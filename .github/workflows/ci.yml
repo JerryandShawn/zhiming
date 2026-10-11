@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      ZHIMING_BASE: ${{ runner.temp }}/zhiming-ci
+      ZHIMING_BASE: ${{ github.workspace }}/private/zhiming-ci
       ZHIMING_SKILL: ${{ github.workspace }}/hermes
-      HERMES_DB: ${{ runner.temp }}/hermes-not-connected.db
+      HERMES_DB: ${{ github.workspace }}/private/hermes-not-connected.db
       KIMI_API_KEY: ""
       MOONSHOT_API_KEY: ""
     steps:
