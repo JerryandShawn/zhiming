@@ -527,7 +527,9 @@ class ConsultationService:
         unsupported_save = False
         for assertion in re.finditer(r'(?:已|已经|我会|已为你)[^。；;！？!?\n，,：:]{0,8}?(?:记住|保存|记录到|更新.{0,4}(?:记忆|档案)|删除.{0,4}(?:记忆|资料))', text):
             prefix = re.split(r'[。；;\n，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', text[:assertion.start()])[-1]
-            denial = re.search(r'(?:不(?:能|会|应)?(?:声称|宣称|表示|说|承诺)|并未|尚未|没有|未曾|未)[“"‘\'「『`]?$' , prefix)
+            # A tightly scoped object remains inside the same denial. Do not
+            # allow arbitrary intervening text or let it span a new assertion.
+            denial = re.search(r'(?:不(?:能|会|应)?(?:声称|宣称|表示|说|承诺)(?:任何资料)?|并未|尚未|没有|未曾|未)[“"‘\'「『`]?$' , prefix)
             double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证)\s*$', prefix[:denial.start()])
             if not denial or double_denial: unsupported_save = True
         if unsupported_save:
@@ -560,10 +562,12 @@ class ConsultationService:
         def explicit_denial(prefix, suffix=''):
             # Only a list joined by "or/and" inherits the same denial. A new
             # sentence, contrast, or affirmative verb starts its own assertion.
-            joined = r'(?:' + guarantee_pattern + r')[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?$'
+            # These extra terms only inherit a list's local denial; they do
+            # not supply evidence for any positive cost or risk guarantee.
+            joined = r'(?:' + guarantee_pattern + r'|零成本|低成本|无风险)[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?$'
             while re.search(joined, prefix):
                 prefix = re.sub(joined, '', prefix)
-            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|认为|说|视为|视作|确定)|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:默认|假设|假定|当作|视为)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它)(?:是|可|为)?|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
+            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定)|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:被)?(?:默认|假设|假定|当作|视为)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
             # A postposed promise noun must be adjacent to this term/list;
             # "不作记录，但报名无损失" is still an affirmative guarantee.
             if denial is None and re.match(r'^(?:(?:、|或|和|及|与)(?:' + guarantee_pattern + r'))*[”"’\'」』`]?\s*(?:的)?(?:承诺|保证)', suffix):

@@ -9,37 +9,85 @@ from mingjing_core.adapters.channels.reports import CoreReportAdapter
 from mingjing_core.domain.consultation import ModelUnavailable
 
 
-async def consult_with_recovery(service, attempts, **kwargs):
-    """One technical recovery of the same durable operation, never new budget.
+async def consult_with_recovery(service, attempts, *, max_recoveries=2, **kwargs):
+    """At most two technical recoveries of the same durable operation.
 
     Retain the failed attempt in the evaluation. Contract/reference failures
     are not retried here; they remain failed samples for investigation.
     """
-    try:
-        return await service.consult(**kwargs)
-    except ModelUnavailable:
-        repo=service.repo;owner=kwargs['owner']
-        with repo.transaction(owner) as connection:
-            run=connection.execute(sql.SQL('SELECT id FROM {} WHERE owner=%s AND operation_id=%s').format(
-                repo.table('core_runs')),(owner,kwargs['request_id'])).fetchone()
-        if not run:raise
-        current=repo.fetch_run(owner,run['id'])
-        diagnostics=[d for d in repo.list(owner,'model_call') if d.get('run_id')==run['id'] and d.get('status')=='failed']
-        failure=max(diagnostics,key=lambda d:d.get('created_at','')) if diagnostics else {}
-        attempts.append({'run_id':run['id'],'operation_id':kwargs['request_id'],'status':current['status'],
-            'calls':current['calls'],'limit':current['call_limit'],'failure_code':failure.get('failure_code'),
-            'provider_http_status':failure.get('provider_http_status')})
-        transient=failure.get('reason') in ('network','tool_count','json','tool_input') or (
-            failure.get('reason')=='http' and (failure.get('provider_http_status')==429 or
-                                             (failure.get('provider_http_status') or 0)>=500))
-        if not transient or current['status']!='failed' or current['calls']>=current['call_limit']:raise
-        retry=repo.prepare_retry(owner,run['id'])
-        if retry['purge_checkpoint']:service.runtime.purge(run['id'],retry['run']['retry_epoch']-1)
-        result=await asyncio.to_thread(service.execute,owner,run['id'])
-        after=repo.fetch_run(owner,run['id'])
-        attempts.append({'run_id':run['id'],'operation_id':kwargs['request_id'],'status':after['status'],
-                         'calls':after['calls'],'limit':after['call_limit']})
-        return result
+    if type(max_recoveries) is not int or not 0 <= max_recoveries <= 2:
+        raise ValueError('Technical recovery bound must be 0..2')
+    pending_run = None
+    recoveries = 0
+    while True:
+        try:
+            if pending_run is None:
+                return await service.consult(**kwargs)
+            result=await asyncio.to_thread(service.execute,kwargs['owner'],pending_run)
+            after=service.repo.fetch_run(kwargs['owner'],pending_run)
+            attempts.append({'run_id':pending_run,'operation_id':kwargs['request_id'],'status':after['status'],
+                             'calls':after['calls'],'limit':after['call_limit']})
+            return result
+        except ModelUnavailable:
+            repo=service.repo;owner=kwargs['owner']
+            with repo.transaction(owner) as connection:
+                run=connection.execute(sql.SQL('SELECT id FROM {} WHERE owner=%s AND operation_id=%s').format(
+                    repo.table('core_runs')),(owner,kwargs['request_id'])).fetchone()
+            if not run:raise
+            current=repo.fetch_run(owner,run['id'])
+            diagnostics=[d for d in repo.list(owner,'model_call') if d.get('run_id')==run['id'] and d.get('status')=='failed']
+            failure=max(diagnostics,key=lambda d:d.get('created_at','')) if diagnostics else {}
+            attempts.append({'run_id':run['id'],'operation_id':kwargs['request_id'],'status':current['status'],
+                'calls':current['calls'],'limit':current['call_limit'],'failure_code':failure.get('failure_code'),
+                'provider_http_status':failure.get('provider_http_status')})
+            transient=failure.get('reason') in ('network','tool_count','json','tool_input') or (
+                failure.get('reason')=='http' and (failure.get('provider_http_status')==429 or
+                                                 (failure.get('provider_http_status') or 0)>=500))
+            if not transient or current['status']!='failed' or current['calls']>=current['call_limit'] or recoveries>=max_recoveries:raise
+            retry=repo.prepare_retry(owner,run['id'])
+            if retry['purge_checkpoint']:service.runtime.purge(run['id'],retry['run']['retry_epoch']-1)
+            recoveries+=1
+            pending_run=run['id']
+
+
+async def report_with_recovery(adapter, attempts, *, max_recoveries=2, **kwargs):
+    """Recover only known technical failures through the same report adapter.
+
+    prepare owns retry/checkpoint handling and builds the authoritative report
+    manifest. Reusing its operation and period preserves the durable budget.
+    """
+    if type(max_recoveries) is not int or not 0 <= max_recoveries <= 2:
+        raise ValueError('Technical recovery bound must be 0..2')
+    service=adapter.service;repo=service.repo
+    owner=adapter.identity(kwargs['external_id'])['owner']
+    operation=kwargs.get('operation_id') or 'report:'+str(kwargs['external_id'])+':'+kwargs['kind']+':'+kwargs['day']
+    recoveries=0
+    while True:
+        try:
+            result=await adapter.prepare(**kwargs)
+            if attempts:
+                current=repo.fetch_run(owner,result['meta']['core_run']['run_id'])
+                attempts.append({'run_id':current['id'],'operation_id':operation,'status':current['status'],
+                                 'calls':current['calls'],'limit':current['call_limit']})
+            return result
+        except Exception as exc:
+            with repo.transaction(owner) as connection:
+                run=connection.execute(sql.SQL('SELECT id FROM {} WHERE owner=%s AND operation_id=%s').format(
+                    repo.table('core_runs')),(owner,operation)).fetchone()
+            if not run:raise
+            current=repo.fetch_run(owner,run['id'])
+            diagnostics=[d for d in repo.list(owner,'model_call') if d.get('run_id')==run['id'] and d.get('status')=='failed']
+            failure=max(diagnostics,key=lambda d:(d.get('created_at',''),d.get('call_index',0))) if diagnostics else {}
+            attempts.append({'run_id':run['id'],'operation_id':operation,'status':current['status'],
+                'calls':current['calls'],'limit':current['call_limit'],'error_code':getattr(exc,'code',type(exc).__name__),
+                'reason':failure.get('reason'),'failure_code':failure.get('failure_code'),
+                'provider_http_status':failure.get('provider_http_status'),'tool_count':failure.get('tool_count')})
+            transient=failure.get('reason') in ('network','tool_count','json','tool_input') or (
+                failure.get('reason')=='http' and (failure.get('provider_http_status')==429 or
+                                                 (failure.get('provider_http_status') or 0)>=500))
+            if (not isinstance(exc,ModelUnavailable) or not transient or current['status']!='failed' or
+                    current['calls']>=current['call_limit'] or recoveries>=max_recoveries):raise
+            recoveries+=1
 
 async def evaluate(output):
     service=ConsultationService.from_base();repo=service.repo
@@ -85,15 +133,16 @@ async def evaluate(output):
         print(json.dumps({k:item[k] for k in ('sample','ok','latency_seconds')},ensure_ascii=False),flush=True)
     report_external='synthetic-report:'+owner
     repo.bind_channel(owner,'report',report_external,binding_kind='task')
-    started=time.monotonic();item={'sample':'report','ok':False}
+    started=time.monotonic();item={'sample':'report','depth':'standard','ok':False,'technical_attempts':[]}
     try:
-        result=await CoreReportAdapter('.',service=service).prepare(external_id=report_external,kind='daily',day='2026-10-12')
-        item.update(ok=True,run_id=result['meta']['core_run']['run_id'],calls=result['meta']['core_run']['calls'],limit=result['meta']['core_run']['call_limit'],summary=result['plain_summary'],answer=result['answer'],validated=result['validation'])
+        result=await report_with_recovery(CoreReportAdapter('.',service=service),item['technical_attempts'],external_id=report_external,kind='daily',day='2026-10-12')
+        run=repo.fetch_run(owner,result['meta']['core_run']['run_id'])
+        item.update(ok=True,run_id=run['id'],calls=run['calls'],limit=run['call_limit'],durable_budget={'calls':run['calls'],'limit':run['call_limit']},report_manifest=result['report'],summary=result['plain_summary'],answer=result['answer'],validated=result['validation'])
     except Exception as exc:
         item.update(error_code=getattr(exc,'code',type(exc).__name__),error=str(exc))
         with repo.connection() as connection:
             failed=connection.execute(sql.SQL('SELECT id,calls,call_limit,status FROM {} WHERE owner=%s AND operation_id=%s').format(repo.table('core_runs')),(owner,'report:'+report_external+':daily:2026-10-12')).fetchone()
-            if failed:item.update(run_id=failed['id'],calls=failed['calls'],limit=failed['call_limit'],run_status=failed['status'])
+            if failed:item.update(run_id=failed['id'],calls=failed['calls'],limit=failed['call_limit'],durable_budget={'calls':failed['calls'],'limit':failed['call_limit']},run_status=failed['status'])
     item['latency_seconds']=round(time.monotonic()-started,3);report['samples'].append(item)
     charges=repo.list(owner,'model_call');report['usage_samples']=[{k:x.get(k) for k in ('run_id','purpose','status','reason','failure_code','provider_http_status','stop_reason','tool_count','usage','usage_known','latency_seconds','model')} for x in charges]
     report['all_passed']=all(x['ok'] for x in report['samples'])

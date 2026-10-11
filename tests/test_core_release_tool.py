@@ -175,7 +175,7 @@ class CoreReleaseTool(unittest.TestCase):
         with ExitStack() as stack:
             for name,value in {'NGINX':str(nginx),'MAINTENANCE':str(self.root/'gate'),'MAINTENANCE_HTML':str(self.root/'maintenance.html')}.items():stack.enter_context(patch.object(release,name,value))
             stack.enter_context(patch.object(release,'require_host'))
-            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:steps.append(argv)))
+            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:steps.append(argv) or ('inactive' if '--property=ActiveState' in argv else 'disabled' if '--property=UnitFileState' in argv else None)))
             def reject(_):
                 self.assertTrue((self.root/'gate').is_file())
                 self.assertIn(['systemctl','stop','mingjingtai.service'],steps)
@@ -224,7 +224,7 @@ class CoreReleaseTool(unittest.TestCase):
             stack.enter_context(patch.object(release,'load_environment',return_value={'ZHIMING_DATABASE_URL':'synthetic env-only DSN'}))
             stack.enter_context(patch.object(release,'units',return_value={}))
             stack.enter_context(patch.object(release,'install_hermes_skill',side_effect=lambda *a:commands.append(['install-fixed-hermes-skill']) or {'installed':True}))
-            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:commands.append(argv)))
+            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:commands.append(argv) or ('inactive' if '--property=ActiveState' in argv else 'disabled' if '--property=UnitFileState' in argv else None)))
             result=release.install(self.args)
         self.assertTrue(result['maintenance']);self.assertFalse(result['effects_started'])
         children=[argv[2] for argv in commands if len(argv)>2 and argv[1]=='-c']

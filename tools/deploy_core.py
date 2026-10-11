@@ -21,6 +21,7 @@ import subprocess
 import sys
 import tarfile
 import urllib.request
+import uuid
 
 RELEASE_ROOT='/root/zhiming-core-releases'
 BACKUP_ROOT='/root/zhiming-core-backups'
@@ -41,6 +42,9 @@ RETIRED_SKILL_PY=('archive.py','archive_store.py','astro.py','bazi.py','chart_co
 MANIFEST='__release_manifest__.json'
 DBS={'stage':'zhiming_core_stage','live':'zhiming_core_live'}
 LEGACY_JOB_COUNT=4
+CORE_EXTERNAL_WRITERS=('zhiming-core-reports.timer','zhiming-core-reports.service','zhiming-core-feishu.service')
+CORE_WRITERS=(*CORE_EXTERNAL_WRITERS,'mingjingtai.service')
+CORE_BOOT_WRITERS=('zhiming-core-reports.timer','zhiming-core-feishu.service','mingjingtai.service')
 
 
 def sha(data):return hashlib.sha256(data).hexdigest()
@@ -479,6 +483,63 @@ def verify_legacy_disabled(args):
         if result.returncode==0:raise ValueError('old report writer is active')
 
 
+def verify_core_external_inactive():
+    for name in CORE_EXTERNAL_WRITERS:
+        state=command(['systemctl','show',name,'--property=ActiveState','--value'],capture=True)
+        if state not in ('inactive','failed'):raise ValueError('Core external writers must be inactive before install or publish')
+
+
+def stop_core_writers():
+    """Best effort every unit, then prove quiescence and persistent boot state."""
+    result={'maintenance_gate_reinstated':False,'units':{},'writers_stopped':False,
+            'boot_writers_disabled':False,'cleanup_complete':False,'errors':[]}
+    def failed(phase,error,name=None):
+        row={'phase':phase,'code':'CORE_WRITER_SHUTDOWN_FAILED','type':type(error).__name__}
+        if name is not None:row['unit']=name
+        result['errors'].append(row)
+    try:
+        maintenance_gate();result['maintenance_gate_reinstated']=True
+    except BaseException as error:failed('maintenance_gate',error)
+    for name in CORE_WRITERS:
+        row={'disable_ok':None,'stop_ok':False,'inactive':False,'boot_disabled':None};result['units'][name]=row
+        if name in CORE_BOOT_WRITERS:
+            try:command(['systemctl','disable','--now',name]);row['disable_ok']=True
+            except BaseException as error:row['disable_ok']=False;failed('disable_writer',error,name)
+        try:command(['systemctl','stop',name]);row['stop_ok']=True
+        except BaseException as error:failed('stop_writer',error,name)
+    for name,row in result['units'].items():
+        try:
+            state=command(['systemctl','show',name,'--property=ActiveState','--value'],capture=True)
+            row['active_state']=state if state in ('inactive','failed','active','activating','deactivating','reloading') else 'unknown'
+            row['inactive']=state in ('inactive','failed')
+            if not row['inactive']:raise ValueError('Core writer still active')
+        except BaseException as error:failed('verify_writer_stopped',error,name)
+        if name in CORE_BOOT_WRITERS:
+            try:
+                state=command(['systemctl','show',name,'--property=UnitFileState','--value'],capture=True)
+                row['unit_file_state']=state if state in ('disabled','masked','masked-runtime','enabled','enabled-runtime','static','indirect') else 'unknown'
+                row['boot_disabled']=state in ('disabled','masked')
+                if not row['boot_disabled']:raise ValueError('Core writer may restart on boot')
+            except BaseException as error:failed('verify_boot_writer_disabled',error,name)
+    result['writers_stopped']=all(row['inactive'] is True for row in result['units'].values())
+    result['boot_writers_disabled']=all(result['units'][name]['boot_disabled'] is True for name in CORE_BOOT_WRITERS)
+    result['cleanup_complete']=(result['maintenance_gate_reinstated'] and result['writers_stopped']
+                                and result['boot_writers_disabled'] and not result['errors'])
+    return result
+
+
+def record_operation_failure(args,action,error,cleanup):
+    """Private operational evidence; recording must not mask the original error."""
+    try:
+        directory=Path(BACKUP_ROOT)/(stamp()+'-'+action+'-failure-'+args.commit[:12]+'-'+uuid.uuid4().hex[:8])
+        directory.mkdir(parents=True,mode=0o700)
+        record={'schema':'core3-release-operation-failure-v1','commit':args.commit,'action':action,
+                'failure':{'code':'RELEASE_OPERATION_FAILED','type':type(error).__name__},'cleanup':cleanup,
+                'rollback_complete':False,'automatic_retry_performed':False,'old_loop_reenabled':False}
+        write_private(directory/'failure.json',json.dumps(record,ensure_ascii=False).encode())
+    except BaseException:pass
+
+
 def skill_paths(source=None):
     target=Path(HERMES_SKILL)
     if not target.is_absolute() or target.name!='zhiming' or target.parent.name!='skills' or not target.parent.is_dir():raise ValueError('Hermes skill path must be the explicit existing skills/zhiming directory')
@@ -607,6 +668,7 @@ def verify_hermes_skill(args):
 def install(args):
     require_host();release=verify_release(args);evidence(args);verify_legacy_disabled(args)
     if not Path(MAINTENANCE).exists():raise ValueError('public writes must be frozen before final migration')
+    verify_core_external_inactive()
     env=load_environment(args,DBS['live']);source=Path(args.source_snapshot)
     bindings=Path(args.bindings)
     if bindings.is_symlink() or not bindings.is_file() or bindings.stat().st_mode&0o077:raise ValueError('trusted binding file must be protected mode 0600')
@@ -702,20 +764,42 @@ def publish(args):
     request=urllib.request.Request('http://127.0.0.1:8787/api/health',headers={'X-Token':env.get('MINGJING_TOKEN','')})
     with urllib.request.urlopen(request,timeout=30) as response:health=json.load(response)
     if not health.get('ok') or health.get('context_version')!='core3.0' or health.get('database')!='postgresql' or health.get('runtime')!='langgraph':raise ValueError('new website health did not confirm Core v3')
-    command(['systemctl','enable','--now','zhiming-core-feishu.service','zhiming-core-reports.timer'])
-    command(['systemctl','is-active','--quiet','zhiming-core-feishu.service','zhiming-core-reports.timer'])
-    command(['nginx','-t']);Path(MAINTENANCE).unlink(missing_ok=True)
+    try:
+        verify_core_external_inactive()
+        command(['nginx','-t'])
+        command(['systemctl','enable','--now','zhiming-core-feishu.service','zhiming-core-reports.timer'])
+        command(['systemctl','is-active','--quiet','zhiming-core-feishu.service','zhiming-core-reports.timer'])
+        Path(MAINTENANCE).unlink(missing_ok=True)
+    except BaseException as error:
+        try:
+            cleanup=stop_core_writers()
+            cleanup.update(latest_backup_attempted=False,latest_backup_completed=False)
+            if cleanup['cleanup_complete']:
+                cleanup['latest_backup_attempted']=True
+                try:
+                    backup=maintenance(args)
+                    cleanup['latest_backup_completed']=backup.get('maintenance') is True and backup.get('writers_stopped') is True
+                    if not cleanup['latest_backup_completed']:raise ValueError('Latest maintenance backup incomplete')
+                except BaseException as backup_error:
+                    cleanup['cleanup_complete']=False
+                    cleanup['errors'].append({'phase':'latest_pg_and_withdrawal_backup','code':'LATEST_MAINTENANCE_BACKUP_FAILED','type':type(backup_error).__name__})
+            record_operation_failure(args,'publish',error,cleanup)
+        except BaseException as cleanup_error:
+            record_operation_failure(args,'publish',error,{'cleanup_complete':False,'errors':[{'phase':'cleanup_internal','type':type(cleanup_error).__name__}]})
+        raise
     return {'published':True,'commit':args.commit,'live_health':True,'probe_messages_sent':0,'model_probe_calls':0}
 
 
 def maintenance(args):
-    require_host();maintenance_gate()
-    for name in ('zhiming-core-reports.timer','zhiming-core-reports.service','zhiming-core-feishu.service','mingjingtai.service'):
-        command(['systemctl','stop',name])
+    require_host();cleanup=stop_core_writers()
+    if cleanup['cleanup_complete'] is not True:
+        error=ValueError('Core writer shutdown incomplete; maintenance gate retained')
+        record_operation_failure(args,'maintenance',error,cleanup)
+        raise error
     Path(NGINX).write_text(render_nginx(Path(NGINX).read_text(encoding='utf-8')),encoding='utf-8')
     command(['nginx','-t']);command(['systemctl','reload','nginx'])
     release=verify_release(args)
-    env=load_environment(args,DBS['live']);directory=Path(BACKUP_ROOT)/(stamp()+'-maintenance-'+args.commit[:12]);directory.mkdir(parents=True,mode=0o700)
+    env=load_environment(args,DBS['live']);directory=Path(BACKUP_ROOT)/(stamp()+'-maintenance-'+args.commit[:12]+'-'+uuid.uuid4().hex[:8]);directory.mkdir(parents=True,mode=0o700)
     code='''import os,json,subprocess
 from psycopg.conninfo import conninfo_to_dict
 from tools.deploy_core import export_withdrawals
@@ -736,7 +820,7 @@ with os.fdopen(descriptor,'wb') as f:subprocess.run(['pg_dump','--format=custom'
     command([str(release/'venv/core/bin/python'),'-c',code],cwd=release,env=env)
     write_private(directory/'maintenance.json',json.dumps({'commit':args.commit,'database':DBS['live'],'withdrawals':'withdrawals-latest.json','withdrawals_sha256':file_sha(directory/'withdrawals-latest.json'),
                   'database_snapshot':'core-live-latest.dump','database_sha256':file_sha(directory/'core-live-latest.dump'),'old_loop_reenabled':False,'at':stamp()}).encode())
-    return {'maintenance':True,'writers_stopped':True,'latest_revocations_retained':str(directory),'old_explanation_loop_reenabled':False}
+    return {'maintenance':True,'writers_stopped':True,'latest_revocations_retained':str(directory),'old_explanation_loop_reenabled':False,'safety_cleanup':cleanup}
 
 
 def restore_withdrawals(args):
