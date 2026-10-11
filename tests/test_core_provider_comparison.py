@@ -23,6 +23,11 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
             self.assertEqual(result['provider_calls'],0)
             self.assertEqual(result['status'],'plan_only_no_provider_calls')
             self.assertEqual(result['fixed_cards'],comparison.FIXED_CARDS)
+            self.assertEqual(result['arm_budgets']['tarot']['new_single_specialist'],{'depth':'standard','call_limit':6})
+            self.assertEqual(result['arm_budgets']['tarot']['new_controlled_multi_specialists'],{'depth':'deep','call_limit':10})
+            for arm in comparison.ARMS[2:]:self.assertEqual(result['arm_budgets']['decision'][arm],{'depth':'standard','call_limit':6})
+            self.assertEqual(result['arm_budgets']['tarot']['legacy'],{'depth':'original_v5','call_limit':None,'legacy_tool_round_limit':8})
+            self.assertTrue(any('not a same-budget comparison' in limit for limit in result['measurement_limits']))
 
     @unittest.skipUnless(os.getenv('CHART_PYTHON') and all(has_dependency(x) for x in ('lunar_python', 'pythonmonkey', 'swisseph')),
                          'requires actual configured CHART_PYTHON with all three calculator libraries')
@@ -52,8 +57,12 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
         self.assertEqual(multi['status'],'validated',multi.get('error_type'))
         self.assertEqual(single['specialist_provider_calls'],1)
         self.assertEqual(multi['specialist_provider_calls'],4)
-        self.assertEqual(single['durable_budget']['calls'],3)
-        self.assertEqual(multi['durable_budget']['calls'],6)
+        self.assertEqual((single['depth'],single['call_limit'],single['durable_budget']),('standard',6,{'calls':3,'limit':6}))
+        self.assertEqual((multi['depth'],multi['call_limit'],multi['durable_budget']),('deep',10,{'calls':7,'limit':10}))
+        self.assertEqual((single['base_phase_provider_calls'],multi['base_phase_provider_calls']),(3,6))
+        self.assertEqual((single['review_provider_calls'],multi['review_provider_calls']),(0,1))
+        self.assertEqual((single['repair_provider_calls'],multi['repair_provider_calls']),(0,0))
+        self.assertEqual([c['purpose'] for c in multi['calls']].count('review'),1)
         self.assertTrue(single['fixed_cards_unchanged']);self.assertTrue(multi['fixed_cards_unchanged'])
         self.assertEqual(single['validation_attempts'][0]['issues'],[])
         self.assertEqual(multi['last_phase'],'commit')
@@ -93,17 +102,27 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
         self.assertEqual(len(old['legacy_source_hashes']),10)
         self.assertEqual(old['context_only_source_changes'],[])
         self.assertEqual(len(expanded['context_only_source_changes']),2)
+        self.assertEqual((old['depth'],old['call_limit'],old['legacy_tool_round_limit']),('original_v5',None,8))
         self.assertEqual(old['calls'][0]['contract_tools'][0]['name'],'final_answer')
         self.assertIn('plain_summary',old['calls'][0]['contract_tools'][0]['output'])
 
     def test_failure_diagnostics_preserve_strict_business_issues_and_contract_output(self):
         def provider(model,**kwargs):
+            self.assertIn('询问与等待也有时间和机会成本',kwargs['system'])
+            self.assertIn('已保存塔罗声明',kwargs['system'])
+            self.assertIn('本轮引用的声明',kwargs['system'])
             data=kwargs['payload']['reference_data']
             if kwargs['purpose']=='intake':
                 output={'plan':{'mode':'decision','topic':'career','systems':[],
                     'target_date':'2026-10-11','time_scale':'natal','decision':True,'rationale':'合成失败诊断','missing_inputs':[]},
                     'proposals':[],'retire_fact_ids':[],'attachment_observations':[]}
             else:
+                if kwargs['purpose']=='repair':
+                    instruction=kwargs['payload']['instruction']
+                    self.assertIn('未知费用、退出条件或时限不能宣称零风险、完全可逆或无损失',instruction)
+                    self.assertIn('询问和等待也有时间及机会成本',instruction)
+                    self.assertIn('塔罗声明、牌面和资料',instruction)
+                    self.assertIn('保存状态由程序真实回执生成',instruction)
                 output={'plain_summary':'你可以每月上一次夜班。','explanation':'这条错误内容必须被真正业务校验拒绝。',
                     'actions':['先核实书面条件。'],'decision_options':[{'option':x,'benefit':'待确认','cost':'未知',
                         'risk':'待确认','reversibility':'待核实','first_step':'询问班次'} for x in ('询问A','询问B')],
@@ -112,6 +131,7 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
             return {'output':output,'usage':{},'latency_seconds':0,'model':'synthetic-preflight'}
         with patch.dict(os.environ,{'CORE_COMPARE_PREFLIGHT_DSN':test_dsn()}),patch.object(ConfiguredModel,'generate',provider):
             result=comparison.core_worker('new_single_specialist','decision','CORE_COMPARE_PREFLIGHT_DSN')
+            controlled=comparison.core_worker('new_controlled_multi_specialists','decision','CORE_COMPARE_PREFLIGHT_DSN')
         self.assertEqual(result['status'],'failed')
         self.assertEqual(result['error_type'],'InvalidAnswer')
         self.assertEqual(result['last_phase'],'validation')
@@ -119,6 +139,10 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
         self.assertEqual(len(result['validation_attempts']),2)
         self.assertTrue(all(any('不能上夜班' in issue for issue in a['issues']) for a in result['validation_attempts']))
         self.assertEqual(result['calls'][-1]['contract_output']['plain_summary'],'你可以每月上一次夜班。')
+        for row in (result,controlled):
+            self.assertEqual((row['depth'],row['call_limit'],row['durable_budget']),('standard',6,{'calls':3,'limit':6}))
+            self.assertEqual(row['specialist_provider_calls'],0)
+            self.assertEqual(row['review_provider_calls'],0)
 
     def test_contract_diagnostics_drop_thinking_headers_and_known_secrets(self):
         from mingjing_core.domain.consultation import FinalAnswer,Intake

@@ -41,6 +41,18 @@ PROFILE_ITEMS = [('gender','女'),('birth.solar_datetime','2000-01-01 08:00'),('
 WORKER_OUTPUT = None
 WORKER_CONTEXT = {}
 
+
+def comparison_budget(arm, scenario):
+    """Expose each workflow's real budget; the arms do not share one cap."""
+    if arm not in ARMS or scenario not in QUESTIONS:
+        raise ValueError('Unknown comparison arm or scenario')
+    if arm in ARMS[:2]:
+        return {'depth': 'original_v5', 'call_limit': None, 'legacy_tool_round_limit': 8}
+    from mingjing_core.repositories.postgres import CALL_LIMITS
+    depth = 'deep' if arm == 'new_controlled_multi_specialists' and scenario == 'tarot' else 'standard'
+    return {'depth': depth, 'call_limit': CALL_LIMITS[depth]}
+
+
 def persist_observations(calls):
     if WORKER_OUTPUT:
         partial=dict(WORKER_CONTEXT,status='in_progress',calls=calls,**aggregate(calls))
@@ -182,7 +194,7 @@ def legacy_worker(arm, scenario, legacy_root):
                     record['stop_reason']=parsed.get('stop_reason')
                 return response
             finally:record['latency_seconds']=round(time.monotonic()-started,3);persist_observations(calls)
-    result={'arm':arm,'scenario':scenario,'synthetic_only':True,'calls':calls,'legacy_controller':'production-v5-ChatAgent',
+    result={'arm':arm,'scenario':scenario,'synthetic_only':True,'calls':calls,**comparison_budget(arm,scenario),'legacy_controller':'production-v5-ChatAgent',
             'legacy_history_window':124 if arm=='expanded_legacy' else 32,
             'legacy_history_character_cap':96000 if arm=='expanded_legacy' else 12000,
             'legacy_frozen_tarot_capability':'unsupported: v5 has no draw store or card identity validation; the same fixed physical-card input is in the question',
@@ -287,8 +299,9 @@ def core_worker(arm, scenario, dsn_env):
     repo = PostgresRepository(dsn, schema=schema)
     service = DiagnosticService(repo, model=ObservedModel())
     owner = 'synthetic-comparison'; repo.ensure_owner(owner)
+    budget = comparison_budget(arm, scenario)
     result = {'arm': arm, 'scenario': scenario, 'synthetic_only': True, 'calls': calls,
-              'validation_attempts':validation_attempts,'phase_events':phase_events}
+              'validation_attempts':validation_attempts,'phase_events':phase_events, **budget}
     def observe_phase(event):
         if event.get('type') == 'status':
             phase_events.append(event['stage'])
@@ -315,7 +328,7 @@ def core_worker(arm, scenario, dsn_env):
                 manual_cards=deepcopy(FIXED_CARDS), idempotency_key='fixed-manual-draw')['draw']
             draw = service.tarot.reveal(owner, draw['id']); assert card_projection(draw) == FIXED_CARDS
         run = service.submit(owner=owner, message=QUESTIONS[scenario], conversation_id='synthetic-conversation',
-            request_id='fixed-target', case_ids=[case], depth='standard',
+            request_id='fixed-target', case_ids=[case], depth=budget['depth'],
             selection={'date':'2026-10-11','systems':(['tarot'] if arm=='new_single_specialist' else ['tarot','bazi','ziwei','astro']) if scenario=='tarot' else []},
             draw_id=draw['id'] if draw else None)
         run_id = run['id']
@@ -329,7 +342,12 @@ def core_worker(arm, scenario, dsn_env):
         result['last_phase']=phase_events[-1] if phase_events else None
         result['last_completed_phase']=current['checkpoint'].get('phase')
         result['durable_budget'] = {'calls': current['calls'], 'limit': current['call_limit']}
+        result['depth'] = current['request']['depth']; result['call_limit'] = current['call_limit']
+        assert result['depth'] == budget['depth'] and result['call_limit'] == budget['call_limit']
         result['specialist_provider_calls'] = sum(c['purpose'].startswith('specialist:') for c in calls)
+        result['base_phase_provider_calls'] = sum(c['purpose'] in ('intake', 'synthesis') or c['purpose'].startswith('specialist:') for c in calls)
+        result['review_provider_calls'] = sum(c['purpose'] == 'review' for c in calls)
+        result['repair_provider_calls'] = sum(c['purpose'] == 'repair' for c in calls)
         expected_specialists = (1 if arm == 'new_single_specialist' else 4) if scenario == 'tarot' else 0
         result['expected_specialist_provider_calls'] = expected_specialists
         if result.get('status') == 'validated' and result['specialist_provider_calls'] != expected_specialists:
@@ -360,7 +378,8 @@ def main(argv=None):
     args = parser.parse_args(argv)
     if args.worker_arm:
         global WORKER_OUTPUT, WORKER_CONTEXT
-        WORKER_OUTPUT=args.output;WORKER_CONTEXT={'arm':args.worker_arm,'scenario':args.worker_scenario,'synthetic_only':True}
+        WORKER_OUTPUT=args.output;WORKER_CONTEXT={'arm':args.worker_arm,'scenario':args.worker_scenario,'synthetic_only':True,
+                                                **comparison_budget(args.worker_arm,args.worker_scenario)}
         try:
             result = legacy_worker(args.worker_arm, args.worker_scenario, args.legacy_root) if args.worker_arm in ARMS[:2] else core_worker(args.worker_arm, args.worker_scenario, args.dsn_env)
         except Exception as exc:
@@ -375,12 +394,14 @@ def main(argv=None):
               'provider': 'real-configured-provider', 'model': model.model,
               'questions': {s: QUESTIONS[s] for s in args.scenarios}, 'fixed_cards': FIXED_CARDS, 'authorized_synthetic_profile':dict(PROFILE_ITEMS),
               'fixture_hash': digest({'questions': QUESTIONS, 'cards': FIXED_CARDS, 'facts': FACTS, 'profile':PROFILE_ITEMS,'history': history_fixture()}),
+              'arm_budgets': {s: {arm: comparison_budget(arm,s) for arm in ARMS} for s in args.scenarios},
               'measurement_limits': [
                   'Only two fixed synthetic questions; not a statistical evaluation or predictive study.',
                   'Legacy uses original production v5 ChatAgent + ConversationStore, private temporary SQLite and the original builtin lexical fallback.',
                   'Expanded legacy only changes two history constants (32 to 124 messages, 12000 to 96000 characters); all other controller code is identical and source hashes are saved.',
-                  'New single arm runs standard depth with explicit selection.systems=[tarot] for the tarot question; reality-only decision has no specialist.',
-                  'Controlled multi arm uses the same question/profile and standard depth with explicit selection.systems=[tarot,bazi,ziwei,astro]. This controls interpretation scope; it is not presented as model-autonomous selection. Actual specialist calls are recorded, missing claims are gaps.',
+                  'New single arm runs standard depth with explicit selection.systems=[tarot] for the tarot question; both reality-only decision arms run standard depth without specialists.',
+                  'Controlled multi tarot uses the same question/profile, explicit selection.systems=[tarot,bazi,ziwei,astro] and deep depth. Deep review is retained and charged; actual specialist calls are recorded and missing claims are gaps. This controls interpretation scope, not model-autonomous selection.',
+                  'The workflows have different budgets: '+json.dumps({s:{arm:comparison_budget(arm,s) for arm in ARMS} for s in args.scenarios},sort_keys=True)+'. Controlled tarot has six base calls (intake, four specialists, synthesis), plus deep review; semantic repair and technical retries also consume its persisted cap. This is not a same-budget comparison.',
                   'Input bytes exclude HTTP headers and differ in accounting: legacy entire request body, Core reference payload. Provider usage is authoritative.',
                   'Production v5 has no frozen Tarot store/validator. It receives exactly the same physical-card input in the question; this capability gap is explicit, never supplied by a newer controller.',
                   'No hidden thinking or API credentials are persisted; final synthetic answers need manual quality review.'],
