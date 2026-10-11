@@ -72,6 +72,8 @@ CORE_PY=$RELEASE_DIR/venv/core/bin/python
 
 install 向专用 live DB 迁移，再通过同一 HermesChannelAdapter 导入最终 Hermes 快照中的受信作者、有效私聊用户原话。它仅使用显式 `feishu/user` 绑定，不导入助手解释、群聊、其他人或失效消息，不提取事实、不调用模型、不投递。重复同步必须新增 0、事实数不变，统计保存在 0600 的 `final-hermes-migration.json`。迁移 owner 随后调用 `ReportScheduleService(repo).seed_defaults('primary')`，仅为已迁 pipeline 且任务/投递目标双重受信绑定的缺失计划建立默认项，保留原暂停设置和既有 schedule；GET 不负责 seed，未配置情况保持未配置。统计只含 created/existing/unconfigured 计数。随后设置 checkpoint 及运行授权，备份并安装 systemd units，只启动维护门内的新网站。网站用一个 Uvicorn worker、数据库池 4；计算通过专用 charts Python。飞书是独立 `zhiming-core-feishu.service`，报告是独立 `zhiming-core-reports.service/.timer`，每个上海时区分钟检查原计划与 outbox。迁移后核对新 PG 的主体、原话、事实、撤销、附件、事项与报告元数据及旧 sent/uncertain 阻断状态；API 只读检查和浏览器登录不发送模型或渠道测试请求。
 
+install 还固定安装 `/root/.hermes/skills/zhiming`：只把该技能的旧 SKILL.md、顶层 Python 源码及旧安装清单备份至本次 freeze 目录的 `hermes-skill`，逐文件哈希记录，重复执行不覆盖原备份。该目录中私密 JSON/SQLite、其他技能和 Hermes 会话不变。新 SKILL.md 来自固定 release；`python3 core_consultation.py` 是薄 wrapper，读取与新服务相同顺序的受保护 0600 环境文件后，用 `os.execv` 执行固定 Core Python 和 release CLI，原参数逐项传递，不嵌入凭据、不调用 shell。旧 Python 入口全部替换为 fail-closed 退役提示，不能继续写旧档案或运行第二次解释。安装后再次重启 Hermes 刷新技能缓存，并复核旧 Feishu 显式禁用，再启动新 Web。publish 会核对 SKILL、wrapper、全部退役 stub、原备份和固定 commit manifest；未知新增 Python 入口、修改或错误 env 顺序均阻断发布。维护恢复不还原旧技能及旧解释循环。
+
 最终确认后发布：
 
 ```bash

@@ -319,7 +319,7 @@ class ConsultationService:
             'current_facts': [{'id': f['id'], 'content': f.get('content', ''), 'case_id': f.get('case_id'),
                                'kind': f.get('kind')} for f in selected_facts(snap, req['message'], 80)],
             'recent_history': [{'role': h.get('role'), 'content': h.get('content','')[:1000]} for h in snap.get('history', [])[-12:]]},
-            'instruction': '识别意图并返回Intake所有字段；记忆候选只引用本轮逐字原话。拒绝保存不提出保存候选；更正意图与保存许可分离。敏感资料、出生、第三人必须明确保存授权。图片仅为未核实附件，图片推断不能作为原话保存。按明确需要规划专业，education规范为study。需要排盘时，程序将用已授权出生资料实际计算，不要求用户提交排盘结果；missing_inputs仅列确实缺少的用户输入，不列程序将计算的字段。费用、班次、退出等现实条件不明时只列待核实，不编造。'}
+            'instruction': '识别意图并返回Intake所有字段；proposals只能处理本轮当前source原话，quote必须是当前message中的逐字连续原文；历史既有资料仅作参考，不得重复提取成新proposals。普通偏好、约束、背景、目标和事件只在quote写事实正文，field和value必须均为null，不得发明schedule等结构化字段或扩写value。只有结构化个人资料（category为出生资料、出生或profile）及其更正可使用schema枚举的现有资料field，value必须直接来自quote原话，不能推断或概括。拒绝保存不提出保存候选；更正意图与保存许可分离。敏感资料、出生、第三人必须明确保存授权。图片仅为未核实附件，图片推断不能作为原话保存。按明确需要规划专业，education规范为study。需要排盘时，程序将用已授权出生资料实际计算，不要求用户提交排盘结果；missing_inputs只列缺少就无法执行本次所选分析的真实用户输入，可选细化信息不列入，现有信息足以继续时返回[]；不列程序将计算的字段、模型规则、宫位、流派与排盘结果。费用、班次、退出等现实条件不明时只列待核实，不编造。'}
         if req.get('parent_run'):
             parent_source = self._parent_source(owner, run)
             payload['reference_data']['clarification_for'] = {'question': parent_source['content']}
@@ -516,7 +516,13 @@ class ConsultationService:
         if set(final['cited_claim_ids']) - set(claims):
             issues.append('引用了未通过规则核验的声明')
         text = render_answer(final) + '\n' + final['professional_appendix']
-        if re.search(r'(?:已|已经|我会|已为你).{0,8}(?:记住|保存|记录到|更新.{0,4}(?:记忆|档案)|删除.{0,4}(?:记忆|资料))', text):
+        unsupported_save = False
+        for assertion in re.finditer(r'(?:已|已经|我会|已为你)[^。；;！？!?\n，,：:]{0,8}?(?:记住|保存|记录到|更新.{0,4}(?:记忆|档案)|删除.{0,4}(?:记忆|资料))', text):
+            prefix = re.split(r'[。；;\n，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', text[:assertion.start()])[-1]
+            denial = re.search(r'(?:不(?:能|会|应)?(?:声称|宣称|表示|说|承诺)|并未|尚未|没有|未曾|未)[“"‘\'「『`]?$' , prefix)
+            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证)\s*$', prefix[:denial.start()])
+            if not denial or double_denial: unsupported_save = True
+        if unsupported_save:
             issues.append('保存或删除提示必须由实际程序回执生成')
         certainty = False
         for clause in re.split(r'[。；;\n]', text):
@@ -542,7 +548,68 @@ class ConsultationService:
         familiarity_pattern = r'(?:关系|流程)(?:[、和与](?:关系|流程))?(?:都)?(?:已(?:经)?)?熟悉(?!程度)|(?:你|我).{0,4}熟悉.{0,16}(?:任务|岗位|关系|流程)'
         if (re.search(cost_pattern,text) and not re.search(r'协商成本低',factual)) or (re.search(familiarity_pattern,text) and not re.search(familiarity_pattern,factual)):
             issues.append('熟悉关系、流程或协商成本低没有已授权现实来源，不可作为推荐理由')
-        if re.search(r'零风险|完全可逆|没有任何损失|随时.{0,3}(?:退出|退款)', text) and not re.search(r'零风险|完全可逆|随时.{0,3}(?:退出|退款)', factual):
+        guarantee_pattern = r'零风险|完全可逆|没有任何损失|无损失|零损失|随时.{0,3}(?:退出|退款)'
+        def explicit_denial(prefix):
+            # Only a list joined by "or/and" inherits the same denial. A new
+            # sentence, contrast, or affirmative verb starts its own assertion.
+            while re.search(r'(?:' + guarantee_pattern + r')(?:或|、|和|及|与)\s*$', prefix):
+                prefix = re.sub(r'(?:' + guarantee_pattern + r')(?:或|、|和|及|与)\s*$', '', prefix)
+            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独)?(?:保证|承诺|认定|断言|声称|认为|说|视为|视作|确定)|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:默认|假设|当作|视为)|并非|不是|未必|不等于|不)(?:(?:任何报名|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它)(?:是|可|为)?|是|可|为)?[“"‘\'「『`]?$', prefix)
+            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法)\s*$', prefix[:denial.start()])
+            return bool(denial and not double_denial)
+
+        def guarantee_is_asserted(clause, assertion):
+            before, after = clause[:assertion.start()], clause[assertion.end():]
+            # Denial applies to this occurrence, never to another
+            # sentence/field or a renewed assertion after a contrast.
+            local = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', before)[-1]
+            if explicit_denial(local): return False
+            if (re.search(r'(?:是否|能否|可否)[“"‘\'「『`]?$' , local)
+                    and re.match(r'^[”"’\'」』`]?(?:(?:、|或)(?:是否|能否|可否)?(?:' + guarantee_pattern + r'|零成本))*\s*(?:尚未|还未|未经|未)(?:确认|核实|验证)', after)):
+                return False
+            if re.match(r'^[”"’\'」』`]?\s*(?:(?:的|这个|这一)?(?:说法|判断|承诺|结论))?\s*(?:不成立|不能成立|没有依据|缺乏依据|尚无依据|并无依据|属于过度承诺|是过度承诺|应当撤回|已经撤回|不能保证|不能承诺)', after):
+                return False
+            # A quoted old guarantee is allowed only with an explicit
+            # local withdrawal. Quotes alone do not make a promise safe.
+            withdrawn = False
+            for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
+                for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']{0,160}' + re.escape(closing), clause):
+                    if not (quoted.start() < assertion.start() and assertion.end() < quoted.end()): continue
+                    history = clause[max(0,quoted.start()-160):quoted.start()]
+                    withdrawal = clause[quoted.end():quoted.end()+90]
+                    local_history = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', history)[-1]
+                    quoted_terms = quoted.group()[1:-1]
+                    if (explicit_denial(local_history)
+                            and re.fullmatch(r'(?:' + guarantee_pattern + r')(?:(?:、|,|，|或|和|及|与)(?:' + guarantee_pattern + r'))*', quoted_terms)):
+                        return False
+                    retraction = re.search(r'(?:撤回|收回|否定|纠正|更正|修正)(?:上一轮|先前|之前|此前|原先)?(?:的|将|关于|对)?\s*$', local_history)
+                    if retraction and not re.search(r'(?:不是|并非|未曾|尚未|没有|不会|不能|无需|不必|不|未)\s*$', local_history[:retraction.start()]):
+                        withdrawn = True
+                    if (re.search(r'(?:修复|修正|纠正|更正)了?(?:上一轮|先前|之前|此前|原先)?(?:对|关于)?\s*$', local_history)
+                            and re.match(r'^\s*的(?:过度(?:断语|承诺)|错误(?:断语|判断|说法))', withdrawal)):
+                        withdrawn = True
+                    if (re.search(r'上一轮|先前|之前|此前|原先|原来的|原本|旧(?:说法|答复|判断)', history)
+                            and re.search(r'描述|表述|称|说|判断|写|承诺', history)
+                            and re.match(r'^\s*[，,：:]?\s*(?:这(?:一(?:说法|判断|承诺))?(?:属于|是)|该(?:说法|判断|承诺)(?:属于|是)|(?:属于|是))?\s*(?:过度承诺|错误|不成立|不准确|没有依据|缺乏依据|已(?:经)?撤回|现(?:在)?撤回|应当撤回|需要撤回|需(?:要)?修正|予以修正)', withdrawal)):
+                        withdrawn = True
+            return not withdrawn
+
+        def guarantee_kind(assertion):
+            value = assertion.group()
+            if value in ('没有任何损失', '无损失', '零损失'): return '无损失'
+            if value.startswith('随时'): return '随时退款' if value.endswith('退款') else '随时退出'
+            return value
+
+        supported_guarantees = set()
+        for source_clause in re.split(r'[。；;\n]', factual):
+            # Questions, instructions not to promise, and old withdrawn wording
+            # are not affirmative evidence for any kind of guarantee.
+            if re.search(r'是否|能否|可否|吗|么|[？?]|不要|请避免|别(?:说|承诺|保证)|不排除|不能否认|不可否认|未排除|可能|或许|也许|据说|有人说|撤回|收回|修复|修正|纠正|更正|上一轮|此前|之前|先前', source_clause): continue
+            for source_assertion in re.finditer(guarantee_pattern, source_clause):
+                if guarantee_is_asserted(source_clause, source_assertion):
+                    supported_guarantees.add(guarantee_kind(source_assertion))
+        if any(guarantee_kind(assertion) not in supported_guarantees and guarantee_is_asserted(clause, assertion)
+               for clause in clauses for assertion in re.finditer(guarantee_pattern, clause)):
             issues.append('费用、退出和风险条件未经确认，不能承诺完全可逆或无损失')
         if plan['mode'] in ('support','urgent_support') and len(final['actions']) > 1:
             issues.append('支持模式只给最多一个低负担行动')

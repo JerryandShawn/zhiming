@@ -31,6 +31,13 @@ LEGACY_SOURCE='/root/.hermes/zhiming'
 LEGACY_CONFIG='/root/.hermes/config.yaml'
 LEGACY_JOBS='/root/.hermes/cron/jobs.json'
 LEGACY_HERMES_DB='/root/.hermes/state.db'
+HERMES_SKILL='/root/.hermes/skills/zhiming'
+SKILL_MANIFEST='__core_skill_manifest__.json'
+SKILL_BACKUP_MANIFEST='__hermes_skill_backup__.json'
+RETIRED_SKILL_PY=('archive.py','archive_store.py','astro.py','bazi.py','chart_context.py','chat_agent.py',
+                  'context_engine.py','context_query.py','conversation_store.py','guidance.py','report_pipeline.py',
+                  'report_store.py','semantic_index.py','ziwei.py','v6_agent.py','state_store.py','domain_api.py',
+                  'tarot_deck.py','tarot_store.py','tarot_guidance.py')
 MANIFEST='__release_manifest__.json'
 DBS={'stage':'zhiming_core_stage','live':'zhiming_core_live'}
 LEGACY_JOB_COUNT=4
@@ -472,6 +479,131 @@ def verify_legacy_disabled(args):
         if result.returncode==0:raise ValueError('old report writer is active')
 
 
+def skill_paths(source=None):
+    target=Path(HERMES_SKILL)
+    if not target.is_absolute() or target.name!='zhiming' or target.parent.name!='skills' or not target.parent.is_dir():raise ValueError('Hermes skill path must be the explicit existing skills/zhiming directory')
+    for path in (target,*target.parents):
+        if path.is_symlink():raise ValueError('Hermes skill path must not contain a symlink')
+    if target.exists() and not target.is_dir():raise ValueError('Hermes skill target must be a directory')
+    if source is None:return target,None
+    source=Path(source)
+    backup=source.parent/'hermes-skill'
+    if source.is_symlink() or not source.is_dir() or not source.resolve().is_relative_to(Path(BACKUP_ROOT).resolve()):raise ValueError('Hermes skill backup requires the explicit frozen source directory')
+    for path in (backup,*backup.parents):
+        if path.is_symlink():raise ValueError('Hermes skill backup path must not contain a symlink')
+    return target,backup
+
+
+def skill_wrapper(args):
+    release_path(args.commit,args.release_dir)
+    # No credential values are embedded. Parse the exact service env-file order
+    # in the fixed release, then exec without a shell or argv reconstruction.
+    config={'commit':args.commit,'release_dir':args.release_dir,'env_file':list(args.env_file)}
+    return ('''"""Fixed Core entrypoint; runtime secrets stay in protected env files."""
+import json,os,sys
+from types import SimpleNamespace
+def main():
+ try:
+  config=json.loads(CONFIG_JSON)
+  sys.path.insert(0,config['release_dir'])
+  from tools.deploy_core import verify_release,load_environment
+  args=SimpleNamespace(**config)
+  release=verify_release(args)
+  env=load_environment(args,'zhiming_core_live')
+  python=str(release/'venv/core/bin/python')
+  command=str(release/'hermes/core_consultation.py')
+  os.environ.clear();os.environ.update(env)
+  os.execv(python,[python,command,*sys.argv[1:]])
+ except Exception:
+  sys.stderr.write('CORE_SKILL_CONFIGURATION_ERROR: protected configuration or fixed release failed; no legacy fallback.\\n')
+  raise SystemExit(78)
+if __name__=='__main__':main()
+'''.replace('CONFIG_JSON',repr(json.dumps(config,sort_keys=True)))).encode()
+
+
+def retired_skill_stub():
+    return ("import sys\nsys.stderr.write('LEGACY_SKILL_RETIRED: 旧入口已退役，请使用本目录 core_consultation.py；禁止旧事实写入或第二次解释。\\n')\nraise SystemExit(64)\n").encode()
+
+
+def expected_skill_files(args,legacy_names):
+    release=verify_release(args)
+    names=set(RETIRED_SKILL_PY)|set(legacy_names)
+    if any(not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*\.py',name) for name in names):raise ValueError('Unexpected Hermes legacy source name')
+    names.discard('core_consultation.py')
+    files={name:retired_skill_stub() for name in names}
+    files['SKILL.md']=(release/'hermes/SKILL.md').read_bytes()
+    files['core_consultation.py']=skill_wrapper(args)
+    return files
+
+
+def install_hermes_skill(args,source):
+    target,backup=skill_paths(source)
+    target.mkdir(mode=0o700,exist_ok=True)
+    original_names={path.name for path in target.iterdir() if path.name=='SKILL.md' or path.suffix=='.py' or path.name==SKILL_MANIFEST}
+    for name in original_names:
+        path=target/name
+        if path.is_symlink() or not path.is_file():raise ValueError('Hermes skill source must be an ordinary file')
+    if backup.exists():
+        if not backup.is_dir():raise ValueError('Hermes skill backup is not a directory')
+        journal=json.loads((backup/SKILL_BACKUP_MANIFEST).read_text(encoding='utf-8'))
+        if journal.get('schema')!='core3-hermes-skill-backup-v1' or journal.get('commit')!=args.commit or not isinstance(journal.get('files'),dict):raise ValueError('Hermes skill backup belongs to a different freeze')
+        for name,row in journal['files'].items():
+            if name not in ('SKILL.md',SKILL_MANIFEST) and not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*\.py',name):raise ValueError('Unsafe Hermes skill backup member')
+            path=backup/name
+            if path.is_symlink() or not path.is_file() or file_sha(path)!=row['sha256']:raise ValueError('Original Hermes skill backup changed; refusing overwrite')
+        if {p.name for p in backup.iterdir()}!={SKILL_BACKUP_MANIFEST,*journal['files']}:raise ValueError('Unexpected Hermes skill backup member')
+        allowed_python={name for name in journal['files'] if name.endswith('.py')}|set(RETIRED_SKILL_PY)|{'core_consultation.py'}
+        if {name for name in original_names if name.endswith('.py')}-allowed_python:raise ValueError('Unknown Hermes Python entrypoint appeared after the frozen inventory')
+    else:
+        backup.mkdir(mode=0o700)
+        journal={'schema':'core3-hermes-skill-backup-v1','commit':args.commit,'files':{}}
+        for name in sorted(original_names):
+            data=(target/name).read_bytes();write_private(backup/name,data)
+            journal['files'][name]={'sha256':sha(data)}
+        write_private(backup/SKILL_BACKUP_MANIFEST,json.dumps(journal,sort_keys=True).encode())
+    legacy_names={name for name in original_names|set(journal['files']) if name.endswith('.py')}
+    files=expected_skill_files(args,legacy_names)
+    for name,data in sorted(files.items()):write_private(target/name,data)
+    installed={'schema':'core3-hermes-skill-v1','commit':args.commit,'release_dir':args.release_dir,
+               'env_files':list(args.env_file),'legacy_names':sorted(set(files)-{'SKILL.md','core_consultation.py'}),
+               'original_files':journal['files'],'backup_path':str(backup),
+               'backup_manifest_sha256':file_sha(backup/SKILL_BACKUP_MANIFEST),
+               'files':{name:{'sha256':sha(data)} for name,data in sorted(files.items())}}
+    write_private(target/SKILL_MANIFEST,json.dumps(installed,sort_keys=True).encode())
+    verify_hermes_skill(args)
+    return {'installed':True,'commit':args.commit,'retired_python_entries':len(installed['legacy_names']),'original_backup_preserved':True,'model_calls':0,'external_sends':0}
+
+
+def verify_hermes_skill(args):
+    target,_=skill_paths()
+    path=target/SKILL_MANIFEST
+    if path.is_symlink() or not path.is_file():raise ValueError('Fixed Core Hermes skill is not installed')
+    installed=json.loads(path.read_text(encoding='utf-8'))
+    if installed.get('schema')!='core3-hermes-skill-v1' or installed.get('commit')!=args.commit or installed.get('release_dir')!=args.release_dir or installed.get('env_files')!=list(args.env_file):raise ValueError('Hermes skill version or protected environment order differs')
+    legacy=installed.get('legacy_names')
+    if not isinstance(legacy,list):raise ValueError('Hermes skill retired-source manifest is missing')
+    backup=Path(installed.get('backup_path',''))
+    if not backup.is_absolute() or backup.name!='hermes-skill' or not backup.resolve().is_relative_to(Path(BACKUP_ROOT).resolve()) or any(p.is_symlink() for p in (backup,*backup.parents)):raise ValueError('Hermes original backup location differs')
+    backup_manifest=backup/SKILL_BACKUP_MANIFEST
+    if backup_manifest.is_symlink() or not backup_manifest.is_file() or file_sha(backup_manifest)!=installed.get('backup_manifest_sha256'):raise ValueError('Hermes original backup manifest changed')
+    original=json.loads(backup_manifest.read_text(encoding='utf-8'))
+    if original.get('schema')!='core3-hermes-skill-backup-v1' or original.get('commit')!=args.commit or original.get('files')!=installed.get('original_files'):raise ValueError('Hermes original source inventory differs')
+    original_python={name for name in original['files'] if name.endswith('.py') and name!='core_consultation.py'}
+    if set(legacy)!=(original_python|set(RETIRED_SKILL_PY)):raise ValueError('Hermes retired inventory is incomplete')
+    for name,row in original['files'].items():
+        if name not in ('SKILL.md',SKILL_MANIFEST) and not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*\.py',name):raise ValueError('Unsafe Hermes original backup name')
+        path=backup/name
+        if path.is_symlink() or not path.is_file() or file_sha(path)!=row['sha256']:raise ValueError('Hermes original source backup changed')
+    expected=expected_skill_files(args,legacy)
+    if installed.get('files')!={name:{'sha256':sha(data)} for name,data in sorted(expected.items())}:raise ValueError('Hermes skill manifest differs from the fixed release')
+    actual={p.name for p in target.iterdir() if p.suffix=='.py'}
+    if actual!={name for name in expected if name.endswith('.py')}:raise ValueError('Unknown or missing Hermes Python entrypoint')
+    for name,data in expected.items():
+        path=target/name
+        if path.is_symlink() or not path.is_file() or path.read_bytes()!=data:raise ValueError('Hermes Core wrapper, SKILL or retired entrypoint changed')
+    return {'verified':True,'commit':args.commit,'retired_python_entries':len(legacy)}
+
+
 def install(args):
     require_host();release=verify_release(args);evidence(args);verify_legacy_disabled(args)
     if not Path(MAINTENANCE).exists():raise ValueError('public writes must be frozen before final migration')
@@ -547,17 +679,21 @@ try:
 finally:service.repo.close()
 '''
     command([python,'-c',runtime_check],env=env,cwd=release)
+    skill_install=install_hermes_skill(args,source)
+    command(['systemctl','restart','hermes.service']);command(['systemctl','is-active','--quiet','hermes.service'])
+    verify_legacy_disabled(args)
     unit_directory=Path('/etc/systemd/system');backup=source.parent/'units';backup.mkdir(mode=0o700,exist_ok=True)
     for name,text in units(args).items():
         target=unit_directory/name
         if target.exists() and not (backup/name).exists():write_private(backup/name,target.read_bytes())
         target.write_text(text,encoding='utf-8');target.chmod(0o644)
     command(['systemctl','daemon-reload']);command(['systemctl','enable','--now','mingjingtai.service'])
-    return {'installed':True,'commit':args.commit,'maintenance':True,'database':DBS['live'],'effects_started':False}
+    return {'installed':True,'commit':args.commit,'maintenance':True,'database':DBS['live'],'effects_started':False,'hermes_skill':skill_install}
 
 
 def publish(args):
     require_host();release=verify_release(args);evidence(args);verify_legacy_disabled(args)
+    verify_hermes_skill(args)
     env=load_environment(args,DBS['live'])
     if not Path(MAINTENANCE).exists():raise ValueError('release must remain behind the maintenance gate until publication')
     if render_nginx(Path(NGINX).read_text(encoding='utf-8'))!=Path(NGINX).read_text(encoding='utf-8'):raise ValueError('reviewed maintenance gate is not installed')

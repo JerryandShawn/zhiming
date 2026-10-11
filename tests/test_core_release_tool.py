@@ -223,6 +223,7 @@ class CoreReleaseTool(unittest.TestCase):
             stack.enter_context(patch.object(Path,'stat',private_stat))
             stack.enter_context(patch.object(release,'load_environment',return_value={'ZHIMING_DATABASE_URL':'synthetic env-only DSN'}))
             stack.enter_context(patch.object(release,'units',return_value={}))
+            stack.enter_context(patch.object(release,'install_hermes_skill',side_effect=lambda *a:commands.append(['install-fixed-hermes-skill']) or {'installed':True}))
             stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:commands.append(argv)))
             result=release.install(self.args)
         self.assertTrue(result['maintenance']);self.assertFalse(result['effects_started'])
@@ -235,6 +236,9 @@ class CoreReleaseTool(unittest.TestCase):
         self.assertLess(joined.index('migration_core.py'),joined.index('sync_frozen_hermes(repo,source,bindings)'))
         self.assertLess(joined.index("seed_defaults('primary')"),joined.index('PostgresSaver(connection).setup()'))
         self.assertLess(joined.index('PostgresSaver(connection).setup()'),joined.index('ConsultationService.from_base()'))
+        self.assertLess(joined.index('ConsultationService.from_base()'),joined.index('install-fixed-hermes-skill'))
+        self.assertLess(joined.index('install-fixed-hermes-skill'),joined.index("'restart', 'hermes.service'"))
+        self.assertLess(joined.index("'restart', 'hermes.service'"),joined.index("'enable', '--now', 'mingjingtai.service'"))
         self.assertNotIn(['systemctl','enable','--now','zhiming-core-feishu.service'],commands)
 
 

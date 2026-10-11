@@ -25,7 +25,7 @@ class ConfiguredModel:
             content.append({"type": "image", "source": {"type": "base64", "media_type": image['mime'], "data": image['data']}})
         body = {"model": self.model, "system": system,
                 "messages": [{"role": "user", "content": content}],
-                "tools": [{"name": "submit", "description": "提交本阶段的结构化结果", "input_schema": schema}],
+                "tools": [{"name": "submit", "description": "每个阶段必须且只能调用本工具一次，完整提交input_schema规定的本阶段结果；即使资料不足也应在规定字段说明，不能以工具外的文字答复替代。", "input_schema": schema}],
                 "tool_choice": {"type": "auto", "disable_parallel_tool_use": True},
                 "max_tokens": 14000 if purpose in ("synthesis", "review", "repair") else 6000,
                 "temperature": 1, "thinking": {"type": "enabled", "budget_tokens": 1024}}

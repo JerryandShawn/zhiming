@@ -2,7 +2,7 @@
 from typing import Any, Literal, Protocol
 from enum import Enum
 import math
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class Contract(BaseModel):
@@ -17,16 +17,30 @@ class ConsultationPlan(Contract):
     time_scale: Literal["natal", "daily", "monthly", "yearly"] = "natal"
     decision: bool = False
     rationale: str = ""
-    missing_inputs: list[str] = Field(default_factory=list)
+    missing_inputs: list[str] = Field(default_factory=list, description="只列缺少就无法执行本次所选分析的真实用户输入；可选细化信息、程序将计算的字段、模型规则、宫位和排盘结果不列入。现有信息足以继续时填写[]。")
+
+
+ProfileField = Literal[
+    "name", "gender", "birth.solar_datetime", "birth.location.lng",
+    "birth.location.lat", "birth.location.city", "birth.location.name",
+    "birth.timezone_offset", "birth.time_unknown", "birth.time_uncertainty_minutes",
+    "birth.precision", "birth.interval_start", "birth.interval_end",
+]
 
 
 class MemoryProposal(Contract):
     quote: str = Field(min_length=1, max_length=4000)
     category: str = "背景"
     case_id: str | None = None
-    field: str | None = None
-    value: Any = None
+    field: ProfileField | None = Field(default=None, description="仅结构化个人资料或其更正使用枚举中的现有资料字段；普通偏好、约束、背景、目标和事件必须填null，不得发明schedule等新字段。普通事实正文只写逐字quote，field/value均为null。")
+    value: Any = Field(default=None, description="普通非结构化事实必须填null；结构化资料的值必须直接来自quote原话，不得扩写、推断或概括。保存仍需程序检查原话与授权。")
     supersedes: str | None = None
+
+    @model_validator(mode="after")
+    def structured_fields_only(self):
+        if self.field is None and self.value is not None:
+            raise ValueError("Unstructured fact field/value must both be null")
+        return self
 
 
 class Intake(Contract):
