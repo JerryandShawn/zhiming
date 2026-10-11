@@ -1,6 +1,6 @@
 """Real deployment control flow with synthetic OS/health responses, no host effects."""
 from argparse import Namespace
-from contextlib import ExitStack
+from contextlib import ExitStack,nullcontext
 import io
 import json
 from pathlib import Path
@@ -42,6 +42,7 @@ class CoreDeploymentFailures(unittest.TestCase):
         self.stack.enter_context(patch.object(deploy, 'evidence', return_value={}))
         self.stack.enter_context(patch.object(deploy, 'verify_legacy_disabled'))
         self.stack.enter_context(patch.object(deploy, 'verify_hermes_skill'))
+        self.stack.enter_context(patch.object(deploy, 'skill_writer_lock',side_effect=lambda **kwargs:nullcontext(0)))
         self.environment = self.stack.enter_context(patch.object(deploy, 'load_environment', return_value={'MINGJING_TOKEN': 'synthetic'}))
         self.stack.enter_context(patch.object(deploy, 'command', side_effect=self.command))
         self.stack.enter_context(patch.object(deploy.urllib.request, 'urlopen', side_effect=lambda *a, **k: io.BytesIO(json.dumps({

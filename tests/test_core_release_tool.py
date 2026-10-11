@@ -1,6 +1,6 @@
 """Release safety checks use temporary files; no host or external side effects."""
 from argparse import Namespace
-from contextlib import ExitStack,closing
+from contextlib import ExitStack,closing,nullcontext
 import hashlib
 import io
 import json
@@ -36,6 +36,8 @@ class CoreReleaseTool(unittest.TestCase):
     def setUp(self):
         self.temporary=tempfile.TemporaryDirectory();self.root=Path(self.temporary.name)
         self.args=Namespace(commit=SHA,release_dir=release.RELEASE_ROOT+'/'+SHA,env_file=['/etc/systemd/system/mingjingtai.env','/root/core-live.env'])
+        fence=patch.object(release,'skill_writer_lock',side_effect=lambda **kwargs:nullcontext(0))
+        fence.start();self.addCleanup(fence.stop)
 
     def tearDown(self):self.temporary.cleanup()
 
@@ -154,7 +156,8 @@ class CoreReleaseTool(unittest.TestCase):
             stack.enter_context(patch.object(release,'require_host'))
             stack.enter_context(patch.object(release,'verify_release',return_value=self.root/'release'))
             stack.enter_context(patch.object(release,'evidence',return_value={}))
-            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:commands.append(argv)))
+            stack.enter_context(patch.object(release,'install_hermes_skill',return_value={'installed':True}))
+            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:commands.append(argv) or ('control-group' if '--property=KillMode' in argv else 'yes' if '--property=SendSIGKILL' in argv else None)))
             journal=release.freeze(self.args)
         copied=Path(journal['source_snapshot'])
         for name,value in [('web.db','web-original'),('reports.db','report-original')]:

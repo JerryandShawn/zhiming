@@ -1,6 +1,6 @@
 """Hermes retirement uses real temporary files, no model or external process service."""
 from argparse import Namespace
-from contextlib import ExitStack
+from contextlib import ExitStack,contextmanager
 import hashlib
 import json
 import os
@@ -41,7 +41,15 @@ class CoreHermesSkillRetirement(unittest.TestCase):
         self.env3.write_text('SETTING=core\nZHIMING_DATABASE_URL=postgresql://synthetic:fixture@127.0.0.1/zhiming_core_live\nCHART_PYTHON='+json.dumps(str(self.fixed/'venv/charts/bin/python'))+'\n')
         self.args=Namespace(commit=SHA,release_dir=self.fixed.as_posix(),env_file=[str(p) for p in (self.env1,self.env2,self.env3)])
         self.stack=ExitStack();self.addCleanup(self.stack.close);self.addCleanup(self.temporary.cleanup)
-        for name,value in {'RELEASE_ROOT':(self.root/'releases').as_posix(),'BACKUP_ROOT':str(self.root/'backups'),'HERMES_SKILL':str(self.skill)}.items():self.stack.enter_context(patch.object(release,name,value))
+        for name,value in {'RELEASE_ROOT':(self.root/'releases').as_posix(),'BACKUP_ROOT':str(self.root/'backups'),'HERMES_SKILL':str(self.skill),'MAINTENANCE':str(self.root/'maintenance.flag')}.items():self.stack.enter_context(patch.object(release,name,value))
+        # Windows unit suite checks entrypoint control flow with a real fd.
+        # The separate Linux probe verifies native flock/exec semantics.
+        @contextmanager
+        def fence(**kwargs):
+            descriptor=os.open(self.root/'test.lock',os.O_CREAT|os.O_RDWR,0o600)
+            try:yield descriptor
+            finally:os.close(descriptor)
+        self.stack.enter_context(patch.object(release,'skill_writer_lock',side_effect=fence))
 
     def test_real_install_retires_old_python_and_preserves_private_files_and_originals(self):
         originals={name:(self.skill/name).read_bytes() for name in ('archive.json','web.db')}

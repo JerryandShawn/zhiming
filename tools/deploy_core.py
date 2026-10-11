@@ -6,7 +6,7 @@ install keeps the maintenance gate closed; publish requires acceptance evidence.
 """
 from __future__ import annotations
 import argparse
-from contextlib import closing
+from contextlib import closing,contextmanager
 from datetime import datetime,timezone
 import hashlib
 import io
@@ -20,6 +20,7 @@ import sqlite3
 import subprocess
 import sys
 import tarfile
+import time
 import urllib.request
 import uuid
 
@@ -28,6 +29,8 @@ BACKUP_ROOT='/root/zhiming-core-backups'
 NGINX='/www/server/panel/vhost/nginx/p.jerrymeng.asia.conf'
 MAINTENANCE='/www/wwwroot/p-acme/core-maintenance.flag'
 MAINTENANCE_HTML='/www/wwwroot/p-acme/core-maintenance.html'
+SKILL_WRITER_LOCK='/root/zhiming-core-secrets/core-skill-writer.lock'
+SKILL_WRITER_TIMEOUT=900
 LEGACY_SOURCE='/root/.hermes/zhiming'
 LEGACY_CONFIG='/root/.hermes/config.yaml'
 LEGACY_JOBS='/root/.hermes/cron/jobs.json'
@@ -271,6 +274,48 @@ def maintenance_gate():
     os.chmod(MAINTENANCE_HTML,0o644)
 
 
+@contextmanager
+def skill_writer_lock(*,exclusive=False,timeout=SKILL_WRITER_TIMEOUT):
+    """Linux advisory fence held through CLI exec or the complete backup.
+
+    New Hermes calls check maintenance inside the shared lock. Setting the
+    gate before the exclusive lock therefore drains existing calls and closes
+    the check/start race, without stopping unrelated Hermes channels.
+    """
+    import fcntl
+    path=Path(SKILL_WRITER_LOCK)
+    path.parent.mkdir(parents=True,mode=0o700,exist_ok=True)
+    descriptor=os.open(path,os.O_RDWR|os.O_CREAT|os.O_NOFOLLOW,0o600)
+    try:
+        os.fchmod(descriptor,0o600)
+        deadline=time.monotonic()+timeout
+        operation=fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH
+        while True:
+            try:
+                fcntl.flock(descriptor,operation|fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic()>=deadline:raise TimeoutError('Core skill writer fence is busy; maintenance retained')
+                time.sleep(0.05)
+        yield descriptor
+    finally:
+        os.close(descriptor)
+
+
+def execute_hermes_core(args,argv):
+    """Only the installed Hermes entrypoint uses this maintenance fence."""
+    if Path(MAINTENANCE).exists():raise ValueError('Core skill unavailable during maintenance')
+    with skill_writer_lock(timeout=0) as descriptor:
+        if Path(MAINTENANCE).exists():raise ValueError('Core skill unavailable during maintenance')
+        release=verify_release(args)
+        env=load_environment(args,DBS['live'])
+        python=str(release/'venv/core/bin/python')
+        entry=str(release/'hermes/core_consultation.py')
+        os.set_inheritable(descriptor,True)
+        os.environ.clear();os.environ.update(env)
+        os.execv(python,[python,entry,*argv])
+
+
 def stamp():return datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 
 
@@ -433,6 +478,11 @@ def freeze(args):
     except Exception:
         Path(NGINX).write_bytes(original)
         raise
+    with skill_writer_lock(exclusive=True):
+        return _freeze_behind_skill_fence(args,backup)
+
+
+def _freeze_behind_skill_fence(args,backup):
     command(['systemctl','disable','--now','mingjingtai-reports.timer','mingjingtai-reports.service'])
     import yaml
     config_path=Path(LEGACY_CONFIG);jobs_path=Path(LEGACY_JOBS)
@@ -443,16 +493,25 @@ def freeze(args):
     for job in found:job['enabled']=False
     write_private(config_path,yaml.safe_dump(config,allow_unicode=True,sort_keys=False).encode())
     write_private(jobs_path,json.dumps(jobs_container,ensure_ascii=False,indent=2).encode())
+    kill_mode=command(['systemctl','show','hermes.service','--property=KillMode','--value'],capture=True)
+    kill_children=command(['systemctl','show','hermes.service','--property=SendSIGKILL','--value'],capture=True)
+    if kill_mode not in ('control-group','mixed') or kill_children!='yes':raise ValueError('Hermes restart must terminate old skill children before snapshot')
+    # Retire direct old skill entrypoints before refreshing Hermes. The empty
+    # source directory only anchors the protected original skill backup; final
+    # legacy data snapshots are made after old in-flight Hermes children stop.
+    source=backup/'source';source.mkdir(mode=0o700)
+    skill=install_hermes_skill(args,source)
     command(['systemctl','restart','hermes.service']);command(['systemctl','is-active','--quiet','hermes.service'])
     command(['systemctl','stop','mingjingtai.service'])
-    source=backup/'source';shutil.copytree(LEGACY_SOURCE,source,symlinks=True)
+    shutil.copytree(LEGACY_SOURCE,source,symlinks=True,dirs_exist_ok=True)
     snapshot_hashes(source)
     for original_db in Path(LEGACY_SOURCE).rglob('*.db'):
         snapshot_sqlite(original_db,source/original_db.relative_to(LEGACY_SOURCE))
     hermes=backup/'hermes-state.db';hermes_sha=snapshot_sqlite(LEGACY_HERMES_DB,hermes)
     journal={'commit':args.commit,'backup':str(backup),'source_snapshot':str(source),'source_hashes':snapshot_hashes(source),
              'hermes_snapshot':str(hermes),'hermes_sha256':hermes_sha,
-             'old_feishu_disabled':True,'old_reports_disabled':True,'legacy_jobs_disabled':selected,'frozen_at':stamp()}
+             'old_feishu_disabled':True,'old_reports_disabled':True,'legacy_jobs_disabled':selected,'frozen_at':stamp(),
+             'skill_entrypoints_retired_before_snapshot':True,'skill_writers_quiescent':True,'hermes_skill':skill}
     write_private(backup/'freeze.json',json.dumps(journal,ensure_ascii=False,indent=2).encode())
     return journal
 
@@ -491,7 +550,7 @@ def verify_core_external_inactive():
 
 def stop_core_writers():
     """Best effort every unit, then prove quiescence and persistent boot state."""
-    result={'maintenance_gate_reinstated':False,'units':{},'writers_stopped':False,
+    result={'maintenance_gate_reinstated':False,'units':{},'unit_writers_stopped':False,'skill_writers_quiescent':False,'writers_stopped':False,
             'boot_writers_disabled':False,'cleanup_complete':False,'errors':[]}
     def failed(phase,error,name=None):
         row={'phase':phase,'code':'CORE_WRITER_SHUTDOWN_FAILED','type':type(error).__name__}
@@ -521,7 +580,15 @@ def stop_core_writers():
                 row['boot_disabled']=state in ('disabled','masked')
                 if not row['boot_disabled']:raise ValueError('Core writer may restart on boot')
             except BaseException as error:failed('verify_boot_writer_disabled',error,name)
-    result['writers_stopped']=all(row['inactive'] is True for row in result['units'].values())
+    result['unit_writers_stopped']=all(row['inactive'] is True for row in result['units'].values())
+    if result['maintenance_gate_reinstated']:
+        try:
+            # After the gate is present no new wrapped CLI can begin. This
+            # check waits out inherited shared fds; maintenance takes the
+            # same exclusive fence again through the actual backup/journal.
+            with skill_writer_lock(exclusive=True):result['skill_writers_quiescent']=True
+        except BaseException as error:failed('quiesce_skill_writers',error)
+    result['writers_stopped']=result['unit_writers_stopped'] and result['skill_writers_quiescent']
     result['boot_writers_disabled']=all(result['units'][name]['boot_disabled'] is True for name in CORE_BOOT_WRITERS)
     result['cleanup_complete']=(result['maintenance_gate_reinstated'] and result['writers_stopped']
                                 and result['boot_writers_disabled'] and not result['errors'])
@@ -567,14 +634,9 @@ def main():
  try:
   config=json.loads(CONFIG_JSON)
   sys.path.insert(0,config['release_dir'])
-  from tools.deploy_core import verify_release,load_environment
+  from tools.deploy_core import execute_hermes_core
   args=SimpleNamespace(**config)
-  release=verify_release(args)
-  env=load_environment(args,'zhiming_core_live')
-  python=str(release/'venv/core/bin/python')
-  command=str(release/'hermes/core_consultation.py')
-  os.environ.clear();os.environ.update(env)
-  os.execv(python,[python,command,*sys.argv[1:]])
+  execute_hermes_core(args,sys.argv[1:])
  except Exception:
   sys.stderr.write('CORE_SKILL_CONFIGURATION_ERROR: protected configuration or fixed release failed; no legacy fallback.\\n')
   raise SystemExit(78)
@@ -796,6 +858,20 @@ def maintenance(args):
         error=ValueError('Core writer shutdown incomplete; maintenance gate retained')
         record_operation_failure(args,'maintenance',error,cleanup)
         raise error
+    cleanup['skill_writers_quiescent']=False
+    try:
+        with skill_writer_lock(exclusive=True):
+            cleanup['skill_writers_quiescent']=True
+            return _maintenance_backup(args,cleanup)
+    except BaseException as error:
+        if not cleanup['skill_writers_quiescent']:
+            cleanup['writers_stopped']=False;cleanup['cleanup_complete']=False
+            cleanup['errors'].append({'phase':'skill_writer_fence','code':'CORE_SKILL_WRITER_FENCE_BUSY','type':type(error).__name__})
+            record_operation_failure(args,'maintenance',error,cleanup)
+        raise
+
+
+def _maintenance_backup(args,cleanup):
     Path(NGINX).write_text(render_nginx(Path(NGINX).read_text(encoding='utf-8')),encoding='utf-8')
     command(['nginx','-t']);command(['systemctl','reload','nginx'])
     release=verify_release(args)
