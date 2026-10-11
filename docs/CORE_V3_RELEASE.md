@@ -63,14 +63,14 @@ CORE_PY=$RELEASE_DIR/venv/core/bin/python
 
 目标 nginx 为 `/www/server/panel/vhost/nginx/p.jerrymeng.asia.conf`，保留 80→HTTPS 跳转、证书与原头配置。维护门只注入**包含 127.0.0.1:8787 proxy 的 443 server 的 location /**，不能误选 80 的 redirect location。该门使用 `/www/wwwroot/p-acme/core-maintenance.flag`，返回 503 与内部静态维护页；HTTP 跳转后同样进入维护页。SSE 关闭 proxy buffering。修改后先 nginx -t 再 reload。布局变成非预期或维护标记与 gate 不符时拒绝继续。
 
-快照保存在 `/root/zhiming-core-backups/<timestamp>-<sha>/source`。所有 SQLite `*.db` 使用只读连接及 backup API 固定一致性，包括 web.db 和 reports.db，并去掉复制快照的 WAL/SHM；不使用 live 文件简单复制作为数据库验收依据。freeze.json 记录固定 commit、源哈希和已禁用 job ID。install 必须重新校验快照哈希，拒绝修改过的输入。
+快照保存在 `/root/zhiming-core-backups/<timestamp>-<sha>/source`。所有 SQLite `*.db` 使用只读连接及 backup API 固定一致性，包括 web.db 和 reports.db，并去掉复制快照的 WAL/SHM；不使用 live 文件简单复制作为数据库验收依据。旧 Feishu 连接停止后，另以 backup API 冻结 `/root/.hermes/state.db` 为同目录下的 `hermes-state.db`。freeze.json 记录固定 commit、两类源哈希和已禁用 job ID。install 必须重新校验快照哈希，拒绝修改过的输入。
 
 ```bash
 "$CORE_PY" tools/deploy_core.py freeze --commit "$REVIEWED_SHA" --release-dir "$RELEASE_DIR" --acceptance /protected/acceptance.json --legacy-job-ids /protected/legacy-job-ids.json
 "$CORE_PY" tools/deploy_core.py install --commit "$REVIEWED_SHA" --release-dir "$RELEASE_DIR" --acceptance /protected/acceptance.json --legacy-job-ids /protected/legacy-job-ids.json --source-snapshot <freeze返回的source_snapshot> --bindings /protected/bindings.json --env-file /etc/systemd/system/mingjingtai.env --env-file /root/.hermes/.env --env-file /protected/core-live.env --migration-env-file /protected/core-migrate-live.env
 ```
 
-install 向专用 live DB 迁移，设置 checkpoint 及运行授权，备份并安装 systemd units，只启动维护门内的新网站。网站用一个 Uvicorn worker、数据库池 4；计算通过专用 charts Python。飞书是独立 `zhiming-core-feishu.service`，报告是独立 `zhiming-core-reports.service/.timer`，每个上海时区分钟检查原计划与 outbox。迁移后核对新 PG 的主体、原话、事实、撤销、附件、事项与报告元数据及旧 sent/uncertain 阻断状态；API 只读检查和浏览器登录不发送模型或渠道测试请求。
+install 向专用 live DB 迁移，再通过同一 HermesChannelAdapter 导入最终 Hermes 快照中的受信作者、有效私聊用户原话。它仅使用显式 `feishu/user` 绑定，不导入助手解释、群聊、其他人或失效消息，不提取事实、不调用模型、不投递。重复同步必须新增 0、事实数不变，统计保存在 0600 的 `final-hermes-migration.json`。迁移 owner 随后调用 `ReportScheduleService(repo).seed_defaults('primary')`，仅为已迁 pipeline 且任务/投递目标双重受信绑定的缺失计划建立默认项，保留原暂停设置和既有 schedule；GET 不负责 seed，未配置情况保持未配置。统计只含 created/existing/unconfigured 计数。随后设置 checkpoint 及运行授权，备份并安装 systemd units，只启动维护门内的新网站。网站用一个 Uvicorn worker、数据库池 4；计算通过专用 charts Python。飞书是独立 `zhiming-core-feishu.service`，报告是独立 `zhiming-core-reports.service/.timer`，每个上海时区分钟检查原计划与 outbox。迁移后核对新 PG 的主体、原话、事实、撤销、附件、事项与报告元数据及旧 sent/uncertain 阻断状态；API 只读检查和浏览器登录不发送模型或渠道测试请求。
 
 最终确认后发布：
 
@@ -80,12 +80,30 @@ install 向专用 live DB 迁移，设置 checkpoint 及运行授权，备份并
 
 publish 要求旧 writer 已停、web WorkingDirectory 指向该 SHA、维护门仍闭合、授权 `/api/health` 确认 core3.0/PostgreSQL/LangGraph；然后启用唯一新飞书 gateway 与新报告 timer，确认 active 并移除维护 flag。系统只在原上海时刻发送正常业务报告：晨报 07:00、周日周报 20:00、每月 1 日月报 09:00、1/4/7/10 月 1 日季报 10:00，提前 15 分钟准备。不会因为发布而额外发一次报告。
 
+## 删除传播验收
+
+发布前另验证实时塔罗删除的来源传播：同 owner 的牌阵、解释版本、关联执行结果、缓存、待投递正文及各 retry_epoch checkpoint 一起清理；模型迟返回后再次清理 checkpoint。已送达或情况不明的收据仅保留无正文状态，不声称撤回。专属抽牌问题与生成式解读原话写入正式撤销账本，独立聊天原话、被引用的全局事实及后续独立事项修改保留。自动事项中仅由已撤销问题派生的标题与目标清空，事项 ID 与独立事件保留。稳定抽牌与解读键保留墓碑，备份恢复仍须重放最新撤销。
+
+## 报告设置页面
+
+“档案与工具 → 报告设置”以及报告存档页入口均可调整既有四类报告。晨报配置时间，周报另配置 ISO 星期，月报与季报另配置 1 至 28 日或月末；季报仍只在 1、4、7、10 月发送。页面显示北京时间、提前 15 分钟准备和实际下一期时刻，跨午夜时明确显示两个日期。启停不创建新渠道、任务或收件人。
+
+`GET /api/reports/schedules` 仅读取。`PATCH /api/reports/schedules` 必须携带稳定 request_id 和 expected_revision，由服务器解析 owner 并核验既有任务及收件绑定。时间策略进入 PostgreSQL 依赖版本；改期使旧待发送结果失效。投递中修改返回 409，送达待确认和已发送收据不能通过修改日期规避同日、ISO 周、月或季的保护。已经过去的发送时间从后续期次生效；重复请求与同值保存不刷新生效时刻。网络失联重试保留请求 ID，409 保留草稿并要求显式读取新版本；仅真实保存回执允许显示成功。
+
 ## 维护回退与恢复
 
-发生上线异常立即运行 maintenance，保持公开 503，停止新 web/gateway/reports service 与 timer，导出最新 live PG custom dump 和最新 body-free 撤销账本到 0600 受保护备份目录。脚本不恢复旧 SQLite/JSON 权威，不重启旧 Hermes Feishu 或旧解释循环。维护期间用户读到静态维护页，不能写入和投递。
+发生上线异常立即运行 maintenance，先设置公开维护门、停止新 web/gateway/reports service 与 timer，再检查固定源码完整性；源码损坏不会阻止先停写。正常情况下导出最新 live PG custom dump 和 `withdrawals-latest.json` 到 0600 受保护备份目录，maintenance.json 保存二者 SHA256。撤销导出包含每 owner 可直接交给 `repo.apply_privacy` 的正式账本、无正文塔罗请求墓碑与已删 draw ID、已送达及送达不明的无正文投递收据。脚本不恢复旧 SQLite/JSON 权威，不重启旧 Hermes Feishu 或旧解释循环。维护期间用户读到静态维护页，不能写入和投递。若完整性检查失败，写入仍已暂停，需人工在受保护目录完成最新备份后修复。
 
 ```bash
 "$CORE_PY" tools/deploy_core.py maintenance --commit "$REVIEWED_SHA" --release-dir "$RELEASE_DIR" --env-file /etc/systemd/system/mingjingtai.env --env-file /root/.hermes/.env --env-file /protected/core-live.env
 ```
 
-修复以最新 live PG 为权威，在新的固定 SHA 和 stage 重验后按发布门恢复。若必须从旧备份恢复数据库，先重放最新撤销账本及后续有效变更，再允许读取、生成和投递；仅恢复旧备份而跳过撤销会造成已删除内容复活，因此维护脚本没有自动旧库回滚。发送中断或 timeout 的 outbox 保持 DELIVERY_UNCERTAIN，只有核对真实 message_id 或提供明确未送达证据后才能对账；禁止重建 business ID 或任意重发按钮绕过账本。
+修复以最新 live PG 为权威，在新的固定 SHA 和 stage 重验后按发布门恢复。优先恢复最新 custom dump；脚本没有自动旧库回滚。若必须人工使用更旧的 PG 备份，保持维护门和全部新旧写入口停止，先完成以下最新撤销重放，再补回之后的其他有效变更、重新核对授权及 schema/checkpoint 权限，最后按新 SHA 的完整验收门恢复。
+
+```bash
+"$CORE_PY" tools/deploy_core.py restore-withdrawals --commit "$REVIEWED_SHA" --release-dir "$RELEASE_DIR" --withdrawals <maintenance返回目录>/withdrawals-latest.json --legacy-job-ids /protected/legacy-job-ids.json --env-file /etc/systemd/system/mingjingtai.env --env-file /root/.hermes/.env --env-file /protected/core-live.env --migration-env-file /protected/core-migrate-live.env
+```
+
+此命令核验维护门、旧 Feishu/报告已禁用、全部 Core writer 已停止、备份文件权限和哈希，仅向明确的 live PG 重放。塔罗请求墓碑的旧结果 ID 已清空时，先从恢复库中相同 owner/operation/key/fingerprint 的旧请求解析原 draw/reading ID，实际清除牌堆、解释及关联 run/checkpoint，再写空结果墓碑；不能只把请求设为 deleted 而留下可按 draw ID 读取的牌阵。HTTP 删除的无正文 deleted_ids 也同时保留。已 sent 的收据阻断重复发送，旧 sending 在导出时成为 uncertain，恢复后绝不自动重试。该路径有真实 PostgreSQL `pg_dump`/`pg_restore` 回归，验证旧备份内容曾恢复、重放后已撤销原话/牌阵无法读取或按旧 key 再生、checkpoint 清除及投递收据保持；测试全为合成资料，外部发送为 0。
+
+发送中断或 timeout 的 outbox 保持 DELIVERY_UNCERTAIN，只有核对真实 message_id 或提供明确未送达证据后才能对账；禁止重建 business ID 或任意重发按钮绕过账本。

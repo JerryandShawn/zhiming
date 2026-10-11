@@ -7,8 +7,10 @@ import json
 import os
 
 from mingjing_core.domain.contracts import ScopeError,EvidenceError,RevisionConflict,LeaseConflict
-from .channels.reports import CoreReportAdapter,report_schedule,SHANGHAI
+from .channels.reports import CoreReportAdapter,SHANGHAI
 from .channels.delivery import CoreDeliveryWorker
+from mingjing_core.application.report_schedules import ReportScheduleService
+from mingjing_core.domain.report_schedules import schedule_on_day
 
 
 class CoreReportWorker:
@@ -28,8 +30,8 @@ class CoreReportWorker:
             return run['status']=='succeeded' and self.repo.verify_versions(owner,run['dependencies'])
         except (ScopeError,EvidenceError):return False
 
-    def _claim_generation(self,owner,business,subject,now):
-        ident='report-preparation:'+business
+    def _claim_generation(self,owner,business,subject,now,revision=0):
+        ident='report-preparation:'+business+':schedule:'+str(revision)
         with self.repo.transaction(owner):
             try:old=self.repo.get(owner,'request',ident)
             except ScopeError:old=None
@@ -50,7 +52,9 @@ class CoreReportWorker:
         now=now or datetime.now(SHANGHAI)
         if now.tzinfo is None:raise ValueError('worker时刻须含时区')
         config=self.repo.assert_scope(owner)['settings'].get('report_pipeline',{})
-        if not config.get('enabled'):return {'enabled':False,'prepared':0,'sent':0,'failures':0}
+        schedules=ReportScheduleService(self.repo)
+        if not any(schedules.effective(owner,kind)['enabled'] for kind in ('daily','weekly','monthly','quarterly')):
+            return {'enabled':False,'prepared':0,'sent':0,'failures':0}
         counts={'enabled':True,'prepared':0,'sent':0,'failures':0}
         allowed_deliveries=set()
         self.service.outbox.recover_claims(owner,now)
@@ -58,13 +62,16 @@ class CoreReportWorker:
         for delta in (0,1):
             day=(now+timedelta(days=delta)).date()
             for job in config.get('jobs',[]):
-                if job.get('enabled') is False:continue
-                schedule=report_schedule(job['kind'],day)
+                policy=schedules.effective(owner,job['kind'])
+                if not policy['configured'] or not policy['enabled']:continue
+                schedule=schedule_on_day(job['kind'],day,policy)
                 if not schedule or now<schedule['prepare_at'] or now>schedule['deliver_at']+timedelta(hours=12):continue
                 if config.get('start_at') and schedule['deliver_at']<datetime.fromisoformat(config['start_at']):continue
+                if policy.get('policy_changed_at') and schedule['deliver_at']<datetime.fromisoformat(policy['policy_changed_at']):continue
                 external=job.get('external_id') or job['id']
                 binding=self.repo.resolve_channel('report',external)
                 if binding['owner']!=owner:raise ScopeError('报告job绑定其他owner')
+                if schedules.protected_period(owner,job['kind'],day):continue
                 business='report:'+external+':'+job['kind']+':'+day.isoformat()
                 allowed_deliveries.add((business,job.get('channel','feishu'),job['target']))
                 manifest=self._manifest(owner,business)
@@ -73,10 +80,10 @@ class CoreReportWorker:
                     # new operation to evade reconciliation.
                     relevant=self.service.outbox.business_status(owner,business)
                     if any(r['status'] in ('sending','uncertain','sent') for r in relevant):continue
-                    state=self._claim_generation(owner,business,binding['subject'],now)
+                    state=self._claim_generation(owner,business,binding['subject'],now,policy['revision'])
                     if state is None:continue
                     try:
-                        result=await self.reports.prepare(external_id=external,kind=job['kind'],day=day.isoformat(),operation_id=business+':generation:'+str(state['attempts']))
+                        result=await self.reports.prepare(external_id=external,kind=job['kind'],day=day.isoformat(),operation_id=business+':schedule:'+str(policy['revision']))
                         self._finish_generation(owner,state,True);counts['prepared']+=1
                         manifest=self._manifest(owner,business)
                     except Exception:
@@ -107,7 +114,8 @@ def main(argv=None):
     try:
         if args.dry_run:
             settings=service.repo.assert_scope(args.owner)['settings'].get('report_pipeline',{})
-            result={'enabled':bool(settings.get('enabled')),'configured_jobs':len(settings.get('jobs',[])),'queue':service.outbox.status(args.owner)}
+            policies=ReportScheduleService(service.repo).list(args.owner)
+            result={'enabled':any(row['enabled'] for row in policies['schedules']),'configured_jobs':len(settings.get('jobs',[])),'schedules':policies,'queue':service.outbox.status(args.owner)}
         else:
             from .channels.feishu import FeishuTransport
             result=asyncio.run(CoreReportWorker(service,FeishuTransport()).tick(args.owner))

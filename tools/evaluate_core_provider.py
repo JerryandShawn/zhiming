@@ -15,8 +15,9 @@ async def evaluate(output):
     source=service.memory.receive(owner,content=text,source_id='synthetic-profile')
     grant=service.memory.grant_authorization(owner,'self',source['id'],text,kinds=['profile'],operation_id='synthetic-profile-consent')
     for field,value in profile.items():service.memory.save_fact(owner,'self',source['id'],f'{field}：{value}','profile',field=field,value=value,authorization_id=grant['id'],operation_id='profile:'+field)
-    case=service.memory.create_case(owner,'self','合成学习决策',goal='在固定白天时间内学习',operation_id='synthetic-case')
-    draw=service.tarot.create_draw(owner,subject_id='self',case_id=case['id'],question='如何在白天安排学习？',draw_source='manual',manual_cards=[{'card_id':'major-00','orientation':'upright'},{'card_id':'major-02','orientation':'reversed'},{'card_id':'major-08','orientation':'upright'}],idempotency_key='synthetic-fixed-cards')['draw']
+    case_source=service.memory.receive(owner,content='合成学习决策。目标：在固定白天时间内学习',source_id='synthetic-case-source')
+    case=service.memory.create_case(owner,'self','合成学习决策',goal='在固定白天时间内学习',message_id=case_source['id'],operation_id='synthetic-case')
+    draw=service.tarot.create_draw(owner,subject_id='self',case_id=case['id'],question='如何在白天安排学习？',spread_id='reflect3',draw_source='manual',manual_cards=[{'card_id':'major-00','orientation':'upright'},{'card_id':'major-02','orientation':'reversed'},{'card_id':'major-08','orientation':'upright'}],idempotency_key='synthetic-fixed-cards')['draw']
     draw=service.tarot.reveal(owner,draw['id']);fixed=draw['cards']
     cases=[('memory','请记住：我不能上夜班。请帮我考虑白天的学习安排。',{},'standard'),
            ('recall','请结合我之前说明的工作限制，安排一个现实的小行动，不要排盘。',{},'standard'),
@@ -48,9 +49,13 @@ async def evaluate(output):
     try:
         result=await CoreReportAdapter('.',service=service).prepare(external_id='synthetic-report',kind='daily',day='2026-10-12')
         item.update(ok=True,run_id=result['meta']['core_run']['run_id'],calls=result['meta']['core_run']['calls'],limit=result['meta']['core_run']['call_limit'],summary=result['plain_summary'],answer=result['answer'],validated=result['validation'])
-    except Exception as exc:item.update(error_code=getattr(exc,'code',type(exc).__name__),error=str(exc))
+    except Exception as exc:
+        item.update(error_code=getattr(exc,'code',type(exc).__name__),error=str(exc))
+        with repo.connection() as connection:
+            failed=connection.execute(sql.SQL('SELECT id,calls,call_limit,status FROM {} WHERE owner=%s AND operation_id=%s').format(repo.table('core_runs')),(owner,'report:synthetic-report:daily:2026-10-12')).fetchone()
+            if failed:item.update(run_id=failed['id'],calls=failed['calls'],limit=failed['call_limit'],run_status=failed['status'])
     item['latency_seconds']=round(time.monotonic()-started,3);report['samples'].append(item)
-    charges=repo.list(owner,'model_call');report['usage_samples']=[{'purpose':x.get('purpose'),'usage':x.get('usage'),'latency_seconds':x.get('latency_seconds'),'model':x.get('model')} for x in charges]
+    charges=repo.list(owner,'model_call');report['usage_samples']=[{k:x.get(k) for k in ('run_id','purpose','status','reason','failure_code','provider_http_status','stop_reason','tool_count','usage','usage_known','latency_seconds','model')} for x in charges]
     report['all_passed']=all(x['ok'] for x in report['samples'])
     with repo.connection() as connection:
         report['provider_calls']=connection.execute(sql.SQL('SELECT COALESCE(sum(calls),0) AS n FROM {} WHERE owner=%s').format(repo.table('core_runs')),(owner,)).fetchone()['n']

@@ -30,6 +30,7 @@ MAINTENANCE_HTML='/www/wwwroot/p-acme/core-maintenance.html'
 LEGACY_SOURCE='/root/.hermes/zhiming'
 LEGACY_CONFIG='/root/.hermes/config.yaml'
 LEGACY_JOBS='/root/.hermes/cron/jobs.json'
+LEGACY_HERMES_DB='/root/.hermes/state.db'
 MANIFEST='__release_manifest__.json'
 DBS={'stage':'zhiming_core_stage','live':'zhiming_core_live'}
 LEGACY_JOB_COUNT=4
@@ -286,6 +287,131 @@ def snapshot_hashes(directory):
     return rows
 
 
+def snapshot_sqlite(original,destination):
+    original=Path(original);destination=Path(destination)
+    if original.is_symlink() or not original.is_file() or destination.is_symlink():raise ValueError('SQLite snapshot requires ordinary protected files')
+    with closing(sqlite3.connect(original.resolve().as_uri()+'?mode=ro',uri=True)) as source,closing(sqlite3.connect(destination)) as target:
+        source.backup(target)
+    os.chmod(destination,0o600)
+    for suffix in ('-wal','-shm'):Path(str(destination)+suffix).unlink(missing_ok=True)
+    return file_sha(destination)
+
+
+def sync_frozen_hermes(repo,source,bindings,owner='primary'):
+    """Final trusted DM originals only: no extraction, consultation or sends."""
+    from types import SimpleNamespace
+    from mingjing_core.application.memory import MemoryService
+    from mingjing_core.adapters.channels.hermes import HermesChannelAdapter
+    source=Path(source);before=file_sha(source)
+    authors=[row for row in bindings if row.get('channel')=='feishu' and row.get('binding_kind','user')=='user']
+    if not authors:raise ValueError('Final Hermes migration requires trusted DM author bindings')
+    adapter=HermesChannelAdapter(source.parent,service=SimpleNamespace(repo=repo,memory=MemoryService(repo)),hermes_db=source)
+    with repo.transaction(owner):
+        prior=len(repo.list(owner,'message'));facts=len(repo.list(owner,'fact'));matched=0
+        for row in authors:
+            if row.get('owner',owner)!=owner or row.get('subject','self')!='self':raise ValueError('Final Hermes author binding scope differs from the reviewed owner')
+            binding=adapter.identity('feishu',row['external_id'])
+            if binding['owner']!=owner or binding['subject']!='self' or binding['binding_kind']!='user':raise ValueError('Final Hermes author binding is not trusted')
+            matched+=len(adapter.original_rows('feishu',row['external_id'],binding_kind='user'))
+            adapter.sync('feishu',row['external_id'],binding_kind='user')
+        after=len(repo.list(owner,'message'))
+        for row in authors:adapter.sync('feishu',row['external_id'],binding_kind='user')
+        if len(repo.list(owner,'message'))!=after or len(repo.list(owner,'fact'))!=facts:raise ValueError('Hermes replay created originals twice or extracted facts')
+        if file_sha(source)!=before:raise ValueError('Frozen Hermes source changed')
+    return {'trusted_authors':len(authors),'matched_originals':matched,'added_originals':after-prior,'repeat_added':0,'facts_created':0,'external_sends':0}
+
+
+def export_withdrawals(repo):
+    """Export program-compatible privacy ledgers and identifier-only guards."""
+    from psycopg import sql
+    with repo.connection() as c:
+        c.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY')
+        owners=[row['id'] for row in c.execute(sql.SQL('SELECT id FROM {} ORDER BY id').format(repo.table('core_owners'))).fetchall()]
+        ledgers=[repo.export_privacy(owner) for owner in owners]
+        tarot=c.execute(sql.SQL('SELECT owner,operation,request_key,fingerprint,result_type FROM {} WHERE deleted=true ORDER BY owner,operation,request_key').format(repo.table('tarot_requests'))).fetchall()
+        deleted=[]
+        for row in c.execute(sql.SQL("SELECT owner,receipt FROM {} WHERE operation LIKE 'tarot-delete:%%' ORDER BY owner,operation,request_key").format(repo.table('core_mutation_requests'))).fetchall():
+            deleted.extend({'owner':row['owner'],'draw_id':ident} for ident in row['receipt'].get('deleted_ids',[]))
+        receipts=c.execute(sql.SQL("SELECT id,owner,subject,business_id,channel,target,run_id,status,attempts,due,receipt FROM {} WHERE status IN ('sent','sending','uncertain') ORDER BY owner,business_id,channel,target").format(repo.table('delivery_outbox'))).fetchall()
+    return {'schema':'core3-withdrawals-v2','owners':ledgers,'tarot_requests':tarot,'deleted_draws':deleted,
+            'delivery_receipts':[dict(row,due=row['due'].isoformat(),status='uncertain' if row['status']=='sending' else row['status']) for row in receipts]}
+
+
+def apply_withdrawals(repo,document):
+    """Replay before reopening an older restored PG; never restore old bodies."""
+    from collections import defaultdict
+    from psycopg import sql
+    from psycopg.types.json import Jsonb
+    from mingjing_core.adapters.tarot import TarotService
+    from mingjing_core.runtime import LangGraphRuntime
+    if not isinstance(document,dict) or document.get('schema')!='core3-withdrawals-v2':raise ValueError('A current complete withdrawal export is required')
+    ledgers=document.get('owners');requests=document.get('tarot_requests');draws=document.get('deleted_draws');receipts=document.get('delivery_receipts')
+    if any(not isinstance(value,list) for value in (ledgers,requests,draws,receipts)):raise ValueError('Withdrawal export arrays are invalid')
+    owners={ledger.get('owner_user_id') for ledger in ledgers}
+    if any(not isinstance(owner,str) or not owner for owner in owners) or len(owners)!=len(ledgers):raise ValueError('Withdrawal owners must be explicit and unique')
+    grouped_requests=defaultdict(list);grouped_draws=defaultdict(set);grouped_receipts=defaultdict(list)
+    for row in requests:
+        if set(row)!={'owner','operation','request_key','fingerprint','result_type'} or row['owner'] not in owners or not all(isinstance(row[k],str) and row[k] for k in row):raise ValueError('Tarot withdrawal metadata is invalid')
+        if row['result_type'] not in ('draw','reading') or not re.fullmatch('[0-9a-f]{64}',row['fingerprint']):raise ValueError('Tarot withdrawal fingerprint/type is invalid')
+        grouped_requests[row['owner']].append(row)
+    for row in draws:
+        if set(row)!={'owner','draw_id'} or row['owner'] not in owners or not isinstance(row['draw_id'],str) or not row['draw_id']:raise ValueError('Deleted draw identifiers are invalid')
+        grouped_draws[row['owner']].add(row['draw_id'])
+    for row in receipts:
+        fields={'id','owner','subject','business_id','channel','target','run_id','status','attempts','due','receipt'}
+        if set(row)!=fields or row['owner'] not in owners or row['status'] not in ('sent','uncertain') or type(row['attempts']) is not int or row['attempts']<0:raise ValueError('Delivery receipt metadata is invalid')
+        if not all(isinstance(row[k],str) and row[k] for k in fields-{'attempts','receipt'}) or not isinstance(row['receipt'],str) or row['status']=='sent' and not row['receipt']:raise ValueError('Delivery receipt identifiers are invalid')
+        due=datetime.fromisoformat(row['due'])
+        if due.tzinfo is None:raise ValueError('Delivery receipt due must include a timezone')
+        grouped_receipts[row['owner']].append(row)
+    removed=0;replayed=0;protected=0;purge=[]
+    # Keep every owner's privacy effects and the independent idempotency guards
+    # in one transaction. Any mismatched fingerprint aborts the whole replay.
+    with repo.transaction() as c:
+        for ledger in ledgers:
+            owner=ledger['owner_user_id'];repo.assert_scope(owner)
+            with repo.transaction(owner):
+                draw_ids=set(grouped_draws[owner]);reading_ids=set()
+                for row in grouped_requests[owner]:
+                    old=c.execute(sql.SQL('SELECT fingerprint,result_id,result_type FROM {} WHERE owner=%s AND operation=%s AND request_key=%s FOR UPDATE').format(repo.table('tarot_requests')),(owner,row['operation'],row['request_key'])).fetchone()
+                    if old and (old['fingerprint']!=row['fingerprint'] or old['result_type']!=row['result_type']):raise ValueError('Restored Tarot request differs from the latest withdrawal')
+                    if old and old['result_id']:
+                        (reading_ids if row['result_type']=='reading' else draw_ids).add(old['result_id'])
+                repo.apply_privacy(owner,ledger)
+                revocations=repo.revocations(owner)
+                fact_ids=[row['entity_id'] for row in revocations if row['kind']=='fact']
+                source_ids=[row['entity_id'] for row in revocations if row['kind']=='message']+[row['metadata']['message_id'] for row in revocations if row['kind']=='source_span' and row['metadata'].get('message_id')]
+                TarotService(repo).purge_context(owner,fact_ids,source_ids)
+                if draw_ids or reading_ids:
+                    runs=c.execute(sql.SQL("SELECT id,retry_epoch FROM {} WHERE owner=%s AND (request->>'draw_id'=ANY(%s) OR request->>'reading_id'=ANY(%s)) FOR UPDATE").format(repo.table('core_runs')),(owner,list(draw_ids),list(reading_ids))).fetchall()
+                    ids=[row['id'] for row in runs];purge.extend(runs)
+                    if ids:
+                        c.execute(sql.SQL("UPDATE {} SET request='{{}}',result=NULL,checkpoint='{{}}',status='revoked',error='SOURCE_REVOKED',lease_token=NULL,lease_until=NULL WHERE owner=%s AND id=ANY(%s)").format(repo.table('core_runs')),(owner,ids))
+                        c.execute(sql.SQL("UPDATE {} SET data='{{}}',status='deleted' WHERE owner=%s AND kind IN ('runtime_step','interpretive_claim','artifact','model_call','report') AND data->>'run_id'=ANY(%s)").format(repo.table('core_entities')),(owner,ids))
+                        c.execute(sql.SQL("UPDATE {} SET payload='{{}}',status=CASE WHEN status IN ('sending','uncertain') THEN 'uncertain' WHEN status='sent' THEN 'sent' ELSE 'cancelled' END,error='SOURCE_REVOKED' WHERE owner=%s AND run_id=ANY(%s)").format(repo.table('delivery_outbox')),(owner,ids))
+                    removed+=c.execute(sql.SQL('DELETE FROM {} WHERE owner=%s AND id=ANY(%s)').format(repo.table('tarot_draws')),(owner,list(draw_ids))).rowcount
+                    c.execute(sql.SQL('DELETE FROM {} WHERE owner=%s AND id=ANY(%s)').format(repo.table('tarot_readings')),(owner,list(reading_ids)))
+                for row in grouped_requests[owner]:
+                    c.execute(sql.SQL("INSERT INTO {}(owner,operation,request_key,fingerprint,result_id,result_type,deleted) VALUES(%s,%s,%s,%s,'',%s,true) ON CONFLICT(owner,operation,request_key) DO UPDATE SET result_id='',deleted=true").format(repo.table('tarot_requests')),(owner,row['operation'],row['request_key'],row['fingerprint'],row['result_type']))
+                    replayed+=1
+                for row in grouped_receipts[owner]:
+                    old=c.execute(sql.SQL('SELECT status,receipt FROM {} WHERE owner=%s AND business_id=%s AND channel=%s AND target=%s FOR UPDATE').format(repo.table('delivery_outbox')),(owner,row['business_id'],row['channel'],row['target'])).fetchone()
+                    if old and old['status']=='sent' and row['status']=='sent' and old['receipt']!=row['receipt']:raise ValueError('Restored external receipt conflicts with latest delivery ledger')
+                    if old and old['status']=='sent':continue
+                    proof={'verification':'latest_withdrawal_export'}
+                    c.execute(sql.SQL("INSERT INTO {}(id,owner,subject,business_id,channel,target,run_id,payload,dependencies,status,attempts,due,receipt,reconciliation) VALUES(%s,%s,%s,%s,%s,%s,%s,'{{}}','{{}}',%s,%s,%s,%s,%s) ON CONFLICT(owner,business_id,channel,target) DO UPDATE SET payload='{{}}',dependencies='{{}}',status=EXCLUDED.status,attempts=GREATEST({}.attempts,EXCLUDED.attempts),receipt=EXCLUDED.receipt,reconciliation=EXCLUDED.reconciliation,claim_token=NULL,lease_until=NULL").format(repo.table('delivery_outbox'),sql.Identifier('delivery_outbox')),(row['id'],owner,row['subject'],row['business_id'],row['channel'],row['target'],row['run_id'],row['status'],row['attempts'],datetime.fromisoformat(row['due']),row['receipt'],Jsonb(proof)))
+                    protected+=1
+    # Latest source revocations may have removed additional runs. Purge all
+    # revoked threads, not only the run IDs directly linked to a Tarot request.
+    with repo.connection() as c:
+        purge=c.execute(sql.SQL("SELECT id,retry_epoch FROM {} WHERE owner=ANY(%s) AND status='revoked'").format(repo.table('core_runs')),(list(owners),)).fetchall()
+    if purge:
+        runtime=LangGraphRuntime(repo,initialize=False)
+        for run in purge:
+            for epoch in range(run['retry_epoch']+1):runtime.purge(run['id'],epoch)
+    return {'owners':len(owners),'deleted_draws':removed,'tarot_tombstones':replayed,'protected_receipts':protected,'external_sends':0,'model_calls':0}
+
+
 def freeze(args):
     require_host();release=verify_release(args);evidence(args)
     backup=Path(BACKUP_ROOT)/(stamp()+'-'+args.commit[:12]);backup.mkdir(parents=True,mode=0o700)
@@ -311,13 +437,11 @@ def freeze(args):
     source=backup/'source';shutil.copytree(LEGACY_SOURCE,source,symlinks=True)
     snapshot_hashes(source)
     for original_db in Path(LEGACY_SOURCE).rglob('*.db'):
-        destination_path=source/original_db.relative_to(LEGACY_SOURCE)
-        with closing(sqlite3.connect(original_db.as_uri()+'?mode=ro',uri=True)) as original_connection,closing(sqlite3.connect(destination_path)) as destination:
-            original_connection.backup(destination)
-        for suffix in ('-wal','-shm'):
-            candidate=Path(str(destination_path)+suffix)
-            if candidate.exists():candidate.unlink()
-    journal={'commit':args.commit,'backup':str(backup),'source_snapshot':str(source),'source_hashes':snapshot_hashes(source),'old_feishu_disabled':True,'old_reports_disabled':True,'legacy_jobs_disabled':selected,'frozen_at':stamp()}
+        snapshot_sqlite(original_db,source/original_db.relative_to(LEGACY_SOURCE))
+    hermes=backup/'hermes-state.db';hermes_sha=snapshot_sqlite(LEGACY_HERMES_DB,hermes)
+    journal={'commit':args.commit,'backup':str(backup),'source_snapshot':str(source),'source_hashes':snapshot_hashes(source),
+             'hermes_snapshot':str(hermes),'hermes_sha256':hermes_sha,
+             'old_feishu_disabled':True,'old_reports_disabled':True,'legacy_jobs_disabled':selected,'frozen_at':stamp()}
     write_private(backup/'freeze.json',json.dumps(journal,ensure_ascii=False,indent=2).encode())
     return journal
 
@@ -357,6 +481,8 @@ def install(args):
     if not source.is_dir() or not source.resolve().is_relative_to(Path(BACKUP_ROOT).resolve()):raise ValueError('final migration requires the protected frozen snapshot')
     frozen=json.loads((source.parent/'freeze.json').read_text(encoding='utf-8'))
     if frozen.get('commit')!=args.commit or frozen.get('source_snapshot')!=str(source) or frozen.get('source_hashes')!=snapshot_hashes(source):raise ValueError('frozen migration source or commit changed')
+    hermes=Path(frozen.get('hermes_snapshot',''))
+    if hermes!=source.parent/'hermes-state.db' or hermes.is_symlink() or not hermes.is_file() or hermes.stat().st_mode&0o077 or file_sha(hermes)!=frozen.get('hermes_sha256'):raise ValueError('final frozen Hermes source or digest changed')
     migration_args=argparse.Namespace(**vars(args));migration_args.env_file=args.env_file+args.migration_env_file
     migration_env=load_environment(migration_args,DBS['live'])
     python=str(release/'venv/core/bin/python')
@@ -364,6 +490,28 @@ def install(args):
     check='import os,psycopg; from psycopg.conninfo import conninfo_to_dict; m=conninfo_to_dict(os.environ["ZHIMING_DATABASE_URL"]); r=conninfo_to_dict(os.environ["CORE_RUNTIME_DSN_CHECK"]); assert m.get("user") and m.get("user")!=r.get("user") and all(m.get(k)==r.get(k) for k in ("dbname","host","port")); c=psycopg.connect(os.environ["ZHIMING_DATABASE_URL"]); v=c.execute("SHOW server_version_num").fetchone()[0]; assert 150000<=int(v)<160000; role=c.execute("SELECT rolsuper,rolcreatedb,rolcreaterole FROM pg_roles WHERE rolname=%s",(r.get("user"),)).fetchone(); assert role is not None and not any(role); c.close()'
     command([python,'-c',check],env=migration_env)
     command([python,str(release/'migration_core.py'),'--source',str(source),'--owner','primary','--apply','--dsn-env','ZHIMING_DATABASE_URL','--schema','mingjing_core','--bindings',args.bindings],cwd=release,env=migration_env)
+    migration_env['CORE_FINAL_HERMES_SNAPSHOT']=str(hermes)
+    migration_env['CORE_FINAL_HERMES_SHA256']=frozen['hermes_sha256']
+    migration_env['CORE_FINAL_BINDINGS']=str(bindings)
+    hermes_sync='''import os,json
+from pathlib import Path
+from tools.deploy_core import file_sha,sync_frozen_hermes
+from mingjing_core.repositories.postgres import PostgresRepository
+from mingjing_core.application.report_schedules import ReportScheduleService
+source=Path(os.environ['CORE_FINAL_HERMES_SNAPSHOT'])
+assert file_sha(source)==os.environ['CORE_FINAL_HERMES_SHA256']
+bindings=json.loads(Path(os.environ['CORE_FINAL_BINDINGS']).read_text(encoding='utf-8'))
+repo=PostgresRepository(os.environ['ZHIMING_DATABASE_URL'],initialize=False,max_size=2)
+try:
+ repo.verify_schema()
+ result=sync_frozen_hermes(repo,source,bindings)
+ result['schedule_defaults']=ReportScheduleService(repo).seed_defaults('primary')
+finally:repo.close()
+path=source.parent/'final-hermes-migration.json'
+descriptor=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_TRUNC,0o600)
+with os.fdopen(descriptor,'w') as stream:json.dump(result,stream)
+'''
+    command([python,'-c',hermes_sync],env=migration_env,cwd=release)
     checkpoint='''import os,psycopg
 from psycopg.rows import dict_row
 from langgraph.checkpoint.postgres import PostgresSaver
@@ -425,41 +573,72 @@ def publish(args):
 
 
 def maintenance(args):
-    require_host();release=verify_release(args);maintenance_gate()
+    require_host();maintenance_gate()
     for name in ('zhiming-core-reports.timer','zhiming-core-reports.service','zhiming-core-feishu.service','mingjingtai.service'):
         command(['systemctl','stop',name])
     Path(NGINX).write_text(render_nginx(Path(NGINX).read_text(encoding='utf-8')),encoding='utf-8')
     command(['nginx','-t']);command(['systemctl','reload','nginx'])
+    release=verify_release(args)
     env=load_environment(args,DBS['live']);directory=Path(BACKUP_ROOT)/(stamp()+'-maintenance-'+args.commit[:12]);directory.mkdir(parents=True,mode=0o700)
-    code='''import os,json,psycopg,subprocess
-from psycopg.rows import dict_row
+    code='''import os,json,subprocess
 from psycopg.conninfo import conninfo_to_dict
-with psycopg.connect(os.environ['ZHIMING_DATABASE_URL'],row_factory=dict_row) as c:
- rows=c.execute('SELECT owner,kind,entity_id,operation,metadata,revision,created_at FROM mingjing_core.core_revocations ORDER BY owner,revision,kind,entity_id').fetchall()
+from tools.deploy_core import export_withdrawals
+from mingjing_core.repositories.postgres import PostgresRepository
+repo=PostgresRepository(os.environ['ZHIMING_DATABASE_URL'],initialize=False,max_size=2)
+try:ledger=export_withdrawals(repo)
+finally:repo.close()
 descriptor=os.open(os.environ['CORE_REVOCATION_EXPORT'],os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
-with os.fdopen(descriptor,'w') as f:json.dump({'schema':'core3-revocations-v1','rows':rows},f,ensure_ascii=False,default=str)
+with os.fdopen(descriptor,'w') as f:json.dump(ledger,f,ensure_ascii=False,default=str)
 fields=conninfo_to_dict(os.environ['ZHIMING_DATABASE_URL']); dump_env=dict(os.environ)
 for key,name in [('host','PGHOST'),('port','PGPORT'),('user','PGUSER'),('password','PGPASSWORD'),('dbname','PGDATABASE')]:
  if key in fields:dump_env[name]=fields[key]
 descriptor=os.open(os.environ['CORE_DATABASE_EXPORT'],os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
 with os.fdopen(descriptor,'wb') as f:subprocess.run(['pg_dump','--format=custom','--no-owner','--no-acl'],env=dump_env,stdout=f,stderr=subprocess.PIPE,check=True)
 '''
-    env['CORE_REVOCATION_EXPORT']=str(directory/'revocations-latest.json')
+    env['CORE_REVOCATION_EXPORT']=str(directory/'withdrawals-latest.json')
     env['CORE_DATABASE_EXPORT']=str(directory/'core-live-latest.dump')
     command([str(release/'venv/core/bin/python'),'-c',code],cwd=release,env=env)
-    write_private(directory/'maintenance.json',json.dumps({'commit':args.commit,'database':DBS['live'],'revocations':'revocations-latest.json','database_snapshot':'core-live-latest.dump','old_loop_reenabled':False,'at':stamp()}).encode())
+    write_private(directory/'maintenance.json',json.dumps({'commit':args.commit,'database':DBS['live'],'withdrawals':'withdrawals-latest.json','withdrawals_sha256':file_sha(directory/'withdrawals-latest.json'),
+                  'database_snapshot':'core-live-latest.dump','database_sha256':file_sha(directory/'core-live-latest.dump'),'old_loop_reenabled':False,'at':stamp()}).encode())
     return {'maintenance':True,'writers_stopped':True,'latest_revocations_retained':str(directory),'old_explanation_loop_reenabled':False}
+
+
+def restore_withdrawals(args):
+    require_host();release=verify_release(args);verify_legacy_disabled(args)
+    if not Path(MAINTENANCE).is_file():raise ValueError('withdrawal restore requires the public maintenance gate')
+    for name in ('mingjingtai.service','zhiming-core-feishu.service','zhiming-core-reports.service','zhiming-core-reports.timer'):
+        if subprocess.run(['systemctl','is-active','--quiet',name]).returncode==0:raise ValueError('withdrawal restore requires every Core writer stopped')
+    path=Path(args.withdrawals)
+    if path.is_symlink() or not path.is_file() or path.stat().st_mode&0o077 or not path.resolve().is_relative_to(Path(BACKUP_ROOT).resolve()):raise ValueError('latest withdrawals must be a protected backup file')
+    journal=json.loads((path.parent/'maintenance.json').read_text(encoding='utf-8'))
+    if path.name!=journal.get('withdrawals') or file_sha(path)!=journal.get('withdrawals_sha256') or journal.get('database')!=DBS['live']:raise ValueError('withdrawal backup digest/database mismatch')
+    inputs=argparse.Namespace(**vars(args));inputs.env_file=args.env_file+args.migration_env_file
+    env=load_environment(inputs,DBS['live']);env['CORE_WITHDRAWAL_RESTORE']=str(path)
+    code='''import os,json
+from pathlib import Path
+from tools.deploy_core import apply_withdrawals
+from mingjing_core.repositories.postgres import PostgresRepository
+repo=PostgresRepository(os.environ['ZHIMING_DATABASE_URL'],initialize=False,max_size=2)
+try:
+ repo.verify_schema()
+ result=apply_withdrawals(repo,json.loads(Path(os.environ['CORE_WITHDRAWAL_RESTORE']).read_text(encoding='utf-8')))
+finally:repo.close()
+print(json.dumps(result))
+'''
+    result=json.loads(command([str(release/'venv/core/bin/python'),'-c',code],cwd=release,env=env,capture=True))
+    return dict(result,maintenance=True,withdrawals_replayed=True,old_explanation_loop_reenabled=False)
 
 
 def parser():
     result=argparse.ArgumentParser(description=__doc__)
-    result.add_argument('action',choices=('plan','bundle','prepare','freeze','install','publish','maintenance'))
+    result.add_argument('action',choices=('plan','bundle','prepare','freeze','install','publish','maintenance','restore-withdrawals'))
     result.add_argument('--commit',required=True);result.add_argument('--release-dir',required=True)
     result.add_argument('--source',default='.');result.add_argument('--artifact');result.add_argument('--artifact-sha256')
     result.add_argument('--python',default='/usr/bin/python3.11')
     result.add_argument('--env-file',action='append',default=[])
     result.add_argument('--migration-env-file',action='append',default=[])
     result.add_argument('--acceptance');result.add_argument('--bindings');result.add_argument('--legacy-job-ids');result.add_argument('--source-snapshot')
+    result.add_argument('--withdrawals')
     return result
 
 
@@ -468,11 +647,11 @@ def main(argv=None):
     if args.action=='plan':
         output={'commit':args.commit,'release':args.release_dir,'databases':DBS,'nginx':NGINX,'maintenance_flag':MAINTENANCE,'sequence':['bundle','prepare','stage acceptance','freeze','install','publish'],'rollback':'maintenance preserves live PG and latest revocation ledger; never restarts old controller','units':list(units(args))}
     else:
-        required={'bundle':['artifact'],'prepare':['artifact','artifact_sha256'],'freeze':['acceptance','legacy_job_ids'],'install':['acceptance','legacy_job_ids','bindings','source_snapshot'],'publish':['acceptance','legacy_job_ids'],'maintenance':[]}[args.action]
+        required={'bundle':['artifact'],'prepare':['artifact','artifact_sha256'],'freeze':['acceptance','legacy_job_ids'],'install':['acceptance','legacy_job_ids','bindings','source_snapshot'],'publish':['acceptance','legacy_job_ids'],'maintenance':[],'restore-withdrawals':['withdrawals','legacy_job_ids']}[args.action]
         if any(not getattr(args,name) for name in required):raise ValueError('missing action inputs: '+', '.join(required))
-        if args.action in ('install','publish','maintenance') and not args.env_file:raise ValueError('protected original/provider/Core environment files required')
-        if args.action=='install' and not args.migration_env_file:raise ValueError('a separate protected migration-owner environment file is required')
-        output=globals()[args.action](args)
+        if args.action in ('install','publish','maintenance','restore-withdrawals') and not args.env_file:raise ValueError('protected original/provider/Core environment files required')
+        if args.action in ('install','restore-withdrawals') and not args.migration_env_file:raise ValueError('a separate protected migration-owner environment file is required')
+        output=globals()[args.action.replace('-','_')](args)
     print(json.dumps(output,ensure_ascii=False,indent=2));return 0
 
 

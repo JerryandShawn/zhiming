@@ -1,5 +1,7 @@
 """Typed execution and presentation contracts, free of provider/runtime imports."""
 from typing import Any, Literal, Protocol
+from enum import Enum
+import math
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -44,21 +46,21 @@ class DecisionOption(Contract):
 
 
 class FinalAnswer(Contract):
-    plain_summary: str = Field(min_length=1, max_length=6000)
-    explanation: str = Field(default="", max_length=18000)
-    actions: list[str] = Field(default_factory=list, max_length=5)
-    decision_options: list[DecisionOption] = Field(default_factory=list, max_length=4)
+    plain_summary: str = Field(min_length=1, max_length=6000, description="用两至四句先回答本轮问题。现实依据和专业细节分别填写explanation/professional_appendix。")
+    explanation: str = Field(default="", max_length=18000, description="说明目标、现实约束、证据、选择代价与待核实条件。不能把象征或旧预测当成已发生事实。")
+    actions: list[str] = Field(max_length=5, description="独立填写可执行行动，不能仅写在plain_summary。decision=true时至少一项；支持模式最多一项。无行动时明确返回[]。")
+    decision_options: list[DecisionOption] = Field(max_length=4, description="decision=true时至少两个可行选项，可包括暂缓核实。每项独立填写真实收益、代价、风险、可逆性、第一步；未知条件明示待确认。其他模式可返回[]。")
     follow_up: str = ""
     professional_appendix: str = Field(default="", max_length=30000)
-    cited_fact_ids: list[str] = Field(default_factory=list)
-    cited_claim_ids: list[str] = Field(default_factory=list)
+    cited_fact_ids: list[str] = Field(description="必须独立填写本答复实际使用的reference_data.facts[].id。正文或附录中的ID不能替代此数组。只选本轮有效事实；没有引用时返回[]。")
+    cited_claim_ids: list[str] = Field(description="必须独立填写本答复实际使用的reference_data.claims[].claim_id。存在专业声明时至少引用一项；只把ID写进professional_appendix仍不合格。无专业声明时返回[]。")
     caveats: list[str] = Field(default_factory=list, max_length=12)
 
 
 class SpecialistAnswer(Contract):
     system: Literal["bazi", "ziwei", "astro", "tarot"]
-    claim_ids: list[str] = Field(default_factory=list)
-    discussion: str = Field(default="", max_length=10000)
+    claim_ids: list[str] = Field(description="独立填写discussion实际采用的reference_data.claims[].claim_id，不可仅在文字中列ID，不可编造。")
+    discussion: str = Field(default="", max_length=10000, description="围绕问题解释选中声明的字段、规则、允许意义与反例，约1500字以内；无须复制整个计算产物。完整可核验字段由程序另行展示。")
     uncertainties: list[str] = Field(default_factory=list)
 
 
@@ -85,8 +87,44 @@ class InvalidAnswer(CoreError):
     http_status = 422
 
 
+class ModelFailureReason(str, Enum):
+    UNKNOWN = "unknown"
+    CONFIGURATION = "configuration"
+    HTTP = "http"
+    NETWORK = "network"
+    JSON = "json"
+    MAX_TOKENS = "max_tokens"
+    TOOL_COUNT = "tool_count"
+    TOOL_INPUT = "tool_input"
+
+
 class ModelUnavailable(CoreError):
+    """Provider failure metadata contains fixed categories and token counts only."""
     code = "MODEL_UNAVAILABLE"
+    _token_fields = frozenset({'input_tokens', 'output_tokens', 'cache_creation_input_tokens', 'cache_read_input_tokens'})
+    _stop_reasons = frozenset({'end_turn', 'max_tokens', 'stop_sequence', 'tool_use', 'pause_turn', 'refusal'})
+
+    def __init__(self, message="模型调用尚未完成，请查询原请求状态", *, reason=ModelFailureReason.UNKNOWN,
+                 provider_http_status=None, usage=None, latency_seconds=None, stop_reason=None, tool_count=None):
+        super().__init__(message)
+        try:self.reason = ModelFailureReason(reason).value
+        except (ValueError, TypeError):self.reason = ModelFailureReason.UNKNOWN.value
+        self.failure_code = 'MODEL_' + self.reason.upper()
+        self.provider_http_status = provider_http_status if type(provider_http_status) is int and 100 <= provider_http_status <= 599 else None
+        self.usage = {key:value for key,value in (usage.items() if isinstance(usage,dict) else ())
+                      if key in self._token_fields and type(value) is int and 0 <= value <= 2**63 - 1}
+        self.usage_known = bool(self.usage)
+        self.latency_seconds = round(latency_seconds, 3) if type(latency_seconds) in (int,float) and math.isfinite(latency_seconds) and latency_seconds >= 0 else None
+        self.stop_reason = stop_reason if isinstance(stop_reason,str) and stop_reason in self._stop_reasons else 'unknown' if stop_reason is not None else None
+        self.tool_count = tool_count if type(tool_count) is int and 0 <= tool_count <= 100000 else None
+
+    def safe_diagnostic(self):
+        result = {'code':self.code, 'reason':self.reason, 'failure_code':self.failure_code,
+                  'usage':dict(self.usage), 'usage_known':self.usage_known}
+        for name in ('provider_http_status', 'latency_seconds', 'stop_reason', 'tool_count'):
+            value=getattr(self,name)
+            if value is not None:result[name]=value
+        return result
 
 
 def render_answer(final: dict) -> str:

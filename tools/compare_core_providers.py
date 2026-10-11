@@ -13,6 +13,7 @@ import asyncio
 from copy import deepcopy
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -82,6 +83,56 @@ def card_projection(draw):
     return [{'card_id': c['card_id'], 'orientation': c['orientation']} for c in draw['cards']]
 
 
+def synthetic_contract_snapshot(value, schema, secrets=()):
+    """Persist only a synthetic structured contract, never transport/thinking.
+
+    The evaluator owns all supplied records. Projection uses the submitted tool
+    schema; raw response content, request headers and extra model fields are not
+    diagnostic material. Known configured keys are also removed from strings.
+    """
+    blocked = {'thinking', 'reasoning', 'reasoning_content', 'headers', 'authorization',
+               'x_api_key', 'api_key', 'apikey', 'access_token', 'secret'}
+    definitions = schema.get('$defs', {})
+
+    def clean(item, shape):
+        if '$ref' in shape:
+            shape = definitions.get(shape['$ref'].rsplit('/', 1)[-1], {})
+        if isinstance(item, dict):
+            properties = shape.get('properties')
+            return {key: clean(child, properties.get(key, {}) if properties is not None else {})
+                    for key, child in item.items() if isinstance(key, str)
+                    and key.lower().replace('-', '_') not in blocked
+                    and (properties is None or key in properties)}
+        if isinstance(item, list):
+            return [clean(child, shape.get('items', {})) for child in item]
+        if isinstance(item, str):
+            for secret in secrets:
+                if isinstance(secret, str) and len(secret) > 8:
+                    item = item.replace(secret, '<redacted>')
+            return item
+        if type(item) is float and not math.isfinite(item):
+            return '<nonfinite-number>'
+        return item if item is None or type(item) in (bool, int, float) else '<invalid-json-type>'
+
+    return clean(value, schema)
+
+
+def synthetic_contract_errors(exc):
+    """Pydantic error locations/types only, without input values or context."""
+    if not hasattr(exc, 'errors'):
+        return []
+    return [{'type': issue['type'], 'location': list(issue['loc'])}
+            for issue in exc.errors(include_input=False, include_url=False)[:24]]
+
+
+class LegacySourceMismatch(ValueError):
+    def __init__(self, name, expected, actual, byte_count):
+        super().__init__('Legacy source checksum mismatch: '+name)
+        self.diagnostic = {'phase': 'legacy_source_verification', 'file': name,
+                           'expected_sha256': expected['sha256'], 'actual_sha256': actual,
+                           'expected_bytes': expected['bytes'], 'actual_bytes': byte_count}
+
+
 def verified_legacy_sources(legacy_root):
     """Require the exact original production source, including its helpers."""
     directory = Path(legacy_root)
@@ -92,7 +143,7 @@ def verified_legacy_sources(legacy_root):
         raw = (directory/name).read_bytes()
         actual = hashlib.sha256(raw).hexdigest()
         if actual != expected['sha256'] or len(raw) != expected['bytes']:
-            raise ValueError('Legacy source checksum mismatch: '+name)
+            raise LegacySourceMismatch(name, expected, actual, len(raw))
         hashes[name] = actual
     return directory, hashes
 
@@ -111,7 +162,7 @@ def legacy_worker(arm, scenario, legacy_root):
     sys.path.insert(0,str(directory))
     names=('archive_store','context_engine','chart_context','guidance','semantic_index','conversation_store','chat_agent')
     previous_modules={name:sys.modules.pop(name,None) for name in names}
-    calls=[];original_client=httpx.AsyncClient
+    calls=[];original_client=httpx.AsyncClient;known_secrets=[]
     class ObservedClient:
         def __init__(self,**kwargs):self.client=original_client(**kwargs)
         async def __aenter__(self):await self.client.__aenter__();return self
@@ -122,7 +173,13 @@ def legacy_worker(arm, scenario, legacy_root):
             calls.append(record);persist_observations(calls)
             try:
                 response=await self.client.post(url,**kwargs);record['http_status']=response.status_code
-                if response.status_code==200:record['usage']=response.json().get('usage',{})
+                if response.status_code==200:
+                    parsed=response.json();record['usage']=parsed.get('usage',{})
+                    schemas={tool['name']:tool.get('input_schema',{}) for tool in body.get('tools',[])}
+                    record['contract_tools']=[{'name':block['name'],
+                        'output':synthetic_contract_snapshot(block.get('input'),schemas[block['name']],known_secrets)}
+                        for block in parsed.get('content',[]) if block.get('type')=='tool_use' and block.get('name') in schemas]
+                    record['stop_reason']=parsed.get('stop_reason')
                 return response
             finally:record['latency_seconds']=round(time.monotonic()-started,3);persist_observations(calls)
     result={'arm':arm,'scenario':scenario,'synthetic_only':True,'calls':calls,'legacy_controller':'production-v5-ChatAgent',
@@ -139,6 +196,7 @@ def legacy_worker(arm, scenario, legacy_root):
         namespace={'__name__':'synthetic_legacy_controller','__file__':str(directory/'chat_agent.py')}
         exec(compile(expanded_source,str(directory/'chat_agent.py'),'exec'),namespace)
         ChatAgent=namespace['ChatAgent'];configured=ConfiguredModel()
+        known_secrets.append(configured.key)
         with tempfile.TemporaryDirectory(prefix='core-provider-production-v5-') as temporary:
             base=Path(temporary);archive=base/'archive.json';profile={}
             for field,value in PROFILE_ITEMS:
@@ -186,12 +244,13 @@ def core_worker(arm, scenario, dsn_env):
     from psycopg import sql
     from mingjing_core.adapters.model import ConfiguredModel
     from mingjing_core.application.consultation import ConsultationService
+    from mingjing_core.domain.consultation import FinalAnswer
     from mingjing_core.repositories.postgres import PostgresRepository
     dsn = os.getenv(dsn_env)
     if not dsn: raise ValueError('Explicit synthetic PostgreSQL environment is required')
     if scenario == 'tarot' and arm == 'new_controlled_multi_specialists' and not os.getenv('CHART_PYTHON'):
         raise ValueError('Four-specialist comparison requires the actual configured chart interpreter')
-    calls = []
+    calls = [];validation_attempts=[];phase_events=[]
     class ObservedModel(ConfiguredModel):
         def generate(self, **kwargs):
             started = time.monotonic()
@@ -200,14 +259,41 @@ def core_worker(arm, scenario, dsn_env):
             calls.append(record); persist_observations(calls)
             try:
                 output = super().generate(**kwargs)
-                record['usage'] = output.get('usage', {}); return output
+                record['usage'] = output.get('usage', {})
+                record['output_contract'] = kwargs['schema'].get('title')
+                record['contract_output'] = synthetic_contract_snapshot(output.get('output'),kwargs['schema'],[self.key])
+                return output
+            except Exception as exc:
+                record['error_type']=type(exc).__name__
+                record['error_code']=getattr(exc,'code',None)
+                raise
             finally:
                 record['latency_seconds'] = round(time.monotonic()-started, 3); persist_observations(calls)
+    class DiagnosticService(ConsultationService):
+        def _validate(self, owner, run, final):
+            # Observational only: the original business validator decides and
+            # returns unchanged. Both failed first answers and repairs remain.
+            attempt={'phase':'validation','contract_output':synthetic_contract_snapshot(final,
+                FinalAnswer.model_json_schema(),[self.model.key])}
+            validation_attempts.append(attempt)
+            try:
+                issues=super()._validate(owner,run,final)
+                attempt['issues']=list(issues)
+                return issues
+            except Exception as exc:
+                attempt.update(error_type=type(exc).__name__,contract_errors=synthetic_contract_errors(exc))
+                raise
     schema = 'test_compare_'+uuid.uuid4().hex[:16]
     repo = PostgresRepository(dsn, schema=schema)
-    service = ConsultationService(repo, model=ObservedModel())
+    service = DiagnosticService(repo, model=ObservedModel())
     owner = 'synthetic-comparison'; repo.ensure_owner(owner)
-    result = {'arm': arm, 'scenario': scenario, 'synthetic_only': True, 'calls': calls}
+    result = {'arm': arm, 'scenario': scenario, 'synthetic_only': True, 'calls': calls,
+              'validation_attempts':validation_attempts,'phase_events':phase_events}
+    def observe_phase(event):
+        if event.get('type') == 'status':
+            phase_events.append(event['stage'])
+            if WORKER_OUTPUT:
+                WORKER_CONTEXT.update(last_phase=event['stage'],validation_attempts=validation_attempts)
     started = time.monotonic(); run_id = None
     try:
         case = service.memory.create_case(owner, 'self', '合成工作安排比较')['id']
@@ -234,11 +320,14 @@ def core_worker(arm, scenario, dsn_env):
             draw_id=draw['id'] if draw else None)
         run_id = run['id']
         try:
-            answer = service.execute(owner, run_id)
+            answer = service.execute(owner, run_id, observe_phase)
             result.update(status='validated', final=answer, validation=answer['validation'])
         except Exception as exc:
-            result.update(status='failed', error_type=type(exc).__name__)
+            result.update(status='failed', error_type=type(exc).__name__,error_code=getattr(exc,'code',None),
+                          contract_errors=synthetic_contract_errors(exc))
         current = repo.fetch_run(owner, run_id)
+        result['last_phase']=phase_events[-1] if phase_events else None
+        result['last_completed_phase']=current['checkpoint'].get('phase')
         result['durable_budget'] = {'calls': current['calls'], 'limit': current['call_limit']}
         result['specialist_provider_calls'] = sum(c['purpose'].startswith('specialist:') for c in calls)
         expected_specialists = (1 if arm == 'new_single_specialist' else 4) if scenario == 'tarot' else 0
@@ -277,6 +366,7 @@ def main(argv=None):
         except Exception as exc:
             result = json.loads(args.output.read_text(encoding='utf-8')) if args.output.is_file() else dict(WORKER_CONTEXT)
             result.update(status='failed_setup',error_type=type(exc).__name__)
+            if isinstance(exc,LegacySourceMismatch):result['setup_diagnostic']=exc.diagnostic
         args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False)+'\n', encoding='utf-8')
         return
     from mingjing_core.adapters.model import ConfiguredModel

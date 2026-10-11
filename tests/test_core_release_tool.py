@@ -141,13 +141,16 @@ class CoreReleaseTool(unittest.TestCase):
         for name,value in [('web.db','web-original'),('reports.db','report-original')]:
             with closing(sqlite3.connect(source/name)) as connection,connection:
                 connection.execute('CREATE TABLE originals(value TEXT)');connection.execute('INSERT INTO originals VALUES(?)',(value,))
+        hermes=self.root/'state.db'
+        with closing(sqlite3.connect(hermes)) as connection,connection:
+            connection.execute('CREATE TABLE originals(value TEXT)');connection.execute("INSERT INTO originals VALUES('hermes-original')")
         config=self.root/'hermes.yaml';config.write_text(yaml.safe_dump({'platforms':{'feishu':{'enabled':True},'telegram':{'enabled':True}},'custom':{'kept':123}}))
         jobs=self.root/'jobs.json';jobs.write_text(json.dumps([{'id':str(i),'prompt':'zhiming/report_pipeline.py','enabled':True} for i in range(4)]+[{'id':'other','prompt':'unrelated','enabled':True}]))
         ids=self.root/'ids.json';ids.write_text(json.dumps(['0','1','2','3']));self.args.legacy_job_ids=str(ids)
         nginx=self.root/'nginx.conf';nginx.write_text(NGINX)
         commands=[]
         with ExitStack() as stack:
-            for name,value in {'BACKUP_ROOT':str(self.root/'backups'),'LEGACY_SOURCE':str(source),'LEGACY_CONFIG':str(config),'LEGACY_JOBS':str(jobs),'NGINX':str(nginx),'MAINTENANCE':str(self.root/'gate'),'MAINTENANCE_HTML':str(self.root/'maintenance.html')}.items():stack.enter_context(patch.object(release,name,value))
+            for name,value in {'BACKUP_ROOT':str(self.root/'backups'),'LEGACY_SOURCE':str(source),'LEGACY_HERMES_DB':str(hermes),'LEGACY_CONFIG':str(config),'LEGACY_JOBS':str(jobs),'NGINX':str(nginx),'MAINTENANCE':str(self.root/'gate'),'MAINTENANCE_HTML':str(self.root/'maintenance.html')}.items():stack.enter_context(patch.object(release,name,value))
             stack.enter_context(patch.object(release,'require_host'))
             stack.enter_context(patch.object(release,'verify_release',return_value=self.root/'release'))
             stack.enter_context(patch.object(release,'evidence',return_value={}))
@@ -157,12 +160,82 @@ class CoreReleaseTool(unittest.TestCase):
         for name,value in [('web.db','web-original'),('reports.db','report-original')]:
             with closing(sqlite3.connect(copied/name)) as connection:self.assertEqual(connection.execute('SELECT value FROM originals').fetchone()[0],value)
         self.assertEqual(release.snapshot_hashes(copied),journal['source_hashes'])
+        frozen_hermes=Path(journal['hermes_snapshot'])
+        self.assertEqual(release.file_sha(frozen_hermes),journal['hermes_sha256'])
+        with closing(sqlite3.connect(frozen_hermes)) as connection:self.assertEqual(connection.execute('SELECT value FROM originals').fetchone()[0],'hermes-original')
         updated=yaml.safe_load(config.read_text());self.assertIs(updated['platforms']['feishu']['enabled'],False)
         self.assertIs(updated['platforms']['telegram']['enabled'],True);self.assertEqual(updated['custom'],{'kept':123})
         updated=json.loads(jobs.read_text());self.assertTrue(all(row['enabled'] is False for row in updated[:4]));self.assertIs(updated[4]['enabled'],True)
         self.assertIn(['systemctl','restart','hermes.service'],commands)
         self.assertIn(['systemctl','stop','mingjingtai.service'],commands)
         self.assertNotIn(['systemctl','stop','hermes.service'],commands)
+
+    def test_maintenance_stops_writers_before_a_modified_release_can_block_export(self):
+        nginx=self.root/'nginx.conf';nginx.write_text(NGINX);steps=[]
+        with ExitStack() as stack:
+            for name,value in {'NGINX':str(nginx),'MAINTENANCE':str(self.root/'gate'),'MAINTENANCE_HTML':str(self.root/'maintenance.html')}.items():stack.enter_context(patch.object(release,name,value))
+            stack.enter_context(patch.object(release,'require_host'))
+            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:steps.append(argv)))
+            def reject(_):
+                self.assertTrue((self.root/'gate').is_file())
+                self.assertIn(['systemctl','stop','mingjingtai.service'],steps)
+                self.assertIn(['systemctl','stop','zhiming-core-feishu.service'],steps)
+                raise ValueError('modified release')
+            stack.enter_context(patch.object(release,'verify_release',side_effect=reject))
+            with self.assertRaisesRegex(ValueError,'modified release'):release.maintenance(self.args)
+        self.assertIn(['systemctl','reload','nginx'],steps)
+        self.assertIn('Core v3 maintenance gate',nginx.read_text())
+
+    def test_withdrawal_restore_is_refused_without_a_gate_or_with_active_writers(self):
+        gate=self.root/'gate'
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(release,'require_host'))
+            stack.enter_context(patch.object(release,'verify_release',return_value=self.root/'release'))
+            stack.enter_context(patch.object(release,'verify_legacy_disabled'))
+            stack.enter_context(patch.object(release,'MAINTENANCE',str(gate)))
+            run=stack.enter_context(patch.object(release.subprocess,'run',return_value=Namespace(returncode=0)))
+            child=stack.enter_context(patch.object(release,'command'))
+            with self.assertRaisesRegex(ValueError,'maintenance gate'):release.restore_withdrawals(self.args)
+            run.assert_not_called();gate.touch()
+            with self.assertRaisesRegex(ValueError,'writer stopped'):release.restore_withdrawals(self.args)
+            child.assert_not_called()
+
+    def test_install_imports_final_hermes_and_seeds_schedule_before_runtime_startup(self):
+        import ast
+        source=self.root/'backups/frozen/source';source.mkdir(parents=True)
+        (source/'archive.json').write_text('{}')
+        hermes=source.parent/'hermes-state.db';hermes.write_bytes(b'synthetic SQLite snapshot identity')
+        bindings=self.root/'bindings.json';bindings.write_text('[]')
+        frozen={'commit':SHA,'source_snapshot':str(source),'source_hashes':release.snapshot_hashes(source),'hermes_snapshot':str(hermes),'hermes_sha256':release.file_sha(hermes)}
+        (source.parent/'freeze.json').write_text(json.dumps(frozen))
+        self.args.source_snapshot=str(source);self.args.bindings=str(bindings);self.args.migration_env_file=['/protected/migrator.env']
+        gate=self.root/'gate';gate.touch();commands=[];ordinary_stat=Path.stat
+        def private_stat(path,*args,**kwargs):
+            if path in (bindings,hermes):return Namespace(st_mode=0o100600)
+            return ordinary_stat(path,*args,**kwargs)
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(release,'require_host'))
+            stack.enter_context(patch.object(release,'verify_release',return_value=self.root/'fixed-release'))
+            stack.enter_context(patch.object(release,'evidence',return_value={}))
+            stack.enter_context(patch.object(release,'verify_legacy_disabled'))
+            stack.enter_context(patch.object(release,'BACKUP_ROOT',str(self.root/'backups')))
+            stack.enter_context(patch.object(release,'MAINTENANCE',str(gate)))
+            stack.enter_context(patch.object(Path,'stat',private_stat))
+            stack.enter_context(patch.object(release,'load_environment',return_value={'ZHIMING_DATABASE_URL':'synthetic env-only DSN'}))
+            stack.enter_context(patch.object(release,'units',return_value={}))
+            stack.enter_context(patch.object(release,'command',side_effect=lambda argv,**kwargs:commands.append(argv)))
+            result=release.install(self.args)
+        self.assertTrue(result['maintenance']);self.assertFalse(result['effects_started'])
+        children=[argv[2] for argv in commands if len(argv)>2 and argv[1]=='-c']
+        for child in children:compile(child,'protected deployment child','exec')
+        hermes_child=next(child for child in children if 'sync_frozen_hermes(repo,source,bindings)' in child)
+        nodes=ast.parse(hermes_child)
+        self.assertLess(hermes_child.index('sync_frozen_hermes(repo,source,bindings)'),hermes_child.index("seed_defaults('primary')"))
+        joined='\n'.join(str(argv) for argv in commands)
+        self.assertLess(joined.index('migration_core.py'),joined.index('sync_frozen_hermes(repo,source,bindings)'))
+        self.assertLess(joined.index("seed_defaults('primary')"),joined.index('PostgresSaver(connection).setup()'))
+        self.assertLess(joined.index('PostgresSaver(connection).setup()'),joined.index('ConsultationService.from_base()'))
+        self.assertNotIn(['systemctl','enable','--now','zhiming-core-feishu.service'],commands)
 
 
 if __name__=='__main__':unittest.main()

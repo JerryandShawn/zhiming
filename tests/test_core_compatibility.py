@@ -162,7 +162,7 @@ class CoreCompatibilityTests(unittest.TestCase):
 
 
     def test_normal_contract_neither_invents_answer_nor_shares_mutable_defaults(self):
-        first=FinalAnswer(plain_summary='你好');second=FinalAnswer(plain_summary='你好')
+        first=FinalAnswer(plain_summary='你好',actions=[],decision_options=[],cited_fact_ids=[],cited_claim_ids=[]);second=FinalAnswer(plain_summary='你好',actions=[],decision_options=[],cited_fact_ids=[],cited_claim_ids=[])
         first.actions.append('合成动作');self.assertEqual(second.actions,[])
         self.configure_provider();self.provider.final_patch={'plain_summary':''}
         with self.assertRaises(Exception):self.consult(request_id='empty-final')

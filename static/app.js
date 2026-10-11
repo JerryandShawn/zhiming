@@ -108,11 +108,12 @@ const PAGE_META = {
  timeline:["回看变化，也留下反馈。","把过去的判断放回真实经历，逐步辨认属于你的规律。","时间轴","观察 · 记录 · 校准"],
  graph:["人与人之间，留下生活的线索。","查看已记录的人物、关系和事件，点击节点读懂其中的联系。","缘网","关系来自档案记录"],
  dict:["让经验，慢慢成为你的词典。","个人解释与样本记录并读；尚无足够反馈的判断，继续保留疑问。","词典","用经历校准语言"],
- reports:["留一段时间，读今天的自己。","报告按日期归档，展开阅读、检索回看，也可以导出留存。","报告","晨报 · 每日 07:00"],
+ reports:["留一段时间，读今天的自己。","报告按日期归档，展开阅读、检索回看，也可以导出留存。","报告","阅读存档 · 查看投递"],
+ reportsettings:["为报告，留一个合适的时间。","设置晨报、周报、月报与季报的发送时间，核对下一次准备和投递。","报告设置","北京时间 · 提前准备"],
  cases:["接着上次，把事情慢慢理清。","查看这件事的背景、决定与实际反馈，继续跟进下一步。","我的事项","一件事 · 持续跟进"],
  memory:["记住的信息，由你核对。","查看长期信息与原话来源，随时更正、停用或删除。","已记住的信息","由你确认 · 由你更正"]
 };
-const loaders = { chat: loadChatScope, chart: loadChart, tarot: loadTarot, cases: loadCases, timeline: loadTimeline, graph: loadGraph, dict: loadDict, reports: loadReports, memory: loadMemories };
+const loaders = { chat: loadChatScope, chart: loadChart, tarot: loadTarot, cases: loadCases, timeline: loadTimeline, graph: loadGraph, dict: loadDict, reports: loadReports, reportsettings: loadReportSettings, memory: loadMemories };
 const loaded = {};
 let currentPage = "chat";
 function switchPage(name, fromRoute) {
@@ -295,11 +296,23 @@ function evidenceHtml(result) {
   };
   const comparison=synthesis.length?`<section class="answer-detail-section"><h3>${synthesis.some(s=>list(s.contributions).some(c=>c.engine==='tarot'))?'不同象征视角如何参考':'三盘如何一起参考'}</h3><p class="detail-note">这里比较的是不同传统的解释角度；相似的象征不代表现实事件更可能发生。</p>${synthesis.map(s=>`<article class="synthesis-theme"><div class="synthesis-heading"><h4>${esc(s.theme)}</h4><span>${esc(relationshipNames[s.relationship] || '对照说明')}</span></div><p>${esc(s.interpretation)}</p><div class="synthesis-contributions">${list(s.contributions).map(c=>`<div class="synthesis-contribution"><div><strong>${esc(engineNames[c.engine] || '盘面')}</strong><small>${esc(contributionNames[c.status] || '参考说明')}</small></div><p>${esc(c.reason)}</p>${list(c.evidence).length?`<details class="source-record"><summary>核对盘面字段</summary>${list(c.evidence).map(e=>`<pre>${esc(e.ref)}${e.path?'\n'+esc(e.path):''}${e.value!==undefined?'\n'+raw(e.value):''}</pre>`).join('')}</details>`:''}</div>`).join('')}</div></article>`).join('')}</section>`:'';
   const sources=evidence.length?`<section class="answer-detail-section"><h3>参考了哪些资料</h3>${evidence.map(e=>`<div class="source-item"><b>${esc(sourceName(e))}</b><p>${esc(e.claim)}</p><details class="source-record"><summary>查看原始资料</summary>${e.ref?`<p class="detail-note">来源标记：${esc(e.ref)}</p>`:''}${e.path || e.value!==undefined?`<pre>${e.path?esc(e.path):''}${e.value!==undefined?'\n'+raw(e.value):''}</pre>`:''}${e.data!==undefined?readableSource(e.data):'<p>本轮已核对来源；暂无更多可展示节选。</p>'}</details></div>`).join('')}</section>`:'';
-  const boundaries=caveats.length?`<section class="answer-detail-section"><h3>资料缺口与解释边界</h3>${caveats.map(x=>`<p>${esc(x)}</p>`).join('')}</section>`:'';
+  const methodLimits=calculationLimitsHtml(result);
+  const boundaries=caveats.length || methodLimits?`<section class="answer-detail-section answer-method-limits"><h3>资料缺口与解释边界</h3>${caveats.map(x=>`<p>${esc(x)}</p>`).join('')}${methodLimits}</section>`:'';
   const coverage=list(result.coverage).length?`<section class="answer-detail-section answer-coverage"><h3>本次参考范围</h3>${list(result.coverage).map(c=>`<p><strong>${esc(engineNames[c.engine] || '参考视角')}</strong> · ${esc(contributionNames[c.status] || '参考说明')}<br>${esc(c.reason)}</p>`).join('')}</section>`:'';
   const tarotDetails=tarotAnswerDetails(result),professional=appendix?`<section class="answer-detail-section professional-appendix"><h3>专业解读</h3>${md(appendix)}</section>`:'';
   const saved=memories.length?`<button class="memory-notice" onclick="switchPage('memory')">本轮已保存 ${memories.length} 条长期信息 · 查看原话与更正 ↗</button>`:'';
   return saved+((comparison || sources || boundaries || professional || tarotDetails || coverage)?`<details class="answer-sources"><summary><span>${tarotDetails?'牌面解释、专业依据与来源':synthesis.length?'专业依据与三盘对照':'专业依据与来源'}</span><small>按需展开</small></summary><div class="answer-details-body">${tarotDetails}${comparison}${coverage}${sources}${boundaries}${professional}</div></details>`:'');
+}
+function calculationFallbackHtml(rows) {
+  if(!Array.isArray(rows))return '';
+  return rows.filter(row=>row && typeof row.requested==='string' && typeof row.actual==='string').map(row=>`<p class="calculation-fallback">实际回退：${esc(row.requested)} → ${esc(row.actual)}${row.body?' · '+esc(row.body):''}${row.layer?' · '+esc(({natal:'本命',transit_snapshot:'目标日快照'})[row.layer] || row.layer):''}${Number.isInteger(row.returned_flags)?' · 引擎标志 '+esc(row.returned_flags):''}</p>`).join('');
+}
+function calculationLimitsHtml(result) {
+  const systems={bazi:'八字',ziwei:'紫微斗数',astro:'西方星盘',tarot:'塔罗'},labels={RULE_GAP:'尚无已实现解释规则',unsupported:'本次不支持',UNSUPPORTED:'本次不支持',UNSUPPORTED_INFERENCE:'超出已允许解释范围',MISSING_INPUT:'所需计算资料缺失',CALCULATION_ERROR:'计算未完成',REFERENCE_ERROR:'字段引用未通过核验',SCOPE_MISMATCH:'解释范围不匹配',AUTH_SCOPE_ERROR:'授权范围不匹配',STALE_INPUT:'依据已更新',DRAW_MISMATCH:'固定牌面不匹配'};
+  const list=value=>Array.isArray(value)?value:[];
+  const gaps=list(result?.coverage_gaps).filter(row=>row && typeof row==='object').map(row=>`<div class="calculation-gap"><p><strong>${esc(systems[row.system] || '解释范围')}</strong> · ${esc(row.status || 'RULE_GAP')} · ${esc(labels[row.status] || '资料需核对')}${row.rule_id?' · '+esc(row.rule_id):''}</p>${row.reason?`<p>${esc(row.reason)}</p>`:''}${list(row.issues).filter(issue=>issue && typeof issue==='object').map(issue=>`<p>${esc(issue.code || '')}${issue.detail?'：'+esc(issue.detail):''}</p>`).join('')}</div>`).join('');
+  const errors=list(result?.calculation_errors).filter(row=>row && typeof row==='object').map(row=>`<p class="calculation-error"><strong>${esc(systems[row.system] || '计算范围')}</strong> · ${esc(row.code || 'CALCULATION_ERROR')} · ${esc(row.reason || labels[row.code] || '计算未完成')}</p>`).join('');
+  return gaps+errors+calculationFallbackHtml(result?.calculation_fallbacks);
 }
 function answerHtml(result, fallback='') {
   return `<div class="answer-reading">${md(result?.answer || fallback || result?.plain_summary || '')}${realityContextHtml(result)}</div>${evidenceHtml(result)}`;
@@ -599,7 +612,7 @@ function chartMetadata(c) {
   const meta=c.core_meta;if(!meta)return '';
   const branches=tarotList(meta.branches),profiles=Object.values(meta.profiles || {}),sampled=branches.some(b=>b.coverage!=='exact_input');
   const notes=[...tarotList(meta.warnings),...profiles.flatMap(p=>tarotList(p.warnings))];
-  return `${sampled?'<p class="chart-sample-notice" role="status">出生时刻存在不确定性：当前盘面是候选样本之一。样本间相同的结果也不表示整个区间都成立。</p>':''}<details class="chart-method"><summary>排盘口径与出生时刻范围</summary>${branches.map(b=>`<p>${b.coverage==='exact_input'?'记录的出生时刻':'候选时刻样本'}：${esc(b.civil_datetime)}${b.sampling_range?' · 范围 '+esc(b.sampling_range.start)+' 至 '+esc(b.sampling_range.end):''}</p>`).join('')}${profiles.map(p=>`<p>流派：${esc(p.school_id)}</p><pre>${esc(JSON.stringify({采用口径:p.actual_method,引擎版本:p.versions},null,2))}</pre>`).join('')}${[...new Set(notes)].map(n=>`<p>${esc(n)}</p>`).join('')}</details>`;
+  return `${sampled?'<p class="chart-sample-notice" role="status">出生时刻存在不确定性：当前盘面是候选样本之一。样本间相同的结果也不表示整个区间都成立。</p>':''}<details class="chart-method"><summary>排盘口径与出生时刻范围</summary>${branches.map(b=>`<p>${b.coverage==='exact_input'?'记录的出生时刻':'候选时刻样本'}：${esc(b.civil_datetime)}${b.sampling_range?' · 范围 '+esc(b.sampling_range.start)+' 至 '+esc(b.sampling_range.end):''}</p>`).join('')}${profiles.map(p=>`<p>流派：${esc(p.school_id)}</p><pre>${esc(JSON.stringify({采用口径:p.actual_method,引擎版本:p.versions},null,2))}</pre>${calculationFallbackHtml(p.fallback)}`).join('')}${[...new Set(notes)].map(n=>`<p>${esc(n)}</p>`).join('')}</details>`;
 }
 function renderChart(c) {
   c = c || {};
@@ -1600,6 +1613,114 @@ async function loadDict() {
 const REPORT_TYPE_C = { "晨报": "#C9A96A", "周报": "#8B7CF6", "月报": "#5B8DD9", "季报": "#5FA97A" };
 const CHANNEL_NAME = { feishu: "飞书", web: "网页" };
 
+/* 时间表与下一期时刻由服务器计算；浏览器只提交用户实际修改的配置。 */
+const REPORT_KINDS = {daily:'晨报',weekly:'周报',monthly:'月报',quarterly:'季报'};
+const REPORT_WEEKDAYS = ['星期一','星期二','星期三','星期四','星期五','星期六','星期日'];
+const reportSettingsState = {snapshots:new Map(),drafts:new Map(),conflicts:new Set(),busy:new Set(),loadVersion:0};
+function reportSettingsPayload(value) {
+  const rows=value?.schedules;
+  if(value?.timezone!=='Asia/Shanghai' || value.prepare_minutes!==15 || !Array.isArray(rows) || rows.length!==4
+      || new Set(rows.map(r=>r.kind)).size!==4 || rows.some(r=>!Object.hasOwn(REPORT_KINDS,r.kind) || !Number.isInteger(r.revision)))
+    throw Error('报告时间表暂时不完整，请重新读取。');
+  return rows;
+}
+function reportScheduleDraft(row) {
+  const draft={enabled:!!row.enabled,time:String(row.time || '')};
+  if(row.kind==='weekly')draft.weekday=row.weekday;
+  if(row.kind==='monthly' || row.kind==='quarterly')draft.day=row.day;
+  return draft;
+}
+function reportSettingDate(value) {
+  if(!value || !Number.isFinite(new Date(value).getTime()))return '暂无下一期';
+  return new Intl.DateTimeFormat('zh-CN',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(value));
+}
+function reportSchedulePreview(row) {
+  const active=row.status==='active' && row.enabled;
+  const preparation=active?row.next_prepare:row.preview_prepare,delivery=active?row.next_delivery:row.preview_delivery;
+  return `<p class="schedule-preview-title">${active?'下一期安排':'启用后的时间预览'}</p><dl class="schedule-preview"><div><dt>提前准备</dt><dd>${esc(reportSettingDate(preparation))}</dd></div><div><dt>报告发送</dt><dd>${esc(reportSettingDate(delivery))}</dd></div></dl>`;
+}
+function reportScheduleCard(row) {
+  const kind=row.kind,draft=reportSettingsState.drafts.get(kind) || reportScheduleDraft(row),prefix='report-'+kind;
+  const status=Number(row.delivery_state?.sending)>0?'发送中':Number(row.delivery_state?.uncertain)>0?'送达待核对':({active:'已启用',paused:'已暂停',unconfigured:'渠道尚未配置',uninitialized:'尚未保存设置'})[row.status] || '等待核对';
+  const weekday=kind==='weekly'?`<label for="${prefix}-weekday">每周发送日</label><select id="${prefix}-weekday" name="weekday">${REPORT_WEEKDAYS.map((label,i)=>`<option value="${i+1}" ${Number(draft.weekday)===i+1?'selected':''}>${label}</option>`).join('')}</select>`:'';
+  const day=['monthly','quarterly'].includes(kind)?`<label for="${prefix}-day">${kind==='quarterly'?'季首月发送日':'每月发送日'}</label><select id="${prefix}-day" name="day">${Array.from({length:28},(_,i)=>`<option value="${i+1}" ${Number(draft.day)===i+1?'selected':''}>${i+1} 日</option>`).join('')}<option value="last" ${draft.day==='last'?'selected':''}>月末（最后一天）</option></select>`:'';
+  return `<article class="schedule-card" data-report-kind="${kind}"><form id="${prefix}-form" aria-labelledby="${prefix}-title"><div class="schedule-heading"><h2 id="${prefix}-title">${REPORT_KINDS[kind]}</h2><span class="schedule-state">${esc(status)}</span></div><label class="schedule-enabled" for="${prefix}-enabled"><input type="checkbox" id="${prefix}-enabled" name="enabled" ${draft.enabled?'checked':''}>启用${REPORT_KINDS[kind]}</label><div class="schedule-fields"><label for="${prefix}-time">发送时间（北京时间）</label><input id="${prefix}-time" name="time" type="time" step="60" required value="${esc(draft.time)}">${weekday}${day}</div>${kind==='daily'?'<p class="muted">每天发送一期。</p>':kind==='quarterly'?'<p class="muted">仅在 1、4、7、10 月发送；月末指这些月份的最后一天。</p>':''}${reportSchedulePreview(row)}<p class="schedule-preview-note muted">预览来自当前已保存设置；修改后保存即可更新。</p>${row.status_reason?`<p class="schedule-reason">${esc(row.status_reason)}</p>`:''}<div class="schedule-actions"><button type="submit" class="btn-gold schedule-save">保存${REPORT_KINDS[kind]}设置</button><button type="button" class="quiet-button schedule-refresh ${reportSettingsState.conflicts.has(kind)?'':'hidden'}">读取最新设置</button></div><p class="schedule-feedback" role="status" aria-live="polite"></p></form></article>`;
+}
+function readReportScheduleDraft(form,kind) {
+  const draft={enabled:form.elements.enabled.checked,time:form.elements.time.value};
+  if(kind==='weekly')draft.weekday=Number(form.elements.weekday.value);
+  if(kind==='monthly' || kind==='quarterly')draft.day=form.elements.day.value==='last'?'last':Number(form.elements.day.value);
+  return draft;
+}
+function reportScheduleMessage(form,text,error=false) {
+  const status=form.querySelector('.schedule-feedback');status.textContent=text;status.classList.toggle('err-banner',error);
+}
+function reportScheduleControls(kind) {
+  const row=reportSettingsState.snapshots.get(kind),form=$('#report-'+kind+'-form');if(!row || !form)return;
+  const busy=reportSettingsState.busy.has(kind),editable=row.configured===true && row.can_modify===true;
+  form.setAttribute('aria-busy',String(busy));
+  form.querySelectorAll('input,select').forEach(control=>control.disabled=busy || !editable);
+  form.querySelector('.schedule-save').disabled=busy || !editable || reportSettingsState.conflicts.has(kind);
+  form.querySelector('.schedule-refresh').disabled=busy;
+}
+function bindReportScheduleForm(kind) {
+  const form=$('#report-'+kind+'-form');
+  const changed=()=>{reportSettingsState.drafts.set(kind,readReportScheduleDraft(form,kind));if(!reportSettingsState.conflicts.has(kind))reportScheduleMessage(form,'有未保存的修改，时间预览仍以已保存设置为准。');};
+  form.oninput=changed;form.onchange=changed;
+  form.onsubmit=event=>{event.preventDefault();saveReportSchedule(kind);};
+  form.querySelector('.schedule-refresh').onclick=()=>refreshReportSchedule(kind);
+  reportScheduleControls(kind);
+  if(reportSettingsState.conflicts.has(kind))reportScheduleMessage(form,'设置在填写期间有更新，草稿仍保留。请读取最新设置并核对后保存。',true);
+}
+function replaceReportScheduleCard(kind,focusSelector) {
+  const previous=$(`[data-report-kind="${kind}"]`);if(!previous)return;
+  previous.outerHTML=reportScheduleCard(reportSettingsState.snapshots.get(kind));bindReportScheduleForm(kind);
+  if(focusSelector)$('#report-'+kind+'-form').querySelector(focusSelector)?.focus({preventScroll:true});
+}
+async function loadReportSettings() {
+  if(reportSettingsState.busy.size){toast('正在保存设置，请等服务器回执后再刷新。');return;}
+  const root=$('#reportSettingsRoot'),version=++reportSettingsState.loadVersion;root.setAttribute('aria-busy','true');
+  if(!root.querySelector('.schedule-card'))root.innerHTML='<p class="muted">正在读取报告时间表…</p>';
+  try {
+    const response=await apiJson('/api/reports/schedules'),rows=reportSettingsPayload(response);if(version!==reportSettingsState.loadVersion)return;
+    rows.forEach(row=>reportSettingsState.snapshots.set(row.kind,row));
+    root.innerHTML='<div class="schedule-intro"><p>所有时间均为<strong>北京时间（Asia/Shanghai）</strong>。报告会提前 <strong>15 分钟</strong>准备。</p><p class="muted">发送渠道由已绑定的账户决定。这里仅调整时间与启用状态；正在发送的报告需要等待当前投递结束。</p><div class="schedule-intro-actions"><a href="#/reports">返回报告存档</a><button type="button" class="quiet-button" id="refreshReportSettingsBtn">刷新时间表</button></div></div><div class="schedule-grid">'+Object.keys(REPORT_KINDS).map(kind=>reportScheduleCard(reportSettingsState.snapshots.get(kind))).join('')+'</div>';
+    $('#refreshReportSettingsBtn').onclick=async()=>{await loadReportSettings();$('#refreshReportSettingsBtn')?.focus({preventScroll:true});};
+    Object.keys(REPORT_KINDS).forEach(bindReportScheduleForm);
+  }catch(e){if(version===reportSettingsState.loadVersion && !root.querySelector('.schedule-card'))root.innerHTML=errState('报告设置读取失败：'+e.message,'loadReportSettings');else if(version===reportSettingsState.loadVersion)toast('报告设置读取失败，草稿仍保留：'+e.message);}
+  finally{if(version===reportSettingsState.loadVersion)root.setAttribute('aria-busy','false');}
+}
+async function saveReportSchedule(kind) {
+  const row=reportSettingsState.snapshots.get(kind),form=$('#report-'+kind+'-form');
+  if(!row || reportSettingsState.busy.has(kind) || reportSettingsState.conflicts.has(kind) || !row.configured || !row.can_modify || !form.reportValidity())return;
+  const draft=readReportScheduleDraft(form,kind),body={kind,expected_revision:row.revision,...draft},operation='report-schedule:'+kind;
+  reportSettingsState.drafts.set(kind,draft);body.request_id=tarotOperationKey(operation,body);
+  reportSettingsState.busy.add(kind);reportScheduleControls(kind);reportScheduleMessage(form,'正在保存，等待服务器回执…');
+  try {
+    const result=await apiJson('/api/reports/schedules',{method:'PATCH',body:JSON.stringify(body)});
+    if(result.kind!==kind || result.receipt?.id!==kind || result.receipt?.kind!=='report_schedule' || result.receipt.write_status!=='saved' || !Number.isInteger(result.revision) || result.receipt.revision!==result.revision)
+      throw Error('尚未收到完整保存回执，请重试核对。');
+    reportSettingsState.snapshots.set(kind,result);reportSettingsState.drafts.delete(kind);clearTarotOperation(operation);
+    replaceReportScheduleCard(kind);reportScheduleMessage($('#report-'+kind+'-form'),`已保存${REPORT_KINDS[kind]}设置，版本 ${result.receipt.revision}。`);
+    loaded.reports=false;
+  }catch(e){
+    if(e.status===409){reportSettingsState.conflicts.add(kind);form.querySelector('.schedule-refresh').classList.remove('hidden');reportScheduleMessage(form,'设置在填写期间有更新，草稿仍保留。请读取最新设置并核对后保存。',true);}
+    else reportScheduleMessage(form,'尚未确认保存，草稿仍保留：'+e.message,true);
+  }finally{reportSettingsState.busy.delete(kind);reportScheduleControls(kind);$('#report-'+kind+'-form '+(reportSettingsState.conflicts.has(kind)?'.schedule-refresh':'.schedule-save'))?.focus({preventScroll:true});}
+}
+async function refreshReportSchedule(kind) {
+  if(reportSettingsState.busy.has(kind))return;
+  const form=$('#report-'+kind+'-form');reportSettingsState.drafts.set(kind,readReportScheduleDraft(form,kind));
+  reportSettingsState.busy.add(kind);reportScheduleControls(kind);reportScheduleMessage(form,'正在读取最新设置，草稿仍保留…');
+  try{
+    const response=await apiJson('/api/reports/schedules'),row=reportSettingsPayload(response).find(item=>item.kind===kind);
+    reportSettingsState.snapshots.set(kind,row);reportSettingsState.conflicts.delete(kind);replaceReportScheduleCard(kind);
+    reportScheduleMessage($('#report-'+kind+'-form'),'已读取最新设置；你的草稿仍保留，请核对后重新保存。');
+  }catch(e){reportScheduleMessage(form,'最新设置读取失败，草稿仍保留：'+e.message,true);}
+  finally{reportSettingsState.busy.delete(kind);reportScheduleControls(kind);$('#report-'+kind+'-form '+(reportSettingsState.conflicts.has(kind)?'.schedule-refresh':'.schedule-save'))?.focus({preventScroll:true});}
+}
+$('#openReportSettingsBtn').onclick=()=>{switchPage('reportsettings');$('#pageTitle').tabIndex=-1;$('#pageTitle').focus({preventScroll:true});};
+
 function reportCardHtml(r) {
   const c = REPORT_TYPE_C[r.type] || "#9AA1B5";
   const vc = Number(r.verified_count) || 0;
@@ -1649,7 +1770,7 @@ async function loadReports() {
     root.innerHTML = emptyState("报", "暂无报告", "飞书推送的报告会自动归档到这里。")+'<div id="reportQueue"></div>'; loadReportQueue();
     return;
   }
-  root.innerHTML = `<div class="report-summary"><div>阅读存档<strong>${list.length} 篇</strong></div><div>最新一期<strong>${esc(list[0].date)}</strong></div><div>晨报投递<strong>07:00</strong></div></div><details class="report-delivery"><summary>查看生成与投递状态</summary><div id="reportQueue">正在读取…</div></details><div class="reports-toolbar"><input id="reportQuery" placeholder="搜索报告正文或日期" aria-label="搜索报告"><select id="reportKind" aria-label="报告类型"><option value="">全部报告</option>${Object.keys(REPORT_TYPE_C).map(k=>`<option>${k}</option>`).join('')}</select><button id="exportReports" class="quiet-button">导出所选报告</button><button id="printReports" class="quiet-button">打印</button></div><div id="reportList" class="max-w-4xl mx-auto space-y-4"></div>`;
+  root.innerHTML = `<div class="report-summary"><div>阅读存档<strong>${list.length} 篇</strong></div><div>最新一期<strong>${esc(list[0].date)}</strong></div><div>发送安排<strong>见报告设置</strong></div></div><details class="report-delivery"><summary>查看生成与投递状态</summary><div id="reportQueue">正在读取…</div></details><div class="reports-toolbar"><input id="reportQuery" placeholder="搜索报告正文或日期" aria-label="搜索报告"><select id="reportKind" aria-label="报告类型"><option value="">全部报告</option>${Object.keys(REPORT_TYPE_C).map(k=>`<option>${k}</option>`).join('')}</select><button id="exportReports" class="quiet-button">导出所选报告</button><button id="printReports" class="quiet-button">打印</button></div><div id="reportList" class="max-w-4xl mx-auto space-y-4"></div>`;
   let filtered=list;
   function renderFiltered() {
     const q=$('#reportQuery').value.toLowerCase(),kind=$('#reportKind').value;

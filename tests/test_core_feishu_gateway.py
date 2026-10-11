@@ -7,8 +7,7 @@ import uuid
 from psycopg import sql
 from test_core_memory import test_dsn
 from mingjing_core.adapters.feishu_gateway import FeishuGateway, build_sdk_client
-from mingjing_core.adapters.delivery import OutboxService
-from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.consultation import ConsultationService
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.repositories.postgres import PostgresRepository
 
@@ -23,34 +22,38 @@ def event(ident='om_syntheticMessage', **changes):
     return value
 
 
-class SyntheticCore:
+class SyntheticProvider:
+    """The provider is synthetic; all contracts and business effects are real."""
+    def __init__(self):self.requests=[]
+
+    def generate(self,*,system,payload,schema,purpose):
+        self.requests.append({'purpose':purpose,'payload':payload})
+        data=payload['reference_data']
+        if purpose=='intake':
+            output={'plan':{'mode':'conversation','topic':'general','systems':[],
+                'target_date':data['today'],'time_scale':'daily','decision':False,
+                'rationale':'本地合成对话','missing_inputs':[]},
+                'proposals':[],'retire_fact_ids':[],'attachment_observations':[]}
+        else:
+            output={'plain_summary':'Core 已验证的合成结论','explanation':'仅使用本轮有效资料。',
+                'actions':[],'decision_options':[],'follow_up':'','professional_appendix':'',
+                'cited_fact_ids':[fact['id'] for fact in data.get('facts',[])],
+                'cited_claim_ids':[claim['claim_id'] for claim in data.get('claims',[])],
+                'caveats':[]}
+        return {'output':output,'usage':{},'model':'synthetic-feishu-provider'}
+
+
+class ObservedCore(ConsultationService):
+    """Observe executions/results without replacing any service operation."""
     def __init__(self,repo):
-        self.repo=repo;self.memory=MemoryService(repo);self.outbox=OutboxService(repo)
-        self.executions=0;self.body='Core 已验证的合成结论\n\n专业附录：仅合成依据'
+        super().__init__(repo,model=SyntheticProvider())
+        self.executions=0;self.body=None
 
-    def submit(self,*,owner,subject='self',message,conversation_id,request_id,
-               source_message_id=None,mode='chat',depth='standard',**kwargs):
-        request={'message':message,'conversation_id':conversation_id,'source_message_id':source_message_id,
-                 'mode':mode,'depth':depth,**kwargs}
-        return self.repo.queue_run(owner,request_id,request,depth,subject)
-
-    async def consult(self,**kwargs):
-        row=self.submit(**kwargs)
-        if row['status']=='succeeded':return row['result']
-        run=self.repo.claim_run(kwargs['owner'],row['id'])
-        owner=kwargs['owner'];self.executions+=1
-        source=self.memory.get_source(owner,run['request']['source_message_id'])
-        if source['content']!=run['request']['message']:raise EvidenceError('Original mismatch')
-        versions=self.memory.snapshot(owner,run['subject'])['versions']
-        self.repo.set_run_dependencies(owner,run['id'],versions,run['lease_token'])
-        result={'plain_summary':'Core 已验证的合成结论','answer':self.body,
-                'schema_version':'core3.0','validation':{'status':'validated','valid':True,'schema':'core3.0'},
-                'meta':{'core_run':{'run_id':run['id'],'dependencies':versions}}}
-        return self.repo.commit_run(owner,run['id'],versions,result,run['lease_token'])['result']
-
-    def prepare_delivery(self,**kwargs):return self.outbox.prepare_delivery(**kwargs)
-    def claim_delivery(self,**kwargs):return self.outbox.claim_delivery(**kwargs)
-    def record_delivery(self,**kwargs):return self.outbox.record_delivery(**kwargs)
+    def execute(self,owner,run_id,emit=None):
+        self.executions+=1
+        result=super().execute(owner,run_id,emit)
+        self.body=result['answer']
+        return result
 
 
 class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
@@ -60,13 +63,19 @@ class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
         self.addCleanup(self.cleanup)
         self.repo.ensure_owner('feishu-owner');self.repo.ensure_owner('other-owner')
         self.repo.bind_channel('feishu-owner','feishu','ou_syntheticAuthor')
-        self.core=SyntheticCore(self.repo);self.sent=[]
+        self.core=ObservedCore(self.repo);self.sent=[]
         def transport(target,content,operation):
             self.sent.append((target,content,operation))
             return 'om_syntheticReceipt'
         self.gateway=FeishuGateway(self.core,transport)
 
     def cleanup(self):
+        if hasattr(self,'core'):
+            with self.repo.transaction() as connection:
+                rows=connection.execute(sql.SQL('SELECT id,retry_epoch FROM {}').format(self.repo.table('core_runs'))).fetchall()
+            for row in rows:
+                for epoch in range(row['retry_epoch']+1):self.core.runtime.purge(row['id'],epoch)
+        self.assertTrue(self.schema.startswith('test_feishu_'))
         with self.repo.pool.connection() as connection:
             connection.execute(sql.SQL('DROP SCHEMA {} CASCADE').format(sql.Identifier(self.schema)))
         self.repo.close()
@@ -80,10 +89,14 @@ class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
         target,body,operation=self.sent[0]
         self.assertEqual(target,'ou_syntheticAuthor');self.assertEqual(body,self.core.body)
         self.assertLessEqual(len(operation),50)
-        originals=self.repo.list('feishu-owner','message')
+        originals=[row for row in self.repo.list('feishu-owner','message') if row.get('role')=='user']
         self.assertEqual(len(originals),1)
         self.assertEqual(originals[0]['channel'],'feishu')
         self.assertEqual(originals[0]['external_id'],'ou_syntheticAuthor')
+        self.assertEqual([request['purpose'] for request in self.core.model.requests],['intake','synthesis'])
+        run=self.repo.fetch_run('feishu-owner',results[0]['run_id'])
+        self.assertEqual(run['result']['answer'],body)
+        self.assertEqual(run['calls'],2)
         self.assertEqual(self.repo.list('other-owner','message'),[])
         self.assertEqual((await self.gateway.tick())['failed'],0)
         self.assertEqual(len(self.sent),1)

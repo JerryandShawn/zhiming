@@ -344,7 +344,10 @@ def create_app(service=None):
     @app.delete('/api/tarot/draws/{ident}')
     async def delete_draw(ident:str,req:Request):
         svc=core(req);owner=auth(req);data=await optional_body(req)
-        return mutation(svc,owner,'tarot-delete:'+ident,data,lambda:effect_receipt(svc.tarot.delete(owner,ident),'draw'))
+        receipt=mutation(svc,owner,'tarot-delete:'+ident,data,lambda:effect_receipt(svc.tarot.delete(owner,ident),'draw'))
+        from ..application.tarot import purge_deleted_checkpoints
+        purge_deleted_checkpoints(svc,owner,receipt)
+        return receipt
 
     @app.get('/api/tarot/draws/{ident}/readings')
     async def readings(ident:str,req:Request): return core(req).tarot.list_readings(auth(req),ident)
@@ -510,6 +513,15 @@ def create_app(service=None):
     async def report_status(req:Request):
         status=core(req).outbox.status(auth(req))
         return {**status,'outbox':status,'worker':{'runtime':'core3.0'}}
+    @app.get('/api/reports/schedules')
+    async def report_schedules(req:Request):
+        from ..application.report_schedules import ReportScheduleService
+        return ReportScheduleService(core(req).repo).list(auth(req))
+    @app.patch('/api/reports/schedules')
+    async def update_report_schedule(req:Request):
+        from ..application.report_schedules import ReportScheduleService
+        svc=core(req);owner=auth(req)
+        return ReportScheduleService(svc.repo).patch(owner,await body(req))
     @app.post('/api/reports/{ident}/retry')
     async def report_retry(ident:str,req:Request):
         svc=core(req);owner=auth(req);rows=svc.outbox.status(owner)['rows']

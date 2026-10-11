@@ -29,6 +29,7 @@
     <button class="nav-tab" data-page="graph">人物与关系</button>
     <button class="nav-tab" data-page="dict">个人词典</button>
     <button class="nav-tab" data-page="reports">报告</button>
+    <button class="nav-tab" data-page="reportsettings">报告设置</button>
   </nav></details>
   <div class="rail-caption rail-session-title">近期对话 <button id="newSessionBtn" aria-label="新建对话">＋</button></div>
   <div id="sessionList" class="session-list"></div>
@@ -152,9 +153,11 @@
 
   <!-- ================= ⑥ 报告（飞书推送回看） ================= -->
   <section id="page-reports" class="page hidden">
+    <div class="section-toolbar"><p>阅读已经归档的报告，查看投递状态。</p><button id="openReportSettingsBtn" class="quiet-button">调整发送时间</button></div>
     <div id="reportsRoot"></div>
   </section>
-<section id="page-cases" class="page hidden"><div class="section-toolbar"><p>把正在考虑、决定与行动的事放在一起。</p><button id="refreshCasesBtn" class="quiet-button">刷新事项</button></div><section class="cases-section"><div class="tarot-section-heading"><h2>正在跟进的事项</h2><button id="newCaseBtn" class="quiet-button">记录一个事项</button></div><form id="newCaseForm" class="hidden case-create-form"><label>事项名称<input id="newCaseTitle" maxlength="200" required placeholder="给正在考虑的事取个名字"></label><label>现在想解决什么？<textarea id="newCaseGoal" rows="2" maxlength="1200"></textarea></label><button type="submit" class="btn-gold">保存事项</button></form><div id="casesRoot"></div></section><details class="secondary-tools"><summary>档案与工具</summary><div><button data-page="memory">已记住的信息</button><button data-page="timeline">时间轴</button><button data-page="graph">人物与关系</button><button data-page="dict">个人词典</button><button data-page="reports">报告</button></div></details></section>
+  <section id="page-reportsettings" class="page hidden"><div id="reportSettingsRoot" aria-busy="false"></div></section>
+<section id="page-cases" class="page hidden"><div class="section-toolbar"><p>把正在考虑、决定与行动的事放在一起。</p><button id="refreshCasesBtn" class="quiet-button">刷新事项</button></div><section class="cases-section"><div class="tarot-section-heading"><h2>正在跟进的事项</h2><button id="newCaseBtn" class="quiet-button">记录一个事项</button></div><form id="newCaseForm" class="hidden case-create-form"><label>事项名称<input id="newCaseTitle" maxlength="200" required placeholder="给正在考虑的事取个名字"></label><label>现在想解决什么？<textarea id="newCaseGoal" rows="2" maxlength="1200"></textarea></label><button type="submit" class="btn-gold">保存事项</button></form><div id="casesRoot"></div></section><details class="secondary-tools"><summary>档案与工具</summary><div><button data-page="memory">已记住的信息</button><button data-page="timeline">时间轴</button><button data-page="graph">人物与关系</button><button data-page="dict">个人词典</button><button data-page="reports">报告</button><button data-page="reportsettings">报告设置</button></div></details></section>
 <section id="page-memory" class="page hidden"><div class="section-toolbar"><p>核对真实来源，随时更正或停止使用。</p><button id="refreshMemoriesBtn" class="quiet-button">刷新记忆</button></div><div id="memorySettings" aria-live="polite"></div><h2 class="memory-section-title">已记住的信息</h2><p class="muted memory-scope-note">停用或删除记忆后，后续回答不再使用它。删除原始来源是另一个范围，会一并移除关联来源内容。</p><div id="memoriesRoot"></div></section>
 </main>
 

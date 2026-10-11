@@ -325,16 +325,22 @@ class TarotService:
         return {'draw_id_checked':True,'owner_checked':True,'cards_checked':True,'deck_version_checked':True}
 
     def delete(self,owner,draw_id,include_revisions=True):
+        from ..application.tarot import revoke_draw_dependencies,purge_committed_checkpoints
+        nested=getattr(self.repo._local,'connection',None) is not None
         with self.repo.transaction(owner) as conn:
             row=self._row(conn,owner,draw_id,True)
-            rows=conn.execute(sql.SQL("SELECT id FROM {} WHERE owner=%s AND payload->>'revision_root'=%s").format(self.repo.table('tarot_draws')), (owner,row['payload']['revision_root'])).fetchall() if include_revisions else [{'id':draw_id}]
+            rows=conn.execute(sql.SQL("SELECT * FROM {} WHERE owner=%s AND payload->>'revision_root'=%s FOR UPDATE").format(self.repo.table('tarot_draws')), (owner,row['payload']['revision_root'])).fetchall() if include_revisions else [row]
             ids=[r['id'] for r in rows]
-            readings=conn.execute(sql.SQL('SELECT id FROM {} WHERE owner=%s AND draw_id=ANY(%s)').format(self.repo.table('tarot_readings')), (owner,ids)).fetchall()
+            readings=conn.execute(sql.SQL('SELECT * FROM {} WHERE owner=%s AND draw_id=ANY(%s) FOR UPDATE').format(self.repo.table('tarot_readings')), (owner,ids)).fetchall()
+            withdrawn=revoke_draw_dependencies(self.repo,conn,owner,rows,readings)
             results=ids+[r['id'] for r in readings]
             conn.execute(sql.SQL("UPDATE {} SET deleted=true,result_id='' WHERE owner=%s AND result_id=ANY(%s)").format(self.repo.table('tarot_requests')), (owner,results))
             conn.execute(sql.SQL('DELETE FROM {} WHERE owner=%s AND id=ANY(%s)').format(self.repo.table('tarot_draws')), (owner,ids))
+            if withdrawn['source_ids']:self.purge_context(owner,withdrawn['fact_ids'],withdrawn['source_ids'])
             self.repo.bump_revision(conn,owner,case_id=row['case_id'])
-            return {'deleted':True,'deleted_ids':ids}
+            receipt={'deleted':True,'deleted_ids':ids,'affected_ids':withdrawn['affected_ids']}
+        if not nested:purge_committed_checkpoints(self.repo,owner,receipt)
+        return receipt
 
     def purge_context(self,owner,fact_ids,source_ids=None):
         targets=set(fact_ids or [])|set(source_ids or [])

@@ -52,10 +52,12 @@ class PostgreSQLEffects(unittest.TestCase):
         return self.cards.create_draw('alice',**args)
 
     def saved_run(self,operation='report-fixture',cases=None):
+        """Repository/outbox unit fixture, not an end-to-end service execution."""
         row=self.repo.begin_run('alice',operation,{'case_ids':cases or [],'mode':'scheduled_report'},subject='self',case_ids=cases or [])
         dependencies=self.repo.versions('alice','self',cases or [])
         self.repo.set_run_dependencies('alice',row['id'],dependencies,row['lease_token'])
         result={'schema_version':'core3.0','plain_summary':'先核对本期现实安排。','answer':'先核对本期现实安排。','actions':['先确认时间。'],
+                'decision_options':[],'cited_fact_ids':[],'cited_claim_ids':[],
                 'validation':{'valid':True,'schema':'core3.0','status':'validated'},'meta':{'subject_id':'self','case_ids':cases or [],'core_run':{'run_id':row['id'],'dependencies':dependencies}}}
         self.repo.commit_run('alice',row['id'],dependencies,result,row['lease_token'])
         return row['id']

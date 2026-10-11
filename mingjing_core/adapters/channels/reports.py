@@ -2,29 +2,20 @@
 from __future__ import annotations
 
 import inspect
-from datetime import date, datetime, timedelta, timezone
+from datetime import date
 from pathlib import Path
+from psycopg import sql
 
 from mingjing_core.domain.contracts import ScopeError, EvidenceError
+from mingjing_core.domain.report_schedules import SHANGHAI, schedule_on_day
 from .hermes import validated_payload
 
-SHANGHAI = timezone(timedelta(hours=8))
 KINDS = {"daily": "晨报", "weekly": "周报", "monthly": "月报", "quarterly": "季报"}
 
 
 def report_schedule(kind: str, day: date):
     """Preserve existing Asia/Shanghai preparation/delivery times."""
-    if kind not in KINDS:
-        raise ValueError("报告类型无效")
-    if kind == "weekly" and day.weekday() != 6:
-        return None
-    if kind in ("monthly", "quarterly") and day.day != 1:
-        return None
-    if kind == "quarterly" and day.month not in (1, 4, 7, 10):
-        return None
-    due = datetime(day.year, day.month, day.day,
-                   {"daily": 7, "weekly": 20, "monthly": 9, "quarterly": 10}[kind], tzinfo=SHANGHAI)
-    return {"prepare_at": due - timedelta(minutes=15), "deliver_at": due, "timezone": "Asia/Shanghai"}
+    return schedule_on_day(kind,day)
 
 
 class CoreReportAdapter:
@@ -49,11 +40,25 @@ class CoreReportAdapter:
                       depth="standard", emit=None):
         binding = self.identity(external_id)
         parsed = date.fromisoformat(day)
-        schedule = report_schedule(kind, parsed)
+        from mingjing_core.application.report_schedules import ReportScheduleService
+        policy = ReportScheduleService(self.service.repo).effective(binding['owner'], kind)
+        schedule = schedule_on_day(kind, parsed, policy if policy['configured'] or policy['initialized'] else None)
         if schedule is None:
             raise ValueError("这一天不属于原定报告计划")
         business = "report:" + str(external_id) + ":" + kind + ":" + day
         operation = operation_id or business
+        repo = self.service.repo
+        # A transport or process retry keeps the same Core operation and
+        # budget. Only an explicit schedule revision starts a new operation.
+        with repo.transaction(binding['owner']) as connection:
+            old = connection.execute(sql.SQL('SELECT id,status,state_version FROM {} WHERE owner=%s AND operation_id=%s FOR UPDATE').format(repo.table('core_runs')), (binding['owner'],operation)).fetchone()
+            if old and old['status']=='succeeded' and not repo.verify_versions(binding['owner'],old['state_version']):
+                connection.execute(sql.SQL("UPDATE {} SET status='stale',error='报告依赖已更新' WHERE owner=%s AND id=%s AND status='succeeded'").format(repo.table('core_runs')), (binding['owner'],old['id']))
+                old=dict(old,status='stale')
+            if old and old['status'] in ('failed','stale'):
+                retried=repo.prepare_retry(binding['owner'],old['id'])
+                if retried['purge_checkpoint']:
+                    self.service.runtime.purge(old['id'],retried['run']['retry_epoch']-1)
         message = (
             f"请生成{day}的{KINDS[kind]}。这是定期报告：读取最新有效事实、事项与已确认反馈；"
             "只调用本期必要体系，不能随机新增塔罗。逐日差异必须实际计算，否则说明未计算；"
@@ -63,6 +68,7 @@ class CoreReportAdapter:
             owner=binding["owner"], subject=binding["subject"], message=message,
             conversation_id="report:" + str(external_id), case_ids=case_ids,
             request_id=operation, mode="scheduled_report", depth=depth, emit=emit,
+            selection={'report_schedule_kind':kind,'report_schedule_revision':policy['revision']},
         )
         validated_payload(result)
         manifest={"kind":kind,"date":day,"business_id":business,"run_id":result['meta']['core_run']['run_id'],

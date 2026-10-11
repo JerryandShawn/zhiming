@@ -55,6 +55,8 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
         self.assertEqual(single['durable_budget']['calls'],3)
         self.assertEqual(multi['durable_budget']['calls'],6)
         self.assertTrue(single['fixed_cards_unchanged']);self.assertTrue(multi['fixed_cards_unchanged'])
+        self.assertEqual(single['validation_attempts'][0]['issues'],[])
+        self.assertEqual(multi['last_phase'],'commit')
 
     def test_isolated_legacy_and_context_only_expansion_run_original_controller(self):
         import httpx
@@ -91,6 +93,46 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
         self.assertEqual(len(old['legacy_source_hashes']),10)
         self.assertEqual(old['context_only_source_changes'],[])
         self.assertEqual(len(expanded['context_only_source_changes']),2)
+        self.assertEqual(old['calls'][0]['contract_tools'][0]['name'],'final_answer')
+        self.assertIn('plain_summary',old['calls'][0]['contract_tools'][0]['output'])
+
+    def test_failure_diagnostics_preserve_strict_business_issues_and_contract_output(self):
+        def provider(model,**kwargs):
+            data=kwargs['payload']['reference_data']
+            if kwargs['purpose']=='intake':
+                output={'plan':{'mode':'decision','topic':'career','systems':[],
+                    'target_date':'2026-10-11','time_scale':'natal','decision':True,'rationale':'合成失败诊断','missing_inputs':[]},
+                    'proposals':[],'retire_fact_ids':[],'attachment_observations':[]}
+            else:
+                output={'plain_summary':'你可以每月上一次夜班。','explanation':'这条错误内容必须被真正业务校验拒绝。',
+                    'actions':['先核实书面条件。'],'decision_options':[{'option':x,'benefit':'待确认','cost':'未知',
+                        'risk':'待确认','reversibility':'待核实','first_step':'询问班次'} for x in ('询问A','询问B')],
+                    'follow_up':'核实后复盘','professional_appendix':'','cited_fact_ids':[f['id'] for f in data.get('facts',[])],
+                    'cited_claim_ids':[],'caveats':[]}
+            return {'output':output,'usage':{},'latency_seconds':0,'model':'synthetic-preflight'}
+        with patch.dict(os.environ,{'CORE_COMPARE_PREFLIGHT_DSN':test_dsn()}),patch.object(ConfiguredModel,'generate',provider):
+            result=comparison.core_worker('new_single_specialist','decision','CORE_COMPARE_PREFLIGHT_DSN')
+        self.assertEqual(result['status'],'failed')
+        self.assertEqual(result['error_type'],'InvalidAnswer')
+        self.assertEqual(result['last_phase'],'validation')
+        self.assertEqual(result['provider_calls'],3)
+        self.assertEqual(len(result['validation_attempts']),2)
+        self.assertTrue(all(any('不能上夜班' in issue for issue in a['issues']) for a in result['validation_attempts']))
+        self.assertEqual(result['calls'][-1]['contract_output']['plain_summary'],'你可以每月上一次夜班。')
+
+    def test_contract_diagnostics_drop_thinking_headers_and_known_secrets(self):
+        from mingjing_core.domain.consultation import FinalAnswer,Intake
+        secret='synthetic-only-secret-do-not-persist'
+        raw={'plain_summary':'合成 '+secret,'thinking':'DO_NOT_WRITE_THINKING',
+             'headers':{'x-api-key':'DO_NOT_WRITE_HEADER'},'decision_options':[
+             {'option':'A','benefit':'核实条件','headers':{'authorization':'DO_NOT_WRITE_NESTED'},'thinking':'DO_NOT_WRITE_NESTED_THINKING'}]}
+        clean=comparison.synthetic_contract_snapshot(raw,FinalAnswer.model_json_schema(),[secret])
+        encoded=json.dumps(clean)
+        self.assertNotIn('DO_NOT_WRITE',encoded)
+        self.assertNotIn(secret,encoded)
+        self.assertEqual(clean['plain_summary'],'合成 <redacted>')
+        nested=comparison.synthetic_contract_snapshot({'proposals':[{'value':{'headers':{'x-api-key':'DO_NOT_WRITE_ANY'},'safe':3}}]},Intake.model_json_schema())
+        self.assertEqual(nested,{'proposals':[{'value':{'safe':3}}]})
 
     def test_modified_legacy_helper_is_rejected_before_provider_call(self):
         import shutil

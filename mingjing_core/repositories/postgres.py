@@ -19,7 +19,7 @@ from psycopg.types.json import Jsonb
 from psycopg_pool import ConnectionPool
 from mingjing_core.domain.contracts import BudgetExceeded, EvidenceError, LeaseConflict, RevisionConflict, ScopeError
 
-ENTITY_KINDS = frozenset({'message','fact','case','episode','draw','reading','report','chart','delivery','upload','session','consent','legacy','feedback','request','interpretive_claim','runtime_step','artifact','model_call'})
+ENTITY_KINDS = frozenset({'message','fact','case','episode','draw','reading','report','report_schedule','chart','delivery','upload','session','consent','legacy','feedback','request','interpretive_claim','runtime_step','artifact','model_call'})
 CALL_LIMITS = {'fast': 2, 'standard': 6, 'deep': 10}
 
 
@@ -219,7 +219,7 @@ class PostgresRepository:
 
     def _version(self,c,owner,key):
         prefix,_,entity_id=key.partition(':')
-        if prefix in ('fact','message'):
+        if prefix in ('fact','message','report_schedule'):
             row=c.execute(sql.SQL('SELECT revision FROM {} WHERE owner=%s AND kind=%s AND id=%s').format(self.table('core_entities')), (owner,prefix,entity_id)).fetchone()
         else:
             row=c.execute(sql.SQL('SELECT revision FROM {} WHERE owner=%s AND dependency=%s').format(self.table('core_versions')), (owner,key)).fetchone()
