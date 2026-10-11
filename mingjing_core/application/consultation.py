@@ -625,10 +625,10 @@ class ConsultationService:
             # sentence, contrast, or affirmative verb starts its own assertion.
             # These extra terms only inherit a list's local denial; they do
             # not supply evidence for any positive cost or risk guarantee.
-            joined = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆)[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?$'
+            joined = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款)[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?(?:付款后)?(?:完全)?$'
             while re.search(joined, prefix):
                 prefix = re.sub(joined, '', prefix)
-            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定|(?:被)?推断)|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:被)?(?:默认|假设|假定|当作|当成|视为)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
+            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定|(?:被)?推断)|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:被)?(?:默认|假设|假定|当作|当成|视为)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
             if denial is None:
                 denial = re.search(r'(?:不是|并非)[“"‘\'「『`]零代价$', prefix)
             if denial is None and re.match(r'^处理', suffix):
@@ -665,6 +665,11 @@ class ConsultationService:
                     withdrawal = clause[quoted.end():quoted.end()+90]
                     local_history = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', history)[-1]
                     quoted_terms = quoted.group()[1:-1]
+                    old_pause = re.search(r'上一轮将(?:"暂缓决定"|“暂缓决定”|\'暂缓决定\'|‘暂缓决定’)描述为$', local_history)
+                    if (old_pause and quoted_terms == '完全可逆'
+                            and not re.search(r'(?:不是|并非|没有|未曾|尚未|不会|不能|不|未)\s*[“"‘\'「『`]?\s*$', local_history[:old_pause.start()])
+                            and re.match(r'^[，,]本轮已更正为(?:"不产生付款承诺但消耗不可收回的时间与机会成本，不能视为零成本或完全无损失"|“不产生付款承诺但消耗不可收回的时间与机会成本，不能视为零成本或完全无损失”)', withdrawal)):
+                        return False
                     revised_from = re.search(r'已将decision_options中所有reversibility表述从$', local_history)
                     if (revised_from and not re.search(r'(?:不是|并非|没有|未曾|尚未|不会|不能|不|未)\s*[“"‘\'「『`]?\s*$', local_history[:revised_from.start()])
                             and re.match(r'^修正为(?:"可停止但已投入时间不可收回、承诺后可逆性取决于未知退出条件"|“可停止但已投入时间不可收回、承诺后可逆性取决于未知退出条件”)', withdrawal)):
@@ -723,7 +728,7 @@ class ConsultationService:
         if issues:
             payload = self._synthesis_payload(owner, run)
             payload.update(previous=final, errors=issues,
-                           instruction=payload['instruction'] + '逐条修复errors，返回完整submit契约，保留已正确的字段。引用错误必须修复cited_fact_ids/cited_claim_ids数组，不仅修改正文；决策错误须填写decision_options/actions数组。未知费用、退出条件或时限不能宣称零风险、完全可逆或无损失；询问和等待也有时间及机会成本，改为可停止的小行动并明确待核实条件。撤回的错误断语不必原样复述。保留核验范围，不输出任何已记住、记录、保存、更新或删除状态，包括塔罗声明、牌面和资料；保存状态由程序真实回执生成。专业描述用本轮提供或引用的声明，不暗示已经长期保存；全局只有本轮修复。')
+                           instruction=payload['instruction'] + '逐条修复errors，返回完整submit契约，保留已正确的字段。引用错误必须修复cited_fact_ids/cited_claim_ids数组，不仅修改正文；决策错误须填写decision_options/actions数组。未知费用、退出条件或时限不能宣称零风险、完全可逆或无损失；询问和等待也有时间及机会成本，改为可停止的小行动并明确待核实条件。只返回修正后的完整最终答案，不描述上一轮、修复过程或引述旧错误断语，不输出修复说明。保留核验范围，不输出任何已记住、记录、保存、更新或删除状态，包括塔罗声明、牌面和资料；保存状态由程序真实回执生成。专业描述用本轮提供或引用的声明，不暗示已经长期保存；全局只有本轮修复。')
             final = self._call(owner, run, token, 'repair', payload, FinalAnswer, repair=True)
             issues = self._validate(owner, run, final)
         if issues:

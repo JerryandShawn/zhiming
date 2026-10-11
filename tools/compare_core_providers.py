@@ -95,6 +95,48 @@ def card_projection(draw):
     return [{'card_id': c['card_id'], 'orientation': c['orientation']} for c in draw['cards']]
 
 
+def execute_core_with_recovery(service, owner, run_id, observe_phase, attempts, *, max_recoveries=2):
+    """Recover only known technical failures of this same durable comparison run."""
+    from mingjing_core.domain.consultation import ModelUnavailable
+    if type(max_recoveries) is not int or not 0 <= max_recoveries <= 2:
+        raise ValueError('Technical recovery bound must be 0..2')
+    recoveries = 0
+    while True:
+        try:
+            answer = service.execute(owner, run_id, observe_phase)
+            if recoveries:
+                current = service.repo.fetch_run(owner, run_id)
+                attempts.append({'run_id': run_id, 'operation_id': current['operation_id'],
+                                 'status': current['status'], 'calls': current['calls'], 'limit': current['call_limit']})
+            return answer
+        except ModelUnavailable as error:
+            current = service.repo.fetch_run(owner, run_id)
+            # Graph exceptions deliberately omit provider details. Read the
+            # already charged, private diagnostic for this same run instead.
+            logs = [row for row in service.repo.list(owner, 'model_call')
+                    if row.get('run_id') == run_id and row.get('status') == 'failed'
+                    and row.get('error_class') == 'ModelUnavailable']
+            latest = max(logs, key=lambda row: (row.get('created_at', ''), row.get('call_index', 0))) if logs else {}
+            failure = {key: latest[key] for key in ('reason', 'failure_code', 'provider_http_status', 'tool_count',
+                                                   'stop_reason', 'usage', 'usage_known', 'latency_seconds') if key in latest}
+            attempts.append({'run_id': run_id, 'operation_id': current['operation_id'],
+                             'status': current['status'], 'calls': current['calls'], 'limit': current['call_limit'],
+                             'error_code': error.code,
+                             **failure})
+            http = failure.get('provider_http_status')
+            transient = failure.get('reason') in ('network', 'json', 'tool_count', 'tool_input') or (
+                failure.get('reason') == 'http' and type(http) is int and (http == 429 or 500 <= http <= 599))
+            if (not transient or current['status'] != 'failed' or current['calls'] >= current['call_limit']
+                    or recoveries >= max_recoveries):
+                raise
+            retry = service.repo.prepare_retry(owner, run_id)
+            if retry['purge_checkpoint']:
+                service.runtime.purge(run_id, retry['run']['retry_epoch'] - 1)
+            recoveries += 1
+            if http == 429:
+                time.sleep(5 * recoveries)
+
+
 def synthetic_contract_snapshot(value, schema, secrets=()):
     """Persist only a synthetic structured contract, never transport/thinking.
 
@@ -237,6 +279,9 @@ def legacy_worker(arm, scenario, legacy_root):
                 result.update(status='validated',final=answer,validation=answer.get('validation',{}))
             except Exception as exc:
                 store.finish(turn['id'],'','failed');result.update(status='failed',error_type=type(exc).__name__)
+                if isinstance(exc, ModuleNotFoundError) and exc.name in (
+                        'numpy', 'onnxruntime', 'tokenizers', 'swisseph', 'lunar_python', 'py_iztro', 'pythonmonkey'):
+                    result['missing_dependency'] = exc.name
     finally:
         httpx.AsyncClient=original_client;logging.disable(old_logging)
         if old_embedding is None:os.environ.pop('ZHIMING_EMBEDDING_MODEL',None)
@@ -278,6 +323,8 @@ def core_worker(arm, scenario, dsn_env):
             except Exception as exc:
                 record['error_type']=type(exc).__name__
                 record['error_code']=getattr(exc,'code',None)
+                from mingjing_core.domain.consultation import ModelUnavailable
+                if isinstance(exc, ModelUnavailable): record.update(exc.safe_diagnostic())
                 raise
             finally:
                 record['latency_seconds'] = round(time.monotonic()-started, 3); persist_observations(calls)
@@ -300,8 +347,10 @@ def core_worker(arm, scenario, dsn_env):
     service = DiagnosticService(repo, model=ObservedModel())
     owner = 'synthetic-comparison'; repo.ensure_owner(owner)
     budget = comparison_budget(arm, scenario)
+    technical_attempts = []
     result = {'arm': arm, 'scenario': scenario, 'synthetic_only': True, 'calls': calls,
-              'validation_attempts':validation_attempts,'phase_events':phase_events, **budget}
+              'validation_attempts':validation_attempts,'phase_events':phase_events,
+              'technical_attempts':technical_attempts, **budget}
     def observe_phase(event):
         if event.get('type') == 'status':
             phase_events.append(event['stage'])
@@ -333,7 +382,7 @@ def core_worker(arm, scenario, dsn_env):
             draw_id=draw['id'] if draw else None)
         run_id = run['id']
         try:
-            answer = service.execute(owner, run_id, observe_phase)
+            answer = execute_core_with_recovery(service, owner, run_id, observe_phase, technical_attempts)
             result.update(status='validated', final=answer, validation=answer['validation'])
         except Exception as exc:
             result.update(status='failed', error_type=type(exc).__name__,error_code=getattr(exc,'code',None),

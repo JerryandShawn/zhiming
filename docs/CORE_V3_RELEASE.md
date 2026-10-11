@@ -30,6 +30,8 @@ LANGSMITH_TRACING=false
 
 完成真实 PostgreSQL 集成测试、真实三盘无 skip 计算、受控真实模型验收，以及 npm/DOM/构建检查。计算环境独立安装 `requirements-charts.lock`，业务环境安装 `requirements-core.lock`，两边运行 pip check。真实模型验收只在 stage；飞书 transport 验收使用替身，不向生产飞书发额外测试消息。
 
+真实模型样本与四流程对照均保留首次失败、单次语义修复和全部物理调用。新 Core 对照遇到已记录的网络、HTTP 429/5xx 或结构化传输故障时，最多恢复两次同一 run/operation；恢复通过正式 PostgreSQL 重试入口，调用数不重置，仍受 standard/deep 总预算约束。认证、配置、输出契约与引用校验失败不使用技术恢复。错误诊断只记录固定类别、HTTP 状态和 usage，不保存供应商原始错误正文。旧流程的隔离词法回退不等同于生产向量环境；缺失依赖或只读工具失败保留在比较结果，不视为新 Core 的质量证明。
+
 验收文件至少包含如下字段；任一 false、非零 skip、错误 commit 或错误数据库均阻断 freeze/install/publish。验收证据中另记录测试统计、迁移摘要和对应报告文件哈希，不能仅凭这个布尔清单宣称功能已验收。
 
 ```json
