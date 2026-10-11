@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>明镜台 · 读懂自己，照见日常</title>
+<meta name="theme-color" content="#f4f1e9">
+<link rel="stylesheet" href="/static/vendor/utilities.css?v=4.0">
+<script src="/static/vendor/marked.js" defer></script>
+<script src="/static/vendor/purify.js" defer></script>
+<link rel="stylesheet" href="/static/base.css?v=5.0">
+<link rel="stylesheet" href="/static/paper.css?v=6.0">
+</head>
+<body class="min-h-screen font-sans">
+
+<a href="#mainContent" class="skip-link">跳到正文</a>
+<aside class="app-rail" aria-label="主导航">
+  <a class="brand" href="#/chat"><span class="brand-seal">明</span><span>明镜台<small>知命 · 日常观察与自我认知</small></span></a>
+  <div class="rail-caption">我的明镜</div>
+  <nav id="navTabs">
+    <button class="nav-tab active" data-page="chat"><span>◎</span> 对话 <small>思考与记录</small></button>
+    <button class="nav-tab" data-page="chart"><span>✧</span> 命盘 <small>三盘对照</small></button>
+    <button class="nav-tab" data-page="tarot"><span>▱</span> 塔罗 <small>梳理问题与选择</small></button>
+    <button class="nav-tab" data-page="timeline"><span>◷</span> 时间轴 <small>变化与反馈</small></button>
+    <button class="nav-tab" data-page="graph"><span>⌘</span> 缘网 <small>人物与关系</small></button>
+    <button class="nav-tab" data-page="dict"><span>≋</span> 词典 <small>积累个人经验</small></button>
+    <button class="nav-tab" data-page="reports"><span>▤</span> 报告 <small>每日一读</small></button>
+    <button class="nav-tab" data-page="memory"><span>◇</span> 记忆与事项 <small>接着上次，继续聊</small></button>
+  </nav>
+  <div class="rail-caption rail-session-title">近期对话 <button id="newSessionBtn" aria-label="新建对话">＋</button></div>
+  <div id="sessionList" class="session-list"></div>
+  <div class="rail-foot"><span class="live-dot"></span>个人档案 · 双端互通<button id="logoutBtn">退出</button></div>
+</aside>
+<header class="workspace-topbar">
+  <div class="mobile-brand">明镜台</div><span id="todayLabel" class="date-label"></span>
+  <button id="openSearchBtn" class="search-trigger"><span>⌕</span> 搜索经历、报告与对话 <kbd>Ctrl K</kbd></button>
+  <button class="account-button" onclick="openTokenModal(false)" aria-label="访问设置">我的档案 <span>↗</span></button>
+  <input id="tokenInput" type="password" class="hidden" aria-label="访问口令"><button id="tokenSaveBtn" class="hidden">保存</button>
+</header>
+<main id="mainContent" class="workspace">
+<div class="page-heading"><div><div class="eyebrow" id="pageEyebrow">THE MIRROR / 对话</div><h1 id="pageTitle">把最近的事，慢慢说清楚。</h1><p id="pageSubtitle">带着经历来，借助依据思考，再回到日常行动。</p></div><div class="heading-note" id="pageNote">一事一问<br>一日一观</div></div>
+
+  <!-- ================= ① 对话 ================= -->
+  <section id="page-chat" class="page">
+    <div class="chat-workspace">
+      <div class="conversation-panel">
+        <div class="conversation-toolbar"><span id="conversationTitle">与明镜对话</span><select id="sessionSelect" aria-label="切换对话"></select><div><button id="chatTarotBtn">用塔罗梳理</button><button id="olderHistoryBtn">更早记录</button><button id="newChatMobileBtn">新对话 ＋</button></div></div><div id="chatCaseBar" class="chat-case-bar hidden" role="status"></div><div id="chatFlow" class="flex-1 overflow-y-auto pr-1 space-y-4 py-2"></div>
+        <div class="composer">
+          <div id="selectionChip" class="selection-chip hidden"></div><div id="chatProgress" class="chat-progress hidden" role="status" aria-live="polite"></div>
+          <div class="flex gap-2 mb-2 overflow-x-auto pb-1">
+            <button class="chip" data-q="逐月详批本月运势">逐月详批本月</button>
+            <button class="chip" data-q="今日日课">今日日课</button>
+            <button class="chip" data-q="应验率报告">应验率报告</button>
+            <button class="chip" data-q="导出档案">导出档案</button>
+          </div>
+          <div id="imgStrip" class="hidden flex gap-2 mb-2 flex-wrap"></div>
+          <div class="flex gap-2 items-end">
+            <textarea id="chatInput" rows="1" placeholder="说说你现在关心的事，也可以继续追问刚才的图片…"
+              class="glass flex-1 px-4 py-3 text-sm bg-transparent resize-none placeholder-gray-600" style="border-radius:14px;"></textarea>
+            <input id="imgInput" type="file" accept="image/jpeg,image/png,image/webp" multiple class="hidden">
+            <button id="imgBtn" title="附图（最多4张，每张≤5MB）"
+              class="glass glass-hover px-3 py-3 shrink-0 text-gray-400 hover:text-[#C9A96A]" style="border-radius:14px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="3"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <path d="M21 15l-5-5L5 21"></path>
+              </svg>
+            </button>
+            <button id="stopBtn" class="quiet-button hidden" aria-label="停止回答">停止</button><button id="sendBtn" class="btn-gold px-5 py-3 text-sm shrink-0">发送</button>
+          </div>
+        </div>
+      </div>
+      <!-- 右栏：档案速览（桌面） -->
+      <aside class="context-panel">
+        <div class="glass p-4">
+          <div class="text-xs tracking-widest text-gray-500 mb-3">本 命 速 览</div>
+          <div id="miniPillars" class="grid grid-cols-4 gap-2 text-center"></div>
+          <div id="miniMeta" class="mt-3 space-y-1.5 text-xs text-gray-400"></div>
+        </div>
+        <div class="glass p-4">
+          <div class="text-xs tracking-widest text-gray-500 mb-2">本 轮 依 据</div>
+          <div id="sliceInfo" class="text-xs text-gray-500 leading-relaxed">回答会结合相关经历与计算依据，来源将在这里显示。</div>
+        </div>
+        <div class="context-note"><span>读盘，也读生活。</span><p>命盘提供观察角度；真实经历和你的反馈，让解读更贴近你。</p><button onclick="switchPage('memory')">查看与更正记忆 ↗</button></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="page-tarot" class="page hidden" aria-label="塔罗决策">
+    <div class="tarot-layout">
+      <div class="tarot-main">
+        <form id="tarotForm" class="tarot-question-card">
+          <div class="tarot-section-heading"><div><span class="eyebrow">从一个现实问题开始</span><h2>换一个角度，想清楚下一步。</h2></div><span class="tarot-mark" aria-hidden="true">明</span></div>
+          <label class="field-label" for="tarotQuestion">这次想梳理什么？</label>
+          <textarea id="tarotQuestion" rows="3" maxlength="2000" placeholder="例如：最近安排太满，我可以怎样调整学习节奏？" required></textarea>
+          <div class="tarot-form-row"><label for="tarotSpread">牌阵 <select id="tarotSpread"><option value="reflect3">三张 · 梳理问题（推荐）</option></select></label><span id="tarotCaseHint" class="muted"></span></div>
+          <p id="tarotSpreadDescription" class="muted">从当前处境、容易忽视的因素，到可以尝试的行动。</p>
+          <details id="tarotAdvanced" class="tarot-advanced"><summary>背景与抽牌设置</summary>
+            <label class="field-label" for="tarotBackground">必要背景 <small>可留空；已有事项会自动带入</small></label><textarea id="tarotBackground" rows="3" maxlength="4000" placeholder="你已经知道的条件、担心和限制。"></textarea>
+            <div id="tarotAB" class="tarot-ab hidden"><label>A 是什么？<input id="tarotOptionA" maxlength="400" placeholder="例如：保留当前安排"></label><label>B 是什么？<input id="tarotOptionB" maxlength="400" placeholder="例如：减少一门课"></label><p class="muted">抽牌后 A/B 含义固定；现实中仍可选择暂缓或其他方案。</p></div>
+            <div class="tarot-form-row"><label for="tarotSource">牌从哪里来 <select id="tarotSource"><option value="auto">由应用随机抽牌</option><option value="pick">我来点选牌背</option><option value="manual">录入我的实体牌</option></select></label><label class="checkbox-label"><input id="tarotReversals" type="checkbox" checked> 使用正逆位</label></div>
+            <p class="muted">随机抽牌采用独立、等概率的正逆位规则，可在抽牌前关闭。实体牌按你实际抽到的结果录入。</p>
+            <div id="tarotManual" class="hidden"></div>
+          </details>
+          <div id="tarotFormError" class="err-banner hidden" role="alert"></div>
+          <div class="tarot-submit-row"><button id="tarotStartBtn" type="submit" class="btn-gold" disabled>开始梳理</button><p>不需要出生资料。牌面提供反思角度，决定仍回到现实条件。</p></div>
+        </form>
+        <div id="tarotStatus" class="tarot-status hidden" role="status" aria-live="polite"></div>
+        <div id="tarotDrawRoot"></div>
+      </div>
+      <aside class="tarot-sidebar"><div class="tarot-history-head"><h2>之前的问题</h2><button id="tarotRefreshBtn" class="quiet-button" aria-label="刷新塔罗记录">刷新</button></div><label class="field-label" for="tarotCaseFilter">按事项查看</label><select id="tarotCaseFilter"><option value="">全部事项</option></select><div id="tarotHistory" aria-live="polite"><p class="muted">读取记录后，可接着上次继续。</p></div><p class="tarot-art-note">使用完整 78 张产品自制图形牌。牌意为原创编辑性解释，不代表事件预测或成功率。</p></aside>
+    </div>
+  </section>
+
+  <!-- ================= ② 命盘（八字 / 紫微 / 星盘 三 tab） ================= -->
+  <section id="page-chart" class="page hidden">
+    <div id="chartTabs" class="flex items-center gap-1 mb-4 text-sm">
+      <button class="nav-tab active" data-chart="bazi">八字</button>
+      <button class="nav-tab" data-chart="ziwei">紫微</button>
+      <button class="nav-tab" data-chart="astro">星盘</button>
+    </div>
+    <div class="glass p-3 mb-4 flex flex-wrap items-center gap-3 text-sm">
+      <label>分析日期 <input id="analysisDate" type="date" class="bg-transparent border border-white/20 rounded p-1" onchange="refreshLinkedCharts()"></label>
+      <label>关注主题 <select id="analysisFocus" class="bg-gray-900 rounded p-1"><option>综合</option><option>学业与成长</option><option>关系与沟通</option><option>情绪与生活节奏</option></select></label>
+      <button class="btn-gold px-3 py-1" onclick="askLinked('all','all','完整三盘')">三盘综合解读</button>
+      <span class="text-xs text-gray-500">选择宫位或行星，查看关联后深入解读</span>
+    </div>
+    <div id="chartPaneBazi"><div id="chartRoot"></div></div>
+    <div id="chartPaneZiwei" class="hidden"><div id="ziweiRoot"></div></div>
+    <div id="chartPaneAstro" class="hidden"><div id="astroRoot"></div></div>
+  </section>
+
+  <!-- ================= ③ 时间轴 ================= -->
+  <section id="page-timeline" class="page hidden">
+    <div id="timelineRoot"></div>
+  </section>
+
+  <!-- ================= ④ 缘网 ================= -->
+  <section id="page-graph" class="page hidden">
+    <div id="graphRoot" class="relative"></div>
+  </section>
+
+  <!-- ================= ⑤ 词典 ================= -->
+  <section id="page-dict" class="page hidden">
+    <div id="dictRoot"></div>
+  </section>
+
+  <!-- ================= ⑥ 报告（飞书推送回看） ================= -->
+  <section id="page-reports" class="page hidden">
+    <div id="reportsRoot"></div>
+  </section>
+<section id="page-memory" class="page hidden"><div class="section-toolbar"><p>回到正在跟进的事，也可以更正、停用或删除已记住的内容。</p><button id="refreshMemoriesBtn" class="quiet-button">刷新</button></div><section class="cases-section"><div class="tarot-section-heading"><h2>正在跟进的事项</h2><button id="newCaseBtn" class="quiet-button">记录一个事项</button></div><form id="newCaseForm" class="hidden case-create-form"><label>事项名称<input id="newCaseTitle" maxlength="200" required placeholder="给正在考虑的事取个名字"></label><label>现在想解决什么？<textarea id="newCaseGoal" rows="2" maxlength="1200"></textarea></label><button type="submit" class="btn-gold">保存事项</button></form><div id="casesRoot"></div></section><h2 class="memory-section-title">已记住的信息</h2><p class="muted memory-scope-note">停用或删除记忆后，后续回答不再使用它。删除原始来源是另一个范围，会一并移除关联来源内容。</p><div id="memoriesRoot"></div></section>
+</main>
+
+<nav id="mobileTabs" aria-label="移动端导航">
+  <button class="m-tab active" data-page="chat">对话</button><button class="m-tab" data-page="chart">命盘</button><button class="m-tab" data-page="tarot">塔罗</button><button class="m-tab" data-page="timeline">时间轴</button><button class="m-tab" data-page="graph">缘网</button><button class="m-tab" data-page="dict">词典</button><button class="m-tab" data-page="reports">报告</button><button class="m-tab" data-page="memory">记忆</button>
+</nav>
+<div id="searchModal" class="modal-mask hidden" role="dialog" aria-modal="true" aria-label="搜索档案"><div class="search-dialog"><div class="search-dialog-head"><input id="globalSearchInput" placeholder="用自然语言搜索，例如：之前说过的睡眠问题" aria-label="搜索内容"><button id="closeSearchBtn" aria-label="关闭搜索">×</button></div><div id="searchResults" role="status">输入内容，自动搜索完整历史和个人档案。</div></div></div>
+<!-- ================= 口令模态框 ================= -->
+<div id="tokenModal" class="modal-mask hidden" role="dialog" aria-modal="true" aria-label="登录明镜台">
+  <div class="glass p-6 w-80" style="background:var(--paper);">
+    <div class="font-serif text-lg gold-text mb-1">明镜台</div>
+    <div class="text-xs text-gray-500 mb-4">请输入访问口令，进入你的私人阅读空间。</div>
+    <div id="tokenErr" class="err-banner hidden mb-3">口令错误或已失效，请重新输入。</div>
+    <input id="tokenModalInput" type="password" placeholder="访问口令" autocomplete="off"
+      class="glass w-full px-3 py-2.5 text-sm bg-transparent mb-4" style="border-radius:10px;">
+    <button id="tokenModalBtn" class="btn-gold w-full py-2.5 text-sm">进入</button>
+  </div>
+</div>
+
+<!-- ================= 时间轴抽屉 ================= -->
+<div id="drawerMask" class="drawer-mask hidden"></div>
+<aside id="drawer" class="drawer p-5" role="dialog" aria-label="详情" aria-modal="true"></aside>
+
+<div id="toast" role="status" aria-live="polite" class="toast"></div>
+
+<!-- ================= 图片放大查看 ================= -->
+<div id="imgViewer" class="modal-mask hidden" style="z-index:95;">
+  <img id="imgViewerImg" class="max-w-[92vw] max-h-[88vh] rounded-xl border border-white/10" alt="附图">
+</div>
+
+<script src="/static/app.js?v=6.0" defer></script>
+</body>
+</html>

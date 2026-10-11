@@ -1,0 +1,51 @@
+{
+  "provenance": {
+    "kind": "synthetic-rendering-fixture",
+    "description": "Handcrafted UI shape samples. No real person, birth input, calculator output, model output or private fixture was copied. These values test rendering only and are not a coherent calculated chart."
+  },
+  "bazi": {
+    "data": {
+      "solar_datetime": "合成界面样本",
+      "lunar_datetime": "仅供渲染测试",
+      "day_master": "甲",
+      "day_master_wuxing": "木",
+      "pillars": {
+        "year": {"ganzhi": "甲子", "wuxing_gan": "木", "wuxing_zhi": "水"},
+        "month": {"ganzhi": "乙丑", "wuxing_gan": "木", "wuxing_zhi": "土"},
+        "day": {"ganzhi": "甲寅", "wuxing_gan": "木", "wuxing_zhi": "木"},
+        "hour": {"ganzhi": "丁卯", "wuxing_gan": "火", "wuxing_zhi": "木"}
+      },
+      "wuxing_count": {"木": 5, "火": 1, "土": 1, "金": 0, "水": 1},
+      "dayun": [],
+      "liunian": [],
+      "target_liuyue": []
+    }
+  },
+  "ziwei": {
+    "data": {
+      "wuxing_ju": "合成宫位样本",
+      "palaces": [
+        {
+          "index": 0,
+          "name": "命宫",
+          "ganzhi": "甲子",
+          "major": [{"name": "紫微", "brightness": "庙"}],
+          "minor": [],
+          "linked_palaces": []
+        }
+      ]
+    }
+  },
+  "astro": {
+    "data": {
+      "civil_time": "合成界面样本",
+      "planets": {
+        "太阳": {"sign": "白羊", "deg": 12},
+        "月亮": {"sign": "双子", "deg": 24}
+      },
+      "houses": [],
+      "aspects": [],
+      "transits": {"aspects_to_natal": []}
+    }
+  }
+}

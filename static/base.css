@@ -1,0 +1,120 @@
+html, body { background: #0A0C14; color: #D8DCE8; font-family: "Noto Sans SC", "PingFang SC", sans-serif; }
+  /* 星点纹理：极低透明度 */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.28) 50%, transparent 51%),
+      radial-gradient(1px 1px at 68% 8%,  rgba(255,255,255,.20) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 84% 42%, rgba(201,169,106,.30) 50%, transparent 51%),
+      radial-gradient(1px 1px at 32% 64%, rgba(255,255,255,.16) 50%, transparent 51%),
+      radial-gradient(1px 1px at 52% 88%, rgba(139,124,246,.25) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 8% 82%, rgba(255,255,255,.22) 50%, transparent 51%),
+      radial-gradient(1px 1px at 92% 72%, rgba(255,255,255,.18) 50%, transparent 51%);
+    background-size: 420px 420px;
+  }
+  .glass {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,169,106,.15);
+    border-radius: 16px;
+  }
+  .glass-hover:hover { border-color: rgba(201,169,106,.4); }
+  .gold-text { color: #C9A96A; }
+  .ziwei-text { color: #8B7CF6; }
+  .nav-tab { padding: 6px 14px; border-radius: 10px; color: #9AA1B5; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .nav-tab:hover { color: #D8DCE8; }
+  .nav-tab.active { color: #C9A96A; background: rgba(201,169,106,.10); box-shadow: inset 0 0 0 1px rgba(201,169,106,.25); }
+  .m-tab { flex: 1; text-align: center; padding: 8px 0 10px; color: #9AA1B5; font-size: 12px; }
+  .m-tab.active { color: #C9A96A; }
+  .btn-gold { background: linear-gradient(135deg, rgba(201,169,106,.9), rgba(169,139,86,.9)); color: #14100A; border-radius: 10px; font-weight: 500; transition: filter .2s; }
+  .btn-gold:hover { filter: brightness(1.1); }
+  .btn-gold:disabled { opacity: .5; cursor: not-allowed; }
+  .chip { border: 1px solid rgba(139,124,246,.35); color: #B9B0F0; border-radius: 999px; padding: 4px 12px; font-size: 12px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+  .chip:hover { background: rgba(139,124,246,.12); }
+  .src-badge { position: absolute; top: -8px; right: -4px; font-size: 9px; line-height: 14px; padding: 0 5px; border-radius: 6px; letter-spacing: 1px; }
+  .src-feishu { background: rgba(139,124,246,.2); color: #A79CF8; border: 1px solid rgba(139,124,246,.5); }
+  .src-web { background: rgba(201,169,106,.16); color: #C9A96A; border: 1px solid rgba(201,169,106,.45); }
+  .msg-ai { background: rgba(255,255,255,0.03); border: 1px solid rgba(201,169,106,.15); border-radius: 14px; border-top-left-radius: 4px; }
+  .msg-user { background: rgba(139,124,246,.12); border: 1px solid rgba(139,124,246,.3); border-radius: 14px; border-top-right-radius: 4px; }
+  .msg-body { line-height: 1.85; font-size: 14.5px; word-break: break-word; }
+  .msg-body h1,.msg-body h2,.msg-body h3 { font-family: "Noto Serif SC", serif; color: #C9A96A; margin: .9em 0 .4em; font-weight: 700; }
+  .msg-body h1 { font-size: 1.15em; } .msg-body h2 { font-size: 1.08em; } .msg-body h3 { font-size: 1em; }
+  .msg-body p { margin: .45em 0; }
+  .msg-body ul,.msg-body ol { margin: .4em 0 .4em 1.3em; } .msg-body li { margin: .25em 0; }
+  .msg-body ul { list-style: disc; } .msg-body ol { list-style: decimal; }
+  .msg-body strong { color: #EDE3CE; }
+  .msg-body blockquote { border-left: 2px solid rgba(201,169,106,.4); padding-left: 10px; color: #9AA1B5; margin: .5em 0; }
+  .msg-body code { background: rgba(255,255,255,.07); border-radius: 4px; padding: 1px 5px; font-size: .9em; }
+  .err-banner { background: rgba(217,106,91,.10); border: 1px solid rgba(217,106,91,.45); color: #F0A79D; border-radius: 10px; padding: 10px 14px; font-size: 13px; }
+  .ganzhi-big { font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 34px; letter-spacing: 2px; }
+  .pillar-label { font-size: 12px; color: #9AA1B5; letter-spacing: 3px; }
+  .bar-track { background: rgba(255,255,255,.06); border-radius: 999px; height: 8px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; transition: width .6s ease; }
+  .tl-card { min-height: 176px; border-radius: 14px; border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); cursor: pointer; position: relative; transition: transform .15s, border-color .15s; padding: 14px; display: flex; flex-direction: column; }
+  .tl-card:hover { transform: translateY(-2px); border-color: rgba(201,169,106,.35); }
+  .tl-card.tl-now { border-color: rgba(201,169,106,.7); box-shadow: 0 0 0 1px rgba(201,169,106,.35), 0 0 22px rgba(201,169,106,.10); }
+  .tl-card.tl-empty { border-style: dashed; border-color: rgba(255,255,255,.10); cursor: default; }
+  .tl-card.tl-empty:hover { transform: none; border-color: rgba(255,255,255,.14); }
+  .tl-card.fb-accurate { box-shadow: inset 0 0 0 1.5px rgba(201,169,106,.75); }
+  .tl-card.fb-partial { box-shadow: inset 0 0 0 1.5px rgba(139,124,246,.75); }
+  .tl-card.fb-off { box-shadow: inset 0 0 0 1.5px rgba(120,124,138,.7); }
+  .stale-stripe::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(255,255,255,.06) 6px 9px);
+  }
+  .drawer-mask { position: fixed; inset: 0; background: rgba(4,6,12,.6); backdrop-filter: blur(2px); z-index: 40; }
+  .drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(480px, 92vw); z-index: 50;
+    background: #10131F; border-left: 1px solid rgba(201,169,106,.25); box-shadow: -12px 0 40px rgba(0,0,0,.5);
+    transform: translateX(100%); transition: transform .25s ease; overflow-y: auto; }
+  .drawer.open { transform: translateX(0); }
+  .badge { display: inline-block; border-radius: 6px; padding: 1px 8px; font-size: 12px; }
+  .badge-gold { background: rgba(201,169,106,.15); color: #C9A96A; border: 1px solid rgba(201,169,106,.4); }
+  .badge-purple { background: rgba(139,124,246,.14); color: #A79CF8; border: 1px solid rgba(139,124,246,.4); }
+  .badge-gray { background: rgba(255,255,255,.06); color: #8A90A2; border: 1px solid rgba(255,255,255,.14); }
+  .fb-btn { border-radius: 10px; padding: 7px 0; font-size: 13px; cursor: pointer; border: 1px solid rgba(255,255,255,.12); color: #C7CCDC; transition: all .2s; text-align: center; }
+  .fb-btn:hover { border-color: rgba(201,169,106,.4); }
+  .fb-btn.on-accurate { background: rgba(201,169,106,.18); border-color: #C9A96A; color: #C9A96A; }
+  .fb-btn.on-partial { background: rgba(139,124,246,.18); border-color: #8B7CF6; color: #A79CF8; }
+  .fb-btn.on-off { background: rgba(255,255,255,.10); border-color: #8A90A2; color: #B9BECC; }
+  .empty-state { text-align: center; padding: 64px 20px; color: #6E7488; }
+  .empty-state .sig { font-family: "Noto Serif SC", serif; font-size: 40px; color: rgba(201,169,106,.35); margin-bottom: 14px; }
+  .dayun-seg { height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #D8DCE8; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); flex-shrink: 0; }
+  .dayun-seg.now { background: rgba(201,169,106,.16); border-color: #C9A96A; color: #C9A96A; font-weight: 700; }
+  /* 报告回看卡片 */
+  .report-card { border-radius: 14px; border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03); transition: border-color .15s; scroll-margin-top: 72px; }
+  .report-card:hover { border-color: rgba(201,169,106,.35); }
+  .report-card.hl { border-color: rgba(201,169,106,.7); box-shadow: 0 0 0 1px rgba(201,169,106,.35), 0 0 22px rgba(201,169,106,.10); }
+  .report-head { cursor: pointer; user-select: none; }
+  /* 命盘可点击元素：hover 高亮 + 手型 */
+  .chart-click { cursor: pointer; transition: all .2s; }
+  .chart-click:hover { border-color: rgba(201,169,106,.55) !important; transform: translateY(-1px); }
+  /* 紫微十二宫：传统 4×4 方格盘式（巳午未申在上，中心为命盘信息） */
+  .zw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; min-width: 780px;
+    grid-template-areas: "si wu wei shen" "chen center center you" "mao center center xu" "yin chou zi hai"; }
+  .zw-cell { background: rgba(255,255,255,.03); border: 1px solid rgba(201,169,106,.15); border-radius: 12px;
+    padding: 8px 9px; min-height: 128px; font-size: 12px; display: flex; flex-direction: column; }
+  .zw-cell.zw-now { border-color: rgba(201,169,106,.7); box-shadow: 0 0 0 1px rgba(201,169,106,.35), 0 0 18px rgba(201,169,106,.08); }
+  .zw-center { background: rgba(255,255,255,.02); border: 1px dashed rgba(201,169,106,.22); border-radius: 12px; padding: 12px; }
+  .zw-pname { font-family: "Noto Serif SC", serif; font-weight: 700; font-size: 13px; color: #EDE3CE; }
+  .zw-star { font-family: "Noto Serif SC", serif; font-size: 13px; }
+  .zw-bright { font-size: 10px; color: #8A90A2; margin-left: 1px; }
+  .zw-mut { display: inline-block; min-width: 14px; height: 14px; line-height: 14px; text-align: center; border-radius: 4px;
+    font-size: 10px; font-weight: 700; padding: 0 1px; margin-left: 2px; vertical-align: 1px;
+    background: linear-gradient(135deg, rgba(201,169,106,.95), rgba(169,139,86,.95)); color: #14100A; }
+  /* 西洋星盘：行星卡 + 四象星座配色（火红/土金/风紫/水蓝） */
+  .astro-deg { font-family: "Noto Serif SC", serif; font-weight: 900; font-size: 26px; letter-spacing: 1px; }
+  .astro-deg-big { font-size: 34px; }
+  .astro-big { border-color: rgba(201,169,106,.45); background: rgba(201,169,106,.05); }
+  .astro-angle { cursor: pointer; transition: all .2s; }
+  .astro-angle:hover { border-color: rgba(201,169,106,.55) !important; transform: translateY(-1px); }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: rgba(201,169,106,.22); border-radius: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  input, textarea { outline: none; }
+  input:focus, textarea:focus { border-color: rgba(201,169,106,.5) !important; }
+  .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: #1A1E2E; border: 1px solid rgba(201,169,106,.4); color: #EDE3CE; border-radius: 10px; padding: 9px 18px; font-size: 13px; z-index: 90; opacity: 0; transition: opacity .25s; pointer-events: none; }
+  .toast.show { opacity: 1; }
+  .modal-mask { position: fixed; inset: 0; background: rgba(4,6,12,.7); backdrop-filter: blur(3px); z-index: 80; display: flex; align-items: center; justify-content: center; }
+  details.fold summary { cursor: pointer; color: #9AA1B5; font-size: 13px; padding: 8px 0; }
+  details.fold summary:hover { color: #C9A96A; }
+  .type-caret::after { content: "▌"; color: #C9A96A; animation: blink 1s steps(1) infinite; font-size: .85em; }
+  @keyframes blink { 50% { opacity: 0; } }

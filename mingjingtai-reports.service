@@ -1,0 +1,18 @@
+[Unit]
+Description=Mingjingtai report archive recovery and timed delivery
+After=network-online.target hermes.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Environment=TZ=Asia/Shanghai
+Environment=PATH=/root/.local/bin:/usr/local/bin:/usr/bin:/bin
+EnvironmentFile=/etc/systemd/system/mingjingtai.env
+EnvironmentFile=/root/.hermes/.env
+WorkingDirectory=/root/mingjingtai
+ExecStart=/root/mingjingtai/venv/bin/python /root/.hermes/skills/zhiming/report_pipeline.py
+TimeoutStartSec=240
+Nice=5
+UMask=0077
+

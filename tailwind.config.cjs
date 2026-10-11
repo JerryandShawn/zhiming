@@ -1,0 +1,1 @@
+module.exports={content:['./static/index.html','./static/app.js'],theme:{extend:{fontFamily:{serif:['Noto Serif SC','Source Han Serif SC','Songti SC','SimSun','serif'],sans:['Inter','PingFang SC','Microsoft YaHei','sans-serif']},colors:{ink:'#282c29',gold:'#8c713d',ziwei:'#786887'}}},plugins:[]};
