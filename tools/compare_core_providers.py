@@ -397,10 +397,24 @@ def core_worker(arm, scenario, dsn_env):
         result['base_phase_provider_calls'] = sum(c['purpose'] in ('intake', 'synthesis') or c['purpose'].startswith('specialist:') for c in calls)
         result['review_provider_calls'] = sum(c['purpose'] == 'review' for c in calls)
         result['repair_provider_calls'] = sum(c['purpose'] == 'repair' for c in calls)
+        successful_specialists = [c for c in calls if c['purpose'].startswith('specialist:')
+            and not c.get('error_type') and not c.get('error_code')
+            and c.get('output_contract') == 'SpecialistAnswer'
+            and isinstance(c.get('contract_output'), dict)
+            and c['contract_output'].get('system') == c['purpose'].split(':', 1)[1]]
+        result['completed_specialist_systems'] = sorted({c['contract_output']['system'] for c in successful_specialists})
+        result['successful_specialist_provider_calls'] = len(successful_specialists)
+        result['successful_review_provider_calls'] = sum(c['purpose'] == 'review'
+            and not c.get('error_type') and not c.get('error_code')
+            and c.get('output_contract') == 'FinalAnswer'
+            and isinstance(c.get('contract_output'), dict) for c in calls)
         expected_specialists = (1 if arm == 'new_single_specialist' else 4) if scenario == 'tarot' else 0
         result['expected_specialist_provider_calls'] = expected_specialists
-        if result.get('status') == 'validated' and result['specialist_provider_calls'] != expected_specialists:
+        expected_systems = ({'tarot'} if arm == 'new_single_specialist' else {'tarot', 'bazi', 'ziwei', 'astro'}) if scenario == 'tarot' else set()
+        if result.get('status') == 'validated' and set(result['completed_specialist_systems']) != expected_systems:
             result['status'] = 'incomplete_specialist_scope'
+        if result.get('status') == 'validated' and result['successful_review_provider_calls'] != (1 if budget['depth'] == 'deep' else 0):
+            result['status'] = 'incomplete_review_scope'
         result['actual_plan'] = service._record(owner,run_id,'plan')
         assert current['calls'] == len(calls)
         if draw: result['fixed_cards_unchanged'] = card_projection(service.tarot.get_for_reading(owner, draw['id'])) == FIXED_CARDS

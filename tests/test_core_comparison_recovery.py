@@ -1,6 +1,7 @@
 """Comparison recovery uses real PG/LangGraph; only its provider is replaced."""
 import json
 import os
+from pathlib import Path
 import unittest
 from unittest.mock import patch
 from psycopg import sql
@@ -8,6 +9,7 @@ from psycopg import sql
 from mingjing_core.adapters.model import ConfiguredModel
 from mingjing_core.domain.consultation import ModelUnavailable, InvalidAnswer
 from tests import test_core_model_diagnostics as diagnostics
+from tests import test_core_comparison_repairs as recorded_helpers
 from tests.test_core_memory import test_dsn
 from tools import compare_core_providers as comparison
 
@@ -116,6 +118,84 @@ class ComparisonRecoveryTests(unittest.TestCase):
         self.assertEqual(result['calls'][0]['reason'], 'http')
         self.assertEqual(result['calls'][0]['provider_http_status'], 403)
         self.assertEqual(result['technical_attempts'][0]['provider_http_status'], 403)
+        self.assertNotIn('PRIVATE_PROVIDER_TEXT', json.dumps(result))
+
+    def test_original_single_tarot_specialist_recovers_without_hiding_physical_attempts(self):
+        evidence = json.loads((Path(__file__).parent / 'fixtures' / '5908_comparison_denials.json').read_text(encoding='utf-8'))
+        recorded = recorded_helpers.RecordedComparisonModel(evidence)
+        failed = False
+        def provider(model, **kwargs):
+            nonlocal failed
+            if kwargs['purpose'] == 'intake':
+                recorded.case_id = kwargs['payload']['reference_data']['case_ids'][0]
+            if kwargs['purpose'] == 'specialist:tarot' and not failed:
+                failed = True
+                raise ModelUnavailable('PRIVATE_PROVIDER_TEXT', reason='network')
+            return recorded.generate(**kwargs)
+        with patch.dict(os.environ, {'CORE_COMPARE_PREFLIGHT_DSN': test_dsn()}), patch.object(ConfiguredModel, 'generate', provider):
+            result = comparison.core_worker('new_single_specialist', 'tarot', 'CORE_COMPARE_PREFLIGHT_DSN')
+        self.assertEqual(result['status'], 'validated')
+        self.assertTrue(result['validation']['valid'])
+        self.assertEqual(result['provider_calls'], 5)
+        self.assertEqual(result['durable_budget'], {'calls': 5, 'limit': 6})
+        self.assertEqual(result['specialist_provider_calls'], 2)
+        self.assertEqual(result['successful_specialist_provider_calls'], 1)
+        self.assertEqual(result['completed_specialist_systems'], ['tarot'])
+        self.assertEqual((result['review_provider_calls'], result['successful_review_provider_calls']), (0, 0))
+        self.assertEqual(result['repair_provider_calls'], 1)
+        self.assertEqual([a['calls'] for a in result['technical_attempts']], [2, 5])
+        self.assertEqual({a['operation_id'] for a in result['technical_attempts']}, {'fixed-target'})
+        self.assertEqual(len({a['run_id'] for a in result['technical_attempts']}), 1)
+        self.assertEqual(result['calls'][1]['error_code'], 'MODEL_UNAVAILABLE')
+        self.assertEqual(result['validation_attempts'][0]['issues'], [recorded_helpers.GUARANTEE_ISSUE])
+        self.assertEqual(result['validation_attempts'][1]['issues'], [])
+        self.assertTrue(result['fixed_cards_unchanged'])
+        self.assertNotIn('PRIVATE_PROVIDER_TEXT', json.dumps(result))
+
+    def test_deep_actual_three_calculators_review_recovery_keeps_eight_calls(self):
+        failed = False
+        def provider(model, **kwargs):
+            nonlocal failed
+            data = kwargs['payload']['reference_data']; purpose = kwargs['purpose']
+            if purpose == 'review' and not failed:
+                failed = True
+                raise ModelUnavailable('PRIVATE_PROVIDER_TEXT', reason='network')
+            if purpose == 'intake':
+                output = {'plan': {'mode': 'tarot', 'topic': 'study', 'systems': ['bazi', 'ziwei', 'astro', 'tarot'],
+                    'target_date': '2026-10-11', 'time_scale': 'natal', 'decision': True,
+                    'rationale': '合成实际三盘恢复预检', 'missing_inputs': []},
+                    'proposals': [], 'retire_fact_ids': [], 'attachment_observations': []}
+            elif purpose.startswith('specialist:'):
+                output = {'system': purpose.split(':')[1], 'claim_ids': [c['claim_id'] for c in data['claims']],
+                          'discussion': '仅在发布规则内提供独立的条件反思。', 'uncertainties': []}
+            else:
+                output = {'plain_summary': '先核对实际班次和费用，再选择可逆的小行动。', 'explanation': '象征仅供讨论。',
+                    'actions': ['先核实白班要求。'],
+                    'decision_options': [{'option': label, 'benefit': '核实后才能判断白班条件', 'cost': '实际费用未知',
+                        'risk': '班次条件待核实', 'reversibility': '先询问，再承诺', 'first_step': '核实书面班次与费用'}
+                        for label in ('核实A', '核实B')], 'follow_up': '按现实反馈复盘。',
+                    'professional_appendix': '仅按已验证字段与规则解释，象征不能证明现实结局。',
+                    'cited_fact_ids': [f['id'] for f in data.get('facts', [])],
+                    'cited_claim_ids': [c['claim_id'] for c in data.get('claims', [])], 'caveats': []}
+            return {'output': output, 'usage': {'input_tokens': 7, 'output_tokens': 11},
+                    'latency_seconds': 0, 'model': 'synthetic-preflight'}
+        with patch.dict(os.environ, {'CORE_COMPARE_PREFLIGHT_DSN': test_dsn()}), patch.object(ConfiguredModel, 'generate', provider):
+            result = comparison.core_worker('new_controlled_multi_specialists', 'tarot', 'CORE_COMPARE_PREFLIGHT_DSN')
+        self.assertEqual(result['status'], 'validated')
+        self.assertTrue(result['validation']['valid'])
+        self.assertEqual(result['provider_calls'], 8)
+        self.assertEqual(result['durable_budget'], {'calls': 8, 'limit': 10})
+        self.assertEqual((result['specialist_provider_calls'], result['successful_specialist_provider_calls']), (4, 4))
+        self.assertEqual(result['completed_specialist_systems'], ['astro', 'bazi', 'tarot', 'ziwei'])
+        self.assertEqual((result['review_provider_calls'], result['successful_review_provider_calls']), (2, 1))
+        self.assertEqual(result['repair_provider_calls'], 0)
+        self.assertEqual([a['calls'] for a in result['technical_attempts']], [7, 8])
+        self.assertEqual({a['operation_id'] for a in result['technical_attempts']}, {'fixed-target'})
+        self.assertEqual(len({a['run_id'] for a in result['technical_attempts']}), 1)
+        self.assertEqual([c['purpose'] for c in result['calls']][-2:], ['review', 'review'])
+        self.assertEqual(result['calls'][-2]['error_code'], 'MODEL_UNAVAILABLE')
+        self.assertEqual(result['validation_attempts'][0]['issues'], [])
+        self.assertTrue(result['fixed_cards_unchanged'])
         self.assertNotIn('PRIVATE_PROVIDER_TEXT', json.dumps(result))
 
 
