@@ -533,7 +533,7 @@ class ConsultationService:
             for quoted in re.finditer(re.escape(opening) + '已记住/已保存/已更新/已删除' + re.escape(closing) + '状态的声称', text):
                 local = re.split(r'[。；;\n，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', text[:quoted.start()])[-1]
                 denial = re.search(r'不包含任何$', local)
-                double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*$', local[:denial.start()])
+                double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', local[:denial.start()])
                 if denial and not double_denial:
                     denied_status_lists.append((quoted.start(), quoted.end()))
         for assertion in re.finditer(r'(?:已|已经|我会|已为你)[^。；;！？!?\n，,：:]{0,8}?(?:记住|保存|记录到|更新.{0,4}(?:记忆|档案)|删除.{0,4}(?:记忆|资料))', text):
@@ -543,7 +543,7 @@ class ConsultationService:
             # A tightly scoped object remains inside the same denial. Do not
             # allow arbitrary intervening text or let it span a new assertion.
             denial = re.search(r'(?:(?:不(?:能|会|应)?|未)(?:声称|宣称|表示|说|承诺|暗示)(?:任何资料|本轮内容)?|并未|尚未|没有|未曾|未)[“"‘\'「『`]?$' , prefix)
-            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*$', prefix[:denial.start()])
+            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
             if not denial or double_denial: unsupported_save = True
         if unsupported_save:
             issues.append('保存或删除提示必须由实际程序回执生成')
@@ -554,12 +554,12 @@ class ConsultationService:
                 denial=re.search(r'(?:不能|无法|不应|不会|并非|不是|不|无从)(?:据此|因此|直接|单独|可靠地|用于|用来|作为|被用于|被用来|给出|做出|提供)?$|没有依据(?:可以|能够)?$',prefix)
                 if not denial and assertion.group(1) == '保证':
                     limited_denial = re.search(r'(?:不能|无法|不应|不会|不)提供吉凶$', prefix)
-                    double_denial = limited_denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*$', prefix[:limited_denial.start()])
+                    double_denial = limited_denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', prefix[:limited_denial.start()])
                     if limited_denial and not double_denial: denial = limited_denial
                 if not denial and assertion.group() == '牌面证明':
                     local = re.split(r'[，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', clause[:assertion.start()])[-1]
                     before_subject = re.search(r'不由$', local)
-                    double_denial = before_subject and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*$', local[:before_subject.start()])
+                    double_denial = before_subject and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', local[:before_subject.start()])
                     if before_subject and not double_denial: denial = before_subject
                 if not denial:certainty=True
         if certainty:
@@ -577,27 +577,38 @@ class ConsultationService:
             before, after = clause[:occurrence.start()], clause[occurrence.end():]
             local = re.split(r'[，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', before)[-1]
             denial = re.search(r'(?:不建议|不能建议|不应建议|不允许|不接受|拒绝)(?:任何)?$', local)
-            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*$', local[:denial.start()])
+            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', local[:denial.start()])
             term = occurrence.group()
+            # An adjacent renewed recommendation can refer back to this
+            # very exception without repeating "night shift". This check is
+            # scoped to an actual night-exception occurrence, not unrelated
+            # advice to accept an ordinary arrangement.
+            if re.search(r'(?:^|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上)(?:同时|仍|然后|现在|还是)?(?:你)?(?:建议(?:你)?|可以|允许|应当)(?:先)?(?:接受|尝试)(?:该|此|上述|这个)(?:例外|夜班安排|安排)', after):
+                return True
             if (denial and not double_denial
                     and re.fullmatch(r'少量(?:晚间|夜班)|夜班(?:例外(?:或放宽|、少量放宽)?|放宽)', term)):
                 return False
             if re.fullmatch(r'夜班[”"’\'」』`]?不设例外(?:或放宽)?', term):
-                denied_refusal = re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?$' , local)
+                denied_refusal = re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$' , local)
                 refusal = re.search(r'(?:不能上|不接受|不排)$', local)
-                if refusal and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?$' , local[:refusal.start()]):
+                if refusal and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$' , local[:refusal.start()]):
                     denied_refusal = True
                 return bool(denied_refusal)
             # These are only the observed employer-condition queries/lists.
-            # They require the unchanged refusal in the answer and never
-            # exempt asking the user to accept or try an exception.
+            # They require the unchanged refusal and the entire observed
+            # non-advisory clause. A later invitation to accept "that
+            # exception" must not inherit the query/list exemption.
             if term == '夜班例外' and re.search(r'不能上夜班|不接受夜班|不排夜班', text):
-                if re.search(r'向A发出班次与$', before) and re.match(r'^书面问题', after): return False
-                if re.search(r'在收到A书面班次/$', before) and re.match(r'^答复', after): return False
-                if (re.search(r'只填已核实项与未知项[（：]班次、$', before)
-                        and re.match(r'^、费用、退出、通勤、学习时段、休息承受度', after)): return False
-                if (re.search(r'A班次、$', before)
-                        and re.match(r'^、轮班/顶班、报名截止与退出条件未知', after)): return False
+                start = re.sub(r'^(?:-\s*|(?:收益|代价|风险|可逆性|第一步)：)', '', before.strip())
+                end = after.strip()
+                if (re.fullmatch(r'(?:今天)?向A发出班次与', start)
+                        and re.fullmatch(r'书面问题(?:，并标注希望回复(?:期限|的截止期限))?', end)): return False
+                if (re.fullmatch(r'在收到A书面班次/', start)
+                        and re.fullmatch(r'答复(?:、B书面费用与退出条款)?后复盘', end)): return False
+                if (re.fullmatch(r'(?:制作(?:一张)?A/B对照表，)?只填已核实项与未知项[（：]班次、', start)
+                        and re.fullmatch(r'、费用、退出、通勤、学习时段、休息承受度(?:），未知栏保持空白，不用牌面或命盘补空)?', end)): return False
+                if (re.fullmatch(r'A班次、', start)
+                        and re.fullmatch(r'、轮班/顶班、报名截止与退出条件未知', end)): return False
             return True
 
         night_exception = any(night_exception_is_asserted(clause, occurrence)
@@ -626,7 +637,7 @@ class ConsultationService:
             # "不作记录，但报名无损失" is still an affirmative guarantee.
             if denial is None and re.match(r'^(?:(?:、|或|和|及|与)(?:' + guarantee_pattern + r'))*[”"’\'」』`]?\s*(?:的)?(?:承诺|保证)', suffix):
                 denial = re.search(r'(?:不作|不做)\s*[“"‘\'「『`]?$', prefix)
-            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不)\s*$', prefix[:denial.start()])
+            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
             return bool(denial and not double_denial)
 
         def guarantee_is_asserted(clause, assertion):
@@ -641,7 +652,7 @@ class ConsultationService:
             if re.match(r'^[”"’\'」』`]?\s*(?:(?:的|这个|这一)?(?:说法|判断|承诺|结论)(?:在条款确认前都)?)?\s*(?:不成立|不能成立|没有依据|缺乏依据|尚无依据|并无依据|属于过度承诺|是过度承诺|应当撤回|已经撤回|不能保证|不能承诺)', after):
                 return False
             old_inquiry = re.search(r'(?:此前|上一轮|先前|之前|原先)将(?:"询问"|“询问”|\'询问\'|‘询问’)表述为$', local)
-            if (old_inquiry and not re.search(r'(?:不是|并非|没有|未曾|尚未|不会|不能|不|未)\s*$', local[:old_inquiry.start()])
+            if (old_inquiry and not re.search(r'(?:不是|并非|没有|未曾|尚未|不会|不能|不|未)\s*[“"‘\'「『`]?\s*$', local[:old_inquiry.start()])
                     and re.match(r'^、未强调损失可能，现已在各选项的reversibility字段中明确[—-]+退出条件、费用和风险条件均未经确认', after)):
                 return False
             # A quoted old guarantee is allowed only with an explicit
@@ -655,7 +666,7 @@ class ConsultationService:
                     local_history = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', history)[-1]
                     quoted_terms = quoted.group()[1:-1]
                     revised_from = re.search(r'已将decision_options中所有reversibility表述从$', local_history)
-                    if (revised_from and not re.search(r'(?:不是|并非|没有|未曾|尚未|不会|不能|不|未)\s*$', local_history[:revised_from.start()])
+                    if (revised_from and not re.search(r'(?:不是|并非|没有|未曾|尚未|不会|不能|不|未)\s*[“"‘\'「『`]?\s*$', local_history[:revised_from.start()])
                             and re.match(r'^修正为(?:"可停止但已投入时间不可收回、承诺后可逆性取决于未知退出条件"|“可停止但已投入时间不可收回、承诺后可逆性取决于未知退出条件”)', withdrawal)):
                         return False
                     if (explicit_denial(local_history, withdrawal)

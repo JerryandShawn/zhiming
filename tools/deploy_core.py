@@ -904,6 +904,12 @@ def restore_withdrawals(args):
     if not Path(MAINTENANCE).is_file():raise ValueError('withdrawal restore requires the public maintenance gate')
     for name in ('mingjingtai.service','zhiming-core-feishu.service','zhiming-core-reports.service','zhiming-core-reports.timer'):
         if subprocess.run(['systemctl','is-active','--quiet',name]).returncode==0:raise ValueError('withdrawal restore requires every Core writer stopped')
+    with skill_writer_lock(exclusive=True):
+        return _restore_withdrawals_behind_skill_fence(args)
+
+
+def _restore_withdrawals_behind_skill_fence(args):
+    release=Path(args.release_dir)
     path=Path(args.withdrawals)
     if path.is_symlink() or not path.is_file() or path.stat().st_mode&0o077 or not path.resolve().is_relative_to(Path(BACKUP_ROOT).resolve()):raise ValueError('latest withdrawals must be a protected backup file')
     journal=json.loads((path.parent/'maintenance.json').read_text(encoding='utf-8'))

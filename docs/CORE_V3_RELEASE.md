@@ -106,6 +106,6 @@ publish 要求旧 writer 已停、web WorkingDirectory 指向该 SHA、维护门
 "$CORE_PY" tools/deploy_core.py restore-withdrawals --commit "$REVIEWED_SHA" --release-dir "$RELEASE_DIR" --withdrawals <maintenance返回目录>/withdrawals-latest.json --legacy-job-ids /protected/legacy-job-ids.json --env-file /etc/systemd/system/mingjingtai.env --env-file /root/.hermes/.env --env-file /protected/core-live.env --migration-env-file /protected/core-migrate-live.env
 ```
 
-此命令核验维护门、旧 Feishu/报告已禁用、全部 Core writer 已停止、备份文件权限和哈希，仅向明确的 live PG 重放。塔罗请求墓碑的旧结果 ID 已清空时，先从恢复库中相同 owner/operation/key/fingerprint 的旧请求解析原 draw/reading ID，实际清除牌堆、解释及关联 run/checkpoint，再写空结果墓碑；不能只把请求设为 deleted 而留下可按 draw ID 读取的牌阵。HTTP 删除的无正文 deleted_ids 也同时保留。已 sent 的收据阻断重复发送，旧 sending 在导出时成为 uncertain，恢复后绝不自动重试。该路径有真实 PostgreSQL `pg_dump`/`pg_restore` 回归，验证旧备份内容曾恢复、重放后已撤销原话/牌阵无法读取或按旧 key 再生、checkpoint 清除及投递收据保持；测试全为合成资料，外部发送为 0。
+此命令核验维护门、旧 Feishu/报告已禁用、全部 Core writer 已停止、备份文件权限和哈希；取得技能写入排他锁、排空已有 CLI 后，持续持锁到撤销重放及回执完成。锁忙时不加载数据库环境、不执行重放。仅向明确的 live PG 重放。塔罗请求墓碑的旧结果 ID 已清空时，先从恢复库中相同 owner/operation/key/fingerprint 的旧请求解析原 draw/reading ID，实际清除牌堆、解释及关联 run/checkpoint，再写空结果墓碑；不能只把请求设为 deleted 而留下可按 draw ID 读取的牌阵。HTTP 删除的无正文 deleted_ids 也同时保留。已 sent 的收据阻断重复发送，旧 sending 在导出时成为 uncertain，恢复后绝不自动重试。该路径有真实 PostgreSQL `pg_dump`/`pg_restore` 回归，验证旧备份内容曾恢复、重放后已撤销原话/牌阵无法读取或按旧 key 再生、checkpoint 清除及投递收据保持；测试全为合成资料，外部发送为 0。
 
 发送中断或 timeout 的 outbox 保持 DELIVERY_UNCERTAIN，只有核对真实 message_id 或提供明确未送达证据后才能对账；禁止重建 business ID 或任意重发按钮绕过账本。

@@ -186,6 +186,8 @@ class Comparison76bDenialRegression(unittest.TestCase):
     def test_deep_exact_employer_queries_prohibitions_and_no_symbolic_guarantee_pass(self):
         passages = ('不建议任何夜班例外或放宽。', '任何方案均不建议夜班例外、少量放宽。',
             '“不能上夜班”不设例外或放宽。', '不能上夜班不设例外或放宽。',
+            '不建议夜班例外，但不建议你接受该例外。',
+            '建议你接受该安排，先核实普通白班的合同条件。',
             '不能上夜班。今天向A发出班次与夜班例外书面问题。',
             '不能上夜班。在收到A书面班次/夜班例外答复后复盘。',
             '不能上夜班。只填已核实项与未知项：班次、夜班例外、费用、退出、通勤、学习时段、休息承受度。',
@@ -215,6 +217,47 @@ class Comparison76bDenialRegression(unittest.TestCase):
         for i, passage in enumerate(passages):
             with self.subTest(passage=passage):
                 operation = 'deep-unsafe-' + str(i)
+                with self.assertRaises(InvalidAnswer): self.local(passage, operation)
+                current = self.run_for(operation)
+                self.assertEqual((current['status'], current['calls'], current['repair_used']), ('failed', 3, True))
+                self.assertIsNone(current['result']); self.assertTrue(self.service.validation_attempts[-1])
+
+    def test_observed_query_and_list_cannot_cover_later_anaphoric_acceptance(self):
+        passages = (
+            '不能上夜班。今天向A发出班次与夜班例外书面问题，同时建议你接受该例外。',
+            '不能上夜班。A班次、夜班例外、轮班/顶班、报名截止与退出条件未知，仍建议你接受该夜班安排。',
+            '不能上夜班。今天向A发出班次与夜班例外书面问题，并标注希望回复期限，同时可以接受该例外。',
+            '不能上夜班。在收到A书面班次/夜班例外答复后复盘，然后建议你接受该安排。',
+            '不能上夜班。只填已核实项与未知项：班次、夜班例外、费用、退出、通勤、学习时段、休息承受度，同时尝试该例外。',
+            '不能上夜班。制作A/B对照表，只填已核实项与未知项（班次、夜班例外、费用、退出、通勤、学习时段、休息承受度），未知栏保持空白，不用牌面或命盘补空，但建议接受该例外。',
+            '不能上夜班。建议先接受该例外，今天向A发出班次与夜班例外书面问题。',
+            '不建议夜班例外，但建议你接受该例外。',
+            '不建议任何夜班例外，同时你可以接受该夜班安排。',
+            '不能上夜班不设例外，但应当接受该安排。',
+        )
+        for i, passage in enumerate(passages):
+            with self.subTest(passage=passage):
+                operation = 'query-tail-unsafe-' + str(i)
+                with self.assertRaises(InvalidAnswer): self.local(passage, operation)
+                current = self.run_for(operation)
+                self.assertEqual((current['status'], current['calls'], current['repair_used']), ('failed', 3, True))
+                self.assertIsNone(current['result'])
+                self.assertIn('用户明确不能上夜班，未授权修改时不能建议少量例外或次数放宽', self.service.validation_attempts[-1])
+
+    def test_adjacent_opening_quote_never_hides_double_denial(self):
+        passages = (
+            '不是“未声称任何资料已长期保存”。', '不是“不声称本轮内容已保存”。',
+            '不是“不建议任何夜班例外”。', '不是“不能承诺任何一步无损失”。',
+            '不能“不按零风险处理”。', '不是“不包含任何‘已记住/已保存/已更新/已删除’状态的声称”。',
+            '白班事实不是“不由牌面证明”。', '星盘不是“不提供吉凶保证”。',
+            '不是「未声称任何资料已长期保存」。', '不是\'不能承诺任何一步无损失\'。',
+            '不能`不按零风险处理`。', '不是“夜班不设例外”。',
+            '不是“此前将\'询问\'表述为完全可逆、未强调损失可能，现已在各选项的reversibility字段中明确——退出条件、费用和风险条件均未经确认”。',
+            '不是“已将decision_options中所有reversibility表述从\'完全可逆\'修正为"可停止但已投入时间不可收回、承诺后可逆性取决于未知退出条件"”。',
+        )
+        for i, passage in enumerate(passages):
+            with self.subTest(passage=passage):
+                operation = 'quoted-double-unsafe-' + str(i)
                 with self.assertRaises(InvalidAnswer): self.local(passage, operation)
                 current = self.run_for(operation)
                 self.assertEqual((current['status'], current['calls'], current['repair_used']), ('failed', 3, True))

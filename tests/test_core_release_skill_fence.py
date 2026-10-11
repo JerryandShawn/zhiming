@@ -179,5 +179,30 @@ class CoreSkillWriterFence(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError,'terminate old skill children'):deploy.freeze(self.args)
                 install.assert_not_called();snapshot.assert_not_called();self.assertTrue(self.gate.exists())
 
+    def test_withdrawal_restore_busy_fence_never_reads_env_or_starts_pg_apply(self):
+        self.gate.touch();self.args.withdrawals=str(self.root/'unread.json')
+        with patch.object(deploy,'require_host'),patch.object(deploy,'verify_release',return_value=self.root/'release'),patch.object(deploy,'verify_legacy_disabled'),patch.object(deploy.subprocess,'run',return_value=Namespace(returncode=3)),patch.object(deploy,'skill_writer_lock',side_effect=TimeoutError('synthetic busy')),patch.object(deploy,'load_environment') as env,patch.object(deploy,'command') as command:
+            with self.assertRaises(TimeoutError):deploy.restore_withdrawals(self.args)
+            env.assert_not_called();command.assert_not_called()
+        self.assertTrue(self.gate.exists())
+
+    def test_withdrawal_restore_holds_fence_through_apply_and_receipt(self):
+        self.gate.touch();directory=self.root/'backups/latest';directory.mkdir(parents=True)
+        path=directory/'withdrawals-latest.json';path.write_text('{}');path.chmod(0o600)
+        (directory/'maintenance.json').write_text(json.dumps({'withdrawals':path.name,'withdrawals_sha256':deploy.file_sha(path),'database':deploy.DBS['live']}))
+        self.args.withdrawals=str(path);self.args.migration_env_file=['/protected/migrate.env']
+        ordinary_stat=Path.stat
+        def protected_stat(target,*args,**kwargs):
+            if target==path:return Namespace(st_mode=0o100600)
+            return ordinary_stat(target,*args,**kwargs)
+        def environment(args,db):
+            self.assertTrue(self.held);self.assertEqual(args.env_file,['/protected/migrate.env']);return {}
+        def apply(argv,**kwargs):
+            self.assertTrue(self.held);self.events.append(('apply',None));return '{"withdrawals":2}'
+        with patch.object(deploy,'require_host'),patch.object(deploy,'verify_release',return_value=self.root/'release'),patch.object(deploy,'verify_legacy_disabled'),patch.object(deploy.subprocess,'run',return_value=Namespace(returncode=3)),patch.object(deploy,'skill_writer_lock',side_effect=self.fence),patch.object(Path,'stat',protected_stat),patch.object(deploy,'load_environment',side_effect=environment),patch.object(deploy,'command',side_effect=apply):
+            result=deploy.restore_withdrawals(self.args)
+        self.assertEqual(result['withdrawals'],2);self.assertTrue(result['withdrawals_replayed']);self.assertTrue(self.gate.exists());self.assertFalse(self.held)
+        self.assertEqual(self.events[0][1],{'exclusive':True});self.assertLess(self.events.index(('apply',None)),self.events.index(('unlock',None)))
+
 
 if __name__=='__main__':unittest.main()
