@@ -203,9 +203,14 @@ function dividerHtml(text) {
     <div class="flex-1 border-t border-white/10"></div>
   </div>`;
 }
-function fmtHistTime(at) {  // ISO「2026-08-22T11:05:01(+08:00)」→「08-22 11:05」
-  const m = /^\d{4}-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/.exec(String(at || ""));
-  return m ? `${m[1]}-${m[2]} ${m[3]}:${m[4]}` : "";
+function fmtHistTime(at) {
+  const value=String(at || ''),m=/^\d{4}-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})/.exec(value);
+  if(!m)return '';
+  // Legacy timestamps without an offset retain their recorded local time.
+  if(!/(?:Z|[+-]\d{2}:?\d{2})$/i.test(value))return `${m[1]}-${m[2]} ${m[3]}:${m[4]}`;
+  const date=new Date(value);if(!Number.isFinite(date.getTime()))return '';
+  const parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Shanghai',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(date).map(p=>[p.type,p.value]));
+  return `${parts.month}-${parts.day} ${parts.hour}:${parts.minute}`;
 }
 function srcBadgeHtml(m) {  // 来源徽章：飞书=紫微紫，网页=鎏金
   if (m.source === "feishu") return `<span class="src-badge src-feishu">飞书</span>`;

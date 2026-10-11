@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import uuid
+from zoneinfo import ZoneInfo
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import FileResponse, StreamingResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -24,6 +25,33 @@ from ..domain.contracts import ScopeError, RevisionConflict, EvidenceError, Leas
 from .tarot import IdempotencyConflict
 
 ROOT = Path(__file__).resolve().parents[2]
+HISTORY_LEGACY_ZONE = ZoneInfo('Asia/Shanghai')
+
+
+def history_instant(value):
+    """Compare instants without rewriting original source timestamps."""
+    try:
+        stamp = value if isinstance(value, datetime) else datetime.fromisoformat(str(value))
+        if stamp.tzinfo is None: stamp = stamp.replace(tzinfo=HISTORY_LEGACY_ZONE)
+        return stamp.astimezone(timezone.utc)
+    except (TypeError, ValueError, OverflowError):
+        return None
+
+
+def history_sort_key(row):
+    stamp = history_instant(row.get('at')) or history_instant(row.get('created_at')) or datetime.min.replace(tzinfo=timezone.utc)
+    role = str(row['role'])
+    return stamp, str(row['turn_id']), {'user':0, 'assistant':1, 'tool':2, 'legacy':3}.get(role, 4), role
+
+
+def history_before_key(cursor):
+    prefix, separator, tail = cursor.partition('|')
+    stamp = history_instant(prefix)
+    if stamp is None: raise MissingInput('历史分页游标时间无效，请刷新历史列表')
+    if not separator: return stamp, '', -1, ''
+    turn_id, role_separator, role = tail.rpartition('|')
+    if not role_separator or not turn_id or not role: raise MissingInput('历史分页游标格式无效，请刷新历史列表')
+    return stamp, turn_id, {'user':0, 'assistant':1, 'tool':2, 'legacy':3}.get(role, 4), role
 
 
 def auth(req):
@@ -456,9 +484,14 @@ def create_app(service=None):
                     row.update(turn_id=run['operation_id'],run_id=run['id'],status=run['status'],meta={'meta':{'core_run':{'run_id':run['id'],'operation_id':run['operation_id']}},'error':run['error']})
             if run['status']!='succeeded': continue
             rows.append({'role':'assistant','content':run['result']['answer'],'at':run['updated_at'].isoformat(),'turn_id':run['operation_id'],'source':'web','meta':run['result']})
-        for row in rows: row['cursor']=str(row['at'])+'|'+str(row['turn_id'])+'|'+row['role']
-        rows.sort(key=lambda r:r['cursor'])
-        return [r for r in rows if (not before or r['cursor']<before) and (not q or q.lower() in r['content'].lower())][-max(1,min(limit,500)):]
+        indexed=[]
+        for row in rows:
+            sort_key=history_sort_key(row)
+            row['cursor']=sort_key[0].isoformat(timespec='microseconds')+'|'+str(row['turn_id'])+'|'+row['role']
+            indexed.append((sort_key,row))
+        indexed.sort(key=lambda item:item[0])
+        boundary=history_before_key(before) if before else None
+        return [row for sort_key,row in indexed if (boundary is None or sort_key<boundary) and (not q or q.lower() in row['content'].lower())][-max(1,min(limit,500)):]
 
     @app.get('/api/feishu_history')
     async def feishu_history(req:Request): return [m for m in core(req).repo.list(auth(req),'message') if m.get('channel')=='feishu'][-100:]

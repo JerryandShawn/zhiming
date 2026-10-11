@@ -18,7 +18,7 @@ from ..domain.consultation import (Intake, ConsultationPlan, FinalAnswer, Specia
                                    InvalidAnswer, MissingInput, ModelUnavailable, render_answer)
 from ..domain.contracts import ScopeError, RevisionConflict, LeaseConflict
 from ..domain.json_values import ensure_finite_json
-from ..repositories.postgres import PostgresRepository
+from ..repositories.postgres import PostgresRepository, fingerprint
 from ..knowledge import KnowledgeRegistry
 from ..runtime import LangGraphRuntime
 from .memory import MemoryService
@@ -208,17 +208,29 @@ class ConsultationService:
         if input_size() > limit:
             raise MissingInput('本轮关键资料超过上下文上限，请减少选中事项；关键约束没有被截断')
         self.repo.renew_run(owner, run['id'], token, 600)
-        self.repo.charge_run(owner, run['id'], purpose + ':' + uuid.uuid4().hex, token, repair=repair)
+        schema = self._output_schema(contract, payload)
+        repair_identity = fingerprint([run.get('retry_epoch', 0), purpose, payload, schema, SYSTEM_POLICY]) if repair else None
+        operation_id = purpose + ':' + uuid.uuid4().hex
+        usage_id = run['id'] + ':call:' + operation_id
+        self.repo.charge_run(owner, run['id'], operation_id, token, repair=repair,
+                             repair_identity=repair_identity, purpose=purpose)
+        def diagnostic(fields):
+            with self.repo.transaction(owner) as connection:
+                self.repo._leased(connection, owner, run['id'], token)
+                previous = self.repo.get(owner, 'model_call', usage_id) if repair else None
+                data = dict(previous or {}, run_id=run['id'], purpose=purpose, **fields)
+                return self.repo.put(owner, 'model_call', usage_id, data, subject=run['subject'],
+                                     expected_revision=previous['revision'] if previous else None)
         try:
             response = self.model.generate(system=SYSTEM_POLICY, payload=payload,
-                                           schema=self._output_schema(contract, payload), purpose=purpose)
+                                           schema=schema, purpose=purpose)
         except ModelUnavailable as exc:
-            if hasattr(exc, 'safe_diagnostic'):
-                with self.repo.transaction(owner) as connection:
-                    self.repo._leased(connection, owner, run['id'], token)
-                    self.repo.put(owner, 'model_call', run['id'] + ':' + purpose + ':' + uuid.uuid4().hex,
-                                  dict(run_id=run['id'], purpose=purpose, status='failed', **exc.safe_diagnostic()),
-                                  subject=run['subject'])
+            info = exc.safe_diagnostic()
+            http = info.get('provider_http_status')
+            transient = info.get('reason') in ('network', 'json', 'tool_count', 'tool_input') or (
+                info.get('reason') == 'http' and type(http) is int and (http == 429 or 500 <= http <= 599))
+            diagnostic(dict(info, status='failed', error_class='ModelUnavailable',
+                            repair_outcome='transient_failure' if repair and transient else 'terminal_failure'))
             raise
         self.repo.renew_run(owner, run['id'], token, 600)
         usage = ModelUnavailable(usage=response.get('usage')).usage
@@ -226,20 +238,14 @@ class ConsultationService:
             ensure_finite_json(response['output'])
             parsed = contract.model_validate(response['output']).model_dump()
         except ValueError:
-            with self.repo.transaction(owner) as connection:
-                self.repo._leased(connection, owner, run['id'], token)
-                self.repo.put(owner, 'model_call', run['id'] + ':' + purpose + ':' + uuid.uuid4().hex,
-                              {'run_id': run['id'], 'purpose': purpose, 'status': 'failed',
-                               'reason': 'output_contract', 'failure_code': 'MODEL_OUTPUT_CONTRACT',
-                               'usage': usage, 'usage_known': bool(usage),
-                               'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')}, subject=run['subject'])
+            diagnostic({'status': 'failed', 'reason': 'output_contract', 'failure_code': 'MODEL_OUTPUT_CONTRACT',
+                        'repair_outcome': 'contract_failure', 'usage': usage, 'usage_known': bool(usage),
+                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')})
             raise InvalidAnswer('模型返回未满足本阶段字段契约') from None
-        usage_id = run['id'] + ':' + purpose + ':' + uuid.uuid4().hex
         with self.repo.transaction(owner) as connection:
             self.repo._leased(connection, owner, run['id'], token)
-            self.repo.put(owner, 'model_call', usage_id,
-                          {'run_id': run['id'], 'purpose': purpose, 'usage': usage, 'usage_known': bool(usage),
-                           'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')}, subject=run['subject'])
+            diagnostic({'status': 'succeeded', 'repair_outcome': 'succeeded', 'usage': usage, 'usage_known': bool(usage),
+                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')})
             return self._store(owner, run, 'model:' + purpose, parsed)
 
     def execute_stage(self, owner, run_id, token, phase, emit=None):
@@ -549,13 +555,17 @@ class ConsultationService:
         if (re.search(cost_pattern,text) and not re.search(r'协商成本低',factual)) or (re.search(familiarity_pattern,text) and not re.search(familiarity_pattern,factual)):
             issues.append('熟悉关系、流程或协商成本低没有已授权现实来源，不可作为推荐理由')
         guarantee_pattern = r'零风险|完全可逆|没有任何损失|无损失|零损失|随时.{0,3}(?:退出|退款)'
-        def explicit_denial(prefix):
+        def explicit_denial(prefix, suffix=''):
             # Only a list joined by "or/and" inherits the same denial. A new
             # sentence, contrast, or affirmative verb starts its own assertion.
             while re.search(r'(?:' + guarantee_pattern + r')(?:或|、|和|及|与)\s*$', prefix):
                 prefix = re.sub(r'(?:' + guarantee_pattern + r')(?:或|、|和|及|与)\s*$', '', prefix)
             denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独)?(?:保证|承诺|认定|断言|声称|认为|说|视为|视作|确定)|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:默认|假设|当作|视为)|并非|不是|未必|不等于|不)(?:(?:任何报名|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它)(?:是|可|为)?|是|可|为)?[“"‘\'「『`]?$', prefix)
-            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法)\s*$', prefix[:denial.start()])
+            # A postposed promise noun must be adjacent to this term/list;
+            # "不作记录，但报名无损失" is still an affirmative guarantee.
+            if denial is None and re.match(r'^(?:(?:、|或|和|及|与)(?:' + guarantee_pattern + r'))*[”"’\'」』`]?\s*(?:的)?(?:承诺|保证)', suffix):
+                denial = re.search(r'(?:不作|不做)\s*[“"‘\'「『`]?$', prefix)
+            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不)\s*$', prefix[:denial.start()])
             return bool(denial and not double_denial)
 
         def guarantee_is_asserted(clause, assertion):
@@ -563,7 +573,7 @@ class ConsultationService:
             # Denial applies to this occurrence, never to another
             # sentence/field or a renewed assertion after a contrast.
             local = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', before)[-1]
-            if explicit_denial(local): return False
+            if explicit_denial(local, after): return False
             if (re.search(r'(?:是否|能否|可否)[“"‘\'「『`]?$' , local)
                     and re.match(r'^[”"’\'」』`]?(?:(?:、|或)(?:是否|能否|可否)?(?:' + guarantee_pattern + r'|零成本))*\s*(?:尚未|还未|未经|未)(?:确认|核实|验证)', after)):
                 return False
@@ -579,7 +589,7 @@ class ConsultationService:
                     withdrawal = clause[quoted.end():quoted.end()+90]
                     local_history = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', history)[-1]
                     quoted_terms = quoted.group()[1:-1]
-                    if (explicit_denial(local_history)
+                    if (explicit_denial(local_history, withdrawal)
                             and re.fullmatch(r'(?:' + guarantee_pattern + r')(?:(?:、|,|，|或|和|及|与)(?:' + guarantee_pattern + r'))*', quoted_terms)):
                         return False
                     retraction = re.search(r'(?:撤回|收回|否定|纠正|更正|修正)(?:上一轮|先前|之前|此前|原先)?(?:的|将|关于|对)?\s*$', local_history)
@@ -591,6 +601,10 @@ class ConsultationService:
                     if (re.search(r'上一轮|先前|之前|此前|原先|原来的|原本|旧(?:说法|答复|判断)', history)
                             and re.search(r'描述|表述|称|说|判断|写|承诺', history)
                             and re.match(r'^\s*[，,：:]?\s*(?:这(?:一(?:说法|判断|承诺))?(?:属于|是)|该(?:说法|判断|承诺)(?:属于|是)|(?:属于|是))?\s*(?:过度承诺|错误|不成立|不准确|没有依据|缺乏依据|已(?:经)?撤回|现(?:在)?撤回|应当撤回|需要撤回|需(?:要)?修正|予以修正)', withdrawal)):
+                        withdrawn = True
+                    if (re.search(r'上一轮|先前|之前|此前|原先|原来的|原本|旧(?:说法|答复|判断)', history)
+                            and re.search(r'描述|表述|称|说|判断|写|承诺', history)
+                            and re.match(r'^\s*[，,:：]?\s*(?:此|该)(?:断语|表述|说法|判断|承诺)\s*(?:依据不足|缺乏依据|没有依据|不成立)', withdrawal)):
                         withdrawn = True
             return not withdrawn
 

@@ -461,17 +461,44 @@ class PostgresRepository:
             c.execute(sql.SQL("UPDATE {} SET lease_until=now()+%s*interval '1 second',updated_at=now() WHERE owner=%s AND id=%s").format(self.table('core_runs')), (max(1,min(int(lease_seconds),3600)),owner,run_id))
             return self.fetch_run(owner,run_id)
 
-    def charge_run(self,owner,run_id,operation_id=None,lease_token=None,*,repair=False):
+    def charge_run(self,owner,run_id,operation_id=None,lease_token=None,*,repair=False,repair_identity=None,purpose=None):
+        if repair_identity is not None and (not repair or not re.fullmatch(r'[0-9a-f]{64}',repair_identity) or not isinstance(purpose,str) or not re.fullmatch(r'[a-z][a-z0-9_:]{0,79}',purpose)):
+            raise ValueError('A repair charge requires a body-free identity and purpose')
         operation_id=operation_id or new_id('model')
         with self.transaction(owner) as c:
             row=self._leased(c,owner,run_id,lease_token)
             old=c.execute(sql.SQL('SELECT repair FROM {} WHERE owner=%s AND run_id=%s AND operation_id=%s').format(self.table('core_model_charges')), (owner,run_id,operation_id)).fetchone()
             if old:
                 if old['repair']!=repair: raise EvidenceError('Model operation reused with different purpose')
+                if repair_identity is not None:
+                    previous=self.get(owner,'model_call',run_id+':call:'+operation_id,include_deleted=True)
+                    if previous.get('repair_identity')!=repair_identity or previous.get('purpose')!=purpose or previous.get('repair_epoch')!=row['retry_epoch']:
+                        raise EvidenceError('Model operation reused with a different repair identity')
                 return self._run(row)
-            if row['calls']>=row['call_limit'] or (repair and row['repair_used']): raise BudgetExceeded('Persistent global model/repair budget exhausted')
+            if row['calls']>=row['call_limit']:raise BudgetExceeded('Persistent global model/repair budget exhausted')
+            if repair and row['repair_used']:
+                # A repair round is unique. Only a known transient failure of
+                # that exact round can incur another physical provider call.
+                # An unmarked legacy charge or unfinished/crashed call is not
+                # evidence that opening the repair gate is safe.
+                attempts=c.execute(sql.SQL("SELECT charge.operation_id,log.status,log.data FROM {} charge LEFT JOIN {} log ON log.owner=charge.owner AND log.kind='model_call' AND log.id=charge.run_id||':call:'||charge.operation_id WHERE charge.owner=%s AND charge.run_id=%s AND charge.repair=true").format(self.table('core_model_charges'),self.table('core_entities')),(owner,run_id)).fetchall()
+                if not repair_identity or not attempts:raise BudgetExceeded('Persistent global repair round already used')
+                for attempt in attempts:
+                    data=attempt['data'] or {}
+                    if data.get('repair_identity')!=repair_identity or data.get('repair_epoch')!=row['retry_epoch'] or data.get('purpose')!=purpose or type(data.get('call_index')) is not int:
+                        raise BudgetExceeded('A different or unverified repair round cannot retry')
+                last=max(attempts,key=lambda attempt:attempt['data']['call_index'])
+                data=last['data'];reason=data.get('reason');http=data.get('provider_http_status')
+                transient=reason in ('network','json','tool_count','tool_input') or (reason=='http' and type(http) is int and (http==429 or 500<=http<=599))
+                if last['status']!='failed' or data.get('repair_outcome')!='transient_failure' or data.get('error_class')!='ModelUnavailable' or not transient or data['call_index']!=row['calls']:
+                    raise BudgetExceeded('Only the last known transient attempt of the same repair can retry')
             c.execute(sql.SQL('INSERT INTO {}(owner,run_id,operation_id,repair) VALUES(%s,%s,%s,%s)').format(self.table('core_model_charges')), (owner,run_id,operation_id,repair))
             c.execute(sql.SQL('UPDATE {} SET calls=calls+1,repair_used=repair_used OR %s,updated_at=now() WHERE owner=%s AND id=%s').format(self.table('core_runs')), (repair,owner,run_id))
+            if repair_identity is not None:
+                self.put(owner,'model_call',run_id+':call:'+operation_id,
+                         {'run_id':run_id,'purpose':purpose,'status':'started','charge_operation_id':operation_id,
+                          'repair_identity':repair_identity,'repair_epoch':row['retry_epoch'],
+                          'call_index':row['calls']+1,'repair_outcome':'unknown','usage':{},'usage_known':False},subject=row['subject'])
             return self.fetch_run(owner,run_id)
 
     def set_run_dependencies(self,owner,run_id,versions,lease_token):
