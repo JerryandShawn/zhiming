@@ -4,12 +4,13 @@
   python3 ziwei.py chart     --datetime "2012-05-03 13:18" --lng 104.07 --gender 男
   python3 ziwei.py horoscope --datetime "2012-05-03 13:18" --lng 104.07 --gender 男 --date 2026-08-13
 """
-import argparse, json, sys, site
+import argparse, json, sys, math
 from datetime import datetime, timedelta
-sys.path.insert(0, site.getusersitepackages())
 from py_iztro import Astro
 
 def hour_to_index(h):
+    if isinstance(h, bool) or not isinstance(h, int) or not 0 <= h <= 23:
+        raise ValueError("出生小时须为0至23的整数")
     if h == 23: return 12          # 晚子时
     return ((h + 1) // 2) % 12     # 0=早子 1=丑 ... 11=亥
 
@@ -29,8 +30,11 @@ def palace(p):
             "ages": p.ages}
 
 def build(dt, lng, gender, tz=8):
-    if not -180 <= lng <= 180 or not -14 <= tz <= 14:
+    if any(isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)
+           for value in (lng, tz)) or not -180 <= lng <= 180 or not -14 <= tz <= 14:
         raise ValueError('出生经度或时区超出范围')
+    if gender not in ("男", "女"):
+        raise ValueError("缺少已明确提供的紫微性别计算参数")
     c = dt + timedelta(minutes=(lng - tz * 15) * 4)  # 地方平太阳时，未计均时差
     a = Astro().by_solar(f"{c.year}-{c.month}-{c.day}", hour_to_index(c.hour), gender)
     return a, c
@@ -44,7 +48,7 @@ def natal(a, c):
                                'major': palaces[j]['major'], 'minor': palaces[j]['minor']}
                               for j, relation in [((i+4)%12,'三合'),((i+8)%12,'三合'),((i+6)%12,'对宫')]]
     return {"corrected_time": c.strftime("%Y-%m-%d %H:%M"),
-            "engine_version": "ziwei-5.0",
+            "engine_version": "ziwei-core-3.1",
             "time_basis": "地方平太阳时：仅经度修正，未计均时差；不是完整真太阳时",
             "method": {"calendar": "py-iztro by_solar 默认历法与闰月规则",
                        "hour_index": hour_to_index(c.hour),
@@ -80,7 +84,9 @@ def main():
     r = natal(ast, c)
     r['timezone_offset'] = a_.tz
     if a_.cmd == "horoscope":
-        d = a_.date or datetime.now().strftime("%Y-%m-%d")
+        if not a_.date:
+            raise ValueError("运限计算必须指定目标日期")
+        d = a_.date
         h = ast.horoscope(d)
         r["horoscope"] = {"target_date": d, "lunar": h.lunar_date,
                           "decadal": scope(h.decadal), "yearly": scope(h.yearly),
@@ -94,7 +100,7 @@ def main():
                         layer['mutagen_links'].append({'star': name, 'mutagen': label,
                             'natal_palace': p['name'], 'palace_index': p['index'],
                             'scope_palace': layer['palace_names'][p['index']]})
-    print(json.dumps(r, ensure_ascii=False, indent=1))
+    print(json.dumps(r, ensure_ascii=False, indent=1, allow_nan=False))
 
 if __name__ == "__main__":
     main()

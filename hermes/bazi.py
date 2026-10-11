@@ -13,6 +13,7 @@
 """
 import argparse
 import json
+import math
 import sys
 from datetime import datetime, timedelta
 
@@ -44,7 +45,7 @@ def _ke_wo(wx):
 
 
 def _emit(obj):
-    s = json.dumps(obj, ensure_ascii=False, indent=1)
+    s = json.dumps(obj, ensure_ascii=False, indent=1, allow_nan=False)
     try:
         sys.stdout.reconfigure(encoding="utf-8")
     except Exception:
@@ -105,6 +106,21 @@ def _liuyue(year):
     return rows
 
 
+def _liunian(year):
+    """Requested-year samples with real Li-Chun boundaries, never host current year."""
+    rows = []
+    for value in range(year - 2, year + 8):
+        sample = Solar.fromYmdHms(value, 6, 1, 12, 0, 0)
+        lunar = sample.getLunar()
+        start = lunar.getJieQiTable()["立春"]
+        end = Solar.fromYmd(value + 1, 6, 1).getLunar().getJieQiTable()["立春"]
+        rows.append({"year": value, "ganzhi": lunar.getYearInGanZhiExact(),
+                     "sample_at": sample.toYmdHms(), "timezone_offset": 8,
+                     "period_start": start.toYmdHms(), "period_end_exclusive": end.toYmdHms(),
+                     "precision_note": "立春至次年立春的节年；公历年初可能仍属上一节年"})
+    return rows
+
+
 def _jie_interval(lunar):
     prev_jie, next_jie = lunar.getPrevJie(), lunar.getNextJie()
     return {"period_start": prev_jie.getSolar().toYmdHms(),
@@ -128,8 +144,11 @@ def _relative_pillar(ganzhi, day_master):
 def cmd_chart(a):
     civil = datetime.strptime(a.datetime, "%Y-%m-%d %H:%M")
     tz = getattr(a, 'tz', 8)
-    if not -180 <= a.lng <= 180 or not -14 <= tz <= 14:
+    if any(isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value)
+           for value in (a.lng, tz)) or not -180 <= a.lng <= 180 or not -14 <= tz <= 14:
         raise ValueError('出生经度或时区超出范围')
+    if getattr(a, "gender", None) not in ("男", "女", "male", "female", "m", "f", "M", "F", "1", "0"):
+        raise ValueError("缺少已明确提供的性别计算参数，不能默认男或女")
     # 地方平太阳时只决定此项目采用的日/时柱口径。节气是同一个真实时刻，
     # 不能把经度偏移误当成节气发生时刻也移动；lunar-python 节气表使用 UTC+8。
     dt = civil + timedelta(minutes=(a.lng - tz * 15) * 4)
@@ -158,18 +177,16 @@ def cmd_chart(a):
               "start_year": d.getStartYear(), "end_year": d.getEndYear()}
              for d in yun.getDaYun(11) if d.getGanZhi()][:10]
 
-    now = datetime.now()
-    # 流年：今年前后共 10 年（前 2 年 + 今年 + 后 7 年）
-    liunian = [{"year": y,
-                "ganzhi": Solar.fromYmd(y, 6, 1).getLunar().getYearInGanZhi()}
-               for y in range(now.year - 2, now.year + 8)]
+    target = datetime.strptime(getattr(a, "date", None) or civil.strftime("%Y-%m-%d"), "%Y-%m-%d")
+    liunian = _liunian(target.year)
 
     _emit({
         "solar_datetime": a.datetime,
         "corrected_time": dt.strftime("%Y-%m-%d %H:%M:%S"),
         "timezone_offset": tz,
         "time_basis": "日时柱采用地方平太阳时（仅经度修正，未计均时差）；年月柱及起运按同一真实时刻交节",
-        "engine_version": "bazi-5.0",
+        "engine_version": "bazi-core-3.1",
+        "target_date": target.strftime("%Y-%m-%d"),
         "method": {"calendar": "lunar-python EightChar", "day_sect": 2,
                    "year_boundary": "立春准确时刻，UTC+8 节气表",
                    "month_boundary": "节交接准确时刻，UTC+8 节气表",
@@ -189,7 +206,7 @@ def cmd_chart(a):
         "xiyongshen": _xiyongshen(dm_wx, count, pillars["month"]["wuxing_zhi"]),
         "dayun": dayun,
         "liunian": liunian,
-        "liuyue": _liuyue(now.year),
+        "liuyue": _liuyue(target.year),
     })
 
 
@@ -215,10 +232,11 @@ def main():
 
     c = sub.add_parser("chart", help="排全盘")
     c.add_argument("--datetime", required=True, help='阳历 "YYYY-MM-DD HH:MM"')
-    c.add_argument("--lng", type=float, default=120.0,
+    c.add_argument("--lng", type=float, required=True,
                    help="出生地经度，地方平太阳时修正（不含均时差）")
-    c.add_argument("--tz", type=float, default=8, help="出生民用时间的 UTC 偏移，默认 +8；需已包含当时夏令时")
-    c.add_argument("--gender", default="男", help="男/女，定大运顺逆")
+    c.add_argument("--tz", type=float, required=True, help="出生民用时间的 UTC 偏移，需已包含当时夏令时")
+    c.add_argument("--gender", required=True, choices=("男", "女"), help="男/女，定大运顺逆")
+    c.add_argument("--date", help="目标日期；未指定时只使用出生日期，绝不使用机器当前年份")
 
     d = sub.add_parser("day", help="流日干支")
     d.add_argument("--date", required=True, help="YYYY-MM-DD")

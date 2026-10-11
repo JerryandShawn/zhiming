@@ -1,0 +1,1813 @@
+{
+  "schema_version": "core-v3-behavior-coverage-v1",
+  "legacy_baseline": {
+    "test_methods": 102,
+    "source_files": [
+      {
+        "file": "tests/legacy/test_channel_evidence_v6.py",
+        "sha256": "d675056763749415d53e9f61e10947d56a7c2d7bcb23759ebda45ecec28854bd"
+      },
+      {
+        "file": "tests/legacy/test_channels_v6.py",
+        "sha256": "d99e8e4b2bcc27635ddb853531834f3e8b0248cb9cb8c436e6338833eb2348e4"
+      },
+      {
+        "file": "tests/legacy/test_feishu_v6.py",
+        "sha256": "0b21f7e096936d62ca17656f2a9b5d925e6cf8e5869594c9f406f4045e95e499"
+      },
+      {
+        "file": "tests/legacy/test_guidance_v6.py",
+        "sha256": "d17f474463392eaebd277f7cb26240bc362f031058d5bdd261cf18fcb9c3437f"
+      },
+      {
+        "file": "tests/legacy/test_multicase_v6.py",
+        "sha256": "686926c21755e2bc6e670a350fbdb5e09945a471f2ca4974a852cae9cea7ec68"
+      },
+      {
+        "file": "tests/legacy/test_privacy_v6.py",
+        "sha256": "f6343a85e6fc43da654d1c69d80c7cffffd1e4bda92e17a3019e293c4af214b2"
+      },
+      {
+        "file": "tests/legacy/test_quality_v6.py",
+        "sha256": "8c8479981e05ddf6ca46bbbbf6298bdbe06636ceba5f129a38e0db35d10fa6ac"
+      },
+      {
+        "file": "tests/legacy/test_review_v6.py",
+        "sha256": "2d615351b6c11fbeb055b1dcac6e1c0e6ecccbab5c9965332ee639ff102b83d5"
+      },
+      {
+        "file": "tests/legacy/test_state_v6.py",
+        "sha256": "08e9213680243b48a290c4b6ec34e77a991f61cbd9d800031d1c16e905402f8f"
+      },
+      {
+        "file": "tests/legacy/test_tarot_v6.py",
+        "sha256": "6ee97c43ad675649e4af17957b10c413646635f07aedf5e4ae3531d25c99d810"
+      },
+      {
+        "file": "tests/legacy/test_vertical_v6.py",
+        "sha256": "c75477626859a973a03ac1a2b25dfa3543cdc40f384c45f02f6d1fe39a6530b2"
+      }
+    ],
+    "initial_import_errors": 19,
+    "initial_import_error_reason": "retired controller globals removed from main; not new Core behavior failures"
+  },
+  "status_definitions": {
+    "covered": "Concrete current Core service, PG, HTTP or pure resource regression covers the behavior within scope_and_change; refs are not results and require the full suite to pass.",
+    "intentional_change": "Old internal API or product scope was deliberately replaced; replacement regression listed and difference explicit. Not claimed unchanged compatibility."
+  },
+  "counts": {
+    "covered": 89,
+    "intentional_change": 13
+  },
+  "verification": {
+    "method": "AST enumerates the exact original 102 IDs; every current test reference is checked against actual defined methods. Genuine service scenarios replace old state fakes.",
+    "suite_command": "CHART_PYTHON=<isolated calculator python> python -m unittest discover -s tests -p test_core*.py -v",
+    "synthetic_replay": "tools/replay_core_synthetic.py --rounds 300 --legacy-root <original snapshot> --output <synthetic report>",
+    "live_model_comparison": "tools/compare_core_providers.py; separate evidence, no claim fixture replay measures real model quality"
+  },
+  "entries": [
+    {
+      "legacy_id": "test_channel_evidence_v6.BoundEvidenceTests.test_bound_fact_ref_is_reauthorized_and_coarse_archive_ref_rejected",
+      "legacy_file": "tests/legacy/test_channel_evidence_v6.py",
+      "legacy_line": 17,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_knowledge.CoreKnowledgeTests.test_owner_subject_revision_branch_and_time_gates",
+          "file": "tests/test_core_knowledge.py",
+          "line": 100
+        }
+      ],
+      "scope_and_change": "逐项来源与主体版本检查，粗粒度档案不能充当解释依据"
+    },
+    {
+      "legacy_id": "test_channel_evidence_v6.BoundEvidenceTests.test_retrieved_original_ref_has_live_owner_and_revision_gate",
+      "legacy_file": "tests/legacy/test_channel_evidence_v6.py",
+      "legacy_line": 24,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_verified_originals_only_and_no_hermes_database_mutation",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 75
+        },
+        {
+          "test_id": "test_core_calculation_boundaries.RealCalculationExplanationTests.test_scope_revision_and_profile_changes_are_rejected",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 181
+        }
+      ],
+      "scope_and_change": "原渠道消息与计算引用均重验活跃身份和版本"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_unbound_or_spoofed_channel_rejected",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 35,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_channels.CoreChannelSourceTests.test_unknown_binding_and_forged_current_source_rejected",
+          "file": "tests/test_core_channels.py",
+          "line": 26
+        }
+      ],
+      "scope_and_change": "未经绑定或伪造渠道原文被程序拒绝"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_web_hermes_report_share_correction_and_owner_scope",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 42,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_shared_saved_fact_read_by_report_and_subject_isolation",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 96
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        }
+      ],
+      "scope_and_change": "Web更正与跨渠道读取采用同一PG事实服务"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_sync_is_source_scoped_and_idempotent",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 60,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_channels.CoreChannelSourceTests.test_only_bound_user_dm_active_rows_imported_and_original_unchanged",
+          "file": "tests/test_core_channels.py",
+          "line": 32
+        }
+      ],
+      "scope_and_change": "同步只导入绑定用户活跃原文，重复同步无新效果"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_chat_binding_requires_single_real_author",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 70,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_channels.CoreChannelSourceTests.test_chat_binding_has_one_real_author",
+          "file": "tests/test_core_channels.py",
+          "line": 55
+        }
+      ],
+      "scope_and_change": "群/多作者不能冒充个人直聊"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_chart_profile_uses_current_explicit_fact",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 87,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_corrected_birth_is_used_in_authorized_calculation_archive",
+          "file": "tests/test_core_compatibility.py",
+          "line": 216
+        }
+      ],
+      "scope_and_change": "计算档案只使用已授权且当前生效字段"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_report_run_revision_and_owner_gates",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 95,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_unvalidated_payload_or_forged_report_manifest_rejected",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 134
+        },
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_outbox_rechecks_owner_target_and_due_time",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 129
+        }
+      ],
+      "scope_and_change": "报告结果身份与发送目标程序重验"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_stale_report_rejected_before_validation_and_during_commit",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 109,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_atomic_stale_commit_and_minimal_checkpoint",
+          "file": "tests/test_core_memory.py",
+          "line": 131
+        },
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_scoped_versions_block_stale_but_allow_unrelated_change",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 120
+        }
+      ],
+      "scope_and_change": "旧依赖无法提交或发送；无关事项变动不造成全局冲突"
+    },
+    {
+      "legacy_id": "test_channels_v6.ChannelIntegrationTests.test_new_reports_cannot_bypass_structured_or_identity_gate",
+      "legacy_file": "tests/legacy/test_channels_v6.py",
+      "legacy_line": 123,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_unvalidated_payload_or_forged_report_manifest_rejected",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 134
+        }
+      ],
+      "scope_and_change": "报告需要真实成功run及结构验证"
+    },
+    {
+      "legacy_id": "test_feishu_v6.FeishuWebsiteTests.test_user_binding_cannot_match_chat_field_or_ambiguous_chat_authors",
+      "legacy_file": "tests/legacy/test_feishu_v6.py",
+      "legacy_line": 69,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_channels.CoreChannelSourceTests.test_chat_binding_has_one_real_author",
+          "file": "tests/test_core_channels.py",
+          "line": 55
+        },
+        {
+          "test_id": "test_core_feishu_gateway.FeishuGatewayPostgresTests.test_unknown_bot_group_and_nontext_cannot_enter_core",
+          "file": "tests/test_core_feishu_gateway.py",
+          "line": 100
+        }
+      ],
+      "scope_and_change": "飞书作者身份与chat字段分离"
+    },
+    {
+      "legacy_id": "test_feishu_v6.FeishuWebsiteTests.test_catalog_source_id_matches_registered_original_and_is_recalled",
+      "legacy_file": "tests/legacy/test_feishu_v6.py",
+      "legacy_line": 81,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_real_core_channel_result_has_exact_origin_and_no_second_model",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 85
+        }
+      ],
+      "scope_and_change": "真实注册原文ID进入Core服务，输出关联该run"
+    },
+    {
+      "legacy_id": "test_feishu_v6.FeishuWebsiteTests.test_restored_source_stays_revoked_after_real_hermes_sync_and_index_rebuild",
+      "legacy_file": "tests/legacy/test_feishu_v6.py",
+      "legacy_line": 100,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_channels.CoreChannelSourceTests.test_deleted_original_never_restored_from_hermes",
+          "file": "tests/test_core_channels.py",
+          "line": 48
+        },
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_privacy_ledger_replayed_after_restore_keeps_bodies_out",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 259
+        }
+      ],
+      "scope_and_change": "恢复旧源后仍依撤销账本拒绝重新进入上下文"
+    },
+    {
+      "legacy_id": "test_feishu_v6.FeishuWebsiteTests.test_stop_preserves_history_but_blocks_its_context_and_index_evidence",
+      "legacy_file": "tests/legacy/test_feishu_v6.py",
+      "legacy_line": 126,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_channels.CoreChannelSourceTests.test_revoked_old_source_skipped_and_current_revocation_rejected",
+          "file": "tests/test_core_channels.py",
+          "line": 42
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        }
+      ],
+      "scope_and_change": "停止保持可查看原文，撤销片段不再作为有效事实"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_plain_and_correction_are_short_without_unused_fields",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 22,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_plain_refusal_and_support_do_not_force_three_calculators",
+          "file": "tests/test_core_compatibility.py",
+          "line": 75
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_normal_contract_neither_invents_answer_nor_shares_mutable_defaults",
+          "file": "tests/test_core_compatibility.py",
+          "line": 164
+        }
+      ],
+      "scope_and_change": "新FinalAnswer保留统一可选字段；UI只显示非空正文，普通对话不强制专业计算"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_normalization_is_not_an_invented_answer_or_shared_mutable_default",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 32,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_normal_contract_neither_invents_answer_nor_shares_mutable_defaults",
+          "file": "tests/test_core_compatibility.py",
+          "line": 164
+        }
+      ],
+      "scope_and_change": "缺失或空正文失败，各结果容器不共享默认值"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_support_needs_only_one_optional_low_burden_action",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 40,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_support_keeps_one_optional_low_burden_action",
+          "file": "tests/test_core_compatibility.py",
+          "line": 171
+        }
+      ],
+      "scope_and_change": "支持模式至多一个可选低负担行动，禁止多个行动清单"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_decision_contract_keeps_tradeoffs_without_charts",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 50,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_decision_requires_real_tradeoffs_and_a_reversible_first_step",
+          "file": "tests/test_core_compatibility.py",
+          "line": 84
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_unknown_cost_is_accepted_without_fabricating_preference",
+          "file": "tests/test_core_compatibility.py",
+          "line": 131
+        }
+      ],
+      "scope_and_change": "现实决策必须两方案与收益代价风险可逆性第一步，无需出生资料"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_tarot_does_not_trigger_three_charts_or_birth_requirement",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 58,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_tarot_same_real_service_uses_saved_draw_and_rule_claims",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 108
+        }
+      ],
+      "scope_and_change": "真实固定牌阵单独进入服务，不强制三盘"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_real_contribution_subset_not_forced_into_three",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 66,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_charts.ChartContractTests.test_only_requested_capability_and_exact_refs",
+          "file": "tests/test_core_charts.py",
+          "line": 64
+        },
+        {
+          "test_id": "test_core_knowledge.CoreKnowledgeTests.test_no_mandatory_cross_system_or_cross_time_scope",
+          "file": "tests/test_core_knowledge.py",
+          "line": 80
+        }
+      ],
+      "scope_and_change": "新按需专业规则claim为依据，旧coverage占位协议退役"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_one_contribution_is_not_called_consensus",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 76,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_knowledge.CoreKnowledgeTests.test_no_mandatory_cross_system_or_cross_time_scope",
+          "file": "tests/test_core_knowledge.py",
+          "line": 80
+        },
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_tarot_same_real_service_uses_saved_draw_and_rule_claims",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 108
+        }
+      ],
+      "scope_and_change": "新服务仅多体系产生complementary说明；相似象征不生成现实共识"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_noncontributions_do_not_need_fabricated_field_citations",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 84,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_knowledge.CoreKnowledgeTests.test_unknown_rule_is_explicit_gap_and_no_claim",
+          "file": "tests/test_core_knowledge.py",
+          "line": 87
+        },
+        {
+          "test_id": "test_core_calculation_boundaries.RealCalculationExplanationTests.test_time_layers_do_not_borrow_a_daily_snapshot_for_yearly_or_monthly",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 131
+        }
+      ],
+      "scope_and_change": "缺能力列RULE_GAP/missing，不制造占位引用或强制跨体系"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_unknown_fields_wrong_values_and_unavailable_lies_still_rejected",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 93,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_knowledge.CoreKnowledgeTests.test_changed_reference_and_relabelled_semantic_path_rejected",
+          "file": "tests/test_core_knowledge.py",
+          "line": 119
+        },
+        {
+          "test_id": "test_core_knowledge.CoreKnowledgeTests.test_well_formed_reference_does_not_support_arbitrary_life_claim",
+          "file": "tests/test_core_knowledge.py",
+          "line": 92
+        }
+      ],
+      "scope_and_change": "字段引用及规则前提和解释语义严格验证"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_tarot_field_provenance_checks_registered_frozen_draw",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 102,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_calculation_boundaries.CalculationBoundaryContractTests.test_tarot_helper_uses_frozen_revealed_view_and_separate_revisions",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 69
+        },
+        {
+          "test_id": "test_core_calculation_boundaries.CalculationBoundaryContractTests.test_tarot_hidden_relabelled_revised_or_revoked_view_is_rejected",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 80
+        }
+      ],
+      "scope_and_change": "固定牌阵/方向/位置/版本必须逐项匹配"
+    },
+    {
+      "legacy_id": "test_guidance_v6.GuidanceModesTests.test_minimal_normal_reply_cli_does_not_compute_or_require_reports",
+      "legacy_file": "tests/legacy/test_guidance_v6.py",
+      "legacy_line": 110,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_cli_status_and_resume_share_service_budget_and_minimal_trace",
+          "file": "tests/test_core_compatibility.py",
+          "line": 267
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_plain_refusal_and_support_do_not_force_three_calculators",
+          "file": "tests/test_core_compatibility.py",
+          "line": 75
+        }
+      ],
+      "scope_and_change": "新CLI只调Core服务；普通聊天不计算报告"
+    },
+    {
+      "legacy_id": "test_multicase_v6.MultipleCaseChatTests.test_explicit_multi_case_message_and_event_target_survive_restart",
+      "legacy_file": "tests/legacy/test_multicase_v6.py",
+      "legacy_line": 20,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_multi_case_feedback_has_real_source_and_survives_restart",
+          "file": "tests/test_core_compatibility.py",
+          "line": 226
+        }
+      ],
+      "scope_and_change": "明确case_ids与指定事项反馈在PG重启后保留"
+    },
+    {
+      "legacy_id": "test_multicase_v6.MultipleCaseChatTests.test_natural_multi_case_title_association_and_invalid_ids",
+      "legacy_file": "tests/legacy/test_multicase_v6.py",
+      "legacy_line": 33,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_selected_case_and_owner_scope_precede_every_provider_call",
+          "file": "tests/test_core_runtime.py",
+          "line": 196
+        },
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_unselected_case_cannot_be_written_corrected_or_retired",
+          "file": "tests/test_core_memory.py",
+          "line": 312
+        }
+      ],
+      "scope_and_change": "用户case_ids授权范围取代模型自然标题暗选；非法或外部事项不进入模型"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_deleted_fact_draw_and_retry_keys_cannot_resurrect_after_restore",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 74,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_privacy_ledger_replayed_after_restore_keeps_bodies_out",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 259
+        },
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_delete_and_source_revoke_prevent_retry_resurrection",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 104
+        }
+      ],
+      "scope_and_change": "PG撤销账本优先重放，固定牌阵与幂等请求不可复活"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_stop_remains_suppressed_and_removes_source_derived_draw",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 113,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_delete_and_source_revoke_prevent_retry_resurrection",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 104
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        }
+      ],
+      "scope_and_change": "真实来源撤销使相关牌阵背景失效与旧运行结果不可重放"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_fact_only_delete_keeps_original_but_purges_derived_fact",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 125,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        },
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_correction_preserves_independent_fact_from_same_message",
+          "file": "tests/test_core_memory.py",
+          "line": 73
+        }
+      ],
+      "scope_and_change": "事实级删除保留原文及独立事实，撤销片段不能回流"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_owner_mismatch_and_unrecognized_document_fail_without_target_changes",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 133,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_privacy_wrong_owner_or_schema_rolls_back_and_exports_no_body",
+          "file": "tests/test_core_compatibility.py",
+          "line": 239
+        }
+      ],
+      "scope_and_change": "撤销账本身份/版本不符拒绝，目标版本不改变"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_both_targets_rollback_on_missing_tarot_schema",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 143,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_changed_source_during_import_rolls_back_core",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 184
+        },
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_mutation_request_atomic_idempotence_and_no_private_receipt",
+          "file": "tests/test_core_memory.py",
+          "line": 248
+        }
+      ],
+      "scope_and_change": "两SQLite跨库恢复退役；新PG单一事务包含事实/牌阵，迁移失败回滚"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_wal_restore_is_rejected_before_mutating_either_database",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 152,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_changed_source_during_import_rolls_back_core",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 184
+        },
+        {
+          "test_id": "test_core_architecture.CoreArchitectureTests.test_postgres_authority_has_no_sqlite_fallback",
+          "file": "tests/test_core_architecture.py",
+          "line": 39
+        }
+      ],
+      "scope_and_change": "PG为唯一写库，旧WAL双库恢复不再是Core入口；SQLite仅只读迁移源"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_export_is_create_only_and_cli_requires_explicit_restore_targets",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 163,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_privacy_wrong_owner_or_schema_rolls_back_and_exports_no_body",
+          "file": "tests/test_core_compatibility.py",
+          "line": 239
+        },
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_privacy_ledger_replayed_after_restore_keeps_bodies_out",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 259
+        }
+      ],
+      "scope_and_change": "旧双SQLite CLI退役；新恢复在明确PG目标与owner下调用撤销账本API，旧CLI覆盖不计Core通过"
+    },
+    {
+      "legacy_id": "test_privacy_v6.PrivacyRestoreTests.test_cli_export_then_apply_executes_real_restore",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 172,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_privacy_ledger_replayed_after_restore_keeps_bodies_out",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 259
+        }
+      ],
+      "scope_and_change": "新PG恢复测试实际重放账本；未声称旧双库CLI仍可执行"
+    },
+    {
+      "legacy_id": "test_privacy_v6.TraceRetentionTests.test_default_and_configured_retention_are_owner_scoped_and_body_free",
+      "legacy_file": "tests/legacy/test_privacy_v6.py",
+      "legacy_line": 190,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_cli_status_and_resume_share_service_budget_and_minimal_trace",
+          "file": "tests/test_core_compatibility.py",
+          "line": 267
+        },
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_checkpoint_state_contains_identifiers_without_private_history",
+          "file": "tests/test_core_runtime.py",
+          "line": 113
+        }
+      ],
+      "scope_and_change": "旧私密trace与30日TTL退役；新最小run/恢复记录主体隔离，不承诺同一TTL"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_night_shift_exceptions_and_monthly_caps_error_then_repair",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 105,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_invalid_hard_constraint_answer_repairs_once_with_durable_charge",
+          "file": "tests/test_core_compatibility.py",
+          "line": 283
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_unrelated_monthly_meeting_cap_cannot_authorize_night_shift",
+          "file": "tests/test_core_compatibility.py",
+          "line": 96
+        }
+      ],
+      "scope_and_change": "夜班硬约束不可模型放宽，错误最终答复阻止提交，修复计入预算"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_night_shift_exception_in_plain_summary_is_also_rejected",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 113,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_hard_night_shift_constraint_cannot_be_relaxed_in_plain_summary",
+          "file": "tests/test_core_compatibility.py",
+          "line": 90
+        }
+      ],
+      "scope_and_change": "plain_summary同样检查夜班硬约束"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_unknown_cost_or_familiarity_cannot_support_recommendation",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 118,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_unknown_familiarity_and_negotiation_cost_cannot_be_invented",
+          "file": "tests/test_core_compatibility.py",
+          "line": 118
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_unknown_job_familiarity_cannot_be_invented",
+          "file": "tests/test_core_compatibility.py",
+          "line": 112
+        }
+      ],
+      "scope_and_change": "两个完整结构方案下，无源低成本/熟悉度拒绝"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_unknowns_marked_as_missing_are_accepted_without_inventing_a_preference",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 125,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_unknown_cost_is_accepted_without_fabricating_preference",
+          "file": "tests/test_core_compatibility.py",
+          "line": 131
+        }
+      ],
+      "scope_and_change": "未知保持未知，答复不产生虚假个人偏好"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_supported_cost_and_familiarity_keep_their_real_source",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 133,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_supported_cost_and_familiarity_keep_actual_fact_citation",
+          "file": "tests/test_core_compatibility.py",
+          "line": 180
+        }
+      ],
+      "scope_and_change": "真实授权成本及熟悉事实被引用且原始引用不变"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_known_familiarity_does_not_authorize_unknown_low_negotiation_cost",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 143,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_known_familiarity_does_not_authorize_unknown_negotiation_cost",
+          "file": "tests/test_core_compatibility.py",
+          "line": 124
+        }
+      ],
+      "scope_and_change": "熟悉任务不自动意味着协商成本低"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_unrelated_monthly_meeting_limit_does_not_relax_night_shift_constraint",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 151,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_unrelated_monthly_meeting_cap_cannot_authorize_night_shift",
+          "file": "tests/test_core_compatibility.py",
+          "line": 96
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_unrelated_meeting_cap_is_allowed_without_relaxing_night_constraint",
+          "file": "tests/test_core_compatibility.py",
+          "line": 301
+        }
+      ],
+      "scope_and_change": "会议频次与夜班许可不混淆"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_full_tarot_moves_card_name_chain_to_interpretations_without_changing_draw",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 158,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_tarot_same_real_service_uses_saved_draw_and_rule_claims",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 108
+        },
+        {
+          "test_id": "test_core_calculation_boundaries.CalculationBoundaryContractTests.test_tarot_every_card_orientation_uses_exact_catalog_meaning",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 94
+        }
+      ],
+      "scope_and_change": "新专业附录由真实固定牌claim程序生成；旧card_interpretations展示协议退役，牌面不变"
+    },
+    {
+      "legacy_id": "test_quality_v6.AnswerQualityTests.test_completed_choice_and_deferral_are_feedback_not_new_decisions",
+      "legacy_file": "tests/legacy/test_quality_v6.py",
+      "legacy_line": 190,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_negated_decision_is_not_written_as_action_or_feedback",
+          "file": "tests/test_core_compatibility.py",
+          "line": 148
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_multi_case_feedback_has_real_source_and_survives_restart",
+          "file": "tests/test_core_compatibility.py",
+          "line": 226
+        }
+      ],
+      "scope_and_change": "已作决定/暂缓不强迫新决策，反馈通过明确事项事件记录；否定不自动记录"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentStateReviewTests.test_expired_memory_cannot_reenter_through_stale_index",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 45,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_expired_memory_cannot_reenter_current_service_context",
+          "file": "tests/test_core_compatibility.py",
+          "line": 188
+        }
+      ],
+      "scope_and_change": "当前服务上下文排除过期事实，旧索引不作权威"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentStateReviewTests.test_canonical_birth_datetime_updates_chart_input",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 56,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_corrected_birth_is_used_in_authorized_calculation_archive",
+          "file": "tests/test_core_compatibility.py",
+          "line": 216
+        }
+      ],
+      "scope_and_change": "原字段更正进入canonical计算输入"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentStateReviewTests.test_deleted_fact_does_not_reenter_via_same_turn_assistant",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 64,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_source_delete_is_irreversible_and_ledger_has_no_text",
+          "file": "tests/test_core_memory.py",
+          "line": 87
+        },
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_selected_cases_filter_saved_context_and_old_predictions_are_not_facts",
+          "file": "tests/test_core_runtime.py",
+          "line": 204
+        }
+      ],
+      "scope_and_change": "助手旧预测不能作为用户事实，删除来源不能重导入"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentStateReviewTests.test_negated_choice_does_not_become_decided_event",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 81,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_negated_decision_is_not_written_as_action_or_feedback",
+          "file": "tests/test_core_compatibility.py",
+          "line": 148
+        }
+      ],
+      "scope_and_change": "否定选择不自动产生feedback或episode"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentStateReviewTests.test_no_write_receipt_rejects_short_saved_claim",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 88,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_saved_receipt_cannot_be_replaced_by_model_acknowledgement",
+          "file": "tests/test_core_compatibility.py",
+          "line": 69
+        }
+      ],
+      "scope_and_change": "无真实写回执，模型“已记住”不提交"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentReviewTests.test_fresh_memory_edit_does_not_conflict_with_its_own_source_write",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 124,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_service_ordinary_memory_has_program_receipt_and_is_recalled",
+          "file": "tests/test_core_runtime.py",
+          "line": 137
+        }
+      ],
+      "scope_and_change": "同回合授权保存刷新版本，服务真实完成并下一轮读回"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentReviewTests.test_history_index_keeps_subject_scope",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 131,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_selected_case_and_owner_scope_precede_every_provider_call",
+          "file": "tests/test_core_runtime.py",
+          "line": 196
+        },
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_cross_owner_subject_and_fake_author_fail",
+          "file": "tests/test_core_memory.py",
+          "line": 97
+        }
+      ],
+      "scope_and_change": "PG原文/事实主体隔离，历史索引不是身份授权"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentReviewTests.test_replayed_draw_key_rejects_different_client_options",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 140,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_reused_draw_has_independent_request_fingerprint",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 78
+        },
+        {
+          "test_id": "test_core_web.CoreWeb.test_cases_tarot_fingerprint_reading_replay",
+          "file": "tests/test_core_web.py",
+          "line": 83
+        }
+      ],
+      "scope_and_change": "相同抽牌键不同选项拒绝，实际Web固定牌可恢复"
+    },
+    {
+      "legacy_id": "test_review_v6.IndependentReviewTests.test_deleting_tarot_removes_linked_synthetic_timeline_copies",
+      "legacy_file": "tests/legacy/test_review_v6.py",
+      "legacy_line": 147,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_delete_and_source_revoke_prevent_retry_resurrection",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 104
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_reveal_cancel_delete_replay_preserves_cards_and_revision",
+          "file": "tests/test_core_web_effects.py",
+          "line": 41
+        }
+      ],
+      "scope_and_change": "牌阵删除撤销派生读数及重试路径"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_original_author_quote_and_version_are_required",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 28,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_cross_owner_subject_and_fake_author_fail",
+          "file": "tests/test_core_memory.py",
+          "line": 97
+        },
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_authorization_is_range_scoped_and_secrets_rejected",
+          "file": "tests/test_core_memory.py",
+          "line": 49
+        }
+      ],
+      "scope_and_change": "真正作者/逐字原话/授权范围必需"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_owner_subject_and_channel_isolation",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 38,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_cross_owner_subject_and_fake_author_fail",
+          "file": "tests/test_core_memory.py",
+          "line": 97
+        },
+        {
+          "test_id": "test_core_channels.CoreChannelSourceTests.test_unknown_binding_and_forged_current_source_rejected",
+          "file": "tests/test_core_channels.py",
+          "line": 26
+        }
+      ],
+      "scope_and_change": "用户人物渠道一致性程序检查"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_write_ack_idempotent_and_request_mismatch",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 48,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_mutation_request_atomic_idempotence_and_no_private_receipt",
+          "file": "tests/test_core_memory.py",
+          "line": 248
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_settings_retry_is_one_effect_and_changed_args_conflict",
+          "file": "tests/test_core_web_effects.py",
+          "line": 12
+        }
+      ],
+      "scope_and_change": "请求指纹与程序效果回执持久化，不重复写入"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_correction_propagates_and_old_time_can_be_read",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 60,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_correction_preserves_independent_fact_from_same_message",
+          "file": "tests/test_core_memory.py",
+          "line": 73
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_corrected_birth_is_used_in_authorized_calculation_archive",
+          "file": "tests/test_core_compatibility.py",
+          "line": 216
+        }
+      ],
+      "scope_and_change": "新有效上下文只读当前事实；旧版本保审计记录，不开放as-of旧事实作为建议输入"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_old_event_cannot_replace_current_fact",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 76,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_selected_cases_filter_saved_context_and_old_predictions_are_not_facts",
+          "file": "tests/test_core_runtime.py",
+          "line": 204
+        },
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_hypothesis_and_legacy_do_not_become_effective",
+          "file": "tests/test_core_memory.py",
+          "line": 107
+        }
+      ],
+      "scope_and_change": "历史事件/预测不替代当前授权事实"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_no_prediction_or_hypothesis_promotion",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 83,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_hypothesis_and_legacy_do_not_become_effective",
+          "file": "tests/test_core_memory.py",
+          "line": 107
+        },
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_explicit_no_save_and_third_person_proposals_do_not_become_self_facts",
+          "file": "tests/test_core_runtime.py",
+          "line": 187
+        }
+      ],
+      "scope_and_change": "预测假设第三人叙述不升级用户现实事实"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_sensitive_third_party_and_profile_consent",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 92,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_authorization_is_range_scoped_and_secrets_rejected",
+          "file": "tests/test_core_memory.py",
+          "line": 49
+        },
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_explicit_optout_and_sensitive_markers_never_authorize",
+          "file": "tests/test_core_memory.py",
+          "line": 40
+        }
+      ],
+      "scope_and_change": "敏感出生第三人资料要求明确范围授权"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_user_can_disable_automatic_memory",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 101,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_auto_memory_disable_requires_scoped_explicit_permission",
+          "file": "tests/test_core_compatibility.py",
+          "line": 195
+        }
+      ],
+      "scope_and_change": "关自动记忆后低敏感候选也需要明确授权"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_profile_boolean_can_use_explicit_form_literal",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 107,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_profile_boolean_and_conflicts_are_not_last_write_wins",
+          "file": "tests/test_core_compatibility.py",
+          "line": 204
+        }
+      ],
+      "scope_and_change": "明确literal True作为原话字段值可保存，不能由模型推断"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_profile_conflict_is_not_last_write_wins",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 114,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_profile_boolean_and_conflicts_are_not_last_write_wins",
+          "file": "tests/test_core_compatibility.py",
+          "line": 204
+        }
+      ],
+      "scope_and_change": "同字段冲突从effective profile排除并列conflicts"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_stop_and_delete_block_reimport_and_purge_audit",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 121,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_source_delete_is_irreversible_and_ledger_has_no_text",
+          "file": "tests/test_core_memory.py",
+          "line": 87
+        },
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_privacy_ledger_replayed_after_restore_keeps_bodies_out",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 259
+        }
+      ],
+      "scope_and_change": "撤销来源无法重导入，账本不保存私密正文"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_fact_only_delete_preserves_history_but_excludes_sources",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 136,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_correction_preserves_independent_fact_from_same_message",
+          "file": "tests/test_core_memory.py",
+          "line": 73
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        }
+      ],
+      "scope_and_change": "原文保留但撤销片段过滤，相关派生来源不可引用"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_delete_after_stop_also_purges_derived_case_title",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 142,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_source_delete_clears_legacy_and_upload_metadata_and_restore_ledger",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 228
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        }
+      ],
+      "scope_and_change": "来源级撤销清理相关派生实体与恢复来源"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_concurrent_stale_writes_only_one_commits",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 150,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_concurrent_versions_only_one_mutation_commits",
+          "file": "tests/test_core_memory.py",
+          "line": 182
+        }
+      ],
+      "scope_and_change": "版本锁下两个真实并发写只有一个提交"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_nested_write_registration_and_mutation_are_atomic",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 162,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_mutation_request_atomic_idempotence_and_no_private_receipt",
+          "file": "tests/test_core_memory.py",
+          "line": 248
+        },
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_changed_source_during_import_rolls_back_core",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 184
+        }
+      ],
+      "scope_and_change": "新PG事务原文/效果注册失败整体回滚"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_nested_read_cannot_upgrade_to_write",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 177,
+      "status": "intentional_change",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_dry_run_shadow_reads_never_writes_source_or_core",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 128
+        },
+        {
+          "test_id": "test_core_architecture.CoreArchitectureTests.test_postgres_authority_has_no_sqlite_fallback",
+          "file": "tests/test_core_architecture.py",
+          "line": 39
+        }
+      ],
+      "scope_and_change": "旧SQLite db(False)嵌套协议退役；新shadow/dry-run读取不修改源或Core"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_case_a_b_a_and_multiple_subjects",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 182,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory.MemoryPostgresTests.test_multi_case_global_scope_and_distinct_versions",
+          "file": "tests/test_core_memory.py",
+          "line": 58
+        },
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_selected_cases_filter_saved_context_and_old_predictions_are_not_facts",
+          "file": "tests/test_core_runtime.py",
+          "line": 204
+        }
+      ],
+      "scope_and_change": "选中事项与人物范围切换后读取正确有效记录"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_case_execution_requires_user_source_and_idempotence",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 197,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_multi_case_feedback_has_real_source_and_survives_restart",
+          "file": "tests/test_core_compatibility.py",
+          "line": 226
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_negated_decision_is_not_written_as_action_or_feedback",
+          "file": "tests/test_core_compatibility.py",
+          "line": 148
+        }
+      ],
+      "scope_and_change": "执行反馈保用户原话与指定事项；否定不自动记录"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_trace_is_minimal_and_scoped",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 209,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_cli_status_and_resume_share_service_budget_and_minimal_trace",
+          "file": "tests/test_core_compatibility.py",
+          "line": 267
+        },
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_checkpoint_state_contains_identifiers_without_private_history",
+          "file": "tests/test_core_runtime.py",
+          "line": 113
+        }
+      ],
+      "scope_and_change": "最小运行状态只含标识预算，跨owner不可读取"
+    },
+    {
+      "legacy_id": "test_state_v6.StateTests.test_300_turn_restart_retains_critical_facts_and_case",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 216,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_long_preloaded_history_does_not_displace_saved_constraint_after_restart",
+          "file": "tests/test_core_compatibility.py",
+          "line": 138
+        }
+      ],
+      "scope_and_change": "预载300条历史后冷服务读取已保存约束；另有300轮seeded真实Core回放"
+    },
+    {
+      "legacy_id": "test_state_v6.MigrationTests.test_dry_run_idempotence_and_no_legacy_promotion",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 241,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_dry_run_readonly_and_repeated_apply_with_withdrawal_first",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 49
+        }
+      ],
+      "scope_and_change": "真实PG目标迁移，干跑只读、重复应用无升级旧预测"
+    },
+    {
+      "legacy_id": "test_state_v6.MigrationTests.test_deletion_survives_rerun_from_old_sources",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 257,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_source_delete_clears_legacy_and_upload_metadata_and_restore_ledger",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 228
+        }
+      ],
+      "scope_and_change": "旧源恢复后账本优先，派生图片及旧段不能复活"
+    },
+    {
+      "legacy_id": "test_state_v6.MigrationTests.test_later_legacy_delete_is_replayed_before_reimport",
+      "legacy_file": "tests/legacy/test_state_v6.py",
+      "legacy_line": 267,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_later_legacy_hidden_is_applied_before_retry",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 249
+        }
+      ],
+      "scope_and_change": "再次迁移先同步旧撤销，再导入活跃来源"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotDeckTests.test_complete_original_editorial_deck",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 15,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_knowledge.CoreKnowledgeTests.test_complete_78_card_deck_and_each_orientation_is_real_editorial_text",
+          "file": "tests/test_core_knowledge.py",
+          "line": 174
+        }
+      ],
+      "scope_and_change": "完整78张及正逆位原始自编材料"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotDeckTests.test_every_original_asset_exists_and_is_safe_svg",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 27,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_original_tarot_assets_are_complete_unique_and_safe_svg",
+          "file": "tests/test_core_compatibility.py",
+          "line": 248
+        }
+      ],
+      "scope_and_change": "79张原创SVG与许可清单完整且无主动内容"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_auto_is_persisted_before_exposure_and_frozen_on_retry",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 50,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_full_deck_hidden_cards_and_frozen_restart",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 67
+        },
+        {
+          "test_id": "test_core_web.CoreWeb.test_cases_tarot_fingerprint_reading_replay",
+          "file": "tests/test_core_web.py",
+          "line": 83
+        }
+      ],
+      "scope_and_change": "固定私有牌序先持久，未揭牌不可见，重启/重试不重抽"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_meaning_snapshot_does_not_change_after_library_edit",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 63,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_fixed_tarot_meanings_ignore_later_in_memory_catalog_edit",
+          "file": "tests/test_core_compatibility.py",
+          "line": 307
+        },
+        {
+          "test_id": "test_core_calculation_boundaries.CalculationBoundaryContractTests.test_tarot_hidden_relabelled_revised_or_revoked_view_is_rejected",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 80
+        }
+      ],
+      "scope_and_change": "解释来自冻结牌意及版本；另版本/重标记不冒充原牌意"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_unbiased_algorithm_bounds_and_reversals_setting",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 72,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_tarot_unbiased_shuffle_bounds_and_reversal_setting",
+          "file": "tests/test_core_compatibility.py",
+          "line": 258
+        }
+      ],
+      "scope_and_change": "真实服务洗牌界限78到2，无逆位设置严格保持正位"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_pick_back_only_concurrent_double_click_and_refresh",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 82,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_concurrent_selection_is_atomic",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 85
+        },
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_full_deck_hidden_cards_and_frozen_restart",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 67
+        }
+      ],
+      "scope_and_change": "牌背选择并发去重并保存，未揭前无牌名"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_same_case_stage_reuses_including_cancelled_and_new_is_linked",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 99,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_cancelled_stage_reuses_draw_and_explicit_new_is_linked",
+          "file": "tests/test_core_compatibility.py",
+          "line": 323
+        }
+      ],
+      "scope_and_change": "同事项阶段复用固定牌，取消与重放保持版本"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_choice_options_required_frozen_and_manual_unique",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 109,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_choice_frozen_manual_revision_and_reading_failure",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 91
+        }
+      ],
+      "scope_and_change": "选择阵保固定选项、实体牌版本，读数失败不重抽"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_explicit_manual_correction_retains_versions_and_source",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 120,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_choice_frozen_manual_revision_and_reading_failure",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 91
+        }
+      ],
+      "scope_and_change": "实体牌纠错必须理由并产生链接新版本"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_owner_scope_on_every_state_path",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 131,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_delete_and_source_revoke_prevent_retry_resurrection",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 104
+        },
+        {
+          "test_id": "test_core_calculation_boundaries.CalculationBoundaryContractTests.test_tarot_helper_uses_frozen_revealed_view_and_separate_revisions",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 69
+        }
+      ],
+      "scope_and_change": "服务牌面/读数/引用均owner主体一致"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_reading_retry_is_separate_and_does_not_redraw",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 144,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_reading_resume_keeps_version_and_only_accepts_its_persisted_result",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 118
+        },
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_choice_frozen_manual_revision_and_reading_failure",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 91
+        }
+      ],
+      "scope_and_change": "读数重试独立版本与原牌面一致"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_cancel_and_restart_recover_pending_reading_without_redraw",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 164,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_reading_resume_keeps_version_and_only_accepts_its_persisted_result",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 118
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_reveal_cancel_delete_replay_preserves_cards_and_revision",
+          "file": "tests/test_core_web_effects.py",
+          "line": 41
+        }
+      ],
+      "scope_and_change": "中断恢复沿持久读数run，不生成新抽牌"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_privacy_delete_clears_snapshots_all_manual_revisions_and_readings",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 175,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_privacy_delete_purges_all_manual_revisions_readings_and_keys",
+          "file": "tests/test_core_compatibility.py",
+          "line": 332
+        }
+      ],
+      "scope_and_change": "牌阵删除与背景撤销封闭旧请求及派生读数重放"
+    },
+    {
+      "legacy_id": "test_tarot_v6.TarotStoreTests.test_retry_lookup_and_revoke_derived_context_without_changing_cards",
+      "legacy_file": "tests/legacy/test_tarot_v6.py",
+      "legacy_line": 191,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_delete_and_source_revoke_prevent_retry_resurrection",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 104
+        },
+        {
+          "test_id": "test_core_pg_channels.CorePGChannels.test_reading_resume_keeps_version_and_only_accepts_its_persisted_result",
+          "file": "tests/test_core_pg_channels.py",
+          "line": 118
+        }
+      ],
+      "scope_and_change": "背景撤销读数不可回流；剩余牌面不重抽"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_memory_edit_stop_and_source_delete_real_routes",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 26,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_web.CoreWeb.test_refusal_no_fact_and_manual_correction_source_delete",
+          "file": "tests/test_core_web.py",
+          "line": 71
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        }
+      ],
+      "scope_and_change": "实际Web路由对PG记忆更正/停止/来源删除"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_cases_current_revision_and_events_distinguish_execution",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 35,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_multi_case_feedback_has_real_source_and_survives_restart",
+          "file": "tests/test_core_compatibility.py",
+          "line": 226
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_negated_decision_is_not_written_as_action_or_feedback",
+          "file": "tests/test_core_compatibility.py",
+          "line": 148
+        }
+      ],
+      "scope_and_change": "事项版本与原话反馈不同于模型建议；未执行不自动转事件"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_draw_reload_idempotency_privacy_and_unconfigured_model",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 44,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_web.CoreWeb.test_cases_tarot_fingerprint_reading_replay",
+          "file": "tests/test_core_web.py",
+          "line": 83
+        },
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_wrong_cards_and_unconfigured_reading_are_not_success",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 112
+        }
+      ],
+      "scope_and_change": "真实牌面固定重载，模型未配置或错误读数不记成功"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_two_account_and_two_subject_isolation",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 55,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_selected_case_and_owner_scope_precede_every_provider_call",
+          "file": "tests/test_core_runtime.py",
+          "line": 196
+        },
+        {
+          "test_id": "test_core_web.CoreWeb.test_chat_memory_sse_replay_and_foreign_operation",
+          "file": "tests/test_core_web.py",
+          "line": 52
+        }
+      ],
+      "scope_and_change": "真实服务与Web验证跨账户和跨主体不可访问"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_chat_actual_context_and_failed_fact_candidate",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 64,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_service_ordinary_memory_has_program_receipt_and_is_recalled",
+          "file": "tests/test_core_runtime.py",
+          "line": 137
+        },
+        {
+          "test_id": "test_core_runtime.CoreRuntimeTests.test_explicit_no_save_and_third_person_proposals_do_not_become_self_facts",
+          "file": "tests/test_core_runtime.py",
+          "line": 187
+        }
+      ],
+      "scope_and_change": "真实上下文来自有效事实，候选失败不会写入"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_tarot_wrong_card_blocked_then_repair_same_draw",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 71,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_wrong_cards_and_unconfigured_reading_are_not_success",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 112
+        },
+        {
+          "test_id": "test_core_calculation_boundaries.CalculationBoundaryContractTests.test_tarot_hidden_relabelled_revised_or_revoked_view_is_rejected",
+          "file": "tests/test_core_calculation_boundaries.py",
+          "line": 80
+        }
+      ],
+      "scope_and_change": "假牌/方向/语义重标记拒绝，真实原牌面保持"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_deletion_purges_tarot_derived_snapshots",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 80,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_pg_effects.PostgreSQLEffects.test_delete_and_source_revoke_prevent_retry_resurrection",
+          "file": "tests/test_core_pg_effects.py",
+          "line": 104
+        },
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_reveal_cancel_delete_replay_preserves_cards_and_revision",
+          "file": "tests/test_core_web_effects.py",
+          "line": 41
+        }
+      ],
+      "scope_and_change": "删除实际撤销派生读数和旧请求"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_natural_stop_refreshes_context_and_confirms_actual_receipt",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 84,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_natural_stop_uses_real_receipt_and_refreshes_current_context",
+          "file": "tests/test_core_compatibility.py",
+          "line": 293
+        }
+      ],
+      "scope_and_change": "停止回执及旧上下文刷新由程序执行，恢复不能免计费"
+    },
+    {
+      "legacy_id": "test_vertical_v6.VerticalTests.test_fact_delete_can_later_upgrade_to_source_delete",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 90,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_web_effects.CoreMutationWeb.test_correction_stop_and_source_delete_replay_cannot_restore_text",
+          "file": "tests/test_core_web_effects.py",
+          "line": 22
+        }
+      ],
+      "scope_and_change": "先事实删除后来源删除仍清除原文与派生状态"
+    },
+    {
+      "legacy_id": "test_vertical_v6.LongContextTests.test_300_mixed_rounds_restart_constraints_and_unknowns",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 98,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_long_preloaded_history_does_not_displace_saved_constraint_after_restart",
+          "file": "tests/test_core_compatibility.py",
+          "line": 138
+        },
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_explicit_unknown_cost_is_accepted_without_fabricating_preference",
+          "file": "tests/test_core_compatibility.py",
+          "line": 131
+        }
+      ],
+      "scope_and_change": "300预载历史与300轮混合回放验证冷恢复；未知成本保持未知"
+    },
+    {
+      "legacy_id": "test_vertical_v6.LongContextTests.test_corrected_birth_uses_canonical_fields_and_delete_blocks_legacy",
+      "legacy_file": "tests/legacy/test_vertical_v6.py",
+      "legacy_line": 116,
+      "status": "covered",
+      "new_scenarios": [
+        {
+          "test_id": "test_core_compatibility.CoreCompatibilityTests.test_corrected_birth_is_used_in_authorized_calculation_archive",
+          "file": "tests/test_core_compatibility.py",
+          "line": 216
+        },
+        {
+          "test_id": "test_core_memory_migration.CoreMigrationPostgresTests.test_source_delete_clears_legacy_and_upload_metadata_and_restore_ledger",
+          "file": "tests/test_core_memory_migration.py",
+          "line": 228
+        }
+      ],
+      "scope_and_change": "实际更正资料进canonical档案，删除后旧迁移来源不能复活"
+    }
+  ]
+}

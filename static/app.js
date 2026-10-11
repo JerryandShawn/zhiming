@@ -4,6 +4,10 @@ const $  = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const jsArg = value => esc(JSON.stringify(String(value ?? '')));
+const operationCache=new Map();
+const focusReturns=new Map();
+function rememberFocus(name){focusReturns.set(name,document.activeElement);}
+function restoreFocus(name){const element=focusReturns.get(name);if(element?.isConnected)element.focus({preventScroll:true});focusReturns.delete(name);}
 
 const DIMS = [
   { k: "爱情",   c: "#E8709C" },
@@ -59,11 +63,12 @@ const TOKEN_KEY = "mjt_token";
 const getToken = () => localStorage.getItem(TOKEN_KEY) || "";
 function saveToken(v) { localStorage.setItem(TOKEN_KEY, v.trim()); $("#tokenInput").value = v.trim(); }
 function openTokenModal(isError) {
+  if($('#tokenModal').classList.contains('hidden'))rememberFocus('token');
   $("#tokenModal").classList.remove("hidden");
   $("#tokenErr").classList.toggle("hidden", !isError);
   setTimeout(() => $("#tokenModalInput").focus(), 50);
 }
-function closeTokenModal() { $("#tokenModal").classList.add("hidden"); $("#tokenErr").classList.add("hidden"); }
+function closeTokenModal() { $("#tokenModal").classList.add("hidden"); $("#tokenErr").classList.add("hidden");restoreFocus('token'); }
 
 async function api(path, opt = {}) {
   const headers = Object.assign({ "X-Token": getToken() }, opt.headers || {});
@@ -81,6 +86,19 @@ async function apiJson(path, opt = {}) {
   }
   return r.json();
 }
+async function writeJson(path, data={}, method='POST') {
+  const operation=method+':'+path, body={...data};
+  body.request_id ||= tarotOperationKey(operation,data);
+  body.idempotency_key ||= body.request_id;
+  const result=await apiJson(path,{method,body:JSON.stringify(body)});
+  clearTarotOperation(operation);
+  return result;
+}
+function entityRevision(entry) {
+  const value=entry?.revision ?? entry?.context_revision;
+  if(!Number.isInteger(value))throw Error('资料版本暂不可用，请刷新后再保存。');
+  return value;
+}
 
 /* ================= 页签切换 ================= */
 const PAGE_META = {
@@ -91,9 +109,10 @@ const PAGE_META = {
  graph:["人与人之间，留下生活的线索。","查看已记录的人物、关系和事件，点击节点读懂其中的联系。","缘网","关系来自档案记录"],
  dict:["让经验，慢慢成为你的词典。","个人解释与样本记录并读；尚无足够反馈的判断，继续保留疑问。","词典","用经历校准语言"],
  reports:["留一段时间，读今天的自己。","报告按日期归档，展开阅读、检索回看，也可以导出留存。","报告","晨报 · 每日 07:00"],
- memory:["接着上次，把事情慢慢理清。","查看正在跟进的事项、已记住的信息和来源，随时更正或停止使用。","记忆与事项","由你确认 · 由你更正"]
+ cases:["接着上次，把事情慢慢理清。","查看这件事的背景、决定与实际反馈，继续跟进下一步。","我的事项","一件事 · 持续跟进"],
+ memory:["记住的信息，由你核对。","查看长期信息与原话来源，随时更正、停用或删除。","已记住的信息","由你确认 · 由你更正"]
 };
-const loaders = { chat: () => {}, chart: loadChart, tarot: loadTarot, timeline: loadTimeline, graph: loadGraph, dict: loadDict, reports: loadReports, memory: loadMemories };
+const loaders = { chat: loadChatScope, chart: loadChart, tarot: loadTarot, cases: loadCases, timeline: loadTimeline, graph: loadGraph, dict: loadDict, reports: loadReports, memory: loadMemories };
 const loaded = {};
 let currentPage = "chat";
 function switchPage(name, fromRoute) {
@@ -105,7 +124,7 @@ function switchPage(name, fromRoute) {
   $("#pageNote").textContent=heading[3];
   $$(".page").forEach(p => p.classList.add("hidden"));
   $("#page-" + name).classList.remove("hidden");
-  $$("#navTabs .nav-tab, #mobileTabs .m-tab").forEach(t => t.classList.toggle("active", t.dataset.page === name));
+  $$("[data-page]").forEach(t => {const active=t.dataset.page===name;t.classList.toggle("active",active);if(active)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current');});
   if (!fromRoute) {
     const target = "#/" + name;
     if (location.hash !== target) history.pushState(null, "", target);
@@ -113,8 +132,8 @@ function switchPage(name, fromRoute) {
   if (!loaded[name] && getToken()) { loaded[name] = true; Promise.resolve(loaders[name]()).catch(e => { loaded[name]=false; toast(e.message); }); }
   if (name === "graph") requestAnimationFrame(() => resizeGraphCanvas());
 }
-$$("#navTabs .nav-tab, #mobileTabs .m-tab").forEach(t =>
-  t.addEventListener("click", () => switchPage(t.dataset.page)));
+$$("[data-page]").forEach(t =>
+  t.addEventListener("click", () => {switchPage(t.dataset.page);$('#pageTitle').tabIndex=-1;$('#pageTitle').focus({preventScroll:true});}));
 
 /* ================= ① 对话 ================= */
 function showSlices(meta) {
@@ -206,16 +225,31 @@ function histMsgHtml(m) {
     </div>`;
   }
   return `<div class="flex justify-start">
-    <div class="msg-ai relative px-4 py-3 max-w-[92%] w-fit min-w-[120px]">${badge}<div class="msg-body">${answerHtml(m.context_meta, m.content)}</div>${timeHtml}</div>
+    <div class="msg-ai relative px-4 py-3 max-w-[92%] w-fit min-w-[120px]">${badge}<div class="msg-body" ${m.meta?.meta?.core_run?.run_id || m.context_meta?.meta?.core_run?.run_id?`data-core-run="${esc((m.meta || m.context_meta).meta.core_run.run_id)}"`:''}>${answerHtml(m.meta || m.context_meta, m.content)}</div>${timeHtml}</div>
   </div>`;
 }
 let currentSession=localStorage.getItem("mjt_session") || "shared", historyBefore="", historyRows=[];
 function storedJson(key, fallback, storage=sessionStorage) {try {return JSON.parse(storage.getItem(key)) ?? fallback;} catch {return fallback;}}
 function chatContext() {return storedJson('context:'+currentSession,{});}
-function setChatContext(context) {sessionStorage.setItem('context:'+currentSession,JSON.stringify(context || {}));renderChatContext();}
+let chatScopeCases=[];
+function contextCaseIds(context=chatContext()) {return [...new Set(Array.isArray(context.case_ids)?context.case_ids:context.case_id?[context.case_id]:[])].filter(id=>typeof id==='string' && id);}
+function setChatContext(context) {context={...(context || {})};context.case_ids=context.draw_id?[context.draw_case_id || context.case_id].filter(Boolean):contextCaseIds(context);context.case_id=context.case_ids[0] || null;if(context.draw_id)context.draw_case_id=context.case_id;sessionStorage.setItem('context:'+currentSession,JSON.stringify(context));renderChatContext();renderChatScope();}
+async function loadChatScope() {
+  const root=$('#chatCaseScopeList');root.innerHTML='<p class="muted">正在读取有效事项…</p>';
+  try{const rows=await apiJson('/api/cases?subject_id=self');chatScopeCases=(Array.isArray(rows)?rows:[]).filter(row=>(row.subject_id || row.subject || 'self')==='self' && !['deleted','stopped','revoked','cancelled'].includes(row.status));renderChatScope();}
+  catch(e){root.innerHTML=`<p class="err-banner" role="alert">事项范围暂时无法读取：${esc(e.message)}</p><button class="quiet-button" data-reload-chat-scope>重新读取</button>`;root.querySelector('button').onclick=loadChatScope;}
+}
+function renderChatScope() {
+  const context=chatContext(),ids=contextCaseIds(context),root=$('#chatCaseScopeList');
+  $('#chatCaseScopeCount').textContent=context.draw_id?'固定牌阵对应事项':ids.length?'已选 '+ids.length+' 件':'未关联事项';
+  root.innerHTML=(context.draw_id?'<p class="muted">本轮牌阵的事项已固定。解除牌阵后，可重新选择范围。</p><button class="quiet-button" data-unlink-chat-draw>解除牌阵关联</button>':'')+(chatScopeCases.length?chatScopeCases.map(entry=>`<label class="chat-case-choice"><input type="checkbox" data-chat-case="${esc(entry.id)}" ${ids.includes(entry.id)?'checked':''} ${context.draw_id?'disabled':''}><span>${esc(entry.title || '未命名事项')}</span></label>`).join(''):'<p class="muted">暂无可选事项。可以先到“我的事项”记录。</p>');
+  root.querySelector('[data-unlink-chat-draw]')?.addEventListener('click',()=>{const {draw_id,draw_case_id,...other}=context;setChatContext(other);});
+  root.querySelectorAll('[data-chat-case]').forEach(input=>input.onchange=()=>{if(sending){input.checked=!input.checked;toast('本轮正在处理，完成后可调整下一轮范围');return;}const chosen=[...root.querySelectorAll('[data-chat-case]:checked')].map(input=>input.dataset.chatCase);if(chosen.length>8){input.checked=false;toast('每轮最多选择 8 个事项');return;}const focused=input.dataset.chatCase;setChatContext({case_ids:chosen,title:chatScopeCases.filter(entry=>chosen.includes(entry.id)).map(entry=>entry.title).join('、')});[...root.querySelectorAll('[data-chat-case]')].find(input=>input.dataset.chatCase===focused)?.focus();});
+}
+$('#chatCaseScope').addEventListener('toggle',()=>{if($('#chatCaseScope').open)loadChatScope();});
 function renderChatContext() {
   const c=chatContext(), root=$('#chatCaseBar');
-  root.classList.toggle('hidden',!c.case_id && !c.draw_id);
+  root.classList.toggle('hidden',!contextCaseIds(c).length && !c.draw_id);
   root.innerHTML=`<span>${esc(c.title || '继续当前事项')}${c.draw_id?' · 已关联固定牌阵':''}</span><div>${c.draw_id?'<button data-open-linked-draw>查看牌阵</button>':''}<button data-clear-linked-case aria-label="解除本轮事项关联">聊另一件事</button></div>`;
   root.querySelector('[data-open-linked-draw]')?.addEventListener('click',()=>openTarotDraw(c.draw_id));
   root.querySelector('[data-clear-linked-case]')?.addEventListener('click',()=>setChatContext({}));
@@ -245,7 +279,7 @@ function tarotAnswerDetails(result) {
 function evidenceHtml(result) {
   if(!result) return "";
   const list=value=>Array.isArray(value)?value:[];
-  const evidence=[...list(result.evidence)], memories=list(result.memory_changes).filter(m=>m && m.ok!==false && !['failed','pending','proposed','unconfigured'].includes(m.status)), synthesis=list(result.synthesis), caveats=list(result.caveats);
+  const evidence=[...list(result.evidence)], memories=list(result.memory_receipts).filter(m=>m?.write_status==='saved'), synthesis=list(result.synthesis), caveats=list(result.caveats);
   for(const row of list(result.reality_context))if(row?.ref && !evidence.some(e=>e.ref===row.ref))evidence.push({ref:row.ref,claim:row.statement,source:'user_context'});
   const appendix=typeof result.professional_appendix==='string'?result.professional_appendix.trim():'';
   const engineNames={bazi:'八字',ziwei:'紫微斗数',astro:'西方星盘',tarot:'塔罗'};
@@ -264,7 +298,7 @@ function evidenceHtml(result) {
   const boundaries=caveats.length?`<section class="answer-detail-section"><h3>资料缺口与解释边界</h3>${caveats.map(x=>`<p>${esc(x)}</p>`).join('')}</section>`:'';
   const coverage=list(result.coverage).length?`<section class="answer-detail-section answer-coverage"><h3>本次参考范围</h3>${list(result.coverage).map(c=>`<p><strong>${esc(engineNames[c.engine] || '参考视角')}</strong> · ${esc(contributionNames[c.status] || '参考说明')}<br>${esc(c.reason)}</p>`).join('')}</section>`:'';
   const tarotDetails=tarotAnswerDetails(result),professional=appendix?`<section class="answer-detail-section professional-appendix"><h3>专业解读</h3>${md(appendix)}</section>`:'';
-  const saved=memories.length?`<button class="memory-notice" onclick="switchPage('memory')">已记录 ${memories.length} 条你的原话 · 查看或更正 ↗</button>`:'';
+  const saved=memories.length?`<button class="memory-notice" onclick="switchPage('memory')">本轮已保存 ${memories.length} 条长期信息 · 查看原话与更正 ↗</button>`:'';
   return saved+((comparison || sources || boundaries || professional || tarotDetails || coverage)?`<details class="answer-sources"><summary><span>${tarotDetails?'牌面解释、专业依据与来源':synthesis.length?'专业依据与三盘对照':'专业依据与来源'}</span><small>按需展开</small></summary><div class="answer-details-body">${tarotDetails}${comparison}${coverage}${sources}${boundaries}${professional}</div></details>`:'');
 }
 function answerHtml(result, fallback='') {
@@ -275,7 +309,8 @@ function historyItemHtml(m) {
   if(m.role==='user') {
     const images=(m.image_ids || []).map(id=>`<img data-image="${esc(id)}" alt="历史附图" class="chat-img history-image">`).join('');
     let state='';
-    if(['failed','cancelled','interrupted'].includes(m.status)) state=`<button class="quiet-button retry-history" data-turn="${esc(m.turn_id)}">${m.status==='cancelled'?'已停止':'未完成'} · 重试</button>`;
+    if(['failed','stale','interrupted'].includes(m.status)) state=`<button class="quiet-button retry-history" data-turn="${esc(m.turn_id)}">未完成 · 继续本轮</button>`;
+    if(m.status==='cancelled')state='<span class="muted">本轮已停止</span>';
     if(m.status==='running')state='<span class="muted">仍在处理，稍后刷新可回看</span>';
     html+=`<div class="history-attachments">${images}${state}</div>`;
   }
@@ -283,9 +318,10 @@ function historyItemHtml(m) {
 }
 function bindHistory(root) {
   hydrateImages(root);
+  root.querySelectorAll('[data-core-run]').forEach(body=>{const message=historyRows.find(row=>row.role==='assistant' && (row.meta || row.context_meta)?.meta?.core_run?.run_id===body.dataset.coreRun);if(message)bindClarification(body,message.meta || message.context_meta);});
   root.querySelectorAll('.retry-history').forEach(b=>b.onclick=()=>{
     const m=historyRows.find(x=>x.turn_id===b.dataset.turn && x.role==='user');
-    if(m)sendChat(m.content,null,m.turn_id);
+    if(m)sendChat(m.content,null,m.run_id || m.turn_id);
   });
 }
 async function loadHistory(older=false) {
@@ -325,7 +361,7 @@ async function activateSession(ident) {
 }
 async function newConversation() {
   if(sending){toast('请等待本轮结束，或先停止回答');return;}
-  try { const s=await apiJson('/api/sessions',{method:'POST',body:JSON.stringify({})});
+  try { const s=await writeJson('/api/sessions',{});
     currentSession=s.id;localStorage.setItem('mjt_session',s.id);renderChatContext();$('#chatInput').value='';switchPage('chat');await loadSessions();await loadHistory();
   } catch(e){toast(e.message);}
 }
@@ -359,17 +395,26 @@ $('#imgInput').addEventListener('change',async e=>{
  }
 });
 
-$("#imgViewer").addEventListener("click", () => $("#imgViewer").classList.add("hidden"));
+function closeImageViewer(){ $('#imgViewer').classList.add('hidden');restoreFocus('image'); }
+$("#imgViewer").addEventListener("click",closeImageViewer);
 $("#chatFlow").addEventListener("click", e => {
   if (e.target.classList.contains("chat-img")) {
+    rememberFocus('image');
     $("#imgViewerImg").src = e.target.src;
     $("#imgViewer").classList.remove("hidden");
   }
 });
 
 let sending = false, activeTurn=null;
+const chatRequests=new Map();
 function progress(text) {$('#chatProgress').textContent=text;$('#chatProgress').classList.remove('hidden');}
-function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);scrollChat(false); }
+function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);bindClarification(body,result);const m=result?.meta || {},caseId=m.case_id || m.case_ids?.[0];if(Array.isArray(m.case_ids) || caseId)setChatContext({case_ids:m.case_ids || [caseId],case_id:caseId,title:m.case_title || chatScopeCases.filter(entry=>(m.case_ids || [caseId]).includes(entry.id)).map(entry=>entry.title).join('、'),...(m.draw_id?{draw_id:m.draw_id,draw_case_id:caseId}:{})});scrollChat(false); }
+function bindClarification(body,result) {
+  const interrupt=result?.meta?.interrupt,runId=result?.meta?.core_run?.run_id;
+  if(!interrupt?.id || !interrupt.state_version || !runId)return;
+  const form=document.createElement('form');form.className='clarification-form';form.innerHTML=`${Array.isArray(interrupt.questions) && interrupt.questions.length?`<ul>${interrupt.questions.map(question=>`<li>${esc(question)}</li>`).join('')}</ul>`:''}<label>补充这次缺少的信息<textarea rows="2" maxlength="16000" required aria-label="补充本轮澄清信息"></textarea></label><p class="muted">补充后会重新读取最新有效资料，沿用这轮选中的人物、事项与固定牌阵。</p><button type="submit" class="btn-gold">补充并继续</button>`;
+  form.onsubmit=async event=>{event.preventDefault();const message=form.querySelector('textarea').value.trim();if(!message || sending)return;await sendChat(message,null,null,{runId,interruptId:interrupt.id,stateVersion:interrupt.state_version,caseIds:result.meta.case_ids || [],drawId:result.meta.draw_id});};body.append(form);
+}
 async function recoverTurn(body,id) {
   progress('连接已断开，正在重新查找本轮结果…');
   for(let i=0;i<90;i++) {
@@ -380,21 +425,36 @@ async function recoverTurn(body,id) {
   }
   throw Error('本轮仍在后台处理中，请稍后从历史回看');
 }
-async function sendChat(msg, selection = null, retryOf = null) {
+async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null) {
   msg=String(msg || '').trim();if(!msg || sending)return;
+  const pending=storedJson('chat-retry:'+currentSession,null);
+  if(!retryOf && pending?.message===msg && JSON.stringify(pending.selection || null)===JSON.stringify(selection)){retryOf=pending.run_id;resumeSpec ||=pending.resumeSpec;}
   if(!getToken()){openTokenModal(false);return;}
   sending=true;$('#sendBtn').disabled=true;$('#stopBtn').classList.remove('hidden');
   $('#chatInput').value='';sessionStorage.removeItem('draft:'+currentSession);
-  const imgs=pendingImgs.slice();pendingImgs=[];renderImgStrip();addUserMsg(msg,imgs);
+  const imgs=resumeSpec?[]:pendingImgs.slice();if(!resumeSpec)pendingImgs=[];renderImgStrip();addUserMsg(msg,imgs);
   if(selection){$('#selectionChip').textContent=`${selection.date} · ${selection.system} · ${selection.focus}`;$('#selectionChip').classList.remove('hidden');}
   else $('#selectionChip').classList.add('hidden');
   const body=addAiMsg();let gotResult=false, serverError=null;
-  activeTurn=crypto.randomUUID();progress('正在保存问题与附图…');
-  const id=activeTurn;
+  const context=chatContext(), previous=retryOf?(chatRequests.get(retryOf) || storedJson('chat-pending:'+retryOf,null)):null;
+  const messageId=resumeSpec?tarotOperationKey('resume:'+resumeSpec.runId+':'+resumeSpec.interruptId,{message:msg,state_version:resumeSpec.stateVersion}):null;
+  const id=previous?.request_id || retryOf || (resumeSpec?'resume:'+resumeSpec.runId+':'+messageId:crypto.randomUUID());
+  const caseIds=resumeSpec?resumeSpec.caseIds:context.draw_id?[context.draw_case_id || context.case_id].filter(Boolean):contextCaseIds(context);
+  const drawId=resumeSpec?resumeSpec.drawId:context.draw_id;
+  const payload=previous || {message:msg,selection:selection || {},images:imgs,session_id:currentSession,request_id:id,case_ids:caseIds,...(caseIds[0]?{case_id:caseIds[0]}:{}),...(drawId?{draw_id:drawId}:{}),...(resumeSpec?{resume:{...resumeSpec,messageId}}:{})};
+  chatRequests.set(id,payload);
+  if(JSON.stringify(payload).length<200000)try{sessionStorage.setItem('chat-pending:'+id,JSON.stringify(payload));}catch{}
+  activeTurn=retryOf || id;progress(retryOf?'正在恢复原来这一轮…':'正在保存问题与附图…');
   try {
-    const context=chatContext();
-    const payload={message:msg,selection:selection || {},images:imgs,session_id:currentSession,request_id:id,retry_of:retryOf,...(context.case_id?{case_id:context.case_id}:{}),...(context.draw_id?{draw_id:context.draw_id}:{})};
-    const r=await api('/api/chat',{method:'POST',body:JSON.stringify(payload)});
+    let r;
+    if(retryOf){
+      let run;
+      try{run=await apiJson('/api/runs/'+encodeURIComponent(retryOf));}catch(e){if(e.status!==404)throw e;}
+      if(run?.status==='succeeded'){gotResult=true;renderAnswer(body,run.result);return;}
+      if(run && ['running','queued'].includes(run.status)){await recoverTurn(body,run.id);gotResult=true;return;}
+      if(run){r=await api('/api/runs/'+encodeURIComponent(run.id)+'/retry',{method:'POST',body:JSON.stringify({request_id:'retry:'+run.operation_id})});}
+    }
+    r ||= payload.resume?await api('/api/runs/'+encodeURIComponent(payload.resume.runId)+'/resume',{method:'POST',body:JSON.stringify({message:payload.message,message_id:payload.resume.messageId,interrupt_id:payload.resume.interruptId,state_version:payload.resume.stateVersion})}):await api('/api/chat',{method:'POST',body:JSON.stringify(payload)});
     if(!r.ok){let detail=await r.json().catch(()=>({}));throw Error(detail.detail || `请求失败 (${r.status})`);}
     const reader=r.body.getReader(),dec=new TextDecoder();let buffer='';
     try {
@@ -404,24 +464,31 @@ async function sendChat(msg, selection = null, retryOf = null) {
           const line=buffer.slice(0,pos).trim();buffer=buffer.slice(pos+1);if(!line.startsWith('data:'))continue;
           const data=line.slice(5).trim();if(data==='[DONE]')continue;
           const event=JSON.parse(data);
+          if(event.type==='started' && event.run_id){activeTurn=event.run_id;chatRequests.set(event.run_id,payload);}
           if(event.type==='context')showSlices(event.meta);
           if(event.type==='status' || event.type==='tool')progress(event.text);
-          if(event.type==='result'){gotResult=true;renderAnswer(body,event.result);loaded.memory=false;const m=event.result.meta || {};const caseId=m.case_id || m.case_ids?.[0];if(caseId)setChatContext({...chatContext(),case_id:caseId,...(m.draw_id?{draw_id:m.draw_id}:{}),...(m.case_title?{title:m.case_title}:{})});}
+          if(event.type==='result'){gotResult=true;renderAnswer(body,event.result);loaded.memory=false;loaded.cases=false;}
           if(event.type==='error')serverError=event.message;
         }
       }
     } catch(e){if(!gotResult && !serverError)progress('连接波动，正在恢复本轮…');}
     if(serverError)throw Error(serverError);
-    if(!gotResult)await recoverTurn(body,id);
+    if(!gotResult){await recoverTurn(body,activeTurn || id);gotResult=true;}
   } catch(e) {
-    body.classList.remove('type-caret');body.innerHTML=`<div class="err-banner">${esc(e.message || e)}</div><button class="quiet-button retry-current">重试这条问题</button>`;
-    body.querySelector('.retry-current').onclick=()=>{if(!sending){pendingImgs=imgs.slice();sendChat(msg,selection,id);}};
+    const restoreId=activeTurn || retryOf || id;
+    sessionStorage.setItem('chat-retry:'+currentSession,JSON.stringify({run_id:restoreId,message:msg,selection,resumeSpec}));
+    body.classList.remove('type-caret');body.innerHTML=`<div class="err-banner" role="alert">${esc(e.message || e)}</div><button class="quiet-button retry-current">继续原来这一轮</button><p class="muted">问题和附图已保留；继续本轮会沿用原来的记录。</p><details class="new-round-options"><summary>需要重新开始？</summary><p class="muted">开始新一轮会建立新的问题记录和调用预算。</p><button class="quiet-button new-round-current">明确开始新一轮</button></details>`;
+    body.querySelector('.retry-current').onclick=()=>{if(!sending)sendChat(msg,selection,restoreId,resumeSpec);};
+    body.querySelector('.new-round-current').onclick=()=>{if(!sending){sessionStorage.removeItem('chat-retry:'+currentSession);pendingImgs=imgs.slice();sendChat(msg,selection);}};
+    if(!$('#chatInput').value){$('#chatInput').value=msg;sessionStorage.setItem('draft:'+currentSession,msg);}
+    if(!pendingImgs.length){pendingImgs=imgs.slice();renderImgStrip();}
   } finally {
+    if(gotResult){sessionStorage.removeItem('chat-pending:'+id);sessionStorage.removeItem('chat-retry:'+currentSession);chatRequests.delete(id);chatRequests.delete(activeTurn);}
     sending=false;activeTurn=null;$('#sendBtn').disabled=false;$('#stopBtn').classList.add('hidden');$('#chatProgress').classList.add('hidden');
     loadSessions().catch(()=>{});$('#chatInput').focus();
   }
 }
-$('#stopBtn').onclick=async()=>{if(activeTurn)try{await apiJson('/api/chat/'+activeTurn+'/cancel',{method:'POST'});progress('正在停止…');}catch(e){toast(e.message);}};
+$('#stopBtn').onclick=async()=>{if(activeTurn)try{await writeJson('/api/runs/'+encodeURIComponent(activeTurn)+'/cancel',{});progress('正在停止…');}catch(e){toast(e.message);}};
 $('#sendBtn').onclick=()=>sendChat($('#chatInput').value);
 $('#chatInput').addEventListener('keydown',e=>{if(e.key==='Enter' && !e.shiftKey && !e.isComposing){e.preventDefault();sendChat($('#chatInput').value);}});
 $('#chatInput').addEventListener('input',()=>{sessionStorage.setItem('draft:'+currentSession,$('#chatInput').value);$('#chatInput').style.height='auto';$('#chatInput').style.height=Math.min(160,$('#chatInput').scrollHeight)+'px';});
@@ -434,6 +501,45 @@ $('#sessionSelect').onchange=()=>activateSession($('#sessionSelect').value);
 $('#newSessionBtn').onclick=newConversation;$('#newChatMobileBtn').onclick=newConversation;
 
 /* 右栏：档案速览 */
+function renderMemorySettings(snapshot) {
+  const root=$('#memorySettings');if(!snapshot){root.innerHTML='';return;}
+  root.innerHTML=`<label class="memory-settings"><input id="autoSavePreference" type="checkbox" ${snapshot.settings?.auto_save_low_sensitivity!==false?'checked':''}> 自动保存低敏感的偏好与约束</label><p class="muted">出生资料、第三人信息等仍需明确授权；每次保存以回答下方的实际回执为准。</p>`;
+  $('#autoSavePreference').onchange=async event=>{const input=event.target;input.disabled=true;try{await writeJson('/api/state/settings',{settings:{auto_save_low_sensitivity:input.checked},expected_revision:snapshot.revision},'PATCH');toast('记忆设置已更新');await loadMemories();}catch(e){input.checked=!input.checked;toast('设置尚未保存：'+e.message);}finally{input.disabled=false;}};
+}
+async function openProfile() {
+  $('#profilePanel').open=true;await loadProfile();$('#profileRoot input')?.focus();
+}
+async function loadProfile() {
+  const root=$('#profileRoot');root.innerHTML='<p class="muted">正在读取你确认过的出生资料…</p>';
+  root.dataset.loading='true';
+  try{
+    const snapshot=await apiJson('/api/subjects/self/profile'),candidate=snapshot.legacy_candidate || {},flat=snapshot.effective || {},birth=candidate.birth || {},location=birth.location || {};
+    const read=(field,fallback='')=>flat[field] ?? fallback;
+    const dateTime=String(read('birth.solar_datetime',birth.solar_datetime || '')),precision=read('birth.precision',birth.time_unknown?'unknown':birth.precision || 'exact');
+    root.innerHTML=`<form id="profileForm"><p class="muted">${snapshot.requires_explicit_confirmation?'以下资料来自历史档案，尚未作为已确认事实使用。请逐项核对，再明确授权保存。':'这些资料将作为你确认的个人事实使用。修改后需重新核对并授权。'}</p><div class="profile-fields">
+      <label>排盘所用性别<select id="profileGender" required><option value="">请选择</option><option>男</option><option>女</option></select></label>
+      <label>阳历出生日期<input id="profileDate" type="date" required value="${esc(dateTime.slice(0,10))}"></label>
+      <label>出生时刻精度<select id="profilePrecision"><option value="exact">准确时刻</option><option value="approximate">大致时刻</option><option value="unknown">时刻未知</option></select></label>
+      <label>当地出生时间<input id="profileTime" type="time" value="${esc(dateTime.slice(11,16))}"></label>
+      <label id="profileUncertaintyLabel">前后误差（分钟）<input id="profileUncertainty" type="number" min="1" max="1440" step="1" value="${esc(read('birth.time_uncertainty_minutes',birth.time_uncertainty_minutes || ''))}"></label>
+      <label>出生地名称<input id="profileCity" maxlength="120" required value="${esc(read('birth.location.city',location.city || location.name || ''))}"></label>
+      <label>经度<input id="profileLng" type="number" min="-180" max="180" step="any" required value="${esc(read('birth.location.lng',location.lng ?? ''))}"></label>
+      <label>纬度<input id="profileLat" type="number" min="-90" max="90" step="any" required value="${esc(read('birth.location.lat',location.lat ?? ''))}"></label>
+      <label>出生地 UTC 偏移（小时）<input id="profileTimezone" type="number" min="-12" max="14" step="0.25" required value="${esc(read('birth.timezone_offset',birth.timezone_offset ?? ''))}"></label>
+    </div><p class="muted">时刻未知时，只记录日期；计算将标明候选时刻样本与不确定范围，不把样本当作你的出生时刻。</p><label class="profile-consent"><input id="profileConsent" type="checkbox" required> 我已核对以上资料，明确授权保存为我的出生与性别资料，并用于后续排盘。</label><button class="btn-gold" type="submit">确认并保存资料</button><p id="profileStatus" role="status" aria-live="polite"></p></form>`;
+    $('#profileGender').value=read('gender',candidate.gender || '');$('#profilePrecision').value=['exact','approximate','unknown'].includes(precision)?precision:'exact';
+    const update=()=>{const value=$('#profilePrecision').value;$('#profileTime').disabled=value==='unknown';$('#profileTime').required=value!=='unknown';$('#profileUncertaintyLabel').classList.toggle('hidden',value!=='approximate');$('#profileUncertainty').required=value==='approximate';};
+    $('#profilePrecision').onchange=update;update();
+    $('#profileForm').onsubmit=async event=>{event.preventDefault();const form=event.target;if(!form.reportValidity())return;const button=form.querySelector('button'),status=$('#profileStatus');button.disabled=true;
+      try{const precision=$('#profilePrecision').value,solar=$('#profileDate').value+(precision==='unknown'?'':' '+$('#profileTime').value),profile={gender:$('#profileGender').value,birth:{solar_datetime:solar,precision,time_unknown:precision==='unknown',time_uncertainty_minutes:precision==='approximate'?Number($('#profileUncertainty').value):0,timezone_offset:Number($('#profileTimezone').value),location:{city:$('#profileCity').value.trim(),lng:Number($('#profileLng').value),lat:Number($('#profileLat').value)}}};
+        const result=await writeJson('/api/subjects/self/profile/confirm',{confirmed:$('#profileConsent').checked,expected_revision:snapshot.revision,profile});
+        const saved=tarotList(result.receipts).filter(r=>r.write_status==='saved');status.textContent=saved.length?'已保存 '+saved.length+' 项你确认的资料。':'本次未收到保存成功回执，请核对后再试。';
+        if(saved.length){loaded.chart=false;ziweiLoaded=false;astroLoaded=false;loaded.memory=false;await refreshLinkedCharts();$('#profileConsent').checked=false;snapshot.revision=(await apiJson('/api/subjects/self/profile')).revision;}
+      }catch(e){status.textContent='资料尚未保存：'+e.message;}finally{button.disabled=false;}
+    };
+  }catch(e){root.innerHTML=errState('档案暂时无法读取：'+e.message,'loadProfile');}finally{delete root.dataset.loading;}
+}
+$('#profilePanel').addEventListener('toggle',()=>{if($('#profilePanel').open && !$('#profileForm') && !$('#profileRoot').dataset.loading)loadProfile();});
 async function loadSidebar() {
   try {
     const arc = await apiJson("/api/archive");
@@ -475,9 +581,9 @@ async function loadChart() {
   try { c = await apiJson("/api/chart?date=" + date); }
   catch (e) {
     if(request!==chartRequests.bazi)return;
-    if (e.status === 400) {
+    if ([400,422].includes(e.status)) {
       root.innerHTML = emptyState("命", "尚未建档",
-        "请先在飞书 / CLI 对 Agent 说「开始排盘」完成建档，再回来查看命盘。");
+        e.message)+`<button class="quiet-button" onclick="openProfile()">核对并确认出生资料</button>`;
     } else if (e.status !== 401) {
       root.innerHTML = errState("命盘加载失败：" + (e.message || e), "loadChart");
     }
@@ -487,7 +593,13 @@ async function loadChart() {
   if (!$("#analysisDate").value) $("#analysisDate").value = date;
   c.liuyue=c.target_liuyue || c.liuyue;
   chartData = c;
-  root.innerHTML = renderChart(c);
+  root.innerHTML = chartMetadata(c)+renderChart(c);
+}
+function chartMetadata(c) {
+  const meta=c.core_meta;if(!meta)return '';
+  const branches=tarotList(meta.branches),profiles=Object.values(meta.profiles || {}),sampled=branches.some(b=>b.coverage!=='exact_input');
+  const notes=[...tarotList(meta.warnings),...profiles.flatMap(p=>tarotList(p.warnings))];
+  return `${sampled?'<p class="chart-sample-notice" role="status">出生时刻存在不确定性：当前盘面是候选样本之一。样本间相同的结果也不表示整个区间都成立。</p>':''}<details class="chart-method"><summary>排盘口径与出生时刻范围</summary>${branches.map(b=>`<p>${b.coverage==='exact_input'?'记录的出生时刻':'候选时刻样本'}：${esc(b.civil_datetime)}${b.sampling_range?' · 范围 '+esc(b.sampling_range.start)+' 至 '+esc(b.sampling_range.end):''}</p>`).join('')}${profiles.map(p=>`<p>流派：${esc(p.school_id)}</p><pre>${esc(JSON.stringify({采用口径:p.actual_method,引擎版本:p.versions},null,2))}</pre>`).join('')}${[...new Set(notes)].map(n=>`<p>${esc(n)}</p>`).join('')}</details>`;
 }
 function renderChart(c) {
   c = c || {};
@@ -552,14 +664,16 @@ function renderChart(c) {
       ${c.day_master ? `<div><span class="text-xs text-gray-500">日主</span>
         <span class="font-serif font-bold" style="color:${wxColor(c.day_master_wuxing)}">${esc(c.day_master)}</span>
         <span class="text-xs text-gray-400">${esc(c.day_master_wuxing || "")}</span></div>` : ""}
-      ${xys.length ? `<div><span class="text-xs text-gray-500">喜用神</span>
+      ${xys.length ? `<div><span class="text-xs text-gray-500">生扶与克泄提示（启发式）</span>
         ${xys.map(x => `<span class="badge ml-1" style="color:${wxColor(x)};border-color:${wxColor(x)}55;background:${wxColor(x)}14">${esc(x)}</span>`).join("")}</div>` : ""}
     </div>
+    ${xys.length?'<p class="muted">旧字段“喜用神”按五行计数粗分生扶与克泄耗，数量持平时参考月令五行；尚未完成旺衰、格局与调候的完整论证。</p>':''}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">${pillarCards}</div>
     <div class="grid md:grid-cols-2 gap-4">
       <div class="glass min-w-0 p-4">
-        <div class="text-xs tracking-widest text-gray-500 mb-3">五 行 强 度</div>
+        <div class="text-xs tracking-widest text-gray-500 mb-3">五 行 构 成 计 数</div>
         <div class="space-y-2.5">${wxBars}</div>
+        <p class="muted chart-count-note">按四柱天干与地支主气各计一份；没有藏干、月令与旺衰权重，条形占比仅表示数量构成。</p>
       </div>
       <div class="glass min-w-0 p-4">
         <div class="text-xs tracking-widest text-gray-500 mb-3">大 运（当前高亮 · 点击查看）</div>
@@ -600,6 +714,7 @@ function relationLine(gan) {
 const PILLAR_DESC = { year: "年柱代表祖辈与童年", month: "月柱代表父母与青年", day: "日柱代表自己与配偶", hour: "时柱代表子女与晚年" };
 /* 复用时间轴的抽屉组件 */
 function openChartDrawer(html) {
+  rememberFocus('drawer');
   $("#drawer").innerHTML = html;
   $("#drawerMask").classList.remove("hidden");
   requestAnimationFrame(() => {$("#drawer").classList.add("open");$("#drawer").querySelector("button")?.focus();});
@@ -747,7 +862,7 @@ async function loadZiwei() {
   }
   if(request!==chartRequests.ziwei)return;
   ziweiData = c; ziweiLoaded = true; ziweiLoading = false;
-  root.innerHTML = renderZiwei(c);
+  root.innerHTML = chartMetadata(c)+renderZiwei(c);
 }
 
 /* 地支 → 传统掌上排盘 4×4 格位（巳午未申在上排，寅丑子亥在下排） */
@@ -891,7 +1006,7 @@ async function loadAstro() {
   }
   if(request!==chartRequests.astro)return;
   astroData = c; astroLoaded = true; astroLoading = false;
-  root.innerHTML = renderAstro(c);
+  root.innerHTML = chartMetadata(c)+renderAstro(c);
 }
 
 /* 十二星座 → 四象 → 配色（火红 / 土金 / 风紫 / 水蓝） */
@@ -1131,13 +1246,15 @@ function openForecast(fid) {
   requestAnimationFrame(() => {$("#drawer").classList.add("open");$("#drawer").querySelector("button")?.focus();});
 }
 function closeDrawer() {
+  const wasOpen=$('#drawer').classList.contains('open');
   $("#drawer").classList.remove("open");
   setTimeout(() => $("#drawerMask").classList.add("hidden"), 200);
+  if(wasOpen)restoreFocus('drawer');
 }
 $("#drawerMask").addEventListener("click", closeDrawer);
 async function sendFeedback(fid, fb) {
   try {
-    await apiJson("/api/feedback", { method: "POST", body: JSON.stringify({ forecast_id: fid, feedback: fb }) });
+    await writeJson('/api/feedback',{forecast_id:fid,feedback:fb});
     const f = (tlData.forecasts || []).find(x => x && x.id === fid);
     if (f) { f.feedback = fb; f.status = "verified"; }
     renderTimeline();
@@ -1351,7 +1468,7 @@ function showNodePanel(n) {
     : "未登记";
   const cht = p.chart || {};
   const chartHtml = cht.pillars ? `
-    <div class="text-xs tracking-widest text-gray-500 mb-2">命 盘${(p.birth && p.birth.time_unknown) ? `<span class="text-gray-600">（时辰未知，时柱按午时推）</span>` : ""}</div>
+    <div class="text-xs tracking-widest text-gray-500 mb-2">命 盘${(p.birth && p.birth.time_unknown) ? `<span class="text-gray-600">（时辰未知；历史盘面仅供回看，需核对出生资料）</span>` : ""}</div>
     <div class="glass p-3 mb-3">
       <div class="grid grid-cols-4 gap-1 text-center">
         ${[["year", "年"], ["month", "月"], ["day", "日"], ["hour", "时"]].map(([k, zh]) => {
@@ -1365,7 +1482,7 @@ function showNodePanel(n) {
       </div>
       <div class="text-xs text-gray-400 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
         ${cht.day_master ? `<span>日主 <span class="font-serif" style="color:${wxColor(cht.day_master_wuxing)}">${esc(cht.day_master)}</span></span>` : ""}
-        ${(cht.xiyongshen || []).length ? `<span>喜用 ${cht.xiyongshen.map(x => `<span style="color:${wxColor(x)}">${esc(x)}</span>`).join(" ")}</span>` : ""}
+        ${(cht.xiyongshen || []).length ? `<span>生扶与克泄提示（启发式，未完整论证） ${cht.xiyongshen.map(x => `<span style="color:${wxColor(x)}">${esc(x)}</span>`).join(" ")}</span>` : ""}
       </div>
     </div>` : "";
   panel.innerHTML = `
@@ -1497,7 +1614,7 @@ function reportCardHtml(r) {
       <span class="flex-1"></span>
       <span class="report-toggle text-xs text-gray-500">收起 ▲</span>
     </div>
-    <div class="report-body msg-body px-4 pb-4 pt-3" style="border-top:1px solid rgba(255,255,255,.06)">${md(r.content || "")}</div>
+    <div class="report-body msg-body px-4 pb-4 pt-3" style="border-top:1px solid rgba(255,255,255,.06)">${r.guidance?answerHtml(r.guidance,r.content):md(r.content || "")}</div>
   </div>`;
 }
 function toggleReportCard(card) {
@@ -1521,7 +1638,7 @@ async function loadReports() {
   root.innerHTML = `<div class="text-center text-gray-500 text-sm py-16">报告加载中…</div>`;
   if (!getToken()) { openTokenModal(false); return; }  // 深读链接首次访问：先收口令，进入后自动重载
   let list;
-  try { list = await apiJson("/api/archive?section=reports"); }
+  try { list = await apiJson('/api/reports'); }
   catch (e) {
     if (e.status !== 401) root.innerHTML = errState("报告加载失败：" + (e.message || e), "loadReports");
     return;
@@ -1551,10 +1668,9 @@ async function loadReports() {
 function downloadText(name,content) {const u=URL.createObjectURL(new Blob([content],{type:'text/markdown;charset=utf-8'}));const a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
 async function loadReportQueue() {
  const root=$('#reportQueue');if(!root)return;
- try{const status=await apiJson('/api/reports/status');
-   const labels={waiting:'等待准备',ready:'已归档，待发送',sending:'投递中',sent:'已送达',retrying:'等待确认并重试',generation_failed:'生成失败',delivery_failed:'投递失败',uncertain:'送达待核对',expired:'已过时段'};
-   root.innerHTML=`<p class="muted">提前15分钟准备，到点开始投递。生成或网络延迟会反映在下方。${status.worker?.at?'最近检查：'+esc(fmtHistTime(status.worker.at)):''}</p>`+(status.rows || []).slice(0,16).map(r=>`<div class="queue-row"><span>${esc(r.date)} ${esc({daily:'晨报',weekly:'周报',monthly:'月报',quarterly:'季报'}[r.kind])}</span><span>${esc(labels[r.status] || r.status)}</span>${r.error?`<small>${esc(r.error)}</small>`:''}${['generation_failed','delivery_failed'].includes(r.status)?`<button class="quiet-button" data-retry-report="${esc(r.id)}">重新尝试</button>`:''}</div>`).join('');
-   root.querySelectorAll('[data-retry-report]').forEach(b=>b.onclick=async()=>{try{await apiJson('/api/reports/'+b.dataset.retryReport+'/retry',{method:'POST'});toast('已安排重试，稍后会更新');loadReportQueue();}catch(e){toast(e.message);}});
+ try{const status=await apiJson('/api/reports/status'),rows=status.outbox?.rows || status.rows || [];
+   const labels={pending:'已归档，待发送',ready:'已归档，待发送',sending:'投递中',sent:'已送达',rejected:'渠道明确拒绝，等待有限重试',stale:'依据已改变，等待重新准备',cancelled:'授权或来源已撤回',uncertain:'送达待核对',expired:'已过时段'};
+   root.innerHTML='<p class="muted">按 Asia/Shanghai 时区定时准备与投递；送达待核对时，需先核对实际回执。</p>'+rows.slice(0,16).map(r=>`<div class="queue-row"><span>${esc(r.date || r.due?.slice(0,10) || '')} ${esc(({daily:'晨报',weekly:'周报',monthly:'月报',quarterly:'季报'})[r.kind] || '报告')}</span><span>${esc(labels[r.status] || r.status)}</span>${r.error?`<small>${esc(r.error)}</small>`:''}</div>`).join('');
  }catch(e){root.innerHTML=`<p class="muted">投递状态暂不可用：${esc(e.message)}</p>`;}
 }
 
@@ -1566,11 +1682,11 @@ function tarotSpread() {return tarotList(tarotState.deck?.spreads).find(s=>s.id=
 function tarotPositions(spread) {return tarotList(spread?.positions).map((p,i)=>typeof p==='string'?{label:p,position:i}:{...p,label:p.label || p.name || p.meaning || `第 ${i+1} 张`,position:p.position ?? i});}
 function tarotStatus(text,error=false) {const el=$('#tarotStatus');el.textContent=text;el.classList.toggle('hidden',!text);el.classList.toggle('err-banner',error);}
 function tarotOperationKey(operation, body) {
-  const key='tarot-request:'+operation, previous=storedJson(key,null), fingerprint=JSON.stringify(body);
+  const key='tarot-request:'+operation, previous=operationCache.get(key) || storedJson(key,null), fingerprint=JSON.stringify(body);
   if(previous?.fingerprint===fingerprint)return previous.id;
-  const id=crypto.randomUUID();sessionStorage.setItem(key,JSON.stringify({id,fingerprint}));return id;
+  const id=crypto.randomUUID(),value={id,fingerprint};operationCache.set(key,value);try{sessionStorage.setItem(key,JSON.stringify(value));}catch{}return id;
 }
-function clearTarotOperation(operation) {sessionStorage.removeItem('tarot-request:'+operation);}
+function clearTarotOperation(operation) {const key='tarot-request:'+operation;operationCache.delete(key);sessionStorage.removeItem(key);}
 function tarotSafeImage(cardId) {return /^[a-zA-Z0-9_-]+$/.test(String(cardId || ''))?'/static/tarot/'+cardId+'.svg':'/static/tarot/back.svg';}
 function tarotOrientation(value) {return value==='reversed'?'逆位':'正位';}
 function tarotText(value) {return Array.isArray(value)?value.filter(v=>typeof v==='string').join('；'):typeof value==='string'?value:'';}
@@ -1712,7 +1828,7 @@ function renderTarotDraw() {
 async function mutateTarotDraw(action, payload) {
   if(tarotState.busy || !tarotState.draw)return;const id=tarotState.draw.id;tarotState.busy=true;
   const operation=id+':'+action+':'+(payload.back_id ?? payload.position ?? 'all'),body={...payload};
-  if(action==='select')body.idempotency_key=tarotOperationKey(operation,payload);
+  body.idempotency_key=tarotOperationKey(operation,payload);body.request_id=body.idempotency_key;
   $('#tarotDrawRoot').setAttribute('aria-busy','true');$('#tarotDrawRoot').querySelectorAll('[data-select-back],[data-reveal-position],[data-reveal-all]').forEach(b=>b.disabled=true);
   try {const draw=await apiJson('/api/tarot/draws/'+encodeURIComponent(id)+'/'+action,{method:'POST',body:JSON.stringify(body)});clearTarotOperation(operation);if(tarotState.draw?.id!==id)return;tarotState.animatePositions=tarotList(draw.cards).filter(c=>c.revealed && !tarotList(tarotState.draw.cards).some(old=>old.position===c.position && old.revealed)).map(c=>c.position);tarotState.draw=draw;renderTarotDraw();tarotStatus(action==='select'?'选牌已保存。':action==='cancel'?'本次选牌已结束。':'牌面已翻开并保存。');if(action==='select')$('#tarotDrawRoot [data-select-back]:not(:disabled)')?.focus();}
   catch(e){tarotStatus('操作未确认：'+e.message+'。重试会继续原来的抽牌。',true);if(tarotState.draw?.id===id)renderTarotDraw();}
@@ -1739,7 +1855,11 @@ async function requestTarotReading(supplement='') {
   const status=$('#tarotReadingStatus');if(status)status.textContent='正在结合这次牌阵与现实信息…';
   let received=false,readingError='',readingId='';
   try {
-    const response=await api('/api/tarot/draws/'+encodeURIComponent(draw.id)+'/readings',{method:'POST',body:JSON.stringify({request_id:id,supplement})});
+    let run,response;
+    try{run=await apiJson('/api/runs/'+encodeURIComponent('reading:'+id));}catch(e){if(e.status!==404)throw e;}
+    if(run?.status==='succeeded'){received=true;clearTarotOperation(operation);await openTarotDraw(draw.id,false);return;}
+    if(run && ['failed','stale'].includes(run.status))response=await api('/api/runs/'+encodeURIComponent(run.id)+'/retry',{method:'POST',body:JSON.stringify({request_id:'retry:'+run.operation_id})});
+    else response=await api('/api/tarot/draws/'+encodeURIComponent(draw.id)+'/readings',{method:'POST',body:JSON.stringify({request_id:id,supplement})});
     if(!response.ok){let problem=await response.json().catch(()=>({}));throw Error(problem.detail || `解读服务暂不可用 (${response.status})`);}
     const reader=response.body.getReader(),decoder=new TextDecoder();let buffer='';
     const accept=line=>{if(!line.startsWith('data:'))return;const data=line.slice(5).trim();if(!data || data==='[DONE]')return;const event=JSON.parse(data);if(event.type==='started')readingId=event.reading_id || '';if((event.type==='status' || event.type==='started') && status)status.textContent=event.text || '解读正在进行…';if(event.type==='error')readingError=event.message || event.error || '解释未完成';if(event.type==='result'){received=true;readingId=event.reading_id || readingId;if(tarotState.draw?.id===draw.id){tarotState.readings.push({id:readingId || id,status:'success',result:event.result});renderTarotReading();}}};
@@ -1748,7 +1868,7 @@ async function requestTarotReading(supplement='') {
     if(!received)throw Error('连接中断或解释尚未完成');
     clearTarotOperation(operation);if(status)status.textContent='解读已保存。这次抽到的牌保持不变。';
   } catch(e) {
-    try {const versions=tarotList(await apiJson('/api/tarot/draws/'+encodeURIComponent(draw.id)+'/readings'));if(tarotState.draw?.id===draw.id){tarotState.readings=versions;renderTarotReading();}const own=versions.find(v=>v.id===readingId || v.request_id===id);if(own && ['success','complete','completed'].includes(own.status)){received=true;clearTarotOperation(operation);}else if(own && !['pending','running'].includes(own.status))clearTarotOperation(operation);}catch {}
+    try {const versions=tarotList(await apiJson('/api/tarot/draws/'+encodeURIComponent(draw.id)+'/readings'));if(tarotState.draw?.id===draw.id){tarotState.readings=versions;renderTarotReading();}const own=versions.find(v=>v.id===readingId || v.request_id===id);if(own && ['success','complete','completed'].includes(own.status)){received=true;clearTarotOperation(operation);}}catch {}
     if(status)status.textContent=received?'已找回并保存解读，牌阵没有变化。':'解释未完成：'+e.message+'。牌阵已保留；可刷新记录或重试解释。';
   } finally {tarotState.reading=false;if(tarotState.draw?.id===draw.id)renderTarotReading();}
 }
@@ -1766,7 +1886,7 @@ function newTarotQuestion(explicit=false) {
 }
 async function deleteTarotDraw() {
   const draw=tarotState.draw;if(!draw || tarotState.busy)return;tarotState.busy=true;
-  try {const result=await apiJson('/api/tarot/draws/'+encodeURIComponent(draw.id),{method:'DELETE'});const ids=tarotList(result.deleted_ids).length?result.deleted_ids:[draw.id];tarotState.draws=tarotState.draws.filter(d=>!ids.includes(d.id));for(const id of ids){sessionStorage.removeItem('tarot-supplement:'+id);for(let i=sessionStorage.length-1;i>=0;i--){const key=sessionStorage.key(i);if(key?.startsWith('tarot-request:'+id+':'))sessionStorage.removeItem(key);}}tarotState.busy=false;const context=chatContext();if(ids.includes(context.draw_id))setChatContext({case_id:context.case_id,title:'当前事项'});newTarotQuestion(false);tarotState.previousDraw=null;renderTarotHistory();toast('这次抽牌与解读已删除');}
+  try {const result=await writeJson('/api/tarot/draws/'+encodeURIComponent(draw.id),{},'DELETE');const ids=tarotList(result.deleted_ids).length?result.deleted_ids:[draw.id];tarotState.draws=tarotState.draws.filter(d=>!ids.includes(d.id));for(const id of ids){sessionStorage.removeItem('tarot-supplement:'+id);for(let i=sessionStorage.length-1;i>=0;i--){const key=sessionStorage.key(i);if(key?.startsWith('tarot-request:'+id+':'))sessionStorage.removeItem(key);}}tarotState.busy=false;const context=chatContext();if(ids.includes(context.draw_id))setChatContext({case_id:context.case_id,title:'当前事项'});newTarotQuestion(false);tarotState.previousDraw=null;renderTarotHistory();toast('这次抽牌与解读已删除');}
   catch(e){tarotStatus('删除未成功：'+e.message,true);}finally{tarotState.busy=false;}
 }
 function showTarotCorrection() {
@@ -1779,7 +1899,7 @@ async function openTarotFeedback() {
   form.classList.remove('hidden');$('#tarotFeedback').focus();
   if(form.dataset.revision!==undefined)return;
   const button=form.querySelector('button'),status=form.querySelector('[role=status]');button.disabled=true;status.textContent='正在读取事项版本…';
-  try {const snapshot=await apiJson('/api/state');if(!Number.isInteger(snapshot.revision))throw Error('资料版本暂不可用');form.dataset.revision=String(snapshot.revision);status.textContent='只会保存你明确提交的这段话。';}
+  try {const cases=await apiJson('/api/cases'),entry=cases.find(c=>c.id===draw.case_id);form.dataset.revision=String(entityRevision(entry));status.textContent='只会保存你明确提交的这段话。';}
   catch(e){status.textContent='暂时无法读取事项：'+e.message;}
   finally{button.disabled=false;}
 }
@@ -1787,7 +1907,7 @@ async function saveTarotFeedback(event) {
   event.preventDefault();const draw=tarotState.draw,content=$('#tarotFeedback').value.trim(),status=$('#tarotFeedbackStatus');if(!content)return;
   if(!draw.case_id){status.textContent='这条抽牌还没有关联事项，请回到对话补充情况后再记录。';return;}
   const form=$('#tarotFeedbackForm'),button=form.querySelector('button'),body={kind:$('#tarotFeedbackKind').value,content};if(button.disabled)return;body.request_id=tarotOperationKey(draw.id+':feedback',body);button.disabled=true;
-  try {if(form.dataset.revision===undefined){const snapshot=await apiJson('/api/state');if(!Number.isInteger(snapshot.revision))throw Error('资料版本暂不可用');form.dataset.revision=String(snapshot.revision);}body.expected_revision=Number(form.dataset.revision);await apiJson('/api/cases/'+encodeURIComponent(draw.case_id)+'/events',{method:'POST',body:JSON.stringify(body)});clearTarotOperation(draw.id+':feedback');status.textContent='你的反馈已保存到这个事项。';form.querySelector('textarea').value='';delete form.dataset.revision;loaded.memory=false;}
+  try {if(form.dataset.revision===undefined){const cases=await apiJson('/api/cases'),entry=cases.find(c=>c.id===draw.case_id);form.dataset.revision=String(entityRevision(entry));}body.expected_revision=Number(form.dataset.revision);await apiJson('/api/cases/'+encodeURIComponent(draw.case_id)+'/events',{method:'POST',body:JSON.stringify(body)});clearTarotOperation(draw.id+':feedback');status.textContent='你的反馈已保存到这个事项。';form.querySelector('textarea').value='';delete form.dataset.revision;loaded.memory=false;loaded.cases=false;}
   catch(e){status.textContent=e.status===409?'事项在你填写期间有更新，反馈尚未保存。请刷新记录、核对情况后重新提交。':'反馈尚未保存：'+e.message;}finally{button.disabled=false;}
 }
 $('#tarotForm').onsubmit=submitTarot;
@@ -1833,7 +1953,7 @@ async function loadCases(snapshot) {
     root.innerHTML=records.length?records.map(c=>`<article class="case-card ${c.status==='closed'?'closed':''}" data-case-id="${esc(c.id)}"><div class="case-card-heading"><h3>${esc(c.title)}</h3><span>${c.status==='closed'?'已关闭':'进行中'}</span></div>${c.goal?`<p>${esc(c.goal)}</p>`:''}${c.events.length?`<details class="case-events"><summary>已记录的决定与进展</summary>${c.events.slice(-8).map(e=>`<p><small>${esc(({decided:'已作决定',acted:'已采取行动',action_started:'已采取行动',completed:'已完成',result:'结果反馈',feedback:'反馈',progress:'进展',discussed:'进展',rejected_interpretation:'解释不符合'})[e.kind] || '记录')} · ${esc((e.occurred_at || e.recorded_at || '').slice(0,10))}</small><br>${esc(e.content)}</p>`).join('')}</details>`:''}<div class="case-actions"><button class="quiet-button case-chat">继续聊这件事</button><button class="quiet-button case-tarot">用塔罗梳理</button></div><details><summary>事项设置</summary><label>名称<input class="case-title-input" value="${esc(c.title)}" maxlength="200"></label><label>目标<textarea class="case-goal-input" rows="2" maxlength="2000">${esc(c.goal || '')}</textarea></label><div class="case-actions"><button class="quiet-button case-save">保存更正</button><button class="quiet-button case-close">${c.status==='closed'?'重新打开事项':'关闭事项'}</button></div></details></article>`).join(''):'<p class="muted">还没有正在跟进的事项。可以自然地开始聊天，或在这里记下一件事。</p>';
     root.querySelectorAll('.case-card').forEach(card=>{
       const entry=records.find(c=>c.id===card.dataset.caseId);
-      const patch=async changes=>{card.querySelectorAll('button').forEach(b=>b.disabled=true);try{await apiJson('/api/cases/'+encodeURIComponent(entry.id),{method:'PATCH',body:JSON.stringify({changes,expected_revision:entry.context_revision ?? snapshot?.revision ?? entry.revision})});toast('事项已更新');await loadCases();}catch(e){toast(e.status===409?'事项刚有更新，请刷新后核对再保存。':e.message);card.querySelectorAll('button').forEach(b=>b.disabled=false);}};
+      const patch=async changes=>{card.querySelectorAll('button').forEach(b=>b.disabled=true);try{await writeJson('/api/cases/'+encodeURIComponent(entry.id),{changes,expected_revision:entityRevision(entry)},'PATCH');toast('事项已更新');await loadCases();}catch(e){toast(e.status===409?'事项刚有更新，请刷新后核对再保存。':e.message);card.querySelectorAll('button').forEach(b=>b.disabled=false);}};
       card.querySelector('.case-chat').onclick=()=>{setChatContext({case_id:entry.id,title:entry.title});switchPage('chat');$('#chatInput').focus();};
       card.querySelector('.case-tarot').onclick=()=>{setChatContext({case_id:entry.id,title:entry.title});tarotState.nextCaseId=entry.id;tarotState.nextExplicit=false;tarotState.previousDraw=null;$('#tarotQuestion').value=entry.goal || entry.title;$('#tarotBackground').value=caseBackground(entry);saveTarotForm();sessionStorage.removeItem('tarot-current-draw');tarotState.draw=null;$('#tarotForm').classList.remove('hidden');$('#tarotDrawRoot').innerHTML='';switchPage('tarot');restoreTarotForm();};
       card.querySelector('.case-save').onclick=()=>patch({title:card.querySelector('.case-title-input').value.trim(),goal:card.querySelector('.case-goal-input').value.trim()});
@@ -1855,25 +1975,27 @@ function memoryCorrection(card,memory) {
 async function loadMemories() {
   const root=$('#memoriesRoot');root.innerHTML='<p class="muted">正在读取记忆…</p>';
   try {
-    const snapshot=await apiJson('/api/state').catch(()=>null);loadCases(snapshot);
+    const snapshot=await apiJson('/api/state').catch(()=>null);renderMemorySettings(snapshot);
     const list=(await apiJson('/api/memories')).filter(m=>m.status!=='deleted');
     root.innerHTML=list.length?list.map(m=>`<article class="memory-card ${m.status!=='active'?'inactive':''}" data-id="${esc(m.id)}"><div class="memory-meta"><span>${esc(m.category || m.kind || '个人记录')}</span><span>${esc((m.valid_from || m.created_at || m.recorded_at || '').slice(0,10))} · ${m.status==='active'?'正在使用':m.status==='superseded'?'已被更正':m.status==='pending'?'待你确认':'已停用'}</span></div><textarea aria-label="记忆内容" rows="3" maxlength="2000">${esc(m.text || m.content || '')}</textarea>${memoryFieldEditor(m)}<details><summary>查看来源与修改记录</summary><div class="memory-source">${m.quote?`<p>${esc(m.quote)}</p>`:'<p>展开后可读取仍保留的原始来源。</p>'}</div><div class="memory-audit"></div><div class="memory-actions"><button class="quiet-button source-memory">查看原始来源</button><button class="quiet-button audit-memory">查看修改记录</button></div></details><div class="memory-actions"><button class="quiet-button save-memory" ${m.status!=='active'?'disabled':''}>保存更正</button>${m.status==='active'?'<button class="quiet-button toggle-memory">停用这条记忆</button>':'<span class="muted">如需再次使用，请在对话中用新原话确认。</span>'}</div><details class="delete-record"><summary>删除范围</summary><label>删除什么？<select class="memory-delete-scope"><option value="fact">只忘记这条事实，保留原始聊天</option><option value="source">同时删除原始来源及关联内容</option></select></label><p>删除后不再从这条来源重新恢复该事实。删除原始来源也可能影响关联的其他记录。</p><button class="quiet-button danger-button delete-memory">确认删除所选范围</button></details></article>`).join(''):emptyState('记','还没有长期记忆','明确告诉明镜你的背景、偏好或目标；保存后可在这里更正。');
     root.querySelectorAll('.memory-card').forEach(card=>{
       const m=list.find(x=>x.id===card.dataset.id);
-      const patch=async data=>{card.querySelectorAll('button').forEach(b=>b.disabled=true);try{await apiJson('/api/memories/'+encodeURIComponent(m.id),{method:'PATCH',body:JSON.stringify({...data,expected_revision:m.context_revision ?? snapshot?.revision ?? m.revision})});toast('记忆已更新');await loadMemories();}catch(e){toast(e.status===409?'记忆刚有更新，请刷新后核对再保存。':e.message);card.querySelectorAll('button').forEach(b=>b.disabled=false);}};
+      const patch=async data=>{card.querySelectorAll('button').forEach(b=>b.disabled=true);try{await writeJson('/api/memories/'+encodeURIComponent(m.id),{...data,expected_revision:entityRevision(m)},'PATCH');toast('记忆已更新');await loadMemories();}catch(e){toast(e.status===409?'记忆刚有更新，请刷新后核对再保存。':e.message);card.querySelectorAll('button').forEach(b=>b.disabled=false);}};
       card.querySelector('.save-memory').onclick=()=>{try{patch(memoryCorrection(card,m));}catch(e){toast(e.message);}};
       card.querySelector('.toggle-memory')?.addEventListener('click',()=>patch({status:'hidden'}));
       card.querySelector('.source-memory').onclick=async()=>{try{const data=await apiJson('/api/memories/'+encodeURIComponent(m.id)+'/source');card.querySelector('.memory-source').innerHTML=readableSource(data) || '<p>原始来源已不可用。</p>';}catch(e){card.querySelector('.memory-source').innerHTML=`<p>${esc(e.message || '来源暂时不可用')}</p>`;}};
       card.querySelector('.audit-memory').onclick=async()=>{try{const rows=await apiJson('/api/memories/'+encodeURIComponent(m.id)+'/audit');card.querySelector('.memory-audit').innerHTML=rows.length?rows.map(r=>`<p>${esc(r.at || r.created_at || '')} · ${esc(({created:'记录',updated:'更正',hidden:'停用',deleted:'删除',active:'恢复'})[r.action || r.operation] || '记录已修订')}${r.revision?' · 第 '+esc(r.revision)+' 次修订':''}</p>`).join(''):'<p>尚无修改记录</p>';}catch(e){toast(e.message);}};
-      card.querySelector('.delete-memory').onclick=async()=>{const scope=card.querySelector('.memory-delete-scope').value,revision=m.context_revision ?? snapshot?.revision ?? m.revision;card.querySelectorAll('button').forEach(b=>b.disabled=true);try{await apiJson('/api/memories/'+encodeURIComponent(m.id)+'?scope='+encodeURIComponent(scope)+'&expected_revision='+encodeURIComponent(revision ?? ''),{method:'DELETE'});toast(scope==='source'?'记忆与原始来源已删除':'已忘记这条事实');await loadMemories();if(scope==='source')loadHistory();}catch(e){toast('删除未成功：'+e.message);card.querySelectorAll('button').forEach(b=>b.disabled=false);}};
+      card.querySelector('.delete-memory').onclick=async()=>{const scope=card.querySelector('.memory-delete-scope').value,revision=entityRevision(m);card.querySelectorAll('button').forEach(b=>b.disabled=true);try{await writeJson('/api/memories/'+encodeURIComponent(m.id)+'?scope='+encodeURIComponent(scope)+'&expected_revision='+encodeURIComponent(revision),{expected_revision:revision,scope},'DELETE');toast(scope==='source'?'记忆与原始来源已删除':'已忘记这条事实');await loadMemories();if(scope==='source')loadHistory();}catch(e){toast('删除未成功：'+e.message);card.querySelectorAll('button').forEach(b=>b.disabled=false);}};
     });
   } catch(e){root.innerHTML=errState(e.message,'loadMemories');}
 }
 $('#refreshMemoriesBtn').onclick=loadMemories;
+$('#refreshCasesBtn').onclick=()=>loadCases();
 $('#newCaseBtn').onclick=()=>{$('#newCaseForm').classList.toggle('hidden');if(!$('#newCaseForm').classList.contains('hidden'))$('#newCaseTitle').focus();};
 $('#newCaseForm').onsubmit=async event=>{event.preventDefault();const title=$('#newCaseTitle').value.trim();if(!title)return;const body={title,goal:$('#newCaseGoal').value.trim(),subject_id:'self'};body.request_id=tarotOperationKey('create-case',body);const button=$('#newCaseForm').querySelector('button');button.disabled=true;try{const result=await apiJson('/api/cases',{method:'POST',body:JSON.stringify(body)});clearTarotOperation('create-case');const entry=result.case || result;if(entry.id)setChatContext({case_id:entry.id,title:entry.title});$('#newCaseForm').reset();$('#newCaseForm').classList.add('hidden');await loadCases();toast('事项已保存');}catch(e){toast('事项尚未保存：'+e.message);}finally{button.disabled=false;}};
-$('#openSearchBtn').onclick=()=>{$('#searchModal').classList.remove('hidden');$('#globalSearchInput').focus();};
-$('#closeSearchBtn').onclick=()=>$('#searchModal').classList.add('hidden');
+$('#openSearchBtn').onclick=()=>{rememberFocus('search');$('#searchModal').classList.remove('hidden');$('#globalSearchInput').focus();};
+function closeSearch(){ $('#searchModal').classList.add('hidden');restoreFocus('search'); }
+$('#closeSearchBtn').onclick=closeSearch;
 let searchTimer,searchVersion=0;
 $('#globalSearchInput').addEventListener('input',()=>{
   clearTimeout(searchTimer);const version=++searchVersion,q=$('#globalSearchInput').value.trim();
@@ -1885,7 +2007,7 @@ $('#globalSearchInput').addEventListener('input',()=>{
 });
 document.addEventListener('keydown',e=>{
   if((e.ctrlKey || e.metaKey) && e.key.toLowerCase()==='k'){e.preventDefault();$('#openSearchBtn').click();}
-  if(e.key==='Escape'){$('#searchModal').classList.add('hidden');$('#imgViewer').classList.add('hidden');closeDrawer();}
+  if(e.key==='Escape'){closeSearch();closeImageViewer();closeDrawer();}
 });
 $('#logoutBtn').onclick=()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem('mjt_session');sessionStorage.clear();for(const u of blobImages.values())URL.revokeObjectURL(u);location.reload();};
 async function unlocked() {
@@ -1915,4 +2037,12 @@ document.addEventListener('keydown',e=>{
 });
 const accessibilityObserver=new MutationObserver(()=>{document?.querySelectorAll('.chart-click:not([tabindex]),.zw-cell:not([tabindex]),.tl-card[onclick]:not([tabindex])').forEach(el=>{if(el.hasAttribute('onclick')){el.tabIndex=0;el.setAttribute('role','button');}});});
 accessibilityObserver.observe(document.querySelector('main'),{childList:true,subtree:true});
+function updateKeyboardViewport(){
+  const viewport=window.visualViewport;if(!viewport)return;
+  const editing=document.activeElement?.matches('input,textarea,select'),open=editing && window.innerHeight-viewport.height>150;
+  document.body.classList.toggle('keyboard-open',!!open);
+  document.documentElement.style.setProperty('--visible-height',viewport.height+'px');
+}
+window.visualViewport?.addEventListener('resize',updateKeyboardViewport);
+document.addEventListener('focusin',updateKeyboardViewport);document.addEventListener('focusout',()=>setTimeout(updateKeyboardViewport,0));
 

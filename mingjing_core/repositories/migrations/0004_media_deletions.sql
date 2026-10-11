@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS core_media_deletions(owner text NOT NULL REFERENCES core_owners(id), upload_id text NOT NULL, path text NOT NULL, status text NOT NULL DEFAULT 'pending', error text NOT NULL DEFAULT '', created_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(owner,upload_id));
