@@ -14,7 +14,7 @@ from mingjing_core.repositories.postgres import fingerprint
 from tests import test_core_76b_provider_denials as providers
 
 FIXTURE = Path(__file__).parent / 'fixtures' / '88_fusion_snapshot_denials.json'
-FIXTURE_SHA256 = '46ffddce901070f5dfe167112cadf7fb98e4ba6919d25403822a0ec547760771'
+FIXTURE_SHA256 = '361f85916d3144bea72f3bf894aed8f58eb4cde3987946457de466d030e0cab8'
 ORIGINAL_OWNER = 'provider_eval_669a196a5a25424f'
 SYMBOLIC = '象征解释被提升为现实确定性或概率'
 PROFILE = {'gender': '男', 'birth.solar_datetime': '1990-05-03 13:18',

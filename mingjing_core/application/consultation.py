@@ -731,6 +731,8 @@ class ConsultationService:
                 r'不把未知退出条件解释为无损失退出',
                 r'未把未知班次、费用、退出条件或时限推断为有利、零成本、零风险或完全可逆',
                 r'不能假设费用可接受或退出无损失',
+                r'不能把这些未知项当作零损失',
+                r'不能承诺该选项可逆或无损失',
             )
             boundary = r'(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上|反而|却)'
             denial = re.match(r'(?:' + '|'.join(finite + comparison_finite) + ')' + boundary, scope)
