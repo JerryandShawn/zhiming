@@ -654,20 +654,23 @@ class ConsultationService:
         familiarity_pattern = r'(?:关系|流程)(?:[、和与](?:关系|流程))?(?:都)?(?:已(?:经)?)?熟悉(?!程度)|(?:你|我).{0,4}熟悉.{0,16}(?:任务|岗位|关系|流程)'
         if (re.search(cost_pattern,text) and not re.search(r'协商成本低',factual)) or (re.search(familiarity_pattern,text) and not re.search(familiarity_pattern,factual)):
             issues.append('熟悉关系、流程或协商成本低没有已授权现实来源，不可作为推荐理由')
-        guarantee_pattern = r'零风险|完全可逆|没有任何损失|无损失|零损失|随时.{0,3}(?:退出|退款)'
+        guarantee_pattern = r'零风险|完全可逆|没有任何损失|无损失|零损失|零成本退出|随时.{0,3}(?:退出|退款)'
         def explicit_denial(prefix, suffix=''):
             # Only a list joined by "or/and" inherits the same denial. A new
             # sentence, contrast, or affirmative verb starts its own assertion.
             # These extra terms only inherit a list's local denial; they do
             # not supply evidence for any positive cost or risk guarantee.
-            joined = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款|低价|可无损退出|零费用)[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?(?:付款后)?(?:完全)?$'
+            finite_term = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款|低价|可无损退出|可退出|零费用)'
+            joined = finite_term + r'[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?(?:付款后)?(?:完全)?$'
             while re.search(joined, prefix):
                 prefix = re.sub(joined, '', prefix)
-            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不|未)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定|(?:被)?推断)|未推断为|不该被当作|不能把未知当成|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应|不)(?:被)?(?:默认|假设|假定|当作|当成|视为|预设)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|中途退出|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
+            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不|未)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|称为|视为|视作|确定|(?:被)?推断)|未推断为|不该被当作|不能把未知当成|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应|不)(?:被)?(?:默认|假设|假定|当作|当成|视为|预设)|(?:并非|不是)(?:保证|承诺)?|(?<!除)非|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步|后续步骤)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|中途退出|退出|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
             if denial is None:
                 denial = re.search(r'(?:不是|并非)[“"‘\'「『`]零代价$', prefix)
             if denial is None and re.match(r'^处理', suffix):
                 denial = re.search(r'不按$', prefix)
+            if denial is None and re.match(r'^[”"’\'」』`]?(?:(?:、|或|和|及|与)[“"‘\'「『`]?' + finite_term + r'[”"’\'」』`]?)*\s*处理[”"’\'」』`]?(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上)', suffix):
+                denial = re.search(r'(?:不能|不可|不应|不宜|不要|不)按[“"‘\'「『`]?$' , prefix)
             # The observed denial of an inference must enclose the complete
             # finite list and end at the adjacent noun, never a new claim.
             if denial is None and re.match(r'^[”"’\'」』`]?(?:(?:、|或|和|及|与)[“"‘\'「『`]?(?:' + guarantee_pattern + r'|可逆性)[”"’\'」』`]?)*\s*推断[”"’\'」』`]?(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上)', suffix):
@@ -676,7 +679,7 @@ class ConsultationService:
             # "不作记录，但报名无损失" is still an affirmative guarantee.
             if denial is None and re.match(r'^(?:(?:、|或|和|及|与)(?:' + guarantee_pattern + r'))*[”"’\'」』`]?\s*(?:的)?(?:承诺|保证)', suffix):
                 denial = re.search(r'(?:不作|不做)\s*[“"‘\'「『`]?$', prefix)
-            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|没有|未曾|未)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
+            double_denial = denial and re.search(r'(?:不是|并非|(?<!除)非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|没有|未曾|未)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
             return bool(denial and not double_denial)
 
         def guarantee_is_asserted(clause, assertion):
@@ -685,6 +688,9 @@ class ConsultationService:
             # sentence/field or a renewed assertion after a contrast.
             local = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', before)[-1]
             if explicit_denial(local, after): return False
+            if (assertion.group() == '零损失' and local == '退出是否'
+                    and re.fullmatch(r'也取决于尚未确认的具体条款', after)):
+                return False
             if (re.search(r'(?:是否|能否|可否)[“"‘\'「『`]?$' , local)
                     and re.match(r'^[”"’\'」』`]?(?:(?:、|或)(?:是否|能否|可否)?(?:' + guarantee_pattern + r'|零成本))*\s*(?:尚未|还未|未经|未)(?:确认|核实|验证)', after)):
                 return False
