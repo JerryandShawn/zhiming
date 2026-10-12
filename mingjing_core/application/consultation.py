@@ -587,9 +587,10 @@ class ConsultationService:
                 if not denial and assertion.group(1) == '保证':
                     # A closed, finite object list is a limit, not a promise.
                     # It cannot inherit arbitrary prose or a quoted denial.
-                    finite_object = r'(?:学习效果|成绩|他人动机)'
-                    limited_denial = re.search(r'(?:不|不能)构成对' + finite_object + r'(?:(?:、|或|和|及|与)' + finite_object + r')*的(?:任何)?$', prefix)
+                    finite_object = r'(?:学习(?:效果|成效|成果)|成绩|他人动机)'
+                    limited_denial = re.search(r'(?:不|不能)构成(?:对)?' + finite_object + r'(?:(?:、|或|和|及|与)' + finite_object + r')*(?:的)?(?:任何)?$', prefix)
                     if (limited_denial and re.fullmatch(r'\s*[”"’\'」』`]?\s*', clause[assertion.end():])
+                            and not re.search(r'(?:不会|不应|没有|未曾)$', prefix[:limited_denial.start()])
                             and not symbolic_limit_is_denied(limited_denial, prefix, clause, assertion, reject_quoted=True)):
                         denial = limited_denial
                     limited_denial = re.search(r'(?:不能|无法|不应|不会|不)提供吉凶$|不产生任何概率或吉凶$', prefix)
@@ -700,16 +701,45 @@ class ConsultationService:
                 denial = re.search(r'不按$', prefix)
             if denial is None and re.match(r'^[”"’\'」』`]?(?:(?:、|或|和|及|与)[“"‘\'「『`]?' + finite_term + r'[”"’\'」』`]?)*\s*处理[”"’\'」』`]?(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上)', suffix):
                 denial = re.search(r'(?:不能|不可|不应|不宜|不要|不)按[“"‘\'「『`]?$' , prefix)
-            # The observed denial of an inference must enclose the complete
-            # finite list and end at the adjacent noun, never a new claim.
-            if denial is None and re.match(r'^[”"’\'」』`]?(?:(?:、|或|和|及|与)[“"‘\'「『`]?(?:' + guarantee_pattern + r'|可逆性)[”"’\'」』`]?)*\s*推断[”"’\'」』`]?(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上)', suffix):
-                denial = re.search(r'(?:未作任何|未做(?:任何)?)[“"‘\'「『`]?$' , prefix)
             # A postposed promise noun must be adjacent to this term/list;
             # "不作记录，但报名无损失" is still an affirmative guarantee.
             if denial is None and re.match(r'^(?:(?:、|或|和|及|与)(?:' + guarantee_pattern + r'))*[”"’\'」』`]?\s*(?:的)?(?:承诺|保证)', suffix):
                 denial = re.search(r'(?:不作|不做)\s*[“"‘\'「『`]?$', prefix)
             double_denial = denial and re.search(r'(?:不是|并非|(?<!除)非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|没有|未曾|未)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
             return bool(denial and not double_denial)
+
+        def finite_inference_is_asserted(clause, assertion, local, after, context, source):
+            # A closed enumeration replaces sentence-specific inference
+            # exceptions. All terms are existing finite vocabulary, plus
+            # the observed signing qualifier; no wildcard spans are used.
+            term = r'(?:零风险|完全可逆|没有任何损失|无损失|零损失|零成本退出|随时(?:可无损|无损|可)?退出|随时(?:可)?退款|零成本|低成本|零代价|无风险|可逆|可承受|可退款|低价|可无损退出|可退出|零费用|免费|可逆性|签约后可逆)'
+            pairs = (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`'))
+            quoted_term = '(?:' + term + '|' + '|'.join(re.escape(o) + term + re.escape(c) for o, c in pairs) + ')'
+            terms = quoted_term + r'(?:(?:、|或|和|及|与)' + quoted_term + r')*'
+            enumeration = '(?:' + terms + '|' + '|'.join(re.escape(o) + terms + re.escape(c) for o, c in pairs) + ')'
+            scope = local + assertion.group() + after
+            denial = re.search(r'未(?:作|做)(?:任何)?' + enumeration + r'(?:的)?(?:推断|假设)(?=$|[，,”"’\'」』`]|但(?:是)?|然而|不过|可是|事实上|实际上|反而|却)', scope)
+            if not denial or not (denial.start() <= len(local) and len(local) + len(assertion.group()) <= denial.end()):
+                # A malformed negative inference is rejected as an answer;
+                # its selected guarantee term is not affirmative evidence.
+                if source and re.search(r'未(?:作|做)(?:任何)?', local): return False
+                return None
+            start = assertion.start() - len(local) + denial.start()
+            double = r'(?:不是|并非|(?<!除)非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不会|不应|不|没有|未曾|尚未|未)\s*(?:[：:]\s*)?[“"‘\'「『`]?\s*$'
+            if re.search(double, clause[:start]): return not source
+            for opening, closing in pairs:
+                for occurrence in re.finditer(re.escape(clause), context):
+                    prefix = context[:occurrence.start() + start]
+                    if (prefix.count(opening) % 2 if opening == closing else prefix.rfind(opening) > prefix.rfind(closing)):
+                        return not source
+                for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']*' + re.escape(closing), context):
+                    for occurrence in re.finditer(re.escape(clause), context):
+                        if quoted.start() < occurrence.start() + start and occurrence.start() + assertion.end() < quoted.end():
+                            # A quoted denial is not an output limit and
+                            # never supplies affirmative factual support.
+                            return not source
+            if re.match(r'^[”"’\'」』`]', scope[denial.end():]): return not source
+            return False
 
         def finite_guarantee_denial(clause, assertion, local, after, context):
             # These observed denials/questions enclose a complete finite
@@ -758,6 +788,8 @@ class ConsultationService:
             # Denial applies to this occurrence, never to another
             # sentence/field or a renewed assertion after a contrast.
             local = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', before)[-1]
+            inference = finite_inference_is_asserted(clause, assertion, local, after, context, source)
+            if inference is not None: return inference
             # A report quoting this denial cannot inherit its local scope,
             # even when the enclosing quote crosses commas or sentences.
             if re.search(r'不能(?:(?:从牌面)?推断为|当作)', local):
