@@ -663,7 +663,7 @@ class ConsultationService:
             joined = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款|低价|可无损退出|零费用)[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?(?:付款后)?(?:完全)?$'
             while re.search(joined, prefix):
                 prefix = re.sub(joined, '', prefix)
-            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定|(?:被)?推断)|未推断为|不该被当作|不能把未知当成|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:被)?(?:默认|假设|假定|当作|当成|视为)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
+            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不|未)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定|(?:被)?推断)|未推断为|不该被当作|不能把未知当成|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应|不)(?:被)?(?:默认|假设|假定|当作|当成|视为|预设)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|中途退出|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
             if denial is None:
                 denial = re.search(r'(?:不是|并非)[“"‘\'「『`]零代价$', prefix)
             if denial is None and re.match(r'^处理', suffix):
@@ -671,12 +671,12 @@ class ConsultationService:
             # The observed denial of an inference must enclose the complete
             # finite list and end at the adjacent noun, never a new claim.
             if denial is None and re.match(r'^[”"’\'」』`]?(?:(?:、|或|和|及|与)[“"‘\'「『`]?(?:' + guarantee_pattern + r'|可逆性)[”"’\'」』`]?)*\s*推断[”"’\'」』`]?(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上)', suffix):
-                denial = re.search(r'未作任何[“"‘\'「『`]?$' , prefix)
+                denial = re.search(r'(?:未作任何|未做(?:任何)?)[“"‘\'「『`]?$' , prefix)
             # A postposed promise noun must be adjacent to this term/list;
             # "不作记录，但报名无损失" is still an affirmative guarantee.
             if denial is None and re.match(r'^(?:(?:、|或|和|及|与)(?:' + guarantee_pattern + r'))*[”"’\'」』`]?\s*(?:的)?(?:承诺|保证)', suffix):
                 denial = re.search(r'(?:不作|不做)\s*[“"‘\'「『`]?$', prefix)
-            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
+            double_denial = denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|没有|未曾|未)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
             return bool(denial and not double_denial)
 
         def guarantee_is_asserted(clause, assertion):
