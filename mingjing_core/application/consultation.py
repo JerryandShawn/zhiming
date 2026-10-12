@@ -561,16 +561,23 @@ class ConsultationService:
             if not denial or double_denial: unsupported_save = True
         if unsupported_save:
             issues.append('保存或删除提示必须由实际程序回执生成')
-        def symbolic_limit_is_denied(denial, prefix, clause, assertion):
+        def symbolic_limit_is_denied(denial, prefix, clause, assertion, *, reject_quoted=False):
             double = r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$'
             if re.search(double, prefix[:denial.start()]) or re.search(double, clause[:assertion.start()]):
                 return True
             # A quoted double denial also governs an enclosed symbolic
             # subject; quotes never turn that double denial into a limit.
             for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
-                for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']{0,360}' + re.escape(closing), clause):
-                    if quoted.start() < assertion.start() and assertion.end() < quoted.end() and re.search(double, clause[:quoted.start()]):
+                if reject_quoted:
+                    before = clause[:assertion.start() + denial.start()]
+                    if (before.count(opening) % 2 if opening == closing else before.rfind(opening) > before.rfind(closing)):
                         return True
+                for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']{0,360}' + re.escape(closing), clause):
+                    if assertion.end() < quoted.end():
+                        if quoted.start() < assertion.start() and re.search(double, clause[:quoted.start()]):
+                            return True
+                        if reject_quoted and quoted.start() < assertion.start() + denial.start() < quoted.end():
+                            return True
             return False
         certainty = False
         for clause in re.split(r'[。；;\n]', text):
@@ -578,6 +585,13 @@ class ConsultationService:
                 prefix=clause[assertion.start():assertion.start(1)]
                 denial=re.search(r'(?:不能|无法|不应|不会|并非|不是|不|无从)(?:据此|因此|直接|单独|可靠地|用于|用来|作为|被用于|被用来|给出|做出|提供)?$|没有依据(?:可以|能够)?$',prefix)
                 if not denial and assertion.group(1) == '保证':
+                    # A closed, finite object list is a limit, not a promise.
+                    # It cannot inherit arbitrary prose or a quoted denial.
+                    finite_object = r'(?:学习效果|成绩|他人动机)'
+                    limited_denial = re.search(r'(?:不|不能)构成对' + finite_object + r'(?:(?:、|或|和|及|与)' + finite_object + r')*的(?:任何)?$', prefix)
+                    if (limited_denial and re.fullmatch(r'\s*[”"’\'」』`]?\s*', clause[assertion.end():])
+                            and not symbolic_limit_is_denied(limited_denial, prefix, clause, assertion, reject_quoted=True)):
+                        denial = limited_denial
                     limited_denial = re.search(r'(?:不能|无法|不应|不会|不)提供吉凶$|不产生任何概率或吉凶$', prefix)
                     double_denial = limited_denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', prefix[:limited_denial.start()])
                     if limited_denial and limited_denial.group() == '不产生任何概率或吉凶':
