@@ -674,11 +674,19 @@ class ConsultationService:
             # sentence, contrast, or affirmative verb starts its own assertion.
             # These extra terms only inherit a list's local denial; they do
             # not supply evidence for any positive cost or risk guarantee.
-            finite_term = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款|低价|可无损退出|可退出|零费用)'
+            finite_term = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款|低价|可无损退出|可退出|零费用|免费)'
             joined = finite_term + r'[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?(?:付款后)?(?:完全)?$'
             while re.search(joined, prefix):
                 prefix = re.sub(joined, '', prefix)
             denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不|未)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|称为|视为|视作|确定|(?:被)?推断)|未推断为|不该被当作|不能把未知当成|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应|不)(?:被)?(?:默认|假设|假定|当作|当成|视为|预设)|(?:并非|不是)(?:保证|承诺)?|(?<!除)非|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步|后续步骤)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|中途退出|退出|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
+            # This finite inference denial must occupy the whole local
+            # predicate; quotes, double denials and new verbs cannot inherit it.
+            if denial is None and re.fullmatch(r'(?:(?:、|或|和|及|与)' + finite_term + r')*', suffix):
+                denial = re.fullmatch(r'(?:(?:均)?保持待核实而)?非推断为', prefix)
+            # These observed inference denials enclose only a finite list.
+            # "可忽略" is an adjacent non-guarantee tail, never a new verb.
+            if denial is None and re.match(r'^(?:(?:、|或|和|及|与)' + finite_term + r')*(?:或可忽略)?(?=$|[，,]|——|但(?:是)?|然而|不过|可是|事实上|实际上|反而|却)', suffix):
+                denial = re.search(r'不能(?:(?:从牌面)?推断为|当作)$', prefix)
             if denial is None:
                 denial = re.search(r'(?:不是|并非)[“"‘\'「『`]零代价$', prefix)
             if denial is None and re.match(r'^处理', suffix):
@@ -696,7 +704,7 @@ class ConsultationService:
             double_denial = denial and re.search(r'(?:不是|并非|(?<!除)非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|没有|未曾|未)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
             return bool(denial and not double_denial)
 
-        def finite_guarantee_denial(clause, assertion, local, after):
+        def finite_guarantee_denial(clause, assertion, local, after, context):
             # These observed denials/questions enclose a complete finite
             # predicate. A new object, verb, double denial or quoted report
             # cannot inherit their scope.
@@ -708,22 +716,46 @@ class ConsultationService:
                 r'未对任何费用、退出或可逆性做零成本、完全可逆或无损失的假设',
                 r'两方案是否允许无损失退出、是否有答复时限或名额限制均待核实',
             )
+            comparison_finite = (
+                r'不能认定(?:之后可以|选择B可)无损失退出',
+                r'不能承诺选择B之后完全可逆或无损失',
+                r'若B费用不可接受能否无损失退出，取决于B的退出条件，待核实',
+            )
             boundary = r'(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上|反而|却)'
-            denial = re.match(r'(?:' + '|'.join(finite) + ')' + boundary, scope)
+            denial = re.match(r'(?:' + '|'.join(finite + comparison_finite) + ')' + boundary, scope)
             if not denial or len(local) + len(assertion.group()) > denial.end(): return False
             start = assertion.start() - len(local)
+            comparison_denial = re.match(r'(?:' + '|'.join(comparison_finite) + ')' + boundary, scope)
+            if comparison_denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[：:]\s*$', clause[:start]):
+                return False
             for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
                 for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']*' + re.escape(closing), clause):
                     if quoted.start() < start and assertion.end() < quoted.end(): return False
+                # A quoted report can cross a sentence/semicolon boundary.
+                # Only these new closed comparison predicates consult the
+                # complete answer/source context for that enclosing quote.
+                if comparison_denial:
+                    for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']*' + re.escape(closing), context):
+                        for occurrence in re.finditer(re.escape(clause), context):
+                            if quoted.start() < occurrence.start() + assertion.start() and occurrence.start() + assertion.end() < quoted.end(): return False
             return True
 
-        def guarantee_is_asserted(clause, assertion):
+        def guarantee_is_asserted(clause, assertion, context=text, source=False):
             before, after = clause[:assertion.start()], clause[assertion.end():]
             # Denial applies to this occurrence, never to another
             # sentence/field or a renewed assertion after a contrast.
             local = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', before)[-1]
+            # A report quoting this denial cannot inherit its local scope,
+            # even when the enclosing quote crosses commas or sentences.
+            if re.search(r'不能(?:(?:从牌面)?推断为|当作)', local):
+                start = assertion.start() - len(local)
+                if re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[：:]\s*$', clause[:start]): return not source
+                for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
+                    for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']*' + re.escape(closing), context):
+                        for occurrence in re.finditer(re.escape(clause), context):
+                            if quoted.start() < occurrence.start() + assertion.start() and occurrence.start() + assertion.end() < quoted.end(): return not source
             if explicit_denial(local, after): return False
-            if finite_guarantee_denial(clause, assertion, local, after): return False
+            if finite_guarantee_denial(clause, assertion, local, after, context): return False
             if (assertion.group() == '零损失' and local == '退出是否'
                     and re.fullmatch(r'也取决于尚未确认的具体条款', after)):
                 return False
@@ -792,7 +824,7 @@ class ConsultationService:
             # are not affirmative evidence for any kind of guarantee.
             if re.search(r'是否|能否|可否|吗|么|[？?]|不要|请避免|别(?:说|承诺|保证)|不排除|不能否认|不可否认|未排除|可能|或许|也许|据说|有人说|撤回|收回|修复|修正|纠正|更正|上一轮|此前|之前|先前', source_clause): continue
             for source_assertion in re.finditer(guarantee_pattern, source_clause):
-                if guarantee_is_asserted(source_clause, source_assertion):
+                if guarantee_is_asserted(source_clause, source_assertion, factual, source=True):
                     supported_guarantees.add(guarantee_kind(source_assertion))
         if any(guarantee_kind(assertion) not in supported_guarantees and guarantee_is_asserted(clause, assertion)
                for clause in clauses for assertion in re.finditer(guarantee_pattern, clause)):
