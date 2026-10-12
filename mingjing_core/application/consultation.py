@@ -598,6 +598,13 @@ class ConsultationService:
                         double_denial = symbolic_limit_is_denied(limited_denial, prefix, clause, assertion)
                     if limited_denial and not double_denial: denial = limited_denial
                 if not denial and assertion.group(1) == '证明':
+                    # A noon snapshot explicitly has not established this
+                    # finite day-pillar boundary; keep quotes, double denials
+                    # and any renewed assertion outside this exception.
+                    snapshot_limit = re.fullmatch(r'八字仅(?:采用)?正午快照[，,]未', prefix)
+                    if (snapshot_limit and re.fullmatch(r'整日不(?:更)?换日柱\s*', clause[assertion.end():])
+                            and not symbolic_limit_is_denied(snapshot_limit, prefix, clause, assertion, reject_quoted=True)):
+                        denial = snapshot_limit
                     limited_denial = re.search(r'不能摘取单一相位$', prefix)
                     if limited_denial and not symbolic_limit_is_denied(limited_denial, prefix, clause, assertion):
                         denial = limited_denial
@@ -720,6 +727,10 @@ class ConsultationService:
                 r'不能认定(?:之后可以|选择B可)无损失退出',
                 r'不能承诺选择B之后完全可逆或无损失',
                 r'若B费用不可接受能否无损失退出，取决于B的退出条件，待核实',
+                r'因此不存在零成本、零风险或完全可逆的路径',
+                r'不把未知退出条件解释为无损失退出',
+                r'未把未知班次、费用、退出条件或时限推断为有利、零成本、零风险或完全可逆',
+                r'不能假设费用可接受或退出无损失',
             )
             boundary = r'(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上|反而|却)'
             denial = re.match(r'(?:' + '|'.join(finite + comparison_finite) + ')' + boundary, scope)
