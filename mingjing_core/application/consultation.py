@@ -280,8 +280,16 @@ class ConsultationService:
                  'injected_ids': output['fact_ids'], 'case_ids': run['request']['case_ids']}})
 
     def _snapshot(self, owner, run):
-        return self.memory.snapshot(owner, run['subject'], run['request']['case_ids'],
-                                    conversation_id=run['request']['conversation_id'])
+        snapshot = self.memory.snapshot(owner, run['subject'], run['request']['case_ids'],
+                                        conversation_id=run['request']['conversation_id'])
+        intake = self._record(owner, run['id'], 'intake')
+        if intake and intake.get('source_id'):
+            current = self.memory.current_source_context(owner, run['subject'], intake['source_id'],
+                                                        intake.get('proposals', []), run['request']['case_ids'])
+            snapshot['current_source_facts'] = current['facts']
+            snapshot['facts'] = snapshot['facts'] + current['facts']
+            snapshot['versions'].update(current['versions'])
+        return snapshot
 
     def _parent_source(self, owner, run):
         parent_id = run['request'].get('parent_run')
@@ -305,7 +313,8 @@ class ConsultationService:
         else:
             source = self.memory.receive(owner, run['subject'], req['message'],
                        case_ids=req['case_ids'], conversation_id=req['conversation_id'],
-                       source_id=run['operation_id'], channel='web' if req['mode']=='chat' else req['mode'])
+                       source_id=run['operation_id'], channel='web' if req['mode']=='chat' else req['mode'],
+                       origin='current_user' if req['mode'] in ('chat','tarot') else 'system')
         snap = self._snapshot(owner, run)
         intake_versions = {k:v for k,v in snap['versions'].items() if k.startswith('owner:')}
         if req['mode'] == 'scheduled_report':
@@ -319,7 +328,12 @@ class ConsultationService:
                 raise RevisionConflict('报告时间在准备前已更新')
             intake_versions['report_schedule:' + kind] = policy['revision']
         intake_versions['message:' + source['id']] = source['revision']
-        for fact in selected_facts(snap, req['message'], 80): intake_versions['fact:' + fact['id']] = fact['revision']
+        for fact in selected_facts(snap, req['message'], 80):
+            if fact.get('context_only'):
+                for source_ref in fact['source_refs']:
+                    intake_versions['message:' + source_ref['message_id']] = source_ref['version']
+            else:
+                intake_versions['fact:' + fact['id']] = fact['revision']
         for history in snap.get('history', [])[-12:]:
             if history.get('id') and history.get('revision'): intake_versions['message:' + history['id']] = history['revision']
         payload = {'reference_data': {
@@ -328,7 +342,7 @@ class ConsultationService:
             'current_facts': [{'id': f['id'], 'content': f.get('content', ''), 'case_id': f.get('case_id'),
                                'kind': f.get('kind')} for f in selected_facts(snap, req['message'], 80)],
             'recent_history': [{'role': h.get('role'), 'content': h.get('content','')[:1000]} for h in snap.get('history', [])[-12:]]},
-            'instruction': '识别意图并返回Intake所有字段；proposals只能处理本轮当前source原话，quote必须是当前message中的逐字连续原文；历史既有资料仅作参考，不得重复提取成新proposals。普通偏好、约束、背景、目标和事件只在quote写事实正文，field和value必须均为null，不得发明schedule等结构化字段或扩写value。只有结构化个人资料（category为出生资料、出生或profile）及其更正可使用schema枚举的现有资料field，value必须直接来自quote原话，不能推断或概括。拒绝保存不提出保存候选；更正意图与保存许可分离。敏感资料、出生、第三人必须明确保存授权。图片仅为未核实附件，图片推断不能作为原话保存。按明确需要规划专业，education规范为study。需要排盘时，程序将用已授权出生资料实际计算，不要求用户提交排盘结果；missing_inputs只列缺少就无法执行本次所选分析的真实用户输入，可选细化信息不列入，现有信息足以继续时返回[]；不列程序将计算的字段、模型规则、宫位、流派与排盘结果。费用、班次、退出等现实条件不明时只列待核实，不编造。'}
+            'instruction': '识别意图并返回Intake所有字段；proposals只能处理本轮当前source原话，quote必须是当前message中的逐字连续原文；历史既有资料仅作参考，不得重复提取成新proposals。普通偏好、约束、背景、目标和事件只在quote写事实正文，field和value必须均为null，不得发明schedule等结构化字段或扩写value。只有结构化个人资料（category为出生资料、资料或profile）及其更正可使用schema枚举的现有资料field，value必须直接来自quote原话，不能推断或概括。拒绝保存不提出保存候选；更正意图与保存许可分离。敏感资料、出生、第三人必须明确保存授权。图片仅为未核实附件，图片推断不能作为原话保存。按明确需要规划专业，education规范为study。需要排盘时，程序将用已授权出生资料实际计算，不要求用户提交排盘结果；missing_inputs只列缺少就无法执行本次所选分析的真实用户输入，可选细化信息不列入，现有信息足以继续时返回[]；不列程序将计算的字段、模型规则、宫位、流派与排盘结果。费用、班次、退出等现实条件不明时只列待核实，不编造。'}
         if req.get('parent_run'):
             parent_source = self._parent_source(owner, run)
             payload['reference_data']['clarification_for'] = {'question': parent_source['content']}
@@ -547,15 +561,32 @@ class ConsultationService:
             if not denial or double_denial: unsupported_save = True
         if unsupported_save:
             issues.append('保存或删除提示必须由实际程序回执生成')
+        def symbolic_limit_is_denied(denial, prefix, clause, assertion):
+            double = r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$'
+            if re.search(double, prefix[:denial.start()]) or re.search(double, clause[:assertion.start()]):
+                return True
+            # A quoted double denial also governs an enclosed symbolic
+            # subject; quotes never turn that double denial into a limit.
+            for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
+                for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']{0,360}' + re.escape(closing), clause):
+                    if quoted.start() < assertion.start() and assertion.end() < quoted.end() and re.search(double, clause[:quoted.start()]):
+                        return True
+            return False
         certainty = False
         for clause in re.split(r'[。；;\n]', text):
             for assertion in re.finditer(r'(?:命盘|八字|星盘|塔罗|牌面).{0,28}?(证明|保证|一定会|必然会|成功率\s*\d|\d+\s*%)', clause):
                 prefix=clause[assertion.start():assertion.start(1)]
                 denial=re.search(r'(?:不能|无法|不应|不会|并非|不是|不|无从)(?:据此|因此|直接|单独|可靠地|用于|用来|作为|被用于|被用来|给出|做出|提供)?$|没有依据(?:可以|能够)?$',prefix)
                 if not denial and assertion.group(1) == '保证':
-                    limited_denial = re.search(r'(?:不能|无法|不应|不会|不)提供吉凶$', prefix)
+                    limited_denial = re.search(r'(?:不能|无法|不应|不会|不)提供吉凶$|不产生任何概率或吉凶$', prefix)
                     double_denial = limited_denial and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', prefix[:limited_denial.start()])
+                    if limited_denial and limited_denial.group() == '不产生任何概率或吉凶':
+                        double_denial = symbolic_limit_is_denied(limited_denial, prefix, clause, assertion)
                     if limited_denial and not double_denial: denial = limited_denial
+                if not denial and assertion.group(1) == '证明':
+                    limited_denial = re.search(r'不能摘取单一相位$', prefix)
+                    if limited_denial and not symbolic_limit_is_denied(limited_denial, prefix, clause, assertion):
+                        denial = limited_denial
                 if not denial and assertion.group() == '牌面证明':
                     local = re.split(r'[，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', clause[:assertion.start()])[-1]
                     before_subject = re.search(r'不由$', local)
@@ -571,7 +602,11 @@ class ConsultationService:
             issues.append('现实决策需要至少两个可行选择，可包含暂缓与核实')
         if plan['decision'] and facts and not final['cited_fact_ids']:
             issues.append('已有现实资料时，决策必须引用本轮有效事实依据')
-        factual = '\n'.join(str(f.get('content','')) for f in facts.values()) + '\n' + run['request']['message']
+        # Current-source quotes may omit the surrounding question, hypothesis
+        # or denial. Their full original is already present below; never use a
+        # model-selected fragment as additional affirmative reality evidence.
+        factual = '\n'.join(str(f.get('content','')) for f in facts.values()
+                            if not f.get('context_only') and f.get('kind') not in ('hypothesis','hearsay','concern')) + '\n' + run['request']['message']
         clauses = re.split(r'[。；;\n]', text)
         def night_exception_is_asserted(clause, occurrence):
             before, after = clause[:occurrence.start()], clause[occurrence.end():]
@@ -625,14 +660,18 @@ class ConsultationService:
             # sentence, contrast, or affirmative verb starts its own assertion.
             # These extra terms only inherit a list's local denial; they do
             # not supply evidence for any positive cost or risk guarantee.
-            joined = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款)[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?(?:付款后)?(?:完全)?$'
+            joined = r'(?:' + guarantee_pattern + r'|零成本|低成本|零代价|无风险|可逆|可承受|可退款|低价|可无损退出|零费用)[”"’\'」』`]?(?:或|、|和|及|与)\s*[“"‘\'「『`]?(?:付款后)?(?:完全)?$'
             while re.search(joined, prefix):
                 prefix = re.sub(joined, '', prefix)
-            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定|(?:被)?推断)|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:被)?(?:默认|假设|假定|当作|当成|视为)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
+            denial = re.search(r'(?:(?:不能|无法|不应|不可|不宜|不再|尚不能|不可能|不要|不)(?:据此|因此|预先|直接|单独|事先)?(?:保证|承诺|认定|断言|声称|宣称|认为|说|视为|视作|确定|(?:被)?推断)|未推断为|不该被当作|不能把未知当成|不能推定退出|不再对任何方案或动作宣称|(?:没有|缺乏|尚无|并无)依据(?:保证|承诺|认定|断言|认为)|(?:避免|不要|不能|不应)(?:被)?(?:默认|假设|假定|当作|当成|视为)|(?:并非|不是)(?:保证|承诺)?|未必|不等于|不)(?:(?:任何(?:报名|选项|路径|方案|一步)|任一(?:方|选项)|正式报名|该课程|这项安排|这个选择|此路径|核实行动|等待|其|它|A|B)(?:是|可|为)?|任何|是|可|为)?[“"‘\'「『`]?(?:完全)?$', prefix)
             if denial is None:
                 denial = re.search(r'(?:不是|并非)[“"‘\'「『`]零代价$', prefix)
             if denial is None and re.match(r'^处理', suffix):
                 denial = re.search(r'不按$', prefix)
+            # The observed denial of an inference must enclose the complete
+            # finite list and end at the adjacent noun, never a new claim.
+            if denial is None and re.match(r'^[”"’\'」』`]?(?:(?:、|或|和|及|与)[“"‘\'「『`]?(?:' + guarantee_pattern + r'|可逆性)[”"’\'」』`]?)*\s*推断[”"’\'」』`]?(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上)', suffix):
+                denial = re.search(r'未作任何[“"‘\'「『`]?$' , prefix)
             # A postposed promise noun must be adjacent to this term/list;
             # "不作记录，但报名无损失" is still an affirmative guarantee.
             if denial is None and re.match(r'^(?:(?:、|或|和|及|与)(?:' + guarantee_pattern + r'))*[”"’\'」』`]?\s*(?:的)?(?:承诺|保证)', suffix):
@@ -800,7 +839,11 @@ class ConsultationService:
             'coverage_gaps': coverage_gaps, 'calculation_errors': calculation_errors,
             'calculation_fallbacks': calculation_fallbacks,
             'schema_version': 'core3.0', 'validation': {'status': 'validated', 'valid': True, 'schema': 'core3.0'},
-            'evidence': [{'ref': 'fact:' + f['id'], 'claim': f.get('content',''), 'source': 'user_report_not_independently_verified'}
+            'evidence': [{'ref': ('source:' if f.get('context_only') else 'fact:') + f['id'],
+                          'claim': f.get('content',''),
+                          'source': 'current_user_statement_not_saved' if f.get('context_only') else 'user_report_not_independently_verified',
+                          **({'label': '本轮原话（未保存为长期记忆）', 'context_only': True,
+                              'source_refs': f['source_refs']} if f.get('context_only') else {})}
                          for f in snap['facts'] if f['id'] in final['cited_fact_ids']] +
                         [{'ref': c['claim_id'], 'claim': c['text'], 'source': c['claim_type'], 'rule_id': c['rule_id'], 'feature_refs': c['feature_refs']} for c in claims if c['claim_id'] in final['cited_claim_ids']],
             'coverage': [{'engine': s, 'status': 'used' if any(c['system']==s for c in claims) else 'unavailable',

@@ -30,7 +30,7 @@ ProfileField = Literal[
 
 class MemoryProposal(Contract):
     quote: str = Field(min_length=1, max_length=4000)
-    category: str = "背景"
+    category: str = Field(default="背景", description="仅使用偏好、约束、出生资料、资料、背景、目标、事件、更正，或preference/constraint/profile/background/goal/event/concern/hearsay/hypothesis/correction。假设、疑问、传闻不能归类成偏好或已确认现实事实；未知类别不会保存。")
     case_id: str | None = None
     field: ProfileField | None = Field(default=None, description="仅结构化个人资料或其更正使用枚举中的现有资料字段；普通偏好、约束、背景、目标和事件必须填null，不得发明schedule等新字段。普通事实正文只写逐字quote，field/value均为null。")
     value: Any = Field(default=None, description="普通非结构化事实必须填null；结构化资料的值必须直接来自quote原话，不得扩写、推断或概括。保存仍需程序检查原话与授权。")

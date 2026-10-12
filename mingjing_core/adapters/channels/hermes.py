@@ -88,7 +88,7 @@ class HermesChannelAdapter:
         ident = 'msg_' + fingerprint([owner, channel, source_id, 'user'])[:32]
         return self.service.repo.is_revoked(owner, 'message', ident)
 
-    def _register(self, binding: dict, channel: str, external_id: str, row: dict):
+    def _register(self, binding: dict, channel: str, external_id: str, row: dict, *, origin='migration'):
         if self._revoked(binding["owner"], channel, row["id"]):
             raise EvidenceError("这条原话已停止使用或删除，不能重新导入")
         content = row["content"]
@@ -100,7 +100,7 @@ class HermesChannelAdapter:
         original = self.state.import_message(
             binding["owner"], channel, str(row["id"]) + ":user", "user", content, stamp,
             subject=binding["subject"], channel=channel, external_id=external_id,
-            conversation_id=channel + ":" + str(row["session_id"]),
+            conversation_id=channel + ":" + str(row["session_id"]), origin=origin,
         )
         # A concurrent withdrawal between the pre-check and insert must not
         # create an apparently usable current source.
@@ -134,7 +134,7 @@ class HermesChannelAdapter:
             raise EvidenceError("未找到属于当前绑定身份的有效用户原话")
         # Verify the current source before synchronizing older messages, so a
         # forged/withdrawn message cannot initiate any consultation.
-        source = self._register(binding, channel, external_id, rows[0])
+        source = self._register(binding, channel, external_id, rows[0], origin='current_user')
         self.sync(channel, external_id, binding_kind=binding_kind)
         self.state.get_message(binding["owner"], source["id"])
         result = await self.service.consult(

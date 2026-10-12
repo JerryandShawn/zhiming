@@ -24,6 +24,11 @@ class SourceRef(Contract):
     quote: str = Field(min_length=1, max_length=3000)
 
 
+class SourcePolicy(Contract):
+    run_context: bool = Field(default=False, strict=True)
+    origin: Literal['current_user','migration','system','unknown'] = 'unknown'
+
+
 class SourceMessage(Contract):
     id: str
     owner_user_id: str
@@ -38,6 +43,7 @@ class SourceMessage(Contract):
     at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     revision: int = Field(default=1, ge=1)
     status: str = 'active'
+    policy: SourcePolicy = Field(default_factory=SourcePolicy)
 
 
 class Fact(Contract):

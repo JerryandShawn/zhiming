@@ -6,6 +6,7 @@ from pathlib import Path
 import unittest
 
 from mingjing_core.domain.consultation import InvalidAnswer
+from mingjing_core.repositories.postgres import fingerprint
 from tests import test_core_comparison_repairs as helpers
 from tests import test_core_76b_provider_denials as provider_helpers
 from tools.compare_core_providers import card_projection
@@ -64,7 +65,8 @@ class Comparison76bDenialRegression(unittest.TestCase):
         record = self.service._record(self.owner, run['id'], 'calculation')
         self.assertTrue(self.service.knowledge.revalidate_claims(record['calculation'], record['claims'],
             record.get('tarot_provenance'))['eligible'])
-        self.assertTrue(set(result['cited_fact_ids']) <= {f['id'] for f in self.service.memory.facts(self.owner)})
+        snapshot = self.service._snapshot(self.owner,self.repo.fetch_run(self.owner,run['id']))
+        self.assertTrue(set(result['cited_fact_ids']) <= {f['id'] for f in snapshot['facts']})
         self.assertTrue(set(result['cited_claim_ids']) <= {c['claim_id'] for c in record['claims']})
         self.assertTrue(result['validation']['valid'])
 
@@ -102,6 +104,22 @@ class Comparison76bDenialRegression(unittest.TestCase):
         self.assertEqual(self.service.validation_attempts[-1], [])
         self.assertEqual(result['plain_summary'], self.model.outputs['repair']['plain_summary'])
         self.assert_refs(run, result)
+        self.assertEqual(len(self.service.memory.facts(self.owner)),9)
+        temporary = self.service._snapshot(self.owner,current)['current_source_facts']
+        self.assertEqual(len(temporary),1)
+        proposal = sample['outputs']['intake']['proposals'][0]
+        original_source = 'msg_' + fingerprint([self.owner,'web','fixed-target','user'])[:32]
+        start = self.evidence['questions']['tarot'].index(proposal['quote'])
+        original_fact = 'fact_' + fingerprint([self.owner,original_source,start,start+len(proposal['quote']),
+                                              'background',proposal['case_id'],None,None])[:32]
+        self.assertEqual(self.model.mapping[original_fact],temporary[0]['id'])
+        self.assertEqual((temporary[0]['content'],temporary[0]['case_id']),(proposal['quote'],self.case))
+        self.assertEqual(result['memory_receipts'][0]['write_status'],'pending_confirmation')
+        current_evidence = [e for e in result['evidence'] if e.get('context_only')]
+        self.assertEqual(len(current_evidence),1)
+        self.assertEqual(current_evidence[0]['source'],'current_user_statement_not_saved')
+        self.assertFalse(any(k.startswith('fact:current_source_') for k in current['dependencies']))
+        self.assertTrue(all('message:'+ref['message_id'] in current['dependencies'] for ref in current_evidence[0]['source_refs']))
         self.assertIn(helpers.SAVE_ISSUE, self.service._validate(self.owner, current,
             self.bound(deepcopy(sample['outputs']['synthesis']))))
         self.assertEqual(card_projection(self.service.tarot.get(self.owner, self.draw['id'])), self.evidence['fixed_cards'])

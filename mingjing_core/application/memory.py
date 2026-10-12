@@ -9,13 +9,43 @@ from mingjing_core.domain.contracts import EvidenceError, Fact, RevisionConflict
 from mingjing_core.repositories.postgres import fingerprint, new_id
 
 OPTOUT = re.compile(r'(?:不要|不用|不许|禁止|不允许|别|不想|不愿|不需要).{0,12}(?:保存|存储|记录|记住|留存|归档|存记忆|加入.{0,3}记忆)|(?:不得|不能)(?:保存|存储|记录|留存)|(?:不保存|不存储|不记录|不留存)')
-SAVE_AUTH = re.compile(r'(?:请|同意|允许|授权|确认|可以).{0,10}(?:保存|存储|记录|记住|留存|归档)|^(?:记住|保存|记录)(?:我|这|以下)')
+SAVE_AUTH = re.compile(r'(?:请(?:你|帮我|替我|为我)?|(?:我)?(?:同意|允许|授权)(?:你|系统)?|(?:我)?(?:确认|可以))\s*(?:保存|存储|记录|记住|留存|归档)(?![的过了])|(?:^|[，,:：。；;\n])\s*(?:记住|保存|记录)(?:我|这|以下)')
 SECRET = re.compile(r'密码|密钥|API.?KEY|身份证|银行卡|口令',re.I)
 SENSITIVE = re.compile(r'出生|病历|诊断|确诊|创伤|自杀|性经历|性取向|精神|抑郁|怀孕|疾病|癌症|收入|存款|债务')
 HYPOTHESIS = re.compile(r'假如|假设|如果|要是|举个例子|比如说|也许|可能会|[？?]')
 CORRECTION = re.compile(r'更正|纠正|改为|现在|不再|其实|不是|修改|更新')
 FACT_KINDS={'preference','constraint','profile','background','goal','event','concern','hearsay','hypothesis','correction'}
 CATEGORIES={'偏好':'preference','约束':'constraint','出生资料':'profile','资料':'profile','背景':'background','目标':'goal','事件':'event','更正':'correction'}
+CURRENT_CHANNELS={'web','web-action','synthetic','tarot'}
+
+
+def fact_kind(kind='preference',category=None):
+    if category is not None:
+        if not isinstance(category,str):raise ValueError('Invalid fact category')
+        if category in CATEGORIES:kind=CATEGORIES[category]
+        elif category in FACT_KINDS:kind=category
+        else:raise ValueError('Invalid fact category')
+    if kind not in FACT_KINDS:raise ValueError('Invalid fact kind')
+    return kind
+
+
+def explicit_save_authorization(text):
+    """A current save instruction grants consent; references to saved state do not."""
+    if OPTOUT.search(text):return False
+    command_text=text
+    for opening,closing in (('“','”'),('「','」'),('『','』'),('"','"'),("'","'"),('`','`')):
+        command_text=re.sub(re.escape(opening)+r'[^'+re.escape(closing)+r'\n]*'+re.escape(closing),
+                            lambda match:' '*len(match.group()),command_text)
+    for match in SAVE_AUTH.finditer(command_text):
+        start=max(command_text.rfind(mark,0,match.start()) for mark in ('。','！','!','？','?','；',';','\n'))+1
+        ends=[command_text.find(mark,match.end()) for mark in ('。','！','!','？','?','；',';','\n')]
+        end=min([position+1 for position in ends if position>=0] or [len(command_text)])
+        clause=command_text[start:end]
+        if re.search(r'是否|能否|可否|可以吗|吗[？?]?|[？?]|假如|假设|如果',clause):continue
+        if re.search(r'(?:已|已经|曾|此前|之前|先前|上次|不|未|没|并非|不是)\s*$',command_text[start:match.start()]):continue
+        if re.search(r'(?:说|说过|提到|问|写着|原话是|引用|解释)[：:，,\s]*$',command_text[start:match.start()]):continue
+        return True
+    return False
 
 
 class MemoryService:
@@ -24,10 +54,11 @@ class MemoryService:
         self.on_revoke=on_revoke
 
     def receive(self,owner,subject='self',content=None,*,message=None,channel='web',source_id=None,external_id=None,
-                conversation_id='default',case_ids=None,role='user',at=None,operation_id=None):
+                conversation_id='default',case_ids=None,role='user',at=None,operation_id=None,origin='current_user'):
         content=content if content is not None else message
         if not isinstance(content,str) or len(content)>200000 or role not in ('user','assistant','tool','legacy'):raise ValueError('Invalid original source')
         if not source_id:raise ValueError('Stable authenticated source ID required')
+        if origin not in ('current_user','migration','system','unknown'):raise ValueError('Invalid program source origin')
         self.repo.assert_scope(owner,subject)
         if external_id is not None:
             binding=self.repo.resolve_channel(channel,str(external_id))
@@ -37,6 +68,10 @@ class MemoryService:
         for cid in case_ids or []:
             if self.repo.get(owner,'case',cid)['subject_id']!=subject:raise ScopeError('Source case belongs to another subject')
         ident='msg_'+fingerprint([owner,channel,str(source_id),role])[:32]
+        source_origin=('migration' if channel=='migration' or role=='legacy' else
+                       'system' if role!='user' or channel=='scheduled_report' else origin)
+        policy={'origin':source_origin,'run_context':source_origin=='current_user' and
+                role=='user' and (channel in CURRENT_CHANNELS or external_id is not None)}
         with self.repo.transaction(owner):
             if self.repo.is_revoked(owner,'message',ident):raise EvidenceError('Deleted original cannot be reimported')
             try:old=self.repo.get(owner,'message',ident,include_deleted=True)
@@ -51,7 +86,7 @@ class MemoryService:
                     old['case_ids']=cases
                 return old
             stamp=at.isoformat() if isinstance(at,datetime) else str(at or datetime.now(timezone.utc).isoformat())
-            return self.repo.put(owner,'message',ident,{'content':content,'role':role,'channel':channel,'source_id':str(source_id),'external_id':external_id,'conversation_id':conversation_id,'case_ids':case_ids or [],'at':stamp},subject=subject,expected_revision=0,operation_id=operation_id)
+            return self.repo.put(owner,'message',ident,{'content':content,'role':role,'channel':channel,'source_id':str(source_id),'external_id':external_id,'conversation_id':conversation_id,'case_ids':case_ids or [],'at':stamp,'policy':policy},subject=subject,expected_revision=0,operation_id=operation_id)
 
     def get_source(self,owner,message_id,*,for_context=False):
         row=self.repo.get(owner,'message',message_id,include_deleted=True)
@@ -83,7 +118,7 @@ class MemoryService:
     def grant_authorization(self,owner,subject,message_id,quote,*,kinds=None,case_id=None,operation_id=None):
         source=self.get_source(owner,message_id)
         if source['subject_id']!=subject or source.get('role')!='user' or quote not in source.get('content',''):raise ScopeError('Authorization requires this subject original user quote')
-        if OPTOUT.search(source['content']) or not SAVE_AUTH.search(quote):raise EvidenceError('Explicit save authorization is absent')
+        if OPTOUT.search(source['content']) or not explicit_save_authorization(quote):raise EvidenceError('Explicit save authorization is absent')
         ident='consent_'+fingerprint([owner,message_id,quote,kinds,case_id])[:32]
         return self.repo.put(owner,'consent',ident,{'message_id':message_id,'source_revision':source['revision'],'kinds':kinds or ['background','profile','goal','event','preference','constraint','correction'],'case_id':case_id,'scope_start':source['content'].find(quote),'scope_end':source['content'].find(quote)+len(quote)},subject=subject,case_id=case_id,operation_id=operation_id or 'consent:'+ident,expected_revision=0)
 
@@ -95,12 +130,53 @@ class MemoryService:
             return True
         # Direct explicit saving in this very source is still checked by program, not model flags.
         clause_start=max(text.rfind('。',0,start),text.rfind('\n',0,start))+1
-        return bool(SAVE_AUTH.search(text[clause_start:end]))
+        return explicit_save_authorization(text[clause_start:end])
+
+    def current_source_context(self,owner,subject,message_id,proposals,case_ids=None):
+        """Quote current user context without making, confirming or storing facts."""
+        empty={'facts':[],'versions':{}}
+        self.repo.assert_scope(owner,subject)
+        selected=list(dict.fromkeys(case_ids or []))
+        for case in selected:
+            if self.repo.get(owner,'case',case)['subject_id']!=subject:raise ScopeError('Current source case belongs to another subject')
+        if not isinstance(proposals,list) or len(proposals)>12:raise EvidenceError('Invalid current source proposals')
+        with self.repo.transaction(owner):
+            source=self.get_source(owner,message_id)
+            if source['subject_id']!=subject:raise ScopeError('Current source belongs to another subject')
+            policy=source.get('policy',{})
+            if (source['status']!='active' or source.get('role')!='user' or not isinstance(policy,dict) or
+                    policy.get('run_context') is not True or policy.get('origin')!='current_user' or
+                    self.repo.is_revoked(owner,'message',message_id)):return empty
+            text=source.get('content','');facts=[]
+            spans=[row['metadata'] for row in self.repo.revocations(owner) if row['kind']=='source_span' and row['metadata'].get('message_id')==message_id]
+            saved=[ref for fact in self.facts(owner,subject,selected) for ref in fact.get('source_refs',[])
+                   if ref.get('message_id')==message_id and ref.get('version')==source['revision']]
+            for proposal in proposals:
+                if not isinstance(proposal,dict) or set(proposal)-{'quote','category','kind','case_id','field','value','supersedes'}:raise EvidenceError('Unsupported current source proposal')
+                quote=proposal.get('quote','');case=proposal.get('case_id')
+                if not isinstance(quote,str) or not 1<=len(quote)<=3000 or quote not in text:raise EvidenceError('Current context must exactly quote this original user source')
+                if case is not None and (case not in selected or case not in source.get('case_ids',[])):raise ScopeError('Current context case is outside the selected source')
+                kind=fact_kind(proposal.get('kind','preference'),proposal.get('category'))
+                if kind in ('profile','correction') or proposal.get('field') is not None or proposal.get('value') is not None or proposal.get('supersedes') or SECRET.search(quote):continue
+                if subject=='self' and re.search(r'(?:朋友|同事|家人)(?:的|是|出生|生日|喜欢|职业|已经|已|最近|目前|被|确诊)|(?:^|[，,：:])(?:他|她)(?:的|是|出生|生日|喜欢|职业|已经|已|最近|目前|被|确诊)',quote):continue
+                start=text.find(quote);end=start+len(quote)
+                clause_start=max(text.rfind(mark,0,start) for mark in ('。','\n','；',';','！','!','？','?'))+1
+                clause_ends=[text.find(mark,end) for mark in ('。','\n','；',';','！','!','？','?')]
+                clause_end=min([position+1 for position in clause_ends if position>=0] or [len(text)])
+                if kind not in ('concern','hearsay','hypothesis') and HYPOTHESIS.search(text[clause_start:clause_end]):continue
+                if any(max(start,span['start'])<min(end,span['end']) for span in spans):continue
+                if any(ref.get('start',-1)<=start<end<=ref.get('end',-1) for ref in saved):continue
+                ident='current_source_'+fingerprint([owner,message_id,start,end,kind,case,None,None])[:32]
+                if any(fact['id']==ident for fact in facts):continue
+                facts.append({'id':ident,'owner':owner,'owner_user_id':owner,'subject':subject,'subject_id':subject,
+                    'case_id':case,'kind':kind,'content':quote,'source_refs':[SourceRef(message_id=message_id,version=source['revision'],start=start,end=end,quote=quote).model_dump()],
+                    'status':'current_source','assertion_status':'current_source','consent':'current_round','retention':'current_round',
+                    'context_only':True,'field':None,'value':None,'revision':source['revision']})
+            return {'facts':facts,'versions':{'message:'+message_id:source['revision']}}
 
     def save_fact(self,owner,subject,message_id,quote,kind='preference',*,category=None,case_id=None,field=None,value=None,
                   authorization_id=None,operation_id=None,expected_revision=None,assertion_status='user_asserted',valid_from=None,valid_to=None):
-        kind=CATEGORIES.get(category,kind) if category else kind
-        if kind not in FACT_KINDS:raise ValueError('Invalid fact kind')
+        kind=fact_kind(kind,category)
         with self.repo.transaction(owner):
             source=self.get_source(owner,message_id)
             if source['subject_id']!=subject or source['status']!='active':raise ScopeError('Original does not belong to current subject or is withdrawn')
@@ -109,6 +185,7 @@ class MemoryService:
             content=source.get('content','')
             if not isinstance(quote,str) or not 1<=len(quote)<=3000 or quote not in content:raise EvidenceError('Fact must exactly quote an original user range')
             if OPTOUT.search(content):return {'write_status':'rejected','reason':'本轮明确要求不保存长期记忆'}
+            if source.get('policy',{}).get('origin')=='system':return {'write_status':'rejected','reason':'系统任务不是用户原话，未写入长期事实'}
             if SECRET.search(quote):return {'write_status':'rejected','reason':'凭据与标识不保存为聊天记忆'}
             start=content.find(quote);end=start+len(quote)
             clause_start=max(content.rfind('。',0,start),content.rfind('\n',0,start))+1
@@ -199,8 +276,8 @@ class MemoryService:
         if candidates and {f['id'] for f in candidates}!={fact_id} or not candidates and len(self.facts(owner,source['subject_id']))!=1:raise EvidenceError('Withdrawal target is not unique; ask for the fact to remove')
         return self.retire_fact(owner,fact_id,expected_revision=fact['revision'],operation='delete' if re.search(r'删除|忘记',text) else 'stop',scope='source' if re.search(r'原话|整条消息|所有来源',text) else 'fact')
 
-    def import_message(self,owner,source,id,role,content,at=None,subject='self',case=None,channel=None,external_id=None,conversation_id='default'):
-        return self.receive(owner,subject,content,channel=channel or source,source_id=str(id),external_id=external_id,conversation_id=conversation_id,case_ids=[] if case is None else [case] if isinstance(case,str) else case,role=role,at=at)
+    def import_message(self,owner,source,id,role,content,at=None,subject='self',case=None,channel=None,external_id=None,conversation_id='default',origin='migration'):
+        return self.receive(owner,subject,content,channel=channel or source,source_id=str(id),external_id=external_id,conversation_id=conversation_id,case_ids=[] if case is None else [case] if isinstance(case,str) else case,role=role,at=at,origin=origin)
 
     def get_message(self,owner,id,include_suppressed=False):
         result=self.get_source(owner,id,for_context=not include_suppressed)

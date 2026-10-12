@@ -77,7 +77,7 @@ class FeishuGateway:
             raise EvidenceError('飞书原始时间格式不可用') from exc
         with self.repo.transaction(owner):
             original = self.service.memory.receive(owner, subject, text, channel='feishu',
-                       source_id=source_id, external_id=author, conversation_id=conversation, at=at)
+                       source_id=source_id, external_id=author, conversation_id=conversation, at=at, origin='current_user')
             run = self.service.submit(owner=owner, subject=subject, message=text,
                       conversation_id=conversation, request_id=operation,
                       source_message_id=original['id'], mode='chat', depth='standard')
