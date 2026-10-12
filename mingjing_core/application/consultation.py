@@ -696,12 +696,34 @@ class ConsultationService:
             double_denial = denial and re.search(r'(?:不是|并非|(?<!除)非|不能说|不意味着|不代表|不能保证|不能|不可|无法|不可能|不|没有|未曾|未)\s*[“"‘\'「『`]?\s*$', prefix[:denial.start()])
             return bool(denial and not double_denial)
 
+        def finite_guarantee_denial(clause, assertion, local, after):
+            # These observed denials/questions enclose a complete finite
+            # predicate. A new object, verb, double denial or quoted report
+            # cannot inherit their scope.
+            scope = local + assertion.group() + after
+            finite = (
+                r'(?:也)?(?:不要|不能)假设(?:付费后)?可以无损失退出',
+                r'不能推断为零费用、免费退出或无损失',
+                r'(?:两条都)?不能被描述为完全可逆或无损失',
+                r'未对任何费用、退出或可逆性做零成本、完全可逆或无损失的假设',
+                r'两方案是否允许无损失退出、是否有答复时限或名额限制均待核实',
+            )
+            boundary = r'(?=$|[，,]|但(?:是)?|然而|不过|可是|事实上|实际上|反而|却)'
+            denial = re.match(r'(?:' + '|'.join(finite) + ')' + boundary, scope)
+            if not denial or len(local) + len(assertion.group()) > denial.end(): return False
+            start = assertion.start() - len(local)
+            for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
+                for quoted in re.finditer(re.escape(opening) + '[^' + re.escape(closing) + ']*' + re.escape(closing), clause):
+                    if quoted.start() < start and assertion.end() < quoted.end(): return False
+            return True
+
         def guarantee_is_asserted(clause, assertion):
             before, after = clause[:assertion.start()], clause[assertion.end():]
             # Denial applies to this occurrence, never to another
             # sentence/field or a renewed assertion after a contrast.
             local = re.split(r'[，,：:]|但(?:是(?!否))?|然而|不过|可是|事实上|实际上|反而|却', before)[-1]
             if explicit_denial(local, after): return False
+            if finite_guarantee_denial(clause, assertion, local, after): return False
             if (assertion.group() == '零损失' and local == '退出是否'
                     and re.fullmatch(r'也取决于尚未确认的具体条款', after)):
                 return False
