@@ -344,7 +344,10 @@ def validate_acceptance(report,commit,manifest_bytes,read,gate=None):
     return report
 
 
-def validate_live_acceptance(report,commit):
+def validate_live_acceptance(report,commit,read=None,manifest_bytes=None):
+    if isinstance(report,dict) and report.get('schema')=='core3-live-http-zero-model-recovery-v2':
+        from tools.zero_model_recovery_acceptance import validate_acceptance
+        return validate_acceptance(report,commit,read,manifest_bytes)
     require(isinstance(report,dict) and report.get('schema')=='core3-live-http-acceptance-v1'
         and report.get('commit')==commit and report.get('passed') is True and report.get('errors')==[],
         'INCREMENTAL_LIVE_ACCEPTANCE_FAILED')

@@ -326,7 +326,7 @@ def evidence(args):
         release=release_path(args.commit,args.release_dir)
         read=dependency_loader(release)
         validate_acceptance(report,args.commit,(release/MANIFEST).read_bytes(),read)
-        if args.action=='publish':validate_live_acceptance(json.loads(read('delivery-live-http.json')),args.commit)
+        if args.action=='publish':validate_live_acceptance(json.loads(read('delivery-live-http.json')),args.commit,read,(release/MANIFEST).read_bytes())
         return report
     required=('stage_accepted','frontend_passed','migration_replay_passed','live_provider_smoke_passed')
     if report.get('commit')!=args.commit or report.get('database')!=DBS['stage'] or report.get('calculator_skips')!=0 or any(report.get(k) is not True for k in required):raise ValueError('release acceptance does not meet the reviewed commit/database gates')

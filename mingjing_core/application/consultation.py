@@ -614,6 +614,15 @@ class ConsultationService:
                     before_subject = re.search(r'不由$', local)
                     double_denial = before_subject and re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*[“"‘\'「『`]?\s*$', local[:before_subject.start()])
                     if before_subject and not double_denial: denial = before_subject
+                if not denial and assertion.group() == '牌面保证':
+                    # The observed closed denial places its negation before
+                    # the subject. Keep quotes, double denials and renewed
+                    # assertions outside this exact no-object exception.
+                    local = re.split(r'[，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', clause[:assertion.start()])[-1]
+                    before_subject = re.fullmatch(r'\s*不能由', local)
+                    if (before_subject and re.fullmatch(r'\s*', clause[assertion.end():])
+                            and not symbolic_limit_is_denied(before_subject, prefix, clause, assertion, reject_quoted=True)):
+                        denial = before_subject
                 if not denial:certainty=True
         if certainty:
             issues.append('象征解释被提升为现实确定性或概率')
