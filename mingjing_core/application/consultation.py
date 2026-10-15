@@ -590,7 +590,7 @@ class ConsultationService:
                     finite_object = r'(?:学习(?:效果|成效|成果)|成绩|他人动机)'
                     limited_denial = re.search(r'(?:不|不能)构成(?:对)?' + finite_object + r'(?:(?:、|或|和|及|与)' + finite_object + r')*(?:的)?(?:任何)?$', prefix)
                     if (limited_denial and re.fullmatch(r'\s*[”"’\'」』`]?\s*', clause[assertion.end():])
-                            and not re.search(r'(?:不会|不应|没有|未曾)$', prefix[:limited_denial.start()])
+                            and not re.search(r'(?:不会|不应|没有|未曾)\s*$', prefix[:limited_denial.start()])
                             and not symbolic_limit_is_denied(limited_denial, prefix, clause, assertion, reject_quoted=True)):
                         denial = limited_denial
                     limited_denial = re.search(r'(?:不能|无法|不应|不会|不)提供吉凶$|不产生任何概率或吉凶$', prefix)

@@ -321,6 +321,13 @@ def stamp():return datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
 
 def evidence(args):
     report=json.loads(Path(args.acceptance).read_text(encoding='utf-8'))
+    if report.get('schema')=='core3-actual-stage-acceptance-incremental-v2':
+        from tools.incremental_acceptance import dependency_loader,validate_acceptance,validate_live_acceptance
+        release=release_path(args.commit,args.release_dir)
+        read=dependency_loader(release)
+        validate_acceptance(report,args.commit,(release/MANIFEST).read_bytes(),read)
+        if args.action=='publish':validate_live_acceptance(json.loads(read('delivery-live-http.json')),args.commit)
+        return report
     required=('stage_accepted','frontend_passed','migration_replay_passed','live_provider_smoke_passed')
     if report.get('commit')!=args.commit or report.get('database')!=DBS['stage'] or report.get('calculator_skips')!=0 or any(report.get(k) is not True for k in required):raise ValueError('release acceptance does not meet the reviewed commit/database gates')
     return report
