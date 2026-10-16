@@ -16,6 +16,12 @@ const sandbox={console,Intl,Date,Map,Set,URLSearchParams,TextDecoder,
   ResizeObserver:class{observe(){}},requestAnimationFrame:f=>f(),setTimeout:f=>0,clearTimeout(){},
 };
 vm.createContext(sandbox);vm.runInContext(code,sandbox);
+assert.equal(sandbox.fmtHistTime('2026-10-11T13:25:00+00:00'),'10-11 21:25');
+assert.equal(sandbox.fmtHistTime('2026-10-11T21:25:00+08:00'),'10-11 21:25');
+assert.equal(sandbox.fmtHistTime('2026-10-11T18:05:00Z'),'10-12 02:05');
+assert.equal(sandbox.fmtHistTime('2026-10-11T18:55:00+05:30'),'10-11 21:25');
+assert.equal(sandbox.fmtHistTime('2026-08-22 11:05:01'),'08-22 11:05');
+assert.equal(sandbox.fmtHistTime('2026-99-22T11:05:01Z'),'');
 element('#analysisDate').value='2026-09-28';element('#analysisFocus').value='学业与成长';
 vm.runInContext(`
 ziweiData={horoscope:{daily:{name:'流日',ganzhi:'乙巳',mutagen_links:[{star:'天机',mutagen:'禄',palace_index:4,natal_palace:'官禄',scope_palace:'命宫'}]}}};

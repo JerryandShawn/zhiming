@@ -1,0 +1,203 @@
+{
+  "schema_version": "synthetic-original-contract-fixture-v1",
+  "synthetic_only": true,
+  "source_commit": "035f29f6c85c1229f20467c756e6920ef2c10c97",
+  "source_file": "candidate-model-inspection-035f29f-second-progress.json",
+  "source_sha256": "7b4e2d6c64998baa7b17b2b03f9235a62b437eec430aaa1f31f071d303fc4b0f",
+  "source_run_id": "run_d9a5efc0c2a94f9e87dae2f44e9c932e",
+  "source_operation_id": "evaluate:tarot",
+  "profile": {
+    "gender": "男",
+    "birth.solar_datetime": "1990-05-03 13:18",
+    "birth.location.lng": 104.07,
+    "birth.location.lat": 30.67,
+    "birth.timezone_offset": 8,
+    "birth.precision": "exact"
+  },
+  "constraint": "我不能上夜班",
+  "fixed_cards": [
+    {
+      "card_id": "major-00",
+      "orientation": "upright"
+    },
+    {
+      "card_id": "major-02",
+      "orientation": "reversed"
+    },
+    {
+      "card_id": "major-08",
+      "orientation": "upright"
+    }
+  ],
+  "draw_question": "如何在白天安排学习？",
+  "case_title": "合成学习决策",
+  "case_goal": "在固定白天时间内学习",
+  "samples": [
+    {
+      "scenario": "tarot",
+      "question": "请解释这次固定塔罗的学习反思，给一个现实行动。",
+      "original_calls": 4,
+      "original_status": "failed",
+      "profile_fact_fields": {
+        "fact_806eca2879a7df595341024bbed146b5": "gender",
+        "fact_13aaa1b39bc381b3c01892c2ecf7b969": "birth.solar_datetime",
+        "fact_68ddd2dce1128f43f13420a0b738ae91": "birth.location.lng",
+        "fact_4419133eefa55fc7a5986de0f4efec4f": "birth.location.lat",
+        "fact_34a22f7a03ecf593ec60890e8bb081ee": "birth.timezone_offset",
+        "fact_1adac0febb82e4bac1fbad8eb69352b4": "birth.precision"
+      },
+      "constraint_fact_id": "fact_4543f27cf7bf9c117902ca5a4af42807",
+      "original_claims": [
+        {
+          "text": "第1牌位 愚人（正位）：保留好奇，用小实验探索尚不熟悉的道路。；第2牌位 女祭司（逆位）：分辨直觉、猜测和隐瞒信息，不急着补齐故事。；第3牌位 力量（正位）：用耐心、温和与稳定的练习面对困难。。这些是明镜原创编辑反思角度，牌位提供问题视角，不能证明现实情况。实际选择须另核对已确认目标、约束与代价。",
+          "scope": "同一轮已保存问题与牌阵的象征反思；不产生新现实事实",
+          "system": "tarot",
+          "rule_id": "tarot.editorial.complete-deck.v1",
+          "claim_id": "claim-acce44e07984c6a353a857322b3d4912",
+          "revision": 99,
+          "branch_id": "draw-635abcc4256ebfa3aed30405",
+          "rule_hash": "f773602e082e3897f6358d98fb3cbf273e3ae8aaaea4956f28a4eb4ecf63729a",
+          "school_id": "zhiming-editorial-v1",
+          "claim_type": "symbolic_reflection",
+          "subject_id": "self",
+          "time_scale": "question",
+          "limitations": [
+            "产品牌阵是反思设计，不宣称唯一传统格式。",
+            "编辑资产未获外部专家认证，也不是预测模型。"
+          ],
+          "source_refs": [
+            "zhiming-tarot-editorial-v1"
+          ],
+          "feature_refs": [
+            {
+              "path": "/data/cards",
+              "value": [
+                {
+                  "name": "愚人",
+                  "card_id": "major-00",
+                  "position": 1,
+                  "orientation": "upright"
+                },
+                {
+                  "name": "女祭司",
+                  "card_id": "major-02",
+                  "position": 2,
+                  "orientation": "reversed"
+                },
+                {
+                  "name": "力量",
+                  "card_id": "major-08",
+                  "position": 3,
+                  "orientation": "upright"
+                }
+              ],
+              "artifact_id": "tarot-8e7f30422f083445a63b70ac",
+              "feature_key": "cards"
+            },
+            {
+              "path": "/data/spread_id",
+              "value": "reflect3",
+              "artifact_id": "tarot-8e7f30422f083445a63b70ac",
+              "feature_key": "spread_id"
+            },
+            {
+              "path": "/data/deck_version",
+              "value": "zhiming-geometric-78-v1",
+              "artifact_id": "tarot-8e7f30422f083445a63b70ac",
+              "feature_key": "deck_version"
+            },
+            {
+              "path": "/data/status",
+              "value": "finalized",
+              "artifact_id": "tarot-8e7f30422f083445a63b70ac",
+              "feature_key": "status"
+            }
+          ],
+          "pack_version": "core-knowledge-2026-10-11-v2",
+          "rule_version": "1.0.0",
+          "owner_user_id": "provider_eval_d9b2bd02c459405f",
+          "counter_factors": [
+            "不是鼓励无视代价，也不是预告某次冒险必成。",
+            "直觉不是读心术，沉默也不证明有秘密。",
+            "忍耐不等于必须承受伤害或越界。"
+          ],
+          "editorial_status": "original_editorial_unreviewed",
+          "empirical_status": "reflection_not_prediction",
+          "interpretation_id": "card_reflection",
+          "derivation_summary": "已逐项核对本轮授权产物字段、规则前提与解释范围；此说明不包含隐藏思维链。",
+          "real_world_link_status": "not_established"
+        }
+      ],
+      "outputs": {
+        "intake": {
+          "plan": {
+            "mode": "tarot",
+            "topic": "study",
+            "systems": [
+              "tarot"
+            ],
+            "decision": false,
+            "rationale": "用户请求解释本轮固定塔罗的学习反思并给一个现实行动，属于塔罗象征解读（study主题、日尺度）。出生资料已完整且本轮为固定塔罗，无需用户额外输入；牌面由程序按固定塔罗规则生成。行动建议需遵守既有约束：不能上夜班，仅安排白天学习。塔罗仅作反思视角，不作吉凶保证。",
+            "time_scale": "daily",
+            "target_date": "2026-10-12",
+            "missing_inputs": []
+          },
+          "proposals": [],
+          "retire_fact_ids": [],
+          "attachment_observations": []
+        },
+        "specialist:tarot": {
+          "system": "tarot",
+          "claim_ids": [
+            "claim-acce44e07984c6a353a857322b3d4912"
+          ],
+          "discussion": "",
+          "uncertainties": [
+            "未提供具体学习科目、今日可用时长、截止期限与评价标准，行动只按低门槛设计。",
+            "牌面为象征反思，不能证明效率、成绩或他人意图；若涉及健康、法律、财务或考试规则，需另查权威信息。",
+            "是否存在隐藏信息、资源费用或退出成本未知，均标记为待核实，不推断为零风险。"
+          ]
+        },
+        "synthesis": {
+          "actions": [
+            "今天白天选一个较小、尚未深入的学习主题，安排一个不超过45分钟的探索性学习时段（如阅读一章或完成一组练习），对应愚人牌的「小实验」；开始前先用2分钟写下一个假设「我以为这里会是怎样」，结束后用5分钟对照实际学到的内容记录差异（对应女祭司逆位）；如过程中遇到困难部分，不硬熬不跳过，改用放慢速度重读一遍或写出卡点的具体句子（对应力量正位的温和练习）。全程安排在白天，不占用夜间。"
+          ],
+          "caveats": [],
+          "follow_up": "建议在今晚（仅限复盘记录、不安排夜间学习）或明天白天回顾：假设与实际的差异记录是否完成，45分钟时段是否可持续；若有效可延长至60分钟，若中断则检查科目或时段选择是否合适。",
+          "explanation": "现实依据：用户仅确认了一条约束——不能上夜班、希望考虑白天的学习安排（fact_4543f27cf7bf9c117902ca5a4af42807）。出生资料虽完整，但本轮为固定塔罗解读，塔罗牌面不依赖出生信息，故未引用其余资料。未提供具体学习科目、今日可用时长、截止期限与评价标准，因此行动按最低门槛设计（45分钟以内、可随时中止），避免推断未知条件。牌面（愚人正位、女祭司逆位、力量正位）按本轮提供的声明仅作反思视角：愚人提示以小实验而非大承诺开启探索；女祭司逆位提示警惕把猜测当结论、把沉默当证据；力量正位提示以稳定温和的练习而非对抗硬撑面对困难。三条牌位均不构成对现实情况的证明，也不预示学习结果；对应到行动上是三个可操作的行为钩子（假设记录、差异对照、温和重读），这些做法本身符合一般的反思性学习常识，但其有效性取决于用户实际执行与具体学科特点。",
+          "plain_summary": "本轮固定塔罗给出三张牌的学习反思视角：愚人（正位）提示保留好奇、用小实验探索不熟悉的领域；女祭司（逆位）提醒区分直觉与猜测，不急于把信息缺口补齐成故事；力量（正位）提示以耐心和稳定练习面对困难，而非硬碰硬。结合你不能上夜班、只安排白天学习的约束，建议的现实小行动是：今天白天安排一个不超过45分钟的探索性学习时段，开始前写下一个假设，结束后记录与实际内容的差异；遇到困难时放慢重读或写下具体卡点。塔罗仅是反思视角，不能保证学习效率或结果。",
+          "cited_fact_ids": [
+            "fact_4543f27cf7bf9c117902ca5a4af42807"
+          ],
+          "cited_claim_ids": [
+            "claim-acce44e07984c6a353a857322b3d4912"
+          ],
+          "decision_options": [],
+          "professional_appendix": "本轮引用的声明（claim-acce44e07984c6a353a857322b3d4912，规则 tarot.editorial.complete-deck.v1，牌阵 reflect3，牌库 zhiming-geometric-78-v1，状态 finalized）：\n- 第1牌位 愚人（正位）：保留好奇，用小实验探索尚不熟悉的道路。\n- 第2牌位 女祭司（逆位）：分辨直觉、猜测和隐瞒信息，不急着补齐故事。\n- 第3牌位 力量（正位）：用耐心、温和与稳定的练习面对困难。\n口径与局限：该声明为明镜原创编辑反思角度（editorial_status: original_editorial_unreviewed，empirical_status: reflection_not_prediction），牌位提供问题视角，不证明现实情况，不产生新现实事实。反例范围按声明保留：不是鼓励无视代价或预告冒险必成；直觉不是读心术，沉默不证明有秘密；忍耐不等于必须承受伤害或越界。时间尺度为 question（针对本轮问题），日尺度解读未单独生成。缺失资料：具体学习科目、可用时长、截止期限与评价标准未知，行动仅按低门槛设计；是否存在资源费用或退出成本待核实，未推断为零风险。本附录仅复述本轮提供的声明字段，未作跨体系类推或概率化表述。"
+        },
+        "repair": {
+          "actions": [
+            "今天白天选一个较小、尚未深入的学习主题，安排一个不超过45分钟的探索性学习时段（如阅读一章或完成一组练习），对应愚人牌的「小实验」；开始前先用2分钟写下一个假设「我以为这里会是怎样」，结束后用5分钟对照实际学到的内容记录差异（对应女祭司逆位）；如过程中遇到困难部分，不硬熬不跳过，改用放慢速度重读一遍或写出卡点的具体句子（对应力量正位的温和练习）。全程安排在白天，不占用夜间；若中途感到成本或效果不合预期，可当场停止，已花的时间属于投入成本，不属于可回收部分。"
+          ],
+          "caveats": [
+            "该行动占用白天约45分钟时间及注意力，存在时间与机会成本，不承诺完全可逆或零损失；投入的时间无法收回。",
+            "是否涉及教材、课程或工具费用未知，待核实后再决定是否扩大投入。",
+            "塔罗牌面仅为反思视角，不证明学习效率、成绩或结果，也不预示他人意图。",
+            "若学习涉及考试规则、健康、法律或财务事项，需另查权威信息，本解读不提供此类判断。"
+          ],
+          "follow_up": "建议在明天白天回顾：假设与实际的差异记录是否完成，45分钟时段是否可持续、是否产生预期外费用或时间挤占；若有效且成本可接受可延长至60分钟，若中断或代价偏高则调整科目或时段。",
+          "explanation": "现实依据：用户确认的唯一约束是不能上夜班、希望安排白天的学习（fact_4543f27cf7bf9c117902ca5a4af42807）。本轮为固定塔罗解读，牌面不依赖出生信息，故其余出生资料未引用。牌面（愚人正位、女祭司逆位、力量正位）按本轮提供的声明仅作反思视角：愚人提示以小实验而非大承诺开启探索；女祭司逆位提示区分直觉与猜测，不把信息缺口补齐成故事；力量正位提示以温和稳定的练习面对困难。这三条对应到行动上是三个可操作的行为钩子（假设记录、差异对照、温和重读），符合一般的反思性学习常识，但有效性取决于实际执行与学科特点。风险口径修正：该行动虽然门槛低、可随时停止，但并非零成本——投入的约45分钟时间与注意力不可收回，且是否涉及教材、课程费用未知，均标记为待核实，不宣称完全可逆或无损失。",
+          "plain_summary": "本轮固定塔罗给出三张牌的学习反思视角：愚人（正位）提示保留好奇、用小实验探索不熟悉的领域；女祭司（逆位）提醒区分直觉与猜测，不急于把信息缺口补齐成故事；力量（正位）提示以耐心和稳定练习面对困难。结合你不能上夜班、只安排白天学习的约束，建议的现实小行动是：今天白天安排一个不超过45分钟的探索性学习时段，开始前写下一个假设，结束后记录与实际内容的差异；遇到困难时放慢重读或写下具体卡点。需要说明：该行动虽可随时停止，但投入的时间与注意力是真实成本，不承诺零损失；是否涉及资料费用待核实。塔罗仅是反思视角，不能保证学习效率或结果。",
+          "cited_fact_ids": [
+            "fact_4543f27cf7bf9c117902ca5a4af42807"
+          ],
+          "cited_claim_ids": [
+            "claim-acce44e07984c6a353a857322b3d4912"
+          ],
+          "decision_options": [],
+          "professional_appendix": "本轮引用的声明（claim-acce44e07984c6a353a857322b3d4912，规则 tarot.editorial.complete-deck.v1，牌阵 reflect3，牌库 zhiming-geometric-78-v1，状态 finalized）：\n- 第1牌位 愚人（正位）：保留好奇，用小实验探索尚不熟悉的道路。\n- 第2牌位 女祭司（逆位）：分辨直觉、猜测和隐瞒信息，不急着补齐故事。\n- 第3牌位 力量（正位）：用耐心、温和与稳定的练习面对困难。\n口径与局限：该声明为明镜原创编辑反思角度（editorial_status: original_editorial_unreviewed，empirical_status: reflection_not_prediction），牌位提供问题视角，不证明现实情况，不产生新现实事实。反例范围按声明保留：不是鼓励无视代价或预告冒险必成；直觉不是读心术，沉默不证明有秘密；忍耐不等于必须承受伤害或越界。时间尺度为 question（针对本轮问题）。缺失资料：具体学习科目、可用时长、截止期限与评价标准未知，行动按低门槛设计；资源费用与退出成本待核实，未推断为零风险或完全可逆。本附录仅复述本轮提供的声明字段，未作跨体系类推或概率化表述。"
+        }
+      }
+    }
+  ]
+}

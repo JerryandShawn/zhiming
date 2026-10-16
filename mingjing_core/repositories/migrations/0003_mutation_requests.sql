@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS core_mutation_requests(owner text NOT NULL REFERENCES core_owners(id), operation text NOT NULL, request_key text NOT NULL, fingerprint text NOT NULL, receipt jsonb NOT NULL, created_at timestamptz NOT NULL DEFAULT now(), PRIMARY KEY(owner,operation,request_key));

@@ -1,42 +1,53 @@
-name: v6 baseline checks
-
-on:
-  push:
-  pull_request:
-
+name: Core v3 checks
+on: [push, pull_request]
 permissions:
   contents: read
-
 jobs:
-  baseline:
+  core:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: core_test
+          POSTGRES_PASSWORD: isolated_ci_only
+          POSTGRES_DB: core_test
+        ports: [5432:5432]
+        options: >-
+          --health-cmd "pg_isready -U core_test"
+          --health-interval 10s --health-timeout 5s --health-retries 5
     env:
-      ZHIMING_BASE: ${{ github.workspace }}/private/zhiming-ci
-      ZHIMING_SKILL: ${{ github.workspace }}/hermes
-      HERMES_DB: ${{ github.workspace }}/private/hermes-not-connected.db
+      CORE_TEST_DSN: postgresql://core_test:isolated_ci_only@127.0.0.1:5432/core_test
+      ZHIMING_TEST_DSN: postgresql://core_test:isolated_ci_only@127.0.0.1:5432/core_test
+      ZHIMING_DATABASE_URL: postgresql://core_test:isolated_ci_only@127.0.0.1:5432/core_test
+      MINGJING_TOKEN: isolated_ci_only
       KIMI_API_KEY: ""
       MOONSHOT_API_KEY: ""
+      LANGSMITH_TRACING: "false"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.11'
       - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: '22'
           cache: npm
-      - name: Install portable Web test dependencies
-        run: python -m pip install fastapi==0.115.12 uvicorn==0.34.3 httpx==0.28.1 Pillow==11.3.0
-      - name: Install locked frontend dependencies
-        run: npm ci
-      - name: Check v6 state and API behavior with synthetic data
-        run: python -m unittest discover -s tests -p 'test_*v6.py' -v
-      - name: Check frontend behavior
-        run: npm test
-      - name: Check DOM interactions with synthetic rendering fixtures
-        run: node tests/dom.test.cjs
-      - name: Check JavaScript syntax
-        run: node --check static/app.js
-      - name: Build frontend styles
-        run: npm run build
+      - name: Install isolated runtimes
+        run: |
+          python -m pip install -r requirements-core.lock -r requirements-test.lock
+          python -m venv .chart-venv
+          .chart-venv/bin/python -m pip install -r requirements-charts.lock
+          echo "CHART_PYTHON=$PWD/.chart-venv/bin/python" >> "$GITHUB_ENV"
+          npm ci
+      - name: Core service and calculator checks
+        run: python -m unittest discover -s tests -p 'test_core*.py' -v
+      - name: Frontend checks
+        run: |
+          npm test
+          node tests/dom.test.cjs
+          node tests/report-settings.dom.test.cjs
+          node tests/method-limits.dom.test.cjs
+          node --check static/app.js
+          npm run build

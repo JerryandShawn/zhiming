@@ -1,0 +1,103 @@
+{
+  "schema_version": "synthetic-model-save-denial-regression-v1",
+  "synthetic_only": true,
+  "source_commit": "9c46f7e3aa1f988dc7318d5ff597de2fab4925c0",
+  "source_file": "candidate-model-inspection-9c-in-progress.json",
+  "source_file_sha256": "f2c259f28381fc88d1b29b6a3cf00de6557d7ccc68efef734007f38c25b4c3b2",
+  "original_operation_id": "evaluate:bazi",
+  "original_status": "failed",
+  "original_calls": 4,
+  "question": "请依据八字讨论2026-10-11的学习反思角度，保留专业字段和局限。",
+  "profile": {
+    "gender": "男",
+    "birth.solar_datetime": "1990-05-03 13:18",
+    "birth.location.lng": 104.07,
+    "birth.location.lat": 30.67,
+    "birth.timezone_offset": 8,
+    "birth.precision": "exact"
+  },
+  "constraint": "我不能上夜班",
+  "outputs": {
+    "intake": {
+      "plan": {
+        "mode": "conversation",
+        "topic": "study",
+        "systems": [
+          "bazi"
+        ],
+        "decision": false,
+        "rationale": "用户请求依据八字讨论2026-10-11的学习反思角度。已授权的出生资料齐全（公历1990-05-03 13:18、成都经纬度、UTC+8、精确时辰），程序可据此实际排盘，无需用户提供排盘结果，故missing_inputs为空。主题为study（education规范为study），时间尺度为该日的daily，仅使用bazi一套体系。请求为反思讨论而非现实决策，decision=false，不生成decision_options。轮次模式为对话式chat，对应conversation。用户背景约束“不能上夜班”仅作白天学习安排的参考，不构成本次缺失输入。专业讨论需保留字段与局限：流年流日干支仅提供象征反思视角，不保证吉凶，且用户此前要求现实小行动时涉及的现实条件不明之处不作为本次推断。",
+        "time_scale": "daily",
+        "target_date": "2026-10-11",
+        "missing_inputs": []
+      },
+      "proposals": [],
+      "retire_fact_ids": [],
+      "attachment_observations": []
+    },
+    "specialist:bazi": {
+      "system": "bazi",
+      "claim_ids": [
+        "claim-57f6b47e03c711a957735ca590a162f9"
+      ],
+      "discussion": "本轮引用的是子平月令体系（school_id：ziping-yueling-v1）下的日层快照声明。其已核验范围为：2026-10-11 12:00:00（UTC+8）处于寒露后、立冬前，真实节月区间为2026-10-08 14:29:17至2026-11-07 17:52:05（不含终点）；该正午快照对应节年丙午、节月戊戌、日柱戊午。该结论来自规则 bazi.target.day-snapshot.v1，revision 48，pack_version 为 core-knowledge-2026-10-11-v2。\n\n用于“学习反思”时，专业边界是把 claim_type 所标示的 symbolic_reflection 当作提问框架，而不是学习结果、考试表现或人际状态的预测。正午快照只能定位传统时间层，不能代表2026-10-11全天每一时刻，也不能推出某门课、某次测验或某个决定必然如何。若只作非断语式联想，丙午、戊戌、戊午中可见丙、戊及午、戌等干支组合，可转化为两个自省方向：其一，检视学习中的驱动力是否被急躁、分心或一次性冲刺消耗；其二，检视笔记、计划、错题归类与复盘是否形成稳定结构。这里的“驱动”“结构”只是借干支名称与五行属性引发的反思语言，不等于当天客观环境具有相应力量，也不构成喜忌判断。\n\n较合适的当日小行动是：选一个真实学习任务，先写下完成标准与停止点；连续学习25—50分钟后，记录走神原因、卡点、已掌握内容和下一步；结束时用“保留、修正、停止”各列一条。若这些记录显示效率、理解或情绪确有改善，只能视为个人证据，不能反推八字断语得到验证。\n\n本条未选择喜用神；counter_factors 已说明旺衰、格局、调候与用神的完整前提尚未实现。empirical_status 为 reflection_not_prediction，real_world_link_status 为 not_established，editorial_status 为 original_editorial_unreviewed。因此不应据此判断“适合/不适合考试”、成绩概率、师友助力或长期学业方向；现实安排仍应由课程要求、可用时间、既往表现、身心状态与实际成本决定。",
+      "uncertainties": [
+        "未提供出生年月日时、出生地与真太阳时等个人命盘资料，不能判断该日干支与个人命局的关系。",
+        "快照仅为2026-10-11 12:00:00（UTC+8）；节气交界前后或当天其他时刻可能适用不同时间层，不能外推整日。",
+        "旺衰、格局、调候、用神及岁运互动尚未实现或未提供，因此不能提出喜用神、吉凶或事件应期。",
+        "声明属于象征性反思，未经科学事件预测验证；reflection_not_prediction 与 real_world_link_status: not_established 限制其现实解释力。",
+        "所引声明的编辑状态为 original_editorial_unreviewed，专业表述仍应保留待复核性质。"
+      ]
+    },
+    "synthesis": {
+      "actions": [
+        "2026-10-11当天选一个真实学习任务，先写下完成标准与停止点（例如“完成两节习题并订正”）。",
+        "连续学习25—50分钟后，记录走神原因、卡住的题目、已掌握内容和下一步。",
+        "结束学习时用“保留、修正、停止”各列一条，作为个人证据复盘，全部安排在白天时段。"
+      ],
+      "caveats": [
+        "干支反思语言（“驱动”“结构”）只是提问框架，不代表当天客观环境具有相应力量。",
+        "正午快照不能外推整日，也不能用于判断考试吉凶、成绩概率或师友助力。",
+        "个人复盘记录的改善只能视为个人证据，不能反推八字断语得到验证。",
+        "2026-10-11是未来的目标日，该日的学习安排尚未发生，不能把象征解释当作已发生事实。"
+      ],
+      "follow_up": "2026-10-11学习结束当天或次日回看三条复盘记录（保留/修正/停止），评估小行动是否值得延续；若之后想结合个人命盘讨论，可另行要求实际排盘。",
+      "explanation": "目标与范围：用户要求依据八字讨论2026-10-11的学习反思角度，并要求保留专业字段和局限。plan设定为conversation模式、study主题、仅bazi一套体系、daily时间尺度、decision=false，因此本轮不生成decision_options，也不作现实决策推断，只提供象征性反思与一个可停止的小行动。\n\n证据与口径：本轮实际引用的专业声明为 claim-57f6b47e03c711a957735ca590a162f9（规则 bazi.target.day-snapshot.v1，子平月令体系 ziping-yueling-v1，revision 48，pack_version core-knowledge-2026-10-11-v2）。该声明仅核验：2026-10-11 12:00:00（UTC+8）处于寒露后、立冬前的真实节月区间（2026-10-08 14:29:17 至 2026-11-07 17:52:05，不含终点），正午快照对应节年丙午、节月戊戌、日柱戊午。它只能定位传统时间层，不能由正午快照推断整日或任何事件应期。\n\n现实约束：用户曾明确“我不能上夜班”（本轮引用为背景事实），因此建议的学习小行动全部安排在白天时段；这是现实安排依据，与干支象征无关。个人命盘与当日干支的关系未纳入：声明未实现旺衰、格局、调候与用神的完整前提，本条不选择喜用神，故不能据丙午/戊戌/戊午推断与个人命局的喜忌。\n\n反思角度的性质：claim_type 为 symbolic_reflection，empirical_status 为 reflection_not_prediction，real_world_link_status 为 not_established，editorial_status 为 original_editorial_unreviewed。因此“驱动力是否被急躁消耗”“笔记与复盘是否形成稳定结构”只是借干支名称引发的自省提问，不等于当天客观环境如此，也不能用于判断考试适合与否、成绩概率或长期学业方向。现实学习效果仍取决于课程要求、可用时间、既往表现、身心状态与实际成本。\n\n待核实条件：若未来希望把当日干支与个人命局结合讨论，需要以个人命盘的实际排盘为前提；本轮虽有授权的出生资料（1990-05-03 13:18、成都经纬度、UTC+8、精确时辰），但本轮提供的声明并未计算个人命盘，故本轮不作命局层面的关联，也不声称任何资料已被保存或更新。",
+      "plain_summary": "本轮引用已核验的日层快照声明：2026-10-11正午（UTC+8）对应节年丙午、节月戊戌、日柱戊午，处于寒露至立冬的节月区间内。它只提供象征性反思视角，可借“驱动力是否被急躁、分心消耗”与“笔记、计划、复盘是否形成稳定结构”两个方向自省，不构成吉凶或成绩预测。结合你此前说明不能上夜班的现实约束，建议把学习安排全部放在白天，并用一个25—50分钟、带明确停止点的小行动来验证复盘方法是否对你有效。",
+      "cited_fact_ids": [
+        "fact_e6fa0c7be4711fdc6b3dc4582714df70"
+      ],
+      "cited_claim_ids": [
+        "claim-57f6b47e03c711a957735ca590a162f9"
+      ],
+      "decision_options": [],
+      "professional_appendix": "本轮引用的声明（claim_id：claim-57f6b47e03c711a957735ca590a162f9）要点与边界如下：\n\n- 体系与规则：system=bazi；school_id=ziping-yueling-v1（子平月令体系）；rule_id=bazi.target.day-snapshot.v1；rule_version=1.0.0；revision=48；pack_version=core-knowledge-2026-10-11-v2；rule_hash=a429ab55626066b89a17d6b1bb18855b477b3a4fb0e160165ef9bb7ac60f1aad。\n- 已核验结构：time_scale=daily_snapshot；采样时刻2026-10-11 12:00:00（UTC+8）；节年丙午、节月戊戌、日柱戊午；真实节月区间2026-10-08 14:29:17（寒露）至2026-11-07 17:52:05（立冬，不含终点）。method_note提示：交节日年/月柱在节气时刻前后可能不同，正午快照不能外推整日。\n- 状态字段：claim_type=symbolic_reflection；empirical_status=reflection_not_prediction；real_world_link_status=not_established；editorial_status=original_editorial_unreviewed；interpretation_id=bazi_target_day。\n- 反例与张力（counter_factors）：旺衰、格局、调候与用神完整前提尚未实现，本条不选择喜用神，故不能据丙午/戊戌/戊午提出喜忌、吉凶或事件应期。\n- 局限（limitations）：仅覆盖已计算结构，未经科学事件预测验证；出生时刻分支为有限采样，采样内一致不等于连续区间稳定。\n- 与现实的衔接：声明的scope仅为目标日正午实际干支与真实交节区间。用于“学习反思”时，干支名称与五行属性只能转化为自省提问（如检视驱动力消耗与复盘结构），不代表当天客观环境或任何课程、测验结果；personal命盘与本日干支的关系未在本轮声明中计算，故不作命局关联；derivation_summary声明已核对字段、规则前提与解释范围，不含隐藏思维链。"
+    },
+    "repair": {
+      "actions": [
+        "在2026-10-11白天已学内容中选一个真实任务；若当天未学习或已到晚间，则改到下一个白天，先写下完成标准与停止点。",
+        "连续学习25—50分钟后，记录走神原因、卡点、已掌握内容和下一步。",
+        "结束时按“保留、修正、停止”各写一条，只把它当作个人复盘证据，后续学习仍安排在白天时段。"
+      ],
+      "caveats": [
+        "“驱动力”“结构”等表述只是借干支名称形成的反思语言，不代表当天客观环境具有相应力量。",
+        "正午快照不能外推2026-10-11整日，也不能推出考试适合度、成绩概率或师友助力。",
+        "个人复盘记录的改善只能视为个人证据，不能反推八字断语得到验证。",
+        "本轮声明未计算个人命盘与该日干支的关系，也未选择喜用神。",
+        "若当前已过白天时段，行动应顺延到下一个白天，以符合不能上夜班的约束。"
+      ],
+      "follow_up": "执行后的次日白天用5分钟回看“保留/修正/停止”三条记录，判断该复盘方法是否值得延续；若想把2026-10-11干支与个人命局结合讨论，再另行要求实际排盘。",
+      "explanation": "目标与范围：本轮问题是依据八字讨论2026-10-11的学习反思角度，并要求保留专业字段和局限。plan为conversation模式、study主题、仅bazi、daily时间尺度、decision=false，因此不生成decision_options，也不作现实决策推断；只给出象征性反思框架和可停止的小行动。\n\n证据口径：实际采用的专业声明为claim-57f6b47e03c711a957735ca590a162f9，规则bazi.target.day-snapshot.v1，子平月令体系ziping-yueling-v1。它只核验到：2026-10-11 12:00:00（UTC+8）处于寒露后、立冬前，真实节月区间为2026-10-08 14:29:17至2026-11-07 17:52:05（不含终点）；正午快照对应节年丙午、节月戊戌、日柱戊午。该快照只能定位传统时间层，不能推断整日或事件应期。\n\n现实约束：用户明确“我不能上夜班”，这是现实安排依据，因此验证性学习或复盘应放在白天；若目标日白天已过，则顺延到下一个白天，而不是夜间补做。选择代价是一个25—50分钟学习块的时间与注意力成本，可随时停止；不把等待或追问说成零成本，但本轮已有足够信息做非断语式反思。\n\n反思角度的性质：claim_type为symbolic_reflection，empirical_status为reflection_not_prediction，real_world_link_status为not_established。借丙午、戊戌、戊午的干支名称，只能转化为两类自省：一看学习驱动力是否被急躁、分心或一次性冲刺消耗；二看笔记、计划、错题归类与复盘是否形成稳定结构。这不等于当天客观环境如此，也不能用于判断成绩、考试吉凶或长期学业方向。\n\n待核实条件：本轮声明未计算个人命盘与该日干支的关系；counter_factors已说明旺衰、格局、调候与用神完整前提尚未实现，本条不选择喜用神。若未来要作命局层面关联，需要另行以实际排盘结果为前提；本轮不声称任何资料已被保存、更新或删除。",
+      "plain_summary": "本轮按已核验的八字日层快照讨论：2026-10-11正午（UTC+8）对应节年丙午、节月戊戌、日柱戊午，处于寒露后、立冬前。它只提供象征性反思角度：一看学习驱动力是否被急躁、分心消耗，二看笔记、计划与复盘是否形成稳定结构；不作吉凶、成绩或考试适合度预测。结合你不能上夜班的现实约束，建议把验证性学习放在白天，用一个25—50分钟、带停止点的小行动来复盘。",
+      "cited_fact_ids": [
+        "fact_e6fa0c7be4711fdc6b3dc4582714df70"
+      ],
+      "cited_claim_ids": [
+        "claim-57f6b47e03c711a957735ca590a162f9"
+      ],
+      "decision_options": [],
+      "professional_appendix": "本轮提供的声明（claim_id：claim-57f6b47e03c711a957735ca590a162f9）字段与边界如下：\n\n- 体系与规则：system=bazi；school_id=ziping-yueling-v1；rule_id=bazi.target.day-snapshot.v1；rule_version=1.0.0；revision=48；pack_version=core-knowledge-2026-10-11-v2；rule_hash=a429ab55626066b89a17d6b1bb18855b477b3a4fb0e160165ef9bb7ac60f1aad。\n- 已核验结构：time_scale=daily_snapshot；sample_at=2026-10-11 12:00:00（UTC+8）；year_ganzhi=丙午；month_ganzhi=戊戌；day_ganzhi=戊午；节月区间start=2026-10-08 14:29:17（寒露后），end_exclusive=2026-11-07 17:52:05（立冬前，不含终点）。method_note提示：交节日年/月柱在节气时刻前后可能不同，正午快照不能外推整日。\n- 状态字段：claim_type=symbolic_reflection；empirical_status=reflection_not_prediction；real_world_link_status=not_established；editorial_status=original_editorial_unreviewed；interpretation_id=bazi_target_day；scope为目标日正午实际干支与真实交节区间。\n- 支持点：可用于把2026-10-11定位到丙午年、戊戌月、戊午日的传统时间层，并作为学习自省提问的框架。\n- 张力与反例（counter_factors）：旺衰、格局、调候与用神完整前提尚未实现；本条不选择喜用神，不能据丙午/戊戌/戊午提出喜忌、吉凶或事件应期。\n- 局限（limitations）：仅覆盖已计算结构，未经科学事件预测验证；出生时刻分支为有限采样，采样内一致不等于连续区间稳定。\n- 缺失：本轮声明未计算个人命盘与该日干支的关系，也不覆盖2026-10-11全天每一时刻；因此不作命局喜忌、课程结果、考试表现或长期学业方向判断。derivation_summary说明已核对本轮授权产物字段、规则前提与解释范围，不含隐藏思维链。"
+    }
+  },
+  "scope": "Full original synthetic-only provider contract outputs, unchanged; tests rebind only local fact and claim identifiers. No real user profile or data."
+}

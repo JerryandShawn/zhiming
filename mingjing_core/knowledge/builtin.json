@@ -1,0 +1,1305 @@
+{
+  "pack_version": "core-knowledge-2026-10-11-v2",
+  "sources": [
+    {
+      "source_id": "ditiansui-tongtian-primary-v1",
+      "title": "滴天髓辑要·通天论",
+      "creator": "古籍题署刘基；本包不替作者归属争议作定论",
+      "kind": "primary_text_transcription",
+      "locator": "https://zh.wikisource.org/zh/滴天髓",
+      "section": "通天论，天地人三元与节令定义",
+      "accessed_on": "2026-10-11",
+      "excerpt": "日干為天元",
+      "scope_note": "原文提供日干、地支与季节气候的传统框架。仅授权解释分析对象与节令语境，未授权由字面五行数量计算旺衰，也未授权职业、健康或财富断语。",
+      "rights_note": "古籍原文转录；保留链接与篇章定位，未复制当代注解全文。"
+    },
+    {
+      "source_id": "ziwei-quanshu-3-primary-v1",
+      "title": "紫微斗数全书·卷三·谈星要论",
+      "creator": "古籍题署陈希夷；本包不替作者归属争议作定论",
+      "kind": "primary_text_transcription",
+      "locator": "https://zh.wikisource.org/wiki/紫微斗數全書/卷三",
+      "section": "谈星要论，先看命宫、再看迁移财帛官禄三方",
+      "accessed_on": "2026-10-11",
+      "excerpt": "三看迁移财帛官禄三方星辰",
+      "scope_note": "只迁移多宫联读的结构约束。原书的阶层、疾病、寿命与性别贬损断语不进入允许解释集合；三方几何由确定性盘面验证。",
+      "rights_note": "古籍原文转录；仅保留短摘录与篇章定位。"
+    },
+    {
+      "source_id": "ptolemy-configurations-primary-v1",
+      "title": "Ptolemy, Tetrabiblos, Book I Chapter XVI",
+      "creator": "Claudius Ptolemy; J. M. Ashmand translation",
+      "kind": "primary_text_transcription",
+      "locator": "https://www.gutenberg.org/files/70850/70850-h/70850-h.htm",
+      "section": "Mutual Configurations of the Signs, pp. 24–26",
+      "accessed_on": "2026-10-11",
+      "excerpt": "the trine and the sextile are each called harmonious",
+      "scope_note": "原文针对黄道符号间的几何与协调/不协调术语。本项目应用到已计算黄经相位的容许度是现代编辑口径，不能假称原典规定统一6度；不迁移医疗、寿命或事件必然预测。",
+      "rights_note": "历史原文英译转录；仅短摘录，不复制编辑注释或全书。"
+    },
+    {
+      "source_id": "waite-temperance-primary-v1",
+      "title": "A. E. Waite, The Pictorial Key to the Tarot",
+      "creator": "Arthur Edward Waite",
+      "kind": "primary_text_transcription",
+      "locator": "https://sacred-texts.com/tarot/pkt/pkt0303.htm",
+      "section": "Part III §3, XIV Temperance, upright divinatory meanings",
+      "accessed_on": "2026-10-11",
+      "excerpt": "Economy, moderation, frugality, management, accommodation.",
+      "scope_note": "只授权节制正位在本牌系内的节度/管理概念。不得用本条替代节制逆位、其他牌或投资/医疗建议；原典与现代编辑释义分别登记。",
+      "rights_note": "历史原文转录；保留短引文与原典章节。原创图形牌不借用Waite/Smith插画。"
+    },
+    {
+      "source_id": "zhiming-tarot-editorial-v1",
+      "title": "明镜原创78张图形牌·现代反思释义",
+      "creator": "知命明镜台项目编辑资产；机器迁移，未经外部专家审核",
+      "kind": "original_editorial",
+      "locator": "mingjing_core/knowledge/tarot_meanings.json",
+      "section": "78张牌的正逆位、常见误读与反思问题",
+      "accessed_on": "2026-10-11",
+      "excerpt": "产品原创象征解释",
+      "scope_note": "由hermes/tarot_deck.py已存在的版本化原创文本迁移为内核静态资产。此来源证明编辑文本出处，不证明牌面可以预测事件；牌阵为产品反思牌阵。",
+      "rights_note": "本项目原创释义与图形；既有static/tarot/licenses.json记录素材来源。"
+    },
+    {
+      "source_id": "mingjing-structural-editorial-v1",
+      "title": "明镜结构解释与时间层编辑口径",
+      "creator": "项目原创编辑，未经外部专家认证",
+      "kind": "original_editorial",
+      "locator": "mingjing_core/knowledge/editorial_definitions.json",
+      "section": "bazi/ziwei/astro结构词义、计算范围与禁止推断",
+      "accessed_on": "2026-10-11",
+      "excerpt": "结构词与现实事实分开",
+      "scope_note": "为明确计算字段提供受限结构词义、现代反思提示和时间范围。此来源证明产品编辑定义，不证明古典原文有这些现代措辞，也不证明人生事件预测。",
+      "rights_note": "本项目新写编辑定义，没有复制现代书籍、牌库说明书或插画。"
+    }
+  ],
+  "rules": [
+    {
+      "rule_id": "bazi.natal.seasonal-structure.v1",
+      "system": "bazi",
+      "school_id": "ziping-yueling-v1",
+      "version": "1.0.0",
+      "concept_definition": "先核对日干作为日主与四柱节令语境；只定义结构分析的起点。以月令组织分析与仅数五行不是同一种判断。",
+      "source_refs": [
+        "ditiansui-tongtian-primary-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "natal"
+      ],
+      "required_features": [
+        "pillars",
+        "day_master",
+        "method"
+      ],
+      "preconditions": [
+        "同一授权人物、资料revision与时间分支",
+        "四柱字段完整且日主等于日柱天干",
+        "已声明计算口径"
+      ],
+      "exceptions": [
+        "时柱未知时不称为完整本命规则",
+        "未实现旺衰、格局与调候的完整前提"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "seasonal_framework",
+          "text_template": "此分支以{day_master}日干作为日主，月柱{month_ganzhi}提供节令语境。传统结构分析需要核对其余柱的生克、藏干与根气；本条只确定分析起点，不能仅凭五行数量确定旺衰、格局或喜用神。",
+          "scope": "本命四柱结构与术语解释；不延伸为人生事件结论"
+        }
+      ],
+      "prohibited_inferences": [
+        "五行少即缺、必须补足",
+        "五行数量确定身强身弱",
+        "本条决定喜用神",
+        "必发财、灾祸、疾病或寿命",
+        "日干确定人格或职业"
+      ],
+      "conflicts_with": [
+        "legacy.bazi.count-only-xiyongshen"
+      ],
+      "supersedes": [],
+      "editorial_status": "machine_structured_unreviewed",
+      "empirical_status": "traditional_not_empirically_validated",
+      "predicate_id": "bazi_structure",
+      "limitations": [
+        "当前仅授权四柱/日主/节令框架。复杂用神、旺衰、调候与格局属于RULE_GAP。",
+        "输入时间不同分支须分别验证；一个采样点不证明整个区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "day_master与日柱天干不同",
+          "expected_code": "REFERENCE_ERROR"
+        },
+        {
+          "scenario": "缺少时柱却要求完整旺衰",
+          "expected_code": "RULE_GAP"
+        },
+        {
+          "scenario": "同字段请求必发财解释",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "ziwei.natal.linked-palaces.v1",
+      "system": "ziwei",
+      "school_id": "sanhe-structure-v1",
+      "version": "1.0.0",
+      "concept_definition": "主题本宫与两组三合宫、对宫共同构成读取范围；主辅星与化忌等牵制因素一并保留，不能把单星关键词当完整判断。",
+      "source_refs": [
+        "ziwei-quanshu-3-primary-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "natal"
+      ],
+      "required_features": [
+        "topic_palace",
+        "method"
+      ],
+      "preconditions": [
+        "真实本宫索引和完整主辅星列表",
+        "三联动宫索引为本宫+4、+8、+6模12，关系分别三合、三合、对宫",
+        "本命层与排盘口径相符"
+      ],
+      "exceptions": [
+        "缺少任一联动宫不退化为单星判断",
+        "本命结构不能替代流年、流月或四化派完整规则"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "linked_context",
+          "text_template": "此议题读取{palace_name}，联动{linked_names}。实际盘面为：{constellation}。三合口径要求把这四宫的资源与牵制放在同一结构中比较；空宫或化忌不能被省略，也不能据这些结构确认现实事件或第三人的心意。",
+          "scope": "指定主题的本命宫位联读结构；不输出事件应期或单星人格断语"
+        }
+      ],
+      "prohibited_inferences": [
+        "单星关键词证明人格",
+        "化忌必有灾",
+        "本命宫位证明某年事件",
+        "第三人正在想什么",
+        "寿命、疾病、灾祸或性别价值判断"
+      ],
+      "conflicts_with": [
+        "legacy.ziwei.single-star-keywords"
+      ],
+      "supersedes": [],
+      "editorial_status": "machine_structured_unreviewed",
+      "empirical_status": "traditional_not_empirically_validated",
+      "predicate_id": "ziwei_linked_structure",
+      "limitations": [
+        "此条提供完整多宫结构读取，不是已完成的全流派专家系统。",
+        "独立四化飞宫、格局和运限断语缺少规则时标RULE_GAP。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "只提供本宫一颗星",
+          "expected_code": "RULE_GAP"
+        },
+        {
+          "scenario": "伪造对宫索引",
+          "expected_code": "REFERENCE_ERROR"
+        },
+        {
+          "scenario": "流年产物套用本命规则",
+          "expected_code": "SCOPE_MISMATCH"
+        }
+      ]
+    },
+    {
+      "rule_id": "astro.natal.major-configurations.v1",
+      "system": "astro",
+      "school_id": "tropical-major-aspects-v1",
+      "version": "1.0.0",
+      "concept_definition": "六合60度、刑90度、拱120度、冲180度是明确几何配置。原典称六合/拱协调、刑/冲不协调；项目容许度是现代编辑口径，不是原典规定。",
+      "source_refs": [
+        "ptolemy-configurations-primary-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "natal"
+      ],
+      "required_features": [
+        "aspects",
+        "aspect_orb",
+        "method"
+      ],
+      "preconditions": [
+        "回归黄道口径已声明",
+        "真实相位名称、角度、天体与误差在声明容许度内",
+        "至少一组六合、刑、拱或冲相位"
+      ],
+      "exceptions": [
+        "合相不属于原典本章节列举的四种配置，需独立规则",
+        "本命相位不能冒充行运或推运",
+        "未知宫制不推断宫位结论"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "aspect_configuration",
+          "text_template": "已计算的配置为：{configurations}；本项目声明容许度为{orb}°。传统术语把六合/拱称为协调，把刑/冲称为张力，适合用来比较不同需要如何共存。这个分类不证明事情顺利或失败，也不能单靠一个相位确认人格、健康或未来事件。",
+          "scope": "明确相位几何与限定象征术语；不输出事件概率或应期"
+        }
+      ],
+      "prohibited_inferences": [
+        "拱相保证成功",
+        "刑冲证明心理疾病或灾祸",
+        "根据相位推断寿命",
+        "本命字段提供精确未来日期",
+        "项目容许度假称古典共识"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "machine_structured_unreviewed",
+      "empirical_status": "traditional_not_empirically_validated",
+      "predicate_id": "astro_major_aspects",
+      "limitations": [
+        "未实现尊贵、接纳、昼夜盘等完整古典判准；只保留本条定义。",
+        "实际计算法、宫制与历表回退须由产物展示，不由知识包猜测。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "拱相名对应90度",
+          "expected_code": "RULE_GAP"
+        },
+        {
+          "scenario": "相位误差大于声明容许度",
+          "expected_code": "REFERENCE_ERROR"
+        },
+        {
+          "scenario": "只有合相却要求四种配置解释",
+          "expected_code": "RULE_GAP"
+        }
+      ]
+    },
+    {
+      "rule_id": "tarot.rws.temperance-upright.v1",
+      "system": "tarot",
+      "school_id": "rws-waite-primary-v1",
+      "version": "1.0.0",
+      "concept_definition": "Waite原典节制正位的节度、节俭、管理与调适概念；与现代编辑释义分开。",
+      "source_refs": [
+        "waite-temperance-primary-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "question"
+      ],
+      "required_features": [
+        "cards",
+        "spread_id",
+        "deck_version",
+        "status"
+      ],
+      "preconditions": [
+        "已持久化完成抽牌",
+        "牌系版本与稳定ID相符",
+        "实际牌中含major-14正位"
+      ],
+      "exceptions": [
+        "major-14逆位使用另一组原典定义，不能套正位",
+        "原典牌意不决定现实决策"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "temperance_moderation",
+          "text_template": "节制正位在Waite原典中围绕节度、管理和调适。可把它作为检查投入比例与协调方式的象征提示；它不要求放弃现实底线，也不证明某个选项一定合适。",
+          "scope": "已保存抽牌中的节制正位；不扩展为投资、医疗或第三人心意结论"
+        }
+      ],
+      "prohibited_inferences": [
+        "节制逆位等于正位",
+        "折中凌驾预算或安全约束",
+        "抽到节制保证关系和谐",
+        "据牌面给用药或投资指令"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "machine_structured_unreviewed",
+      "empirical_status": "traditional_not_empirically_validated",
+      "predicate_id": "tarot_temperance_upright",
+      "limitations": [
+        "这里只迁移节制正位的一条原典含义，其他牌的产品释义另标原创编辑。",
+        "牌面不是现实事实来源。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "只有节制逆位",
+          "expected_code": "RULE_GAP"
+        },
+        {
+          "scenario": "尚未翻牌完成",
+          "expected_code": "DRAW_MISMATCH"
+        },
+        {
+          "scenario": "另一牌系同编号",
+          "expected_code": "RULE_GAP"
+        }
+      ]
+    },
+    {
+      "rule_id": "tarot.editorial.complete-deck.v1",
+      "system": "tarot",
+      "school_id": "zhiming-editorial-v1",
+      "version": "1.0.0",
+      "concept_definition": "完整78张原创编辑牌意依赖实际冻结的牌阵、每张牌与方向；正逆位与常见误读逐张映射，不以一份泛化文本替代。",
+      "source_refs": [
+        "zhiming-tarot-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "question"
+      ],
+      "required_features": [
+        "cards",
+        "spread_id",
+        "deck_version",
+        "status"
+      ],
+      "preconditions": [
+        "服务端已保存且完成抽牌",
+        "唯一牌ID和方向来自当前抽牌产物",
+        "牌数与已冻结牌阵相符"
+      ],
+      "exceptions": [
+        "未完成选择或隐藏牌序不解读",
+        "未知牌系版本不得套用当前牌意"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "card_reflection",
+          "text_template": "{reflection}。这些是明镜原创编辑反思角度，牌位提供问题视角，不能证明现实情况。实际选择须另核对已确认目标、约束与代价。",
+          "scope": "同一轮已保存问题与牌阵的象征反思；不产生新现实事实"
+        }
+      ],
+      "prohibited_inferences": [
+        "牌面吉凶直接决定A/B",
+        "牌面写成已确认用户经历",
+        "重写实际牌或方向",
+        "读心、诊断、寿命、灾祸、必发财或事件概率"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "tarot_editorial",
+      "limitations": [
+        "产品牌阵是反思设计，不宣称唯一传统格式。",
+        "编辑资产未获外部专家认证，也不是预测模型。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "保存牌名与稳定ID矛盾",
+          "expected_code": "DRAW_MISMATCH"
+        },
+        {
+          "scenario": "五张牌阵只有三张",
+          "expected_code": "DRAW_MISMATCH"
+        },
+        {
+          "scenario": "有牌面但声明对方必然爱我",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "bazi.natal.hidden-ten-gods.v1",
+      "system": "bazi",
+      "school_id": "ziping-yueling-v1",
+      "version": "1.0.0",
+      "concept_definition": "完整四柱透藏十神结构与受限编辑词义",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "natal"
+      ],
+      "required_features": [
+        "pillars",
+        "day_master",
+        "method",
+        "hidden_stems",
+        "ten_gods"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "bazi_hidden_structure",
+          "text_template": "本分支透藏十神结构：{hidden_details}。十神是以日干为参照的生克与阴阳关系名称，可用来提出输出、资源、规则与支持的反思问题；不直接对应已发生经历，也不能据此决定职业或旺衰。",
+          "scope": "完整四柱透藏十神结构与受限编辑词义"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "bazi_hidden_structure",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "bazi.natal.raw-relations.v1",
+      "system": "bazi",
+      "school_id": "ziping-yueling-v1",
+      "version": "1.0.0",
+      "concept_definition": "四柱原始六冲、六合与天干五合，不判断合化成立",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "natal"
+      ],
+      "required_features": [
+        "pillars",
+        "day_master",
+        "method",
+        "relations"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "bazi_relations",
+          "text_template": "本分支已计算的原始关系为：{relations}。配对共存不表示已经合化，也不把冲等同灾祸；需保留月令、透藏与未实现的力量条件。",
+          "scope": "四柱原始六冲、六合与天干五合，不判断合化成立"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "bazi_relations",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "bazi.target.day-snapshot.v1",
+      "system": "bazi",
+      "school_id": "ziping-yueling-v1",
+      "version": "1.0.0",
+      "concept_definition": "目标日正午实际干支与真实交节区间",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "daily_snapshot"
+      ],
+      "required_features": [
+        "day"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "bazi_target_day",
+          "text_template": "目标快照{sample_at}（UTC+8）的节年/月/日为{year_ganzhi}/{month_ganzhi}/{day_ganzhi}；所处节月区间{period_start}至{period_end_exclusive}（不含终点）。它只能定位传统时间层，不能由正午快照推断整日或事件应期。",
+          "scope": "目标日正午实际干支与真实交节区间"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "bazi_target_day",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "ziwei.decadal.mutagen-structure.v1",
+      "system": "ziwei",
+      "school_id": "sanhe-structure-v1",
+      "version": "1.0.0",
+      "concept_definition": "指定大限的四化位置与宫位映射；不是独立飞宫或应期算法",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "decadal"
+      ],
+      "required_features": [
+        "horoscope.decadal"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "ziwei_temporal_structure",
+          "text_template": "指定大限层{layer}，干支{ganzhi}，实际四化关联为：{mutagen_links}。此层与本命结构分开比较，不能把禄权科忌直接写成机会、成败或事件已经发生。",
+          "scope": "指定大限的四化位置与宫位映射；不是独立飞宫或应期算法"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "ziwei_temporal_structure",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "ziwei.yearly.mutagen-structure.v1",
+      "system": "ziwei",
+      "school_id": "sanhe-structure-v1",
+      "version": "1.0.0",
+      "concept_definition": "指定流年的四化位置与宫位映射；不是独立飞宫或应期算法",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "yearly"
+      ],
+      "required_features": [
+        "horoscope.yearly"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "ziwei_temporal_structure",
+          "text_template": "指定流年层{layer}，干支{ganzhi}，实际四化关联为：{mutagen_links}。此层与本命结构分开比较，不能把禄权科忌直接写成机会、成败或事件已经发生。",
+          "scope": "指定流年的四化位置与宫位映射；不是独立飞宫或应期算法"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "ziwei_temporal_structure",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "ziwei.monthly.mutagen-structure.v1",
+      "system": "ziwei",
+      "school_id": "sanhe-structure-v1",
+      "version": "1.0.0",
+      "concept_definition": "指定流月的四化位置与宫位映射；不是独立飞宫或应期算法",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "monthly"
+      ],
+      "required_features": [
+        "horoscope.monthly"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "ziwei_temporal_structure",
+          "text_template": "指定流月层{layer}，干支{ganzhi}，实际四化关联为：{mutagen_links}。此层与本命结构分开比较，不能把禄权科忌直接写成机会、成败或事件已经发生。",
+          "scope": "指定流月的四化位置与宫位映射；不是独立飞宫或应期算法"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "ziwei_temporal_structure",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "ziwei.daily.mutagen-structure.v1",
+      "system": "ziwei",
+      "school_id": "sanhe-structure-v1",
+      "version": "1.0.0",
+      "concept_definition": "指定流日的四化位置与宫位映射；不是独立飞宫或应期算法",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "daily"
+      ],
+      "required_features": [
+        "horoscope.daily"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "ziwei_temporal_structure",
+          "text_template": "指定流日层{layer}，干支{ganzhi}，实际四化关联为：{mutagen_links}。此层与本命结构分开比较，不能把禄权科忌直接写成机会、成败或事件已经发生。",
+          "scope": "指定流日的四化位置与宫位映射；不是独立飞宫或应期算法"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "ziwei_temporal_structure",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "astro.natal.placements.v1",
+      "system": "astro",
+      "school_id": "tropical-major-aspects-v1",
+      "version": "1.0.0",
+      "concept_definition": "本命天体、12宫头和上升/天顶结构的编辑反思",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "natal"
+      ],
+      "required_features": [
+        "planets",
+        "houses",
+        "asc",
+        "mc",
+        "method"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "astro_placements",
+          "text_template": "本分支实际位置：{placements}；上升{asc}、天顶{mc}。星座、宫位与轴线是明确宫制下的结构；可围绕自我方向、表达、关系和责任提出待核查问题，不把坐标当作性格认证、职业保证或健康结论。",
+          "scope": "本命天体、12宫头和上升/天顶结构的编辑反思"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "astro_placements",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "astro.target.transit-snapshot.v1",
+      "system": "astro",
+      "school_id": "tropical-major-aspects-v1",
+      "version": "1.0.0",
+      "concept_definition": "目标时刻行运与本命参照的已计算主要相位",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "daily_transit_snapshot"
+      ],
+      "required_features": [
+        "transits",
+        "transit_method"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "astro_transit_snapshot",
+          "text_template": "目标正午快照{sample_time}：{configurations}。这些是行运与本命参照的实际几何关系，只覆盖记录时刻；未扫描精确入出相、连续区间或推运，不能补一个未来事件日期。",
+          "scope": "目标时刻行运与本命参照的已计算主要相位"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "astro_transit_snapshot",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "bazi.target.monthly-period.v1",
+      "system": "bazi",
+      "school_id": "ziping-yueling-v1",
+      "version": "1.0.0",
+      "concept_definition": "目标日所在的真实节月区间，与公历月/年明确分开",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "monthly"
+      ],
+      "required_features": [
+        "target_month"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "bazi_target_period",
+          "scope": "目标日所在的真实节月区间，与公历月/年明确分开",
+          "text_template": "目标日期{date}的UTC+8快照{sample_at}位于节月{ganzhi}；真实区间为{period_start}至{period_end_exclusive}（不含终点）。这是传统时间层的实际定位，不把公历边界当交节，也不据此生成具体未来事件。"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "bazi_target_period",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    },
+    {
+      "rule_id": "bazi.target.yearly-period.v1",
+      "system": "bazi",
+      "school_id": "ziping-yueling-v1",
+      "version": "1.0.0",
+      "concept_definition": "目标日所在的真实节年区间，与公历月/年明确分开",
+      "source_refs": [
+        "mingjing-structural-editorial-v1"
+      ],
+      "applicable_topics": [
+        "general",
+        "career",
+        "study",
+        "relationships",
+        "decision",
+        "terminology",
+        "finance",
+        "family",
+        "home",
+        "health",
+        "personal_growth"
+      ],
+      "time_scales": [
+        "yearly"
+      ],
+      "required_features": [
+        "target_year"
+      ],
+      "preconditions": [
+        "服务端授权人物、revision、分支和时间层一致",
+        "真实字段引用和值一致",
+        "本规则列出的结构完整且实际口径明确"
+      ],
+      "exceptions": [
+        "缺必要结构不以模型补值",
+        "此规则不支持完整格局、精确应期或现实事件断言"
+      ],
+      "allowed_interpretations": [
+        {
+          "interpretation_id": "bazi_target_period",
+          "scope": "目标日所在的真实节年区间，与公历月/年明确分开",
+          "text_template": "目标日期{date}的UTC+8快照{sample_at}位于节年{ganzhi}；真实区间为{period_start}至{period_end_exclusive}（不含终点）。这是传统时间层的实际定位，不把公历边界当交节，也不据此生成具体未来事件。"
+        }
+      ],
+      "prohibited_inferences": [
+        "疾病与寿命断言",
+        "第三人心意",
+        "保证发财或灾祸",
+        "把象征标签写入用户现实事实",
+        "以符号替代现实硬约束"
+      ],
+      "conflicts_with": [],
+      "supersedes": [],
+      "editorial_status": "original_editorial_unreviewed",
+      "empirical_status": "reflection_not_prediction",
+      "predicate_id": "bazi_target_period",
+      "limitations": [
+        "仅覆盖下列已计算结构，未经科学事件预测验证。",
+        "出生时刻分支为有限采样，采样内一致不等于连续区间稳定。"
+      ],
+      "counterexamples": [
+        {
+          "scenario": "改变人物、revision或时间层",
+          "expected_code": "AUTH_SCOPE_ERROR/STALE_INPUT/SCOPE_MISMATCH"
+        },
+        {
+          "scenario": "缺失必需字段或不符合前提",
+          "expected_code": "MISSING_INPUT/RULE_GAP"
+        },
+        {
+          "scenario": "改写允许解释为发财、疾病或未来保证",
+          "expected_code": "UNSUPPORTED_INFERENCE"
+        }
+      ]
+    }
+  ]
+}
