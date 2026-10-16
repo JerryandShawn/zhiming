@@ -351,5 +351,22 @@ class LiveTarotDenialPostgresTests(unittest.TestCase):
             with self.subTest(value=value):
                 self.execute(patch={'explanation':value+'。'},expected_issue=SYMBOLIC)
 
+    def test_existential_proof_denials_before_subject_preserve_cached_answers(self):
+        values=['没有任何牌面或算法能证明事情会成功或失败，实际结果取决于现实条件',
+            '不存在任何塔罗能够证明结果，仍需核实现实条件',
+            '没有命盘或八字可以证明结果，也不能保证结果',
+            '诚实的回答是：没有任何牌面或算法能证明事情会成功或失败']
+        for value in values:
+            with self.subTest(value=value):self.execute(patch={'explanation':value+'。'})
+
+    def test_existential_proof_denials_reject_double_negation_quotes_and_new_assertions(self):
+        limit='没有任何牌面或算法能证明事情会成功或失败'
+        variants=['牌面或算法能证明事情会成功','不是'+limit,'并非'+limit,'不能说'+limit,
+            '“'+limit+'”','“此前的说法。'+limit+'”',
+            limit+'，但牌面保证结果',limit+'，但保证结果',limit+'，事情保证成功',
+            limit+'，并非不能保证结果',limit+'且保证结果','没有任何资料，牌面能证明结果']
+        for value in variants:
+            with self.subTest(value=value):self.execute(patch={'explanation':value+'。'},expected_issue=SYMBOLIC)
+
 
 if __name__=='__main__':unittest.main()

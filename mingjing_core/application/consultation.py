@@ -579,6 +579,14 @@ class ConsultationService:
                         if reject_quoted and quoted.start() < assertion.start() + denial.start() < quoted.end():
                             return True
             return False
+        def symbolic_expression_is_quoted(clause, assertion):
+            for occurrence in re.finditer(re.escape(clause), text):
+                leading = text[:occurrence.start() + assertion.start()]
+                for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
+                    if (leading.count(opening) % 2 if opening == closing else leading.rfind(opening) > leading.rfind(closing)):
+                        return True
+            return False
+
         certainty = False
         for clause in re.split(r'[。；;\n]', text):
             for assertion in re.finditer(r'(?:命盘|八字|星盘|塔罗|牌面).{0,28}?(证明|保证|一定会|必然会|成功率\s*\d|\d+\s*%)', clause):
@@ -608,14 +616,24 @@ class ConsultationService:
                     proof_object = r'(?:结果|对方态度|顺利程度)'
                     finite_proof = re.fullmatch(r'(?:命盘|八字|星盘|塔罗|牌面)(?:当作|视为)' + proof_object + r'(?:(?:、|或|和|及|与)' + proof_object + r')*的', prefix)
                     closed_tail = re.fullmatch(r'(?:[，,]也不能给出成败概率)?\s*', clause[assertion.end():])
-                    quoted = False
                     if before_subject and finite_proof and closed_tail:
-                        for occurrence in re.finditer(re.escape(clause), text):
-                            leading = text[:occurrence.start() + assertion.start()]
-                            for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
-                                if (leading.count(opening) % 2 if opening == closing else leading.rfind(opening) > leading.rfind(closing)):
-                                    quoted = True
-                        if not quoted and not symbolic_limit_is_denied(before_subject, local, clause, assertion, reject_quoted=True):
+                        if not symbolic_expression_is_quoted(clause, assertion) and not symbolic_limit_is_denied(before_subject, local, clause, assertion, reject_quoted=True):
+                            denial = before_subject
+                    # Existential denial also precedes the subject, rather
+                    # than the verb: "没有任何牌面或算法能证明...". Coordinate
+                    # subjects are bounded; unrelated negatives cannot apply.
+                    before_subject = re.search(r'(?:没有|不存在)(?:任何)?$', local)
+                    proof_subject = r'(?:命盘|八字|星盘|塔罗|牌面)'
+                    existential_proof = re.fullmatch(proof_subject + r'(?:(?:或|和|及|与)(?:命盘|八字|星盘|塔罗|牌面|算法))*(?:能|能够|可以)', prefix)
+                    renewed = False
+                    for tail in re.split(r'[，,]|但(?:是)?|然而|不过|可是|事实上|实际上|反而|却|并且|同时|且', clause[assertion.end():]):
+                        for claim in re.finditer(r'证明|保证|一定会|必然会|成功率\s*\d|\d+\s*%', tail):
+                            denied = re.search(r'(?:不能|无法|不应|不会|并非|不是|不|无从)$', tail[:claim.start()])
+                            if not denied or re.search(r'(?:不是|并非|不能说|不意味着|不代表|不能|不可|无法|不可能|不|未)\s*$', tail[:denied.start()]):
+                                renewed = True
+                    if (not denial and before_subject and existential_proof and not renewed
+                            and not symbolic_expression_is_quoted(clause, assertion)
+                            and not symbolic_limit_is_denied(before_subject, local, clause, assertion, reject_quoted=True)):
                             denial = before_subject
                     # A noon snapshot explicitly has not established this
                     # finite day-pillar boundary; keep quotes, double denials
