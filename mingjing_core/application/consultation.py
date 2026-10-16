@@ -599,6 +599,24 @@ class ConsultationService:
                         double_denial = symbolic_limit_is_denied(limited_denial, prefix, clause, assertion)
                     if limited_denial and not double_denial: denial = limited_denial
                 if not denial and assertion.group(1) == '证明':
+                    # In a disposal construction the denial precedes the
+                    # symbolic subject: "不能把牌面当作...的证明". Only this
+                    # finite evidence list and its optional probability limit
+                    # belong to the denial; quotes and renewed assertions do not.
+                    local = re.split(r'[，,：:]|但(?:是)?|然而|不过|可是|事实上|实际上', clause[:assertion.start()])[-1]
+                    before_subject = re.search(r'(?:不能|不可|不应|不要)(?:把|将)$', local)
+                    proof_object = r'(?:结果|对方态度|顺利程度)'
+                    finite_proof = re.fullmatch(r'(?:命盘|八字|星盘|塔罗|牌面)(?:当作|视为)' + proof_object + r'(?:(?:、|或|和|及|与)' + proof_object + r')*的', prefix)
+                    closed_tail = re.fullmatch(r'(?:[，,]也不能给出成败概率)?\s*', clause[assertion.end():])
+                    quoted = False
+                    if before_subject and finite_proof and closed_tail:
+                        for occurrence in re.finditer(re.escape(clause), text):
+                            leading = text[:occurrence.start() + assertion.start()]
+                            for opening, closing in (('“','”'), ('"','"'), ('‘','’'), ("'","'"), ('「','」'), ('『','』'), ('`','`')):
+                                if (leading.count(opening) % 2 if opening == closing else leading.rfind(opening) > leading.rfind(closing)):
+                                    quoted = True
+                        if not quoted and not symbolic_limit_is_denied(before_subject, local, clause, assertion, reject_quoted=True):
+                            denial = before_subject
                     # A noon snapshot explicitly has not established this
                     # finite day-pillar boundary; keep quotes, double denials
                     # and any renewed assertion outside this exception.

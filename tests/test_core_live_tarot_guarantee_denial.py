@@ -334,5 +334,22 @@ class LiveTarotDenialPostgresTests(unittest.TestCase):
         for kind,issue in [('fact','引用了本轮有效范围之外的事实'),('claim','引用了未通过规则核验的声明')]:
             with self.subTest(kind=kind):self.execute(invalid=kind,expected_issue=issue)
 
+    def test_symbolic_evidence_denial_before_subject_commits_with_original_cards(self):
+        for suffix in ('', '，也不能给出成败概率'):
+            with self.subTest(suffix=suffix):
+                self.execute(patch={'explanation':'本轮仅作象征反思，因此不能把牌面当作结果、对方态度或顺利程度的证明'+suffix+'。'})
+
+    def test_symbolic_evidence_denial_does_not_excuse_guarantees_or_quotes(self):
+        limit='不能把牌面当作结果、对方态度或顺利程度的证明'
+        variants=['牌面当作结果、对方态度或顺利程度的证明',
+            '不是'+limit,'并非'+limit,'不能说'+limit,
+            '“'+limit+'”','“此前的说法。'+limit+'”',
+            limit+'，但牌面保证结果',limit+'，但保证结果',
+            limit+'，也不能给出成败概率，但保证结果',
+            limit+'且保证结果',limit+'，所以现实一定成功']
+        for value in variants:
+            with self.subTest(value=value):
+                self.execute(patch={'explanation':value+'。'},expected_issue=SYMBOLIC)
+
 
 if __name__=='__main__':unittest.main()
