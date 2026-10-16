@@ -1,5 +1,7 @@
 # 知命明镜台 Core v3
 
+AI 接手请先阅读 [完整项目交接说明](docs/AI_HANDOFF.md)，其中包含 GitHub 版本、架构、API、数据库、部署、测试证据与已知限制。
+
 独立 Core v3 保留 FastAPI、原生前端、X-Token 登录、既有模型配置和完整塔罗素材。生产入口 `main.py` 只创建 `mingjing_core.adapters.web`，网站、飞书、Hermes 适配器和报告统一调用 `ConsultationService`。PostgreSQL 是唯一权威数据库；LangGraph 是唯一业务执行链。旧总控仅保留为迁移/对比样本，不被生产入口调用。
 
 原话、明确授权事实、人物、选中事项和各实体 revision 分别保存。单事实更正只使依赖它的结果失效；整来源删除清除派生正文并写入不含正文的撤销账本。备份恢复后必须先重放最新撤销账本。旧档案来源无法确认时标记 `legacy_unverified`，出生信息需在命盘页面核对并明确确认后才进入计算。
