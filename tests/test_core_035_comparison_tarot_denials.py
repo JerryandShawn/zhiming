@@ -167,7 +167,8 @@ class Original035ComparisonTarotDenials(unittest.TestCase):
         def fake_client(*args, **kwargs):
             kwargs['transport'] = httpx.MockTransport(self.model.handler)
             return original_client(*args,**kwargs)
-        with patch.dict(os.environ,{'CHART_PYTHON':str(Path(__file__).resolve().parents[2] / 'chart311-venv/Scripts/python.exe')}), \
+        chart_python = os.environ.get('CHART_PYTHON') or str(Path(__file__).resolve().parents[2] / 'chart311-venv/Scripts/python.exe')
+        with patch.dict(os.environ,{'CHART_PYTHON':chart_python}), \
              patch('mingjing_core.adapters.model.httpx.Client',side_effect=fake_client):
             self.result = execute_core_with_recovery(self.service,self.owner,self.run['id'],None,self.attempts)
         return self.repo.fetch_run(self.owner,self.run['id'])
