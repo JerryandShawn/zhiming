@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import threading
 from collections.abc import Iterator
 from typing import Any
@@ -10,12 +9,10 @@ from typing import Any
 from .errors import (
     CapabilityError,
     ModelProtocolError,
-    ModelQuotaExhausted,
-    ModelUnavailable,
 )
 from .port import ChatMessage, StreamEvent, ToolCall, ToolSpec
 from .schema_flatten import flatten_schema
-from .transport import StreamingHTTP, safe_usage
+from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
 
 
 def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
@@ -36,7 +33,7 @@ def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> tuple[
                     content.append({"type": "text", "text": message.content})
             else:
                 content.extend(_parts(message.content, caps))
-            if caps.get("reasoning_replay") and message.reasoning and message.tool_cycle == active:
+            if active and caps.get("reasoning_replay") and message.reasoning and message.tool_cycle == active:
                 if not message.reasoning_signature:
                     raise CapabilityError()
                 content.insert(
@@ -69,7 +66,7 @@ def _parts(parts: list[Any], caps: dict[str, Any]) -> list[dict[str, Any]]:
 def _call(block: dict[str, Any]) -> ToolCall:
     failed = False
     try:
-        args = json.loads(block["partial"]) if block.get("partial") else block.get("input", {})
+        args = strict_json(block["partial"]) if block.get("partial") else block.get("input", {})
         failed = not isinstance(args, dict) or not block.get("id") or not block.get("name")
     except (ValueError, TypeError):
         failed = True
@@ -78,15 +75,14 @@ def _call(block: dict[str, Any]) -> ToolCall:
     return ToolCall(block["id"], block["name"], args)
 
 
-def parse_events(chunks: Iterator[dict[str, Any]]) -> Iterator[StreamEvent]:
+def parse_events(chunks: Iterator[dict[str, Any]], *, membership: bool = False) -> Iterator[StreamEvent]:
     blocks: dict[int, dict[str, Any]] = {}
+    closed: set[int] = set()
     completed, signature = False, ""
     for chunk in chunks:
         kind = chunk.get("type")
         if kind == "error":
-            error = chunk.get("error", {})
-            quota = any(word in str(error).lower() for word in ("quota", "usage limit", "额度"))
-            raise ModelQuotaExhausted() if quota else ModelUnavailable()
+            raise stream_error(chunk.get("error", {}), membership=membership)
         if kind == "message_start":
             yield StreamEvent("usage", safe_usage(chunk.get("message", {}).get("usage")))
         elif kind == "content_block_start":
@@ -104,6 +100,8 @@ def parse_events(chunks: Iterator[dict[str, Any]]) -> Iterator[StreamEvent]:
                 yield StreamEvent("reasoning", delta["thinking"])
             elif delta.get("type") == "signature_delta":
                 signature += delta["signature"]
+        elif kind == "content_block_stop":
+            closed.add(chunk["index"])
         elif kind == "message_delta":
             if chunk.get("delta", {}).get("stop_reason") == "max_tokens":
                 raise ModelProtocolError()
@@ -112,8 +110,10 @@ def parse_events(chunks: Iterator[dict[str, Any]]) -> Iterator[StreamEvent]:
             completed = True
     if not completed:
         raise ModelProtocolError()
-    for _, block in sorted(blocks.items()):
+    for index, block in sorted(blocks.items()):
         if block.get("type") == "tool_use":
+            if index not in closed:
+                raise ModelProtocolError()
             yield StreamEvent("tool_call", _call(block))
     if signature:
         yield StreamEvent("done", {"reasoning_signature": signature})
@@ -166,4 +166,6 @@ class AnthropicMessages(StreamingHTTP):
             else:
                 raise CapabilityError()
         headers = {"x-api-key": self.api_key, "anthropic-version": "2023-06-01", "User-Agent": "MingjingCore/3.0"}
-        yield from self._events("/messages", body, headers, parse_events, cancel_event)
+        yield from self._events(
+            "/messages", body, headers, lambda chunks: parse_events(chunks, membership=self.membership), cancel_event
+        )

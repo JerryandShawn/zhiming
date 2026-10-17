@@ -249,12 +249,14 @@ class ConsultationService:
         except ValueError:
             diagnostic({'status': 'failed', 'reason': 'output_contract', 'failure_code': 'MODEL_OUTPUT_CONTRACT',
                         'repair_outcome': 'contract_failure', 'usage': usage, 'usage_known': bool(usage),
-                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')})
+                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model'),
+                        'provider': response.get('provider')})
             raise InvalidAnswer('模型返回未满足本阶段字段契约') from None
         with self.repo.transaction(owner) as connection:
             self.repo._leased(connection, owner, run['id'], token)
             diagnostic({'status': 'succeeded', 'repair_outcome': 'succeeded', 'usage': usage, 'usage_known': bool(usage),
-                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')})
+                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model'),
+                        'provider': response.get('provider')})
             return self._store(owner, run, 'model:' + purpose, parsed)
 
     def execute_stage(self, owner, run_id, token, phase, emit=None):

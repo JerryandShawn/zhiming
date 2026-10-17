@@ -8,7 +8,8 @@ import threading
 import time
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
-from typing import Any
+from typing import Any, Protocol
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -24,6 +25,8 @@ from .port import ModelPort, StreamEvent
 
 
 def safe_usage(data: Any) -> dict[str, int]:
+    if not isinstance(data, dict):
+        return {}
     names = {
         "input_tokens",
         "output_tokens",
@@ -48,7 +51,7 @@ def check_cancel(event: threading.Event | None) -> None:
 def http_error(response: httpx.Response, *, membership: bool) -> ModelUnavailable:
     status = response.status_code
     # Inspect only to classify; this local value is never attached to an exception or logged.
-    sample = response.read()[:4096].decode("utf-8", errors="ignore").lower()
+    sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore").lower()
     quota = any(word in sample for word in ("usage limit", "quota", "额度", "usage_limit"))
     if quota or membership and status == 429:
         return ModelQuotaExhausted(status=status)
@@ -76,7 +79,7 @@ def sse(response: httpx.Response, cancel: threading.Event | None) -> Iterator[di
 def _parse(value: str) -> dict[str, Any]:
     failed = False
     try:
-        parsed = json.loads(value)
+        parsed = strict_json(value)
         failed = not isinstance(parsed, dict)
     except (ValueError, TypeError):
         failed = True
@@ -85,10 +88,29 @@ def _parse(value: str) -> dict[str, Any]:
     return parsed
 
 
+class Closable(Protocol):
+    def close(self) -> None: ...
+
+
+def _reject_constant(_: str) -> Any:
+    raise ValueError("Nonfinite JSON number")
+
+
+def strict_json(value: str) -> Any:
+    return json.loads(value, parse_constant=_reject_constant)
+
+
+def stream_error(data: Any, *, membership: bool) -> ModelUnavailable:
+    classification = str(data).casefold()
+    rate = any(word in classification for word in ("rate_limit", "rate limit", "429"))
+    quota = any(word in classification for word in ("quota", "usage_limit", "usage limit", "额度"))
+    if quota or membership and rate:
+        return ModelQuotaExhausted(status=429 if rate else None)
+    return ModelRateLimited(status=429) if rate else ModelUnavailable()
+
+
 @contextmanager
-def close_on_cancel(
-    response: httpx.Response, cancel: threading.Event | None, deadline: float
-) -> Iterator[threading.Event]:
+def close_on_cancel(response: Closable, cancel: threading.Event | None, deadline: float) -> Iterator[threading.Event]:
     done = threading.Event()
     expired = threading.Event()
 
@@ -125,6 +147,16 @@ class StreamingHTTP(ModelPort):
         sleep: Callable[[float], None] = time.sleep,
         max_retries: int = 3,
     ) -> None:
+        parsed = urlsplit(base_url)
+        if (
+            parsed.scheme not in {"https", "http"}
+            or not parsed.hostname
+            or parsed.username
+            or parsed.password
+            or parsed.query
+            or parsed.fragment
+        ):
+            raise ValueError("Model base URL must be an HTTP origin/path without credentials or query")
         self.base_url = base_url.rstrip("/")
         self.api_key, self.model, self.provider = api_key, model, provider
         self.caps, self.settings = caps or {}, settings or {}
@@ -142,32 +174,15 @@ class StreamingHTTP(ModelPort):
         cancel: threading.Event | None,
     ) -> Iterator[StreamEvent]:
         check_cancel(cancel)
-        timeout = httpx.Timeout(
-            float(self.settings.get("first_byte_timeout", 60)), connect=float(self.settings.get("connect_timeout", 10))
-        )
         deadline = time.monotonic() + float(self.settings.get("total_timeout", 600))
         started, parse_retries = time.monotonic(), 0
         for attempt in range(self.max_retries + 1):
             visible, failure = False, None
             check_cancel(cancel)
             try:
-                with httpx.Client(transport=self.transport, timeout=timeout, follow_redirects=False) as client:
-                    self.request_count += 1
-                    with (
-                        client.stream("POST", self.base_url + path, headers=headers, json=body) as response,
-                        close_on_cancel(response, cancel, deadline) as expired,
-                    ):
-                        if response.status_code != 200:
-                            raise http_error(response, membership=self.membership)
-                        for event in parser(sse(response, cancel)):
-                            check_cancel(cancel)
-                            if expired.is_set():
-                                raise ModelUnavailable()
-                            visible = visible or event.type in {"text", "tool_call", "reasoning"}
-                            yield event
-                        check_cancel(cancel)
-                        if expired.is_set():
-                            raise ModelUnavailable()
+                for event in self._request(path, body, headers, parser, cancel, deadline):
+                    visible = visible or event.type in {"text", "tool_call", "reasoning"}
+                    yield event
                 yield StreamEvent(
                     "done",
                     {"model": self.model, "provider": self.provider, "latency_ms": (time.monotonic() - started) * 1000},
@@ -185,8 +200,48 @@ class StreamingHTTP(ModelPort):
                 failure = exc
             except httpx.HTTPError:
                 failure = ModelUnavailable()
+            except (KeyError, TypeError, AttributeError, ValueError):
+                failure = ModelProtocolError()
+                parse_retries += 1
             check_cancel(cancel)
             if visible or attempt >= self.max_retries or parse_retries > 1 or time.monotonic() >= deadline:
                 yield StreamEvent("error", failure)
                 return
-            self.sleep((1, 3, 9)[min(attempt, 2)] + random.uniform(0, 0.2))
+            delay = (1, 3, 9)[min(attempt, 2)] + random.uniform(0, 0.2)
+            if cancel is not None and self.sleep is time.sleep:
+                cancel.wait(delay)
+            else:
+                self.sleep(delay)
+
+    def _request(
+        self,
+        path: str,
+        body: dict[str, Any],
+        headers: dict[str, str],
+        parser: Callable[..., Iterator[StreamEvent]],
+        cancel: threading.Event | None,
+        deadline: float,
+    ) -> Iterator[StreamEvent]:
+        timeout = httpx.Timeout(
+            float(self.settings.get("first_byte_timeout", 60)), connect=float(self.settings.get("connect_timeout", 10))
+        )
+        with (
+            httpx.Client(transport=self.transport, timeout=timeout, follow_redirects=False) as client,
+            close_on_cancel(client, cancel, deadline) as client_expired,
+        ):
+            check_cancel(cancel)
+            self.request_count += 1
+            with (
+                client.stream("POST", self.base_url + path, headers=headers, json=body) as response,
+                close_on_cancel(response, cancel, deadline) as expired,
+            ):
+                if response.status_code != 200:
+                    raise http_error(response, membership=self.membership)
+                for event in parser(sse(response, cancel)):
+                    check_cancel(cancel)
+                    if expired.is_set() or client_expired.is_set():
+                        raise ModelUnavailable()
+                    yield event
+                check_cancel(cancel)
+                if expired.is_set() or client_expired.is_set():
+                    raise ModelUnavailable()

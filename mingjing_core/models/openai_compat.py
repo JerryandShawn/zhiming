@@ -10,7 +10,7 @@ from typing import Any
 from .errors import CapabilityError, ModelProtocolError
 from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec
 from .schema_flatten import flatten_schema
-from .transport import StreamingHTTP, safe_usage
+from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
 
 
 def _content(content: str | list[Part], vision: bool) -> str | list[dict[str, Any]]:
@@ -48,7 +48,13 @@ def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> list[d
         if message.tool_call_id:
             row["tool_call_id"] = message.tool_call_id
         field = caps.get("reasoning_field")
-        if field and caps.get("reasoning_replay") and message.reasoning and message.tool_cycle == active_cycle:
+        if (
+            active_cycle
+            and field
+            and caps.get("reasoning_replay")
+            and message.reasoning
+            and message.tool_cycle == active_cycle
+        ):
             row[field] = message.reasoning
         result.append(row)
     return result
@@ -58,7 +64,7 @@ def _tool_calls(calls: dict[int, dict[str, str]]) -> Iterator[StreamEvent]:
     for _, call in sorted(calls.items()):
         failed = False
         try:
-            arguments = json.loads(call["arguments"] or "{}")
+            arguments = strict_json(call["arguments"] or "{}")
             failed = not isinstance(arguments, dict) or not call["id"] or not call["name"]
         except (ValueError, TypeError):
             failed = True
@@ -67,12 +73,14 @@ def _tool_calls(calls: dict[int, dict[str, str]]) -> Iterator[StreamEvent]:
         yield StreamEvent("tool_call", ToolCall(call["id"], call["name"], arguments))
 
 
-def parse_events(chunks: Iterator[dict[str, Any]], reasoning_field: str | None) -> Iterator[StreamEvent]:
+def parse_events(
+    chunks: Iterator[dict[str, Any]], reasoning_field: str | None, *, membership: bool = False
+) -> Iterator[StreamEvent]:
     calls: dict[int, dict[str, str]] = {}
     finished = False
     for chunk in chunks:
         if chunk.get("error"):
-            raise ModelProtocolError()
+            raise stream_error(chunk["error"], membership=membership)
         if usage := safe_usage(chunk.get("usage")):
             yield StreamEvent("usage", usage)
         for choice in chunk.get("choices", []):
@@ -145,6 +153,6 @@ class OpenAICompat(StreamingHTTP):
             "/chat/completions",
             body,
             headers,
-            lambda chunks: parse_events(chunks, self.caps.get("reasoning_field")),
+            lambda chunks: parse_events(chunks, self.caps.get("reasoning_field"), membership=self.membership),
             cancel_event,
         )

@@ -47,4 +47,8 @@
 - https://platform.claude.com/docs/en/build-with-claude/streaming （Messages SSE）
 - https://api-docs.deepseek.com/guides/thinking_mode/ （reasoning 回传按能力配置；未实测）
 
-额度错误立即结束整个夜间真实调用，未重试，未访问兄弟模型。
+额度保护策略：如遇额度错误即结束整个夜间真实调用，不重试、不访问兄弟模型。本组未遇额度错误。
+
+初版图片 fixture 的 IDAT CRC 校验失败：两次原400不构成视觉能力结论，已保留在表内并计入调用数；修正后各补一次，两模型通过（同能力合计每模型2次）。`tool_choice=none` 接受请求且不调用工具，但返回仅 reasoning、没有最终文字，因此约束接受与答复可用性分列，初版判定记录见 evidence/P1/probe-initial-36-calls.json。
+
+reasoning 两种回传变体均完成；初版未留签名存在性元数据，不能证明回传必要性。注册表使用已通过的“不回传”路径，不将“可接受一次请求”说成强制协议要求。首事件延迟已记录，首个可见文字延迟未单独计时，不能把 reasoning 延迟当作首字延迟。
