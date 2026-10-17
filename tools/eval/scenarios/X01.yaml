@@ -1,0 +1,41 @@
+id: X01
+title: 评审两次revise只修订一次
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    critic_verdicts:
+    - revise
+    - revise
+turns:
+- user: 帮我理一理跳槽的考虑
+  channel: web
+  kind: chat
+  expect:
+    must_include_any:
+    - 成长
+    - 小步骤
+    must_not_include:
+    - 本轮未完成
+    events:
+    - critic.reviewed
+    - answer.revised
+    - run.completed
+    db:
+    - path: run_meta.revision_count
+      equals: 1
+scripted:
+- turn: 1
+  model:
+  - event: critic.reviewed
+  - event: answer.revised
+  - db:
+      run_meta:
+        revision_count: 1
+        status: completed
+  - event: run.completed
+  - text: 已修订。先核对岗位成长、收入与生活节奏，再选一个可以验证的小步骤。

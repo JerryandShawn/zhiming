@@ -1,0 +1,70 @@
+id: D01
+title: 决策卡含收益代价风险可逆性第一步
+category: decision
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: A公司涨薪30%但要常出差，B公司稳定但涨薪少，怎么选
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - present_options
+    must_include_all:
+    - A
+    - B
+    - 待确认
+    must_not_include:
+    - 零风险
+    - 必须选A
+    - 必须选B
+    db:
+    - kind: decision_option
+      count: 2
+    judge: 每个选项都有收益、代价、风险、可逆性和第一步，不替用户决定。
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: present_options
+      arguments:
+        options:
+        - title: A公司
+          benefit: 涨薪30%
+          cost: 经常出差
+          risk: 出差频率与强度待确认
+          reversibility: 入职前可拒绝，入职后转岗条件待确认
+          first_step: 向HR确认每月出差天数
+        - title: B公司
+          benefit: 工作稳定
+          cost: 涨薪较少
+          risk: 成长路径待确认
+          reversibility: 可先沟通岗位并保留其他选择
+          first_step: 确认项目职责与成长空间
+  - db:
+      entities:
+      - id: option-a
+        kind: decision_option
+        status: active
+        data:
+          title: A公司
+          benefit: 涨薪30%
+          cost: 经常出差
+          risk: 出差频率与强度待确认
+          reversibility: 入职前可拒绝，入职后转岗条件待确认
+          first_step: 向HR确认每月出差天数
+      - id: option-b
+        kind: decision_option
+        status: active
+        data:
+          title: B公司
+          benefit: 工作稳定
+          cost: 涨薪较少
+          risk: 成长路径待确认
+          reversibility: 可先沟通岗位并保留其他选择
+          first_step: 确认项目职责与成长空间
+  - text: A收益是涨薪30%，代价是常出差；B较稳定但涨薪少。两边都有风险，出差频率和成长路径待确认，先问清再判断。

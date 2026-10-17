@@ -1,0 +1,27 @@
+id: T03
+title: 明天重阳不是法定假日
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 明天有什么节日吗？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 10月18日|10/18
+    - 重阳
+    - 九月初九
+    - 不是法定|非法定
+    must_not_include:
+    - 重阳放假
+    - 法定假日放假
+scripted:
+- turn: 1
+  model:
+  - text: 明天10月18日是重阳节，农历九月初九。重阳不是法定假日。

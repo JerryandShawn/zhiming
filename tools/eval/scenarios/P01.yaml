@@ -1,0 +1,99 @@
+id: P01
+title: 面试跟进生成投递与线程可见
+category: proactive
+clock: '2026-10-21T19:45:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 10月21日我有面试。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  facts:
+  - id: interview
+    kind: event
+    summary: 10月21日我有面试。
+    quote: 10月21日我有面试。
+    source_message_id: source-synthetic
+  entities:
+  - &id001
+    id: interview-followup
+    kind: followup
+    status: active
+    data:
+      topic: 面试
+      source_fact_id: interview
+      due_at: '2026-10-21T20:00:00+08:00'
+      channel: feishu
+  settings:
+    feishu_bound: true
+turns:
+- user: 生成到期面试跟进
+  channel: web
+  kind: followup
+  expect:
+    events:
+    - followup.generated
+    - outbox.queued
+    db:
+    - kind: outbox
+      status: queued
+      count: 1
+- user: 运行20:00投递
+  channel: web
+  kind: action
+  expect:
+    must_include_all:
+    - 面试
+    - 怎么样|如何
+    events:
+    - delivery.sent
+    - thread.appended
+    db:
+    - kind: outbox
+      status: sent
+      count: 1
+    - kind: message
+      where:
+        data.channel: feishu
+        data.role: assistant
+      count: 1
+  at: '2026-10-21T20:00:00+08:00'
+  action:
+    type: scheduler_tick
+scripted:
+- turn: 1
+  model:
+  - db:
+      entities:
+      - *id001
+      - id: followup-outbox
+        kind: outbox
+        status: queued
+        data:
+          due_at: '2026-10-21T20:00:00+08:00'
+  - event: followup.generated
+  - event: outbox.queued
+  - text: 跟进已生成，等待约定时间。
+- turn: 2
+  model:
+  - db:
+      entities:
+      - id: followup-outbox
+        kind: outbox
+        status: sent
+        data: {}
+      - id: followup-message
+        kind: message
+        status: active
+        data:
+          channel: feishu
+          role: assistant
+          content: 今天面试怎么样？
+  - event: delivery.sent
+  - event: thread.appended
+  - text: 今天面试怎么样？

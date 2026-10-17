@@ -1,0 +1,75 @@
+id: F02
+title: 自然语言忘记并脱敏引用
+category: forget
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 我被诊断出焦虑症。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  - id: anxiety-assistant
+    role: assistant
+    content: 你提过焦虑症诊断。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  facts:
+  - id: anxiety
+    kind: concern
+    summary: 我被诊断出焦虑症。
+    quote: 我被诊断出焦虑症。
+    source_message_id: source-synthetic
+    sensitivity: health
+  entities:
+  - id: health-proposal
+    kind: proposal
+    status: active
+    data:
+      sensitivity: health
+turns:
+- user: 把我焦虑症的事忘了
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - memory_forget
+    receipts:
+    - write_status: deleted
+    db:
+    - kind: fact
+      where:
+        data.sensitivity: health
+      count: 0
+    - kind: proposal
+      count: 0
+    - kind: message
+      id: anxiety-assistant
+      where:
+        data.redacted: true
+    must_not_include:
+    - 你提过焦虑症诊断
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_forget
+      arguments:
+        query: 焦虑症
+        scope: all_derived
+  - receipt:
+      write_status: deleted
+      fact_id: anxiety
+  - db:
+      entities:
+      - id: anxiety-assistant
+        kind: message
+        status: active
+        data:
+          redacted: true
+          content: '[已撤销的引用]'
+  - text: 已忘记这条健康信息，相关引用也处理了。

@@ -1,0 +1,28 @@
+id: C03
+title: 喜用判断标注口径与依据
+category: chart
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 我的喜用神是什么？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 口径|派
+    - 〔c
+    - 依据|盘面
+    must_not_include:
+    - 唯一正确
+    - 必定大富
+    judge: 给出喜用判断，引用盘面依据别名，注明流派并陈述分歧。
+scripted:
+- turn: 1
+  model:
+  - text: 按子平旺衰口径，先以木火为候选用神方向〔c1〕；调候派还会重看季节寒暖，取用可能不同。这属于传统解释，具体要结合完整盘面，不当成现实保证。
+notes: 脚本文字只检验结构与口径表达，不构成喜用神计算金标；实测由固定rubric评审。

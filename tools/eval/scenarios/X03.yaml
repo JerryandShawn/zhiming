@@ -1,0 +1,99 @@
+id: X03
+title: 崩溃恢复不重复写记忆不重复投递
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    crash_after: tool_commit
+    operation_id: crash-replay-synthetic
+turns:
+- user: 请记住我下周三面试，结束后提醒我复盘
+  channel: web
+  kind: chat
+  expect:
+    events:
+    - run.step_committed
+    - run.crashed
+    db:
+    - kind: fact
+      count: 1
+    - kind: outbox
+      status: queued
+      count: 1
+- user: 恢复该轮运行
+  channel: web
+  kind: action
+  expect:
+    events:
+    - run.resumed
+    - delivery.sent
+    - run.completed
+    db:
+    - kind: fact
+      count: 1
+    - kind: outbox
+      status: sent
+      count: 1
+    - kind: message
+      where:
+        data.channel: feishu
+      count: 1
+  action:
+    type: resume_run
+    operation_id: crash-replay-synthetic
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我下周三面试
+        summary: 10月21日面试
+        kind: event
+        event_at: '2026-10-21'
+  - receipt:
+      write_status: saved
+      fact_id: crash-fact
+  - db:
+      entities:
+      - id: crash-fact
+        kind: fact
+        status: active
+        data:
+          kind: event
+      - id: crash-outbox
+        kind: outbox
+        status: queued
+        data: {}
+  - event: run.step_committed
+  - event: run.crashed
+  - text: 已完成的步骤已持久保存。
+- turn: 2
+  model:
+  - db:
+      run_meta:
+        resumed: true
+      entities:
+      - id: crash-fact
+        kind: fact
+        status: active
+        data:
+          kind: event
+      - id: crash-outbox
+        kind: outbox
+        status: sent
+        data: {}
+      - id: crash-message
+        kind: message
+        status: active
+        data:
+          channel: feishu
+  - event: run.resumed
+  - event: delivery.sent
+  - event: run.completed
+  - text: 已从记录恢复，没有重复保存或重复发送。

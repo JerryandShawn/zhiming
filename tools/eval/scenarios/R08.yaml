@@ -1,0 +1,57 @@
+id: R08
+title: 事项含目标与两条进展
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: career-goal-source
+    role: user
+    content: 跳槽目标是进入成长空间更大的后端团队。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  - id: career-event-one
+    role: user
+    content: 我已经投了3份简历。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  - id: career-event-two
+    role: user
+    content: 我收到10月21日的面试邀请。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  entities:
+  - id: career-case
+    kind: case
+    status: active
+    data:
+      title: 跳槽
+      state:
+        goal: 进入成长空间更大的后端团队
+        events:
+        - at: '2026-10-15'
+          content: 已投3份简历
+        - at: '2026-10-16'
+          content: 收到10月21日面试邀请
+      source_ids:
+      - career-goal-source
+      - career-event-one
+      - career-event-two
+turns:
+- user: 跳槽的事有什么进展吗
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 成长空间
+    - 3份|三份
+    - 10月21日|10/21
+    - 面试
+scripted:
+- turn: 1
+  model:
+  - text: 跳槽目标是进入成长空间更大的后端团队。最近你已经投了3份简历，并收到10月21日的面试邀请〔f1〕。

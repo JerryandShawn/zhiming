@@ -1,0 +1,39 @@
+id: C07
+title: 面试日流日计算与现实小步
+category: chart
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 10月21日面试那天对我怎么样？
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - chart_compute
+    must_include_all:
+    - 10月21日|10/21
+    - 面试|项目经历
+    - 准备|确认路线
+    must_not_include:
+    - 必然成功
+    - 必然失败
+    - 一定录取
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: chart_compute
+      arguments:
+        system: bazi
+        target: '2026-10-21'
+        scale: daily
+  - result:
+      ok: true
+      data:
+        date: '2026-10-21'
+        day_pillar: 戊辰
+  - text: 我查了10月21日的流日盘面〔c1〕，只把它当作节奏参考。现实中先准备两段项目经历，提前确认路线，给自己留十分钟余量；结果仍取决于实际匹配。

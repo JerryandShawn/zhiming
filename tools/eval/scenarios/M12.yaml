@@ -1,0 +1,32 @@
+id: M12
+title: 无回执的保存声称须附注告警
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    model_response: 我已经记住了。
+    suppress_memory_receipts: true
+turns:
+- user: 记住我下周三面试
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 还没有真正保存
+    - 回执
+    events:
+    - warning.unsupported_memory_claim
+    db:
+    - kind: fact
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - event: warning.unsupported_memory_claim
+  - db:
+      entities: []
+  - text: 我已经记住了。（这条还没有真正保存，请以记忆回执为准。）

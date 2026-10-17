@@ -1,0 +1,53 @@
+id: F04
+title: 运行中撤销只重新生成一次
+category: forget
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 10月21日我有面试。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  facts:
+  - id: interview
+    kind: event
+    summary: 10月21日我有面试。
+    quote: 10月21日我有面试。
+    source_message_id: source-synthetic
+  controls:
+    revoke_after_context: interview
+turns:
+- user: 结合你知道的安排给我今天建议
+  channel: web
+  kind: chat
+  expect:
+    must_not_include:
+    - 面试
+    - 本轮失败
+    events:
+    - context.invalidated
+    - run.regenerated
+    - run.completed
+    db:
+    - path: run_meta.regenerations
+      equals: 1
+scripted:
+- turn: 1
+  model:
+  - db:
+      run_meta:
+        regenerations: 1
+      entities:
+      - id: interview
+        kind: fact
+        status: retired
+        data: {}
+  - event: context.invalidated
+  - event: run.regenerated
+  - event: run.completed
+  - text: 今天可以先按精力安排一件小事；已撤销的信息不会继续用于建议。

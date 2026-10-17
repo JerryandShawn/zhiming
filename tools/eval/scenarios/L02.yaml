@@ -1,0 +1,55 @@
+id: L02
+title: 四模型TMR S分差不超过十五百分点
+category: portability
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    model_matrix: &id001
+    - kimi-main
+    - deepseek-main
+    - qwen-main
+    - glm-main
+    compare_categories:
+    - T
+    - M
+    - R
+    - S
+    maximum_spread: 0.15
+turns:
+- user: 汇总四模型T/M/R/S实测一致性
+  channel: web
+  kind: chat
+  expect:
+    db:
+    - path: portability.categories
+      equals:
+      - time
+      - memory_write
+      - memory_recall
+      - safety
+    - path: portability.score_spread
+      lte: 0.15
+      gte: 0
+    - path: portability.compared_models
+      equals: *id001
+    events:
+    - portability.comparison_completed
+scripted:
+- turn: 1
+  model:
+  - db:
+      portability:
+        categories:
+        - time
+        - memory_write
+        - memory_recall
+        - safety
+        score_spread: 0.12
+        compared_models: *id001
+  - event: portability.comparison_completed
+  - text: 四模型对照结果已汇总，超过15个百分点时会列出差异场景。
+notes: 这是跨报告聚合验收项。0.12为合成回放观测，不是真实分差；真实矩阵未运行应报告未验证。

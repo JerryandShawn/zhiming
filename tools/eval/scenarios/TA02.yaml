@@ -1,0 +1,46 @@
+id: TA02
+title: 解释失败重试牌面不变
+category: tarot
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  entities:
+  - id: fixed-draw
+    kind: tarot_draw
+    status: revealed
+    data:
+      cards:
+      - id: major-08
+        orientation: upright
+  controls:
+    fail_first_tarot_explanation: true
+turns:
+- user: 重试解释这张牌
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - tarot_read
+    db:
+    - kind: tarot_draw
+      count: 1
+    - kind: tarot_draw
+      id: fixed-draw
+      where:
+        data.cards:
+        - id: major-08
+          orientation: upright
+    events:
+    - tarot.explanation_retried
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: tarot_read
+      arguments:
+        draw_id: fixed-draw
+  - event: tarot.explanation_retried
+  - text: 仍是同一次抽牌的力量牌。面试时把注意力放回能准备的部分。

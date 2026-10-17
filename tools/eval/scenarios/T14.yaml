@@ -1,0 +1,37 @@
+id: T14
+title: 临近面试安排召回
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 10月21日我有面试。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  facts:
+  - id: interview
+    kind: event
+    summary: 10月21日我有面试。
+    quote: 10月21日我有面试。
+    source_message_id: source-synthetic
+    event_at: '2026-10-21'
+turns:
+- user: 我这周有什么安排？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 10月21日|10/21
+    - 周三|星期三
+    - 面试
+scripted:
+- turn: 1
+  model:
+  - text: 你记下的近期安排是10月21日周三面试〔f1〕。今天已是周六，这场面试属于下周，我先替你列出来。
+notes: 原场景在周六问本周却期望下周三；保留原问法并要求明确下周口径。

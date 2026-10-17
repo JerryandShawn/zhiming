@@ -1,0 +1,235 @@
+id: R01
+title: 同日二十轮前的约束
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: constraint-source
+    role: user
+    content: 我不能上夜班。
+    at: '2026-10-17T08:00:00+08:00'
+    channel: web
+  - id: old-user-1
+    role: user
+    content: 今天记录第1个普通工作片段。
+    at: '2026-10-17T09:01:00+08:00'
+    channel: web
+  - id: old-assistant-1
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:01:00+08:00'
+    channel: web
+  - id: old-user-2
+    role: user
+    content: 今天记录第2个普通工作片段。
+    at: '2026-10-17T09:02:00+08:00'
+    channel: web
+  - id: old-assistant-2
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:02:00+08:00'
+    channel: web
+  - id: old-user-3
+    role: user
+    content: 今天记录第3个普通工作片段。
+    at: '2026-10-17T09:03:00+08:00'
+    channel: web
+  - id: old-assistant-3
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:03:00+08:00'
+    channel: web
+  - id: old-user-4
+    role: user
+    content: 今天记录第4个普通工作片段。
+    at: '2026-10-17T09:04:00+08:00'
+    channel: web
+  - id: old-assistant-4
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:04:00+08:00'
+    channel: web
+  - id: old-user-5
+    role: user
+    content: 今天记录第5个普通工作片段。
+    at: '2026-10-17T09:05:00+08:00'
+    channel: web
+  - id: old-assistant-5
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:05:00+08:00'
+    channel: web
+  - id: old-user-6
+    role: user
+    content: 今天记录第6个普通工作片段。
+    at: '2026-10-17T09:06:00+08:00'
+    channel: web
+  - id: old-assistant-6
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:06:00+08:00'
+    channel: web
+  - id: old-user-7
+    role: user
+    content: 今天记录第7个普通工作片段。
+    at: '2026-10-17T09:07:00+08:00'
+    channel: web
+  - id: old-assistant-7
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:07:00+08:00'
+    channel: web
+  - id: old-user-8
+    role: user
+    content: 今天记录第8个普通工作片段。
+    at: '2026-10-17T09:08:00+08:00'
+    channel: web
+  - id: old-assistant-8
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:08:00+08:00'
+    channel: web
+  - id: old-user-9
+    role: user
+    content: 今天记录第9个普通工作片段。
+    at: '2026-10-17T09:09:00+08:00'
+    channel: web
+  - id: old-assistant-9
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:09:00+08:00'
+    channel: web
+  - id: old-user-10
+    role: user
+    content: 今天记录第10个普通工作片段。
+    at: '2026-10-17T09:10:00+08:00'
+    channel: web
+  - id: old-assistant-10
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:10:00+08:00'
+    channel: web
+  - id: old-user-11
+    role: user
+    content: 今天记录第11个普通工作片段。
+    at: '2026-10-17T09:11:00+08:00'
+    channel: web
+  - id: old-assistant-11
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:11:00+08:00'
+    channel: web
+  - id: old-user-12
+    role: user
+    content: 今天记录第12个普通工作片段。
+    at: '2026-10-17T09:12:00+08:00'
+    channel: web
+  - id: old-assistant-12
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:12:00+08:00'
+    channel: web
+  - id: old-user-13
+    role: user
+    content: 今天记录第13个普通工作片段。
+    at: '2026-10-17T09:13:00+08:00'
+    channel: web
+  - id: old-assistant-13
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:13:00+08:00'
+    channel: web
+  - id: old-user-14
+    role: user
+    content: 今天记录第14个普通工作片段。
+    at: '2026-10-17T09:14:00+08:00'
+    channel: web
+  - id: old-assistant-14
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:14:00+08:00'
+    channel: web
+  - id: old-user-15
+    role: user
+    content: 今天记录第15个普通工作片段。
+    at: '2026-10-17T09:15:00+08:00'
+    channel: web
+  - id: old-assistant-15
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:15:00+08:00'
+    channel: web
+  - id: old-user-16
+    role: user
+    content: 今天记录第16个普通工作片段。
+    at: '2026-10-17T09:16:00+08:00'
+    channel: web
+  - id: old-assistant-16
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:16:00+08:00'
+    channel: web
+  - id: old-user-17
+    role: user
+    content: 今天记录第17个普通工作片段。
+    at: '2026-10-17T09:17:00+08:00'
+    channel: web
+  - id: old-assistant-17
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:17:00+08:00'
+    channel: web
+  - id: old-user-18
+    role: user
+    content: 今天记录第18个普通工作片段。
+    at: '2026-10-17T09:18:00+08:00'
+    channel: web
+  - id: old-assistant-18
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:18:00+08:00'
+    channel: web
+  - id: old-user-19
+    role: user
+    content: 今天记录第19个普通工作片段。
+    at: '2026-10-17T09:19:00+08:00'
+    channel: web
+  - id: old-assistant-19
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:19:00+08:00'
+    channel: web
+  - id: old-user-20
+    role: user
+    content: 今天记录第20个普通工作片段。
+    at: '2026-10-17T09:20:00+08:00'
+    channel: web
+  - id: old-assistant-20
+    role: assistant
+    content: 好的，接着说。
+    at: '2026-10-17T09:20:00+08:00'
+    channel: web
+  facts:
+  - id: no-night
+    kind: constraint
+    summary: 我不能上夜班。
+    quote: 我不能上夜班。
+    source_message_id: constraint-source
+turns:
+- user: 有个新岗位要倒班，你觉得呢？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 不能上夜班
+    - 〔f
+    judge: 主动使用既有约束且给事实引用。
+scripted:
+- turn: 1
+  model:
+  - text: 你说过不能上夜班〔f1〕，先确认这份倒班是否包含夜班；若包含，就不符合你的硬约束。

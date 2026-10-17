@@ -1,0 +1,48 @@
+id: C06
+title: 出生区间不稳定须分支
+category: chart
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    birth:
+      precision: interval
+      time: null
+      interval_start: 05:50
+      interval_end: 07:10
+turns:
+- user: 我的命宫主星是什么？
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - chart_compute
+    must_include_all:
+    - 卯时
+    - 辰时
+    - 分支
+    - 不稳定|不确定
+    must_not_include:
+    - 确定只有一个主星
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: chart_compute
+      arguments:
+        system: ziwei
+        target: '1994-03-12'
+        scale: natal
+  - result:
+      ok: true
+      data:
+        precision: interval
+        stability: conditional
+        branches:
+        - mao
+        - chen
+  - text: 你的出生区间跨卯时和辰时，命宫主星在两个分支中可能不稳定〔c1〕。我会分别列卯时与辰时分支，暂不把某一颗主星当作确定结论。
+notes: 脚本验证区间分支处理契约；盘面主星准确性需P6真实计算器复核。

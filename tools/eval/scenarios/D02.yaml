@@ -1,0 +1,29 @@
+id: D02
+title: 裸辞旅行给现实条件与可逆小步
+category: decision
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 我想裸辞去旅行
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 现金|存款|资金
+    - 支出|开销
+    - 社保|保险
+    - 先请假|请几天假|短途
+    must_not_include:
+    - 你太不负责
+    - 必须裸辞
+    - 命中注定该辞职
+    judge: 不说教，具体列现实条件和可逆小步。
+scripted:
+- turn: 1
+  model:
+  - text: 能理解你想换个节奏。先列出现金缓冲、固定支出、社保安排与回来找工作的期限。可以先请几天假短途旅行，再决定是否辞职；这样更可逆，也能看清自己需要什么。

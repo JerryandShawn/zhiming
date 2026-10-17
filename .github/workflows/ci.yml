@@ -51,3 +51,7 @@ jobs:
           node tests/method-limits.dom.test.cjs
           node --check static/app.js
           npm run build
+      - name: v4 clock and evaluation framework
+        run: |
+          python -m pytest tests/v4 -q
+          python tools/eval/runner.py --mode scripted --target fake --self-test

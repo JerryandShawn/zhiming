@@ -1,0 +1,45 @@
+id: X02
+title: 两次5xx后降级并记元数据
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    primary_errors:
+    - 503
+    - 503
+    primary_model: kimi-main
+    fallback_model: deepseek-main
+turns:
+- user: 今天先做哪件事
+  channel: web
+  kind: chat
+  expect:
+    must_include_any:
+    - 先选
+    - 半小时
+    events:
+    - model.error
+    - model.error
+    - model.fallback
+    db:
+    - path: run_meta.fallbacks
+      equals:
+      - deepseek-main
+scripted:
+- turn: 1
+  model:
+  - event: model.error
+  - event: model.error
+  - event: model.fallback
+  - db:
+      run_meta:
+        fallbacks:
+        - deepseek-main
+  - meta:
+      model: deepseek-main
+      model_calls: 3
+  - text: 先选一件最重要、能在半小时内推进的事。

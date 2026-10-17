@@ -1,0 +1,99 @@
+id: F03
+title: 删除来源清理所有派生层
+category: forget
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: derived-source
+    role: user
+    content: 我下周有个面试。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  entities:
+  - id: derived-fact
+    kind: fact
+    status: active
+    data:
+      source_ids:
+      - derived-source
+  - id: derived-note
+    kind: note
+    status: active
+    data:
+      source_ids:
+      - derived-source
+  - id: derived-episode
+    kind: episode
+    status: active
+    data:
+      source_ids:
+      - derived-source
+  - id: derived-thread_summary
+    kind: thread_summary
+    status: active
+    data:
+      source_ids:
+      - derived-source
+  - id: derived-run_event
+    kind: run_event
+    status: active
+    data:
+      source_ids:
+      - derived-source
+  - id: derived-run_step
+    kind: run_step
+    status: active
+    data:
+      source_ids:
+      - derived-source
+  - id: derived-embedding
+    kind: embedding
+    status: active
+    data:
+      source_ids:
+      - derived-source
+turns:
+- user: 删除这条来源消息
+  channel: web
+  kind: action
+  expect:
+    db:
+    - kind: message
+      id: derived-source
+      status: deleted
+    - kind: fact
+      count: 0
+    - kind: note
+      count: 0
+    - kind: episode
+      count: 0
+    - kind: thread_summary
+      count: 0
+    - kind: run_event
+      count: 0
+    - kind: run_step
+      count: 0
+    - kind: embedding
+      count: 0
+    events:
+    - source.deleted
+    - derived.invalidated
+  action:
+    type: source_delete
+    message_id: derived-source
+scripted:
+- turn: 1
+  model:
+  - db:
+      entities:
+      - id: derived-source
+        kind: message
+        status: deleted
+        data: {}
+  - event: source.deleted
+  - event: derived.invalidated
+  - text: 来源消息与它派生的记忆和运行内容已清理。

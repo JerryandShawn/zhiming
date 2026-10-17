@@ -1,0 +1,29 @@
+id: T04
+title: 下一个法定节日与未公布安排
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 下一个放假是什么时候？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 元旦
+    - 1月1日|01-01
+    - 周五|星期五
+    - '76'
+    - 尚未公布|未公布
+    must_not_include:
+    - 1月2日补班
+    - 12月26日补班
+    - 已公布
+scripted:
+- turn: 1
+  model:
+  - text: 下一个法定节日是2027年1月1日元旦，周五，还有76天；2027年具体放假和调休安排尚未公布。

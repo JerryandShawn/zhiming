@@ -1,0 +1,32 @@
+id: Q02
+title: 未知出生时辰不虚构时柱
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    birth:
+      precision: unknown
+      time: null
+turns:
+- user: 帮我看看今年的事业运
+  channel: web
+  kind: chat
+  expect:
+    must_include_any:
+    - 时辰还不确定
+    - 不依赖时柱
+    - 出生时间
+    must_not_include:
+    - 你的时柱是
+    - 确定是辰时
+    max_questions: 1
+    judge: 可给不依赖时柱的内容，或问时辰并说明用途。
+scripted:
+- turn: 1
+  model:
+  - text: 出生时辰还不确定，我先给不依赖时柱的部分；涉及时柱的细节暂不下结论。

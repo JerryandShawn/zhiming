@@ -1,0 +1,36 @@
+id: X06
+title: 否定零风险只告警仍交付
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    legacy_lint_rule: zero_risk
+    lint_severity: warning
+turns:
+- user: 这份工作是零风险吗
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 没有零风险
+    must_not_include:
+    - 本轮未完成
+    events:
+    - lint.warning
+    - run.completed
+    db:
+    - path: run_meta.status
+      equals: completed
+scripted:
+- turn: 1
+  model:
+  - event: lint.warning
+  - db:
+      run_meta:
+        status: completed
+  - event: run.completed
+  - text: 没有零风险的工作，先核对试用期、加班和退出成本。

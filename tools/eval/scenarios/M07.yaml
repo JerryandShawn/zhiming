@@ -1,0 +1,45 @@
+id: M07
+title: 存款信息先提案
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 我存款大概有23万
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: pending_confirmation
+    db:
+    - kind: proposal
+      where:
+        data.sensitivity: money
+      count: 1
+    - kind: fact
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我存款大概有23万
+        summary: 自述存款约23万元
+        kind: background
+        sensitivity: money
+  - receipt:
+      write_status: pending_confirmation
+      proposal_id: money-proposal
+  - db:
+      entities:
+      - id: money-proposal
+        kind: proposal
+        status: active
+        data:
+          sensitivity: money
+  - text: 了解，这可以作为你考虑跳槽时的缓冲信息。这是金钱隐私，要记住吗？

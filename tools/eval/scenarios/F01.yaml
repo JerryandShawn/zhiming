@@ -1,0 +1,101 @@
+id: F01
+title: 撤销事实传播到跟进画像搜索向量
+category: forget
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 10月21日我有面试。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  facts:
+  - id: interview
+    kind: event
+    summary: 10月21日我有面试。
+    quote: 10月21日我有面试。
+    source_message_id: source-synthetic
+    event_at: '2026-10-21'
+  entities:
+  - id: interview-followup
+    kind: followup
+    status: active
+    data:
+      source_fact_id: interview
+  - id: interview-profile
+    kind: profile_item
+    status: active
+    data:
+      source_fact_id: interview
+  - id: interview-search
+    kind: search_hit
+    status: active
+    data:
+      source_fact_id: interview
+  - id: interview-vector
+    kind: embedding
+    status: active
+    data:
+      source_fact_id: interview
+turns:
+- user: 撤销这条面试记忆
+  channel: web
+  kind: action
+  expect:
+    db:
+    - kind: fact
+      id: interview
+      status: retired
+    - kind: followup
+      id: interview-followup
+      status: cancelled
+    - kind: profile_item
+      count: 0
+    - kind: search_hit
+      count: 0
+    - kind: embedding
+      count: 0
+  action:
+    type: fact_revoke
+    fact_id: interview
+- user: 我接下来有什么安排？
+  channel: web
+  kind: chat
+  expect:
+    must_not_include:
+    - 面试
+    - 10月21日
+    db:
+    - kind: search_hit
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - receipt:
+      write_status: deleted
+      fact_id: interview
+  - db:
+      entities:
+      - id: interview
+        kind: fact
+        status: retired
+        data:
+          kind: event
+      - id: interview-followup
+        kind: followup
+        status: cancelled
+        data:
+          source_fact_id: interview
+  - text: 这条记忆已撤销，相关跟进也关闭了。
+- turn: 2
+  model:
+  - tool_call:
+      name: calendar_lookup
+      arguments:
+        start: '2026-10-17'
+        end: '2026-10-24'
+  - text: 目前没有保存的个人安排，可以按你现在告诉我的内容来聊。

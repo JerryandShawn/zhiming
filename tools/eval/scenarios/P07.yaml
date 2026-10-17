@@ -1,0 +1,25 @@
+id: P07
+title: 调休日晨报提醒上班
+category: proactive
+clock: '2026-10-10T07:00:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 生成今天晨报
+  channel: web
+  kind: brief
+  expect:
+    must_include_all:
+    - 10月10日|10/10
+    - 调休
+    - 上班|补班
+    must_not_include:
+    - 今天休息
+scripted:
+- turn: 1
+  model:
+  - text: 早安，今天是10月10日周六，也是国庆调休上班日，记得按上班时间安排。

@@ -1,0 +1,30 @@
+id: M04
+title: 明确别记优先
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 我不吃香菜，这个别记
+  channel: web
+  kind: chat
+  expect:
+    must_include_any:
+    - 不记
+    - 不保存
+    db:
+    - kind: fact
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - receipt:
+      write_status: stopped
+      reason: 用户明确拒绝保存
+  - db:
+      entities: []
+  - text: 好，这条不记。

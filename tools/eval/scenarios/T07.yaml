@@ -1,0 +1,25 @@
+id: T07
+title: 国庆剩余天数含今天
+category: time
+clock: '2026-10-05T15:00:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 假期还剩几天？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 10月7日|10/7
+    - 3天
+    - 含今天
+    - 10月10日|10/10
+    - 补班|上班
+scripted:
+- turn: 1
+  model:
+  - text: 国庆假期到10月7日周三结束，含今天10月5日还剩3天；10月10日周六要补班。
