@@ -1,0 +1,15 @@
+{
+  "messages": 10000,
+  "warmup": 10,
+  "samples": 100,
+  "p50_ms": 3.714,
+  "p95_ms": 4.155,
+  "max_ms": 4.896,
+  "latest_id": "p2_perf_09999",
+  "retained_early_constraint": true,
+  "python": "3.11.16",
+  "platform": "Windows",
+  "postgres": "15.19",
+  "model_calls": 0,
+  "method": "perf_counter around complete MemoryService.snapshot, real PG15, no patches"
+}

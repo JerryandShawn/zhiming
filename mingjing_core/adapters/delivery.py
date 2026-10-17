@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import uuid
 
 from psycopg import sql
 from psycopg.types.json import Jsonb
+from mingjing_core.timekit.clock import get_clock
 from mingjing_core.domain.contracts import ScopeError, RevisionConflict, LeaseConflict, EvidenceError
 from .channels.hermes import validated_payload
 from .tarot import fingerprint, IdempotencyConflict
@@ -59,7 +60,7 @@ class OutboxService:
         if not all(isinstance(v,str) and v.strip() and len(v)<=250 for v in (run_id,business_id,channel,target)):
             raise ValueError('投递标识或目标无效')
         if isinstance(due,str):due=datetime.fromisoformat(due)
-        due=due or datetime.now(timezone.utc)
+        due=due or get_clock().now()
         if due.tzinfo is None:raise ValueError('投递时间须含时区')
         with self.repo.transaction(owner) as conn:
             run=self.repo.fetch_run(owner,run_id)
@@ -90,7 +91,7 @@ class OutboxService:
             return self._view(self._row(conn,owner,ident))
 
     def claim_delivery(self,*,owner,outbox_id,now=None):
-        now=now or datetime.now(timezone.utc)
+        now=now or get_clock().now()
         failure=None;claim=None
         with self.repo.transaction(owner) as conn:
             row=self._row(conn,owner,outbox_id,True)
@@ -128,7 +129,7 @@ class OutboxService:
             return self._view(self._row(conn,owner,outbox_id))
 
     def recover_claims(self,owner,now=None):
-        now=now or datetime.now(timezone.utc)
+        now=now or get_clock().now()
         with self.repo.transaction(owner) as conn:
             cursor=conn.execute(sql.SQL("UPDATE {} SET status='uncertain',error='DELIVERY_UNCERTAIN：worker中断，须对账',updated_at=now() WHERE owner=%s AND status='sending' AND lease_until<%s").format(self.repo.table('delivery_outbox')), (owner,now))
             return cursor.rowcount
@@ -140,7 +141,7 @@ class OutboxService:
             row=self._row(conn,owner,outbox_id,True)
             if row['status'] not in ('uncertain','sending'):raise LeaseConflict('只有送达不明记录需要对账')
             status='sent' if delivered else 'rejected'
-            proof={'delivered':delivered,'evidence_ref':evidence_ref[:500],'message_id':message_id,'verified_at':datetime.now(timezone.utc).isoformat()}
+            proof={'delivered':delivered,'evidence_ref':evidence_ref[:500],'message_id':message_id,'verified_at':get_clock().now().isoformat()}
             conn.execute(sql.SQL("UPDATE {} SET status=%s,receipt=%s,error='',reconciliation=%s,claim_token=NULL,lease_until=NULL,updated_at=now() WHERE id=%s").format(self.repo.table('delivery_outbox')), (status,message_id or '',Jsonb(proof),outbox_id))
             return self._view(self._row(conn,owner,outbox_id))
 

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from datetime import datetime, timezone
 import hashlib
 import json
 import secrets
@@ -10,6 +9,7 @@ import uuid
 
 from psycopg import sql
 from psycopg.types.json import Jsonb
+from mingjing_core.timekit.clock import get_clock
 from hermes.tarot_deck import CARDS, CARD_BY_ID, SPREADS, DECK_VERSION, MEANING_VERSION, METHOD_VERSION, card
 
 
@@ -29,7 +29,7 @@ def fingerprint(value):
 
 
 def _stamp():
-    return datetime.now(timezone.utc).isoformat()
+    return get_clock().now().isoformat()
 
 
 class TarotService:

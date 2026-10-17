@@ -7,7 +7,7 @@ from pathlib import Path
 from psycopg import sql
 
 from mingjing_core.domain.contracts import ScopeError, EvidenceError
-from mingjing_core.domain.report_schedules import SHANGHAI, schedule_on_day
+from mingjing_core.domain.report_schedules import SHANGHAI as SHANGHAI, schedule_on_day, report_period_bounds
 from .hermes import validated_payload
 
 KINDS = {"daily": "晨报", "weekly": "周报", "monthly": "月报", "quarterly": "季报"}
@@ -59,8 +59,9 @@ class CoreReportAdapter:
                 retried=repo.prepare_retry(binding['owner'],old['id'])
                 if retried['purge_checkpoint']:
                     self.service.runtime.purge(old['id'],retried['run']['retry_epoch']-1)
+        period=report_period_bounds(kind,parsed)
         message = (
-            f"请生成{day}的{KINDS[kind]}。这是定期报告：读取最新有效事实、事项与已确认反馈；"
+            f"请生成{day}的{KINDS[kind]}，覆盖期间{period['start']}至{period['end']}。这是定期报告：读取最新有效事实、事项与已确认反馈；"
             "只调用本期必要体系，不能随机新增塔罗。逐日差异必须实际计算，否则说明未计算；"
             "先白话重点，再现实安排，专业依据置于最后。旧预测不能当成已经发生的用户经历。"
         )
@@ -68,10 +69,10 @@ class CoreReportAdapter:
             owner=binding["owner"], subject=binding["subject"], message=message,
             conversation_id="report:" + str(external_id), case_ids=case_ids,
             request_id=operation, mode="scheduled_report", depth=depth, emit=emit,
-            selection={'report_schedule_kind':kind,'report_schedule_revision':policy['revision']},
+            selection={'report_schedule_kind':kind,'report_schedule_revision':policy['revision'],'date':day,'period':period},
         )
         validated_payload(result)
-        manifest={"kind":kind,"date":day,"business_id":business,"run_id":result['meta']['core_run']['run_id'],
+        manifest={"kind":kind,"date":day,"period":period,"business_id":business,"run_id":result['meta']['core_run']['run_id'],
                   "prepare_at":schedule['prepare_at'].isoformat(),"deliver_at":schedule['deliver_at'].isoformat(),"timezone":schedule['timezone']}
         repo=self.service.repo
         with repo.transaction(binding['owner']):

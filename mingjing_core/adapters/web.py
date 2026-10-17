@@ -22,6 +22,7 @@ from ..application.consultation import ConsultationService, today
 from ..domain.consultation import CoreError, MissingInput
 from ..domain.json_values import ensure_finite_json
 from ..domain.contracts import ScopeError, RevisionConflict, EvidenceError, LeaseConflict, BudgetExceeded
+from ..memory.history import history_window
 from .tarot import IdempotencyConflict
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -468,30 +469,9 @@ def create_app(service=None):
 
     @app.get('/api/history')
     async def history(req:Request,session:str='shared',limit:int=60,before:str='',q:str='',subject_id:str='self'):
-        svc=core(req);owner=auth(req);rows=[]
-        svc.repo.assert_scope(owner,subject_id)
-        for message in svc.repo.list(owner,'message'):
-            if message.get('subject_id')!=subject_id: continue
-            if session not in ('shared','') and message.get('conversation_id')!=session: continue
-            if message.get('status') in ('deleted','hidden') or not message.get('content'): continue
-            rows.append(dict(message,source=message.get('channel','web'),at=message.get('at',message['created_at']),turn_id=message.get('source_id',message['id'])))
-        with svc.repo.transaction(owner) as conn:
-            runs=conn.execute(sql.SQL("SELECT * FROM {} WHERE owner=%s AND subject=%s ORDER BY created_at").format(svc.repo.table('core_runs')),(owner,subject_id)).fetchall()
-        for run in runs:
-            if session not in ('shared','') and run['request'].get('conversation_id')!=session: continue
-            for row in rows:
-                if row['role']=='user' and (row['turn_id']==run['operation_id'] or row.get('id')==run['request'].get('source_message_id')):
-                    row.update(turn_id=run['operation_id'],run_id=run['id'],status=run['status'],meta={'meta':{'core_run':{'run_id':run['id'],'operation_id':run['operation_id']}},'error':run['error']})
-            if run['status']!='succeeded': continue
-            rows.append({'role':'assistant','content':run['result']['answer'],'at':run['updated_at'].isoformat(),'turn_id':run['operation_id'],'source':'web','meta':run['result']})
-        indexed=[]
-        for row in rows:
-            sort_key=history_sort_key(row)
-            row['cursor']=sort_key[0].isoformat(timespec='microseconds')+'|'+str(row['turn_id'])+'|'+row['role']
-            indexed.append((sort_key,row))
-        indexed.sort(key=lambda item:item[0])
+        svc=core(req);owner=auth(req)
         boundary=history_before_key(before) if before else None
-        return [row for sort_key,row in indexed if (boundary is None or sort_key<boundary) and (not q or q.lower() in row['content'].lower())][-max(1,min(limit,500)):]
+        return history_window(svc.repo,owner,subject_id,session,limit,boundary,q)
 
     @app.get('/api/feishu_history')
     async def feishu_history(req:Request): return [m for m in core(req).repo.list(auth(req),'message') if m.get('channel')=='feishu'][-100:]
