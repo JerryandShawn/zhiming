@@ -8,7 +8,7 @@ from psycopg.types.json import Jsonb
 from mingjing_core.domain.contracts import EvidenceError, Fact, RevisionConflict, ScopeError, SourceRef
 from mingjing_core.repositories.postgres import fingerprint, new_id
 from mingjing_core.repositories.foundation import thread_history
-from mingjing_core.memory.policy import clause, has_optout, hypothetical, third_party
+from mingjing_core.memory.policy import authorization_clause, has_optout, hypothetical, mask_quoted, third_party
 from mingjing_core.memory.projections import redact_ranges
 from mingjing_core.memory.threads import message_fields, project_sources, record_assistant
 from mingjing_core.timekit.clock import get_clock
@@ -37,10 +37,7 @@ def fact_kind(kind='preference',category=None):
 def explicit_save_authorization(text):
     """A current save instruction grants consent; references to saved state do not."""
     if has_optout(text):return False
-    command_text=text
-    for opening,closing in (('“','”'),('「','」'),('『','』'),('"','"'),("'","'"),('`','`')):
-        command_text=re.sub(re.escape(opening)+r'[^'+re.escape(closing)+r'\n]*'+re.escape(closing),
-                            lambda match:' '*len(match.group()),command_text)
+    command_text=mask_quoted(text)
     for match in SAVE_AUTH.finditer(command_text):
         start=max(command_text.rfind(mark,0,match.start()) for mark in ('。','！','!','？','?','；',';','\n'))+1
         ends=[command_text.find(mark,match.end()) for mark in ('。','！','!','？','?','；',';','\n')]
@@ -127,7 +124,7 @@ class MemoryService:
             if auth['subject_id']!=subject or auth.get('message_id')!=source['id'] or auth.get('source_revision')!=source['revision'] or kind not in auth.get('kinds',[]) or auth.get('case_id') not in (None,case_id) or not auth.get('scope_start',0)<=start<end<=auth.get('scope_end',0):raise EvidenceError('Save authorization does not cover this source/type/person/range')
             return True
         # Direct explicit saving in this very source is still checked by program, not model flags.
-        return explicit_save_authorization(clause(text,start,end,comma=False))
+        return explicit_save_authorization(authorization_clause(text,start,end))
 
     def current_source_context(self,owner,subject,message_id,proposals,case_ids=None):
         """Quote current user context without making, confirming or storing facts."""

@@ -3,7 +3,7 @@
 import pytest
 
 from mingjing_core.application.memory import MemoryService, explicit_save_authorization
-from mingjing_core.memory.policy import has_optout, third_party
+from mingjing_core.memory.policy import has_optout, hypothetical, third_party
 
 
 @pytest.mark.parametrize(
@@ -81,3 +81,66 @@ def test_real_memory_writer_preserves_scope_and_sensitive_policy(p2_repo, text, 
     memory = MemoryService(p2_repo)
     source = memory.receive("alice", content=text, source_id="policy")
     assert memory.save_fact("alice", "self", source["id"], quote, kind)["write_status"] == expected
+
+
+def test_complete_declarative_quote_does_not_absorb_question_from_next_sentence(p2_repo):
+    from mingjing_core.application.memory import MemoryService
+
+    memory = MemoryService(p2_repo)
+    message = memory.receive(
+        "alice",
+        content="A是白天课程，B是夜间课程，两者费用与退出条件未知。应该怎么选？不要排盘。",
+        source_id="next-question",
+    )
+    receipt = memory.save_fact(
+        "alice", "self", message["id"], "A是白天课程，B是夜间课程，两者费用与退出条件未知。", "background"
+    )
+    assert receipt["write_status"] == "pending_confirmation"
+    question = memory.receive("alice", content="假如我去夜间课程。应该怎么选？", source_id="real-hypothesis")
+    assert (
+        memory.save_fact("alice", "self", question["id"], "假如我去夜间课程。", "background")["write_status"]
+        == "rejected"
+    )
+
+
+@pytest.mark.parametrize(
+    "text,quote",
+    [
+        ("我喜欢散步，是真的吗？", "我喜欢散步，"),
+        ("假如我有空，我喜欢散步，请记住", "我喜欢散步"),
+        ("如果换工作，我不能上夜班", "我不能上夜班"),
+    ],
+)
+def test_comma_does_not_turn_conditional_or_question_into_asserted_fact(p2_repo, text, quote):
+    memory = MemoryService(p2_repo)
+    message = memory.receive("alice", content=text, source_id="comma-hypothesis")
+    assert memory.save_fact("alice", "self", message["id"], quote, "preference")["write_status"] == "rejected"
+
+
+@pytest.mark.parametrize(
+    "text,quote",
+    [
+        ("引用：“请保存我的病历。”应该怎么选？", "请保存我的病历。"),
+        ("朋友说：“请保存我的病历。”下一句。", "请保存我的病历。"),
+        ("引用：“这是示例。请保存我的病历。”下一句。", "请保存我的病历。"),
+        ("病历在这里。请记住我喜欢散步。", "病历在这里。"),
+    ],
+)
+def test_quoted_or_unrelated_next_sentence_cannot_authorize_sensitive_fact(p2_repo, text, quote):
+    memory = MemoryService(p2_repo)
+    message = memory.receive("alice", content=text, source_id="quote-boundary")
+    receipt = memory.save_fact("alice", "self", message["id"], quote, "background")
+    assert receipt["write_status"] == "pending_confirmation"
+    assert memory.facts("alice") == []
+
+
+@pytest.mark.parametrize(
+    "text,quote",
+    [
+        ("我不吃辣。 应该怎么选？", "我不吃辣。 "),
+        ("“我不吃辣。”应该怎么选？", "“我不吃辣。”"),
+    ],
+)
+def test_closing_quote_and_space_keep_complete_statement_separate_from_next_question(text, quote):
+    start = text.find(quote)
+    assert not hypothetical(text, start, start + len(quote))

@@ -19,16 +19,45 @@ def has_optout(text: str) -> bool:
     return DECLINE.search(BENIGN_REMINDERS.sub(" ", text)) is not None
 
 
-def clause(text: str, start: int, end: int, *, comma=True) -> str:
-    separators = "。！？!?；;\n" + ("，," if comma else "")
+def mask_quoted(text: str) -> str:
+    for opening, closing in (("“", "”"), ("「", "」"), ("『", "』"), ('"', '"'), ("'", "'"), ("`", "`")):
+        text = re.sub(
+            re.escape(opening) + r"[^" + re.escape(closing) + r"\n]*" + re.escape(closing),
+            lambda match: " " * len(match.group()),
+            text,
+        )
+    return text
+
+
+def clause_bounds(text: str, start: int, end: int, *, comma=True) -> tuple[int, int]:
+    hard = "。！？!?；;\n"
+    separators = hard + ("，," if comma else "")
     left = max(text.rfind(mark, 0, start) for mark in separators) + 1
+    closing = " \t\r”’」』\"'）)]】〕》〉"
+    tail = text[start:end].rstrip(closing)
     ends = [text.find(mark, end) for mark in separators]
-    right = min([position + 1 for position in ends if position >= 0] or [len(text)])
+    right = (
+        end if tail and tail[-1] in hard else min([position + 1 for position in ends if position >= 0] or [len(text)])
+    )
+    while right < len(text) and text[right] in closing:
+        right += 1
+    return left, right
+
+
+def clause(text: str, start: int, end: int, *, comma=True) -> str:
+    left, right = clause_bounds(text, start, end, comma=comma)
     return text[left:right]
 
 
+def authorization_clause(text: str, start: int, end: int) -> str:
+    # Mask complete original quotes before slicing, so an inner sentence cannot
+    # lose its opening quote and turn reported speech into user consent.
+    left, right = clause_bounds(text, start, end, comma=False)
+    return mask_quoted(text)[left:right]
+
+
 def hypothetical(text: str, start: int, end: int) -> bool:
-    return HYPOTHESIS.search(clause(text, start, end)) is not None
+    return HYPOTHESIS.search(clause(text, start, end, comma=False)) is not None
 
 
 def third_party(quote: str) -> bool:
