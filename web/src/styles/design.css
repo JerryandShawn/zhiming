@@ -1,0 +1,52 @@
+.design-section {
+  border-top: var(--border) solid var(--line);
+  margin-top: var(--s-8);
+  padding-top: var(--s-6);
+}
+.design-section > h2 {
+  margin-bottom: var(--s-5);
+}
+.design-grid {
+  display: grid;
+  gap: var(--s-5);
+}
+.design-item {
+  min-width: 0;
+}
+.design-item > .meta {
+  margin-bottom: var(--s-2);
+}
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s-3);
+}
+.swatch {
+  height: var(--s-9);
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-1);
+}
+.swatch.paper {
+  background: var(--paper);
+}
+.swatch.surface {
+  background: var(--surface);
+}
+.swatch.ink {
+  background: var(--ink);
+}
+.swatch.cinnabar {
+  background: var(--cinnabar);
+}
+.swatch.jade {
+  background: var(--jade);
+}
+.swatch.gold {
+  background: var(--gold);
+}
+.swatch.paper2 {
+  background: var(--paper-2);
+}
+.swatch.line {
+  background: var(--line);
+}
