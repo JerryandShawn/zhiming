@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from tools.eval.chart_goldens import load_golden, stability_checks, structure_checks
 from tools.eval.targets.base import TurnResult
 
 ISSUE_SEVERITIES: dict[str, int] = {
@@ -106,6 +107,13 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
             checks.append(AssertionResult(f"{name}[{index}]", bool(predicate(value))))
     if "events" in expect and expect["events"] is not None:
         checks.append(AssertionResult("events", _event_check(expect["events"], result.events)))
+    if expect.get("chart_structure"):
+        checks.extend(
+            AssertionResult("chart_structure." + name, passed) for name, passed in structure_checks(result.text).items()
+        )
+    if expect.get("chart_stability"):
+        observed = stability_checks(result.text, load_golden())
+        checks.extend(AssertionResult("chart_stability." + name, passed) for name, passed in observed.items())
     questions = result.text.count("？") + result.text.count("?")
     for name, passed in (
         ("min_questions", questions >= expect.get("min_questions", 0)),

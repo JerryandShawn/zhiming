@@ -159,6 +159,10 @@ class DbAssertion(StrictModel):
         return self
 
 
+class ChartStabilityAssertion(StrictModel):
+    fixture: Literal["C06"]
+
+
 class Expectation(StrictModel):
     must_include_any: list[Nonempty] = Field(default_factory=list)
     must_include_all: list[Nonempty] = Field(default_factory=list)
@@ -170,6 +174,8 @@ class Expectation(StrictModel):
     events: list[Nonempty] = Field(default_factory=list)
     min_questions: Annotated[int, Field(ge=0)] | None = None
     max_questions: Annotated[int, Field(ge=0)] | None = None
+    chart_structure: bool = False
+    chart_stability: ChartStabilityAssertion | None = None
     judge: Nonempty | None = None
 
     @model_validator(mode="after")

@@ -11,6 +11,7 @@ from psycopg import sql
 from mingjing_core.adapters.model import ConfiguredModel
 from mingjing_core.application.consultation import ConsultationService
 from mingjing_core.repositories.postgres import ENTITY_KINDS, PostgresRepository
+from tools.eval.quota import ProviderStopped, QuotaGuard
 
 from .base import TurnResult
 from .local_db import local_dsn, verify_local_postgres
@@ -19,7 +20,7 @@ from .v3_seed import V3Seeder
 
 class TrackingModel:
     def __init__(self, provider: Any) -> None:
-        self.provider = provider
+        self.provider = QuotaGuard(provider, "target")
         self.calls = 0
         self.failures = 0
         self.last_failure_category = "provider"
@@ -27,9 +28,14 @@ class TrackingModel:
         self.diagnostics: list[dict[str, Any]] = []
 
     def generate(self, **kwargs: Any) -> dict[str, Any]:
+        self.provider.check_open()
         self.calls += 1
         try:
             result = self.provider.generate(**kwargs)
+        except ProviderStopped:
+            self.failures += 1
+            self.last_failure_category = "provider"
+            raise
         except Exception as exc:
             self.failures += 1
             if hasattr(exc, "safe_diagnostic"):
@@ -78,6 +84,7 @@ class V3Target:
             raise RuntimeError("Call reset before send")
         started = time.perf_counter()
         calls_before = self.model.calls
+        elapsed_before = self.model.provider.elapsed_seconds
         failures_before = self.model.failures
         usage_before = dict(self.model.usage)
         request = self.submit_turn(turn)
@@ -87,6 +94,8 @@ class V3Target:
         error = None
         try:
             result = self.service.execute(self.owner, request["id"], lambda event: events.append(event["type"]))
+        except ProviderStopped:
+            error = "ProviderStopped"
         except Exception as exc:
             error = type(exc).__name__
         run = self.repo.fetch_run(self.owner, request["id"])
@@ -105,6 +114,9 @@ class V3Target:
                 "run_status": run["status"],
                 "run_id": request["id"],
                 "runtime": "v3",
+                "model_elapsed_seconds": self.model.provider.elapsed_seconds - elapsed_before,
+                "stop_reason": self.model.provider.stop_reason,
+                "provider_http_status": self.model.provider.provider_http_status,
                 "error_category": self.model.last_failure_category
                 if self.model.failures > failures_before
                 else "business"

@@ -72,7 +72,7 @@ def markdown(report: dict[str, Any]) -> str:
         f"执行状态：{header.get('status', 'unknown')}；源码 SHA256：{header.get('source_sha256', 'unavailable')}",
         f"总分：{_percentage(summary['score'])}；通过 {summary['passed']}/{summary['count']}；"
         f"n/a on v3：{summary['not_applicable']}",
-        f"模型调用：{summary['model_calls']}；耗时：{summary['elapsed_seconds']:.3f} 秒",
+        f"本报告观测调用：{summary['model_calls']}；耗时：{summary['elapsed_seconds']:.3f} 秒",
         f"其中被测模型 {summary['target_model_calls']} 次，评审模型 {summary['judge_model_calls']} 次。",
         "",
         "| 分类 | 通过/可运行 | 得分 |",
@@ -103,11 +103,47 @@ def markdown(report: dict[str, Any]) -> str:
             f"| {case['id']} | {case['status']} | {_percentage(case['score'])} | {failed} | "
             f"{case.get('model_calls', 0)} | {case.get('elapsed_seconds', 0):.3f} |"
         )
+    lines.extend(_batch_lines(report))
     previews = [(case["id"], preview) for case in report["cases"] for preview in case.get("previews", [])]
     if previews:
         lines.extend(["", "## 合成场景回答预览（每轮最多 200 字）", ""])
         lines.extend(f"- {identity}：{preview.replace(chr(10), ' ')}" for identity, preview in previews)
     return "\n".join(lines) + "\n"
+
+
+def _batch_lines(report: dict[str, Any]) -> list[str]:
+    if not report.get("batches"):
+        return []
+    lines = [
+        "",
+        "## 分批实际调用（新增为实际请求，继承为缓存观测）",
+        "",
+        "| 执行/批次 | 场景 | 新增目标/评审 | 继承目标/评审 | 新增模型耗时（秒） |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for batch in report["batches"]:
+        new, inherited = batch["new_usage"], batch["inherited_usage"]
+        seconds = new["target_model_elapsed_seconds"] + new["judge_model_elapsed_seconds"]
+        lines.append(
+            f"| {batch['attempt']}/{batch['batch']} | {', '.join(batch['scenario_ids'])} | "
+            f"{new['target_model_calls']}/{new['judge_model_calls']} | "
+            f"{inherited['target_model_calls']}/{inherited['judge_model_calls']} | {seconds:.3f} |"
+        )
+    metadata = report["metadata"]
+    usage = metadata.get("execution_usage", {})
+    if usage:
+        lines.extend(
+            [
+                "",
+                f"本次新增实际调用：{usage['new_usage']['model_calls']}；"
+                f"缓存继承观测调用：{usage['inherited_usage']['model_calls']}；"
+                f"历史累计实际调用（含失败请求）：{usage['historical_actual_usage']['model_calls']}。",
+            ]
+        )
+    if metadata.get("stop_reason"):
+        reason = "额度限制" if metadata["stop_reason"] == "quota" else "供应商 HTTP 故障"
+        lines.extend(["", f"因{reason}已停止；需用户明确决定后显式使用 --resume 继续。"])
+    return lines
 
 
 def write_report(report: dict[str, Any], directory: Path, *, baseline: bool = False) -> tuple[Path, Path]:

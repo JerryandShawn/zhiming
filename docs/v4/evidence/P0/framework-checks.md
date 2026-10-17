@@ -22,3 +22,10 @@
 整仓ruff检查另有6399项既有发现，日志仅本机忽略的`private/p0-logs/ruff-legacy.json`；新增目录发现0项。旧大文件不整体重排；业务改动严格限于today()改走Clock。
 
 真实模型基线在用户授权及可用进程环境配置就绪后单独运行。尚未生成`baseline-v3.json`；不会把测试替身或供应商配置故障的0分冒充v3能力基线。
+
+
+## 中期复核增量（2026-10-17）
+
+设计四文件已单独同步提交。T14、C03结构检查、C06实际金标及额度保护落实后，全量 `pytest tests/v4 -q` 为 **229 passed in 60.60s，0 skips**；随后仅增加裸429识别和安全HTTP状态透传，额度针对性回归为 **21 passed in 2.26s**（含4项真实隔离PG与LangGraph），原20项经独立复核通过。最终CI将再次全量执行新目录，不能把本节当作CI绿灯。
+
+最终源码已重跑正式 scripted 报告：`Validated 80/80`、`Result 80/80`；自测48项通过（1.36秒）。新增代码Ruff与显式120列format通过。T14/C03/C06计算证据见chart-goldens.md；额度与分批证据见quota-protection.md；CI根因与修复见ci-v4-failure.md。没有改旧Core测试或业务适配器/User-Agent。

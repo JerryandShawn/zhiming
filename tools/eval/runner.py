@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import sys
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
@@ -20,6 +21,7 @@ if str(ROOT) not in sys.path:
 import yaml  # noqa: E402
 
 from mingjing_core.timekit.clock import get_clock  # noqa: E402
+from tools.eval.batching import run_batches  # noqa: E402
 from tools.eval.engine import evaluate_scenario  # noqa: E402
 from tools.eval.judges import JUDGE_SCHEMA, ModelJudge  # noqa: E402
 from tools.eval.outcomes import is_infrastructure_failure  # noqa: E402
@@ -63,6 +65,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--scenarios", type=Path, default=EVAL_ROOT / "scenarios")
     result.add_argument("--scenario", help="Comma-separated scenario IDs")
     result.add_argument("--output", type=Path, default=ROOT / "docs/v4/eval")
+    result.add_argument("--batch-size", type=int, choices=range(1, 11), default=10)
     result.add_argument("--validate", "--validate-only", action="store_true", dest="validate_only")
     result.add_argument("--self-test", action="store_true")
     result.add_argument(
@@ -105,12 +108,26 @@ def _target(name: str, model: str) -> Target:
 
 
 def _fingerprint(scenario: Scenario, metadata: dict[str, Any]) -> str:
-    fixed = {key: value for key, value in metadata.items() if key not in {"date", "status"}}
+    keys = (
+        "mode",
+        "target",
+        "model",
+        "judge_model",
+        "judge_provider",
+        "judge_schema_sha256",
+        "rubric_version",
+        "rubric_sha256",
+        "config_version",
+        "config_sha256",
+        "source_sha256",
+        "provider_endpoint_sha256",
+    )
+    fixed = {key: metadata.get(key) for key in keys}
     payload = {"scenario": scenario.model_dump(mode="json"), "metadata": fixed}
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
-def _resume_cases(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, dict[str, Any]]:
+def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, Any]:
     if not args.resume:
         return {}
     for path in sorted(args.output.glob("*.json"), reverse=True):
@@ -127,12 +144,38 @@ def _resume_cases(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[st
             "provider_endpoint_sha256",
         )
         if all(data["metadata"].get(key) == metadata.get(key) for key in keys):
-            return {
-                case["id"]: case
-                for case in data["cases"]
-                if case["status"] in {"passed", "failed", "n/a on v3"} and not is_infrastructure_failure(case)
-            }
+            return data
     return {}
+
+
+def _reusable_cases(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {
+        case["id"]: case
+        for case in report.get("cases", [])
+        if case["status"] in {"passed", "failed", "n/a on v3"} and not is_infrastructure_failure(case)
+    }
+
+
+def _resume_cases(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return _reusable_cases(_resume_report(args, metadata))
+
+
+def _observe_case(
+    scenario: Scenario, target: Target, judge: ModelJudge | None, metadata: dict[str, Any], previous: dict[str, Any]
+) -> tuple[dict[str, Any], bool]:
+    fingerprint = _fingerprint(scenario, metadata)
+    cached = previous.get(scenario.id)
+    reused = bool(cached and cached.get("fingerprint") == fingerprint)
+    case = (
+        deepcopy(cached) if reused else evaluate_scenario(scenario, target, target_name=metadata["target"], judge=judge)
+    )
+    case["fingerprint"] = fingerprint
+    return case, reused
+
+
+def _publish(report: dict[str, Any], output: Path) -> None:
+    report["summary"] = summarize(report["cases"])
+    write_report(report, output)
 
 
 def _run(
@@ -142,27 +185,38 @@ def _run(
     model: str,
 ) -> int:
     metadata = _metadata(config, args.mode, args.target, model)
-    report: dict[str, Any] = {"metadata": metadata, "cases": []}
-    previous = _resume_cases(args, metadata)
+    prior_report = _resume_report(args, metadata)
+    previous = _reusable_cases(prior_report)
+    report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
+    metadata["planned_scenario_ids"] = [scenario.id for scenario in scenarios]
     judge = ModelJudge(config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"]) if args.mode == "live" else None
     target = _target(args.target, model)
+    for scenario in scenarios:
+        cached = previous.get(scenario.id)
+        if cached and cached.get("fingerprint") == _fingerprint(scenario, metadata):
+            report["cases"].append(deepcopy(cached))
+        elif args.target == "v3" and "v3" not in scenario.targets:
+            report["cases"].append(evaluate_scenario(scenario, target, target_name="v3"))
     try:
-        for scenario in scenarios:
-            fingerprint = _fingerprint(scenario, metadata)
-            cached = previous.get(scenario.id)
-            case = (
-                cached
-                if cached and cached.get("fingerprint") == fingerprint
-                else evaluate_scenario(scenario, target, target_name=args.target, judge=judge)
-            )
-            case["fingerprint"] = fingerprint
-            report["cases"].append(case)
-            report["summary"] = summarize(report["cases"])
-            write_report(report, args.output)
-            print(f"{scenario.id}: {case['status']} score={case['score']}", flush=True)
+        run_batches(
+            scenarios,
+            report,
+            lambda scenario: _observe_case(scenario, target, judge, metadata, previous),
+            lambda: _publish(report, args.output),
+            batch_size=getattr(args, "batch_size", 10),
+        )
     finally:
         target.close()
-    complete = not any(is_infrastructure_failure(case) for case in report["cases"])
+    return _finish(args, scenarios, report)
+
+
+def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[str, Any]) -> int:
+    metadata = report["metadata"]
+    complete = (
+        len(report["cases"]) == len(scenarios)
+        and not any(is_infrastructure_failure(case) for case in report["cases"])
+        and not metadata.get("stop_reason")
+    )
     metadata["status"] = "complete" if complete else "incomplete"
     add_comparison(report, args.output / "baseline-v3.json")
     baseline = complete and args.mode == "live" and args.target == "v3" and not args.scenario and len(scenarios) == 80
@@ -173,7 +227,11 @@ def _run(
         "Reports: "
         + ", ".join(str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path) for path in paths)
     )
-    return int(not complete or args.mode == "scripted" and summary["passed"] != summary["count"])
+    return (
+        2
+        if metadata.get("stop_reason")
+        else int(not complete or args.mode == "scripted" and summary["passed"] != summary["count"])
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -200,12 +258,9 @@ def main(argv: list[str] | None = None) -> int:
     os.environ["LANGSMITH_TRACING"] = "false"
     os.environ["LANGCHAIN_TRACING_V2"] = "false"
     models = (args.models or args.model).split(",") if args.mode == "live" else ["scripted-v1"]
-    status = 0
-    for name in models:
-        model = config["models"].get(name, name)
-        if name in {"kimi", "kimi-main"}:
-            model = os.getenv("KIMI_MODEL", model)
-        status = max(status, _run(args, scenarios, config, model))
+    status = _run_models(args, scenarios, config, models)
+    if status == 2:
+        return 2
     if args.self_test:
         completed = subprocess.run(
             [sys.executable, "-m", "pytest", "tests/v4/test_eval_framework.py", "-q"],
@@ -213,6 +268,19 @@ def main(argv: list[str] | None = None) -> int:
             check=False,
         )
         status = max(status, completed.returncode)
+    return status
+
+
+def _run_models(args: argparse.Namespace, scenarios: list[Scenario], config: dict[str, Any], models: list[str]) -> int:
+    status = 0
+    for name in models:
+        model = config["models"].get(name, name)
+        if name in {"kimi", "kimi-main"}:
+            model = os.getenv("KIMI_MODEL", model)
+        result = _run(args, scenarios, config, model)
+        status = max(status, result)
+        if result == 2:
+            break
     return status
 
 

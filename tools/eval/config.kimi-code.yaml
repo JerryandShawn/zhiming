@@ -1,10 +1,10 @@
-version: eval-config-kimi-code-v1.0.0
+version: eval-config-kimi-code-v1.1.0
 models:
-  kimi: kimi-for-coding
-  kimi-main: kimi-for-coding
+  kimi: k3
+  kimi-main: k3
 judge:
   provider: configured-model-v3
-  model: kimi-for-coding
+  model: k3
   rubric: rubric_v1.md
   version: critic-eval-v1.0.0
 report:
