@@ -34,6 +34,7 @@ export default function Chat() {
               <UserMessage time="10:30">那天对我来说怎么样？顺便说下，我最近身体不太好，在吃药调理。</UserMessage>
               <AssistantMessage revised>
                 <ToolStatusLine />
+                <p>先说身体：调理期间多留点睡眠给自己，面试前一晚别熬夜。</p>
                 <p>
                   周三是戊辰日
                   <CitationChip />

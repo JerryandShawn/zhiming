@@ -7,10 +7,17 @@ import { Markdown } from '../src/components/Markdown';
 import { AskCard, Composer, DecisionCard, MemoryReceipt, ToolStatusLine } from '../src/components/Messages';
 import { CardPicker, RevealSpread, SpreadLayout } from '../src/components/TarotCards';
 import Tarot from '../src/pages/Tarot';
+import Chat from '../src/pages/Chat';
 import { useUi } from '../src/state';
 import backAsset from '../../static/tarot/back.svg';
 
 describe('M1 component contracts', () => {
+  it('keeps the reference reality-first paragraph before the symbolic chat example', () => {
+    render(<Chat />);
+    const reality = screen.getByText('先说身体：调理期间多留点睡眠给自己，面试前一晚别熬夜。');
+    const symbolic = screen.getByText(/周三是戊辰日/);
+    expect(reality.compareDocumentPosition(symbolic) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
   it('keeps the loading label and prevents duplicate activation', async () => {
     const click = vi.fn();
     render(
