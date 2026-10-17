@@ -1,4 +1,4 @@
-# P2 数据底座与连续上下文实现证据（最终回归进行中）
+# P2 数据底座与连续上下文实现证据
 
 仅本机 PG15.19 与合成数据，Core/Charts 独立环境，测试子进程清空模型 Key。未访问 stage/生产、未调用真实模型或真实飞书。
 
@@ -9,9 +9,9 @@
 - fact→助手→note→profile→summary→后续run/助手/reminder 逆序多跳；旧run缺依赖反向污染；显式note账本重放；correction 保留可重算请求；无 lineage legacy 助手同闭包清理。对应 `test_p2_privacy_closure.py` 4/4，1.85s。
 - Feishu显式源核验、损坏原话拒绝；10001条旧助手回填不挤掉近期用户，同毫秒100/900微秒游标无漏页，scope/session/q保留。对应 `test_p2_history_window.py`。
 - 报告四类期间含 ISO 跨年/闰年，真实服务替身边界的日期/期间、此刻、历史角色与危机固定配置。对应 `test_p2_clock_reports.py`；不将配置透传等同真实 S01 模型安全行为达标。
-- 早先全量 v4：335 passed in142.12s（审计补丁前）；后续最终全量独立 `core_test_p2_v4` 正在执行。旧553在 `core_test_p2` 同时执行。最终结果另补回执，不以进行中冒充通过。
+- 最终冻结de082ce全部v4：379 passed in159.87s；最终旧Core在独立 `core_test_p2_verified` 完整553项826.169s通过。两次完整失败与单独中止进程均单列，不计入通过数，详见validation.md/receipt.md。
 - 10,000消息完整 snapshot：100样本+10预热，p50=3.714ms，p95=4.155ms，max=4.896ms，早期硬约束仍在；见 snapshot-benchmark.json。
-- 新模块 Ruff E/F/I/B/UP/SIM +format120 已通过，新增函数≤60行。旧业务文件只必要接线，不全量格式重排。
+- 32个新模块/辅助文件 Ruff E/F/I/B/UP/SIM +format120 已通过，新增函数≤60行。旧业务文件只必要接线，不全量格式重排。
 
 已知边界：history API 为兼容未回填旧时间扫描候选；消息窗口有界，run 元数据仍 fetchall，尚无海量历史接口性能声明。未来P5 writer须完整记录source/fact lineage；仅covers_until_message_id不足以保证细粒度撤销。P2未开放P5工具。
 
