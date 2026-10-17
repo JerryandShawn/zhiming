@@ -22,6 +22,7 @@ class TrackingModel:
         self.provider = provider
         self.calls = 0
         self.failures = 0
+        self.last_failure_category = "provider"
         self.usage: dict[str, int] = {}
         self.diagnostics: list[dict[str, Any]] = []
 
@@ -32,7 +33,15 @@ class TrackingModel:
         except Exception as exc:
             self.failures += 1
             if hasattr(exc, "safe_diagnostic"):
-                self.diagnostics.append(exc.safe_diagnostic())
+                diagnostic = exc.safe_diagnostic()
+                self.diagnostics.append(diagnostic)
+                self.last_failure_category = (
+                    "business"
+                    if diagnostic.get("reason") in {"json", "max_tokens", "tool_count", "tool_input"}
+                    else "provider"
+                )
+            else:
+                self.last_failure_category = "provider"
             raise
         for key, count in result.get("usage", {}).items():
             if type(count) is int and count >= 0:
@@ -96,7 +105,7 @@ class V3Target:
                 "run_status": run["status"],
                 "run_id": request["id"],
                 "runtime": "v3",
-                "error_category": "provider"
+                "error_category": self.model.last_failure_category
                 if self.model.failures > failures_before
                 else "business"
                 if error
@@ -110,15 +119,17 @@ class V3Target:
         kind = turn.get("kind", "turn")
         mode = "scheduled_report" if kind in {"brief", "report"} else "chat"
         selection = self.report_selection() if mode == "scheduled_report" else {}
-        source = self.seeder.receive(
-            {
-                **turn,
-                "content": turn["user"],
-                "role": "user" if mode == "chat" else "assistant",
-                "topic_id": self.seed_data.get("context", {}).get("topic_id", "shared"),
-            },
-            operation,
-        )
+        source = None
+        if mode == "chat":
+            source = self.seeder.receive(
+                {
+                    **turn,
+                    "content": turn["user"],
+                    "role": "user",
+                    "topic_id": self.seed_data.get("context", {}).get("topic_id", "shared"),
+                },
+                operation,
+            )
         return self.service.submit(
             owner=self.owner,
             message=turn["user"],
@@ -130,7 +141,7 @@ class V3Target:
             mode=mode,
             depth="standard",
             selection=selection,
-            source_message_id=source["id"] if mode == "chat" else None,
+            source_message_id=source["id"] if source else None,
         )
 
     def report_selection(self) -> dict[str, Any]:

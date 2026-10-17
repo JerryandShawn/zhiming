@@ -5,6 +5,7 @@ from datetime import datetime
 
 import pytest
 
+from mingjing_core.domain.consultation import ModelUnavailable
 from mingjing_core.timekit import FrozenClock, get_clock, set_clock
 from tests.test_core_pg_channels import FixtureModel
 from tools.eval.targets.local_db import validate_local_dsn
@@ -118,3 +119,31 @@ def test_unknown_birth_time_retains_date_without_inventing_a_confirmed_time(targ
     assert profile["birth.precision"] == "unknown"
     assert profile["birth.time_unknown"] is True
     assert profile["birth.solar_datetime"] == "1994-03-12"
+
+
+def test_brief_uses_one_real_report_source_without_inventing_assistant_history(target):
+    instance, provider = target
+    instance.reset({"profile": "empty_profile", "_scenario_id": "T13"})
+    result = instance.send({"user": "生成今天晨报", "kind": "brief", "channel": "web", "_index": 1})
+    assert result.error is None
+    messages = instance.inspect_db()["message"]
+    assert len(messages) == 1
+    assert messages[0]["channel"] == "scheduled_report"
+    assert messages[0]["policy"]["origin"] == "system"
+    history = provider.requests[0]["payload"]["reference_data"]["recent_history"]
+    assert not any(row["role"] == "assistant" for row in history)
+
+
+@pytest.mark.parametrize("reason,category", [("http", "provider"), ("network", "provider"), ("tool_count", "business")])
+def test_v3_distinguishes_provider_outage_from_model_contract_failure(target, monkeypatch, reason, category):
+    instance, provider = target
+
+    def fail(**kwargs):
+        raise ModelUnavailable("Synthetic provider failure", reason=reason)
+
+    monkeypatch.setattr(provider, "generate", fail)
+    instance.reset({"profile": "empty_profile", "_scenario_id": "T01"})
+    result = instance.send({"user": "今天几号？", "channel": "web", "_index": 1})
+    assert result.error == "ModelUnavailable"
+    assert result.metadata["error_category"] == category
+    assert result.model_calls == 1

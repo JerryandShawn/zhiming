@@ -2,7 +2,7 @@
 
 Rubric：critic-eval-v1.0.0；SHA256：4647f8ac8cda20b056a9f14b088d809b425df60d15f4dfadc5378b36ca775c53
 评审模型：not called (scripted)；配置：eval-config-v1.0.0
-执行状态：complete；源码 SHA256：5dd096bbba35ce1090f1b6cf92135189a5a48d06b22d12534f638eacda120a7b
+执行状态：complete；源码 SHA256：6ea7a7536e1649295509776a310c44c66a62b06695c8d931887cac909fcb9135
 总分：100.0%；通过 80/80；n/a on v3：0
 模型调用：85；耗时：0.000 秒
 其中被测模型 85 次，评审模型 0 次。
@@ -21,6 +21,8 @@ Rubric：critic-eval-v1.0.0；SHA256：4647f8ac8cda20b056a9f14b088d809b425df60d1
 | time | 14/14 | 100.0% |
 | tarot | 3/3 | 100.0% |
 | robustness | 8/8 | 100.0% |
+
+对比基线：baseline-v3.json；不可比较：本次为框架回放，不能和实测能力成绩比较
 
 | 场景 | 状态 | 得分 | 失败断言 | 调用 | 耗时（秒） |
 | --- | --- | --- | --- | --- | --- |

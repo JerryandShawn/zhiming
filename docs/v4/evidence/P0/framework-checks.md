@@ -6,14 +6,16 @@
 | --- | --- |
 | `python tools/eval/runner.py --validate-only` | Validated 80/80 scenarios |
 | `python tools/eval/runner.py --mode scripted --target fake --self-test` | 80/80，48个框架测试通过，1.25秒 |
-| `python -m pytest tests/v4 -q`（隔离PG15，Core3.11） | 119 passed，32.90秒，0跳过 |
+| `python -m pytest tests/v4 -q`（隔离PG15，Core3.11） | 184 passed，31.11秒，0跳过 |
 | 新代码ruff E,F,I,B,UP,SIM / 120列 | All checks passed |
-| 新代码ruff format / 120列 | 21 files already formatted |
+| 新代码ruff format / 120列 | 24 files already formatted |
 | `git diff --check` | 退出0 |
 
 脚本报告：[2026-10-17-scripted-fake-scripted-v1.md](../../eval/2026-10-17-scripted-fake-scripted-v1.md)，同名JSON记录版本、源码/配置/rubric哈希和分类分数。80/80表示独立脚本观测的回放和判分正常，不表示v4业务已实现。
 
-新测试覆盖文本同义备选、工具正反条件、回执、DB计数/状态/路径/范围、事件序列的正反例；全部场景重复回放一致；schema坏格式拒绝；评审非法结构/非有限分数失败关闭；不完整真实评测不生成基线；报告仅保留至多200字合成预览；恢复时核对场景/配置/rubric/源码版本。
+新测试覆盖文本同义备选、工具正反条件、回执、DB计数/状态/路径/范围、事件序列的正反例；全部场景重复回放一致；schema坏格式拒绝；评审非法结构/非有限分数/12类严重度不匹配失败关闭；基础设施不完整评测不生成基线，业务失败保留真实零分；报告仅保留至多200字合成预览；恢复时核对场景/配置/rubric/源码版本，只重跑基础设施失败，不重跑业务零分。比较只在双方live/complete、计分ID与评审契约一致时显示差值。
+
+初次完整新增测试为119项通过，最终独立审查后增加65项评分/恢复/来源回归，最终184项全部通过。AST检查新增代码单文件≤400行、函数≤60行，无超限；没有改写旧测试来迁就实现。
 
 44个v3适用场景全部初始化真实合成PG状态并执行原有ConsultationService首轮；替换的只有模型，未用fake_target替代业务服务。来源、计数、未来冻结时间和回环路由的回归说明见 [v3-seed-validation.md](v3-seed-validation.md)。
 

@@ -5,6 +5,27 @@ import re
 from pathlib import Path
 from typing import Any
 
+from tools.eval.outcomes import is_infrastructure_failure
+
+COMPARISON_REASONS = {
+    "current_not_live": "本次为框架回放，不能和实测能力成绩比较",
+    "baseline_not_live": "基线不是实测能力成绩",
+    "current_incomplete": "本次运行尚未完整完成",
+    "baseline_incomplete": "基线运行尚未完整完成",
+    "baseline_missing": "尚无可用基线",
+    "judge_contract_missing": "缺少固定评审协议信息",
+    "judge_contract_changed": "评审模型、rubric 或提交协议不同",
+    "applicable_scenarios_differ": "实际参与计分的场景范围不同",
+    "scores_unavailable": "缺少可比较的分数",
+}
+JUDGE_COMPARISON_KEYS = (
+    "judge_model",
+    "judge_provider",
+    "judge_schema_sha256",
+    "rubric_version",
+    "rubric_sha256",
+)
+
 
 def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
     applicable = [case for case in cases if case["status"] != "n/a on v3"]
@@ -63,12 +84,12 @@ def markdown(report: dict[str, Any]) -> str:
         lines.extend(["", "本次实测未完成；零分包含运行或评审错误，不能作为 v3 能力基线。"])
     comparison = report.get("comparison")
     if comparison:
-        lines.extend(
-            [
-                "",
-                f"对比基线：{comparison['baseline']}；总分变化 {comparison['score_delta']:+.1%}",
-            ]
-        )
+        label = f"对比基线：{comparison['baseline']}；"
+        if "score_delta" in comparison:
+            label += f"总分变化 {comparison['score_delta']:+.1%}"
+        else:
+            label += "不可比较：" + COMPARISON_REASONS[comparison["reason"]]
+        lines.extend(["", label])
     lines.extend(
         [
             "",
@@ -110,12 +131,37 @@ def _atomic_write(path: Path, contents: str) -> None:
 
 
 def add_comparison(report: dict[str, Any], baseline_path: Path) -> None:
+    comparison: dict[str, Any] = {"baseline": baseline_path.name, "comparable": False}
+    report["comparison"] = comparison
+    if report["metadata"].get("mode") != "live" or report["metadata"].get("target") == "fake":
+        comparison["reason"] = "current_not_live"
+        return
     if not baseline_path.is_file():
+        comparison["reason"] = "baseline_missing"
         return
     baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+    reason = _comparison_reason(report, baseline)
+    if reason:
+        comparison["reason"] = reason
+        return
     previous, current = baseline["summary"]["score"], report["summary"]["score"]
-    if previous is not None and current is not None:
-        report["comparison"] = {
-            "baseline": baseline_path.name,
-            "score_delta": round(current - previous, 6),
-        }
+    if previous is None or current is None:
+        comparison["reason"] = "scores_unavailable"
+        return
+    comparison.update(comparable=True, score_delta=round(current - previous, 6))
+
+
+def _comparison_reason(current: dict[str, Any], baseline: dict[str, Any]) -> str | None:
+    for label, report in (("current", current), ("baseline", baseline)):
+        metadata = report["metadata"]
+        if metadata.get("mode") != "live" or metadata.get("target") == "fake":
+            return label + "_not_live"
+        if metadata.get("status") != "complete" or any(is_infrastructure_failure(case) for case in report["cases"]):
+            return label + "_incomplete"
+        if any(not metadata.get(key) for key in JUDGE_COMPARISON_KEYS):
+            return "judge_contract_missing"
+    if any(current["metadata"][key] != baseline["metadata"][key] for key in JUDGE_COMPARISON_KEYS):
+        return "judge_contract_changed"
+    current_ids = {case["id"] for case in current["cases"] if case["status"] != "n/a on v3"}
+    baseline_ids = {case["id"] for case in baseline["cases"] if case["status"] != "n/a on v3"}
+    return "applicable_scenarios_differ" if current_ids != baseline_ids else None

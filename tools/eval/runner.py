@@ -21,7 +21,8 @@ import yaml  # noqa: E402
 
 from mingjing_core.timekit.clock import get_clock  # noqa: E402
 from tools.eval.engine import evaluate_scenario  # noqa: E402
-from tools.eval.judges import ModelJudge  # noqa: E402
+from tools.eval.judges import JUDGE_SCHEMA, ModelJudge  # noqa: E402
+from tools.eval.outcomes import is_infrastructure_failure  # noqa: E402
 from tools.eval.report import add_comparison, summarize, write_report  # noqa: E402
 from tools.eval.schema import Scenario, load_scenarios  # noqa: E402
 from tools.eval.targets.base import Target  # noqa: E402
@@ -80,6 +81,8 @@ def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dic
         "target": target,
         "model": model,
         "judge_model": config["judge"]["model"] if mode == "live" else "not called (scripted)",
+        "judge_provider": config["judge"].get("provider", "configured-model-v3"),
+        "judge_schema_sha256": hashlib.sha256(json.dumps(JUDGE_SCHEMA, sort_keys=True).encode()).hexdigest(),
         "rubric_version": config["judge"]["version"],
         "rubric_sha256": hashlib.sha256(rubric.read_bytes()).hexdigest(),
         "config_version": config["version"],
@@ -124,7 +127,11 @@ def _resume_cases(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[st
             "provider_endpoint_sha256",
         )
         if all(data["metadata"].get(key) == metadata.get(key) for key in keys):
-            return {case["id"]: case for case in data["cases"]}
+            return {
+                case["id"]: case
+                for case in data["cases"]
+                if case["status"] in {"passed", "failed", "n/a on v3"} and not is_infrastructure_failure(case)
+            }
     return {}
 
 
@@ -155,10 +162,7 @@ def _run(
             print(f"{scenario.id}: {case['status']} score={case['score']}", flush=True)
     finally:
         target.close()
-    complete = not any(
-        case.get("error_code") or case.get("judge_error_code") or case.get("target_error_code")
-        for case in report["cases"]
-    )
+    complete = not any(is_infrastructure_failure(case) for case in report["cases"])
     metadata["status"] = "complete" if complete else "incomplete"
     add_comparison(report, args.output / "baseline-v3.json")
     baseline = complete and args.mode == "live" and args.target == "v3" and not args.scenario and len(scenarios) == 80
