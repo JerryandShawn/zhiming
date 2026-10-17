@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from tools.eval.contracts import scoring_corpus_hash
 from tools.eval.outcomes import is_infrastructure_failure
 
 COMPARISON_REASONS = {
@@ -17,6 +18,9 @@ COMPARISON_REASONS = {
     "judge_contract_changed": "评审模型、rubric 或提交协议不同",
     "applicable_scenarios_differ": "实际参与计分的场景范围不同",
     "scores_unavailable": "缺少可比较的分数",
+    "scenario_contract_missing": "缺少场景或判分契约信息",
+    "scenario_contract_changed": "场景输入、断言或引用金标不同",
+    "scoring_contract_changed": "确定性判分契约版本不同",
 }
 JUDGE_COMPARISON_KEYS = (
     "judge_model",
@@ -78,6 +82,10 @@ def markdown(report: dict[str, Any]) -> str:
         "| 分类 | 通过/可运行 | 得分 |",
         "| --- | --- | --- |",
     ]
+    if header.get("scoring_contract_version"):
+        lines.insert(
+            5, f"判分契约：{header['scoring_contract_version']}；场景契约 SHA256：{header['scoring_corpus_sha256']}"
+        )
     for name, group in summary["categories"].items():
         lines.append(f"| {name} | {group['passed']}/{group['count']} | {_percentage(group['score'])} |")
     if header.get("status") == "incomplete":
@@ -200,4 +208,24 @@ def _comparison_reason(current: dict[str, Any], baseline: dict[str, Any]) -> str
         return "judge_contract_changed"
     current_ids = {case["id"] for case in current["cases"] if case["status"] != "n/a on v3"}
     baseline_ids = {case["id"] for case in baseline["cases"] if case["status"] != "n/a on v3"}
-    return "applicable_scenarios_differ" if current_ids != baseline_ids else None
+    if current_ids != baseline_ids:
+        return "applicable_scenarios_differ"
+    return _scenario_contract_reason(current, baseline)
+
+
+def _scenario_contract_reason(current: dict[str, Any], baseline: dict[str, Any]) -> str | None:
+    for report in (current, baseline):
+        if not report["metadata"].get("scoring_contract_version") or not report["metadata"].get(
+            "scoring_corpus_sha256"
+        ):
+            return "scenario_contract_missing"
+        if any(not case.get("scenario_contract_sha256") for case in report["cases"] if case["status"] != "n/a on v3"):
+            return "scenario_contract_missing"
+    if current["metadata"]["scoring_contract_version"] != baseline["metadata"]["scoring_contract_version"]:
+        return "scoring_contract_changed"
+    for report in (current, baseline):
+        if scoring_corpus_hash(report["cases"]) != report["metadata"]["scoring_corpus_sha256"]:
+            return "scenario_contract_changed"
+    if current["metadata"]["scoring_corpus_sha256"] != baseline["metadata"]["scoring_corpus_sha256"]:
+        return "scenario_contract_changed"
+    return None

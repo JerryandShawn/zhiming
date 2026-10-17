@@ -2,7 +2,8 @@
 
 Rubric：critic-eval-v1.0.0；SHA256：4647f8ac8cda20b056a9f14b088d809b425df60d15f4dfadc5378b36ca775c53
 评审模型：not called (scripted)；配置：eval-config-v1.0.0
-执行状态：complete；源码 SHA256：5f49a5823cfc26d8952c6738ad627bee6e87af5fc2e9aeeccf62c8aaaed90b47
+执行状态：complete；源码 SHA256：cf89b5d792e9b6c3cded75723f2c3b80973acbac6aa27f82168dc24914adf713
+判分契约：deterministic-eval-v1.0.0；场景契约 SHA256：643eba8740d61756db7d4f0557f29e5145683db2991c3572c9086b0b663a9c08
 总分：100.0%；通过 80/80；n/a on v3：0
 本报告观测调用：85；耗时：0.000 秒
 其中被测模型 85 次，评审模型 0 次。

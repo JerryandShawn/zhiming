@@ -9,6 +9,7 @@ from typing import Any
 import pytest
 
 from tools.eval import runner
+from tools.eval.contracts import SCORING_CONTRACT_VERSION, canonical_hash, scoring_corpus_hash
 from tools.eval.outcomes import is_infrastructure_failure
 from tools.eval.report import add_comparison, markdown, summarize
 from tools.eval.runner import _resume_cases
@@ -24,6 +25,7 @@ def report_fixture(*, score: float = 0.5) -> dict[str, Any]:
             "category": "time",
             "status": "passed" if score == 1 else "failed",
             "score": score,
+            "scenario_contract_sha256": canonical_hash({"id": "T01", "contract": "fixed-synthetic"}),
             "failed_assertions": [] if score == 1 else ["turn[1].must_include_all[1]"],
         }
     ]
@@ -40,6 +42,8 @@ def report_fixture(*, score: float = 0.5) -> dict[str, Any]:
             "judge_provider": "configured-model-v3",
             "judge_schema_sha256": "schema-digest",
             "config_version": "config-v1",
+            "scoring_contract_version": SCORING_CONTRACT_VERSION,
+            "scoring_corpus_sha256": scoring_corpus_hash(cases),
         },
         "summary": summarize(cases),
         "cases": cases,

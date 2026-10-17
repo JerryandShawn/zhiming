@@ -22,6 +22,7 @@ import yaml  # noqa: E402
 
 from mingjing_core.timekit.clock import get_clock  # noqa: E402
 from tools.eval.batching import run_batches  # noqa: E402
+from tools.eval.contracts import stamp_contracts  # noqa: E402
 from tools.eval.engine import evaluate_scenario  # noqa: E402
 from tools.eval.judges import JUDGE_SCHEMA, ModelJudge  # noqa: E402
 from tools.eval.outcomes import is_infrastructure_failure  # noqa: E402
@@ -130,10 +131,16 @@ def _fingerprint(scenario: Scenario, metadata: dict[str, Any]) -> str:
 def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, Any]:
     if not args.resume:
         return {}
+    changed_source = False
     for path in sorted(args.output.glob("*.json"), reverse=True):
         if path.name == "baseline-v3.json":
             continue
         data = json.loads(path.read_text(encoding="utf-8"))
+        identity = ("target", "model", "mode", "config_sha256", "provider_endpoint_sha256")
+        same_run = all(data["metadata"].get(key) == metadata.get(key) for key in identity)
+        if same_run and data["metadata"].get("source_sha256") != metadata.get("source_sha256"):
+            changed_source = True
+            continue
         keys = (
             "target",
             "model",
@@ -145,6 +152,8 @@ def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[s
         )
         if all(data["metadata"].get(key) == metadata.get(key) for key in keys):
             return data
+    if changed_source:
+        raise SystemExit("Cannot resume across execution sources; use the preserved frozen execution snapshot")
     return {}
 
 
@@ -189,6 +198,7 @@ def _run(
     previous = _reusable_cases(prior_report)
     report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
     metadata["planned_scenario_ids"] = [scenario.id for scenario in scenarios]
+    scenario_map = {scenario.id: scenario for scenario in scenarios}
     judge = ModelJudge(config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"]) if args.mode == "live" else None
     target = _target(args.target, model)
     for scenario in scenarios:
@@ -202,12 +212,18 @@ def _run(
             scenarios,
             report,
             lambda scenario: _observe_case(scenario, target, judge, metadata, previous),
-            lambda: _publish(report, args.output),
+            lambda: _publish_contract_report(report, args.output, scenario_map),
             batch_size=getattr(args, "batch_size", 10),
         )
     finally:
         target.close()
+    stamp_contracts(report, scenario_map)
     return _finish(args, scenarios, report)
+
+
+def _publish_contract_report(report: dict[str, Any], output: Path, scenarios: dict[str, Scenario]) -> None:
+    stamp_contracts(report, scenarios)
+    _publish(report, output)
 
 
 def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[str, Any]) -> int:
