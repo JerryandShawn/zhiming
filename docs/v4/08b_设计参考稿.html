@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>明镜台设计参考稿</title>
+<style>
+/* ===== 设计 token（与 08_设计规范_新中式.md §2–§4 一致） ===== */
+:root{
+  --paper:#F6F1E7; --paper-2:#EFE8DA; --surface:#FBF8F2;
+  --ink:#1F1B16; --ink-2:#4A433A; --ink-3:#6F665A;
+  --line:#DDD3C2; --line-strong:#C9BCA6;
+  --cinnabar:#B23A2E; --cinnabar-hover:#9E3226; --cinnabar-wash:#F3E1DC; --on-cinnabar:#FBF8F2;
+  --gold:#8A6D3B; --gold-ink:#765C2E; --gold-wash:#F1E8D3;
+  --jade:#3F6B57; --jade-wash:#E2ECE4; --amber:#8F6210; --amber-wash:#F4E9CF; --danger:#9C2B22;
+  --wood:#3F6B57; --fire:#B23A2E; --earth:#8A6D3B; --metal:#6E6A62; --water:#2F4A66;
+  --shadow-float:0 8px 24px rgba(31,27,22,.10),0 1px 2px rgba(31,27,22,.06);
+  --grain-opacity:.035;
+  --font-serif:"Source Han Serif SC","Noto Serif SC","Songti SC","STSong",serif;
+  --font-sans:"Source Han Sans SC","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  --font-kai:"LXGW WenKai","Kaiti SC","STKaiti","KaiTi",serif;
+  --r-1:4px; --r-2:8px; --r-3:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#14110E; --paper-2:#1B1713; --surface:#221D18;
+    --ink:#EDE6D8; --ink-2:#C9BFAE; --ink-3:#9C9282; --line:#2F2822; --line-strong:#433A31;
+    --cinnabar:#D0574A; --cinnabar-hover:#DE6A5D; --cinnabar-wash:#3A1F1A; --on-cinnabar:#14110E;
+    --gold:#C9A96A; --gold-ink:#C9A96A; --gold-wash:#2C2418;
+    --jade:#7FB39A; --jade-wash:#1C2A23; --amber:#D9A441; --amber-wash:#2E2412; --danger:#E06C5F;
+    --wood:#7FB39A; --fire:#D0574A; --earth:#C9A96A; --metal:#B8B2A6; --water:#7F9DBF;
+    --shadow-float:0 8px 24px rgba(0,0,0,.45); --grain-opacity:.05; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14110E; --paper-2:#1B1713; --surface:#221D18;
+  --ink:#EDE6D8; --ink-2:#C9BFAE; --ink-3:#9C9282; --line:#2F2822; --line-strong:#433A31;
+  --cinnabar:#D0574A; --cinnabar-hover:#DE6A5D; --cinnabar-wash:#3A1F1A; --on-cinnabar:#14110E;
+  --gold:#C9A96A; --gold-ink:#C9A96A; --gold-wash:#2C2418;
+  --jade:#7FB39A; --jade-wash:#1C2A23; --amber:#D9A441; --amber-wash:#2E2412; --danger:#E06C5F;
+  --wood:#7FB39A; --fire:#D0574A; --earth:#C9A96A; --metal:#B8B2A6; --water:#7F9DBF;
+  --shadow-float:0 8px 24px rgba(0,0,0,.45); --grain-opacity:.05; color-scheme:dark;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--paper)}
+body{
+  font-family:var(--font-sans); color:var(--ink); font-size:16px; line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+.grain{position:relative;isolation:isolate}
+.grain::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:var(--grain-opacity);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.s16{width:16px;height:16px} svg.i.s24{width:24px;height:24px}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ===== 文档外壳（仅参考稿使用，不属于产品） ===== */
+.doc{max-width:1760px;margin:0 auto;padding:40px 24px 96px}
+.doc-head{display:flex;gap:20px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:40px}
+.doc-head h1{font-family:var(--font-serif);font-size:28px;line-height:1.4;font-weight:600;letter-spacing:.02em}
+.doc-head p{color:var(--ink-2);font-size:15px;max-width:60em;margin-top:6px}
+.doc h2.sec{font-family:var(--font-serif);font-size:21px;font-weight:600;margin:56px 0 8px;letter-spacing:.02em}
+.doc p.sec-note{color:var(--ink-3);font-size:13px;margin-bottom:20px}
+.toggle{display:inline-flex;gap:8px;align-items:center;height:40px;padding:0 16px;border:1px solid var(--line-strong);border-radius:var(--r-2);background:transparent;color:var(--ink);font:500 15px var(--font-sans);cursor:pointer}
+.toggle:hover{background:var(--paper-2)}
+.frames{display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start}
+.frame-cap{font-size:13px;color:var(--ink-3);margin-bottom:8px}
+
+/* ===== 手机外框 ===== */
+.phone{width:390px;height:844px;border:1px solid var(--line-strong);border-radius:28px;overflow:hidden;background:var(--paper);box-shadow:var(--shadow-float)}
+.app{display:flex;flex-direction:column;height:100%}
+.topbar{height:52px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 8px 0 16px;border-bottom:1px solid var(--line)}
+.topbar .title{font-family:var(--font-serif);font-size:18px;font-weight:600;letter-spacing:.02em}
+.iconbtn{width:44px;height:44px;display:inline-grid;place-items:center;border:0;background:transparent;color:var(--ink-2);border-radius:var(--r-2)}
+.content{flex:1;overflow:auto;padding:20px 16px 24px}
+.tabbar{height:64px;flex:none;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);background:var(--paper)}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--ink-3);font-size:12px;font-weight:500;position:relative}
+.tab.on{color:var(--cinnabar)}
+.tab.on::before{content:"";position:absolute;top:0;width:20px;height:2px;background:var(--cinnabar);border-radius:2px}
+
+/* ===== 通用 ===== */
+.h-display{font-family:var(--font-serif);font-size:26px;line-height:36px;font-weight:600;letter-spacing:.02em}
+.h2{font-family:var(--font-serif);font-size:18px;line-height:28px;font-weight:600;letter-spacing:.02em}
+.h3{font-size:17px;line-height:26px;font-weight:600}
+.meta{font-size:13px;line-height:20px;color:var(--ink-3)}
+.sub{font-size:15px;line-height:24px;color:var(--ink-2)}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font-size:13px;line-height:1;white-space:nowrap}
+.tag.rest{background:var(--jade-wash);color:var(--jade)}
+.tag.work{background:var(--amber-wash);color:var(--amber)}
+.tag.festival{background:var(--gold-wash);color:var(--gold-ink)}
+.tag.neutral{background:var(--paper-2);color:var(--ink-2)}
+.tag.accent{background:var(--cinnabar-wash);color:var(--cinnabar)}
+.rule{height:1px;background:var(--line);margin:24px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:var(--r-2);font:600 15px var(--font-sans);border:1px solid transparent;cursor:pointer}
+.btn.primary{background:var(--cinnabar);color:var(--on-cinnabar)}
+.btn.primary:hover{background:var(--cinnabar-hover)}
+.btn.secondary{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+.btn.secondary:hover{background:var(--paper-2)}
+.btn.ghost{background:transparent;color:var(--ink-2);padding:0 12px}
+.btn.ghost:hover{background:var(--paper-2)}
+.btn.block{width:100%}
+.btn.left{justify-content:flex-start;text-align:left;font-weight:500}
+.btn:focus-visible,.iconbtn:focus-visible{outline:2px solid var(--cinnabar);outline-offset:2px}
+.seal{display:inline-grid;place-items:center;background:var(--cinnabar);color:var(--on-cinnabar);border-radius:4px;font-family:var(--font-serif);font-weight:600;writing-mode:vertical-rl;letter-spacing:.05em;flex:none}
+.seal.s24{width:24px;height:24px;font-size:9px;line-height:1}
+.seal.s28{width:28px;height:28px;font-size:10px;line-height:1}
+.seal.s40{width:40px;height:40px;font-size:14px;line-height:1}
+.voice{font-family:var(--font-kai);font-size:18px;line-height:30px;color:var(--ink)}
+.list{list-style:none}
+.list li{display:flex;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.list li:last-child{border-bottom:0}
+.list .when{font-size:15px;color:var(--ink-2);min-width:96px}
+.disclosure{display:flex;align-items:center;gap:8px;height:44px;font-size:15px;font-weight:600;color:var(--ink)}
+.disclosure .count{font-weight:400;font-size:13px;color:var(--ink-3)}
+.link{color:var(--cinnabar);font-size:15px;display:inline-flex;align-items:center;gap:2px}
+
+/* ===== 对话 ===== */
+.sep{display:flex;align-items:center;gap:12px;margin:20px 0 12px;font-size:13px;color:var(--ink-3)}
+.sep::before,.sep::after{content:"";flex:1;height:1px;background:var(--line)}
+.sep-note{text-align:center;font-size:13px;color:var(--ink-3);margin:-8px 0 12px}
+.msg-user{display:flex;flex-direction:column;align-items:flex-end;margin:8px 0 16px}
+.bubble{max-width:80%;background:var(--paper-2);border-radius:12px 4px 12px 12px;padding:10px 16px;font-size:16px;line-height:28px}
+.msg-user .meta{display:flex;align-items:center;gap:4px;margin-top:4px}
+.msg-ai{margin:8px 0 16px}
+.ai-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.ai-body p{margin-bottom:12px}
+.ai-body p:last-child{margin-bottom:0}
+.cite{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;margin:0 2px;border-radius:999px;background:var(--gold-wash);color:var(--gold-ink);font-size:12px;font-weight:600;line-height:1;vertical-align:super;cursor:pointer}
+.ink-fresh{opacity:.42;filter:blur(.6px)}
+.toolline{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);margin-bottom:8px}
+.toolline .dot{width:8px;height:8px;border-radius:50%;background:var(--cinnabar)}
+.toolline.live{font-size:15px;color:var(--ink-2)}
+.receipt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:8px;border-top:1px dashed var(--line)}
+.receipt .txt{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--ink-2)}
+.receipt .txt svg{color:var(--jade)}
+.askcard{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--cinnabar);border-radius:var(--r-3);padding:16px 16px 12px 18px}
+.askcard .q{font-family:var(--font-kai);font-size:18px;line-height:30px}
+.askcard .why{font-size:13px;color:var(--ink-3);margin:2px 0 12px}
+.askcard .opts{display:flex;flex-direction:column;gap:8px}
+.pending{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);padding:12px 16px}
+.pending .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.composer{flex:none;border-top:1px solid var(--line);background:var(--surface);padding:8px 12px 10px}
+.composer .ctx{display:flex;gap:8px;margin-bottom:6px}
+.composer .box{display:flex;align-items:flex-end;gap:6px}
+.composer .field{flex:1;min-height:44px;border:1px solid var(--line-strong);border-radius:var(--r-2);background:var(--paper);padding:9px 12px;font-size:16px;color:var(--ink-3)}
+.sendbtn{width:40px;height:40px;border-radius:50%;background:var(--cinnabar);color:var(--on-cinnabar);display:grid;place-items:center;flex:none;margin-bottom:2px}
+
+/* ===== 命盘 ===== */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--paper-2);border-radius:var(--r-2);padding:3px;height:38px}
+.seg span{display:grid;place-items:center;font-size:15px;color:var(--ink-2);border-radius:6px}
+.seg span.on{background:var(--surface);color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(31,27,22,.08)}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:16px}
+.pillar{text-align:center;padding:12px 2px 10px;border-right:1px solid var(--line);position:relative}
+.pillar:last-child{border-right:0}
+.pillar.dm{outline:1.5px solid var(--cinnabar);outline-offset:-1.5px;background:color-mix(in srgb,var(--cinnabar-wash) 35%,transparent)}
+.pillar .pn{font-size:13px;color:var(--ink-3)}
+.pillar .ss{font-size:13px;color:var(--ink-2);height:20px}
+.glyph{font-family:var(--font-serif);font-size:34px;line-height:40px;font-weight:500}
+.hide{font-size:13px;color:var(--ink-2);margin-top:4px}
+.nayin{font-size:13px;color:var(--ink-3)}
+.dm-tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%)}
+.wood{color:var(--wood)} .fire{color:var(--fire)} .earth{color:var(--earth)} .metal{color:var(--metal)} .water{color:var(--water)}
+.ebar{display:flex;height:8px;border-radius:999px;overflow:hidden;margin:10px 0 6px;gap:2px}
+.ebar i{display:block}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.compare .col{border-top:1px solid var(--line);padding-top:10px}
+.luck{display:flex;gap:8px;overflow:auto;margin-top:10px;padding-bottom:4px}
+.luck .step{flex:none;width:88px;padding:10px 8px;border-radius:var(--r-2);text-align:center;border:1px solid var(--line)}
+.luck .step.now{background:var(--cinnabar-wash);border-color:var(--cinnabar)}
+.luck .gz{font-family:var(--font-serif);font-size:20px;line-height:28px}
+
+/* ===== 塔罗 ===== */
+.steps{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--ink-3);margin-bottom:14px}
+.steps b{color:var(--cinnabar);font-weight:600}
+.spread{display:flex;gap:12px;justify-content:center;margin:12px 0 8px}
+.tcard{width:104px;text-align:center}
+.tcard .face{width:104px;height:178px;border-radius:6px;border:1px solid var(--line-strong);background:var(--surface);display:block}
+.tcard .pos{font-size:13px;color:var(--ink-3);margin-top:6px}
+.tcard .nm{font-size:15px;font-weight:600}
+.tcard.rev .face{transform:rotate(180deg)}
+
+/* ===== 桌面 ===== */
+.desk-wrap{width:1080px;height:675px;overflow:hidden;border:1px solid var(--line-strong);border-radius:12px;box-shadow:var(--shadow-float)}
+.desk{width:1440px;height:900px;transform:scale(.75);transform-origin:0 0;display:grid;grid-template-columns:240px 1fr 320px;background:var(--paper)}
+.rail{background:var(--paper-2);border-right:1px solid var(--line);padding:20px 12px;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px 4px}
+.brand .nm{font-family:var(--font-serif);font-size:19px;font-weight:600}
+.rail .date{font-size:13px;color:var(--ink-3);padding:0 8px 16px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.nav{display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;border-radius:var(--r-2);font-size:15px;color:var(--ink-2);position:relative}
+.nav.on{background:var(--surface);color:var(--ink)}
+.nav.on::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--cinnabar);border-radius:2px}
+.rail .spacer{flex:1}
+.mainc{display:flex;flex-direction:column;min-width:0;min-height:0;height:900px}
+.mainc .chat{flex:1;min-height:0;overflow:auto;padding:24px 56px 16px}
+.mainc .chat-inner{max-width:680px}
+.mainc .composer{padding:12px 56px 16px}
+.mainc .composer .box,.mainc .composer .ctx{max-width:680px}
+.side{border-left:1px solid var(--line);padding:24px 20px;display:flex;flex-direction:column;gap:24px;overflow:auto}
+.nowcard .d{font-family:var(--font-serif);font-size:19px;font-weight:600}
+.cite-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+.chk{display:flex;align-items:center;gap:10px;height:40px;font-size:15px}
+.chk i{width:18px;height:18px;border:1.5px solid var(--line-strong);border-radius:4px;display:grid;place-items:center}
+.chk i.on{background:var(--cinnabar);border-color:var(--cinnabar);color:var(--on-cinnabar)}
+.switch{width:44px;height:26px;border-radius:999px;background:var(--line-strong);position:relative;flex:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--surface)}
+
+/* ===== 样张 ===== */
+.sheet{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:32px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-3);padding:20px}
+.panel h3{font-family:var(--font-serif);font-size:17px;font-weight:600;margin-bottom:12px}
+.swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sw{font-size:12px;color:var(--ink-3);line-height:1.4}
+.sw i{display:block;height:40px;border-radius:6px;border:1px solid var(--line);margin-bottom:4px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.cal .wd{font-size:13px;color:var(--ink-3);height:28px}
+.cal .c{position:relative;height:48px;padding-top:4px;font-size:15px;border-radius:6px}
+.cal .c.out{color:var(--ink-3);opacity:.6}
+.cal .c.today{outline:1.5px solid var(--cinnabar);outline-offset:-1.5px}
+.cal .c .mk{position:absolute;top:1px;right:3px;font-size:12px;line-height:1}
+.cal .c .mk.off{color:var(--jade)} .cal .c .mk.work{color:var(--amber)}
+.cal .c .fe{display:block;font-size:12px;line-height:1.2;color:var(--gold-ink)}
+.cal .c .jq{position:absolute;bottom:4px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--gold)}
+.cal .c .ev{position:absolute;bottom:4px;left:50%;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:var(--cinnabar)}
+.fs-chat{background:#F2F3F5;border-radius:12px;padding:16px}
+:root[data-theme="dark"] .fs-chat{background:#1f1f1f}
+.fs-card{background:#fff;border-radius:8px;overflow:hidden;max-width:340px;box-shadow:0 1px 3px rgba(0,0,0,.08);color:#1F2329}
+:root[data-theme="dark"] .fs-card{background:#2a2a2a;color:#e8e8e8}
+.fs-card .hd{background:#B23A2E;color:#fff;padding:10px 14px;font-weight:600;font-size:15px}
+.fs-card .bd{padding:12px 14px;font-size:14px;line-height:1.7}
+.fs-card .bt{display:block;margin-top:8px;border:1px solid #D0D3D6;border-radius:6px;padding:6px 10px;text-align:center;font-size:14px}
+.fs-card .gr{color:#8F959E;font-size:13px}
+@media (max-width:720px){.desk-wrap{display:none}}
+</style>
+</head>
+<body class="grain">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 3v1M12 20v1M3 12h1M20 12h1M18.4 5.6l-.7.7M6.3 17.7l-.7.7M5.6 5.6l.7.7M17.7 17.7l.7.7"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><path d="M10.4 21.9a10 10 0 0 0 9.9-15.4M13.5 2.1a10 10 0 0 0-9.8 15.4"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><path d="M20 7h-9M14 17H5"/><circle cx="17" cy="17" r="3"/><circle cx="7" cy="7" r="3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/><path d="m9 10 2 2 4-4"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><path d="M16 5h6M19 2v6M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/><circle cx="9" cy="9" r="2"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="m5 12 7-7 7 7M12 19V5"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol>
+  <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M9.9 9.9a3 3 0 1 0 4.2 4.2"/><path d="M10.7 5.1A10.4 10.4 0 0 1 12 5c7 0 10 7 10 7a13 13 0 0 1-1.7 2.7"/><path d="M6.6 6.6A13.5 13.5 0 0 0 2 12s3 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="m2 2 20 20"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4M3 7l2 2 4-4M13 6h8M13 12h8M13 18h8"/></symbol>
+  <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+  <symbol id="i-tick" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+</svg>
+
+<div class="doc">
+  <header class="doc-head">
+    <div style="display:flex;gap:14px;align-items:flex-start">
+      <span class="seal s40">明镜</span>
+      <div>
+        <h1>知命明镜台 v4 · 设计参考稿</h1>
+        <p>新中式「宣纸、墨、朱砂」。本页是 <b>08_设计规范_新中式.md</b> 的视觉示意：token、字号、组件与关键画面。所有数据均为合成示例（合成用户"阿远"，1994-03-12 08:20 成都，四柱 甲戌 丁卯 丁酉 甲辰），时间冻结在 2026年10月17日（周六）10:30。规范与本稿冲突时以规范为准。生产环境字体自托管；本稿使用系统回退字体。</p>
+      </div>
+    </div>
+    <button class="toggle" id="themeBtn" type="button"><svg class="i s16"><use href="#i-sun"/></svg>切换 宣纸 / 夜墨</button>
+  </header>
+
+  <h2 class="sec">一、手机 · 390×844</h2>
+  <p class="sec-note">飞书内嵌时顶栏由飞书提供（本稿保留顶栏以示意浏览器访问）。底部导航五项：今日、对话、命盘、塔罗、我。</p>
+
+  <div class="frames">
+    <!-- ========== 今日 ========== -->
+    <div>
+      <div class="frame-cap">今日 · 首屏只回答"今天是什么日子、我今天有什么事"</div>
+      <div class="phone"><div class="app">
+        <div class="topbar"><span class="title">今日</span><button class="iconbtn" aria-label="设置"><svg class="i"><use href="#i-settings"/></svg></button></div>
+        <div class="content">
+          <div class="h-display">10月17日 · 星期六</div>
+          <div class="sub" style="margin:2px 0 10px">农历九月初八 · 丙午年 戊戌月 甲子日</div>
+          <div class="tags"><span class="tag rest">周末休息</span><span class="tag festival">明天重阳</span><span class="tag festival">霜降还有 6 天</span></div>
+
+          <div style="display:flex;gap:12px;margin:24px 0 4px">
+            <span class="seal s40">明镜</span>
+            <div>
+              <div class="voice">周六好，阿远。明天重阳，记得给家里打个电话。周三的面试，今天可以先把想讲的两件事写下来。</div>
+              <div class="meta" style="margin-top:4px">明镜 · 07:00</div>
+            </div>
+          </div>
+
+          <div class="rule"></div>
+          <div class="h2">今天和这几天</div>
+          <ul class="list" style="margin-top:4px">
+            <li><span class="when tnum">周三 10月21日</span><span style="flex:1">面试</span><span class="tag neutral">晚上我来问你</span></li>
+            <li><span class="when tnum">周五 10月23日</span><span style="flex:1;color:var(--gold-ink)">霜降 · 17:38 交节</span></li>
+          </ul>
+
+          <div class="rule"></div>
+          <div class="h2">今日流日</div>
+          <div class="h3" style="margin-top:4px">甲子日 · 对你是「正印」日</div>
+          <p class="sub" style="font-size:16px;line-height:28px">适合请教前辈、看书充电，把面试要讲的故事理一理。</p>
+          <a class="link" href="#">看依据<svg class="i s16"><use href="#i-right"/></svg></a>
+
+          <div class="rule"></div>
+          <div class="disclosure"><svg class="i s16"><use href="#i-right"/></svg>黄历<span class="count">宜 纳采 会亲友 沐浴 · 忌 开市 出行</span></div>
+
+          <div class="rule" style="margin-top:12px"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><span class="h2">进行中的事</span><a class="link" href="#">全部<svg class="i s16"><use href="#i-right"/></svg></a></div>
+          <ul class="list"><li><span style="flex:1;font-weight:600">跳槽</span><span class="meta">上次进展 10月15日</span></li></ul>
+
+          <button class="btn primary block" style="margin-top:20px">和明镜聊聊</button>
+        </div>
+        <nav class="tabbar">
+          <span class="tab on"><svg class="i s24"><use href="#i-sun"/></svg>今日</span>
+          <span class="tab"><svg class="i s24"><use href="#i-msg"/></svg>对话</span>
+          <span class="tab"><svg class="i s24"><use href="#i-orbit"/></svg>命盘</span>
+          <span class="tab"><svg class="i s24"><use href="#i-layers"/></svg>塔罗</span>
+          <span class="tab"><svg class="i s24"><use href="#i-user"/></svg>我</span>
+        </nav>
+      </div></div>
+    </div>
+
+    <!-- ========== 对话 ========== -->
+    <div>
+      <div class="frame-cap">对话 · 带时间与渠道的历史、记忆回执、工具状态、提问卡</div>
+      <div class="phone"><div class="app">
+        <div class="topbar"><span class="title">明镜</span><button class="iconbtn" aria-label="更多"><svg class="i"><use href="#i-more"/></svg></button></div>
+        <div class="content" style="padding-top:4px">
+          <div class="sep">10月15日 星期四</div>
+          <div class="msg-user">
+            <div class="bubble">周三我有个面试，有点紧张</div>
+            <div class="meta tnum">21:04 · <svg class="i s16"><use href="#i-send"/></svg>飞书</div>
+          </div>
+          <div class="msg-ai">
+            <div class="ai-head"><span class="seal s24">明镜</span><span class="meta tnum">明镜 · 21:05</span></div>
+            <div class="ai-body"><p>紧张说明你在意这次机会，挺正常的。面试前一两天，把你最想让对方记住的两件事写下来，比临时背答案管用。</p></div>
+            <div class="receipt"><span class="txt"><svg class="i s16"><use href="#i-check"/></svg>记下了：10月21日（周三）面试</span><button class="btn ghost" style="height:32px">撤销</button></div>
+          </div>
+
+          <div class="sep">今天 10月17日 星期六</div>
+          <div class="sep-note">隔了 2 天</div>
+          <div class="msg-user">
+            <div class="bubble">那天对我来说怎么样？</div>
+            <div class="meta tnum">10:30</div>
+          </div>
+          <div class="msg-ai">
+            <div class="ai-head"><span class="seal s24">明镜</span><span class="meta tnum">明镜 · 10:31 · 复核中</span></div>
+            <div class="toolline"><span class="dot"></span>查了 1 处记忆 · 算了 10月21日 的流日<svg class="i s16"><use href="#i-right"/></svg></div>
+            <div class="ai-body">
+              <p>周三是戊辰日<span class="cite">1</span>，对你（丁火日主）来说是「伤官」日：脑子快、表达欲强，适合把想法讲出来。<span class="ink-fresh">要留意的是别急着反驳面试官，先听完再说。</span></p>
+            </div>
+            <div class="askcard">
+              <div class="q">这次是技术面，还是谈薪的终面？</div>
+              <div class="why">为什么问：不同轮次要准备的重点不一样</div>
+              <div class="opts">
+                <button class="btn secondary left">技术面</button>
+                <button class="btn secondary left">终面 · 谈薪</button>
+                <button class="btn secondary left">还不确定</button>
+                <button class="btn ghost left">我自己说</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="composer">
+          <div class="ctx"><span class="tag neutral">跳槽 ×</span></div>
+          <div class="box">
+            <button class="iconbtn" aria-label="添加图片"><svg class="i"><use href="#i-img"/></svg></button>
+            <div class="field">和明镜说说…</div>
+            <span class="sendbtn" aria-label="发送"><svg class="i"><use href="#i-up"/></svg></span>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <span class="tab"><svg class="i s24"><use href="#i-sun"/></svg>今日</span>
+          <span class="tab on"><svg class="i s24"><use href="#i-msg"/></svg>对话</span>
+          <span class="tab"><svg class="i s24"><use href="#i-orbit"/></svg>命盘</span>
+          <span class="tab"><svg class="i s24"><use href="#i-layers"/></svg>塔罗</span>
+          <span class="tab"><svg class="i s24"><use href="#i-user"/></svg>我</span>
+        </nav>
+      </div></div>
+    </div>
+
+    <!-- ========== 命盘 ========== -->
+    <div>
+      <div class="frame-cap">命盘 · 八字（示意数据；旺衰、喜用等结论为占位，实际以计算与技能包为准）</div>
+      <div class="phone"><div class="app">
+        <div class="topbar"><span class="title">命盘</span><button class="iconbtn" aria-label="更多"><svg class="i"><use href="#i-more"/></svg></button></div>
+        <div class="content">
+          <div class="seg"><span class="on">八字</span><span>紫微</span><span>星盘</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+            <span class="sub">看哪一天：<b style="color:var(--ink)">今天 10月17日</b></span>
+            <svg class="i s16" style="color:var(--ink-3)"><use href="#i-right"/></svg>
+          </div>
+          <div class="seg" style="margin-top:8px"><span class="on">本命</span><span>流年</span><span>流月</span><span>流日</span></div>
+
+          <div class="pillars" style="margin-top:24px">
+            <div class="pillar"><div class="pn">年柱</div><div class="ss">正印</div><div class="glyph wood">甲</div><div class="glyph earth">戌</div><div class="hide"><span class="earth">戊</span> · <span class="metal">辛</span> · <span class="fire">丁</span></div><div class="nayin">山头火</div></div>
+            <div class="pillar"><div class="pn">月柱</div><div class="ss">比肩</div><div class="glyph fire">丁</div><div class="glyph wood">卯</div><div class="hide"><span class="wood">乙</span></div><div class="nayin">炉中火</div></div>
+            <div class="pillar dm"><span class="tag accent dm-tag" style="height:22px">日主</span><div class="pn">日柱</div><div class="ss">&nbsp;</div><div class="glyph fire">丁</div><div class="glyph metal">酉</div><div class="hide"><span class="metal">辛</span></div><div class="nayin">山下火</div></div>
+            <div class="pillar"><div class="pn">时柱</div><div class="ss">正印</div><div class="glyph wood">甲</div><div class="glyph earth">辰</div><div class="hide"><span class="earth">戊</span> · <span class="wood">乙</span> · <span class="water">癸</span></div><div class="nayin">覆灯火</div></div>
+          </div>
+
+          <div class="h2" style="margin-top:24px">五行构成</div>
+          <div class="ebar"><i style="flex:3;background:var(--wood)"></i><i style="flex:2;background:var(--fire)"></i><i style="flex:2;background:var(--earth)"></i><i style="flex:1;background:var(--metal)"></i></div>
+          <div class="meta tnum"><span class="wood">木3</span>　<span class="fire">火2</span>　<span class="earth">土2</span>　<span class="metal">金1</span>　<span class="water">水0</span>　· 这是构成计数，不等于旺衰</div>
+
+          <div class="h2" style="margin-top:24px">旺衰</div>
+          <div class="compare">
+            <div class="col"><div style="font-size:15px;font-weight:600">月令通根打分</div><span class="tag accent" style="margin:6px 0">偏强 · 示意</span><div class="meta">依据〔c3〕〔c4〕</div></div>
+            <div class="col"><div style="font-size:15px;font-weight:600">得令 / 得地 / 得势</div><span class="tag accent" style="margin:6px 0">偏强 · 示意</span><div class="meta">依据〔c3〕〔c5〕</div></div>
+          </div>
+          <div class="meta" style="margin-top:6px">两种方法结论一致</div>
+
+          <div class="h2" style="margin-top:24px">大运</div>
+          <div class="luck tnum">
+            <div class="step"><div class="meta">9 岁 · 2002</div><div class="gz"><span class="earth">戊</span><span class="earth">辰</span></div><div class="meta">伤官</div></div>
+            <div class="step"><div class="meta">19 岁 · 2012</div><div class="gz"><span class="earth">己</span><span class="fire">巳</span></div><div class="meta">食神</div></div>
+            <div class="step now"><div class="meta" style="color:var(--cinnabar)">现在 · 2022</div><div class="gz"><span class="metal">庚</span><span class="fire">午</span></div><div class="meta">正财</div></div>
+            <div class="step"><div class="meta">39 岁 · 2032</div><div class="gz"><span class="metal">辛</span><span class="earth">未</span></div><div class="meta">偏财</div></div>
+          </div>
+
+          <div class="rule"></div>
+          <div class="disclosure"><svg class="i s16"><use href="#i-right"/></svg>计算口径与引擎<span class="count">真太阳时 · 节气口径 · 引擎版本</span></div>
+        </div>
+        <nav class="tabbar">
+          <span class="tab"><svg class="i s24"><use href="#i-sun"/></svg>今日</span>
+          <span class="tab"><svg class="i s24"><use href="#i-msg"/></svg>对话</span>
+          <span class="tab on"><svg class="i s24"><use href="#i-orbit"/></svg>命盘</span>
+          <span class="tab"><svg class="i s24"><use href="#i-layers"/></svg>塔罗</span>
+          <span class="tab"><svg class="i s24"><use href="#i-user"/></svg>我</span>
+        </nav>
+      </div></div>
+    </div>
+
+    <!-- ========== 塔罗 ========== -->
+    <div>
+      <div class="frame-cap">塔罗 · 解读（牌面图为示意，产品使用 static/tarot/ 中的 78 张原创 SVG）</div>
+      <div class="phone"><div class="app">
+        <div class="topbar"><span class="title">塔罗</span><button class="iconbtn" aria-label="历史"><svg class="i"><use href="#i-list"/></svg></button></div>
+        <div class="content">
+          <div class="steps">提问 · 选牌 · 揭牌 · <b>解读</b></div>
+          <div class="h3">这次面试我该注意什么？</div>
+          <div class="meta">梳理问题 · 3 张 · 含逆位 · 10月17日</div>
+
+          <div class="spread">
+            <div class="tcard">
+              <svg class="face" viewBox="0 0 104 178"><rect x="6" y="6" width="92" height="166" rx="3" fill="none" stroke="var(--gold)" stroke-width="1"/><circle cx="52" cy="80" r="26" fill="none" stroke="var(--gold)"/><circle cx="52" cy="80" r="14" fill="var(--gold-wash)" stroke="var(--gold)"/><text x="52" y="152" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="serif">VIII</text></svg>
+              <div class="pos">过去的影响</div><div class="nm">星币八</div>
+            </div>
+            <div class="tcard rev">
+              <svg class="face" viewBox="0 0 104 178"><rect x="6" y="6" width="92" height="166" rx="3" fill="none" stroke="var(--gold)" stroke-width="1"/><path d="M52 40 L52 120 M40 52 L64 52" stroke="var(--ink-2)" stroke-width="1.5"/><path d="M30 130 Q52 110 74 130" fill="none" stroke="var(--gold)"/><text x="52" y="152" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="serif">KN</text></svg>
+              <div class="pos">现在的状态</div><div class="nm">宝剑骑士</div><span class="tag work" style="margin-top:4px">逆位</span>
+            </div>
+            <div class="tcard">
+              <svg class="face" viewBox="0 0 104 178"><rect x="6" y="6" width="92" height="166" rx="3" fill="none" stroke="var(--gold)" stroke-width="1"/><path d="M52 50 L58 72 L80 72 L62 85 L69 107 L52 94 L35 107 L42 85 L24 72 L46 72 Z" fill="none" stroke="var(--cinnabar)" stroke-width="1.2"/><text x="52" y="152" text-anchor="middle" font-size="11" fill="var(--ink-2)" font-family="serif">XVII</text></svg>
+              <div class="pos">可以怎么做</div><div class="nm">星星</div>
+            </div>
+          </div>
+
+          <div class="ai-head" style="margin-top:16px"><span class="seal s24">明镜</span><span class="meta">解读 v1 · 10:42</span></div>
+          <div class="ai-body">
+            <p>这三张连起来看：你过去在专业上下过扎实的功夫（星币八），现在的问题不在能力，而在节奏——逆位的宝剑骑士像是"想一口气把话说完"。最后一张星星提醒你：带着希望、慢一点，让对方看见你。</p>
+          </div>
+          <div class="rule" style="margin:16px 0 4px"></div>
+          <div class="disclosure"><svg class="i s16"><use href="#i-right"/></svg>每张牌<span class="count">3 张 · 含反思问题</span></div>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn secondary">补充背景再解读</button>
+            <button class="btn ghost">带去对话</button>
+          </div>
+        </div>
+        <nav class="tabbar">
+          <span class="tab"><svg class="i s24"><use href="#i-sun"/></svg>今日</span>
+          <span class="tab"><svg class="i s24"><use href="#i-msg"/></svg>对话</span>
+          <span class="tab"><svg class="i s24"><use href="#i-orbit"/></svg>命盘</span>
+          <span class="tab on"><svg class="i s24"><use href="#i-layers"/></svg>塔罗</span>
+          <span class="tab"><svg class="i s24"><use href="#i-user"/></svg>我</span>
+        </nav>
+      </div></div>
+    </div>
+  </div>
+
+  <h2 class="sec">二、桌面 · 1440×900（按 75% 缩放展示）</h2>
+  <p class="sec-note">左侧栏 240 · 消息列 ≤680 · 右栏 320（此刻、这轮用到的、进行中的事、无痕）。</p>
+  <div class="desk-wrap"><div class="desk grain">
+    <aside class="rail">
+      <div class="brand"><span class="seal s28">明镜</span><span class="nm">明镜</span></div>
+      <div class="date tnum">10月17日 周六 · 九月初八</div>
+      <span class="nav"><svg class="i"><use href="#i-sun"/></svg>今日</span>
+      <span class="nav on"><svg class="i"><use href="#i-msg"/></svg>对话</span>
+      <span class="nav"><svg class="i"><use href="#i-orbit"/></svg>命盘</span>
+      <span class="nav"><svg class="i"><use href="#i-layers"/></svg>塔罗</span>
+      <span class="nav"><svg class="i"><use href="#i-list"/></svg>事项</span>
+      <span class="nav"><svg class="i"><use href="#i-user"/></svg>关于我</span>
+      <span class="spacer"></span>
+      <span class="nav"><svg class="i"><use href="#i-eyeoff"/></svg>无痕模式</span>
+      <span class="nav"><svg class="i"><use href="#i-settings"/></svg>设置</span>
+    </aside>
+    <section class="mainc">
+      <div class="chat"><div class="chat-inner">
+        <div class="sep">10月15日 星期四</div>
+        <div class="msg-user"><div class="bubble">周三我有个面试，有点紧张</div><div class="meta tnum">21:04 · <svg class="i s16"><use href="#i-send"/></svg>飞书</div></div>
+        <div class="msg-ai">
+          <div class="ai-head"><span class="seal s24">明镜</span><span class="meta tnum">明镜 · 21:05</span></div>
+          <div class="ai-body"><p>紧张说明你在意这次机会，挺正常的。面试前一两天，把你最想让对方记住的两件事写下来，比临时背答案管用。到时候晚上我来问问你。</p></div>
+          <div class="receipt"><span class="txt"><svg class="i s16"><use href="#i-check"/></svg>记下了：10月21日（周三）面试</span><button class="btn ghost" style="height:32px">撤销</button></div>
+        </div>
+        <div class="sep">今天 10月17日 星期六</div>
+        <div class="sep-note">隔了 2 天</div>
+        <div class="msg-user"><div class="bubble">那天对我来说怎么样？顺便说下，我最近身体不太好，在吃药调理</div><div class="meta tnum">10:30</div></div>
+        <div class="msg-ai">
+          <div class="ai-head"><span class="seal s24">明镜</span><span class="meta tnum">明镜 · 10:31</span><span class="meta" style="display:inline-flex;align-items:center;gap:4px;color:var(--gold-ink)"><svg class="i s16"><use href="#i-pen"/></svg>已修订</span></div>
+          <div class="toolline"><span class="dot"></span>查了 1 处记忆 · 算了 10月21日 的流日<svg class="i s16"><use href="#i-right"/></svg></div>
+          <div class="ai-body">
+            <p>先说身体：调理期间多留点睡眠给自己，面试前一晚别熬夜。</p>
+            <p>周三是戊辰日<span class="cite">1</span>，对你（丁火日主）来说是「伤官」日：脑子快、表达欲强，适合把想法讲出来；要留意的是别急着反驳面试官，先听完再说<span class="cite">2</span>。</p>
+          </div>
+          <div class="disclosure"><svg class="i s16"><use href="#i-book"/></svg>命理依据<span class="count">2 条 · 按流日十神看</span></div>
+          <div class="pending">
+            <div style="font-size:15px">这个比较私人，要不要我记住？</div>
+            <div class="meta">"最近身体不太好，在吃药调理"</div>
+            <div class="row"><button class="btn primary" style="height:36px">记住</button><button class="btn secondary" style="height:36px">不用</button><button class="btn ghost" style="height:36px">以后这类都记</button></div>
+          </div>
+        </div>
+      </div></div>
+      <div class="composer">
+        <div class="ctx"><span class="tag neutral">跳槽 ×</span></div>
+        <div class="box"><button class="iconbtn" aria-label="添加图片"><svg class="i"><use href="#i-img"/></svg></button><div class="field">和明镜说说…</div><span class="sendbtn"><svg class="i"><use href="#i-up"/></svg></span></div>
+      </div>
+    </section>
+    <aside class="side">
+      <div class="nowcard">
+        <div class="meta">此刻</div>
+        <div class="d tnum">10月17日 星期六 10:31</div>
+        <div class="sub">农历九月初八 · 甲子日</div>
+        <div class="tags" style="margin-top:8px"><span class="tag rest">周末休息</span><span class="tag festival">明天重阳</span></div>
+        <div class="meta" style="margin-top:8px">霜降 10月23日 · 元旦还有 76 天（2027 安排未公布）</div>
+      </div>
+      <div>
+        <div class="h3">这轮用到的</div>
+        <div class="cite-row"><span class="cite" style="vertical-align:baseline">1</span><span>周三 10月21日 流日 戊辰 · 伤官<br><span class="meta">程序计算 · 按流日十神看</span></span></div>
+        <div class="cite-row"><span class="cite" style="vertical-align:baseline">2</span><span>"有点紧张"· 面试安排<br><span class="meta">你在 10月15日 飞书上说的</span></span></div>
+      </div>
+      <div>
+        <div class="h3">进行中的事</div>
+        <div class="chk"><i class="on"><svg class="i s16"><use href="#i-tick"/></svg></i>跳槽</div>
+        <div class="chk"><i></i>考研准备</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center"><span style="display:flex;gap:8px;align-items:center;font-size:15px"><svg class="i"><use href="#i-eyeoff"/></svg>无痕模式</span><span class="switch"></span></div>
+    </aside>
+  </div></div>
+
+  <h2 class="sec">三、组件与 token 样张</h2>
+  <p class="sec-note">切换右上角按钮查看「夜墨」主题。</p>
+  <div class="sheet">
+    <div class="panel">
+      <h3>色彩</h3>
+      <div class="swatches">
+        <div class="sw"><i style="background:var(--paper)"></i>paper</div>
+        <div class="sw"><i style="background:var(--paper-2)"></i>paper-2</div>
+        <div class="sw"><i style="background:var(--surface)"></i>surface</div>
+        <div class="sw"><i style="background:var(--ink)"></i>ink</div>
+        <div class="sw"><i style="background:var(--ink-2)"></i>ink-2</div>
+        <div class="sw"><i style="background:var(--ink-3)"></i>ink-3</div>
+        <div class="sw"><i style="background:var(--cinnabar)"></i>cinnabar</div>
+        <div class="sw"><i style="background:var(--gold)"></i>gold</div>
+        <div class="sw"><i style="background:var(--jade)"></i>jade 木</div>
+        <div class="sw"><i style="background:var(--amber)"></i>amber</div>
+        <div class="sw"><i style="background:var(--metal)"></i>metal 金</div>
+        <div class="sw"><i style="background:var(--water)"></i>water 水</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>字号阶梯</h3>
+      <div style="font-family:var(--font-serif);font-size:26px;line-height:36px;font-weight:600">10月17日 · 星期六</div>
+      <div style="font-family:var(--font-serif);font-size:22px;line-height:32px;font-weight:600">页面标题 h1</div>
+      <div style="font-family:var(--font-serif);font-size:18px;line-height:28px;font-weight:600">分节标题 h2</div>
+      <div style="font-size:17px;font-weight:600">小节标题 h3</div>
+      <div style="font-size:16px;line-height:28px">正文 16/28：像老朋友聊天，短段落，先说结论。</div>
+      <div style="font-size:15px;color:var(--ink-2)">次要正文 15/24</div>
+      <div class="meta">元信息 13/20 · 全站最小字号</div>
+      <div class="voice" style="margin-top:6px">明镜一句话（楷体，仅两处使用）</div>
+    </div>
+    <div class="panel">
+      <h3>按钮与标签</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px"><button class="btn primary">和明镜聊聊</button><button class="btn secondary">补充出生资料</button><button class="btn ghost">撤销</button></div>
+      <div class="tags"><span class="tag rest">休息日</span><span class="tag work">调休上班</span><span class="tag festival">重阳</span><span class="tag neutral">跳槽</span><span class="tag accent">日主</span></div>
+    </div>
+    <div class="panel">
+      <h3>记忆回执三态</h3>
+      <div class="receipt" style="border-top:0;margin-top:0"><span class="txt"><svg class="i s16"><use href="#i-check"/></svg>记下了：10月21日（周三）面试</span><button class="btn ghost" style="height:32px">撤销</button></div>
+      <div class="pending"><div style="font-size:15px">这个比较私人，要不要我记住？</div><div class="row"><button class="btn primary" style="height:36px">记住</button><button class="btn secondary" style="height:36px">不用</button><button class="btn ghost" style="height:36px">以后这类都记</button></div></div>
+      <div class="meta" style="margin-top:10px;display:flex;gap:6px;align-items:center"><svg class="i s16"><use href="#i-undo"/></svg>已撤销，不会再提起</div>
+    </div>
+    <div class="panel">
+      <h3>月历 · 2026年10月</h3>
+      <div class="cal tnum">
+        <div class="wd">一</div><div class="wd">二</div><div class="wd">三</div><div class="wd">四</div><div class="wd">五</div><div class="wd">六</div><div class="wd">日</div>
+        <div class="c out">28</div><div class="c out">29</div><div class="c out">30</div>
+        <div class="c">1<span class="mk off">休</span><span class="fe">国庆</span></div><div class="c">2<span class="mk off">休</span></div><div class="c">3<span class="mk off">休</span></div><div class="c">4<span class="mk off">休</span></div>
+        <div class="c">5<span class="mk off">休</span></div><div class="c">6<span class="mk off">休</span></div><div class="c">7<span class="mk off">休</span></div><div class="c">8<span class="fe">寒露</span></div><div class="c">9</div><div class="c">10<span class="mk work">班</span></div><div class="c">11</div>
+        <div class="c">12</div><div class="c">13</div><div class="c">14</div><div class="c">15</div><div class="c">16</div><div class="c today">17</div><div class="c">18<span class="fe">重阳</span></div>
+        <div class="c">19</div><div class="c">20</div><div class="c">21<span class="ev"></span></div><div class="c">22</div><div class="c">23<span class="fe">霜降</span></div><div class="c">24</div><div class="c">25</div>
+        <div class="c">26</div><div class="c">27</div><div class="c">28</div><div class="c">29</div><div class="c">30</div><div class="c">31</div><div class="c out">1</div>
+      </div>
+      <div class="meta" style="margin-top:8px"><span style="color:var(--jade)">休</span> 法定假日 · <span style="color:var(--amber)">班</span> 调休上班 · 古金字 节气/节日 · 朱砂点 你的安排</div>
+    </div>
+    <div class="panel">
+      <h3>飞书卡片（示意，非真实渲染）</h3>
+      <div class="fs-chat">
+        <div class="fs-card">
+          <div class="hd">明镜想问你</div>
+          <div class="bd">
+            <b>这次是技术面，还是谈薪的终面？</b><br><span class="gr">为什么问：不同轮次要准备的重点不一样</span>
+            <span class="bt">技术面</span><span class="bt">终面 · 谈薪</span><span class="bt">还不确定</span>
+            <div class="gr" style="margin-top:8px">也可以直接打字告诉我</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeBtn'), key='mjt-ref-theme';
+  try{var saved=localStorage.getItem(key); if(saved) root.setAttribute('data-theme',saved);}catch(e){}
+  btn.addEventListener('click',function(){
+    var next=root.getAttribute('data-theme')==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem(key,next);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

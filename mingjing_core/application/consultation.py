@@ -21,6 +21,7 @@ from ..domain.json_values import ensure_finite_json
 from ..repositories.postgres import PostgresRepository, fingerprint
 from ..knowledge import KnowledgeRegistry
 from ..runtime import LangGraphRuntime
+from ..timekit.clock import get_clock
 from .memory import MemoryService
 
 SHANGHAI = timezone(timedelta(hours=8))
@@ -40,7 +41,7 @@ decision=true时独立填写至少两个可行decision_options和至少一项act
 
 
 def today():
-    return datetime.now(SHANGHAI).date().isoformat()
+    return get_clock().now().astimezone(SHANGHAI).date().isoformat()
 
 
 def selected_facts(snapshot, message, limit=100):

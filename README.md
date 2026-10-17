@@ -1,3 +1,7 @@
+# v4 改造进行中
+
+设计文档见 [docs/v4/](docs/v4/)，当前阶段为 [P0：启动、基线与评测框架](docs/v4/execplans/P0_baseline.md)。
+
 # 知命明镜台 Core v3
 
 AI 接手请先阅读 [完整项目交接说明](docs/AI_HANDOFF.md)，其中包含 GitHub 版本、架构、API、数据库、部署、测试证据与已知限制。
