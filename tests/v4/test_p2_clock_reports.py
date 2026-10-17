@@ -91,3 +91,29 @@ def test_report_adapter_sends_explicit_date_and_period_into_unchanged_service(p2
         assert all(value in run["request"]["message"] for value in result["report"]["period"].values())
     finally:
         service.runtime.purge(result["meta"]["core_run"]["run_id"])
+
+
+def test_intake_today_matches_owner_timezone_now_block_under_frozen_clock(p2_repo):
+    from psycopg import sql
+    from psycopg.types.json import Jsonb
+
+    original = get_clock()
+    set_clock(FrozenClock(datetime.fromisoformat("2026-10-17T10:30:00+08:00")))
+    model = CapturingModel()
+    service = ConsultationService(p2_repo, model=model)
+    try:
+        with p2_repo.transaction("alice") as connection:
+            connection.execute(
+                sql.SQL("UPDATE {} SET settings=settings||%s WHERE id='alice'").format(p2_repo.table("core_owners")),
+                (Jsonb({"timezone": "America/New_York"}),),
+            )
+        result = asyncio.run(
+            service.consult(owner="alice", message="今天核对安排", request_id="owner-zone", depth="fast")
+        )
+        data = model.requests[0]["payload"]["reference_data"]
+        assert data["today"] == "2026-10-16"
+        assert "2026年10月16日" in data["now"]
+    finally:
+        if "result" in locals():
+            service.runtime.purge(result["meta"]["core_run"]["run_id"])
+        set_clock(original)

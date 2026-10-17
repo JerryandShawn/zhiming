@@ -129,3 +129,18 @@ def test_new_year_terms_have_chinese_names_and_naive_time_is_rejected():
     assert almanac(datetime(2027, 1, 1, tzinfo=SHANGHAI)).jieqi["current"] == "冬至"
     with pytest.raises(ValueError):
         almanac(datetime(2026, 10, 17))
+
+
+@pytest.mark.parametrize("zone", ["Asia/Shanghai", "America/New_York"])
+@pytest.mark.parametrize(
+    "instant,year,month",
+    [
+        ("2026-02-04T04:02:07+08:00", "乙巳", "己丑"),
+        ("2026-02-04T04:02:09+08:00", "丙午", "庚寅"),
+    ],
+)
+def test_year_and_month_pillars_follow_same_physical_lichun_instant_in_each_zone(zone, instant, year, month):
+    value = almanac(datetime.fromisoformat(instant), zone)
+    assert value.ganzhi["year"] == year
+    assert value.ganzhi["month"] == month
+    assert (value.jieqi["current"] == "立春") == (year == "丙午")

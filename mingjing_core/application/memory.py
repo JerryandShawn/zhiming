@@ -12,6 +12,7 @@ from mingjing_core.memory.policy import authorization_clause, has_optout, hypoth
 from mingjing_core.memory.projections import redact_ranges
 from mingjing_core.memory.threads import message_fields, project_sources, record_assistant
 from mingjing_core.timekit.clock import get_clock
+from mingjing_core.timekit.timestamps import history_instant
 
 OPTOUT = re.compile(r'(?:不要|不用|不许|禁止|不允许|别|不想|不愿|不需要).{0,12}(?:保存|存储|记录|记住|留存|归档|存记忆|加入.{0,3}记忆)|(?:不得|不能)(?:保存|存储|记录|留存)|(?:不保存|不存储|不记录|不留存)')
 SAVE_AUTH = re.compile(r'(?:请(?:你|帮我|替我|为我)?|(?:我)?(?:同意|允许|授权)(?:你|系统)?|(?:我)?(?:确认|可以))\s*(?:保存|存储|记录|记住|留存|归档)(?![的过了])|(?:^|[，,:：。；;\n])\s*(?:记住|保存|记录)(?:我|这|以下)')
@@ -88,7 +89,13 @@ class MemoryService:
                     old['case_ids']=cases
                 return old
             stamp=at.isoformat() if isinstance(at,datetime) else str(at or get_clock().now().isoformat())
-            fields=message_fields(subject,stamp,conversation_id)
+            effective=stamp
+            if history_instant(stamp) is None:
+                # Legacy unknown text stays original; PostgreSQL transaction time
+                # is the same created_at fallback used by the history API.
+                with self.repo.transaction(owner) as connection:
+                    effective=connection.execute("SELECT now() AS at").fetchone()['at']
+            fields=message_fields(subject,effective,conversation_id)
             return self.repo.put(owner,'message',ident,dict(fields,content=content,role=role,channel=channel,source_id=str(source_id),external_id=external_id,conversation_id=conversation_id,case_ids=case_ids or [],at=stamp,policy=policy),subject=subject,expected_revision=0,operation_id=operation_id)
 
     def record_assistant_message(self,owner,subject,thread_id,text,*,run_id,kind='chat',used_fact_ids=(),channel,at=None,**lineage):

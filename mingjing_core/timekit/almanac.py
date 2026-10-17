@@ -63,8 +63,8 @@ def almanac(dt: datetime, tz: str | ZoneInfo = "Asia/Shanghai") -> Almanac:
             "is_leap": lunar.getMonth() < 0,
         },
         ganzhi={
-            "year": lunar.getYearInGanZhiExact(),
-            "month": lunar.getMonthInGanZhiExact(),
+            "year": physical.getYearInGanZhiExact(),
+            "month": physical.getMonthInGanZhiExact(),
             "day": lunar.getDayInGanZhi(),
             "hour": lunar.getTimeInGanZhi(),
         },

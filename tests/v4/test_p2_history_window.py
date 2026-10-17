@@ -79,3 +79,17 @@ def test_history_after_10001_old_backfilled_replies_preserves_latest_user_and_pr
     assert history_window(p2_repo, "alice", "self", "current", 1, None, "用户甲")[0]["id"] == first["id"]
     assert history_window(p2_repo, "alice", "self", "other-topic", 20, None, "") == []
     assert history_window(p2_repo, "bob", "self", "shared", 20, None, "") == []
+
+
+def test_unknown_legacy_time_preserves_raw_source_and_uses_created_instant(p2_repo):
+    from mingjing_core.timekit.timestamps import history_instant
+
+    memory = MemoryService(p2_repo)
+    source = memory.receive(
+        "alice", content="合成未知旧时间", source_id="unknown", channel="migration", at="旧时间未知"
+    )
+    row = history_window(p2_repo, "alice", "self", "shared", 10, None, "")[0]
+    assert row["at"] == source["at"] == "旧时间未知"
+    assert row["at_ms"] == int(history_instant(source["created_at"]).timestamp() * 1000)
+    assert row["cursor"].startswith(history_instant(source["created_at"]).isoformat(timespec="microseconds"))
+    assert memory.snapshot("alice")["history"][0]["id"] == source["id"]

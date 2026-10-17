@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 
 import yaml
 
-from mingjing_core.timekit.clock import get_clock
+from mingjing_core.timekit.clock import FrozenClock, get_clock
 from mingjing_core.timekit.now_block import render_now_block
 from mingjing_core.timekit.timestamps import history_instant
 
@@ -39,7 +39,14 @@ def recent_history(snapshot) -> list[dict]:
     return result
 
 
-def now_context(run, snapshot) -> str:
+def program_clock(service, owner, run):
+    value = service._record(owner, run["id"], "program_time")
+    if value is None:
+        value = service._store(owner, run, "program_time", {"at": get_clock().now().isoformat()})
+    return FrozenClock(history_instant(value["at"]))
+
+
+def now_context(run, snapshot, *, clock=None) -> str:
     request = run["request"]
     previous = [
         message
@@ -49,4 +56,4 @@ def now_context(run, snapshot) -> str:
         and message.get("channel") != "scheduled_report"
     ]
     last = previous[-1] if previous else None
-    return render_now_block(snapshot["settings"], get_clock(), last, snapshot.get("facts", []))
+    return render_now_block(snapshot["settings"], clock or get_clock(), last, snapshot.get("facts", []))

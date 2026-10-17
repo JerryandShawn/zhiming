@@ -8,6 +8,7 @@ import os
 import re
 import uuid
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from psycopg import sql
 
 from ..adapters.model import ConfiguredModel
@@ -23,7 +24,7 @@ from ..knowledge import KnowledgeRegistry
 from ..runtime import LangGraphRuntime
 from ..timekit.clock import get_clock
 from .memory import MemoryService
-from .consultation_context import SYSTEM_POLICY_VERSION, crisis_policy, now_context, recent_history
+from .consultation_context import SYSTEM_POLICY_VERSION, crisis_policy, now_context, program_clock, recent_history
 
 SHANGHAI = timezone(timedelta(hours=8))
 SYSTEM_POLICY = """你为知命明镜台提供本阶段结构化结果。只调用submit一次。
@@ -43,8 +44,8 @@ reference_data.now 是此刻的真实时间与历法信息；涉及日期、星�
 recent_history 中 role=assistant 的是你之前的回答，用户说'那个/第二个/上次'时据此接续。""" + '\n' + crisis_policy()
 
 
-def today():
-    return get_clock().now().astimezone(SHANGHAI).date().isoformat()
+def today(*, clock=None, tz="Asia/Shanghai"):
+    return (clock or get_clock()).now().astimezone(ZoneInfo(tz)).date().isoformat()
 
 
 def selected_facts(snapshot, message, limit=100):
@@ -340,9 +341,10 @@ class ConsultationService:
                 intake_versions['fact:' + fact['id']] = fact['revision']
         for history in snap.get('history', []):
             if history.get('id') and history.get('revision'): intake_versions['message:' + history['id']] = history['revision']
+        clock = program_clock(self,owner,run)
         payload = {'reference_data': {
             'message': req['message'], 'subject_id': run['subject'], 'case_ids': req['case_ids'],
-            'selection': req['selection'], 'today': today(), 'now': now_context(run,snap), 'requested_mode': req['mode'],
+            'selection': req['selection'], 'today': today(clock=clock,tz=snap['settings'].get('timezone','Asia/Shanghai')), 'now': now_context(run,snap,clock=clock), 'requested_mode': req['mode'],
             'current_facts': [{'id': f['id'], 'content': f.get('content', ''), 'case_id': f.get('case_id'),
                                'kind': f.get('kind')} for f in selected_facts(snap, req['message'], 80)],
             'recent_history': recent_history(snap)},
@@ -511,7 +513,7 @@ class ConsultationService:
         calculation = self._record(owner, run['id'], 'calculation')
         return {'reference_data': {'question': run['request']['message'], 'plan': plan,
             'facts': selected_facts(snap, run['request']['message']),
-            'recent_history': recent_history(snap), 'now': now_context(run,snap),
+            'recent_history': recent_history(snap), 'now': now_context(run,snap,clock=program_clock(self,owner,run)),
             'claims': calculation['claims'], 'gaps': calculation['gaps'], 'calculation_errors': calculation['calculation']['errors'],
             'attachment_observations_unverified': self._record(owner, run['id'], 'intake').get('attachment_observations', []),
             'specialists': self._record(owner, run['id'], 'specialists')['specialists']},
