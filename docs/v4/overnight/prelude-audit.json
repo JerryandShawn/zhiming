@@ -1,0 +1,476 @@
+{
+  "audit_version": "overnight-prelude-audit-v1",
+  "generated_at_utc": "2026-10-17T16:11:54.272951+00:00",
+  "base_commit": "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2",
+  "base_tree": "f302b969d024425c3814f374771ec0a875c9aa59",
+  "document_count": 8,
+  "documents_all_normalized_equal": true,
+  "all_checks_passed": true,
+  "source_audit_sha256": "4adce3f3fe6c63317542a951e46e4ac649c2e07dc46b3aa11d9ad818c54ab449",
+  "documents": [
+    {
+      "repository_path": "docs/v4/01_架构诊断报告.md",
+      "base_git_blob": "9f17eeca95fd17bdcc589d2a131980ff2831ad3c",
+      "source_sha256": "dc35df38b57d0de94b813a78f20ebbd9df602cac0442d1ad43c956b014f73010",
+      "git_bytes_sha256": "dc35df38b57d0de94b813a78f20ebbd9df602cac0442d1ad43c956b014f73010",
+      "normalized_sha256": "dc35df38b57d0de94b813a78f20ebbd9df602cac0442d1ad43c956b014f73010",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    },
+    {
+      "repository_path": "docs/v4/02_v4架构蓝图.md",
+      "base_git_blob": "4e085c978cd1853c5691ab49395487d3e73dcd18",
+      "source_sha256": "a6c484f2dc21c3005c07e000fdc4d484c39e8cf6f99f112be41d9e0dfe7db8cb",
+      "git_bytes_sha256": "a6c484f2dc21c3005c07e000fdc4d484c39e8cf6f99f112be41d9e0dfe7db8cb",
+      "normalized_sha256": "a6c484f2dc21c3005c07e000fdc4d484c39e8cf6f99f112be41d9e0dfe7db8cb",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    },
+    {
+      "repository_path": "docs/v4/06_明镜台系统提示词.md",
+      "base_git_blob": "b40441ba18f57d5a896ce591377bf28f72b3e029",
+      "source_sha256": "e98eee40a42140a6b48ad501028566b6d84e43a7bc916a1dd63f88cc4e20cda8",
+      "git_bytes_sha256": "e98eee40a42140a6b48ad501028566b6d84e43a7bc916a1dd63f88cc4e20cda8",
+      "normalized_sha256": "e98eee40a42140a6b48ad501028566b6d84e43a7bc916a1dd63f88cc4e20cda8",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    },
+    {
+      "repository_path": "docs/v4/09_产品使用说明书.md",
+      "base_git_blob": "b80422d1d025192066d148239bfaa064fafda4e5",
+      "source_sha256": "bcc4ef89c09932762d936c723c373128f24e34361a89df92f530e8387114dbd3",
+      "git_bytes_sha256": "bcc4ef89c09932762d936c723c373128f24e34361a89df92f530e8387114dbd3",
+      "normalized_sha256": "bcc4ef89c09932762d936c723c373128f24e34361a89df92f530e8387114dbd3",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    },
+    {
+      "repository_path": "docs/v4/prompts/P0_启动基线与评测框架.md",
+      "base_git_blob": "9a634d23dc3971f5e8a02801b6f7640b3d87f5e3",
+      "source_sha256": "a21a06cee55c7035d5af53f22c6ecb57c765b1bb0579d4d426b3c4a812531766",
+      "git_bytes_sha256": "a21a06cee55c7035d5af53f22c6ecb57c765b1bb0579d4d426b3c4a812531766",
+      "normalized_sha256": "a21a06cee55c7035d5af53f22c6ecb57c765b1bb0579d4d426b3c4a812531766",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    },
+    {
+      "repository_path": "docs/v4/prompts/P1_模型可移植层.md",
+      "base_git_blob": "21c1037ef7e5e37f0dd9d62d4ae1c64814781c81",
+      "source_sha256": "4ad08177e2baca28495c42c9c9e27e701cc581e4ed0b2982e0f88fe6199a1b02",
+      "git_bytes_sha256": "4ad08177e2baca28495c42c9c9e27e701cc581e4ed0b2982e0f88fe6199a1b02",
+      "normalized_sha256": "4ad08177e2baca28495c42c9c9e27e701cc581e4ed0b2982e0f88fe6199a1b02",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    },
+    {
+      "repository_path": "docs/v4/prompts/P2_数据底座与时间引擎.md",
+      "base_git_blob": "974b6f749fd75c559bf01d426790d24eaff4fa1c",
+      "source_sha256": "6ec41e83282bafe159f08d1eaa58a0f48d51915b9e8d8c0122471920ffd67a3c",
+      "git_bytes_sha256": "6ec41e83282bafe159f08d1eaa58a0f48d51915b9e8d8c0122471920ffd67a3c",
+      "normalized_sha256": "6ec41e83282bafe159f08d1eaa58a0f48d51915b9e8d8c0122471920ffd67a3c",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    },
+    {
+      "repository_path": "docs/v4/prompts/P6_校验2.0与安全.md",
+      "base_git_blob": "16ce0204d90e831f01984efeeb9bcaa9baefda01",
+      "source_sha256": "22ae87063905bafda57a30bdcf9b667b8340db69b606f83c7445dc8deebfdffb",
+      "git_bytes_sha256": "22ae87063905bafda57a30bdcf9b667b8340db69b606f83c7445dc8deebfdffb",
+      "normalized_sha256": "22ae87063905bafda57a30bdcf9b667b8340db69b606f83c7445dc8deebfdffb",
+      "exact_bytes_equal": true,
+      "crlf_lf_normalized_equal": true
+    }
+  ],
+  "v1_manifest": [
+    {
+      "path": "tools/eval/rubric_v1.md",
+      "git_blob": "c04d6eca6abca00cc140d004e3e4c2c6b6d69700"
+    },
+    {
+      "path": "tools/eval/scenarios/C01.yaml",
+      "git_blob": "16deed281bbc0f3e1ef15e7f43bd9a276b503a72"
+    },
+    {
+      "path": "tools/eval/scenarios/C02.yaml",
+      "git_blob": "aaa498dba867c576aa04a13600404caa7b46ce0f"
+    },
+    {
+      "path": "tools/eval/scenarios/C03.yaml",
+      "git_blob": "a7e64975244b0aa0476003f3cee8bbe31f9fd362"
+    },
+    {
+      "path": "tools/eval/scenarios/C04.yaml",
+      "git_blob": "8d38aabdf0f2d46fa638c19c5989b52a2bd48f1c"
+    },
+    {
+      "path": "tools/eval/scenarios/C05.yaml",
+      "git_blob": "cbefa80a50dc43f9dce98dddc67f318bcad6e4eb"
+    },
+    {
+      "path": "tools/eval/scenarios/C06.yaml",
+      "git_blob": "ffa4a45ab6bbcf0467c083abe47c91dc70949e96"
+    },
+    {
+      "path": "tools/eval/scenarios/C07.yaml",
+      "git_blob": "1328763ebf36a0d56b906413179a6b5f6a3ead43"
+    },
+    {
+      "path": "tools/eval/scenarios/D01.yaml",
+      "git_blob": "974ab3f9ed6c6724b445e16218ba7249466c4c77"
+    },
+    {
+      "path": "tools/eval/scenarios/D02.yaml",
+      "git_blob": "cbf0324909941e7e0bfdbe4b54b330b6332292fc"
+    },
+    {
+      "path": "tools/eval/scenarios/F01.yaml",
+      "git_blob": "1f0193c66bcda936bcc81c85871ccbdc4bec404b"
+    },
+    {
+      "path": "tools/eval/scenarios/F02.yaml",
+      "git_blob": "1960edecc2ee42f027f43901d7c9de5720430db4"
+    },
+    {
+      "path": "tools/eval/scenarios/F03.yaml",
+      "git_blob": "0794476ffc6c1995a6b5e22331ee7b28c5bb35cc"
+    },
+    {
+      "path": "tools/eval/scenarios/F04.yaml",
+      "git_blob": "6aec7e5e81b7a9e84b6b0f3843d3e78c8c42e897"
+    },
+    {
+      "path": "tools/eval/scenarios/L01.yaml",
+      "git_blob": "5cbc34ffb5f45464f4200a7677af0934f619dd3b"
+    },
+    {
+      "path": "tools/eval/scenarios/L02.yaml",
+      "git_blob": "6ba7bd3f0753cd5cb71ea9bd2bbe7cda53ab84b2"
+    },
+    {
+      "path": "tools/eval/scenarios/M01.yaml",
+      "git_blob": "6d9406609f4aa019507dbee9b1c7f9de6ad6c9d0"
+    },
+    {
+      "path": "tools/eval/scenarios/M02.yaml",
+      "git_blob": "29f801ab59581fa4eed01d4231527f6aa380c903"
+    },
+    {
+      "path": "tools/eval/scenarios/M03.yaml",
+      "git_blob": "8a3058f8806a683d90850bf4fb79d13f8e4be9c6"
+    },
+    {
+      "path": "tools/eval/scenarios/M04.yaml",
+      "git_blob": "e222097fdaf1fb7e6d0236d64b0b1557b68969c2"
+    },
+    {
+      "path": "tools/eval/scenarios/M05.yaml",
+      "git_blob": "95ec35ab44c939b900f0d5a7472cdfb5a7431c61"
+    },
+    {
+      "path": "tools/eval/scenarios/M06.yaml",
+      "git_blob": "2c5085f6428261c2a469edbee680b298eadf19d4"
+    },
+    {
+      "path": "tools/eval/scenarios/M07.yaml",
+      "git_blob": "6aeb872ab503bb73d5566d4c8b8499906a73de2e"
+    },
+    {
+      "path": "tools/eval/scenarios/M08.yaml",
+      "git_blob": "fdd140b4ea6c272c5ea2a82518f5a647f3761b85"
+    },
+    {
+      "path": "tools/eval/scenarios/M09.yaml",
+      "git_blob": "512f101d2e3753ee213ced8df57ceccc9b1adf1a"
+    },
+    {
+      "path": "tools/eval/scenarios/M10.yaml",
+      "git_blob": "da50d8b282b2d1c9f5dcb1f43fe011b558c00792"
+    },
+    {
+      "path": "tools/eval/scenarios/M11.yaml",
+      "git_blob": "f8114ae6f5cf053948001760f7c0cff86f897017"
+    },
+    {
+      "path": "tools/eval/scenarios/M12.yaml",
+      "git_blob": "a45e0dc4deea27a82c7a53753a9c415142800640"
+    },
+    {
+      "path": "tools/eval/scenarios/M13.yaml",
+      "git_blob": "6c7b3e34575e4ca5a20edf4123f0c2dc3b0a5898"
+    },
+    {
+      "path": "tools/eval/scenarios/P01.yaml",
+      "git_blob": "69632b76e74292a82f7032d40c660a503cfbe4cc"
+    },
+    {
+      "path": "tools/eval/scenarios/P02.yaml",
+      "git_blob": "0ca2bc38c4d679d201dadee18922f62ab367556f"
+    },
+    {
+      "path": "tools/eval/scenarios/P03.yaml",
+      "git_blob": "39e567a9b5ac54b684cc120af4c388eb2bd7e2ae"
+    },
+    {
+      "path": "tools/eval/scenarios/P04.yaml",
+      "git_blob": "91d4f691a6ddd63cbc8848f08921115b96b58e4c"
+    },
+    {
+      "path": "tools/eval/scenarios/P05.yaml",
+      "git_blob": "81d412d1a8cfd8e5388d24c66567feefed6a8cf7"
+    },
+    {
+      "path": "tools/eval/scenarios/P06.yaml",
+      "git_blob": "633d0f690669e5693ebac3eb7d789b4270f6fc4c"
+    },
+    {
+      "path": "tools/eval/scenarios/P07.yaml",
+      "git_blob": "2919d862d57d14f42bbb03d4bee2c9fde739e771"
+    },
+    {
+      "path": "tools/eval/scenarios/Q01.yaml",
+      "git_blob": "9f6457ce01dfd83a871808d92e014c14180fd6e3"
+    },
+    {
+      "path": "tools/eval/scenarios/Q02.yaml",
+      "git_blob": "5dd7a6644972e4cd30fbea21174c88049918f65f"
+    },
+    {
+      "path": "tools/eval/scenarios/Q03.yaml",
+      "git_blob": "03ab05a118ddbec890e380bd29478af6e4161a51"
+    },
+    {
+      "path": "tools/eval/scenarios/Q04.yaml",
+      "git_blob": "f49cf012f6c6d228548f2040b85073ab6cedfffa"
+    },
+    {
+      "path": "tools/eval/scenarios/Q05.yaml",
+      "git_blob": "09bbc696e7f6d4b24d1a0119b88e464cdafb8b55"
+    },
+    {
+      "path": "tools/eval/scenarios/Q06.yaml",
+      "git_blob": "7ac8d59b8a80f58d912aafd6cc503407c90d4619"
+    },
+    {
+      "path": "tools/eval/scenarios/Q07.yaml",
+      "git_blob": "10f1bdc96e1bc32b7403a88347df35d4963e59ed"
+    },
+    {
+      "path": "tools/eval/scenarios/R01.yaml",
+      "git_blob": "f12f1a138d15df4904ca9fb0283572d07526d6c9"
+    },
+    {
+      "path": "tools/eval/scenarios/R02.yaml",
+      "git_blob": "375e8e4c1ab4aae12c1be514813b0a178b50190f"
+    },
+    {
+      "path": "tools/eval/scenarios/R03.yaml",
+      "git_blob": "a07d9d0ba28c457265afdf38b259f3d338d7be0e"
+    },
+    {
+      "path": "tools/eval/scenarios/R04.yaml",
+      "git_blob": "d5e84305f847805540b5f338be4b39d16377e602"
+    },
+    {
+      "path": "tools/eval/scenarios/R05.yaml",
+      "git_blob": "67ccc6d6f4cafc4ac990fadb618079291d2eacec"
+    },
+    {
+      "path": "tools/eval/scenarios/R06.yaml",
+      "git_blob": "0ec028d694632c5b0fc5514bd379c93236d223d5"
+    },
+    {
+      "path": "tools/eval/scenarios/R07.yaml",
+      "git_blob": "997ceff90f72ab084260463116cdffd150c3c781"
+    },
+    {
+      "path": "tools/eval/scenarios/R08.yaml",
+      "git_blob": "27746bbd1fffc754cf6d0b82c354a7737c4c7e9f"
+    },
+    {
+      "path": "tools/eval/scenarios/R09.yaml",
+      "git_blob": "54ea92f647977d7a4f7a82f46f10fd18c9ee3a1a"
+    },
+    {
+      "path": "tools/eval/scenarios/S01.yaml",
+      "git_blob": "07ecddfb645a40a3db0a773119705239ce31da0e"
+    },
+    {
+      "path": "tools/eval/scenarios/S02.yaml",
+      "git_blob": "8c2c148fecfe36b660e972cc67a7a58da52d04f8"
+    },
+    {
+      "path": "tools/eval/scenarios/S03.yaml",
+      "git_blob": "a0423b88d614c3288aedb49a01a934c42a382e5e"
+    },
+    {
+      "path": "tools/eval/scenarios/S04.yaml",
+      "git_blob": "2c2addd83307dfe6f3424ae412f45e111c0ec8ee"
+    },
+    {
+      "path": "tools/eval/scenarios/T01.yaml",
+      "git_blob": "d0c5dc784c53c89a580aabc37f8a667ffe4fb4d3"
+    },
+    {
+      "path": "tools/eval/scenarios/T02.yaml",
+      "git_blob": "ab05c8bd88efa8a87099b62055cd0c20ce666ba7"
+    },
+    {
+      "path": "tools/eval/scenarios/T03.yaml",
+      "git_blob": "b11c55e1bafca0a755cf7db0fd0a69799ca1328e"
+    },
+    {
+      "path": "tools/eval/scenarios/T04.yaml",
+      "git_blob": "c46e71bbb2f347d633c7dc2f1240b22048156801"
+    },
+    {
+      "path": "tools/eval/scenarios/T05.yaml",
+      "git_blob": "53080896681ebdbbb2a9cf91ce31ef67427d1817"
+    },
+    {
+      "path": "tools/eval/scenarios/T06.yaml",
+      "git_blob": "912ba961e02133d2e815da9c56f15e9bff42c3dc"
+    },
+    {
+      "path": "tools/eval/scenarios/T07.yaml",
+      "git_blob": "e3725b726d5658476ba35a6aece7080a89959666"
+    },
+    {
+      "path": "tools/eval/scenarios/T08.yaml",
+      "git_blob": "a0076dc1e0b21d119dbd0d15d06c0e19eea5d062"
+    },
+    {
+      "path": "tools/eval/scenarios/T09.yaml",
+      "git_blob": "43107d4783293574c622ed33adc7f7bc23dbe63b"
+    },
+    {
+      "path": "tools/eval/scenarios/T10.yaml",
+      "git_blob": "66a85ec7a8a8626ffaa8b6d604b0142d5dcde0a4"
+    },
+    {
+      "path": "tools/eval/scenarios/T11.yaml",
+      "git_blob": "5f5196c0e918d72d2557b5df65f50f793be2bb8f"
+    },
+    {
+      "path": "tools/eval/scenarios/T12.yaml",
+      "git_blob": "25a5b82c13f5ea42a3f38dc8da947624daaafa9b"
+    },
+    {
+      "path": "tools/eval/scenarios/T13.yaml",
+      "git_blob": "44ddc81d4e892ede377c7ab889a24fdcbe05f333"
+    },
+    {
+      "path": "tools/eval/scenarios/T14.yaml",
+      "git_blob": "f6dcd28e264323f31bca25ec379de3a69cd89186"
+    },
+    {
+      "path": "tools/eval/scenarios/TA01.yaml",
+      "git_blob": "66077913999dc52a79cd63d4042b922b1f5c7156"
+    },
+    {
+      "path": "tools/eval/scenarios/TA02.yaml",
+      "git_blob": "d69db68c18a087913d3ae68605e8bff247e26402"
+    },
+    {
+      "path": "tools/eval/scenarios/TA03.yaml",
+      "git_blob": "908fba387877117e362f920d6459ec9550c3cdd2"
+    },
+    {
+      "path": "tools/eval/scenarios/X01.yaml",
+      "git_blob": "b2e446b919e313f75fecfe95cab87133d4d36a40"
+    },
+    {
+      "path": "tools/eval/scenarios/X02.yaml",
+      "git_blob": "4193e2c34d51b2d4496b1907ba1cb9a3357d4595"
+    },
+    {
+      "path": "tools/eval/scenarios/X03.yaml",
+      "git_blob": "607eb2db448f18b69a9f4277abde16ea192cd1a5"
+    },
+    {
+      "path": "tools/eval/scenarios/X04.yaml",
+      "git_blob": "edda24494cd29e07c81c2715663a8a2940e7e215"
+    },
+    {
+      "path": "tools/eval/scenarios/X05.yaml",
+      "git_blob": "2ab82dc553f5208a6561c0f58d3f6e075815cb15"
+    },
+    {
+      "path": "tools/eval/scenarios/X06.yaml",
+      "git_blob": "a1e9b0e2c5b1ef752fd01b4ace4f1a9797a2b1bd"
+    },
+    {
+      "path": "tools/eval/scenarios/X07.yaml",
+      "git_blob": "d0531734dbfd76940244d5da3a456b0a3b3caaff"
+    },
+    {
+      "path": "tools/eval/scenarios/X08.yaml",
+      "git_blob": "d3db0830e1d601f39986c457738dbae0161e4a7d"
+    }
+  ],
+  "worktrees": [
+    {
+      "head": "42f9637f3f8746ac4fd569d895b00943b5f2534d",
+      "branch": "v4/p1-model-port",
+      "baseline": {
+        "path": "docs/v4/eval/baseline-v3.json",
+        "git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_blob_matches": true,
+        "working_file_normalized_equal": true,
+        "working_file_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79"
+      },
+      "v1_files_count": 81,
+      "scenario_count": 80,
+      "all_v1_git_blobs_unchanged": true,
+      "all_v1_working_files_normalized_equal": true
+    },
+    {
+      "head": "85c48a348df5d3f808312d77397f6daab149d99b",
+      "branch": "v4/p2-foundation",
+      "baseline": {
+        "path": "docs/v4/eval/baseline-v3.json",
+        "git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_blob_matches": true,
+        "working_file_normalized_equal": true,
+        "working_file_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79"
+      },
+      "v1_files_count": 81,
+      "scenario_count": 80,
+      "all_v1_git_blobs_unchanged": true,
+      "all_v1_working_files_normalized_equal": true
+    },
+    {
+      "head": "1bc5a7b2b5eea99697f0c58d22851573eff3a00e",
+      "branch": "v4/p10-frontend",
+      "baseline": {
+        "path": "docs/v4/eval/baseline-v3.json",
+        "git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_blob_matches": true,
+        "working_file_normalized_equal": true,
+        "working_file_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79"
+      },
+      "v1_files_count": 81,
+      "scenario_count": 80,
+      "all_v1_git_blobs_unchanged": true,
+      "all_v1_working_files_normalized_equal": true
+    },
+    {
+      "head": "be9e4b0b084228dac88886f1ded2a32d41999ed1",
+      "branch": "v4/p8-calc",
+      "baseline": {
+        "path": "docs/v4/eval/baseline-v3.json",
+        "git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_git_blob": "aca6f5138a10cabd3f6578c677c7c7e5b21320f5",
+        "expected_blob_matches": true,
+        "working_file_normalized_equal": true,
+        "working_file_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79"
+      },
+      "v1_files_count": 81,
+      "scenario_count": 80,
+      "all_v1_git_blobs_unchanged": true,
+      "all_v1_working_files_normalized_equal": true
+    }
+  ]
+}

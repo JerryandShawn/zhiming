@@ -1,0 +1,158 @@
+{
+  "audit_version": "overnight-merge-preflight-final-v1",
+  "generated_at_utc": "2026-10-17T17:01:38.385591+00:00",
+  "git_version": "git version 2.55.0.windows.4",
+  "fixed_heads": {
+    "P1": "42f9637f3f8746ac4fd569d895b00943b5f2534d",
+    "P2": "de082ce1e6af37a706eee6a4596b09d1b6ca49e3",
+    "P10": "2d3863522b3f6a48130a492ceb2b77b63a4027e3",
+    "P8": "f23b942ce698a3f7ee0b98c918d43053fe773433"
+  },
+  "pair_count": 6,
+  "conflicted_pair_count": 1,
+  "pairs": [
+    {
+      "left": "P1",
+      "right": "P2",
+      "left_commit": "42f9637f3f8746ac4fd569d895b00943b5f2534d",
+      "right_commit": "de082ce1e6af37a706eee6a4596b09d1b6ca49e3",
+      "merge_base": "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2",
+      "exit_status": 1,
+      "conflicted": true,
+      "conflict_paths": [
+        "requirements-test.lock"
+      ],
+      "overlapping_changed_paths": [
+        "mingjing_core/application/consultation.py",
+        "requirements-test.lock"
+      ],
+      "unreferenced_preview_tree": "a95b5baedfac51a7c5959bab68b834e5d455349f",
+      "preview_tree_is_accepted_or_tested": false,
+      "messages": [
+        {
+          "type": "Auto-merging",
+          "paths": [
+            "mingjing_core/application/consultation.py"
+          ],
+          "message": "Auto-merging mingjing_core/application/consultation.py"
+        },
+        {
+          "type": "Auto-merging",
+          "paths": [
+            "requirements-test.lock"
+          ],
+          "message": "Auto-merging requirements-test.lock"
+        },
+        {
+          "type": "CONFLICT (contents)",
+          "paths": [
+            "requirements-test.lock"
+          ],
+          "message": "CONFLICT (content): Merge conflict in requirements-test.lock"
+        }
+      ],
+      "stderr": ""
+    },
+    {
+      "left": "P1",
+      "right": "P10",
+      "left_commit": "42f9637f3f8746ac4fd569d895b00943b5f2534d",
+      "right_commit": "2d3863522b3f6a48130a492ceb2b77b63a4027e3",
+      "merge_base": "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2",
+      "exit_status": 0,
+      "conflicted": false,
+      "conflict_paths": [],
+      "overlapping_changed_paths": [
+        ".gitignore"
+      ],
+      "unreferenced_preview_tree": "59385979e56d2f4cc90510ff66ddc202f93fa3e4",
+      "preview_tree_is_accepted_or_tested": false,
+      "messages": [
+        {
+          "type": "Auto-merging",
+          "paths": [
+            ".gitignore"
+          ],
+          "message": "Auto-merging .gitignore"
+        }
+      ],
+      "stderr": ""
+    },
+    {
+      "left": "P1",
+      "right": "P8",
+      "left_commit": "42f9637f3f8746ac4fd569d895b00943b5f2534d",
+      "right_commit": "f23b942ce698a3f7ee0b98c918d43053fe773433",
+      "merge_base": "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2",
+      "exit_status": 0,
+      "conflicted": false,
+      "conflict_paths": [],
+      "overlapping_changed_paths": [],
+      "unreferenced_preview_tree": "0c6f40a3095b588896fa59fa2ae5f87a0b8208c6",
+      "preview_tree_is_accepted_or_tested": false,
+      "messages": [],
+      "stderr": ""
+    },
+    {
+      "left": "P2",
+      "right": "P10",
+      "left_commit": "de082ce1e6af37a706eee6a4596b09d1b6ca49e3",
+      "right_commit": "2d3863522b3f6a48130a492ceb2b77b63a4027e3",
+      "merge_base": "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2",
+      "exit_status": 0,
+      "conflicted": false,
+      "conflict_paths": [],
+      "overlapping_changed_paths": [],
+      "unreferenced_preview_tree": "2622672b895c9ea5e4c8deadd080dad54377565c",
+      "preview_tree_is_accepted_or_tested": false,
+      "messages": [],
+      "stderr": ""
+    },
+    {
+      "left": "P2",
+      "right": "P8",
+      "left_commit": "de082ce1e6af37a706eee6a4596b09d1b6ca49e3",
+      "right_commit": "f23b942ce698a3f7ee0b98c918d43053fe773433",
+      "merge_base": "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2",
+      "exit_status": 0,
+      "conflicted": false,
+      "conflict_paths": [],
+      "overlapping_changed_paths": [],
+      "unreferenced_preview_tree": "7f9a7572f56b8158e051181781449d8fb9eb2192",
+      "preview_tree_is_accepted_or_tested": false,
+      "messages": [],
+      "stderr": ""
+    },
+    {
+      "left": "P10",
+      "right": "P8",
+      "left_commit": "2d3863522b3f6a48130a492ceb2b77b63a4027e3",
+      "right_commit": "f23b942ce698a3f7ee0b98c918d43053fe773433",
+      "merge_base": "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2",
+      "exit_status": 0,
+      "conflicted": false,
+      "conflict_paths": [],
+      "overlapping_changed_paths": [],
+      "unreferenced_preview_tree": "6464de2b3de85f9a9bb760b8e0eb0c7dcd0ee63e",
+      "preview_tree_is_accepted_or_tested": false,
+      "messages": [],
+      "stderr": ""
+    }
+  ],
+  "integrated": false,
+  "merged": false,
+  "integration_tests_run": false,
+  "scope": "Read-only fixed-commit merge-tree preview. Only unreferenced Git preview objects and this task-work JSON may be written. No branch/ref/checkout/source modification, merge, rebase, commit, network, database, or model execution.",
+  "refs_unchanged_during_preflight": true,
+  "checkout_heads_unchanged_during_preflight": true,
+  "working_status_unchanged_during_preflight": true,
+  "refs_snapshot_sha256_before": "d16dd02827c41cd727f0e7cab7b8a50b2e7cad187df7266a3e1b9c29c7766848",
+  "refs_snapshot_sha256_after": "d16dd02827c41cd727f0e7cab7b8a50b2e7cad187df7266a3e1b9c29c7766848",
+  "future_notes": [
+    "P1/P2 requirements-test.lock needs explicit reconciliation of versions and hashes; textual conflict resolution must preserve both lines requirements.",
+    "P1/P2 consultation.py auto-merge is textual only: preserve P1 model/budget/cancellation contracts and P2 Clock/history/program_time/lease behavior in later authorized integration.",
+    "Pairwise clean previews do not validate a combined four-line tree. Re-run after head movement and run combined regression only during separately authorized integration.",
+    "No overnight merge to main or v4/main is performed or authorized by this preflight."
+  ],
+  "source_audit_sha256": "0fe93ca71aa3bcd2931ad357d1e4610db65887fa62e0dd58e80ee7810a984303"
+}
