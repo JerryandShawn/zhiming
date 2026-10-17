@@ -46,3 +46,11 @@
 ## 验证边界
 
 这是固定 head `dffc184` 的 GitHub PR CI 绿灯。scripted / fake 的 80/80 验证框架回放与断言，不代表 v4 产品能力或真实模型基线通过。真实 live 评测由独立报告记录；后续若修改源码形成新 head，仍须核对新 head 的实际 CI。
+
+## 场景契约修复后的 PR CI（fe9e35a）
+
+最终代码head `fe9e35af15d46993b88ad4e6fdd6a81b245f49f4` 的 [PR run39028870575](https://github.com/JerryandShawn/zhiming/actions/runs/39028870575) / [job117385161079](https://github.com/JerryandShawn/zhiming/actions/runs/39028870575/job/117385161079) 已由GitHub实际状态确认 **completed/success**。读取真实日志：Core553/1087.283秒；前端六命令通过；新测试250 passed/84.05秒；schema80/80；scripted80/80；self-test48/13.32秒；loopback preflight及清理成功。该结果覆盖场景契约与离线补元数据工具的20项新增回归。
+
+后续证据/结果提交如形成新head，最新状态须另外核对；本节不替代尚未完成的后续CI。
+
+同head push [39028867570](https://github.com/JerryandShawn/zhiming/actions/runs/39028867570) / [job117385152644](https://github.com/JerryandShawn/zhiming/actions/runs/39028867570/job/117385152644) 也已实际 completed/success、所有步骤成功。真实日志：Core553/1637.216秒；前端六命令；新测试250/110.49秒；schema及scripted80/80；self-test48/16.76秒；PG preflight与清理成功。两条fe9e35a运行均已结束，不再轮询。

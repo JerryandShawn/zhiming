@@ -1,6 +1,6 @@
 # P0 本地评测框架验证
 
-日期：2026-10-17，UTC+08:00。真实模型调用为0，以下模型均是明确的测试替身或脚本回放；PostgreSQL与咨询服务未替换。
+日期：2026-10-17，UTC+08:00。本文件只记本地框架验证；这些检查未调用真实模型，模型均为明确的测试替身或脚本回放。真实模型调用另见 live-baseline-status.md，PostgreSQL与咨询服务未替换。
 
 | 检查 | 结果 |
 | --- | --- |
@@ -21,7 +21,7 @@
 
 整仓ruff检查另有6399项既有发现，日志仅本机忽略的`private/p0-logs/ruff-legacy.json`；新增目录发现0项。旧大文件不整体重排；业务改动严格限于today()改走Clock。
 
-真实模型基线在用户授权及可用进程环境配置就绪后单独运行。尚未生成`baseline-v3.json`；不会把测试替身或供应商配置故障的0分冒充v3能力基线。
+真实模型基线按用户授权单独运行，结果以 live-baseline-status.md 及正式 live 报告为准。测试替身、框架自测及供应商故障均不冒充 v3 能力成绩。
 
 
 ## 中期复核增量（2026-10-17）
@@ -29,3 +29,9 @@
 设计四文件已单独同步提交。T14、C03结构检查、C06实际金标及额度保护落实后，全量 `pytest tests/v4 -q` 为 **229 passed in 60.60s，0 skips**；随后仅增加裸429识别和安全HTTP状态透传，额度针对性回归为 **21 passed in 2.26s**（含4项真实隔离PG与LangGraph），原20项经独立复核通过。最终CI将再次全量执行新目录，不能把本节当作CI绿灯。
 
 最终源码已重跑正式 scripted 报告：`Validated 80/80`、`Result 80/80`；自测48项通过（1.36秒）。新增代码Ruff与显式120列format通过。T14/C03/C06计算证据见chart-goldens.md；额度与分批证据见quota-protection.md；CI根因与修复见ci-v4-failure.md。没有改旧Core测试或业务适配器/User-Agent。
+
+## 最终源码验证（fe9e35a，2026-10-17）
+
+加入不改变判分的场景契约完整性检查后，本机全量 **250 passed in 95.46s，0 skips**；Ruff E/F/I/B/UP/SIM 与 120 列格式检查均通过（34 个文件）。正式 scripted 报告为80/80，框架self-test为48 passed in19.40s。旧测试断言未删改；原v4比较测试仅补固定契约字段，理由已写ExecPlan Decision Log。
+
+同提交PR CI [39028870575](https://github.com/JerryandShawn/zhiming/actions/runs/39028870575) 实际 completed/success；日志为旧Core553/1087.283s、新测试250/84.05s、scripted80/80、自测48/13.32s、前端六命令及回环PG检查通过。场景契约补丁不改变正在运行的dffc184实测源码或既有观测；版本关系见comparison-contract.md。
