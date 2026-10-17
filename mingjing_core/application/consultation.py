@@ -82,7 +82,12 @@ class ConsultationService:
         repo = PostgresRepository(dsn, initialize=False, max_size=int(os.getenv('CORE_DB_POOL_SIZE', '4')),
                                   max_running=int(os.getenv('CORE_RUN_CONCURRENCY', '1')))
         repo.verify_schema()
-        return cls(repo, runtime=LangGraphRuntime(repo, initialize=False))
+        model = None
+        if os.getenv('MODELS_CONFIG') or os.getenv('MINGJING_MODEL_PORT') == 'v2':
+            from ..models.legacy import PortBackedModel
+            from ..models.registry import ModelRegistry
+            model = PortBackedModel(ModelRegistry(), role='primary')
+        return cls(repo, model=model, runtime=LangGraphRuntime(repo, initialize=False))
 
     def submit(self, *, owner, subject='self', message, conversation_id='shared', request_id,
                case_ids=None, mode='chat', depth='standard', selection=None, draw_id=None,
