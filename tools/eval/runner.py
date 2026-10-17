@@ -1,0 +1,304 @@
+"""CLI for strict corpus validation, deterministic replay and real v3 baselines."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import subprocess
+import sys
+from copy import deepcopy
+from pathlib import Path
+from typing import Any
+from urllib.parse import urlsplit
+from zoneinfo import ZoneInfo
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+import yaml  # noqa: E402
+
+from mingjing_core.timekit.clock import get_clock  # noqa: E402
+from tools.eval.batching import run_batches  # noqa: E402
+from tools.eval.contracts import stamp_contracts  # noqa: E402
+from tools.eval.engine import evaluate_scenario  # noqa: E402
+from tools.eval.judges import JUDGE_SCHEMA, ModelJudge  # noqa: E402
+from tools.eval.outcomes import is_infrastructure_failure  # noqa: E402
+from tools.eval.report import add_comparison, summarize, write_report  # noqa: E402
+from tools.eval.schema import Scenario, load_scenarios  # noqa: E402
+from tools.eval.targets.base import Target  # noqa: E402
+
+EVAL_ROOT = Path(__file__).parent
+
+
+def _source_digest() -> str:
+    candidates = list((ROOT / "tools/eval").rglob("*.py")) + list(ROOT.glob("requirements*.lock"))
+    candidates += list((ROOT / "tools/eval/fixtures").glob("*.yaml"))
+    candidates += [
+        path for path in (ROOT / "mingjing_core").rglob("*") if path.suffix in {".py", ".md", ".json", ".sql"}
+    ]
+    digest = hashlib.sha256()
+    for path in sorted(candidates):
+        digest.update(path.relative_to(ROOT).as_posix().encode())
+        digest.update(b"\x00")
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+def _endpoint_digest() -> str:
+    try:
+        parsed = urlsplit(os.getenv("KIMI_BASE_URL", "https://api.moonshot.cn/v1"))
+        normalized = f"{parsed.scheme}://{parsed.hostname}:{parsed.port or ''}{parsed.path.rstrip('/')}"
+    except ValueError:
+        raise ValueError("模型服务地址格式不可用") from None
+    return hashlib.sha256(normalized.encode()).hexdigest()
+
+
+def parser() -> argparse.ArgumentParser:
+    result = argparse.ArgumentParser(description=__doc__)
+    result.add_argument("--mode", choices=["scripted", "live"], default="scripted")
+    result.add_argument("--target", choices=["fake", "v3"], default=None)
+    result.add_argument("--model", default="kimi")
+    result.add_argument("--models", help="Comma-separated primary model names; each gets its own report")
+    result.add_argument("--config", type=Path, default=EVAL_ROOT / "config.yaml")
+    result.add_argument("--scenarios", type=Path, default=EVAL_ROOT / "scenarios")
+    result.add_argument("--scenario", help="Comma-separated scenario IDs")
+    result.add_argument("--output", type=Path, default=ROOT / "docs/v4/eval")
+    result.add_argument("--batch-size", type=int, choices=range(1, 11), default=10)
+    result.add_argument("--validate", "--validate-only", action="store_true", dest="validate_only")
+    result.add_argument("--self-test", action="store_true")
+    result.add_argument(
+        "--resume",
+        action="store_true",
+        help="Reuse matching completed scenario results",
+    )
+    return result
+
+
+def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dict[str, Any]:
+    rubric = EVAL_ROOT / config["judge"]["rubric"]
+    return {
+        "date": get_clock().now().astimezone(ZoneInfo("Asia/Shanghai")).date().isoformat(),
+        "mode": mode,
+        "target": target,
+        "model": model,
+        "judge_model": config["judge"]["model"] if mode == "live" else "not called (scripted)",
+        "judge_provider": config["judge"].get("provider", "configured-model-v3"),
+        "judge_schema_sha256": hashlib.sha256(json.dumps(JUDGE_SCHEMA, sort_keys=True).encode()).hexdigest(),
+        "rubric_version": config["judge"]["version"],
+        "rubric_sha256": hashlib.sha256(rubric.read_bytes()).hexdigest(),
+        "config_version": config["version"],
+        "config_sha256": hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest(),
+        "source_sha256": _source_digest(),
+        "provider_endpoint_sha256": _endpoint_digest() if mode == "live" else None,
+        "synthetic_only": True,
+        "status": "running",
+    }
+
+
+def _target(name: str, model: str) -> Target:
+    if name == "fake":
+        from tools.eval.targets.fake_target import FakeTarget
+
+        return FakeTarget()
+    from tools.eval.targets.v3_target import V3Target
+
+    return V3Target(model=model)
+
+
+def _fingerprint(scenario: Scenario, metadata: dict[str, Any]) -> str:
+    keys = (
+        "mode",
+        "target",
+        "model",
+        "judge_model",
+        "judge_provider",
+        "judge_schema_sha256",
+        "rubric_version",
+        "rubric_sha256",
+        "config_version",
+        "config_sha256",
+        "source_sha256",
+        "provider_endpoint_sha256",
+    )
+    fixed = {key: metadata.get(key) for key in keys}
+    payload = {"scenario": scenario.model_dump(mode="json"), "metadata": fixed}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
+
+
+def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, Any]:
+    if not args.resume:
+        return {}
+    changed_source = False
+    for path in sorted(args.output.glob("*.json"), reverse=True):
+        if path.name == "baseline-v3.json":
+            continue
+        data = json.loads(path.read_text(encoding="utf-8"))
+        identity = ("target", "model", "mode", "config_sha256", "provider_endpoint_sha256")
+        same_run = all(data["metadata"].get(key) == metadata.get(key) for key in identity)
+        if same_run and data["metadata"].get("source_sha256") != metadata.get("source_sha256"):
+            changed_source = True
+            continue
+        keys = (
+            "target",
+            "model",
+            "mode",
+            "rubric_sha256",
+            "config_sha256",
+            "source_sha256",
+            "provider_endpoint_sha256",
+        )
+        if all(data["metadata"].get(key) == metadata.get(key) for key in keys):
+            return data
+    if changed_source:
+        raise SystemExit("Cannot resume across execution sources; use the preserved frozen execution snapshot")
+    return {}
+
+
+def _reusable_cases(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return {
+        case["id"]: case
+        for case in report.get("cases", [])
+        if case["status"] in {"passed", "failed", "n/a on v3"} and not is_infrastructure_failure(case)
+    }
+
+
+def _resume_cases(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    return _reusable_cases(_resume_report(args, metadata))
+
+
+def _observe_case(
+    scenario: Scenario, target: Target, judge: ModelJudge | None, metadata: dict[str, Any], previous: dict[str, Any]
+) -> tuple[dict[str, Any], bool]:
+    fingerprint = _fingerprint(scenario, metadata)
+    cached = previous.get(scenario.id)
+    reused = bool(cached and cached.get("fingerprint") == fingerprint)
+    case = (
+        deepcopy(cached) if reused else evaluate_scenario(scenario, target, target_name=metadata["target"], judge=judge)
+    )
+    case["fingerprint"] = fingerprint
+    return case, reused
+
+
+def _publish(report: dict[str, Any], output: Path) -> None:
+    report["summary"] = summarize(report["cases"])
+    write_report(report, output)
+
+
+def _run(
+    args: argparse.Namespace,
+    scenarios: list[Scenario],
+    config: dict[str, Any],
+    model: str,
+) -> int:
+    metadata = _metadata(config, args.mode, args.target, model)
+    prior_report = _resume_report(args, metadata)
+    previous = _reusable_cases(prior_report)
+    report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
+    metadata["planned_scenario_ids"] = [scenario.id for scenario in scenarios]
+    scenario_map = {scenario.id: scenario for scenario in scenarios}
+    judge = ModelJudge(config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"]) if args.mode == "live" else None
+    target = _target(args.target, model)
+    for scenario in scenarios:
+        cached = previous.get(scenario.id)
+        if cached and cached.get("fingerprint") == _fingerprint(scenario, metadata):
+            report["cases"].append(deepcopy(cached))
+        elif args.target == "v3" and "v3" not in scenario.targets:
+            report["cases"].append(evaluate_scenario(scenario, target, target_name="v3"))
+    try:
+        run_batches(
+            scenarios,
+            report,
+            lambda scenario: _observe_case(scenario, target, judge, metadata, previous),
+            lambda: _publish_contract_report(report, args.output, scenario_map),
+            batch_size=getattr(args, "batch_size", 10),
+        )
+    finally:
+        target.close()
+    stamp_contracts(report, scenario_map)
+    return _finish(args, scenarios, report)
+
+
+def _publish_contract_report(report: dict[str, Any], output: Path, scenarios: dict[str, Scenario]) -> None:
+    stamp_contracts(report, scenarios)
+    _publish(report, output)
+
+
+def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[str, Any]) -> int:
+    metadata = report["metadata"]
+    complete = (
+        len(report["cases"]) == len(scenarios)
+        and not any(is_infrastructure_failure(case) for case in report["cases"])
+        and not metadata.get("stop_reason")
+    )
+    metadata["status"] = "complete" if complete else "incomplete"
+    add_comparison(report, args.output / "baseline-v3.json")
+    baseline = complete and args.mode == "live" and args.target == "v3" and not args.scenario and len(scenarios) == 80
+    paths = write_report(report, args.output, baseline=baseline)
+    summary = report["summary"]
+    print(f"Result: {summary['passed']}/{summary['count']}; n/a on v3: {summary['not_applicable']}")
+    print(
+        "Reports: "
+        + ", ".join(str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path) for path in paths)
+    )
+    return (
+        2
+        if metadata.get("stop_reason")
+        else int(not complete or args.mode == "scripted" and summary["passed"] != summary["count"])
+    )
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parser().parse_args(argv)
+    args.target = args.target or ("v3" if args.mode == "live" else "fake")
+    if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3")}:
+        raise SystemExit("P0 supports scripted/fake and live/v3 only")
+    scenarios = load_scenarios(args.scenarios)
+    if not scenarios:
+        raise SystemExit("No scenarios found")
+    if args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve() and len(scenarios) != 80:
+        raise SystemExit(f"Expected 80 corpus scenarios, found {len(scenarios)}")
+    print(f"Validated {len(scenarios)}/{len(scenarios)} scenarios")
+    if args.validate_only:
+        return 0
+    if args.scenario:
+        requested = set(args.scenario.split(","))
+        scenarios = [scenario for scenario in scenarios if scenario.id in requested]
+        if requested != {scenario.id for scenario in scenarios}:
+            raise SystemExit("Unknown scenario ID")
+    config = yaml.safe_load(args.config.read_text(encoding="utf-8"))
+    if args.mode == "live" and not (os.getenv("KIMI_API_KEY") or os.getenv("MOONSHOT_API_KEY")):
+        raise SystemExit("Live preflight failed: provide KIMI_API_KEY or MOONSHOT_API_KEY through process environment")
+    os.environ["LANGSMITH_TRACING"] = "false"
+    os.environ["LANGCHAIN_TRACING_V2"] = "false"
+    models = (args.models or args.model).split(",") if args.mode == "live" else ["scripted-v1"]
+    status = _run_models(args, scenarios, config, models)
+    if status == 2:
+        return 2
+    if args.self_test:
+        completed = subprocess.run(
+            [sys.executable, "-m", "pytest", "tests/v4/test_eval_framework.py", "-q"],
+            cwd=ROOT,
+            check=False,
+        )
+        status = max(status, completed.returncode)
+    return status
+
+
+def _run_models(args: argparse.Namespace, scenarios: list[Scenario], config: dict[str, Any], models: list[str]) -> int:
+    status = 0
+    for name in models:
+        model = config["models"].get(name, name)
+        if name in {"kimi", "kimi-main"}:
+            model = os.getenv("KIMI_MODEL", model)
+        result = _run(args, scenarios, config, model)
+        status = max(status, result)
+        if result == 2:
+            break
+    return status
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

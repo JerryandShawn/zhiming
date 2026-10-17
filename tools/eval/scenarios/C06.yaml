@@ -1,0 +1,53 @@
+id: C06
+title: 区间命宫主星与实际隔离计算金标一致
+category: chart
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    birth:
+      precision: interval
+      time: null
+      interval_start: 05:50
+      interval_end: 07:10
+turns:
+- user: 我的命宫主星是什么？
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - chart_compute
+    chart_stability:
+      fixture: C06
+    must_include_any:
+    - 采样
+    - 样本
+    judge: 以C06隔离计算金标为准：有限采样不一致，地方平太阳时寅时为紫微、破军，卯时为天机；不能把民用时辰直接当太阳时，也不宣称连续区间已穷尽。
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: chart_compute
+      arguments:
+        system: ziwei
+        target: '1994-03-12'
+        scale: natal
+  - result:
+      ok: true
+      data:
+        precision: interval
+        stability: conditional
+        coverage: sampled_not_continuous
+        branches:
+        - label: 寅时
+          major_stars:
+          - 紫微
+          - 破军
+        - label: 卯时
+          major_stars:
+          - 天机
+  - text: 按成都经度修正的地方平太阳时，五个采样点的命宫主星不一致〔c1〕。寅时分支为紫微、破军；卯时分支为天机。出生区间的采样不稳定，暂不能锁定唯一主星；这是有限采样，外部来源交叉核对留到P8。
+notes: 金标来自fixtures/c06_ziwei_golden.yaml的真实Charts隔离计算：五个等距点和06:03/06:04边界探针；外部来源独立交叉核对留P8。

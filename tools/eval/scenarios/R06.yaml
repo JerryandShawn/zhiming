@@ -1,0 +1,38 @@
+id: R06
+title: 新话题仍召回考研
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 我在准备考研，目标是复旦。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  facts:
+  - id: fudan-goal
+    kind: goal
+    summary: 我在准备考研，目标是复旦。
+    quote: 我在准备考研，目标是复旦。
+    source_message_id: source-synthetic
+  thread_id: new-topic-synthetic
+  context:
+    topic_id: new-topic
+    previous_topic_id: old-topic
+turns:
+- user: 我上次跟你说的考研的事
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 考研
+    - 复旦
+scripted:
+- turn: 1
+  model:
+  - text: 记得，你准备考研，目标是复旦〔f1〕。可以接着看复习进度。

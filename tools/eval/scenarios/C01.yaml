@@ -1,0 +1,44 @@
+id: C01
+title: 日主必须来自盘面计算
+category: chart
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 我是什么日主？
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - chart_compute
+    must_include_all:
+    - 丁火|日主是丁
+    - 〔c
+    db:
+    - path: chart.day_master
+      equals: 丁
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: chart_compute
+      arguments:
+        system: bazi
+        target: '1994-03-12'
+        scale: natal
+  - result:
+      ok: true
+      data:
+        day_master: 丁
+        day_pillar: 丁酉
+        engine: lunar-python
+        version: 1.4.8
+  - db:
+      chart:
+        day_master: 丁
+        day_pillar: 丁酉
+  - text: 按已确认资料计算，你的日柱是丁酉，日主是丁火〔c1〕。可以把它当作传统命理里的观察角度。
+notes: 合成出生资料的丁酉日已用本机lunar-python核对；脚本回放不证明命理解释正确。

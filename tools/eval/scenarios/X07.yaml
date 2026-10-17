@@ -1,0 +1,54 @@
+id: X07
+title: 飞书两秒三消息合并一轮
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    inbound_batch:
+    - id: fs-one
+      at: '2026-10-17T10:30:00+08:00'
+      content: 我今天有面试
+    - id: fs-two
+      at: '2026-10-17T10:30:01+08:00'
+      content: 有点紧张
+    - id: fs-three
+      at: '2026-10-17T10:30:02+08:00'
+      content: 帮我准备一下
+    debounce_seconds: 2.5
+turns:
+- user: 合并飞书入站消息
+  channel: feishu
+  kind: action
+  expect:
+    must_include_all:
+    - 面试
+    - 紧张
+    db:
+    - kind: run
+      count: 1
+    - path: run_meta.input_message_ids
+      equals:
+      - fs-one
+      - fs-two
+      - fs-three
+  action:
+    type: ingest_batch
+scripted:
+- turn: 1
+  model:
+  - db:
+      run_meta:
+        input_message_ids:
+        - fs-one
+        - fs-two
+        - fs-three
+      entities:
+      - id: merged-run
+        kind: run
+        status: active
+        data: {}
+  - text: 收到：你今天有面试，而且有点紧张。我们先准备最关键的两段经历。

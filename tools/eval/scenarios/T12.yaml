@@ -1,0 +1,27 @@
+id: T12
+title: 春节日期与未公布放假安排
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 过年是几号？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - '2027'
+    - 2月6日|02-06
+    - 正月初一
+    - 尚未公布|未公布
+    must_not_include:
+    - 2月7日补班
+    - 已公布
+scripted:
+- turn: 1
+  model:
+  - text: 下一次春节正月初一是2027年2月6日。2027年的具体放假与调休安排尚未公布。

@@ -1,0 +1,58 @@
+id: P04
+title: 用户停止面试跟进
+category: proactive
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  entities:
+  - id: interview-followup
+    kind: followup
+    status: active
+    data:
+      topic: 面试
+      source_fact_id: interview
+      due_at: '2026-10-21T20:00:00+08:00'
+      channel: feishu
+  - id: interview-followup-two
+    kind: followup
+    status: active
+    data:
+      topic: 面试
+turns:
+- user: 别再问面试的事了
+  channel: web
+  kind: chat
+  expect:
+    must_include_any:
+    - 关闭
+    - 不再
+    db:
+    - kind: followup
+      where:
+        data.topic: 面试
+      status: active
+      count: 0
+    - kind: followup
+      where:
+        data.topic: 面试
+      status: closed
+      count: 2
+scripted:
+- turn: 1
+  model:
+  - db:
+      entities:
+      - id: interview-followup
+        kind: followup
+        status: closed
+        data:
+          topic: 面试
+      - id: interview-followup-two
+        kind: followup
+        status: closed
+        data:
+          topic: 面试
+  - text: 好，关于面试的主动跟进都关闭了。

@@ -5,18 +5,7 @@ permissions:
 jobs:
   core:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: core_test
-          POSTGRES_PASSWORD: isolated_ci_only
-          POSTGRES_DB: core_test
-        ports: [5432:5432]
-        options: >-
-          --health-cmd "pg_isready -U core_test"
-          --health-interval 10s --health-timeout 5s --health-retries 5
+    timeout-minutes: 60
     env:
       CORE_TEST_DSN: postgresql://core_test:isolated_ci_only@127.0.0.1:5432/core_test
       ZHIMING_TEST_DSN: postgresql://core_test:isolated_ci_only@127.0.0.1:5432/core_test
@@ -27,6 +16,21 @@ jobs:
       LANGSMITH_TRACING: "false"
     steps:
       - uses: actions/checkout@v4
+      - name: Start loopback PostgreSQL 15
+        run: |
+          docker run --detach --name p0-core-postgres --network host \
+            -e POSTGRES_USER=core_test \
+            -e POSTGRES_PASSWORD=isolated_ci_only \
+            -e POSTGRES_DB=core_test \
+            postgres:15 -c listen_addresses=127.0.0.1
+          for attempt in {1..30}; do
+            if docker exec p0-core-postgres pg_isready -h 127.0.0.1 -U core_test -d core_test; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs --tail 40 p0-core-postgres
+          exit 1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -41,6 +45,15 @@ jobs:
           .chart-venv/bin/python -m pip install -r requirements-charts.lock
           echo "CHART_PYTHON=$PWD/.chart-venv/bin/python" >> "$GITHUB_ENV"
           npm ci
+      - name: Verify loopback PostgreSQL 15
+        run: |
+          python - <<'PY'
+          import os
+          from tools.eval.targets.local_db import verify_local_postgres
+
+          verify_local_postgres(os.environ["CORE_TEST_DSN"])
+          print("Loopback PostgreSQL 15 verified")
+          PY
       - name: Core service and calculator checks
         run: python -m unittest discover -s tests -p 'test_core*.py' -v
       - name: Frontend checks
@@ -51,3 +64,13 @@ jobs:
           node tests/method-limits.dom.test.cjs
           node --check static/app.js
           npm run build
+      - name: v4 clock and evaluation framework
+        run: |
+          python -m pytest tests/v4 -q
+          python tools/eval/runner.py --mode scripted --target fake --self-test
+      - name: Stop isolated PostgreSQL
+        if: ${{ always() }}
+        run: |
+          if docker container inspect p0-core-postgres >/dev/null 2>&1; then
+            docker rm --force p0-core-postgres
+          fi

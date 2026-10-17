@@ -1,0 +1,21 @@
+id: R05
+title: 称呼使用已确认画像
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 你好
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 阿远
+scripted:
+- turn: 1
+  model:
+  - text: 你好，阿远，今天想聊点什么？

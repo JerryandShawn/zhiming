@@ -1,0 +1,59 @@
+id: P03
+title: 每日主动消息上限两条
+category: proactive
+clock: '2026-10-21T20:00:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  entities:
+  - id: sent-one
+    kind: outbox
+    status: sent
+    data:
+      sent_at: '2026-10-21T09:00:00+08:00'
+  - id: sent-two
+    kind: outbox
+    status: sent
+    data:
+      sent_at: '2026-10-21T15:00:00+08:00'
+  - id: third-followup
+    kind: followup
+    status: active
+    data:
+      due_at: '2026-10-21T20:00:00+08:00'
+  settings:
+    proactive_daily_limit: 2
+turns:
+- user: 检查第三条主动跟进
+  channel: web
+  kind: followup
+  expect:
+    db:
+    - kind: followup
+      id: third-followup
+      where:
+        data.due_date: '2026-10-22'
+    - kind: outbox
+      status: sent
+      count: 2
+scripted:
+- turn: 1
+  model:
+  - db:
+      entities:
+      - id: sent-one
+        kind: outbox
+        status: sent
+        data: {}
+      - id: sent-two
+        kind: outbox
+        status: sent
+        data: {}
+      - id: third-followup
+        kind: followup
+        status: active
+        data:
+          due_date: '2026-10-22'
+  - text: 今天已经主动发过两条，这一条顺延到明天。

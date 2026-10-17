@@ -1,0 +1,29 @@
+id: T02
+title: 农历与节气
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 今天农历是多少？什么节气？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 九月初八
+    - 寒露
+    - 霜降
+    - 10月23日|10/23
+    judge: 历法须有确定依据，不自行推演。
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: time_context
+      arguments:
+        date: '2026-10-17'
+  - text: 今天是农历九月初八。当前在寒露节气，寒露10月8日交节，下一个是10月23日的霜降。

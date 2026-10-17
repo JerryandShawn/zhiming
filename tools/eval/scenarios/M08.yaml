@@ -1,0 +1,89 @@
+id: M08
+title: 敏感分类授权后的自动保存
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  entities:
+  - id: health-proposal
+    kind: proposal
+    status: active
+    data:
+      sensitivity: health
+      source_message_id: health-source
+  thread:
+  - id: health-source
+    role: user
+    content: 我被诊断出焦虑症了，最近在吃药
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+turns:
+- user: 以后这类都记
+  channel: web
+  kind: action
+  expect:
+    db:
+    - path: owner_settings.auto_save_categories
+      contains: health
+    events:
+    - consent.category_updated
+  action:
+    type: proposal_accept
+    proposal_id: health-proposal
+    auto_save_category: health
+- user: 我这周复诊了
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: saved
+    db:
+    - kind: fact
+      where:
+        data.sensitivity: health
+      count: 2
+scripted:
+- turn: 1
+  model:
+  - db:
+      owner_settings:
+        auto_save_categories:
+        - health
+      entities:
+      - id: diagnosis
+        kind: fact
+        status: active
+        data:
+          sensitivity: health
+  - event: consent.category_updated
+  - text: 好，以后健康类信息按你的设置记住。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-2
+        quote: 我这周复诊了
+        summary: 本周已复诊
+        kind: event
+        sensitivity: health
+  - receipt:
+      write_status: saved
+      fact_id: checkup
+  - db:
+      entities:
+      - id: diagnosis
+        kind: fact
+        status: active
+        data:
+          sensitivity: health
+      - id: checkup
+        kind: fact
+        status: active
+        data:
+          kind: event
+          sensitivity: health
+  - text: 记下了，这周已经复诊。

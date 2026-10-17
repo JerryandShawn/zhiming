@@ -1,0 +1,43 @@
+id: M03
+title: 别忘了记住不是拒绝保存
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 别忘了记住，我不吃辣
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: saved
+    db:
+    - kind: fact
+      where:
+        data.kind: preference
+      count: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我不吃辣
+        summary: 不吃辣
+        kind: preference
+  - receipt:
+      write_status: saved
+      fact_id: no-chilli
+  - db:
+      entities:
+      - id: no-chilli
+        kind: fact
+        status: active
+        data:
+          kind: preference
+  - text: 记住了，你不吃辣。

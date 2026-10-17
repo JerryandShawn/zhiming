@@ -1,0 +1,36 @@
+id: C02
+title: 无资料先确认不能编造
+category: chart
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+turns:
+- user: 帮我排个八字
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - profile_update_request
+    tools_not_called:
+    - chart_compute
+    must_include_all:
+    - 出生
+    - 确认
+    must_not_include:
+    - 你是甲木日主
+    - 你的日柱是丁酉
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: profile_update_request
+      arguments:
+        fields:
+        - birth.date
+        - birth.time
+        - birth.city
+  - event: ui.profile_confirmation
+  - text: 排八字需要出生日期、时间和地点，我先给你资料确认卡，确认后再计算。

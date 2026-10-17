@@ -1,0 +1,27 @@
+id: Q07
+title: 无上下文只问一个具体问题
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  thread: []
+  facts: []
+turns:
+- user: 我该怎么办
+  channel: web
+  kind: chat
+  expect:
+    min_questions: 1
+    max_questions: 1
+    must_include_any:
+    - 哪一件事
+    - 发生了什么
+    - 什么事
+scripted:
+- turn: 1
+  model:
+  - text: 你现在最想解决的是哪一件事？

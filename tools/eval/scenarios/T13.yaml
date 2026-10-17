@@ -1,0 +1,27 @@
+id: T13
+title: 周末晨报完整时间背景
+category: time
+clock: '2026-10-17T07:00:00+08:00'
+targets:
+- v3
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 生成今天晨报
+  channel: web
+  kind: brief
+  expect:
+    must_include_all:
+    - 10月17日|10/17
+    - 周六|星期六
+    - 九月初八
+    - 寒露|霜降
+    - 重阳
+    must_not_include:
+    - 上班加油
+scripted:
+- turn: 1
+  model:
+  - text: 阿远，早安。今天10月17日周六，农历九月初八，寒露已过、霜降临近。明天是重阳节，周末留点空闲。

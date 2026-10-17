@@ -1,0 +1,63 @@
+id: P06
+title: 用户已聊结果则跳过发送
+category: proactive
+clock: '2026-10-21T20:00:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  thread:
+  - id: result-already-shared
+    role: user
+    content: 面试结束了，拿到offer啦。
+    at: '2026-10-21T19:55:00+08:00'
+    channel: feishu
+  entities:
+  - id: interview-followup
+    kind: followup
+    status: active
+    data:
+      topic: 面试
+      source_fact_id: interview
+      due_at: '2026-10-21T20:00:00+08:00'
+      channel: feishu
+  - id: generated-outbox
+    kind: outbox
+    status: queued
+    data:
+      topic: 面试
+turns:
+- user: 投递面试跟进前复查
+  channel: web
+  kind: followup
+  expect:
+    events:
+    - followup.skipped
+    db:
+    - kind: followup
+      id: interview-followup
+      status: skipped
+    - kind: outbox
+      status: sent
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: followup_skip
+      arguments:
+        id: interview-followup
+        reason: 用户已主动聊过结果
+  - db:
+      entities:
+      - id: interview-followup
+        kind: followup
+        status: skipped
+        data: {}
+      - id: generated-outbox
+        kind: outbox
+        status: cancelled
+        data: {}
+  - event: followup.skipped
+  - text: 你已经主动说过结果，这条跟进跳过，不再发送。

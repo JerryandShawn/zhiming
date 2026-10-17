@@ -1,0 +1,98 @@
+version: c06-ziwei-golden-v1
+scenario_id: C06
+synthetic: true
+input:
+  gender: 男
+  birth:
+    time_precision: interval
+    time_interval:
+      start: 1994-03-12 05:50
+      end: 1994-03-12 07:10
+    timezone_offset: 8
+    location:
+      lng: 104.07
+      lat: 30.67
+      city: 成都
+sampling:
+  coverage: sampled_not_continuous
+  points: 5
+  time_basis: local_mean_solar_time_without_equation_of_time
+  longitude_correction_minutes: -63.72
+versions:
+  py-iztro: 0.1.5
+  pythonmonkey: 1.1.0
+  engine: ziwei-core-3.1
+  iztro_upstream_declared: 2.4.4
+  iztro_upstream_version_source: installed_py_iztro_distribution_description
+  iztro_bundle_sha256:
+    py_iztro/res/iztro-2.5.0.min.js: 09333d6a2da7fff7bd338134c8d17de0d589259c16a70ece1db1d64e17217ea0
+  upstream_version_independently_verified: false
+  source_sha256:
+    ziwei.py: 7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341
+    core_chart_adapter.py: 073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d
+    core_chart_worker.py: a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0
+samples:
+- civil_datetime: 1994-03-12 05:50
+  corrected_time: 1994-03-12 04:46
+  hour_index: 2
+  ming_gong: 丑
+  palace_ganzhi: 丁丑
+  major_stars:
+  - 紫微
+  - 破军
+- civil_datetime: 1994-03-12 06:10
+  corrected_time: 1994-03-12 05:06
+  hour_index: 3
+  ming_gong: 子
+  palace_ganzhi: 丙子
+  major_stars:
+  - 天机
+- civil_datetime: 1994-03-12 06:30
+  corrected_time: 1994-03-12 05:26
+  hour_index: 3
+  ming_gong: 子
+  palace_ganzhi: 丙子
+  major_stars:
+  - 天机
+- civil_datetime: 1994-03-12 06:50
+  corrected_time: 1994-03-12 05:46
+  hour_index: 3
+  ming_gong: 子
+  palace_ganzhi: 丙子
+  major_stars:
+  - 天机
+- civil_datetime: 1994-03-12 07:10
+  corrected_time: 1994-03-12 06:06
+  hour_index: 3
+  ming_gong: 子
+  palace_ganzhi: 丙子
+  major_stars:
+  - 天机
+boundary_probes:
+- civil_datetime: 1994-03-12 06:03
+  corrected_time: 1994-03-12 04:59
+  hour_index: 2
+  ming_gong: 丑
+  palace_ganzhi: 丁丑
+  major_stars:
+  - 紫微
+  - 破军
+- civil_datetime: 1994-03-12 06:04
+  corrected_time: 1994-03-12 05:00
+  hour_index: 3
+  ming_gong: 子
+  palace_ganzhi: 丙子
+  major_stars:
+  - 天机
+branches:
+- hour_index: 2
+  label: 寅时
+  major_stars:
+  - 紫微
+  - 破军
+- hour_index: 3
+  label: 卯时
+  major_stars:
+  - 天机
+sampled_stable: false
+external_cross_check: deferred_to_P8

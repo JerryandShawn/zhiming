@@ -1,0 +1,47 @@
+id: M06
+title: 第三人健康信息先提案
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+turns:
+- user: 我妈今年血压一直很高
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: pending_confirmation
+    db:
+    - kind: proposal
+      where:
+        data.sensitivity: third_party
+        data.health: true
+      count: 1
+    - kind: fact
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我妈今年血压一直很高
+        summary: 自述母亲今年血压偏高
+        kind: relationship
+        sensitivity: third_party
+  - receipt:
+      write_status: pending_confirmation
+      proposal_id: mother-health
+  - db:
+      entities:
+      - id: mother-health
+        kind: proposal
+        status: active
+        data:
+          sensitivity: third_party
+          health: true
+  - text: 你会担心妈妈是自然的，持续血压偏高适合由医生评估。这涉及家人的健康，要记住吗？
