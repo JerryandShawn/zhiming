@@ -2,6 +2,7 @@
 
 import json
 from dataclasses import replace
+from typing import Any
 from unittest.mock import patch
 
 import httpx
@@ -11,7 +12,7 @@ from tools import probe_models
 from tools.model_probe_cases import cases
 
 
-def handle():
+def handle() -> Any:
     return ModelHandle(
         "kimi-code-main",
         "kimi_code",
@@ -24,10 +25,10 @@ def handle():
     )
 
 
-def test_probe_quota_is_one_actual_request_and_no_body_in_result():
+def test_probe_quota_is_one_actual_request_and_no_body_in_result() -> None:
     original = ModelHandle.adapter
 
-    def factory(instance, **kwargs):
+    def factory(instance: Any, **kwargs: Any) -> Any:
         return original(
             instance, transport=httpx.MockTransport(lambda _: httpx.Response(429, text="private quota")), **kwargs
         )
@@ -38,16 +39,16 @@ def test_probe_quota_is_one_actual_request_and_no_body_in_result():
     assert "private" not in json.dumps(row)
 
 
-def test_probe_main_stops_global_after_first_quota(tmp_path):
+def test_probe_main_stops_global_after_first_quota(tmp_path: Any) -> None:
     class Registry:
         path = tmp_path / "models.yaml"
 
-        def resolve(self, role):
+        def resolve(self, role: Any) -> Any:
             return [handle() if role == "primary" else replace(handle(), model="k3-256k")]
 
     calls = []
 
-    def run(item, probe):
+    def run(item: Any, probe: Any) -> Any:
         calls.append(item.model)
         return {
             "model": item.model,

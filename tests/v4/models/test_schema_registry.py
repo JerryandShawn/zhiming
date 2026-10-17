@@ -1,7 +1,9 @@
 """Schema preservation and failover behavior are independent of live credentials."""
 
 import json
+import time
 from pathlib import Path
+from typing import Any
 
 import httpx
 import pytest
@@ -12,6 +14,7 @@ from mingjing_core.models.errors import (
     CapabilityError,
     ModelCancelled,
     ModelQuotaExhausted,
+    ModelUnavailable,
 )
 from mingjing_core.models.legacy import PortBackedModel
 from mingjing_core.models.port import ChatMessage
@@ -23,7 +26,7 @@ from .test_protocols import CAPS, adapter, openai_record, recording
 
 @pytest.mark.parametrize("contract", [Intake, FinalAnswer])
 @pytest.mark.parametrize("dialect", ["openai", "openai_partial", "anthropic"])
-def test_pydantic_contract_is_flattened_without_mutation(contract, dialect):
+def test_pydantic_contract_is_flattened_without_mutation(contract: Any, dialect: Any) -> None:
     source = contract.model_json_schema()
     before = json.dumps(source, sort_keys=True)
     flattened = flatten_schema(source, dialect)
@@ -65,12 +68,12 @@ def test_pydantic_contract_is_flattened_without_mutation(contract, dialect):
         ),
     ],
 )
-def test_blueprint_tool_schemas(name, properties, required):
+def test_blueprint_tool_schemas(name: Any, properties: Any, required: Any) -> None:
     schema = {"type": "object", "properties": properties, "required": required}
     assert flatten_schema(schema)["required"] == required, name
 
 
-def test_optional_any_and_escaped_local_reference():
+def test_optional_any_and_escaped_local_reference() -> None:
     source = {
         "type": "object",
         "properties": {
@@ -97,12 +100,12 @@ def test_optional_any_and_escaped_local_reference():
         ({}, "unknown"),
     ],
 )
-def test_reject_remote_recursive_and_unknown_schema(schema, dialect):
+def test_reject_remote_recursive_and_unknown_schema(schema: Any, dialect: Any) -> None:
     with pytest.raises(ValueError):
         flatten_schema(schema, dialect)
 
 
-def registry(tmp_path, *, shared=False):
+def registry(tmp_path: Any, *, shared: Any = False) -> Any:
     data = {
         "version": 1,
         "providers": {
@@ -128,12 +131,12 @@ def registry(tmp_path, *, shared=False):
     )
 
 
-def test_provider_503_twice_then_failover(tmp_path):
+def test_provider_503_twice_then_failover(tmp_path: Any) -> None:
     model_registry = registry(tmp_path)
     attempts = []
 
-    def factory(handle):
-        def respond(_):
+    def factory(handle: Any) -> Any:
+        def respond(_: Any) -> Any:
             attempts.append(handle.model)
             if handle.model == "a":
                 return httpx.Response(503, text="transient")
@@ -150,11 +153,11 @@ def test_provider_503_twice_then_failover(tmp_path):
     assert (result.model, result.provider) == ("sibling", "two")
 
 
-def test_quota_global_stop_and_shared_key_siblings(tmp_path):
+def test_quota_global_stop_and_shared_key_siblings(tmp_path: Any) -> None:
     calls = []
 
     class QuotaPort:
-        def stream(self, *args, **kwargs):
+        def stream(self, *args: Any, **kwargs: Any) -> Any:
             calls.append("quota")
             raise ModelQuotaExhausted(status=429)
 
@@ -170,11 +173,11 @@ def test_quota_global_stop_and_shared_key_siblings(tmp_path):
 
 
 @pytest.mark.parametrize("error", [CapabilityError, ModelCancelled])
-def test_bad_request_or_cancel_does_not_fallback(tmp_path, error):
+def test_bad_request_or_cancel_does_not_fallback(tmp_path: Any, error: Any) -> None:
     calls = []
 
     class FailedPort:
-        def stream(self, *args, **kwargs):
+        def stream(self, *args: Any, **kwargs: Any) -> Any:
             calls.append(1)
             raise error()
 
@@ -183,7 +186,7 @@ def test_bad_request_or_cancel_does_not_fallback(tmp_path, error):
     assert len(calls) == 1
 
 
-def test_environment_fallback_disabled_and_warning_once(tmp_path, caplog):
+def test_environment_fallback_disabled_and_warning_once(tmp_path: Any, caplog: Any) -> None:
     reg = registry(tmp_path)
     reg.environment = {}
     assert reg.resolve() == reg.resolve() == []
@@ -201,13 +204,13 @@ def test_environment_fallback_disabled_and_warning_once(tmp_path, caplog):
     assert reg.resolve("embedding") == []
 
 
-def test_v3_submit_shim_and_usage_mapping(tmp_path):
+def test_v3_submit_shim_and_usage_mapping(tmp_path: Any) -> None:
     reg = registry(tmp_path)
     reg.data["roles"]["primary"] = ["a"]
     model = PortBackedModel(reg)
     bodies = []
 
-    def respond(request):
+    def respond(request: Any) -> Any:
         bodies.append(json.loads(request.content))
         return httpx.Response(200, content=openai_record('{"answer":"合成"}').replace(b"lookup", b"submit"))
 
@@ -220,7 +223,7 @@ def test_v3_submit_shim_and_usage_mapping(tmp_path):
     assert bodies[0]["tool_choice"]["function"]["name"] == "submit"
 
 
-def test_default_registry_loads_no_network():
+def test_default_registry_loads_no_network() -> None:
     root = Path(__file__).resolve().parents[3]
     reg = ModelRegistry(
         root / "config/models.yaml", environment={"KIMI_API_KEY": "synthetic-value", "KIMI_MODEL": "k3"}
@@ -228,3 +231,23 @@ def test_default_registry_loads_no_network():
     assert [handle.model for handle in reg.resolve()] == ["k3"]
     assert reg.resolve("critic")[0].model == "k3-256k"
     assert reg.resolve("fast")[0].provider == "kimi_code"
+
+
+def test_registry_shares_total_deadline_across_retries_and_providers(tmp_path: Any) -> None:
+    reg = registry(tmp_path)
+    reg.data["providers"]["one"]["settings"]["total_timeout"] = 0.01
+    attempts: list[str] = []
+
+    def factory(handle: Any) -> Any:
+        def respond(_: httpx.Request) -> httpx.Response:
+            attempts.append(handle.model)
+            time.sleep(0.03)
+            return httpx.Response(
+                200, content=recording({"choices": [{"delta": {"content": "too late"}, "finish_reason": "stop"}]})
+            )
+
+        return adapter(respond, max_retries=0)
+
+    with pytest.raises(ModelUnavailable):
+        reg.port(factory=factory).complete([])
+    assert attempts == ["a"]

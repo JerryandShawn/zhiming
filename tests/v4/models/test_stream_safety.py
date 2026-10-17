@@ -1,5 +1,6 @@
 """Malformed provider data and cancellation cannot bypass quota/privacy guards."""
 
+import json
 import threading
 import time
 from typing import Any
@@ -9,9 +10,16 @@ import pytest
 
 from mingjing_core.models.anthropic_messages import AnthropicMessages
 from mingjing_core.models.anthropic_messages import encode_messages as anthropic_encode
-from mingjing_core.models.errors import ModelCancelled, ModelProtocolError, ModelQuotaExhausted, ModelUnavailable
+from mingjing_core.models.errors import (
+    CapabilityError,
+    ModelBadRequest,
+    ModelCancelled,
+    ModelProtocolError,
+    ModelQuotaExhausted,
+    ModelUnavailable,
+)
 from mingjing_core.models.openai_compat import OpenAICompat, encode_messages
-from mingjing_core.models.port import ChatMessage
+from mingjing_core.models.port import ChatMessage, Part
 from mingjing_core.models.transport import safe_usage
 
 from .test_protocols import CAPS, adapter, openai_record, recording
@@ -39,7 +47,9 @@ def test_streamed_membership_rate_limit_stops_after_one_request(protocol: Any) -
     assert "private" not in str(caught.value.safe_diagnostic())
 
 
-@pytest.mark.parametrize("arguments", ['{"x":NaN}', '{"x":Infinity}', '{"x":-Infinity}'])
+@pytest.mark.parametrize(
+    "arguments", ['{"x":NaN}', '{"x":Infinity}', '{"x":-Infinity}', '{"x":1e9999}', '{"x":[-1e9999]}']
+)
 def test_nonfinite_tool_json_is_rejected(arguments: str) -> None:
     model = adapter(lambda _: httpx.Response(200, content=openai_record(arguments)), max_retries=0)
     with pytest.raises(ModelProtocolError):
@@ -107,3 +117,118 @@ def test_base_url_rejects_credential_and_query(url: str) -> None:
     with pytest.raises(ValueError) as caught:
         OpenAICompat(base_url=url, api_key="synthetic", model="test", provider="test")
     assert "private" not in str(caught.value)
+
+
+def test_transient_retry_uses_one_three_nine_second_schedule() -> None:
+    delays: list[float] = []
+    requests: list[httpx.Request] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        if len(requests) < 4:
+            return httpx.Response(503, text="transient")
+        return httpx.Response(
+            200, content=recording({"choices": [{"delta": {"content": "成功"}, "finish_reason": "stop"}]})
+        )
+
+    model = OpenAICompat(
+        base_url="https://synthetic.invalid",
+        api_key="synthetic",
+        model="test",
+        provider="test",
+        transport=httpx.MockTransport(respond),
+        sleep=delays.append,
+    )
+    assert model.complete([]).text == "成功" and model.request_count == 4
+    assert len(delays) == 3 and all(
+        base <= actual <= base + 0.2 for base, actual in zip((1, 3, 9), delays, strict=True)
+    )
+
+
+def test_cancellation_interrupts_default_backoff_before_second_request() -> None:
+    event = threading.Event()
+    timer = threading.Timer(0.03, event.set)
+
+    def respond(_: httpx.Request) -> httpx.Response:
+        timer.start()
+        return httpx.Response(503, text="transient")
+
+    model = OpenAICompat(
+        base_url="https://synthetic.invalid",
+        api_key="synthetic",
+        model="test",
+        provider="test",
+        transport=httpx.MockTransport(respond),
+    )
+    started = time.monotonic()
+    try:
+        with pytest.raises(ModelCancelled):
+            model.complete([], cancel_event=event)
+    finally:
+        timer.cancel()
+    assert time.monotonic() - started < 0.6 and model.request_count == 1
+
+
+def test_total_deadline_is_checked_after_backoff_before_any_second_post() -> None:
+    requests: list[httpx.Request] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return (
+            httpx.Response(503)
+            if len(requests) == 1
+            else httpx.Response(
+                200, content=recording({"choices": [{"delta": {"content": "too late"}, "finish_reason": "stop"}]})
+            )
+        )
+
+    model = OpenAICompat(
+        base_url="https://synthetic.invalid",
+        api_key="synthetic",
+        model="test",
+        provider="test",
+        transport=httpx.MockTransport(respond),
+        sleep=lambda _: time.sleep(0.03),
+        settings={"total_timeout": 0.01},
+    )
+    with pytest.raises(ModelUnavailable):
+        model.complete([])
+    assert model.request_count == len(requests) == 1
+
+
+def test_new_real_user_turn_closes_old_tagged_reasoning_cycle() -> None:
+    messages = [
+        ChatMessage("user", "旧问题"),
+        ChatMessage(
+            "assistant", "旧答复", reasoning="old-cycle", reasoning_signature="signature", tool_cycle="finished"
+        ),
+        ChatMessage("user", "新问题"),
+    ]
+    assert "reasoning_content" not in encode_messages(messages, CAPS)[1]
+    _, rows = anthropic_encode(messages, CAPS)
+    assert all(part["type"] != "thinking" for part in rows[1]["content"])
+
+
+def test_anthropic_tool_result_part_list_is_wire_json_and_checks_vision() -> None:
+    messages = [ChatMessage("tool", [Part(text="合成结果"), Part(type="image", data="aGVsbG8=")], tool_call_id="call")]
+    _, encoded = anthropic_encode(messages, CAPS)
+    result = encoded[0]["content"][0]
+    assert result["content"][0] == {"type": "text", "text": "合成结果"}
+    assert result["content"][1]["source"]["type"] == "base64"
+    json.dumps(encoded)
+
+    with pytest.raises(CapabilityError):
+        anthropic_encode(messages, {"vision": False})
+
+
+@pytest.mark.parametrize("status,error", [(429, ModelQuotaExhausted), (401, ModelBadRequest)])
+def test_unreadable_error_body_cannot_change_known_membership_status(status: int, error: Any) -> None:
+    class BrokenBody(httpx.SyncByteStream):
+        def __iter__(self) -> Any:
+            raise httpx.ReadError("synthetic-private")
+
+    model = adapter(lambda _: httpx.Response(status, stream=BrokenBody()), settings={"membership": True})
+    with pytest.raises(error):
+        model.complete([])
+    assert model.request_count == 1
+    assert model.quota_errors == (1 if status == 429 else 0)

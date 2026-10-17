@@ -8,7 +8,7 @@ from collections.abc import Iterator
 from typing import Any
 
 from .errors import CapabilityError, ModelProtocolError
-from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec
+from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec, active_tool_cycle
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
 
@@ -30,7 +30,7 @@ def _content(content: str | list[Part], vision: bool) -> str | list[dict[str, An
 def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> list[dict[str, Any]]:
     result = []
     # A caller tags the active tool cycle; reasoning from earlier user turns is excluded.
-    active_cycle = next((message.tool_cycle for message in reversed(messages) if message.tool_cycle), None)
+    active_cycle = active_tool_cycle(messages)
     for message in messages:
         row: dict[str, Any] = {"role": message.role, "content": _content(message.content, caps.get("vision", False))}
         if message.tool_calls:

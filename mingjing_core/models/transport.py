@@ -13,6 +13,8 @@ from urllib.parse import urlsplit
 
 import httpx
 
+from mingjing_core.domain.json_values import ensure_finite_json
+
 from .errors import (
     ModelBadRequest,
     ModelCancelled,
@@ -50,8 +52,13 @@ def check_cancel(event: threading.Event | None) -> None:
 
 def http_error(response: httpx.Response, *, membership: bool) -> ModelUnavailable:
     status = response.status_code
+    if membership and status == 429:
+        return ModelQuotaExhausted(status=status)
     # Inspect only to classify; this local value is never attached to an exception or logged.
-    sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore").lower()
+    try:
+        sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore").lower()
+    except httpx.HTTPError:
+        sample = ""
     quota = any(word in sample for word in ("usage limit", "quota", "额度", "usage_limit"))
     if quota or membership and status == 429:
         return ModelQuotaExhausted(status=status)
@@ -97,7 +104,7 @@ def _reject_constant(_: str) -> Any:
 
 
 def strict_json(value: str) -> Any:
-    return json.loads(value, parse_constant=_reject_constant)
+    return ensure_finite_json(json.loads(value, parse_constant=_reject_constant))
 
 
 def stream_error(data: Any, *, membership: bool) -> ModelUnavailable:
@@ -179,6 +186,9 @@ class StreamingHTTP(ModelPort):
         for attempt in range(self.max_retries + 1):
             visible, failure = False, None
             check_cancel(cancel)
+            if time.monotonic() >= deadline:
+                yield StreamEvent("error", ModelUnavailable())
+                return
             try:
                 for event in self._request(path, body, headers, parser, cancel, deadline):
                     visible = visible or event.type in {"text", "tool_call", "reasoning"}
@@ -198,7 +208,7 @@ class StreamingHTTP(ModelPort):
                 parse_retries += 1
             except ModelUnavailable as exc:
                 failure = exc
-            except httpx.HTTPError:
+            except (httpx.HTTPError, RuntimeError):
                 failure = ModelUnavailable()
             except (KeyError, TypeError, AttributeError, ValueError):
                 failure = ModelProtocolError()
@@ -207,7 +217,7 @@ class StreamingHTTP(ModelPort):
             if visible or attempt >= self.max_retries or parse_retries > 1 or time.monotonic() >= deadline:
                 yield StreamEvent("error", failure)
                 return
-            delay = (1, 3, 9)[min(attempt, 2)] + random.uniform(0, 0.2)
+            delay = min((1, 3, 9)[min(attempt, 2)] + random.uniform(0, 0.2), max(0, deadline - time.monotonic()))
             if cancel is not None and self.sleep is time.sleep:
                 cancel.wait(delay)
             else:
@@ -222,6 +232,8 @@ class StreamingHTTP(ModelPort):
         cancel: threading.Event | None,
         deadline: float,
     ) -> Iterator[StreamEvent]:
+        if time.monotonic() >= deadline:
+            raise ModelUnavailable()
         timeout = httpx.Timeout(
             float(self.settings.get("first_byte_timeout", 60)), connect=float(self.settings.get("connect_timeout", 10))
         )
@@ -230,18 +242,22 @@ class StreamingHTTP(ModelPort):
             close_on_cancel(client, cancel, deadline) as client_expired,
         ):
             check_cancel(cancel)
+            if time.monotonic() >= deadline:
+                raise ModelUnavailable()
             self.request_count += 1
             with (
                 client.stream("POST", self.base_url + path, headers=headers, json=body) as response,
                 close_on_cancel(response, cancel, deadline) as expired,
             ):
                 if response.status_code != 200:
-                    raise http_error(response, membership=self.membership)
+                    failure = http_error(response, membership=self.membership)
+                    check_cancel(cancel)
+                    raise failure
                 for event in parser(sse(response, cancel)):
                     check_cancel(cancel)
-                    if expired.is_set() or client_expired.is_set():
+                    if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
                         raise ModelUnavailable()
                     yield event
                 check_cancel(cancel)
-                if expired.is_set() or client_expired.is_set():
+                if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
                     raise ModelUnavailable()

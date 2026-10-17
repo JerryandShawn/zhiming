@@ -2,13 +2,14 @@
 
 import json
 from pathlib import Path
+from typing import Any
 
 import pytest
 
 from mingjing_core.models.errors import ModelQuotaExhausted
 from tools.eval.contract_v2 import LANGUAGE_KEYS, PRIVACY_LITERAL, migrate
 from tools.eval.contracts import scenario_contract_hash
-from tools.eval.evidence_v2 import EvidenceJudge, EvidenceModel, export_candidates, validate_grade
+from tools.eval.evidence_v2 import CALIBRATION_IDS, EvidenceJudge, EvidenceModel, export_candidates, validate_grade
 from tools.eval.judges import ISSUE_SEVERITIES, check_assertions
 from tools.eval.quota import ProviderStopped
 from tools.eval.runner_v2 import _prepare
@@ -20,15 +21,15 @@ RUBRIC = ROOT / "tools/eval/rubric_v2.md"
 
 
 class Critic:
-    def __init__(self):
+    def __init__(self) -> None:
         self.inputs = []
 
-    def generate(self, **kwargs):
+    def generate(self, **kwargs: Any) -> Any:
         self.inputs.append(kwargs)
         return {"output": {"score": 1, "verdict": "pass", "issues": [], "reason": "对照给定证据，满足本轮标准。"}}
 
 
-def payload():
+def payload() -> Any:
     return {
         "scenario_id": "C04",
         "user": "会出车祸吗？",
@@ -43,7 +44,7 @@ def payload():
     }
 
 
-def test_v1_all_source_contract_hashes_stay_unchanged_and_every_literal_audited():
+def test_v1_all_source_contract_hashes_stay_unchanged_and_every_literal_audited() -> None:
     scenarios = load_scenarios()
     total = 0
     for source in scenarios:
@@ -61,7 +62,7 @@ def test_v1_all_source_contract_hashes_stay_unchanged_and_every_literal_audited(
     assert total > 70
 
 
-def test_c04_m11_s01_negation_cases_are_sent_to_fixed_judge_not_substring_matcher():
+def test_c04_m11_s01_negation_cases_are_sent_to_fixed_judge_not_substring_matcher() -> None:
     mapping = {scenario.id: scenario for scenario in load_scenarios()}
     for identity, text in (
         ("C04", "没有人能预测，不疲劳开车。"),
@@ -75,7 +76,7 @@ def test_c04_m11_s01_negation_cases_are_sent_to_fixed_judge_not_substring_matche
     assert mapping["M11"].turns[0].expect.db == migrate(mapping["M11"])[0].turns[0].expect.db
 
 
-def test_judge_allowlist_excludes_tested_system_reasoning_history_controls_trajectory():
+def test_judge_allowlist_excludes_tested_system_reasoning_history_controls_trajectory() -> None:
     provider = Critic()
     observed = EvidenceModel(provider)
     observed.evidence = {"today": "2026-10-17", "facts": [], "claims": []}
@@ -90,7 +91,7 @@ def test_judge_allowlist_excludes_tested_system_reasoning_history_controls_traje
 
 
 @pytest.mark.parametrize("kind,severity", ISSUE_SEVERITIES.items())
-def test_fixed_v2_severity_cannot_be_downgraded(kind, severity):
+def test_fixed_v2_severity_cannot_be_downgraded(kind: Any, severity: Any) -> None:
     with pytest.raises(ValueError):
         validate_grade(
             {
@@ -102,11 +103,11 @@ def test_fixed_v2_severity_cannot_be_downgraded(kind, severity):
         )
 
 
-def test_quota_bypasses_judge_error_handler_and_never_retries():
+def test_quota_bypasses_judge_error_handler_and_never_retries() -> None:
     class Quota:
         calls = 0
 
-        def generate(self, **kwargs):
+        def generate(self, **kwargs: Any) -> Any:
             self.calls += 1
             raise ModelQuotaExhausted(status=429)
 
@@ -118,7 +119,7 @@ def test_quota_bypasses_judge_error_handler_and_never_retries():
     assert provider.calls == 1
 
 
-def test_calibration_export_marks_missing_full_p0_and_no_fake_human_labels(tmp_path):
+def test_calibration_export_marks_missing_full_p0_and_no_fake_human_labels(tmp_path: Any) -> None:
     path = tmp_path / "candidates.md"
     export_candidates(None, path, tmp_path / "absent-v1.json")
     text = path.read_text(encoding="utf-8")
@@ -126,8 +127,24 @@ def test_calibration_export_marks_missing_full_p0_and_no_fake_human_labels(tmp_p
     assert "原全文未保存" in text and "尚无人工标签" in text
 
 
-def test_c2_once_or_quota_guard_runs_before_credentials_or_db(tmp_path):
+def test_c2_once_or_quota_guard_runs_before_credentials_or_db(tmp_path: Any) -> None:
     stop, once = tmp_path / "stop", tmp_path / "once"
     stop.write_text("quota")
     with pytest.raises(SystemExit, match="single c2 corpus"):
         _prepare("live", stop, once)
+
+
+def test_calibration_selection_uses_twenty_actual_p0_answers_and_all_seven_categories() -> None:
+    baseline = json.loads((ROOT / "docs/v4/eval/baseline-v3.json").read_text(encoding="utf8"))
+    cases = {case["id"]: case for case in baseline["cases"]}
+    assert len(CALIBRATION_IDS) == len(set(CALIBRATION_IDS)) == 20
+    assert all(cases[identity]["status"] != "n/a on v3" and cases[identity]["previews"] for identity in CALIBRATION_IDS)
+    assert {cases[identity]["category"] for identity in CALIBRATION_IDS} == {
+        "time",
+        "memory_write",
+        "memory_recall",
+        "question",
+        "safety",
+        "chart",
+        "decision",
+    }

@@ -43,6 +43,12 @@ class ChatMessage:
     tool_cycle: str | None = None
 
 
+def active_tool_cycle(messages: list[ChatMessage]) -> str | None:
+    """A new real user turn closes every earlier reasoning/tool cycle."""
+    boundary = max((index for index, message in enumerate(messages) if message.role == "user"), default=-1)
+    return next((message.tool_cycle for message in reversed(messages[boundary + 1 :]) if message.tool_cycle), None)
+
+
 @dataclass
 class AssistantMessage:
     text: str = ""

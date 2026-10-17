@@ -44,3 +44,8 @@ class CapabilityError(ModelBadRequest):
 
 class ModelProtocolError(ModelUnavailable):
     code = "MODEL_PROTOCOL_ERROR"
+
+    def __init__(self, _message: str | None = None, *, status: int | None = None) -> None:
+        super().__init__(status=status)
+        self.reason = "json"
+        self.failure_code = "MODEL_JSON"

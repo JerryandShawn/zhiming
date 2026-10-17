@@ -18,25 +18,25 @@ JUDGE_SCHEMA_V2["required"].append("reason")
 JUDGE_SCHEMA_V2["properties"]["reason"] = {"type": "string", "minLength": 1, "maxLength": 1200}
 CALIBRATION_IDS = (
     "T01",
-    "T02",
     "T05",
     "T14",
-    "M01",
+    "M02",
     "M03",
     "M04",
-    "M05",
+    "M10",
     "M11",
     "R01",
     "R02",
     "R03",
+    "R04",
     "Q01",
+    "Q03",
     "Q04",
     "S01",
     "S02",
-    "C01",
+    "S03",
     "C04",
-    "C06",
-    "D01",
+    "D02",
 )
 
 
@@ -171,6 +171,6 @@ def export_candidates(judge: EvidenceJudge | None, path: Path, v1_path: Path) ->
                 ]
             )
         else:
-            lines.extend(["用户输入/全文/此刻/回执/v2 评分：本夜尚无成功运行样本，禁止伪造。", ""])
+            lines.extend(["原P0全文、实际注入此刻、程序回执与v2评分所需证据未保留，无法补全；不得伪造。", ""])
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines), encoding="utf-8")

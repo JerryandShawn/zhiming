@@ -2,6 +2,7 @@
 
 import json
 import threading
+from typing import Any
 
 import httpx
 import pytest
@@ -55,7 +56,7 @@ def openai_record(arguments: str = '{"day":"周六"}') -> bytes:
     )
 
 
-def adapter(handler, cls=OpenAICompat, **kwargs):
+def adapter(handler: Any, cls=OpenAICompat, **kwargs: Any) -> Any:
     return cls(
         base_url="https://synthetic.invalid/v1",
         api_key="synthetic-test-key",
@@ -68,10 +69,10 @@ def adapter(handler, cls=OpenAICompat, **kwargs):
     )
 
 
-def test_split_tool_json_and_usage():
+def test_split_tool_json_and_usage() -> None:
     requests = []
 
-    def respond(request):
+    def respond(request: Any) -> Any:
         requests.append(json.loads(request.content))
         assert request.headers["User-Agent"] == "MingjingCore/3.0"
         return httpx.Response(200, content=openai_record())
@@ -85,7 +86,7 @@ def test_split_tool_json_and_usage():
     assert requests[0]["stream_options"] == {"include_usage": True}
 
 
-def test_parallel_calls_assembled_by_index():
+def test_parallel_calls_assembled_by_index() -> None:
     data = recording(
         {
             "choices": [
@@ -105,7 +106,7 @@ def test_parallel_calls_assembled_by_index():
     assert [item.id for item in result.tool_calls] == ["a", "b"]
 
 
-def test_reasoning_replayed_only_for_tagged_active_cycle():
+def test_reasoning_replayed_only_for_tagged_active_cycle() -> None:
     messages = [
         ChatMessage("assistant", "旧", reasoning="old", tool_cycle="old"),
         ChatMessage("user", "新"),
@@ -117,10 +118,10 @@ def test_reasoning_replayed_only_for_tagged_active_cycle():
     assert "reasoning_content" not in encode_messages(messages, {**CAPS, "reasoning_replay": False})[-1]
 
 
-def test_text_reasoning_and_caller_tool_roundtrip_l01():
+def test_text_reasoning_and_caller_tool_roundtrip_l01() -> None:
     bodies = []
 
-    def respond(request):
+    def respond(request: Any) -> Any:
         bodies.append(json.loads(request.content))
         if len(bodies) == 1:
             return httpx.Response(200, content=openai_record())
@@ -143,7 +144,7 @@ def test_text_reasoning_and_caller_tool_roundtrip_l01():
     "status,error,retries",
     [(400, ModelBadRequest, 0), (401, ModelBadRequest, 0), (429, ModelRateLimited, 3), (503, ModelUnavailable, 3)],
 )
-def test_http_status_retry_budget(status, error, retries):
+def test_http_status_retry_budget(status: Any, error: Any, retries: Any) -> None:
     model = adapter(lambda _: httpx.Response(status, text="synthetic-private-response"))
     with pytest.raises(error) as caught:
         model.complete([ChatMessage("user", "synthetic-private-user")])
@@ -153,21 +154,22 @@ def test_http_status_retry_budget(status, error, retries):
 
 
 @pytest.mark.parametrize("status,body", [(429, "rate"), (403, "usage limit"), (500, "quota")])
-def test_membership_quota_never_retry(status, body):
+def test_membership_quota_never_retry(status: Any, body: Any) -> None:
     model = adapter(lambda _: httpx.Response(status, text=body), settings={"membership": True})
     with pytest.raises(ModelQuotaExhausted):
         model.complete([ChatMessage("user", "查询")])
     assert model.request_count == model.quota_errors == 1
 
 
-def test_bad_tool_arguments_retried_once_then_error_event():
+def test_bad_tool_arguments_retried_once_then_error_event() -> None:
     model = adapter(lambda _: httpx.Response(200, content=openai_record("{bad")))
     events = list(model.stream([ChatMessage("user", "查询")]))
     assert events[-1].type == "error" and isinstance(events[-1].data, ModelProtocolError)
+    assert events[-1].data.safe_diagnostic()["reason"] == "json"
     assert model.request_count == 2
 
 
-def test_cancel_before_request_and_during_stream():
+def test_cancel_before_request_and_during_stream() -> None:
     cancelled = threading.Event()
     cancelled.set()
     model = adapter(lambda _: pytest.fail("cancelled request must not be sent"))
@@ -179,12 +181,12 @@ def test_cancel_before_request_and_during_stream():
     class RecordingStream(httpx.SyncByteStream):
         closed = False
 
-        def __iter__(self):
+        def __iter__(self) -> Any:
             yield recording({"choices": [{"delta": {"content": "首字"}}]})
             cancelled.set()
             yield b"data: [DONE]\n\n"
 
-        def close(self):
+        def close(self) -> Any:
             self.closed = True
 
     stream = RecordingStream()
@@ -194,7 +196,7 @@ def test_cancel_before_request_and_during_stream():
     assert stream.closed and model.request_count == 1
 
 
-def test_image_caps_and_data_uri():
+def test_image_caps_and_data_uri() -> None:
     messages = [ChatMessage("user", [Part(type="image", data="aGVsbG8=", mime="image/png")])]
     assert encode_messages(messages, CAPS)[0]["content"][0]["image_url"]["url"].startswith("data:image/png;base64,")
     with pytest.raises(CapabilityError):
@@ -202,8 +204,8 @@ def test_image_caps_and_data_uri():
 
 
 @pytest.mark.parametrize("failure", [httpx.ConnectError, httpx.ReadTimeout])
-def test_transport_exceptions_are_safe_and_retried(failure):
-    def respond(_):
+def test_transport_exceptions_are_safe_and_retried(failure: Any) -> None:
+    def respond(_: Any) -> Any:
         raise failure("synthetic-private-request")
 
     model = adapter(respond, max_retries=1)
@@ -212,7 +214,7 @@ def test_transport_exceptions_are_safe_and_retried(failure):
     assert model.request_count == 2 and "private" not in str(caught.value)
 
 
-def anthropic_record():
+def anthropic_record() -> Any:
     return recording(
         {"type": "message_start", "message": {"usage": {"input_tokens": 5}}},
         {"type": "content_block_start", "index": 0, "content_block": {"type": "thinking", "thinking": ""}},
@@ -234,10 +236,10 @@ def anthropic_record():
     )
 
 
-def test_anthropic_tools_thinking_signature_and_multiturn():
+def test_anthropic_tools_thinking_signature_and_multiturn() -> None:
     bodies = []
 
-    def respond(request):
+    def respond(request: Any) -> Any:
         assert request.url.path == "/v1/messages"
         bodies.append(json.loads(request.content))
         return httpx.Response(200, content=anthropic_record())
@@ -265,13 +267,13 @@ def test_anthropic_tools_thinking_signature_and_multiturn():
         (b"data: invalid-json\n\n", ModelProtocolError),
     ],
 )
-def test_anthropic_rejects_incomplete_or_quota_stream(data, error):
+def test_anthropic_rejects_incomplete_or_quota_stream(data: Any, error: Any) -> None:
     model = adapter(lambda _: httpx.Response(200, content=data), AnthropicMessages, max_retries=0)
     with pytest.raises(error):
         model.complete([ChatMessage("user", "查询")])
 
 
-def test_no_replay_after_visible_text_failure():
+def test_no_replay_after_visible_text_failure() -> None:
     data = recording({"choices": [{"delta": {"content": "已展示"}}]})
     model = adapter(lambda _: httpx.Response(200, content=data))
     events = list(model.stream([ChatMessage("user", "查询")]))

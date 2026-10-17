@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 import os
+import time
 from collections.abc import Callable, Iterator, Mapping
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -20,6 +21,7 @@ from .errors import (
 )
 from .openai_compat import OpenAICompat
 from .port import ChatMessage, ModelPort, StreamEvent
+from .transport import StreamingHTTP
 
 LOG = logging.getLogger(__name__)
 DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / "config/models.yaml"
@@ -106,25 +108,34 @@ class RegistryPort(ModelPort):
         role: str = "primary",
         factory: Callable[[ModelHandle], ModelPort] | None = None,
         stop_on_quota: bool = False,
+        total_timeout: float | None = None,
     ) -> None:
         self.registry, self.role = registry, role
         # Registry makes two attempts per provider; adapters must not multiply this budget.
         self.factory = factory or (lambda handle: handle.adapter(max_retries=0))
         self.stop_on_quota = stop_on_quota
+        self.total_timeout = total_timeout
         self.quota_errors = 0
 
     def stream(self, messages: list[ChatMessage], **kwargs: Any) -> Iterator[StreamEvent]:
         role = kwargs.pop("role", self.role)
         blocked_memberships: set[str] = set()
         last: ModelUnavailable = ModelUnavailable()
-        for handle in self.registry.resolve(role):
+        handles = self.registry.resolve(role)
+        timeout = (
+            self.total_timeout
+            if self.total_timeout is not None
+            else (float(handles[0].settings.get("total_timeout", 600)) if handles else 600)
+        )
+        deadline = time.monotonic() + timeout
+        for handle in handles:
             if handle.api_key in blocked_memberships:
                 continue
             adapter = self.factory(handle)
             for _ in range(2):
                 visible = False
                 try:
-                    for event in adapter.stream(messages, role=role, **kwargs):
+                    for event in self._attempt(adapter, messages, deadline, role=role, **kwargs):
                         if event.type == "error":
                             raise event.data
                         visible = visible or event.type in {"text", "reasoning", "tool_call"}
@@ -144,3 +155,18 @@ class RegistryPort(ModelPort):
                     if visible:
                         raise
         raise last
+
+    def _attempt(
+        self, adapter: ModelPort, messages: list[ChatMessage], deadline: float, **kwargs: Any
+    ) -> Iterator[StreamEvent]:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise ModelUnavailable()
+        settings = adapter.settings if isinstance(adapter, StreamingHTTP) else None
+        if settings is not None:
+            adapter.settings = {**settings, "total_timeout": min(float(settings.get("total_timeout", 600)), remaining)}
+        try:
+            yield from adapter.stream(messages, **kwargs)
+        finally:
+            if settings is not None:
+                adapter.settings = settings

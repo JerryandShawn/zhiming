@@ -10,14 +10,14 @@ from .errors import (
     CapabilityError,
     ModelProtocolError,
 )
-from .port import ChatMessage, StreamEvent, ToolCall, ToolSpec
+from .port import ChatMessage, StreamEvent, ToolCall, ToolSpec, active_tool_cycle
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
 
 
 def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
     system, result = [], []
-    active = next((item.tool_cycle for item in reversed(messages) if item.tool_cycle), None)
+    active = active_tool_cycle(messages)
     for message in messages:
         if message.role == "system":
             if not isinstance(message.content, str):
@@ -26,7 +26,8 @@ def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> tuple[
             continue
         content: list[dict[str, Any]] = []
         if message.role == "tool":
-            content.append({"type": "tool_result", "tool_use_id": message.tool_call_id, "content": message.content})
+            result_content = message.content if isinstance(message.content, str) else _parts(message.content, caps)
+            content.append({"type": "tool_result", "tool_use_id": message.tool_call_id, "content": result_content})
         else:
             if isinstance(message.content, str):
                 if message.content:

@@ -2,7 +2,7 @@
 
 Rubric：critic-eval-v2.0.0；SHA256：4ddaad1c15b27232b3cafc901d8f35d313812d816a750c9f4abe12fc5bd716fa
 评审模型：not called (scripted)；配置：eval-config-kimi-code-v2.0.0
-执行状态：complete；源码 SHA256：71c414718921910cc9644c85ccce833bcb8bae1ba317b77fb7380f4a634f82c7
+执行状态：complete；源码 SHA256：471dc65d73c516d6cb13ce710a2728a95737a4099147f88144b1d5efb4b26424
 判分契约：deterministic-eval-v2.0.0；场景契约 SHA256：baf1fc69116b65f893778e71c8f5a6bc210cf6c91be856b70a71cea94dc4ce0e
 总分：100.0%；通过 80/80；n/a on v3：0
 本报告观测调用：85；耗时：0.000 秒
