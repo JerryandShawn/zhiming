@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
 
-def history_instant(value) -> datetime | None:
+def history_instant(value: object) -> datetime | None:
     try:
         stamp = value if isinstance(value, datetime) else datetime.fromisoformat(str(value).replace("Z", "+00:00"))
         if stamp.tzinfo is None:

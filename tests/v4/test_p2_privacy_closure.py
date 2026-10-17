@@ -1,9 +1,19 @@
 """Withdrawal traverses every derived layer, including incomplete old run lineage."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from mingjing_core.application.memory import MemoryService
 
+if TYPE_CHECKING:
+    # Run rows retain heterogeneous JSON values returned by the repository.
+    from typing import Any
 
-def run(repo, operation, versions):
+    from mingjing_core.repositories.postgres import PostgresRepository
+
+
+def run(repo: PostgresRepository, operation: str, versions: dict[str, int]) -> dict[str, Any]:
     value = repo.begin_run("alice", operation, {"message": "合成请求"})
     repo.set_run_dependencies("alice", value["id"], versions, value["lease_token"])
     repo.commit_run(
@@ -16,7 +26,7 @@ def run(repo, operation, versions):
     return value
 
 
-def test_fact_only_withdrawal_propagates_backwards_and_forwards_across_all_layers(p2_repo):
+def test_fact_only_withdrawal_propagates_backwards_and_forwards_across_all_layers(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     source = memory.receive("alice", content="请记住，我不能上夜班", source_id="original")
     fact = memory.save_fact("alice", "self", source["id"], "我不能上夜班", "constraint")
@@ -57,7 +67,7 @@ def test_fact_only_withdrawal_propagates_backwards_and_forwards_across_all_layer
     assert p2_repo.get("bob", "note", "note")["content"] == "另一个所有者"
 
 
-def test_restore_ledger_explicit_note_deletion_seeds_typed_dependencies(p2_repo):
+def test_restore_ledger_explicit_note_deletion_seeds_typed_dependencies(p2_repo: PostgresRepository) -> None:
     p2_repo.put("alice", "note", "n", {"content": "原笔记"}, expected_revision=0)
     p2_repo.put("alice", "profile_doc", "p", {"content": "派生画像", "source_ids": ["n"]}, expected_revision=0)
     affected = run(p2_repo, "uses-note", {"note:n": 1})
@@ -72,7 +82,7 @@ def test_restore_ledger_explicit_note_deletion_seeds_typed_dependencies(p2_repo)
     assert p2_repo.fetch_run("alice", affected["id"])["result"] is None
 
 
-def test_correction_invalidates_same_closure_but_preserves_recomputable_request(p2_repo):
+def test_correction_invalidates_same_closure_but_preserves_recomputable_request(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     source = memory.receive("alice", content="请记住，我不能上夜班", source_id="old")
     fact = memory.save_fact("alice", "self", source["id"], "我不能上夜班", "constraint")
@@ -84,7 +94,7 @@ def test_correction_invalidates_same_closure_but_preserves_recomputable_request(
     assert after["request"]["message"] == "合成请求"
 
 
-def test_full_source_delete_includes_unlinked_legacy_reply_in_same_closure(p2_repo):
+def test_full_source_delete_includes_unlinked_legacy_reply_in_same_closure(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     source = memory.receive("alice", content="请记住，我不吃辣", source_id="original")
     fact = memory.save_fact("alice", "self", source["id"], "我不吃辣", "preference")

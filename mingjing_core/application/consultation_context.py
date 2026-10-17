@@ -1,13 +1,21 @@
 """v3 payload projections of program time and bidirectional life history."""
 
+from __future__ import annotations
+
+from datetime import datetime
 from pathlib import Path
+from typing import TYPE_CHECKING, Any
 from zoneinfo import ZoneInfo
 
 import yaml
 
-from mingjing_core.timekit.clock import FrozenClock, get_clock
+from mingjing_core.repositories.runtime_metadata import program_time
+from mingjing_core.timekit.clock import Clock, FrozenClock, get_clock
 from mingjing_core.timekit.now_block import render_now_block
 from mingjing_core.timekit.timestamps import history_instant
+
+if TYPE_CHECKING:
+    from .consultation import ConsultationService
 
 SYSTEM_POLICY_VERSION = "core3-policy-p2.1"
 
@@ -23,7 +31,7 @@ def crisis_policy() -> str:
     )
 
 
-def recent_history(snapshot) -> list[dict]:
+def recent_history(snapshot: dict[str, Any]) -> list[dict[str, Any]]:
     zone = ZoneInfo(snapshot["settings"].get("timezone", "Asia/Shanghai"))
     result = []
     for message in snapshot.get("history", []):
@@ -39,14 +47,15 @@ def recent_history(snapshot) -> list[dict]:
     return result
 
 
-def program_clock(service, owner, run):
-    value = service._record(owner, run["id"], "program_time")
-    if value is None:
-        value = service._store(owner, run, "program_time", {"at": get_clock().now().isoformat()})
-    return FrozenClock(history_instant(value["at"]))
+def program_clock(
+    service: ConsultationService, owner: str, run: dict[str, Any], *, at: str | None = None, persist: bool = True
+) -> FrozenClock:
+    at = at or get_clock().now().isoformat()
+    at = program_time(service.repo, owner, run, at, write=persist)
+    return FrozenClock(datetime.fromisoformat(at))
 
 
-def now_context(run, snapshot, *, clock=None) -> str:
+def now_context(run: dict[str, Any], snapshot: dict[str, Any], *, clock: Clock | None = None) -> str:
     request = run["request"]
     previous = [
         message

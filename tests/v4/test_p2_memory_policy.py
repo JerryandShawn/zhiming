@@ -1,9 +1,16 @@
 """Negation exceptions never weaken privacy, hypothetical or author checks."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import pytest
 
 from mingjing_core.application.memory import MemoryService, explicit_save_authorization
 from mingjing_core.memory.policy import has_optout, hypothetical, third_party
+
+if TYPE_CHECKING:
+    from mingjing_core.repositories.postgres import PostgresRepository
 
 
 @pytest.mark.parametrize(
@@ -26,7 +33,7 @@ from mingjing_core.memory.policy import has_optout, hypothetical, third_party
         "我不喜欢咖啡，请记住",
     ],
 )
-def test_benign_reminders_are_not_refusals(text):
+def test_benign_reminders_are_not_refusals(text: str) -> None:
     assert not has_optout(text)
 
 
@@ -50,18 +57,18 @@ def test_benign_reminders_are_not_refusals(text):
         "别忘了记住，但这一条不要保存",
     ],
 )
-def test_explicit_refusals_still_win(text):
+def test_explicit_refusals_still_win(text: str) -> None:
     assert has_optout(text)
     assert not explicit_save_authorization(text)
 
 
 @pytest.mark.parametrize("text", ["其他的是补充", "我和他是同学", "我和她是同学", "其他的课程我不喜欢"])
-def test_pronoun_substrings_are_not_third_party_facts(text):
+def test_pronoun_substrings_are_not_third_party_facts(text: str) -> None:
     assert not third_party(text)
 
 
 @pytest.mark.parametrize("text", ["他的生日是明天", "她喜欢游泳", "我朋友的生日是明天", "朋友是医生", "我妈的诊断结果"])
-def test_actual_third_party_statements_remain_guarded(text):
+def test_actual_third_party_statements_remain_guarded(text: str) -> None:
     assert third_party(text)
 
 
@@ -77,13 +84,15 @@ def test_actual_third_party_statements_remain_guarded(text):
         ("我被诊断出焦虑症了", "我被诊断出焦虑症了", "background", "pending_confirmation"),
     ],
 )
-def test_real_memory_writer_preserves_scope_and_sensitive_policy(p2_repo, text, quote, kind, expected):
+def test_real_memory_writer_preserves_scope_and_sensitive_policy(
+    p2_repo: PostgresRepository, text: str, quote: str, kind: str, expected: str
+) -> None:
     memory = MemoryService(p2_repo)
     source = memory.receive("alice", content=text, source_id="policy")
     assert memory.save_fact("alice", "self", source["id"], quote, kind)["write_status"] == expected
 
 
-def test_complete_declarative_quote_does_not_absorb_question_from_next_sentence(p2_repo):
+def test_complete_declarative_quote_does_not_absorb_question_from_next_sentence(p2_repo: PostgresRepository) -> None:
     from mingjing_core.application.memory import MemoryService
 
     memory = MemoryService(p2_repo)
@@ -111,7 +120,9 @@ def test_complete_declarative_quote_does_not_absorb_question_from_next_sentence(
         ("如果换工作，我不能上夜班", "我不能上夜班"),
     ],
 )
-def test_comma_does_not_turn_conditional_or_question_into_asserted_fact(p2_repo, text, quote):
+def test_comma_does_not_turn_conditional_or_question_into_asserted_fact(
+    p2_repo: PostgresRepository, text: str, quote: str
+) -> None:
     memory = MemoryService(p2_repo)
     message = memory.receive("alice", content=text, source_id="comma-hypothesis")
     assert memory.save_fact("alice", "self", message["id"], quote, "preference")["write_status"] == "rejected"
@@ -126,7 +137,9 @@ def test_comma_does_not_turn_conditional_or_question_into_asserted_fact(p2_repo,
         ("病历在这里。请记住我喜欢散步。", "病历在这里。"),
     ],
 )
-def test_quoted_or_unrelated_next_sentence_cannot_authorize_sensitive_fact(p2_repo, text, quote):
+def test_quoted_or_unrelated_next_sentence_cannot_authorize_sensitive_fact(
+    p2_repo: PostgresRepository, text: str, quote: str
+) -> None:
     memory = MemoryService(p2_repo)
     message = memory.receive("alice", content=text, source_id="quote-boundary")
     receipt = memory.save_fact("alice", "self", message["id"], quote, "background")
@@ -141,6 +154,6 @@ def test_quoted_or_unrelated_next_sentence_cannot_authorize_sensitive_fact(p2_re
         ("“我不吃辣。”应该怎么选？", "“我不吃辣。”"),
     ],
 )
-def test_closing_quote_and_space_keep_complete_statement_separate_from_next_question(text, quote):
+def test_closing_quote_and_space_keep_complete_statement_separate_from_next_question(text: str, quote: str) -> None:
     start = text.find(quote)
     assert not hypothetical(text, start, start + len(quote))

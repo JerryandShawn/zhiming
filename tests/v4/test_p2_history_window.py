@@ -1,6 +1,9 @@
 """History windows are precise beyond the old 10,000-created-row boundary."""
 
+from __future__ import annotations
+
 from datetime import UTC, datetime, timedelta
+from typing import TYPE_CHECKING
 
 from psycopg import sql
 from psycopg.types.json import Jsonb
@@ -9,8 +12,11 @@ from mingjing_core.application.memory import MemoryService
 from mingjing_core.memory.backfill import _run_context
 from mingjing_core.memory.history import history_window, sort_key
 
+if TYPE_CHECKING:
+    from mingjing_core.repositories.postgres import PostgresRepository
 
-def test_backfill_prefers_exact_feishu_request_source_and_rejects_cross_subject(p2_repo):
+
+def test_backfill_prefers_exact_feishu_request_source_and_rejects_cross_subject(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     old = memory.receive("alice", content="旧网站问题", source_id="web-old", channel="web")
     p2_repo.bind_channel("alice", "feishu", "synthetic-ou")
@@ -33,7 +39,9 @@ def test_backfill_prefers_exact_feishu_request_source_and_rejects_cross_subject(
     assert _run_context(p2_repo, "alice", value, []) is None
 
 
-def test_history_after_10001_old_backfilled_replies_preserves_latest_user_and_precise_cursor(p2_repo):
+def test_history_after_10001_old_backfilled_replies_preserves_latest_user_and_precise_cursor(
+    p2_repo: PostgresRepository,
+) -> None:
     memory = MemoryService(p2_repo)
     base = datetime(2026, 1, 1, tzinfo=UTC)
     latest = datetime(2026, 10, 17, 10, tzinfo=UTC)
@@ -81,7 +89,7 @@ def test_history_after_10001_old_backfilled_replies_preserves_latest_user_and_pr
     assert history_window(p2_repo, "bob", "self", "shared", 20, None, "") == []
 
 
-def test_unknown_legacy_time_preserves_raw_source_and_uses_created_instant(p2_repo):
+def test_unknown_legacy_time_preserves_raw_source_and_uses_created_instant(p2_repo: PostgresRepository) -> None:
     from mingjing_core.timekit.timestamps import history_instant
 
     memory = MemoryService(p2_repo)

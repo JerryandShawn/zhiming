@@ -1,5 +1,7 @@
 """Forward schema, owner isolation, latest queries, vectors and runtime grants."""
 
+from __future__ import annotations
+
 import hashlib
 import uuid
 from pathlib import Path
@@ -16,7 +18,7 @@ from mingjing_core.repositories.permissions import grant_runtime_tables
 from mingjing_core.repositories.postgres import PostgresRepository
 
 
-def test_migration_accepts_only_contiguous_known_verified_prefix():
+def test_migration_accepts_only_contiguous_known_verified_prefix() -> None:
     expected = migration_manifest()
     validate_history({key: value for key, value in expected.items() if key <= 4}, expected, complete=False)
     with pytest.raises(EvidenceError, match="Pending"):
@@ -28,7 +30,7 @@ def test_migration_accepts_only_contiguous_known_verified_prefix():
         validate_history(expected, {key: value for key, value in expected.items() if key <= 4}, complete=True)
 
 
-def test_existing_four_migrations_with_data_upgrade_atomically(p2_repo):
+def test_existing_four_migrations_with_data_upgrade_atomically(p2_repo: PostgresRepository) -> None:
     repo = p2_repo
     schema = "p2_legacy_" + uuid.uuid4().hex
     try:
@@ -66,7 +68,7 @@ def test_existing_four_migrations_with_data_upgrade_atomically(p2_repo):
             connection.execute(sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(schema)))
 
 
-def test_schema_database_gap_future_and_checksum_fail_before_use(p2_repo):
+def test_schema_database_gap_future_and_checksum_fail_before_use(p2_repo: PostgresRepository) -> None:
     repo = p2_repo
     with repo.transaction() as connection:
         connection.execute(
@@ -78,7 +80,7 @@ def test_schema_database_gap_future_and_checksum_fail_before_use(p2_repo):
         repo.initialize()
 
 
-def test_list_desc_and_stable_before_take_the_latest(p2_repo):
+def test_list_desc_and_stable_before_take_the_latest(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     values = [memory.receive("alice", content=f"合成消息{i}", source_id=f"msg-{i}") for i in range(6)]
     newest = p2_repo.list("alice", "message", order="desc", limit=2)
@@ -90,7 +92,7 @@ def test_list_desc_and_stable_before_take_the_latest(p2_repo):
         p2_repo.list("alice", "message", order="DESC; DROP TABLE")
 
 
-def test_search_uses_chinese_terms_and_cannot_cross_owner_subject_or_retirement(p2_repo):
+def test_search_uses_chinese_terms_and_cannot_cross_owner_subject_or_retirement(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     alice = memory.receive("alice", content="我的喜用神与十神大运记录", source_id="alice")
     memory.receive("bob", content="我的喜用神与十神大运记录", source_id="bob")
@@ -102,7 +104,7 @@ def test_search_uses_chinese_terms_and_cannot_cross_owner_subject_or_retirement(
 
 
 @pytest.mark.parametrize("retirement", ["deleted", "empty"])
-def test_database_trigger_deletes_only_matching_embedding(p2_repo, retirement):
+def test_database_trigger_deletes_only_matching_embedding(p2_repo: PostgresRepository, retirement: str) -> None:
     repo = p2_repo
     for owner in ("alice", "bob"):
         repo.put(owner, "note", "same", {"content": "合成向量原文"}, expected_revision=0)
@@ -124,7 +126,7 @@ def test_database_trigger_deletes_only_matching_embedding(p2_repo, retirement):
     assert [row["owner"] for row in rows] == ["bob"]
 
 
-def test_new_tables_regranted_to_dml_role_and_migration_ledger_readonly(p2_repo):
+def test_new_tables_regranted_to_dml_role_and_migration_ledger_readonly(p2_repo: PostgresRepository) -> None:
     repo = p2_repo
     role_name = "p2_role_" + uuid.uuid4().hex[:20]
     role = sql.Identifier(role_name)

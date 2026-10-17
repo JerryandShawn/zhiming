@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
@@ -11,8 +13,17 @@ from mingjing_core.memory.threads import message_fields, record_assistant
 from mingjing_core.memory.tokenize import SEARCHABLE, searchable_data
 from mingjing_core.timekit.timestamps import history_instant
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator, Sequence
 
-def _rows(repo, owner):
+    # PostgreSQL rows contain heterogeneous, schema-dependent JSON payloads.
+    from typing import Any
+
+    from mingjing_core.application.memory import MemoryService
+    from mingjing_core.repositories.postgres import PostgresRepository
+
+
+def _rows(repo: PostgresRepository, owner: str) -> Iterator[dict[str, Any]]:
     cursor = ("", "")
     while True:
         with repo.transaction(owner) as connection:
@@ -29,7 +40,7 @@ def _rows(repo, owner):
         cursor = rows[-1]["id"], rows[-1]["kind"]
 
 
-def backfill_entities(repo, owner, *, apply):
+def backfill_entities(repo: PostgresRepository, owner: str, *, apply: bool) -> dict[str, int | list[str]]:
     counts = {"message_metadata": 0, "search_tokens": 0, "invalid_time": 0, "sample_ids": []}
     spans, deleted = owner_spans(repo, owner)
     for row in _rows(repo, owner):
@@ -71,7 +82,12 @@ def backfill_entities(repo, owner, *, apply):
     return counts
 
 
-def _run_context(repo, owner, run, revocations):
+def _run_context(
+    repo: PostgresRepository,
+    owner: str,
+    run: dict[str, Any],
+    revocations: Sequence[dict[str, Any]],
+) -> tuple[set[str], dict[str, Any]] | None:
     sources = {key[8:] for key in run["state_version"] if key.startswith("message:")}
     sources.update(value for key in ("source_message_id", "message_id") if (value := run["request"].get(key)))
     facts = {key[5:] for key in run["state_version"] if key.startswith("fact:")}
@@ -107,7 +123,7 @@ def _run_context(repo, owner, run, revocations):
     return (sources, matching[0]) if len(matching) == 1 else None
 
 
-def backfill_replies(memory, owner, *, apply):
+def backfill_replies(memory: MemoryService, owner: str, *, apply: bool) -> dict[str, int]:
     repo = memory.repo
     counts = {"assistant_created": 0, "assistant_existing": 0, "assistant_skipped": 0}
     revocations = repo.revocations(owner)
@@ -166,7 +182,7 @@ def backfill_replies(memory, owner, *, apply):
     return counts
 
 
-def backfill(memory, owner, *, apply=False):
+def backfill(memory: MemoryService, owner: str, *, apply: bool = False) -> dict[str, str | int | list[str]]:
     repo = memory.repo
     with repo.transaction(owner):
         repo.assert_scope(owner)

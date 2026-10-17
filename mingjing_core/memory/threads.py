@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.repositories.postgres import fingerprint
@@ -11,8 +12,18 @@ from mingjing_core.timekit.timestamps import history_instant
 
 from .projections import redact_ranges
 
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+    from datetime import datetime
 
-def message_fields(subject, at, conversation_id):
+    # Entity payloads and source references retain schema-dependent JSON values.
+    from typing import Any
+
+    from mingjing_core.application.memory import MemoryService
+    from mingjing_core.repositories.postgres import PostgresRepository
+
+
+def message_fields(subject: str, at: datetime | str | None, conversation_id: str) -> dict[str, str | int]:
     stamp = history_instant(at)
     if stamp is None:
         raise ValueError("消息时间无效")
@@ -24,22 +35,22 @@ def message_fields(subject, at, conversation_id):
 
 
 def record_assistant(
-    memory,
-    owner,
-    subject,
-    thread_id,
-    text,
+    memory: MemoryService,
+    owner: str,
+    subject: str,
+    thread_id: str,
+    text: str,
     *,
-    run_id,
-    kind="chat",
-    used_fact_ids=(),
-    used_claim_ids=(),
-    source_ids=(),
-    channel,
-    at=None,
-    case_ids=(),
-    conversation_id="default",
-):
+    run_id: str,
+    kind: str = "chat",
+    used_fact_ids: Iterable[str] = (),
+    used_claim_ids: Iterable[str] = (),
+    source_ids: Iterable[str] = (),
+    channel: str,
+    at: datetime | str | None = None,
+    case_ids: Iterable[str] = (),
+    conversation_id: str = "default",
+) -> dict[str, Any]:
     if (
         not isinstance(text, str)
         or not 1 <= len(text) <= 200000
@@ -73,7 +84,9 @@ def record_assistant(
     return _persist_assistant(repo, owner, subject, ident, run_id, value)
 
 
-def _persist_assistant(repo, owner, subject, ident, run_id, value):
+def _persist_assistant(
+    repo: PostgresRepository, owner: str, subject: str, ident: str, run_id: str, value: dict[str, Any]
+) -> dict[str, Any]:
     with repo.transaction(owner):
         if repo.is_revoked(owner, "message", ident):
             raise EvidenceError("Withdrawn assistant reply cannot be restored")
@@ -99,7 +112,13 @@ def _persist_assistant(repo, owner, subject, ident, run_id, value):
         )
 
 
-def project_sources(memory, owner, rows, facts, selected):
+def project_sources(
+    memory: MemoryService,
+    owner: str,
+    rows: list[dict[str, Any]],
+    facts: list[dict[str, Any]],
+    selected: set[str],
+) -> list[dict[str, Any]]:
     spans = {}
     for row in memory.repo.revocations(owner) if rows else []:
         if row["kind"] == "source_span":

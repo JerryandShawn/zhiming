@@ -1,5 +1,9 @@
 """Deterministic withdrawal of the new derived storage layers."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
@@ -9,10 +13,18 @@ from mingjing_core.memory.tokenize import searchable_data
 
 from .privacy_closure import closure_rows, partial_sources, propagate
 
+if TYPE_CHECKING:
+    from collections.abc import Collection
+
+    # Entity and revocation metadata carry heterogeneous JSON values.
+    from typing import Any
+
+    from mingjing_core.repositories.postgres import PostgresRepository
+
 DERIVED_KINDS = ("thread_summary", "note", "profile_doc", "knowledge_gap", "followup", "reminder", "proposal")
 
 
-def redact_assistant(repo, owner, message):
+def redact_assistant(repo: PostgresRepository, owner: str, message: dict[str, Any]) -> dict[str, Any]:
     result = repo.update(
         owner,
         "message",
@@ -30,7 +42,7 @@ def redact_assistant(repo, owner, message):
     return result
 
 
-def refresh_source_indexes(repo, owner, spans):
+def refresh_source_indexes(repo: PostgresRepository, owner: str, spans: dict[str | None, list[dict[str, Any]]]) -> None:
     for ident, ranges in spans.items():
         try:
             message = repo.get(owner, "message", ident, include_deleted=True)
@@ -51,12 +63,19 @@ def refresh_source_indexes(repo, owner, spans):
 
 
 def invalidate_foundation(
-    repo, owner, fact_ids, source_ids, run_ids=(), *, span_source_ids=(), recomputable=False, seed_entities=()
-):
+    repo: PostgresRepository,
+    owner: str,
+    fact_ids: Collection[str],
+    source_ids: Collection[str],
+    run_ids: Collection[str] = (),
+    *,
+    span_source_ids: Collection[str] = (),
+    recomputable: bool = False,
+    seed_entities: Collection[tuple[str, str]] = (),
+) -> tuple[list[str], list[str], set[str]]:
     facts, sources, runs = set(fact_ids), set(source_ids), set(run_ids)
     partial = partial_sources(repo, owner, facts, span_source_ids)
-    sources.update(partial)
-    sources.update(ident for _, ident in seed_entities)
+    sources.update(partial | {ident for _, ident in seed_entities})
     entities, run_rows = closure_rows(repo, owner, (*DERIVED_KINDS, "message", "episode", "interpretive_claim"))
     propagate(
         repo,

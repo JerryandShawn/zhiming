@@ -1,8 +1,20 @@
 """Withdrawn original ranges stay absent from both search tokens and results."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from psycopg import sql
 
 from .tokenize import searchable_data, tokenize
+
+if TYPE_CHECKING:
+    from collections.abc import Collection
+
+    # Projection values come from heterogeneous entity JSON and revocation rows.
+    from typing import Any
+
+    from mingjing_core.repositories.postgres import PostgresRepository
 
 
 def redact_ranges(text: str, spans: list[dict]) -> str:
@@ -23,7 +35,7 @@ def redact_ranges(text: str, spans: list[dict]) -> str:
     return text
 
 
-def owner_spans(repo, owner) -> tuple[dict, set]:
+def owner_spans(repo: PostgresRepository, owner: str) -> tuple[dict[str | None, list[dict[str, Any]]], set[str]]:
     spans, deleted = {}, set()
     for row in repo.revocations(owner):
         if row["kind"] == "source_span":
@@ -34,7 +46,9 @@ def owner_spans(repo, owner) -> tuple[dict, set]:
     return spans, deleted
 
 
-def tokenized_payload(repo, owner, kind, ident, payload):
+def tokenized_payload(
+    repo: PostgresRepository, owner: str, kind: str, ident: str, payload: dict[str, Any]
+) -> dict[str, Any]:
     if kind != "message" or not payload:
         return searchable_data(kind, payload)
     with repo.transaction(owner) as connection:
@@ -48,7 +62,9 @@ def tokenized_payload(repo, owner, kind, ident, payload):
     return dict(payload, search_tokens=searchable_data(kind, projected)["search_tokens"])
 
 
-def project_search(repo, owner, rows, query_tokens):
+def project_search(
+    repo: PostgresRepository, owner: str, rows: list[dict[str, Any]], query_tokens: Collection[str]
+) -> list[dict[str, Any]]:
     spans, deleted = owner_spans(repo, owner)
     result = []
     for row in rows:

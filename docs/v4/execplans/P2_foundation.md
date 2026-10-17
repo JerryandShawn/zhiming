@@ -37,6 +37,15 @@
 
 ## Decision Log（决策记录）
 
+决定：第二次完整553执行839.975s报告3 failures/4 errors，也不记为通过。4 errors由新增program_time经普通put增加owner revision，继而改变native claim_id造成；不是午夜日期。保持原sealed fixture/精确ID断言，用固定stage专用元数据写：owner+run+当前epoch+lease、仅可解析带时区ISO、稳定ID幂等、既有行不覆盖，不增语义revision或模型调用。普通entity put仍原样增revision。四原native测试13.803s通过，PG7项4.77s证明revision/lease/epoch/owner/时间边界。日期/作者：2026-10-18 / Codex。
+
+决定：时间先读既存epoch锚点或内存捕获；仅在本次_call的diagnostic已安全记录模型结果之后、同一有效lease事务内持久化。成功与已记录network/503/zero-tool/契约错误保留同轮时间，unknown未诊断异常不写，取消/过期/错误lease不写。这样修复第二次553的3个取消/过期失败，不改变其0runtime_step断言。新增首intake四类失败后推进1天+1微秒仍完整payload相同，以及cancel/expire0steps；合并元数据/repair回归13项11.78s。原native+取消/诊断+repair17项22.630s通过。日期/作者：2026-10-18 / Codex。
+
+决定：为使时间生命周期跟随本次安全调用边界，对允许修改范围作一项窄偏离：_call只新增可选program_at，并在既有diagnostic事务追加固定时间元数据保存。from_base/模型构造完全不动，预算/repair identity/hash逻辑完全不动。大脑复核时请特别核这项接线；后续P1 rebase须保留provider诊断字段与本时间钩子，不能机械覆盖。日期/作者：2026-10-18 / Codex，root管理审阅认可实现边界。
+
+决定：补齐新生产/CLI与测试的参数、返回注解；稳定12生产模块和8测试模块由独立代理仅补类型并验证去注解AST相等，逻辑/SQL/断言不变。为满足60行，privacy_foundation两次等价set.update合为一次集合并集更新。最终32个受检Python文件类型缺失0、函数>60为0、文件>400为0、Ruff E/F/I/B/UP/SIM及format120通过。日期/作者：2026-10-18 / Codex。
+
+
 决定：完整旧553首轮949.569s报告7 failures/6 errors，绝不记为通过。两项背景receipt由句界误读引起，已保留旧断言修实现；history四项只在fixture更新run.updated_at、未更新新增权威助手message.at，现仅同步合成助手at/at_ms，所有原排序/分页/渠道断言保留。memory_proposals一项仅用户计数改精确核对用户+成功助手，重放事实/模型调用计数不变。旧无效迁移时间保留原始at文本，at_ms使用同PG事务now()，与原created_at回退完全一致。history+proposals原13项15.143s通过。日期/作者：2026-10-18 / Codex。
 
 决定：同运行epoch的程序时刻以现有runtime_step/program_time持久化Clock.now ISO，只存时间；intake/synthesis/review/repair的now与intake.today复用该时刻，并尊重FrozenClock及owner timezone。stale新epoch不复制program_time，重新取时；不改repair_identity/hash/预算/合法重试guard。理由：真实旧repair恢复5个error由每次重建now的微秒变化造成合法同轮identity漂移。原repair模块11项9.453s通过，新PG两项4.15s证明未变化输入下完整repair payload/identity相同、累计4calls，以及新run/新epoch新时刻。事实有效期仍读当前Clock，未冻结整个snapshot；真实依赖改变仍应触发原严格校验。日期/作者：2026-10-18 / Codex，独立审计真实函数复现并确认。
@@ -131,3 +140,5 @@
 2026-10-18：旧553进行中发现2项同源句界错误，保留旧断言修实现；新增完整句/逗号/引用授权边界回归。最终v4首轮350通过138.59s，扩展句界后354通过149.95s；最后引用边界增量仍需再跑全量，当前不混称这些轮次。
 
 2026-10-18：修复首轮全部已定位回归；中止被首轮后续修复取代的第二轮553，保留日志、不计成功。新增program_time、原始无效时间与时区交节回归；固定最终代码后重新完整553与v4。
+
+2026-10-18：第二完整553新增metadata语义revision/取消边界问题已按严格旧断言修实现；本次调用diagnostic原子锚定、typed安全写、32文件注解/行数审计完成。最后代码提交后重新完整553/v4，早先失败和中止轮均不计成功。

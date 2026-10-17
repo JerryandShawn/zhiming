@@ -22,7 +22,7 @@ from ..domain.json_values import ensure_finite_json
 from ..repositories.postgres import PostgresRepository, fingerprint
 from ..knowledge import KnowledgeRegistry
 from ..runtime import LangGraphRuntime
-from ..timekit.clock import get_clock
+from ..timekit.clock import Clock, get_clock
 from .memory import MemoryService
 from .consultation_context import SYSTEM_POLICY_VERSION, crisis_policy, now_context, program_clock, recent_history
 
@@ -44,7 +44,7 @@ reference_data.now 是此刻的真实时间与历法信息；涉及日期、星�
 recent_history 中 role=assistant 的是你之前的回答，用户说'那个/第二个/上次'时据此接续。""" + '\n' + crisis_policy()
 
 
-def today(*, clock=None, tz="Asia/Shanghai"):
+def today(*, clock: Clock | None = None, tz: str = "Asia/Shanghai") -> str:
     return (clock or get_clock()).now().astimezone(ZoneInfo(tz)).date().isoformat()
 
 
@@ -198,7 +198,7 @@ class ConsultationService:
                 properties['actions']['maxItems'] = 1
         return schema
 
-    def _call(self, owner, run, token, purpose, payload, contract, *, repair=False):
+    def _call(self, owner, run, token, purpose, payload, contract, *, repair=False, program_at: str | None = None):
         cached = self._record(owner, run['id'], 'model:' + purpose)
         if cached is not None:
             return cached
@@ -227,8 +227,11 @@ class ConsultationService:
                 self.repo._leased(connection, owner, run['id'], token)
                 previous = self.repo.get(owner, 'model_call', usage_id) if repair else None
                 data = dict(previous or {}, run_id=run['id'], purpose=purpose, **fields)
-                return self.repo.put(owner, 'model_call', usage_id, data, subject=run['subject'],
-                                     expected_revision=previous['revision'] if previous else None)
+                record = self.repo.put(owner, 'model_call', usage_id, data, subject=run['subject'],
+                                       expected_revision=previous['revision'] if previous else None)
+                if purpose == 'intake' and program_at is not None:
+                    program_clock(self,owner,run,at=program_at)
+                return record
         try:
             response = self.model.generate(system=SYSTEM_POLICY, payload=payload,
                                            schema=schema, purpose=purpose)
@@ -341,7 +344,7 @@ class ConsultationService:
                 intake_versions['fact:' + fact['id']] = fact['revision']
         for history in snap.get('history', []):
             if history.get('id') and history.get('revision'): intake_versions['message:' + history['id']] = history['revision']
-        clock = program_clock(self,owner,run)
+        clock = program_clock(self,owner,run,persist=False)
         payload = {'reference_data': {
             'message': req['message'], 'subject_id': run['subject'], 'case_ids': req['case_ids'],
             'selection': req['selection'], 'today': today(clock=clock,tz=snap['settings'].get('timezone','Asia/Shanghai')), 'now': now_context(run,snap,clock=clock), 'requested_mode': req['mode'],
@@ -364,7 +367,7 @@ class ConsultationService:
                     self.repo.update(owner, 'upload', ident, {'source_ids': source_ids}, expected_revision=image['revision'])
                 payload['_image_inputs'].append({'mime': image['mime'], 'data': base64.b64encode(Path(image['path']).read_bytes()).decode('ascii')})
         self.repo.set_run_dependencies(owner,run['id'],intake_versions,token)
-        output = self._call(owner, run, token, 'intake', payload, Intake)
+        output = self._call(owner, run, token, 'intake', payload, Intake, program_at=clock.now().isoformat())
         output['source_id'] = source['id']
         output['intake_versions'] = intake_versions
         return output

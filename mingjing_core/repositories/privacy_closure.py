@@ -1,9 +1,21 @@
 """Compute the complete owner-local dependency closure before clearing bodies."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from psycopg import sql
 
+if TYPE_CHECKING:
+    from collections.abc import Callable, Collection, Iterable
 
-def linked_ids(entity):
+    # Dependency fields are read from heterogeneous persisted entity/run JSON.
+    from typing import Any
+
+    from mingjing_core.repositories.postgres import PostgresRepository
+
+
+def linked_ids(entity: dict[str, Any]) -> tuple[set[str | None], set[str]]:
     sources = set(entity.get("source_ids", [])) | {ref.get("message_id") for ref in entity.get("source_refs", [])}
     sources.update(value for key in ("message_id", "source_id") if (value := entity.get(key)))
     used = set(entity.get("fact_ids", [])) | set(entity.get("used_fact_ids", []))
@@ -11,7 +23,9 @@ def linked_ids(entity):
     return sources, used
 
 
-def closure_rows(repo, owner, kinds):
+def closure_rows(
+    repo: PostgresRepository, owner: str, kinds: Collection[str]
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     with repo.transaction(owner) as connection:
         entities = connection.execute(
             sql.SQL("SELECT * FROM {} WHERE owner=%s AND kind=ANY(%s) AND status!='deleted'").format(
@@ -26,7 +40,7 @@ def closure_rows(repo, owner, kinds):
     return [dict(repo._decode(row), entity_kind=row["kind"]) for row in entities], runs
 
 
-def partial_sources(repo, owner, facts, explicit):
+def partial_sources(repo: PostgresRepository, owner: str, facts: set[str], explicit: Iterable[str]) -> set[str]:
     selected = set(explicit)
     for revoked in repo.revocations(owner):
         metadata = revoked["metadata"]
@@ -35,7 +49,9 @@ def partial_sources(repo, owner, facts, explicit):
     return selected
 
 
-def contaminated_runs(rows, facts, sources, keys, runs, recomputable):
+def contaminated_runs(
+    rows: list[dict[str, Any]], facts: set[str], sources: set[str], keys: set[str], runs: set[str], recomputable: bool
+) -> None:
     for row in rows:
         if recomputable and row["status"] in ("revoked", "cancelled"):
             continue
@@ -50,19 +66,19 @@ def contaminated_runs(rows, facts, sources, keys, runs, recomputable):
 
 
 def propagate(
-    repo,
-    owner,
-    entities,
-    run_rows,
-    facts,
-    sources,
-    runs,
-    redact,
-    derived_kinds,
-    recomputable,
-    seed_entities=(),
-    include_legacy=False,
-):
+    repo: PostgresRepository,
+    owner: str,
+    entities: list[dict[str, Any]],
+    run_rows: list[dict[str, Any]],
+    facts: set[str],
+    sources: set[str],
+    runs: set[str],
+    redact: Callable[[PostgresRepository, str, dict[str, Any]], dict[str, Any]],
+    derived_kinds: Collection[str],
+    recomputable: bool,
+    seed_entities: Iterable[tuple[str, str]] = (),
+    include_legacy: bool = False,
+) -> None:
     keys = {kind + ":" + ident for kind, ident in seed_entities}
     handled = set()
     while True:

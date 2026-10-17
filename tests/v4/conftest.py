@@ -1,7 +1,10 @@
 """P2 integration fixtures always use an explicit disposable loopback database."""
 
+from __future__ import annotations
+
 import os
 import uuid
+from typing import TYPE_CHECKING
 
 import psycopg
 import pytest
@@ -10,9 +13,12 @@ from psycopg import sql
 from mingjing_core.repositories.postgres import PostgresRepository
 from tools.eval.targets.local_db import local_dsn, verify_local_postgres
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+
 
 @pytest.fixture
-def p2_repo():
+def p2_repo() -> Iterator[PostgresRepository]:
     configured = os.getenv("CORE_TEST_DSN")
     if not configured:
         pytest.skip("requires disposable PostgreSQL 15")

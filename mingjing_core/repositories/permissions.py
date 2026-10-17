@@ -1,9 +1,19 @@
 """Reapply DML-only grants after forward migrations create new tables."""
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from psycopg import sql
 
+if TYPE_CHECKING:
+    # This deployment boundary accepts both tuple-row and dict-row connections.
+    from typing import Any
 
-def grant_runtime_tables(connection, role_name: str, schema: str = "mingjing_core") -> list[str]:
+    from psycopg import Connection
+
+
+def grant_runtime_tables(connection: Connection[Any], role_name: str, schema: str = "mingjing_core") -> list[str]:
     role, namespace = sql.Identifier(role_name), sql.Identifier(schema)
     connection.execute(sql.SQL("GRANT USAGE ON SCHEMA {} TO {}").format(namespace, role))
     connection.execute(

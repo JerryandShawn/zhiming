@@ -29,7 +29,7 @@ def mask_quoted(text: str) -> str:
     return text
 
 
-def clause_bounds(text: str, start: int, end: int, *, comma=True) -> tuple[int, int]:
+def clause_bounds(text: str, start: int, end: int, *, comma: bool = True) -> tuple[int, int]:
     hard = "。！？!?；;\n"
     separators = hard + ("，," if comma else "")
     left = max(text.rfind(mark, 0, start) for mark in separators) + 1
@@ -44,7 +44,7 @@ def clause_bounds(text: str, start: int, end: int, *, comma=True) -> tuple[int, 
     return left, right
 
 
-def clause(text: str, start: int, end: int, *, comma=True) -> str:
+def clause(text: str, start: int, end: int, *, comma: bool = True) -> str:
     left, right = clause_bounds(text, start, end, comma=comma)
     return text[left:right]
 

@@ -4,11 +4,21 @@ from __future__ import annotations
 
 import hashlib
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from psycopg import sql
 
 from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.memory.projections import project_search
+
+if TYPE_CHECKING:
+    from collections.abc import Collection
+    from datetime import datetime
+
+    # PostgreSQL entity rows have kind-specific JSON payload values.
+    from typing import Any
+
+    from mingjing_core.repositories.postgres import PostgresRepository
 
 
 def migration_manifest() -> dict[int, str]:
@@ -34,8 +44,17 @@ def validate_history(actual: dict, expected: dict, *, complete: bool) -> None:
 
 
 def list_entities(
-    repo, owner, kind, *, subject=None, case_ids=None, include_deleted=False, limit=10000, order="asc", before=None
-):
+    repo: PostgresRepository,
+    owner: str,
+    kind: str,
+    *,
+    subject: str | None = None,
+    case_ids: list[str] | None = None,
+    include_deleted: bool = False,
+    limit: int = 10000,
+    order: str = "asc",
+    before: datetime | str | tuple[datetime | str, str] | list[datetime | str] | None = None,
+) -> list[dict[str, Any]]:
     repo._kind(kind)
     if order not in ("asc", "desc"):
         raise ValueError("Entity order must be asc or desc")
@@ -63,7 +82,9 @@ def list_entities(
         return [repo._decode(row) for row in connection.execute(query, args).fetchall()]
 
 
-def thread_history(repo, owner, subject, thread_id, case_ids, limit):
+def thread_history(
+    repo: PostgresRepository, owner: str, subject: str, thread_id: str, case_ids: Collection[str] | None, limit: int
+) -> list[dict[str, Any]]:
     with repo.transaction(owner) as connection:
         repo.assert_scope(owner, subject)
         query = sql.SQL("""SELECT * FROM {} WHERE owner=%s AND subject=%s AND kind='message' AND status='active'
@@ -77,7 +98,16 @@ def thread_history(repo, owner, subject, thread_id, case_ids, limit):
         ]
 
 
-def search(repo, owner, subject, query_tokens, kinds, limit, since=None, until=None):
+def search(
+    repo: PostgresRepository,
+    owner: str,
+    subject: str,
+    query_tokens: Collection[str],
+    kinds: Collection[str],
+    limit: int,
+    since: datetime | str | None = None,
+    until: datetime | str | None = None,
+) -> list[dict[str, Any]]:
     if isinstance(query_tokens, str) or not query_tokens or not all(isinstance(token, str) for token in query_tokens):
         raise ValueError("Search needs a nonempty token list")
     for kind in kinds:

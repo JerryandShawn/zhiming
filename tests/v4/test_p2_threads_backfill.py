@@ -1,6 +1,9 @@
 """Life history, successful replies and migration replay use real PostgreSQL."""
 
+from __future__ import annotations
+
 from datetime import UTC, datetime, timedelta
+from typing import TYPE_CHECKING
 
 import pytest
 from fastapi.testclient import TestClient
@@ -14,8 +17,14 @@ from mingjing_core.timekit.clock import FrozenClock, get_clock, set_clock
 from tests.test_core_pg_channels import FixtureModel
 from tools.eval.targets.v3_target import V3Target
 
+if TYPE_CHECKING:
+    # The forwarding wrapper preserves the fixture callable's dynamic signature.
+    from typing import Any
 
-def test_thread_latest_thirty_keeps_roles_channels_dates_and_owner_isolation(p2_repo):
+    from mingjing_core.repositories.postgres import PostgresRepository
+
+
+def test_thread_latest_thirty_keeps_roles_channels_dates_and_owner_isolation(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     base = datetime(2026, 10, 1, tzinfo=UTC)
     for index in range(40):
@@ -47,7 +56,9 @@ def test_thread_latest_thirty_keeps_roles_channels_dates_and_owner_isolation(p2_
 
 
 @pytest.mark.parametrize("assertion", ["user_asserted", "legacy_unverified"])
-def test_assistant_can_never_be_saved_as_a_user_fact_even_with_legacy_flag(p2_repo, assertion):
+def test_assistant_can_never_be_saved_as_a_user_fact_even_with_legacy_flag(
+    p2_repo: PostgresRepository, assertion: str
+) -> None:
     memory = MemoryService(p2_repo)
     message = memory.record_assistant_message(
         "alice", "self", "life:self", "请记住，我喜欢散步", run_id="assistant", channel="web"
@@ -56,7 +67,7 @@ def test_assistant_can_never_be_saved_as_a_user_fact_even_with_legacy_flag(p2_re
         memory.save_fact("alice", "self", message["id"], "我喜欢散步", assertion_status=assertion)
 
 
-def test_assistant_revision_replay_and_source_withdrawal_never_restore_text(p2_repo):
+def test_assistant_revision_replay_and_source_withdrawal_never_restore_text(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     original = memory.receive("alice", content="请记住，我不能上夜班", source_id="source")
     fact = memory.save_fact("alice", "self", original["id"], "我不能上夜班", "constraint")
@@ -73,7 +84,7 @@ def test_assistant_revision_replay_and_source_withdrawal_never_restore_text(p2_r
         memory.record_assistant_message("alice", "self", "life:self", "方案 B 先核实白班", **kwargs)
 
 
-def test_partial_source_withdrawal_removes_search_vector_and_derived_note(p2_repo):
+def test_partial_source_withdrawal_removes_search_vector_and_derived_note(p2_repo: PostgresRepository) -> None:
     memory = MemoryService(p2_repo)
     source = memory.receive("alice", content="我不吃辣。我的计划是考研", source_id="partial")
     fact = memory.save_fact("alice", "self", source["id"], "我不吃辣", "preference")
@@ -106,7 +117,7 @@ def test_partial_source_withdrawal_removes_search_vector_and_derived_note(p2_rep
     assert p2_repo.search("alice", "self", ["辣"], ["message"], 10) == []
 
 
-def seed_historical_runs(repo, count):
+def seed_historical_runs(repo: PostgresRepository, count: int) -> MemoryService:
     memory = MemoryService(repo)
     start = datetime(2026, 1, 1, tzinfo=UTC)
     with repo.transaction("alice") as connection:
@@ -148,7 +159,7 @@ def seed_historical_runs(repo, count):
     return memory
 
 
-def test_backfill_three_hundred_rounds_dry_run_apply_and_repeat(p2_repo):
+def test_backfill_three_hundred_rounds_dry_run_apply_and_repeat(p2_repo: PostgresRepository) -> None:
     memory = seed_historical_runs(p2_repo, 300)
     before = [(row["id"], row["revision"], row["content"]) for row in p2_repo.list("alice", "message")]
     dry = backfill(memory, "alice")
@@ -166,14 +177,16 @@ def test_backfill_three_hundred_rounds_dry_run_apply_and_repeat(p2_repo):
     assert all(row["origin_conversation_id"] == "old-topic" for row in p2_repo.list("alice", "message"))
 
 
-def test_interrupted_backfill_rolls_back_and_can_resume_without_duplicates(p2_repo, monkeypatch):
+def test_interrupted_backfill_rolls_back_and_can_resume_without_duplicates(
+    p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch
+) -> None:
     memory = seed_historical_runs(p2_repo, 12)
     import mingjing_core.memory.backfill as module
 
     real = module.record_assistant
     calls = []
 
-    def interrupted(*args, **kwargs):
+    def interrupted(*args: Any, **kwargs: Any) -> dict[str, Any]:
         calls.append(kwargs["run_id"])
         if len(calls) == 5:
             raise RuntimeError("synthetic interruption")
@@ -189,7 +202,7 @@ def test_interrupted_backfill_rolls_back_and_can_resume_without_duplicates(p2_re
     assert backfill(memory, "alice", apply=True)["assistant_created"] == 0
 
 
-def test_backfill_skips_withdrawn_sources_and_deleted_runs(p2_repo):
+def test_backfill_skips_withdrawn_sources_and_deleted_runs(p2_repo: PostgresRepository) -> None:
     memory = seed_historical_runs(p2_repo, 3)
     sources = p2_repo.list("alice", "message")
     with p2_repo.transaction("alice") as connection:
@@ -205,7 +218,9 @@ def test_backfill_skips_withdrawn_sources_and_deleted_runs(p2_repo):
     assert len([row for row in p2_repo.list("alice", "message") if row["role"] == "assistant"]) == 1
 
 
-def test_service_payload_cross_topic_and_api_history_do_not_duplicate_reply(p2_repo, monkeypatch):
+def test_service_payload_cross_topic_and_api_history_do_not_duplicate_reply(
+    p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch
+) -> None:
     original_clock = get_clock()
     set_clock(FrozenClock(datetime.fromisoformat("2026-10-17T10:30:00+08:00")))
     provider = FixtureModel()

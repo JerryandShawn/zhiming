@@ -1,7 +1,10 @@
 """Published calendar examples and unknown-year boundaries are observable contracts."""
 
+from __future__ import annotations
+
 import json
 from datetime import date, datetime, timedelta
+from typing import TYPE_CHECKING
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -15,6 +18,9 @@ from mingjing_core.timekit.calendar_cn import (
 from mingjing_core.timekit.clock import FrozenClock
 from mingjing_core.timekit.now_block import render_now_block
 from tools.update_holidays import update
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 SHANGHAI = ZoneInfo("Asia/Shanghai")
 
@@ -37,7 +43,7 @@ SHANGHAI = ZoneInfo("Asia/Shanghai")
         ("2027-02-06", "六", "正月初一", None, "weekend"),
     ],
 )
-def test_calendar_appendix(day, weekday, lunar, day_pillar, kind):
+def test_calendar_appendix(day: str, weekday: str, lunar: str, day_pillar: str | None, kind: str) -> None:
     value = almanac(datetime.fromisoformat(day + "T10:30:00+08:00"))
     assert value.weekday == "星期" + weekday
     assert value.lunar["month"] + "月" + value.lunar["day"] == lunar
@@ -46,7 +52,7 @@ def test_calendar_appendix(day, weekday, lunar, day_pillar, kind):
     assert day_status(date.fromisoformat(day)).kind == kind
 
 
-def test_now_block_matches_all_blueprint_fields_and_real_arrangements():
+def test_now_block_matches_all_blueprint_fields_and_real_arrangements() -> None:
     clock = FrozenClock(datetime(2026, 10, 17, 10, 30, tzinfo=SHANGHAI))
     text = render_now_block(
         {},
@@ -77,7 +83,7 @@ def test_now_block_matches_all_blueprint_fields_and_real_arrangements():
         assert fragment in text
 
 
-def test_late_zi_uses_documented_day_and_hour_without_greeting_error():
+def test_late_zi_uses_documented_day_and_hour_without_greeting_error() -> None:
     value = almanac(datetime(2026, 10, 17, 23, 30, tzinfo=SHANGHAI))
     assert value.lunar["day"] == "初八"
     assert value.ganzhi["day"] == "甲子" and value.ganzhi["hour"] == "丙子"
@@ -85,7 +91,7 @@ def test_late_zi_uses_documented_day_and_hour_without_greeting_error():
 
 
 @pytest.mark.parametrize("day,name", [(date(2027, 1, 1), "元旦"), (date(2027, 2, 6), "春节")])
-def test_unpublished_year_only_claims_festival_date(day, name):
+def test_unpublished_year_only_claims_festival_date(day: date, name: str) -> None:
     assert day_status(day).source == "unpublished"
     holiday = next_holiday(day)
     assert holiday.name == name and holiday.date == day
@@ -93,7 +99,7 @@ def test_unpublished_year_only_claims_festival_date(day, name):
 
 
 @pytest.mark.parametrize("instant,name", [("2026-10-23T17:37:57+08:00", "霜降"), ("2026-11-07T17:52:05+08:00", "立冬")])
-def test_term_changes_at_the_calculated_second(instant, name):
+def test_term_changes_at_the_calculated_second(instant: str, name: str) -> None:
     at = datetime.fromisoformat(instant)
     assert almanac(at - timedelta(seconds=1)).jieqi["next"] == name
     assert almanac(at + timedelta(seconds=1)).jieqi["current"] == name
@@ -101,14 +107,14 @@ def test_term_changes_at_the_calculated_second(instant, name):
     assert almanac(at + timedelta(seconds=1), "UTC").jieqi["current"] == name
 
 
-def test_clock_zone_changes_civil_day_and_keeps_term_instant():
+def test_clock_zone_changes_civil_day_and_keeps_term_instant() -> None:
     clock = FrozenClock(datetime.fromisoformat("2026-10-17T23:30:00+00:00"))
     text = render_now_block({"timezone": "Asia/Shanghai"}, clock)
     assert "2026年10月18日 星期日" in text
     assert "今天 10月18日" in text and "重阳节" in text
 
 
-def test_holiday_override_validated_diff_and_idempotent_update(tmp_path):
+def test_holiday_override_validated_diff_and_idempotent_update(tmp_path: Path) -> None:
     value = {
         "year": 2027,
         "papers": ["self-hosted-test"],
@@ -125,7 +131,7 @@ def test_holiday_override_validated_diff_and_idempotent_update(tmp_path):
         validate_holidays(dict(value, days=value["days"] * 2))
 
 
-def test_new_year_terms_have_chinese_names_and_naive_time_is_rejected():
+def test_new_year_terms_have_chinese_names_and_naive_time_is_rejected() -> None:
     assert almanac(datetime(2027, 1, 1, tzinfo=SHANGHAI)).jieqi["current"] == "冬至"
     with pytest.raises(ValueError):
         almanac(datetime(2026, 10, 17))
@@ -139,7 +145,9 @@ def test_new_year_terms_have_chinese_names_and_naive_time_is_rejected():
         ("2026-02-04T04:02:09+08:00", "丙午", "庚寅"),
     ],
 )
-def test_year_and_month_pillars_follow_same_physical_lichun_instant_in_each_zone(zone, instant, year, month):
+def test_year_and_month_pillars_follow_same_physical_lichun_instant_in_each_zone(
+    zone: str, instant: str, year: str, month: str
+) -> None:
     value = almanac(datetime.fromisoformat(instant), zone)
     assert value.ganzhi["year"] == year
     assert value.ganzhi["month"] == month

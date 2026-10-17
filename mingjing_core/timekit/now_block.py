@@ -3,11 +3,18 @@
 from __future__ import annotations
 
 from datetime import date, datetime, timedelta
+from typing import TYPE_CHECKING
 from zoneinfo import ZoneInfo
 
 from .almanac import almanac, term_display
 from .calendar_cn import day_status, holiday_window, next_holiday
 from .clock import Clock
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    # Confirmed event/settings payloads cross a heterogeneous JSON boundary.
+    from typing import Any
 
 
 def instant(value: object, zone: ZoneInfo) -> datetime | None:
@@ -97,7 +104,12 @@ def event_text(events: list[dict], now: datetime, zone: ZoneInfo) -> str:
     return "；".join(text for _, text in sorted(selected)) or "暂无已确认安排"
 
 
-def render_now_block(owner_settings: dict, clock: Clock, last_interaction_at=None, upcoming_events=()) -> str:
+def render_now_block(
+    owner_settings: dict[str, Any],
+    clock: Clock,
+    last_interaction_at: object = None,
+    upcoming_events: Iterable[dict[str, Any]] = (),
+) -> str:
     timezone = owner_settings.get("timezone", "Asia/Shanghai")
     zone = ZoneInfo(timezone)
     now = clock.now().astimezone(zone)

@@ -25,7 +25,7 @@ from mingjing_core.repositories.postgres import PostgresRepository
 from tools.eval.targets.local_db import local_dsn, verify_local_postgres
 
 
-def seed(repo):
+def seed(repo: PostgresRepository) -> MemoryService:
     repo.ensure_owner("p2-synthetic")
     base = datetime(2026, 1, 1, tzinfo=UTC)
     rows = []
@@ -61,7 +61,7 @@ def seed(repo):
     return memory
 
 
-def measure(dsn, samples=100):
+def measure(dsn: str, samples: int = 100) -> dict[str, str | int | float | bool]:
     if not 20 <= samples <= 1000:
         raise ValueError("测量样本必须为 20–1000")
     canonical = local_dsn(dsn)
@@ -104,7 +104,7 @@ def measure(dsn, samples=100):
         repo.close()
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--samples", type=int, default=100)
     parser.add_argument("--output", type=Path)
