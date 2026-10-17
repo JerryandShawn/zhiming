@@ -27,6 +27,12 @@ webchat.json
 report-worker-health.json
 retrieval/
 models/
+!/mingjing_core/models/
+/mingjing_core/models/*
+!/mingjing_core/models/*.py
+!/tests/v4/models/
+/tests/v4/models/*
+!/tests/v4/models/*.py
 uploads/
 data/
 *.log

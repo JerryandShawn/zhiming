@@ -1,0 +1,155 @@
+version: 1
+providers:
+  kimi_code:
+    protocol: anthropic_messages
+    base_url: https://api.kimi.com/coding/v1
+    base_url_env: KIMI_BASE_URL
+    api_key_env: KIMI_API_KEY
+    api_key_fallback_env: MOONSHOT_API_KEY
+    settings:
+      membership: true
+      total_timeout: 600
+      first_byte_timeout: 60
+      connect_timeout: 10
+  kimi_anthropic:
+    protocol: anthropic_messages
+    base_url: https://api.moonshot.cn/v1
+    base_url_env: KIMI_BASE_URL
+    api_key_env: KIMI_API_KEY
+    api_key_fallback_env: MOONSHOT_API_KEY
+    enabled: false
+  moonshot:
+    protocol: openai_compat
+    base_url: https://api.moonshot.cn/v1
+    api_key_env: MOONSHOT_API_KEY
+    enabled: false
+  deepseek:
+    protocol: openai_compat
+    base_url: https://api.deepseek.com/v1
+    api_key_env: DEEPSEEK_API_KEY
+  dashscope:
+    protocol: openai_compat
+    base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api_key_env: DASHSCOPE_API_KEY
+  zhipu:
+    protocol: openai_compat
+    base_url: https://open.bigmodel.cn/api/paas/v4
+    api_key_env: ZHIPU_API_KEY
+models:
+  kimi-code-main:
+    provider: kimi_code
+    model: k3
+    model_env: KIMI_MODEL
+    caps:
+      status: probed
+      tools: true
+      vision: true
+      parallel_tools: true
+      tool_choice:
+      - auto
+      - none
+      - required
+      schema_dialect: anthropic
+      reasoning_replay: false
+      probe_report: docs/v4/model-probe-2026-10-17.json
+      reasoning_replay_status: not-required-in-observed-roundtrip; signature-presence-unrecorded
+    settings:
+      thinking:
+        type: enabled
+        budget_tokens: 1024
+      temperature: 1
+  kimi-critic:
+    provider: kimi_code
+    model: k3-256k
+    caps:
+      status: probed
+      tools: true
+      vision: true
+      parallel_tools: true
+      tool_choice:
+      - auto
+      - none
+      - required
+      schema_dialect: anthropic
+      reasoning_replay: false
+      probe_report: docs/v4/model-probe-2026-10-17.json
+      reasoning_replay_status: not-required-in-observed-roundtrip; signature-presence-unrecorded
+    settings:
+      thinking:
+        type: enabled
+        budget_tokens: 1024
+      temperature: 1
+  kimi-legacy:
+    provider: kimi_anthropic
+    model: kimi-k3
+    model_env: KIMI_MODEL
+    caps:
+      status: unprobed
+      tools: false
+      vision: false
+      tool_choice:
+      - auto
+      schema_dialect: anthropic
+    settings:
+      thinking:
+        type: enabled
+        budget_tokens: 1024
+      temperature: 1
+  kimi-open:
+    provider: moonshot
+    model: kimi-k3
+    caps:
+      status: unprobed
+      tools: false
+      vision: false
+      include_usage: false
+      tool_choice:
+      - auto
+  deepseek-main:
+    provider: deepseek
+    model: deepseek-chat
+    caps:
+      status: unprobed
+      tools: false
+      vision: false
+      include_usage: false
+      tool_choice:
+      - auto
+      reasoning_field: reasoning_content
+      reasoning_replay: false
+  qwen-main:
+    provider: dashscope
+    model: qwen-plus
+    caps:
+      status: unprobed
+      tools: false
+      vision: false
+      include_usage: false
+      tool_choice:
+      - auto
+  glm-main:
+    provider: zhipu
+    model: glm-4.6
+    caps:
+      status: unprobed
+      tools: false
+      vision: false
+      include_usage: false
+      tool_choice:
+      - auto
+      schema_dialect: openai_partial
+roles:
+  primary:
+  - kimi-code-main
+  - deepseek-main
+  - qwen-main
+  - glm-main
+  critic:
+  - kimi-critic
+  evaluation:
+  - kimi-code-main
+  fast:
+  - kimi-code-main
+  vision:
+  - kimi-code-main
+  embedding: local:bge-small-zh-v1.5

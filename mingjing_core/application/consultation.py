@@ -82,7 +82,12 @@ class ConsultationService:
         repo = PostgresRepository(dsn, initialize=False, max_size=int(os.getenv('CORE_DB_POOL_SIZE', '4')),
                                   max_running=int(os.getenv('CORE_RUN_CONCURRENCY', '1')))
         repo.verify_schema()
-        return cls(repo, runtime=LangGraphRuntime(repo, initialize=False))
+        model = None
+        if os.getenv('MODELS_CONFIG') or os.getenv('MINGJING_MODEL_PORT') == 'v2':
+            from ..models.legacy import PortBackedModel
+            from ..models.registry import ModelRegistry
+            model = PortBackedModel(ModelRegistry(), role='primary')
+        return cls(repo, model=model, runtime=LangGraphRuntime(repo, initialize=False))
 
     def submit(self, *, owner, subject='self', message, conversation_id='shared', request_id,
                case_ids=None, mode='chat', depth='standard', selection=None, draw_id=None,
@@ -244,12 +249,14 @@ class ConsultationService:
         except ValueError:
             diagnostic({'status': 'failed', 'reason': 'output_contract', 'failure_code': 'MODEL_OUTPUT_CONTRACT',
                         'repair_outcome': 'contract_failure', 'usage': usage, 'usage_known': bool(usage),
-                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')})
+                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model'),
+                        'provider': response.get('provider')})
             raise InvalidAnswer('模型返回未满足本阶段字段契约') from None
         with self.repo.transaction(owner) as connection:
             self.repo._leased(connection, owner, run['id'], token)
             diagnostic({'status': 'succeeded', 'repair_outcome': 'succeeded', 'usage': usage, 'usage_known': bool(usage),
-                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model')})
+                        'latency_seconds': response.get('latency_seconds'), 'model': response.get('model'),
+                        'provider': response.get('provider')})
             return self._store(owner, run, 'model:' + purpose, parsed)
 
     def execute_stage(self, owner, run_id, token, phase, emit=None):
