@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta, timezone
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, model_validator
+from mingjing_core.timekit.clock import get_clock
 
 SHANGHAI = timezone(timedelta(hours=8))
 KINDS = ('daily', 'weekly', 'monthly', 'quarterly')
@@ -103,9 +104,22 @@ def report_period(kind: str, day: date) -> str:
     raise ValueError('报告类型无效')
 
 
+def report_period_bounds(kind: str, day: date) -> dict[str,str]:
+    report_period(kind,day)
+    start=end=day
+    if kind=='weekly':
+        start=day-timedelta(days=day.weekday());end=start+timedelta(days=6)
+    elif kind in ('monthly','quarterly'):
+        month=day.month if kind=='monthly' else (day.month-1)//3*3+1
+        last_month=month if kind=='monthly' else month+2
+        start=date(day.year,month,1)
+        end=date(day.year,last_month,calendar.monthrange(day.year,last_month)[1])
+    return {'start':start.isoformat(),'end':end.isoformat()}
+
+
 def next_schedule(kind: str, policy: dict | None = None, *, now: datetime | None = None, blocked_periods=None):
     """Preview the next future delivery, including its preceding preparation."""
-    current = now or datetime.now(SHANGHAI)
+    current = now or get_clock().now()
     if current.tzinfo is None:
         raise ValueError('预览时刻需要时区')
     current = current.astimezone(SHANGHAI)

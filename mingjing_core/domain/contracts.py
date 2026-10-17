@@ -1,8 +1,9 @@
 """Strict core state contracts. Persisted facts always cite original sources."""
 from __future__ import annotations
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field
+from mingjing_core.timekit.clock import get_clock
 
 
 class Contract(BaseModel):
@@ -40,7 +41,7 @@ class SourceMessage(Contract):
     source_id: str
     role: Literal['user', 'assistant', 'tool', 'legacy']
     content: str = Field(max_length=200000)
-    at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    at: datetime = Field(default_factory=lambda: get_clock().now())
     revision: int = Field(default=1, ge=1)
     status: str = 'active'
     policy: SourcePolicy = Field(default_factory=SourcePolicy)

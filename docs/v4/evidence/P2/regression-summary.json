@@ -1,0 +1,59 @@
+{
+  "schema": "p2-regression-evidence-v1",
+  "local_code_commit": "de082ce1e6af37a706eee6a4596b09d1b6ca49e3",
+  "remote_equivalent_code_commit": "cc1187e95f3f292c56985c99dac859420af63fcb",
+  "code_tree": "c25f3951743469702e2539b62379227713da4dca",
+  "synthetic_only": true,
+  "real_model_calls": 0,
+  "stage_or_production_operations": 0,
+  "core": {
+    "passed": 553,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 826.169,
+    "exit_code": 0
+  },
+  "v4": {
+    "passed": 379,
+    "p2_new_tests": 129,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 1,
+    "seconds": 159.87,
+    "exit_code": 0
+  },
+  "scripted": {
+    "passed": 80,
+    "total": 80,
+    "target": "fake",
+    "self_tests_passed": 48,
+    "self_tests_seconds": 17.42,
+    "exit_code": 0
+  },
+  "frontend": {
+    "checks_passed": 6,
+    "node": "22.23.3",
+    "existing_npm_audit": {
+      "moderate": 2,
+      "high": 6
+    }
+  },
+  "latest_code_ci_last_observed": {
+    "run_id": 39051908909,
+    "status": "in_progress",
+    "url": "https://github.com/JerryandShawn/zhiming/actions/runs/39051908909",
+    "final_conclusion": null
+  },
+  "private_log_sha256": {
+    "core": "873327004a0a2a03362c5fe2dff15f40c6241eb281a9ba0a8f76b5e030ca203b",
+    "v4": "7fef64aec6941802e553ac96bd62d2ea91300db185a848f973dc4f146be7e18c",
+    "scripted": "b805596e7e8627f0fc3f66aa4f04e7bf70fa8237989946453250afe258590f5f"
+  },
+  "phase_accepted": false,
+  "pending": [
+    "final remote CI conclusion",
+    "brain-approved real-model T/R/M/S comparison",
+    "future separately authorized stage execution"
+  ]
+}

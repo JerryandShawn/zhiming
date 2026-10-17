@@ -142,7 +142,10 @@ class CoreMemoryProposalPG(unittest.TestCase):
         self.assertEqual(repeated['id'], run['id'])
         self.assertEqual(self.service.execute('alpha', repeated['id']), result)
         self.assertEqual(len(self.repo.list('alpha', 'fact')), 1)
-        self.assertEqual(len(self.repo.list('alpha', 'message')), 1)
+        messages=self.repo.list('alpha','message')
+        self.assertEqual(len(messages),2)
+        self.assertEqual([row['content'] for row in messages if row['role']=='user'],[message])
+        self.assertEqual([row['content'] for row in messages if row['role']=='assistant'],[result['answer']])
         self.assertEqual(len(self.provider.requests), 2)
         schema = self.provider.intake_schemas[0]
         self.assertEqual(set(schema['$defs']['MemoryProposal']['properties']['field']['anyOf'][0]['enum']), SUPPORTED_FIELDS)

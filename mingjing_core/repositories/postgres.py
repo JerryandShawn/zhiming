@@ -18,8 +18,12 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 from psycopg_pool import ConnectionPool
 from mingjing_core.domain.contracts import BudgetExceeded, EvidenceError, LeaseConflict, RevisionConflict, ScopeError
+from mingjing_core.memory.projections import tokenized_payload
+from .foundation import list_entities, migration_manifest, search as search_entities, validate_history
+from .privacy_foundation import DERIVED_KINDS, invalidate_foundation
 
 ENTITY_KINDS = frozenset({'message','fact','case','episode','draw','reading','report','report_schedule','chart','delivery','upload','session','consent','legacy','feedback','request','interpretive_claim','runtime_step','artifact','model_call'})
+ENTITY_KINDS |= frozenset({'thread','thread_summary','note','profile_doc','knowledge_gap','followup','reminder','proposal'})
 CALL_LIMITS = {'fast': 2, 'standard': 6, 'deep': 10}
 
 
@@ -79,6 +83,9 @@ class PostgresRepository:
             migrations=sorted(Path(__file__).with_name('migrations').glob('[0-9][0-9][0-9][0-9]_*.sql'))
             known={int(path.name[:4]) for path in migrations}
             if not migrations or set(applied)-known:raise EvidenceError('Database schema is newer than this release or migrations are missing')
+            expected=migration_manifest()
+            checked={version:expected[version] if checksum is None and adopt_unverified else checksum for version,checksum in applied.items()}
+            validate_history(checked,expected,complete=False)
             for path in migrations:
                 version=int(path.name[:4]);source=path.read_text(encoding='utf-8').replace('\r\n','\n')
                 checksum=hashlib.sha256(source.encode('utf-8')).hexdigest()
@@ -91,15 +98,13 @@ class PostgresRepository:
     def verify_schema(self):
         """Read-only startup check for the production DML-only application role."""
         import psycopg
-        paths=sorted(Path(__file__).with_name('migrations').glob('[0-9][0-9][0-9][0-9]_*.sql'))
-        expected={int(path.name[:4]):hashlib.sha256(path.read_text(encoding='utf-8').replace('\r\n','\n').encode('utf-8')).hexdigest() for path in paths}
-        if not expected:raise EvidenceError('Versioned migration files are missing')
+        expected=migration_manifest()
         try:
             with self.connection() as c:
                 actual={row['version']:row['checksum'] for row in c.execute(sql.SQL('SELECT version,checksum FROM {} ORDER BY version').format(self.table('schema_migrations'))).fetchall()}
         except psycopg.Error:
             raise EvidenceError('Core schema is unavailable; use the separate migration role') from None
-        if actual!=expected:raise EvidenceError('Core schema version/checksum does not match this release')
+        validate_history(actual,expected,complete=True)
         return {'schema':self.schema,'version':max(expected),'checksums':{str(version):checksum for version,checksum in expected.items()}}
 
     def ensure_owner(self, owner: str, *, settings: dict | None = None) -> dict:
@@ -163,16 +168,12 @@ class PostgresRepository:
             return result
 
     def list(self, owner: str, kind: str, *, subject: str | None = None, case_ids: list[str] | None = None,
-             include_deleted: bool = False, limit: int = 10000) -> list[dict]:
-        self._kind(kind)
-        with self.transaction(owner) as c:
-            self.assert_scope(owner,subject or 'self')
-            query=sql.SQL('SELECT * FROM {} WHERE owner=%s AND kind=%s').format(self.table('core_entities'));args=[owner,kind]
-            if subject is not None: query+=sql.SQL(' AND subject=%s');args.append(subject)
-            if case_ids is not None: query+=sql.SQL(' AND (case_id IS NULL OR case_id=ANY(%s))');args.append(case_ids)
-            if not include_deleted: query+=sql.SQL(" AND status!='deleted'")
-            query+=sql.SQL(' ORDER BY created_at,id LIMIT %s');args.append(max(1,min(int(limit),100000)))
-            return [self._decode(row) for row in c.execute(query,args).fetchall()]
+             include_deleted: bool = False, limit: int = 10000, order: str = 'asc', before=None) -> list[dict]:
+        return list_entities(self,owner,kind,subject=subject,case_ids=case_ids,include_deleted=include_deleted,
+                             limit=limit,order=order,before=before)
+
+    def search(self,owner,subject,query_tokens,kinds,limit=20,since=None,until=None):
+        return search_entities(self,owner,subject,query_tokens,kinds,limit,since,until)
 
     def _operation(self, c, owner, operation_id, value, kind, entity_id):
         if not operation_id: return False
@@ -190,6 +191,7 @@ class PostgresRepository:
         if not isinstance(data,dict) or not entity_id: raise ValueError('Entity payload/ID required')
         reserved={'id','owner','owner_user_id','subject','subject_id','case_id','revision','created_at','updated_at'}
         payload={k:v for k,v in data.items() if k not in reserved and k!='status'};status=data.get('status','active')
+        payload=tokenized_payload(self,owner,kind,entity_id,payload)
         with self.transaction(owner) as c:
             self.assert_scope(owner,subject)
             if case_id:
@@ -219,7 +221,7 @@ class PostgresRepository:
 
     def _version(self,c,owner,key):
         prefix,_,entity_id=key.partition(':')
-        if prefix in ('fact','message','report_schedule'):
+        if prefix in ('fact','message','report_schedule','thread',*DERIVED_KINDS):
             row=c.execute(sql.SQL('SELECT revision FROM {} WHERE owner=%s AND kind=%s AND id=%s').format(self.table('core_entities')), (owner,prefix,entity_id)).fetchone()
         else:
             row=c.execute(sql.SQL('SELECT revision FROM {} WHERE owner=%s AND dependency=%s').format(self.table('core_versions')), (owner,key)).fetchone()
@@ -279,31 +281,20 @@ class PostgresRepository:
         c.execute(sql.SQL('INSERT INTO {}(owner,kind,entity_id,operation,metadata,revision) VALUES(%s,%s,%s,%s,%s,%s) ON CONFLICT(owner,kind,entity_id) DO UPDATE SET operation=EXCLUDED.operation,metadata=EXCLUDED.metadata,revision=EXCLUDED.revision').format(self.table('core_revocations')), (owner,kind,entity_id,operation,Jsonb(clean),revision))
         return revision
 
-    def invalidate_derived(self, owner: str, fact_ids: list[str], source_ids: list[str], *, recomputable=False):
+    def invalidate_derived(self, owner: str, fact_ids: list[str], source_ids: list[str], *, recomputable=False,span_source_ids=(),seed_entities=()):
         with self.transaction(owner) as c:
-            if source_ids:
-                expanded=set(source_ids)
-                messages=self.list(owner,'message',include_deleted=True)
-                while True:
-                    matched=[]
-                    for message in messages:
-                        if message['status']=='deleted' or message['id'] in expanded or message.get('role') not in ('assistant','tool'):continue
-                        linked=set(message.get('source_ids',[]))|{ref.get('message_id') for ref in message.get('source_refs',[])}
-                        if linked.intersection(expanded) or message.get('legacy_derived') and not linked:
-                            self.delete(owner,'message',message['id'],expected_revision=message['revision'])
-                            matched.append(message['id'])
-                    if not matched:break
-                    expanded.update(matched)
-                source_ids=list(expanded)
+            original_sources=list(source_ids)
+            retry=bool(recomputable and not original_sources)
+            source_ids,closure_runs,partial=invalidate_foundation(self,owner,fact_ids,source_ids,
+                span_source_ids=span_source_ids,recomputable=recomputable,seed_entities=seed_entities)
             contaminated=set('fact:'+ident for ident in fact_ids)|set('message:'+ident for ident in source_ids)
             runs=c.execute(sql.SQL('SELECT id,state_version,request,status FROM {} WHERE owner=%s').format(self.table('core_runs')), (owner,)).fetchall()
             ids=[]
             for run in runs:
                 if recomputable and run['status'] in ('revoked','cancelled'):continue
-                if contaminated.intersection(run['state_version']) or run['request'].get('message_id') in source_ids or run['request'].get('source_message_id') in source_ids:
+                if run['id'] in closure_runs or contaminated.intersection(run['state_version']) or run['request'].get('message_id') in source_ids or run['request'].get('source_message_id') in source_ids:
                     ids.append(run['id'])
             if ids:
-                retry=bool(recomputable and not source_ids)
                 c.execute(sql.SQL("UPDATE {} SET request=CASE WHEN %s THEN request ELSE '{{}}'::jsonb END,result=NULL,checkpoint='{{}}',status=%s,error=%s,lease_token=NULL,lease_until=NULL,updated_at=now() WHERE owner=%s AND id=ANY(%s)").format(self.table('core_runs')), (retry,'stale' if retry else 'revoked','STALE_INPUT' if retry else 'SOURCE_REVOKED',owner,ids))
                 c.execute(sql.SQL("UPDATE {} SET data='{{}}',status='deleted',revision=revision+1,updated_at=now() WHERE owner=%s AND kind IN ('runtime_step','interpretive_claim','artifact','model_call','report') AND data->>'run_id'=ANY(%s) AND NOT (%s AND kind='runtime_step' AND data->>'stage' IN ('intake','memory'))").format(self.table('core_entities')), (owner,ids,retry))
                 c.execute(sql.SQL("UPDATE {} SET payload='{{}}',status=CASE WHEN status IN ('sending','uncertain') THEN 'uncertain' WHEN status='sent' THEN 'sent' WHEN %s THEN 'stale' ELSE 'cancelled' END,error=%s,updated_at=now() WHERE owner=%s AND run_id=ANY(%s)").format(self.table('delivery_outbox')), (retry,'STALE_INPUT' if retry else 'SOURCE_REVOKED',owner,ids))
@@ -317,17 +308,18 @@ class PostgresRepository:
                     cached_facts={receipt.get('id') for receipt in derived.get('result',{}).get('receipts',[]) if isinstance(receipt,dict)} if isinstance(derived.get('result'),dict) else set()
                     if linked.intersection(source_ids) or cached_facts.intersection(fact_ids):
                         self.delete(owner,kind,derived['id'],expected_revision=derived['revision'])
-            if source_ids:
+            if original_sources:
                 # Legacy payloads have no trustworthy fine-grained lineage. Do
                 # not let an archive endpoint resurrect withdrawn originals.
                 for legacy in self.list(owner,'legacy',include_deleted=True):
                     if legacy['status']!='deleted':self.delete(owner,'legacy',legacy['id'],expected_revision=legacy['revision'])
+                hard_sources=set(source_ids)-partial|set(original_sources)
                 for case in self.list(owner,'case',include_deleted=True):
-                    if case['status']!='deleted' and any(ref.get('message_id') in source_ids for ref in case.get('source_refs',[])):
+                    if case['status']!='deleted' and any(ref.get('message_id') in hard_sources for ref in case.get('source_refs',[])):
                         self.delete(owner,'case',case['id'],expected_revision=case['revision'])
                 for upload in self.list(owner,'upload',include_deleted=True):
                     linked=set(upload.get('source_ids',[]))|{ref.get('message_id') for ref in upload.get('source_refs',[])}|{upload.get('message_id')}
-                    if linked.intersection(source_ids) and upload['status']!='deleted':
+                    if linked.intersection(hard_sources) and upload['status']!='deleted':
                         self.enqueue_media_deletion(owner,upload)
                         self.delete(owner,'upload',upload['id'],expected_revision=upload['revision'])
 
@@ -607,17 +599,18 @@ class PostgresRepository:
         if ledger.get('schema_version')!='core3.0' or ledger.get('owner_user_id')!=owner:raise ScopeError('Privacy ledger owner/schema mismatch')
         rows=ledger.get('revocations',[])
         if not isinstance(rows,list):raise ValueError('Invalid privacy ledger')
-        fact_ids=[];source_ids=[];other_targets={}
+        fact_ids=[];source_ids=[];other_targets={};span_sources=[]
         with self.transaction(owner) as c:
             self.assert_scope(owner)
             all_facts=self.list(owner,'fact',include_deleted=True)
             for row in rows:
                 kind=row.get('kind');ident=row.get('entity_id');metadata=row.get('metadata',{})
-                if not isinstance(ident,str) or kind not in ('fact','message','source_span','episode','legacy_memory','legacy','upload','case','request','feedback'):raise ValueError('Invalid revocation target')
+                if not isinstance(ident,str) or kind not in ('fact','message','source_span','episode','legacy_memory','legacy','upload','case','request','feedback',*DERIVED_KINDS):raise ValueError('Invalid revocation target')
                 if kind=='fact':fact_ids.append(ident)
                 if kind=='message':source_ids.append(ident)
-                if kind in ('episode','legacy','upload','case','request','feedback'):other_targets.setdefault(kind,[]).append(ident)
+                if kind in ('episode','legacy','upload','case','request','feedback',*DERIVED_KINDS):other_targets.setdefault(kind,[]).append(ident)
                 if kind=='source_span':
+                    if metadata.get('message_id'):span_sources.append(metadata['message_id'])
                     for fact in all_facts:
                         if any(ref.get('message_id')==metadata.get('message_id') and max(ref.get('start',0),metadata.get('start',0))<min(ref.get('end',0),metadata.get('end',0)) for ref in fact.get('source_refs',[])):fact_ids.append(fact['id'])
                 self.revoke(c,owner,kind,ident,row.get('operation','deleted'),metadata)
@@ -631,5 +624,5 @@ class PostgresRepository:
                         try:self.enqueue_media_deletion(owner,self.get(owner,'upload',ident,include_deleted=True))
                         except ScopeError:pass
                 c.execute(sql.SQL("UPDATE {} SET data='{{}}',status='deleted',revision=revision+1,updated_at=now() WHERE owner=%s AND kind=%s AND id=ANY(%s) AND status!='deleted'").format(self.table('core_entities')), (owner,kind,ids))
-            self.invalidate_derived(owner,list(set(fact_ids)),list(set(source_ids)))
+            self.invalidate_derived(owner,list(set(fact_ids)),list(set(source_ids)),span_source_ids=span_sources,seed_entities=[(kind,ident) for kind,ids in other_targets.items() for ident in ids])
         return {'facts':len(set(fact_ids)),'sources':len(set(source_ids)),'revision':self.get_revision(owner)}

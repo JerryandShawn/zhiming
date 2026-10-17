@@ -786,12 +786,10 @@ with psycopg.connect(os.environ['ZHIMING_DATABASE_URL'],autocommit=True,prepare_
     grants='''import os,psycopg
 from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict
+from mingjing_core.repositories.permissions import grant_runtime_tables
 role=sql.Identifier(conninfo_to_dict(os.environ['CORE_RUNTIME_DSN_CHECK'])['user'])
 with psycopg.connect(os.environ['ZHIMING_DATABASE_URL']) as c:
- c.execute(sql.SQL('GRANT USAGE ON SCHEMA mingjing_core TO {}').format(role))
- c.execute(sql.SQL('GRANT SELECT,INSERT,UPDATE,DELETE ON ALL TABLES IN SCHEMA mingjing_core TO {}').format(role))
- c.execute(sql.SQL('GRANT USAGE,SELECT ON ALL SEQUENCES IN SCHEMA mingjing_core TO {}').format(role))
- c.execute(sql.SQL('REVOKE INSERT,UPDATE,DELETE ON mingjing_core.schema_migrations FROM {}').format(role))
+ grant_runtime_tables(c,conninfo_to_dict(os.environ['CORE_RUNTIME_DSN_CHECK'])['user'])
  c.execute(sql.SQL('GRANT USAGE ON SCHEMA public TO {}').format(role))
  c.execute('REVOKE CREATE ON SCHEMA public FROM PUBLIC')
  c.execute(sql.SQL('REVOKE CREATE ON SCHEMA public,mingjing_core FROM {}').format(role))
