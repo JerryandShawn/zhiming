@@ -25,7 +25,7 @@ def _edge(source: int, mutagen_index: int, palaces: dict, positions: dict, profi
         "mutagen": profile["labels"][mutagen_index],
         "star": star,
         "source": origin,
-        "table_ref": f"flying_v1.json#/table/{stem}/{mutagen_index}",
+        "table_ref": f"flying_v1.json#{profile['table_pointer']}/{stem}/{mutagen_index}",
         **locate(star, positions),
     }
     result["evidence_paths"] = [origin["palace_pointer"] + "/ganzhi"] + [
@@ -112,15 +112,7 @@ def _temporal_layer(name: str, value: Any, palaces: dict, positions: dict, profi
     }
 
 
-def palace_flying_transformations(data: dict[str, Any]) -> dict[str, Any]:
-    """Keep missing/duplicate stars unresolved; do not manufacture absent layers."""
-    profile = flying_profile()
-    palaces = palaces_by_index(data)
-    positions = star_positions(palaces, profile)
-    edges = [_edge(source, ordinal, palaces, positions, profile) for source in range(12) for ordinal in range(4)]
-    horoscope = data.get("horoscope", {})
-    if not isinstance(horoscope, dict):
-        raise ValueError("紫微运限结构无效")
+def _nodes(edges: list[dict[str, Any]], palaces: dict) -> list[dict[str, Any]]:
     nodes = []
     for index in range(12):
         incoming = [
@@ -135,14 +127,27 @@ def palace_flying_transformations(data: dict[str, Any]) -> dict[str, Any]:
                 "incoming": incoming,
             }
         )
+    return nodes
+
+
+def palace_flying_transformations(data: dict[str, Any], *, school: str = "iztro") -> dict[str, Any]:
+    """Keep missing/duplicate stars unresolved; do not manufacture absent layers."""
+    profile = flying_profile(school)
+    palaces = palaces_by_index(data)
+    positions = star_positions(palaces, profile)
+    edges = [_edge(source, ordinal, palaces, positions, profile) for source in range(12) for ordinal in range(4)]
+    horoscope = data.get("horoscope", {})
+    if not isinstance(horoscope, dict):
+        raise ValueError("紫微运限结构无效")
     return {
         "version": profile["version"],
         "school": profile["school"],
+        "table_id": profile["table_id"],
         "claim_kind": profile["claim_kind"],
         "method": "declared_palace_stem_table_to_actual_natal_major_minor_stars",
         "table_sha256": profile["source_sha256"],
         "target_date": horoscope.get("target_date"),
-        "nodes": nodes,
+        "nodes": _nodes(edges, palaces),
         "edges": edges,
         "complete": all(edge["status"] == "resolved" for edge in edges),
         "natal": _natal_tags(positions, profile),

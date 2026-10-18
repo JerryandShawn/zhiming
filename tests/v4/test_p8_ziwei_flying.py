@@ -195,3 +195,69 @@ def test_native_iztro_flying_crosscheck() -> None:
     assert process.returncode == 0, process.stderr
     result = json.loads(process.stdout)
     assert result["successful"] and result["skipped"] == 0 and result["tests"] == 3
+
+
+def test_quanshu_is_explicit_and_only_ren_ke_differs_from_default() -> None:
+    default, alternative = flying_profile(), flying_profile("quanshu")
+    changed = [
+        (stem, ordinal)
+        for stem in default["table"]
+        for ordinal in range(4)
+        if default["table"][stem][ordinal] != alternative["table"][stem][ordinal]
+    ]
+    assert changed == [("壬", 2)]
+    assert default["table"]["壬"][2] == "左辅"
+    assert alternative["table"]["壬"][2] == "天府"
+    assert alternative["table"]["庚"] == ["太阳", "武曲", "太阴", "天同"]
+    assert alternative["table_id"] == "quanshu"
+    assert "原刊待核" in alternative["source_status"]
+    assert flying_profile()["table"]["壬"][2] == "左辅"
+
+
+def test_quanshu_graph_uses_actual_tianfu_and_preserves_engine_layers() -> None:
+    data = sample()
+    data["palaces"][11]["minor"].append({"name": "天府"})
+    data["horoscope"]["yearly"].update(ganzhi="壬寅", mutagen=flying_profile()["table"]["壬"].copy())
+    before = copy.deepcopy(data)
+    default = palace_flying_transformations(data)
+    result = palace_flying_transformations(data, school="quanshu")
+    assert data == before
+    assert result["table_id"] == "quanshu" and result["complete"]
+    assert result["natal"] == default["natal"]
+    assert result["temporal_layers"]["yearly"]["links"] == default["temporal_layers"]["yearly"]["links"]
+    assert default["temporal_layers"]["yearly"]["matches_named_table"]
+    assert not result["temporal_layers"]["yearly"]["matches_named_table"]
+    edge = next(row for row in result["edges"] if row["source"]["ganzhi"][0] == "壬" and row["mutagen"] == "科")
+    assert edge["star"] == "天府" and edge["locations"][0]["palace_index"] == 11
+    assert edge["table_ref"] == "flying_v1.json#/named_tables/quanshu/table/壬/2"
+    assert pointer(data, edge["locations"][0]["star_pointer"])["name"] == "天府"
+
+
+def test_optional_table_does_not_manufacture_an_absent_tianfu() -> None:
+    result = palace_flying_transformations(sample(), school="quanshu")
+    rows = [row for row in result["edges"] if row["star"] == "天府"]
+    assert rows and all(row["status"] == "missing" for row in rows)
+    assert all(row["self_transformation"] is None for row in rows)
+    assert not result["complete"]
+
+
+@pytest.mark.parametrize("school", ["unknown", "全书", None, True, ["quanshu"]])
+def test_unknown_named_table_is_rejected(school) -> None:
+    with pytest.raises(ValueError, match="未知紫微"):
+        palace_flying_transformations(sample(), school=school)
+
+
+def test_native_review24_optional_table_and_late_zi_boundaries() -> None:
+    python = os.environ.get("CHART_PYTHON")
+    if not python:
+        pytest.skip("requires explicitly configured CHART_PYTHON")
+    root = Path(__file__).resolve().parents[2]
+    process = subprocess.run(
+        [python, "-X", "utf8", str(root / "tests/test_p8_ziwei_review24_native.py")],
+        cwd=root,
+        capture_output=True,
+        encoding="utf-8",
+        timeout=120,
+    )
+    assert process.returncode == 0, process.stderr
+    assert json.loads(process.stdout) == {"tests": 2, "successful": True, "skipped": 0}

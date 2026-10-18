@@ -32,7 +32,10 @@ def resolve(value: dict, path: str) -> object:
 
 
 @pytest.mark.parametrize("rule_id", sorted(CASES))
-@pytest.mark.parametrize("label,expected", [("positive", True), ("negative", False)])
+@pytest.mark.parametrize(
+    "label,expected",
+    [("positive", True), ("negative", False), ("extra_negative", False)],
+)
 def test_every_rule_has_an_independent_pillar_positive_and_negative(
     rule_id: str, label: str, expected: bool
 ) -> None:
@@ -43,17 +46,17 @@ def test_every_rule_has_an_independent_pillar_positive_and_negative(
     row = next(item for item in result["assessments"] if item["rule_id"] == rule_id)
     assert row["met"] is expected
     assert (rule_id in {item["rule_id"] for item in result["rule_hits"]}) is expected
-    assert len(result["assessments"]) == 35
+    assert len(result["assessments"]) == 38
     assert all(item["met"] is True for item in result["rule_hits"])
     assert data == before
     for path in row["evidence_paths"]:
         resolve({"data": data}, path)
 
 
-def test_all_35_rules_have_reviewable_metadata_and_no_interpretation_result() -> None:
+def test_all_38_rules_have_reviewable_metadata_and_no_interpretation_result() -> None:
     registry = load_registry()
     validate_registry(registry)
-    assert len(registry["rules"]) == 35 <= 40
+    assert len(registry["rules"]) == 38 <= 40
     assert set(CASES) == {row["rule_id"] for row in registry["rules"]}
     for row in registry["rules"]:
         assert (
@@ -89,7 +92,7 @@ def test_registry_rejects_invalid_schemas(mutation: str) -> None:
         validate_registry(value)
 
 
-@pytest.mark.parametrize("school", ["子平", "调候", "盲派", "通用"])
+@pytest.mark.parametrize("school", ["子平", "通用"])
 def test_u2_labels_and_sorting_are_explicit_and_stable_by_school(school: str) -> None:
     case = CASES["u12-palace-day-clash-combine"]["positive"]
     first = bazi_interactions(case["pillars"], case["layers"], school=school)
@@ -108,7 +111,7 @@ def test_u2_labels_and_sorting_are_explicit_and_stable_by_school(school: str) ->
             if any(member["id"] == "natal." + key for member in row["members"])
         ]
         assert row["palace"] == expected
-        assert set(row["priority"]) == {"子平", "调候", "盲派", "通用"}
+        assert set(row["priority"]) == {"子平", "通用"}
         assert row["mapping_status"] == "project_convention_v1_not_expert_calibrated"
         assert row["domains"]
 

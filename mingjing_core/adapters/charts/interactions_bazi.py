@@ -16,7 +16,7 @@ from ...calculations.bazi.elements import (
     ten_god,
     validate_pillars,
 )
-from .rules.interaction_metadata import enrich_relations
+from .rules.interaction_metadata import annotation_basis, enrich_relations
 from .rules.registry import interaction_policy
 
 RULES = Path(__file__).resolve().parents[2] / "knowledge" / "p8_interactions.json"
@@ -182,8 +182,11 @@ def bazi_interactions(
         "method": "p8-layered-structural-graph-v1",
         "school": rules["school"],
         "ordering_school": school,
-        "annotation_version": "p8-u12-interaction-labels-v1",
+        "ordering_label": policy["priority_labels"][school],
+        "priority_labels": policy["priority_labels"],
+        "annotation_version": "p8-u12-interaction-labels-v2-review24",
         "annotation_status": policy["status"],
+        "annotation_basis": annotation_basis(policy),
         "day_master": master,
         "nodes": nodes,
         "relations": relationships,

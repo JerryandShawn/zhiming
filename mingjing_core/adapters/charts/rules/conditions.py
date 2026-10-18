@@ -26,13 +26,41 @@ def pattern_condition(
         raise ValueError("候选条件必须为明确布尔值")
     path = f"/data/p8/patterns/regular_eight/{index}/conditions/"
     path += str(params["condition_index"])
+    observed = condition["evidence"]
+    qi_matches = observed.get("matches", []) if isinstance(observed, dict) else []
+    qi_rank = params.get("qi_rank", "any")
+    met = condition["satisfied"]
+    if params["condition_index"] == 0 and qi_rank != "any":
+        met = met and any(item["role"] == qi_rank for item in qi_matches)
     return result(
-        condition["satisfied"],
+        met,
         [path],
         condition=condition["condition"],
         observed=condition["evidence"],
         pattern=row["pattern"],
+        qi_rank_filter=qi_rank,
+        qi_matches=qi_matches,
+        notes=row.get("notes", []),
         scope="single_candidate_condition_only",
+    )
+
+
+def extra_pattern(
+    data: dict[str, Any], params: dict[str, Any], graph: dict[str, Any]
+) -> dict[str, Any]:
+    rows = data["p8"]["patterns"]["regular_extra"]
+    index, row = next(
+        (index, row)
+        for index, row in enumerate(rows)
+        if row["pattern"] == params["pattern"] + "格"
+    )
+    return result(
+        row["screen_passed"],
+        [f"/data/p8/patterns/regular_extra/{index}/conditions/{i}" for i in range(3)],
+        pattern=row["pattern"],
+        condition_assessments=row["conditions"],
+        notes=row["notes"],
+        scope="three_explicit_candidate_conditions_not_established_pattern",
     )
 
 
@@ -52,6 +80,11 @@ def exposed_combination(
         ],
         required_gods=params["gods"],
         observed=observed,
+        day_master=data["p8"]["ten_gods"]["day_master"],
+        metal_water_exception=(
+            set(params["gods"]) == {"伤官", "正官"}
+            and data["p8"]["ten_gods"]["day_master"] in "庚辛"
+        ),
         scope="exposed_coappearance_not_effectiveness",
     )
 
@@ -88,11 +121,25 @@ def climate_missing(
         for stem in [row["exposed"]["stem"], *[item["stem"] for item in row["hidden"]]]
     }
     missing = [stem for stem in candidates if stem not in present]
+    exposed = {row["exposed"]["stem"] for row in p8["ten_gods"]["pillars"].values()}
+    hidden = {
+        item["stem"]
+        for row in p8["ten_gods"]["pillars"].values()
+        for item in row["hidden"]
+    }
     return result(
         bool(missing),
         ["/data/p8/climate", "/data/p8/ten_gods/pillars"],
         candidate_stems=candidates,
         missing_stems=missing,
+        exposed_candidate_stems=[stem for stem in candidates if stem in exposed],
+        hidden_candidate_stems=[stem for stem in candidates if stem in hidden],
+        hidden_only_candidate_stems=[
+            stem for stem in candidates if stem in hidden - exposed
+        ],
+        not_exposed_candidate_stems=[
+            stem for stem in candidates if stem not in exposed
+        ],
         source_locator=p8["climate"]["source_locator"],
         scope="excerpt_candidates_absent_from_exposed_and_selected_hidden_table",
     )
@@ -131,6 +178,7 @@ def palace_activation(
 
 CONDITIONS = {
     "pattern_condition": pattern_condition,
+    "extra_pattern": extra_pattern,
     "exposed_combination": exposed_combination,
     "wealth_weak": wealth_weak,
     "climate_missing": climate_missing,

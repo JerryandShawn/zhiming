@@ -10,7 +10,7 @@ from typing import Any
 
 from .conditions import CONDITIONS
 
-SCHOOLS = ("子平", "调候", "盲派", "通用")
+SCHOOLS = ("子平", "通用")
 DOMAINS = ("事业", "财运", "婚恋", "六亲", "健康", "学业", "性格", "年运")
 PATH = Path(__file__).resolve().parents[3] / "knowledge" / "p8_bazi" / "rules_v1.json"
 
@@ -98,13 +98,26 @@ def _validate_row(row: dict[str, Any]) -> None:
 def _validate_parameters(condition: str, params: dict[str, Any]) -> None:
     if condition == "pattern_condition":
         if (
-            set(params) != {"god", "condition_index"}
+            set(params)
+            not in ({"god", "condition_index"}, {"god", "condition_index", "qi_rank"})
             or params["god"]
             not in ("正官", "七杀", "正印", "偏印", "正财", "偏财", "食神", "伤官")
             or type(params["condition_index"]) is not int
             or params["condition_index"] not in (0, 1, 2)
         ):
             raise ValueError("格局条件参数无效")
+        if "qi_rank" in params and (
+            params["condition_index"] != 0
+            or params["qi_rank"] not in ("any", "本气", "中气", "余气")
+        ):
+            raise ValueError("气位筛选只能用于月藏条件")
+    elif condition == "extra_pattern":
+        if set(params) != {"pattern"} or params["pattern"] not in (
+            "建禄",
+            "月劫",
+            "阳刃",
+        ):
+            raise ValueError("增补格局需具名")
     elif condition == "exposed_combination":
         gods = params.get("gods")
         if (

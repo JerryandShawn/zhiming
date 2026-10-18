@@ -11,7 +11,9 @@ from ...calculations.bazi.calendar_layers import iso, solar_at
 from ...calculations.bazi.elements import HIDDEN, block, table, ten_god
 from ...calculations.bazi.stars import auxiliary_stars
 from ...calculations.bazi.supplement import supplement
+from .climate_review import reviewed_climate
 from .named_strength import named_patterns, named_scores
+from .p8_structure import reviewed_useful
 
 
 def options(value: dict[str, str] | None = None) -> dict[str, str]:
@@ -108,7 +110,10 @@ def named_stars(pillars: dict[str, str], selected: dict[str, str]) -> dict[str, 
                 applicability="defined" if targets else "not_defined_for_yin_stem",
                 method=selected[key],
                 method_name=method["name"],
-                source=rules["star_source"],
+                source=method.get("source", rules["star_source"]),
+                source_locator=method.get("locator", rules["star_locator"]),
+                source_status=method.get("source_status", "public_transcription_not_original_collation"),
+                source_note=method.get("note", "只取具名表，不采用原文人生断语"),
                 placements=[
                     {"pillar": name, "branch": value[1]} for name, value in pillars.items() if value[1] in targets
                 ],
@@ -151,9 +156,8 @@ def named_supplement(engine: Any, args: dict[str, Any], data: dict[str, Any]) ->
     result["ten_gods"] = named_ten_gods(pillars, hidden, selected)
     result["strength"] = named_scores(pillars, hidden)
     result["patterns"] = named_patterns(pillars, hidden, result["strength"])
-    from ...calculations.bazi.structure import useful
-
-    result["useful_candidates"] = useful(pillars, result["strength"], result["patterns"], result["climate"])
+    result["climate"] = reviewed_climate(result["climate"])
+    result["useful_candidates"] = reviewed_useful(pillars, result["strength"], result["patterns"], result["climate"])
     result["climate"]["collation_status"] = "未经原刊校勘"
     result["climate"]["warnings"].append("未经原刊校勘；正式阶段待校勘，不将转录本视作原刊")
     result["auxiliary_stars"] = named_stars(pillars, selected)

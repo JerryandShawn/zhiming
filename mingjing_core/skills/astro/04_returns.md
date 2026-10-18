@@ -1,6 +1,6 @@
 # 太阳回归盘：时刻、地点与比较
 
-版本：p8-skills-draft-2026-10-18-v2.1；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
+版本：p8-skills-draft-2026-10-19-v2.2；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
 
 ## 方法步骤
 
@@ -37,8 +37,12 @@
 
 ## 表达示例
 
+示例是措辞模板：〔c1〕/〔c2〕须替换成本轮已注册的计算依据别名；未注册就不引用，不制造〔r#〕。
+
 “若本轮〔c2〕已有回归解，我会先说明实际回归时刻和取盘地点，再与本命〔c1〕比较。若没有这份产物，就先不说‘今年回归盘显示什么’。”
 
+
+“若本轮已算出回归时刻和地点〔c2〕，咱们只挑一两个年度主题，与本命〔c1〕对照，再安排能验证的小行动，不把生日变成必须等答案的节点。”
 
 ## 对应的规则命中 rule_id 列表
 
@@ -48,8 +52,10 @@
 
 - [Ptolemy, Tetrabiblos (Robbins 译本)](https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1A*.html)，Book I §§1–3：计算与解释边界背景；不作为回归求解或地点选择的出处。
 
-- [William Lilly, Christian Astrology (1647)](https://www.worldastrology.net/wp-content/uploads/2008/12/CA-III.pdf)，Book III, Chapter CLXXII Of Revolutions，原书pp.734–737：太阳回到本命黄经与本命盘比较；不沿用疾病灾祸断语。
+- [William Lilly, Christian Astrology (1647)](https://www.worldastrology.net/wp-content/uploads/2008/12/CA-III.pdf)，Book III, Chapter CLXXII Of Revolutions，原书pp.734–737（本轮核对PDF第248–251页，0基247–250；第734页标题CHAP.CLXXII Of REVOLUTIONS）：太阳回到本命黄经与本命盘比较；不沿用疾病灾祸断语。
 
 - [Astrodienst回归说明](https://www.astro.com/faq/fq_fh_return_e.htm)：年份与地点；[Swiss接口](https://www.astro.com/swisseph/swephprg.htm)§4、§9、§15：太阳过黄经、UTC转换、Placidus错误行为。±5日周年锚和闰日处理是项目约定。
 
 以上白话为项目原创概括；公开转录不等于原刊校勘。传统概念不证明现实预测有效。
+
+存疑/待核：古籍原刊校勘、解释的现实预测效度未验证；字段与版本以本轮实际产物为准。

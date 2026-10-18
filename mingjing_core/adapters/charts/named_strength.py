@@ -6,7 +6,8 @@ from typing import Any
 
 from ...calculations.bazi.elements import block, element, ten_god
 from ...calculations.bazi.strength import PARAMETERS, conclusion, supportive
-from ...calculations.bazi.structure import conditions, regular_patterns
+from ...calculations.bazi.structure import conditions
+from .p8_structure import reviewed_extra, reviewed_regular
 
 
 def named_scores(pillars: dict[str, str], hidden: dict[str, str]) -> dict[str, Any]:
@@ -102,10 +103,11 @@ def named_patterns(pillars: dict[str, str], hidden: dict[str, str], strength: di
         )
     following.append(_strong_following(pillars, hidden, methods, exposed, concealed))
     return block(
-        "p8-pattern-condition-screen-v1",
+        "p8-pattern-condition-screen-v2-reviewed",
         "子平真诠·论用神/变化；项目候选筛选，不宣称成格",
         editorial_status="project_candidate_screen",
-        regular_eight=regular_patterns(month_gods, exposed),
+        regular_eight=reviewed_regular(pillars, hidden),
+        regular_extra=reviewed_extra(pillars, hidden),
         following=following,
         establishment="candidate_only",
         not_evaluated=["合化成立", "救应力量", "特殊外格", "真假从格", "岁运成败"],

@@ -12,13 +12,19 @@ BRANCHES = "寅卯辰巳午未申酉戌亥子丑"
 TABLE_PATH = Path(__file__).resolve().parents[2] / "knowledge/p8_ziwei/flying_v1.json"
 
 
-def flying_profile() -> dict[str, Any]:
+def flying_profile(school: str = "iztro") -> dict[str, Any]:
     raw = TABLE_PATH.read_bytes()
     result = json.loads(raw)
+    if school != result["default_table"]:
+        if not isinstance(school, str) or school not in result["named_tables"]:
+            raise ValueError("未知紫微宫干四化具名表")
+        result.update(result["named_tables"][school])
     if set(result["table"]) != set(STEMS) or any(
         len(row) != 4 or len(set(row)) != 4 for row in result["table"].values()
     ):
         raise ValueError("宫干四化具名表不完整")
+    result["table_id"] = school
+    result["table_pointer"] = "/table" if school == "iztro" else f"/named_tables/{school}/table"
     result["source_sha256"] = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
     return result
 

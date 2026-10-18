@@ -6,6 +6,23 @@ from copy import deepcopy
 from typing import Any
 
 
+def annotation_basis(policy: dict[str, Any]) -> dict[str, Any]:
+    return deepcopy(
+        {
+            key: policy[key]
+            for key in (
+                "priority_source_status",
+                "palace_source",
+                "palace_source_status",
+                "palace_modern_mappings",
+                "palace_pending_claims",
+                "ten_god_traditional_mappings",
+                "ten_god_domain_status",
+            )
+        }
+    )
+
+
 def enrich_relations(
     relations: list[dict[str, Any]],
     nodes: list[dict[str, Any]],

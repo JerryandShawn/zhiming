@@ -1,5 +1,5 @@
 {
-  "version": "p8-skills-draft-2026-10-18-v2.1",
+  "version": "p8-skills-draft-2026-10-19-v2.2",
   "status": "draft_requires_owner_review",
   "systems": {
     "bazi": {
@@ -28,7 +28,7 @@
           "sources": [
             {
               "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
-              "locator": "第一章论十干十二支、第二章论阴阳生克、第三章附支藏人元司令图表",
+              "locator": "第一章论十干十二支、第二章论阴阳生克；司令分野表PDF第19页/零基18，章节归属待核",
               "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
             },
             {
@@ -40,6 +40,16 @@
               "title": "袁树珊《命理探源》",
               "locator": "卷三强弱·天乙贵人、羊刃（引古歌、曹震圭、《渊海子平》）；只核原文表，不采用站点现代白话",
               "url": "https://libokang.com/zh-hant/classics/bazi/命理探源/"
+            },
+            {
+              "title": "张楠《神峰通考》",
+              "locator": "吉神类·天乙贵人；庚辛逢马虎公开转录已核，非原刊校勘",
+              "url": "https://zh.wikisource.org/zh-hans/神峰通考"
+            },
+            {
+              "title": "《三命通会》卷五·论阳刃",
+              "locator": "五阳干有刃正文可核；阴刃逆行第三说未找到对应原文，待核",
+              "url": "https://zh.wikisource.org/wiki/三命通會_(四庫全書本)/卷05"
             }
           ],
           "status": "draft_requires_owner_review",
@@ -104,6 +114,11 @@
               "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
               "locator": "第八章论用神、第九章论用神成败救应、第十章论用神变化、第二十二章论外格用舍",
               "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            },
+            {
+              "title": "《子平真诠》公开转录",
+              "locator": "第九/十四/十六/三十九/四十一/四十三/四十五及四十六章；审校候选不宣布成格",
+              "url": "https://donglishuzhai.net/chapter/3722.html"
             }
           ],
           "status": "draft_requires_owner_review",
@@ -131,7 +146,10 @@
             "u12-pattern-output-c3",
             "u12-pattern-hurting-officer-c1",
             "u12-pattern-hurting-officer-c2",
-            "u12-pattern-hurting-officer-c3"
+            "u12-pattern-hurting-officer-c3",
+            "u12-pattern-established-lu",
+            "u12-pattern-month-robber",
+            "u12-pattern-yang-blade"
           ]
         },
         {
@@ -158,8 +176,13 @@
             },
             {
               "title": "万民英《三命通会》",
-              "locator": "卷二论天干阴阳生死；具体调候摘表出处以计算块 source_locator 为准，未核刊",
+              "locator": "卷二论天干阴阳生死；基础概念参考，不是120键摘表主来源",
               "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+            },
+            {
+              "title": "《穷通宝鉴》",
+              "locator": "十干分论各日干/季节/月段；实际键以source_locator为准，pN未核对应刊页；乙申三秋总论及七月条件段，原刊待核",
+              "url": "https://zh.wikisource.org/zh-hant/穷通宝鉴"
             }
           ],
           "status": "draft_requires_owner_review",
@@ -205,7 +228,7 @@
           "sources": [
             {
               "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
-              "locator": "第七章论刑冲会合解法、第二十五章论行运、第二十六章论行运成格变格",
+              "locator": "第七章论刑冲会合解法、第二十五章论行运、第二十六章论行运成格变格；第二十三章宫分，只作传统位置出处",
               "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
             }
           ],
@@ -235,7 +258,7 @@
           "sources": [
             {
               "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
-              "locator": "第二十三章论宫分用神配六亲、第二十四章论妻子；不沿用原书性别与阶层断语",
+              "locator": "第二十三章论宫分用神配六亲、第二十四章论妻子；不沿用原书性别与阶层断语；女命夫官子食伤本轮未核，不作现代家庭身份事实",
               "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
             }
           ],
@@ -441,6 +464,16 @@
               "title": "《紫微斗数全书》",
               "locator": "卷三谈星要论",
               "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷三"
+            },
+            {
+              "title": "iztro v2.5.0 晚子日序",
+              "locator": "timeToIndex、fixLunarDayIndex；晚子23点index12；安装引擎边界另有原生测试",
+              "url": "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/utils/index.ts"
+            },
+            {
+              "title": "iztro v2.5.0 主星起点",
+              "locator": "getStartIndex：晚子日数加1；不能概括成全部历法等同次日早子",
+              "url": "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/star/location.ts"
             }
           ],
           "status": "draft_requires_owner_review",
@@ -494,13 +527,18 @@
           "sources": [
             {
               "title": "《紫微斗数全书》",
-              "locator": "卷二安禄权科忌四星变化诀（论生年干）",
+              "locator": "24号定位卷二安禄权科忌四星变化诀，壬科天府；本轮在线正文未定位，原刊及全部40格待核；不冒称独立校勘",
               "url": "https://zh.wikisource.org/wiki/紫微斗數全書/卷二"
             },
             {
               "title": "iztro所选宫干表与飞化接口",
               "locator": "v2.5.0 heavenlyStems；宫位飞化按实际星曜定位",
               "url": "https://docs.iztro.com/posts/palace"
+            },
+            {
+              "title": "iztro v2.5.0 默认十天干表",
+              "locator": "heavenlyStems：默认壬科左辅；只改可选宫干图，不重写实际生年/运限",
+              "url": "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/data/heavenlyStems.ts"
             }
           ],
           "status": "draft_requires_owner_review",
@@ -599,7 +637,7 @@
     },
     "astro": {
       "name": "astro",
-      "description": "按程序西占产物解释本命、相位与行运，明确次限和回归未接入项。",
+      "description": "按程序西占产物解释本命、相位、行运区间、显式次限与太阳回归；技术与待接主线分开。",
       "chapters": [
         {
           "topic": "natal",
@@ -649,6 +687,11 @@
               "title": "Ptolemy, Tetrabiblos (Robbins 译本)",
               "locator": "Book I §13 Of the Aspects of the Signs、§24 Of Applications and Separations",
               "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1B*.html"
+            },
+            {
+              "title": "Astrotheme 程序容许度说明",
+              "locator": "Orbs Used on Astrotheme：本命合10.5度、冲10度；行运更小；不用于更改项目6度",
+              "url": "https://www.astrotheme.com/astrology_aspects.php"
             }
           ],
           "status": "draft_requires_owner_review",
@@ -735,7 +778,7 @@
             },
             {
               "title": "William Lilly, Christian Astrology (1647)",
-              "locator": "Book III, Chapter CLXXII Of Revolutions，原书pp.734–737：太阳回到本命黄经与本命盘比较；不沿用疾病灾祸断语",
+              "locator": "Book III, Chapter CLXXII Of Revolutions，原书pp.734–737；本轮PDF核对第248–251页（0基247–250）；定义与本命比较，不沿用灾祸断语",
               "url": "https://www.worldastrology.net/wp-content/uploads/2008/12/CA-III.pdf"
             }
           ],
