@@ -38,6 +38,8 @@ describe('local organize proposal editing', () => {
     render(<OrganizePage />);
     expect(screen.getByText('合成数据 · 本地模拟')).toBeVisible();
     expect(screen.getByText(/不能整理真实旧聊天/)).toBeVisible();
+    expect(screen.getByRole('heading', { level: 2, name: '整理草稿区与话题' })).toBeInTheDocument();
+    expect(within(card('周末散步')).getByRole('heading', { level: 3, name: '周末散步' })).toBeVisible();
     expect(screen.getAllByLabelText('敏感区')).toHaveLength(2);
     expect(screen.getByText('待你确认 · 把握度低')).toBeVisible();
     expect(within(card('跳槽 · 面试')).getByText(/4 条消息/)).toBeVisible();

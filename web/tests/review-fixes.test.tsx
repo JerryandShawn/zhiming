@@ -28,10 +28,10 @@ describe('14 I reviewed static controls', () => {
     render(<DatePicker />);
     const trigger = screen.getByRole('button', { name: /看哪一天：今天 10月17日/ });
     await userEvent.click(trigger);
-    expect(screen.getByRole('button', { name: '2026-10-01 法定假日 国庆' })).toBeVisible();
-    expect(screen.getByRole('button', { name: '2026-10-10 调休上班' })).toBeVisible();
-    expect(screen.getByRole('button', { name: '2026-10-23 霜降' })).toBeVisible();
-    await userEvent.click(screen.getByRole('button', { name: '2026-10-18 重阳' }));
+    expect(screen.getByRole('button', { name: '2026-10-01 法定假日 国庆 1 休 国庆' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '2026-10-10 调休上班 10 班' })).toBeVisible();
+    expect(screen.getByRole('button', { name: '2026-10-23 霜降 23 霜降' })).toBeVisible();
+    await userEvent.click(screen.getByRole('button', { name: '2026-10-18 重阳 18 重阳' }));
     await waitFor(() => expect(trigger).toHaveFocus());
     expect(trigger).toHaveTextContent('看哪一天：10月18日');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

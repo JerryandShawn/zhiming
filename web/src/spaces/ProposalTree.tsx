@@ -21,6 +21,7 @@ export default function ProposalTree({ onEdit }: { onEdit: (edit: OrganizeEdit) 
   const { draft, data, applied, ignoreTopic } = useSpacesDemo();
   return (
     <div className="organize-tree" aria-label="整理草稿区与话题">
+      <h2 className="sr-only">整理草稿区与话题</h2>
       {[...draft.spaces]
         .sort((a, b) => a.order - b.order)
         .map((space) => {

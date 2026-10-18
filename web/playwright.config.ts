@@ -7,6 +7,7 @@ export default defineConfig({
     /spaces.*\.spec\.ts/,
     /components.*\.spec\.ts/,
     /night-.*\.spec\.ts/,
+    /overnight-matrix\.spec\.ts/,
   ],
   timeout: 60000,
   fullyParallel: false,

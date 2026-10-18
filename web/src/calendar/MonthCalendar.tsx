@@ -102,6 +102,14 @@ export function MonthCalendar({
           const note = inside ? (data.notes[date] ?? {}) : {};
           const chosen = Boolean(onSelect) && date === selected;
           const className = `calendar-day ${date === today ? 'today' : ''} ${inside ? '' : 'outside'} ${chosen ? 'selected' : ''}`;
+          const visibleName = [
+            String(day),
+            note.holiday === 'rest' ? '休' : note.holiday === 'work' ? '班' : '',
+            ...(note.festivals ?? []),
+            ...(note.terms ?? []),
+          ]
+            .filter(Boolean)
+            .join(' ');
           const content = (
             <>
               {day}
@@ -112,7 +120,7 @@ export function MonthCalendar({
             className,
             'data-date': date,
             'aria-current': date === today ? ('date' as const) : undefined,
-            'aria-label': dateLabel(date, note),
+            'aria-label': onSelect ? `${dateLabel(date, note)} ${visibleName}` : dateLabel(date, note),
           };
           return onSelect ? (
             <button type="button" key={date} {...attributes} aria-pressed={chosen} onClick={() => onSelect(date)}>

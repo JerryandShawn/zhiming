@@ -24,11 +24,15 @@ beforeEach(() => viewport(false));
 describe('calendar facts and publication coverage', () => {
   it('retains the original preview date names and exposes all five marker types', () => {
     render(<MiniCalendar onSelect={vi.fn()} />);
-    expect(screen.getByRole('button', { name: '2026-10-01 法定假日 国庆' })).toBeVisible();
-    expect(screen.getByRole('button', { name: '2026-10-10 调休上班' })).toBeVisible();
-    expect(screen.getByRole('button', { name: '2026-10-08 寒露' })).toBeVisible();
-    expect(screen.getByRole('button', { name: '2026-10-18 重阳' })).toBeVisible();
-    expect(screen.getByRole('button', { name: '2026-10-21 你的安排：面试安排' })).toBeVisible();
+    expect(screen.getByRole('button', { name: /^2026-10-01 法定假日 国庆/ })).toBeVisible();
+    expect(screen.getByRole('button', { name: /^2026-10-10 调休上班/ })).toBeVisible();
+    expect(screen.getByRole('button', { name: /^2026-10-08 寒露/ })).toBeVisible();
+    expect(screen.getByRole('button', { name: /^2026-10-18 重阳/ })).toBeVisible();
+    expect(screen.getByRole('button', { name: /^2026-10-21 你的安排：面试安排/ })).toBeVisible();
+    expect(document.querySelector('[data-date="2026-10-01"]')).toHaveAccessibleName(
+      '2026-10-01 法定假日 国庆 1 休 国庆',
+    );
+    expect(document.querySelector('[data-date="2026-10-10"]')).toHaveAccessibleName('2026-10-10 调休上班 10 班');
     expect(screen.getByText('合成日历示例 · 不代表真实安排')).toBeVisible();
     expect(screen.getByText('你的安排')).toBeVisible();
   });
@@ -40,7 +44,7 @@ describe('calendar facts and publication coverage', () => {
       notes: { '2026-10-08': { festivals: ['合成节日'], terms: ['寒露'], arrangements: ['核对日程'] } },
     });
     render(<MonthCalendar today="2026-10-17" source={source} onSelect={vi.fn()} />);
-    const cell = screen.getByRole('button', { name: '2026-10-08 合成节日 寒露 你的安排：核对日程' });
+    const cell = screen.getByRole('button', { name: /^2026-10-08 合成节日 寒露 你的安排：核对日程/ });
     expect(within(cell).getByText('合成节日')).toBeVisible();
     expect(within(cell).getByText('寒露')).toBeVisible();
     expect(cell.querySelector('.calendar-term')).toBeInTheDocument();
@@ -50,7 +54,7 @@ describe('calendar facts and publication coverage', () => {
 
   it('distinguishes actual today from a separately selected date', () => {
     render(<MonthCalendar today="2026-10-17" selected="2026-10-21" source={exampleCalendar} onSelect={vi.fn()} />);
-    const today = screen.getByRole('button', { name: '2026-10-17' });
+    const today = screen.getByRole('button', { name: /^2026-10-17 / });
     const chosen = screen.getByRole('button', { name: /2026-10-21/ });
     expect(today).toHaveAttribute('aria-current', 'date');
     expect(today).toHaveAttribute('aria-pressed', 'false');
@@ -146,20 +150,20 @@ describe('today calendar placement and safe data source', () => {
     render(<TodayCalendar today="2026-10-17" />);
     expect(screen.queryByRole('button', { name: '查看本月日历' })).not.toBeInTheDocument();
     const calendar = screen.getByRole('region', { name: '2026年10月日历' });
-    await userEvent.click(within(calendar).getByRole('button', { name: '2026-10-21' }));
-    expect(within(calendar).getByRole('button', { name: '2026-10-17' })).toHaveAttribute('aria-current', 'date');
+    await userEvent.click(within(calendar).getByRole('button', { name: /^2026-10-21 / }));
+    expect(within(calendar).getByRole('button', { name: /^2026-10-17 / })).toHaveAttribute('aria-current', 'date');
     expect(screen.getByRole('link', { name: '查看该日命盘' })).toHaveAttribute(
       'href',
       '#/chart?tab=bazi&date=2026-10-21',
     );
     await userEvent.click(screen.getByRole('button', { name: '回到今天' }));
-    expect(within(calendar).getByRole('button', { name: '2026-10-17' })).toHaveAttribute('aria-pressed', 'true');
+    expect(within(calendar).getByRole('button', { name: /^2026-10-17 / })).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('marks the today preview explicitly synthetic and retains a term plus arrangement on the same date', () => {
     viewport(true);
     render(<TodayCalendar today="2026-10-17" source={todayExampleCalendar} />);
-    const day = screen.getByRole('button', { name: '2026-10-23 霜降 你的安排：合成复盘安排' });
+    const day = screen.getByRole('button', { name: /^2026-10-23 霜降 你的安排：合成复盘安排/ });
     expect(day.querySelector('.calendar-term')).toBeInTheDocument();
     expect(day.querySelector('.calendar-event')).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: '查看该日命盘' })).not.toBeInTheDocument();
