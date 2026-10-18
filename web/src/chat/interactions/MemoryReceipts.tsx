@@ -3,9 +3,10 @@ import { operationNamespace } from '../../api/client';
 import { Disclosure } from '../../components/ui/Controls';
 import { publicChatText } from '../publicProjection';
 import type { Receipt } from '../types';
-import type { MemoryCommands, MemoryCommandReceipt } from './contracts';
+import { validMemoryReceipt, type MemoryCommands, type MemoryCommandReceipt } from './contracts';
 import { v3MemoryCommands } from './memoryCommands';
 import { MemoryCard } from './MemoryCard';
+import { useInteractionGuard } from './useInteractionGuard';
 import {
   createMemoryReceiptRegistry,
   receiptAliases,
@@ -29,12 +30,9 @@ export function MemoryReceipts({
   if (local.current.namespace !== operationNamespace()) local.current = createMemoryReceiptRegistry();
   const activeRegistry = registry?.namespace === operationNamespace() ? registry : local.current;
   const seen = activeRegistry.receipts;
-  const version = useSyncExternalStore(
-    activeRegistry.subscribe,
-    activeRegistry.getSnapshot,
-    activeRegistry.getSnapshot,
-  );
-  const [feedback, setFeedback] = useState<{ text: string; version: number; key: string; status: string }>();
+  useSyncExternalStore(activeRegistry.subscribe, activeRegistry.getSnapshot, activeRegistry.getSnapshot);
+  const [feedback, setFeedback] = useState<{ text: string; key: string; signature: string }>();
+  const guard = useInteractionGuard();
   const before = new Map<string, string>();
   for (const receipt of receipts)
     for (const alias of receiptAliases(receipt)) {
@@ -66,7 +64,11 @@ export function MemoryReceipts({
   const saved = resolved.filter((receipt) => receipt.write_status === 'saved');
   const others = resolved.filter((receipt) => receipt.write_status !== 'saved');
   function confirmed(source: DisplayReceipt, result: MemoryCommandReceipt) {
-    rememberReceipt(seen, { ...source, ...result, summary: publicChatText(result.summary ?? source.summary) });
+    const confirmedReceipt = rememberReceipt(seen, {
+      ...source,
+      ...result,
+      summary: publicChatText(result.summary ?? source.summary),
+    });
     activeRegistry.notify();
     const text =
       result.write_status === 'saved'
@@ -76,20 +78,30 @@ export function MemoryReceipts({
         : result.write_status === 'dismissed'
           ? '这次不记，此条没有保存为有效记忆。'
           : '撤销已确认，此条不会再提起。';
-    setFeedback({ text, version: activeRegistry.getSnapshot(), key: receiptKey(source), status: result.write_status });
+    setFeedback({ text, key: receiptKey(source), signature: receiptSignature(confirmedReceipt) });
   }
+  // A shared store can move a card into the saved disclosure before its promise
+  // resolves. Keep acknowledgement handling in this stable parent, while still
+  // ignoring replies after the parent unmounts or its identity changes.
+  const projectedCommands: MemoryCommands = {
+    supports: (action, receipt) => commands.supports(action, receipt),
+    async execute(action, receipt) {
+      const result = await commands.execute(action, receipt);
+      if (guard.current() && validMemoryReceipt(action, receipt, result)) confirmed(receipt, result);
+      return result;
+    },
+  };
   const render = (receipt: DisplayReceipt) => (
     <MemoryCard
       key={receiptKey(receipt)}
       receipt={receipt}
-      commands={commands}
-      onConfirmed={confirmed}
+      commands={projectedCommands}
       onAttempt={() => setFeedback(undefined)}
     />
   );
   return (
     <div className="receipt-group">
-      {feedback?.version === version && seen.get(feedback.key)?.write_status === feedback.status && (
+      {feedback && seen.has(feedback.key) && receiptSignature(seen.get(feedback.key)!) === feedback.signature && (
         <p className="meta receipt-action-feedback" role="status" aria-live="polite">
           {feedback.text}
         </p>

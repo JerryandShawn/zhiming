@@ -5,6 +5,7 @@ import { createNightPort } from './port';
 import { createMemoryReceiptRegistry } from '../chat/interactions/memoryProjection';
 import ChatPreview from './ChatPreview';
 import { useNormalConversation } from './useNormalConversation';
+import { useAboutMeReceipts } from './useAboutMeReceipts';
 import { usePrivacySession, PrivateChat } from './privacy';
 import { Button } from '../components/ui/Controls';
 import { EyeOff } from 'lucide-react';
@@ -18,10 +19,12 @@ const otherPages = {
   me: lazy(() => import('../pages/Me')),
   settings: lazy(() => import('../pages/Settings')),
 };
+const AboutMePage = lazy(() => import('./me/AboutMePage'));
 
 export default function NightApp({ page }: { page: string }) {
   const [port] = useState(createNightPort);
   const receiptRegistry = useRef(createMemoryReceiptRegistry()).current;
+  useAboutMeReceipts(port.aboutMe, receiptRegistry);
   const privacy = usePrivacySession();
   const chat = useNormalConversation(port, page === 'chat' && !privacy.active);
   const previousMode = useRef(privacy.active);
@@ -82,6 +85,8 @@ export default function NightApp({ page }: { page: string }) {
           ) : (
             <ChatPreview port={port} receiptRegistry={receiptRegistry} chat={chat} onPrivacyChange={setPrivacy} />
           )
+        ) : page === 'me' ? (
+          <AboutMePage port={port.aboutMe} />
         ) : (
           <Other />
         )}

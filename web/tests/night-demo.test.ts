@@ -92,7 +92,12 @@ describe('夜间模拟接线层', () => {
   });
   it('记忆回执只提交一次，拒绝过时的其他写操作', async () => {
     const port = createNightPort();
-    const item = { proposal_id: 'p1', write_status: 'pending_confirmation', summary: '合成记忆', revision: 1 };
+    const item = {
+      proposal_id: 'local-proposal',
+      write_status: 'pending_confirmation',
+      summary: '希望跟进一项健康安排（合成示例）',
+      revision: 1,
+    };
     const saved = await port.memory.execute('remember', item);
     expect(saved.write_status).toBe('saved');
     expect(await port.memory.execute('remember', item)).toBe(saved);
@@ -103,7 +108,12 @@ describe('夜间模拟接线层', () => {
   });
   it('同类自动记只在有效类别回执后更新本地偏好', async () => {
     const port = createNightPort();
-    const item = { proposal_id: 'p2', write_status: 'pending_confirmation', summary: '合成记忆', revision: 1 };
+    const item = {
+      proposal_id: 'local-proposal',
+      write_status: 'pending_confirmation',
+      summary: '希望跟进一项健康安排（合成示例）',
+      revision: 1,
+    };
     expect(port.memory.supports('remember-category', item)).toBe(false);
     await expect(port.memory.execute('remember-category', item)).rejects.toThrow();
     expect(port.autoSaveCategories.size).toBe(0);

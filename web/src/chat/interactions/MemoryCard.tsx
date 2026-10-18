@@ -3,19 +3,17 @@ import { BookmarkCheck, Undo2 } from 'lucide-react';
 import { ApiError } from '../../api/client';
 import { Button } from '../../components/ui/Controls';
 import { publicChatText } from '../publicProjection';
-import { validMemoryReceipt, type MemoryAction, type MemoryCommands, type MemoryCommandReceipt } from './contracts';
+import { validMemoryReceipt, type MemoryAction, type MemoryCommands } from './contracts';
 import type { DisplayReceipt } from './memoryProjection';
 import { useInteractionGuard } from './useInteractionGuard';
 
 export function MemoryCard({
   receipt,
   commands,
-  onConfirmed,
   onAttempt,
 }: {
   receipt: DisplayReceipt;
   commands: MemoryCommands;
-  onConfirmed: (source: DisplayReceipt, result: MemoryCommandReceipt) => void;
   onAttempt?: () => void;
 }) {
   const [busy, setBusy] = useState<MemoryAction>(),
@@ -40,7 +38,6 @@ export function MemoryCard({
       if (!guard.current()) return;
       if (!validMemoryReceipt(action, receipt, result))
         throw new Error('没有收到有效确认，记忆状态没有改变，请用原操作重试');
-      onConfirmed(receipt, result);
     } catch (reason) {
       if (!guard.current()) return;
       if (reason instanceof ApiError && reason.status === 409) setConflicted(true);
