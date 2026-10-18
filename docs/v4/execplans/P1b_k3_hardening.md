@@ -18,6 +18,9 @@
 
 ## Progress
 
+- [x] (2026-10-18 23:34 +08:00) U39规范消息/角色策略子片：私有完整content原序回传、独立签名/空thinking/redacted、双协议真实user边界、Kimi缺签名诊断、绑定角色与默认high未实测元数据已实现。新增5模块74项，定向363/1.36s、最终models+foundation810/65.66s通过；12Python文件静态边界通过，源码冻结。旧两fixture仅补stop，原断言不变；U38冻结13/13源hash不变。
+- [ ] (2026-10-18 23:34 +08:00) U39剩余：YAML配置/采样能力启用、准确effort wire/low效果探针、用量账本effort持久字段、probe/eval报告头和P3私有消息接线尚未完成；真实供应商0，不切换实际主模型。U38中央入口/部署与人工启动门仍未闭环。
+
 - [x] (2026-10-18 23:02 +08:00) U38中央核心首切片：0008、显式账号位置/UUID、真实PG双槽/滚动预算/份额、持久全停、逐批一用授权、人工unknown恢复已离线验证。新增79项（48真实PG/31纯契约）包含在最终models+foundation共736通过/74.13s内；Ruff指定规则、format、AST限制、UTF8 LF、diff通过，源码冻结。
 - [ ] (2026-10-18 23:02 +08:00) U38集成剩余：中央DSN/schema/账号身份部署、runtime配置装载、所有物理POST入口/重试/评测/探针接线和用户在线逐批启动入口尚未完成。U39完整回传及真实256k等价仍未完成；夜间真实调用（含探针）为0。详见[核心子范围证据](../evidence/P1b/2026-10-18-u38-central-core.md)。
 
@@ -40,6 +43,10 @@
 
 ## Surprises & Discoveries
 
+2026-10-18 / U39规范消息发现：旧flat reasoning与signature会合并多块签名、丢start初值/空文本签名/redacted/原内容顺序，不能无损重建。新增private_content规范回执作为回传依据，flat兼容视图保留，私有字段与StreamEvent数据不进入repr；原text/tool_calls与规范回执不一致时发送前拒绝。单凭cycle字符串相同仍可能带回最新user之前的旧推理，因此双协议再加真实user位置边界。
+
+2026-10-18 / U39夹具：test_protocols.anthropic_record缺thinking stop、test_request_policy_wire.wire_model缺text stop。root逐类批准只补两条官方SSE闭合事件，全部旧断言保留。首轮343/363非全绿，补后363/363；最终810包含全部相关原保护与74新增。官方通用Anthropic签名格式不证明Kimi会员缺签名已实测接受，二者在证据中分开。
+
 2026-10-18 / U38开工：运行配置中尚无runtime.yaml，因此先提供显式DSN/schema/account_id/ledger UUID的核心接口，不从任意业务库推断中央身份。账本部署拓扑及所有HTTP入口接线仍待后续交付；现有eval MemberBudget不冒充生产中央守卫。物理发送前持久reserve，即使进程崩溃也保守计入窗口；reserved并不谎称已确认供应商收到POST。
 
 2026-10-18 / U38恢复发现：被杀进程的PG session锁会释放，但已reserve的结果无法确定，必须保留预算。新增显式人工close_abandoned_batch：同时持有两个空闲槽才把旧pending记unknown并结束批，不退款、不重发、不清全局stop，20分钟间隔仍持久生效。首轮Windows强杀用例清理Event曾阻塞测试退出；只停止本次pytest进程，修测试清理后多进程回归通过，未停启共享PG；两份严格匹配本次合成case/初版0008校验和的遗留schema已清理。
@@ -61,6 +68,10 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-18 / U39决定：内容按原index/原block类型与字段保存，thinking签名不解释不拼接后重建wire；原flat拼接仅兼容旧读取方。仅会员k3/k3-256k强制同循环回传，缺/空signature按增补原样保留并计响应缺签名与出站待回传计数；非K3仍缺签名拒绝。只接受本项目使用的text/thinking/redacted_thinking/tool_use，未闭合/重复index/错类型delta不能形成完整回执。OpenAI保留reasoning字符串及显式空字符串，供应商原tool ID不改。
+
+2026-10-18 / U39 effort决定：已核Kimi会员模型页默认high；开放平台默认/Claude工具映射不能冒充会员Anthropic准确wire实测。暂不发thinking、旧1024 budget或猜测effort参数，primary/critic及其他角色统一server_default/high，记录effort_verified=false。Registry绑定角色，K3运行前再拒禁思考/低档或未知effort/角色越界；非K3维持旧配置合同。声明是离线请求策略，不称low/high已测；low档、实际wire与报告/账本接线保留未完成。详见[独立决策](../evidence/P1b/2026-10-18-u39-decisions.md)。
 
 2026-10-18 / U38夜间最新授权覆盖前述模块线分工：root委派本P1b工作树独占实现中央guard及真实隔离PG单测，root不写此树；发现模块树同名文件即停该文件并切U39。核心必须显式核验数据库位置与固定ledger UUID，运行角色不可建账号或删除用量。默认60/20/20：critic占critic池，eval/probe与background共用后台池；交互可借空余额，非交互不可借。配置装载与可信角色路由尚未接线，测试中的低限额只收紧80上限。停止只人工解除；明确5h停止至少5h且仍需人工，风控/Access永久全停直到人工核准，不降并发继续。
 
@@ -87,6 +98,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-18 23:34 +08:00 / U39子片可独立审查：以U38本机提交2cb0277a282431ddcf7d8392fd885ce1c8eff41b（远端等价18352da4）为基底，5端口/codec/helper、2旧fixture闭合增补与5新测试已冻结；最终810/810通过65.66s，新增74项均在内，Ruff完整规则/format120/AST/UTF8 LF/diff通过。精确来源见[结构化记录](../evidence/P1b/u39-turn-validation-2026-10-18.json)，命令/§11边界见[子片回执](../evidence/P1b/2026-10-18-u39-turn-slice.md)。没有修改模型YAML、旧适配器、U38源码、P3或服务器；probe/eval头/账本effort/真实效果/全入口/部署仍未完成，不能宣称整个U39或P1b验收。当前未提交，由root统一发布。
 
 2026-10-18 23:02 +08:00 / U38核心可独立验收：最终P2 Core解释器在P1b cwd运行models+foundation为736/736、74.13s、0skip，其中新增6模块79项（48真实隔离PG、31纯契约）。同账号三进程/第三个零POST拒绝、进程重启stop、滚动80保守reserve、降权角色、迁移8、人工unknown恢复和操作ID重放均有证据。源码/测试13文件hash与静态核验见[结构化记录](../evidence/P1b/u38-central-core-validation-2026-10-18.json)，命令和边界见[§11子范围回执](../evidence/P1b/2026-10-18-u38-central-core.md)。此前42/33.45和733/70.15是中间源码验证，不能替代最终身份。未跑整库Core/v4、coverage、scripted评测、CI或真实供应商；全入口/中央部署/人工启动入口/U39/256k切换均未完成，不把U38核心成绩称整阶段完成。未提交/推送/合并，交root统一核对发布。
 

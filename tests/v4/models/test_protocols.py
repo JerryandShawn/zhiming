@@ -233,6 +233,7 @@ def anthropic_record() -> Any:
         {"type": "content_block_start", "index": 0, "content_block": {"type": "thinking", "thinking": ""}},
         {"type": "content_block_delta", "index": 0, "delta": {"type": "thinking_delta", "thinking": "合成推理"}},
         {"type": "content_block_delta", "index": 0, "delta": {"type": "signature_delta", "signature": "signature"}},
+        {"type": "content_block_stop", "index": 0},
         {
             "type": "content_block_start",
             "index": 1,

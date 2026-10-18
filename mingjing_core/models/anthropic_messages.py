@@ -10,16 +10,19 @@ from .errors import (
     CapabilityError,
     ModelProtocolError,
 )
-from .port import ChatMessage, StreamEvent, ToolCall, ToolSpec, active_tool_cycle
+from .port import ChatMessage, StreamEvent, ToolCall, ToolSpec, reasoning_indices, with_execution_meta
 from .request_policy import safe_tool_choice
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
+from .turn_coercion import ContentBlocks, canonical_content, legacy_thinking, member_k3, replay_caps, turn_policy
 
 
-def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+def encode_messages(
+    messages: list[ChatMessage], caps: dict[str, Any], *, allow_missing_signature: bool = False
+) -> tuple[str, list[dict[str, Any]]]:
     system, result = [], []
-    active = active_tool_cycle(messages)
-    for message in messages:
+    replay = reasoning_indices(messages, caps)
+    for index, message in enumerate(messages):
         if message.role == "system":
             if not isinstance(message.content, str):
                 raise CapabilityError()
@@ -30,21 +33,24 @@ def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> tuple[
             result_content = message.content if isinstance(message.content, str) else _parts(message.content, caps)
             content.append({"type": "tool_result", "tool_use_id": message.tool_call_id, "content": result_content})
         else:
-            if isinstance(message.content, str):
-                if message.content:
-                    content.append({"type": "text", "text": message.content})
-            else:
-                content.extend(_parts(message.content, caps))
-            if active and caps.get("reasoning_replay") and message.reasoning and message.tool_cycle == active:
-                if not message.reasoning_signature:
-                    raise CapabilityError()
-                content.insert(
-                    0, {"type": "thinking", "thinking": message.reasoning, "signature": message.reasoning_signature}
-                )
-            content.extend(
-                {"type": "tool_use", "id": call.id, "name": call.name, "input": call.arguments}
-                for call in message.tool_calls
+            canonical = (
+                canonical_content(message, replay=index in replay, allow_missing=allow_missing_signature)
+                if message.role == "assistant"
+                else None
             )
+            if canonical is not None:
+                content = canonical
+            else:
+                content.extend(legacy_thinking(message, replay=index in replay, allow_missing=allow_missing_signature))
+                if isinstance(message.content, str):
+                    if message.content:
+                        content.append({"type": "text", "text": message.content})
+                else:
+                    content.extend(_parts(message.content, caps))
+                content.extend(
+                    {"type": "tool_use", "id": call.id, "name": call.name, "input": call.arguments}
+                    for call in message.tool_calls
+                )
         role = "user" if message.role == "tool" else message.role
         if result and result[-1]["role"] == role:
             result[-1]["content"].extend(content)
@@ -78,32 +84,21 @@ def _call(block: dict[str, Any]) -> ToolCall:
 
 
 def parse_events(chunks: Iterator[dict[str, Any]], *, membership: bool = False) -> Iterator[StreamEvent]:
-    blocks: dict[int, dict[str, Any]] = {}
-    closed: set[int] = set()
-    completed, signature = False, ""
+    blocks, completed = ContentBlocks(), False
     for chunk in chunks:
         kind = chunk.get("type")
+        if completed and kind != "ping":
+            raise ModelProtocolError()
         if kind == "error":
             raise stream_error(chunk.get("error", {}), membership=membership)
         if kind == "message_start":
             yield StreamEvent("usage", safe_usage(chunk.get("message", {}).get("usage")))
-        elif kind == "content_block_start":
-            blocks[chunk["index"]] = {**chunk["content_block"], "partial": ""}
-            block = chunk["content_block"]
-            if block.get("type") == "text" and block.get("text"):
-                yield StreamEvent("text", block["text"])
-        elif kind == "content_block_delta":
-            delta = chunk["delta"]
-            if delta.get("type") == "input_json_delta":
-                blocks[chunk["index"]]["partial"] += delta.get("partial_json", "")
-            elif delta.get("type") == "text_delta":
-                yield StreamEvent("text", delta["text"])
-            elif delta.get("type") == "thinking_delta":
-                yield StreamEvent("reasoning", delta["thinking"])
-            elif delta.get("type") == "signature_delta":
-                signature += delta["signature"]
+        elif kind in {"content_block_start", "content_block_delta"}:
+            part = blocks.start(chunk) if kind == "content_block_start" else blocks.delta(chunk)
+            if part and part[1]:
+                yield StreamEvent(*part)
         elif kind == "content_block_stop":
-            closed.add(chunk["index"])
+            blocks.stop(chunk)
         elif kind == "message_delta":
             if chunk.get("delta", {}).get("stop_reason") == "max_tokens":
                 raise ModelProtocolError()
@@ -112,13 +107,22 @@ def parse_events(chunks: Iterator[dict[str, Any]], *, membership: bool = False) 
             completed = True
     if not completed:
         raise ModelProtocolError()
-    for index, block in sorted(blocks.items()):
-        if block.get("type") == "tool_use":
-            if index not in closed:
-                raise ModelProtocolError()
+    content = blocks.complete(strict_json)
+    for block in content:
+        if block["type"] == "tool_use":
             yield StreamEvent("tool_call", _call(block))
-    if signature:
-        yield StreamEvent("done", {"reasoning_signature": signature})
+    yield StreamEvent(
+        "done",
+        {
+            "private_content": content,
+            "reasoning_signature": "".join(
+                block.get("signature", "") for block in content if block["type"] == "thinking"
+            ),
+            "reasoning_signature_missing": sum(
+                block["type"] == "thinking" and not block.get("signature") for block in content
+            ),
+        },
+    )
 
 
 class AnthropicMessages(StreamingHTTP):
@@ -134,7 +138,17 @@ class AnthropicMessages(StreamingHTTP):
         cancel_event: threading.Event | None = None,
     ) -> Iterator[StreamEvent]:
         tool_choice = safe_tool_choice(self.model, tools, tool_choice)
-        system, encoded = encode_messages(messages, self.caps)
+        metadata = turn_policy(self.model, self.settings, role)
+        caps = replay_caps(self.model, self.caps, self.settings)
+        system, encoded = encode_messages(messages, caps, allow_missing_signature=member_k3(self.model, self.settings))
+        if metadata:
+            metadata["reasoning_replay_signature_missing"] = sum(
+                block.get("type") == "thinking" and not block.get("signature")
+                for row in encoded
+                if row["role"] == "assistant"
+                for block in row["content"]
+            )
+        self.last_execution_meta = dict(metadata)
         body: dict[str, Any] = {
             "model": self.model,
             "system": system,
@@ -143,7 +157,7 @@ class AnthropicMessages(StreamingHTTP):
             "max_tokens": max_output or self.settings.get("max_output", 14000),
         }
         thinking = self.settings.get("thinking")
-        if thinking:
+        if thinking and not metadata:
             body["thinking"] = thinking
         temp = temperature if temperature is not None else self.settings.get("temperature")
         if temp is not None:
@@ -169,6 +183,13 @@ class AnthropicMessages(StreamingHTTP):
             else:
                 raise CapabilityError()
         headers = {"x-api-key": self.api_key, "anthropic-version": "2023-06-01", "User-Agent": "MingjingCore/3.0"}
-        yield from self._events(
-            "/messages", body, headers, lambda chunks: parse_events(chunks, membership=self.membership), cancel_event
+        yield from with_execution_meta(
+            self._events("/messages", body, headers, self._parsed_events, cancel_event), metadata
         )
+
+    def _parsed_events(self, chunks: Iterator[dict[str, Any]]) -> Iterator[StreamEvent]:
+        for event in parse_events(chunks, membership=self.membership):
+            if event.type == "done":
+                missing = event.data.get("reasoning_signature_missing", 0)
+                self.reasoning_signature_missing = getattr(self, "reasoning_signature_missing", 0) + missing
+            yield event

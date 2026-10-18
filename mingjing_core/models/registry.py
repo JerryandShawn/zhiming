@@ -13,7 +13,7 @@ from typing import Any
 import yaml
 
 from .anthropic_messages import AnthropicMessages
-from .config_policy import validate_model_settings
+from .config_policy import ConfigError, validate_model_settings
 from .errors import (
     ModelQuotaExhausted,
     ModelUnavailable,
@@ -22,6 +22,7 @@ from .openai_compat import OpenAICompat
 from .port import ChatMessage, ModelPort, StreamEvent
 from .retry_policy import retry_delay, wait_for_retry
 from .transport import StreamingHTTP, check_cancel
+from .turn_coercion import member_k3
 
 LOG = logging.getLogger(__name__)
 DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / "config/models.yaml"
@@ -37,6 +38,7 @@ class ModelHandle:
     api_key: str = field(repr=False)
     caps: dict[str, Any]
     settings: dict[str, Any]
+    role: str = "primary"
 
     def adapter(self, **kwargs: Any) -> ModelPort:
         adapter = {"openai_compat": OpenAICompat, "anthropic_messages": AnthropicMessages}.get(self.protocol)
@@ -48,7 +50,9 @@ class ModelHandle:
             model=self.model,
             provider=self.provider,
             caps=self.caps,
-            settings=self.settings,
+            settings={**self.settings, "role_binding": self.role}
+            if member_k3(self.model, self.settings)
+            else self.settings,
             **kwargs,
         )
 
@@ -102,6 +106,7 @@ class ModelRegistry:
                     key,
                     dict(entry.get("caps", {})),
                     {**provider.get("settings", {}), **entry.get("settings", {})},
+                    role=role,
                 )
             )
         return handles
@@ -132,7 +137,11 @@ class RegistryPort(ModelPort):
         blocked_memberships: set[str] = set()
         nonmembership_only = False
         last: ModelUnavailable = ModelUnavailable()
-        handles = self.registry.resolve(role)
+        handles = self.registry.resolve(self.role)
+        if role != self.role:
+            if any(member_k3(handle.model, handle.settings) for handle in handles):
+                raise ConfigError("K3端口角色已绑定，不能在调用时切换角色")
+            handles = self.registry.resolve(role)
         timeout = (
             self.total_timeout
             if self.total_timeout is not None

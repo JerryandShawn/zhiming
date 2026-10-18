@@ -38,6 +38,7 @@ def wire_model(
         data = (
             recording(
                 {"type": "content_block_start", "index": 0, "content_block": {"type": "text", "text": "合成回答"}},
+                {"type": "content_block_stop", "index": 0},
                 {"type": "message_stop"},
             )
             if protocol is AnthropicMessages
