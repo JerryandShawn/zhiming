@@ -11,7 +11,7 @@ import {
   SunMedium,
   UserRound,
 } from 'lucide-react';
-import { useState } from 'react';
+import { Fragment, lazy, Suspense, useState } from 'react';
 import { IconButton, Seal, Switch } from './components/ui/Controls';
 import { Panel, Toast } from './components/ui/Overlays';
 import { useKeyboardViewport } from './useKeyboardViewport';
@@ -24,21 +24,41 @@ const navigation: { key: string; label: string; icon: LucideIcon }[] = [
   { key: 'cases', label: '事项', icon: ListChecks },
   { key: 'me', label: '关于我', icon: UserRound },
 ];
+const SpaceNavigation = lazy(() =>
+  import('./spaces/SpaceNavigation').then((module) => ({ default: module.SpaceNavigation })),
+);
 
-function Links({ current }: { current: string }) {
+function Links({ current, spacesPreview = false }: { current: string; spacesPreview?: boolean }) {
   return (
     <>
       {navigation.map(({ key, label, icon: Icon }) => (
-        <a className="nav-link" href={`#/${key}`} key={key} aria-current={current === key ? 'page' : undefined}>
-          <Icon className="icon" aria-hidden />
-          {label}
-        </a>
+        <Fragment key={key}>
+          <a className="nav-link" href={`#/${key}`} aria-current={current === key ? 'page' : undefined}>
+            <Icon className="icon" aria-hidden />
+            {label}
+          </a>
+          {spacesPreview && key === 'chat' && current === 'chat' && (
+            <Suspense fallback={<p className="meta">正在展开功能区…</p>}>
+              <SpaceNavigation />
+            </Suspense>
+          )}
+        </Fragment>
       ))}
     </>
   );
 }
 
-export function Layout({ page, children, preview = false }: { page: string; children: ReactNode; preview?: boolean }) {
+export function Layout({
+  page,
+  children,
+  preview = false,
+  spacesPreview = false,
+}: {
+  page: string;
+  children: ReactNode;
+  preview?: boolean;
+  spacesPreview?: boolean;
+}) {
   const [privateMode, setPrivate] = useState(false);
   const viewport = useKeyboardViewport();
   const label =
@@ -53,7 +73,8 @@ export function Layout({ page, children, preview = false }: { page: string; chil
   return (
     <div
       className="shell"
-      data-keyboard={!preview && viewport.keyboard ? 'open' : undefined}
+      data-spaces={spacesPreview ? 'demo' : undefined}
+      data-keyboard={(!preview || spacesPreview) && viewport.keyboard ? 'open' : undefined}
       style={viewport.height ? ({ '--keyboard-height': `${viewport.height}px` } as CSSProperties) : undefined}>
       <a
         className="skip"
@@ -70,7 +91,7 @@ export function Layout({ page, children, preview = false }: { page: string; chil
           <span>明镜</span>
         </a>
         <p className="rail-date meta">
-          {preview
+          {preview && !spacesPreview
             ? '10月17日 周六 · 九月初八'
             : new Intl.DateTimeFormat('zh-CN', {
                 timeZone: 'Asia/Shanghai',
@@ -80,7 +101,7 @@ export function Layout({ page, children, preview = false }: { page: string; chil
               }).format(new Date())}
         </p>
         <nav>
-          <Links current={page} />
+          <Links current={page} spacesPreview={spacesPreview} />
         </nav>
         <div className="rail-bottom">
           <div className="row between small-text">
@@ -88,12 +109,20 @@ export function Layout({ page, children, preview = false }: { page: string; chil
               <EyeOff className="icon" />
               无痕模式
             </span>
-            <Switch label="侧栏无痕模式" checked={privateMode} onChange={setPrivate} disabled={!preview} />
+            <Switch
+              label="侧栏无痕模式"
+              checked={privateMode}
+              onChange={setPrivate}
+              disabled={!preview || spacesPreview}
+            />
           </div>
           {!preview && <p className="meta">无痕对话正在准备，暂不可用。</p>}
           <a className="nav-link" href="#/settings" aria-current={page === 'settings' ? 'page' : undefined}>
             <Settings2 className="icon" />
             设置
+          </a>
+          <a className="nav-link" href="?spaces=demo#/chat">
+            功能区预览
           </a>
         </div>
       </aside>
@@ -117,6 +146,9 @@ export function Layout({ page, children, preview = false }: { page: string; chil
             <a className="nav-link" href="#/settings">
               <Settings2 className="icon" />
               设置
+            </a>
+            <a className="nav-link" href={spacesPreview ? '#/organize' : '?spaces=demo#/chat'}>
+              {spacesPreview ? '整理建议' : '功能区预览'}
             </a>
           </Panel>
         )}

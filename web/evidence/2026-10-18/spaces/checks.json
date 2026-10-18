@@ -1,0 +1,71 @@
+{
+  "recorded_at": "2026-10-18T09:13:05.959Z",
+  "node_version": "v22.23.3",
+  "baseline": "241e87409987c91148adde639ec365c49a53fe5a",
+  "mode": "explicit synthetic front-end demo; no organizing API or production data",
+  "checks": {
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "unit": {
+      "passed": 130,
+      "files": 16,
+      "new_tests": 41
+    },
+    "spaces_behavior": {
+      "startTime": "2026-10-18T09:11:54.387Z",
+      "duration": 4297.946,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "spaces_visual": {
+      "passed": 24,
+      "run_id": "2026-10-18T09:09:34.711Z",
+      "checks": {
+        "api_requests": 0,
+        "external_requests": 0,
+        "javascript_errors": 0,
+        "console_messages": 0,
+        "overflowing_pages": 0,
+        "small_text_pages": 0,
+        "accessibility_violations": 0
+      }
+    },
+    "previous_static_behavior": {
+      "passed": 80,
+      "seconds": 60,
+      "note": "Re-run after App/Layout changes; final favicon/scoped-color fix independently checked by 24 final visual tests"
+    },
+    "v3_pg_contracts": {
+      "startTime": "2026-10-18T09:11:59.905Z",
+      "duration": 20070.358,
+      "expected": 12,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "first_screen_gzip": 83564,
+    "gzip_limit": 204800
+  },
+  "demo_api_requests": 0,
+  "real_model_calls": 0,
+  "stage_or_production_access": false,
+  "screenshots": 28,
+  "interaction_sha256": {
+    "web/evidence/2026-10-18/spaces/interactions/apply-confirm-1440.png": "18f560271afb927cd28b479651e3c4814d42a8f35ac5b2f5e56acdb5488c8a26",
+    "web/evidence/2026-10-18/spaces/interactions/revert-confirm-1440.png": "8b6ae4925766cbc4352a890f7119e749d71f597f6744d521d37b62cb7e6e940c",
+    "web/evidence/2026-10-18/spaces/interactions/route-new-topic-390.png": "814e9a3ee06405ed5e447955b03da01244a1349063f547df902136efc956e059",
+    "web/evidence/2026-10-18/spaces/interactions/split-editor-390.png": "a9df5da2a00cbb6452c5f00c854f848bd933c9dbd653dc50d8e1e69ed96dbe52"
+  },
+  "original_M4_evidence": "Preserved; new evidence in spaces/ only",
+  "not_verified": [
+    "real spaces/topic APIs and route_changed",
+    "real history migration or classifiers",
+    "server persistent apply/revert",
+    "Feishu",
+    "4G LCP",
+    "remote CI"
+  ]
+}

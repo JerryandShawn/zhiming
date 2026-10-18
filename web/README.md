@@ -45,6 +45,26 @@ node scripts/bundle-budget.mjs
 
 本地测试专用端点 `__test__` 只定义于 `web/tests/fixture_app.py`；不修改或注册到生产 API。正常生产反向代理应自行管理 `/api`；Vite 的 localhost 代理只是本机开发配置。
 
+## 功能区与整理建议模拟预览
+
+P5b 增补 C / 22 号 §6 的界面用独立合成数据预览，**不需要后端或网站口令**，也不读取真实对话：
+
+- `/?spaces=demo#/chat?space=career&topic=interview`：桌面区、话题、对话三栏；手机区标签横滑和话题下拉；全部时间线、回答归区及输入归属。
+- `/?spaces=demo#/me`：七区记忆、重要的人与事项。
+- `/?spaces=demo#/organize`：整理树，可改名、合并、拆分、移动、忽略；应用和撤销都要再次确认。
+
+现有页面的“功能区预览”和“关于我 → 整理建议 · 合成预览”均能进入。此模式的归属修改、批次和草稿仅在内存中，刷新重置；忽略不删除原消息；应用后有新归区修改时，旧批次不能直接覆盖撤销。聊天发送和模型起名禁用。默认入口仍用真实 v3，不会混入这些合成记录。
+
+构建并启动 `npm run preview` 后可运行（无需 PG/8002）：
+
+```sh
+npx playwright test -c playwright.spaces.config.ts
+npx playwright test -c playwright.spaces-visual.config.ts
+node scripts/bundle-budget.mjs evidence/2026-10-18/spaces/bundle-budget.json
+```
+
+状态/组件测试包含在 `npm test` 中（同时收集 `.test.ts` 与 `.test.tsx`）。新截图和哈希在 `evidence/2026-10-18/spaces/`，与旧 M4 证据分开。计划为 `ExecPlan_spaces.md`；API、真实历史整理与分类器未接通，仍由主线/模块线交付。
+
 ## 证据与参考
 
 `../docs/v4/evidence/P10/` 包含 24 张未经改动的参考截图、56 张实际页面截图、56 张并排比较、16 张组件/浮层截图及 56 份自动审计记录。375、390、768、1440 四个视口分别覆盖宣纸和夜墨。比较脚本 `node scripts/compare.mjs` 使用现有截图，不生成或修饰设计图。

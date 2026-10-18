@@ -22,6 +22,10 @@ const livePages = {
   me: lazy(() => import('./live/Me')),
   settings: lazy(() => import('./live/Settings')),
 };
+const SpacesChat = lazy(() => import('./spaces/ChatPreview'));
+const SpacesMe = lazy(() => import('./spaces/MemoryPreview'));
+const OrganizePage = lazy(() => import('./spaces/OrganizePage'));
+const PreviewNotice = lazy(() => import('./spaces/PreviewNotice'));
 const aliases: Record<string, string> = {
   memory: 'me?section=memory',
   timeline: 'me?section=timeline',
@@ -39,23 +43,35 @@ export default function App() {
   let route = hash.replace(/^#\/?/, '') || 'today';
   const name = route.split(/[/?]/)[0];
   if (aliases[name]) route = aliases[name];
-  const pageName = route.split(/[/?]/)[0] === 'reports' ? 'settings' : route.split(/[/?]/)[0];
+  const spacesPreview = new URLSearchParams(location.search).get('spaces') === 'demo';
+  const routeName = route.split(/[/?]/)[0];
+  const pageName = routeName === 'reports' ? 'settings' : spacesPreview && routeName === 'organize' ? 'me' : routeName;
   const page = pageName in pages ? (pageName as keyof typeof pages) : 'today';
-  const preview = new URLSearchParams(location.search).get('preview') === '1' || page === '__design';
-  const Component = preview ? pages[page] : livePages[page as keyof typeof livePages];
+  const preview = spacesPreview || new URLSearchParams(location.search).get('preview') === '1' || page === '__design';
+  const Component =
+    spacesPreview && routeName === 'organize'
+      ? OrganizePage
+      : spacesPreview && page === 'chat'
+        ? SpacesChat
+        : spacesPreview && page === 'me'
+          ? SpacesMe
+          : preview
+            ? pages[page]
+            : livePages[page as keyof typeof livePages];
   useEffect(() => {
     if (aliases[name]) location.replace(`#/${route}`);
     window.scrollTo(0, 0);
   }, [name, route]);
   const content = (
-    <Layout page={page} preview={preview}>
+    <Layout page={page} preview={preview} spacesPreview={spacesPreview}>
       <Suspense
         fallback={
           <div className="page">
             <Skeleton label="正在展开页面" />
           </div>
         }>
-        <Component key={route} />
+        {spacesPreview && <PreviewNotice />}
+        <Component key={spacesPreview && page === 'chat' ? 'spaces-chat' : route} />
       </Suspense>
     </Layout>
   );

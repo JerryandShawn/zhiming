@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/e2e',
-  testIgnore: [/contracts\.spec\.ts/, /live-visual\.spec\.ts/],
+  testIgnore: [/contracts\.spec\.ts/, /live-visual\.spec\.ts/, /spaces.*\.spec\.ts/],
   timeout: 60000,
   fullyParallel: false,
   workers: 1,

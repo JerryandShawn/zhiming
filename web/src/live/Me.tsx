@@ -31,6 +31,9 @@ export default function Me() {
         <div>
           <h1>关于我</h1>
           <p className="meta">{active === undefined ? '正在核对有效记忆' : `目前有 ${active} 条有效记忆`}</p>
+          <a className="text-link quiet-link" href="?spaces=demo#/organize">
+            整理建议 · 合成预览
+          </a>
         </div>
       </header>
       <div className="route-tabs">

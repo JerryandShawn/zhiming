@@ -29,7 +29,8 @@ const result = {
   passed: total <= 200 * 1024,
   note: 'Static bundle budget only; this does not establish LCP or real mobile performance.',
 };
-await fs.mkdir('evidence/2026-10-18', { recursive: true });
-await fs.writeFile('evidence/2026-10-18/bundle-budget.json', JSON.stringify(result, null, 2) + '\n');
+const output = process.argv[2] ?? 'evidence/2026-10-18/bundle-budget.json';
+await fs.mkdir(path.dirname(output), { recursive: true });
+await fs.writeFile(output, JSON.stringify(result, null, 2) + '\n');
 console.log(JSON.stringify({ gzip_bytes: total, limit_bytes: result.limit_bytes, passed: result.passed }));
 if (!result.passed) process.exitCode = 1;
