@@ -17,7 +17,7 @@ from ..adapters.delivery import OutboxService
 from ..adapters.charts import ChartAdapter
 from ..domain.consultation import (Intake, ConsultationPlan, FinalAnswer, SpecialistAnswer,
                                    InvalidAnswer, MissingInput, ModelUnavailable, render_answer)
-from ..domain.contracts import ScopeError, RevisionConflict, LeaseConflict
+from ..domain.contracts import ScopeError, RevisionConflict, LeaseConflict, EvidenceError
 from ..domain.json_values import ensure_finite_json
 from ..repositories.postgres import PostgresRepository, fingerprint
 from ..knowledge import KnowledgeRegistry
@@ -229,7 +229,9 @@ class ConsultationService:
                              repair_identity=repair_identity, purpose=purpose)
         def diagnostic(fields):
             with self.repo.transaction(owner) as connection:
-                self.repo._leased(connection, owner, run['id'], token)
+                current = self.repo._leased(connection, owner, run['id'], token)
+                if current['retry_epoch'] != run.get('retry_epoch', 0):
+                    raise EvidenceError('模型结果不属于当前运行批次')
                 previous = self.repo.get(owner, 'model_call', usage_id) if repair else None
                 data = dict(previous or {}, run_id=run['id'], purpose=purpose, **fields)
                 record = self.repo.put(owner, 'model_call', usage_id, data, subject=run['subject'],
