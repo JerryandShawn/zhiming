@@ -20,7 +20,7 @@
 
 B1不包含P3循环/调度/无痕、P1b的0008/U38/U39、P4流式、P5b分区、P8新命理算法或P10新前端；不把这些分支的文件或未跟踪文件夹带入发布包。
 
-新增候选待决：23号要求的Charts tzdata2026.5锁修复不在b9a89b6包内。保持本候选不变；由大脑裁定修复单列后续，或明确新SHA后重跑CI/stage，不能临时补包或从P3树打包。
+2026-10-18夜间大脑已裁定：候选保持b9a89b6，Charts tzdata2026.5锁修复随B2，不进B1、不临时补包；该项不再待决。磁盘扩容/清理由用户明天选择，今晚只做本地代码与文档，禁止服务器访问。
 
 ### 当前用户决定与模型闸门
 
@@ -189,7 +189,7 @@ stage进程使用独立空队列的合成应用库/合成owner、独立媒体/�
 | P2 最终一致备份 | PG custom dump+最新撤销账本+sent/uncertain/绑定/配置/媒体清单，核SHA与可恢复性；首次Core再用SQLite backup API冻结旧源和Hermes状态，不能直接复制live WAL文件 | 10–30分钟 |
 | P3 迁移与授权 | 同stage受审步骤仅将目标核为live，0005–0007/manifest→版本7、新表CRUD/账本只读、LangGraph权限。任何失败保留维护门 | 5–20分钟 |
 | P4 回填与核账 | 同一owner dry-run→审核计数→apply→repeat；核原文/来源revision、撤销/助手去重、送达收据。首次Core先完整旧来源迁移再做P2回填 | 10–40分钟 |
-| P5 切固定版本 | 经审阅的systemd WorkingDirectory/ExecStart/CHART_PYTHON/env均指向固定release，单Uvicorn worker/池4、仍v3、新端口默认off；维护门内只启动已授权入口 | 5–10分钟 |
+| P5 切固定版本 | 经审阅的systemd WorkingDirectory/ExecStart/CHART_PYTHON/env和Hermes Core wrapper/manifest共同指向固定release；保留env加载次序/旧解释器退役、覆盖Hermes writer fence，不整体重启Hermes；单Uvicorn worker/池4、仍v3、新端口默认off | 5–15分钟，须先审本地增量实现 |
 | P6 门内验收与最终Go/No-Go | schema只读核验、health/state/history、固定牌、隐私/授权/计数、页面与旧版本读取。不得未经开始指令发模型探针或真实飞书测试消息 | 10–20分钟 |
 | P7 恢复正常业务 | 用户批准后恢复原已核验的唯一渠道/报告writer，再开放Web；核服务和下一次正常日程，不因发布补发报告；记录开放时刻与回滚阈值 | 5–10分钟 |
 | P8 观察 | 观察错误/延迟/队列/失鲜/重复投递/模型停止状态30–60分钟；只有计数、状态、哈希进入公开回执 | 30–60分钟，窗后 |
