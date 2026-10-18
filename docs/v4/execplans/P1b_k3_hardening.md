@@ -69,6 +69,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 
 ## Decision Log
 
+2026-10-19 07:15 +08:00 / Codex：精确头ee2e6de的Core CI唯一失败为旧test_core_memory版本断言仍固定7（553项，552通过/1失败，658.242s）；迁移0008后预期改8，迁移序列追加8，原64位checksum检查、篡改version1后initialize/verify均拒绝及fact为空断言全部保留。定向真实PG复验1 passed/0.90s；这不代表完整CI已恢复绿，修复头需另等结果。
+
 2026-10-18 / U39决定：内容按原index/原block类型与字段保存，thinking签名不解释不拼接后重建wire；原flat拼接仅兼容旧读取方。仅会员k3/k3-256k强制同循环回传，缺/空signature按增补原样保留并计响应缺签名与出站待回传计数；非K3仍缺签名拒绝。只接受本项目使用的text/thinking/redacted_thinking/tool_use，未闭合/重复index/错类型delta不能形成完整回执。OpenAI保留reasoning字符串及显式空字符串，供应商原tool ID不改。
 
 2026-10-18 / U39 effort决定：已核Kimi会员模型页默认high；开放平台默认/Claude工具映射不能冒充会员Anthropic准确wire实测。暂不发thinking、旧1024 budget或猜测effort参数，primary/critic及其他角色统一server_default/high，记录effort_verified=false。Registry绑定角色，K3运行前再拒禁思考/低档或未知effort/角色越界；非K3维持旧配置合同。声明是离线请求策略，不称low/high已测；low档、实际wire与报告/账本接线保留未完成。详见[独立决策](../evidence/P1b/2026-10-18-u39-decisions.md)。
