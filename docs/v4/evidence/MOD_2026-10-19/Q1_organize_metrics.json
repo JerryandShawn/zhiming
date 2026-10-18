@@ -1,0 +1,149 @@
+{
+  "code_commit": "dace2fca1178e116c3f1f04be4df69665345dd82",
+  "development": {
+    "fixture_sha256": "8a549b84f5ebeec8dc4baa42313f458491243f20c704de56af82150f51a2b5b7",
+    "messages": 600,
+    "ground_truth_segments": 300,
+    "predicted_segments": 294,
+    "clear_segments": 240,
+    "correct_clear_segments": 233,
+    "space_accuracy": 0.9708333333333333,
+    "space_accuracy_clear_messages": 0.9708333333333333,
+    "topic_ari_all": 0.7289989662038261,
+    "topic_ari_clear": 0.7583481047899381,
+    "low_confidence_without_review": 0,
+    "ambiguous_reviewed": 120,
+    "ambiguous_total": 120,
+    "topic_count": 21,
+    "elapsed_seconds": 0.05672710000362713,
+    "encoder_mode": "keyword",
+    "degradation": "local_model_not_configured",
+    "classification_errors": [
+      {
+        "expected": "family",
+        "predicted": "daily",
+        "segments": 4
+      },
+      {
+        "expected": "metaphysics",
+        "predicted": "career",
+        "segments": 1
+      },
+      {
+        "expected": "relationships",
+        "predicted": "career",
+        "segments": 1
+      },
+      {
+        "expected": "wellbeing",
+        "predicted": "finance",
+        "segments": 1
+      }
+    ]
+  },
+  "holdout": {
+    "fixture_sha256": "223370d1b28cb8eb36ca194126c8e7b09ec86b41dc82195f19fbc13d270ee6d8",
+    "messages": 98,
+    "ground_truth_segments": 14,
+    "predicted_segments": 49,
+    "clear_segments": 14,
+    "correct_clear_segments": 2,
+    "space_accuracy": 0.14285714285714285,
+    "space_accuracy_clear_messages": 0.30612244897959184,
+    "topic_ari_all": 0.029483767961681746,
+    "topic_ari_clear": 0.029483767961681746,
+    "low_confidence_without_review": 0,
+    "ambiguous_reviewed": 0,
+    "ambiguous_total": 0,
+    "topic_count": 11,
+    "elapsed_seconds": 0.009990999998990446,
+    "encoder_mode": "keyword",
+    "degradation": "local_model_not_configured",
+    "classification_errors": [
+      {
+        "expected": "career",
+        "predicted": "career",
+        "segments": 1
+      },
+      {
+        "expected": "career",
+        "predicted": "daily",
+        "segments": 1
+      },
+      {
+        "expected": "family",
+        "predicted": "daily",
+        "segments": 2
+      },
+      {
+        "expected": "finance",
+        "predicted": "daily",
+        "segments": 1
+      },
+      {
+        "expected": "finance",
+        "predicted": "finance",
+        "segments": 1
+      },
+      {
+        "expected": "metaphysics",
+        "predicted": "daily",
+        "segments": 1
+      },
+      {
+        "expected": "metaphysics",
+        "predicted": "relationships",
+        "segments": 1
+      },
+      {
+        "expected": "relationships",
+        "predicted": "relationships",
+        "segments": 2
+      },
+      {
+        "expected": "wellbeing",
+        "predicted": "daily",
+        "segments": 1
+      },
+      {
+        "expected": "wellbeing",
+        "predicted": "wellbeing",
+        "segments": 1
+      }
+    ]
+  },
+  "observed_test_command": "python -m pytest tests/v4/organize -q --basetemp=private/pytest-mod-q1",
+  "test_result": {
+    "passed": 122,
+    "skipped": 0,
+    "seconds": 0.49
+  },
+  "base_files_modified": 0,
+  "real_model_calls": 0,
+  "server_access": false,
+  "source_sha256": {
+    "mingjing_core/organize/__init__.py": "565a934c6091d41c5fd5d1f46efc9cf307a9ccf290649884ead522b888df4b70",
+    "mingjing_core/organize/_change_values.py": "7154c76e1b1e9c268faff437920a7c3704ab48f2d31c7fce10b4bd6e8c433dfb",
+    "mingjing_core/organize/changes.py": "d8a559c49595339ab5cbd98d8660db0e4e0aa46568c97495ce42c42c21857ab3",
+    "mingjing_core/organize/contracts.py": "92aff67e69416cfcc831614bf8d9bd317360db2a761d4b37391180bd3224ed4f",
+    "mingjing_core/organize/engine.py": "483a7841fdb190079381e13a67ec29cd44347ae986425070e30e159113c02571",
+    "mingjing_core/organize/local_vectors.py": "6de193ca0af107930182b3c5ffb0d472bcebbbacab88245633148d23a2808ac5",
+    "mingjing_core/organize/metrics.py": "46fcce49d2426fee798454b70c45bd39727849e7c1874dccc030c63ac6cf7567",
+    "mingjing_core/organize/onnx_vectors.py": "b6849d8dc3c669ce64b19a254cd417d0e75aebf1605b7694dfb67a78c4918a1d",
+    "mingjing_core/organize/proposal.py": "bd5a65526804d1aae8bf5db0f57ce109e3200434cdbc80a3305ddf0e058a98b2",
+    "mingjing_core/organize/router.py": "dcaaff9013e483b96429fd6705a11f30c5334e49e1b9b98b5da68564a18d44e4",
+    "mingjing_core/organize/segmenter.py": "4f6b0977c1a75a3bc4fc444bca98adbcfea9c042b445d3e70da818f6a7ee2884",
+    "mingjing_core/organize/space_classifier.py": "6182ccc0253bc91af27680e9ad86be23e252e7699e08648d18c811e038c65202",
+    "mingjing_core/organize/spaces.py": "049f55c4bb362266f1e77ed832dc911d7c388f5c01dab105b571771fe26062a7",
+    "mingjing_core/organize/synonyms.py": "7ac4a7f8092929b6d00f59f6b5f0652a09264879731ca84bb0d80fdeee154334",
+    "mingjing_core/organize/topic_clusterer.py": "5e9ce24069020d293dd3da3c61717bf023fcfb6c87e886ed42dc0f7f6b548084",
+    "tests/v4/organize/fixtures/build_history_600_mod.py": "9003e9b2e276135257636e055a9f3aa742318621ad0746fe8dba67e7c7c2693b",
+    "tests/v4/organize/test_changes_mod.py": "55273df05c12617f9b1afb655dc8d372ea7e7202d6e353f77a7ec48e257700f3",
+    "tests/v4/organize/test_engine_proposal_mod.py": "0c3939504e98688867eea4738ac3f70d29df86892a8f4f1c8dc88b3018e54657",
+    "tests/v4/organize/test_holdout_mod.py": "74a1006c58e37116ea7623c995ab1c2a4a6f7e49dbe077f15f534dbefc176b76",
+    "tests/v4/organize/test_metrics_mod.py": "c32164bad0d38204566ee5b186b58dfdebd68eec91e507a5b734f24518d92c87",
+    "tests/v4/organize/test_segmentation_routing_mod.py": "117e956b5328768a1508b1d383a6ffe13c6253b667dbf838eda7511b82b71b23",
+    "tools/mod_overnight/evaluate_organize.py": "d6cc56d3fc5f25e01223591f50f2edd4582f4415bd1ed352f13f499e5279f0ed",
+    "tools/mod_overnight/publish_manifest.py": "b0b88fdbb6d253571c0a16c2f8e38da4ee4a5d3931b99ab3cb49bb9dee4c0cca"
+  }
+}
