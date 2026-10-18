@@ -1,6 +1,6 @@
 # B1 第一批上线计划：P1 + P2，保持 v3 运行时
 
-日期：2026-10-18，Asia/Taipei。状态：**仅计划，尚未访问服务器或执行任何部署、迁移、回填、模型请求、服务操作或消息投递。** 编写本文件不构成这些操作的授权。预计耗时是排期估计，服务器现状、数据规模和权限均待获准盘点后核实。
+日期：2026-10-18，Asia/Taipei。状态：**部署计划；授权A只读盘点已执行，授权B尚未申请或执行。** 已观察事实、容量No-Go及待审参数见 [B1具体操作单](B1_operation_sheet.md)。未执行部署、迁移、回填、备份、服务操作、模型请求或消息投递。预计耗时仍为待stage实测修正的排期估计，本文不构成后续写操作授权。
 
 ## 1. 发布内容与固定输入
 
@@ -20,11 +20,13 @@
 
 B1不包含P3循环/调度/无痕、P1b的0008/U38/U39、P4流式、P5b分区、P8新命理算法或P10新前端；不把这些分支的文件或未跟踪文件夹带入发布包。
 
+新增候选待决：23号要求的Charts tzdata2026.5锁修复不在b9a89b6包内。保持本候选不变；由大脑裁定修复单列后续，或明确新SHA后重跑CI/stage，不能临时补包或从P3树打包。
+
 ### 当前用户决定与模型闸门
 
 D1继续使用Kimi Code会员；只有主线可以发真实请求。每批须用户在线并在本聊天明确开始，≤10场景，目标/评审/探针/HTTP重试合计滚动5小时≤80，批间≥20分钟；夜间零真实模型请求。`concurrency_limited`、`Access terminated`立即全停；周/月额度按最新决定停止并提示。旧文档的自动续跑、切开放平台或并发降为1后继续，不适用于本批。
 
-D2主模型与评审目标均为k3-256k，切换前需单独获准的≤20次等价性子集；不能把未运行的k3快照改名成新模型基线。B1默认不设置`MODELS_CONFIG`、不设置`MINGJING_MODEL_PORT=v2`，不在部署中顺手更换端点/模型/思考配置。实际生效模型由获准盘点确认。若正式放行涉及模型变更，须先补等价性、启动守卫和真实验收；未经明确批准不得以保留旧配置或临时绕过守卫代替这些门槛。
+D2主模型与评审目标均为k3-256k，切换前需单独获准的≤20次等价性子集；不能把未运行的k3快照改名成新模型基线。按23号第一节已确认的分批决定，B1保持盘点实际的Kimi Code端点与`KIMI_MODEL=k3`，不设置`MODELS_CONFIG`、不设置`MINGJING_MODEL_PORT=v2`，不更换端点/模型/思考配置。k3-256k等价性及切换放在P1b合并后单独执行，不作为保留旧模型的零模型B1无条件阻塞门；真实请求、守卫与开始授权仍须各自满足，不能临时绕过。
 
 两个新端口开关需同时核对：仅有非空MODELS_CONFIG也会启用新端口。候选默认YAML仍含k3主模型和其他供应商降级链，不能拿该默认配置直接视为符合最新D1/D2；任何获准的端口试验须审阅实际解析的角色链、有效模型与会员来源，不能依赖“没有填备用Key”碰运气。
 
@@ -41,13 +43,17 @@ D2主模型与评审目标均为k3-256k，切换前需单独获准的≤20次等
 | 仍是旧Hermes/SQLite/JSON权威，或首次建立Core PG | 先执行既有Core v3完整迁移演练及最终冻结，不能只跑backfill_v4；独立列明旧入口退役、绑定与投递账本迁移，重新确认窗口与授权 |
 | 未来迁移、校验和漂移、未知混合写入、数据库/服务身份不符 | 停止后续写操作，记录差异；不得删账本、跳校验或临时改历史迁移继续 |
 
-本文使用仓库约定名称`zhiming_core_stage`/`zhiming_core_live`和schema `mingjing_core`。这是待核实的目标约定，不是已观察到的服务器事实。stage禁止把运行DSN指向live；同机时独立数据库、角色、媒体目录、服务名和端口。建议stage Web只绑定回环8788，实际空闲端口由盘点确认；不改生产8787代理。所有连接详情由受保护配置注入。
+授权A已核实：当前7dbc951包为Core v3，stage/live同机5432、PG15.18、schema mingjing_core、账本均为1–4且与b9前缀四项hash一致，采用增量路径。实际模型k3、新端口环境变量未设置；根分区仅余约0.737GiB，容量整改是B前置门。角色、队列、备份及Hermes Core固定入口详见操作单，不把本机或历史文档当当前事实。
+
+stage禁止把运行DSN指向live；独立数据库、角色、媒体目录、服务名和端口。8788在盘点时未监听，但执行前须复核；不改生产8787代理。历史stage已有17个owner和历史收据，建议保持离线；合成Web另用新库/新服务，具体名字与允许范围以操作单经审阅的授权B为准。所有连接详情由受保护配置注入。
 
 ## 3. Stage验证步骤与放行证据
 
 先获得第8节中的stage访问/执行范围授权，再逐步执行；每步保存安全计数、版本、哈希、退出码和耗时到服务器受保护证据目录。发现数量异常、隐私/权限失败或超窗风险就保持隔离并报告，不自动继续生产。
 
 ### S1 固定包与隔离环境（20–45分钟，可离线准备）
+
+先执行操作单的容量门：核定扩容/整理权限与新包、双环境、缓存、备份恢复副本的空间预算。当前0.737GiB不得直接开始服务器prepare；不自动删除cache/log/旧release或创建备份。
 
 在干净的独立检出中固定候选SHA，按`tools/deploy_core.py bundle`生成原始Git blob包与逐文件清单，核整体SHA256。当前P3目录含未跟踪源，不用于bundle；不得为了打包删除别的工作。
 
@@ -87,22 +93,27 @@ prepare本身从同一候选的可信部署工具目录启动，不能用未知�
     "$CORE_PY" - <<'PY'
     import os
     import psycopg
-    from mingjing_core.repositories.postgres import PostgresRepository
+    from mingjing_core.repositories.postgres import PostgresRepository, migration_manifest
     from mingjing_core.repositories.permissions import grant_runtime_tables
+    if set(migration_manifest()) != set(range(1, 8)):
+        raise RuntimeError('B1 package must contain exactly migrations 1..7')
     with psycopg.connect(os.environ['CORE_MIGRATION_DSN']) as preflight:
         preflight.execute('SET TRANSACTION READ ONLY')
         identity = preflight.execute(
             'SELECT current_database(), current_user, host(inet_server_addr()), '
             "current_setting('server_version_num')::int, inet_server_port()"
         ).fetchone()
-        assert identity[0] == 'zhiming_core_stage'
-        assert identity[1] != os.environ['CORE_RUNTIME_ROLE']
-        assert identity[2] in ('127.0.0.1', '::1', '::ffff:127.0.0.1')
-        assert 150000 <= identity[3] < 160000
-        assert identity[4] == int(os.environ['CORE_STAGE_PG_PORT'])
+        if not (identity[0] == 'zhiming_core_stage'
+                and identity[1] == 'zhiming_core_stage_owner'
+                and os.environ['CORE_RUNTIME_ROLE'] == 'zhiming_core_stage_writer'
+                and identity[2] in ('127.0.0.1', '::1', '::ffff:127.0.0.1')
+                and 150000 <= identity[3] < 160000
+                and identity[4] == int(os.environ['CORE_STAGE_PG_PORT']) == 5432):
+            raise RuntimeError('B1 stage database/role/server identity mismatch')
     repo = PostgresRepository(os.environ['CORE_MIGRATION_DSN'], schema='mingjing_core')
     try:
-        assert repo.verify_schema()['version'] == 7
+        if repo.verify_schema()['version'] != 7:
+            raise RuntimeError('B1 migration version mismatch')
         with repo.connection() as connection:
             grant_runtime_tables(connection, os.environ['CORE_RUNTIME_ROLE'])
     finally:
@@ -110,6 +121,8 @@ prepare本身从同一候选的可信部署工具目录启动，不能用未知�
     PY
 
 DML运行角色与迁移角色不同、非superuser/无CREATEDB/CREATEROLE、无数据库或schema CREATE、不是迁移角色成员，也不拥有业务表；新三表CRUD和序列权限存在，schema_migrations只读。既有LangGraph public checkpoint表CRUD和checkpoint_migrations只读仍保留，不执行退役LangGraph。启动应用必须`initialize=False`并通过只读verify_schema，不临时给运行角色DDL权限。
+
+上述grant helper不是完整降权器。还需通过真实runtime连接只读核同库/host/port/schema7与有效权限，检查PUBLIC/成员继承/表ownership；不能只凭返回新三表名字判权限门通过。前缀checksum不符时在初始化前停止。
 
 ### S4 回填dry-run、apply和第二次幂等检查（10–40分钟）
 
@@ -222,7 +235,7 @@ RPO目标为不丢已确认有效写入、不复活已撤销正文。计划停�
 
 每个环境分别记录：服务器身份摘要、固定SHA/tree/包哈希、数据库身份与迁移校验和、角色权限、备份/恢复演练哈希与耗时、回填dry/apply/repeat计数、原文与撤销/投递核对、零模型测试/DOM、真实模型另行报告、配置版本、服务WorkingDirectory、放行人/时间与回滚负责人。包含真实历史的样例、快照和凭据仅留服务器保护目录；仓库回执只放安全摘要。
 
-任何必要门未完成即No-Go：stage身份未知、数据/权限异常、备份未验证、模型验收/等价性/守卫门缺证、维护/渠道恢复未授权、增量部署路径仍未验证。只写计划的本轮不填写“stage通过”或“生产上线”。
+任何必要门未完成即No-Go：容量整改/预算未通过、数据/权限异常、备份未验证、该批实际要求的验收/守卫缺证、维护/渠道恢复未授权、增量入口路径仍未验证。B1保留实际k3，P1b后新模型等价性单列；不因缺新模型实测而伪造B1零模型结果，也不发未经开始的请求。本轮只完成A，不填写“stage通过”或“生产上线”。
 
 ## 8. 用户需要提供的信息与逐次授权清单
 
@@ -244,4 +257,4 @@ RPO目标为不丢已确认有效写入、不复活已撤销正文。计划停�
 
 依据为候选提交中的AGENTS.md、README.md、docs/CLOUD_DEVELOPMENT.md、docs/CORE_V3_RELEASE.md、P1_B1_stage_plan.md、P2_stage_plan.md、P2提示词，以及repositories/postgres.py/foundation.py/permissions.py、0005–0007、tools/backfill_v4.py、memory/backfill.py、adapters/web.py、tools/deploy_core.py、tools/verify_core_stage.py。现有旧计划中开放平台切换/自动续跑等内容被本文件第1节的最新用户决定覆盖；不改写旧历史证据。
 
-本轮只核本地代码/文档及计划完整性；未执行上述命令、未访问stage/生产、未读取服务器配置、未产生真实模型或飞书请求。执行结果应另写B1_stage_receipt.md，不能把本文件改名冒充验收回执。
+初版仅本机准备；2026-10-18授权A后已完成只读盘点，详见B1_operation_sheet.md及evidence/B1安全JSON。其余部署/迁移/回填/备份/服务命令均未执行，模型和飞书请求0。未来B执行结果另写B1_stage_receipt.md，不能把本计划或A操作单改名冒充stage验收。
