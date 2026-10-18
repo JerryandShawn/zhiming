@@ -1,0 +1,189 @@
+{
+  "item": 2,
+  "time_utc": "2026-10-18T15:21:13.8183893Z",
+  "branch": "v4/p10-frontend",
+  "base_commit": "6bfeb812584d6661ad2c8087c66390eb674b510f",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "unit": {
+    "passed": 329,
+    "total": 329,
+    "files": 31
+  },
+  "frontend": {
+    "old_pages": 80,
+    "night_total": 19,
+    "night_failed": 0,
+    "privacy_cases": 9,
+    "chat_regressions": 10
+  },
+  "privacy": {
+    "in_memory_only": true,
+    "late_generation_rejected": true,
+    "normal_draft_and_images_restored": true,
+    "idle_boundary_ms": 86400000,
+    "idle_clock_injected": true,
+    "storage_content_and_write_trace_checked": true,
+    "api_requests": 0,
+    "external_requests": 0,
+    "console_messages": 0,
+    "page_errors": 0
+  },
+  "axe": {
+    "privacy_scenarios": 7,
+    "violations": 0
+  },
+  "cinnabar_budget": 3,
+  "embed": "Browser simulation only: browser/Feishu UA, safe area 34, VV height420/offset120; no SDK or physical device",
+  "screenshots": [
+    {
+      "path": "02-ordinary-restored-390.png",
+      "sha256": "cf9e36b820356c6949324333abf2be7094394d0ea01326c63ac7aa2a7b41987f"
+    },
+    {
+      "path": "02-private-after-reload-1440.png",
+      "sha256": "fd11a9cc7f8bf330f01f3d137941a7715224771e3a004aa2fc3b7c31227b01a8"
+    },
+    {
+      "path": "02-private-browser-keyboard-exited.png",
+      "sha256": "9d25c58d9f224f0b97258c38f023011a66d4f7f5e383076141bb707471b2f673"
+    },
+    {
+      "path": "02-private-browser-keyboard420-offset120.png",
+      "sha256": "59ed3751cd90ced844f93bf0b9b8c4e7f4cd5c9f0700aab5a6595b3723bd0b2c"
+    },
+    {
+      "path": "02-private-browser-keyboard420.png",
+      "sha256": "fa357d25de83872803744ddf306f0e065a7e9b2412e8f4a380cb4cf2dcaf6959"
+    },
+    {
+      "path": "02-private-empty-1440-dark.png",
+      "sha256": "fafc6f8219d846de5e0315c2484b2f2361038ffb388419acdd3e773168ba30db"
+    },
+    {
+      "path": "02-private-empty-1440-light.png",
+      "sha256": "6434b440979038ec84ddb27cd78fcdc467a6e5e7b3d140c6f13704a1f9b4ba0a"
+    },
+    {
+      "path": "02-private-empty-390-dark.png",
+      "sha256": "f7b16013a1aefe515102bb63a2ec7a09678a109d5e73096bc1e037e6a0c7d507"
+    },
+    {
+      "path": "02-private-empty-390-light.png",
+      "sha256": "91c6c295d39202a998c29dcf6ede8441d9f5567066d5da353f90e6e107351b9d"
+    },
+    {
+      "path": "02-private-exited-1440-dark.png",
+      "sha256": "d74868de7641e6b09f5a660c3cb32db9b6b9754312ec02fcca40c6553289b063"
+    },
+    {
+      "path": "02-private-exited-1440-light.png",
+      "sha256": "6c548fcadbbb340948f148c0b0c12277d9e0611c7d4358e7be794c298208b7eb"
+    },
+    {
+      "path": "02-private-exited-390-dark.png",
+      "sha256": "e031456eb27f4565e72abb50c4104ca9a49c384a79daee21368b48a113602a36"
+    },
+    {
+      "path": "02-private-exited-390-light.png",
+      "sha256": "e3253a91a6af9b2eb3751dc9cb7d156bcc9b1bacc19e170855aa1ba032bed512"
+    },
+    {
+      "path": "02-private-feishu-keyboard-exited.png",
+      "sha256": "fcce404f6d491008c86188315a95f9e6032275842d8f13b8764fc0ca60a4a417"
+    },
+    {
+      "path": "02-private-feishu-keyboard420-offset120.png",
+      "sha256": "c95ec8acdfbd0a3045236732f96e423b048c31a10dfed4aad6a585ae8dcae7cf"
+    },
+    {
+      "path": "02-private-feishu-keyboard420.png",
+      "sha256": "d4e66a0d4996367c5b8aea4e85658f65a30aeb39160e3fa367df056645398a31"
+    },
+    {
+      "path": "02-private-paused-me-390.png",
+      "sha256": "d1707fa5e005b800c19682db3807b30c59999eb5ce46be2483488489b9ce2bba"
+    },
+    {
+      "path": "02-private-sent-390.png",
+      "sha256": "5baf1867ba1a3ed25b18bec67498e0f3dc5c0a823fce3cad6c0b87d8c96e4b2d"
+    }
+  ],
+  "source_sha256": [
+    {
+      "path": "web/src/Layout.tsx",
+      "sha256": "76be86179fd6c15af5df4ab649e4d4a51144ee788de3bb1cfa7739f620a71a27"
+    },
+    {
+      "path": "web/src/night/ChatPreview.tsx",
+      "sha256": "01da97d4a98a0e8b92c8751eea3295f5542741735aa4117839d3bf80c4fb3c5c"
+    },
+    {
+      "path": "web/src/night/events.ts",
+      "sha256": "faaa5d93fa2f5f3ec0a9ac43d66886181abe97162a3dc0d568ea2484f4cd6537"
+    },
+    {
+      "path": "web/src/night/night.css",
+      "sha256": "29d9cfc7988e5ca6b83ea3eec91bc0a9d55ad0df531d590d780eb2609d19bf41"
+    },
+    {
+      "path": "web/src/night/NightApp.tsx",
+      "sha256": "4bc7b12b22c1dc9dc85bf0638be034c43409eee68eefd306963041d48b181025"
+    },
+    {
+      "path": "web/src/night/port.ts",
+      "sha256": "aea1f1208dd8c7c3deb93cb1b8b20cebf0c068805872c4c670afdfa7cb69044d"
+    },
+    {
+      "path": "web/src/night/privacy/index.ts",
+      "sha256": "71839a25f44d75ab1b8ae3bf61a84ad1dea4ddd4e382b7e5e325532bd2aa4dfd"
+    },
+    {
+      "path": "web/src/night/privacy/port.ts",
+      "sha256": "5843c2593069f805823c9b80276684ecdd4473577e78edec3eeac78761259f50"
+    },
+    {
+      "path": "web/src/night/privacy/PrivateChat.tsx",
+      "sha256": "cc7f11607a05a68973541142dcd726ffba0a3b20c1e0165552fb6b3c230517b6"
+    },
+    {
+      "path": "web/src/night/privacy/session.ts",
+      "sha256": "abbd226b151d0556970a7fe29ed0263ce2e43f27909161104c773ee6285fe3a5"
+    },
+    {
+      "path": "web/src/night/privacy/usePrivacySession.ts",
+      "sha256": "f8bf9b62763f6473ce0b7e8a2a9d00d289545bea2b3ddd46bc1d20f7eaed2014"
+    },
+    {
+      "path": "web/src/night/useNormalConversation.ts",
+      "sha256": "0cb7e5bd771e9010efd5b3da7c68e142ff512c98fcc44905fd0f3b9a4f82ae42"
+    },
+    {
+      "path": "web/tests/e2e/night-chat.spec.ts",
+      "sha256": "7d02931eac519ed903831f2f147af8f9ebd733ad7ee2df0df64738fdc1c75076"
+    },
+    {
+      "path": "web/tests/e2e/night-helpers.ts",
+      "sha256": "4f00f4b87affb394e16d393706eb14df64f1f1877f0a739f8d3fed182765b957"
+    },
+    {
+      "path": "web/tests/e2e/night-privacy.spec.ts",
+      "sha256": "ae0133f1e59abd0309c9d6db9cbf4c2b60fc16fd89a674c7cbc9d2b4effc6a31"
+    },
+    {
+      "path": "web/tests/night-privacy-components.test.tsx",
+      "sha256": "28d0d8a54c37dda9548c34d61c31c07365b771bf150d42e0ba355e4ee17d2aa6"
+    },
+    {
+      "path": "web/tests/night-privacy-session.test.ts",
+      "sha256": "18037f5f32f52f5f1a043305939163a1712489f9e6eaaaf6f451851f9a557923"
+    }
+  ],
+  "built_manifest_sha256": "bad965eee0d2b06e363525a7d872250f7b036f436450d27f551cc0e80ed18965",
+  "unverified": [
+    "Server incognito API absent; real v3 remains disabled",
+    "Real Feishu device and SDK not tested",
+    "No physical memory erasure claim"
+  ]
+}

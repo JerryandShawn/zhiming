@@ -26,6 +26,7 @@ export async function openNight(page: Page, route = 'chat') {
   await page.evaluate(() => document.fonts.ready);
 }
 export async function captureNight(page: Page, name: string, fullPage = false) {
+  if (process.env.NIGHT_CAPTURE_ONLY && !name.startsWith(process.env.NIGHT_CAPTURE_ONLY)) return;
   const directory = 'evidence/2026-10-19';
   await fs.mkdir(directory, { recursive: true });
   await page.screenshot({ path: `${directory}/${name}.png`, fullPage, animations: 'disabled' });

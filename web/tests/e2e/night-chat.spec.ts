@@ -113,7 +113,7 @@ test('工具进行中可见，完成后收起详情', async ({ page }) => {
   await captureNight(page, '01-tool-complete-1440');
 });
 
-test('离开再回对话开启新轮，自己的文字确认后只读', async ({ page }) => {
+test('跨页保留已答卡，明确重放开启新轮，自己的文字确认后只读', async ({ page }) => {
   await openNight(page);
   await expect(page.locator('[data-complete="true"]')).toBeVisible();
   const ask = page.getByRole('region', { name: '明镜的提问' });
@@ -126,6 +126,9 @@ test('离开再回对话开启新轮，自己的文字确认后只读', async ({
   await page.evaluate(() => {
     location.hash = '/chat';
   });
+  await expect(page.locator('[data-complete="true"]')).toBeVisible();
+  await expect(ask).toHaveAttribute('data-answer-state', 'answered');
+  await page.getByRole('button', { name: '重放对话', exact: true }).click();
   await expect(page.locator('[data-complete="true"]')).toBeVisible();
   await ask.getByRole('button', { name: '我自己说', exact: true }).click();
   await page.getByRole('textbox', { name: '和明镜说说' }).fill('我想先听听第三种走法（合成试写）');

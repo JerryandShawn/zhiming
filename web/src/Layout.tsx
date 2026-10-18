@@ -19,6 +19,13 @@ import { useViewportPortalStyles } from './useViewportPortalStyles';
 
 export const embeddedAppearance = (userAgent: string) => /\b(?:Lark|Feishu)\b/i.test(userAgent);
 
+export type PrivacyControl = {
+  active: boolean;
+  onChange: (active: boolean) => void;
+  disabled?: boolean;
+  description?: string;
+};
+
 const navigation: { key: string; label: string; icon: LucideIcon }[] = [
   { key: 'today', label: '今日', icon: SunMedium },
   { key: 'chat', label: '对话', icon: MessageCircle },
@@ -56,11 +63,13 @@ export function Layout({
   children,
   preview = false,
   spacesPreview = false,
+  privacy,
 }: {
   page: string;
   children: ReactNode;
   preview?: boolean;
   spacesPreview?: boolean;
+  privacy?: PrivacyControl;
 }) {
   const [privateMode, setPrivate] = useState(false);
   const viewport = useKeyboardViewport();
@@ -126,12 +135,16 @@ export function Layout({
               </span>
               <Switch
                 label="侧栏无痕模式"
-                checked={privateMode}
-                onChange={setPrivate}
-                disabled={!preview || spacesPreview}
+                checked={privacy?.active ?? privateMode}
+                onChange={privacy?.onChange ?? setPrivate}
+                disabled={privacy ? privacy.disabled : !preview || spacesPreview}
               />
             </div>
-            {!preview && <p className="meta">无痕对话正在准备，暂不可用。</p>}
+            {privacy?.description ? (
+              <p className="meta">{privacy.description}</p>
+            ) : (
+              !privacy && !preview && <p className="meta">无痕对话正在准备，暂不可用。</p>
+            )}
             <a className="nav-link" href="#/settings" aria-current={page === 'settings' ? 'page' : undefined}>
               <Settings2 className="icon" />
               设置
