@@ -1,0 +1,50 @@
+contract_version: deterministic-eval-v2.2.0
+id: MS03
+title: 飞书睡眠信息在网页新会话中连续使用
+category: multi_session
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U5
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-MS03
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  messages:
+  - id: ms03-sleep
+    role: user
+    content: 我最近睡眠不好。
+    at: '2026-10-16T21:00:00+08:00'
+    session_id: ms03-sleep-feishu
+    channel: feishu
+  facts: []
+  tarot_draws: []
+steps:
+- id: step-1
+  message:
+    id: ms03-question
+    role: user
+    content: 最近该注意什么？
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: ms03-review-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ms03-question
+    semantic:
+    - id: connect_sleep
+      criterion: 结合前一会话飞书的睡眠不好，给温和可做的作息建议；不诊断疾病或编造睡眠时长、病史。
+      evidence:
+      - answer
+      - source_messages
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。
+- 只预置原消息，不预置健康事实或授权；是否形成 proposal 不作为跨渠道召回的前提。

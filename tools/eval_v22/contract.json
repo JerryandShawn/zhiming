@@ -1,0 +1,127 @@
+{
+  "contract_version": "deterministic-eval-v2.2.0",
+  "artifact_kind": "future_contract_data_definition",
+  "extension_only": true,
+  "complete_corpus": false,
+  "parent": {
+    "requested_version": "deterministic-eval-v2.1.0",
+    "binding_status": "not_found_unbound",
+    "bound_contract_sha256": null,
+    "note": "本研究工作树沿用 v1；另行只读检查 P1 工作树发现 c2/v2.0。未定位今天 v2.1 冻结执行快照，不推定其场景数、哈希或评分。"
+  },
+  "requires_p3_target": true,
+  "ready_for_live": false,
+  "business_validation": "not_run",
+  "live_model_calls": 0,
+  "scenario_schema": "scenario.schema.json",
+  "scenario_directory": "scenarios",
+  "scenario_count": 12,
+  "scenario_ids": [
+    "A01",
+    "A02",
+    "A03",
+    "MS01",
+    "MS02",
+    "MS03",
+    "KU01",
+    "KU02",
+    "TM01",
+    "TM02",
+    "AX01",
+    "AX02"
+  ],
+  "sources": [
+    {
+      "path": "docs/v4/07_评测场景集.md",
+      "sha256": "a637aadca05c412f5b27352769a7ddadc0b75359698b5002a86af30a018e28a6"
+    },
+    {
+      "path": "docs/v4/16_算命Agent架构研究.md",
+      "sha256": "54dde71f2a41edec6e4e486c48113faae190730ac8a3d4b451d26cc1f64a8c6f"
+    },
+    {
+      "path": "docs/v4/prompts/P3_Agent循环与工具.md",
+      "sha256": "520e3a796f29c643035ea278064fa5e9cbdcaabe9253b7315cddbd35c4daafa2"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "A01",
+      "path": "scenarios/A01.yaml",
+      "sha256": "9fba21ea2d47cf70a06675cc9b78f1bbf97089b41f3a63d32de20114de34583e"
+    },
+    {
+      "id": "A02",
+      "path": "scenarios/A02.yaml",
+      "sha256": "fdd12886fa9164d9a4ed5cd9d103e326a53a177e2eb6377e3cb4b4e5a8b8b8a2"
+    },
+    {
+      "id": "A03",
+      "path": "scenarios/A03.yaml",
+      "sha256": "92a23112c5d93b9874d78a12d44a56f76b4e9d6d5318afd53747efb18bb445fd"
+    },
+    {
+      "id": "MS01",
+      "path": "scenarios/MS01.yaml",
+      "sha256": "e23827cb5f327a27b51cc0ec6ebcb7fa39e7bd26e79b70b18459849782ab72f1"
+    },
+    {
+      "id": "MS02",
+      "path": "scenarios/MS02.yaml",
+      "sha256": "f95045ef03f744abda8e82cffd7839aee2a7ac75d196d0cd2567a937a271521a"
+    },
+    {
+      "id": "MS03",
+      "path": "scenarios/MS03.yaml",
+      "sha256": "93ce4ff67673f03254a8ffbb5b48376de8746c50a6ba52b46ab19d0f990b1e4b"
+    },
+    {
+      "id": "KU01",
+      "path": "scenarios/KU01.yaml",
+      "sha256": "9fd9b559fa5940b6453a2b5a4a42f0cf34057031d40e791614f4ee4445750af6"
+    },
+    {
+      "id": "KU02",
+      "path": "scenarios/KU02.yaml",
+      "sha256": "8f5f16ab19bf5742bd4ef8da055b4c20b35b81b78aa885d319bc0045f79720aa"
+    },
+    {
+      "id": "TM01",
+      "path": "scenarios/TM01.yaml",
+      "sha256": "84e469f7a90ec1b7a39ae4c0b4a11eebdc54c03907318b10931021b51d9b98fc"
+    },
+    {
+      "id": "TM02",
+      "path": "scenarios/TM02.yaml",
+      "sha256": "d893761a23801b69111d75a7bf0e24e03587b8023a3842751a3f89f56381a2f3"
+    },
+    {
+      "id": "AX01",
+      "path": "scenarios/AX01.yaml",
+      "sha256": "498306028b5a1aa1eda3cdf62e4d3fed272804ee0c4e8b42dab492d6acea914b"
+    },
+    {
+      "id": "AX02",
+      "path": "scenarios/AX02.yaml",
+      "sha256": "2c80d9d6c84a442603e3d14b68a89854cf3a60df00dc432950441dac0382111d"
+    }
+  ],
+  "activation_requirements": [
+    "定位并绑定正确的 v2.1 版本；由大脑确认组合后的新契约，不把本扩展称为已冻结 92 场景全集。",
+    "接入真实隔离 PG 的 P3 靶标与只读证据投影；每条业务断言执行后才能报告通过。",
+    "固定语义评审 rubric/schema/model 并单独校准；本数据中的 criterion 不是已通过校准的完整评分契约。",
+    "为 v2.2 设独立 runner、报告与恢复命名空间；不得覆写、续写或重新评分 v2.1 基线。"
+  ],
+  "legacy_boundary": {
+    "unchanged": [
+      "tools/eval/",
+      "docs/v4/eval/",
+      "mingjing_core/",
+      "requirements*.lock",
+      ".github/workflows/"
+    ],
+    "no_repository_python_added": true,
+    "no_existing_report_modified": true,
+    "note": "旧 runner 的递归执行源码哈希不包含本目录的数据文件；源文档同步另为独立提交。"
+  }
+}

@@ -1,0 +1,106 @@
+contract_version: deterministic-eval-v2.2.0
+id: KU02
+title: 偏好变化不留下两条冲突的当前记忆
+category: knowledge_update
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U5
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-KU02
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-03T10:30:00+08:00'
+seed:
+  messages: []
+  facts: []
+  tarot_draws: []
+steps:
+- id: step-1
+  message:
+    id: ku02-old
+    role: user
+    content: 我不吃辣，请记住。
+    at: '2026-10-03T10:30:00+08:00'
+    session_id: ku02-old-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ku02-old
+    - kind: source_quote
+      source_message_id: ku02-old
+      quote: 我不吃辣
+      fact_status: active
+    - kind: entity_count
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: ku02-old
+      - field: status
+        equals: active
+      equals: 1
+    semantic:
+    - id: acknowledge_original
+      criterion: 只确认实际成功的原事实写入，不生成用户未说过的细节。
+      evidence:
+      - answer
+      - persisted_facts
+- id: step-2
+  message:
+    id: ku02-new
+    role: user
+    content: 最近开始能吃点辣了，请更新我不吃辣的偏好。
+    at: '2026-10-10T10:30:00+08:00'
+    session_id: ku02-update-feishu
+    channel: feishu
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ku02-new
+    - kind: source_quote
+      source_message_id: ku02-new
+      quote: 最近开始能吃点辣了
+      fact_status: active
+    - kind: entity_count
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: ku02-old
+      - field: status
+        equals: active
+      equals: 0
+    semantic:
+    - id: update_current_fact
+      criterion: 识别明确更新，旧事实不再作为当前事实，与新事实来源仍可审计。
+      evidence:
+      - answer
+      - persisted_facts
+      - source_messages
+- id: step-3
+  message:
+    id: ku02-question
+    role: user
+    content: 朋友约我吃微辣的菜，你记得我现在的口味吗？
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: ku02-review-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ku02-question
+    semantic:
+    - id: use_updated_fact
+      criterion: 按现在能吃一点辣给建议，不能同时肯定现在完全不吃辣；不夸大成嗜辣。
+      evidence:
+      - answer
+      - persisted_facts
+      - source_messages
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。
+- 事实由步骤 1/2 的真实写入路径产生，seed.facts 必须为空；不得只改回答而留下两条冲突 active 事实。

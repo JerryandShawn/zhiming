@@ -1,0 +1,58 @@
+contract_version: deterministic-eval-v2.2.0
+id: A03
+title: 跳槽意向不等于已知面试公司
+category: abstention
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U5
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-A03
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  messages:
+  - id: a03-career
+    role: user
+    content: 我最近在考虑跳槽。
+    at: '2026-10-12T20:00:00+08:00'
+    session_id: a03-career-web
+    channel: web
+  facts: []
+  tarot_draws: []
+steps:
+- id: step-1
+  message:
+    id: a03-question
+    role: user
+    content: 我上次面的那家公司叫什么？
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: a03-current-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: a03-question
+    - kind: entity_count
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: a03-question
+      - field: status
+        equals: active
+      equals: 0
+    semantic:
+    - id: admit_unknown
+      criterion: 只知道用户考虑跳槽，没有面试公司名。明确公司名未知，不能把居住地、目标或想象的公司当成事实。
+      evidence:
+      - answer
+      - source_messages
+      - persisted_facts
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。
