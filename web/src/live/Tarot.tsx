@@ -121,10 +121,6 @@ export default function Tarot() {
               ? '实体牌录入已更正，旧版本保留。'
               : '揭牌已保存，原牌阵保持不变。',
       );
-      if (action === 'select')
-        window.requestAnimationFrame(() =>
-          document.querySelector<HTMLButtonElement>('.tarot-picker button:not(:disabled)')?.focus(),
-        );
     } catch (error) {
       if (error instanceof ApiError && error.status === 409) setConflict(true);
       setStatus(error instanceof Error ? error.message : '操作未确认，请用原内容重试。');

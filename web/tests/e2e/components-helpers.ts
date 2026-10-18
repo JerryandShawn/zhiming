@@ -32,5 +32,6 @@ export async function openDemo(page: Page, route: string) {
 export async function captureComponent(page: Page, name: string, fullPage = false) {
   const directory = `${componentEvidence}/interactions`;
   await fs.mkdir(directory, { recursive: true });
+  if (fullPage) await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: `${directory}/${name}.png`, fullPage, animations: 'disabled' });
 }

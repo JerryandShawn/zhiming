@@ -345,7 +345,7 @@ describe('live tarot viewer and fixed-card contracts', () => {
     expect(screen.getByRole('img', { name: '不透明的塔罗牌背' })).toHaveAttribute('src', '/static/tarot/back.svg');
     expect(screen.getByLabelText('冻结的A/B选项')).toHaveTextContent('A：学习');
     expect(document.body).not.toHaveTextContent('PRIVATE');
-    await user.click(screen.getByRole('button', { name: '全部揭开 · 跳过动画' }));
+    await user.click(screen.getByRole('button', { name: /^(全部揭开|全部揭开 · 跳过动画)$/ }));
     expect(await screen.findByRole('img', { name: '星星 · 正位' })).toBeVisible();
     expect(revealed).toBe(true);
     expect(screen.getByText('第二版：先休息。')).toBeVisible();

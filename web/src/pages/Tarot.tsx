@@ -94,16 +94,20 @@ function QuestionForm({
 }
 
 export default function Tarot() {
-  const [step, setStep] = useState('解读');
+  const query = new URLSearchParams(window.location.hash.split('?')[1] ?? '');
+  const initialSpread = query.get('spread');
+  const [step, setStep] = useState(
+    query.get('step') === 'pick' ? '选牌' : query.get('step') === 'reveal' ? '揭牌' : '解读',
+  );
   const [revealed, reveal] = useState(false);
   const [version, setVersion] = useState('v1');
   const [draft, setDraft] = useState<TarotDraft>({
-    spread: 'reflect3',
+    spread: initialSpread === 'focus1' || initialSpread === 'choice5' ? initialSpread : 'reflect3',
     method: '随机',
     reverse: true,
     question: '这次面试我该注意什么？',
-    optionA: '',
-    optionB: '',
+    optionA: initialSpread === 'choice5' ? '先准备' : '',
+    optionB: initialSpread === 'choice5' ? '先休息' : '',
   });
   const [selected, setSelected] = useState<number[]>([]);
   const count = spreadCounts[draft.spread];

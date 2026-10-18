@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent } from 'react';
+import { useState } from 'react';
 import back from '../../../static/tarot/back.svg';
 import pentacles from '../../../static/tarot/pentacles-08.svg';
 import swords from '../../../static/tarot/swords-12.svg';
@@ -7,6 +7,8 @@ import world from '../../../static/tarot/major-21.svg';
 import cups from '../../../static/tarot/cups-01.svg';
 import { Button, Tag } from './ui/Controls';
 import { spreadCounts, type SpreadKind } from './TarotDraft';
+import { CardBackGrid } from '../tarot/CardBackGrid';
+import { FlipFace } from '../tarot/FlipFace';
 
 const cards = [
   { name: '星币八', image: pentacles, position: '过去的影响', reversed: false },
@@ -67,38 +69,24 @@ export function CardPicker({
   const [local, setLocal] = useState<number[]>([]);
   const selected = controlled ?? local;
   const setSelected = onChange ?? setLocal;
-  const refs = useRef<(HTMLButtonElement | null)[]>([]);
-  function move(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const columns = window.matchMedia('(min-width: 1024px)').matches ? 13 : 6;
-    const offset = { ArrowRight: 1, ArrowLeft: -1, ArrowUp: -columns, ArrowDown: columns }[event.key];
-    if (offset) {
-      event.preventDefault();
-      refs.current[Math.max(0, Math.min(77, index + offset))]?.focus();
-    }
-  }
   return (
     <div className="stack">
       <p role="status">
         已选 {selected.length} / {count}
       </p>
-      <div className="tarot-picker" role="group" aria-label="亲手点选牌背">
-        {Array.from({ length: 78 }, (_, index) => (
-          <button
-            type="button"
-            key={index}
-            ref={(element) => {
-              refs.current[index] = element;
-            }}
-            aria-label={`第${index + 1}张牌`}
-            aria-pressed={selected.includes(index)}
-            onKeyDown={(event) => move(event, index)}
-            onClick={() => {
-              if (!selected.includes(index) && selected.length < count) setSelected([...selected, index]);
-            }}>
-            <img src={back} alt="" />
-          </button>
-        ))}
-      </div>
+      <CardBackGrid
+        backs={Array.from({ length: 78 }, (_, index) => ({
+          id: String(index),
+          label: `第${index + 1}张牌`,
+          selected: selected.includes(index),
+        }))}
+        backImage={back}
+        complete={selected.length >= count}
+        onSelect={(id) => {
+          const index = Number(id);
+          if (!selected.includes(index) && selected.length < count) setSelected([...selected, index]);
+        }}
+      />
       <Button onClick={() => setSelected([])}>重新选择（示例）</Button>
     </div>
   );
@@ -122,23 +110,29 @@ export function RevealSpread({
           <figure className="tarot-card" key={card.name}>
             <button
               type="button"
-              className={`flip-button ${visible ? 'revealed' : ''}`}
+              className="flip-button"
+              disabled={visible}
               aria-label={visible ? `${card.name}已揭开` : `揭开第${index + 1}张牌`}
               onClick={() => setOpened([...opened, index])}>
-              {!visible && <img src={back} alt="不透明的塔罗牌背" />}
-              {visible && (
-                <img
-                  className={`flip-front ${reverse && card.reversed ? 'reversed' : ''}`}
-                  src={card.image}
-                  alt={`${card.name}${reverse && card.reversed ? '逆位' : '正位'}`}
-                />
-              )}
+              <FlipFace
+                revealed={visible}
+                frontImage={visible ? card.image : undefined}
+                alt={`${card.name}${reverse && card.reversed ? '逆位' : '正位'}`}
+                reversed={reverse && card.reversed}
+                delay={allRevealed && !opened.includes(index) ? index * 90 : 0}
+                backImage={back}
+              />
             </button>
             <figcaption>
               <p className="meta">
                 {layout === 'choice5' ? ['现状', '选A', '选B', 'A走向', 'B走向'][index] : card.position}
               </p>
-              {visible && <p className="small-text">{card.name}</p>}
+              {visible && (
+                <>
+                  <p className="small-text">{card.name}</p>
+                  {reverse && card.reversed && <Tag tone="work">逆位</Tag>}
+                </>
+              )}
             </figcaption>
           </figure>
         );

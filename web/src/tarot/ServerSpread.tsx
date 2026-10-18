@@ -1,7 +1,9 @@
-import { useRef, type KeyboardEvent } from 'react';
-import { useReducedMotion } from 'motion/react';
-import { Button } from '../components/ui/Controls';
+import { useEffect, useRef, useState } from 'react';
+import { Button, Tag } from '../components/ui/Controls';
 import { image, type Draw } from './public';
+import { CardBackGrid } from './CardBackGrid';
+import { FlipFace } from './FlipFace';
+import { useTarotReducedMotion } from './useTarotMotion';
 
 export function ServerSpread({
   draw,
@@ -12,29 +14,29 @@ export function ServerSpread({
   busy: boolean;
   mutate: (action: 'select' | 'reveal', payload: Record<string, unknown>) => void;
 }) {
-  const refs = useRef<(HTMLButtonElement | null)[]>([]);
-  const reduced = useReducedMotion();
+  const group = useRef<HTMLDivElement>(null);
+  const [batchReveal, setBatchReveal] = useState(false);
+  const pendingReveal = useRef<number | 'all' | null>(null);
+  const reduced = useTarotReducedMotion();
   const picking =
     draw.draw_source === 'pick' && draw.cards.length < draw.spread.positions.length && draw.status !== 'cancelled';
   const cancelled = draw.status === 'cancelled';
-  function move(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const candidates = refs.current.filter((button): button is HTMLButtonElement =>
-      Boolean(button && !button.disabled),
-    );
-    const current = candidates.indexOf(refs.current[index]!);
-    const columns = window.matchMedia('(min-width: 1024px)').matches ? 13 : 6;
-    const offset = { ArrowRight: 1, ArrowLeft: -1, ArrowUp: -columns, ArrowDown: columns }[event.key];
-    if (offset !== undefined || event.key === 'Home' || event.key === 'End') {
-      event.preventDefault();
-      const next =
-        event.key === 'Home'
-          ? 0
-          : event.key === 'End'
-            ? candidates.length - 1
-            : (current + (offset ?? 0) + candidates.length) % candidates.length;
-      candidates[next]?.focus();
-    }
-  }
+  const wasPicking = useRef(picking);
+  useEffect(() => {
+    if (wasPicking.current && !picking) group.current?.focus();
+    wasPicking.current = picking;
+  }, [picking]);
+  useEffect(() => {
+    if (busy || pendingReveal.current === null) return;
+    const requested = pendingReveal.current;
+    pendingReveal.current = null;
+    const buttons = Array.from(group.current?.querySelectorAll<HTMLButtonElement>('.flip-button') ?? []);
+    const previous = requested === 'all' ? -1 : draw.cards.findIndex((position) => position.position === requested);
+    const unconfirmed = buttons[previous];
+    const next = unconfirmed && !unconfirmed.disabled ? unconfirmed : buttons.find((button) => !button.disabled);
+    if (next) next.focus();
+    else group.current?.focus();
+  }, [busy, draw.cards]);
   return (
     <div className="stack">
       {picking && (
@@ -46,31 +48,25 @@ export function ServerSpread({
           <p role="status">
             已选 {draw.cards.length} / {draw.spread.positions.length}
           </p>
-          <div className="tarot-picker" role="group" aria-label="亲手点选牌背">
-            {draw.backs.map((back, index) => (
-              <button
-                type="button"
-                key={back.back_id}
-                ref={(node) => {
-                  refs.current[index] = node;
-                }}
-                disabled={busy || back.selected}
-                aria-label={`第${index + 1}张牌背${back.selected ? '，已选择' : ''}`}
-                aria-pressed={back.selected}
-                onKeyDown={(e) => move(e, index)}
-                onClick={() => mutate('select', { back_id: back.back_id })}>
-                <img src="/static/tarot/back.svg" alt="" />
-              </button>
-            ))}
-          </div>
+          <CardBackGrid
+            backs={draw.backs.map((back, index) => ({
+              id: back.back_id,
+              label: `第${index + 1}张牌背${back.selected ? '，已选择' : ''}`,
+              selected: back.selected,
+            }))}
+            disabled={busy}
+            onSelect={(id) => mutate('select', { back_id: id })}
+          />
         </section>
       )}
       <div
         className={`spread-layout ${draw.spread_id}`}
+        ref={group}
+        tabIndex={-1}
         role="group"
         aria-label="本次固定牌阵"
         data-reduced-motion={reduced ? 'true' : 'false'}>
-        {draw.cards.map((position) => (
+        {draw.cards.map((position, index) => (
           <figure className="tarot-card" key={position.position}>
             <button
               type="button"
@@ -81,10 +77,16 @@ export function ServerSpread({
                   ? `${position.label}：${position.card?.name}，${position.orientation === 'reversed' ? '逆位' : '正位'}`
                   : `揭开第${position.position}张牌`
               }
-              onClick={() => mutate('reveal', { position: position.position })}>
-              <img
-                src={position.revealed ? image(position.card?.card_id) : '/static/tarot/back.svg'}
-                className={position.revealed && position.orientation === 'reversed' ? 'reversed' : ''}
+              onClick={() => {
+                pendingReveal.current = position.position;
+                setBatchReveal(false);
+                mutate('reveal', { position: position.position });
+              }}>
+              <FlipFace
+                revealed={position.revealed}
+                frontImage={position.revealed ? image(position.card?.card_id) : undefined}
+                reversed={position.orientation === 'reversed'}
+                delay={batchReveal ? index * 90 : 0}
                 alt={
                   position.revealed
                     ? `${position.card?.name} · ${position.orientation === 'reversed' ? '逆位' : '正位'}`
@@ -97,14 +99,7 @@ export function ServerSpread({
               {position.revealed && (
                 <>
                   <h3 className="small-text">{position.card?.name}</h3>
-                  <p className="small-text">
-                    {position.orientation === 'reversed' ? position.card?.reversed : position.card?.upright}
-                  </p>
-                  <details>
-                    <summary>牌意与反思问题</summary>
-                    <p>{position.card?.misreading}</p>
-                    <p>{position.card?.question}</p>
-                  </details>
+                  {position.orientation === 'reversed' && <Tag tone="work">逆位</Tag>}
                 </>
               )}
             </figcaption>
@@ -112,9 +107,33 @@ export function ServerSpread({
         ))}
       </div>
       {!picking && !cancelled && draw.cards.some((c) => !c.revealed) && (
-        <Button disabled={busy} onClick={() => mutate('reveal', {})}>
-          全部揭开 · 跳过动画
+        <Button
+          disabled={busy}
+          onClick={() => {
+            pendingReveal.current = 'all';
+            setBatchReveal(true);
+            mutate('reveal', {});
+          }}>
+          {reduced ? '全部揭开 · 跳过动画' : '全部揭开'}
         </Button>
+      )}
+      {draw.cards.some((position) => position.revealed) && (
+        <section className="stack small" aria-label="每张牌的牌意与反思问题">
+          {draw.cards
+            .filter((position) => position.revealed)
+            .map((position) => (
+              <details className="disclosure" key={position.position}>
+                <summary>
+                  {position.label} · {position.card?.name} · {position.orientation === 'reversed' ? '逆位' : '正位'}
+                </summary>
+                <div className="disclosure-content">
+                  <p>{position.orientation === 'reversed' ? position.card?.reversed : position.card?.upright}</p>
+                  <p>{position.card?.misreading}</p>
+                  <p>{position.card?.question}</p>
+                </div>
+              </details>
+            ))}
+        </section>
       )}
       {cancelled && <p role="status">这次选牌已结束，已有记录保留。</p>}
     </div>

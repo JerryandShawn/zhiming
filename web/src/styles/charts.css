@@ -151,6 +151,7 @@
   justify-content: center;
   gap: var(--s-3);
   margin-block: var(--s-5);
+  min-width: 0;
 }
 .tarot-card {
   width: min(30vw, var(--tarot-width));
@@ -158,6 +159,7 @@
   text-align: center;
 }
 .tarot-card img {
+  display: block;
   width: 100%;
   aspect-ratio: 7/12;
   border-radius: var(--r-1);
@@ -170,6 +172,10 @@
 }
 .tarot-card figcaption {
   margin-top: var(--s-2);
+  overflow-wrap: anywhere;
+}
+.tarot-card figcaption .tag {
+  margin-top: var(--s-1);
 }
 .spread-layout.choice5 {
   display: grid;
@@ -202,7 +208,9 @@
 .tarot-picker {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: var(--s-2);
+  gap: calc(var(--s-3) / 2);
+  padding: calc(var(--s-3) / 2 + var(--focus-width) + var(--ring-offset)) calc(var(--focus-width) + var(--ring-offset));
+  overflow: visible;
 }
 .tarot-picker button {
   border: var(--border) solid var(--line-strong);
@@ -210,16 +218,16 @@
   padding: 0;
   min-height: var(--control-height);
   border-radius: var(--r-1);
-  overflow: hidden;
 }
 .tarot-picker button[aria-pressed='true'] {
   outline: var(--selected) solid var(--cinnabar);
-  transform: translateY(calc(-1 * var(--s-1)));
+  transform: translateY(calc(-1 * var(--s-3) / 2));
 }
 .tarot-picker img {
   display: block;
   width: 100%;
   height: auto;
+  border-radius: inherit;
 }
 .flip-button {
   display: block;
@@ -227,17 +235,43 @@
   border: 0;
   padding: 0;
   background: transparent;
+  border-radius: var(--r-1);
+  perspective: calc(var(--tarot-width) * 6);
+}
+.tarot-flip,
+.tarot-flip-rotor {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 7/12;
+}
+.tarot-flip-rotor {
   transform-style: preserve-3d;
   transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--tarot-reveal-delay, 0ms);
 }
-.flip-button.revealed {
+.tarot-flip.is-revealed .tarot-flip-rotor {
   transform: rotateY(180deg);
 }
-.flip-button .flip-front {
+.tarot-card .tarot-flip img {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.tarot-card .tarot-flip-front {
   transform: rotateY(180deg);
 }
-.flip-button .flip-front.reversed {
+.tarot-card .tarot-flip-front.reversed {
   transform: rotateY(180deg) rotateZ(180deg);
+}
+.no-motion .tarot-flip-rotor {
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tarot-flip-rotor {
+    transition: none;
+  }
 }
 @media (min-width: 1024px) {
   .tarot-picker {

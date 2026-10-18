@@ -13,6 +13,10 @@ const states = [
   { stage: 'chart', name: 'bazi', route: 'chart?tab=bazi' },
   { stage: 'chart', name: 'ziwei', route: 'chart?tab=ziwei' },
   { stage: 'chart', name: 'astro', route: 'chart?tab=astro' },
+  { stage: 'tarot', name: 'tarot-focus1', route: 'tarot?spread=focus1&step=reveal' },
+  { stage: 'tarot', name: 'tarot-reflect3', route: 'tarot?spread=reflect3&step=reveal' },
+  { stage: 'tarot', name: 'tarot-choice5', route: 'tarot?spread=choice5&step=reveal' },
+  { stage: 'tarot', name: 'tarot-picker', route: 'tarot?spread=reflect3&step=pick' },
   { stage: 'calendar', name: 'today', route: 'today' },
 ] as const;
 const viewports = [
@@ -36,6 +40,12 @@ async function sourceHashes(directory: string): Promise<Record<string, string>> 
 }
 async function prepareState(page: Page, item: (typeof states)[number]) {
   await openDemo(page, item.route);
+  if (item.stage === 'tarot' && item.name !== 'tarot-picker') {
+    await page.getByRole('button', { name: '全部揭开', exact: true }).click();
+    await expect(page.locator('.tarot-flip-front')).toHaveCount(
+      { 'tarot-focus1': 1, 'tarot-reflect3': 3, 'tarot-choice5': 5 }[item.name]!,
+    );
+  }
   if (item.stage === 'chart')
     await expect(page.getByRole('group', { name: '命盘体系' }).getByRole('button', { pressed: true })).toHaveText(
       { bazi: '八字', ziwei: '紫微', astro: '星盘' }[item.name]!,
@@ -104,6 +114,7 @@ for (const viewport of viewports)
             .map((element) => element.className),
         }));
         const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+        await page.evaluate(() => window.scrollTo(0, 0));
         const filename = `${item.name}-${theme}-${viewport.width}.png`;
         const screenshot = `${componentEvidence}/screenshots/${filename}`;
         await page.screenshot({ path: screenshot, fullPage: true, animations: 'disabled' });
