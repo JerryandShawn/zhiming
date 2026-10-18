@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { UserMessage } from '../components/Messages';
 import { Button, Switch } from '../components/ui/Controls';
 import { Answer, HistoryMessage } from '../chat/Answers';
@@ -6,9 +6,11 @@ import { LiveComposer } from '../chat/Composer';
 import { useChat } from '../chat/useChat';
 import { object, string } from '../chat/types';
 import { publicChatText } from '../chat/publicProjection';
+import { createMemoryReceiptRegistry } from '../chat/interactions/memoryProjection';
 
 export default function Chat() {
   const chat = useChat();
+  const receiptRegistry = useRef(createMemoryReceiptRegistry()).current;
   const [images, setImages] = useState(chat.pending?.payload.images || []);
   const inHistory = (requestId: string, runId: string, completed = false) =>
     chat.historyRows.some(
@@ -37,9 +39,15 @@ export default function Chat() {
               {chat.history.error && <p role="alert">历史暂时没有读取完整，可以稍后重试。</p>}
               {chat.historyRows.map((row) => (
                 <HistoryMessage
+                  receiptRegistry={receiptRegistry}
                   key={`${row.cursor}:${row.role}`}
                   row={row}
                   restore={chat.restore}
+                  onAskReply={
+                    row === chat.historyRows.at(-1) && !chat.busy && !chat.pending
+                      ? (text) => void chat.send(text, [])
+                      : undefined
+                  }
                   resume={chat.busy ? undefined : (row, text) => void chat.resumeHistory(row, text)}
                 />
               ))}
@@ -49,6 +57,7 @@ export default function Chat() {
                   <section key={turn.requestId}>
                     <UserMessage time="本轮">{publicChatText(turn.prompt)}</UserMessage>
                     <Answer
+                      receiptRegistry={receiptRegistry}
                       state={turn.state}
                       onReply={
                         chat.busy || turn.runId !== chat.state.runId
@@ -65,6 +74,7 @@ export default function Chat() {
                 )}
               {!chat.state.complete && (chat.state.runId || chat.state.text || chat.state.status) && (
                 <Answer
+                  receiptRegistry={receiptRegistry}
                   state={chat.state}
                   onReply={
                     chat.busy

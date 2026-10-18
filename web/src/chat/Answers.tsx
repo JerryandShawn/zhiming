@@ -1,172 +1,82 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { Send } from 'lucide-react';
 import { Markdown } from '../components/Markdown';
 import { AssistantMessage, UserMessage } from '../components/Messages';
-import { Button, Disclosure, Input } from '../components/ui/Controls';
-import { write } from '../api/operations';
-import { ApiError } from '../api/client';
+import { Button, Disclosure } from '../components/ui/Controls';
 import { envelope } from './events';
-import { initialStream, type HistoryRow, type Receipt, type StreamState } from './types';
+import { initialStream, type HistoryRow, type StreamState } from './types';
 import { publicChatText, publicHistoryText } from './publicProjection';
+import { InteractiveAskCard } from './interactions/AskCard';
+import { ClarificationCard } from './interactions/ClarificationCard';
+import { DecisionCards } from './interactions/DecisionCards';
+import { MemoryReceipts } from './interactions/MemoryReceipts';
+import { ToolProgress } from './interactions/ToolProgress';
+import type { AskAnswerHandler, MemoryActionHandler, MemoryCommands } from './interactions/contracts';
+import type { MemoryReceiptRegistry } from './interactions/memoryProjection';
 
-function MemoryNotice({ receipt }: { receipt: Receipt }) {
-  const [undone, setUndone] = useState(false),
-    [error, setError] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [conflicted, setConflicted] = useState(false);
-  const canUndo = receipt.write_status === 'saved' && receipt.fact_id && Number.isInteger(receipt.revision);
-  async function undo() {
-    if (!canUndo) return;
-    setBusy(true);
-    setError('');
-    try {
-      const result = await write<{ write_status?: string; status?: string }>(
-        `chat-undo:${receipt.fact_id}`,
-        'PATCH',
-        `/api/memories/${encodeURIComponent(receipt.fact_id!)}`,
-        {
-          expected_revision: receipt.revision,
-          status: 'hidden',
-        },
-        { receipt: (value) => value.write_status === 'stopped' || value.status === 'hidden' },
-      );
-      if (result.write_status !== 'stopped' && result.status !== 'hidden') throw new Error('未收到停止使用回执');
-      setUndone(true);
-    } catch (reason) {
-      if (reason instanceof ApiError && reason.status === 409) setConflicted(true);
-      setError(reason instanceof Error ? reason.message : '尚未确认撤销');
-    } finally {
-      setBusy(false);
-    }
-  }
-  return (
-    <div className="memory-receipt">
-      <div>
-        <p>
-          {undone
-            ? '已撤销，不会再使用'
-            : receipt.write_status === 'saved'
-              ? `程序回执：已记下${receipt.summary ? `：${receipt.summary}` : ''}`
-              : receipt.write_status === 'pending_confirmation'
-                ? '程序回执：待你确认，尚未保存为有效记忆'
-                : receipt.write_status === 'stopped'
-                  ? '程序回执：已停止使用'
-                  : receipt.write_status === 'deleted'
-                    ? '程序回执：已删除'
-                    : '程序回执：尚未确认保存成功'}
-        </p>
-        {error && <p role="alert">{error}</p>}
-        {!canUndo && receipt.write_status === 'saved' && (
-          <a className="text-link quiet-link" href="#/me?section=memory">
-            查看原话与撤销
-          </a>
-        )}
-      </div>
-      {canUndo && !undone && (
-        <Button loading={busy} disabled={conflicted} onClick={() => void undo()}>
-          撤销使用
-        </Button>
-      )}
-    </div>
-  );
-}
+export type AnswerInteractions = {
+  onAskAnswer?: AskAnswerHandler;
+  answered?: string;
+  memoryCommands?: MemoryCommands;
+  onMemoryAction?: MemoryActionHandler;
+  reviewPending?: boolean;
+  composerId?: string;
+  receiptRegistry?: MemoryReceiptRegistry;
+};
 export function Answer({
   state,
   onReply,
   time = '本轮',
   source,
-}: {
+  onAskAnswer,
+  answered,
+  memoryCommands,
+  onMemoryAction,
+  reviewPending,
+  composerId,
+  receiptRegistry,
+}: AnswerInteractions & {
   state: StreamState;
   onReply?: (text: string) => void;
   time?: string;
   source?: string;
 }) {
-  const [reply, setReply] = useState('');
+  const commands = useMemo(
+    () =>
+      memoryCommands ??
+      (onMemoryAction
+        ? {
+            supports: () => true,
+            execute: onMemoryAction,
+          }
+        : undefined),
+    [memoryCommands, onMemoryAction],
+  );
   return (
-    <AssistantMessage revised={state.revised} time={time}>
+    <AssistantMessage revised={state.revised} pending={reviewPending ?? state.reviewPending ?? false} time={time}>
       {source === 'feishu' && (
         <p className="meta row">
           <Send className="icon small" aria-hidden="true" />
           飞书
         </p>
       )}
-      {state.status && <p role="status">{state.status}</p>}
-      {state.tools.length > 0 && (
-        <Disclosure title={`本轮查看了 ${state.tools.length} 个步骤`} count="查看步骤">
-          <ol>
-            {state.tools.map((tool, index) => (
-              <li key={index}>
-                {tool.summary || '核对本轮资料'} · {tool.done ? '已完成' : '进行中'}
-              </li>
-            ))}
-          </ol>
-        </Disclosure>
-      )}
       {state.text && <Markdown text={publicChatText(state.text)} />}
-      {state.decisions.length > 0 && (
-        <div className="decision-options">
-          {state.decisions.map((option, index) => (
-            <section className="decision-card" key={index}>
-              <h3>{option.option}</h3>
-              <dl>
-                {(['benefit', 'cost', 'risk', 'reversibility', 'first_step'] as const).map((key, item) => (
-                  <div key={key}>
-                    <dt>{['收益', '代价', '风险', '可逆性', '第一步'][item]}</dt>
-                    <dd>{option[key] || '仍需核对'}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-          ))}
-        </div>
-      )}
+      <ToolProgress tools={state.tools} status={state.status} complete={state.complete || Boolean(state.error)} />
+      <DecisionCards options={state.decisions} />
       {state.question && (
-        <section className="ask-card">
-          <p className="question">{state.question.question}</p>
-          <p className="meta">为什么问：{state.question.why}</p>
-          <div className="ask-options">
-            {state.question.options.map((option) => (
-              <Button key={option} disabled={!onReply} onClick={() => onReply?.(option)}>
-                {option}
-              </Button>
-            ))}
-          </div>
-          {state.question.allow_free_text && onReply && (
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                if (reply.trim()) onReply(reply.trim());
-              }}>
-              <Input aria-label="补充回答" value={reply} onChange={(event) => setReply(event.target.value)} />
-              <Button type="submit" disabled={!reply.trim()}>
-                补充并继续
-              </Button>
-            </form>
-          )}
-        </section>
+        <InteractiveAskCard
+          key={`${state.runId}:${state.question.question}`}
+          question={state.question}
+          onAnswer={onAskAnswer}
+          onReply={onReply}
+          answered={answered ?? state.answered}
+          composerId={composerId}
+        />
       )}
       {state.envelope?.interrupt && onReply && (
-        <form
-          className="ask-card"
-          onSubmit={(event) => {
-            event.preventDefault();
-            if (reply.trim()) onReply(reply.trim());
-          }}>
-          {state.envelope.interrupt.questions.map((question) => (
-            <p key={question}>{question}</p>
-          ))}
-          <label>
-            补充本轮澄清信息
-            <Input value={reply} onChange={(event) => setReply(event.target.value)} />
-          </label>
-          <Button type="submit" disabled={!reply.trim()}>
-            补充并继续
-          </Button>
-        </form>
+        <ClarificationCard questions={state.envelope.interrupt.questions} onReply={onReply} />
       )}
-      {state.receipts.map((item) => (
-        <MemoryNotice key={item.fact_id || item.proposal_id} receipt={item} />
-      ))}
+      <MemoryReceipts receipts={state.receipts} commands={commands} registry={receiptRegistry} />
       {state.envelope?.professional_appendix || state.envelope?.evidence.length ? (
         <Disclosure title="专业依据与来源">
           {state.envelope?.evidence.map((item, index) => (
@@ -183,14 +93,19 @@ export function Answer({
     </AssistantMessage>
   );
 }
+
 export function HistoryMessage({
   row,
   restore,
   resume,
+  onAskReply,
+  receiptRegistry,
 }: {
   row: HistoryRow;
   restore: (row: HistoryRow) => void;
   resume?: (row: HistoryRow, text: string) => void;
+  onAskReply?: (text: string) => void;
+  receiptRegistry?: MemoryReceiptRegistry;
 }) {
   const date = new Date(row.at);
   const time = Number.isNaN(date.getTime()) ? '' : date.toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
@@ -207,12 +122,13 @@ export function HistoryMessage({
     );
   if (row.role !== 'assistant') return null;
   const data = envelope(row.meta);
-  if (!data.answer) data.answer = publicHistoryText(row);
+  if (!data.answer && data.schema !== 'core4.0') data.answer = publicHistoryText(row);
   return (
     <Answer
       time={time}
       source={row.source}
-      onReply={resume && data.interrupt ? (text) => resume(row, text) : undefined}
+      receiptRegistry={receiptRegistry}
+      onReply={resume && data.interrupt ? (text) => resume(row, text) : data.question ? onAskReply : undefined}
       state={{
         ...initialStream(),
         text: data.answer,
@@ -220,6 +136,7 @@ export function HistoryMessage({
         envelope: data,
         receipts: data.receipts,
         decisions: data.decisions,
+        question: data.question,
       }}
     />
   );

@@ -395,7 +395,7 @@ test('SSE v2 本地事件服务中断续传去重、修订替换、工具/回执
   await expect(page.getByText('已修订', { exact: true })).toBeVisible();
   await expect(page.getByText('想先看哪一项？', { exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: '先准备', exact: true })).toBeVisible();
-  await expect(page.getByText('程序回执：已记下：合成偏好', { exact: true })).toHaveCount(1);
+  await expect(page.getByText('已记下：合成偏好', { exact: true })).toHaveCount(1);
   const metrics = (await (await request.get('/__test__/metrics')).json()) as { v2_cursors: string[] };
   expect(metrics.v2_cursors).toContain('4');
 });

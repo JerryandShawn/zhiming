@@ -1,0 +1,332 @@
+{
+  "item": 1,
+  "time_utc": "2026-10-18T15:01:57.8225482Z",
+  "branch": "v4/p10-frontend",
+  "base_commit": "06e49b727674f9bc8a6d38b4a769500df3244076",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "unit": {
+    "passed": 316,
+    "total": 316,
+    "files": 29
+  },
+  "frontend_full": {
+    "static": 80,
+    "spaces": 10,
+    "components": 10,
+    "components_visual": 64,
+    "night": 10,
+    "total": 174
+  },
+  "final_night": {
+    "passed": 10,
+    "failed": 0
+  },
+  "isolated_pg": {
+    "full_passed": 12,
+    "final_targeted_recheck": 2,
+    "database": "core_test_fe",
+    "pg_port": 55481,
+    "api_port": 8002,
+    "real_model_calls": 0,
+    "note": "Full PG pass followed by targeted legacy restore and SSE recheck after HistoryMessage refinement."
+  },
+  "mock_browser_guard": {
+    "api_requests": 0,
+    "external_requests": 0,
+    "page_errors": 0,
+    "console_messages": 0
+  },
+  "axe": {
+    "layouts": 4,
+    "violations": 0
+  },
+  "cinnabar": {
+    "maximum": 3,
+    "counting_source": "14 I.6; document 23 has no counting definition"
+  },
+  "screenshots": [
+    {
+      "path": "01-chat-answered-1440-dark.png",
+      "sha256": "dcf65bec4afcc0952cdb407e0385bcc61db17e2ff6a041d64bd84be65b98a354"
+    },
+    {
+      "path": "01-chat-answered-1440-light.png",
+      "sha256": "4b368d1f1c0f9c4aa9e70d3d4e8d95c9f4351c9eede08c588f9c9b46f761fb44"
+    },
+    {
+      "path": "01-chat-answered-390-dark.png",
+      "sha256": "c96c7ffa4a2ba6c4f18fb0aeefc7af54becbe71bb6dcdfd2a9689eae353822ed"
+    },
+    {
+      "path": "01-chat-answered-390-light.png",
+      "sha256": "c31bead782fd9f892e1aa3720eedbf66ba2ee1d27647113dc1488e69f0a3fd79"
+    },
+    {
+      "path": "01-chat-cards-1440-dark.png",
+      "sha256": "ce5e82fea004bc6c524161c17cde2f5cc8b2780ffc2517fa80e2723fea6537b6"
+    },
+    {
+      "path": "01-chat-cards-1440-light.png",
+      "sha256": "0083aebaa9a3bea9971bae6629e0224915878586953195ba6a18e216fabfbed4"
+    },
+    {
+      "path": "01-chat-cards-390-dark.png",
+      "sha256": "d573921b08bf88b6c1ad6a647b9cf78a07157107cbaa21ffaef1cf5326a652e3"
+    },
+    {
+      "path": "01-chat-cards-390-light.png",
+      "sha256": "5fa4f1ee8b38fbb3363e27074293c2d708243b853934c88b2581816a6de5cfbb"
+    },
+    {
+      "path": "01-decisions-1440-dark.png",
+      "sha256": "0ba4e03106cc119a6fb3ea171670e62a23cd073abe7db3849e9452ca04e397a5"
+    },
+    {
+      "path": "01-decisions-1440-light.png",
+      "sha256": "08d2850f00b2ddab1856709246d60549bc22ef22b3f208a37e977c33a942ff08"
+    },
+    {
+      "path": "01-decisions-390-dark.png",
+      "sha256": "70c7629bb8f68ad7a5d947b5609708bd5c74ee0315c90a032201469ca00f6df6"
+    },
+    {
+      "path": "01-decisions-390-light.png",
+      "sha256": "e857ce64a7bd9c4e72d63b8de67993aff3d706f633b587c22196ee2fac42d2fa"
+    },
+    {
+      "path": "01-interrupted-1440.png",
+      "sha256": "5f39fbb3a090276b04e0129a9086a73b9abe2e757fb619f08d842f200e6b74f7"
+    },
+    {
+      "path": "01-memory-category-1440.png",
+      "sha256": "117fc5a2f2a23249a6ca69450b13b706d5f1cc1f5b99e9396fa90f6d08269bdc"
+    },
+    {
+      "path": "01-memory-dismissed-1440.png",
+      "sha256": "a545d72ac669062894bc3936609188dc755304bba884916405153483acfccbb6"
+    },
+    {
+      "path": "01-memory-pending-390.png",
+      "sha256": "5b4dcc4ce793350015a76bac2022bc02f2d2845671c97bb2a1ad2378158bcfdd"
+    },
+    {
+      "path": "01-memory-saved-390.png",
+      "sha256": "2a92de4c09399a3f023bb330e54ac94ed7c2b8ea688ef1769c782fb38e41dabd"
+    },
+    {
+      "path": "01-memory-undone-390.png",
+      "sha256": "d74f60d9438381e5ca115b1678fc72350d3d4e9d53901f3b11de030814182177"
+    },
+    {
+      "path": "01-review-pending-1440.png",
+      "sha256": "aa2762d513aa8e46e1a4ab987c89148840461b217df1b9318c3aef33969b4635"
+    },
+    {
+      "path": "01-review-replaced-1440.png",
+      "sha256": "2c32db43d2469484eb78f67568ff9f881ef4639d3ba953d6e4999b91b8662894"
+    },
+    {
+      "path": "01-tool-complete-1440.png",
+      "sha256": "d6a27629a7d248df0657848f19958bf4d970a72793677517a578ea505a57f35b"
+    },
+    {
+      "path": "01-tool-running-1440.png",
+      "sha256": "eeee7633e5990808898a1017fc29b0e3c501925645e6700aa8500598232b0f4a"
+    }
+  ],
+  "source_sha256": [
+    {
+      "path": "web/package.json",
+      "sha256": "763f2bf9cb754a720a3c1610e58754ba2d6fd23d5bb80a04ce65c2641f1ba615"
+    },
+    {
+      "path": "web/playwright.config.ts",
+      "sha256": "4ddf1f718ad597fa391c208561380e2e303cc7f0ac31cddd5cd63f48c2b88238"
+    },
+    {
+      "path": "web/playwright.night.config.ts",
+      "sha256": "ccb153bd479a20f8a758881d79c017fc9afcde13cb502afb3f0e5126b9dee329"
+    },
+    {
+      "path": "web/src/App.tsx",
+      "sha256": "f33fc7ad1b38d7355ad0df1401e1c638bc8ab90270d7784dbb499e9001ba33cc"
+    },
+    {
+      "path": "web/src/chat/Answers.tsx",
+      "sha256": "9fe519935838c4250def08959738ff278586d39a09f857b5790c06d294285688"
+    },
+    {
+      "path": "web/src/chat/Composer.tsx",
+      "sha256": "1847d45a4c9993f563cf77e5e907d1a8db24cf001ec7cbabe4accfa2b3208712"
+    },
+    {
+      "path": "web/src/chat/envelopes.ts",
+      "sha256": "9e1a493ac0691bd7552592a5400c1a5f3a2da0ce9e5eb21583ada7b85b6fd642"
+    },
+    {
+      "path": "web/src/chat/events.ts",
+      "sha256": "844a4ae052bf68703d8790b2febf07d74bda1c04311ace8140b36a22c7d80c22"
+    },
+    {
+      "path": "web/src/chat/interactions/AskCard.tsx",
+      "sha256": "f6f4490c35d6bf9ca6fa5470939b5f061f2aa6c066b3052f8722b440bb4d22fc"
+    },
+    {
+      "path": "web/src/chat/interactions/ClarificationCard.tsx",
+      "sha256": "6bdfc25976d41851b5f5282036c8e9c0a7bfcccaad8b39fc339ee53d04576798"
+    },
+    {
+      "path": "web/src/chat/interactions/contracts.ts",
+      "sha256": "0a68b0b149a9d0fcdda6bcd38104b634128eabec50347a9f7b44c6b9a9799cc7"
+    },
+    {
+      "path": "web/src/chat/interactions/DecisionCards.tsx",
+      "sha256": "9ae3194dd75bab4bea0df5bc564bb2ccb2527b994f758439e87d5d451bfbb1fb"
+    },
+    {
+      "path": "web/src/chat/interactions/MemoryCard.tsx",
+      "sha256": "70eecbabd7466265bf97c02cdf2936255a5f356bcf3aa5f9e3b277ae6ee8ac16"
+    },
+    {
+      "path": "web/src/chat/interactions/memoryCommands.ts",
+      "sha256": "7dd7d55a17edf5f26f294c82b6c0f988284ac5b7104ca227e0d05e2a122b301e"
+    },
+    {
+      "path": "web/src/chat/interactions/memoryProjection.ts",
+      "sha256": "56b7745fa6545aebed38110f598cb9c0629c63150eda2729bdb8104ae505c769"
+    },
+    {
+      "path": "web/src/chat/interactions/MemoryReceipts.tsx",
+      "sha256": "e5356f5e228231081e7bd135b5c3382a3048f4354a6262cb2cad584631d2d739"
+    },
+    {
+      "path": "web/src/chat/interactions/ToolProgress.tsx",
+      "sha256": "bff5b6e64ebca8dba6797975e0619115e33ee7e06a02bb7702d6868133153297"
+    },
+    {
+      "path": "web/src/chat/interactions/useInteractionGuard.ts",
+      "sha256": "6606d87f62e3bb03e7e2ec089e89912c2ac0771789db640f37ae809338ccd2bc"
+    },
+    {
+      "path": "web/src/chat/publicProjection.ts",
+      "sha256": "f2bc43e718576db96953ca8d13ee866b025237a50c18d1b819c422bc575fa019"
+    },
+    {
+      "path": "web/src/chat/reducer.ts",
+      "sha256": "7d6300551f2cfceeef99954afd3fc2358918efe0fc11664640d1a90ad9265f82"
+    },
+    {
+      "path": "web/src/chat/sse.ts",
+      "sha256": "414354498f52185fbf6360b7c43d93003257dfe5c6c1e4a59cf83119e2e5bd1c"
+    },
+    {
+      "path": "web/src/chat/storage.ts",
+      "sha256": "07383479398282f730a7f5409fb999e5aab4f23908f394dd1ea8059cfb5752e2"
+    },
+    {
+      "path": "web/src/chat/transport.ts",
+      "sha256": "5849931d665aec4343b6d05390a996a52d82ce9fede38dd2bd199337b40c6a9b"
+    },
+    {
+      "path": "web/src/chat/types.ts",
+      "sha256": "d24906e306e4728c78773e1d9a88ac90bc7aaf9b248580d06641f9a249afdf30"
+    },
+    {
+      "path": "web/src/chat/useChat.ts",
+      "sha256": "90fa1fdb8977dabadf287ab9af32d74ecc9d8981eb1c4b88e88aee4c6ee20a72"
+    },
+    {
+      "path": "web/src/chat/v2.ts",
+      "sha256": "6423a13754b893ae7695c21f974c69a243425223aaef1020d5f7f01147eda6db"
+    },
+    {
+      "path": "web/src/components/Messages.tsx",
+      "sha256": "4a6c70d6682c96e619bcf6c19393ae5a800366a995132513427fd887f2b4ba6a"
+    },
+    {
+      "path": "web/src/live/Chat.tsx",
+      "sha256": "890ffb2b5ae7a0b345adc53368b978da365b204454e3b33181152146ee6382fd"
+    },
+    {
+      "path": "web/src/night/ChatPreview.tsx",
+      "sha256": "60e9ef45581c2b189cf09eef7213962e47866ae8a3e5eb706038998ec532fe69"
+    },
+    {
+      "path": "web/src/night/events.ts",
+      "sha256": "faaa5d93fa2f5f3ec0a9ac43d66886181abe97162a3dc0d568ea2484f4cd6537"
+    },
+    {
+      "path": "web/src/night/night.css",
+      "sha256": "acb1f0d9054c9353c47ed8d6476bb278777671172d6ec40ec6d54868201a2e07"
+    },
+    {
+      "path": "web/src/night/NightApp.tsx",
+      "sha256": "c8c13c727cf233b9cc38ce3b61cd432d46dea8f0504d94db792855aaab8f4510"
+    },
+    {
+      "path": "web/src/night/port.ts",
+      "sha256": "aea1f1208dd8c7c3deb93cb1b8b20cebf0c068805872c4c670afdfa7cb69044d"
+    },
+    {
+      "path": "web/src/styles/messages.css",
+      "sha256": "cda577ade28d1024c7fc2ff1403f3d62d20a9e1f4a0ea75fac2ac25303166e57"
+    },
+    {
+      "path": "web/tests/chat-components.test.tsx",
+      "sha256": "0938677fdc08d2bb9a2953528f9fb5b8e86a1e44504327091bb56bfbd00f84e1"
+    },
+    {
+      "path": "web/tests/chat-envelopes.test.tsx",
+      "sha256": "537cfd1ecd2d3f92227498df8860dda51947eab5869a431a28faed489ddd2fed"
+    },
+    {
+      "path": "web/tests/chat-events.test.tsx",
+      "sha256": "0e8ef5af8191dc0f6a1a70046b0c8bbf0233c2f7529ba1dfbf5f3de4570e9040"
+    },
+    {
+      "path": "web/tests/chat-interactions.test.tsx",
+      "sha256": "5c9c3b859f630a2bfe7bf26755cc89919e1a763dfd4bcb68672e18f35e2276df"
+    },
+    {
+      "path": "web/tests/chat-memory-interactions.test.tsx",
+      "sha256": "aa3d6a64178042c102448aa5879874b76e2a22cf108dca53b91c5c461dadb1b4"
+    },
+    {
+      "path": "web/tests/chat-receipt-registry.test.tsx",
+      "sha256": "24bb3a91a372981a39c8b044c40b72b506b327a909d6c8b953bc19f7f9840565"
+    },
+    {
+      "path": "web/tests/chat-session.test.tsx",
+      "sha256": "da78200ac54c00922953dc859e2c74686d3ec962663f1bed168f020fa94ed701"
+    },
+    {
+      "path": "web/tests/chat-transport.test.tsx",
+      "sha256": "1900924541da43713d1389d17d5f454c569c409b0a7aa18d67207d9e53964a11"
+    },
+    {
+      "path": "web/tests/e2e/contracts.spec.ts",
+      "sha256": "2a1e9bf960bceea4267218fcefc57fda38b5e7bc8feb12d8a56d4cfa38984c10"
+    },
+    {
+      "path": "web/tests/e2e/night-chat.spec.ts",
+      "sha256": "9a30918463ee1fad56ab5dbdc22a62623e5f5d9bdd53c70e3f51d9027b1f93a4"
+    },
+    {
+      "path": "web/tests/e2e/night-helpers.ts",
+      "sha256": "3b2608a451aa9bff4109ba4ff5dea2923a5e2769fb876d1d7ca328a621184e2f"
+    },
+    {
+      "path": "web/tests/night-demo.test.ts",
+      "sha256": "ae952e7faa0474c6a10fea53c75ef75a3521637014a61e25f979f03564eae510"
+    }
+  ],
+  "built_manifest_sha256": "941d5eda77f25061beac545cfe29faa7e19b748411b45be0ea727072589533e3",
+  "unverified": [
+    "Real model evaluation forbidden",
+    "Remote servers and Feishu not accessed",
+    "Core4 review children and persisted decisions not frozen",
+    "Real v4 proposal/category APIs absent"
+  ]
+}

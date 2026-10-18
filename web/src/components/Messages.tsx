@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useId, useState, type ReactNode } from 'react';
 import { BookmarkCheck, PenLine, Send, Undo2 } from 'lucide-react';
 import { useReducedMotion } from 'motion/react';
 import * as Popover from '@radix-ui/react-popover';
@@ -41,10 +41,28 @@ export function UserMessage({
 }
 
 export function ReviewBadge({ pending = false }: { pending?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const id = useId();
+  if (pending) return <span className="meta row">复核中</span>;
   return (
-    <span className={`meta row ${pending ? '' : 'gold-text'}`}>
-      {!pending && <PenLine className="icon small" aria-hidden="true" />}
-      {pending ? '复核中' : '已修订'}
+    <span
+      className="meta row gold-text review-badge"
+      tabIndex={0}
+      aria-describedby={open ? id : undefined}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={() => setOpen(false)}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') setOpen(false);
+      }}>
+      <PenLine className="icon small" aria-hidden="true" />
+      已修订
+      {open && (
+        <span role="tooltip" id={id} className="review-tooltip">
+          复核后修正了一处说法
+        </span>
+      )}
     </span>
   );
 }

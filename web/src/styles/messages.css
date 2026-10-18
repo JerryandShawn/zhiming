@@ -126,6 +126,14 @@
   margin-top: var(--s-3);
   padding-top: var(--s-2);
 }
+.memory-receipt > .button {
+  flex: none;
+  white-space: nowrap;
+}
+.memory-receipt > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .pending-receipt,
 .ask-card,
 .decision-card {
@@ -244,6 +252,10 @@
   border: var(--border) solid var(--line-strong);
   color: var(--ink);
 }
+.send-button:disabled {
+  background: var(--line);
+  color: var(--ink-3);
+}
 @media (min-width: 1024px) {
   .assistant-message {
     position: relative;
@@ -274,5 +286,52 @@
   to {
     opacity: 1;
     filter: blur(0);
+  }
+}
+.tool-progress {
+  margin-top: var(--s-2);
+}
+.tool-progress ol {
+  padding-left: var(--s-5);
+}
+.receipt-group > * + * {
+  margin-top: var(--s-3);
+}
+.interaction-error {
+  color: var(--ink-2);
+  margin-top: var(--s-2);
+}
+.review-badge {
+  position: relative;
+  cursor: help;
+}
+.review-tooltip {
+  position: absolute;
+  z-index: var(--z-popover, 20);
+  top: calc(100% + var(--s-2));
+  right: 0;
+  width: max-content;
+  max-width: min(var(--text-width), calc(50vw - var(--s-4)));
+  padding: var(--s-2) var(--s-3);
+  background: var(--surface);
+  color: var(--ink-2);
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-2);
+  box-shadow: var(--shadow-float);
+}
+.live-decision-options > .decision-card {
+  flex: 0 0 84%;
+}
+@media (min-width: 1024px) {
+  .live-decision-options {
+    display: grid;
+    overflow: visible;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .live-decision-options.count-1 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .live-decision-options.count-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

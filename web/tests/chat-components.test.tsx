@@ -64,9 +64,9 @@ describe('live chat rendering', () => {
       />,
     );
     await userEvent.click(screen.getByRole('button', { name: '撤销使用' }));
-    expect(screen.queryByText('已撤销，不会再使用')).not.toBeInTheDocument();
+    expect(screen.queryByText('已撤销，不会再提起')).not.toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: '撤销使用' }));
-    await screen.findByText('已撤销，不会再使用');
+    await screen.findByText('已撤销，不会再提起');
     expect(JSON.parse(bodies[0]).request_id).toBe(JSON.parse(bodies[1]).request_id);
   });
   it('connects v3 chat and keeps the question plus final answer after success', async () => {
@@ -111,6 +111,34 @@ describe('live chat rendering', () => {
     );
     expect(screen.getByText('飞书')).toBeVisible();
     expect(screen.getByText(/明镜 · .*2026.*10.*18.*09:15/)).toBeVisible();
+  });
+  it('keeps an authoritative empty core4 history answer and starts a new turn for its question', async () => {
+    const nextTurn = vi.fn(),
+      resume = vi.fn();
+    render(
+      <HistoryMessage
+        row={{
+          role: 'assistant',
+          at: '',
+          source: 'web',
+          cursor: 'core4-question',
+          turn_id: 'core4-question',
+          content: '不应恢复的旧片段',
+          meta: {
+            schema: 'core4.0',
+            text: '',
+            asked: { question: '下一步先做什么？', options: ['先问清楚'], allow_free_text: true, why: '缩小问题' },
+          },
+        }}
+        restore={() => undefined}
+        resume={resume}
+        onAskReply={nextTurn}
+      />,
+    );
+    expect(screen.queryByText('不应恢复的旧片段')).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: '先问清楚' }));
+    expect(nextTurn).toHaveBeenCalledWith('先问清楚');
+    expect(resume).not.toHaveBeenCalled();
   });
   it('hides program profile commands and structured birth evidence outside the profile page', () => {
     const raw =

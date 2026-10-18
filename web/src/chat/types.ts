@@ -14,6 +14,7 @@ export type Receipt = {
   proposal_id?: string;
   write_status: string;
   summary: string;
+  category?: string;
   revision?: number;
   undo_token?: string;
 };
@@ -27,6 +28,9 @@ export type Decision = {
   first_step: string;
 };
 export type Envelope = {
+  schema?: 'core3.0' | 'core4.0';
+  messageId?: string;
+  question?: Question;
   answer: string;
   professional_appendix: string;
   receipts: Receipt[];
@@ -43,9 +47,15 @@ export type ChatEvent =
   | { type: 'memory_receipt'; receipt: Receipt }
   | { type: 'ask_user'; question: Question }
   | { type: 'present_options'; options: Decision[] }
-  | { type: 'final'; envelope: Envelope }
+  | { type: 'final'; envelope: Envelope; message_id?: string }
   | { type: 'error'; code: string; message: string; retryable: boolean };
 export type StreamState = {
+  threadId?: string;
+  messageId?: string;
+  errorCode?: string;
+  retryable?: boolean;
+  reviewPending?: boolean;
+  answered?: string;
   runId: string;
   text: string;
   status: string;

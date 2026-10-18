@@ -1,0 +1,52 @@
+.night-notice {
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: var(--t-meta);
+  line-height: var(--l-meta);
+}
+.night-notice a {
+  display: inline-flex;
+  min-height: var(--control-height);
+  align-items: center;
+  text-decoration: underline;
+}
+.night-controls {
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+}
+.night-chat .chat-inner {
+  padding-bottom: var(--s-6);
+}
+.shell:has(.night-chat) > main {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - var(--app-header-height, 0px) - var(--tabbar-height) - env(safe-area-inset-bottom, 0px));
+  min-height: 0;
+}
+.shell .night-chat,
+.shell[data-keyboard='open'] .night-chat {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: auto;
+  min-height: 0;
+}
+.night-chat > .chat-layout {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+.night-notice,
+.night-controls {
+  flex: none;
+}
+.shell[data-keyboard='open']:has(.night-chat) > main {
+  height: calc(var(--keyboard-height) - var(--app-header-height, 0px));
+}
+@media (min-width: 1024px) {
+  .shell:has(.night-chat) > main {
+    height: 100dvh;
+  }
+}

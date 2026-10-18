@@ -1,7 +1,7 @@
 {
-  "run_id": "2026-10-18T11:03:32.543Z",
+  "run_id": "2026-10-18T14:50:34.034Z",
   "stage": "all",
-  "captured_at": "2026-10-18T11:04:52.924Z",
+  "captured_at": "2026-10-18T14:51:56.293Z",
   "node": "v22.23.3",
   "synthetic_only": true,
   "model_calls": 0,
@@ -12,7 +12,7 @@
     "web/src/api/client.ts": "165fb104f5e7d20de4c9055be346afad8ebf1830c1dfcd4eaa0916533b920ff4",
     "web/src/api/operations.ts": "b1cfd97313f2aa5154166995e4687519b068871895c7284e727ee99d107c38e7",
     "web/src/api/useResource.ts": "8097e2e45b57fc0eaa7e20a9fb063f78ff6cb5d7097f2d7341b60102521b07a3",
-    "web/src/App.tsx": "c30b1f55564bb7ace4ddd033bc3febbd1f3c6710b27bc78a8bf8ab49e4d5bcdb",
+    "web/src/App.tsx": "f33fc7ad1b38d7355ad0df1401e1c638bc8ab90270d7784dbb499e9001ba33cc",
     "web/src/calendar/data.ts": "88ae3b35bb7c1460617053655fefd20e3290fee908b8309408dc1b4d56c6df9f",
     "web/src/calendar/examples.ts": "0e60ee56319c5b1e2a68197f4b79369c8e4d1c8c33fb3b3872e03ce0f56e22d1",
     "web/src/calendar/MonthCalendar.tsx": "a625f668717ac9ac2b326237cc89f32856cdbf1d14f084ccdac6fef52b774caf",
@@ -26,15 +26,26 @@
     "web/src/charts/LuckPeriods.tsx": "1bbdb27c78c97b1c6463f31730eac094373674933ba010a72229aa7a3fc8fc23",
     "web/src/charts/TimeBasis.tsx": "af284a64f8ee063b08b0369ca6f3f18684759de740b1502be990eaa47830e174",
     "web/src/charts/ZiweiPalaces.tsx": "14adeb43e6fe6b9a3a74490d0054a2187f8a54c6af2aeda8f538dbb6f7829cfe",
-    "web/src/chat/Answers.tsx": "5d5781cb98aed39a13d54ccbde993bf7beda6ace920e1c837bcca5a2bfe07140",
+    "web/src/chat/Answers.tsx": "f8efd7f6c4cd601e23abd72382174151dbf55a3673f5b7355024df491b5d46eb",
     "web/src/chat/Composer.tsx": "1847d45a4c9993f563cf77e5e907d1a8db24cf001ec7cbabe4accfa2b3208712",
-    "web/src/chat/events.ts": "410df9da5cf2971068e2a5ce3317dc24d93753284e68699a60de312ee1662e02",
-    "web/src/chat/publicProjection.ts": "b403c2f145163c234b9473ff1aff0111581fd3898f9e1f7d4f918aae96a7fde6",
-    "web/src/chat/reducer.ts": "68b2d1eb4b66638771c41720ace23b872cf9328064e487c6156eebab0ba8eb5c",
+    "web/src/chat/envelopes.ts": "2e73a1a8bb360db68f6aaa9af8dddf0239028dd839928676a86b448b125e450c",
+    "web/src/chat/events.ts": "844a4ae052bf68703d8790b2febf07d74bda1c04311ace8140b36a22c7d80c22",
+    "web/src/chat/interactions/AskCard.tsx": "f6f4490c35d6bf9ca6fa5470939b5f061f2aa6c066b3052f8722b440bb4d22fc",
+    "web/src/chat/interactions/ClarificationCard.tsx": "6bdfc25976d41851b5f5282036c8e9c0a7bfcccaad8b39fc339ee53d04576798",
+    "web/src/chat/interactions/contracts.ts": "0a68b0b149a9d0fcdda6bcd38104b634128eabec50347a9f7b44c6b9a9799cc7",
+    "web/src/chat/interactions/DecisionCards.tsx": "9ae3194dd75bab4bea0df5bc564bb2ccb2527b994f758439e87d5d451bfbb1fb",
+    "web/src/chat/interactions/MemoryCard.tsx": "1ef15a2a0b78f79b24d709daa0aa853e3a3a0c2f7f8b14c13e6f31dfa4d86c80",
+    "web/src/chat/interactions/memoryCommands.ts": "7dd7d55a17edf5f26f294c82b6c0f988284ac5b7104ca227e0d05e2a122b301e",
+    "web/src/chat/interactions/memoryProjection.ts": "d9a7a8275ec101b474ff1c775a7989c23384c2f6b0055407b404987dd0bf4233",
+    "web/src/chat/interactions/MemoryReceipts.tsx": "b3755e947fd276e0997c5a0138690b0674ec0aff9bfc19c19907af03ef8146a9",
+    "web/src/chat/interactions/ToolProgress.tsx": "bff5b6e64ebca8dba6797975e0619115e33ee7e06a02bb7702d6868133153297",
+    "web/src/chat/interactions/useInteractionGuard.ts": "6606d87f62e3bb03e7e2ec089e89912c2ac0771789db640f37ae809338ccd2bc",
+    "web/src/chat/publicProjection.ts": "f2bc43e718576db96953ca8d13ee866b025237a50c18d1b819c422bc575fa019",
+    "web/src/chat/reducer.ts": "7d6300551f2cfceeef99954afd3fc2358918efe0fc11664640d1a90ad9265f82",
     "web/src/chat/sse.ts": "414354498f52185fbf6360b7c43d93003257dfe5c6c1e4a59cf83119e2e5bd1c",
     "web/src/chat/storage.ts": "07383479398282f730a7f5409fb999e5aab4f23908f394dd1ea8059cfb5752e2",
     "web/src/chat/transport.ts": "5849931d665aec4343b6d05390a996a52d82ce9fede38dd2bd199337b40c6a9b",
-    "web/src/chat/types.ts": "d2678eb5eafb63340db787857745f4ffe4ef420a52aed09b683d525436d112de",
+    "web/src/chat/types.ts": "d24906e306e4728c78773e1d9a88ac90bc7aaf9b248580d06641f9a249afdf30",
     "web/src/chat/useChat.ts": "90fa1fdb8977dabadf287ab9af32d74ecc9d8981eb1c4b88e88aee4c6ee20a72",
     "web/src/chat/v2.ts": "6423a13754b893ae7695c21f974c69a243425223aaef1020d5f7f01147eda6db",
     "web/src/components/Calendar.tsx": "2e209023ae78a3ae25cbee696e51b9930558825cc10e418bad51c534a000f447",
@@ -42,7 +53,7 @@
     "web/src/components/Composer.tsx": "801b7d7ca77b00b6fe03e1320f65a6a31a68b069e6e4e5f77b361a0f0d1d7ef2",
     "web/src/components/DatePicker.tsx": "3964ac7b5388765471070fa1c65a2f86812cd0872782ba758e1dd44e337b984f",
     "web/src/components/Markdown.tsx": "d3dc26cf3da70d183fd8c00de9b159704f4bff298838765f6e580960a2884b12",
-    "web/src/components/Messages.tsx": "583dda5dcf1c9411f6410d537e5d7a54b50336a1280b4817a1b1c92f5d05cbd6",
+    "web/src/components/Messages.tsx": "4a6c70d6682c96e619bcf6c19393ae5a800366a995132513427fd887f2b4ba6a",
     "web/src/components/ReportOptions.tsx": "c5f5e3eaa085cfe96e35d68267e291f1fae7b1b3435805a8c4d9732acf2c4bd0",
     "web/src/components/TarotCards.tsx": "aea0b51cbacc527a9afe4d25303f209259632c8525a114d11af1213e00c5866e",
     "web/src/components/TarotDraft.ts": "183bb05cb1ddb0659dcf698bc05cc129f69ccbd7b5844d614838a5bb3cde2008",
@@ -56,7 +67,7 @@
     "web/src/live/Cases.tsx": "ff69e8e4a65e4fba24b96440d062ad9dc7277354c23738e7eebc54bd3b869b6f",
     "web/src/live/Chart.tsx": "788ee9ce410bcf023e7ad938ca268b4d2a37f5a62da33245edb157454011f810",
     "web/src/live/ChartData.tsx": "f08ea3ba0bb0355dca5e4f56713acd35a176b1b99dd273b96aceb6ef4534590c",
-    "web/src/live/Chat.tsx": "b1f6c8a9c0773d2b9344d76d2c39517a6b942d288ab40e4c4fb392a75b9da479",
+    "web/src/live/Chat.tsx": "d87624f6114f070404e4fa12f2512ad2982f254eb68601f7573d50e01a4cde66",
     "web/src/live/common.tsx": "0e1289f085fba909e1b98bbf7d5d10e128f2de04f7dccde44f30a4d6ba3a63ce",
     "web/src/live/DateField.tsx": "4c56a86650c01ced9b7b6d9268455efda619e266826ad4fee389cb2e08221a9b",
     "web/src/live/LegacyPreview.tsx": "82b702beb74dff8c046e80fc2f09af99c6bc2f15e88117ceb6c870edf16f5460",
@@ -71,6 +82,11 @@
     "web/src/live/Today.tsx": "35653ab242aa4afac18089fac41866c1d8ba05e92b45457e2bca5789ea7ad102",
     "web/src/live/types.ts": "aecdc2c807cd8f977f82d367387fb590d66f0bdada46ad1b75ac36b502f9595d",
     "web/src/main.tsx": "a689c6e16d661c9557cd8716b2c1d56d1e3deb2d8fa8b21930bb2e22722f039c",
+    "web/src/night/ChatPreview.tsx": "60e9ef45581c2b189cf09eef7213962e47866ae8a3e5eb706038998ec532fe69",
+    "web/src/night/events.ts": "faaa5d93fa2f5f3ec0a9ac43d66886181abe97162a3dc0d568ea2484f4cd6537",
+    "web/src/night/night.css": "acb1f0d9054c9353c47ed8d6476bb278777671172d6ec40ec6d54868201a2e07",
+    "web/src/night/NightApp.tsx": "c8c13c727cf233b9cc38ce3b61cd432d46dea8f0504d94db792855aaab8f4510",
+    "web/src/night/port.ts": "aea1f1208dd8c7c3deb93cb1b8b20cebf0c068805872c4c670afdfa7cb69044d",
     "web/src/pages/Cases.tsx": "2994248a5f1fc54035a626d93e77484dedd6ab634045c6354def55f6cb773580",
     "web/src/pages/Chart.tsx": "ecd68fadffd478a02ee865dc8c447ee1caab52877a072c4931c552d81f109cf7",
     "web/src/pages/Chat.tsx": "e2bbb8c133bbd8dbbd70971ab6d7c54ff402baf32033064d9c3244e76f4450a9",
@@ -102,7 +118,7 @@
     "web/src/styles/controls.css": "c3ba07064f5a63fc0c279f9d49f792a2a426744809203f504bbf65f9ff3df55e",
     "web/src/styles/design.css": "67a6cf567e666e8bf48b555199117ed593c58601cfbb83ad53b3441a9a09499a",
     "web/src/styles/live.css": "2bf1da189a49f7d548f4550bbd829ad481e4f8245036066cb44fdf9e34261233",
-    "web/src/styles/messages.css": "96ead24a190fa99f06fee8983fb0940e4e49d56cf7ebe85a6ed55f970f36da34",
+    "web/src/styles/messages.css": "cda577ade28d1024c7fc2ff1403f3d62d20a9e1f4a0ea75fac2ac25303166e57",
     "web/src/styles/pages.css": "ee387cb7bcf4470a93f89237293c2ead956299f2baf88b93aca1a864d0063538",
     "web/src/styles/selection.css": "fdb8ce0e9a7319ef27bf5f16db88c657ee0db1e106c4b98278c136780905b848",
     "web/src/styles/tokens.css": "fa49e318b972f696495662e7c85fc900ff33536726cbbe95611ede229fed62cb",
@@ -124,58 +140,61 @@
     "web/tests/e2e/components-visual.spec.ts": "b987248203f7987e18150cdc231ccb30716aebe6eb85ad1bba7421f291e7ddb7"
   },
   "build_hashes": {
-    "static/dist/assets/Calendar-CeKhg1NJ.js": "f0eb531e319ee69fae94c362aecd38e46479e68dec3a0319ee41931a918116b5",
-    "static/dist/assets/Cases-BTCy1lg1.js": "5dfb36f353ba0a8155cb59ca4c98c2f7b06099c08e89daa3f1d15cf45d48afe2",
-    "static/dist/assets/Cases-Cl3jSEXq.js": "d028d25c94526521f51ef589d92d443554a18839a82cd2ab8f31e139af762d2c",
-    "static/dist/assets/Chart-BLIVwXai.js": "9f17a83fe61b73a0c3cfdca0f13440905f07f0ccb76dc4de461bcbc08981b5b0",
-    "static/dist/assets/Chart-wtUgs2Y5.js": "53140594d37a4b841c9c877a80f4547fe8a74b0201951b859421b6c851ca62ac",
-    "static/dist/assets/ChartDemo-DTEzEJww.js": "560d1b0f915ed78b74d903bbcebea848067b26d6ce4ae111cda616e55a98a3ac",
-    "static/dist/assets/Charts-CIQ3DArw.js": "a4baeb7196a4c061e0db62da23d608a33d9f204e6094adb0d13a88dbc0640a63",
-    "static/dist/assets/Chat-B7Sbw8M1.js": "622da53249b29b8ce01570aa7c65fa938f0e5b5402cb52f53c915d7b4f8094c2",
-    "static/dist/assets/Chat-CcG3f-8T.js": "0db1ae95675fa8dbfd42a4cf77df60818a1ff10cad4efdd12519db145b765586",
-    "static/dist/assets/ChatPreview-BTSJM1ff.js": "a1d5e6181652d6b7bdddbe0c6c02f33532f8ea71b7b8e68c35a0b3ce5205a898",
-    "static/dist/assets/chevron-down-XyyZYnqI.js": "0cb66dee86154e71e1dd8f823a8b7d490c3820ca6fba104027ad15e27affc87c",
+    "static/dist/assets/Calendar-DzoX_QxI.js": "395e3d9dee2f98bd0811667769346a750ad72e6b6e764a8a1246d8bdce8a7112",
+    "static/dist/assets/Cases-CidbYIXc.js": "27f4388edea66fa1c52671e93432dc360b7d3476525670cd3eff7d0aa3aef9ed",
+    "static/dist/assets/Cases-hz2rQpog.js": "d32cca2439ac13f546daa6b529f5cec4639a664568c5fc80e55ea922b036d3f5",
+    "static/dist/assets/Chart-BmBHt7Wc.js": "3dc86f7dd861514479fc31f455a87b3a0f38eb2fb2a9343070c13d43cd7d4cff",
+    "static/dist/assets/Chart-D0tf5mUD.js": "076ed99508f0f8fd97d88418473440e921260ab5ffece81e706d6f00b8b67c2a",
+    "static/dist/assets/ChartDemo-C5jt7qHX.js": "0fe8b22f656f9e1802d186630686f60a924dc958c4aceff3f37c02a189f86d3b",
+    "static/dist/assets/Charts-D4TLGTp_.js": "72d6c9e7932562fbb4fc49f60c343d79e03bca6375c853f68b8f01c8172186c6",
+    "static/dist/assets/Chat-BCNzjECs.js": "0c4808e0363a52248094630eed226141a50e52a5d57ea1f51809171206bf0e83",
+    "static/dist/assets/Chat-udB2wGGT.js": "16e74bd9b3167075bf63dc4c1dd779081bcec30ac2ae9be5235e93ed26647c9d",
+    "static/dist/assets/ChatPreview-DXpc0IEL.js": "081dd4774123493441e39684891c31478018686b1b08e46e34d34f20a4f3bffd",
+    "static/dist/assets/chevron-down-nr4Xy1I1.js": "5ffbffbdd3fb58fe130c5b9c56a9b932f765bcca0dbc5342276bff66cc570a26",
     "static/dist/assets/common-Cmd9HAar.css": "cb82c6da3859e24ff4b64ab8107434e98af8bf11c2667f8b92a72cfe08d4aad2",
     "static/dist/assets/ComponentNotice-BIoJSqjK.css": "110d8be426ba4a2d5063ad0a7b31d999fc0babf1be9be7fe7b5538650db493fa",
-    "static/dist/assets/ComponentNotice-Bmts4O1G.js": "37f68a14d2a9be7baf44eaac726b01e8fdabe74bc1be8a028c9b4989b00c4b16",
-    "static/dist/assets/Composer-CnxyQQ_I.js": "e15b453c9420655946f9d21a0d186e62189beabbdc2f73420519c7be4de3d789",
-    "static/dist/assets/DateField-Dx08CGgD.js": "3650729c74d434e25438855febb691b0307525213552166fed22eaf7c8be67e9",
-    "static/dist/assets/Design-BfSbxAY-.js": "486c3dc85521c1c3020d36c15d5fecc36d5ba1d01ac4b9dece7a3690a76a2534",
-    "static/dist/assets/FlipFace-DffGUU7f.js": "8bfa1abf5918634c47ccfc21e212191d1bf18a472f70249c4ce1388a051a0c35",
-    "static/dist/assets/index-BHztdyFW.css": "c0945f9e588cab4ddadaca9f8a601f33963502cfe0dd0a87dac76952a73ee80f",
-    "static/dist/assets/index-CFp0Lw_x.js": "8adcba5f0b371d15e2cc3e48103ca6036bad57b5e62f4805d83d67af3199d08a",
-    "static/dist/assets/index-_EAD2idb.js": "8838bfbd3f90d354e5c820964f14cbae45da906116c7b03eeac5cccbf44821e6",
-    "static/dist/assets/lock-keyhole-jnF49sbB.js": "62baad41e799445c53d5586d4ace68df388f8abca145d3c66fc4eda793983901",
-    "static/dist/assets/Markdown-kCoBp7rF.js": "5352285e5e4790aed1da1cf9d6d72ce771ba9c9f54a5f24fed5245e655dd005c",
-    "static/dist/assets/Me-FmQa6FQk.js": "9bc6399677ed7c72fdea0282937697c7791465eed656c3c7a432bb573e98fcee",
-    "static/dist/assets/Me-fUyL1dAX.js": "be60067839ae88198a8957888acd50ddc2803a0ce9272188fe46fd1e9b244ffc",
-    "static/dist/assets/MemoryPreview-BKtlJaA3.js": "7ab47dadceb69ae4f2908aca0673b4cfa24f0842e03e2ca6c91e33af68469928",
-    "static/dist/assets/Messages-BAqaqpZb.js": "28d5f86ddf5f41699002f7951a6c49784a4d23d2a69eae882c26aea878b56ff1",
-    "static/dist/assets/OrganizePage-D3p4SzzC.js": "c6c00567a6a008c4408649a6ee7782e0482b749dd33b2817e3fc6924272a53b7",
+    "static/dist/assets/ComponentNotice-CmfnrNwP.js": "a2cf46a25d7e43b1a077ea89cb111dd71fbd14514950aed72e6cc29af2ad5212",
+    "static/dist/assets/Composer-Cu-_ur_j.js": "7027e9b60c97544036dbfa560ac4c1dd764b539ff1f51c676b37ac9a29abf9a4",
+    "static/dist/assets/DateField-DNnuHn1v.js": "832fa6ef9974278ca5fcb5d60f289110e4a9d8b5b28b9ef35d5beb09acb3b358",
+    "static/dist/assets/Design-I-cuSPhG.js": "31492b08cf760dbf3db945839613ef46d07d657d356780787f2ab9f8ac2f4d3b",
+    "static/dist/assets/FlipFace-DA1hWDq1.js": "c6495d1b1642b5fa1899b8bbb9f7a47f6e04f27e54946af9c2f37f9bfdf3a681",
+    "static/dist/assets/index-C1l-Q405.js": "887b254c785c1330c2256106d631a4449075198806c899e560f5b72aba7ef462",
+    "static/dist/assets/index-CqF4dI36.js": "60c4b9df40fa7952f5d256eacd7f636d7b36b215461d440f9fae94ee61f42eb5",
+    "static/dist/assets/index-DM0sbl6x.css": "63f26fa658d4300c2f13cb9b5a8336570ee3ee005e0911d52dac92dee49fa11b",
+    "static/dist/assets/lock-keyhole-CYfmrLwM.js": "9d3851be1241a6e965c74cf77aa14c52348f3eed5e27eeccd9156e559f752e71",
+    "static/dist/assets/Markdown-DzdOrxV4.js": "e1f51131002ec25000cbe34f97f81def16747e787aab3617bfe1f0de0f470e17",
+    "static/dist/assets/Me-BXQe989D.js": "29b4d2ba6d261bd8df8af90b927137970a0e592f84c775287f5d4057cf524921",
+    "static/dist/assets/Me-CvTR2r1O.js": "4caa6a289fede70777295f39c684336c88d1d420970fcfeadf8fccf4a13db128",
+    "static/dist/assets/MemoryPreview-ByRTGVc6.js": "42358205c44b3e7468ebb20737ff3e0104faf249d4e14d01c5f955fa455a365a",
+    "static/dist/assets/Messages-svBgWyzs.js": "217afa62141dd8272515340f1443899adf33a73d6c51671b619eebffcfbf92eb",
+    "static/dist/assets/NightApp-B0kS7Hf7.css": "79d1a25b473cafd20dc2b91aa3c54dcb19c5c579ba7c4b2f9cd3e36b8b2b848a",
+    "static/dist/assets/NightApp-CfY2zfvK.js": "5e1fddf4fa977e7d8c0a292afffdb261d6a2f0c8dc8b79dfbdc0f34865457165",
+    "static/dist/assets/OrganizePage-SWJhQykz.js": "5069b46b83d84ef8d8b4ddcc6d1aa6a111d95188125ef16cced8d5caadbe08ba",
     "static/dist/assets/OrganizePage-Xf4G6qj_.css": "9432693f29a1cc6f8d6fd75e8998de199c8bf73997cbd7d0cb6cc8b7fc5d282b",
-    "static/dist/assets/PreviewNotice-Dwp1w8HB.js": "2a6cf20562ef37dec45313073ae58ae0eca106aca40e2ae6906e6e6b027df6c8",
+    "static/dist/assets/PreviewNotice-CP8_Nrbm.js": "f5ab115ee51b0272ab2330726045eaba4d563e7fcb6d5f86fc77839819b7afbd",
     "static/dist/assets/react-DnxA9v5e.js": "753bd94c54c1746ba790ce3be16209c47ecd154709b319251a98c86b24408187",
-    "static/dist/assets/Selection-DC7-44Gf.js": "31309fc7db9d14182653c43eaa032937c0f1ef232c8211fc3827c44af37bec72",
-    "static/dist/assets/Settings-BEdeV8ME.js": "3566267e377a2dec25f5e1583a0b62ea6f2e0667e732fb34b8cd1974023359b2",
-    "static/dist/assets/Settings-BY0_9Fb5.js": "ee70bfa0520abef03a39ce2cffa9fe60074f011bc28f9ea954044584de83dc37",
-    "static/dist/assets/SpaceNavigation-DDCTDuSb.js": "a2ecd3c3b63203ab0b81a9b3727d085cd4506261c99d67d68729b450af97a19f",
+    "static/dist/assets/reducer-BZ4mkZUG.js": "b12bd57b85fba7281d99e03151d3c46373e8413f76f5f322e782b423dd97df38",
+    "static/dist/assets/Selection-Dtw1Q-UF.js": "4bd6950488278e0ae085c57647ba7d2bc803fa9ebb93c1b7e7bb8919a1d1d91f",
+    "static/dist/assets/Settings-C_FhXfrQ.js": "1c08154eab5b1fac3e35a52c4bbaf70f24d02483fe1031064b46f76f07a9e972",
+    "static/dist/assets/Settings-DQDmQ2iF.js": "6347b792ebdb6b0e66c764bb5bebca013b9ad535af185e1d289ac844e4e10394",
     "static/dist/assets/SpaceNavigation-p_7PkAVI.css": "49493df00aa7f9de9a1ec95a1cb1ed987c24760804177ee5810fdcbf623879e1",
-    "static/dist/assets/square-DkwzmR52.js": "efd476411c8d173f3874ffd126d4c5090355ff8d2785751c69877ce7e0a04dd3",
+    "static/dist/assets/SpaceNavigation-ypdWx0eW.js": "54c8e7382f74c9f544b72d27011f2787bf585f5e03794697a6bf0e65d19a2901",
+    "static/dist/assets/square-ZYaQK_jU.js": "77be1572e3942ff1e87de90670a3c0c765afd411c5d034e377a1f3c876634c58",
     "static/dist/assets/sse-MLsGSJ6H.js": "c34e1c507e173c5672c70dbc01a1f7af63ea22e02e7235744b71d1a6bb3ab313",
-    "static/dist/assets/store-B4BHugmT.js": "0c7bbacdc69482274eb7468c13fee309615691aed1b404382f17dcbcee4ba666",
-    "static/dist/assets/Tarot-B2Inf9vF.js": "0bf5d69c21ae1d70237db48a813af6b4925914c53e7d01b2c136f5e802b86664",
-    "static/dist/assets/Tarot-CW45ocBg.js": "9542aabfb381b40d5df748a79bec638f71c764d999315faba346d72d1c3bfe53",
-    "static/dist/assets/TarotCards-Bob_eg4T.js": "acf8b60a05ae3c84821c87b796e2a85c70b4042f84a4ed73aaa89e3ed4ce0ef1",
-    "static/dist/assets/TimeBasis-BMyLUONv.js": "383c9967ea5a575f574cf98c0a403d09fac293fa87dd5ee6ce4732aeabd6aa2e",
+    "static/dist/assets/store-BGeJ6rGM.js": "5b2be17d76586fbf9f0730902291f2203bd3d415d6f22466f56f32dea23a3d4f",
+    "static/dist/assets/Tarot-C1tD5OM3.js": "a357096db2958db8666e5fc0eeba5d266f0c78c1f72ceb3b1e4134515dc8cbdc",
+    "static/dist/assets/Tarot-DjXJWaGF.js": "b535bfdaab5590c473f7847e6f181182f841f6187e258ba4bf34753d6a80e121",
+    "static/dist/assets/TarotCards-CSYKXRIn.js": "8429d05d07ba133dd2a92c0afd665641c3fa83c1e4df87aba3d320ad8d412677",
     "static/dist/assets/TimeBasis-DFAJCxas.css": "828231e7a74fcb1e7a6c9bec4ad49ce8d0ceebe6cfce07f99bc18c2abb7d8a6a",
-    "static/dist/assets/TimeField-DNhoRUKl.js": "9ac99e6c87fdf7850e90dcf54d99782fac0c8481552d3853d039bf3a8d221089",
-    "static/dist/assets/Today-k6CDsHYz.js": "39e78016158492c56799d3bafc392f0c8ddbb51a31b61fc78e41824905710742",
-    "static/dist/index.html": "79f407d790c032d1a285c275aa721d64dd6e9897651a2ebf0832ac2cc9bb2ba3",
-    "static/dist/.vite/manifest.json": "5d097773d6fa032592f15eda1db21da01fbc1eb35362fc8cc9cce0aa4dffe0c4"
+    "static/dist/assets/TimeBasis-GVfxqNxX.js": "360b740178464f75371635c78230c89b000e0e91804834925457b0c6f76efe0c",
+    "static/dist/assets/TimeField-BFrRDyjQ.js": "ebfc66d54561c203904c39a6a9500110c9d35f43dc736eba0be1a79973083b95",
+    "static/dist/assets/Today-B-XUt2FW.js": "19b3af35f95555a3c8cf954abf81c12a098e9ecd8c0a6898c7bcf34047ea0e5e",
+    "static/dist/index.html": "fa16010363ea3f8198e5b2f4b3cc79f45d0d28cd25688c30f0c7207e6147e325",
+    "static/dist/.vite/manifest.json": "28285f26ba2fa127c60ec36b549604b7cea22be3b0a06a12e5f69a75601f0f88"
   },
   "captures": [
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "dark",
@@ -196,7 +215,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "dark",
@@ -217,7 +236,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "dark",
@@ -238,7 +257,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "dark",
@@ -259,7 +278,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "light",
@@ -280,7 +299,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "light",
@@ -301,7 +320,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "light",
@@ -322,7 +341,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "astro",
       "route": "chart?tab=astro",
       "theme": "light",
@@ -343,7 +362,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "dark",
@@ -364,7 +383,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "dark",
@@ -385,7 +404,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "dark",
@@ -406,7 +425,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "dark",
@@ -427,7 +446,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "light",
@@ -448,7 +467,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "light",
@@ -469,7 +488,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "light",
@@ -490,7 +509,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "bazi",
       "route": "chart?tab=bazi",
       "theme": "light",
@@ -511,7 +530,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "dark",
@@ -532,7 +551,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "dark",
@@ -553,7 +572,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "dark",
@@ -574,7 +593,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "dark",
@@ -595,7 +614,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "light",
@@ -616,7 +635,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "light",
@@ -637,7 +656,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "light",
@@ -658,7 +677,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-choice5",
       "route": "tarot?spread=choice5&step=reveal",
       "theme": "light",
@@ -679,7 +698,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "dark",
@@ -700,7 +719,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "dark",
@@ -721,7 +740,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "dark",
@@ -742,7 +761,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "dark",
@@ -763,7 +782,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "light",
@@ -784,7 +803,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "light",
@@ -805,7 +824,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "light",
@@ -826,7 +845,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-focus1",
       "route": "tarot?spread=focus1&step=reveal",
       "theme": "light",
@@ -847,7 +866,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "dark",
@@ -868,7 +887,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "dark",
@@ -889,7 +908,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "dark",
@@ -910,7 +929,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "dark",
@@ -931,7 +950,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "light",
@@ -952,7 +971,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "light",
@@ -973,7 +992,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "light",
@@ -994,7 +1013,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-picker",
       "route": "tarot?spread=reflect3&step=pick",
       "theme": "light",
@@ -1015,7 +1034,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "dark",
@@ -1036,7 +1055,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "dark",
@@ -1057,7 +1076,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "dark",
@@ -1078,7 +1097,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "dark",
@@ -1099,7 +1118,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "light",
@@ -1120,7 +1139,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "light",
@@ -1141,7 +1160,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "light",
@@ -1162,7 +1181,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "tarot-reflect3",
       "route": "tarot?spread=reflect3&step=reveal",
       "theme": "light",
@@ -1183,7 +1202,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "dark",
@@ -1204,7 +1223,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "dark",
@@ -1225,7 +1244,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "dark",
@@ -1246,7 +1265,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "dark",
@@ -1267,7 +1286,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "light",
@@ -1288,7 +1307,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "light",
@@ -1309,7 +1328,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "light",
@@ -1330,7 +1349,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "today",
       "route": "today",
       "theme": "light",
@@ -1351,7 +1370,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "dark",
@@ -1372,7 +1391,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "dark",
@@ -1393,7 +1412,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "dark",
@@ -1414,7 +1433,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "dark",
@@ -1435,7 +1454,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "light",
@@ -1456,7 +1475,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "light",
@@ -1477,7 +1496,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "light",
@@ -1498,7 +1517,7 @@
       "violations": []
     },
     {
-      "run_id": "2026-10-18T11:03:32.543Z",
+      "run_id": "2026-10-18T14:50:34.034Z",
       "state": "ziwei",
       "route": "chart?tab=ziwei",
       "theme": "light",
