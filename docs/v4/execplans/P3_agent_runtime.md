@@ -55,6 +55,10 @@ D4不开2小时使用提醒、不登记紧急联系人；上下文连续3次60k�
 
 ## Progress（进度）
 
+- [x] (2026-10-19 07:39复核) 夜M4工具应用子切片220项/35.55s通过：事项、澄清、本地提醒和U7真实注册；16定义中按真实牌阵互斥暴露1个，正常每轮15。见2026-10-19-m4-tools.md/json；chart_compute和U4仍未完成。
+- [x] (2026-10-19 07:39复核) Snapshot/LoopCycle组件59项/15.83s通过；精确entity依赖避免case聚合碰撞，完成步骤+实际回执+当前revision证明自写，冻结前缀不重写。尚无RuntimePort接线，不能算完整M3/M7。
+- [x] (2026-10-19 07:42复核) 提交/信封组件47项/3.31s通过：原子写助手消息与core4结果、仅本轮别名、真实回执、当前租约与撤销闸门。旧commit_run仍只接受core3；所有读取端、一次再生成调度和U41均未接，不能勾完整夜M6。
+
 - [x] (2026-10-18 夜间) 队列9 B1离线候选：已有PG增量入口、Hermes wrapper同切方案、磁盘扩容/整理对照；28替身用例通过。工具默认只校验，实际Linux/备份恢复/解释器完整性与容量仍No-Go；未执行B，不改变固定b9候选。
 - [x] (2026-10-18 夜间) 夜M2七工具应用/PG子切片：136项相关回归通过；真实MemoryService默认普通保存/敏感proposal/撤销、只读来源投影、持久scope与规范化参数指纹收口。见`evidence/P3/2026-10-19-first-tools.md`；U4解析与完整Loop仍未完成。
 - [x] (2026-10-18 22:56 +08:00) 夜M3离线分层/D2子切片：层序、40/10窗口、有效派生血缘、实际注入依赖、TokenMeter阈值接口与真实PG持久streak已实现；证据`evidence/P3/2026-10-19-context-layers-d2.md`。未知会员framing仍拒绝真实发送，完整Loop/槽位/时间检索/无痕未接线，不勾完整M3。
@@ -75,6 +79,8 @@ D4不开2小时使用提醒、不登记紧急联系人；上下文连续3次60k�
 - [x] (2026-10-18 本轮) 外部草案纳入v4.2增补、索引§4a决定、手动批次闸门和P5b B后续依赖；未实施。
 
 ## Surprises & Discoveries（意外发现）
+
+2026-10-19收口：case:ID在v3表示事项聚合版本，直接用case实体revision会被两条feedback造成3!=1拒绝。新增entity:case:ID精确命名空间，保留v3旧聚合语义，并同步隐私闭包与快照解析。新写注册前发生外部修订也必须核对receipt.revision，不能把读取到的最新行冒充自己的写入。23:07至07:09没有小时记录，恢复时本机PG已停；只恢复既有本机测试cluster，没有服务器连接，不补造连续运行证据。
 
 B1首次安装工具不能用于现有PG增量。新增独立控制器分backup/migrate/backfill三道审查闸门，不调用freeze/install/publish，不开业务。Native目前只有替身证据，PATH二进制、候选venv完整性与完整owner覆盖须在任何实际B前核验，不能凭28绿解除No-Go。
 
@@ -103,6 +109,8 @@ P2 `save_fact`仍把preference/constraint以外种类视为敏感，需要确认
 C21/E1冻结逻辑主动拒绝P2源码。P3基于P2，不能调用其旧v3冻结入口来评测v4，不能修改该拒绝来迁就新代码。新v4 target与报告必须独立；旧P1 k3快照仅保留历史、未运行；后续E1需要pre-P2旧业务加经过审查的P1b兼容桥，另建k3-256k身份/manifest后仍等用户逐批开始。
 
 ## Decision Log（决策记录）
+
+2026-10-19收口 / Codex：提交可验证组件，不宣布P3完成或启用v4。无痕/inbox/Feishu合并、完整RuntimePort、charts_service、所有core4读取端、U41、dispatcher和v4评测留未完成。自身写入只接受同epoch完成Journal与mutation receipt一致、当前entity revision一致及对应core_operations证明；原事项写入后日志完成前崩溃目前拒绝恢复，不改旧scope/撤销规则来掩盖。
 
 2026-10-18 夜间 / Codex：B1增量控制器作为固定b9包外的独立受审工具，以源码合集hash绑定审批；backup→隔离恢复proof→迁移7与授权→dry-run审查→apply两次与retarget，始终保持全部writer停写，真实发布另获授权。不增加tzdata到B1；磁盘两方案只文档，明天用户裁定。
 
@@ -138,6 +146,8 @@ C21/E1冻结逻辑主动拒绝P2源码。P3基于P2，不能调用其旧v3冻结
 2026-10-18 / 范围决定：chart_skill在P8；consult_specialist可留P8，正式回执写清未实现与理由，不静默把独立专家分析假装普通工具。P3只做未知别名移除/告警与空回答兜底；不调用v3 `_validate`、不提前启用P6 critic/legacy lint。撤销触发的一次重新生成属于提交安全，不是任意风格评审。
 
 ## Outcomes & Retrospective（结果与复盘）
+
+2026-10-19收口：第二批工具220、Loop组件59、信封/提交组件47分别通过，不能简单相加当全阶段成绩。B1离线28已推；P1b U38/U39核心已推，旧schema断言修复头b8d98a5完整Core CI39175535078成功。完整主线目标未完成，真实模型、stage/生产、真实飞书仍0；当前仍Draft且未合并。
 
 队列9离线候选已形成，运行说明、验证和磁盘方案在release/B1_incremental_*.md/B1_disk_options.md；只证明替身控制流，实际主机/PG/恢复能力保持未验证，不作执行授权。
 

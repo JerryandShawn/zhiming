@@ -221,7 +221,11 @@ class PostgresRepository:
 
     def _version(self,c,owner,key):
         prefix,_,entity_id=key.partition(':')
-        if prefix in ('fact','message','report_schedule','thread',*DERIVED_KINDS):
+        if prefix=='entity':
+            kind,separator,ident=entity_id.partition(':')
+            if not separator or kind not in ENTITY_KINDS or not ident:raise EvidenceError('Invalid exact entity dependency')
+            row=c.execute(sql.SQL('SELECT revision FROM {} WHERE owner=%s AND kind=%s AND id=%s').format(self.table('core_entities')), (owner,kind,ident)).fetchone()
+        elif prefix in ('fact','message','report_schedule','thread',*DERIVED_KINDS):
             row=c.execute(sql.SQL('SELECT revision FROM {} WHERE owner=%s AND kind=%s AND id=%s').format(self.table('core_entities')), (owner,prefix,entity_id)).fetchone()
         else:
             row=c.execute(sql.SQL('SELECT revision FROM {} WHERE owner=%s AND dependency=%s').format(self.table('core_versions')), (owner,key)).fetchone()

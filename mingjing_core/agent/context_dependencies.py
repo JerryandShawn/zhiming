@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from mingjing_core.repositories.dependencies import dependency_entity_id
+
 from .context_types import BudgetResult, SourceSnapshot
 
 
@@ -25,4 +27,4 @@ def injected_versions(snapshot: SourceSnapshot, budget: BudgetResult) -> dict[st
         if row.get("source_fact_id"):
             links.add(row["source_fact_id"])
         pending.update(links - retained)
-    return {key: version for key, version in snapshot.versions.items() if key.partition(":")[2] in retained}
+    return {key: version for key, version in snapshot.versions.items() if dependency_entity_id(key) in retained}
