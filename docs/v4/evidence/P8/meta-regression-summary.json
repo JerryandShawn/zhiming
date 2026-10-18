@@ -1,12 +1,12 @@
 {
-  "source_commit": "3b8b6a10a581e299e15081833878fcae633ee9ea",
-  "local_equivalent_source_commit": "be7ae91260fe290b6c64cba7949e2cd6a90a1af9",
-  "source_tree": "2a836ea0fec303d1a6a8a2c34bd3996c120de000",
+  "source_commit": "5a5334bcb1426b94fac1016992ab6c6b4cb5ec9e",
+  "local_equivalent_source_commit": "0c6224f2d1882eb381306d1973ea6e8e2078a094",
+  "source_tree": "b0698e6d5657740907222544b55d01dfb22d20ce",
   "v4": {
-    "passed": 559,
+    "passed": 570,
     "skipped": 0,
-    "seconds": 103.67,
-    "command": "<Core Python> -m pytest tests/v4 -q",
+    "seconds": 98.11,
+    "command": "<Core Python> -m pytest tests/v4 -q (after timezone precedence fix)",
     "database": "127.0.0.1:55480/core_test_meta"
   },
   "scripted": {
@@ -25,7 +25,7 @@
     "total": 60
   },
   "ruff": {
-    "python_files": 67,
+    "python_files": 69,
     "status": "passed"
   },
   "protected_files_unchanged": 141,
@@ -43,9 +43,29 @@
       "sha256": "19e0ea49813698e725bccac54bac41bb3378dd608e380fdd6582d30f8508fcec"
     },
     {
-      "name": "v4-complete-final.log",
-      "bytes": 681,
-      "sha256": "1b316c5a688347bbd3671b1cc1fe5aa72baecc3efa8ce323495f222ef578e9f0"
+      "name": "v4-pin-final.log",
+      "bytes": 680,
+      "sha256": "058bb99f6995a81b8353306ca4668a91ece37cc2ccf9654a195a55b955b481dc"
+    },
+    {
+      "name": "actual-public-cli.log",
+      "bytes": 60,
+      "sha256": "d86eaa08b5b8ad4267c07de4784c8f9a34d922cc68f11114ab00c9fc4453e174"
+    },
+    {
+      "name": "e2-pin-final.log",
+      "bytes": 182,
+      "sha256": "d66e8f04757e97d65355ffcd5c3ea991d259dc0278bac2702b7b04c15d5a6317"
+    },
+    {
+      "name": "scripted-pin-final.log",
+      "bytes": 2082,
+      "sha256": "63df5da6b4246d25dde4b9fbf3e3cabff2b6aab0b25563f3b09b31c480010f81"
     }
-  ]
+  ],
+  "public_actual_charts_rerun": {
+    "command": "<Charts Python> -m mingjing_core.adapters.charts.rectification_workbench.evaluation_charts --output <report.json>",
+    "people": 10,
+    "ER1_gate": false
+  }
 }

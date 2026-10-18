@@ -18,6 +18,10 @@
 
 ## DST与历史时区
 
+跨平台来源选择已修正：每次调用读取当前 `PYTHONTZPATH`，显式非空覆盖只接受绝对目录，按顺序查找实际文件；导入模块后修改环境变量也生效。非法相对目录、显式目录缺少目标文件均拒绝，不静默改用别的数据。显式空串禁用系统目录，只允许包数据。没有显式覆盖时优先使用已安装的 `tzdata` 包，记录包版本、IANA版本和实际文件SHA，避免Linux系统旧数据库抢先覆盖部署所锁版本。
+
+仅在没有显式覆盖且包不可用时才读取系统目录，标为 `system_unpinned_fallback`，明确写出“系统数据未锁定、未证明跨平台一致”。本函数记录包版本但不冒充已校验部署锁文件；主线仍须安装锁定依赖。新增9个展开用例使用临时目录和真实上海tz文件，故意标记系统版本 `unpinned-system-test`，复现系统/包冲突，核对包优先、导入后显式覆盖、空覆盖、无包回退及失败分支。Core/Charts桥也在伪旧系统目录存在时比较同一包文件的fold瞬间与ID。该模拟不是Linux CI实跑结果。
+
 真实IANA数据验证了下列规则；全部是合成输入/公开历法日期，没有使用用户出生资料。
 
 | 场景 | 实际观察 |
@@ -50,8 +54,8 @@
 
 ## 验证与交主线
 
-最终定向命令 `pytest tests/v4/test_p8_time_basis.py tests/v4/test_p8_time_basis_process.py -q`：27 passed、0跳过、1.70秒。其中25个展开用例覆盖时区与NOAA数值，两项Core桥在真实Charts环境执行8项原生盘面测试，并比较同一tz文件在Core/Charts得到相同fold物理瞬间与ID。8项原生测试也单独运行通过。Ruff E/F/I/B/UP/SIM与7文件默认format通过；新增文件均≤400行、函数≤60行、行≤120字符。
+最终定向命令 `pytest tests/v4/test_p8_time_basis.py tests/v4/test_p8_time_basis_process.py -q`：36 passed、0跳过、1.92秒。其中34个展开用例覆盖时区来源优先级、历史换算与NOAA数值，两项Core桥在真实Charts环境执行8项原生盘面测试，并比较同一tz文件在Core/Charts得到相同fold物理瞬间与ID。8项原生测试也单独运行通过。Ruff E/F/I/B/UP/SIM与7文件默认format通过；新增文件均≤400行、函数≤60行、行≤120字符。
 
-本模块源码、测试与参考表manifest digest为 `d6021c49dd9836b0eef21720a735cca63b5ddc1b7cbb8feff7fedfdd78534a11`；最终运行前后未变。机器证据 `time-basis-crosscheck.json` 含每项命令、原表缓存读取、时区SHA/IANA版本、历史样例和风格检查；原输出见 `time-basis-tests.txt`、`time-basis-native.txt`、`time-basis-ruff.txt`、`time-basis-format.txt`。旧三套Hermes引擎、旧ChartAdapter与旧worker相对HEAD换行归一后全部不变。
+本模块源码、测试与参考表manifest digest为 `37decbe7ace645ed42e98fd11f76482cad1bea5170f5ab25e3beddd1b65ba237`；最终运行前后未变。机器证据 `time-basis-crosscheck.json` 含每项命令、原表缓存读取、时区SHA/IANA版本、历史样例和风格检查；原输出见 `time-basis-tests.txt`、`time-basis-native.txt`、`time-basis-ruff.txt`、`time-basis-format.txt`。修复前27项运行的摘要作为历史验证保留，当前验收以36项为准。旧三套Hermes引擎、旧ChartAdapter与旧worker相对HEAD换行归一后全部不变。
 
 已核实 **Core锁与Core运行时已有tzdata==2026.5（IANA2026e）；仅Charts锁/运行时缺失**。本次Charts子进程通过显式 `PYTHONTZPATH` 只读Core包的zoneinfo数据，没有安装或改动任一venv。主线仍需把Charts同版本依赖锁定、安装并在Linux CI验证；当前证据只证明本机两个解释器在同一数据文件下结果一致，不能声称Linux CI已通过。`rectified`领域枚举与资料确认迁移仍由主线处理，本模块未改domain、locks或资料数据。

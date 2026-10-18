@@ -112,7 +112,10 @@
     "core_tzdata_version": "2026.5",
     "charts_tzdata_installed": false,
     "charts_test_data": "read-only Core tzdata zoneinfo via explicit child PYTHONTZPATH; no environment installation or lock edits",
-    "linux_CI": "not_run_this_scope"
+    "linux_CI": "not_run_this_scope",
+    "selection_policy": "current explicit absolute PYTHONTZPATH files; otherwise package before OS; empty override forbids OS fallback",
+    "unpinned_system_fallback": "only without explicit override and unavailable package; source and cross-platform limitation recorded",
+    "regressions_added": 9
   },
   "historical_cases": [
     {
@@ -135,7 +138,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [
             "该钟表时刻在时区跳时中不存在，需要核对记录，不能自动平移一小时。"
@@ -171,7 +176,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": true,
@@ -197,7 +204,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": true,
@@ -225,7 +234,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [
             "该钟表时刻在时区跳时中不存在，需要核对记录，不能自动平移一小时。"
@@ -261,7 +272,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": true,
@@ -287,7 +300,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": true,
@@ -315,7 +330,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [
             "该钟表时刻在时区跳时中不存在，需要核对记录，不能自动平移一小时。"
@@ -351,7 +368,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": true,
@@ -377,7 +396,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": true,
@@ -411,7 +432,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [
             "历史时区数据可能有误差，不能代替出生记录。"
@@ -447,7 +470,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "f4068f73246db97417f73467453564c57d6646ce4909b9fa2536923efcd7eb4f",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": false,
@@ -481,7 +506,9 @@
             "iana_version": "2026e",
             "tzdata_package_version": "2026.5",
             "zone_sha256": "a04c2c72f4f76a83178d036dd97d157ee1f32e478e44dda7a5c10923687ee6cf",
-            "historical_accuracy": "tzdb_convention_not_birth_document_verification"
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
           },
           "warnings": [],
           "requires_confirmation": false,
@@ -494,7 +521,7 @@
     {
       "name": "tests",
       "command": [
-        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
         "-m",
         "pytest",
         "tests/v4/test_p8_time_basis.py",
@@ -502,8 +529,8 @@
         "-q"
       ],
       "returncode": 0,
-      "seconds": 2.531,
-      "stdout": "...........................                                              [100%]\n27 passed in 1.70s\n",
+      "seconds": 2.749,
+      "stdout": "....................................                                     [100%]\n36 passed in 1.92s\n",
       "stderr": ""
     },
     {
@@ -515,14 +542,14 @@
         "tests/test_p8_time_basis_native.py"
       ],
       "returncode": 0,
-      "seconds": 1.391,
+      "seconds": 1.378,
       "stdout": "{\"tests\": 8, \"successful\": true, \"skipped\": 0}\n",
-      "stderr": "test_jie_marker_and_year_month_use_actual_utc_not_shifted_solar_clock (__main__.TimeBasisNative.test_jie_marker_and_year_month_use_actual_utc_not_shifted_solar_clock) ... ok\ntest_late_zi_day_advances_at_23_in_both_time_coordinates (__main__.TimeBasisNative.test_late_zi_day_advances_at_23_in_both_time_coordinates) ... ok\ntest_nonexistent_clock_never_becomes_a_guessed_pillar (__main__.TimeBasisNative.test_nonexistent_clock_never_becomes_a_guessed_pillar) ... ok\ntest_same_pillars_deduplicate_bases_but_preserve_all_coordinates (__main__.TimeBasisNative.test_same_pillars_deduplicate_bases_but_preserve_all_coordinates) ... ok\ntest_standard_clock_engine_coordinates_preserve_the_utc_instant (__main__.TimeBasisNative.test_standard_clock_engine_coordinates_preserve_the_utc_instant) ... ok\ntest_true_solar_previous_date_is_retained_without_changing_physical_instant (__main__.TimeBasisNative.test_true_solar_previous_date_is_retained_without_changing_physical_instant) ... ok\ntest_unknown_time_samples_centers_and_sides_without_fabricating_known_time (__main__.TimeBasisNative.test_unknown_time_samples_centers_and_sides_without_fabricating_known_time) ... ok\ntest_urumqi_standard_and_apparent_solar_have_distinct_declared_hours (__main__.TimeBasisNative.test_urumqi_standard_and_apparent_solar_have_distinct_declared_hours) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 1.108s\n\nOK\n"
+      "stderr": "test_jie_marker_and_year_month_use_actual_utc_not_shifted_solar_clock (__main__.TimeBasisNative.test_jie_marker_and_year_month_use_actual_utc_not_shifted_solar_clock) ... ok\ntest_late_zi_day_advances_at_23_in_both_time_coordinates (__main__.TimeBasisNative.test_late_zi_day_advances_at_23_in_both_time_coordinates) ... ok\ntest_nonexistent_clock_never_becomes_a_guessed_pillar (__main__.TimeBasisNative.test_nonexistent_clock_never_becomes_a_guessed_pillar) ... ok\ntest_same_pillars_deduplicate_bases_but_preserve_all_coordinates (__main__.TimeBasisNative.test_same_pillars_deduplicate_bases_but_preserve_all_coordinates) ... ok\ntest_standard_clock_engine_coordinates_preserve_the_utc_instant (__main__.TimeBasisNative.test_standard_clock_engine_coordinates_preserve_the_utc_instant) ... ok\ntest_true_solar_previous_date_is_retained_without_changing_physical_instant (__main__.TimeBasisNative.test_true_solar_previous_date_is_retained_without_changing_physical_instant) ... ok\ntest_unknown_time_samples_centers_and_sides_without_fabricating_known_time (__main__.TimeBasisNative.test_unknown_time_samples_centers_and_sides_without_fabricating_known_time) ... ok\ntest_urumqi_standard_and_apparent_solar_have_distinct_declared_hours (__main__.TimeBasisNative.test_urumqi_standard_and_apparent_solar_have_distinct_declared_hours) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 1.121s\n\nOK\n"
     },
     {
       "name": "ruff",
       "command": [
-        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
         "-m",
         "ruff",
         "check",
@@ -539,14 +566,14 @@
         "120"
       ],
       "returncode": 0,
-      "seconds": 0.094,
+      "seconds": 0.09,
       "stdout": "All checks passed!\n",
       "stderr": ""
     },
     {
       "name": "format",
       "command": [
-        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
         "-m",
         "ruff",
         "format",
@@ -560,7 +587,7 @@
         "tests/test_p8_time_basis_native.py"
       ],
       "returncode": 0,
-      "seconds": 0.078,
+      "seconds": 0.097,
       "stdout": "7 files already formatted\n",
       "stderr": ""
     }
@@ -569,13 +596,13 @@
     "mingjing_core/adapters/charts/time_basis.py": "c9706c5c30e4300219c97748415b687a2f248881b61303b375d815d63bcc2370",
     "mingjing_core/adapters/charts/time_basis_candidates.py": "c11be6489ababe72b261da014864ed25708305d905b8f5afedf8cfddc26a8acb",
     "mingjing_core/adapters/charts/time_basis_solar.py": "64d1acc5df79d9f1c84f6ed41bc03e979634294b29096b4fd3109fd7cff3dc8a",
-    "mingjing_core/adapters/charts/time_basis_zones.py": "438ef43ad3bbc2745cad421b73c6122a43376647eea989f1193d3e3c220cbb81",
-    "tests/v4/test_p8_time_basis.py": "72a7ba30c21585cf3aa47e06c4e99365571189a9b87fa43bf552bd475458bb16",
-    "tests/v4/test_p8_time_basis_process.py": "1a25af597de4ae7ffc6ef6953bf350e2f2e6cb75b160a49f04f553ae3e19de8c",
+    "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+    "tests/v4/test_p8_time_basis.py": "34ba0fa373df5a24561a37b4a442d8c7a1c753ff2710d199a9c6343ca5ed6164",
+    "tests/v4/test_p8_time_basis_process.py": "eca423e6c47f11d5ed6c142e4cb494124771bbb24dabe130f2387c8aa3c3e2d6",
     "tests/test_p8_time_basis_native.py": "abf66250680016805be4e684265649676f135f7d8a9199c6499019161945e044",
     "mingjing_core/knowledge/time_basis_noaa_reference.json": "adaceba143c8244229b0a0afe7ce4bcaebe71f5c230320aadb0c5315e674054e"
   },
-  "source_digest": "d6021c49dd9836b0eef21720a735cca63b5ddc1b7cbb8feff7fedfdd78534a11",
+  "source_digest": "37decbe7ace645ed42e98fd11f76482cad1bea5170f5ab25e3beddd1b65ba237",
   "source_unchanged_during_run": true,
   "style": [
     {
@@ -598,19 +625,19 @@
     },
     {
       "path": "mingjing_core/adapters/charts/time_basis_zones.py",
-      "lines": 58,
+      "lines": 95,
       "over_60_functions": [],
       "over_120_lines": []
     },
     {
       "path": "tests/v4/test_p8_time_basis.py",
-      "lines": 129,
+      "lines": 241,
       "over_60_functions": [],
       "over_120_lines": []
     },
     {
       "path": "tests/v4/test_p8_time_basis_process.py",
-      "lines": 74,
+      "lines": 89,
       "over_60_functions": [],
       "over_120_lines": []
     },
@@ -645,5 +672,10 @@
   ],
   "model_calls": 0,
   "database_calls": 0,
-  "writes_to_birth_profiles": 0
+  "writes_to_birth_profiles": 0,
+  "previous_verification": {
+    "source_digest": "d6021c49dd9836b0eef21720a735cca63b5ddc1b7cbb8feff7fedfdd78534a11",
+    "tests": "27 passed; superseded by timezone-source priority fix regressions"
+  },
+  "source_digest_method": "SHA256 canonical sorted compact JSON of per-file LF-normalized SHA256 manifest"
 }
