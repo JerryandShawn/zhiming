@@ -226,3 +226,10 @@ def test_nonstring_provider_fields_are_not_stringified() -> None:
 
     failure = classify_error(403, {"error": {"type": CannotStringify(), "message": CannotStringify()}}, membership=True)
     assert type(failure) is errors.ModelPermissionDenied and failure.provider_message is None
+
+
+def test_nonmembership_payment_error_keeps_legacy_nonretry_contract() -> None:
+    failure = classify_error(402, {"error": {"type": "billing_error", "message": "synthetic"}}, membership=False)
+    assert isinstance(failure, errors.ModelBadRequest)
+    assert failure.retry_actions.max_attempts == 1 and failure.retry_actions.fallback == "none"
+    assert not failure.global_stop

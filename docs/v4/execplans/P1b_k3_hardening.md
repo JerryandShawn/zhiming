@@ -118,3 +118,5 @@ Decision Log补充（2026-10-18/Codex）：旧test_membership_quota_never_retry�
 2026-10-18 / Codex：合成78项HTTP/SSE矩阵放tools/eval/fixtures/u37_error_matrix.json，遵守AGENTS合成夹具路径；不强制加入被gitignore保护的tests/v4/models/fixtures。其余6项transport/local归实际执行测试，不能把纯分类通过当成PG持久全停完成。
 
 2026-10-18 / Codex：完整模型覆盖初跑430通过/1失败，失败为旧真实PG shim仍用429冒充quota。将其参数化为403公开额度句=1物理POST、429 rate=4物理POST，同时都保留1个旧v3业务charge、失败终态、repair不重开；这区分供应商物理重试与旧业务预算，不削弱预算或服务真实路径。初次96%覆盖不计作通过，修后完整重跑。
+
+2026-10-18 / Codex：402会员验证60秒重试仅限membership提供方，非会员402保留原ModelBadRequest且不重试；避免把Kimi专项动作扩到其他供应商。新增非会员反例；真实供应商兼容/探针仍未执行。

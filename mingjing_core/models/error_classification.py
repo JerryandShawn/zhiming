@@ -76,7 +76,9 @@ def _http_error(status: int | None, payload: object, membership: bool) -> ModelU
     if status == 403:
         return _permission(status, payload, membership)
     if status == 402:
-        return ModelMembershipUnverified(status=status, error_type=error_type)
+        if membership:
+            return ModelMembershipUnverified(status=status, error_type=error_type)
+        return ModelBadRequest(status=status, error_type=error_type)
     if status == 429:
         return _rate_limit(status, error_type, message)
     if status == 400:
