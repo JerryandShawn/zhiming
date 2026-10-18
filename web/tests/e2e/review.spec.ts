@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { cinnabarUsages } from './appearance';
 
-const evidence = path.resolve('../docs/v4/evidence/P10/review-2026-10-18');
+const evidence = path.resolve('test-results/static-evidence/review-2026-10-18');
 
 for (const width of [375, 390, 768, 1440])
   for (const theme of ['light', 'dark']) {
@@ -15,7 +15,7 @@ for (const width of [375, 390, 768, 1440])
         height: width === 1440 ? 900 : width === 768 ? 1024 : width === 390 ? 844 : 812,
       });
       await page.addInitScript((value) => localStorage.setItem('mingjing-theme', value), theme);
-      await page.goto('/#/today');
+      await page.goto('/?preview=1#/today');
       const row = page.locator('.event-row').first();
       const layout = await row.evaluate((element) => {
         const [date, name, tag] = Array.from(element.children);
@@ -34,7 +34,7 @@ for (const width of [375, 390, 768, 1440])
       expect(layout.name.right).toBeLessThan(layout.tag.left);
       expect(layout.truncated).toBe(true);
       expect(layout.overflow).toBe('ellipsis');
-      await page.goto('/#/chart');
+      await page.goto('/?preview=1#/chart');
       const trigger = page.getByRole('button', { name: /看哪一天：/ });
       await expect(trigger).toHaveText(/看哪一天：今天 10月17日/);
       await trigger.click();
@@ -61,7 +61,7 @@ for (const theme of ['light', 'dark'])
   test(`custom controls, inline citation, and scrolled budget ${theme}`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.addInitScript((value) => localStorage.setItem('mingjing-theme', value), theme);
-    await page.goto('/#/chat');
+    await page.goto('/?preview=1#/chat');
     const checkbox = page.getByRole('checkbox', { name: '聚焦跳槽' });
     await expect(checkbox).toBeChecked();
     await checkbox.focus();
@@ -102,7 +102,7 @@ for (const theme of ['light', 'dark'])
       expect(uses.length).toBeLessThanOrEqual(3);
     }
     await page.screenshot({ path: path.join(evidence, `chat-controls-${theme}-1440.png`), animations: 'disabled' });
-    await page.goto('/#/settings');
+    await page.goto('/?preview=1#/settings');
     await page.getByRole('button', { name: /周报.*下一期/ }).click();
     await page.getByRole('combobox', { name: '报告星期' }).click();
     await page.getByRole('option', { name: '星期三' }).click();

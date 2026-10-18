@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import {
   EyeOff,
@@ -14,6 +14,7 @@ import {
 import { useState } from 'react';
 import { IconButton, Seal, Switch } from './components/ui/Controls';
 import { Panel, Toast } from './components/ui/Overlays';
+import { useKeyboardViewport } from './useKeyboardViewport';
 
 const navigation: { key: string; label: string; icon: LucideIcon }[] = [
   { key: 'today', label: '今日', icon: SunMedium },
@@ -37,8 +38,9 @@ function Links({ current }: { current: string }) {
   );
 }
 
-export function Layout({ page, children }: { page: string; children: ReactNode }) {
+export function Layout({ page, children, preview = false }: { page: string; children: ReactNode; preview?: boolean }) {
   const [privateMode, setPrivate] = useState(false);
+  const viewport = useKeyboardViewport();
   const label =
     page === 'chat'
       ? '明镜'
@@ -49,7 +51,10 @@ export function Layout({ page, children }: { page: string; children: ReactNode }
           : (navigation.find((item) => item.key === page)?.label ?? '明镜');
   const mobileSelected = page === 'settings' ? 'me' : page === 'cases' ? 'today' : page;
   return (
-    <div className="shell">
+    <div
+      className="shell"
+      data-keyboard={!preview && viewport.keyboard ? 'open' : undefined}
+      style={viewport.height ? ({ '--keyboard-height': `${viewport.height}px` } as CSSProperties) : undefined}>
       <a
         className="skip"
         href="#main"
@@ -64,7 +69,16 @@ export function Layout({ page, children }: { page: string; children: ReactNode }
           <Seal />
           <span>明镜</span>
         </a>
-        <p className="rail-date meta">10月17日 周六 · 九月初八</p>
+        <p className="rail-date meta">
+          {preview
+            ? '10月17日 周六 · 九月初八'
+            : new Intl.DateTimeFormat('zh-CN', {
+                timeZone: 'Asia/Shanghai',
+                month: 'long',
+                day: 'numeric',
+                weekday: 'short',
+              }).format(new Date())}
+        </p>
         <nav>
           <Links current={page} />
         </nav>
@@ -74,8 +88,9 @@ export function Layout({ page, children }: { page: string; children: ReactNode }
               <EyeOff className="icon" />
               无痕模式
             </span>
-            <Switch label="侧栏无痕模式" checked={privateMode} onChange={setPrivate} />
+            <Switch label="侧栏无痕模式" checked={privateMode} onChange={setPrivate} disabled={!preview} />
           </div>
+          {!preview && <p className="meta">无痕对话正在准备，暂不可用。</p>}
           <a className="nav-link" href="#/settings" aria-current={page === 'settings' ? 'page' : undefined}>
             <Settings2 className="icon" />
             设置

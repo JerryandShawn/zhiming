@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useSyncExternalStore } from 'react';
 import { Layout } from './Layout';
 import { Skeleton } from './components/ui/Overlays';
+import { AuthGate } from './api/AuthGate';
 
 const pages = {
   today: lazy(() => import('./pages/Today')),
@@ -11,6 +12,15 @@ const pages = {
   me: lazy(() => import('./pages/Me')),
   settings: lazy(() => import('./pages/Settings')),
   __design: lazy(() => import('./pages/Design')),
+};
+const livePages = {
+  today: lazy(() => import('./live/Today')),
+  chat: lazy(() => import('./live/Chat')),
+  chart: lazy(() => import('./live/Chart')),
+  tarot: lazy(() => import('./live/Tarot')),
+  cases: lazy(() => import('./live/Cases')),
+  me: lazy(() => import('./live/Me')),
+  settings: lazy(() => import('./live/Settings')),
 };
 const aliases: Record<string, string> = {
   memory: 'me?section=memory',
@@ -31,13 +41,14 @@ export default function App() {
   if (aliases[name]) route = aliases[name];
   const pageName = route.split(/[/?]/)[0] === 'reports' ? 'settings' : route.split(/[/?]/)[0];
   const page = pageName in pages ? (pageName as keyof typeof pages) : 'today';
-  const Component = pages[page];
+  const preview = new URLSearchParams(location.search).get('preview') === '1' || page === '__design';
+  const Component = preview ? pages[page] : livePages[page as keyof typeof livePages];
   useEffect(() => {
     if (aliases[name]) location.replace(`#/${route}`);
     window.scrollTo(0, 0);
   }, [name, route]);
-  return (
-    <Layout page={page}>
+  const content = (
+    <Layout page={page} preview={preview}>
       <Suspense
         fallback={
           <div className="page">
@@ -48,4 +59,5 @@ export default function App() {
       </Suspense>
     </Layout>
   );
+  return preview ? content : <AuthGate>{content}</AuthGate>;
 }

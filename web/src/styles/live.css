@@ -1,0 +1,48 @@
+.auth-hidden {
+  visibility: hidden;
+}
+.login-dialog {
+  display: grid;
+  gap: var(--s-4);
+}
+.live-warning {
+  color: var(--ink-2);
+  padding: var(--s-3) 0;
+}
+.live-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.live-table th,
+.live-table td {
+  text-align: left;
+  padding: var(--s-3) var(--s-2);
+  border-bottom: var(--border) solid var(--line);
+}
+.live-pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.checkbox-box {
+  pointer-events: none;
+}
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-inline-size: 0;
+}
+[data-page='chart'] .stack,
+[data-page='tarot'] .stack {
+  grid-template-columns: minmax(0, 1fr);
+}
+[data-page='chart'] svg.element-bar {
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+.shell[data-keyboard='open'] .tabbar {
+  display: none;
+}
+.shell[data-keyboard='open'] .chat-page {
+  height: calc(var(--keyboard-height) - var(--topbar-height));
+}

@@ -10,10 +10,10 @@ for (const width of [375, 390, 768, 1440])
         height: width === 1440 ? 900 : width === 768 ? 1024 : width === 390 ? 844 : 812,
       });
       await page.addInitScript((value) => localStorage.setItem('mingjing-theme', value), theme);
-      await page.goto('/#/__design');
+      await page.goto('/?preview=1#/__design');
       await expect(page.locator('[data-page="__design"]')).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
-      const directory = path.resolve('../docs/v4/evidence/P10/components');
+      const directory = path.resolve('test-results/static-evidence/components');
       await fs.mkdir(directory, { recursive: true });
       await page.screenshot({
         path: path.join(directory, `design-${theme}-${width}.png`),
@@ -36,9 +36,9 @@ for (const width of [390, 1440])
     test(`overlay states ${theme} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.addInitScript((value) => localStorage.setItem('mingjing-theme', value), theme);
-      await page.goto('/#/__design');
+      await page.goto('/?preview=1#/__design');
       await expect(page.locator('[data-page="__design"]')).toBeVisible();
-      const directory = path.resolve('../docs/v4/evidence/P10/components');
+      const directory = path.resolve('test-results/static-evidence/components');
       await page.getByRole('button', { name: '打开对话框' }).click();
       await page.screenshot({ path: path.join(directory, `dialog-${theme}-${width}.png`), animations: 'disabled' });
       await page.keyboard.press('Escape');

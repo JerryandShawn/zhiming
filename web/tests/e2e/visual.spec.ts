@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { cinnabarUsages } from './appearance';
 
-const evidence = path.resolve('../docs/v4/evidence/P10');
+const evidence = path.resolve('test-results/static-evidence');
 const pages = ['today', 'chat', 'chart', 'tarot', 'cases', 'me', 'settings'];
 const viewports = [
   { width: 375, height: 812 },
@@ -29,7 +29,7 @@ for (const viewport of viewports)
           if (url.pathname.startsWith('/api/')) api.push(url.pathname);
         });
         page.on('pageerror', (error) => errors.push(error.name));
-        await page.goto(`/#/${name}`);
+        await page.goto(`/?preview=1#/${name}`);
         await expect(page.locator(`[data-page="${name}"]`)).toBeVisible();
         await page.evaluate(() => document.fonts.ready);
         await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
@@ -89,7 +89,7 @@ for (const viewport of viewports)
 
 test('component showcase, keyboard, themes, and old deep links', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/#/__design');
+  await page.goto('/?preview=1#/__design');
   await expect(page.getByRole('heading', { name: '组件一览' }).last()).toBeVisible();
   await page.getByRole('button', { name: '打开对话框' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
@@ -108,22 +108,22 @@ test('component showcase, keyboard, themes, and old deep links', async ({ page }
     ['reportsettings', 'settings'],
     ['reports?date=2026-10-17', 'settings'],
   ]) {
-    await page.goto(`/#/${old}`);
+    await page.goto(`/?preview=1#/${old}`);
     await expect(page.locator(`[data-page="${target}"]`)).toBeVisible();
   }
-  await page.goto('/#/settings');
+  await page.goto('/?preview=1#/settings');
   await page.getByRole('button', { name: '夜墨', exact: true }).click();
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 });
 
 test('three chart systems and fixed tarot selection remain keyboard operable', async ({ page }) => {
-  await page.goto('/#/chart');
+  await page.goto('/?preview=1#/chart');
   await page.getByRole('button', { name: '紫微', exact: true }).click();
   await expect(page.getByRole('heading', { name: '十二宫' })).toBeVisible();
   await page.getByRole('button', { name: '星盘', exact: true }).click();
   await expect(page.getByRole('img', { name: '合成星盘示意' })).toBeVisible();
-  await page.goto('/#/tarot');
+  await page.goto('/?preview=1#/tarot');
   await page.getByRole('button', { name: '选牌', exact: true }).click();
   await page.getByRole('button', { name: '第1张牌', exact: true }).focus();
   await page.keyboard.press('ArrowRight');

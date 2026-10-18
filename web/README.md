@@ -1,6 +1,6 @@
-# 明镜台 v4 静态前端（P10 M1/M2）
+# 明镜台 v4 前端（P10）
 
-本工程提供设计系统和七个合成示例页面：今日、对话、命盘、塔罗、事项、关于我、设置。数据和交互均在浏览器本地演示，不请求 API，不发送消息，不保存用户资料，不计算真实命盘或抽取真实塔罗。旧 FastAPI 页面入口保持原状。
+默认七页接入现有 v3 API，保留原设计系统和静态页面供显式预览：`/?preview=1#/today`。`#/__design` 始终是组件展示。真实页面包含命盘、塔罗、事项、记忆、资料确认、报告计划与归档，以及 v3 旧格式 SSE 对话与历史；成功状态以程序回执为准。旧 FastAPI 首页入口保持原状，本分支没有部署。
 
 ## 本地检查
 
@@ -15,15 +15,41 @@ npm run build
 npm run test:e2e
 ```
 
-`npm run dev` 启动开发预览；`npm run preview` 在本机 4173 端口预览构建。构建输出到已忽略的 `../static/dist/`。`#/__design` 展示组件及其状态。七页使用 hash 路由，旧报告、记忆、时间线等深链映射到对应静态分区。
+`npm run dev -- --port 4173` 启动开发预览，`npm run preview` 预览构建。API 和本地测试事件经同源代理连接 `127.0.0.1:8002`。构建输出到已忽略的 `../static/dist/`；默认页面需要 X-Token 网站口令。七页使用 hash 路由，旧深链继续映射对应数据页。不要直接使用带真实模型环境的 `main:app` 作为前端端到端测试服务。
 
-浏览器测试在本机使用已安装的 Chrome，在 CI 使用 Playwright Chromium。CI 工作流为 `.github/workflows/frontend-v4.yml`，同时验证键盘、弹层焦点、减少动效、AA 对比度、无横向溢出和没有后端或外域请求。
+浏览器测试在本机使用 Chrome，在 CI 使用 Playwright Chromium。默认 `npm run test:e2e` 是原 M1/M2 的 80 项显式静态预览检查，继续断言零 API/外域请求。真实数据与 SSE 测试单独运行，避免混淆验证范围。
+
+## 隔离业务测试
+
+本机 PostgreSQL 端口 55480，专用可丢弃数据库 `core_test_fe`。在仓库根目录使用已安装 Core 锁定依赖的 Python 环境启动：
+
+```sh
+python -m web.tests.fixture_server
+```
+
+共享数据库不可用时，可以在本工作树 `web/test-results/` 下初始化独立 PostgreSQL 15，监听 `127.0.0.1:55481`，创建同名 `core_test_fe`，并设置 `FRONTEND_TEST_DSN=postgresql://core_test@127.0.0.1:55481/core_test_fe`。夹具仅接受这两个本机端口和该库名，不会自动重启其他工作树数据库。2026-10-18 最终复测使用此隔离备用实例；数据库目录与日志均被 Git 忽略。
+
+计算环境由 `CHART_PYTHON` 指向单独 Charts 解释器。测试服务只监听 `127.0.0.1:8002`，硬性限制数据库名，清除进程 API keys 后注入脚本模型；不启动报告投递器。每项契约测试创建独立合成 owner，避免修改全局 revision 时互相影响。
+
+在 `web/` 中运行：
+
+```sh
+npx playwright test -c playwright.contracts.config.ts
+npx playwright test -c playwright.live-visual.config.ts
+node scripts/bundle-budget.mjs
+```
+
+契约套件默认使用 4173 开发服务；设置 `FRONTEND_TEST_PORT=4174` 可以在独立开发服务上运行 SSE v2 测试夹具，同时保留 4173 构建预览供视觉检查。后端仍为 8002。
+
+第一组验证 P10 的 11 条行为契约和 SSE v2 本地模拟；第二组为真实 API 的四视口×双主题×七页截图。SSE v2 的 `tests/fixtures/v2.html` 仅在开发服务器测试使用，不会由产品页面导入，也不进入普通生产构建。请求 ID/冻结参数与事件投影保存在当前 tab 的 sessionStorage；存储容量不足时拒绝发送，避免丢失重试身份。大图片完整容量支持仍需后续附件存储方案。
+
+本地测试专用端点 `__test__` 只定义于 `web/tests/fixture_app.py`；不修改或注册到生产 API。正常生产反向代理应自行管理 `/api`；Vite 的 localhost 代理只是本机开发配置。
 
 ## 证据与参考
 
 `../docs/v4/evidence/P10/` 包含 24 张未经改动的参考截图、56 张实际页面截图、56 张并排比较、16 张组件/浮层截图及 56 份自动审计记录。375、390、768、1440 四个视口分别覆盖宣纸和夜墨。比较脚本 `node scripts/compare.mjs` 使用现有截图，不生成或修饰设计图。
 
-2026-10-18按大脑14§I修正六项后重拍上述矩阵，并在`review-2026-10-18/`新增12张日历/控件特写与逐文件哈希。当前26项单测、80项浏览器检查通过；56默认首屏和对话滚动检查按已裁定口径满足内容朱砂≤3。日历/时间/选项仍为本地合成演示，不接业务保存或重新排盘。
+交接前静态快照：2026-10-18 按大脑 14§I 修正六项后重拍上述矩阵，并在 `review-2026-10-18/` 新增 12 张日历/控件特写与逐文件哈希。当时 26 项单测、80 项浏览器检查通过；56 默认首屏和对话滚动检查按已裁定口径满足内容朱砂≤3。该组证据对应显式静态预览，日历/时间/选项为本地合成演示；默认真实页面的独立证据见 `evidence/2026-10-18/`。
 
 ## 本地字体与许可证
 
@@ -37,6 +63,6 @@ npm run test:e2e
 
 ## 后续范围
 
-M3 真实事件协议/后端接线、M4 行为端到端、M5 真机和性能验收尚未实施。静态界面不能证明 revision、owner、固定牌、撤销、来源授权等业务不变量。晨间待大脑复核的视觉差异见 `../docs/v4/evidence/P10/visual-review.md`，阶段回执见 `../docs/v4/receipts/P10_M1_M2.md`。
+SSE v2 服务端与冻结 schema、cookie 会话、无痕语义、新版画像/proposal/主动设置/设备吊销尚未提供；相关控件禁用。v3 运行取消接口实际返回 422，不能宣称已停止。塔罗写接口不校验 expected_revision，紫微与星盘目前为实际字段列表。飞书真机、4G LCP 与生产首页切换未验证。本分支没有访问 stage/生产或发真实模型/飞书请求。
 
-用户已指定本轮修正提交后由独立前端聊天接续M4，本代理停止此工作树与`web/**`修改。交接边界、静态状态限制、8002/core_test_fe与主线发布约定见`../docs/v4/daily/2026-10-18_frontend_handoff.md`。
+当前计划 `ExecPlan_frontend.md`；本线日报 `../docs/v4/daily/2026-10-18_frontend.md`；新证据摘要在 `evidence/2026-10-18/`，完整本机测试输出与图片在已忽略的 `test-results/`。原 `docs/v4/evidence/P10/` 是交接前静态证据，保持不变。

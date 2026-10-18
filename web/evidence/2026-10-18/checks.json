@@ -1,0 +1,162 @@
+{
+  "recorded_at": "2026-10-18T08:52:42.884Z",
+  "node": "v22.23.3",
+  "scope": "frontend only; no stage, production, real model calls or PR merge",
+  "backend": "127.0.0.1:8002",
+  "database": "core_test_fe",
+  "final_database_port": 55481,
+  "final_database_version": "PostgreSQL 15.19",
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "passed": true
+    },
+    {
+      "command": "npm run lint",
+      "passed": true
+    },
+    {
+      "command": "npm test",
+      "passed": true,
+      "tests": 89,
+      "files": 12
+    },
+    {
+      "command": "npm run build",
+      "passed": true
+    },
+    {
+      "command": "npm run test:e2e",
+      "passed": true,
+      "tests": 80,
+      "seconds": 58.4,
+      "mode": "explicit preview=1 static pages; final built preview"
+    },
+    {
+      "command": "FRONTEND_TEST_PORT=4174 npx playwright test -c playwright.contracts.config.ts",
+      "passed": true,
+      "tests": 12,
+      "seconds": 18.143313000000003,
+      "report": "web/test-results/frontend/contracts.json",
+      "note": "Checks include honest blocked behavior: run cancel422, cookie unavailable, tarot revision not enforced by v3. Twelve passing tests do not establish full P10 completion."
+    },
+    {
+      "command": "npx playwright test -c playwright.live-visual.config.ts",
+      "passed": true,
+      "tests": 56,
+      "run_id": "2026-10-18T08:49:31.488Z",
+      "report": "web/evidence/2026-10-18/live-visual-summary.json"
+    },
+    {
+      "command": "node scripts/bundle-budget.mjs",
+      "passed": true,
+      "gzip_bytes": 83015,
+      "limit_bytes": 204800
+    },
+    {
+      "command": "node tests/{frontend.test,dom.test,report-settings.dom.test,method-limits.dom.test}.cjs",
+      "passed": true,
+      "suites": 4
+    },
+    {
+      "command": "node --check static/app.js",
+      "passed": true
+    },
+    {
+      "command": "python -m ruff check web/tests/fixture_{app,events,server}.py --select E,F,I,B,UP,SIM",
+      "passed": true
+    },
+    {
+      "command": "python -m ruff format --check web/tests/fixture_{app,events,server}.py",
+      "passed": true
+    }
+  ],
+  "real_model_calls": 0,
+  "not_run": [
+    "full Core tests",
+    "full tests/v4",
+    "tools/eval scripted and live evaluation",
+    "remote CI for this local code",
+    "Feishu real device",
+    "4G LCP",
+    "stage or production acceptance"
+  ],
+  "source_sha256": {
+    "web/src/App.tsx": "a44573a28316ea27045ac8297ec148de5f3e63b9dcf16c43252cecbf6c0a9122",
+    "web/src/Layout.tsx": "fa974e25445c5e411194f65cf56479dd4d6ac0272655a08f2f16ba407a2477f1",
+    "web/src/api/AuthGate.tsx": "7bb01819e64a631c388ae0abac10ebe8db325749eef72514001c6ef50cedc300",
+    "web/src/api/client.ts": "3d8dab3341b5e46ef5517678f217dc66f47b7add20a9925a5877b4b15150224b",
+    "web/src/api/operations.ts": "b1cfd97313f2aa5154166995e4687519b068871895c7284e727ee99d107c38e7",
+    "web/src/api/useResource.ts": "8097e2e45b57fc0eaa7e20a9fb063f78ff6cb5d7097f2d7341b60102521b07a3",
+    "web/src/chat/Answers.tsx": "5d5781cb98aed39a13d54ccbde993bf7beda6ace920e1c837bcca5a2bfe07140",
+    "web/src/chat/Composer.tsx": "1847d45a4c9993f563cf77e5e907d1a8db24cf001ec7cbabe4accfa2b3208712",
+    "web/src/chat/events.ts": "410df9da5cf2971068e2a5ce3317dc24d93753284e68699a60de312ee1662e02",
+    "web/src/chat/publicProjection.ts": "b403c2f145163c234b9473ff1aff0111581fd3898f9e1f7d4f918aae96a7fde6",
+    "web/src/chat/reducer.ts": "68b2d1eb4b66638771c41720ace23b872cf9328064e487c6156eebab0ba8eb5c",
+    "web/src/chat/sse.ts": "414354498f52185fbf6360b7c43d93003257dfe5c6c1e4a59cf83119e2e5bd1c",
+    "web/src/chat/storage.ts": "07383479398282f730a7f5409fb999e5aab4f23908f394dd1ea8059cfb5752e2",
+    "web/src/chat/transport.ts": "5849931d665aec4343b6d05390a996a52d82ce9fede38dd2bd199337b40c6a9b",
+    "web/src/chat/types.ts": "d2678eb5eafb63340db787857745f4ffe4ef420a52aed09b683d525436d112de",
+    "web/src/chat/useChat.ts": "90fa1fdb8977dabadf287ab9af32d74ecc9d8981eb1c4b88e88aee4c6ee20a72",
+    "web/src/chat/v2.ts": "6423a13754b893ae7695c21f974c69a243425223aaef1020d5f7f01147eda6db",
+    "web/src/components/Calendar.tsx": "3ad76a542dd67428ca5d9064942f4491aba0ff8b679d69f012ca6a7ee5f5e4d5",
+    "web/src/components/Charts.tsx": "3e9010a7c870c29b1b7e34b8886897ecda0dc8ef79dc116ef30f892fb92e6d7c",
+    "web/src/components/Composer.tsx": "801b7d7ca77b00b6fe03e1320f65a6a31a68b069e6e4e5f77b361a0f0d1d7ef2",
+    "web/src/components/DatePicker.tsx": "3964ac7b5388765471070fa1c65a2f86812cd0872782ba758e1dd44e337b984f",
+    "web/src/components/Markdown.tsx": "d3dc26cf3da70d183fd8c00de9b159704f4bff298838765f6e580960a2884b12",
+    "web/src/components/Messages.tsx": "583dda5dcf1c9411f6410d537e5d7a54b50336a1280b4817a1b1c92f5d05cbd6",
+    "web/src/components/ReportOptions.tsx": "c5f5e3eaa085cfe96e35d68267e291f1fae7b1b3435805a8c4d9732acf2c4bd0",
+    "web/src/components/TarotCards.tsx": "9e6f9e3d14c50c2be6a9a48007a66a456c531550e3fe7921be516dc9503e5883",
+    "web/src/components/TarotDraft.ts": "183bb05cb1ddb0659dcf698bc05cc129f69ccbd7b5844d614838a5bb3cde2008",
+    "web/src/components/ui/Controls.tsx": "5f548d9993df9498a153c910401b375f19e9dcb02d2f79001e9e99164b1e21bb",
+    "web/src/components/ui/Overlays.tsx": "d8e1aea939a8c47f15e222688b90fb50e780e22b482640e765a298788b15105b",
+    "web/src/components/ui/Selection.tsx": "7256e0eec4485151166f4dcea5467c03ca9dcd64aea453750afe02eefc3309c1",
+    "web/src/live/CaseFeedback.tsx": "6fe517e8b2048b0850da42b0e44c5d212dc3e8854a8d8b81b12b0d700839b43d",
+    "web/src/live/Cases.tsx": "ff69e8e4a65e4fba24b96440d062ad9dc7277354c23738e7eebc54bd3b869b6f",
+    "web/src/live/Chart.tsx": "5a536ded0bde7fe358dcba9190120d1f41465fdb53f14a8f12dc3a596a5b6d32",
+    "web/src/live/ChartData.tsx": "81617e682ee0ee3cbbc428946d680defc4b6a508d37ed7aa21ed1f48be7760b3",
+    "web/src/live/Chat.tsx": "b1f6c8a9c0773d2b9344d76d2c39517a6b942d288ab40e4c4fb392a75b9da479",
+    "web/src/live/DateField.tsx": "4c56a86650c01ced9b7b6d9268455efda619e266826ad4fee389cb2e08221a9b",
+    "web/src/live/LegacyPreview.tsx": "82b702beb74dff8c046e80fc2f09af99c6bc2f15e88117ceb6c870edf16f5460",
+    "web/src/live/Me.tsx": "549ab8be7d9ddd593f99436e772debd59d8139e993d5d9b24403972ce3fec06a",
+    "web/src/live/MemoryCard.tsx": "39b3f15778b61a2802120bdebd9f520b0a588a8d4503e8ae00997ffc21907742",
+    "web/src/live/ProfileForm.tsx": "887d622b855b0056e30dd8b4196d01ae482ad615473a5046f8565ef146a548e4",
+    "web/src/live/ReportSchedule.tsx": "3a682beb07f1db077940b8e576816145a432397853d9410c9258fcf3ca7c1e0d",
+    "web/src/live/Reports.tsx": "1f17c1dcc2423147feeafdae7d9c9d151f1fae5365410571eaea9b138f3b5701",
+    "web/src/live/Settings.tsx": "1e7cf378b23b20a1f6df7f34c63c7977369c77ec9692ba550fd83e13a52cae73",
+    "web/src/live/Tarot.tsx": "e865c8134568373bb5157bdb3c2b480da928480c9d77f179a26cbfe703e12fbe",
+    "web/src/live/TimeField.tsx": "039ac413b3c81ab364551d865b1502eee2657d2eb07c26d63bef8ef7354ccf31",
+    "web/src/live/Today.tsx": "38518e4ef5636130c91977bbdedd0739f0404c17b7462060573645a68b7f4026",
+    "web/src/live/common.tsx": "0e1289f085fba909e1b98bbf7d5d10e128f2de04f7dccde44f30a4d6ba3a63ce",
+    "web/src/live/types.ts": "aecdc2c807cd8f977f82d367387fb590d66f0bdada46ad1b75ac36b502f9595d",
+    "web/src/main.tsx": "a689c6e16d661c9557cd8716b2c1d56d1e3deb2d8fa8b21930bb2e22722f039c",
+    "web/src/pages/Cases.tsx": "2994248a5f1fc54035a626d93e77484dedd6ab634045c6354def55f6cb773580",
+    "web/src/pages/Chart.tsx": "ecd68fadffd478a02ee865dc8c447ee1caab52877a072c4931c552d81f109cf7",
+    "web/src/pages/Chat.tsx": "e2bbb8c133bbd8dbbd70971ab6d7c54ff402baf32033064d9c3244e76f4450a9",
+    "web/src/pages/Design.tsx": "443ca32827f7f2bdf7574e6aba6c54b79ec9777d8e4f0ab771877a00115b0bf0",
+    "web/src/pages/Me.tsx": "a9aef5e38127786d3c7926221439abe2a5faac48cb73dfc305916a86cbe8fc91",
+    "web/src/pages/Settings.tsx": "0e73d11646c0d4a389fda37e5629956f05e78a78c408a323c99bbf0eaa8c6cad",
+    "web/src/pages/Tarot.tsx": "40415b8988191b52e1fc5d75a2621c72230a90433de6a01a8a5915e06a36ca2d",
+    "web/src/pages/Today.tsx": "f0a9ad901a817f0a3994128675dfa84c5be9f79e2a1868e7eb06f96230269988",
+    "web/src/state.ts": "23a0f719cfb315182dcf871b5b7b6295112114aa67d6f4f0b60ccc9253dd7bd1",
+    "web/src/styles/accessibility.css": "2a4d335c322d925b7ad5f7327e1b4f41585938fde02cb388a7a16ccc6542ea09",
+    "web/src/styles/base.css": "630afaa1b8ef419577684990efd65d5b3cd6a7b3c25163a18ac80460754b39f1",
+    "web/src/styles/charts.css": "1298a31ec2b0413b8643c5e3a8d55e6927488ddf48d4e98469ced25ed0bdf494",
+    "web/src/styles/controls.css": "c3ba07064f5a63fc0c279f9d49f792a2a426744809203f504bbf65f9ff3df55e",
+    "web/src/styles/design.css": "67a6cf567e666e8bf48b555199117ed593c58601cfbb83ad53b3441a9a09499a",
+    "web/src/styles/live.css": "1cbfb0d8648f8e88dfe0e916d37df5aa3db0ed91eda908151d742b159ca87bef",
+    "web/src/styles/messages.css": "3d4f88c47348ca8695b6f64bddb924945f922160d3ddf99fc60d0fd214941615",
+    "web/src/styles/pages.css": "883ccebd8f27b8ec26a3ab32d3eb0cf440586d6d7d8705ca85fe7bce242e9a50",
+    "web/src/styles/selection.css": "fdb8ce0e9a7319ef27bf5f16db88c657ee0db1e106c4b98278c136780905b848",
+    "web/src/styles/tokens.css": "fa49e318b972f696495662e7c85fc900ff33536726cbbe95611ede229fed62cb",
+    "web/src/tarot/DrawPanel.tsx": "e42ee56b5b266645d07b2457f43ab509dde8396087efebdfc7d0d50f05cb3f16",
+    "web/src/tarot/ManualCards.tsx": "497f3dd7cbf88a93af929f0ecda4e56f4147085c588bfb9bfe1f4206bfa00a82",
+    "web/src/tarot/QuestionForm.tsx": "35f1da6ea39577f6bb799a80c1035585ba940796f94bfb751952ecbed0bbae9e",
+    "web/src/tarot/ReadingPanel.tsx": "3ee948a742e357aad73b39866cebe02820d14aacb3e22189215828454c4b2cad",
+    "web/src/tarot/ServerSpread.tsx": "37e6a713930768c5d5fcda784cbedabf8f5a5a808620dc3550d92e87d0144422",
+    "web/src/tarot/draws.ts": "f6aa12ddbe096f0292ef365d1f093334fafe04c592172fb8825bc8f561577c00",
+    "web/src/tarot/public.ts": "3151fb5aee2deeb17536470d369be7de8f1b7ee0e951b82b289d8ebf1bdf2fd9",
+    "web/src/tarot/readings.ts": "9e3856be89693da54698e1e28f77c3ca8930892cf911067e11207a32d8327195",
+    "web/src/useKeyboardViewport.ts": "372cf27293e74aaab805d278628d766157da4dceb242ad2c956723fd4427087c"
+  }
+}

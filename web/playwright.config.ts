@@ -1,9 +1,11 @@
 import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests/e2e',
+  testIgnore: [/contracts\.spec\.ts/, /live-visual\.spec\.ts/],
   timeout: 60000,
   fullyParallel: false,
   workers: 1,
+  outputDir: 'test-results/static-runs',
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: 'http://127.0.0.1:4173',
