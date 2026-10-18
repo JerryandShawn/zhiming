@@ -1,6 +1,6 @@
-# P1b：加固 Kimi Code 错误、协议、额度与调用入口（开工）
+# P1b：加固 Kimi Code 错误、协议、额度与调用入口（离线首切片，阶段未完成）
 
-本 ExecPlan 遵循 `.agent/PLANS.md`，四个活文档段落随实际证据更新。正式分支`v4/p1b-k3-hardening`于2026-10-18 17:34 +08:00从P1/P2均已合并的`v4/main@b9a89b6f84f7bebb640de080548010859aae630c`创建。工作树`C:/Users/Administrator/Documents/Codex/zhiming-v4-p1b`。尚未实施，真实请求0。
+本 ExecPlan 遵循 `.agent/PLANS.md`，四个活文档段落随实际证据更新。正式分支`v4/p1b-k3-hardening`于2026-10-18 17:34 +08:00从P1/P2均已合并的`v4/main@b9a89b6f84f7bebb640de080548010859aae630c`创建。工作树`C:/Users/Administrator/Documents/Codex/zhiming-v4-p1b`。已实现U37离线首切片与禁关思考配置闸门；完整阶段未完成，真实请求0。
 
 ## Purpose / Big Picture
 
@@ -20,18 +20,26 @@
 
 - [x] (2026-10-18 16:50 +08:00) 阅读 P1b、P3 增补及索引 §4a；先建立 task 草案，真实请求为 0。
 - [x] (2026-10-18 17:34 +08:00) M0：P2精确头CI绿并合并，建立`v4/p1b-k3-hardening`与独立工作树，正式落盘本计划。
-- [ ] M1：U37 错误分类与 HTTP/SSE 动作表、公开诊断回归。
-- [ ] M2：U39 推理/签名、禁关思考、角色 effort、采样与工具选择/体积守卫。
+- [x] (2026-10-18 17:58 +08:00) M1离线首切片：78项HTTP/SSE合成分类与真实adapter边界、统一类型/动作、受限公开诊断、单层retry/fallback、typed eval停止兼容；真实供应商行为未验证。
+- [x] (2026-10-18 17:58 +08:00) M2配置子项：会员K3禁关思考的静态/effective env/resolve/直接adapter闸门，合法None与非会员/非K3契约保留。
+- [ ] M2剩余：U39完整推理/签名回传、effort锁定、采样移除、工具选择及1.8MB体积守卫未完成。
 - [ ] M3：0008、真实 PG 用量/停止状态、消费模块线 quota_guard、所有调用入口接线。
 - [ ] M4：人工分批评测与探针启动门、报告身份与 k3-256k 候选配置。
 - [ ] M5：用户明确开始后运行获授权的探针/等价子集，再决定是否具备实际切换证据。
-- [ ] M6：完整回归、覆盖率不低于 P1、CI、AGENTS §11 回执，保持草稿不自行合并。
+- [x] (2026-10-18 17:58 +08:00) M6本地证据：Core553/638.777s、models511/75.04s及903/944约95.66%、v4918/153.58s零skip、脚本80+48/10.72s、transport+PG92/2.72s；已写离线回执。Core时点早于最终非会员402窄改，最终models/v4另覆盖，不把日志绑定同一源码瞬间。
+- [ ] M6阶段门：代码与证据由root统一发布至草稿PR #9，精确头CI未核实；保持阶段未完成，不自行合并。
 
 ## Surprises & Discoveries
 
 P1 的实际物理 POST 计数由 ContextVar hook 提供，旧 ConfiguredModel 仍是 E1/v3 默认路径。仅给 Registry 加守卫不能据此声称所有会员入口已覆盖；必须列出旧适配器、重试、评审、探针和 runner 路径并实际验证。若最窄接线超出增补列出的文件范围，先写清设计冲突与候选改法，不暗中放开范围。
 
 旧 E1 已准备的 k3 冻结清单是历史准备物；未运行、没有成绩。新 D2 及唯一守卫生效后需重新准备可验证执行身份，不把旧清单改名为 k3-256k 实测，更不把不同模型分数直接相减。原无人值守 coordinator 已禁用。
+
+自定义factory曾让adapter四次重试乘以Registry四轮，纯MockTransport复现16POST。现在Registry每次调用暂时将StreamingHTTP.max_retries置0并finally恢复，失败4次、成功2次、取消1次均有回归；visible后不重播、仅显式非会员fallback与总deadline保留。
+
+HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员BadRequest/no-retry并加反例。最终models511/v4918在窄改后重跑；Core553是同切片回归过程、在该窄改前完成，不能把各日志宣称为同一瞬间源码。覆盖以903/944精确语句数记录，显示96%，95%门通过。
+
+合成矩阵正式从ignored的tests/v4/models/fixtures候选路径移至AGENTS允许的tools/eval/fixtures/u37_error_matrix.json，78项已跟踪。内嵌source_design_sha256实际绑定task的84项派生离线设计矩阵前身，已核实92396c...；大脑原P1b提示词hash另列，不能混称。
 
 ## Decision Log
 
@@ -47,9 +55,15 @@ P1 的实际物理 POST 计数由 ContextVar hook 提供，旧 ConfiguredModel �
 
 2026-10-18 / 迁移：0008_model_usage由P1b独占，P5对应0009/0010，退役LangGraph0011。只新增顺序迁移，不修改0001–0007；若已知链机制出现真实冲突，记待决并切换其他里程碑。
 
+2026-10-18 / Codex离线首切片：旧“一律会员429/正文quota即额度停”的断言按P1b§A替换为状态/type优先；继续保留严格403公开句1POST、隐私、取消/deadline、visible不重播、旧v3一次业务charge与repair不重开。PG shim分别测403=1物理POST、429=4物理POST；初跑430通过/1失败不计绿，修后全量重跑。非会员HTTP402保留旧BadRequest，不把会员60秒重试扩散。
+
+2026-10-18 / Codex验收边界：本切片仅完成离线U37和U39禁关思考子项。U38中央PG账本/槽位/持久stop、U39完整回传、effort/采样/体积/工具选择、人工批次代码门、探针和实际256k切换均未完成。ErrorActions标记并非PG执行结果；最终分支ref/PR/CI由root发布后核实，不能以本地成绩宣称整阶段完成。
+
 ## Outcomes & Retrospective
 
-当前正式分支与ExecPlan已建立，旧E1自动入口保持禁用；没有P1b代码、迁移或探针结果。P1/P2均已CI绿并合并。正式开工后更新实际范围，离线证据与真实探针分开；未完成真实探针时整阶段不能报完成。
+离线首切片已有生产代码与证据：本地代码2cf6b1f1edefac46e2b5d035484713326eacf7d0，等价远端不可变代码对象be8119e475034306681b6d168ab49073b2a23b76，代码tree ff652a9d1e4a8b64cd83e364aebf10be1234cb47。U37分类/当前链动作、统一retry/fallback、typed eval停止及禁关思考配置闸门已离线验证。Core553、models511/约95.66%、v4918、脚本80+48、transport/PG92的结果与源码时点见 [离线验证说明](../evidence/P1b/2026-10-18-offline-slice.md) 和 [结构化证明](../evidence/P1b/offline-validation-2026-10-18.json)。
+
+阶段未完成，当前没有新迁移、U38中央持久守卫、完整U39或真实探针结果；没有实际256k切换。旧E1自动入口仍禁用，旧k3冻结仅历史未运行；后续新256k来源另建身份。代码与证据随本提交统一发布至草稿PR #9，精确头CI待核验，当前不合并。回执 [receipt-daytime-2026-10-18.md](../evidence/P1b/receipt-daytime-2026-10-18.md) 逐项列明剩余，避免离线全绿被误读为完整验收。
 
 ## Plan of Work
 
@@ -65,10 +79,10 @@ M5用户明确启动后，按每次具体授权执行探针，非自动串跑所
 
 ## Concrete Steps
 
-正式分支建立后执行（当前未执行）：
+本切片已执行离线检查，以下为可复验入口；精确结果与源码时点见evidence/P1b，不将命令列表当额外成绩：
 
     python -m pytest tests/v4/models -q
-    python -m coverage run --source=mingjing_core.models -m pytest tests/v4/models tests/v4/test_eval_framework.py -q
+    python -m coverage run --source=mingjing_core.models -m pytest tests/v4/models -q
     python -m coverage report --fail-under=95
     python -m unittest discover -s tests -p 'test_core*.py'
     python -m pytest tests/v4 -q
@@ -81,37 +95,31 @@ PG明确core_test_main/127.0.0.1:55480，测试每例独立schema；Core/Charts�
 
 ## Validation and Acceptance
 
-增补八项逐项保留：错误→类型→动作实测表；真实PG三调用最多两在途（风控后全停）；月额度跨进程持久全停与人工解除；禁关思考拒启动；E1–E4探针真实结论；所有runner物理调用在用量表且lane=eval；CI及模型覆盖率≥P1约95%；计划与§11回执。新增D1全停/人工批门、D2模型身份及上下文账本映射另有回归。未获得真实启动授权时第五项标未验证，不能宣布整阶段完成。
+增补八项逐项保留：错误→类型→动作实测表；真实PG三调用最多两在途（风控后全停）；月额度跨进程持久全停与人工解除；禁关思考拒启动；E1–E4探针真实结论；所有runner物理调用在用量表且lane=eval；CI及模型覆盖率≥P1约95%；计划与§11回执。D1持久全停/人工批门、D2新模型身份及上下文账本映射还须分别落地并补回归。未获得真实启动授权时第五项标未验证，不能宣布整阶段完成。
 
 对应19号候选场景K01–K03、K05的端口/守卫部分；07原有L01、X03–X05保持旧协议、恢复、取消回归。真实场景新定义归v2.3候选，不修改已冻结v2.1八十场景或分数。
 
 ## Idempotence and Recovery
 
-用量写入与请求预留有稳定attempt_id，崩溃不能释放预算重发绕计数；在途槽由PG连接死亡释放，停止标志持久保留。重试每次都单独记数，排队未POST不当作已完成请求。迁移仅合成库前向验证，旧版本拒不认识schema；回滚先停新入口/owner回v3，实际stage迁移与生产回滚另需具体授权，本轮不执行。
+后续M3的用量写入与请求预留必须有稳定attempt_id，崩溃不能释放预算重发绕计数；在途槽由PG连接死亡释放，停止标志持久保留。重试每次都单独记数，排队未POST不当作已完成请求。这些PG守卫与迁移要求尚未实施；迁移只能先在合成库前向验证，旧版本拒不认识schema。回滚先停新入口/owner回v3，实际stage迁移与生产回滚另需具体授权，本轮不执行。
 
 ## Artifacts and Notes
 
-正式文件：docs/v4/execplans/P1b_k3_hardening.md、evidence/P1b、model-probe-<date>-k3-hardening.md、§11回执。当前草案仅task/work/daytime/P1b_k3_hardening.draft.md。待用户：每次探针/评测开始；待大脑：真实发现的协议/范围冲突及探针变差。所有问题写汇总后继续独立离线工作，不等待。
+正式产物为本ExecPlan及evidence/P1b/2026-10-18-offline-slice.md、offline-validation-2026-10-18.json、receipt-daytime-2026-10-18.md；探针报告尚未生成。task旧草案保留为历史。最终提交/发布/PR与CI由root负责，文档编辑者不自行操作。待用户：每次探针/评测开始；待大脑：实际协议/范围冲突及探针变差；待模块线：quota_guard核心接口交接。所有问题写汇总后继续独立离线工作，不等待。
 
 ## Interfaces and Dependencies
 
 依赖P1/P2合并；与P3并行，P3的正式守卫接入里程碑要等P1b合并。quota_guard核心由模块线供给，主线负责真实PG集成、迁移、Registry/物理POST接线及人工执行门。模型用量与安全错误不包含任何用户原话、思考正文、请求/响应、key或完整DSN。
 
-## 修订记录
-
-- 2026-10-18 17:11 +08:00：建立并补全task草案，纳入18索引§4a与明确人工开始门；P1已合并、P2尚在完整回归，不抢先建正式分支。
-
 ## U37首切片接口与旧测试替换依据
 
 统一纯分类器`classify_error(status, payload, membership=..., surface=...)`返回旧ModelUnavailable兼容异常，新增受控kind与不可变ErrorActions。只读取完整嵌套error外壳；HTTP与SSE共表，SSE没有状态不捏造429。ModelPermissionError采用旧ModelPermissionDenied同类别名。公开诊断只保留审计句，不把任意响应前240字导出；新错误的原始正文不留在异常/日志。
 
-主线拆分所有权：分类代理只改errors.py/provider_diagnostics.py/error_classification.py及新矩阵测试；root改transport.py/registry.py及下游eval兼容。模块线独占quota_guard.py。重试只在一个层执行：Registry构造adapter max_retries=0；直用adapter按同一ErrorActions执行。402最多2尝试（60s一次）；429/5xx/网络最多4尝试（1/3/9加抖动），总deadline/取消/可见输出进一步收紧。global_stop优先，无自动同会员fallback；没有PG接线时不能声称跨进程全停已经实施。
+主线拆分所有权：分类代理只改errors.py/provider_diagnostics.py/error_classification.py及新矩阵测试；root改transport.py/registry.py及下游eval兼容。模块线独占quota_guard.py。重试只在一个层执行：Registry构造adapter max_retries=0；直用adapter按同一ErrorActions执行。会员HTTP402最多2尝试（60s一次），非会员HTTP402为BadRequest且不重试；429/5xx/网络最多4尝试（1/3/9加抖动），总deadline/取消/可见输出进一步收紧。global_stop优先，无自动同会员fallback；没有PG接线时不能声称跨进程全停已经实施。
 
 Decision Log补充（2026-10-18/Codex）：旧test_membership_quota_never_retry的429和500正文quota、streamed membership rate-limit和unreadable429断言保护旧“一律额度停”行为。P1b §A明确替换为状态优先的rate/transient动作；只修改这些已被新设计替代的断言，保留真实403额度1POST、隐私、取消、总deadline、不在已可见输出后重播的保护。Registry旧503两尝试用例按同一明确退避预算更新，不保留嵌套两套重试。84个先行矩阵中的未官方证实文案标格式推定，不称录制响应。
 
 中心账本拓扑（后续M3）：所有业务库/评测/探针明确共用同一ledger DSN/schema/account scope；PG advisory锁仅DB内有效，不能各业务DB建独立守卫。拟用独立本机无正文账本数据库，配置固定ledger identity，缺配置失败关闭。每个物理attempt先预留、结束后终结，不能一complete只算一次或多层重复acquire。具体数据库/迁移安装仍未实施；不把方案当验收。
-
-- 2026-10-18 17:34 +08:00：P2合并后M0完成，补U37接口/动作与旧测试替换依据，中央账本仍等模块接口接线，真实请求0。
 
 2026-10-18 / Codex：旧Anthropic流式quota正例只有无类型message=quota，按新状态/error.type优先及回显隐私规则不足以证明额度。正例换成保留已审计的permission_error+5h公开句；新unknown SSE含quota/429回显的负例单独断言不猜状态、不重试。旧probe额度夹具由429换成真实403公开额度句，仍保护恰1POST和无正文输出，429退避另由新动作测试覆盖。
 
@@ -120,3 +128,9 @@ Decision Log补充（2026-10-18/Codex）：旧test_membership_quota_never_retry�
 2026-10-18 / Codex：完整模型覆盖初跑430通过/1失败，失败为旧真实PG shim仍用429冒充quota。将其参数化为403公开额度句=1物理POST、429 rate=4物理POST，同时都保留1个旧v3业务charge、失败终态、repair不重开；这区分供应商物理重试与旧业务预算，不削弱预算或服务真实路径。初次96%覆盖不计作通过，修后完整重跑。
 
 2026-10-18 / Codex：402会员验证60秒重试仅限membership提供方，非会员402保留原ModelBadRequest且不重试；避免把Kimi专项动作扩到其他供应商。新增非会员反例；真实供应商兼容/探针仍未执行。
+
+## 修订记录
+
+- 2026-10-18 17:11 +08:00：建立并补全task草案，纳入18索引§4a与明确人工开始门；P1已合并、P2尚在完整回归，不抢先建正式分支。
+- 2026-10-18 17:34 +08:00：P2合并后M0完成，补U37接口/动作与旧测试替换依据，中央账本仍等模块接口接线，真实请求0。
+- 2026-10-18 17:58 +08:00：更新Progress、Surprises、Decision Log、Outcomes及离线首切片证据/§11回执，记录553/511/918/92/80+48和903/944语句覆盖；明确Core与最终非会员402窄改的时点差异、78项夹具迁移/派生来源、U38/U39剩余与发布CI待root，不宣称整阶段完成。
