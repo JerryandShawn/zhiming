@@ -6,7 +6,7 @@ import json
 import threading
 import time
 from collections.abc import Callable, Iterator
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 from typing import Any, Protocol
 from urllib.parse import urlsplit
 
@@ -26,6 +26,7 @@ from .errors import (
 from .metering import before_provider_request
 from .port import ModelPort, StreamEvent
 from .provider_diagnostics import parse_error_sample
+from .request_policy import check_request_size, sampling_body
 from .retry_policy import retry_delay, wait_for_retry
 
 
@@ -228,12 +229,17 @@ class StreamingHTTP(ModelPort):
             close_on_cancel(client, cancel, deadline) as client_expired,
         ):
             check_cancel(cancel)
+            request = client.build_request(
+                "POST", self.base_url + path, headers=headers, json=sampling_body(body, self.caps)
+            )
+            check_request_size(request, model=self.model, settings=self.settings)
+            check_cancel(cancel)
             if time.monotonic() >= deadline:
                 raise ModelUnavailable()
             before_provider_request()
             self.request_count += 1
             with (
-                client.stream("POST", self.base_url + path, headers=headers, json=body) as response,
+                closing(client.send(request, stream=True)) as response,
                 close_on_cancel(response, cancel, deadline) as expired,
             ):
                 if response.status_code != 200:

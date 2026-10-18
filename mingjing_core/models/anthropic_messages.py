@@ -11,6 +11,7 @@ from .errors import (
     ModelProtocolError,
 )
 from .port import ChatMessage, StreamEvent, ToolCall, ToolSpec, active_tool_cycle
+from .request_policy import safe_tool_choice
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
 
@@ -132,6 +133,7 @@ class AnthropicMessages(StreamingHTTP):
         temperature: float | None = None,
         cancel_event: threading.Event | None = None,
     ) -> Iterator[StreamEvent]:
+        tool_choice = safe_tool_choice(self.model, tools, tool_choice)
         system, encoded = encode_messages(messages, self.caps)
         body: dict[str, Any] = {
             "model": self.model,

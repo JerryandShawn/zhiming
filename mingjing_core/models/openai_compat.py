@@ -9,6 +9,7 @@ from typing import Any
 
 from .errors import CapabilityError, ModelProtocolError
 from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec, active_tool_cycle
+from .request_policy import safe_tool_choice
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
 
@@ -116,6 +117,7 @@ class OpenAICompat(StreamingHTTP):
         temperature: float | None = None,
         cancel_event: threading.Event | None = None,
     ) -> Iterator[StreamEvent]:
+        tool_choice = safe_tool_choice(self.model, tools, tool_choice)
         body: dict[str, Any] = {
             "model": self.model,
             "messages": encode_messages(messages, self.caps),
