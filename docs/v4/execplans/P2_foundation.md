@@ -16,6 +16,22 @@
 
 ## Progress（进度）
 
+白天更新优先于下方保留的夜间历史状态：用户14/15授权在A/C通过后依次合并P1、P2；18索引与用户后续决定取代无人值守真实评测。P8/P10已交独立聊天，主线不修改其目录。
+
+- [x] (2026-10-18 16:47 +08:00) P1当前头CI全绿，PR #3合并到v4/main，合并SHA为7b45a781921e6fa2e875319a12af433f0cf505b4。
+- [x] (2026-10-18 16:48 +08:00) P2 rebase到上述主线；只发生test锁冲突，保留coverage7.11.0后重生成全部7包230个artifact哈希，原版本不漂移，Core锁保留lunar-python1.4.8/jieba0.42.1；隔离环境require-hashes核验64包。
+- [x] (2026-10-18 16:56 +08:00) 两个独立原文提交：17/18/19十文件905bc6f；22/P5b两文件5d2a35c；12/12提交blob与大脑源字节相同。
+- [x] (2026-10-18 17:06 +08:00) P1/P2组合28项、最终全部v4 615项/160.51s、scripted80/80+自测48/10.84s、35现代文件Ruff/format均通过；真实PG使用core_test_main/55480，模型仅HTTP替身。
+- [x] (2026-10-18 17:11 +08:00) 最终旧Core完整553项/705.625s全部通过，退出码0。
+- [ ] 当前组合头远端CI与合并待结果，不用夜间旧CI替代；CI链接与最终合并SHA由每日汇总/PR当前checks补充。
+- [ ] 真实模型比较、E1及stage未验证。E1每批需用户在线并在主线明确开始，夜间不发任何真实模型请求（含探针）；今日真实调用0。
+
+- [x] (2026-10-18 17:07 +08:00) 按14/15及最新用户授权，P1已合并7b45a781921e6fa2e875319a12af433f0cf505b4，P2完整rebase；唯一锁冲突保留coverage7.11.0并重生成230哈希，无版本漂移，P2 Core按require-hashes校验64包。
+- [x] (2026-10-18 17:07 +08:00) 组合28项真实PG验证通过；全部v4 615/163.14s（零跳过）、模型评测208/62.59s及700/737约95%覆盖、scripted80/80+48/10.31s、35现代文件Ruff/format通过。
+- [x] (2026-10-18 17:11 +08:00) 当前组合源码旧Core553/705.625s完整通过，已观察父进程退出0。最后代码75cbeb7；最终候选头CI绿后才合并PR4，夜间历史CI不能替代本轮。
+- [x] (2026-10-18) 17/18/19原件十文件与22/P5b两文件已分两个独立本机文档提交；P5b B仅后续计划、A/C分别归模块/前端，未抢写代码。
+- [ ] 真实质量比较仍未验证。最新用户明确E1/E2逐批在线授权、探针等“开始”、夜间零真实调用，覆盖旧自动续跑许可；本轮实际POST为0。
+
 - [x] (2026-10-17) 完整读取原始夜间指令、P2 提示词、蓝图相关章节及 T/M/R 与历法附录；只读研究现有实现。
 - [x] (2026-10-17) 取得独立 worktree 与同步后基线，确认干净分支。
 - [x] (2026-10-17 23:04) 里程碑一：独立 Core 环境与 P2 数据库；时间引擎、覆盖导入工具和历法金标 22/22，通过格式与静态检查。
@@ -28,6 +44,14 @@
 
 ## Surprises & Discoveries（意外发现）
 
+白天组合审查发现，intake晚到epoch测试原来由program_time的epoch核验挡住，不能证明repair诊断同样安全。真实PG/HTTP复现：移除新增guard的进程内旧行为会把epoch0的started/unknown repair诊断覆盖成succeeded。当前在同lease事务内、读取/覆盖诊断之前核对authoritative retry_epoch，success/network/quota三类晚到结果都被拒，调用charge保留、诊断与步骤不新增。没有修改E1冻结源。
+
+组合首次v4报告612通过/3失败，原因是新Graph测试错误期待EvidenceError穿过图边界；现有Graph安全封装会将其映射为InvalidAnswer。只修新增测试预期，保留旧Graph与拒写断言，随后完整615通过。首次PG组合尝试时本机55480未响应，恢复确认的private/pg-p0集群后重跑；未访问或重启其他前端线55481集群。
+
+本轮rebase自动合并保留P1 provider诊断字段与P2 program_at同事务接线。新增独立repair晚到epoch测试复现旧诊断只核token、不核epoch：成功、quota_5h、网络失败均可污染旧批次诊断。现在同一租约事务核权威retry_epoch，晚到结果不覆盖原started/unknown行、不新增步骤，已发生的一次HTTP仍保留一次charge。intake与repair分别真实PG/HTTP parser验证，不把intake的“无diagnostic”断言套到repair。
+
+本机55480测试集群一度中断，首次组合25项都在连接阶段失败，59项纯契约通过；这些不计作业务通过。恢复正确private/pg-p0并核PG15.19/core_test_main/127.0.0.1:55480后重跑。独立前端另用55481集群，未触碰。最终v4只有一项上游anyio别名弃用告警，非跳过或失败。
+
 现有依赖锁仅固定版本，无哈希；P2 提示词“与现有哈希方式一致”的前提不符。新依赖不能只加两条 pip hash，否则 pip 会要求所有依赖都有 hash。保持既有版本，优先完整生成 Core 哈希锁；若索引不支持则记录精确受限项，不声称已哈希锁定。
 
 已完成 Core/Test 两份完整哈希锁，原有版本逐项一致，仅新增 lunar-python 1.4.8 与 jieba 0.42.1；隔离环境 `uv pip install --require-hashes` 检查 64 包通过。PG15 实际旧约束名为 core_runs_check，旧 0001–0004 合成 schema 已成功迁到 7，数据库细节、运行角色权限、连续链与回填/撤销回归已在本机真实PG完成。
@@ -37,6 +61,20 @@
 现有 sources 对每条消息再次读取完整撤销账本；将同次读取按消息 ID 分组后投影，保留多事项原话只展示所选事实片段的隐私契约。现有 receive 禁止同身份替换正文，助手修订使用独立方法，不放宽此规则。
 
 ## Decision Log（决策记录）
+
+2026-10-18 / 组合接线：保留P1供应商诊断字段与P2program_at钩子；新增epoch核验先于任何结果诊断写入，和现有lease锁在同一事务。旧charge、repair_identity、retry_epoch与预算逻辑不放宽。28项组合通过，独立只读审查无阻塞问题。
+
+2026-10-18 / 测试隔离：test_freeze_rejects_untracked_execution_files把source_v21.ROOT显式置于tmp_path，使其验证未跟踪源码拒绝，不受P2模块存在这一外部状态抢先影响；另一个P2不能用于旧v3基线的测试完全保留。时间断言按同一UTC瞬时验证，不更改program_time的存储口径。
+
+2026-10-18 / 用户最新决定：D1全部会员端点且风控/Access terminated立即全停，D2主/评审目标k3-256k（等价性子集和探针待明确开始），D4不开时长提醒/不紧急联系人，D5 E2只2025；这些由后续P1b/P3按18索引实现，不在P2偷改模型/运行时。P5b B排P3上下文引擎之后，A模块线、C前端线；本阶段仅原文同步。
+
+决定（2026-10-18 / Codex）：旧P2头2afd389保留在refs/codex/daytime/pre-p1-rebase-p2，显式rebase到已合并P1；仅本阶段独占分支按精确lease发布，不强推v4/main。requirements-test.lock冲突用两线精确版本候选，之后再从官方各版本PyPI metadata重生成，SHA256为4a60e429d5e2d7f616257e2624d1b5a7456191becb17d472bdb48a733ce2357a；coverage7.11.0及P2 lunar/jieba均保留，依赖环境仍隔离。
+
+决定（2026-10-18 / Codex）：test_contract_v21的未跟踪源码单测将ROOT隔离到tmp_path。它继续验证有未提交执行源不得冻结；否则合入P2后会先正确命中“P2不能作为旧v3基线”的另一条规则。没有删除/跳过断言，没有放宽真实P2拒绝保护。
+
+决定（2026-10-18 / Codex）：只在_call现有diagnostic短事务新增epoch校验和EvidenceError导入，不改charge/repair_identity/重试预算。完整LangGraph将该领域异常安全映射为InvalidAnswer；测试按真实服务边界验证外部错误、原started诊断逐字段相同、calls与charges各一次，不迁就旧污染行为。新测试分两文件，单文件不超过400行。
+
+决定（2026-10-18 / 用户最新指令）：D1继续会员端点且人工逐批，D2目标/评审k3-256k需获授权等价子集，D4提醒默认关闭/无紧急联系人，D5 E2只2025。P2不提前改模型或重跑E1，P1b/P3在两阶段合并后按18增补正式开工；P5b B排P3上下文引擎完成之后。源设计副本只复制，不改写。
 
 决定：第二次完整553执行839.975s报告3 failures/4 errors，也不记为通过。4 errors由新增program_time经普通put增加owner revision，继而改变native claim_id造成；不是午夜日期。保持原sealed fixture/精确ID断言，用固定stage专用元数据写：owner+run+当前epoch+lease、仅可解析带时区ISO、稳定ID幂等、既有行不覆盖，不增语义revision或模型调用。普通entity put仍原样增revision。四原native测试13.803s通过，PG7项4.77s证明revision/lease/epoch/owner/时间边界。日期/作者：2026-10-18 / Codex。
 
@@ -81,6 +119,10 @@
 决定：P0 brief 测试原“只有一条系统入站 source”改为精确核对一条原入站及一条成功后的真实助手输出；模型执行前不得凭空出现助手来源。理由：P2 明确新增成功助手历史，原防虚构来源保护必须继续成立。当时烟测38通过、该项为1项预期语义差异；随后修改和新增回归，最终全套v4 379通过。日期/作者：2026-10-17 / Codex，属于阶段明确行为变更。
 
 ## Outcomes & Retrospective（结果与复盘）
+
+白天组合结果：P1已合并，P2已rebase且553项旧Core/705.625s、615项v4/160.51s、28项新组合、80/80脚本与48自检通过；当前头CI与P2合并未完成。最新12份文档按两独立提交同步。以下是夜间历史快照，不替代白天最终验收；真实模型与stage仍未验证。
+
+2026-10-18白天组合更新（优先于下方夜间历史）：P1已合并后完成P2 rebase、全哈希锁重生成、同事务诊断/业务时刻/epoch补防护，553旧Core/705.625s、615 v4、208模型评测/95%覆盖、80/80+48脚本与35现代文件静态检查通过，代码提交75cbeb7。最终候选CI受绿门约束，尚未合并P2。真实模型0次，stage/生产/飞书未操作。合并SHA与最终CI在本轮收尾汇总补齐；完整结果见2026-10-18-combined-validation.md与receipt-daytime-2026-10-18.md，不把本段等待状态说成已验收。
 
 时间、迁移、检索、线程、助手持久化、撤销闭包、幂等回填和 v3 接线已实现。最终实现冻结本地de082ce1e6af37a706eee6a4596b09d1b6ca49e3，远端等价cc1187e95f3f292c56985c99dac859420af63fcb，两者树均c25f3951743469702e2539b62379227713da4dca。最终v4为379 passed/159.87s（129项P2新增），scripted80/80、自测48/17.42s、前端6项通过；最终旧Core553在独立数据库完整826.169s通过，exit0。最终代码CI run39051908909最后核对in_progress，未标绿。一万条消息 snapshot 100 次实测 p95=4.155ms，小于150ms。P2 尚未整体验收通过。夜间禁止的真实模型比较、stage/生产、真实飞书不会执行；最终结果、计数、证据及待决问题在本节与阶段回执同步更新。
 
@@ -131,6 +173,8 @@
 新增 day_status(date)、next_holiday(date)、almanac(datetime,tz)、render_now_block(owner_settings,clock,last_interaction_at,upcoming_events)；MemoryService.record_assistant_message；repository list 的 order/before/limit 与全文 search(owner,subject,query_tokens,kinds,limit,since,until)。新实体种类 thread/thread_summary/note/profile_doc/knowledge_gap/followup/reminder/proposal；不启用新 Agent 表的运行使用。无新增外部服务或对话时联网。
 
 ## 修订记录
+
+2026-10-18 17:11：记录P1合并后的P2 rebase、原版本哈希锁、诊断epoch保护及真实PG组合28项；完整旧553与最终v4 615通过。两组12份设计文档原文同步；更新人工逐批/模型目标与独立线边界，等待本次头CI后才合并。
 
 2026-10-17：建立 P2 执行计划，记录夜间边界、独立环境、复用位置、现状差异、实现顺序和可观察验收。
 
