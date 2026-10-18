@@ -1,0 +1,7 @@
+# Q1 独立复核修复：隐式话题引用不能复活
+
+在Q4并行交叉审查时发现：message从旧topic移动到新topic而两个topic对象无字段修改，旧topic随后withdrawn，原实现撤销仍可把message.topic_id恢复旧topic。原消息原文守卫不能覆盖这个话题生命周期。
+
+先新增26项独立测试，修复前22失败/4通过；只扩展本分支新增changes.py的来源守卫：收集message原topic引用、topic_id操作before/after中的已有topic，绑定其生命周期与修订；本批新建topic继续由整对象/逆操作保护。全量整理148项通过。closed/archived正常话题保留，不强改active；missing/null/空值、部分撤销与后来修改保持精确语义。
+
+未改基底已有文件、冻结600/98条fixture或人工标签；Q1历史分数报告仍是原评测时点，最终源码hash另在总验收更新。本补丁无DB/服务器/真实模型调用。主线PG事务必须同样锁定隐式引用的旧/目标topic并重查撤销/删除状态。

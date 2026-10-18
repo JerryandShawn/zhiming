@@ -61,9 +61,14 @@ def _operations(before: dict[str, Any], after: dict[str, Any]) -> tuple[FieldCha
 
 def _guards(before: dict[str, Any], ops: tuple[FieldChange, ...]) -> tuple[SourceGuard, ...]:
     message_ids: set[str] = set()
+    topic_ids = {op.entity_id for op in ops if op.collection == "topics"}
     for op in ops:
         if op.collection == "messages":
             message_ids.add(op.entity_id)
+            if op.field == "topic_id":
+                for value in (op.before, op.after):
+                    if value.present and isinstance(value.value, str) and value.value:
+                        topic_ids.add(value.value)
         else:
             message_ids.update(records(before, "topics").get(op.entity_id, {}).get("message_ids", []))
             if op.field == "message_ids" or op.field is None:
@@ -76,7 +81,10 @@ def _guards(before: dict[str, Any], ops: tuple[FieldChange, ...]) -> tuple[Sourc
         record = records(before, "messages")[identity]
         require_active(record)
         guards.append(SourceGuard("messages", identity, digest(immutable_message(record))))
-    topic_ids = {op.entity_id for op in ops if op.collection == "topics"}
+        # Label-only edits still depend on the original topic's lifecycle.
+        topic_id = record.get("topic_id")
+        if isinstance(topic_id, str) and topic_id:
+            topic_ids.add(topic_id)
     for identity in sorted(topic_ids & set(records(before, "topics"))):
         record = records(before, "topics")[identity]
         require_active(record)
