@@ -16,8 +16,9 @@ import { IconButton, Seal, Switch } from './components/ui/Controls';
 import { Panel, Toast } from './components/ui/Overlays';
 import { useKeyboardViewport } from './useKeyboardViewport';
 import { useViewportPortalStyles } from './useViewportPortalStyles';
+import { detectContainer } from './embed/feishu';
 
-export const embeddedAppearance = (userAgent: string) => /\b(?:Lark|Feishu)\b/i.test(userAgent);
+export const embeddedAppearance = (userAgent: string) => detectContainer(userAgent).host === 'feishu';
 
 export type PrivacyControl = {
   active: boolean;

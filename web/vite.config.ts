@@ -14,6 +14,7 @@ export default defineConfig({
   },
   publicDir: 'public',
   server: {
+    watch: { ignored: ['**/test-results/**', '**/evidence/**'] },
     proxy: {
       '/api': 'http://127.0.0.1:8002',
       '/static': 'http://127.0.0.1:8002',
