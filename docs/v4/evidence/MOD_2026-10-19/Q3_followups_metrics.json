@@ -1,0 +1,42 @@
+{
+  "kind": "offline_synthetic_module_only",
+  "code_commit": "c7df71fb1d7fd135e89de340175d593de0da335e",
+  "module_tests": 276,
+  "combined_tests": 1278,
+  "combined_seconds": 2.73,
+  "random_groups": 4000,
+  "random_oracles": {
+    "delivery_scope_timezone": 1000,
+    "response_sequences_12_events": 1000,
+    "daily_ledger_15_events": 1000,
+    "divination_window_replay": 1000
+  },
+  "seeded_tests": true,
+  "timezones": 8,
+  "ruff": "E,F,I,B,UP,SIM;120;pass",
+  "file_max_lines": 317,
+  "function_max_lines_limit": 60,
+  "real_model_calls": 0,
+  "server_access": 0,
+  "real_feishu_calls": 0,
+  "baseline_files_modified": 0,
+  "limitations": [
+    "No scheduler/outbox/storage integration",
+    "Brief 07:00 vs quiet needs decision; defers to 08:30",
+    "Semantic recurrence accuracy unmeasured",
+    "D4 usage reminder disabled by default"
+  ],
+  "sha256": {
+    "mingjing_core/application/decision_autonomy_rules.py": "0ed1f611d41b31051efbf64f1c9c8537aaa91857ccc69c7d35c9de35f495e3f7",
+    "mingjing_core/application/divination_rules.py": "cf511bff8e99d16f4598cb07ffaad42e144ea82127b642539a22e8cf18a71893",
+    "mingjing_core/application/followups_adaptation.py": "c8b387d73992f7f13bb753a6fc3a6479230b79c7e15c35bc9b35175ab596ef93",
+    "mingjing_core/application/followups_contracts.py": "4717e15d3b015dc3d1b8a5cc16beb8bd6a15df10a85e52890c16e424afbd923b",
+    "mingjing_core/application/followups_rules.py": "47ca1cf1868fd3fe3136b74892df31a4aca2bd1166955691a34df02c916824be",
+    "mingjing_core/application/usage_guard_rules.py": "2721c114037e388f5e6aac45fdb35c17dcb2050d1dfd1e4b5d0510da4de8bc14",
+    "tests/v4/followups_mod/test_adaptation_rules_mod.py": "d4d21c390c71c662179005b3d78ae1b4c97b0fc2d16138a2a8b619ff22bec9c8",
+    "tests/v4/followups_mod/test_delivery_rules_mod.py": "e413ced215e2a426163b1ab150c11457a394b5c99fb68953f05c49130a01ba2f",
+    "tests/v4/followups_mod/test_divination_usage_mod.py": "7ae45b648fc45eaed76530211a24efe182fdddeb6c4c9798efa2827c923469b0",
+    "tests/v4/followups_mod/test_followups_properties_mod.py": "1571ac574c72c15d422f413da1e1810e6599ac447283113fcb35259e2ad44e0d",
+    "tests/v4/followups_mod/test_interaction_adversarial_mod.py": "64588485da7ec3dd75386a6633070dcc06c246217660e9c847a601bb56ab7406"
+  }
+}
