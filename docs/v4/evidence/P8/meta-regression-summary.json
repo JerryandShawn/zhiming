@@ -1,0 +1,51 @@
+{
+  "source_commit": "3b8b6a10a581e299e15081833878fcae633ee9ea",
+  "local_equivalent_source_commit": "be7ae91260fe290b6c64cba7949e2cd6a90a1af9",
+  "source_tree": "2a836ea0fec303d1a6a8a2c34bd3996c120de000",
+  "v4": {
+    "passed": 559,
+    "skipped": 0,
+    "seconds": 103.67,
+    "command": "<Core Python> -m pytest tests/v4 -q",
+    "database": "127.0.0.1:55480/core_test_meta"
+  },
+  "scripted": {
+    "passed": 80,
+    "total": 80,
+    "real_model_calls": 0
+  },
+  "legacy_core": {
+    "passed": 553,
+    "skipped": 0,
+    "seconds": 1443.409,
+    "timing": "earlier in same phase; before addenda replacement; protected legacy files unchanged afterward"
+  },
+  "legacy_calculations": {
+    "passed": 60,
+    "total": 60
+  },
+  "ruff": {
+    "python_files": 67,
+    "status": "passed"
+  },
+  "protected_files_unchanged": 141,
+  "real_model_calls": 0,
+  "stage_or_production_access": false,
+  "merged_prs": [],
+  "server": "not started; reserved 8003",
+  "full_P8_acceptance": false,
+  "formal_rectification_ER1_gate": false,
+  "professional_corpus_scores": null,
+  "private_logs": [
+    {
+      "name": "core-regression.log",
+      "bytes": 4069,
+      "sha256": "19e0ea49813698e725bccac54bac41bb3378dd608e380fdd6582d30f8508fcec"
+    },
+    {
+      "name": "v4-complete-final.log",
+      "bytes": 681,
+      "sha256": "1b316c5a688347bbd3671b1cc1fe5aa72baecc3efa8ce323495f222ef578e9f0"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "disclaimer": "本评测衡量的是程序的一致性与防误报能力，不证明命理方法本身的效度。",
+  "model_calls": 0,
+  "writes_to_user_profiles": 0,
+  "fixture_scope": "artificial_binary_year_candidate_signals_only_not_real_U2_or_life_events",
+  "generator": "12 fixed persons; 16 events/person; known candidate only; no competitor filtering",
+  "E_R1": {
+    "subjects": 12,
+    "first_place_hit_rate": 1.0,
+    "passed_95_percent": true,
+    "confidence_wrong_rate": 0.0
+  },
+  "calibration": {
+    "delta": 0,
+    "sample_count": 200,
+    "validation_count": 200,
+    "calibration_false_positives": 1,
+    "validation_false_positives": 4,
+    "dataset_hash": "8b0b2f114de74e94a83ac46a2e690b32c0d03fa33faa5e86ba427975f10a123d",
+    "rules_version": "rectification-rules-v1-2026-10-18",
+    "rules_hash": "b81c2e1e9dff8c610e5e061ffedc6e677ef3f5007495b135d5b3ce53904de8eb",
+    "usable": true
+  },
+  "E_R2_null_validation": {
+    "subjects": 200,
+    "false_positive_rate": 0.02,
+    "wilson_95": [
+      0.0078044264163494685,
+      0.050287086905826436
+    ],
+    "passed_point_estimate_5_percent": true
+  },
+  "noise_grid": [
+    {
+      "year_error_fraction": 0,
+      "missing_fraction": 0,
+      "unrelated_fraction": 0,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 1.0,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0,
+      "missing_fraction": 0,
+      "unrelated_fraction": 0.3,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 1.0,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0,
+      "missing_fraction": 0.3,
+      "unrelated_fraction": 0,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 1.0,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0,
+      "missing_fraction": 0.3,
+      "unrelated_fraction": 0.3,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 1.0,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.2,
+      "missing_fraction": 0,
+      "unrelated_fraction": 0,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 1.0,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.2,
+      "missing_fraction": 0,
+      "unrelated_fraction": 0.3,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 0.8333333333333334,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.2,
+      "missing_fraction": 0.3,
+      "unrelated_fraction": 0,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 0.8333333333333334,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.2,
+      "missing_fraction": 0.3,
+      "unrelated_fraction": 0.3,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 0.75,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.4,
+      "missing_fraction": 0,
+      "unrelated_fraction": 0,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 0.9166666666666666,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.4,
+      "missing_fraction": 0,
+      "unrelated_fraction": 0.3,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 0.9166666666666666,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.4,
+      "missing_fraction": 0.3,
+      "unrelated_fraction": 0,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 0.9166666666666666,
+      "distinguishable_rate": 0.5833333333333334,
+      "confidence_wrong_rate": 0.0
+    },
+    {
+      "year_error_fraction": 0.4,
+      "missing_fraction": 0.3,
+      "unrelated_fraction": 0.3,
+      "subjects": 12,
+      "top_three_hit_rate_diagnostic_only": 1.0,
+      "distinguishable_rate": 0.5,
+      "confidence_wrong_rate": 0.0
+    }
+  ],
+  "max_1000_permutation_seconds": 0.012427699999534525,
+  "permutation_performance_under_ten_seconds": true,
+  "external_validity": "not_tested_no_external_person_data_downloaded",
+  "limits": [
+    "矩阵信号是软件测试输入，不是实际命理盘；不能把本表成绩归于传统规则。",
+    "δ仅在本次人工矩阵零样本上标定，真实Charts信号需另做独立标定，不授权生产倾向结论。"
+  ]
+}
