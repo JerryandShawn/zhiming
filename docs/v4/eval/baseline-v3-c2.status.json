@@ -1,0 +1,42 @@
+{
+  "status": "incomplete",
+  "valid_baseline": false,
+  "reason": "provider_http_error",
+  "http_status": 403,
+  "scenario": "T05",
+  "pending_scenario_ids": [
+    "T06",
+    "T07",
+    "T08",
+    "T09",
+    "T10",
+    "T11",
+    "T12",
+    "T13",
+    "T14",
+    "TA01",
+    "TA02",
+    "TA03",
+    "X01",
+    "X02",
+    "X03",
+    "X04",
+    "X05",
+    "X06",
+    "X07",
+    "X08"
+  ],
+  "source_sha256": "71c414718921910cc9644c85ccce833bcb8bae1ba317b77fb7380f4a634f82c7",
+  "scoring_contract_version": "deterministic-eval-v2.0.0",
+  "actual_model_calls": {
+    "model_calls": 104,
+    "target_model_calls": 80,
+    "judge_model_calls": 24,
+    "target_model_elapsed_seconds": 2084.89281819998,
+    "judge_model_elapsed_seconds": 417.4365473000653,
+    "elapsed_seconds": 2520.888
+  },
+  "night_total_real_calls": 142,
+  "retry_after_stop": false,
+  "v1_unchanged": true
+}

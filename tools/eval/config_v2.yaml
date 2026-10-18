@@ -1,0 +1,20 @@
+version: eval-config-kimi-code-v2.1.0
+contract_version: deterministic-eval-v2.1.0
+models:
+  kimi-main: k3
+judge:
+  provider: kimi-code-independent-evidence
+  model: k3-256k
+  rubric: rubric_v21.md
+  version: critic-eval-v2.1.0
+member_policy:
+  rolling_window_seconds: 18000
+  max_real_calls: 80
+  max_scenarios_per_batch: 10
+  batch_interval_seconds: 1200
+  quota_5h_auto_resumes: 1
+report:
+  preserve_full_synthetic_answers: true
+  namespace: c21
+  calibration_candidates: 20
+  calibration_categories: 7

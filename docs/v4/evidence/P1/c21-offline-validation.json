@@ -1,0 +1,217 @@
+{
+  "scope": "P1 E1 c21 offline preparation only",
+  "contract_version": "deterministic-eval-v2.1.0",
+  "target_live_model": "k3",
+  "judge_live_model": "k3-256k",
+  "real_supplier_calls": 0,
+  "tests": {
+    "command": "python -m pytest tests/v4/models/test_contract_v2.py tests/v4/models/test_contract_v21.py tests/v4/models/test_c21_lifecycle.py -q",
+    "result": "91 passed in 13.42s",
+    "includes_five_infrastructure_vs_capability_regressions": true,
+    "final_lifecycle_fixture_refinement": "13 passed in 9.33s; explicitly distinguishes ValueError/KeyError/ConnectionError"
+  },
+  "scripted": {
+    "result": "80/80",
+    "mode": "scripted",
+    "source_sha256": "5b4ebc0ff85e4baf43fe52487e782ec0bc00661dc87ddec434df0124a2bc20bd",
+    "execution_sha256": "d94aa6e24905ff1ee550d327dd3d413aa0047b9c3c80fa062762d6247d0e1274",
+    "artifacts": [
+      {
+        "path": "docs/v4/evidence/P1/c21-scripted/2026-10-18-scripted-fake-k3-c21.json",
+        "sha256": "792695d0e1051d787729e0170c34b9f34ee230214a2593d9ba23adb00719f41b"
+      },
+      {
+        "path": "docs/v4/evidence/P1/c21-scripted/2026-10-18-scripted-fake-k3-c21.md",
+        "sha256": "ed16267026099bc74aea1cd4e9ed0662b872d5560d929533abeaeab4cb96f959"
+      },
+      {
+        "path": "docs/v4/evidence/P1/c21-scripted/contract-v2.1-assertion-audit.md",
+        "sha256": "edae521d57e6e3fcd0075c7fb0161dc8ef3db61bd689d04567dcf0a9086a5e67"
+      },
+      {
+        "path": "docs/v4/evidence/P1/c21-scripted/run-state-c21.json",
+        "sha256": "792695d0e1051d787729e0170c34b9f34ee230214a2593d9ba23adb00719f41b"
+      }
+    ],
+    "legacy_flag_files_created": false
+  },
+  "ruff": {
+    "check": "All checks passed!",
+    "format": "11 files already formatted",
+    "rules": "E,F,I,B,UP,SIM",
+    "line_length": 120
+  },
+  "assertion_audit": {
+    "restore_factual_hard": 81,
+    "independent_semantic_judge": 130,
+    "retain_privacy_literal": 9
+  },
+  "protected_original_paths_unchanged_vs_HEAD": [
+    "tools/eval/scenarios",
+    "tools/eval/rubric_v1.md",
+    "tools/eval/rubric_v2.md",
+    "tools/eval/config.yaml",
+    "docs/v4/eval/baseline-v3.json",
+    "docs/v4/eval/2026-10-17-live-v3-k3.json",
+    "docs/v4/eval/2026-10-17-live-v3-k3.md",
+    "docs/v4/eval/c2/2026-10-17-live-v3-k3.json",
+    "docs/v4/eval/c2/2026-10-17-live-v3-k3.md"
+  ],
+  "p0_baseline_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79",
+  "files": [
+    {
+      "path": "tools/eval/contract_v2.py",
+      "sha256": "2035a412f149e20e76ac77a8971b2cf993b1cbc1718ce6f5478a0408802210d8",
+      "git_blob_id": "00cee27f88519a2169d1f836eea64c404088ca98",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 98,
+      "max_function_lines": 20,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/facts_v21.py",
+      "sha256": "7a2b00dd51c11b16f98d47319102bfcf3de04cc39124f960db2a1d423d04936b",
+      "git_blob_id": "984876ba9bc4c069edd5da18bd5481a4dda96280",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 191,
+      "max_function_lines": 36,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/evidence_v2.py",
+      "sha256": "5805da7edcb29635fc78e199565b3e3d38d044436a357b5ea72ee0d38957aca8",
+      "git_blob_id": "a7d6ee78daffda15d4711e5261df9f63239f9ada",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 198,
+      "max_function_lines": 55,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/engine_v21.py",
+      "sha256": "e36167c1dbc7d826b22c0d9c5b7de02ce708a910805de4cc7d7dc4b612609cc9",
+      "git_blob_id": "c206c7ab50bab2b232cfb20d8a7fb643bb23a911",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 86,
+      "max_function_lines": 37,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/runner_v2.py",
+      "sha256": "39b26c4598bbc2d6c8fb3a1044db08c7605663ca93c1423c0d65f0e3669121a7",
+      "git_blob_id": "eee1102c0cd2d29738107e64ed19d4f88aa5bdd8",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 374,
+      "max_function_lines": 57,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/source_v21.py",
+      "sha256": "3a23b312daf8a631f57e0f3c8c55c08d1a1f6f2a495d330ce246d9486eb22e7e",
+      "git_blob_id": "3b798358ff5005fe19d725c4f197db9563649aef",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 104,
+      "max_function_lines": 47,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/state_v21.py",
+      "sha256": "a2d46f0961185421b5f9ee1209c62f64474bb2dc65f724f2c312c14f6fc7d968",
+      "git_blob_id": "64ad5743189173e04866267f9c37bded50eb14aa",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 110,
+      "max_function_lines": 39,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/calibration_v21.py",
+      "sha256": "a4f5d42505c90e2833d1241119daa63352d271205538d9c7ca128b7cc1c274fd",
+      "git_blob_id": "0df293d70fe0bb104dd51be56ca47378a1ef1a39",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 145,
+      "max_function_lines": 50,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tools/eval/config_v2.yaml",
+      "sha256": "0dadb02fbd63fe2873f809cb939268da9115823728de1c68dee27304b5ff6eb9",
+      "git_blob_id": "8a7ddc3b6b35c45a5e1f52b38dc2a290064e4b6c",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true
+    },
+    {
+      "path": "tools/eval/rubric_v21.md",
+      "sha256": "98be77a0d51de85ffaad10a73b87a4230fb27ba481ad7a800c0fb22dc96f2b75",
+      "git_blob_id": "7f870f5159a510d5837ba4c6ab677e4b8cf1fd49",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true
+    },
+    {
+      "path": "tests/v4/models/test_contract_v2.py",
+      "sha256": "dfba638c876691a23e2207f842f27ffc89ed5f85059959dccff1617b667b9257",
+      "git_blob_id": "b158b50816b31429fe85b7ac04f5b9e7a14c17c1",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 156,
+      "max_function_lines": 18,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tests/v4/models/test_contract_v21.py",
+      "sha256": "27f98890cb9b5be41074ee4b757fcf0195b0bc543c21a1b4285e90783d59bae3",
+      "git_blob_id": "0705589900bc5ad2923882e7ca34c8d9f239cb6d",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 266,
+      "max_function_lines": 21,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "tests/v4/models/test_c21_lifecycle.py",
+      "sha256": "b8e36585a03b146af3f61fff09cda065300c705e83c9ff493edf436771bb3931",
+      "git_blob_id": "b0542beb1c4f60fd06376558a52a80eb76e37807",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true,
+      "lines": 197,
+      "max_function_lines": 39,
+      "complete_type_annotations": true
+    },
+    {
+      "path": "docs/v4/eval/c2/contract-v2-assertion-audit.md",
+      "sha256": "edae521d57e6e3fcd0075c7fb0161dc8ef3db61bd689d04567dcf0a9086a5e67",
+      "git_blob_id": "a0fa52f91a11539b66d15e788c85b51646499215",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true
+    },
+    {
+      "path": "docs/v4/eval/c2/contract-v2.0-assertion-audit.md",
+      "sha256": "9aab6a2ba6bb466d2cdb2f5dad493a23fd9cb19c815adda7255a1cef83d4dce8",
+      "git_blob_id": "07b871f6d059783d482e0991d746e492951f086f",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true
+    },
+    {
+      "path": "docs/v4/evidence/P1/c21-preparation.md",
+      "sha256": "964d1a91b5a3b58f3bb5b3bbddf431c3c208434dffc72c0a6cc7f2251ee68f9f",
+      "git_blob_id": "6d26d4f9859de3bd2eaf1d3ad1c9fa9a69480a10",
+      "filtered_git_blob_matches_raw": true,
+      "utf8_lf": true
+    }
+  ],
+  "git_byte_proof": "All 16 raw bytes equal Git filtered blob bytes; no staging or commit performed by helper",
+  "not_verified": [
+    "live E1 baseline",
+    "human calibration labels/agreement",
+    "stage/production",
+    "P3 behavior",
+    "v2.2 execution"
+  ],
+  "source_freeze": "Not created: root must commit reviewed P1 A/C then freeze an isolated pre-P2 snapshot"
+}

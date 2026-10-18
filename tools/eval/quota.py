@@ -1,8 +1,27 @@
 """Evaluation-only stop signals bypass business repair without exposing provider text."""
 
+from __future__ import annotations
+
 import re
 import time
-from typing import Any
+from datetime import UTC, datetime
+from typing import TYPE_CHECKING, Any
+
+from mingjing_core.models.metering import request_meter
+
+if TYPE_CHECKING:
+    from tools.eval.member_budget import MemberBudget
+
+STOP_REASONS = frozenset(
+    {
+        "quota",
+        "quota_5h",
+        "quota_weekly",
+        "provider_http_error",
+        "member_window_limit",
+        "batch_cooldown",
+    }
+)
 
 
 class ProviderStopped(BaseException):
@@ -16,15 +35,36 @@ class ProviderStopped(BaseException):
         elapsed_seconds: float = 0.0,
         model_calls: int = 0,
         provider_http_status: int | None = None,
+        resume_at: str | None = None,
     ) -> None:
-        super().__init__("Evaluation provider stopped; an explicit user decision is required")
-        self.reason = reason
-        self.role = role
+        super().__init__("Evaluation provider stopped before another request")
+        self.reason = reason if reason in STOP_REASONS else "provider_http_error"
+        self.subtype = self.reason
+        self.role = role if role in {"target", "judge", "probe"} else "target"
         self.elapsed_seconds = elapsed_seconds
         self.model_calls = model_calls
         self.provider_http_status = (
             provider_http_status if type(provider_http_status) is int and 100 <= provider_http_status <= 599 else None
         )
+        self.resume_at = _resume_at(resume_at)
+
+    def safe_diagnostic(self) -> dict[str, Any]:
+        return {
+            "reason": self.reason,
+            "subtype": self.subtype,
+            "role": self.role,
+            "provider_http_status": self.provider_http_status,
+            "resume_at": self.resume_at,
+            "model_calls": self.model_calls,
+        }
+
+
+def _resume_at(value: str | None) -> str | None:
+    try:
+        stamp = datetime.fromisoformat(value or "")
+        return stamp.astimezone(UTC).isoformat() if stamp.tzinfo is not None else None
+    except (ValueError, TypeError):
+        return None
 
 
 def provider_http_status(exc: Exception) -> int | None:
@@ -41,6 +81,9 @@ def provider_http_status(exc: Exception) -> int | None:
 
 
 def provider_stop_reason(exc: Exception) -> str | None:
+    subtype = getattr(exc, "quota_subtype", None)
+    if subtype in {"quota", "quota_5h", "quota_weekly"}:
+        return subtype
     status = provider_http_status(exc)
     if status == 429 or re.search(r"quota|usage[\s_-]*limit|rate[\s_-]*limit|额度|限额", str(exc).casefold()):
         return "quota"
@@ -48,37 +91,64 @@ def provider_stop_reason(exc: Exception) -> str | None:
 
 
 class QuotaGuard:
-    """Meter actual provider calls and permanently open the circuit after a stop."""
+    """Open the circuit after a stop; only the persistent policy may reopen it."""
 
-    def __init__(self, provider: Any, role: str) -> None:
+    def __init__(self, provider: Any, role: str, budget: MemberBudget | None = None) -> None:
         self.provider = provider
         self.role = role
         self.calls = 0
         self.elapsed_seconds = 0.0
         self.stop_reason: str | None = None
         self.provider_http_status: int | None = None
+        self.budget = budget
 
     def check_open(self) -> None:
+        if self.budget is not None:
+            try:
+                self.budget.check_open(self.role)
+            except ProviderStopped as exc:
+                self.stop_reason = exc.reason
+                self.provider_http_status = exc.provider_http_status
+                raise
+            if self.stop_reason in {
+                "quota_5h",
+                "member_window_limit",
+                "batch_cooldown",
+            }:
+                self.stop_reason = None
         if self.stop_reason:
-            raise ProviderStopped(self.stop_reason, self.role, provider_http_status=self.provider_http_status)
+            raise ProviderStopped(
+                self.stop_reason,
+                self.role,
+                provider_http_status=self.provider_http_status,
+            )
 
     def generate(self, **kwargs: Any) -> dict[str, Any]:
         self.check_open()
         self.calls += 1
         started = time.perf_counter()
         try:
-            return self.provider.generate(**kwargs)
+            callback = (lambda: self.budget.before_provider_request(self.role)) if self.budget is not None else None
+            with request_meter(callback):
+                return self.provider.generate(**kwargs)
+        except ProviderStopped as exc:
+            self.stop_reason = exc.reason
+            self.provider_http_status = exc.provider_http_status
+            raise
         except Exception as exc:
             reason = provider_stop_reason(exc)
             if reason:
                 self.stop_reason = reason
                 self.provider_http_status = provider_http_status(exc)
+                if self.budget is not None:
+                    self.budget.record_stop(reason, self.provider_http_status)
                 raise ProviderStopped(
                     reason,
                     self.role,
                     elapsed_seconds=time.perf_counter() - started,
                     model_calls=1,
                     provider_http_status=self.provider_http_status,
+                    resume_at=self.budget.snapshot().get("resume_at") if self.budget is not None else None,
                 ) from None
             raise
         finally:

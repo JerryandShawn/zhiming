@@ -68,6 +68,11 @@ jobs:
         run: |
           python -m pytest tests/v4 -q
           python tools/eval/runner.py --mode scripted --target fake --self-test
+      - name: ModelPort contract and coverage (synthetic transport only)
+        run: |
+          python -m coverage run --source=mingjing_core.models -m pytest tests/v4/models -q
+          python -m coverage report --fail-under=85
+          python tools/eval/runner_v2.py --mode scripted --stop-file "$RUNNER_TEMP/night-quota-stop.json" --once-file "$RUNNER_TEMP/night-c2-started.json" --output "$RUNNER_TEMP/eval-c2"
       - name: Stop isolated PostgreSQL
         if: ${{ always() }}
         run: |
