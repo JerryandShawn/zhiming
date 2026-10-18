@@ -16,7 +16,7 @@
     "validation_count": 200,
     "calibration_false_positives": 1,
     "validation_false_positives": 4,
-    "dataset_hash": "e31cf4ac26da2b5d4f3c7f71eacccac25f094e885c6b1257e68f3cd0ba5d4bdc",
+    "dataset_hash": "3b13fbf3a9cd2891df80918076c884a3671b9029345419cd97ecb50560aa7b92",
     "rules_version": "rectification-rules-v1-2026-10-18",
     "rules_hash": "b81c2e1e9dff8c610e5e061ffedc6e677ef3f5007495b135d5b3ce53904de8eb",
     "signal_provenance": "artificial_independent_binary_signals_not_real_charts",
@@ -26,6 +26,8 @@
         16
       ]
     ],
+    "round_no": 1,
+    "alpha": 0.05,
     "usable": true
   },
   "E_R2_null_validation": {
@@ -171,7 +173,7 @@
       "raw_delta_pass_rate_diagnostic_only": 0.5
     }
   ],
-  "max_1000_permutation_seconds": 0.010684700006095227,
+  "max_1000_permutation_seconds": 0.013583499996457249,
   "permutation_performance_under_ten_seconds": true,
   "external_validity": "not_tested_no_external_person_data_downloaded",
   "limits": [

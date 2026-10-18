@@ -3083,7 +3083,7 @@
       "validation_count": 200,
       "calibration_false_positives": 0,
       "validation_false_positives": 0,
-      "dataset_hash": "c949fb69cda43283f41ef820b0f8928b4216aa142654c9b4b8b4c1769bd4df41",
+      "dataset_hash": "4767ec7f79622f7a010c9a4ee950fdfc012a61e8a7d9c99d448a0c29b6a55dcb",
       "rules_version": "rectification-rules-v1-2026-10-18",
       "rules_hash": "b81c2e1e9dff8c610e5e061ffedc6e677ef3f5007495b135d5b3ce53904de8eb",
       "signal_provenance": "real_charts_U2_U12_precompute_no_model_calls",
@@ -3093,6 +3093,8 @@
           6
         ]
       ],
+      "round_no": 1,
+      "alpha": 0.05,
       "calibration_wilson_95": [
         1.734723475976807e-18,
         0.018845326377266575
@@ -3101,7 +3103,7 @@
         1.734723475976807e-18,
         0.018845326377266575
       ],
-      "max_1000_permutation_seconds": 0.004364200001873542,
+      "max_1000_permutation_seconds": 0.005902799995965324,
       "independence": "200 independent event datasets per split over 10 fixed synthetic birth charts; no shared session seeds"
     },
     "8": {
@@ -3110,7 +3112,7 @@
       "validation_count": 200,
       "calibration_false_positives": 0,
       "validation_false_positives": 0,
-      "dataset_hash": "f56de0320dd06dad6d1aa0f9988267f1807343f8393da2942903aac9e3c90ae6",
+      "dataset_hash": "e84a4a22500c7c83c89e398403a1aa4b3914e8f9b452e86408dcb9cd941249c6",
       "rules_version": "rectification-rules-v1-2026-10-18",
       "rules_hash": "b81c2e1e9dff8c610e5e061ffedc6e677ef3f5007495b135d5b3ce53904de8eb",
       "signal_provenance": "real_charts_U2_U12_precompute_no_model_calls",
@@ -3120,6 +3122,8 @@
           8
         ]
       ],
+      "round_no": 1,
+      "alpha": 0.05,
       "calibration_wilson_95": [
         1.734723475976807e-18,
         0.018845326377266575
@@ -3128,7 +3132,7 @@
         1.734723475976807e-18,
         0.018845326377266575
       ],
-      "max_1000_permutation_seconds": 0.0057623999964562245,
+      "max_1000_permutation_seconds": 0.007716299995081499,
       "independence": "200 independent event datasets per split over 10 fixed synthetic birth charts; no shared session seeds"
     },
     "10": {
@@ -3137,7 +3141,7 @@
       "validation_count": 200,
       "calibration_false_positives": 0,
       "validation_false_positives": 0,
-      "dataset_hash": "d7072a769a70135429ec67bd677a84133bce2b8d5fc7ba188c22fc9e1a72eb2c",
+      "dataset_hash": "b8f216ef7ec2d1c6bde31a49df52e0157f63ab467ca2c869f657940dd59f06e3",
       "rules_version": "rectification-rules-v1-2026-10-18",
       "rules_hash": "b81c2e1e9dff8c610e5e061ffedc6e677ef3f5007495b135d5b3ce53904de8eb",
       "signal_provenance": "real_charts_U2_U12_precompute_no_model_calls",
@@ -3147,6 +3151,8 @@
           10
         ]
       ],
+      "round_no": 1,
+      "alpha": 0.05,
       "calibration_wilson_95": [
         1.734723475976807e-18,
         0.018845326377266575
@@ -3155,7 +3161,7 @@
         1.734723475976807e-18,
         0.018845326377266575
       ],
-      "max_1000_permutation_seconds": 0.00672429999394808,
+      "max_1000_permutation_seconds": 0.009985700002289377,
       "independence": "200 independent event datasets per split over 10 fixed synthetic birth charts; no shared session seeds"
     }
   },
@@ -3191,70 +3197,70 @@
   "precomputations": [
     {
       "id": "synthetic-actual-chart-01",
-      "seconds": 16.784914000003482,
+      "seconds": 17.1905912000002,
       "cache_hash": "97f65bcbbc960287f613b73854a213210e84093ee81feba9f078ba9658655add",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-02",
-      "seconds": 15.808460299995204,
+      "seconds": 16.996410900006595,
       "cache_hash": "aac9691ec5df6aa3a1a4e9a898db71909b3c0decfa7790296ed9802bcccb0cfa",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-03",
-      "seconds": 15.972488499995961,
+      "seconds": 18.345649199996842,
       "cache_hash": "f64167ea6a6f54c259e7e4078ba962b20bc52bd5a9c78fc36bd4851122474069",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-04",
-      "seconds": 14.969418899992888,
+      "seconds": 18.21804279999924,
       "cache_hash": "3355f6e877a6e53090163f40f721d1d3c1838849e748848ae592dcd46780112c",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-05",
-      "seconds": 15.175486500003899,
+      "seconds": 18.81154339999921,
       "cache_hash": "72762dc4fdc9f7a8b58454575a54b429a7e7ee80973bb0a214d40d94329e7e10",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-06",
-      "seconds": 13.859873200002767,
+      "seconds": 18.52672039999743,
       "cache_hash": "803431ef5f31f075d40fea6939804ad432d3fa4d219d59885bbcce630c1b70c0",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-07",
-      "seconds": 13.507457100000465,
+      "seconds": 15.498920199999702,
       "cache_hash": "6585f7007a4715d982198317055719c16f06abec2f0cf8ff43f29a181599b37a",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-08",
-      "seconds": 12.951573700003792,
+      "seconds": 14.506439699995099,
       "cache_hash": "4c9bf94f24498590ebbbfb7fed412fe9602304e09e64e6cb76f3a0da25af9fb4",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-09",
-      "seconds": 12.40085160000308,
+      "seconds": 14.5047779000015,
       "cache_hash": "4fdb9a366141da06742e8901fa5238b793ad124b081f28cebeb3cd95dec2db81",
       "candidates": 12,
       "signals": 13
     },
     {
       "id": "synthetic-actual-chart-10",
-      "seconds": 11.87899820000166,
+      "seconds": 12.843325900001219,
       "cache_hash": "f40efab3ccdbf8be212f8361be16f6c6188ce8341345522a313728df408ce5c6",
       "candidates": 12,
       "signals": 13

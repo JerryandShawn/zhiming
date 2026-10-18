@@ -16,8 +16,8 @@
 - [x] H具名表/显式入口与旧口径隔离；time_basis 36定向（桥内8native）、只读入口11、严格节界桥1（内3native）通过。
 - [x] U12 35规则各正反例+3教材快照，U2稳定排序与技能28章；定向131通过。
 - [x] E2 v2 C0–C4a/b、随机选项/会话/同题统计/外部盘映射；75测试与3题全配置脚本通过，0真实调用。
-- [x] 最后补workbench纯冻结/留出/置换与校准拒绝；40单元+真实grid桥1（内10native）通过。
-- [x] (2026-10-18 最终) v4全570/570，0skip；脚本80/80；Ruff69文件与141保护文件不变核验通过。
+- [x] 最后补workbench纯冻结/留出/置换与校准拒绝；71单元+真实grid桥1（内10native）通过。
+- [x] (2026-10-18 最终) v4全601/601，0skip；脚本80/80；Ruff71文件与141保护文件不变核验通过。
 - [x] 旧Core553/553、旧计算60/60在本阶段已实跑；其后受保护旧文件不变。
 - [x] 真实排盘合成10人和12格噪声/零事件评测已运行，结果与人工矩阵严格分列。
 - [ ] 正式倒推E-R1≥95%：未达（唯一0/10，稳定解并列2/10）；不放宽方法，交大脑复核。
@@ -45,7 +45,7 @@
 
 ## Validation and Acceptance
 
-本机软件检查570/570、脚本80/80。正式E-R1不通过，200种独立出生盘与自信错误率、Linux/Windows一致性未证明；不宣称完整P8 Done。详细命令/输出/指纹见evidence/P8/meta-regression-summary.json与meta-validation.json、time-basis-crosscheck.md、rules-review.md、skills-review.md、e2-v2-scripted-2026-10-18.md、rectification-eval.md。
+本机软件检查601/601、脚本80/80。正式E-R1不通过，200种独立出生盘与自信错误率、Linux/Windows一致性未证明；不宣称完整P8 Done。详细命令/输出/指纹见evidence/P8/meta-regression-summary.json与meta-validation.json、time-basis-crosscheck.md、rules-review.md、skills-review.md、e2-v2-scripted-2026-10-18.md、rectification-eval.md。
 
 ## Idempotence and Recovery
 
@@ -57,10 +57,12 @@ P8ChartAdapter.time_basis(request)；charts.rules.evaluate_rules；bazi_interact
 
 ## Artifacts and Notes
 
-代码基准 `5a5334bcb1426b94fac1016992ab6c6b4cb5ec9e`，本机等价be7ae912，源码树b0698e6d5657740907222544b55d01dfb22d20ce。PR https://github.com/JerryandShawn/zhiming/pull/5 保持draft。证据独立提交，远端CI状态以PR为准。日汇总docs/v4/daily/2026-10-18_meta.md；阶段回执evidence/P8/P8_命理计算线_阶段回执_2026-10-18.md。
+代码基准 `16933cb2af7cff04f9ab328ed8dd22a846db1e7a`，本机等价540c7fe，源码树535dae36ed1876ef410805ff702f2c6e934a9de3。PR https://github.com/JerryandShawn/zhiming/pull/5 保持draft。证据独立提交，远端CI状态以PR为准。日汇总docs/v4/daily/2026-10-18_meta.md；阶段回执evidence/P8/P8_命理计算线_阶段回执_2026-10-18.md。
 
 ## Outcomes & Retrospective
 
 本线交付准确时刻核对、具名计算与规则证据、技能/E2离线框架以及诚实拒绝的工作台。主要限制不是测试跳过，而是倒推信号不能唯一分辨与跨线部署/业务尚未接；本轮保留失败事实供大脑决定，未合并、未部署。
 
 2026-10-18 17:33 Decision/Progress：为保证锁定数据优先，修复Linux包/OS优先级；显式当前环境覆盖严格验证绝对目录，空覆盖禁OS，未锁定回退透明标记。新增9用例与公开固定评测样本/入口；最新聚合570通过、80脚本。source基准5a5334b，正式倒推仍不达标。
+
+2026-10-18 最终复核 Decision/Progress：校准严格绑定单一轮次/α、信号来源、规则哈希及单一候选数/事件数；跨轮与混合shape拒绝，第二轮无独立200+200校准则拒绝倾向。追问复用完整scope/出生年/截止年/规则绑定检查。旧测试的raw_nulls新增round字段；原混合shape可聚合通过的契约是漏洞，改为严格拒绝，未改事件或重选人物。新增轮次/alpha/shape及跨年份负例；最终v4 601通过，脚本80/80。
