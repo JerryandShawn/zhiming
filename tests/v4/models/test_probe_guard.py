@@ -30,7 +30,14 @@ def test_probe_quota_is_one_actual_request_and_no_body_in_result() -> None:
 
     def factory(instance: Any, **kwargs: Any) -> Any:
         return original(
-            instance, transport=httpx.MockTransport(lambda _: httpx.Response(429, text="private quota")), **kwargs
+            instance,
+            transport=httpx.MockTransport(
+                lambda _: httpx.Response(
+                    403,
+                    json={"error": {"type": "permission_error", "message": "You've reached your 5-hour usage limit."}},
+                )
+            ),
+            **kwargs,
         )
 
     with patch.object(ModelHandle, "adapter", factory):

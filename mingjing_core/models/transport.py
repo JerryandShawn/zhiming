@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import random
 import threading
 import time
 from collections.abc import Callable, Iterator
@@ -15,18 +14,19 @@ import httpx
 
 from mingjing_core.domain.json_values import ensure_finite_json
 
+from .config_policy import validate_model_settings
+from .error_classification import classify_error
 from .errors import (
     ModelBadRequest,
     ModelCancelled,
-    ModelPermissionDenied,
     ModelProtocolError,
     ModelQuotaExhausted,
-    ModelRateLimited,
     ModelUnavailable,
 )
 from .metering import before_provider_request
 from .port import ModelPort, StreamEvent
-from .provider_diagnostics import error_fields, parse_error_sample, permission_quota
+from .provider_diagnostics import parse_error_sample
+from .retry_policy import retry_delay, wait_for_retry
 
 
 def safe_usage(data: Any) -> dict[str, int]:
@@ -54,31 +54,12 @@ def check_cancel(event: threading.Event | None) -> None:
 
 
 def http_error(response: httpx.Response, *, membership: bool) -> ModelUnavailable:
-    status = response.status_code
-    if membership and status == 429:
-        return ModelQuotaExhausted(status=status)
-    # Only audited public quota sentences may leave this local classification boundary.
+    # Classification inspects one bounded error sample; no raw text crosses this boundary.
     try:
         sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore")
     except httpx.HTTPError:
         sample = ""
-    parsed = parse_error_sample(sample)
-    if status == 403 and (match := permission_quota(parsed)):
-        subtype, public = match
-        return ModelQuotaExhausted(
-            status=status,
-            subtype=subtype,
-            error_type="permission_error",
-            provider_message=public,
-        )
-    if status == 403:
-        return ModelPermissionDenied(status=status, error_type=error_fields(parsed)[0])
-    quota = any(word in sample.casefold() for word in ("usage limit", "quota", "额度", "usage_limit"))
-    if quota or membership and status == 429:
-        return ModelQuotaExhausted(status=status)
-    if status == 429:
-        return ModelRateLimited(status=status)
-    return ModelUnavailable(status=status) if status >= 500 else ModelBadRequest(status=status)
+    return classify_error(response.status_code, parse_error_sample(sample), membership=membership)
 
 
 def sse(response: httpx.Response, cancel: threading.Event | None) -> Iterator[dict[str, Any]]:
@@ -122,15 +103,7 @@ def strict_json(value: str) -> Any:
 
 
 def stream_error(data: Any, *, membership: bool) -> ModelUnavailable:
-    if match := permission_quota({"error": data}):
-        subtype, public = match
-        return ModelQuotaExhausted(subtype=subtype, error_type="permission_error", provider_message=public)
-    classification = str(data).casefold()
-    rate = any(word in classification for word in ("rate_limit", "rate limit", "429"))
-    quota = any(word in classification for word in ("quota", "usage_limit", "usage limit", "额度"))
-    if quota or membership and rate:
-        return ModelQuotaExhausted(status=429 if rate else None)
-    return ModelRateLimited(status=429) if rate else ModelUnavailable()
+    return classify_error(None, {"error": data}, membership=membership, surface="sse")
 
 
 @contextmanager
@@ -184,6 +157,7 @@ class StreamingHTTP(ModelPort):
         self.base_url = base_url.rstrip("/")
         self.api_key, self.model, self.provider = api_key, model, provider
         self.caps, self.settings = caps or {}, settings or {}
+        validate_model_settings(model, self.settings)
         self.transport, self.sleep, self.max_retries = transport, sleep, max_retries
         self.membership = bool(self.settings.get("membership", False))
         self.request_count = 0
@@ -199,7 +173,7 @@ class StreamingHTTP(ModelPort):
     ) -> Iterator[StreamEvent]:
         check_cancel(cancel)
         deadline = time.monotonic() + float(self.settings.get("total_timeout", 600))
-        started, parse_retries = time.monotonic(), 0
+        started = time.monotonic()
         for attempt in range(self.max_retries + 1):
             visible, failure = False, None
             check_cancel(cancel)
@@ -222,23 +196,18 @@ class StreamingHTTP(ModelPort):
                 raise
             except ModelProtocolError as exc:
                 failure = exc
-                parse_retries += 1
             except ModelUnavailable as exc:
                 failure = exc
             except (httpx.HTTPError, RuntimeError):
                 failure = ModelUnavailable()
             except (KeyError, TypeError, AttributeError, ValueError):
                 failure = ModelProtocolError()
-                parse_retries += 1
             check_cancel(cancel)
-            if visible or attempt >= self.max_retries or parse_retries > 1 or time.monotonic() >= deadline:
+            delay = retry_delay(failure, attempt, self.max_retries, visible=visible)
+            if delay is None or not wait_for_retry(delay, deadline, cancel, self.sleep):
+                check_cancel(cancel)
                 yield StreamEvent("error", failure)
                 return
-            delay = min((1, 3, 9)[min(attempt, 2)] + random.uniform(0, 0.2), max(0, deadline - time.monotonic()))
-            if cancel is not None and self.sleep is time.sleep:
-                cancel.wait(delay)
-            else:
-                self.sleep(delay)
 
     def _request(
         self,

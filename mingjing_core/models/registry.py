@@ -13,15 +13,15 @@ from typing import Any
 import yaml
 
 from .anthropic_messages import AnthropicMessages
+from .config_policy import validate_model_settings
 from .errors import (
-    ModelBadRequest,
-    ModelCancelled,
     ModelQuotaExhausted,
     ModelUnavailable,
 )
 from .openai_compat import OpenAICompat
 from .port import ChatMessage, ModelPort, StreamEvent
-from .transport import StreamingHTTP
+from .retry_policy import retry_delay, wait_for_retry
+from .transport import StreamingHTTP, check_cancel
 
 LOG = logging.getLogger(__name__)
 DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / "config/models.yaml"
@@ -61,8 +61,18 @@ class ModelRegistry:
         self.warned: set[str] = set()
         if not isinstance(self.data, dict) or self.data.get("version") != 1:
             raise ValueError("Unsupported model registry version")
+        self._validate_configured_models()
+
+    def _validate_configured_models(self) -> None:
+        for entry in self.data.get("models", {}).values():
+            provider = self.data["providers"][entry["provider"]]
+            settings = {**provider.get("settings", {}), **entry.get("settings", {})}
+            validate_model_settings(entry["model"], settings)
+            effective = self.environment.get(entry.get("model_env", "")) or entry["model"]
+            validate_model_settings(effective, settings)
 
     def resolve(self, role: str = "primary") -> list[ModelHandle]:
+        self._validate_configured_models()
         handles = []
         chain = self.data.get("roles", {}).get(role, [])
         if not isinstance(chain, list):
@@ -111,7 +121,7 @@ class RegistryPort(ModelPort):
         total_timeout: float | None = None,
     ) -> None:
         self.registry, self.role = registry, role
-        # Registry makes two attempts per provider; adapters must not multiply this budget.
+        # Registry owns retries; direct adapters retain the identical policy independently.
         self.factory = factory or (lambda handle: handle.adapter(max_retries=0))
         self.stop_on_quota = stop_on_quota
         self.total_timeout = total_timeout
@@ -120,6 +130,7 @@ class RegistryPort(ModelPort):
     def stream(self, messages: list[ChatMessage], **kwargs: Any) -> Iterator[StreamEvent]:
         role = kwargs.pop("role", self.role)
         blocked_memberships: set[str] = set()
+        nonmembership_only = False
         last: ModelUnavailable = ModelUnavailable()
         handles = self.registry.resolve(role)
         timeout = (
@@ -129,32 +140,52 @@ class RegistryPort(ModelPort):
         )
         deadline = time.monotonic() + timeout
         for handle in handles:
-            if handle.api_key in blocked_memberships:
+            if handle.api_key in blocked_memberships or nonmembership_only and handle.settings.get("membership", False):
                 continue
             adapter = self.factory(handle)
-            for _ in range(2):
-                visible = False
-                try:
-                    for event in self._attempt(adapter, messages, deadline, role=role, **kwargs):
-                        if event.type == "error":
-                            raise event.data
-                        visible = visible or event.type in {"text", "reasoning", "tool_call"}
-                        yield event
-                    return
-                except ModelQuotaExhausted as exc:
+            try:
+                yield from self._handle(adapter, messages, deadline, role=role, **kwargs)
+                return
+            except _VisibleFailure as captured:
+                if isinstance(captured.failure, ModelQuotaExhausted):
                     self.quota_errors += 1
-                    last = exc
-                    if self.stop_on_quota or visible:
-                        raise
-                    blocked_memberships.add(handle.api_key)
-                    break
-                except (ModelBadRequest, ModelCancelled):
+                raise captured.failure from None
+            except ModelQuotaExhausted as exc:
+                self.quota_errors += 1
+                if self.stop_on_quota or exc.global_stop or exc.retry_actions.fallback == "none":
                     raise
-                except ModelUnavailable as exc:
-                    last = exc
-                    if visible:
-                        raise
+                blocked_memberships.add(handle.api_key)
+                last = exc
+                nonmembership_only = True
+            except ModelUnavailable as exc:
+                last = exc
+                if exc.global_stop or exc.retry_actions.fallback == "none":
+                    raise
+                nonmembership_only = True
         raise last
+
+    def _handle(
+        self, adapter: ModelPort, messages: list[ChatMessage], deadline: float, **kwargs: Any
+    ) -> Iterator[StreamEvent]:
+        cancel = kwargs.get("cancel_event")
+        for attempt in range(4):
+            visible = False
+            check_cancel(cancel)
+            try:
+                for event in self._attempt(adapter, messages, deadline, **kwargs):
+                    if event.type == "error":
+                        raise event.data
+                    visible = visible or event.type in {"text", "reasoning", "tool_call"}
+                    yield event
+                return
+            except ModelUnavailable as failure:
+                if visible:
+                    raise _VisibleFailure(failure) from None
+                delay = retry_delay(failure, attempt, 3, visible=False)
+                sleep = adapter.sleep if isinstance(adapter, StreamingHTTP) else time.sleep
+                if delay is None or not wait_for_retry(delay, deadline, cancel, sleep):
+                    check_cancel(cancel)
+                    raise
 
     def _attempt(
         self, adapter: ModelPort, messages: list[ChatMessage], deadline: float, **kwargs: Any
@@ -163,10 +194,19 @@ class RegistryPort(ModelPort):
         if remaining <= 0:
             raise ModelUnavailable()
         settings = adapter.settings if isinstance(adapter, StreamingHTTP) else None
+        retries = adapter.max_retries if isinstance(adapter, StreamingHTTP) else None
         if settings is not None:
+            adapter.max_retries = 0
             adapter.settings = {**settings, "total_timeout": min(float(settings.get("total_timeout", 600)), remaining)}
         try:
             yield from adapter.stream(messages, **kwargs)
         finally:
             if settings is not None:
                 adapter.settings = settings
+                adapter.max_retries = retries
+
+
+class _VisibleFailure(Exception):
+    def __init__(self, failure: ModelUnavailable) -> None:
+        super().__init__("模型已返回部分结果，停止重播")
+        self.failure = failure

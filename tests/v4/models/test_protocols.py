@@ -154,21 +154,24 @@ def test_http_status_retry_budget(status: Any, error: Any, retries: Any) -> None
 
 
 @pytest.mark.parametrize(
-    "status,body",
+    "status,body,error,attempts",
     [
-        (429, "rate"),
+        (429, "rate", ModelRateLimited, 4),
         (
             403,
             json.dumps({"error": {"type": "permission_error", "message": "You've reached your 5-hour usage limit."}}),
+            ModelQuotaExhausted,
+            1,
         ),
-        (500, "quota"),
+        (500, "quota", ModelUnavailable, 4),
     ],
 )
-def test_membership_quota_never_retry(status: Any, body: Any) -> None:
+def test_membership_status_controls_retry(status: Any, body: Any, error: Any, attempts: int) -> None:
     model = adapter(lambda _: httpx.Response(status, text=body), settings={"membership": True})
-    with pytest.raises(ModelQuotaExhausted):
+    with pytest.raises(error):
         model.complete([ChatMessage("user", "查询")])
-    assert model.request_count == model.quota_errors == 1
+    assert model.request_count == attempts
+    assert model.quota_errors == (1 if error is ModelQuotaExhausted else 0)
 
 
 def test_bad_tool_arguments_retried_once_then_error_event() -> None:
@@ -273,7 +276,15 @@ def test_anthropic_tools_thinking_signature_and_multiturn() -> None:
     "data,error",
     [
         (recording({"type": "message_delta", "delta": {"stop_reason": "max_tokens"}}), ModelProtocolError),
-        (recording({"type": "error", "error": {"message": "quota"}}), ModelQuotaExhausted),
+        (
+            recording(
+                {
+                    "type": "error",
+                    "error": {"type": "permission_error", "message": "You've reached your 5-hour usage limit."},
+                }
+            ),
+            ModelQuotaExhausted,
+        ),
         (b"data: invalid-json\n\n", ModelProtocolError),
     ],
 )

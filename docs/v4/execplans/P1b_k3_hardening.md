@@ -112,3 +112,9 @@ Decision Log补充（2026-10-18/Codex）：旧test_membership_quota_never_retry�
 中心账本拓扑（后续M3）：所有业务库/评测/探针明确共用同一ledger DSN/schema/account scope；PG advisory锁仅DB内有效，不能各业务DB建独立守卫。拟用独立本机无正文账本数据库，配置固定ledger identity，缺配置失败关闭。每个物理attempt先预留、结束后终结，不能一complete只算一次或多层重复acquire。具体数据库/迁移安装仍未实施；不把方案当验收。
 
 - 2026-10-18 17:34 +08:00：P2合并后M0完成，补U37接口/动作与旧测试替换依据，中央账本仍等模块接口接线，真实请求0。
+
+2026-10-18 / Codex：旧Anthropic流式quota正例只有无类型message=quota，按新状态/error.type优先及回显隐私规则不足以证明额度。正例换成保留已审计的permission_error+5h公开句；新unknown SSE含quota/429回显的负例单独断言不猜状态、不重试。旧probe额度夹具由429换成真实403公开额度句，仍保护恰1POST和无正文输出，429退避另由新动作测试覆盖。
+
+2026-10-18 / Codex：合成78项HTTP/SSE矩阵放tools/eval/fixtures/u37_error_matrix.json，遵守AGENTS合成夹具路径；不强制加入被gitignore保护的tests/v4/models/fixtures。其余6项transport/local归实际执行测试，不能把纯分类通过当成PG持久全停完成。
+
+2026-10-18 / Codex：完整模型覆盖初跑430通过/1失败，失败为旧真实PG shim仍用429冒充quota。将其参数化为403公开额度句=1物理POST、429 rate=4物理POST，同时都保留1个旧v3业务charge、失败终态、repair不重开；这区分供应商物理重试与旧业务预算，不削弱预算或服务真实路径。初次96%覆盖不计作通过，修后完整重跑。

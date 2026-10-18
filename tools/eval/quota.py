@@ -7,6 +7,7 @@ import time
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
+from mingjing_core.models.errors import ModelUnavailable as TypedModelUnavailable
 from mingjing_core.models.metering import request_meter
 
 if TYPE_CHECKING:
@@ -17,6 +18,9 @@ STOP_REASONS = frozenset(
         "quota",
         "quota_5h",
         "quota_weekly",
+        "quota_monthly",
+        "concurrency_limited",
+        "access_terminated",
         "provider_http_error",
         "member_window_limit",
         "batch_cooldown",
@@ -81,6 +85,18 @@ def provider_http_status(exc: Exception) -> int | None:
 
 
 def provider_stop_reason(exc: Exception) -> str | None:
+    if isinstance(exc, TypedModelUnavailable):
+        if exc.kind in {
+            "quota",
+            "quota_5h",
+            "quota_weekly",
+            "quota_monthly",
+            "concurrency_limited",
+            "access_terminated",
+        }:
+            return exc.kind
+        # The adapter has already exhausted its own retry policy. Never re-label rate as quota.
+        return "provider_http_error"
     subtype = getattr(exc, "quota_subtype", None)
     if subtype in {"quota", "quota_5h", "quota_weekly"}:
         return subtype
