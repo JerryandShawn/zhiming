@@ -72,7 +72,9 @@ test.afterAll(async () => {
   for (const filename of [
     'src/App.tsx',
     'src/Layout.tsx',
+    'src/styles/base.css',
     'index.html',
+    'tests/e2e/spaces.spec.ts',
     'tests/e2e/spaces-visual.spec.ts',
     'playwright.spaces-visual.config.ts',
   ])

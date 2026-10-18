@@ -85,47 +85,49 @@ export function Layout({
         }}>
         跳到主要内容
       </a>
-      <aside className="rail" aria-label="主导航">
-        <a href="#/today" className="brand row">
-          <Seal />
-          <span>明镜</span>
-        </a>
-        <p className="rail-date meta">
-          {preview && !spacesPreview
-            ? '10月17日 周六 · 九月初八'
-            : new Intl.DateTimeFormat('zh-CN', {
-                timeZone: 'Asia/Shanghai',
-                month: 'long',
-                day: 'numeric',
-                weekday: 'short',
-              }).format(new Date())}
-        </p>
-        <nav>
-          <Links current={page} spacesPreview={spacesPreview} />
-        </nav>
-        <div className="rail-bottom">
-          <div className="row between small-text">
-            <span className="row">
-              <EyeOff className="icon" />
-              无痕模式
-            </span>
-            <Switch
-              label="侧栏无痕模式"
-              checked={privateMode}
-              onChange={setPrivate}
-              disabled={!preview || spacesPreview}
-            />
+      <div className="rail-column">
+        <aside className="rail" aria-label="主导航">
+          <a href="#/today" className="brand row">
+            <Seal />
+            <span>明镜</span>
+          </a>
+          <p className="rail-date meta">
+            {preview && !spacesPreview
+              ? '10月17日 周六 · 九月初八'
+              : new Intl.DateTimeFormat('zh-CN', {
+                  timeZone: 'Asia/Shanghai',
+                  month: 'long',
+                  day: 'numeric',
+                  weekday: 'short',
+                }).format(new Date())}
+          </p>
+          <nav>
+            <Links current={page} spacesPreview={spacesPreview} />
+          </nav>
+          <div className="rail-bottom">
+            <div className="row between small-text">
+              <span className="row">
+                <EyeOff className="icon" />
+                无痕模式
+              </span>
+              <Switch
+                label="侧栏无痕模式"
+                checked={privateMode}
+                onChange={setPrivate}
+                disabled={!preview || spacesPreview}
+              />
+            </div>
+            {!preview && <p className="meta">无痕对话正在准备，暂不可用。</p>}
+            <a className="nav-link" href="#/settings" aria-current={page === 'settings' ? 'page' : undefined}>
+              <Settings2 className="icon" />
+              设置
+            </a>
+            <a className="nav-link" href="?spaces=demo#/chat">
+              功能区预览
+            </a>
           </div>
-          {!preview && <p className="meta">无痕对话正在准备，暂不可用。</p>}
-          <a className="nav-link" href="#/settings" aria-current={page === 'settings' ? 'page' : undefined}>
-            <Settings2 className="icon" />
-            设置
-          </a>
-          <a className="nav-link" href="?spaces=demo#/chat">
-            功能区预览
-          </a>
-        </div>
-      </aside>
+        </aside>
+      </div>
       <header className="topbar">
         <h1>{label}</h1>
         {page === 'today' ? (

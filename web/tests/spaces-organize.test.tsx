@@ -1,6 +1,6 @@
 import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import OrganizePage from '../src/spaces/OrganizePage';
 import { useSpacesDemo } from '../src/spaces/store';
 
@@ -19,7 +19,20 @@ async function nameAndSave(name: string, label = '名称') {
 }
 
 describe('local organize proposal editing', () => {
-  beforeEach(() => useSpacesDemo.getState().reset());
+  beforeEach(() => {
+    useSpacesDemo.getState().reset();
+    // These existing edit contracts exercise the unchanged five-button desktop layout.
+    vi.mocked(window.matchMedia).mockImplementation((query) => ({
+      matches: query === '(min-width: 1024px)',
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+  });
 
   it('shows synthetic scope, counts, low confidence in text and sensitive locks', () => {
     render(<OrganizePage />);

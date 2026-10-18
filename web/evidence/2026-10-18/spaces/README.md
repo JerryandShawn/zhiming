@@ -1,5 +1,7 @@
 # P10 增补阶段回执：功能区、话题与整理建议
 
+> 最新复核修正与发布回执见 [review-fixes.md](review-fixes.md)。以下保留 17:15 +08 首次预览交付记录；其中未推送、旧 SHA 和历史测试结果不是当前发布状态。
+
 - 分支 / 最后代码提交：`v4/p10-frontend @ e89a0e4a090dca74b90726c11d304766e21044d9`，基线 `241e874`；本回执随后仅补文档。
 - 关联 PR：[草稿 #6](https://github.com/JerryandShawn/zhiming/pull/6)，本线未推送、未合并或强推。
 - ExecPlan：[ExecPlan_spaces.md](../../../ExecPlan_spaces.md)；设计依据：P5b 增补 C、22 号 §6，指纹见 [design-inputs.json](design-inputs.json)。

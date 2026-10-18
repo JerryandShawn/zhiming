@@ -73,3 +73,11 @@
 .organize-page code {
   overflow-wrap: anywhere;
 }
+.organize-topic-menu {
+  display: grid;
+  gap: var(--s-1);
+  min-width: calc(var(--control-height) * 3);
+}
+.organize-topic-menu .button {
+  justify-content: flex-start;
+}

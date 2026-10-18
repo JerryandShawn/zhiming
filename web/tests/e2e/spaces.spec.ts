@@ -17,6 +17,13 @@ async function saveName(page: Page, name: string, label = '名称') {
   await page.getByRole('button', { name: '保存到草稿', exact: true }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
 }
+async function moreAction(page: Page, title: string, action: string) {
+  await card(page, title).getByRole('button', { name: '更多', exact: true }).click();
+  await page
+    .getByRole('menu', { name: `${title}更多操作`, exact: true })
+    .getByRole('menuitem', { name: action, exact: true })
+    .click();
+}
 async function capture(page: Page, name: string) {
   await fs.mkdir('evidence/2026-10-18/spaces/interactions', { recursive: true });
   await page.screenshot({ path: `evidence/2026-10-18/spaces/interactions/${name}.png`, animations: 'disabled' });
@@ -141,12 +148,12 @@ test('整理草稿改名后先确认再应用，撤销也需确认', async ({ pa
 test('整理树支持合并、拆分、移动和忽略，消息总数不变', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await open(page, 'organize');
-  await card(page, '跳槽 · 面试').getByRole('button', { name: '合并', exact: true }).click();
+  await moreAction(page, '跳槽 · 面试', '合并');
   await page.getByRole('button', { name: '保存到草稿' }).click();
   await expect(card(page, '学习计划')).toContainText('6 条消息');
   await expect(card(page, '跳槽 · 面试')).toHaveCount(0);
   await page.getByRole('button', { name: '重置草稿' }).click();
-  await card(page, '跳槽 · 面试').getByRole('button', { name: '拆分', exact: true }).click();
+  await moreAction(page, '跳槽 · 面试', '拆分');
   await page.getByRole('checkbox').nth(2).check();
   await page.getByRole('checkbox').nth(3).check();
   await page.getByRole('textbox', { name: '新话题名称' }).fill('协作练习');
@@ -160,7 +167,7 @@ test('整理树支持合并、拆分、移动和忽略，消息总数不变', as
   await expect(page.locator('.organize-space').filter({ has: page.getByText('家庭', { exact: true }) })).toContainText(
     '协作练习',
   );
-  await card(page, '学习计划').getByRole('button', { name: '忽略本批' }).click();
+  await moreAction(page, '学习计划', '忽略本批');
   await expect(page.getByRole('region', { name: '本批忽略的话题' })).toContainText('学习计划');
   await expect(page.getByText(/原消息共 18 条/)).toBeVisible();
 });
@@ -176,3 +183,85 @@ test('关于我按区列记忆、重要的人与事项，真实入口不会混�
   await expect(page.locator('[data-runtime="spaces-demo"]')).toHaveCount(0);
   expect(new URL(page.url()).searchParams.has('spaces')).toBe(false);
 });
+
+for (const theme of ['light', 'dark']) {
+  test(`手机话题三入口与更多菜单键盘回焦 ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.addInitScript((value) => localStorage.setItem('mingjing-theme', value), theme);
+    await open(page, 'organize');
+    const actions = card(page, '跳槽 · 面试').getByRole('group', { name: '跳槽 · 面试操作', exact: true });
+    await expect(actions.getByRole('button')).toHaveText(['改名', '移动', '更多']);
+    const more = actions.getByRole('button', { name: '更多', exact: true });
+    await more.focus();
+    await page.keyboard.press('ArrowDown');
+    const menu = page.getByRole('menu', { name: '跳槽 · 面试更多操作', exact: true });
+    await expect(menu.getByRole('menuitem')).toHaveText(['合并', '拆分', '忽略本批']);
+    await expect(menu.getByRole('menuitem', { name: '合并', exact: true })).toBeFocused();
+    await page.keyboard.press('ArrowDown');
+    await expect(menu.getByRole('menuitem', { name: '拆分', exact: true })).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(menu.getByRole('menuitem', { name: '忽略本批', exact: true })).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(menu).toHaveCount(0);
+    await expect(more).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(menu).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    await capture(page, theme === 'light' ? 'mobile-more-390' : 'mobile-more-dark-390');
+    await menu.getByRole('menuitem', { name: '拆分', exact: true }).click();
+    await expect(menu).toHaveCount(0);
+    await expect(page.getByRole('dialog', { name: '拆分话题' })).toBeVisible();
+    await page.getByRole('button', { name: '取消', exact: true }).click();
+    await expect(more).toBeFocused();
+    await page.getByRole('button', { name: '应用整理', exact: true }).click();
+    await page.getByRole('button', { name: '确认应用演示整理' }).click();
+    await expect(actions.getByRole('button')).toHaveCount(3);
+    for (const button of await actions.getByRole('button').all()) await expect(button).toBeDisabled();
+    await expect(page.getByText(/原消息共 18 条/)).toBeVisible();
+  });
+
+  test(`桌面长页侧栏撑满视口且底部背景连续 ${theme}`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.addInitScript((value) => localStorage.setItem('mingjing-theme', value), theme);
+    await open(page, 'organize');
+    await page.evaluate(() => document.fonts.ready);
+    await expect(card(page, '跳槽 · 面试').getByRole('button')).toHaveText([
+      '改名',
+      '合并',
+      '拆分',
+      '移动',
+      '忽略本批',
+    ]);
+    expect(await page.evaluate(() => document.documentElement.scrollHeight)).toBeGreaterThan(900);
+    await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+    await expect
+      .poll(() => page.evaluate(() => Math.abs(scrollY + innerHeight - document.documentElement.scrollHeight)))
+      .toBeLessThanOrEqual(1);
+    const geometry = await page.evaluate(() => {
+      const rail = document.querySelector<HTMLElement>('.rail')!;
+      const column = document.querySelector<HTMLElement>('.rail-column')!;
+      const railBox = rail.getBoundingClientRect();
+      const columnBox = column.getBoundingClientRect();
+      return {
+        position: getComputedStyle(rail).position,
+        top: railBox.top,
+        height: railBox.height,
+        columnTop: columnBox.top + scrollY,
+        columnBottom: columnBox.bottom + scrollY,
+        pageHeight: document.documentElement.scrollHeight,
+        railBackground: getComputedStyle(rail).backgroundColor,
+        columnBackground: getComputedStyle(column).backgroundColor,
+        bottomWithinRail: Boolean(document.elementFromPoint(20, innerHeight - 1)?.closest('.rail-column')),
+      };
+    });
+    expect(geometry.position).toBe('sticky');
+    expect(geometry.top).toBeCloseTo(0);
+    expect(geometry.height).toBeCloseTo(900);
+    expect(geometry.columnTop).toBeLessThanOrEqual(0);
+    expect(geometry.columnBottom).toBeGreaterThanOrEqual(geometry.pageHeight - 1);
+    expect(geometry.columnBackground).toBe(geometry.railBackground);
+    expect(geometry.columnBackground).not.toBe('rgba(0, 0, 0, 0)');
+    expect(geometry.bottomWithinRail).toBe(true);
+    await capture(page, theme === 'light' ? 'desktop-sidebar-scrolled-1440' : 'desktop-sidebar-scrolled-dark-1440');
+  });
+}

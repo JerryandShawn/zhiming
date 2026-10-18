@@ -3,6 +3,7 @@ import { Button, Tag } from '../components/ui/Controls';
 import type { OrganizeEdit } from './EditDialog';
 import { useSpacesDemo } from './store';
 import { getTopicStats } from './proposal';
+import TopicActions from './TopicActions';
 
 function dateLabel(value: string) {
   if (!value) return '时间待确认';
@@ -62,27 +63,13 @@ export default function ProposalTree({ onEdit }: { onEdit: (edit: OrganizeEdit) 
                         {stats.count} 条消息 · {dateLabel(stats.start)} 至 {dateLabel(stats.end)}
                       </p>
                       <p className="organize-sample">{stats.sample || '这条话题没有可展示的消息摘要。'}</p>
-                      <div className="row wrap" role="group" aria-label={`${topic.title}操作`}>
-                        {(
-                          [
-                            { kind: 'rename', text: '改名' },
-                            { kind: 'merge', text: '合并' },
-                            { kind: 'split', text: '拆分' },
-                            { kind: 'move', text: '移动' },
-                          ] as const
-                        ).map((action) => (
-                          <Button
-                            key={action.kind}
-                            variant="ghost"
-                            disabled={Boolean(applied)}
-                            onClick={() => onEdit({ kind: action.kind, id: topic.id })}>
-                            {action.text}
-                          </Button>
-                        ))}
-                        <Button variant="ghost" disabled={Boolean(applied)} onClick={() => ignoreTopic(topic.id)}>
-                          忽略本批
-                        </Button>
-                      </div>
+                      <TopicActions
+                        id={topic.id}
+                        title={topic.title}
+                        disabled={Boolean(applied)}
+                        onEdit={onEdit}
+                        onIgnore={() => ignoreTopic(topic.id)}
+                      />
                     </article>
                   );
                 })}

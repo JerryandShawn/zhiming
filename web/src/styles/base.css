@@ -163,6 +163,7 @@ svg.icon {
 .shell {
   min-height: 100dvh;
 }
+.rail-column,
 .rail {
   display: none;
 }
@@ -323,19 +324,36 @@ svg.icon {
 }
 @media (min-width: 1024px) {
   .shell {
-    padding-left: var(--rail-width);
+    display: grid;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    align-items: start;
+  }
+  .rail-column {
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    align-self: stretch;
+    min-height: 100vh;
+    background: var(--paper-2);
+    border-right: var(--border) solid var(--line);
+  }
+  .shell > main {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
   }
   .rail {
     display: flex;
     flex-direction: column;
-    position: fixed;
-    left: 0;
+    position: sticky;
     top: 0;
-    bottom: 0;
-    width: var(--rail-width);
+    height: 100vh;
+    max-height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: var(--s-5) var(--s-3);
     background: var(--paper-2);
-    border-right: var(--border) solid var(--line);
     z-index: 20;
   }
   .rail .brand {
