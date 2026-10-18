@@ -1,0 +1,10 @@
+.component-demo-notice {
+  padding: var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+  background: var(--paper-2);
+}
+@media (min-width: 1024px) {
+  .component-demo-notice {
+    padding-inline: var(--s-8);
+  }
+}

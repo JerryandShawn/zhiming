@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { Disclosure } from '../components/ui/Controls';
 import { Panel } from '../components/ui/Overlays';
 import { localDate, record, rows, text } from './common';
+import LuckPeriods from '../charts/LuckPeriods';
 
 function Basis({ path, value, trigger }: { path: string; value: string; trigger?: ReactElement }) {
   const date = new URLSearchParams(location.hash.split('?')[1]).get('date') ?? localDate();
@@ -119,21 +120,7 @@ export function BaziData({ data }: { data: Record<string, unknown> }) {
         <p className="small-text">{text(day.method_note)}</p>
         <Basis path="day.day_ganzhi" value={text(day.day_ganzhi)} />
       </section>
-      <section className="section">
-        <h2>大运</h2>
-        <div className="luck-timeline" tabIndex={0} role="region" aria-label="大运时间线，可左右滚动">
-          {rows(data.dayun).map((item, index) => (
-            <article className="luck-step" key={index}>
-              <p className="meta">
-                {text(item.start_year)}–{text(item.end_year)}
-              </p>
-              <p className="luck-glyph">{text(item.ganzhi)}</p>
-              <p className="meta">起始年龄 {text(item.start_age) || '未提供'}</p>
-            </article>
-          ))}
-        </div>
-        {!rows(data.dayun).length && <p className="meta">暂无大运字段。</p>}
-      </section>
+      <LuckPeriods data={data} date={new URLSearchParams(location.hash.split('?')[1]).get('date') ?? localDate()} />
       <Disclosure title="所选日期的年、月快照">
         {['target_liunian', 'target_liuyue'].map((field) => (
           <section key={field}>
@@ -192,23 +179,36 @@ export function ZiweiData({ data }: { data: Record<string, unknown> }) {
 export function AstroData({ data }: { data: Record<string, unknown> }) {
   const planets = record(data.planets),
     transits = record(data.transits);
+  const bodies = [
+    ['太阳'],
+    ['月亮'],
+    ['水星'],
+    ['金星'],
+    ['火星'],
+    ['木星'],
+    ['土星'],
+    ['天王', '天王星'],
+    ['海王', '海王星'],
+    ['冥王', '冥王星'],
+  ].flatMap((aliases) => {
+    const name = aliases.find((alias) => planets[alias]);
+    return name ? [name] : [];
+  });
   return (
     <div className="stack">
       <section className="section">
         <h2>本命星体</h2>
-        {['太阳', '月亮', '水星', '金星', '火星', '木星', '土星', '天王星', '海王星', '冥王星']
-          .filter((name) => planets[name])
-          .map((name) => {
-            const position = record(planets[name]);
-            return (
-              <article className="list-row row between wrap" key={name}>
-                <span>
-                  {name} · {text(position.sign)} {text(position.deg)}° · 第{text(position.house) || '未知'}宫
-                </span>
-                <Basis path={`planets.${name}`} value={`${text(position.sign)} ${text(position.longitude)}°`} />
-              </article>
-            );
-          })}
+        {bodies.map((name) => {
+          const position = record(planets[name]);
+          return (
+            <article className="list-row row between wrap" key={name}>
+              <span>
+                {name} · {text(position.sign)} {text(position.deg)}° · 第{text(position.house) || '未知'}宫
+              </span>
+              <Basis path={`planets.${name}`} value={`${text(position.sign)} ${text(position.longitude)}°`} />
+            </article>
+          );
+        })}
       </section>
       <section className="section">
         <h2>宫头</h2>

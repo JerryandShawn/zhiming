@@ -4,6 +4,9 @@ import { Disclosure, Segmented } from '../components/ui/Controls';
 import { BaziData, ZiweiData, AstroData } from './ChartData';
 import { localDate, record, ResourceState, text } from './common';
 import DateField from './DateField';
+import ZiweiPalaces from '../charts/ZiweiPalaces';
+import AstroDiagram from '../charts/AstroDiagram';
+import TimeBasis from '../charts/TimeBasis';
 
 const tabs = [
   { value: 'bazi', label: '八字' },
@@ -66,10 +69,17 @@ export default function Chart() {
           {tab === 'bazi' ? (
             <BaziData data={data} />
           ) : tab === 'ziwei' ? (
-            <ZiweiData data={data} />
+            <>
+              <ZiweiPalaces data={data} date={date} />
+              <ZiweiData data={data} />
+            </>
           ) : (
-            <AstroData data={data} />
+            <>
+              <AstroDiagram data={data} />
+              <AstroData data={data} />
+            </>
           )}
+          <TimeBasis data={data} />
           <section className="section">
             <Disclosure title="计算口径与限制">
               <p className="meta">盘面来自本次程序计算。出生资料原值仅在资料确认页展示。</p>

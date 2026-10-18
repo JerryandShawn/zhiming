@@ -1,0 +1,195 @@
+.chart-palaces,
+.chart-astro,
+.chart-luck,
+.chart-time-basis {
+  min-width: 0;
+}
+.chart-palaces {
+  /* Explicit cell dimensions from design 08 section 5.2. */
+  --palace-width: 120px;
+  --palace-height: 110px;
+}
+.chart-palace-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  margin-block: var(--s-4);
+}
+.chart-palace-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(var(--palace-width), 1fr));
+  grid-template-rows: repeat(4, minmax(var(--palace-height), auto));
+}
+.chart-palace-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  min-width: 0;
+  padding: var(--s-3);
+  text-align: start;
+  border: var(--border) solid var(--line);
+  background: transparent;
+  color: var(--ink);
+}
+.chart-palace-cell:hover {
+  background: var(--surface);
+}
+.chart-palace-heading {
+  font-family: var(--font-serif);
+  font-size: var(--t-body-sm);
+  font-weight: 600;
+}
+.chart-stars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  font-size: var(--t-body-sm);
+}
+.chart-stars > span {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--s-1);
+}
+.chart-mutagen {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  font-size: var(--t-meta);
+  padding-inline: var(--s-1);
+  border-radius: var(--r-1);
+  background: var(--paper-2);
+}
+.mutagen-禄 {
+  color: var(--jade);
+  background: var(--jade-wash);
+}
+.mutagen-权 {
+  color: var(--cinnabar);
+  background: var(--cinnabar-wash);
+}
+.mutagen-科 {
+  color: var(--gold-ink);
+  background: var(--gold-wash);
+}
+.mutagen-忌 {
+  color: var(--ink);
+}
+.chart-palace-center {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: var(--s-3);
+  padding: var(--s-5);
+  border: var(--border) solid var(--line);
+}
+.chart-astro-wheel {
+  width: min(100%, var(--dialog-width));
+  height: auto;
+  display: block;
+  margin: var(--s-5) auto;
+  overflow: visible;
+}
+.chart-wheel-ring,
+.chart-house-line {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: var(--border);
+}
+.chart-astro-wheel text {
+  font-family: var(--font-sans);
+  font-size: var(--t-body);
+  fill: var(--ink);
+  font-weight: 600;
+}
+.chart-astro-wheel .chart-zodiac-label {
+  font-family: var(--font-serif);
+  font-weight: 400;
+}
+.chart-aspect {
+  fill: none;
+  stroke-width: var(--border);
+}
+.chart-aspect.conjunction {
+  stroke: var(--gold);
+}
+.chart-aspect.harmonious {
+  stroke: var(--jade);
+}
+.chart-aspect.tense {
+  stroke: var(--cinnabar);
+}
+.chart-planet-leader {
+  stroke: var(--ink-3);
+  stroke-width: var(--border);
+}
+.chart-planet-dot {
+  fill: var(--ink);
+}
+.chart-luck-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--s-2);
+  padding-block: var(--s-3);
+}
+.chart-luck-period {
+  flex: 0 0 var(--luck-width);
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--s-1);
+  padding: var(--s-3) var(--s-1);
+  border: var(--border) solid var(--line);
+  background: transparent;
+  border-radius: var(--r-2);
+  color: var(--ink);
+}
+.chart-luck-period.current {
+  background: var(--cinnabar-wash);
+  border-color: var(--cinnabar);
+}
+.chart-luck-period.current .meta {
+  color: var(--ink-2);
+}
+.chart-luck-status {
+  min-height: var(--tag-height);
+  display: grid;
+  align-items: center;
+}
+.chart-luck-period .tag {
+  padding-inline: var(--s-1);
+  max-width: 100%;
+  height: auto;
+  min-height: var(--tag-height);
+  white-space: normal;
+  line-height: var(--l-meta);
+  text-align: center;
+}
+.chart-luck-period:hover {
+  border-color: var(--line-strong);
+}
+.chart-basis-pair {
+  display: grid;
+  gap: var(--s-5);
+  padding-block: var(--s-4);
+  border-block-end: var(--border) solid var(--line);
+}
+.chart-basis-comparison {
+  padding-inline-start: var(--s-4);
+  border-inline-start: var(--selected) solid var(--gold-ink);
+}
+@media (min-width: 1024px) {
+  .chart-palaces {
+    --palace-width: 140px;
+    --palace-height: 120px;
+  }
+  .chart-basis-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+:root[data-theme='dark'] .chart-luck-period.current .tag,
+:root[data-theme='dark'] .chart-mutagen.mutagen-权 {
+  color: var(--cinnabar-hover);
+}
