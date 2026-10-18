@@ -12,7 +12,7 @@
 
 - [x] (2026-10-18 22:00 +08:00 夜间开工) 完整读取24号审校；只执行用户授予的命理线范围，确认v4/p8-calc，原已发布HEAD 0aa9ab7b。
 - [x] (2026-10-18 22:36 +08:00) 夜间M1本机验证完成：24号§6十项审校，规则正反例/教材快照/time_basis/交互表完整769通过、80脚本；96样式/141保护文件；随后按相同树提交推送。
-- [ ] 夜间M2：chart_compute只读接线契约、JSON Schema、三份阿远合成输出与前端模拟数据；逐字段与实际入口核验。
+- [x] (2026-10-18 23:08 +08:00) 夜间M2本机验证完成：chart_compute只读接线契约、JSON Schema、三份阿远合成输出与前端模拟数据；逐字段与实际入口核验。
 - [ ] 夜间M3：E2十四道2025题纳入/排除/year_basis表及生日打乱安慰剂脚本，真实模型留主线在线手动执行。
 - [ ] 夜间M4：技能来源/待核与白话示例、38条额外反例、实际耗时与独立边界复核；07:30收束、08:00前汇总。
 
@@ -68,6 +68,10 @@
 
 ## Validation and Acceptance
 
+夜间M1：769/769、0跳过、脚本80/80，96Python样式/141保护文件通过；源码955533d1、证据HEAD0b744aee，PR #5草稿，新HEAD CI尚在运行。相关07场景C01–C07与19号CR01–CR06的Agent真实表达未由这些计算单元测试证明；主线语义场景不可冒领。
+
+夜间M2：正在生成JSON Schema/真实计算的canonical阿远三样例，分配临时演示c/r依据，不建立主线别名账本。每份用独立operation_id，三文件不可把c1直接合并为同一上下文。不同原生document根通过内容ID+Pointer显式引用；time_basis坐标ID与feature ID不单独冒充内容依据ID。
+
 本机软件检查601/601、脚本80/80。正式E-R1不通过，200种独立出生盘与自信错误率、Linux/Windows一致性未证明；不宣称完整P8 Done。详细命令/输出/指纹见evidence/P8/meta-regression-summary.json与meta-validation.json、time-basis-crosscheck.md、rules-review.md、skills-review.md、e2-v2-scripted-2026-10-18.md、rectification-eval.md。
 
 ## Idempotence and Recovery
@@ -97,3 +101,5 @@ P8ChartAdapter.time_basis(request)；charts.rules.evaluate_rules；bazi_interact
 2026-10-18 23号续作 Decision/Progress/Outcome：旧time_basis版本断言改v2-review23以承载主口径；原R2校准成功测试仍验证统计pass，但按冻结政策产品输出改拒绝。技能多信封测试按能力根解析并增加真实west路径检查，保留无写入/原数据不变。太阳回归选UTC周年锚±5日，不当自然年全部根。E2视图重新生成profile/artifact内容ID、只保留年层且不改源bundle；明确源年/赛季年不等于目标年。全部677通过、80脚本，源码9c2ca7085b2e99ebbd0882cd7e6307475b372f84，证据独立发布；PR保持草稿。
 
 2026-10-18 22:36 夜间Decision/Outcome：审校不改v3。两财格c3旧正例按新七杀牵制变为反例并保存替换理由；38规则不删原35ID。首次全回归发现P8相神元数据tuple不符合JSON，改输出list且保护legacy tuple，重跑769/769。新38规则、三教材快照和技能v2.2记录原典/项目/待核边界，未进行任何模型或服务器访问。夜间剩余接线契约/E2/性能继续推进。
+
+2026-10-18 23:08 Night M2 Outcome：契约草稿、Schema、canonical阿远三份真实引擎样例齐备。原生time_basis同盘，comparison空、两诊断保留；9true hits/38assessments、48飞边、20区间窗口、次限/回归完整。短别名不进入稳定claimID；7个新增Python文件（含测试）及全文源均过103样式/141保护，完整816通过；样例只读演示，不宣称主线/API/别名账本已完成。
