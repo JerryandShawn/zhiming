@@ -1,9 +1,10 @@
 import type { ReactElement, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AlertCircle, X } from 'lucide-react';
 import { Button, Seal } from './Controls';
 import { useUi } from '../../state';
+import { usePanelHistory } from '../../usePanelHistory';
 
 export function Panel({
   title,
@@ -18,14 +19,9 @@ export function Panel({
   children: ReactNode;
   sheet?: boolean;
 }) {
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    const close = () => setOpen(false);
-    window.addEventListener('hashchange', close);
-    return () => window.removeEventListener('hashchange', close);
-  }, []);
+  const { open, onOpenChange } = usePanelHistory();
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="overlay" />

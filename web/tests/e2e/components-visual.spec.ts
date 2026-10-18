@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { assertDemoQuiet, componentEvidence, demoActivity, guardDemo, openDemo } from './components-helpers';
 
 const runId = process.env.MINGJING_COMPONENTS_RUN_ID!;
-const stage = process.env.MINGJING_COMPONENTS_STAGE ?? 'chart';
+const stage = process.env.MINGJING_COMPONENTS_STAGE ?? 'all';
 const batch = runId.replace(/[^a-zA-Z0-9-]/g, '-');
 const auditsDirectory = `test-results/components-evidence/${batch}/audits`;
 const states = [

@@ -15,6 +15,9 @@ import { Fragment, lazy, Suspense, useState } from 'react';
 import { IconButton, Seal, Switch } from './components/ui/Controls';
 import { Panel, Toast } from './components/ui/Overlays';
 import { useKeyboardViewport } from './useKeyboardViewport';
+import { useViewportPortalStyles } from './useViewportPortalStyles';
+
+export const embeddedAppearance = (userAgent: string) => /\b(?:Lark|Feishu)\b/i.test(userAgent);
 
 const navigation: { key: string; label: string; icon: LucideIcon }[] = [
   { key: 'today', label: '今日', icon: SunMedium },
@@ -61,6 +64,8 @@ export function Layout({
 }) {
   const [privateMode, setPrivate] = useState(false);
   const viewport = useKeyboardViewport();
+  useViewportPortalStyles(viewport);
+  const embedded = embeddedAppearance(navigator.userAgent);
   const label =
     page === 'chat'
       ? '明镜'
@@ -73,9 +78,18 @@ export function Layout({
   return (
     <div
       className="shell"
+      data-route={page}
+      data-host={embedded ? 'feishu' : undefined}
       data-spaces={spacesPreview ? 'demo' : undefined}
-      data-keyboard={(!preview || spacesPreview) && viewport.keyboard ? 'open' : undefined}
-      style={viewport.height ? ({ '--keyboard-height': `${viewport.height}px` } as CSSProperties) : undefined}>
+      data-keyboard={viewport.keyboard ? 'open' : undefined}
+      style={
+        viewport.height
+          ? ({
+              '--keyboard-height': `${viewport.height}px`,
+              '--viewport-offset-top': `${viewport.offsetTop ?? 0}px`,
+            } as CSSProperties)
+          : undefined
+      }>
       <a
         className="skip"
         href="#main"
@@ -155,7 +169,7 @@ export function Layout({
           </Panel>
         )}
       </header>
-      <main id="main" tabIndex={-1}>
+      <main id="main" tabIndex={-1} aria-label={label}>
         {children}
       </main>
       <nav className="tabbar" aria-label="底部导航">

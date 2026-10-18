@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Settings2 } from 'lucide-react';
 import { useResource } from '../api/useResource';
 import { Button, Segmented, Seal } from '../components/ui/Controls';
 import { ResourceState } from './common';
@@ -35,6 +36,9 @@ export default function Me() {
             整理建议 · 合成预览
           </a>
         </div>
+        <a className="icon-button me-settings" href="#/settings" aria-label="设置">
+          <Settings2 className="icon" aria-hidden="true" />
+        </a>
       </header>
       <div className="route-tabs">
         <Segmented label="关于我的分区" options={sections} value={tab} onChange={setTab} />

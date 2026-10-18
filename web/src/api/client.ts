@@ -57,7 +57,8 @@ export async function api<T>(path: string, options: RequestInit = {}): Promise<T
   for (const [key, value] of Object.entries(authHeaders())) headers.set(key, value);
   let response: Response;
   try {
-    response = await fetch(path, { ...options, headers, credentials: 'same-origin' });
+    // Foreground data should not wait behind the CJK font slices requested during layout.
+    response = await fetch(path, { priority: 'high', ...options, headers, credentials: 'same-origin' });
   } catch {
     if (options.signal?.aborted) throw options.signal.reason;
     throw new ApiError(0, '网络没有连上。你的修改还在，请用原内容再试一次。');

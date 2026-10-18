@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useSyncExternalStore } from 'react';
 import { Layout } from './Layout';
 import { Skeleton } from './components/ui/Overlays';
 import { AuthGate } from './api/AuthGate';
+import LiveToday from './live/Today';
 
 const pages = {
   today: lazy(() => import('./pages/Today')),
@@ -14,7 +15,7 @@ const pages = {
   __design: lazy(() => import('./pages/Design')),
 };
 const livePages = {
-  today: lazy(() => import('./live/Today')),
+  today: LiveToday,
   chat: lazy(() => import('./live/Chat')),
   chart: lazy(() => import('./live/Chart')),
   tarot: lazy(() => import('./live/Tarot')),
@@ -72,7 +73,7 @@ export default function App() {
     window.scrollTo(0, 0);
   }, [name, route]);
   const content = (
-    <Layout page={page} preview={preview} spacesPreview={spacesPreview}>
+    <Layout page={page} preview={preview && !componentsPreview} spacesPreview={spacesPreview}>
       <Suspense
         fallback={
           <div className="page">

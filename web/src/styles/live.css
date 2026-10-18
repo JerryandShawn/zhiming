@@ -40,9 +40,69 @@ fieldset {
   inline-size: 100%;
   max-inline-size: 100%;
 }
-.shell[data-keyboard='open'] .tabbar {
-  display: none;
+.me-settings {
+  margin-inline-start: auto;
+  align-self: flex-start;
 }
-.shell[data-keyboard='open'] .chat-page {
-  height: calc(var(--keyboard-height) - var(--topbar-height));
+@media (max-width: 1023px) {
+  .shell {
+    --app-header-height: calc(var(--topbar-height) + env(safe-area-inset-top, 0px));
+    --app-page-gutter: var(--s-4);
+  }
+  .shell[data-host='feishu'] {
+    --app-header-height: 0px;
+  }
+  .shell[data-host='feishu'] .topbar {
+    display: none;
+  }
+  .shell .topbar {
+    height: var(--app-header-height);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: max(var(--s-4), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--s-2), env(safe-area-inset-right, 0px));
+  }
+  .shell .page:not(.chat-page) {
+    padding-left: max(var(--app-page-gutter), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--app-page-gutter), env(safe-area-inset-right, 0px));
+  }
+  .shell .tabbar {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  .shell .chat-page {
+    height: calc(100dvh - var(--app-header-height) - var(--tabbar-height) - env(safe-area-inset-bottom, 0px));
+  }
+  .shell[data-keyboard='open'] .tabbar {
+    display: none;
+  }
+  .shell[data-keyboard='open'][data-route='chat'] {
+    position: fixed;
+    inset-inline: 0;
+    top: var(--viewport-offset-top, 0px);
+    height: var(--keyboard-height);
+    min-height: 0;
+  }
+  .shell[data-keyboard='open'] .chat-page {
+    height: calc(var(--keyboard-height) - var(--app-header-height));
+  }
+  .shell .chat-messages {
+    padding-left: max(var(--s-4), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--s-4), env(safe-area-inset-right, 0px));
+  }
+  html[data-visual-keyboard='open'] .dialog {
+    max-height: calc(var(--app-vv-height) - var(--s-7));
+    top: calc(var(--app-vv-top) + var(--app-vv-height) / 2);
+    bottom: auto;
+  }
+  html[data-visual-keyboard='open'] .dialog.sheet {
+    top: calc(var(--app-vv-top) + var(--app-vv-height));
+    transform: translateY(-100%);
+    padding-bottom: var(--s-6);
+    animation: none;
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .shell {
+    --app-page-gutter: var(--s-6);
+  }
 }
