@@ -88,7 +88,7 @@ P8ChartAdapter.time_basis(request)；charts.rules.evaluate_rules；bazi_interact
 
 ## Outcomes & Retrospective
 
-夜间续作进行中，不能以既有677项和旧CI代替本轮审校验证；新结果与未验证项会独立记录到2026-10-19_meta.md。模型实测按用户夜间禁令不执行。
+四个夜间里程碑本机914/914、0skip，118Python样式/141保护通过；全部计算、契约、题库脚本与技能成果已记录2026-10-19_meta.md及总回执。最终发布与准确HEAD CI在收束时核对，不能借旧CI冒充。00–06缺可核验小时记录，作为未完成披露。模型实测按用户夜间禁令不执行。
 
 23号续作计算及本机验证已完成。API/UI/档案等仍归主线，API/UI与档案持久化仍须主线接入，不能把只读结果当线上产品已更新。夜间/模型/部署边界不变。
 
