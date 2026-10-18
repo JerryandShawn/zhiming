@@ -161,7 +161,7 @@ class P8NativeTests(unittest.TestCase):
                 value = value[key]
             self.assertEqual(feature["value"], value)
         self.assertEqual(
-            len([row for row in new["features"].values() if row["feature_key"].startswith("bazi.p8.")]), 11
+            len([row for row in new["features"].values() if row["feature_key"].startswith("bazi.p8.")]), 13
         )
 
     def test_unknown_time_finite_samples_and_different_day_master_survive(self) -> None:
@@ -182,15 +182,19 @@ class P8NativeTests(unittest.TestCase):
         self.assertGreater(len({row["value"]["day_master"] for row in features}), 1)
         self.assertTrue(all(branch["coverage"] == "sampled_not_continuous" for branch in result["branches"]))
 
-    def test_existing_si_hidden_order_failure_stays_visible(self) -> None:
+    def test_v3_si_failure_remains_and_named_entry_records_legacy_bridge(self) -> None:
         arc = archive()
         arc["user"]["birth"].update(time_precision="unknown", solar_date="2012-05-03")
         new = P8ChartAdapter("synthetic-owner", python=sys.executable).calculate(arc, ARGS["date"], ["bazi"], 1, "self")
         old = ChartAdapter("synthetic-owner", python=sys.executable).calculate(arc, ARGS["date"], ["bazi"], 1, "self")
-        self.assertEqual(new["errors"], old["errors"])
-        self.assertEqual(len(new["errors"]), 1)
-        self.assertEqual(len(new["artifacts"]), 4)
-        self.assertTrue(all(row["stability"] == "conditional" for row in new["features"].values()))
+        self.assertEqual(new["errors"], [])
+        self.assertEqual(len(old["errors"]), 1)
+        self.assertEqual(len(old["artifacts"]), 4)
+        self.assertEqual(len(new["artifacts"]), 5)
+        bridged = [row["data"]["p8"] for row in new["artifacts"].values() if "legacy_bridge" in row["data"]["p8"]]
+        self.assertEqual(len(bridged), 1)
+        self.assertIn(["丙", "庚", "戊"], bridged[0]["engine_hidden_stems_before_legacy_derivation"].values())
+        self.assertTrue(any(row["stability"] == "conditional" for row in new["features"].values()))
 
     def test_owner_scope_is_checked_before_opt_in_worker(self) -> None:
         adapter = P8ChartAdapter("other-owner", python="must-not-run")

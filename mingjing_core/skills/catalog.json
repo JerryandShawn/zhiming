@@ -1,0 +1,956 @@
+{
+  "version": "p8-skills-draft-2026-10-18-v2",
+  "status": "draft_requires_owner_review",
+  "systems": {
+    "bazi": {
+      "name": "bazi",
+      "description": "按程序八字产物解释十神、旺衰、格局候选、调候与岁运，并记录分歧和时辰校正边界。",
+      "chapters": [
+        {
+          "topic": "basics",
+          "title": "基础、十神与司令",
+          "file": "01_basics.md",
+          "question_types": [
+            "日主是什么",
+            "十神、藏干和司令怎么区分"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/pillars",
+            "/data/day_master",
+            "/data/hidden_stems",
+            "/data/p8/ten_gods",
+            "/data/p8/month_command",
+            "/data/p8/selected_schools",
+            "/data/p8/auxiliary_stars"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+              "locator": "第一章论十干十二支、第二章论阴阳生克、第三章附支藏人元司令图表",
+              "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            },
+            {
+              "title": "万民英《三命通会》",
+              "locator": "卷二论天干阴阳生死、论人元司事；与项目所选具名表对照",
+              "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+            },
+            {
+              "title": "袁树珊《命理探源》",
+              "locator": "卷三强弱·天乙贵人、羊刃（引古歌、曹震圭、《渊海子平》）；只核原文表，不采用站点现代白话",
+              "url": "https://libokang.com/zh-hant/classics/bazi/命理探源/"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": [
+            "u12-combo-hurting-officer-officer",
+            "u12-combo-indirect-seal-output",
+            "u12-combo-officer-killer",
+            "u12-combo-output-killer",
+            "u12-combo-hurting-officer-seal"
+          ]
+        },
+        {
+          "topic": "strength",
+          "title": "旺衰判断：两种项目口径",
+          "file": "02_strength.md",
+          "question_types": [
+            "为什么两种算法强弱不同",
+            "能否直接定喜用"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/p8/strength",
+            "/data/p8/ten_gods",
+            "/data/p8/month_command",
+            "/data/p8/useful_candidates"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+              "locator": "第六章论十干得时不旺失时不弱；第二章论阴阳生克",
+              "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            },
+            {
+              "title": "万民英《三命通会》",
+              "locator": "卷二有关五行旺衰的概念；权重与45/55均非原典数字",
+              "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": [
+            "u12-wealth-multiple-weak"
+          ]
+        },
+        {
+          "topic": "patterns",
+          "title": "格局候选与成立条件",
+          "file": "03_patterns.md",
+          "question_types": [
+            "这是正官格还是从格",
+            "为什么不能直接定格"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/p8/patterns",
+            "/data/p8/strength",
+            "/data/p8/ten_gods"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+              "locator": "第八章论用神、第九章论用神成败救应、第十章论用神变化、第二十二章论外格用舍",
+              "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": [
+            "u12-pattern-officer-c1",
+            "u12-pattern-officer-c2",
+            "u12-pattern-officer-c3",
+            "u12-pattern-killer-c1",
+            "u12-pattern-killer-c2",
+            "u12-pattern-killer-c3",
+            "u12-pattern-seal-c1",
+            "u12-pattern-seal-c2",
+            "u12-pattern-seal-c3",
+            "u12-pattern-indirect-seal-c1",
+            "u12-pattern-indirect-seal-c2",
+            "u12-pattern-indirect-seal-c3",
+            "u12-pattern-wealth-c1",
+            "u12-pattern-wealth-c2",
+            "u12-pattern-wealth-c3",
+            "u12-pattern-indirect-wealth-c1",
+            "u12-pattern-indirect-wealth-c2",
+            "u12-pattern-indirect-wealth-c3",
+            "u12-pattern-output-c1",
+            "u12-pattern-output-c2",
+            "u12-pattern-output-c3",
+            "u12-pattern-hurting-officer-c1",
+            "u12-pattern-hurting-officer-c2",
+            "u12-pattern-hurting-officer-c3"
+          ]
+        },
+        {
+          "topic": "climate-useful",
+          "title": "调候与喜用：三条思路并列",
+          "file": "04_climate-useful.md",
+          "question_types": [
+            "喜什么",
+            "调候和扶抑为什么冲突"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/p8/climate",
+            "/data/p8/useful_candidates",
+            "/data/p8/patterns",
+            "/data/p8/strength"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+              "locator": "第十四章论用神配气候得失、第十五章论相神紧要；这里只支持方法区分",
+              "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            },
+            {
+              "title": "万民英《三命通会》",
+              "locator": "卷二论天干阴阳生死；具体调候摘表出处以计算块 source_locator 为准，未核刊",
+              "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "additional_interfaces": [
+            {
+              "name": "charts.profile_draft.profile_proposal",
+              "root": "read-only profile proposal",
+              "paths": [
+                "/schema",
+                "/version_id",
+                "/previous_version",
+                "/change_reason",
+                "/branches",
+                "/branches/0/judgments/0/path",
+                "/status",
+                "/writes"
+              ]
+            }
+          ],
+          "rule_ids": [
+            "u12-climate-candidate-missing",
+            "u12-wealth-multiple-weak"
+          ]
+        },
+        {
+          "topic": "time-layers",
+          "title": "大运、流年、流月与时间交互",
+          "file": "05_time-layers.md",
+          "question_types": [
+            "什么时候换运",
+            "某月有什么结构变化"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/p8/decade_luck",
+            "/data/p8/calendar_layers",
+            "/data/target_year",
+            "/data/target_month",
+            "/data/relations",
+            "/data/p8/time_interactions"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+              "locator": "第七章论刑冲会合解法、第二十五章论行运、第二十六章论行运成格变格",
+              "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": [
+            "u12-palace-year-clash-combine",
+            "u12-palace-month-clash-combine",
+            "u12-palace-day-clash-combine",
+            "u12-palace-hour-clash-combine"
+          ]
+        },
+        {
+          "topic": "life-topics",
+          "title": "六亲、事业、财运与感情",
+          "file": "06_life-topics.md",
+          "question_types": [
+            "能否谈行业、关系和现实选择"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/pillars",
+            "/data/p8/ten_gods",
+            "/data/p8/patterns",
+            "/data/p8/useful_candidates"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+              "locator": "第二十三章论宫分用神配六亲、第二十四章论妻子；不沿用原书性别与阶层断语",
+              "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": [
+            "u12-palace-year-clash-combine",
+            "u12-palace-month-clash-combine",
+            "u12-palace-day-clash-combine",
+            "u12-palace-hour-clash-combine"
+          ]
+        },
+        {
+          "topic": "misreadings",
+          "title": "常见误读、边界与档案一致性",
+          "file": "07_misreadings.md",
+          "question_types": [
+            "结论冲突",
+            "旧分析是否能当事实"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/method",
+            "/data/p8",
+            "/warnings",
+            "/revision",
+            "/branch_id"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+              "locator": "第二十一章论星辰无关格局、第二十九章论时说拘泥格局、第三十章论时说以讹传讹",
+              "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "additional_interfaces": [
+            {
+              "name": "charts.profile_draft.profile_proposal",
+              "root": "read-only profile proposal",
+              "paths": [
+                "/schema",
+                "/version_id",
+                "/previous_version",
+                "/change_reason",
+                "/branches",
+                "/branches/0/judgments/0/path",
+                "/status",
+                "/writes"
+              ]
+            }
+          ],
+          "rule_ids": []
+        },
+        {
+          "topic": "rectification",
+          "title": "准确时刻优先：文档与时间口径核对",
+          "file": "08_rectification.md",
+          "question_types": [
+            "出生时辰未知",
+            "人生事件能否缩小范围"
+          ],
+          "artifact_root": "P8ChartAdapter.time_basis read-only envelope",
+          "required_fields": [
+            "/time_basis",
+            "/charts",
+            "/profile_update_allowed",
+            "/life_event_scoring_performed",
+            "/model_calls",
+            "/writes"
+          ],
+          "pending_fields": [
+            "人生事件证据工作台低优先离线预备：FrozenSession/检验结果与业务API尚未核验接入；不得继续使用旧评分前三接口"
+          ],
+          "sources": [
+            {
+              "title": "IANA时区规则",
+              "locator": "asia: PRC与历史规则",
+              "url": "https://github.com/eggert/tz/blob/main/asia"
+            },
+            {
+              "title": "NOAA太阳计算说明",
+              "locator": "均时差方法",
+              "url": "https://gml.noaa.gov/grad/solcalc/calcdetails.html"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "rectification-rules",
+          "title": "证据工作台：冻结、留出与置换",
+          "file": "09_rectification-rules.md",
+          "question_types": [
+            "为什么候选得这些分",
+            "同分和月份未知如何处理"
+          ],
+          "artifact_root": "P8ChartAdapter.time_basis read-only envelope",
+          "required_fields": [
+            "/time_basis",
+            "/charts",
+            "/profile_update_allowed",
+            "/life_event_scoring_performed",
+            "/model_calls",
+            "/writes"
+          ],
+          "pending_fields": [
+            "人生事件证据工作台低优先离线预备：FrozenSession/检验结果与业务API尚未核验接入；不得继续使用旧评分前三接口"
+          ],
+          "sources": [
+            {
+              "title": "Stellium计算式校正研究",
+              "locator": "预注册/零假设检验背景；项目检验门槛以设计文件为准",
+              "url": "https://stellium.readthedocs.io/en/stable/development/specs/rectification/RECTIFICATION_REPORT.html"
+            },
+            {
+              "title": "Gelman与Loken：分岔小径",
+              "locator": "原始论文",
+              "url": "https://stat.columbia.edu/~gelman/research/unpublished/p_hacking.pdf"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "traditional-hour-methods",
+          "title": "定时辰的传统方法：只展示，不计分",
+          "file": "10_traditional-hour-methods.md",
+          "question_types": [
+            "民间口诀为什么不能定时辰"
+          ],
+          "artifact_root": "P8ChartAdapter.time_basis read-only envelope",
+          "required_fields": [
+            "/time_basis",
+            "/charts",
+            "/profile_update_allowed",
+            "/life_event_scoring_performed",
+            "/model_calls",
+            "/writes"
+          ],
+          "pending_fields": [
+            "民间口诀无可靠古籍出处，不做数值规则或弱先验"
+          ],
+          "sources": [
+            {
+              "title": "民间定时辰资料（非可靠古籍）",
+              "locator": "17号§10所列转帖，仅作传统说法与互相矛盾的语料出处",
+              "url": "https://k.sina.cn/article_6431044916_17f51f534001003vbp.html"
+            },
+            {
+              "title": "民间定时辰资料（非可靠古籍）",
+              "locator": "17号§10所列转帖，仅作传统说法与互相矛盾的语料出处",
+              "url": "https://tianyugong.com/dcssc/"
+            },
+            {
+              "title": "民间定时辰资料（非可靠古籍）",
+              "locator": "17号§10所列转帖，仅作传统说法与互相矛盾的语料出处",
+              "url": "https://www.sina.cn/news/detail/5109461637141808.html"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        }
+      ]
+    },
+    "ziwei": {
+      "name": "ziwei",
+      "description": "按程序紫微命盘解释命身宫、主星、四化、宫位组合与运限，不补造盘面或事件。",
+      "chapters": [
+        {
+          "topic": "palaces",
+          "title": "命身宫与主星：先定位再解释",
+          "file": "01_palaces.md",
+          "question_types": [
+            "命宫身宫有什么不同"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/ming_gong",
+            "/data/shen_gong",
+            "/data/palaces",
+            "/data/topic_palace",
+            "/data/method"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷二安命身宫诀",
+              "url": "https://zh.wikisource.org/wiki/紫微斗數全書/卷二"
+            },
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷三谈星要论",
+              "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷三"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "major-stars",
+          "title": "十四主星：性质、组合与条件",
+          "file": "02_major-stars.md",
+          "question_types": [
+            "主星怎样读",
+            "单星能否定性格"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/palaces",
+            "/data/topic_palace/major",
+            "/data/topic_palace/minor",
+            "/data/topic_palace/linked_palaces"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷一诸星问答论：十四主星各问答；仅抽取结构方法，不复述祸福断语",
+              "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷一"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "mutagens",
+          "title": "四化与飞星：起点、落点和时间层",
+          "file": "03_mutagens.md",
+          "question_types": [
+            "化忌是否一定不好",
+            "自化怎样核对"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/palaces",
+            "/data/horoscope/yearly/mutagen",
+            "/data/horoscope/yearly/mutagen_links",
+            "/data/p8_time_interactions"
+          ],
+          "pending_fields": [
+            "宫干飞化、自化、化忌冲新增图结构尚待本线输出核验"
+          ],
+          "sources": [
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷二安禄权科忌四星变化诀（论生年干）",
+              "url": "https://zh.wikisource.org/wiki/紫微斗數全書/卷二"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "combinations",
+          "title": "宫位组合与三方四正",
+          "file": "04_combinations.md",
+          "question_types": [
+            "事业、感情该看哪些宫"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/selected_topic",
+            "/data/topic_palace",
+            "/data/topic_palace/linked_palaces",
+            "/data/palaces"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷三谈星要论",
+              "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷三"
+            },
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷一斗数发微论、斗数准绳",
+              "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷一"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "time-layers",
+          "title": "大限、流年与流月",
+          "file": "05_time-layers.md",
+          "question_types": [
+            "今年和十年背景如何区分"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/horoscope/decadal",
+            "/data/horoscope/yearly",
+            "/data/horoscope/monthly",
+            "/data/horoscope/daily",
+            "/data/palaces",
+            "/data/p8_time_interactions"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷三论大限十年祸福何如、论二限太岁吉凶、论流年太岁吉凶星杀；禁用危险事件断语",
+              "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷三"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "misreadings",
+          "title": "紫微常见误读与未知时辰",
+          "file": "06_misreadings.md",
+          "question_types": [
+            "为什么同一人不同时间盘差很多"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/method",
+            "/data/quality",
+            "/branch_id",
+            "/warnings",
+            "/data/palaces"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷三论人生时要审的确；定小儿生时诀只作为不能沿用的历史反例",
+              "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷三"
+            },
+            {
+              "title": "《紫微斗数全书》",
+              "locator": "卷一斗数准绳关于不能一概论议的讨论",
+              "url": "https://zh.wikisource.org/zh-hant/紫微斗數全書/卷一"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        }
+      ]
+    },
+    "astro": {
+      "name": "astro",
+      "description": "按程序西占产物解释本命、相位与行运，明确次限和回归未接入项。",
+      "chapters": [
+        {
+          "topic": "natal",
+          "title": "行星、星座与宫位",
+          "file": "01_natal.md",
+          "question_types": [
+            "如何读本命盘而不只讲太阳星座"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/planets",
+            "/data/houses",
+            "/data/asc",
+            "/data/mc",
+            "/data/method",
+            "/data/calculation_flags/natal"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "Ptolemy, Tetrabiblos (Robbins 译本)",
+              "locator": "Book I §§4、10–11、17：行星性质、季节与星座守护；不提供Placidus或外行星依据",
+              "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1B*.html"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "aspects",
+          "title": "相位、容许度与条件",
+          "file": "02_aspects.md",
+          "question_types": [
+            "刑冲是否必坏",
+            "相位为什么软件不同"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/aspects",
+            "/data/aspect_orb",
+            "/data/planets",
+            "/data/method"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "Ptolemy, Tetrabiblos (Robbins 译本)",
+              "locator": "Book I §13 Of the Aspects of the Signs、§24 Of Applications and Separations",
+              "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1B*.html"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "transits-progressions",
+          "title": "行运与次限推运：区间和技术分开",
+          "file": "03_transits-progressions.md",
+          "question_types": [
+            "行运何时精确",
+            "次限是否已经算出"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/transits",
+            "/data/transit_method",
+            "/data/transits/aspects_to_natal"
+          ],
+          "pending_fields": [
+            "次限推运与太阳回归计算未接入；已挂产物的连续行运仍需主线Agent工具接线"
+          ],
+          "sources": [
+            {
+              "title": "Ptolemy, Tetrabiblos (Robbins 译本)",
+              "locator": "Book I §24：入离相概念，仅支持概念区分；不支持本项目次限算法",
+              "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1B*.html"
+            },
+            {
+              "title": "Alan Leo, The Progressed Horoscope",
+              "locator": "附录IV Summary of Measures of Time：One day measures a year；区分平均日/真太阳日变体，不继承宿命断语",
+              "url": "https://www.astro.nu/wp-content/uploads/The-Progressed-Horoscope-Alan-Leo.pdf"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "conditional_fields": [
+            {
+              "capability": "explicit_transit_period",
+              "when": "P8ChartAdapter显式传入transit_period；默认产物不要求此字段",
+              "artifact_root": "CalculationArtifact",
+              "paths": [
+                "/data/p8_transit_windows",
+                "/data/p8_transit_windows/windows",
+                "/data/p8_transit_windows/requested_interval",
+                "/data/p8_transit_windows/limits"
+              ]
+            }
+          ],
+          "rule_ids": []
+        },
+        {
+          "topic": "returns",
+          "title": "太阳回归盘：时刻、地点与比较",
+          "file": "04_returns.md",
+          "question_types": [
+            "今年回归盘怎样看",
+            "能否用生日中午代替"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/planets",
+            "/data/method",
+            "/data/asc",
+            "/data/houses"
+          ],
+          "pending_fields": [
+            "专门太阳回归产物与地点选择待接入"
+          ],
+          "sources": [
+            {
+              "title": "Ptolemy, Tetrabiblos (Robbins 译本)",
+              "locator": "Book I §§1–3：计算与解释边界背景；不作为回归求解或地点选择的出处",
+              "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1A*.html"
+            },
+            {
+              "title": "William Lilly, Christian Astrology (1647)",
+              "locator": "Book III, Chapter CLXXII Of Revolutions，原书pp.734–737：太阳回到本命黄经与本命盘比较；不沿用疾病灾祸断语",
+              "url": "https://www.worldastrology.net/wp-content/uploads/2008/12/CA-III.pdf"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "misreadings",
+          "title": "西占常见误读与证据边界",
+          "file": "05_misreadings.md",
+          "question_types": [
+            "为什么不能用星盘诊断或保证未来"
+          ],
+          "artifact_root": "CalculationArtifact",
+          "required_fields": [
+            "/data/quality",
+            "/data/method",
+            "/warnings",
+            "/data/utc_time",
+            "/data/calculation_flags"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "Ptolemy, Tetrabiblos (Robbins 译本)",
+              "locator": "Book I §§1–3：认识范围的历史讨论；现代实证边界是项目要求",
+              "url": "https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1A*.html"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        }
+      ]
+    },
+    "tarot": {
+      "name": "tarot",
+      "description": "按固定已翻牌阵解释大牌、小牌、宫廷牌、牌位关系及逆位，保留自主与防反复规则。",
+      "chapters": [
+        {
+          "topic": "major",
+          "title": "大阿卡纳：象征主题与牌面版本",
+          "file": "01_major.md",
+          "question_types": [
+            "大牌多意味着命运已注定吗"
+          ],
+          "artifact_root": "TarotService.get_for_reading public draw",
+          "required_fields": [
+            "/cards",
+            "/deck_version",
+            "/meaning_version",
+            "/status"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §3：大阿卡纳牌义；只作传统来源，不继承灾祸断语",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0303.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "minor",
+          "title": "小阿卡纳：四花色、元素与数字",
+          "file": "02_minor.md",
+          "question_types": [
+            "同花色或同数字怎样连读"
+          ],
+          "artifact_root": "TarotService.get_for_reading public draw",
+          "required_fields": [
+            "/cards",
+            "/cards/0/card/suit",
+            "/cards/0/card/number",
+            "/meaning_version"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §2 The Lesser Arcana",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0302.htm"
+            },
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §4：追加牌义；元素数字词为项目编辑概括",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0304.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "court",
+          "title": "宫廷牌：角色方式而非固定人物",
+          "file": "03_court.md",
+          "question_types": [
+            "宫廷牌一定代表某个人吗"
+          ],
+          "artifact_root": "TarotService.get_for_reading public draw",
+          "required_fields": [
+            "/cards/0/card/rank",
+            "/cards/0/card/suit",
+            "/cards/0/orientation",
+            "/spread"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §2：四花色宫廷牌；不采用历史外貌/性别判断",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0302.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "spread",
+          "title": "牌阵与位置：问题、上下文和固定牌",
+          "file": "04_spread.md",
+          "question_types": [
+            "牌阵位置怎样改变解读",
+            "能否补抽"
+          ],
+          "artifact_root": "TarotService.get_for_reading public draw",
+          "required_fields": [
+            "/id",
+            "/question",
+            "/spread/positions",
+            "/cards",
+            "/draw_source",
+            "/context_snapshot"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §7 An Ancient Celtic Method of Divination；产品reflect3等不是该原牌阵",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0307.htm"
+            },
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §6：读牌方法背景；24小时守卫是项目规则",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0306.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "relations",
+          "title": "牌间关系：支持、张力与反例",
+          "file": "05_relations.md",
+          "question_types": [
+            "几张牌能否形成故事",
+            "重复牌怎样看"
+          ],
+          "artifact_root": "TarotService.get_for_reading public draw",
+          "required_fields": [
+            "/cards",
+            "/spread/positions",
+            "/cards/0/card/meaning_version",
+            "/meaning_version"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §5 The Recurrence of Cards in Dealing；不沿用必然事件列表",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0305.htm"
+            },
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §6：读牌方法",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0306.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "reversals",
+          "title": "逆位的几种读法",
+          "file": "06_reversals.md",
+          "question_types": [
+            "逆位是不是坏牌",
+            "怎么避免随意解释"
+          ],
+          "artifact_root": "TarotService.get_for_reading public draw",
+          "required_fields": [
+            "/reversals",
+            "/cards/0/orientation",
+            "/cards/0/card/upright",
+            "/cards/0/card/reversed",
+            "/cards/0/card/misreading"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §3：含各牌Reversed条目",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0303.htm"
+            },
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §4：追加意义；过程性四类为项目编辑读法",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0304.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "misreadings",
+          "title": "常见误读与自主决策",
+          "file": "07_misreadings.md",
+          "question_types": [
+            "能否用牌决定分手、就医或投资"
+          ],
+          "artifact_root": "TarotService.get_for_reading public draw",
+          "required_fields": [
+            "/cards",
+            "/question",
+            "/status",
+            "/revision",
+            "/previous_draw_id",
+            "/context_snapshot"
+          ],
+          "pending_fields": [],
+          "sources": [
+            {
+              "title": "A. E. Waite, The Pictorial Key to the Tarot",
+              "locator": "Part III §6：历史读牌背景；自主决策、危机边界与防依赖均为项目规则",
+              "url": "https://www.sacred-texts.com/tarot/pkt/pkt0306.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        }
+      ]
+    }
+  }
+}

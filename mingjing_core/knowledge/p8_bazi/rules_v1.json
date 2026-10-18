@@ -1,0 +1,1261 @@
+{
+  "version": "p8-bazi-rules-v1",
+  "rule_count": 35,
+  "priority_status": "project_convention_v1_not_expert_calibrated",
+  "limits": [
+    "程序只证明条件是否成立，不证明传统解释或现实预测有效。",
+    "只将met=true放入rule_hits，met=false留assessments供未来步骤日志和contradictions。",
+    "尚未实现从格逐条件命中、完整救应合化和隐性力量判定；不分配r#或写入主线状态。",
+    "传入graph替换时，调用方须把该图绑定到/data/p8/time_interactions后才能持久化依据Pointer。"
+  ],
+  "interaction_mapping": {
+    "status": "project_convention_v1_not_expert_calibrated",
+    "palace_domains": {
+      "year": [
+        "六亲"
+      ],
+      "month": [
+        "六亲",
+        "事业",
+        "学业"
+      ],
+      "day": [
+        "婚恋"
+      ],
+      "hour": [
+        "六亲"
+      ]
+    },
+    "palace_meanings": {
+      "year": "祖上与早年",
+      "month": "父母兄弟与青年",
+      "day": "配偶",
+      "hour": "子女与晚年"
+    },
+    "palace_source": null,
+    "palace_source_status": "常见说法，未核对可靠原刊对应条文，存疑；只作项目检索标签，不推出现实人物事实",
+    "ten_god_domains": {
+      "比肩": [
+        "性格",
+        "六亲"
+      ],
+      "劫财": [
+        "财运",
+        "六亲"
+      ],
+      "食神": [
+        "事业",
+        "学业"
+      ],
+      "伤官": [
+        "事业",
+        "性格"
+      ],
+      "正财": [
+        "财运"
+      ],
+      "偏财": [
+        "财运"
+      ],
+      "正官": [
+        "事业",
+        "学业"
+      ],
+      "七杀": [
+        "事业"
+      ],
+      "正印": [
+        "学业",
+        "六亲"
+      ],
+      "偏印": [
+        "学业"
+      ]
+    },
+    "priority_by_school": {
+      "子平": {
+        "天干五合": 3,
+        "天干相克": 3,
+        "六冲": 2,
+        "六合": 3,
+        "三合": 2,
+        "三会": 3,
+        "三刑": 4,
+        "六害": 5,
+        "六破": 5,
+        "自刑": 5
+      },
+      "调候": {
+        "天干五合": 3,
+        "天干相克": 2,
+        "六冲": 2,
+        "六合": 3,
+        "三合": 2,
+        "三会": 2,
+        "三刑": 4,
+        "六害": 5,
+        "六破": 5,
+        "自刑": 5
+      },
+      "盲派": {
+        "天干五合": 3,
+        "天干相克": 3,
+        "六冲": 1,
+        "六合": 3,
+        "三合": 2,
+        "三会": 3,
+        "三刑": 3,
+        "六害": 5,
+        "六破": 5,
+        "自刑": 5
+      },
+      "通用": {
+        "天干五合": 3,
+        "天干相克": 3,
+        "六冲": 3,
+        "六合": 3,
+        "三合": 3,
+        "三会": 3,
+        "三刑": 3,
+        "六害": 3,
+        "六破": 3,
+        "自刑": 3
+      }
+    },
+    "layer_order": [
+      "decadal",
+      "yearly",
+      "monthly",
+      "daily"
+    ],
+    "domain_order": [
+      "事业",
+      "财运",
+      "婚恋",
+      "六亲",
+      "健康",
+      "学业",
+      "性格",
+      "年运"
+    ],
+    "palace_order": [
+      "year",
+      "month",
+      "day",
+      "hour"
+    ]
+  },
+  "rules": [
+    {
+      "rule_id": "u12-pattern-officer-c1",
+      "school": "子平",
+      "name": "正官格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正官",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/0/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-officer-c2",
+      "school": "子平",
+      "name": "正官格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正官",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/0/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-officer-c3",
+      "school": "子平",
+      "name": "正官格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正官",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/0/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-killer-c1",
+      "school": "子平",
+      "name": "七杀格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "七杀",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/1/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-killer-c2",
+      "school": "子平",
+      "name": "七杀格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "七杀",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/1/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-killer-c3",
+      "school": "子平",
+      "name": "七杀格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "七杀",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/1/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-seal-c1",
+      "school": "子平",
+      "name": "正印格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正印",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/2/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-seal-c2",
+      "school": "子平",
+      "name": "正印格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正印",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/2/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-seal-c3",
+      "school": "子平",
+      "name": "正印格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正印",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/2/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-indirect-seal-c1",
+      "school": "子平",
+      "name": "偏印格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "偏印",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/3/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-indirect-seal-c2",
+      "school": "子平",
+      "name": "偏印格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "偏印",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/3/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-indirect-seal-c3",
+      "school": "子平",
+      "name": "偏印格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "偏印",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/3/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-wealth-c1",
+      "school": "子平",
+      "name": "正财格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正财",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/4/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-wealth-c2",
+      "school": "子平",
+      "name": "正财格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正财",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/4/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-wealth-c3",
+      "school": "子平",
+      "name": "正财格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "正财",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/4/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-indirect-wealth-c1",
+      "school": "子平",
+      "name": "偏财格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "偏财",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/5/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-indirect-wealth-c2",
+      "school": "子平",
+      "name": "偏财格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "偏财",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/5/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-indirect-wealth-c3",
+      "school": "子平",
+      "name": "偏财格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "偏财",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/5/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-output-c1",
+      "school": "子平",
+      "name": "食神格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "食神",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/6/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-output-c2",
+      "school": "子平",
+      "name": "食神格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "食神",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/6/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-output-c3",
+      "school": "子平",
+      "name": "食神格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "食神",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/6/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-hurting-officer-c1",
+      "school": "子平",
+      "name": "伤官格候选/月支藏该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "伤官",
+        "condition_index": 0
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/7/conditions/0"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-hurting-officer-c2",
+      "school": "子平",
+      "name": "伤官格候选/年月时透该十神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "伤官",
+        "condition_index": 1
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/7/conditions/1"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-pattern-hurting-officer-c3",
+      "school": "子平",
+      "name": "伤官格候选/未见本筛选的直接牵制神",
+      "condition_ref": "pattern_condition",
+      "parameters": {
+        "god": "伤官",
+        "condition_index": 2
+      },
+      "evidence_fields": [
+        "/data/p8/patterns/regular_eight/7/conditions/2"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "财运",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神、第九章论用神成败救应；现有structure.py三条件为项目候选筛选，不是原典完整成格法",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-combo-hurting-officer-officer",
+      "school": "子平",
+      "name": "伤官见官（仅透干同见）",
+      "condition_ref": "exposed_combination",
+      "parameters": {
+        "gods": [
+          "伤官",
+          "正官"
+        ]
+      },
+      "evidence_fields": [
+        "/data/p8/ten_gods/pillars"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第十四章论用神配气候得失；有明确例外，不能用同见直接推出祸福",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-combo-indirect-seal-output",
+      "school": "子平",
+      "name": "枭食同透（未判夺食）",
+      "condition_ref": "exposed_combination",
+      "parameters": {
+        "gods": [
+          "偏印",
+          "食神"
+        ]
+      },
+      "evidence_fields": [
+        "/data/p8/ten_gods/pillars"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "学业",
+        "事业"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第八章论用神；原评注明确区别月令偏印透食与食神逢枭",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-combo-officer-killer",
+      "school": "子平",
+      "name": "官杀混杂（仅透干同见）",
+      "condition_ref": "exposed_combination",
+      "parameters": {
+        "gods": [
+          "正官",
+          "七杀"
+        ]
+      },
+      "evidence_fields": [
+        "/data/p8/ten_gods/pillars"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第四十六章论建禄月劫取运；官煞并出尚需合留制化条件",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-combo-output-killer",
+      "school": "子平",
+      "name": "食杀同透（制杀候选）",
+      "condition_ref": "exposed_combination",
+      "parameters": {
+        "gods": [
+          "食神",
+          "七杀"
+        ]
+      },
+      "evidence_fields": [
+        "/data/p8/ten_gods/pillars"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "事业",
+        "年运"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第二十五章论行运；须复核身强弱、食杀力量，不以共存宣布制杀有效",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-combo-hurting-officer-seal",
+      "school": "子平",
+      "name": "伤官印绶同透（配印候选）",
+      "condition_ref": "exposed_combination",
+      "parameters": {
+        "gods": [
+          "伤官",
+          "正印"
+        ]
+      },
+      "evidence_fields": [
+        "/data/p8/ten_gods/pillars"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "学业",
+        "事业"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第十二章论用神格局高低、第十四章论用神配气候得失；印重伤浅等例外需另论",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查具名计算条件；不是成格、救应、合化或现实事件断言。项目筛选与优先级并非原典数值。"
+    },
+    {
+      "rule_id": "u12-wealth-multiple-weak",
+      "school": "子平",
+      "name": "财多身弱（项目数量条件）",
+      "condition_ref": "wealth_weak",
+      "parameters": {},
+      "evidence_fields": [
+        "/data/p8/ten_gods",
+        "/data/p8/strength"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "财运",
+        "事业"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第三十三章论财、第四十二章论伤官取运中的财多身弱讨论；两透财且两法偏弱为本项目可计算化定义",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "财多定义为年月时至少两干为财，弱定义为两种项目口径均偏弱；数量和45/55阈值非古籍定值。未论财根或制化。"
+    },
+    {
+      "rule_id": "u12-climate-candidate-missing",
+      "school": "调候",
+      "name": "调候摘表候选未全见透藏",
+      "condition_ref": "climate_missing",
+      "parameters": {},
+      "evidence_fields": [
+        "/data/p8/climate",
+        "/data/p8/ten_gods"
+      ],
+      "priority": {
+        "子平": 3,
+        "调候": 1,
+        "盲派": 4,
+        "通用": 3
+      },
+      "domains": [
+        "年运",
+        "性格"
+      ],
+      "time_scale": "natal",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第十四章论用神配气候得失仅支持概念；具体候选来自climate.json.source_locator，未经原刊校勘",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只报告摘表候选天干在透藏中的缺项；摘表不完整且未经原刊校勘，缺项不代表喜忌已确定或必有补救需求。"
+    },
+    {
+      "rule_id": "u12-palace-year-clash-combine",
+      "school": "子平",
+      "name": "year柱被大运/流年六冲或六合",
+      "condition_ref": "palace_activation",
+      "parameters": {
+        "palace": "year"
+      },
+      "evidence_fields": [
+        "/data/p8/time_interactions/relations"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "六亲",
+        "年运"
+      ],
+      "time_scale": "year",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第七章论刑冲会合解法、第二十五章论行运；只支持结构比较，不支持事件类型因果",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查大运或流年的地支关系连接该原局柱；palace指原局字段位置，不证明六亲/婚姻事件。流年与大运参与层保存在details。"
+    },
+    {
+      "rule_id": "u12-palace-month-clash-combine",
+      "school": "子平",
+      "name": "month柱被大运/流年六冲或六合",
+      "condition_ref": "palace_activation",
+      "parameters": {
+        "palace": "month"
+      },
+      "evidence_fields": [
+        "/data/p8/time_interactions/relations"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "六亲",
+        "年运"
+      ],
+      "time_scale": "year",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第七章论刑冲会合解法、第二十五章论行运；只支持结构比较，不支持事件类型因果",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查大运或流年的地支关系连接该原局柱；palace指原局字段位置，不证明六亲/婚姻事件。流年与大运参与层保存在details。"
+    },
+    {
+      "rule_id": "u12-palace-day-clash-combine",
+      "school": "子平",
+      "name": "day柱被大运/流年六冲或六合",
+      "condition_ref": "palace_activation",
+      "parameters": {
+        "palace": "day"
+      },
+      "evidence_fields": [
+        "/data/p8/time_interactions/relations"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "婚恋",
+        "年运"
+      ],
+      "time_scale": "year",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第七章论刑冲会合解法、第二十五章论行运；只支持结构比较，不支持事件类型因果",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查大运或流年的地支关系连接该原局柱；palace指原局字段位置，不证明六亲/婚姻事件。流年与大运参与层保存在details。"
+    },
+    {
+      "rule_id": "u12-palace-hour-clash-combine",
+      "school": "子平",
+      "name": "hour柱被大运/流年六冲或六合",
+      "condition_ref": "palace_activation",
+      "parameters": {
+        "palace": "hour"
+      },
+      "evidence_fields": [
+        "/data/p8/time_interactions/relations"
+      ],
+      "priority": {
+        "子平": 2,
+        "调候": 3,
+        "盲派": 3,
+        "通用": 3
+      },
+      "domains": [
+        "六亲",
+        "年运"
+      ],
+      "time_scale": "year",
+      "source": {
+        "book": "子平真诠评注",
+        "chapter": "第七章论刑冲会合解法、第二十五章论行运；只支持结构比较，不支持事件类型因果",
+        "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+      },
+      "claim_kind": "traditional",
+      "notes": "只检查大运或流年的地支关系连接该原局柱；palace指原局字段位置，不证明六亲/婚姻事件。流年与大运参与层保存在details。"
+    }
+  ]
+}

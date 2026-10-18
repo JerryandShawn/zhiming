@@ -1,0 +1,19 @@
+{
+  "version": "noaa-cached-equation-of-time-reference-v1",
+  "source_url": "https://gml.noaa.gov/grad/solcalc/NOAA_Solar_Calculations_year.ods",
+  "source_sha256": "28b4c196700e2a57e0ff32c4c88729d5506e3b8f425700ece71397e801a0b0a6",
+  "source_bytes": 390343,
+  "source_sheet": "Calculations",
+  "source_settings": {"year": 2010, "local_hour": 12, "timezone_hours": -7, "longitude": -105},
+  "reference_kind": "official_published_cached_numeric_cells_not_recomputed_in_test",
+  "independence": "NOAA spreadsheet and implementation share Meeus mathematics; external published numeric crosscheck, not independent astronomical observation",
+  "tolerance_minutes": 0.5,
+  "rows": [
+    {"utc": "2010-01-15T19:00:00Z", "cell": "V16", "eot_minutes": -9.50469392310526},
+    {"utc": "2010-02-15T19:00:00Z", "cell": "V47", "eot_minutes": -14.1379287302671},
+    {"utc": "2010-04-15T19:00:00Z", "cell": "V106", "eot_minutes": 0.0208955169080454},
+    {"utc": "2010-06-15T19:00:00Z", "cell": "V167", "eot_minutes": -0.522779190331529},
+    {"utc": "2010-09-15T19:00:00Z", "cell": "V259", "eot_minutes": 4.84100803902021},
+    {"utc": "2010-11-03T19:00:00Z", "cell": "V308", "eot_minutes": 16.4768579211255}
+  ]
+}
