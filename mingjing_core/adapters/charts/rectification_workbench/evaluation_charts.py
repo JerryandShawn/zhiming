@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
+import argparse
 import itertools
+import json
 import random
 from dataclasses import asdict
+from pathlib import Path
+from time import perf_counter
 from typing import Any
 
 from .contracts import AnnualSignalCache, rules
@@ -240,3 +244,61 @@ def _report(
             "首名严格要求唯一；稳定ID解并列另报；前三仅离线噪声曲线，产品不输出前三。",
         ],
     }
+
+
+def main() -> None:
+    from .chart_grid import synthetic_chart_grid
+    from .contracts import digest
+    from .evaluation_cases import fixture_requests
+    from .signals import precompute
+
+    parser = argparse.ArgumentParser(
+        description="Actual synthetic Charts only; no model or external corpus"
+    )
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    requests, caches, timings = fixture_requests(), [], []
+    for request in requests:
+        start = perf_counter()
+        contexts = synthetic_chart_grid(request, basis="standard")
+        cache = precompute(
+            contexts,
+            birth_year=int(request["birth"]["date"][:4]),
+            as_of_year=2026,
+            scope=(
+                request["owner_user_id"],
+                request["subject_id"],
+                request["revision"],
+            ),
+        )
+        caches.append(cache)
+        timings.append(
+            {
+                "id": request["subject_id"],
+                "seconds": perf_counter() - start,
+                "cache_hash": cache.fingerprint,
+                "candidates": len(cache.candidate_ids),
+                "signals": len(cache.signal_ids),
+            }
+        )
+    report = run_actual_charts(caches)
+    report.update(fixed_fixture_hash=digest(requests), precomputations=timings)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+    print(
+        json.dumps(
+            {
+                "people": report["people"],
+                "er1_gate_passed": report["er1_95_percent_gate_passed"],
+                "model_calls": 0,
+            }
+        )
+    )
+
+
+if __name__ == "__main__":
+    main()

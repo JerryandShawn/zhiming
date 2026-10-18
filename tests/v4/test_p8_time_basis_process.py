@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pytest
 
+from mingjing_core.adapters.charts import time_basis_zones
 from mingjing_core.adapters.charts.time_basis import resolve_birth_instants
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -48,10 +49,24 @@ def test_native_time_basis_with_explicit_tzdata() -> None:
     assert summary == {"tests": 8, "successful": True, "skipped": 0}
 
 
-def test_core_and_charts_same_tzfile_have_same_physical_fold_instants() -> None:
+def test_core_and_charts_same_tzfile_have_same_physical_fold_instants(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     python = os.environ.get("CHART_PYTHON")
     if not python:
         pytest.skip("requires explicitly configured CHART_PYTHON")
+    # Reproduce Linux with a stale system database and a newer locked package.
+    if importlib.util.find_spec("tzdata"):
+        target = tmp_path / "Asia" / "Shanghai"
+        target.parent.mkdir()
+        target.write_bytes(
+            files("tzdata.zoneinfo").joinpath("Asia", "Shanghai").read_bytes()
+        )
+        (tmp_path / "tzdata.zi").write_text(
+            "# version unpinned-system-test\n", encoding="utf-8"
+        )
+        monkeypatch.setattr(time_basis_zones.zoneinfo, "TZPATH", (str(tmp_path),))
+        monkeypatch.delenv("PYTHONTZPATH", raising=False)
     code = (
         "import json; from mingjing_core.adapters.charts.time_basis import resolve_birth_instants;"
         "print(json.dumps(resolve_birth_instants('1988-09-11','01:30',{'tz':'Asia/Shanghai'},'clock')))"

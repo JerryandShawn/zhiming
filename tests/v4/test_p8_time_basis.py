@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 from datetime import datetime
+from importlib.resources import files
 from pathlib import Path
 
 import pytest
 
+from mingjing_core.adapters.charts import time_basis_zones
 from mingjing_core.adapters.charts.time_basis import resolve_birth_instants, solar_time
 from mingjing_core.adapters.charts.time_basis_solar import equation_of_time
 
@@ -127,3 +130,112 @@ def test_no_double_dst_or_longitude_correction_and_no_input_mutation() -> None:
 def test_naive_datetime_is_not_an_instant_for_equation_of_time() -> None:
     with pytest.raises(ValueError):
         equation_of_time(datetime(1988, 7, 15, 9, 30))
+
+
+@pytest.fixture
+def unpinned_zone_directory(tmp_path: Path) -> Path:
+    target = tmp_path / "Asia" / "Shanghai"
+    target.parent.mkdir()
+    target.write_bytes(
+        files("tzdata.zoneinfo").joinpath("Asia", "Shanghai").read_bytes()
+    )
+    (tmp_path / "tzdata.zi").write_text(
+        "# version unpinned-system-test\n", encoding="utf-8"
+    )
+    return tmp_path
+
+
+def test_installed_package_precedes_unpinned_os_tzpath(
+    monkeypatch: pytest.MonkeyPatch, unpinned_zone_directory: Path
+) -> None:
+    import tzdata
+
+    monkeypatch.delenv("PYTHONTZPATH", raising=False)
+    monkeypatch.setattr(
+        time_basis_zones.zoneinfo, "TZPATH", (str(unpinned_zone_directory),)
+    )
+    zone, source = time_basis_zones.load_zone("Asia/Shanghai")
+    assert zone.key == "Asia/Shanghai"
+    assert source["source"] == "tzdata_package"
+    assert source["iana_version"] == tzdata.IANA_VERSION
+    assert source["tzdata_package_version"] == tzdata.__version__
+    assert source["iana_version"] != "unpinned-system-test"
+
+
+def test_current_explicit_environment_overrides_import_time_search_path(
+    monkeypatch: pytest.MonkeyPatch, unpinned_zone_directory: Path
+) -> None:
+    monkeypatch.setattr(time_basis_zones.zoneinfo, "TZPATH", ())
+    monkeypatch.setenv("PYTHONTZPATH", str(unpinned_zone_directory))
+    _, source = time_basis_zones.load_zone("Asia/Shanghai")
+    assert source["source"] == "explicit_environment_tzpath"
+    assert source["iana_version"] == "unpinned-system-test"
+    assert source["tzdata_package_version"] is None
+    assert "may_differ_from_package_lock" in source["source_limits"]
+
+
+def test_current_explicit_path_list_is_searched_in_order(
+    monkeypatch: pytest.MonkeyPatch, unpinned_zone_directory: Path, tmp_path: Path
+) -> None:
+    paths = (str(tmp_path / "missing"), str(unpinned_zone_directory))
+    monkeypatch.setenv("PYTHONTZPATH", os.pathsep.join(paths))
+    _, source = time_basis_zones.load_zone("Asia/Shanghai")
+    assert source["source"] == "explicit_environment_tzpath"
+    assert source["iana_version"] == "unpinned-system-test"
+
+
+@pytest.mark.parametrize("relative", ["relative-zone-data", "../zone-data"])
+def test_relative_override_is_rejected_instead_of_ignored(
+    monkeypatch: pytest.MonkeyPatch, relative: str
+) -> None:
+    monkeypatch.setenv("PYTHONTZPATH", relative)
+    with pytest.raises(ValueError, match="绝对路径"):
+        time_basis_zones.load_zone("Asia/Shanghai")
+
+
+def test_explicit_nonempty_missing_zone_does_not_silently_select_package(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    monkeypatch.setenv("PYTHONTZPATH", str(tmp_path))
+    with pytest.raises(ValueError, match="显式PYTHONTZPATH没有所需时区文件"):
+        time_basis_zones.load_zone("Asia/Shanghai")
+
+
+def test_empty_override_disables_os_data_and_still_allows_package(
+    monkeypatch: pytest.MonkeyPatch, unpinned_zone_directory: Path
+) -> None:
+    monkeypatch.setenv("PYTHONTZPATH", "")
+    monkeypatch.setattr(
+        time_basis_zones.zoneinfo, "TZPATH", (str(unpinned_zone_directory),)
+    )
+    _, source = time_basis_zones.load_zone("Asia/Shanghai")
+    assert source["source"] == "tzdata_package"
+    monkeypatch.setattr(time_basis_zones, "_from_package", lambda _: None)
+    with pytest.raises(ValueError, match="没有可用的出生时区数据"):
+        time_basis_zones.load_zone("Asia/Shanghai")
+
+
+def test_last_resort_os_source_is_explicitly_unpinned(
+    monkeypatch: pytest.MonkeyPatch, unpinned_zone_directory: Path
+) -> None:
+    monkeypatch.delenv("PYTHONTZPATH", raising=False)
+    monkeypatch.setattr(time_basis_zones, "_from_package", lambda _: None)
+    monkeypatch.setattr(
+        time_basis_zones.zoneinfo, "TZPATH", (str(unpinned_zone_directory),)
+    )
+    _, source = time_basis_zones.load_zone("Asia/Shanghai")
+    assert source["source"] == "system_unpinned_fallback"
+    assert source["iana_version"] == "unpinned-system-test"
+    assert source["tzdata_package_version"] is None
+    assert "OS_data_unpinned" in source["source_limits"]
+    assert "not_established" in source["source_limits"]
+
+
+def test_no_package_and_no_system_source_does_not_guess_an_offset(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv("PYTHONTZPATH", raising=False)
+    monkeypatch.setattr(time_basis_zones, "_from_package", lambda _: None)
+    monkeypatch.setattr(time_basis_zones.zoneinfo, "TZPATH", ())
+    with pytest.raises(ValueError, match="没有可用的出生时区数据"):
+        time_basis_zones.load_zone("Asia/Shanghai")
