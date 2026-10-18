@@ -1,6 +1,6 @@
 # 前端交接 2026-10-18：14§I 六项静态修正
 
-本工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-p10`，分支 `v4/p10-frontend`，草稿 [PR #6](https://github.com/JerryandShawn/zhiming/pull/6)。本轮从远端等价树提交 `2d3863522b3f6a48130a492ceb2b77b63a4027e3` 继续，完成14号§I修正；完整实现提交和tree由本阶段回执及主线发布记录绑定。PR保持草稿，不合并、不部署。
+本工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-p10`，分支 `v4/p10-frontend`，草稿 [PR #6](https://github.com/JerryandShawn/zhiming/pull/6)。本轮从远端等价树提交 `2d3863522b3f6a48130a492ceb2b77b63a4027e3` 继续，完成14号§I修正；本地实现提交`ea4cb5a23d68f10dc4cbe26050e9c03db57b80e2`，tree`1307e2ef1689bab987b7af008a659d3dfd6b1380`；之后仅回执/交接文档提交。主线发布记录绑定远端等价树SHA。PR保持草稿，不合并、不部署。
 
 用户已明确划分工作：本代理提交本轮修正并向主线汇报后，立即停止所有 `zhiming-v4-p10` 与 `web/**` 修改；M4起交给新的独立前端聊天。主线经GitHub connector发布，本代理不自行push/rebase。请新聊天接管前先确认主线已发布且本地/远端tree对应、工作树干净，避免覆盖未发布内容；不能直接pull/reset来处理等价树但不同SHA的历史。
 
