@@ -11,6 +11,7 @@ import { Button } from '../components/ui/Controls';
 import { EyeOff } from 'lucide-react';
 import { createBirthPort } from './onboarding/birth';
 import { createOnboardingController } from './onboarding/controller';
+import { createSettingsPort } from './settings/port';
 import './night.css';
 
 const otherPages = {
@@ -23,6 +24,7 @@ const otherPages = {
 };
 const AboutMePage = lazy(() => import('./me/AboutMePage'));
 const OnboardingChat = lazy(() => import('./onboarding/OnboardingChat'));
+const SettingsPage = lazy(() => import('./settings/SettingsPage'));
 
 export default function NightApp({ page }: { page: string }) {
   const [port] = useState(createNightPort);
@@ -30,7 +32,15 @@ export default function NightApp({ page }: { page: string }) {
   useAboutMeReceipts(port.aboutMe, receiptRegistry);
   const privacy = usePrivacySession();
   const [birth] = useState(createBirthPort);
-  const [guide] = useState(() => createOnboardingController({ aboutMe: port.aboutMe, birth }));
+  const [settings] = useState(createSettingsPort);
+  const [guide] = useState(() =>
+    createOnboardingController({
+      aboutMe: port.aboutMe,
+      birth,
+      onContactPreference: settings.applyContactPreference,
+      readContactPreference: settings.readContactPreference,
+    }),
+  );
   const guideState = useSyncExternalStore(guide.subscribe, guide.getSnapshot);
   const [showGuide, setShowGuide] = useState(false);
   const chat = useNormalConversation(port, page === 'chat' && !privacy.active && !showGuide);
@@ -133,6 +143,8 @@ export default function NightApp({ page }: { page: string }) {
           )
         ) : page === 'me' ? (
           <AboutMePage port={port.aboutMe} />
+        ) : page === 'settings' ? (
+          <SettingsPage port={settings} />
         ) : (
           <Other />
         )}

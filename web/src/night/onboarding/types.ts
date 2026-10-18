@@ -1,4 +1,9 @@
 import type { AboutMePort } from '../me/types';
+import type {
+  OnboardingContactPreference,
+  ContactPreferenceProjection,
+  ContactPreferenceReceipt,
+} from '../settings/types';
 
 export type BirthDraft = {
   date: string;
@@ -82,4 +87,6 @@ export type OnboardingOptions = {
   birth: BirthPort;
   known?: OnboardingKnown;
   uuid?: () => string;
+  onContactPreference?: (preference: OnboardingContactPreference) => Promise<ContactPreferenceReceipt>;
+  readContactPreference?: () => ContactPreferenceProjection;
 };

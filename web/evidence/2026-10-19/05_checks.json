@@ -1,0 +1,142 @@
+{
+  "item": 5,
+  "time_utc": "2026-10-18T23:32:16.0625462Z",
+  "branch": "v4/p10-frontend",
+  "base_commit": "99b2ecd446c02563a36ba3c7efa63a934d253762",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "unit": {
+    "total": 426,
+    "passed": 426,
+    "files": 40
+  },
+  "frontend": {
+    "failed": 0,
+    "settings": 10,
+    "full_night_not_repeated_this_item": true,
+    "onboarding_regression": 10,
+    "targeted": 20
+  },
+  "axe_violations": 0,
+  "cinnabar_budget": 3,
+  "network": {
+    "api": 0,
+    "pageerror": 0,
+    "external": 0,
+    "console": 0
+  },
+  "screenshots": [
+    {
+      "sha256": "7b6c818d4b14af5e9ba596c0782be2e8e5fa1d2054f32f5b36d4592d679d681b",
+      "path": "05-contact-saved-390.png"
+    },
+    {
+      "sha256": "4ec6c7febc668523aa5eb4bf1694ac97d29df9c338e92fc9ca81ece830e71dd2",
+      "path": "05-device-revoke-confirm-1440.png"
+    },
+    {
+      "sha256": "bc9746e73d5ed1d5e046b64b9d51d0ffc4c9ea526ae9351a1c6184f9dae5fc51",
+      "path": "05-device-revoked-1440.png"
+    },
+    {
+      "sha256": "48f20b145086573ebd4af7a44e5670198bf152a0fa9dcad42da15eec8ec1fa92",
+      "path": "05-report-daily-saved-390.png"
+    },
+    {
+      "sha256": "d424e981b31136549c77b78dbd7df276b118abea8132f900965268d554a5eb42",
+      "path": "05-report-monthly-saved-390.png"
+    },
+    {
+      "sha256": "6bcdb753d8cfd0832f46c09209bf8c659feaef03a1144eeb05ac895bd856ceca",
+      "path": "05-report-quarterly-saved-390.png"
+    },
+    {
+      "sha256": "79ef3a0ceb4645ecca8ad684debc1fbeb37cc5874f044a7242b6a6d6f194d523",
+      "path": "05-report-weekly-saved-390.png"
+    },
+    {
+      "sha256": "3a504207fea3e9cf010d0fa09511c24f639c0c6d31cf07648f9795b14e1ec2a8",
+      "path": "05-settings-1440-dark.png"
+    },
+    {
+      "sha256": "6a53d326a71589760fa5107461f9e6007e5a0b203c4839d3e9dbba199cd52b7d",
+      "path": "05-settings-1440-light.png"
+    },
+    {
+      "sha256": "eda4422da5ce25b9e792df25b8983feada6fdeac482c951950deb602081480ad",
+      "path": "05-settings-390-dark.png"
+    },
+    {
+      "sha256": "4d8e12eaf2960e47cc0e72900d357ed86f8fde1dc3e4782f803cd9d832ed58a4",
+      "path": "05-settings-390-light.png"
+    }
+  ],
+  "source_sha256": [
+    {
+      "sha256": "d21cfe6b5b3b89818c413a08b44bafc94d944d2e25495b26d09152242f0ee61d",
+      "path": "web/src/night/NightApp.tsx"
+    },
+    {
+      "sha256": "5394677e263ecc716d610e353414ddbd3ca9e5f9927c2d545ba2ede5f1b98fc1",
+      "path": "web/src/night/onboarding/controller.ts"
+    },
+    {
+      "sha256": "c5001cd4f85d88d9a0276472c7fac449046a23e01f3b23705ab069690a940a1a",
+      "path": "web/src/night/onboarding/types.ts"
+    },
+    {
+      "sha256": "2c899342188d49f63477cccc4870aa553a4e9cfb6e25d5d96f19d7a6613b7abf",
+      "path": "web/src/night/settings/AppearancePrivacy.tsx"
+    },
+    {
+      "sha256": "e397be396cae559e2709d115e33adb084e827322b3cf27756c6042f2176c0347",
+      "path": "web/src/night/settings/ContactForm.tsx"
+    },
+    {
+      "sha256": "054acf4bde469bfd0b9d1a4333753f6e9d6c2c6cfca4eaefbe2d751b6d7e8b7f",
+      "path": "web/src/night/settings/Devices.tsx"
+    },
+    {
+      "sha256": "33ecdd4be83d0621c45a6ecc491374f945f33181b1227e556a321d45f2086ad1",
+      "path": "web/src/night/settings/port.ts"
+    },
+    {
+      "sha256": "8ecac143f7f5e2a74b78c4272238feeacb9437290617ae30413d39f480a6c4c1",
+      "path": "web/src/night/settings/ReportForms.tsx"
+    },
+    {
+      "sha256": "75e6094fab00e340378171b0a3cbaef7fc0a4335fe759d62db558abf5ebf4da9",
+      "path": "web/src/night/settings/settings.css"
+    },
+    {
+      "sha256": "5baa4e9e86dae00757d72edd18885202041898f1f5a952dbd6d6e41787a13442",
+      "path": "web/src/night/settings/SettingsPage.tsx"
+    },
+    {
+      "sha256": "b55a7392be0a4a57bac9830aaffc19068f7eb81eed17a9eee614dbe5bf8724f1",
+      "path": "web/src/night/settings/types.ts"
+    },
+    {
+      "sha256": "c4bc39e3cd899e8d25b80b8a109918f10123f1b09f171d70ba92238e30c97a17",
+      "path": "web/src/night/settings/useSettingsCommand.tsx"
+    },
+    {
+      "sha256": "071d6f6be043d61f0bfb059beed360104a918508e4b1bb7a4d4fe0c310a0a41d",
+      "path": "web/tests/e2e/night-settings.spec.ts"
+    },
+    {
+      "sha256": "a785d8f395e14fa499f0647eece0e271366824f5ab510d85b981c7f75f5325b0",
+      "path": "web/tests/night-settings-port.test.ts"
+    },
+    {
+      "sha256": "7a889446d1aaffa5c5bed37985fabf9c3c7f7fa778e190ca2d523e852ddd9a23",
+      "path": "web/tests/night-settings-ui.test.tsx"
+    }
+  ],
+  "built_manifest_sha256": "5265f24b15e1e692f2800b0598b00e583ab78c4ccc34fb5064fd387f12d68572",
+  "unverified": [
+    "Real outreach, delivery, device revocation and auth APIs are not connected",
+    "Local demo actions only; actual token unchanged"
+  ]
+}
