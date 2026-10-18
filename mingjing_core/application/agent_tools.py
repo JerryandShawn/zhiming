@@ -105,9 +105,16 @@ class AgentToolsService:
         settings = self.repo.assert_scope(ctx.owner, ctx.subject)["settings"]
         return settings.get("timezone", "Asia/Shanghai")
 
+    def tarot_visibility(self, ctx: ToolContext) -> str:
+        from mingjing_core.application.agent_tools_tarot_guard import tarot_mode
+
+        return tarot_mode(self, ctx)
+
     def execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
+        from mingjing_core.application.agent_tools_interactions import INTERACTION_NAMES, execute_interaction
         from mingjing_core.application.agent_tools_memory import execute_write
         from mingjing_core.application.agent_tools_reads import execute_read
+        from mingjing_core.application.agent_tools_tarot import execute_tarot
 
         if ctx.name != name:
             raise EvidenceError("调用名称与受信步骤不符")
@@ -124,6 +131,10 @@ class AgentToolsService:
             )
         with self.repo.transaction(ctx.owner) as connection:
             self.authority(connection, ctx)
+            if name in {"tarot_start", "tarot_read"}:
+                return execute_tarot(self, name, arguments, ctx)
+            if name in INTERACTION_NAMES:
+                return execute_interaction(self, name, arguments, ctx)
             if name in writes:
                 return execute_write(self, name, arguments, ctx)
             return execute_read(self, name, arguments, ctx)

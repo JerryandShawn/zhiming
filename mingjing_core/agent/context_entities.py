@@ -74,8 +74,12 @@ def _valid(
             return False
         if original["subject_id"] != subject or original["status"] != "active":
             return False
-        if original.get("thread_id") != "life:" + subject or ident in sources.deleted or sources.spans.get(ident):
+        if original.get("thread_id") != "life:" + subject or ident in sources.deleted:
             return False
+        if sources.spans.get(ident):
+            exact = [ref for ref in refs if ref["message_id"] == ident]
+            if not exact or not all(sources._reference_valid(owner, subject, ref) for ref in exact):
+                return False
         if original.get("redacted") or sources.boundary is None or sources._key(original) > sources.boundary:
             return False
         if any(
