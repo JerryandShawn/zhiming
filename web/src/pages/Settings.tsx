@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { ChevronRight, EyeOff, Laptop, ShieldCheck } from 'lucide-react';
-import { Button, Input, Segmented, Switch } from '../components/ui/Controls';
+import { Button, Segmented, Switch } from '../components/ui/Controls';
+import { TimePicker } from '../components/ui/Selection';
+import { ReportOptions } from '../components/ReportOptions';
 import { Panel } from '../components/ui/Overlays';
 import { useUi, type Theme } from '../state';
 
 function ReportSettings() {
   const [enabled, setEnabled] = useState([true, true, false, false]);
-  const notify = useUi((state) => state.notify);
   return (
     <section className="setting-group">
       <h2>晨报与周期报告</h2>
@@ -26,34 +27,7 @@ function ReportSettings() {
                 <ChevronRight className="icon" />
               </button>
             }>
-            <div className="stack">
-              <label className="field">
-                发送时间
-                <Input type="time" defaultValue="07:00" />
-              </label>
-              <p className="meta">北京时间 · 提前15分钟准备</p>
-              {index === 1 && (
-                <label className="field">
-                  星期
-                  <select className="select" defaultValue="1">
-                    {['一', '二', '三', '四', '五', '六', '日'].map((day, number) => (
-                      <option key={day} value={number + 1}>
-                        星期{day}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              )}
-              {index > 1 && (
-                <label className="field">
-                  日期
-                  <Input type="number" min="1" max="31" defaultValue="1" />
-                </label>
-              )}
-              <Button variant="primary" onClick={() => notify()}>
-                保存时间
-              </Button>
-            </div>
+            <ReportOptions index={index} />
           </Panel>
           <Switch
             label={`开启${name}`}
@@ -62,7 +36,7 @@ function ReportSettings() {
           />
         </div>
       ))}
-      <a className="text-link" href="#/reports">
+      <a className="text-link quiet-link" href="#/reports">
         看以前的报告
         <ChevronRight className="icon small" />
       </a>
@@ -91,10 +65,10 @@ function ContactSettings() {
       </div>
       <div className="setting-row wrap">
         <span>免打扰</span>
-        <div className="row">
-          <Input aria-label="免打扰开始时间" type="time" defaultValue="22:00" />
+        <div className="row wrap quiet-times">
+          <TimePicker label="免打扰开始时间" initial="22:00" />
           <span>至</span>
-          <Input aria-label="免打扰结束时间" type="time" defaultValue="08:00" />
+          <TimePicker label="免打扰结束时间" initial="08:00" />
         </div>
       </div>
     </section>

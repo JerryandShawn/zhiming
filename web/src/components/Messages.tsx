@@ -79,7 +79,7 @@ export function CitationChip({ number = 1 }: { number?: number }) {
         <span>{number}</span>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="popover" sideOffset={8}>
+        <Popover.Content className="popover" sideOffset={8} aria-label={`第${number}条依据详情`}>
           <p>10月21日是戊辰日；面试安排来自你之前说的话。</p>
           <p className="meta">合成示例 · 10月15日 · 飞书</p>
           <a className="text-link" href="#/me?section=memory">

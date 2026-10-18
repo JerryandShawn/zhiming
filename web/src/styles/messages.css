@@ -65,21 +65,35 @@
   gap: var(--s-1);
   font-size: var(--t-body-sm);
 }
+.text-link.quiet-link {
+  color: var(--ink-2);
+}
 .citation {
-  min-width: var(--control-height);
-  min-height: var(--control-height);
+  position: relative;
+  width: var(--citation-size);
+  height: var(--citation-size);
+  padding: 0;
+  margin: 0;
   display: inline-grid;
   place-items: center;
   background: transparent;
   border: 0;
   color: var(--gold-ink);
-  vertical-align: middle;
+  vertical-align: baseline;
+  transform: translateY(-0.35em);
+  line-height: 0;
+}
+.citation::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--citation-size) - var(--control-height)) / 2);
 }
 .citation > span {
   display: inline-grid;
   place-items: center;
-  width: var(--s-5);
-  height: var(--s-5);
+  width: var(--citation-size);
+  height: var(--citation-size);
+  line-height: 1;
   font-size: var(--t-nav);
   border-radius: var(--r-pill);
   background: var(--gold-wash);

@@ -62,12 +62,20 @@
 .event-row {
   display: grid;
   gap: var(--s-2);
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: baseline;
 }
 .event-row .tag {
-  grid-column: 2;
-  width: fit-content;
+  justify-self: end;
+}
+.event-row > :first-child {
+  white-space: nowrap;
+}
+.event-name {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .now-card {
   display: grid;
@@ -87,10 +95,25 @@
   min-height: var(--calendar-cell);
   font-size: var(--t-body-sm);
   border-radius: var(--r-1);
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  line-height: var(--l-body-sm);
+  padding: var(--s-1) 0;
 }
-.calendar-day.today {
+.calendar-day.today,
+.calendar-day.selected {
   outline: var(--selected) solid var(--cinnabar);
   outline-offset: calc(-1 * var(--selected));
+}
+.calendar-day.selected {
+  background: var(--cinnabar-wash);
+}
+button.calendar-day:hover {
+  background: var(--paper-2);
+}
+.amber-text {
+  color: var(--amber);
 }
 .calendar-day.outside {
   color: var(--ink-3);
@@ -114,7 +137,16 @@
   width: var(--s-1);
   height: var(--s-1);
   border-radius: var(--r-pill);
-  background: var(--cinnabar);
+  background: var(--gold-ink);
+}
+.calendar-term {
+  position: absolute;
+  bottom: 0;
+  left: calc(50% - var(--s-1) / 2);
+  width: var(--s-1);
+  height: var(--s-1);
+  border-radius: var(--r-pill);
+  background: var(--gold);
 }
 .today-action {
   margin-top: var(--s-7);
@@ -315,12 +347,6 @@
   margin-top: var(--s-6);
 }
 @media (min-width: 640px) {
-  .event-row {
-    grid-template-columns: auto 1fr auto;
-  }
-  .event-row .tag {
-    grid-column: auto;
-  }
   .people-grid,
   .design-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -357,11 +383,5 @@
     padding: var(--s-6) var(--s-5);
     overflow: auto;
     border-left: var(--border) solid var(--line);
-  }
-  .event-row {
-    grid-template-columns: auto 1fr;
-  }
-  .event-row .tag {
-    grid-column: 2;
   }
 }

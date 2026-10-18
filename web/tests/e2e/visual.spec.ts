@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { cinnabarUsages } from './appearance';
 
 const evidence = path.resolve('../docs/v4/evidence/P10');
 const pages = ['today', 'chat', 'chart', 'tarot', 'cases', 'me', 'settings'];
@@ -48,6 +49,7 @@ for (const viewport of viewports)
             .map((element) => element.className),
         }));
         const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+        const cinnabar = await page.evaluate(cinnabarUsages);
         const filename = `${name}-${theme}-${viewport.width}`;
         await fs.mkdir(path.join(evidence, 'screenshots'), { recursive: true });
         await fs.mkdir(path.join(evidence, 'audits'), { recursive: true });
@@ -60,6 +62,7 @@ for (const viewport of viewports)
               theme,
               viewport,
               ...audit,
+              cinnabar_uses: cinnabar,
               outside_requests: outside,
               api_requests: api,
               page_errors: errors,
@@ -79,6 +82,7 @@ for (const viewport of viewports)
         expect(audit.overflow).toBe(false);
         expect(audit.smallText).toEqual([]);
         expect(audit.fontFaces).toBeGreaterThan(0);
+        expect(cinnabar.length).toBeLessThanOrEqual(3);
         expect(accessibility.violations).toEqual([]);
       });
     }

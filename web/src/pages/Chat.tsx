@@ -12,7 +12,7 @@ import {
   ToolStatusLine,
   UserMessage,
 } from '../components/Messages';
-import { Disclosure, Switch } from '../components/ui/Controls';
+import { Checkbox, Disclosure, Switch } from '../components/ui/Controls';
 
 export default function Chat() {
   const [privateMode, setPrivate] = useState(false);
@@ -49,7 +49,7 @@ export default function Chat() {
               </AssistantMessage>
             </div>
           </div>
-          <Composer />
+          <Composer subdued />
         </div>
         <aside className="chat-aside">
           <NowCard />
@@ -71,7 +71,7 @@ export default function Chat() {
             {['跳槽', '考研准备'].map((text, index) => (
               <label className="setting-row small-text" key={text}>
                 <span>{text}</span>
-                <input type="checkbox" defaultChecked={!index} />
+                <Checkbox label={`聚焦${text}`} defaultChecked={!index} />
               </label>
             ))}
           </section>

@@ -3,7 +3,7 @@ import { ArrowUp, EyeOff, ImagePlus, Square, X } from 'lucide-react';
 import { IconButton, Tag } from './ui/Controls';
 import { useUi } from '../state';
 
-export function Composer({ busy = false }: { busy?: boolean }) {
+export function Composer({ busy = false, subdued = false }: { busy?: boolean; subdued?: boolean }) {
   const [text, setText] = useState('');
   const [context, setContext] = useState(true);
   const notify = useUi((value) => value.notify);
@@ -41,7 +41,7 @@ export function Composer({ busy = false }: { busy?: boolean }) {
           aria-label="和明镜说说"
         />
         <button
-          className={`send-button ${busy ? 'stopping' : ''}`}
+          className={`send-button ${busy || subdued ? 'stopping' : ''}`}
           type="submit"
           aria-label={busy ? '停止回答' : '发送'}>
           {busy ? <Square className="icon" /> : <ArrowUp className="icon" />}

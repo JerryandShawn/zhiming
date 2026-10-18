@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AstroWheel, ElementBar, LuckTimeline, PalaceGrid, PillarColumn, StrengthCompare } from '../components/Charts';
-import { Disclosure, Input, Segmented } from '../components/ui/Controls';
+import { Disclosure, Segmented } from '../components/ui/Controls';
+import { DatePicker } from '../components/DatePicker';
 
 const tabs = [
   { value: 'bazi', label: '八字' },
@@ -21,10 +22,7 @@ export default function Chart() {
       <div className="stack">
         <Segmented label="命盘体系" options={tabs} value={tab} onChange={setTab} />
         <div className="row between wrap">
-          <label className="row small-text chart-date-label">
-            看哪一天
-            <Input type="date" defaultValue="2026-10-17" aria-label="看哪一天" />
-          </label>
+          <DatePicker />
           <span className="meta" title="已确认的合成资料">
             阿远
           </span>

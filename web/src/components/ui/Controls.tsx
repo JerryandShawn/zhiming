@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes, InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
 import { forwardRef } from 'react';
-import { ChevronRight, LoaderCircle, Trash2 } from 'lucide-react';
+import { Check, ChevronRight, LoaderCircle, Trash2 } from 'lucide-react';
 import * as SwitchPrimitive from '@radix-ui/react-switch';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -43,6 +43,17 @@ export function Input(props: InputHTMLAttributes<HTMLInputElement>) {
 
 export function Textarea(props: TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea {...props} className={`textarea ${props.className ?? ''}`} />;
+}
+
+export function Checkbox({ label, ...props }: InputHTMLAttributes<HTMLInputElement> & { label: string }) {
+  return (
+    <span className="checkbox-target">
+      <input {...props} type="checkbox" className="checkbox-input" aria-label={label} />
+      <span className="checkbox-box" aria-hidden="true">
+        <Check className="icon small" />
+      </span>
+    </span>
+  );
 }
 
 export function Switch({

@@ -28,12 +28,12 @@ export default function Today() {
             <ul className="plain-list">
               <li className="event-row">
                 <span className="small-text secondary-text">周三 10月21日</span>
-                <span>面试</span>
+                <span className="event-name">面试</span>
                 <Tag>晚上我来问你</Tag>
               </li>
               <li className="event-row">
                 <span className="small-text secondary-text">周五 10月23日</span>
-                <span className="gold-text">霜降 · 17:38交节</span>
+                <span className="event-name gold-text">霜降 · 17:38交节</span>
               </li>
             </ul>
           </section>
@@ -58,7 +58,7 @@ export default function Today() {
           <section className="section">
             <div className="row between">
               <h2>进行中的事</h2>
-              <a href="#/cases" className="text-link">
+              <a href="#/cases" className="text-link quiet-link">
                 全部
                 <ChevronRight className="icon small" />
               </a>
