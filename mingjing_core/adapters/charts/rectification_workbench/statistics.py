@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from time import perf_counter
 from typing import Any
 
+from ..p8_policy import frozen_rectification_state
 from .calibration_scope import (
     calibration_dataset_hash,
     calibration_scope,
@@ -295,9 +296,8 @@ def evaluate(
         )
     return dict(
         result,
-        distinguishable=passes,
-        conclusion="更倾向（推断，不是确认）" if passes else "分不出来",
-        selected_candidate=result["training_leader"] if passes else None,
+        experimental_statistical_pass=passes,
+        **frozen_rectification_state(),
         candidates=candidates,
         **conclusion_metadata(columns, cache.candidate_ids),
         delta=calibration.delta,
@@ -307,6 +307,7 @@ def evaluate(
         writes=0,
         method="rectification_rules v1",
         limits=[
+            "23号复核冻结为默认隐藏的实验；即使离线统计闸门通过，也不授权解读倾向或资料确认。",
             "只检验项目规则内的年份配合，不证明命理效度。",
             "少于6件不满足留出闸门；并列按最坏名次；第二轮已见过第一轮，不能当作独立外部验证。",
         ],

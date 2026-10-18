@@ -25,6 +25,7 @@ def source_hashes() -> dict[str, str]:
     paths += [ROOT / "hermes" / (name + ".py") for name in ("bazi", "ziwei", "astro")]
     paths += sorted((ROOT / "mingjing_core/calculations/bazi").glob("*.py"))
     paths += sorted((ROOT / "mingjing_core/knowledge/p8_bazi").glob("*.json"))
+    paths += sorted((ROOT / "mingjing_core/knowledge/p8_ziwei").glob("*.json"))
     paths += [
         ROOT / "mingjing_core/knowledge" / name for name in ("p8_interactions.json", "rectification_rules_v1.json")
     ]
@@ -64,6 +65,11 @@ def main() -> None:
         from mingjing_core.adapters.charts.time_basis_request import calculate_time_basis
 
         print(json.dumps(calculate_time_basis(request["args"]), ensure_ascii=False, allow_nan=False))
+        return
+    if request.get("system") == "western_timing":
+        from mingjing_core.adapters.charts.western_timing import calculate_western_timing
+
+        print(json.dumps(calculate_western_timing(request["args"]), ensure_ascii=False, allow_nan=False))
         return
     if request.get("system") == "jie_probe":
         args = request["args"]

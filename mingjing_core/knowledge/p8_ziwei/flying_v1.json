@@ -1,0 +1,38 @@
+{
+  "version": "p8-ziwei-palace-stem-flying-v1",
+  "school": "iztro-2.5.0-default-palace-stem-table",
+  "claim_kind": "traditional_structure_not_event_prediction",
+  "labels": ["禄", "权", "科", "忌"],
+  "table": {
+    "甲": ["廉贞", "破军", "武曲", "太阳"],
+    "乙": ["天机", "天梁", "紫微", "太阴"],
+    "丙": ["天同", "天机", "文昌", "廉贞"],
+    "丁": ["太阴", "天同", "天机", "巨门"],
+    "戊": ["贪狼", "太阴", "右弼", "天机"],
+    "己": ["武曲", "贪狼", "天梁", "文曲"],
+    "庚": ["太阳", "武曲", "太阴", "天同"],
+    "辛": ["巨门", "太阳", "文曲", "文昌"],
+    "壬": ["天梁", "紫微", "左辅", "武曲"],
+    "癸": ["破军", "巨门", "太阴", "贪狼"]
+  },
+  "aliases": {
+    "廉貞": "廉贞", "破軍": "破军", "太陽": "太阳", "天機": "天机",
+    "太陰": "太阴", "巨門": "巨门", "貪狼": "贪狼", "左輔": "左辅"
+  },
+  "definitions": {
+    "self_transformation": "来源宫宫干所化星曜实际位于同一宫；仅采用iztro同宫自化定义，不细分向心离心。",
+    "ji_opposition": "化忌所落宫的索引加6取模12得到对宫；仅几何关联，不宣布事件或吉凶。",
+    "temporal_layers": "使用实际horoscope层的干支、命宫索引、宫名数组与四化星；不推造缺失层，不移动本命星。"
+  },
+  "source_refs": [
+    "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/data/heavenlyStems.ts",
+    "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/astro/FunctionalPalace.ts",
+    "https://docs.iztro.com/posts/palace",
+    "https://docs.iztro.com/posts/horoscope"
+  ],
+  "limits": [
+    "具名表是所选程序口径，未裁定为各派通用真理；庚干太阴化科等异表须另立口径。",
+    "只计算本命星曜间的飞化结构，不用来增加已冻结的倒推评分。",
+    "生年星曜四化和运限四化保留引擎实际输出；与所选表不一致时明确标注。"
+  ]
+}

@@ -38,13 +38,17 @@ def _candidate(
     physical = solar_at(engine, calendar).getLunar()
     local = solar_at(engine, coordinate).getLunar().getEightChar()
     local.setSect(1)
-    offset = instant["standard_offset_minutes"] / 60
+    offset = (
+        8 if basis == "beijing_standard" else instant["standard_offset_minutes"] / 60
+    )
     longitude = (
         offset * 15
-        if basis == "standard"
+        if basis in ("standard", "beijing_standard")
         else solar["longitude"] + solar["eot_minutes"] / 4
     )
-    standard = datetime.fromisoformat(solar["standard"])
+    standard = datetime.fromisoformat(
+        solar["beijing_standard"] if basis == "beijing_standard" else solar["standard"]
+    )
     return {
         "basis": basis,
         "utc": instant["utc"],
@@ -119,6 +123,7 @@ def build_candidates(
     clock_basis: str,
     *,
     precision: str,
+    include_beijing: bool = False,
 ) -> dict[str, Any]:
     if not isinstance(place, dict) or "lon" not in place:
         raise ValueError("必须提供已确认经度和IANA时区，不能默认出生地")
@@ -130,10 +135,12 @@ def build_candidates(
             if instant["status"] != "valid":
                 continue
             solar = solar_time(instant, place["lon"])
-            rows += [
-                _candidate(instant, basis, solar, engine)
-                for basis in ("standard", "true_solar")
-            ]
+            bases = (
+                ("standard", "true_solar", "beijing_standard")
+                if include_beijing
+                else ("standard", "true_solar")
+            )
+            rows += [_candidate(instant, basis, solar, engine) for basis in bases]
     items = _deduplicate(rows)
     hour_stable = bool(items) and len({row["pillars"]["hour"] for row in items}) == 1
     return {

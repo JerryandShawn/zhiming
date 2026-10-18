@@ -8,8 +8,10 @@ from typing import Any
 
 from ...domain.json_values import ensure_finite_json
 from .adapter import stable_id
+from .p8_policy import release_policy
 from .time_basis import time_basis_candidates
 from .time_basis_chart import bazi_context, ziwei_column
+from .time_basis_readout import attach_readout, rebase_column_evidence
 
 
 def validate_request(request: dict[str, Any]) -> None:
@@ -36,14 +38,8 @@ def validate_request(request: dict[str, Any]) -> None:
         raise ValueError("出生日期不能晚于核对日期")
 
 
-def calculate_time_basis(request: dict[str, Any]) -> dict[str, Any]:
-    from .p8_worker import source_hashes
-
-    validate_request(request)
+def _charts(request: dict[str, Any], result: dict[str, Any]) -> list[dict[str, Any]]:
     birth = request["birth"]
-    result = time_basis_candidates(
-        birth["date"], birth.get("reported_time"), birth.get("place"), birth.get("clock_basis"), precision="reported"
-    )
     variants = []
     for item in result["items"]:
         for candidate in item["source_variants"]:
@@ -52,22 +48,53 @@ def calculate_time_basis(request: dict[str, Any]) -> dict[str, Any]:
                 [request["owner_user_id"], request["subject_id"], request["revision"], candidate],
             )
             data = bazi_context(candidate, request)
+            column = ziwei_column(candidate, birth["gender"])
+            rebase_column_evidence(column, f"/charts/{len(variants)}/ziwei_column")
             variants.append(
                 dict(
                     id=ident,
                     candidate_group_id=item["id"],
                     time_basis=candidate,
                     data=data,
-                    ziwei_column=ziwei_column(candidate, birth["gender"]),
+                    ziwei_column=column,
                 )
             )
+    return variants
+
+
+def calculate_time_basis(request: dict[str, Any]) -> dict[str, Any]:
+    from .p8_worker import source_hashes
+
+    validate_request(request)
+    birth = request["birth"]
+    result = time_basis_candidates(
+        birth["date"],
+        birth.get("reported_time"),
+        birth.get("place"),
+        birth.get("clock_basis"),
+        precision="reported",
+        include_beijing=True,
+    )
+    variants = _charts(request, result)
+    interpretation = attach_readout(result, variants)
     return {
-        "version": "p8-time-basis-readonly-v1",
+        "version": "p8-time-basis-readonly-v2-review23",
         **{key: request[key] for key in ("owner_user_id", "subject_id", "revision", "operation_id")},
         "time_basis": result,
         "charts": variants,
+        "interpretation": interpretation,
+        "profile_basis_record": {
+            "basis": result["selected_basis"],
+            "comparison_basis": "beijing_standard",
+            "primary_chart_ids": interpretation["primary_chart_ids"],
+            "method": "longitude_plus_NOAA_Meeus_equation_of_time",
+            "policy_version": release_policy()["version"],
+            "status": "readonly_proposal_not_persisted",
+            "writes": 0,
+        },
+        "release_policy": release_policy(),
         "source_sha256": source_hashes(),
-        "record_policy": "以记录为准；口径不同并列，尚未选择流派或更改出生资料",
+        "record_policy": "以记录为准；真太阳时主解读，按北京时间的不同结果并列；不改出生资料",
         "profile_update_allowed": False,
         "life_event_scoring_performed": False,
         "model_calls": 0,

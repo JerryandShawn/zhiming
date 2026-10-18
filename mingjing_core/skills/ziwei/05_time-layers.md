@@ -1,6 +1,6 @@
 # 大限、流年与流月
 
-版本：p8-skills-draft-2026-10-18-v2；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
+版本：p8-skills-draft-2026-10-18-v2.1；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
 
 ## 方法步骤
 
@@ -17,12 +17,15 @@
 - `/data/horoscope/monthly`
 - `/data/horoscope/daily`
 - `/data/palaces`
+- `/data/p8_flying_transformations`：`temporal_layers`保留实际大限/流年/月/日的命宫、宫名和四化，不生成缺层；`matches_named_table`为false时保留差异，不能改写原值。
 
 新增P8接口字段：`/data/p8_time_interactions` 含 `links`、`complete`、`yearly_ganzhi` 与 `target_date`；每条link保存status以及实际本命/流年宫位。缺失或歧义项不能自行补宫位。
 
 ## 各流派观点与分歧
 
 虚岁、限起点、流月起法和闰月处理可能有差异，本项目沿用安装版本默认值并保存源码指纹。不把现代包装库默认当作原典唯一解。
+
+只核对已返回的运限，不据模型类声明默认值猜实际年界；安装JS运行配置可能不同。当前字段不等于连续全年扫描，也不参与冻结倒推评分。
 
 ## 适用前提
 

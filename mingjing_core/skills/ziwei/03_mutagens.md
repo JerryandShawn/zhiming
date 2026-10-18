@@ -1,6 +1,6 @@
 # 四化与飞星：起点、落点和时间层
 
-版本：p8-skills-draft-2026-10-18-v2；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
+版本：p8-skills-draft-2026-10-18-v2.1；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
 
 ## 方法步骤
 
@@ -16,7 +16,9 @@
 - `/data/horoscope/yearly/mutagen`
 - `/data/horoscope/yearly/mutagen_links`
 
-待接入/待核验（不能作为已有依据）：宫干飞化、自化、化忌冲新增图结构尚待本线输出核验。
+新增具名图：`/data/p8_flying_transformations`。`edges`给出来源宫干、四化星、实际落宫、`self_transformation`和`ji_opposition`；`nodes`记录入出边，`natal`保留实际生年标签，`temporal_layers`分列真实运限。缺星/重星保留missing/ambiguous，不补造；化忌对宫仅几何关系。API/UI及Agent别名待主线接入。
+
+在time_basis只读信封中，图位于`/charts/0/ziwei_column/p8_flying_transformations`（按实际索引）；证据路径已重定位到完整信封，不能按普通Artifact根解析。不能把这张图加进已冻结的倒推分数。
 
 新增P8接口字段：`/data/p8_time_interactions` 含 `links`、`complete`、`yearly_ganzhi` 与 `target_date`；每条link保存status以及实际本命/流年宫位。缺失或歧义项不能自行补宫位。
 
@@ -44,5 +46,6 @@
 ## 参考来源
 
 - [《紫微斗数全书》](https://zh.wikisource.org/wiki/紫微斗數全書/卷二)，卷二安禄权科忌四星变化诀（论生年干）。
+- [iztro具名宫干表](https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/data/heavenlyStems.ts)、[宫位飞化接口](https://docs.iztro.com/posts/palace)：本实现只选该程序表与同宫定义，不称其为所有流派共识。
 
 以上白话为项目原创概括；公开转录不等于原刊校勘。传统概念不证明现实预测有效。

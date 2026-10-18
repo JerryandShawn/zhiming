@@ -1,1 +1,1 @@
-"""Frozen, offline evidence tests. No model client, database or profile writes."""
+"""Frozen hidden experiment per review 23; no public interpretation or writes."""

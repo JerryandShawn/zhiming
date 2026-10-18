@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-import importlib
 from collections.abc import Callable
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta
 from math import isfinite
 from typing import Any
+
+from .astro_ephemeris import Ephemeris, actual_utc
 
 ASPECTS = {"合相": 0, "六合": 60, "刑相": 90, "拱相": 120, "冲相": 180}
 BODIES = (
@@ -25,22 +26,16 @@ ROOT_SECONDS = 2
 
 
 def _utc(value: str) -> datetime:
-    result = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    if result.tzinfo is None or result.utcoffset() is None:
-        raise ValueError("行运区间必须带明确时区")
-    return result.astimezone(UTC)
+    return actual_utc(value)
 
 
 def _iso(value: datetime) -> str:
-    return value.isoformat(timespec="seconds").replace("+00:00", "Z")
+    precision = "microseconds" if value.microsecond else "seconds"
+    return value.isoformat(timespec=precision).replace("+00:00", "Z")
 
 
 def _number(value: float, lower: float, upper: float) -> float:
-    if (
-        isinstance(value, bool)
-        or not isinstance(value, (float, int))
-        or not isfinite(value)
-    ):
+    if isinstance(value, bool) or not isinstance(value, (float, int)) or not isfinite(value):
         raise ValueError("行运数值必须有限")
     if not lower <= value <= upper:
         raise ValueError("行运数值超出搜索范围")
@@ -51,9 +46,7 @@ def _error(longitude: float, center: float) -> float:
     return (longitude - center + 180) % 360 - 180
 
 
-def _bisect(
-    function: Callable[[datetime], float], left: datetime, right: datetime
-) -> datetime:
+def _bisect(function: Callable[[datetime], float], left: datetime, right: datetime) -> datetime:
     initial = function(left)
     if initial == 0:
         return left
@@ -97,9 +90,7 @@ def _windows(
 ) -> list[dict[str, Any]]:
     edges = [points[0], points[-1]]
     for limit in (-orb, orb):
-        edges += _roots(
-            lambda moment, limit=limit: error(moment) - limit, points, wrap_filter=True
-        )
+        edges += _roots(lambda moment, limit=limit: error(moment) - limit, points, wrap_filter=True)
     edges = sorted(set(edges))
     exact = _roots(error, points, wrap_filter=True)
     windows = []
@@ -109,15 +100,11 @@ def _windows(
         exact_points = [_iso(moment) for moment in exact if left <= moment <= right]
         windows.append(
             {
-                "entry_at": None
-                if left == points[0] and abs(error(left)) < orb
-                else _iso(left),
+                "entry_at": None if left == points[0] and abs(error(left)) < orb else _iso(left),
                 "window_start": _iso(left),
                 "exact_at": exact_points,
                 "window_end": _iso(right),
-                "exit_at": None
-                if right == points[-1] and abs(error(right)) < orb
-                else _iso(right),
+                "exit_at": None if right == points[-1] and abs(error(right)) < orb else _iso(right),
                 "start_clipped": left == points[0] and abs(error(left)) < orb,
                 "end_clipped": right == points[-1] and abs(error(right)) < orb,
                 "phases": _phases(error, left, right, sorted(set(exact + stations))),
@@ -152,35 +139,19 @@ def _phases(
 def _position_reader(
     body: str,
 ) -> tuple[Callable[[datetime], tuple[float, float]], set[int], str]:
-    swe = importlib.import_module("swisseph")
+    engine = Ephemeris()
     flags_seen: set[int] = set()
     cache: dict[datetime, tuple[float, float]] = {}
-    swe.set_ephe_path(None)
 
     def position(moment: datetime) -> tuple[float, float]:
         if moment not in cache:
-            hour = (
-                moment.hour
-                + moment.minute / 60
-                + (moment.second + moment.microsecond / 1e6) / 3600
-            )
-            jd = swe.julday(moment.year, moment.month, moment.day, hour)
-            values, flags = swe.calc_ut(
-                jd, BODIES.index(body), swe.FLG_MOSEPH | swe.FLG_SPEED
-            )
-            longitude, speed = values[0], values[3]
-            if not isfinite(longitude) or not isfinite(speed):
-                raise ValueError("历表返回非有限位置")
-            if (
-                flags & (swe.FLG_JPLEPH | swe.FLG_SWIEPH | swe.FLG_MOSEPH)
-                != swe.FLG_MOSEPH
-            ):
-                raise ValueError("行运历表偏离显式Moshier口径")
-            flags_seen.add(int(flags))
-            cache[moment] = (longitude, speed)
+            jd_ut = engine.julian(moment)[1]
+            value = engine.position(body, jd_ut)
+            flags_seen.add(value["returned_flags"])
+            cache[moment] = (value["longitude"], value["speed_degrees_per_day"])
         return cache[moment]
 
-    return position, flags_seen, str(swe.version)
+    return position, flags_seen, str(engine.swe.version)
 
 
 def _body_windows(
@@ -224,21 +195,20 @@ def transit_windows(
     for longitude in natal_longitudes.values():
         _number(longitude, 0, 360)
     points = [
-        start + timedelta(hours=step * index)
-        for index in range(int((end - start).total_seconds() / 3600 / step) + 1)
+        start + timedelta(hours=step * index) for index in range(int((end - start).total_seconds() / 3600 / step) + 1)
     ]
     points = sorted(set(points + [end]))
     rows, flag_sets, versions = [], {}, set()
     for body in moving_bodies:
-        body_rows, flag_sets[body], version = _body_windows(
-            body, natal_longitudes, points, orb
-        )
+        body_rows, flag_sets[body], version = _body_windows(body, natal_longitudes, points, orb)
         rows += body_rows
         versions.add(version)
     return {
-        "version": "p8-transit-windows-v1",
+        "version": "p8-transit-windows-v2-UTC-UT1",
         "method": "Moshier-tropical-geocentric-longitude-root-search",
         "requested_interval": {"start": _iso(start), "end": _iso(end)},
+        "actual_UTC": {"start_at": _iso(start), "end_at": _iso(end)},
+        "time_scale": "Swiss utc_to_jd: UTC -> UT1, calc_ut; v3 default remains unchanged",
         "orb_degrees": orb,
         "sampling_step_hours": step,
         "root_bracket_seconds": ROOT_SECONDS,
@@ -246,9 +216,12 @@ def transit_windows(
         "returned_flags": flag_sets,
         "windows": rows,
         "source_refs": ["https://www.astro.com/swisseph/swephprg.htm"],
+        "reference_sources": ["https://www.astro.com/swisseph/swephprg.htm"],
         "limits": [
             "有限步长搜索含速度变号驻点细分；不是连续数学完备性证明，切触或极短窗口仍可能遗漏。",
             "精确表示所用黄经相位方程的数值根；2秒是求根括区间，不是历表或民用UTC的准确度。",
+            "求根时间戳保留微秒是数值表示，不宣称微秒准确度或现实事件时刻。",
+            "1972年前UTC由Swiss按UT1处理；未来UTC依赖其闰秒及Delta-T模型。",
             "只计算行运对固定本命黄经；不计算推运、回归盘或现实事件概率，不改变Placidus行为。",
         ],
     }

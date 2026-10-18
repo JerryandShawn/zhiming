@@ -1,5 +1,5 @@
 {
-  "version": "p8-skills-draft-2026-10-18-v2",
+  "version": "p8-skills-draft-2026-10-18-v2.1",
   "status": "draft_requires_owner_review",
   "systems": {
     "bazi": {
@@ -305,10 +305,13 @@
             "/profile_update_allowed",
             "/life_event_scoring_performed",
             "/model_calls",
-            "/writes"
+            "/writes",
+            "/interpretation",
+            "/profile_basis_record",
+            "/release_policy/rectification"
           ],
           "pending_fields": [
-            "人生事件证据工作台低优先离线预备：FrozenSession/检验结果与业务API尚未核验接入；不得继续使用旧评分前三接口"
+            "档案持久化、API、UI待主线接入；事件倒推冻结为实验且默认隐藏，不启用解读倾向"
           ],
           "sources": [
             {
@@ -323,7 +326,9 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "feature_state": "accurate_record_time_basis_check",
+          "visible_by_default": true
         },
         {
           "topic": "rectification-rules",
@@ -340,10 +345,13 @@
             "/profile_update_allowed",
             "/life_event_scoring_performed",
             "/model_calls",
-            "/writes"
+            "/writes",
+            "/interpretation",
+            "/profile_basis_record",
+            "/release_policy/rectification"
           ],
           "pending_fields": [
-            "人生事件证据工作台低优先离线预备：FrozenSession/检验结果与业务API尚未核验接入；不得继续使用旧评分前三接口"
+            "档案持久化、API、UI待主线接入；事件倒推冻结为实验且默认隐藏，不启用解读倾向"
           ],
           "sources": [
             {
@@ -358,7 +366,9 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "feature_state": "experimental_frozen",
+          "visible_by_default": false
         },
         {
           "topic": "traditional-hour-methods",
@@ -475,16 +485,22 @@
             "/data/palaces",
             "/data/horoscope/yearly/mutagen",
             "/data/horoscope/yearly/mutagen_links",
-            "/data/p8_time_interactions"
+            "/data/p8_time_interactions",
+            "/data/p8_flying_transformations"
           ],
           "pending_fields": [
-            "宫干飞化、自化、化忌冲新增图结构尚待本线输出核验"
+            "API/UI与Agent别名待主线接入；表及流派待抽查，非独立流派校盘"
           ],
           "sources": [
             {
               "title": "《紫微斗数全书》",
               "locator": "卷二安禄权科忌四星变化诀（论生年干）",
               "url": "https://zh.wikisource.org/wiki/紫微斗數全書/卷二"
+            },
+            {
+              "title": "iztro所选宫干表与飞化接口",
+              "locator": "v2.5.0 heavenlyStems；宫位飞化按实际星曜定位",
+              "url": "https://docs.iztro.com/posts/palace"
             }
           ],
           "status": "draft_requires_owner_review",
@@ -534,7 +550,8 @@
             "/data/horoscope/monthly",
             "/data/horoscope/daily",
             "/data/palaces",
-            "/data/p8_time_interactions"
+            "/data/p8_time_interactions",
+            "/data/p8_flying_transformations"
           ],
           "pending_fields": [],
           "sources": [
@@ -652,7 +669,7 @@
             "/data/transits/aspects_to_natal"
           ],
           "pending_fields": [
-            "次限推运与太阳回归计算未接入；已挂产物的连续行运仍需主线Agent工具接线"
+            "只读计算入口已验证；Agent工具、UI及档案持久化待主线接入；推运宫位未定义"
           ],
           "sources": [
             {
@@ -678,6 +695,16 @@
                 "/data/p8_transit_windows/requested_interval",
                 "/data/p8_transit_windows/limits"
               ]
+            },
+            {
+              "capability": "secondary_progressions",
+              "when": "P8ChartAdapter.western_timing显式technique；不是默认本命CalculationArtifact",
+              "artifact_root": "P8ChartAdapter.western_timing read-only envelope",
+              "paths": [
+                "/data/progressed_planets",
+                "/data/mapping",
+                "/data/actual_UTC"
+              ]
             }
           ],
           "rule_ids": []
@@ -698,7 +725,7 @@
             "/data/houses"
           ],
           "pending_fields": [
-            "专门太阳回归产物与地点选择待接入"
+            "只读计算入口已验证；Agent工具、UI及档案持久化待主线接入；推运宫位未定义"
           ],
           "sources": [
             {
@@ -713,7 +740,19 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "conditional_fields": [
+            {
+              "capability": "solar_return",
+              "when": "P8ChartAdapter.western_timing显式technique；不是默认本命CalculationArtifact",
+              "artifact_root": "P8ChartAdapter.western_timing read-only envelope",
+              "paths": [
+                "/data/root",
+                "/data/houses",
+                "/data/actual_UTC"
+              ]
+            }
+          ]
         },
         {
           "topic": "misreadings",

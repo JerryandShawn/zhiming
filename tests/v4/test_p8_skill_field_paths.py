@@ -89,6 +89,8 @@ def test_optional_transit_skill_paths_match_explicit_interval_artifact() -> None
         if row["topic"] == "transits-progressions"
     )
     for capability in chapter["conditional_fields"]:
+        if capability["capability"] != "explicit_transit_period":
+            continue
         for path in capability["paths"]:
             pointer(artifact, path)
     assert artifact["data"]["p8_transit_windows"]["windows"]
@@ -167,7 +169,7 @@ def test_time_basis_pointer_requirements_match_real_read_only_engine(
         if chapter["artifact_root"] == "P8ChartAdapter.time_basis read-only envelope":
             for path in chapter["required_fields"]:
                 pointer(result, path)
-    assert result["version"] == "p8-time-basis-readonly-v1"
+    assert result["version"] == "p8-time-basis-readonly-v2-review23"
     assert result["profile_update_allowed"] is False
     assert result["life_event_scoring_performed"] is False
     assert result["writes"] == result["model_calls"] == 0

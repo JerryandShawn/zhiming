@@ -146,11 +146,17 @@ def time_basis_candidates(
     clock_basis: str,
     *,
     precision: str = "reported",
+    include_beijing: bool = False,
 ) -> dict[str, Any]:
     from .time_basis_candidates import build_candidates
 
     return build_candidates(
-        date, reported_time, place, clock_basis, precision=precision
+        date,
+        reported_time,
+        place,
+        clock_basis,
+        precision=precision,
+        include_beijing=include_beijing,
     )
 
 

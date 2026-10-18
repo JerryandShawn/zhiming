@@ -9,11 +9,36 @@ from typing import Any
 
 from .contexts_v2 import context, hit_list, specialist_context, systems
 from .controls_v2 import shuffle_options
+from .eligibility_v2 import YearReview, question_year, select_questions
 from .experiment import parse_selection
 from .records import BirthMetadata, Question, fingerprint
 from .statistics_v2 import accuracy_summary
 
 CONFIGURATIONS_V2 = ("C0", "C1", "C2", "C3", "C4a", "C4b")
+
+
+def _question_chart(
+    provider: Callable[[BirthMetadata], dict[str, Any]],
+    record: Question,
+    review: YearReview | None,
+) -> dict[str, Any]:
+    method = getattr(provider, "for_question", None)
+    if callable(method):
+        return method(record, review=review)
+    if record.source in ("MingLi-Bench", "BaziQA"):
+        raise ValueError("professional_question_requires_question_aware_chart_provider")
+    # Synthetic request-plan callbacks retain their previous isolated unit-test API.
+    return provider(record.birth)
+
+
+def _chart_binding(provider: Any, configuration: str) -> str:
+    if configuration == "C0":
+        return "no_chart_c0"
+    return (
+        "question_aware_annual_view"
+        if callable(getattr(provider, "for_question", None))
+        else "synthetic_callback_time_layers_unverified"
+    )
 
 
 @dataclass(frozen=True)
@@ -59,6 +84,10 @@ def _request(
         )
         if configuration == "C4a":
             instructions += "时间交互必须按程序给定顺序处理，不自行重排。"
+    if configuration != "C0":
+        instructions += (
+            "年度采样日不是事件日；事件月日未知时，只使用原局与流年，不推测流月流日。"
+        )
     return RequestV2(
         configuration,
         stage,
@@ -116,12 +145,24 @@ def _trial_rows(
     rule_provider: Callable[[dict[str, Any]], list[dict[str, Any]]],
     seed: int,
     trial: int,
+    year_reviews: dict[str, YearReview],
 ) -> tuple[list[dict[str, Any]], int]:
     histories: dict[str, list[dict[str, Any]]] = {}
     results, calls = [], 0
     for record in records:
         payload, mapping = shuffle_options(record, seed, trial)
-        bundle = chart_provider(record.birth) if configuration != "C0" else {}
+        decision = question_year(record, year_reviews.get(record.scoring_fingerprint()))
+        payload |= {
+            "target_year": decision.year,
+            "year_basis": "question_explicit_target_year",
+        }
+        bundle = (
+            _question_chart(
+                chart_provider, record, year_reviews.get(record.scoring_fingerprint())
+            )
+            if configuration != "C0"
+            else {}
+        )
         inputs = context(configuration, bundle, skill_provider, rule_provider)
         history = (
             histories.setdefault(record.case_id, [])
@@ -173,6 +214,24 @@ def _outcomes(trials: list[list[dict[str, Any]]]) -> list[dict[str, Any]]:
     return outcomes
 
 
+def _excluded_configuration(
+    configuration: str, control: str, eligibility: dict[str, Any]
+) -> dict[str, Any]:
+    return {
+        "contract": "e2-protocol-v2",
+        "configuration": configuration,
+        "control": control,
+        "status": "all_questions_excluded",
+        "question_eligibility": eligibility,
+        "chart_year_binding": "no_chart_all_excluded",
+        "protocol_stage_calls": 0,
+        "model_requests": 0,
+        "outcomes": [],
+        "summary": None,
+        "actual_v4_runtime": False,
+    }
+
+
 def run_configuration_v2(
     records: list[Question],
     configuration: str,
@@ -184,6 +243,7 @@ def run_configuration_v2(
     control: str = "original",
     repeats: int = 1,
     rule_provider: Callable[[dict[str, Any]], list[dict[str, Any]]] = hit_list,
+    year_reviews: dict[str, YearReview] | None = None,
 ) -> dict[str, Any]:
     if (
         configuration not in CONFIGURATIONS_V2
@@ -194,6 +254,9 @@ def run_configuration_v2(
         raise ValueError("invalid_e2_configuration_repeats_or_empty_records")
     if len({(row.source, row.id) for row in records}) != len(records):
         raise ValueError("duplicate_e2_question_identity")
+    records, eligibility = select_questions(records, reviews=year_reviews)
+    if not records:
+        return _excluded_configuration(configuration, control, eligibility)
     trials, calls = [], 0
     for trial in range(repeats):
         rows, count = _trial_rows(
@@ -205,6 +268,7 @@ def run_configuration_v2(
             rule_provider,
             seed,
             trial,
+            year_reviews or {},
         )
         trials.append(rows)
         calls += count
@@ -221,6 +285,8 @@ def run_configuration_v2(
         "protocol_stage_calls": calls,
         "actual_v4_runtime": False,
         "model_requests": "unmeasured_use_authorized_transport_ledger",
+        "question_eligibility": eligibility,
+        "chart_year_binding": _chart_binding(chart_provider, configuration),
         "outcomes": outcomes,
         "summary": accuracy_summary(outcomes),
     }

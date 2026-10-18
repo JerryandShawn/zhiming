@@ -1,12 +1,12 @@
 # 行运与次限推运：区间和技术分开
 
-版本：p8-skills-draft-2026-10-18-v2；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
+版本：p8-skills-draft-2026-10-18-v2.1；状态：待所有者抽查的解释草稿，不是模型或现实预测验证。
 
 ## 方法步骤
 
 1. 先读 transits 的 sample_time、timezone_offset、orb_limit 与 precision_note。旧入口只是目标日UTC+8正午快照，不能把快照外推整月或精确日期。
 2. 入相、精确、出相必须来自独立区间搜索产物，保留逆行多次经过、搜索边界与未闭合区间。没有该产物就明确只谈快照；不能模型自算插值。
-3. 次限采用日返一年是另一个技术，需要出生时刻、目标岁数映射与独立推运产物。尚无核验字段时只解释技术区别，不给个人次限结论。
+3. 次限只读具名产物：历表推进日数为 `(目标JD_UT1−出生JD_UT1)/365.2422`，保留小数，不按生日整岁取整。象征历表时刻不是目标日实际天空。
 
 ## 需要的盘面字段
 
@@ -22,11 +22,21 @@
 - `/data/p8_transit_windows/windows`：含entry_at/exact_at/exit_at、window_start/window_end、start_clipped/end_clipped与phases；保留多次经过。
 - `/data/p8_transit_windows/requested_interval`、`/data/p8_transit_windows/limits`：分别是搜索范围与限制。
 
-entry/exit为空表示被范围截断，exact_at可多次；2秒只是求根括区间，不是历表或民用时刻准确度。有限步长可能遗漏切触与极短窗口。已有CalculationFeature路径可供主线分配真实别名；本轮没有实际产物就不能编造〔c#〕。次限与太阳回归仍未实现。
+entry/exit为空表示截断，exact_at可多次；2秒只是求根括区间，不是历表或民用时刻准确度。有限步长可能遗漏切触或极短窗口。没有本轮实际产物不能编造〔c#〕。
+
+另一根对象为 `P8ChartAdapter.western_timing` 只读信封，technique须为`secondary_progressions`，以下不能拿旧快照冒充：
+
+- `/data/progressed_planets`、`/data/natal_planets`：实际本命及次限十天体。
+- `/data/mapping`、`/data/symbolic_ephemeris_at_UTC`：具名UT1日返一年映射。
+- `/data/actual_UTC`、`/data/metadata`、`/data/method`：实际出生/目标UTC、历表与方法。
+- `/data/aspects_to_natal`、`/data/progressed_aspects`：容许度见`/data/aspect_orb_degrees`。
+- `/data/houses`：当前明确为null，不提供未定义的推运宫位。
+
+西占始终从实际UTC转UT1，不套真太阳时。主线Agent工具和界面待接入；独立计算信封只读，不写命理档案。
 
 ## 各流派观点与分歧
 
-行运是实际目标时刻天空，次限是符号时间映射，太阳弧又不同；不能把Book I入离相概念当作日返一年法的原始出处。日返一年法的历史出处参Alan Leo附录IV；平均日/真太阳日变体并不相同。当前尚无次限计算产物，不能据书中算法宣称已经算出。
+行运是实际天空，次限是符号映射，太阳弧又不同。Alan Leo附录IV区分日返一年变体；固定365.2422个UT1日为本项目具名细化，不声称所有软件同法。Book I入离相概念不是次限算法出处。
 
 ## 适用前提
 
@@ -34,7 +44,7 @@ entry/exit为空表示被范围截断，exact_at可多次；2秒只是求根括�
 
 ## 反例与常见误读
 
-目标日orb小不证明该日精确；逆行可能三次经过。用未计算次限字段说“次限月亮已进某宫”属于编造。
+目标日orb小不证明该日精确；逆行可能三次经过。次限houses为null，因此说“次限月亮已进某宫”仍属编造。
 
 ## 表达示例
 
@@ -50,5 +60,7 @@ entry/exit为空表示被范围截断，exact_at可多次；2秒只是求根括�
 - [Ptolemy, Tetrabiblos (Robbins 译本)](https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Ptolemy/Tetrabiblos/1B*.html)，Book I §24：入离相概念，仅支持概念区分；不支持本项目次限算法。
 
 - [Alan Leo, The Progressed Horoscope](https://www.astro.nu/wp-content/uploads/The-Progressed-Horoscope-Alan-Leo.pdf)，附录IV Summary of Measures of Time：One day measures a year；区分平均日/真太阳日变体，不继承宿命断语。
+
+- [Astrodienst图种说明](https://www.astro.com/faq/fq_fh_owtype_e.htm)：日返一年原则；[Swiss接口](https://www.astro.com/swisseph/swephprg.htm)§3、§9：黄经、flags与UTC/UT1转换。历表版本及Moshier潮汐/Delta-T约定见产物metadata。
 
 以上白话为项目原创概括；公开转录不等于原刊校勘。传统概念不证明现实预测有效。

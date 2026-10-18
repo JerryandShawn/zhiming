@@ -18,6 +18,12 @@ from .named_bazi import options
 class P8ChartAdapter(ChartAdapter):
     """Opt in by importing this class; the default ChartAdapter is unchanged."""
 
+    @staticmethod
+    def capabilities() -> dict[str, Any]:
+        from .p8_policy import release_policy
+
+        return release_policy()
+
     def __init__(
         self,
         owner_user_id: str,
@@ -44,9 +50,14 @@ class P8ChartAdapter(ChartAdapter):
             if system == "ziwei":
                 from .interactions_ziwei import yearly_mutagen_links
                 from .p8_worker import source_hashes
+                from .ziwei_flying import palace_flying_transformations
 
                 result["data"]["p8_time_interactions"] = yearly_mutagen_links(result["data"])
+                result["data"]["p8_flying_transformations"] = palace_flying_transformations(result["data"])
                 result["metadata"]["actual_method"]["p8_yearly_links"] = "p8-yearly-mutagen-links-v1"
+                result["metadata"]["actual_method"]["p8_flying_transformations"] = result["data"][
+                    "p8_flying_transformations"
+                ]["version"]
                 result["metadata"]["versions"]["p8"] = {"version": "p8-u2-v1", "source_sha256": source_hashes()}
             if system == "astro" and self.transit_period is not None:
                 from .p8_worker import source_hashes
@@ -66,6 +77,12 @@ class P8ChartAdapter(ChartAdapter):
             raise ValueError("时间口径核对请求归属不匹配")
         value = dict(request, p8_options=self.p8_options)
         return self._request("time_basis", value)
+
+    def western_timing(self, request: dict[str, Any]) -> dict[str, Any]:
+        from .western_timing import validate_timing_request
+
+        validate_timing_request(request, self.owner_user_id)
+        return self._request("western_timing", request)
 
     def _request(self, system: str, args: dict[str, Any]) -> Any:
         process = subprocess.run(
@@ -140,6 +157,14 @@ class P8ChartAdapter(ChartAdapter):
                 paths.append(("p8.calendar_layers." + key, "/data/p8/calendar_layers/" + key, scale))
         if system == "ziwei" and "p8_time_interactions" in data:
             paths.append(("p8_time_interactions", "/data/p8_time_interactions", "yearly"))
+        if system == "ziwei" and "p8_flying_transformations" in data:
+            paths.append(
+                (
+                    "p8_flying_transformations",
+                    "/data/p8_flying_transformations",
+                    "layered_natal_decadal_yearly_monthly_daily",
+                )
+            )
         if system == "astro" and "p8_transit_windows" in data:
             paths.append(("p8_transit_windows", "/data/p8_transit_windows", "transit_interval"))
         return paths

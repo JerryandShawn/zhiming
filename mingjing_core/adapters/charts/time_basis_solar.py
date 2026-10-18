@@ -56,6 +56,7 @@ def solar_time(instant: dict[str, Any], lon: float) -> dict[str, Any]:
     apparent = mean + timedelta(minutes=eot)
     return {
         "standard": standard.isoformat(),
+        "beijing_standard": (utc + timedelta(hours=8)).replace(tzinfo=None).isoformat(),
         "mean_solar": mean.isoformat(),
         "true_solar": apparent.isoformat(),
         "longitude": lon,

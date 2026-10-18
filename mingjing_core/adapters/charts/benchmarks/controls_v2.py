@@ -6,6 +6,7 @@ import random
 from dataclasses import replace
 from typing import Any
 
+from .eligibility_v2 import YearReview, question_year
 from .records import Question, fingerprint
 
 
@@ -57,31 +58,51 @@ def _matching(cases: dict[str, Question], seed: int) -> dict[str, str]:
     return {source: donor for donor, source in assigned.items()}
 
 
+def _year(record: Question, basis: str, reviews: dict[str, YearReview]) -> int:
+    year = (
+        question_year(record, reviews.get(record.scoring_fingerprint())).year
+        if basis == "question_year"
+        else (record.birth.year if basis == "birth_year" else record.competition_year)
+    )
+    if year is None:
+        raise ValueError(
+            "placebo_explicit_question_year_missing"
+            if basis == "question_year"
+            else "placebo_year_value_missing"
+        )
+    return year
+
+
 def same_year_placebo(
-    records: list[Question], seed: int, *, year_basis: str
+    records: list[Question],
+    seed: int,
+    *,
+    year_basis: str,
+    year_reviews: dict[str, YearReview] | None = None,
 ) -> list[Question]:
-    if year_basis not in ("birth_year", "competition_year"):
+    if year_basis not in ("question_year", "birth_year", "competition_year"):
         raise ValueError("explicit_placebo_year_basis_required")
     groups: dict[tuple[str, int], dict[str, Question]] = {}
+    case_years: dict[tuple[str, str], set[int]] = {}
+    year_reviews = year_reviews or {}
+    if set(year_reviews) - {row.scoring_fingerprint() for row in records}:
+        raise ValueError("year_reviews_contain_unknown_questions")
     for record in records:
-        year = (
-            record.birth.year if year_basis == "birth_year" else record.competition_year
-        )
-        if year is None:
-            raise ValueError("placebo_year_value_missing")
+        year = _year(record, year_basis, year_reviews)
+        case_years.setdefault((record.source, record.case_id), set()).add(year)
         group = groups.setdefault((record.source, year), {})
         if record.case_id in group and group[record.case_id].birth != record.birth:
             raise ValueError("placebo_case_birth_conflict")
         group[record.case_id] = record
+    if any(len(years) != 1 for years in case_years.values()):
+        raise ValueError("placebo_case_spans_question_years_cannot_preserve_one_donor")
     mappings = {
         key: _matching(cases, int(fingerprint([seed, key])[:16], 16))
         for key, cases in groups.items()
     }
     result = []
     for record in records:
-        year = (
-            record.birth.year if year_basis == "birth_year" else record.competition_year
-        )
+        year = _year(record, year_basis, year_reviews)
         key = (record.source, year)
         result.append(
             replace(record, birth=groups[key][mappings[key][record.case_id]].birth)

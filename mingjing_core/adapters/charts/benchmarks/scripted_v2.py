@@ -10,6 +10,7 @@ from typing import Any
 from ....skills.loader import chart_skill
 from .controls_v2 import same_year_placebo
 from .engine import P8Engine
+from .inspect_v2 import source_report
 from .protocol_v2 import CONFIGURATIONS_V2, RequestV2, run_configuration_v2
 from .records import BirthMetadata, CalculationInputs, Question, fingerprint
 from .statistics_v2 import paired_comparison
@@ -27,7 +28,7 @@ def fixtures() -> list[Question]:
         Question(
             id=f"synthetic-v2-{index}",
             case_id=f"synthetic-v2-case-{index}",
-            text="合成软件测试：程序盘面的时支是哪一个？",
+            text="2025年合成软件测试：程序盘面的时支是哪一个？",
             options=tuple(zip("ABCD", ("辰", "未", "戌", "丑"), strict=True)),
             answer="ABC"[index],
             birth=BirthMetadata(
@@ -79,15 +80,15 @@ def run_scripted_v2(python: str) -> dict[str, Any]:
         for configuration in CONFIGURATIONS_V2
     }
     placebo = run_configuration_v2(
-        same_year_placebo(records, 20261018, year_basis="birth_year"),
+        same_year_placebo(records, 20261018, year_basis="question_year"),
         "C3",
         engine,
         _skill,
         answerer,
         seed=20261018,
-        control="same_birth_year_chart_placebo",
+        control="same_explicit_question_year_chart_placebo",
     )
-    placebo["year_basis"] = "birth_year"
+    placebo["year_basis"] = "question_year"
     other_placebo = run_configuration_v2(
         same_year_placebo(records, 20261018, year_basis="competition_year"),
         "C3",
@@ -138,6 +139,10 @@ def _report(
         "results": results,
         "placebo": placebo,
         "other_year_basis_placebo": other_placebo,
+        "other_year_basis_placebo_status": (
+            "historical_competition_year_compatibility_smoke_only"
+        ),
+        "current_year_basis": "question_year",
         "paired_comparisons": comparisons,
         "isolated_chart_calculations": len(engine.cache),
         "protocol_stage_calls": sum(
@@ -147,11 +152,14 @@ def _report(
         + other_placebo["protocol_stage_calls"],
         "engine_provenance": [
             {
-                "birth_fingerprint": key,
+                "cache_key": key,
+                "birth_fingerprint": bundle.get("benchmark_birth_fingerprint", key),
+                "benchmark_time_basis": bundle.get("benchmark_time_basis"),
                 "profiles": [
                     {
                         "actual_method": profile["actual_method"],
                         "versions": profile["versions"],
+                        "target_date": profile["input"]["target_date"],
                     }
                     for profile in bundle["profiles"].values()
                 ],
@@ -180,13 +188,17 @@ def main() -> None:
         help="默认开启；E2 v2固定随机选项，显式传此flag记录同一行为",
     )
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--mingli-root", type=Path)
+    parser.add_argument("--baziqa-root", type=Path)
     args = parser.parse_args()
     result = run_scripted_v2(args.chart_python)
     result["cli_parameters"] = {
         "shuffle_options": args.shuffle_options,
         "shuffle_default": True,
-        "year_bases_tested": ["birth_year", "competition_year"],
+        "year_basis": "question_year",
+        "historical_compatibility_year_bases_tested": ["competition_year"],
     }
+    result["source_adjudications"] = source_report(args.mingli_root, args.baziqa_root)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n",

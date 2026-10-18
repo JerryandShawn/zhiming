@@ -177,7 +177,9 @@ def test_round_two_abstains_until_its_own_independent_calibration_exists(
         null_records("r2-val", round_no=2, shape=shape),
     )
     accepted = evaluate(frozen, dominant, second, 2)
-    assert accepted["calibration_usable"] and accepted["distinguishable"]
+    assert accepted["calibration_usable"] and accepted["experimental_statistical_pass"]
+    assert not accepted["distinguishable"] and accepted["selected_candidate"] is None
+    assert accepted["conclusion"] == "分不出来"
 
 
 @pytest.mark.parametrize(

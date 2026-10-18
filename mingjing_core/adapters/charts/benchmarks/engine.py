@@ -5,7 +5,9 @@ from __future__ import annotations
 from typing import Any
 
 from ..p8_adapter import P8ChartAdapter
-from .records import BirthMetadata, CalculationInputs, fingerprint
+from .annual_v2 import annual_basis, annual_view
+from .eligibility_v2 import YearReview, question_year
+from .records import BirthMetadata, CalculationInputs, Question, fingerprint
 
 
 class P8Engine:
@@ -21,6 +23,32 @@ class P8Engine:
         key = fingerprint(birth.public_input())
         if key in self.cache:
             return self.cache[key]
+        value = self._calculate(birth, self.target_date, "e2-synthetic-" + key[:12])
+        self.cache[key] = value
+        return value
+
+    def for_question(
+        self, record: Question, *, review: YearReview | None = None
+    ) -> dict[str, Any]:
+        decision = question_year(record, review)
+        if decision.year is None:
+            raise ValueError("question_chart_requires_explicit_target_year")
+        basis = annual_basis(decision.year)
+        birth_key = fingerprint(record.birth.public_input())
+        key = fingerprint([birth_key, decision.year, basis["method"]])
+        if key not in self.cache:
+            computed = self._calculate(
+                record.birth, basis["sampling_date"], "e2-annual-" + key[:12]
+            )
+            value = annual_view(computed, decision.year)
+            value["benchmark_birth_fingerprint"] = birth_key
+            self.cache[key] = value
+        return self.cache[key]
+
+    def _calculate(
+        self, birth: BirthMetadata, target_date: str, subject_id: str
+    ) -> dict[str, Any]:
+        key = fingerprint(birth.public_input())
         if key not in self.inputs:
             raise ValueError("chart_missing_verified_coordinates_offset_or_precision")
         coordinates = self.inputs[key]
@@ -49,9 +77,7 @@ class P8Engine:
                 },
             }
         }
-        result = self.adapter.calculate(
-            archive, self.target_date, ["bazi"], 0, "e2-synthetic-" + key[:12]
-        )
+        result = self.adapter.calculate(archive, target_date, ["bazi"], 0, subject_id)
         if result["errors"] or not result["artifacts"]:
             raise RuntimeError("e2_isolated_chart_failed_without_fallback")
         value = {
@@ -59,5 +85,4 @@ class P8Engine:
             "profiles": result["profiles"],
             "features": result["features"],
         }
-        self.cache[key] = value
         return value

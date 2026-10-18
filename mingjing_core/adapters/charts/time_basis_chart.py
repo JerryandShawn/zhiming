@@ -49,6 +49,8 @@ def bazi_context(candidate: dict[str, Any], request: dict[str, Any]) -> dict[str
 
 
 def ziwei_column(candidate: dict[str, Any], gender: str) -> dict[str, Any]:
+    from .ziwei_flying import palace_flying_transformations
+
     engine = load_engine("ziwei")
     coordinate = datetime.fromisoformat(candidate["coordinate_datetime"])
     ast, corrected = engine.build(coordinate, 0, gender, 0)
@@ -64,4 +66,5 @@ def ziwei_column(candidate: dict[str, Any], gender: str) -> dict[str, Any]:
         "pythonmonkey": version("pythonmonkey"),
         **iztro_provenance(),
     }
+    result["p8_flying_transformations"] = palace_flying_transformations(result)
     return result
