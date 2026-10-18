@@ -11,6 +11,7 @@ from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.projections import owner_spans, redact_ranges
 from mingjing_core.memory.tokenize import searchable_data
 
+from .privacy_cases import redact_case_fields
 from .privacy_closure import closure_rows, partial_sources, propagate
 
 if TYPE_CHECKING:
@@ -92,6 +93,7 @@ def invalidate_foundation(
         include_legacy=bool(source_ids),
     )
     spans, _ = owner_spans(repo, owner)
+    redact_case_fields(repo, owner, spans, partial)
     refresh_source_indexes(repo, owner, spans)
     with repo.transaction(owner) as connection:
         if sources:
