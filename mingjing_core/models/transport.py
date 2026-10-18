@@ -18,12 +18,15 @@ from mingjing_core.domain.json_values import ensure_finite_json
 from .errors import (
     ModelBadRequest,
     ModelCancelled,
+    ModelPermissionDenied,
     ModelProtocolError,
     ModelQuotaExhausted,
     ModelRateLimited,
     ModelUnavailable,
 )
+from .metering import before_provider_request
 from .port import ModelPort, StreamEvent
+from .provider_diagnostics import error_fields, parse_error_sample, permission_quota
 
 
 def safe_usage(data: Any) -> dict[str, int]:
@@ -54,12 +57,23 @@ def http_error(response: httpx.Response, *, membership: bool) -> ModelUnavailabl
     status = response.status_code
     if membership and status == 429:
         return ModelQuotaExhausted(status=status)
-    # Inspect only to classify; this local value is never attached to an exception or logged.
+    # Only audited public quota sentences may leave this local classification boundary.
     try:
-        sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore").lower()
+        sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore")
     except httpx.HTTPError:
         sample = ""
-    quota = any(word in sample for word in ("usage limit", "quota", "额度", "usage_limit"))
+    parsed = parse_error_sample(sample)
+    if status == 403 and (match := permission_quota(parsed)):
+        subtype, public = match
+        return ModelQuotaExhausted(
+            status=status,
+            subtype=subtype,
+            error_type="permission_error",
+            provider_message=public,
+        )
+    if status == 403:
+        return ModelPermissionDenied(status=status, error_type=error_fields(parsed)[0])
+    quota = any(word in sample.casefold() for word in ("usage limit", "quota", "额度", "usage_limit"))
     if quota or membership and status == 429:
         return ModelQuotaExhausted(status=status)
     if status == 429:
@@ -108,6 +122,9 @@ def strict_json(value: str) -> Any:
 
 
 def stream_error(data: Any, *, membership: bool) -> ModelUnavailable:
+    if match := permission_quota(data):
+        subtype, public = match
+        return ModelQuotaExhausted(subtype=subtype, error_type="permission_error", provider_message=public)
     classification = str(data).casefold()
     rate = any(word in classification for word in ("rate_limit", "rate limit", "429"))
     quota = any(word in classification for word in ("quota", "usage_limit", "usage limit", "额度"))
@@ -244,6 +261,7 @@ class StreamingHTTP(ModelPort):
             check_cancel(cancel)
             if time.monotonic() >= deadline:
                 raise ModelUnavailable()
+            before_provider_request()
             self.request_count += 1
             with (
                 client.stream("POST", self.base_url + path, headers=headers, json=body) as response,

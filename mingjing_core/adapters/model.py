@@ -5,6 +5,9 @@ import time
 import base64
 import httpx
 from ..domain.consultation import ModelUnavailable, ModelFailureReason
+from ..models.metering import before_provider_request
+from ..models.provider_diagnostics import permission_quota
+from ..models.errors import ModelQuotaExhausted
 
 
 class ConfiguredModel:
@@ -32,6 +35,7 @@ class ConfiguredModel:
         network_failed = False
         try:
             with httpx.Client(timeout=httpx.Timeout(240, connect=20), follow_redirects=False) as client:
+                before_provider_request()
                 response = client.post(self.base + "/messages", headers=headers, json=body)
         except httpx.HTTPError:
             network_failed = True
@@ -42,6 +46,14 @@ class ConfiguredModel:
                                    reason=ModelFailureReason.NETWORK, latency_seconds=time.monotonic() - started)
         status = response.status_code
         if status != 200:
+            try:
+                quota = permission_quota(response.json()) if status == 403 else None
+            except ValueError:
+                quota = None
+            if quota:
+                subtype, public = quota
+                raise ModelQuotaExhausted(status=status, subtype=subtype,
+                                         error_type='permission_error', provider_message=public)
             raise ModelUnavailable(f"模型服务返回 HTTP {status}；本轮结果尚未提交",
                                    reason=ModelFailureReason.HTTP, provider_http_status=status,
                                    latency_seconds=time.monotonic() - started)

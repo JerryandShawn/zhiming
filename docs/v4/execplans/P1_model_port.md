@@ -22,6 +22,10 @@
 - [x] (2026-10-17 23:28) 最终89项端口/契约/真实服务集成通过，模型包619/656=94.36%覆盖；v4最终339通过零跳过；旧553中1项PATH问题补齐后恢复3项均通过；v1脚本80/80与self-test48/48。
 - [x] (2026-10-17) 独立复核六项边界缺陷均修复并复现通过；草稿PR3此前代码头c65f597的完整CI已绿，最终增量另取CI结果。
 - [ ] 有效c2能力基线、20条原P0全文与人工标签、一致率、真实端口子集比较、stage验收未完成；夜间不补跑。
+- [x] (2026-10-18 / 14A、15) 严格识别 HTTP403 + permission_error + usage limit，细分 quota_5h/quota_weekly；保留原429/503边界，其他403仍权限失败。公开诊断只保留已审计的供应商提示句，不采集任意响应正文。
+- [x] (2026-10-18 / 14A、15) 新增共享会员调用账本：实际HTTP发送前预留、目标/评审/探针合计滚动5小时80次、每批≤10与跨批20分钟、首次5小时额度恢复后仅续一次、weekly全局停止；Mock HTTP与账本验证99项及旧诊断16个subtest通过。
+- [x] (2026-10-18 / 14A、15) core_test_main隔离PG新403额度异常、旧端口、LangGraph上下文传递实际POST计数与旧诊断回归8项及3个subtest通过；现代改动11文件Ruff/format120通过；未发送真实调用。
+- [ ] (2026-10-18 / 14A、15) runner v2.1完整接线与组合回归，真实基线仍未运行。
 
 ## Surprises & Discoveries
 
@@ -37,6 +41,8 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 
 唯一c2尝试在T05返回HTTP403，原因未确认，不能断定额度或排除额度；已停止全部真实调用。60条记录中36条适用尝试（含停止项）、24条N/A，仍有8条适用项未执行；混入基础设施失败的部分分数不作为模型能力基线。离线校准选择修正为20条实际存在P0预览的ID，七类齐全；原执行导出的9条完整新c2合成回答另存，不伪装成原P0全文。
 
+2026-10-18 / 14A：旧诊断中抽取的公开格式为“You've reached your 5-hour usage limit.”与“You've reached your weekly (7-day) usage limit.”，只用这两句建立合成JSON夹具，不复制原诊断的其他字段。HTTP403必须同时有可解析的error.type=permission_error与usage limit提示；raw403纯文本不是额度证据。只截任意响应前240字仍会泄漏供应商回显的用户正文，因此诊断只提取已审计公共句，长度≤240。实际会员计数使用独立物理Clock；场景的FrozenClock不能倒退会员窗口。
+
 ## Decision Log
 
 - 2026-10-17 / Codex：所有待用户/大脑事项写早上汇总，夜间不等待；来自用户明确指令。
@@ -45,10 +51,16 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 - 2026-10-17 / Codex：每处自然语言 must_include*/must_not_include 均见 `eval/c2/contract-v2-assertion-audit.md`。自然语义改为固定证据评审；F01/F02/F04/P05 涉及删除/锁屏隐私的禁提词仍按字面硬检查，因为否定提及也泄露。数据库/回执/工具/问题数/计算金标不改。需要大脑验收此 c2 范围，不与 v1 作差。
 - 2026-10-17 / Codex：c2 基线使用未改的 ConfiguredModel 测 v3，避免把端口改动混入历史能力基线。夜间不另发端口实测子集，5个百分点兼容比较明确留待大脑授权。
 - 2026-10-17 / Codex：新增额度集成测试起初通过 V3Target 时得到预期的评测控制信号 ProviderStopped，故将运行时验收直接驱动真实 service（仅替换 HTTP），而不是修改旧配额断言。该测试随后发现并修复异常重建兼容问题。未删除或削弱旧测试。
+- 2026-10-18 / Codex / 14A：旧test_protocols中(403,"usage limit")夹具过宽，按大脑明确的新三条件改成permission_error公开JSON提示；保留“一次HTTP、无重试”的原断言，新增缺type/错误type/原始文本403反例。普通旧适配器非quota行为、JSON结果契约与业务修复预算保持原样。
+- 2026-10-18 / Codex / 15：使用持久化共享账本防止通过新run_id或角色绕过80次；HTTP边界ContextVar钩子覆盖旧POST及新端口内部重试/降级，默认未绑定时不改变生产。quota_5h首停写stop+5h预计恢复，resume_once限一次，第二次无自动恢复时间；weekly跨所有运行保持停止。原夜间quota-stop不删除，今日用独立运行作用域与同一会员共享账本。
 
 ## Outcomes & Retrospective
 
 夜间实现与本地验证完成，阶段验收仍未完成。端口/注册表/取消/错误分类/工具循环、契约v2基础设施与防额度重试均有替身及真实隔离PG证据；89定向与339全量通过、覆盖率94.36%。真实测量未形成有效c2基线，人工校准和供应商端口兼容比较留给大脑安排。服务器仅形成stage计划，未访问。最终增量保持草稿PR，CI结果由早间汇总绑定具体头提交。
+
+2026-10-18 / 14A、15增补：严格quota分类与会员实际HTTP账本已实现，目标/评审/探针共享限制、批次间隔与一次恢复均有离线证据。此结果不等于今日E1已经运行，也不构成v2.1基线或新端口真实能力分数。没有改动或删除历史夜间停止记录，没有访问stage或生产。
+
+14A验证命令为 pytest tests/v4/models/test_member_quota_errors.py tests/v4/models/test_member_budget.py tests/v4/models/test_protocols.py tests/v4/models/test_stream_safety.py tests/v4/models/test_schema_registry.py tests/v4/models/test_probe_guard.py tests/test_core_model_diagnostics.py::ConfiguredModelDiagnosticsTests -q：99 passed、16 subtests，9.35秒。CORE_TEST_DSN指定loopback core_test_main后，pytest tests/v4/models/test_member_quota_pg.py tests/v4/models/test_v3_port_integration.py tests/test_core_model_diagnostics.py::FailureDiagnosticPostgresTests -q：8 passed、3 subtests，2.56秒；其中完整LangGraph业务一轮的两次Mock POST恰计target=2。首次带PG批次因PG未运行而中止，不作为通过证据；恢复本机隔离PG后仅重跑上述真实PG范围。
 
 ## Plan of Work
 
@@ -87,3 +99,5 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 - 2026-10-17 创建：冻结执行边界、拆分里程碑，记录全文校准来源缺失。
 - 2026-10-17 23:00 更新：记录38次探针、冻结源、集成发现/修复、本地回归与PR3状态。
 - 2026-10-17 23:28 更新：记录403停止与142次调用、最终89/339回归和94.36%覆盖、独立审计修复、校准来源修正与明确未验收项。
+- 2026-10-18 更新14A、15：记录严格403分类、公共诊断白名单、HTTP实际调用共享账本、批次/恢复规则与原403夹具修订原因；待PG和runner组合检查，不发送真实调用。
+- 2026-10-18 更新14A验证：99项离线与8项真实core_test_main回归通过，补充失败后重跑范围与LangGraph实际POST钩子传播证据，完整E1及合并仍由主线处理。

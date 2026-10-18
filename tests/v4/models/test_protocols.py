@@ -153,7 +153,17 @@ def test_http_status_retry_budget(status: Any, error: Any, retries: Any) -> None
     assert caught.value.__cause__ is None
 
 
-@pytest.mark.parametrize("status,body", [(429, "rate"), (403, "usage limit"), (500, "quota")])
+@pytest.mark.parametrize(
+    "status,body",
+    [
+        (429, "rate"),
+        (
+            403,
+            json.dumps({"error": {"type": "permission_error", "message": "You've reached your 5-hour usage limit."}}),
+        ),
+        (500, "quota"),
+    ],
+)
 def test_membership_quota_never_retry(status: Any, body: Any) -> None:
     model = adapter(lambda _: httpx.Response(status, text=body), settings={"membership": True})
     with pytest.raises(ModelQuotaExhausted):
