@@ -3,7 +3,7 @@
 import hashlib
 import json
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 LABEL_FIELDS = frozenset({"space_id", "topic_id", "space_secondary", "route_source", "route_confidence"})
@@ -39,7 +39,7 @@ def digest(value: Any) -> str:
 @dataclass(frozen=True)
 class FieldValue:
     present: bool
-    encoded: str = "null"
+    encoded: str = field(default="null", repr=False)
 
     @classmethod
     def read(cls, document: dict[str, Any], key: str) -> "FieldValue":

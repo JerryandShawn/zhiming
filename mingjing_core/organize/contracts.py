@@ -60,7 +60,7 @@ class MessageLabel:
 class Topic:
     id: str
     space_id: str
-    title: str
+    title: str = field(repr=False)
     segment_ids: tuple[str, ...]
     message_ids: tuple[str, ...]
     start: int
