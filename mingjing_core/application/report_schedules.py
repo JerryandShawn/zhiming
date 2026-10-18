@@ -4,6 +4,7 @@ from __future__ import annotations
 from datetime import date, datetime
 
 from psycopg import sql
+from mingjing_core.timekit.clock import get_clock
 from pydantic import ValidationError
 
 from mingjing_core.domain.consultation import MissingInput
@@ -96,7 +97,7 @@ class ReportScheduleService:
     def get(self, owner, kind, *, now: datetime | None = None):
         with self.repo.transaction(owner):
             policy = self.effective(owner,kind)
-            current = now or datetime.now(SHANGHAI)
+            current = now or get_clock().now()
             if current.tzinfo is None:raise ValueError('预览时刻需要时区')
             current = current.astimezone(SHANGHAI)
             deliveries = self._deliveries(owner,kind)
@@ -166,7 +167,7 @@ class ReportScheduleService:
             rows = self._deliveries(owner,command.kind)
             if any(row['status']=='sending' for row in rows):
                 raise LeaseConflict('当前报告已开始投递，无法保证撤回；请等待状态确认后修改')
-            changed_at = now or datetime.now(SHANGHAI)
+            changed_at = now or get_clock().now()
             if changed_at.tzinfo is None:raise MissingInput('报告生效时刻需要时区')
             entity = self.repo.put(owner,'report_schedule',command.kind,
                                    dict(updated,effective_after=changed_at.astimezone(SHANGHAI).isoformat()),

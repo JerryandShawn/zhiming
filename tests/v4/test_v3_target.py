@@ -127,9 +127,14 @@ def test_brief_uses_one_real_report_source_without_inventing_assistant_history(t
     result = instance.send({"user": "生成今天晨报", "kind": "brief", "channel": "web", "_index": 1})
     assert result.error is None
     messages = instance.inspect_db()["message"]
-    assert len(messages) == 1
-    assert messages[0]["channel"] == "scheduled_report"
-    assert messages[0]["policy"]["origin"] == "system"
+    source = [row for row in messages if row["role"] == "user"]
+    replies = [row for row in messages if row["role"] == "assistant"]
+    assert len(source) == len(replies) == 1
+    assert source[0]["channel"] == "scheduled_report"
+    assert source[0]["policy"]["origin"] == "system"
+    assert replies[0]["kind"] == "brief"
+    assert replies[0]["content"] == result.text
+    assert replies[0]["policy"]["origin"] == "system"
     history = provider.requests[0]["payload"]["reference_data"]["recent_history"]
     assert not any(row["role"] == "assistant" for row in history)
 

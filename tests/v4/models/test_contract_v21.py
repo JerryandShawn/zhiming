@@ -226,6 +226,7 @@ def test_freeze_rejects_untracked_execution_files(tmp_path: Path, monkeypatch: A
 
     monkeypatch.delenv("MODELS_CONFIG", raising=False)
     monkeypatch.delenv("MINGJING_MODEL_PORT", raising=False)
+    monkeypatch.setattr(source_v21, "ROOT", tmp_path)
     monkeypatch.setattr(source_v21.subprocess, "run", git)
     with pytest.raises(SystemExit, match="Commit"):
         source_v21.freeze_source(tmp_path / "freeze.json")

@@ -11,6 +11,7 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 from psycopg import sql
 from psycopg.conninfo import make_conninfo
+from psycopg.types.json import Jsonb
 from mingjing_core.adapters.web import create_app
 from tests import test_core_runtime as helpers
 
@@ -48,6 +49,10 @@ class CoreHistoryTests(unittest.TestCase):
             self.assertEqual(run['status'],'succeeded')
             connection.execute(sql.SQL('UPDATE {} SET updated_at=%s WHERE owner=%s AND id=%s').format(self.repo.table('core_runs')),
                                (datetime.fromisoformat(answer_at),owner,run['id']))
+            # P2 persists the actual assistant source. Fixture time must update
+            # that source too; the API no longer invents its time from a run.
+            connection.execute(sql.SQL("UPDATE {} SET data=data||%s WHERE owner=%s AND kind='message' AND data->>'run_id'=%s").format(self.repo.table('core_entities')),
+                               (Jsonb({'at':answer_at,'at_ms':int(datetime.fromisoformat(answer_at).timestamp()*1000)}),owner,run['id']))
         return source
 
     @staticmethod

@@ -11,6 +11,7 @@ from .channels.reports import CoreReportAdapter,SHANGHAI
 from .channels.delivery import CoreDeliveryWorker
 from mingjing_core.application.report_schedules import ReportScheduleService
 from mingjing_core.domain.report_schedules import schedule_on_day
+from mingjing_core.timekit.clock import get_clock
 
 
 class CoreReportWorker:
@@ -49,7 +50,7 @@ class CoreReportWorker:
             self.repo.update(owner,'request',state['id'],{'generation_status':'complete' if success else 'failed'},expected_revision=latest['revision'])
 
     async def tick(self,owner,now=None):
-        now=now or datetime.now(SHANGHAI)
+        now=now or get_clock().now().astimezone(SHANGHAI)
         if now.tzinfo is None:raise ValueError('worker时刻须含时区')
         config=self.repo.assert_scope(owner)['settings'].get('report_pipeline',{})
         schedules=ReportScheduleService(self.repo)
