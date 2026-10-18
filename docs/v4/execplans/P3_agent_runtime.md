@@ -320,7 +320,7 @@ Journal恢复需有效当前lease，旧worker即使仍有内存结果也不能�
 
 正式仓库产物为 `docs/v4/execplans/P3_agent_runtime.md`、`docs/v4/evidence/P3/`、`docs/v4/release/P3_stage_plan.md`，以及阶段回执。证据目录按M1–M6分组保存测试命令/输出、运行身份/提示词hash、PG安全统计、脚本JSON/MD、取消延迟与DOM截图；原模型全文仅限明确合成评测证据，不放操作日志。真实调用只引用共享账本的安全计数和状态。
 
-当前草案路径是 `task/work/daytime/P3_agent_runtime.draft.md`，M3a具体设计见同目录`P3_context_guard.slice.md`，都没有代码、schema或测试结果。把草案落盘正式分支时，root补基底/开始时间并重新验证设计副本字节；不把本文中“预期”转换为“已通过”。
+历史草案保留在 `task/work/daytime/P3_agent_runtime.draft.md`，M3a设计草案见同目录`P3_context_guard.slice.md`。正式计划现已落在本分支；M3a离线首切片的9个代码/测试文件、63项目标测试、678项全v4回归及真实PG300轮/万条消息证据已提交，见本节正式证据目录和Progress。新增schema为0；实际token计量与完整P3里程碑仍未完成，不将历史草案或预期当作验收结果。
 
 需要大脑确认但不阻止M1的事项：无痕线程中用户显式要求持久提醒时如何与“不写记忆”兼容；首版高相似塔罗问题规则若边界测试暴露误伤，列具体样例再裁定；consult_specialist选择P3末尾或P8须在正式进度明确。默认先执行不依赖这些决定的M1/U4：无痕不生成长期实体、塔罗完全相同问题护栏先闭环，复杂相似度不冒充完成。
 
