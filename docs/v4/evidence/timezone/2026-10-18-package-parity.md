@@ -29,6 +29,8 @@
 
 ## 未验证与发布边界
 
-本机通过不代表远端双系统CI已通过；Actions结果单独记录。本检查覆盖锁版本、包数据和ZoneInfo行为，不代表全套Charts依赖/算法在两系统一致。普通Linux进程仍可能优先系统TZPATH；本轮未改默认运行时或服务器。完整算法/实际时间口径仍归命理线。
+远端提交`90849c60cf6772c1492df9465c0de745d857f54d`的[双系统CI 39119854074](https://github.com/JerryandShawn/zhiming/actions/runs/39119854074)已success：Windows job117653052902、Ubuntu job117653053156均完成哈希安装、5项回归、fresh-process摘要核验与产物上传。后续Journal/文档提交不改变这五个锁/工具/测试/workflow文件的验证字节。
+
+本检查覆盖锁版本、包数据和ZoneInfo行为，不代表全套Charts依赖/算法在两系统一致。普通Linux进程仍可能优先系统TZPATH；本轮未改默认运行时或服务器。完整算法/实际时间口径仍归命理线。
 
 B1固定候选b9a89b6不含本次修复，不能静默补入旧包。由大脑裁定单列后续或批准新候选重跑CI/stage；当前不改候选、不执行部署。
