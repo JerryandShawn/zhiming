@@ -11,6 +11,7 @@ from mingjing_core.application.memory import MemoryService
 from mingjing_core.domain.contracts import ScopeError
 from mingjing_core.memory.projections import redact_ranges
 from mingjing_core.memory.tokenize import tokenize
+from mingjing_core.repositories.dependencies import entity_dependency
 
 from .context_entities import read_entities
 from .context_types import BudgetPolicy, ContextInputError, SourceSnapshot
@@ -251,7 +252,7 @@ class BoundedSources:
             versions = {"message:" + row["id"]: row["revision"] for row in self.cache.values()}
             versions.update({"fact:" + fact["id"]: fact["revision"] for fact in facts})
             versions.update(
-                {kind + ":" + row["id"]: row["revision"] for kind, rows in entities.items() for row in rows}
+                {entity_dependency(kind, row["id"]): row["revision"] for kind, rows in entities.items() for row in rows}
             )
             counts = {
                 "fact_catalog": fact_count,
