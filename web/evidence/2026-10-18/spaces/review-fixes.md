@@ -1,6 +1,6 @@
 # P10 复核修正阶段回执
 
-- 分支：`v4/p10-frontend`；PR：[草稿 #6](https://github.com/JerryandShawn/zhiming/pull/6)。发布记录将在验证后绑定代码提交。
+- 分支：`v4/p10-frontend`；PR：[草稿 #6](https://github.com/JerryandShawn/zhiming/pull/6)。代码验收头 `60516e16f1f47d99c879f056edb7307064fcbf74`；本页与日报的文档补充提交在其后，最终远端头以 PR #6 为准。
 - ExecPlan：[ExecPlan_spaces.md](../../../ExecPlan_spaces.md)；原 M4 与功能区回执保留，本页只记录大脑预览通过后的两项修正。
 
 ## 完成了什么
@@ -44,7 +44,7 @@
 
 ## 数据库迁移与回滚方式
 
-无迁移、无后端或真实资料写入。模拟刷新即恢复；回退本轮修正代码提交并重新构建即可。只启动本机 4173 构建预览，未启动 8002 或测试 PG，也未接触 stage/生产。
+无迁移、无后端或真实资料写入。模拟刷新即恢复；回退本轮修正代码提交 `git revert 60516e16f1f47d99c879f056edb7307064fcbf74` 并重新构建即可。只启动本机 4173 构建预览，未启动 8002 或测试 PG，也未接触 stage/生产。
 
 ## 偏离设计的地方
 
@@ -61,3 +61,20 @@
 ## 建议后续
 
 主线提供真实 API 和冻结的 SSE v2 协议后继续联调，并修复已记录的取消 422；按既有边界独立安排 stage、飞书真机及完整 P10 验收。
+
+
+## 发布与历史对齐记录
+
+- 发布方式：普通推送 `HEAD:refs/heads/v4/p10-frontend`，保留 PR #6 的草稿/open、base=`v4/main`；不强推，不合并。远程 CI 由推送触发，结果另在 PR 报告；本地通过不代表远程 CI 已绿。
+- 远端原头 `8b6545973fd25bd3ab4f6b12ab9b8bdf6156a707` 与本机旧交接头 `f65d3baed63df8149f0f54aff5e0555072bebeed` 的树同为 `327b6f5742292d4ae6ab633f89cdb00d7939c639`。在保留本机备份引用 `codex/p10-before-publish-20261018` 后，将交接后的五个前端提交重放到远端原头。未改远端已有提交。
+- 重放前后最终树均为 `a0927c5b3239e1174cf35fe3fdb580e0ae38867e`，`git diff --exit-code codex/p10-before-publish-20261018 HEAD` 为 0（文档补充前）；重放后再验证全部源码/构建/PNG 哈希仍相同。随后仅补本页、ExecPlan、机器发布记录和日报。
+
+| 历史本机 SHA | 对齐后的 SHA | 内容 |
+| --- | --- | --- |
+| `63800ca2f47bac9890543fff66ce976e938d35ae` | `ebeccba71d7b5d189997a4d9561a23cb3bd99453` | M4 / SSE 客户端 |
+| `241e87409987c91148adde639ec365c49a53fe5a` | `1d689dd731c5968e36dc904b7a7fd583aa42d507` | M4 回执 |
+| `e89a0e4a090dca74b90726c11d304766e21044d9` | `11f9eb8c22374d4b1e26c5c2851660babb82bbf7` | 功能区原型 |
+| `3a86352d599cb0844cc880e5c62365fbf16c63b4` | `bcc6cfd4b50344f42c5343046832a1eaf6a0784d` | 功能区回执 |
+| `8f883ce65fee10cfc2680ad6a772ed73509fbb03` | `60516e16f1f47d99c879f056edb7307064fcbf74` | 本次两项修正与截图 |
+
+原回执中的本机 SHA 保留为当时观察记录；现在阅读代码请使用上表右栏或 PR 当前头。无待决问题，后端阻塞保持原记录。
