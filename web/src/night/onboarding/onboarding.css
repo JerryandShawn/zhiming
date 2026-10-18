@@ -1,0 +1,56 @@
+.onboarding-controls {
+  flex: none;
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+}
+.night-onboarding .chat-inner {
+  padding-top: var(--s-4);
+}
+.onboarding-question {
+  padding: var(--s-4);
+  background: var(--surface);
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-3);
+}
+.onboarding-question h2 {
+  font-family: var(--font-kai);
+  font-size: var(--t-voice);
+  margin-bottom: var(--s-2);
+}
+.onboarding-question > .stack {
+  margin-top: var(--s-3);
+}
+.onboarding-composer {
+  margin-top: var(--s-4);
+}
+.onboarding-composer .textarea {
+  min-height: calc(var(--s-8) * 2);
+}
+.onboarding-paused {
+  padding: var(--s-4);
+  background: var(--paper-2);
+  border-radius: var(--r-2);
+}
+.night-onboarding [hidden] {
+  display: none;
+}
+.onboarding-birth-form details {
+  border-block: var(--border) solid var(--line);
+  padding-block: var(--s-2);
+}
+.onboarding-birth-form summary {
+  min-height: var(--control-height);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+@media (min-width: 64rem) {
+  .onboarding-birth-sheet {
+    max-width: var(--dialog-width);
+    left: 50%;
+    bottom: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--r-3);
+  }
+}

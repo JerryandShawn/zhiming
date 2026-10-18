@@ -38,20 +38,20 @@ export default function DateField({
       <Popover.Root open={open} onOpenChange={setOpen}>
         <Popover.Trigger asChild>
           <Button disabled={disabled} aria-label={`选择${label}`}>
-            选择日期
+            {`选择${label}`}
           </Button>
         </Popover.Trigger>
         <Popover.Portal>
           <Popover.Content className="popover calendar-popover" role="dialog" aria-label={`选择${label}`}>
             <div className="row between">
               <Button aria-label="上个月" onClick={() => move(-1)}>
-                上一月
+                上个月
               </Button>
               <h3>
                 {year}年{number}月
               </h3>
               <Button aria-label="下个月" onClick={() => move(1)}>
-                下一月
+                下个月
               </Button>
             </div>
             <div className="calendar-grid">

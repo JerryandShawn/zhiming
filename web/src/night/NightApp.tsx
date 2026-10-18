@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Layout } from '../Layout';
 import { Skeleton } from '../components/ui/Overlays';
 import { createNightPort } from './port';
@@ -9,6 +9,8 @@ import { useAboutMeReceipts } from './useAboutMeReceipts';
 import { usePrivacySession, PrivateChat } from './privacy';
 import { Button } from '../components/ui/Controls';
 import { EyeOff } from 'lucide-react';
+import { createBirthPort } from './onboarding/birth';
+import { createOnboardingController } from './onboarding/controller';
 import './night.css';
 
 const otherPages = {
@@ -20,13 +22,21 @@ const otherPages = {
   settings: lazy(() => import('../pages/Settings')),
 };
 const AboutMePage = lazy(() => import('./me/AboutMePage'));
+const OnboardingChat = lazy(() => import('./onboarding/OnboardingChat'));
 
 export default function NightApp({ page }: { page: string }) {
   const [port] = useState(createNightPort);
   const receiptRegistry = useRef(createMemoryReceiptRegistry()).current;
   useAboutMeReceipts(port.aboutMe, receiptRegistry);
   const privacy = usePrivacySession();
-  const chat = useNormalConversation(port, page === 'chat' && !privacy.active);
+  const [birth] = useState(createBirthPort);
+  const [guide] = useState(() => createOnboardingController({ aboutMe: port.aboutMe, birth }));
+  const guideState = useSyncExternalStore(guide.subscribe, guide.getSnapshot);
+  const [showGuide, setShowGuide] = useState(false);
+  const chat = useNormalConversation(port, page === 'chat' && !privacy.active && !showGuide);
+  useEffect(() => {
+    if (page !== 'chat') guide.pause();
+  }, [page, guide]);
   const previousMode = useRef(privacy.active);
   const focusRequested = useRef(false);
   useEffect(() => {
@@ -43,9 +53,17 @@ export default function NightApp({ page }: { page: string }) {
     return () => cancelAnimationFrame(frame);
   }, [page, privacy.active, chat.busy]);
   function setPrivacy(active: boolean) {
-    if (active) chat.pause();
+    if (active) {
+      chat.pause();
+      guide.pause();
+    }
     privacy.setActive(active);
     if (active && page !== 'chat') location.hash = '/chat';
+  }
+  function startGuide(mode: 'new' | 'known') {
+    chat.pause();
+    guide.start(mode);
+    setShowGuide(true);
   }
   const Other = otherPages[page as keyof typeof otherPages] || otherPages.today;
   return (
@@ -82,8 +100,36 @@ export default function NightApp({ page }: { page: string }) {
         {page === 'chat' ? (
           privacy.active ? (
             <PrivateChat privacy={privacy} />
+          ) : showGuide ? (
+            <OnboardingChat
+              controller={guide}
+              birth={birth}
+              onLeave={() => {
+                guide.pause();
+                setShowGuide(false);
+              }}
+            />
           ) : (
-            <ChatPreview port={port} receiptRegistry={receiptRegistry} chat={chat} onPrivacyChange={setPrivacy} />
+            <ChatPreview
+              port={port}
+              receiptRegistry={receiptRegistry}
+              chat={chat}
+              onPrivacyChange={setPrivacy}
+              guideControls={
+                <div className="row wrap" role="group" aria-label="初次相识演示入口">
+                  {guideState.status === 'idle' ? (
+                    <>
+                      <Button onClick={() => startGuide('new')}>初次相识演示</Button>
+                      <Button onClick={() => startGuide('known')}>已有资料继续演示</Button>
+                    </>
+                  ) : (
+                    <Button onClick={() => setShowGuide(true)}>
+                      {guideState.status === 'complete' ? '回看相识小结' : '继续初次相识'}
+                    </Button>
+                  )}
+                </div>
+              }
+            />
           )
         ) : page === 'me' ? (
           <AboutMePage port={port.aboutMe} />

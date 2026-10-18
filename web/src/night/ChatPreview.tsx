@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Answer } from '../chat/Answers';
 import { LiveComposer } from '../chat/Composer';
 import type { MemoryReceiptRegistry } from '../chat/interactions/memoryProjection';
@@ -12,11 +13,13 @@ export default function ChatPreview({
   receiptRegistry,
   chat,
   onPrivacyChange,
+  guideControls,
 }: {
   port: NightPort;
   receiptRegistry: MemoryReceiptRegistry;
   chat: NormalConversation;
   onPrivacyChange: (active: boolean) => void;
+  guideControls?: ReactNode;
 }) {
   const { state, scenario, round, review, draft, setDraft, images, setImages, answered, reply, busy, answer, replay } =
     chat;
@@ -24,6 +27,7 @@ export default function ChatPreview({
     <div className="page chat-page night-chat" data-page="chat" data-scenario={scenario} data-complete={state.complete}>
       <h1 className="sr-only">和明镜对话 · 本地交互预览</h1>
       <div className="night-controls row wrap" role="group" aria-label="演示片段">
+        {guideControls}
         <PrivacyToggle active={false} onChange={onPrivacyChange} />
         <Button onClick={() => replay('cards')}>重放对话</Button>
         <Button onClick={() => replay('review')}>查看修订过程</Button>
