@@ -1,6 +1,8 @@
 import { ChevronRight } from 'lucide-react';
 import { Seal, Tag, Disclosure } from '../components/ui/Controls';
-import { MiniCalendar, NowCard } from '../components/Calendar';
+import { NowCard } from '../components/Calendar';
+import { TodayCalendar } from '../calendar/TodayCalendar';
+import { exampleToday, todayExampleCalendar } from '../calendar/examples';
 
 export default function Today() {
   return (
@@ -49,7 +51,7 @@ export default function Today() {
         </div>
         <aside className="page-aside today-aside">
           <NowCard />
-          <MiniCalendar />
+          <TodayCalendar today={exampleToday} source={todayExampleCalendar} />
           <section className="section">
             <Disclosure title="黄历" count="宜 纳采 会亲友 沐浴">
               <p className="small-text">黄历仅作传统文化参考，现实安排优先。</p>

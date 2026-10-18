@@ -99,7 +99,7 @@
   background: transparent;
   color: var(--ink);
   line-height: var(--l-body-sm);
-  padding: var(--s-1) 0;
+  padding: var(--s-1) 0 var(--s-3);
 }
 .calendar-day.today,
 .calendar-day.selected {
@@ -133,20 +133,48 @@ button.calendar-day:hover {
 }
 .calendar-event {
   display: block;
-  margin: auto;
   width: var(--s-1);
   height: var(--s-1);
   border-radius: var(--r-pill);
-  background: var(--gold-ink);
+  background: var(--cinnabar);
+}
+.calendar-dots {
+  position: absolute;
+  bottom: var(--s-1);
+  inset-inline: 0;
+  display: flex;
+  justify-content: center;
+  gap: var(--s-1);
 }
 .calendar-term {
-  position: absolute;
-  bottom: 0;
-  left: calc(50% - var(--s-1) / 2);
   width: var(--s-1);
   height: var(--s-1);
   border-radius: var(--r-pill);
   background: var(--gold);
+}
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+}
+.calendar-legend > span {
+  white-space: nowrap;
+}
+.calendar-legend-dot {
+  display: inline-block;
+  width: var(--s-1);
+  height: var(--s-1);
+  border-radius: var(--r-pill);
+  vertical-align: middle;
+}
+.calendar-legend-dot.term {
+  background: var(--gold);
+}
+.calendar-legend-dot.event {
+  background: var(--cinnabar);
+}
+.calendar-selection {
+  margin-block: var(--s-4);
 }
 .today-action {
   margin-top: var(--s-7);

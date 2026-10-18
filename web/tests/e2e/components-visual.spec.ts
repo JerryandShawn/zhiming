@@ -40,6 +40,8 @@ async function sourceHashes(directory: string): Promise<Record<string, string>> 
 }
 async function prepareState(page: Page, item: (typeof states)[number]) {
   await openDemo(page, item.route);
+  if (item.stage === 'calendar' && (page.viewportSize()?.width ?? 0) < 1024)
+    await page.getByRole('button', { name: '查看本月日历', exact: true }).click();
   if (item.stage === 'tarot' && item.name !== 'tarot-picker') {
     await page.getByRole('button', { name: '全部揭开', exact: true }).click();
     await expect(page.locator('.tarot-flip-front')).toHaveCount(

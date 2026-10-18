@@ -2,6 +2,7 @@ import { useResource } from '../api/useResource';
 import { Seal } from '../components/ui/Controls';
 import { localDate, record, ResourceState, text } from './common';
 import type { Case, History } from './types';
+import { TodayCalendar } from '../calendar/TodayCalendar';
 
 export default function Today() {
   const date = localDate();
@@ -72,6 +73,7 @@ export default function Today() {
           </section>
         </div>
         <aside className="page-aside today-aside">
+          <TodayCalendar today={date} />
           <section className="section">
             <h2>进行中的事</h2>
             <ResourceState
