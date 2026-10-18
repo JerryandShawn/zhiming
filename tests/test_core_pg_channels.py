@@ -89,7 +89,10 @@ class CorePGChannels(unittest.TestCase):
         run=self.repo.fetch_run('alice',result['meta']['core_run']['run_id'])
         source=self.service.memory.get_source('alice',run['request']['source_message_id'])
         self.assertEqual(source['channel'],'feishu');self.assertEqual(source['source_id'],'alice-now:user')
-        self.assertEqual(len(self.repo.list('alice','message')),2)
+        messages=self.repo.list('alice','message')
+        self.assertEqual(len(messages),3)
+        self.assertEqual(len([m for m in messages if m['role']=='user']),2)
+        self.assertEqual([m['content'] for m in messages if m['role']=='assistant'],[result['answer']])
         replay=asyncio.run(self.hermes.consult(channel='feishu',external_id='ou_alice',message_id='alice-now',depth='fast'))
         self.assertEqual(replay,result);self.assertEqual(len(self.model.requests),2)
 
