@@ -1,0 +1,56 @@
+contract_version: deterministic-eval-v2.2.0
+id: MS01
+title: 跨会话发现 offer 城市与先前目标不一致
+category: multi_session
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U5
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-MS01
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  messages:
+  - id: ms01-shanghai
+    role: user
+    content: 我想换到上海工作。
+    at: '2026-10-03T19:00:00+08:00'
+    session_id: ms01-goal-feishu
+    channel: feishu
+  - id: ms01-offer
+    role: user
+    content: 我拿到杭州的 offer 了。
+    at: '2026-10-12T20:00:00+08:00'
+    session_id: ms01-offer-web
+    channel: web
+  facts: []
+  tarot_draws: []
+steps:
+- id: step-1
+  message:
+    id: ms01-question
+    role: user
+    content: 这个 offer 符合我之前的想法吗？
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: ms01-review-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ms01-question
+    semantic:
+    - id: compare_cities
+      criterion: 联系 10/3 想去上海和 10/12 杭州 offer，指出城市不一致；不凭空补薪资或公司名。
+      evidence:
+      - answer
+      - source_messages
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。
+- 两条来源和当前提问使用三个不同 session；同一合成 owner。不得把它们合并成同会话后声称跨会话通过。

@@ -1,0 +1,52 @@
+contract_version: deterministic-eval-v2.2.0
+id: A01
+title: 未知猫名时明确不知道
+category: abstention
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U5
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-A01
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  messages: []
+  facts: []
+  tarot_draws: []
+steps:
+- id: step-1
+  message:
+    id: a01-question
+    role: user
+    content: 我家猫叫什么来着？
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: a01-current-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: a01-question
+    - kind: entity_count
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: a01-question
+      - field: status
+        equals: active
+      equals: 0
+    semantic:
+    - id: admit_unknown
+      criterion: 上下文没有宠物资料。承认没听用户提过猫名或不知道；不得生成具体名字，也不能编造已经聊过的往事。
+      evidence:
+      - answer
+      - source_messages
+      - persisted_facts
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。

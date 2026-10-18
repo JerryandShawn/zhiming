@@ -1,0 +1,56 @@
+contract_version: deterministic-eval-v2.2.0
+id: MS02
+title: 跨会话结合买车意向与三十万预算
+category: multi_session
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U5
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-MS02
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  messages:
+  - id: ms02-budget
+    role: user
+    content: 我的购车预算是 30 万。
+    at: '2026-10-03T19:00:00+08:00'
+    session_id: ms02-budget-feishu
+    channel: feishu
+  - id: ms02-buy
+    role: user
+    content: 我最近想买车。
+    at: '2026-10-12T20:00:00+08:00'
+    session_id: ms02-buy-web
+    channel: web
+  facts: []
+  tarot_draws: []
+steps:
+- id: step-1
+  message:
+    id: ms02-question
+    role: user
+    content: 我想买车，你觉得应该怎么选？
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: ms02-review-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ms02-question
+    semantic:
+    - id: use_budget
+      criterion: 结合此前 30 万预算与买车意向，给预算范围内的筛选框架；不再问完全未知的预算或编造车型实时报价。
+      evidence:
+      - answer
+      - source_messages
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。
+- 预算来源保留为合成原消息；不通过伪造已获敏感记忆授权来自动保存金额。

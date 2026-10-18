@@ -1,0 +1,239 @@
+{
+  "artifact_kind": "future_contract_data_validation_only",
+  "contract_version": "deterministic-eval-v2.2.0",
+  "extension_only": true,
+  "parent_binding_status": "not_found_unbound",
+  "ready_for_live": false,
+  "json_schema_draft": "2020-12",
+  "schema_meta_validation": "passed",
+  "validation_provenance": {
+    "scope": "schema_and_data_definitions_only_not_p3_business_tests",
+    "external_helper": "task work/research_update/validate_v22_data.py",
+    "helper_sha256": "3b087f5f17b834e4ab6639e475ffaaf20a6982d8ea425d479d3a58321b210f5b",
+    "python": "3.11.16",
+    "jsonschema": "4.26.0",
+    "PyYAML": "6.0.3",
+    "source_sync_commit": "84a724b5eee178ac5e3722fed60dabc7d1a76cd4"
+  },
+  "scenario_schema_valid": 12,
+  "scenario_data_integrity_valid": 12,
+  "scenario_count": 12,
+  "step_count": 19,
+  "source_messages": 31,
+  "negative_data_checks": [
+    {
+      "case": "unknown_root_field",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "unknown_seed_field",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "unknown_message_field",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "legacy_id_in_extension",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "wrong_category",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "non_synthetic_owner_id",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "non_synthetic_marker",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "live_enabled_without_binding",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "wrong_contract_version",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "precomputed_seed_fact",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "timezone_missing",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "invalid_calendar_day",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "missing_semantic_criterion",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "unknown_assertion_kind",
+      "rejected": true,
+      "error_type": "ValidationError"
+    },
+    {
+      "case": "duplicate_message_id",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "forged_source_quote",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "changed_original_message_instant",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "wrong_absolute_date",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "collapsed_cross_session_sources",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "draw_created_before_insistence",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "missing_explicit_insistence",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "old_cards_not_protected",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "assistant_as_draw_source",
+      "rejected": true,
+      "error_type": "AssertionError"
+    },
+    {
+      "case": "wrong_owner_filter",
+      "rejected": true,
+      "error_type": "AssertionError"
+    }
+  ],
+  "utc_equivalent_instant_data_check": "passed",
+  "legacy_scenario_count": 80,
+  "legacy_source_sha256": "d54c6e31c10cfb9c2ba43a27d1d5f9a8a08614d79b0d890e22d8dfcf4f1e9506",
+  "legacy_git_base_source_sha256": "d54c6e31c10cfb9c2ba43a27d1d5f9a8a08614d79b0d890e22d8dfcf4f1e9506",
+  "legacy_execution_source_files_byte_equal": 72,
+  "legacy_baseline_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79",
+  "protected_paths_diff_since_source_sync": [],
+  "new_repository_python_files": [],
+  "data_file_encoding": "utf-8-lf",
+  "git_blob_byte_hashes_verified": 15,
+  "git_index_modified_by_validator": false,
+  "files": [
+    {
+      "path": "tools/eval_v22/README.md",
+      "sha256": "7fe5e4e22b52410182eaead744cf9280e1839d5493ec7e28b7d7886d0cb2bb06",
+      "git_blob_sha1": "ad356b6b6791e911164906d00075cdc775f4b282"
+    },
+    {
+      "path": "tools/eval_v22/contract.json",
+      "sha256": "cfeefbe30aca53a0ab54d9df5e2e9f71914ff0a271e0f4c1fcb1ae8b64af87a7",
+      "git_blob_sha1": "742b27fd7b49398b2ae09b5913e6549e6390c9bc"
+    },
+    {
+      "path": "tools/eval_v22/scenario.schema.json",
+      "sha256": "791359c58f38af9c0c9ac559ed6d4d1de136b2280644e51bbeb55313b8e67d2b",
+      "git_blob_sha1": "4abfcd83373047b6b2086f1537c78c9ae660a93f"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/A01.yaml",
+      "sha256": "9fba21ea2d47cf70a06675cc9b78f1bbf97089b41f3a63d32de20114de34583e",
+      "git_blob_sha1": "85b36aaa0ed49ca9ddeb7800ef38eb3ef30c855c"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/A02.yaml",
+      "sha256": "fdd12886fa9164d9a4ed5cd9d103e326a53a177e2eb6377e3cb4b4e5a8b8b8a2",
+      "git_blob_sha1": "b51c8c614e8f4d00be81a65c9aa077448ca83a85"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/A03.yaml",
+      "sha256": "92a23112c5d93b9874d78a12d44a56f76b4e9d6d5318afd53747efb18bb445fd",
+      "git_blob_sha1": "a89cdce12638d118582b32fa1cfdcd112ef77885"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/AX01.yaml",
+      "sha256": "498306028b5a1aa1eda3cdf62e4d3fed272804ee0c4e8b42dab492d6acea914b",
+      "git_blob_sha1": "a68d1db91dbbb60fc840c87c16ca7124fc93a4da"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/AX02.yaml",
+      "sha256": "2c80d9d6c84a442603e3d14b68a89854cf3a60df00dc432950441dac0382111d",
+      "git_blob_sha1": "d90df546e4cbfc352a897dfd73cd6476cac91c37"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/KU01.yaml",
+      "sha256": "9fd9b559fa5940b6453a2b5a4a42f0cf34057031d40e791614f4ee4445750af6",
+      "git_blob_sha1": "e580b4fbf078cc17c8d2096cfdd9bec4b7ce5685"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/KU02.yaml",
+      "sha256": "8f5f16ab19bf5742bd4ef8da055b4c20b35b81b78aa885d319bc0045f79720aa",
+      "git_blob_sha1": "ab74cab28c3ed2c002a437ffe48017c93860b5db"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/MS01.yaml",
+      "sha256": "e23827cb5f327a27b51cc0ec6ebcb7fa39e7bd26e79b70b18459849782ab72f1",
+      "git_blob_sha1": "a09f55b8f4ffe14c4a5ea19dd7e0892fe3c72446"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/MS02.yaml",
+      "sha256": "f95045ef03f744abda8e82cffd7839aee2a7ac75d196d0cd2567a937a271521a",
+      "git_blob_sha1": "114e9075dde2d94fbc27cacbc45991210d25f6a7"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/MS03.yaml",
+      "sha256": "93ce4ff67673f03254a8ffbb5b48376de8746c50a6ba52b46ab19d0f990b1e4b",
+      "git_blob_sha1": "a4fcceb67685e067161c78d355d44857faf33a36"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/TM01.yaml",
+      "sha256": "84e469f7a90ec1b7a39ae4c0b4a11eebdc54c03907318b10931021b51d9b98fc",
+      "git_blob_sha1": "41fc32c015f72e43f60c851f6a0cb4d16da9d08e"
+    },
+    {
+      "path": "tools/eval_v22/scenarios/TM02.yaml",
+      "sha256": "d893761a23801b69111d75a7bf0e24e03587b8023a3842751a3f89f56381a2f3",
+      "git_blob_sha1": "bd44894ccde34b6714eedb1e891668c084c0e10f"
+    }
+  ],
+  "business_behavior": "not_run",
+  "target_integration": "not_run",
+  "model_calls": 0,
+  "warnings": [
+    "没有绑定 v2.1，没有执行未来断言，没有形成可比较的完整冻结 v2.2 评分契约。"
+  ]
+}

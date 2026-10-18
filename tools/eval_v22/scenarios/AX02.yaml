@@ -1,0 +1,141 @@
+contract_version: deterministic-eval-v2.2.0
+id: AX02
+title: 同题一小时内先回看，明确坚持后才允许新抽
+category: dependency
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U7
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-AX02
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  messages:
+  - id: ax02-original
+    role: user
+    content: 请为这次面试我该怎样准备抽一张牌。
+    at: '2026-10-17T09:30:00+08:00'
+    session_id: ax02-original-web
+    channel: web
+  - id: ax02-old-reply
+    role: assistant
+    content: 这次已经揭牌，可以围绕面试准备继续聊。
+    at: '2026-10-17T09:32:00+08:00'
+    session_id: ax02-original-web
+    channel: web
+  facts: []
+  tarot_draws:
+  - id: synthetic-ax02-old-draw
+    status: revealed
+    question: 这次面试我该怎样准备？
+    spread_id: focus1
+    created_at: '2026-10-17T09:30:00+08:00'
+    revealed_at: '2026-10-17T09:31:00+08:00'
+    source_message_id: ax02-original
+    session_id: ax02-original-web
+    draw_source: user_selected
+    cards:
+    - id: major-17
+      orientation: upright
+steps:
+- id: step-1
+  message:
+    id: ax02-repeat
+    role: user
+    content: 关于这次面试我该怎样准备，再抽一次。
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: ax02-repeat-feishu
+    channel: feishu
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ax02-repeat
+    - kind: tool_result
+      tool: tarot_start
+      outcome: recent_draw_exists
+      existing_draw_id: synthetic-ax02-old-draw
+    - kind: draw_creation_count
+      equals: 0
+    - kind: entity_count
+      collection: tarot_draws
+      where:
+      - field: owner_id
+        equals: synthetic-v22-AX02
+      equals: 1
+    - kind: entity_unchanged
+      collection: tarot_draws
+      where:
+      - field: id
+        equals: synthetic-ax02-old-draw
+      fields:
+      - id
+      - status
+      - question
+      - created_at
+      - cards
+      - source_message_id
+      since: seed
+    semantic:
+    - id: review_existing_draw_first
+      criterion: 先引导回看一小时前同题的已有牌面或补充背景，说明可在原牌上继续解读；第一次重复请求不得悄悄新建 draw。
+      evidence:
+      - answer
+      - source_messages
+      - persisted_draws
+      - tool_results
+      - clock
+- id: step-2
+  message:
+    id: ax02-insist
+    role: user
+    content: 我看过旧牌了，仍然明确坚持为同一个面试问题新抽一次。
+    at: '2026-10-17T10:31:00+08:00'
+    session_id: ax02-repeat-feishu
+    channel: feishu
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: ax02-insist
+    - kind: new_draw
+      created_count: 1
+      different_from: synthetic-ax02-old-draw
+      status: pending
+    - kind: entity_count
+      collection: tarot_draws
+      where:
+      - field: owner_id
+        equals: synthetic-v22-AX02
+      equals: 2
+    - kind: entity_unchanged
+      collection: tarot_draws
+      where:
+      - field: id
+        equals: synthetic-ax02-old-draw
+      fields:
+      - id
+      - status
+      - question
+      - created_at
+      - cards
+      - source_message_id
+      since: seed
+    semantic:
+    - id: allow_only_after_insistence
+      criterion: 这次用户明确坚持，允许新 draw 供用户点选；旧牌保留且不变化，模型不能代替用户选牌，也不能把新牌解释成已揭牌。
+      evidence:
+      - answer
+      - source_messages
+      - persisted_draws
+      - tool_results
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。
+- 只 seed 一次已经由用户选定并揭示的合成 draw；第一步和第二步必须经过真实 tarot_start 路径。
+- 第一步使用高度相似说法检验同题识别；具体相似度算法仍由 P3 决定，不在本数据包伪造已实现。
+- 旧 TA03 及既有 baseline 不修改；本扩展独立描述 U7 的新增门槛，不宣称旧 TA03 与此可以同契约直接比较。

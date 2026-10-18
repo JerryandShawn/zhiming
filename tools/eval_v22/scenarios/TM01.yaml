@@ -1,0 +1,135 @@
+contract_version: deterministic-eval-v2.2.0
+id: TM01
+title: 相对下周三按说话时刻绝对化并跨天召回
+category: temporal_memory
+source:
+  document: docs/v4/07_评测场景集.md
+  section: 附录 B
+  research_items:
+  - U4
+  - U5
+status: data_definition_only
+requires_p3_target: true
+ready_for_live: false
+owner:
+  id: synthetic-v22-TM01
+  synthetic: true
+  timezone: Asia/Shanghai
+  profile_fixture: tools/eval/fixtures/profiles.yaml#default_synthetic
+clock: '2026-10-15T10:30:00+08:00'
+seed:
+  messages: []
+  facts: []
+  tarot_draws: []
+steps:
+- id: step-1
+  message:
+    id: tm01-original
+    role: user
+    content: 我下周三面试，请记住。
+    at: '2026-10-15T10:30:00+08:00'
+    session_id: tm01-write-feishu
+    channel: feishu
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: tm01-original
+    - kind: source_quote
+      source_message_id: tm01-original
+      quote: 我下周三面试
+      fact_status: active
+    - kind: entity_count
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: tm01-original
+      - field: status
+        equals: active
+      equals: 1
+    - kind: entity_field
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: tm01-original
+      - field: status
+        equals: active
+      field: event_at
+      equals: '2026-10-21'
+    - kind: entity_instant
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: tm01-original
+      - field: status
+        equals: active
+      field: said_at
+      same_instant_as: '2026-10-15T10:30:00+08:00'
+    - kind: entity_field
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: tm01-original
+      - field: status
+        equals: active
+      field: original_expression
+      equals: 下周三
+    semantic:
+    - id: normalize_at_write
+      criterion: 写入时保留原话和说话时刻，程序按消息时间与 owner 时区换算；只确认真实写入回执。
+      evidence:
+      - answer
+      - persisted_facts
+      - source_messages
+      - clock
+- id: step-2
+  message:
+    id: tm01-question
+    role: user
+    content: 面试是哪天？还有几天？
+    at: '2026-10-17T10:30:00+08:00'
+    session_id: tm01-recall-web
+    channel: web
+  expect:
+    deterministic:
+    - kind: message_recorded
+      message_id: tm01-question
+    - kind: entity_field
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: tm01-original
+      - field: status
+        equals: active
+      field: event_at
+      equals: '2026-10-21'
+    - kind: entity_instant
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: tm01-original
+      - field: status
+        equals: active
+      field: said_at
+      same_instant_as: '2026-10-15T10:30:00+08:00'
+    - kind: entity_field
+      collection: facts
+      where:
+      - field: source_message_id
+        equals: tm01-original
+      - field: status
+        equals: active
+      field: original_expression
+      equals: 下周三
+    semantic:
+    - id: recall_original_time
+      criterion: 面试为 2026-10-21 周三，相对 10/17 还有 4 天；后续不得按召回日期重新解释原始相对说法，也不得把周次或星期说错。
+      evidence:
+      - answer
+      - source_messages
+      - persisted_facts
+      - clock
+notes:
+- 仅未来契约数据定义；未接入 P3 靶标、未验证业务行为、未进行模型评分。
+- 必须从原消息执行 memory_write，不能预置 event_at/said_at 或在靶标观测投影中重新计算以冒充存储。
+- 纯日期 event_at 保留 YYYY-MM-DD 与日期粒度，不补午夜；含具体时分的时间才按 UTC 存储。
+- said_at 按同一瞬时比较，存储须遵守 UTC，不要求保存原 +08 字符串。

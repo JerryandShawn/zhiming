@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "明镜台 v2.2 附录 B 扩展数据定义（不是业务靶标）",
+  "description": "只定义未来独立契约输入与可观察断言；不绑定 v2.1，不供旧 runner 自动加载。",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {"const": "deterministic-eval-v2.2.0"},
+    "id": {"enum": ["A01", "A02", "A03", "MS01", "MS02", "MS03", "KU01", "KU02", "TM01", "TM02", "AX01", "AX02"]},
+    "title": {"type": "string", "minLength": 1},
+    "category": {"enum": ["abstention", "multi_session", "knowledge_update", "temporal_memory", "dependency"]},
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "document": {"const": "docs/v4/07_评测场景集.md"},
+        "section": {"const": "附录 B"},
+        "research_items": {"type": "array", "items": {"enum": ["U4", "U5", "U7"]}, "minItems": 1, "uniqueItems": true}
+      },
+      "required": ["document", "section", "research_items"]
+    },
+    "status": {"const": "data_definition_only"},
+    "requires_p3_target": {"const": true},
+    "ready_for_live": {"const": false},
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^synthetic-v22-[A-Z]+[0-9]{2}$"},
+        "synthetic": {"const": true},
+        "timezone": {"const": "Asia/Shanghai"},
+        "profile_fixture": {"const": "tools/eval/fixtures/profiles.yaml#default_synthetic"}
+      },
+      "required": ["id", "synthetic", "timezone", "profile_fixture"]
+    },
+    "clock": {"type": "string", "format": "date-time", "pattern": "(?:Z|[+-]\\d\\d:\\d\\d)$"},
+    "seed": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "messages": {"type": "array", "items": {"$ref": "#/$defs/message"}, "minItems": 0},
+        "facts": {"const": []},
+        "tarot_draws": {"type": "array", "items": {"$ref": "#/$defs/draw"}, "minItems": 0}
+      },
+      "required": ["messages", "facts", "tarot_draws"]
+    },
+    "steps": {"type": "array", "items": {"$ref": "#/$defs/step"}, "minItems": 1},
+    "notes": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1}
+  },
+  "required": [
+    "contract_version",
+    "id",
+    "title",
+    "category",
+    "source",
+    "status",
+    "requires_p3_target",
+    "ready_for_live",
+    "owner",
+    "clock",
+    "seed",
+    "steps",
+    "notes"
+  ],
+  "$defs": {
+    "filter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "field": {"enum": ["id", "owner_id", "status", "source_message_id", "kind"]},
+        "equals": {"type": "string", "minLength": 1}
+      },
+      "required": ["field", "equals"]
+    },
+    "message": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "role": {"enum": ["user", "assistant"]},
+        "content": {"type": "string", "minLength": 1},
+        "at": {"type": "string", "format": "date-time", "pattern": "(?:Z|[+-]\\d\\d:\\d\\d)$"},
+        "session_id": {"type": "string", "minLength": 1},
+        "channel": {"enum": ["web", "feishu"]}
+      },
+      "required": ["id", "role", "content", "at", "session_id", "channel"]
+    },
+    "card": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^major-(?:[0-9]|1[0-9]|2[01])$"},
+        "orientation": {"enum": ["upright", "reversed"]}
+      },
+      "required": ["id", "orientation"]
+    },
+    "draw": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "status": {"const": "revealed"},
+        "question": {"type": "string", "minLength": 1},
+        "spread_id": {"const": "focus1"},
+        "created_at": {"type": "string", "format": "date-time", "pattern": "(?:Z|[+-]\\d\\d:\\d\\d)$"},
+        "revealed_at": {"type": "string", "format": "date-time", "pattern": "(?:Z|[+-]\\d\\d:\\d\\d)$"},
+        "source_message_id": {"type": "string", "minLength": 1},
+        "session_id": {"type": "string", "minLength": 1},
+        "draw_source": {"const": "user_selected"},
+        "cards": {"type": "array", "items": {"$ref": "#/$defs/card"}, "minItems": 1, "maxItems": 1}
+      },
+      "required": [
+        "id",
+        "status",
+        "question",
+        "spread_id",
+        "created_at",
+        "revealed_at",
+        "source_message_id",
+        "session_id",
+        "draw_source",
+        "cards"
+      ]
+    },
+    "semantic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9_]+$"},
+        "criterion": {"type": "string", "minLength": 1},
+        "evidence": {
+          "type": "array",
+          "items": {
+            "enum": ["answer", "source_messages", "persisted_facts", "persisted_draws", "tool_results", "clock"]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": ["id", "criterion", "evidence"]
+    },
+    "expect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "deterministic": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {"$ref": "#/$defs/message_recorded"},
+              {"$ref": "#/$defs/entity_count"},
+              {"$ref": "#/$defs/entity_field"},
+              {"$ref": "#/$defs/entity_instant"},
+              {"$ref": "#/$defs/source_quote"},
+              {"$ref": "#/$defs/entity_unchanged"},
+              {"$ref": "#/$defs/tool_result"},
+              {"$ref": "#/$defs/tools_forbidden"},
+              {"$ref": "#/$defs/new_draw"},
+              {"$ref": "#/$defs/draw_creation_count"}
+            ]
+          },
+          "minItems": 1
+        },
+        "semantic": {"type": "array", "items": {"$ref": "#/$defs/semantic"}, "minItems": 1}
+      },
+      "required": ["deterministic", "semantic"]
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {"type": "string", "pattern": "^step-[1-9][0-9]*$"},
+        "message": {"allOf": [{"$ref": "#/$defs/message"}, {"properties": {"role": {"const": "user"}}}]},
+        "expect": {"$ref": "#/$defs/expect"}
+      },
+      "required": ["id", "message", "expect"]
+    },
+    "message_recorded": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {"kind": {"const": "message_recorded"}, "message_id": {"type": "string", "minLength": 1}},
+      "required": ["kind", "message_id"]
+    },
+    "entity_count": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "entity_count"},
+        "collection": {"enum": ["facts", "tarot_draws"]},
+        "where": {"type": "array", "items": {"$ref": "#/$defs/filter"}, "minItems": 1},
+        "equals": {"type": "integer", "minimum": 0}
+      },
+      "required": ["kind", "collection", "where", "equals"]
+    },
+    "entity_field": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "entity_field"},
+        "collection": {"const": "facts"},
+        "where": {"type": "array", "items": {"$ref": "#/$defs/filter"}, "minItems": 1},
+        "field": {"enum": ["event_at", "original_expression"]},
+        "equals": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "collection", "where", "field", "equals"]
+    },
+    "entity_instant": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "entity_instant"},
+        "collection": {"const": "facts"},
+        "where": {"type": "array", "items": {"$ref": "#/$defs/filter"}, "minItems": 1},
+        "field": {"const": "said_at"},
+        "same_instant_as": {"type": "string", "format": "date-time", "pattern": "(?:Z|[+-]\\d\\d:\\d\\d)$"}
+      },
+      "required": ["kind", "collection", "where", "field", "same_instant_as"]
+    },
+    "source_quote": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "source_quote"},
+        "source_message_id": {"type": "string", "minLength": 1},
+        "quote": {"type": "string", "minLength": 1},
+        "fact_status": {"const": "active"}
+      },
+      "required": ["kind", "source_message_id", "quote", "fact_status"]
+    },
+    "entity_unchanged": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "entity_unchanged"},
+        "collection": {"const": "tarot_draws"},
+        "where": {"type": "array", "items": {"$ref": "#/$defs/filter"}, "minItems": 1},
+        "fields": {
+          "type": "array",
+          "items": {"enum": ["id", "status", "question", "created_at", "cards", "source_message_id"]},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "since": {"enum": ["seed", "previous_step"]}
+      },
+      "required": ["kind", "collection", "where", "fields", "since"]
+    },
+    "tool_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "tool_result"},
+        "tool": {"const": "tarot_start"},
+        "outcome": {"const": "recent_draw_exists"},
+        "existing_draw_id": {"type": "string", "minLength": 1}
+      },
+      "required": ["kind", "tool", "outcome", "existing_draw_id"]
+    },
+    "tools_forbidden": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "tools_forbidden"},
+        "tools": {
+          "type": "array",
+          "items": {"enum": ["memory_write", "memory_update", "note_write", "tarot_start", "tarot_read"]},
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": ["kind", "tools"]
+    },
+    "new_draw": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"const": "new_draw"},
+        "created_count": {"const": 1},
+        "different_from": {"type": "string", "minLength": 1},
+        "status": {"const": "pending"}
+      },
+      "required": ["kind", "created_count", "different_from", "status"]
+    },
+    "draw_creation_count": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {"kind": {"const": "draw_creation_count"}, "equals": {"type": "integer", "minimum": 0}},
+      "required": ["kind", "equals"]
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"id": {"pattern": "^A[0-9]"}}},
+      "then": {"properties": {"category": {"const": "abstention"}}}
+    },
+    {
+      "if": {"properties": {"id": {"pattern": "^MS"}}},
+      "then": {"properties": {"category": {"const": "multi_session"}}}
+    },
+    {
+      "if": {"properties": {"id": {"pattern": "^KU"}}},
+      "then": {"properties": {"category": {"const": "knowledge_update"}}}
+    },
+    {
+      "if": {"properties": {"id": {"pattern": "^TM"}}},
+      "then": {"properties": {"category": {"const": "temporal_memory"}}}
+    },
+    {
+      "if": {"properties": {"id": {"pattern": "^AX"}}},
+      "then": {"properties": {"category": {"const": "dependency"}}}
+    }
+  ]
+}
