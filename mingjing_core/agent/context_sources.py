@@ -12,6 +12,7 @@ from mingjing_core.domain.contracts import ScopeError
 from mingjing_core.memory.projections import redact_ranges
 from mingjing_core.memory.tokenize import tokenize
 
+from .context_entities import read_entities
 from .context_types import BudgetPolicy, ContextInputError, SourceSnapshot
 
 
@@ -22,6 +23,7 @@ class BoundedSources:
         self.spans: dict[str, list[dict[str, Any]]] = {}
         self.deleted: set[str] = set()
         self.boundary: tuple[int, str, str] | None = None
+        self.history_counts: dict[str, int] = {}
 
     @staticmethod
     def _key(source: dict[str, Any]) -> tuple[int, str, str]:
@@ -53,17 +55,34 @@ class BoundedSources:
 
     def _history(self, owner: str, subject: str, cases: tuple[str, ...]) -> list[dict[str, Any]]:
         with self.repo.transaction(owner) as connection:
-            query = sql.SQL("""SELECT * FROM {} WHERE owner=%s AND subject=%s AND kind='message'
+            query = sql.SQL("""WITH timeline AS (SELECT *,
+                row_number() OVER (ORDER BY (data->>'at_ms')::bigint,created_at,id) AS context_ordinal,
+                count(*) OVER () AS context_total,
+                sum((data->>'role'='user')::int) OVER () AS user_rounds
+                FROM {} WHERE owner=%s AND subject=%s AND kind='message'
                 AND status='active' AND data->>'thread_id'=%s
                 AND (coalesce(data->'case_ids','[]')='[]'::jsonb OR data->'case_ids' ?| %s)
-                AND ((data->>'at_ms')::bigint,created_at,id)<= (%s,%s::timestamptz,%s)
+                AND ((data->>'at_ms')::bigint,created_at,id)<= (%s,%s::timestamptz,%s))
+                SELECT * FROM timeline
                 ORDER BY (data->>'at_ms')::bigint DESC,created_at DESC,id DESC LIMIT %s""").format(
                 self.repo.table("core_entities")
             )
             rows = connection.execute(
-                query, (owner, subject, "life:" + subject, list(cases), *self.boundary, self.policy.history_limit)
+                query,
+                (
+                    owner,
+                    subject,
+                    "life:" + subject,
+                    list(cases),
+                    *self.boundary,
+                    self.policy.history_limit,
+                ),
             ).fetchall()
-        decoded = [self.repo._decode(row) for row in reversed(rows)]
+        decoded = [dict(self.repo._decode(row), _context_ordinal=row["context_ordinal"]) for row in reversed(rows)]
+        self.history_counts = {
+            "thread_user_rounds": rows[0]["user_rounds"] if rows else 0,
+            "history_truncated": int(bool(rows and rows[0]["context_total"] > len(rows))),
+        }
         self.cache.update({row["id"]: row for row in decoded})
         return decoded
 
@@ -88,6 +107,8 @@ class BoundedSources:
 
     def _source(self, owner: str, ident: str) -> dict[str, Any]:
         if ident not in self.cache:
+            if len(self.cache) >= self.policy.source_ref_limit + self.policy.history_limit + self.policy.search_limit:
+                raise ContextInputError("context_source_catalog_overflow")
             self.cache[ident] = self.memory.get_source(owner, ident)
         return self.cache[ident]
 
@@ -129,7 +150,12 @@ class BoundedSources:
         ]
 
     def _project(
-        self, owner: str, subject: str, row: dict[str, Any], facts: list[dict[str, Any]], cases: tuple[str, ...]
+        self,
+        owner: str,
+        subject: str,
+        row: dict[str, Any],
+        facts: list[dict[str, Any]],
+        cases: tuple[str, ...],
     ) -> dict[str, Any] | None:
         original = self._source(owner, row["id"])
         if original["subject_id"] != subject or original["status"] != "active" or original["id"] in self.deleted:
@@ -163,7 +189,12 @@ class BoundedSources:
                 self.spans.setdefault(span.get("message_id"), []).append(span)
 
     def _current(
-        self, owner: str, subject: str, ident: str, facts: list[dict[str, Any]], cases: tuple[str, ...]
+        self,
+        owner: str,
+        subject: str,
+        ident: str,
+        facts: list[dict[str, Any]],
+        cases: tuple[str, ...],
     ) -> dict[str, Any]:
         original = self._source(owner, ident)
         policy = original.get("policy", {})
@@ -175,7 +206,12 @@ class BoundedSources:
         return projected
 
     def _retrieved(
-        self, owner: str, subject: str, query: str, facts: list[dict[str, Any]], cases: tuple[str, ...]
+        self,
+        owner: str,
+        subject: str,
+        query: str,
+        facts: list[dict[str, Any]],
+        cases: tuple[str, ...],
     ) -> tuple[list[dict[str, Any]], int]:
         tokens = tokenize(query[:2000])[:32]
         if not tokens:
@@ -211,14 +247,20 @@ class BoundedSources:
             history = [row for row in history if row is not None and row["id"] != source_message_id]
             retrieved, search_count = self._retrieved(owner, subject, query or current["content"], facts, case_ids)
             retrieved = [row for row in retrieved if row["id"] != source_message_id]
+            entities = read_entities(self, owner, subject, case_ids, facts)
             versions = {"message:" + row["id"]: row["revision"] for row in self.cache.values()}
             versions.update({"fact:" + fact["id"]: fact["revision"] for fact in facts})
+            versions.update(
+                {kind + ":" + row["id"]: row["revision"] for kind, rows in entities.items() for row in rows}
+            )
             counts = {
                 "fact_catalog": fact_count,
                 "revocations": revocation_count,
                 "history_candidates": len(rows),
                 "search_candidates": search_count,
                 "source_cache_entries": len(self.cache),
+                "extra_candidates": sum(len(rows) for rows in entities.values()),
+                **self.history_counts,
             }
             return copy.deepcopy(
                 SourceSnapshot(
@@ -232,5 +274,6 @@ class BoundedSources:
                     current,
                     versions,
                     counts,
+                    entities,
                 )
             )
