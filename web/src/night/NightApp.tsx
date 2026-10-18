@@ -25,6 +25,7 @@ const otherPages = {
 const AboutMePage = lazy(() => import('./me/AboutMePage'));
 const OnboardingChat = lazy(() => import('./onboarding/OnboardingChat'));
 const SettingsPage = lazy(() => import('./settings/SettingsPage'));
+const SampleChartPage = lazy(() => import('./charts/SampleChartPage'));
 
 export default function NightApp({ page }: { page: string }) {
   const [port] = useState(createNightPort);
@@ -141,6 +142,8 @@ export default function NightApp({ page }: { page: string }) {
               }
             />
           )
+        ) : page === 'chart' ? (
+          <SampleChartPage />
         ) : page === 'me' ? (
           <AboutMePage port={port.aboutMe} />
         ) : page === 'settings' ? (

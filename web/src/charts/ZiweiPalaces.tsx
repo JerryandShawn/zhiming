@@ -87,8 +87,8 @@ export default function ZiweiPalaces({ data, date }: { data: ChartRecord; date: 
                     type="button"
                     className="chart-palace-cell"
                     data-palace-branch={branch}
-                    style={{ gridColumn: palacePositions[branch][0], gridRow: palacePositions[branch][1] }}
-                    aria-label={`查看${label(palace.name)}宫位依据`}>
+                    style={{ gridColumn: palacePositions[branch][0], gridRow: palacePositions[branch][1] }}>
+                    <span className="sr-only">查看{label(palace.name)}宫位依据 </span>
                     <span className="chart-palace-heading">
                       {label(palace.name)} <span className="meta">{label(palace.ganzhi)}</span>
                     </span>
@@ -116,7 +116,8 @@ export default function ZiweiPalaces({ data, date }: { data: ChartRecord; date: 
                   date={date}
                   path={path}
                   trigger={
-                    <Button variant="ghost" aria-label={`查看${label(palace.name)}宫位依据`}>
+                    <Button variant="ghost">
+                      <span className="sr-only">查看{label(palace.name)}宫位依据 </span>
                       查看依据
                     </Button>
                   }>

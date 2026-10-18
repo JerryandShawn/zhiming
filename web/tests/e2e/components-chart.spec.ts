@@ -12,7 +12,7 @@ test('命盘时辰口径默认真太阳，差异并列北京时间，大运可�
   await expect(basis.getByRole('heading', { name: '按北京时间则为' })).toBeVisible();
   await expect(basis).toContainText('时柱 甲辰');
   await expect(basis).toContainText('时柱 乙巳');
-  const luck = page.getByRole('button', { name: /^查看.*大运解释$/ }).first();
+  const luck = page.getByRole('button', { name: /^查看.*大运解释/ }).first();
   await luck.click();
   await expect(page.getByRole('dialog')).toContainText('不是这十年会发生什么的预测');
   await captureComponent(page, 'chart-luck-explanation-390');
@@ -56,7 +56,7 @@ test('桌面紫微四乘四周边十二宫，中间信息不挤占宫位', async
     return [style.gridColumnStart, style.gridColumnEnd, style.gridRowStart, style.gridRowEnd];
   });
   expect(center).toEqual(['2', '4', '2', '4']);
-  const trigger = grid.getByRole('button', { name: '查看命宫宫位依据' });
+  const trigger = grid.getByRole('button', { name: /^查看命宫宫位依据/ });
   await trigger.click();
   await expect(page.getByRole('dialog')).toContainText('紫微');
   await expect(page.getByRole('dialog')).toContainText('对宫：迁移');

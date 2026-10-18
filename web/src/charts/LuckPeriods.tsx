@@ -69,8 +69,8 @@ export default function LuckPeriods({ data, date }: { data: ChartRecord; date: s
                 <button
                   type="button"
                   className={`chart-luck-period ${current ? 'current' : ''}`}
-                  aria-label={`查看${ganzhi}大运解释`}
                   aria-current={current && hasExtended ? 'date' : undefined}>
+                  <span className="sr-only">查看{ganzhi}大运解释 </span>
                   <span className="chart-luck-status">
                     {current ? (
                       <Tag tone="accent">{hasExtended ? '快照所在' : '所选年份示意'}</Tag>

@@ -37,7 +37,10 @@ describe('P8 luck period timestamp boundaries', () => {
     ['2026-06-01T04:00:00Z', '乙丑'],
   ])('uses the returned sample %s and a half-open interval for %s', (sample, ganzhi) => {
     render(<LuckPeriods data={data(sample)} date="2026-12-31" />);
-    expect(screen.getByRole('button', { name: `查看${ganzhi}大运解释` })).toHaveAttribute('aria-current', 'date');
+    expect(screen.getByRole('button', { name: new RegExp(`^查看${ganzhi}大运解释`) })).toHaveAttribute(
+      'aria-current',
+      'date',
+    );
     expect(document.querySelectorAll('[aria-current="date"]')).toHaveLength(1);
   });
 
@@ -52,7 +55,10 @@ describe('P8 luck period timestamp boundaries', () => {
   ])('uses declared Beijing noon for date-only %s', (date, ganzhi) => {
     render(<LuckPeriods data={data()} date={date} />);
     expect(screen.getByText(/所选日期北京时间正午快照/)).toBeVisible();
-    expect(screen.getByRole('button', { name: `查看${ganzhi}大运解释` })).toHaveAttribute('aria-current', 'date');
+    expect(screen.getByRole('button', { name: new RegExp(`^查看${ganzhi}大运解释`) })).toHaveAttribute(
+      'aria-current',
+      'date',
+    );
     expect(document.querySelectorAll('[aria-current="date"]')).toHaveLength(1);
   });
 

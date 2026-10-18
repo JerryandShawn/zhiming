@@ -20,6 +20,7 @@
   grid-template-rows: repeat(4, minmax(var(--palace-height), auto));
 }
 .chart-palace-cell {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--s-2);
@@ -135,6 +136,7 @@
   padding-block: var(--s-3);
 }
 .chart-luck-period {
+  position: relative;
   flex: 0 0 var(--luck-width);
   display: grid;
   justify-items: center;

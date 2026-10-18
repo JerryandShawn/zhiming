@@ -48,7 +48,7 @@ describe('data-driven chart components', () => {
     expect(container.querySelector('[data-palace-view]')).toHaveAttribute('data-palace-view', 'list');
     expect(container.querySelectorAll('details')).toHaveLength(12);
     await userEvent.click(screen.getByText('命宫 · 甲子', { selector: 'summary' }));
-    expect(screen.getByRole('button', { name: '查看命宫宫位依据' })).toBeVisible();
+    expect(screen.getByRole('button', { name: /^查看命宫宫位依据/ })).toBeVisible();
     await userEvent.click(screen.getByRole('button', { name: '网格' }));
     expect(container.querySelector('[data-palace-view]')).toHaveAttribute('data-palace-view', 'grid');
     expect(screen.getByRole('button', { name: '宫位列表' })).toHaveAttribute('aria-pressed', 'true');
@@ -64,7 +64,9 @@ describe('data-driven chart components', () => {
   it('opens a palace explanation by keyboard and restores focus after Escape', async () => {
     viewport(true);
     render(<ZiweiPalaces data={ziweiDemo} date="2026-10-18" />);
-    const trigger = screen.getByRole('button', { name: '查看命宫宫位依据' });
+    const trigger = screen.getByRole('button', { name: /^查看命宫宫位依据/ });
+    expect(trigger).toHaveAccessibleName(/甲子/);
+    expect(trigger).toHaveAccessibleName(/紫微/);
     trigger.focus();
     await userEvent.keyboard('{Enter}');
     const dialog = await screen.findByRole('dialog', { name: '命宫宫位依据' });
@@ -128,7 +130,8 @@ describe('data-driven chart components', () => {
 
   it('opens each actual luck period with its original field selection, date and keyboard focus return', async () => {
     render(<LuckPeriods data={baziDemo} date="2026-10-18" />);
-    const trigger = screen.getByRole('button', { name: '查看戊辰大运解释' });
+    const trigger = screen.getByRole('button', { name: /^查看戊辰大运解释/ });
+    expect(trigger).toHaveAccessibleName(/2002–2011/);
     trigger.focus();
     await userEvent.keyboard('{Enter}');
     const dialog = await screen.findByRole('dialog', { name: '戊辰 · 大运依据' });
@@ -148,9 +151,9 @@ describe('data-driven chart components', () => {
 
   it('labels a legacy year-only highlight as illustrative, without claiming an exact current period', () => {
     render(<LuckPeriods data={baziDemo} date="2026-10-18" />);
-    expect(screen.getByRole('button', { name: '查看庚午大运解释' })).toHaveTextContent('所选年份示意');
-    expect(screen.getByRole('button', { name: '查看庚午大运解释' })).not.toHaveAttribute('aria-current');
-    expect(screen.getByRole('button', { name: '查看戊辰大运解释' })).not.toHaveAttribute('aria-current');
+    expect(screen.getByRole('button', { name: /^查看庚午大运解释/ })).toHaveTextContent('所选年份示意');
+    expect(screen.getByRole('button', { name: /^查看庚午大运解释/ })).not.toHaveAttribute('aria-current');
+    expect(screen.getByRole('button', { name: /^查看戊辰大运解释/ })).not.toHaveAttribute('aria-current');
   });
 
   it('shows an explicit gap instead of generating missing luck periods', () => {
