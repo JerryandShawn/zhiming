@@ -1,0 +1,223 @@
+{
+  "messages_before_extra_probes": 10000,
+  "source_sha256": "9c9979bb331e82b150830e9b34bc80df9bdbfd6a1f0054428171d0fc40817cfc",
+  "original_messages_unchanged": true,
+  "provider_calls": 0,
+  "unit": "policy_units",
+  "actual_input_tokens": null,
+  "input_token_upper_bound": null,
+  "checkpoints": [
+    {
+      "messages": 100,
+      "counts": {
+        "fact_catalog": 3,
+        "revocations": 0,
+        "history_candidates": 81,
+        "search_candidates": 1,
+        "source_cache_entries": 82,
+        "extra_candidates": 0,
+        "thread_user_rounds": 50,
+        "history_truncated": 1
+      }
+    },
+    {
+      "messages": 1000,
+      "counts": {
+        "fact_catalog": 3,
+        "revocations": 0,
+        "history_candidates": 81,
+        "search_candidates": 1,
+        "source_cache_entries": 82,
+        "extra_candidates": 0,
+        "thread_user_rounds": 500,
+        "history_truncated": 1
+      }
+    },
+    {
+      "messages": 5000,
+      "counts": {
+        "fact_catalog": 3,
+        "revocations": 0,
+        "history_candidates": 81,
+        "search_candidates": 1,
+        "source_cache_entries": 82,
+        "extra_candidates": 0,
+        "thread_user_rounds": 2500,
+        "history_truncated": 1
+      }
+    },
+    {
+      "messages": 10000,
+      "counts": {
+        "fact_catalog": 3,
+        "revocations": 0,
+        "history_candidates": 81,
+        "search_candidates": 1,
+        "source_cache_entries": 82,
+        "extra_candidates": 0,
+        "thread_user_rounds": 5000,
+        "history_truncated": 1
+      }
+    }
+  ],
+  "compression_trace": [
+    {
+      "action": "L5_drop",
+      "before": 139433,
+      "after": 139039
+    },
+    {
+      "action": "L5_drop",
+      "before": 139039,
+      "after": 138645
+    },
+    {
+      "action": "L5_drop",
+      "before": 138645,
+      "after": 138251
+    },
+    {
+      "action": "L5_drop",
+      "before": 138251,
+      "after": 137857
+    },
+    {
+      "action": "L5_drop",
+      "before": 137857,
+      "after": 137463
+    },
+    {
+      "action": "L5_drop",
+      "before": 137463,
+      "after": 137069
+    },
+    {
+      "action": "L5_drop",
+      "before": 137069,
+      "after": 136675
+    },
+    {
+      "action": "L5_drop",
+      "before": 136675,
+      "after": 136281
+    },
+    {
+      "action": "L5_drop",
+      "before": 136281,
+      "after": 135887
+    },
+    {
+      "action": "L5_drop",
+      "before": 135887,
+      "after": 135493
+    },
+    {
+      "action": "L5_drop",
+      "before": 135493,
+      "after": 135099
+    },
+    {
+      "action": "L5_drop",
+      "before": 135099,
+      "after": 134705
+    },
+    {
+      "action": "L5_drop",
+      "before": 134705,
+      "after": 134311
+    },
+    {
+      "action": "L5_drop",
+      "before": 134311,
+      "after": 133917
+    },
+    {
+      "action": "L5_drop",
+      "before": 133917,
+      "after": 133523
+    },
+    {
+      "action": "L5_drop",
+      "before": 133523,
+      "after": 133129
+    },
+    {
+      "action": "L5_drop",
+      "before": 133129,
+      "after": 132735
+    },
+    {
+      "action": "L5_drop",
+      "before": 132735,
+      "after": 132341
+    },
+    {
+      "action": "L5_drop",
+      "before": 132341,
+      "after": 131947
+    },
+    {
+      "action": "L5_drop",
+      "before": 131947,
+      "after": 131553
+    },
+    {
+      "action": "L5_drop",
+      "before": 131553,
+      "after": 131159
+    },
+    {
+      "action": "L5_drop",
+      "before": 131159,
+      "after": 130765
+    },
+    {
+      "action": "L5_drop",
+      "before": 130765,
+      "after": 130371
+    },
+    {
+      "action": "L5_drop",
+      "before": 130371,
+      "after": 129977
+    },
+    {
+      "action": "L5_drop",
+      "before": 129977,
+      "after": 129583
+    },
+    {
+      "action": "L5_drop",
+      "before": 129583,
+      "after": 129189
+    },
+    {
+      "action": "L5_drop",
+      "before": 129189,
+      "after": 128795
+    },
+    {
+      "action": "L5_drop",
+      "before": 128795,
+      "after": 128401
+    },
+    {
+      "action": "L5_drop",
+      "before": 128401,
+      "after": 128007
+    },
+    {
+      "action": "L5_drop",
+      "before": 128007,
+      "after": 127801
+    },
+    {
+      "action": "L5_drop",
+      "before": 127801,
+      "after": 2626
+    }
+  ],
+  "overflow_rejected": true,
+  "unknown_framing_live_blocked": true,
+  "duration_seconds": 42.375
+}

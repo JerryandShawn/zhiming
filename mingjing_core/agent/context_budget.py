@@ -60,7 +60,10 @@ def _validate_messages(messages: tuple[ChatMessage, ...]) -> None:
 
 
 def count_request(
-    messages: tuple[ChatMessage, ...], tools: tuple[ToolSpec, ...] = (), *, tool_choice: str = "auto"
+    messages: tuple[ChatMessage, ...],
+    tools: tuple[ToolSpec, ...] = (),
+    *,
+    tool_choice: str = "auto",
 ) -> MeterResult:
     """Count every normalized field as policy units, including private reasoning."""
     if tool_choice not in {"auto", "required"} or tool_choice == "required" and not tools:
@@ -76,7 +79,13 @@ def count_request(
             "tools": [asdict(tool) for tool in tools],
             "tool_choice": tool_choice,
         }
-        encoded = json.dumps(body, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+        encoded = json.dumps(
+            body,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        )
         size = len(encoded.encode("utf-8", errors="strict"))
     except (ValueError, TypeError, OverflowError, RecursionError, UnicodeError):
         raise ContextInputError("context_serialization_invalid") from None
@@ -87,7 +96,9 @@ def _flatten(layers: tuple[ContextLayer, ...]) -> tuple[ChatMessage, ...]:
     return tuple(message for layer in layers for item in layer.items for message in item.messages)
 
 
-def _remove_candidate(layers: tuple[ContextLayer, ...]) -> tuple[tuple[ContextLayer, ...], str] | None:
+def _remove_candidate(
+    layers: tuple[ContextLayer, ...],
+) -> tuple[tuple[ContextLayer, ...], str] | None:
     for name, reverse in (("L5", False), ("L4", True)):
         for index, layer in enumerate(layers):
             if layer.name != name:
@@ -125,7 +136,12 @@ def _summary_content(message: ChatMessage, summary: str) -> str | None:
         return None
     preserved = {key: value[key] for key in preserved_keys if key in value}
     try:
-        return json.dumps(dict(preserved, summary=summary), ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+        return json.dumps(
+            dict(preserved, summary=summary),
+            ensure_ascii=False,
+            separators=(",", ":"),
+            allow_nan=False,
+        )
     except (ValueError, TypeError):
         return None
 
@@ -174,7 +190,13 @@ def apply_budget(
         measured = count_request(_flatten(changed), tools, tool_choice=tool_choice)
         if measured.policy_units >= meter.policy_units:
             raise ContextInputError("context_compression_not_reducing")
-        trace.append({"action": action, "before": meter.policy_units, "after": measured.policy_units})
+        trace.append(
+            {
+                "action": action,
+                "before": meter.policy_units,
+                "after": measured.policy_units,
+            }
+        )
         layers, meter = changed, measured
     if meter.policy_units > policy.hard_max:
         raise RequiredContextOverflow()
@@ -182,6 +204,9 @@ def apply_budget(
 
 
 def assert_live_allowed(result: BudgetResult) -> None:
-    """No caller can promote this offline policy meter into a provider contract."""
-    del result
-    raise InputMeterUnverified()
+    """Fail closed unless an application-injected provider meter covers this request."""
+    meter = result.meter
+    if not meter.live_admissible or meter.input_token_upper_bound is None or not meter.token_meter_version:
+        raise InputMeterUnverified()
+    if meter.input_token_upper_bound > 180_000:
+        raise RequiredContextOverflow()

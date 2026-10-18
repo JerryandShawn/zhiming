@@ -37,13 +37,18 @@ class BudgetPolicy:
     revocation_limit: int = 512
     search_limit: int = 10
     source_ref_limit: int = 512
+    extra_entity_limit: int = 128
+    history_rounds: int = 30
+    window_step: int = 10
 
     def __post_init__(self) -> None:
         if any(type(value) is not int or value < 1 for value in vars(self).values()):
             raise ContextInputError("context_policy_invalid")
-        if not self.target <= self.compress_above <= self.hard_max:
+        if not self.target <= self.compress_above <= self.hard_max <= 180_000:
             raise ContextInputError("context_policy_invalid")
         if self.history_limit > 1000 or self.search_limit > 100 or self.fact_limit > 10_000:
+            raise ContextInputError("context_policy_invalid")
+        if self.extra_entity_limit > 1000 or self.history_rounds + self.window_step > 500:
             raise ContextInputError("context_policy_invalid")
 
 
@@ -68,10 +73,13 @@ class MeterResult:
     serialized_bytes: int
     meter_version: str = "policy_utf8_bytes_v1"
     unit: str = "policy_units"
-    estimated_input_tokens: None = None
-    input_token_upper_bound: None = None
-    actual_input_tokens: None = None
+    estimated_input_tokens: int | None = None
+    input_token_upper_bound: int | None = None
+    actual_input_tokens: int | None = None
     live_admissible: bool = False
+    token_meter_version: str | None = None
+    provider: str | None = None
+    model: str | None = None
 
 
 @dataclass(frozen=True)
@@ -95,6 +103,7 @@ class SourceSnapshot:
     current: dict[str, Any]
     versions: dict[str, int]
     read_counts: dict[str, int]
+    extra_entities: dict[str, tuple[dict[str, Any], ...]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -105,7 +114,11 @@ class ContextBuild:
     injected_versions: dict[str, int]
     read_counts: dict[str, int]
     limitations: tuple[str, ...] = field(
-        default=("offline_policy_units", "runtime_unconnected", "provider_framing_unverified")
+        default=(
+            "offline_policy_units",
+            "runtime_unconnected",
+            "provider_framing_unverified",
+        )
     )
 
     @property
