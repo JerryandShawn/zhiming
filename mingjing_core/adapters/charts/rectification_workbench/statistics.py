@@ -9,6 +9,11 @@ from dataclasses import dataclass
 from time import perf_counter
 from typing import Any
 
+from .calibration_scope import (
+    calibration_dataset_hash,
+    calibration_scope,
+    valid_round_alpha,
+)
 from .contracts import AnnualSignalCache, digest, rules, rules_identity
 from .sessions import FrozenSession, seed, split_events
 
@@ -161,6 +166,8 @@ class DeltaCalibration:
     rules_hash: str
     signal_provenance: str
     supported_shapes: tuple[tuple[int, int], ...]
+    round_no: int
+    alpha: float
 
     def __post_init__(self) -> None:
         if type(self.delta) is not int or self.delta < 0:
@@ -177,6 +184,10 @@ class DeltaCalibration:
                 raise ValueError("invalid_calibration_binomial_counts")
         if not self.signal_provenance or not self.supported_shapes:
             raise ValueError("calibration_requires_signal_family_and_shapes")
+        if len(self.supported_shapes) != 1:
+            raise ValueError("mixed_calibration_shapes")
+        if not valid_round_alpha(self.round_no, self.alpha):
+            raise ValueError("invalid_calibration_round_alpha_pair")
 
     @property
     def usable(self) -> bool:
@@ -197,6 +208,8 @@ class DeltaCalibration:
     def covers(self, result: dict[str, Any]) -> bool:
         return (
             self.usable
+            and valid_round_alpha(result.get("round"), result.get("alpha"))
+            and (result["round"], result["alpha"]) == (self.round_no, self.alpha)
             and result["signal_provenance"] == self.signal_provenance
             and (result["candidate_count"], result["event_count"])
             in self.supported_shapes
@@ -228,12 +241,7 @@ def calibrate(
         for row in calibration + validation
     ):
         raise ValueError("calibration_rules_mismatch")
-    provenance = {row["signal_provenance"] for row in calibration + validation}
-    shapes = {(row["candidate_count"], row["event_count"]) for row in calibration}
-    if len(provenance) != 1 or any(
-        (row["candidate_count"], row["event_count"]) not in shapes for row in validation
-    ):
-        raise ValueError("mixed_signal_family_or_unseen_validation_shape")
+    scope = calibration_scope(calibration + validation)
     choices = range(max(row["margin"] for row in calibration) + 2)
     delta = next(
         value
@@ -241,31 +249,18 @@ def calibrate(
         if sum(_passes(row, value) for row in calibration) / len(calibration) <= 0.05
     )
     return DeltaCalibration(
-        delta,
-        len(calibration),
-        len(validation),
-        sum(_passes(row, delta) for row in calibration),
-        sum(_passes(row, delta) for row in validation),
-        digest(
-            [
-                {
-                    key: row[key]
-                    for key in (
-                        "session_fingerprint",
-                        "events_hash",
-                        "annual_cache_hash",
-                        "p_value",
-                        "margin",
-                        "holdout",
-                    )
-                }
-                for row in calibration + validation
-            ]
-        ),
-        version,
-        rule_hash,
-        next(iter(provenance)),
-        tuple(sorted(shapes)),
+        delta=delta,
+        sample_count=len(calibration),
+        validation_count=len(validation),
+        calibration_false_positives=sum(_passes(row, delta) for row in calibration),
+        validation_false_positives=sum(_passes(row, delta) for row in validation),
+        dataset_hash=calibration_dataset_hash(calibration + validation),
+        rules_version=version,
+        rules_hash=rule_hash,
+        signal_provenance=scope.signal_provenance,
+        supported_shapes=(scope.shape,),
+        round_no=scope.round_no,
+        alpha=scope.alpha,
     )
 
 
@@ -319,11 +314,9 @@ def evaluate(
 
 
 def round2_prompt(session: FrozenSession, cache: AnnualSignalCache) -> dict[str, Any]:
-    session.verify()
+    _validate_bindings(session, cache)
     if session.second:
         raise ValueError("maximum_two_rounds_no_more_followup")
-    if cache.scope != session.scope:
-        raise ValueError("question_cache_scope_mismatch")
     divergences = []
     for index, year in enumerate(cache.years):
         amount = sum(

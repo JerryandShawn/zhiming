@@ -69,6 +69,7 @@ def raw_nulls(
             "rules_version": version,
             "rules_hash": rules_hash,
             "p_value": p_value,
+            "round": 1,
             "alpha": 0.05,
             "holdout": {"supported": True},
             "unique_leader": margin > 0,
@@ -179,7 +180,7 @@ def test_delta_cannot_transfer_between_signal_families_or_unseen_event_counts() 
     assert calibration.covers(base)
     assert not calibration.covers(dict(base, event_count=11))
     assert not calibration.covers(dict(base, signal_provenance="real_Charts"))
-    with pytest.raises(ValueError, match="mixed_signal_family"):
+    with pytest.raises(ValueError, match="mixed_calibration_shapes"):
         calibrate(raw_nulls("cal"), raw_nulls("val", shape=(12, 11)))
 
 
