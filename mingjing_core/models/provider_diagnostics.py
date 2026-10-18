@@ -42,6 +42,8 @@ def quota_subtype(message: str) -> str:
 
 
 def permission_quota(data: object) -> tuple[str, str] | None:
+    if not isinstance(data, dict) or not isinstance(data.get("error"), dict):
+        return None
     kind, message = error_fields(data)
     if kind != "permission_error" or "usage limit" not in message.casefold():
         return None

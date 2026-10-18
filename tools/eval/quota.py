@@ -104,7 +104,12 @@ class QuotaGuard:
 
     def check_open(self) -> None:
         if self.budget is not None:
-            self.budget.check_open(self.role)
+            try:
+                self.budget.check_open(self.role)
+            except ProviderStopped as exc:
+                self.stop_reason = exc.reason
+                self.provider_http_status = exc.provider_http_status
+                raise
             if self.stop_reason in {
                 "quota_5h",
                 "member_window_limit",

@@ -1,10 +1,10 @@
-# P1：建立可替换的模型端口与契约 v2 评测
+# P1：建立可替换的模型端口与契约 v2.1 评测
 
-本 ExecPlan 是活文档，遵循 `.agent/PLANS.md`。夜间执行以用户明确授权的 `13_夜间并行指令.md` 为范围。
+本 ExecPlan 是活文档，遵循 `.agent/PLANS.md`。2026-10-18 当前执行以用户明确要求的 14、15、20 号文件及分线指令为准，取代下文标注 2026-10-17 的夜间限制。历史失败和停止记录保留。
 
 ## Purpose / Big Picture
 
-让同一业务服务通过配置切换模型供应商，支持流式文本、完整工具调用、取消、受控重试及降级。旧 ConfiguredModel 保留为关闭开关后的回滚路径，业务预算与校验保持不变。建立独立上下文、证据化的评测契约 v2，保留 P0 v1 原始分数；夜间仅探测 k3/k3-256k 并尝试一次 v3 c2 基线。
+让同一业务服务通过配置切换模型供应商，支持流式文本、完整工具调用、取消、受控重试及降级。旧 ConfiguredModel 保留为关闭开关后的回滚路径，业务预算与校验保持不变。当前建立事实硬断言、独立证据评审和全文采集的 v2.1 契约；P0 v1 与旧夜间 c2 均保留。新端口默认关闭，只有完整有效 c2.1 基线之后才运行十场景端口子集。
 
 ## Context and Orientation
 
@@ -21,11 +21,13 @@
 - [x] (2026-10-17) 38次探针及唯一一次c2尝试已结束；T05发生HTTP403即停止，全夜142次，无重试/降级/再次调用。
 - [x] (2026-10-17 23:28) 最终89项端口/契约/真实服务集成通过，模型包619/656=94.36%覆盖；v4最终339通过零跳过；旧553中1项PATH问题补齐后恢复3项均通过；v1脚本80/80与self-test48/48。
 - [x] (2026-10-17) 独立复核六项边界缺陷均修复并复现通过；草稿PR3此前代码头c65f597的完整CI已绿，最终增量另取CI结果。
-- [ ] 有效c2能力基线、20条原P0全文与人工标签、一致率、真实端口子集比较、stage验收未完成；夜间不补跑。
+- [ ] 当前：有效 c2.1 能力基线、20 条新全文候选、人工标签、一致率、真实端口子集比较未完成；stage 未获授权，不执行。原 P0 全文要求已由 14§D 改为新有效基线采集。
 - [x] (2026-10-18 / 14A、15) 严格识别 HTTP403 + permission_error + usage limit，细分 quota_5h/quota_weekly；保留原429/503边界，其他403仍权限失败。公开诊断只保留已审计的供应商提示句，不采集任意响应正文。
 - [x] (2026-10-18 / 14A、15) 新增共享会员调用账本：实际HTTP发送前预留、目标/评审/探针合计滚动5小时80次、每批≤10与跨批20分钟、首次5小时额度恢复后仅续一次、weekly全局停止；Mock HTTP与账本验证99项及旧诊断16个subtest通过。
 - [x] (2026-10-18 / 14A、15) core_test_main隔离PG新403额度异常、旧端口、LangGraph上下文传递实际POST计数与旧诊断回归8项及3个subtest通过；现代改动11文件Ruff/format120通过；未发送真实调用。
-- [ ] (2026-10-18 / 14A、15) runner v2.1完整接线与组合回归，真实基线仍未运行。
+- [x] (2026-10-18 16:12 / 14A、C、15) runner v2.1、全文、冻结与恢复、独立校准/端口子集接线完成。81事实硬断言、9隐私字面、130语义模式；C21定向91项通过。
+- [x] (2026-10-18 16:12) 主线旧Core553/553（1340.335秒）、全部v4 458/458零跳过（157.69秒）、端口/评测208项与覆盖700/737（约95%）、v1/v2.1脚本均80/80、自检48/48通过。真实调用0；等待当前头CI，再按授权合并P1。
+- [x] (2026-10-18) 最新九份设计已独立提交，9/9提交字节与大脑目录一致，含个人自用与U9必做决定；证明见design-sync-2026-10-18.json。
 
 ## Surprises & Discoveries
 
@@ -43,6 +45,8 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 
 2026-10-18 / 14A：旧诊断中抽取的公开格式为“You've reached your 5-hour usage limit.”与“You've reached your weekly (7-day) usage limit.”，只用这两句建立合成JSON夹具，不复制原诊断的其他字段。HTTP403必须同时有可解析的error.type=permission_error与usage limit提示；raw403纯文本不是额度证据。只截任意响应前240字仍会泄漏供应商回显的用户正文，因此诊断只提取已审计公共句，长度≤240。实际会员计数使用独立物理Clock；场景的FrozenClock不能倒退会员窗口。
 
+2026-10-18 / 14D：冻结语料的七类校准中，decision 只有 D02 一个适用场景。保持原 targets 和基线分数，完整基线后可单独重采样一次 D02，标记 calibration_only、独立 sample_id，并沿用原会员账本；是否接受同场景两次实际回答满足覆盖要求，留给大脑判断。proactive 不在指定七类之内，无需额外请求。
+
 ## Decision Log
 
 - 2026-10-17 / Codex：所有待用户/大脑事项写早上汇总，夜间不等待；来自用户明确指令。
@@ -53,6 +57,9 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 - 2026-10-17 / Codex：新增额度集成测试起初通过 V3Target 时得到预期的评测控制信号 ProviderStopped，故将运行时验收直接驱动真实 service（仅替换 HTTP），而不是修改旧配额断言。该测试随后发现并修复异常重建兼容问题。未删除或削弱旧测试。
 - 2026-10-18 / Codex / 14A：旧test_protocols中(403,"usage limit")夹具过宽，按大脑明确的新三条件改成permission_error公开JSON提示；保留“一次HTTP、无重试”的原断言，新增缺type/错误type/原始文本403反例。普通旧适配器非quota行为、JSON结果契约与业务修复预算保持原样。
 - 2026-10-18 / Codex / 15：使用持久化共享账本防止通过新run_id或角色绕过80次；HTTP边界ContextVar钩子覆盖旧POST及新端口内部重试/降级，默认未绑定时不改变生产。quota_5h首停写stop+5h预计恢复，resume_once限一次，第二次无自动恢复时间；weekly跨所有运行保持停止。原夜间quota-stop不删除，今日用独立运行作用域与同一会员共享账本。
+- 2026-10-18 / Codex / 14C、15：恢复日期、星期、农历、节气/节假日、天数与热线等事实硬检查；明确同义格式和否定识别。隐私禁提词保持原字面硬检查；措辞交固定评审，旧 YAML、rubric 和历史报告不改。新目标 k3、评审 k3-256k 的口径标为 deterministic-eval-v2.1.0，不与 v1/c2 作分差。
+- 2026-10-18 / Codex / 15F、G：用户已授权 A/C 与 CI 通过后将 PR3、PR4 依序合入 v4/main。先冻结 P1 完整执行源，再合 P2；E1 使用该独立快照，避免 P2 时间速赢污染旧 v3 基线。普通 main、stage、生产不在授权内。
+- 2026-10-18 / Codex / 20：主线测试使用 core_test_main，E1 专用 core_test_e1；均限 loopback:55480。真实模型请求与 v4/main 合并只由主线执行。P10 §I 已收尾推送后移交，P8 §H 与后续计算交独立命理线，主线不再改其目录或 charts/skills/knowledge。
 
 ## Outcomes & Retrospective
 
@@ -62,9 +69,11 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 
 14A验证命令为 pytest tests/v4/models/test_member_quota_errors.py tests/v4/models/test_member_budget.py tests/v4/models/test_protocols.py tests/v4/models/test_stream_safety.py tests/v4/models/test_schema_registry.py tests/v4/models/test_probe_guard.py tests/test_core_model_diagnostics.py::ConfiguredModelDiagnosticsTests -q：99 passed、16 subtests，9.35秒。CORE_TEST_DSN指定loopback core_test_main后，pytest tests/v4/models/test_member_quota_pg.py tests/v4/models/test_v3_port_integration.py tests/test_core_model_diagnostics.py::FailureDiagnosticPostgresTests -q：8 passed、3 subtests，2.56秒；其中完整LangGraph业务一轮的两次Mock POST恰计target=2。首次带PG批次因PG未运行而中止，不作为通过证据；恢复本机隔离PG后仅重跑上述真实PG范围。
 
+2026-10-18 16:12：A/C离线与主线回归均通过，旧Core553、v4 458、模型/评测208、脚本两契约80/80及自检48/48已验证。最终收口额外修复共享额度预检查漏传停止类型、subset基础设施错误误报完成、C21基础设施错误自动重试；相关回归通过。当前合并条件尚待发布头CI，E1真实调用仍为0，没有有效c2.1基线、人工校准或真实分差。完整结果与命令见2026-10-18-validation.md。
+
 ## Plan of Work
 
-先实现端口类型、取消与脱敏错误，拆开 HTTP 传输和 SSE 解析以保持文件/函数大小限制。随后实现 OpenAI 与 Anthropic 消息编码、工具分片、schema 与注册表；先替身验证再接入 from_base 的显式开关。评测使用独立 c2 场景副本/断言审计与固定 rubric，评审仅看用户输入、最终回答、此刻和回执/事实证据。最后运行受配额保护的小探针，若可用再启动唯一一次 c2 语料；不为校准补发额外请求。
+端口与显式 from_base 开关已实现。当前先完成 A 额度边界与 C 事实断言的组合验证，发布测试证据并在 CI 绿后依次合并 P1、P2。E1 从提交后的 P1 源建立独立冻结快照，目标只用旧 ConfiguredModel，评审只看用户输入、完整最终回答、此刻和回执/事实证据。80 场景按最多十场景分批，批间二十分钟，实际发送共用滚动五小时八十次账本。完整有效基线后才补决策校准并运行独立新端口子集；不改今天 v2.1 的场景定义，不提前纳入 v2.2。
 
 ## Concrete Steps
 
@@ -80,11 +89,11 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 
 ## Validation and Acceptance
 
-分片 JSON 工具应完整组装；合成 reasoning 只按能力回传；取消关闭流并抛安全错误；503 故障两次切下个模型；会员额度错误一次即全局中止夜间实测且不访问兄弟模型。L01 用端口进行工具→结果→回答三步替身循环。Intake、FinalAnswer/DecisionOption 与 ask_user/memory_write schema 应不含本地引用。模型包覆盖率目标至少 85%。所有场景 scripted 应 100%；T01–T05/R01–R03/S01–S02 的真实结果仅取同一 c2 运行，缺失则注明未验证。
+分片 JSON 工具应完整组装；合成 reasoning 只按能力回传；取消关闭流并抛安全错误；503 故障两次切下个模型；会员额度错误立即停止本批且不换模型绕过。L01 用端口进行工具→结果→回答三步替身循环。Intake、FinalAnswer/DecisionOption 与 ask_user/memory_write schema 应不含本地引用。模型包覆盖率目标至少 85%。所有场景 scripted 应 100%；T01–T05/R01–R03/S01–S02 的新旧比较必须使用同一 v2.1 场景、模型与评审身份，缺失则注明未验证。
 
 ## Idempotence and Recovery
 
-不迁移数据库。关闭 `MODELS_CONFIG`/`MINGJING_MODEL_PORT=v2` 即回旧适配器。只在本地隔离 schema 执行评测，运行的状态文件与全局配额停止标志持久化至受保护工作目录；恢复只能读缓存，遇会员额度错误不重试。远端仅草稿 PR，预期旧 SHA 检查后更新独立分支，不合并。
+P1 不迁移业务数据库。清除 `MODELS_CONFIG` 与 `MINGJING_MODEL_PORT=v2` 即回旧适配器。只在本地隔离 schema 执行评测，运行状态与会员账本持久化至受保护工作目录。恢复必须验证源码、80 场景、rubric、模型和账本身份，已完成场景不再请求；首次 quota_5h 停止加五小时后只允许自动继续一次，第二次停止到用户回来，quota_weekly 全部停止并置顶提示。原夜间停止文件保留。独立阶段分支更新使用预期旧 SHA；PR3/4 只在用户授权的条件满足后合入 v4/main。
 
 ## Artifacts and Notes
 
@@ -101,3 +110,4 @@ P0 报告仅保留回答前 200 字，原完整回答未保存；不能从预览
 - 2026-10-17 23:28 更新：记录403停止与142次调用、最终89/339回归和94.36%覆盖、独立审计修复、校准来源修正与明确未验收项。
 - 2026-10-18 更新14A、15：记录严格403分类、公共诊断白名单、HTTP实际调用共享账本、批次/恢复规则与原403夹具修订原因；待PG和runner组合检查，不发送真实调用。
 - 2026-10-18 更新14A验证：99项离线与8项真实core_test_main回归通过，补充失败后重跑范围与LangGraph实际POST钩子传播证据，完整E1及合并仍由主线处理。
+- 2026-10-18 按14/15/20更新当前范围：v2.1、冻结P1再合P2、限定一次自动续跑、D02校准缺口、独立数据库与前端/命理交接；旧夜间记录仅作历史证据。

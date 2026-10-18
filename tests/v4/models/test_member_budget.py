@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import httpx
 import pytest
@@ -207,3 +207,18 @@ def test_new_port_retries_and_failover_share_the_actual_request_cap(
     assert budget.snapshot()["run_calls_by_role"]["target"] == 3
     ledger = json.loads(budget.path.read_text(encoding="utf-8"))
     assert all(set(call) == {"at", "role", "run_id"} for call in ledger["calls"])
+
+
+@pytest.mark.parametrize("reason", ["quota_5h", "quota_weekly"])
+def test_preflight_shared_stop_is_kept_for_target_result_metadata(tmp_path: Path, reason: str) -> None:
+    budget, _ = setup_budget(tmp_path)
+    budget.before_batch(["T01"])
+    provider = Mock()
+    guard = QuotaGuard(provider, "target", budget)
+    budget.record_stop(reason, 403)
+    with pytest.raises(ProviderStopped) as caught:
+        guard.check_open()
+    assert caught.value.reason == guard.stop_reason == reason
+    assert guard.provider_http_status == 403
+    provider.generate.assert_not_called()
+    assert budget.snapshot()["real_calls_total"] == 0

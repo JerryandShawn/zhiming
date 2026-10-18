@@ -62,6 +62,7 @@ def test_member_403_is_one_attempt_and_diagnostic_is_public(subtype: str, protoc
         },
         {"error": {"message": "You've reached your weekly (7-day) usage limit."}},
         {"error": {"type": {}, "message": "usage limit"}},
+        {"type": "permission_error", "message": "You've reached your 5-hour usage limit."},
         {"echo": "quota; usage limit; synthetic-private"},
     ],
 )

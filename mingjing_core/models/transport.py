@@ -122,7 +122,7 @@ def strict_json(value: str) -> Any:
 
 
 def stream_error(data: Any, *, membership: bool) -> ModelUnavailable:
-    if match := permission_quota(data):
+    if match := permission_quota({"error": data}):
         subtype, public = match
         return ModelQuotaExhausted(subtype=subtype, error_type="permission_error", provider_message=public)
     classification = str(data).casefold()

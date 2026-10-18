@@ -10,34 +10,12 @@ from pathlib import Path
 from typing import Any
 
 from tools.eval.judges import ISSUE_SEVERITIES, JUDGE_SCHEMA
-from tools.eval.quota import QuotaGuard
+from tools.eval.quota import ProviderStopped, QuotaGuard
 from tools.eval.schema import load_scenarios
 
 JUDGE_SCHEMA_V2 = deepcopy(JUDGE_SCHEMA)
 JUDGE_SCHEMA_V2["required"].append("reason")
 JUDGE_SCHEMA_V2["properties"]["reason"] = {"type": "string", "minLength": 1, "maxLength": 1200}
-CALIBRATION_IDS = (
-    "T01",
-    "T05",
-    "T14",
-    "M02",
-    "M03",
-    "M04",
-    "M10",
-    "M11",
-    "R01",
-    "R02",
-    "R03",
-    "R04",
-    "Q01",
-    "Q03",
-    "Q04",
-    "S01",
-    "S02",
-    "S03",
-    "C04",
-    "D02",
-)
 
 
 class EvidenceModel:
@@ -79,9 +57,14 @@ class EvidenceJudge:
         self.rubric = rubric.read_text(encoding="utf-8")
         self.observed = observed
         self.candidates: dict[str, dict[str, Any]] = {}
+        self.records: list[dict[str, Any]] = []
+        self.run_id = "unassigned"
+        self.categories = {case.id: case.category for case in load_scenarios()}
 
     def evaluate(self, payload: dict[str, Any]) -> dict[str, Any]:
         started = time.monotonic()
+        budget = getattr(self.provider, "budget", None)
+        before = budget.snapshot()["run_calls_by_role"].get("judge", 0) if budget else None
         evidence = deepcopy(self.observed.evidence if self.observed else {})
         safe = {key: deepcopy(payload[key]) for key in ("scenario_id", "user", "answer", "receipts", "criterion")}
         safe["此刻"] = {
@@ -94,8 +77,17 @@ class EvidenceJudge:
             "injected_facts": evidence.get("facts", evidence.get("current_facts", [])),
             "claims": evidence.get("claims", []),
         }
-        if payload["scenario_id"] in CALIBRATION_IDS:
-            self.candidates[payload["scenario_id"]] = {**safe, "grade": {"status": "not_completed"}}
+        if payload.get("seed", {}).get("synthetic") is not True:
+            raise ValueError("Full-answer capture requires the strict synthetic fixture marker")
+        row = {
+            **safe,
+            "run_id": self.run_id,
+            "category": self.categories[payload["scenario_id"]],
+            "turn": getattr(self.observed, "turn_index", 1),
+            "sample_id": f"{self.run_id}:{payload['scenario_id']}:{len(self.records) + 1}",
+            "grade": {"status": "not_completed"},
+        }
+        self.records.append(row)
         try:
             # generate has exactly this one new user payload; no tested system/history/trajectory is passed.
             response = self.provider.generate(
@@ -103,74 +95,104 @@ class EvidenceJudge:
             )
             output = response["output"]
             validate_grade(output)
-            if payload["scenario_id"] in CALIBRATION_IDS:
-                self.candidates[payload["scenario_id"]] = {**safe, "grade": deepcopy(output)}
+            row["grade"] = {"status": "complete", **deepcopy(output)}
+            self.candidates[payload["scenario_id"]] = deepcopy(row)
             return {
                 "score": float(output["score"]),
-                "model_calls": 1,
+                "model_calls": budget.snapshot()["run_calls_by_role"].get("judge", 0) - before if budget else 1,
                 "elapsed_seconds": time.monotonic() - started,
                 "error": None,
             }
+        except ProviderStopped as exc:
+            row["grade"] = {"status": "stopped", "reason": exc.reason}
+            if budget:
+                exc.model_calls = budget.snapshot()["run_calls_by_role"].get("judge", 0) - before
+            raise
         except Exception as exc:
+            row["grade"] = {"status": "error", "error_code": type(exc).__name__}
             return {
                 "score": 0.0,
-                "model_calls": 1,
+                "model_calls": budget.snapshot()["run_calls_by_role"].get("judge", 0) - before if budget else 1,
                 "elapsed_seconds": time.monotonic() - started,
                 "error": type(exc).__name__,
             }
 
 
-def export_candidates(judge: EvidenceJudge | None, path: Path, v1_path: Path) -> None:
-    prior = json.loads(v1_path.read_text(encoding="utf-8")) if v1_path.exists() else {"cases": []}
-    cases = {case["id"]: case for case in prior["cases"]}
-    scenarios = {scenario.id: scenario for scenario in load_scenarios()}
+CALIBRATION_CATEGORIES = (
+    "time",
+    "memory_write",
+    "memory_recall",
+    "question",
+    "safety",
+    "chart",
+    "decision",
+)
+
+
+def select_candidates(records: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if len({row["sample_id"] for row in records}) != len(records):
+        raise ValueError("Calibration sample IDs must identify distinct actual observations")
+    eligible = [row for row in records if row.get("answer") and row.get("grade", {}).get("status") == "complete"]
+    by_category = {
+        category: [row for row in eligible if row["category"] == category] for category in CALIBRATION_CATEGORIES
+    }
+    selected = [row for category in CALIBRATION_CATEGORIES for row in by_category[category][:2]]
+    chosen = {row["sample_id"] for row in selected}
+    selected += [row for row in eligible if row["sample_id"] not in chosen and row["category"] in by_category][
+        : 20 - len(selected)
+    ]
+    counts = {category: sum(row["category"] == category for row in selected) for category in CALIBRATION_CATEGORIES}
+    missing = {
+        category: {"required": 2, "available": len(rows)} for category, rows in by_category.items() if len(rows) < 2
+    }
+    return selected, {
+        "candidate_count": len(selected),
+        "category_counts": counts,
+        "missing_categories": missing,
+        "ready": len(selected) == 20 and not missing,
+        "human_labels": 0,
+        "agreement": None,
+    }
+
+
+def export_candidates(
+    judge: EvidenceJudge | None,
+    path: Path,
+    v1_path: Path | None = None,
+    *,
+    valid_run: bool = False,
+) -> dict[str, Any]:
+    """Export only actual full new-run observations; P0 previews are never inputs."""
+    del v1_path
+    rows, status = select_candidates(judge.records if judge else [])
+    status.update(valid_run=valid_run, ready=valid_run and status["ready"], source="c21-full-synthetic-observations")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.with_suffix(".status.json").write_text(
+        json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
+    if not valid_run or not rows:
+        return status
     lines = [
-        "# 合成校准候选（20 条；尚待大脑标注）",
+        "# c2.1 合成全文校准候选",
         "",
-        "人工一致率：未计算，尚无人工标签。不得声称 ≥80%。",
-        "P0 v1 仅留前200字预览，原全文未保存；以下逐项区分原预览与此次 c2 重跑全文。",
-        "c2 全文可作为替代校准集，能否替代 P0 原全文请大脑决定。不得把预览扩写成原回答。",
+        f"实际候选 {len(rows)} 条；覆盖 {len({row['category'] for row in rows})} 类；达标：{status['ready']}。",
+        "每类至少两条要求不足时见同名 status.json，不复制回答或补造缺失样本。",
+        "来源仅为本次有效 c2.1 的实际完整回答，未使用 P0 的 200 字预览或旧夜间九条回答。",
+        "人工标签 0，一致率未计算。",
         "",
     ]
-    for identity in CALIBRATION_IDS:
-        row = judge.candidates.get(identity) if judge else None
-        lines.extend([f"## {identity}", ""])
-        scenario = scenarios[identity]
-        lines.extend(["用户输入：" + scenario.turns[0].user, "", "场景冻结时刻：" + scenario.clock, ""])
-        previews = cases.get(identity, {}).get("previews", [])
-        lines.extend(["P0 原预览（不是全文）：", "", "\n\n".join(previews) or "无回答预览（运行未产生最终回答）。", ""])
-        if row:
-            lines.extend(
-                [
-                    "来源：本夜获准 c2 基线重跑；仅合成资料。",
-                    "",
-                    "用户输入：" + row["user"],
-                    "",
-                    "v3 c2 回答全文：",
-                    "",
-                    row["answer"],
-                    "",
-                    "此刻块：",
-                    "",
-                    "```json",
-                    json.dumps(row["此刻"], ensure_ascii=False, indent=2),
-                    "```",
-                    "",
-                    "回执清单：",
-                    "",
-                    "```json",
-                    json.dumps(row["receipts"], ensure_ascii=False, indent=2),
-                    "```",
-                    "",
-                    "评审员 v2：",
-                    "",
-                    "```json",
-                    json.dumps(row["grade"], ensure_ascii=False, indent=2),
-                    "```",
-                    "",
-                ]
-            )
-        else:
-            lines.extend(["原P0全文、实际注入此刻、程序回执与v2评分所需证据未保留，无法补全；不得伪造。", ""])
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines), encoding="utf-8")
+    for row in rows:
+        lines += [
+            f"## {row['sample_id']} / {row['category']}",
+            "",
+            "用户输入：" + row["user"],
+            "",
+            "回答全文：",
+            "",
+            row["answer"],
+            "",
+        ]
+        for title, value in (("此刻块", row["此刻"]), ("程序回执", row["receipts"]), ("评审打分与理由", row["grade"])):
+            lines += [title + "：", "", "```json", json.dumps(value, ensure_ascii=False, indent=2), "```", ""]
+    path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
+    return status
