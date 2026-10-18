@@ -5,6 +5,11 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta, timezone
 
 from .handoff_refs import digest, resolve
+from .handoff_validate_request import (
+    astro_profile_inputs,
+    basis_target,
+    timing_inputs,
+)
 
 
 def same_scope(scope: dict, value: dict, *, operation: bool = False) -> None:
@@ -57,6 +62,7 @@ def _basis(doc: dict, preview: dict) -> None:
             raise ValueError("preview_chart_instant_mismatch")
         if candidate["solar_time"]["longitude"] != request["birth"]["place"]["lon"]:
             raise ValueError("preview_birth_longitude_mismatch")
+        basis_target(row, preview)
         _chart_evidence(row, raw)
     if raw["model_calls"] != 0 or raw["writes"] != 0 or raw["profile_update_allowed"]:
         raise ValueError("preview_native_effects_forbidden")
@@ -127,6 +133,7 @@ def _bundle(doc: dict, preview: dict) -> None:
         ):
             raise ValueError("preview_profile_source_binding_mismatch")
         _profile_utc(profile, preview["request"]["physical_birth_at_utc"])
+        astro_profile_inputs(profile, preview)
     for key, artifact in raw["artifacts"].items():
         same_scope(scope, artifact)
         profile = raw["profiles"][artifact["profile_id"]]
@@ -162,6 +169,7 @@ def _timing(doc: dict, preview: dict) -> None:
         preview["request"]["physical_birth_at_utc"]
     ):
         raise ValueError("preview_timing_birth_utc_mismatch")
+    timing_inputs(raw["data"], preview, utc)
     if raw["model_calls"] != 0 or raw["writes"] != 0 or raw["profile_update_allowed"]:
         raise ValueError("preview_native_effects_forbidden")
 

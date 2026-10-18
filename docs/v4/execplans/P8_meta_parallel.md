@@ -14,7 +14,7 @@
 - [x] (2026-10-18 22:36 +08:00) 夜间M1本机验证完成：24号§6十项审校，规则正反例/教材快照/time_basis/交互表完整769通过、80脚本；96样式/141保护文件；随后按相同树提交推送。
 - [x] (2026-10-18 23:08 +08:00) 夜间M2本机验证完成：chart_compute只读接线契约、JSON Schema、三份阿远合成输出与前端模拟数据；逐字段与实际入口核验。
 - [x] (2026-10-18T23:40:09+08:00) 夜间M3：14纳入/66排除、完整来源优先校验、固定种子安慰剂拒绝、3合成题30回调；完整843通过后按相同树发布，真实模型留主线在线手动执行。
-- [ ] 夜间M4：技能来源/待核与白话示例、38条额外反例、实际耗时与独立边界复核；07:30收束、08:00前汇总。
+- [x] (2026-10-19T07:15:32+08:00) 夜间M4：技能28章、52绑定检查、重复性能及8156点独立研究；完整914通过后发布，07:30收束、08:00前汇总。
 
 - [x] (2026-10-18 23号裁定续作) 实验倒推冻结/默认隐藏、真太阳时主口径+北京时间差异并列（实际UTC不改）；只读命理档案建议记录口径。
 - [x] 按题面明确年份筛选、BaziQA逐题缺标签排除与实际纳入统计；不发真实模型。
@@ -68,9 +68,9 @@
 
 ## Validation and Acceptance
 
-夜间M1：769/769、0跳过、脚本80/80，96Python样式/141保护文件通过；源码955533d1、证据HEAD0b744aee，PR #5草稿，新HEAD CI尚在运行。相关07场景C01–C07与19号CR01–CR06的Agent真实表达未由这些计算单元测试证明；主线语义场景不可冒领。
+夜间M1：769/769、0跳过、脚本80/80，96Python样式/141保护文件通过；源码955533d1、证据HEAD0b744aee，PR #5草稿，准确HEAD CI已成功。相关07场景C01–C07与19号CR01–CR06的Agent真实表达未由这些计算单元测试证明；主线语义场景不可冒领。
 
-夜间M2：正在生成JSON Schema/真实计算的canonical阿远三样例，分配临时演示c/r依据，不建立主线别名账本。每份用独立operation_id，三文件不可把c1直接合并为同一上下文。不同原生document根通过内容ID+Pointer显式引用；time_basis坐标ID与feature ID不单独冒充内容依据ID。
+夜间M2：已交JSON Schema/真实计算的canonical阿远三样例，分配临时演示c/r依据，不建立主线别名账本。每份用独立operation_id，三文件不可把c1直接合并为同一上下文。不同原生document根通过内容ID+Pointer显式引用；time_basis坐标ID与feature ID不单独冒充内容依据ID。
 
 本机软件检查601/601、脚本80/80。正式E-R1不通过，200种独立出生盘与自信错误率、Linux/Windows一致性未证明；不宣称完整P8 Done。详细命令/输出/指纹见evidence/P8/meta-regression-summary.json与meta-validation.json、time-basis-crosscheck.md、rules-review.md、skills-review.md、e2-v2-scripted-2026-10-18.md、rectification-eval.md。
 
@@ -105,3 +105,5 @@ P8ChartAdapter.time_basis(request)；charts.rules.evaluate_rules；bazi_interact
 2026-10-18 23:08 Night M2 Outcome：契约草稿、Schema、canonical阿远三份真实引擎样例齐备。原生time_basis同盘，comparison空、两诊断保留；9true hits/38assessments、48飞边、20区间窗口、次限/回归完整。短别名不进入稳定claimID；7个新增Python文件（含测试）及全文源均过103样式/141保护，完整816通过；样例只读演示，不宣称主线/API/别名账本已完成。
 
 2026-10-18T23:40:09+08:00 Night M3 Decision/Outcome：旧子集先筛再校验会漏跨赛季重复或出生冲突，新审计直接用正式loader全源校验后筛出的records；不改变loader或v1。2025子集80/14/66与全源360分列；安慰剂完整批次不可行，固定种子只一次，0降级。完整843通过、0skip，M2准确HEAD CI成功；剩余技能/独立校验继续。
+
+2026-10-19T07:15:32+08:00 Night M4 Decision/Outcome：新增预览请求绑定严格限定canonical合成资料，不能据不完整回显宣称通用输入验证。8156研究点和42边界探针保留5差异，现行算法不改。PG首次4连接超时/910通过，确认core_test_meta后原代码全重跑914通过；不改测试。M3准确HEAD CI成功。00–06缺可核验小时记录，作为未完成披露，未补填；后续只收束与核验。

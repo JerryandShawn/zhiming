@@ -177,6 +177,8 @@ python -m mingjing_core.adapters.charts.benchmarks.handoff_build `
 
 JSON Schema需启用FormatChecker并结合`ensure_finite_json`；归属、内容hash、引用解析、r=true、完整规则版本与西占实际UTC等跨字段关系由语义检查处理。它不证明授权、来源签名、排盘外部精度或人生预测有效。各样例的精确SHA、数量和本机验证结果在本里程碑证据报告列出；夜间不运行真实模型或服务器。
 
+附带的`validate_preview`只校验当前builder的canonical阿远固定合成请求及其表示形式，会拒绝其它人物、日期或时间标签。Schema本身仅约束结构；固定输入核对后仍检查原生目标日、西占实际输入与显式地点、时序目标、内容hash、scope和依据引用。原生time_basis没有完整输入回显，因此它不是任意请求的通用校验器。主线通用接线需单独设计实际输入回显和内容绑定，不能照搬固定合成输入白名单作为真实用户API。修复缘由与反例见[请求绑定复核](../evidence/P8/night24-handoff-binding-review.md)。
+
 
 ### 5.3 本机验证回执
 

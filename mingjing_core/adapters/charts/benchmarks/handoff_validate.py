@@ -10,6 +10,7 @@ from ....domain.json_values import ensure_finite_json
 from .handoff_refs import claim_id, digest, document_id, resolve
 from .handoff_schema import schema
 from .handoff_validate_data import native_document, same_scope, utc
+from .handoff_validate_request import canonical_fixture_request
 
 
 def _documents(preview: dict, verify_runtime_sources: bool) -> dict:
@@ -243,6 +244,7 @@ def validate_preview(value: dict, *, verify_runtime_sources: bool = False) -> No
         Draft202012Validator(schema(), format_checker=FormatChecker()).validate(value)
     except ValidationError as exc:
         raise ValueError("preview_schema_invalid") from exc
+    canonical_fixture_request(value)
     try:
         docs = _documents(value, verify_runtime_sources)
         for group in value["view"].values():
