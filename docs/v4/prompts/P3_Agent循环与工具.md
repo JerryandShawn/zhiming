@@ -68,6 +68,14 @@ LangGraph 不再作为主循环（理由见蓝图 §3.1：v3 checkpoint 只存 I
   - `schedule_followup` / `set_reminder`：只写 `followup` / `reminder` 实体（`due_at`、`topic`、`reason`、`source_fact_id`、`status=active`），发送逻辑在 P7。
 - 按情境暴露（每轮 ≤15）：无已确认出生资料时不暴露 `chart_compute`；无已揭示 draw 时不暴露 `tarot_read`；无痕线程不暴露写记忆类工具；危机模式只暴露 `time_context`、`memory_search`。
 
+### v4.1 增补（来自 `docs/v4/16_算命Agent架构研究.md`）
+- **U4 相对日期绝对化**：`memory_write` 与 `schedule_followup` 收到"下周三""月底""过两天"等相对说法时：
+  - 由代码按该条消息的"此刻"（消息时间 + owner 时区）换算成绝对日期，写入 `event_at`；
+  - 同时保存说话时刻 `said_at` 与原始说法；
+  - 换算有歧义时（例如周日说"下周三"），工具返回 `needs_confirmation`，由模型用 `ask_user` 确认。
+  - 为日期解析写正反例测试各 ≥20 条，基准时间为 2026-10-17（周六）。
+- **U7 塔罗防反复**：同一个问题（规范化后的问题文本相同或高度相似）在 24 小时内再次请求抽牌时，`tarot_start` 返回 `recent_draw_exists` 和已有 draw 的 ID。模型据此引导用户回看已有牌面，或补充背景后重新解读；用户明确坚持时仍然允许抽新牌。
+
 ### 人生线程与无痕
 - 线程 ID 规则见 §4；无痕：用户在消息中明确说"开个无痕/这段别记"或前端开关（P10）→ 新建 `incognito:<uuid>` 线程，后续消息在该线程中直到用户说"结束无痕"或 24 小时无活动；无痕线程不写记忆、不进主线程上下文、不被反思处理。
 - `POST /api/chat` 新增可选字段 `thread_id`（默认主线程）与 `incognito: bool`；旧字段 `session_id` 映射为 `topic_id` 标签。
