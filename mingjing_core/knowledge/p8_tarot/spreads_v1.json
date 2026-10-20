@@ -1,0 +1,310 @@
+{
+  "version": "p8-tarot-spreads-v1",
+  "status": "readonly_handoff_not_runtime_registry",
+  "school": "zhiming-editorial-symbolic-reflection",
+  "runtime_supported_count": 3,
+  "supported_card_counts": [
+    1,
+    3,
+    5
+  ],
+  "meanings": {
+    "path": "mingjing_core/knowledge/tarot_meanings.json",
+    "deck_version": "zhiming-geometric-78-v1",
+    "meaning_version": "zhiming-editorial-2026-10-10-v1",
+    "card_count": 78,
+    "source_type": "original_editorial",
+    "source_ref": "editorial-meanings"
+  },
+  "sources": [
+    {
+      "source_id": "runtime-spreads",
+      "title": "现有三牌阵项目定义",
+      "kind": "project_implementation",
+      "path": "hermes/tarot_deck.py",
+      "locator": "SPREADS",
+      "sha256": "43e9a978f7637c630a43890a3ea7506ee1421f1a008233e2fa0fe781dc487668",
+      "sha_mode": "utf8-lf-sha256",
+      "support_scope": "只支持三种产品牌阵的实际ID、名称、版本、牌位和数量；不支持传统权威或预测效度"
+    },
+    {
+      "source_id": "runtime-service",
+      "title": "现有抽牌服务边界",
+      "kind": "project_implementation",
+      "path": "mingjing_core/adapters/tarot.py",
+      "locator": "TarotService.create_draw/_manual/get_for_reading",
+      "sha256": "603d961da03bc076c3272ffc40350a575ed6423e06716ee01f3db1f0b10b5ee0",
+      "sha_mode": "utf8-lf-sha256",
+      "support_scope": "抽牌来源、choice5选项、固定牌面和ready门槛；新资产不执行或替代这些状态操作"
+    },
+    {
+      "source_id": "runtime-claims",
+      "title": "现有塔罗声明校验",
+      "kind": "project_implementation",
+      "path": "mingjing_core/knowledge/registry.py",
+      "locator": "KnowledgeRegistry.tarot_claims",
+      "sha256": "ac45f017b18ec11305c61107c34279e1f7f763f0263106b8bf9a870c76cd3eff",
+      "sha_mode": "utf8-lf-sha256",
+      "support_scope": "牌阵、版本、顺序、方向和快照核对；不表示本新资产已自动接入该Registry"
+    },
+    {
+      "source_id": "editorial-meanings",
+      "title": "明镜原创78张牌义资产",
+      "kind": "original_editorial",
+      "path": "mingjing_core/knowledge/tarot_meanings.json",
+      "locator": "/cards/*/source",
+      "sha256": "fcdc96fdfc077eaf164faaf6e57f11d030425453788246fa9d123b243344ec7e",
+      "sha_mode": "utf8-lf-sha256",
+      "support_scope": "逐牌正逆位和反思文本署名为产品原创，不是Waite逐句翻译或专家校勘"
+    },
+    {
+      "source_id": "p8-spread-guidance",
+      "title": "P8牌位用途与限制原创说明",
+      "kind": "original_editorial",
+      "path": "mingjing_core/knowledge/p8_tarot/spreads_v1.json",
+      "locator": "/spreads/*/position_guidance",
+      "support_scope": "本版本新写的反思问题、用途、限制及流派边界；不补造历史出处"
+    }
+  ],
+  "spreads": [
+    {
+      "id": "focus1",
+      "name": "关注点",
+      "version": "1.0",
+      "positions": [
+        "此刻值得留意的角度"
+      ],
+      "card_count": 1,
+      "runtime_supported": true,
+      "purpose": "从一个已说清的小问题选择一个值得留意的角度，不用它替代现实判断。",
+      "when_to_use": "问题边界已经明确，只想先整理一个关注点时；复杂A/B比较应改用明确选项。",
+      "position_guidance": [
+        {
+          "position": 1,
+          "label": "此刻值得留意的角度",
+          "focus": "聚焦当前能核实的一件事",
+          "question": "眼前哪件小事值得先核实？",
+          "limit": "一个象征角度不代表全局，也不自动等于建议或未来结果。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        }
+      ],
+      "options": {
+        "required": [],
+        "distinct_values": false,
+        "max_length": 1200
+      },
+      "school_differences": [
+        {
+          "method": "zhiming-editorial-reflection",
+          "description": "这是产品一牌反思布局；不同传统一牌法的提问和时间尺度不能自动套入。",
+          "status": "project_choice_not_historical_consensus"
+        }
+      ],
+      "limits": [
+        "不判断客观事实、他人心意、疾病、灾祸或收益；不换算事件概率。",
+        "只读本轮owner范围内已固定且ready的牌阵；不猜未翻牌或自行补抽。",
+        "重复提问、明确新抽、更正、删除与撤销由主线工具处理，本数据没有写入能力。"
+      ],
+      "source_refs": [
+        "runtime-spreads",
+        "runtime-service",
+        "runtime-claims",
+        "p8-spread-guidance"
+      ]
+    },
+    {
+      "id": "reflect3",
+      "name": "梳理问题",
+      "version": "1.0",
+      "positions": [
+        "当前处境的反思",
+        "可能忽视的因素",
+        "可尝试的行动"
+      ],
+      "card_count": 3,
+      "runtime_supported": true,
+      "purpose": "把当前感受、未核实条件和一个可撤回行动分开讨论。",
+      "when_to_use": "用户愿意先整理处境再试一件小事时；不是过去/现在/未来三张布局。",
+      "position_guidance": [
+        {
+          "position": 1,
+          "label": "当前处境的反思",
+          "focus": "描述已确认的处境和感受",
+          "question": "这张象征让你想到当前哪一部分经历？",
+          "limit": "牌不能补写未被用户确认的往事或现实事实。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        },
+        {
+          "position": 2,
+          "label": "可能忽视的因素",
+          "focus": "提出需要核实的条件",
+          "question": "有没有一条尚未核实、却会改变判断的信息？",
+          "limit": "忽视因素只是可调查问题，不是隐藏秘密或他人动机的证据。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        },
+        {
+          "position": 3,
+          "label": "可尝试的行动",
+          "focus": "选择可撤回的小行动",
+          "question": "今天可以试哪件小事，何时检查实际结果？",
+          "limit": "行动位不是未来结果位，不要求照牌行动或保证有效。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        }
+      ],
+      "options": {
+        "required": [],
+        "distinct_values": false,
+        "max_length": 1200
+      },
+      "school_differences": [
+        {
+          "method": "zhiming-editorial-reflection",
+          "description": "同为三张不等于通用时间牌阵；必须用本项目现有三处原标签，不偷换为过去现在未来。",
+          "status": "project_choice_not_historical_consensus"
+        }
+      ],
+      "limits": [
+        "不判断客观事实、他人心意、疾病、灾祸或收益；不换算事件概率。",
+        "只读本轮owner范围内已固定且ready的牌阵；不猜未翻牌或自行补抽。",
+        "重复提问、明确新抽、更正、删除与撤销由主线工具处理，本数据没有写入能力。"
+      ],
+      "source_refs": [
+        "runtime-spreads",
+        "runtime-service",
+        "runtime-claims",
+        "p8-spread-guidance"
+      ]
+    },
+    {
+      "id": "choice5",
+      "name": "A/B 选择",
+      "version": "1.0",
+      "positions": [
+        "核心诉求",
+        "A 的机会提示",
+        "A 需核查的顾虑",
+        "B 的机会提示",
+        "B 需核查的顾虑"
+      ],
+      "card_count": 5,
+      "runtime_supported": true,
+      "purpose": "围绕两个已命名选项，对照诉求、机会提示和需要核查的顾虑。",
+      "when_to_use": "用户已给出不同的A/B现实选项且愿意比较条件时；不是自动替用户选赢家。",
+      "position_guidance": [
+        {
+          "position": 1,
+          "label": "核心诉求",
+          "focus": "确认选择背后的现实诉求",
+          "question": "这次最需要满足的条件或底线是什么？",
+          "limit": "诉求须由用户确认，牌不证明用户其实想要什么。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        },
+        {
+          "position": 2,
+          "label": "A 的机会提示",
+          "focus": "为A提出一个可核实机会",
+          "question": "A有哪些资源或条件值得进一步询问？",
+          "limit": "机会提示不保证A成功，也不能把未知条件算成已有优势。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        },
+        {
+          "position": 3,
+          "label": "A 需核查的顾虑",
+          "focus": "为A列出事实核查问题",
+          "question": "A的成本、边界或退出条件还缺哪条信息？",
+          "limit": "顾虑是待核问题，不是A会失败或他人不可信的预言。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        },
+        {
+          "position": 4,
+          "label": "B 的机会提示",
+          "focus": "为B提出一个可核实机会",
+          "question": "B有哪些资源或条件值得进一步询问？",
+          "limit": "需用与A相同的证据标准，不按正逆位直接给B加分。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        },
+        {
+          "position": 5,
+          "label": "B 需核查的顾虑",
+          "focus": "为B列出事实核查问题",
+          "question": "B的成本、边界或退出条件还缺哪条信息？",
+          "limit": "两边顾虑都保留，不靠补牌求出一个确定赢家。",
+          "source_type": "original_editorial",
+          "source_refs": [
+            "runtime-spreads",
+            "p8-spread-guidance"
+          ]
+        }
+      ],
+      "options": {
+        "required": [
+          "A",
+          "B"
+        ],
+        "distinct_values": true,
+        "max_length": 1200
+      },
+      "school_differences": [
+        {
+          "method": "zhiming-editorial-reflection",
+          "description": "这是产品原创A/B对照布局，不是凯尔特十字或历史固定胜负算法；不输出相容度或胜率。",
+          "status": "project_choice_not_historical_consensus"
+        }
+      ],
+      "limits": [
+        "不判断客观事实、他人心意、疾病、灾祸或收益；不换算事件概率。",
+        "只读本轮owner范围内已固定且ready的牌阵；不猜未翻牌或自行补抽。",
+        "重复提问、明确新抽、更正、删除与撤销由主线工具处理，本数据没有写入能力。"
+      ],
+      "source_refs": [
+        "runtime-spreads",
+        "runtime-service",
+        "runtime-claims",
+        "p8-spread-guidance"
+      ]
+    }
+  ],
+  "reference_policy": {
+    "static_aliases": false,
+    "runtime_alias_family": "t",
+    "rule": "静态定义不生成c/r/t；运行时由主线以已授权固定牌阵及其document/claim登记真实别名。",
+    "expression_format_only": "这张固定牌在行动位，咱们先挑一件能核实的小事。<运行时已登记的真实塔罗依据>"
+  },
+  "pending_review": [
+    "逐牌对照某历史版本的译义与页码未完成；原创署名不等于古籍校勘。",
+    "本资产尚未被现有TarotService或KnowledgeRegistry自动加载。",
+    "24小时防反复规则的主线接线与产品效果不由本数据测试证明。"
+  ]
+}

@@ -1,0 +1,753 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "p8-tarot-spreads-v1"
+    },
+    "status": {
+      "const": "readonly_handoff_not_runtime_registry"
+    },
+    "school": {
+      "const": "zhiming-editorial-symbolic-reflection"
+    },
+    "runtime_supported_count": {
+      "const": 3
+    },
+    "supported_card_counts": {
+      "const": [
+        1,
+        3,
+        5
+      ]
+    },
+    "meanings": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "const": "mingjing_core/knowledge/tarot_meanings.json"
+        },
+        "deck_version": {
+          "const": "zhiming-geometric-78-v1"
+        },
+        "meaning_version": {
+          "const": "zhiming-editorial-2026-10-10-v1"
+        },
+        "card_count": {
+          "const": 78
+        },
+        "source_type": {
+          "const": "original_editorial"
+        },
+        "source_ref": {
+          "const": "editorial-meanings"
+        }
+      },
+      "required": [
+        "path",
+        "deck_version",
+        "meaning_version",
+        "card_count",
+        "source_type",
+        "source_ref"
+      ],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "enum": [
+              "runtime-spreads",
+              "runtime-service",
+              "runtime-claims",
+              "editorial-meanings",
+              "p8-spread-guidance"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "kind": {
+            "enum": [
+              "project_implementation",
+              "original_editorial"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "locator": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "support_scope": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "sha_mode": {
+            "const": "utf8-lf-sha256"
+          }
+        },
+        "required": [
+          "source_id",
+          "title",
+          "kind",
+          "path",
+          "locator",
+          "support_scope"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "source_id": {
+                  "const": "p8-spread-guidance"
+                }
+              }
+            },
+            "then": {
+              "not": {
+                "anyOf": [
+                  {
+                    "required": [
+                      "sha256"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "sha_mode"
+                    ]
+                  }
+                ]
+              }
+            },
+            "else": {
+              "required": [
+                "sha256",
+                "sha_mode"
+              ]
+            }
+          }
+        ]
+      },
+      "minItems": 5,
+      "maxItems": 5
+    },
+    "spreads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "enum": [
+              "focus1",
+              "reflect3",
+              "choice5"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          },
+          "version": {
+            "const": "1.0"
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "minItems": 1,
+            "maxItems": 5
+          },
+          "card_count": {
+            "enum": [
+              1,
+              3,
+              5
+            ]
+          },
+          "runtime_supported": {
+            "const": true
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "when_to_use": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 400
+          },
+          "position_guidance": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "position": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 80
+                },
+                "focus": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 400
+                },
+                "question": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 400
+                },
+                "limit": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 400
+                },
+                "source_type": {
+                  "const": "original_editorial"
+                },
+                "source_refs": {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "runtime-spreads",
+                      "runtime-service",
+                      "runtime-claims",
+                      "editorial-meanings",
+                      "p8-spread-guidance"
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 5,
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "position",
+                "label",
+                "focus",
+                "question",
+                "limit",
+                "source_type",
+                "source_refs"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 5
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "required": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "A",
+                    "B"
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 2,
+                "uniqueItems": true
+              },
+              "distinct_values": {
+                "type": "boolean"
+              },
+              "max_length": {
+                "const": 1200
+              }
+            },
+            "required": [
+              "required",
+              "distinct_values",
+              "max_length"
+            ],
+            "additionalProperties": false
+          },
+          "school_differences": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "method": {
+                  "const": "zhiming-editorial-reflection"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 400
+                },
+                "status": {
+                  "const": "project_choice_not_historical_consensus"
+                }
+              },
+              "required": [
+                "method",
+                "description",
+                "status"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1,
+            "maxItems": 5
+          },
+          "limits": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 400
+            },
+            "minItems": 3,
+            "maxItems": 10
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "enum": [
+                "runtime-spreads",
+                "runtime-service",
+                "runtime-claims",
+                "editorial-meanings",
+                "p8-spread-guidance"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "version",
+          "positions",
+          "card_count",
+          "runtime_supported",
+          "purpose",
+          "when_to_use",
+          "position_guidance",
+          "options",
+          "school_differences",
+          "limits",
+          "source_refs"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "focus1"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "name": {
+                  "const": "关注点"
+                },
+                "positions": {
+                  "const": [
+                    "此刻值得留意的角度"
+                  ]
+                },
+                "card_count": {
+                  "const": 1
+                },
+                "position_guidance": {
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "prefixItems": [
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 1
+                        },
+                        "label": {
+                          "const": "此刻值得留意的角度"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "options": {
+                  "const": {
+                    "required": [],
+                    "distinct_values": false,
+                    "max_length": 1200
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "reflect3"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "name": {
+                  "const": "梳理问题"
+                },
+                "positions": {
+                  "const": [
+                    "当前处境的反思",
+                    "可能忽视的因素",
+                    "可尝试的行动"
+                  ]
+                },
+                "card_count": {
+                  "const": 3
+                },
+                "position_guidance": {
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "prefixItems": [
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 1
+                        },
+                        "label": {
+                          "const": "当前处境的反思"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 2
+                        },
+                        "label": {
+                          "const": "可能忽视的因素"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 3
+                        },
+                        "label": {
+                          "const": "可尝试的行动"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "options": {
+                  "const": {
+                    "required": [],
+                    "distinct_values": false,
+                    "max_length": 1200
+                  }
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "id": {
+                  "const": "choice5"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "name": {
+                  "const": "A/B 选择"
+                },
+                "positions": {
+                  "const": [
+                    "核心诉求",
+                    "A 的机会提示",
+                    "A 需核查的顾虑",
+                    "B 的机会提示",
+                    "B 需核查的顾虑"
+                  ]
+                },
+                "card_count": {
+                  "const": 5
+                },
+                "position_guidance": {
+                  "minItems": 5,
+                  "maxItems": 5,
+                  "prefixItems": [
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 1
+                        },
+                        "label": {
+                          "const": "核心诉求"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 2
+                        },
+                        "label": {
+                          "const": "A 的机会提示"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 3
+                        },
+                        "label": {
+                          "const": "A 需核查的顾虑"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 4
+                        },
+                        "label": {
+                          "const": "B 的机会提示"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "position": {
+                          "const": 5
+                        },
+                        "label": {
+                          "const": "B 需核查的顾虑"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "options": {
+                  "const": {
+                    "required": [
+                      "A",
+                      "B"
+                    ],
+                    "distinct_values": true,
+                    "max_length": 1200
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "reference_policy": {
+      "type": "object",
+      "properties": {
+        "static_aliases": {
+          "const": false
+        },
+        "runtime_alias_family": {
+          "const": "t"
+        },
+        "rule": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400
+        },
+        "expression_format_only": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 400
+        }
+      },
+      "required": [
+        "static_aliases",
+        "runtime_alias_family",
+        "rule",
+        "expression_format_only"
+      ],
+      "additionalProperties": false
+    },
+    "pending_review": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 400
+      },
+      "minItems": 3,
+      "maxItems": 10
+    }
+  },
+  "required": [
+    "version",
+    "status",
+    "school",
+    "runtime_supported_count",
+    "supported_card_counts",
+    "meanings",
+    "sources",
+    "spreads",
+    "reference_policy",
+    "pending_review"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zhiming:p8:tarot-spreads:v1",
+  "title": "P8 existing tarot spreads readonly asset v1",
+  "allOf": [
+    {
+      "properties": {
+        "spreads": {
+          "contains": {
+            "properties": {
+              "id": {
+                "const": "focus1"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "spreads": {
+          "contains": {
+            "properties": {
+              "id": {
+                "const": "reflect3"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "spreads": {
+          "contains": {
+            "properties": {
+              "id": {
+                "const": "choice5"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_id": {
+                "const": "runtime-spreads"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_id": {
+                "const": "runtime-service"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_id": {
+                "const": "runtime-claims"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_id": {
+                "const": "editorial-meanings"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "sources": {
+          "contains": {
+            "properties": {
+              "source_id": {
+                "const": "p8-spread-guidance"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      }
+    }
+  ]
+}
