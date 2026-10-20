@@ -6,6 +6,7 @@ import base64
 import httpx
 from ..domain.consultation import ModelUnavailable, ModelFailureReason
 from ..models.quota_legacy import post_legacy
+from ..models.legacy_request_policy import configured_model
 from ..models.provider_diagnostics import permission_quota
 from ..models.errors import ModelQuotaExhausted
 
@@ -13,8 +14,8 @@ from ..models.errors import ModelQuotaExhausted
 class ConfiguredModel:
     def __init__(self, key=None, base=None, model=None, *, role="primary", guard=None):
         self.key = key if key is not None else os.getenv("KIMI_API_KEY") or os.getenv("MOONSHOT_API_KEY", "")
-        self.base = (base or os.getenv("KIMI_BASE_URL", "https://api.moonshot.cn/v1")).rstrip("/")
-        self.model = model or os.getenv("KIMI_MODEL", "kimi-k3")
+        self.base = (base or os.getenv("KIMI_BASE_URL", "https://api.kimi.com/coding/v1")).rstrip("/")
+        self.model = configured_model(self.base, model, os.getenv("KIMI_MODEL"))
         self._guard_role, self.guard = role, guard
 
     def generate(self, *, system, payload, schema, purpose):

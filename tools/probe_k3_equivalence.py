@@ -22,7 +22,7 @@ from tools.probe_equivalence_cases import CASES, MAX_ATTEMPTS, SCENARIOS, Equiva
 from tools.probe_equivalence_mock import mock_transport
 
 MODELS = ("k3", "k3-256k")
-CAPS = {"tools": True, "tool_choice": ["auto", "required"], "reasoning_replay": True}
+CAPS = {"tools": True, "tool_choice": ["auto", "required"], "reasoning_replay": True, "sampling_fixed": True}
 
 
 class ProbeRejected(ValueError):

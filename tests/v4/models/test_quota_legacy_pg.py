@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from typing import Any
 
 import httpx
@@ -58,6 +59,10 @@ def test_legacy_success_is_recorded_in_same_central_account(
     assert result["output"] == {"value": "synthetic"} and len(requests) == 1
     assert (rows(guard)[0]["role"], rows(guard)[0]["bucket"], rows(guard)[0]["input_tokens"]) == ("critic", "critic", 9)
     assert guard.status()["in_flight"] == 0
+    wire = json.loads(requests[0].content)
+    assert wire["model"] == "k3"  # Explicit historical identity was not silently renamed.
+    assert "thinking" not in wire and "temperature" not in wire
+    assert wire["tool_choice"] == {"type": "any", "disable_parallel_tool_use": True}
 
 
 @pytest.mark.parametrize(

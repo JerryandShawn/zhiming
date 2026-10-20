@@ -1,4 +1,4 @@
-"""Central accounting for the retained v3 single-response adapter; body contract stays v3."""
+"""Central accounting and current K3 policy for the retained single-submit adapter."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ from typing import Any
 import httpx
 
 from .error_classification import classify_error
+from .legacy_request_policy import member_body
 from .metering import before_provider_request
 from .quota_guard import QuotaGuard
 from .quota_http import membership_endpoint, observe_usage, provider_attempt
@@ -27,7 +28,8 @@ def post_legacy(
     if not membership:
         before_provider_request()
         return client.post(base + "/messages", headers=headers, json=body)
-    request = client.build_request("POST", base + "/messages", headers=headers, json=body)
+    normalized = member_body(body, model=model, role=role)
+    request = client.build_request("POST", base + "/messages", headers=headers, json=normalized)
     check_request_size(request, model=model, settings={})
     transport = getattr(client, "_transport", None)
     with provider_attempt(
