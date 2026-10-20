@@ -83,6 +83,7 @@ def build_envelope(
     message_id: str,
     receipts: tuple[dict[str, Any], ...] = (),
     asked: dict[str, Any] | None = None,
+    options: dict[str, Any] | None = None,
     usage: Mapping[str, Any] | None = None,
     review: TrustedReviewReceipt | Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
@@ -108,7 +109,7 @@ def build_envelope(
         "used_fact_ids": list(checked.used_fact_ids),
         "used_claim_ids": list(checked.used_claim_ids),
         "asked": public_question(asked, message_id),
-        "options": None,
+        "options": options,
         "review": reviewed,
         "usage": public_usage(usage or {}),
         "validation": {"status": "validated", "valid": True, "schema": "core4.0"},
