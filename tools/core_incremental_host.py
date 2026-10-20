@@ -23,6 +23,7 @@ from tools.core_incremental_contracts import (
     Request,
     require,
 )
+from tools.core_incremental_environment import chart_environment
 from tools.core_incremental_files import (
     ENV_FILES,
     HostFiles,
@@ -44,13 +45,12 @@ class LocalCommands:
         stdin: str | None = None,
         output: Path | None = None,
     ) -> bytes:
-        allowed = args[0] in {"systemctl", "pg_dump", "pg_restore"} or args[0] == (
-            "/root/zhiming-core-releases/" + TARGET + "/venv/core/bin/python"
-        )
-        require(allowed, "HOST_COMMAND_NOT_ALLOWED")
+        from tools.core_incremental_binaries import executable
+
+        command = [executable(args[0]), *args[1:]]
         if output is None:
             result = subprocess.run(
-                args,
+                command,
                 env=env,
                 input=stdin.encode() if stdin else None,
                 capture_output=True,
@@ -61,7 +61,7 @@ class LocalCommands:
             descriptor = os.open(output, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
             with os.fdopen(descriptor, "wb") as stream:
                 result = subprocess.run(
-                    args,
+                    command,
                     env=env,
                     stdout=stream,
                     stderr=subprocess.PIPE,
@@ -371,6 +371,10 @@ class NativePort:
             "writers_still_stopped": True,
         }
         backup = self.op / "retarget-before"
+        environment = chart_environment(self.files, request, backup / "runtime.env")
+        self.config = dict(self.config, env_files_sha256=dict(self.config["env_files_sha256"]))
+        self.config["env_files_sha256"][environment["path"]] = environment["after_sha256"]
+        receipt["chart_environment"] = environment
         receipt["units_sha256"] = self.files.retarget_units(request, backup / "units")
         self.new_unit_hashes = receipt["units_sha256"]
         if request.scope == "live":

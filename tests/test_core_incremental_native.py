@@ -108,6 +108,7 @@ class NativeAdapterTests(unittest.TestCase):
         for target in (
             "tools.core_incremental_files.regular",
             "tools.core_incremental_host.regular",
+            "tools.core_incremental_environment.regular",
         ):
             policy = patch(
                 target,
@@ -229,6 +230,7 @@ class NativeAdapterTests(unittest.TestCase):
         for index, name in enumerate(ENV_FILES):
             text = "# Synthetic configuration\n"
             if index == 1:
+                text += f"CHART_PYTHON=/root/zhiming-core-releases/{PREVIOUS}/venv/charts/bin/python\n"
                 text += f"KIMI_MODEL=k3\nKIMI_BASE_URL={MODEL_BASE}\nLANGSMITH_TRACING=false\n"
                 text += f"ZHIMING_DATABASE_URL=postgresql://{self.request.database}_writer@127.0.0.1:5432/{self.request.database}\n"
             private_write(self.files.path(name), text.encode())
@@ -286,6 +288,9 @@ class NativeAdapterTests(unittest.TestCase):
             result = self.port.retarget(self.request)
         self.assertTrue(result["hermes_retired_preserved"])
         self.assertFalse(result["hermes_restarted"])
+        self.assertTrue(result["chart_environment"]["changed"])
+        self.assertIn(TARGET, result["chart_environment"]["chart_python"])
+        self.assertEqual(self.port.model()["model"], "k3")
         self.assertEqual(
             self.files.path("/root/.hermes/skills/zhiming/chat_agent.py").read_bytes(),
             stub,
