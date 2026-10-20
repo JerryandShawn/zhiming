@@ -110,6 +110,7 @@ def test_real_next_source_updates_slot_once_and_preserves_other_thread_fields(
     h = setup(tool_repo, "帮我比较合成选项")
     call(h, "ask_user", QUESTION)
     assert apply_clarification_answer(tool_repo, h.run, h.service.clock) == 0
+    h.finish()
     reply = setup(tool_repo, answer)
     assert apply_clarification_answer(tool_repo, reply.run, reply.service.clock) == 1
     row = tool_repo.get("alice", "thread", "life:self")
@@ -129,6 +130,7 @@ def test_third_same_slot_refused_then_expiry_starts_fresh(tool_repo: PostgresRep
         h = setup(tool_repo, "合成讨论" + str(count))
         result, _ = call(h, "ask_user", QUESTION)
         assert result.ends_turn == (count < 2)
+        h.finish()
     assert result.data["error"] == "slot_exhausted"
     h = setup(tool_repo, "过期后再讨论")
     h.service.clock = FrozenClock(SAID_AT + timedelta(days=8))
@@ -143,6 +145,7 @@ def test_answer_application_requires_current_lease_epoch_and_live_source(
 ) -> None:
     h = setup(tool_repo, "帮我比较合成选项")
     call(h, "ask_user", QUESTION)
+    h.finish()
     reply = setup(tool_repo, "我不想回答")
     with tool_repo.transaction("alice") as connection:
         connection.execute(
@@ -262,6 +265,7 @@ def test_reminder_requires_explicit_request_and_confirmed_time(tool_repo: Postgr
     h = setup(tool_repo, "我2026-10-21 20:00开会")
     result, _ = call(h, "set_reminder", schedule_args(h, reminder=True))
     assert result.receipt["code"] == "explicit_reminder_required"
+    h.finish()
     h = setup(tool_repo, "提醒我2026-10-21开会")
     result, _ = call(h, "set_reminder", schedule_args(h, reminder=True))
     assert result.receipt["code"] == "reminder_text_or_time_unconfirmed"
@@ -272,6 +276,7 @@ def test_relative_followup_needs_parser_or_uses_source_clock(tool_repo: Postgres
     h = setup(tool_repo, "我下周三参加面试")
     result, _ = call(h, "schedule_followup", schedule_args(h))
     assert result.receipt["code"] == "date_parser_unavailable"
+    h.finish()
     h = setup(tool_repo, "我下周三参加面试", parser=Parser())
     result, _ = call(h, "schedule_followup", schedule_args(h))
     assert result.ok
@@ -326,6 +331,7 @@ def test_proactive_optout_does_not_disable_explicit_reminders(tool_repo: Postgre
     h = setup(tool_repo, "我2026-10-21参加面试")
     result, _ = call(h, "schedule_followup", schedule_args(h))
     assert result.receipt["code"] == "proactive_disabled"
+    h.finish()
     h = setup(tool_repo, "提醒我2026-10-21 20:00开会")
     result, _ = call(h, "set_reminder", schedule_args(h, reminder=True))
     assert result.ok and len(tool_repo.list("alice", "reminder")) == 1

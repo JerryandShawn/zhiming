@@ -70,6 +70,7 @@ def test_two_hundred_recent_candidates_fail_closed_but_old_history_does_not_bloc
     record_property("recent_guard_elapsed_ms", round((time.monotonic() - started) * 1000, 3))
     assert not result.ok and result.receipt["code"] == "recent_draw_check_limit"
     assert len(reads) == 200 and repo.get_revision("alice") == before
+    h.finish()
     clock.advance(timedelta(hours=25))
     reads.clear()
     h = harness(tarot_env)

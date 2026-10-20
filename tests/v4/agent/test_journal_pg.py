@@ -33,12 +33,14 @@ def journal_repo(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch) -
     return configure_repo(p2_repo, monkeypatch)
 
 
-def new_run(repo: PostgresRepository, ident: str = "journal", owner: str = "alice") -> dict[str, Any]:
-    run = repo.queue_run(owner, ident, {"message": "合成日志请求"})
+def new_run(
+    repo: PostgresRepository, ident: str = "journal", owner: str = "alice", *, subject: str = "self"
+) -> dict[str, Any]:
+    run = repo.queue_run(owner, ident, {"message": "合成日志请求"}, subject=subject)
     with repo.transaction(owner) as connection:
         connection.execute(
-            sql.SQL("UPDATE {} SET runtime='v4' WHERE owner=%s AND id=%s").format(repo.table("core_runs")),
-            (owner, run["id"]),
+            sql.SQL("UPDATE {} SET runtime='v4',thread_id=%s WHERE owner=%s AND id=%s").format(repo.table("core_runs")),
+            ("life:" + subject, owner, run["id"]),
         )
     return repo.claim_run(owner, run["id"])
 
@@ -83,7 +85,9 @@ def test_completed_model_replays_private_normalized_output_after_repository_reop
 
 def test_sequence_is_per_run_and_epoch_and_survives_replay(journal_repo: PostgresRepository) -> None:
     repo = journal_repo
-    first, second = new_run(repo, "first"), new_run(repo, "second")
+    repo.create_subject("alice", "journal-secondary", "合成独立日志人物")
+    first, second = new_run(repo, "first"), new_run(repo, "second", subject="journal-secondary")
+    assert first["thread_id"] != second["thread_id"]
     journal = Journal(repo, "alice")
     digest = input_fingerprint("model", "", {})
     step = journal.next_or_replay(first, kind="model", input_fp=digest)
