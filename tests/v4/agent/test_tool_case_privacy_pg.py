@@ -53,6 +53,7 @@ def withdrawn_case(repo: PostgresRepository) -> tuple[str, str]:
             "expected_revision": updated["revision"],
         },
     )
+    h.finish()
     deletion = setup(repo, "请忘记刚才的合成记录")
     case(deletion)
     args = {"fact_id": fact["id"], "message_id": deletion.source["id"]}

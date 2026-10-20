@@ -81,6 +81,7 @@ def test_model_or_stale_output_cannot_forge_c_r(tool_repo: PostgresRepository, f
     elif forgery == "entity":
         changed.data["persisted"]["artifacts"][0]["id"] = "forged-artifact"
     elif forgery == "other_run":
+        h.finish()
         run = setup(tool_repo, "另一个合成问题").run
     elif forgery == "epoch":
         run = dict(run, retry_epoch=1)
@@ -138,6 +139,7 @@ def test_registered_memory_update_and_profile_request_use_real_mutation_receipts
         },
     )
     assert result.ok and tool_repo.get("alice", "fact", result.receipt["id"])["content"] == h.source["content"]
+    h.finish()
     requested = setup(tool_repo, "更正出生资料")
     result, _ = requested.call(
         "profile_update_request",

@@ -43,6 +43,13 @@ def meter(upper: int | None = 70_000) -> MeterResult:
     )
 
 
+def finish_step(repo: PostgresRepository, step: Any) -> None:
+    terminal = repo.fail_run(
+        "alice", step.run_id, "合成用量组件已核验，未发布对话", step.lease_token, status="cancelled"
+    )
+    assert terminal["status"] == "cancelled" and terminal["result"] is None
+
+
 def test_third_large_actual_alert_persists_and_replay_does_not_increment(
     p2_repo: PostgresRepository,
 ) -> None:
@@ -56,10 +63,13 @@ def test_third_large_actual_alert_persists_and_replay_does_not_increment(
         assert Journal(p2_repo, "alice").complete(step, {"text": "合成回答"}, {"input_tokens": 70_000}).usage == {
             "input_tokens": 70_000
         }
+        finish_step(p2_repo, step)
     reopened = PostgresRepository(p2_repo.dsn, schema=p2_repo.schema, initialize=False)
     try:
-        row = ContextUsageService(reopened).record(completed(reopened, "fourth", {"input_tokens": 70_001}), meter())
+        fourth = completed(reopened, "fourth", {"input_tokens": 70_001})
+        row = ContextUsageService(reopened).record(fourth, meter())
         assert row["actual_streak"] == 4 and not row["actual_alert"]
+        finish_step(reopened, fourth)
         reset = ContextUsageService(reopened).record(completed(reopened, "reset", {"input_tokens": 60_000}), meter())
         assert reset["actual_streak"] == 0 and reset["measured_upper_streak"] == 5
     finally:
@@ -70,7 +80,9 @@ def test_unknown_actual_is_null_and_only_measured_alert_is_emitted(
     p2_repo: PostgresRepository,
 ) -> None:
     for index in range(3):
-        receipt = ContextUsageService(p2_repo).record(completed(p2_repo, str(index), {}), meter())
+        step = completed(p2_repo, str(index), {})
+        receipt = ContextUsageService(p2_repo).record(step, meter())
+        finish_step(p2_repo, step)
     assert receipt["actual_input_tokens"] is None and receipt["actual_streak"] == 0
     assert receipt["measured_upper_alert"] and not receipt["actual_alert"]
     state = p2_repo.get("alice", "thread", "life:self")["context_guard"]

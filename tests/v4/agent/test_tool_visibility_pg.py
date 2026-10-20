@@ -149,7 +149,7 @@ def test_wrong_subject_cannot_read_disclosure_state(
 
 
 def test_second_user_turn_is_not_first_meeting(cycle_repo: PostgresRepository) -> None:
-    setup(cycle_repo, "第一次合成对话")
+    setup(cycle_repo, "第一次合成对话").finish()
     h = setup(cycle_repo, "第二次合成对话")
     assert not h.service.visibility_state(model_context(h.run)).first_meeting
 
