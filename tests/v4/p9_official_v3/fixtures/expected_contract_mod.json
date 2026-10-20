@@ -1,0 +1,4504 @@
+{
+  "schema_version": "p9-official-independent-v3.0.0",
+  "status": "frozen_before_independent_v3_tests",
+  "frozen_at_beijing": "2026-10-21T02:05:13.802+08:00",
+  "source": {
+    "name": "26_飞书官方接口核实.md",
+    "absolute_path": "C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/26_飞书官方接口核实.md",
+    "sha256": "70883c7517e7796039e5481c8d41fa5ca7d499da3b210a65a40ed3657f2318bb",
+    "bytes": 57048,
+    "lines": 317,
+    "document_date": "2026-10-20",
+    "fully_read_before_matrix": true,
+    "evidence_boundary": "26号官方核实文档快照；本线未重新联网核验，也未访问任何业务接口"
+  },
+  "official_reference_urls": {
+    "card_json_v2": "https://open.feishu.cn/document/feishu-cards/card-json-v2-structure",
+    "card_create": "https://open.feishu.cn/document/cardkit-v1/card/create",
+    "card_content": "https://open.feishu.cn/document/cardkit-v1/card-element/content",
+    "card_update": "https://open.feishu.cn/document/cardkit-v1/card/update",
+    "card_settings": "https://open.feishu.cn/document/cardkit-v1/card/settings",
+    "streaming": "https://open.feishu.cn/document/cardkit-v1/streaming-updates-openapi-overview",
+    "rich_text": "https://open.feishu.cn/document/feishu-cards/card-json-v2-components/content-components/rich-text",
+    "message_create": "https://open.feishu.cn/document/server-docs/im-v1/message/create",
+    "message_patch": "https://open.feishu.cn/document/server-docs/im-v1/message-card/patch",
+    "message_reply": "https://open.feishu.cn/document/server-docs/im-v1/message/reply",
+    "callbacks": "https://open.feishu.cn/document/feishu-cards/card-callback-communication",
+    "handle_callbacks": "https://open.feishu.cn/document/uAjLw4CM/ukzMukzMukzM/feishu-cards/handle-card-callbacks",
+    "delayed_update": "https://open.feishu.cn/document/server-docs/im-v1/message-card/delay-update-message-card",
+    "access_token": "https://open.feishu.cn/document/server-docs/authentication-management/access-token/tenant_access_token_internal",
+    "frequency": "https://open.feishu.cn/document/server-docs/api-call-guide/frequency-control"
+  },
+  "scope": {
+    "synthetic_data_only": true,
+    "actual_business_requests": 0,
+    "model_requests": 0,
+    "network_requests": 0,
+    "database_connections": 0,
+    "tests_executed_for_this_matrix": 0,
+    "product_files_imported": 0,
+    "existing_files_modified": 0,
+    "not_runtime_acceptance": true,
+    "published_sources_and_tests_remain_frozen": true
+  },
+  "interpretation_rules": [
+    "Facts come from source 26 before product API tests, never from observed implementation output.",
+    "Project policies are distinguished from official statements and unverified stage behavior.",
+    "Golden expectations must not be weakened merely to match an implementation.",
+    "Endpoint entries are offline request plans and do not authorize business requests.",
+    "An in-memory callback cannot prove durable database enqueue or the live 3-second deadline.",
+    "SAFE_CARD_BYTES=28000 and MAX_WIRE_BYTES=30000 are explicit engineering budgets; official text says 30 KB.",
+    "Component counts traverse body component trees; button.text and header.title properties are not separate components.",
+    "Empty offer/reset is noop_empty and zero PUTs, and does not claim visible text was erased.",
+    "Current source, ownership, freshness and unknown-outcome safety remain mandatory.",
+    "The exact 10 section-7 gaps and 3 additional console/unit prerequisites remain unverified."
+  ],
+  "policy_choices": {
+    "empty_stream_text": "noop_empty",
+    "empty_text_reset": "noop_empty",
+    "safe_card_bytes": 28000,
+    "max_wire_bytes": 30000,
+    "allow_sequence_gaps_default": true,
+    "entity_callback_response": "toast_only",
+    "automatic_new_card_after_stream_expiry": false
+  },
+  "checklist_8_coverage": {
+    "1": [
+      "CLOSE_WIRE",
+      "CLOSE_finalize_rejected",
+      "CLOSE_finalize_uncertain",
+      "CLOSE_finalize_retryable",
+      "CLOSE_close_streaming_uncertain",
+      "CLOSE_close_streaming_retryable",
+      "CLOSE_REJECT_RETRY_ONCE",
+      "CLOSE_REJECT_TWICE",
+      "RESTORE_finalize_reserved",
+      "RESTORE_finalize_unknown",
+      "RESTORE_finalize_ack_close_pending",
+      "RESTORE_close_unknown",
+      "RESTORE_both_ack",
+      "EXPIRED_STREAM_200850",
+      "EXPIRED_STREAM_300309",
+      "PRESERVE_owner_and_run_scope",
+      "PRESERVE_entity_revision",
+      "PRESERVE_current_source_active",
+      "PRESERVE_source_revision",
+      "PRESERVE_global_optout",
+      "PRESERVE_freshness_deadline",
+      "PRESERVE_occurrence_lease",
+      "PRESERVE_one_time_business_effect",
+      "UNKNOWN_NOT_RESENT"
+    ],
+    "2": [
+      "RESTORE_finalize_reserved",
+      "RESTORE_finalize_unknown",
+      "RESTORE_finalize_ack_close_pending",
+      "RESTORE_close_unknown",
+      "RESTORE_both_ack",
+      "UUID_DERIVATION",
+      "UUID_RECONCILE",
+      "WIRE_SEND_ENTITY",
+      "UNKNOWN_NOT_RESENT"
+    ],
+    "3": [
+      "EMPTY_offer_text",
+      "EMPTY_text_reset",
+      "TEXT_RESET_REPLACEMENT",
+      "CONTENT_LENGTH_0",
+      "CONTENT_LENGTH_1",
+      "CONTENT_LENGTH_100000",
+      "CONTENT_LENGTH_100001",
+      "WIRE_CONTENT"
+    ],
+    "4": [
+      "ELEMENT_ID_1",
+      "ELEMENT_ID_2",
+      "ELEMENT_ID_3",
+      "ELEMENT_ID_4",
+      "ELEMENT_ID_5",
+      "ELEMENT_ID_6",
+      "ELEMENT_ID_7",
+      "ELEMENT_ID_8",
+      "ELEMENT_ID_9",
+      "ELEMENT_ID_10",
+      "ELEMENT_ID_11",
+      "ELEMENT_IDS_UNIQUE",
+      "CARD_ID_LENGTH_0",
+      "CARD_ID_LENGTH_1",
+      "CARD_ID_LENGTH_20",
+      "CARD_ID_LENGTH_21",
+      "WIRE_CONTENT"
+    ],
+    "5": [
+      "CLOSE_REJECT_RETRY_ONCE",
+      "SEQUENCE_TYPE_1",
+      "SEQUENCE_TYPE_2",
+      "SEQUENCE_TYPE_3",
+      "SEQUENCE_TYPE_4",
+      "SEQUENCE_TYPE_5",
+      "SEQUENCE_TYPE_6",
+      "SEQUENCE_TYPE_7",
+      "SEQUENCE_TYPE_8",
+      "SEQUENCE_TYPE_9",
+      "SEQUENCE_FLOAT_ONE",
+      "SEQUENCE_EXHAUSTED",
+      "SEQUENCE_CARD_WIDE",
+      "SEQUENCE_GAPS_POLICY",
+      "WIRE_CONTENT"
+    ],
+    "6": [
+      "ERROR_CODE_10002",
+      "ERROR_CODE_200740",
+      "ERROR_CODE_200750",
+      "ERROR_CODE_200860",
+      "ERROR_CODE_300302",
+      "ERROR_CODE_300311",
+      "ERROR_CODE_200810",
+      "ERROR_CODE_200850",
+      "ERROR_CODE_300309",
+      "ERROR_CODE_300317",
+      "ERROR_CODE_200770",
+      "ERROR_CODE_300120",
+      "ERROR_HTTP_500",
+      "ERROR_HTTP_502",
+      "ERROR_HTTP_503",
+      "ERROR_HTTP_504",
+      "ERROR_TRANSPORT_timeout_before_response",
+      "ERROR_TRANSPORT_connection_reset",
+      "ERROR_TRANSPORT_network_exception",
+      "RATE_429",
+      "RATE_99991400",
+      "RATE_BAD_RESET_1",
+      "RATE_BAD_RESET_2",
+      "RATE_BAD_RESET_3",
+      "RATE_BAD_RESET_4",
+      "RATE_BAD_RESET_5",
+      "ERROR_UNKNOWN_CODE",
+      "EXPIRED_STREAM_200850",
+      "EXPIRED_STREAM_300309",
+      "UNKNOWN_NOT_RESENT"
+    ],
+    "7": [
+      "ESCAPE_OFFICIAL_1",
+      "ESCAPE_OFFICIAL_2",
+      "ESCAPE_OFFICIAL_3",
+      "ESCAPE_OFFICIAL_4",
+      "ESCAPE_OFFICIAL_5",
+      "ESCAPE_OFFICIAL_6",
+      "ESCAPE_OFFICIAL_7",
+      "ESCAPE_OFFICIAL_8",
+      "ESCAPE_OFFICIAL_9",
+      "ESCAPE_OFFICIAL_10",
+      "ESCAPE_OFFICIAL_11",
+      "ESCAPE_OFFICIAL_12",
+      "ESCAPE_OFFICIAL_13",
+      "ESCAPE_OFFICIAL_14",
+      "ESCAPE_PROJECT_1",
+      "ESCAPE_PROJECT_2",
+      "ESCAPE_PROJECT_3",
+      "ESCAPE_ONE_ORIGINAL_PASS"
+    ],
+    "8": [
+      "SIZE_answer_10000_chinese_characters",
+      "SIZE_huge_evidence_alias_list",
+      "SIZE_large_brief",
+      "SIZE_NO_OPEN_URL",
+      "SIZE_UTF8_AND_ENVELOPE",
+      "ELEMENT_COUNT_200",
+      "ELEMENT_COUNT_201"
+    ],
+    "9": [
+      "JSON_V2_REQUIRED",
+      "UPDATE_MULTI_initial_card",
+      "UPDATE_MULTI_ordinary_patch_before",
+      "UPDATE_MULTI_ordinary_patch_after",
+      "UPDATE_MULTI_finalize",
+      "JSON_V2_STRUCTURE"
+    ],
+    "10": [
+      "CLOSE_WIRE",
+      "RATE_429",
+      "RATE_99991400",
+      "EXPIRED_STREAM_200850",
+      "EXPIRED_STREAM_300309",
+      "JSON_V2_REQUIRED",
+      "JSON_V2_STRUCTURE",
+      "WIRE_CREATE",
+      "WIRE_SEND_ENTITY",
+      "WIRE_CONTENT",
+      "STREAM_THROTTLE",
+      "STREAM_CLIENT_LIFETIME",
+      "CALLBACK_TOKEN_NAMESPACES",
+      "TOKEN_CONFUSION_header.token",
+      "TOKEN_CONFUSION_event.token",
+      "CALLBACK_BIND_operator.open_id",
+      "CALLBACK_BIND_header.app_id",
+      "CALLBACK_BIND_context.open_chat_id",
+      "CALLBACK_BIND_context.open_message_id",
+      "CALLBACK_BIND_owner",
+      "CALLBACK_BIND_subject",
+      "CALLBACK_BIND_entity_id",
+      "CALLBACK_BIND_entity_revision",
+      "CALLBACK_BIND_kind",
+      "CALLBACK_BIND_payload_fingerprint",
+      "CALLBACK_BIND_current_source_revision",
+      "CALLBACK_OPERATOR_AUTHORITY",
+      "CALLBACK_RESPONSE",
+      "CALLBACK_ENQUEUE_FAILURE",
+      "CALLBACK_IDEMPOTENCY",
+      "CALLBACK_WEBHOOK_AUTH",
+      "CALLBACK_LONG_CONNECTION",
+      "DELAYED_UPDATE_TOKEN",
+      "CALLBACK_LIFETIMES",
+      "K3_question",
+      "K3_decision",
+      "K3_memory_receipt",
+      "K3_brief",
+      "K3_delete_memory",
+      "K3_delete_source",
+      "K3_apply_organize",
+      "K3_EXPIRED_CLICK",
+      "K3_INVALID_NOT_EXPIRED",
+      "MAINLINE_SCOPES",
+      "MESSAGE_REPLY",
+      "PRESERVE_owner_and_run_scope",
+      "PRESERVE_entity_revision",
+      "PRESERVE_current_source_active",
+      "PRESERVE_source_revision",
+      "PRESERVE_global_optout",
+      "PRESERVE_freshness_deadline",
+      "PRESERVE_occurrence_lease",
+      "PRESERVE_one_time_business_effect",
+      "UNKNOWN_NOT_RESENT",
+      "UNVERIFIED_U01",
+      "UNVERIFIED_U02",
+      "UNVERIFIED_U03",
+      "UNVERIFIED_U04",
+      "UNVERIFIED_U05",
+      "UNVERIFIED_U06",
+      "UNVERIFIED_U07",
+      "UNVERIFIED_U08",
+      "UNVERIFIED_U09",
+      "UNVERIFIED_U10",
+      "UNVERIFIED_U11",
+      "UNVERIFIED_U12",
+      "UNVERIFIED_U13"
+    ],
+    "11": [
+      "MESSAGE_PERMANENT_230053",
+      "MESSAGE_PERMANENT_230013",
+      "MESSAGE_PERMANENT_230038",
+      "MESSAGE_PERMANENT_230028",
+      "MESSAGE_UNKNOWN_230049",
+      "MESSAGE_RETRY_230020",
+      "MESSAGE_RETRY_99991400",
+      "MESSAGE_RETRY_429",
+      "MESSAGE_STOPPED_BOT",
+      "TOKEN_CACHE_1801",
+      "TOKEN_CACHE_1800",
+      "TOKEN_CACHE_1799",
+      "TOKEN_CACHE_LIFETIME",
+      "MAINLINE_SCOPES",
+      "MESSAGE_REPLY"
+    ]
+  },
+  "planned_independent_acceptance_points": [
+    {
+      "topic": "wire shapes, IDs, UTF-8 and component budgets",
+      "prefixes": [
+        "WIRE_",
+        "SIZE_",
+        "ELEMENT_",
+        "UPDATE_MULTI_"
+      ]
+    },
+    {
+      "topic": "two-step close outcomes, recovery and sequence reservation",
+      "prefixes": [
+        "CLOSE_",
+        "RESTORE_",
+        "SEQUENCE_"
+      ]
+    },
+    {
+      "topic": "all error classifications and unknown transports",
+      "prefixes": [
+        "ERROR_",
+        "RATE_",
+        "EXPIRED_STREAM_"
+      ]
+    },
+    {
+      "topic": "escape strings, empty reset and deterministic wire identity",
+      "prefixes": [
+        "ESCAPE_",
+        "EMPTY_",
+        "TEXT_RESET_",
+        "UUID_"
+      ]
+    },
+    {
+      "topic": "callback intents and three token namespaces, no live durability claims",
+      "prefixes": [
+        "CALLBACK_",
+        "TOKEN_CONFUSION_",
+        "K3_",
+        "DELAYED_"
+      ]
+    },
+    {
+      "topic": "owner/current source/freshness and unknown-not-resend regression",
+      "prefixes": [
+        "PRESERVE_",
+        "UNKNOWN_"
+      ]
+    },
+    {
+      "topic": "documentation-only mainline hints and unverified checklist",
+      "prefixes": [
+        "MAINLINE_",
+        "MESSAGE_",
+        "TOKEN_CACHE_",
+        "UNVERIFIED_"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "CLOSE_WIRE",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.5",
+        "8.1"
+      ],
+      "action": "close_stream",
+      "given": {
+        "next_sequence": 41,
+        "summary": "合成最终摘要"
+      },
+      "expected": {
+        "operations": [
+          {
+            "kind": "finalize",
+            "method": "PUT",
+            "path": "/open-apis/cardkit/v1/cards/:card_id",
+            "sequence": 41,
+            "body_fields": [
+              "card",
+              "uuid",
+              "sequence"
+            ],
+            "card": {
+              "type": "card_json",
+              "data_type": "serialized_json_string"
+            }
+          },
+          {
+            "kind": "close_streaming",
+            "method": "PATCH",
+            "path": "/open-apis/cardkit/v1/cards/:card_id/settings",
+            "sequence": 42,
+            "body_fields": [
+              "settings",
+              "uuid",
+              "sequence"
+            ],
+            "settings_json": {
+              "config": {
+                "streaming_mode": false,
+                "summary": {
+                  "content": "合成最终摘要"
+                }
+              }
+            }
+          }
+        ],
+        "separate_operation_ids": true,
+        "separate_wire_uuids": true,
+        "separate_ack_flags": true,
+        "send_close_only_after_finalize_ack": true,
+        "closed_only_after_both_acks": true
+      },
+      "forbidden": [
+        "one close request",
+        "sharing one sequence",
+        "settings object instead of JSON string"
+      ]
+    },
+    {
+      "id": "CLOSE_finalize_rejected",
+      "checklist_items": [
+        1
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.1"
+      ],
+      "action": "record_outcome",
+      "given": {
+        "operation": "finalize",
+        "outcome": "rejected",
+        "finalize_ack": false
+      },
+      "expected": {
+        "phase": "fallback_intent",
+        "close_requests": 0
+      },
+      "forbidden": [
+        "fake acknowledgement",
+        "closed before both acknowledgements"
+      ]
+    },
+    {
+      "id": "CLOSE_finalize_uncertain",
+      "checklist_items": [
+        1
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.1"
+      ],
+      "action": "record_outcome",
+      "given": {
+        "operation": "finalize",
+        "outcome": "uncertain",
+        "finalize_ack": false
+      },
+      "expected": {
+        "phase": "reconcile",
+        "close_requests": 0,
+        "resend_requests": 0
+      },
+      "forbidden": [
+        "fake acknowledgement",
+        "closed before both acknowledgements"
+      ]
+    },
+    {
+      "id": "CLOSE_finalize_retryable",
+      "checklist_items": [
+        1
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.1"
+      ],
+      "action": "record_outcome",
+      "given": {
+        "operation": "finalize",
+        "outcome": "retryable",
+        "finalize_ack": false
+      },
+      "expected": {
+        "phase": "retry_pending",
+        "closed": false,
+        "close_requests": 0
+      },
+      "forbidden": [
+        "fake acknowledgement",
+        "closed before both acknowledgements"
+      ]
+    },
+    {
+      "id": "CLOSE_close_streaming_uncertain",
+      "checklist_items": [
+        1
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.1"
+      ],
+      "action": "record_outcome",
+      "given": {
+        "operation": "close_streaming",
+        "outcome": "uncertain",
+        "finalize_ack": true
+      },
+      "expected": {
+        "phase": "reconcile",
+        "resend_requests": 0,
+        "plaintext_fallback": false
+      },
+      "forbidden": [
+        "fake acknowledgement",
+        "closed before both acknowledgements"
+      ]
+    },
+    {
+      "id": "CLOSE_close_streaming_retryable",
+      "checklist_items": [
+        1
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.1"
+      ],
+      "action": "record_outcome",
+      "given": {
+        "operation": "close_streaming",
+        "outcome": "retryable",
+        "finalize_ack": true
+      },
+      "expected": {
+        "phase": "retry_pending",
+        "closed": false,
+        "plaintext_fallback": false
+      },
+      "forbidden": [
+        "fake acknowledgement",
+        "closed before both acknowledgements"
+      ]
+    },
+    {
+      "id": "CLOSE_REJECT_RETRY_ONCE",
+      "checklist_items": [
+        1,
+        5
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.1"
+      ],
+      "action": "retry_close_streaming",
+      "given": {
+        "finalize_ack": true,
+        "close_rejected_count": 1,
+        "allow_sequence_gaps": true,
+        "last_reserved_sequence": 42
+      },
+      "expected": {
+        "retry_sequence": 43,
+        "new_internal_operation_id": true,
+        "new_wire_uuid": true,
+        "plaintext_fallback": false,
+        "closed": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CLOSE_REJECT_TWICE",
+      "checklist_items": [
+        1
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.1"
+      ],
+      "action": "record_second_close_rejection",
+      "given": {
+        "finalize_ack": true,
+        "close_rejected_count": 2
+      },
+      "expected": {
+        "reason": "streaming_close_failed",
+        "closed": false,
+        "wait_platform_autoclose": true,
+        "plaintext_fallback": false,
+        "automatic_new_card": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RESTORE_finalize_reserved",
+      "checklist_items": [
+        1,
+        2
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "8.1",
+        "8.2"
+      ],
+      "action": "restore_snapshot",
+      "given": {
+        "checkpoint_stage": "finalize_reserved"
+      },
+      "expected": {
+        "stable_operation_ids": true,
+        "stable_wire_uuids": true,
+        "stable_sequences": true,
+        "stable_ack_flags": true,
+        "closed": false,
+        "automatic_new_card": false,
+        "resend_unknown": false,
+        "repeat_confirmed": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RESTORE_finalize_unknown",
+      "checklist_items": [
+        1,
+        2
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "8.1",
+        "8.2"
+      ],
+      "action": "restore_snapshot",
+      "given": {
+        "checkpoint_stage": "finalize_unknown"
+      },
+      "expected": {
+        "stable_operation_ids": true,
+        "stable_wire_uuids": true,
+        "stable_sequences": true,
+        "stable_ack_flags": true,
+        "closed": false,
+        "automatic_new_card": false,
+        "resend_unknown": false,
+        "repeat_confirmed": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RESTORE_finalize_ack_close_pending",
+      "checklist_items": [
+        1,
+        2
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "8.1",
+        "8.2"
+      ],
+      "action": "restore_snapshot",
+      "given": {
+        "checkpoint_stage": "finalize_ack_close_pending"
+      },
+      "expected": {
+        "stable_operation_ids": true,
+        "stable_wire_uuids": true,
+        "stable_sequences": true,
+        "stable_ack_flags": true,
+        "closed": false,
+        "automatic_new_card": false,
+        "resend_unknown": false,
+        "repeat_confirmed": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RESTORE_close_unknown",
+      "checklist_items": [
+        1,
+        2
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "8.1",
+        "8.2"
+      ],
+      "action": "restore_snapshot",
+      "given": {
+        "checkpoint_stage": "close_unknown"
+      },
+      "expected": {
+        "stable_operation_ids": true,
+        "stable_wire_uuids": true,
+        "stable_sequences": true,
+        "stable_ack_flags": true,
+        "closed": false,
+        "automatic_new_card": false,
+        "resend_unknown": false,
+        "repeat_confirmed": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RESTORE_both_ack",
+      "checklist_items": [
+        1,
+        2
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "8.1",
+        "8.2"
+      ],
+      "action": "restore_snapshot",
+      "given": {
+        "checkpoint_stage": "both_ack"
+      },
+      "expected": {
+        "stable_operation_ids": true,
+        "stable_wire_uuids": true,
+        "stable_sequences": true,
+        "stable_ack_flags": true,
+        "closed": true,
+        "automatic_new_card": false,
+        "resend_unknown": false,
+        "repeat_confirmed": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UUID_DERIVATION",
+      "checklist_items": [
+        2
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.2"
+      ],
+      "action": "derive_wire_uuid",
+      "given": {
+        "operation_id": "cardkit:0000000000000000000000000000000000000000000000000000000000000000:finalize"
+      },
+      "expected": {
+        "algorithm": "sha256(operation_id.encode('utf-8')).hexdigest()[:40]",
+        "length": 40,
+        "operation_id_unchanged": true,
+        "deterministic": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UUID_RECONCILE",
+      "checklist_items": [
+        2
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "8.2"
+      ],
+      "action": "retry_or_reconcile_original_operation",
+      "given": {
+        "outcome": "unknown"
+      },
+      "expected": {
+        "checkpoint_fields": [
+          "operation_id",
+          "wire_uuid"
+        ],
+        "reconcile_identifier": "wire_uuid",
+        "same_operation_same_uuid": true,
+        "automatic_resend": false
+      },
+      "forbidden": [
+        "new uuid to evade conflict",
+        "expiring internal idempotency at message UUID 1-hour window"
+      ]
+    },
+    {
+      "id": "EMPTY_offer_text",
+      "checklist_items": [
+        3
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.3",
+        "8.3"
+      ],
+      "action": "offer_text",
+      "given": {
+        "text": ""
+      },
+      "expected": {
+        "status": "noop_empty",
+        "external_requests": 0,
+        "put_content_requests": 0,
+        "not_a_visible_clear_ack": true
+      },
+      "forbidden": [
+        "PUT empty content",
+        "claim existing text was erased"
+      ]
+    },
+    {
+      "id": "EMPTY_text_reset",
+      "checklist_items": [
+        3
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.3",
+        "8.3"
+      ],
+      "action": "text_reset",
+      "given": {
+        "text": ""
+      },
+      "expected": {
+        "status": "noop_empty",
+        "external_requests": 0,
+        "put_content_requests": 0,
+        "not_a_visible_clear_ack": true
+      },
+      "forbidden": [
+        "PUT empty content",
+        "claim existing text was erased"
+      ]
+    },
+    {
+      "id": "TEXT_RESET_REPLACEMENT",
+      "checklist_items": [
+        3
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.3"
+      ],
+      "action": "text_reset",
+      "given": {
+        "old_text": "合成旧答案abc",
+        "text": "合成新答案XYZ"
+      },
+      "expected": {
+        "content": "合成新答案XYZ",
+        "mode": "full_replacement",
+        "append_old_text": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CONTENT_LENGTH_0",
+      "checklist_items": [
+        3
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3"
+      ],
+      "action": "validate_stream_content_shape",
+      "given": {
+        "ascii_content_length": 0
+      },
+      "expected": {
+        "shape_valid": false,
+        "size_policy_still_applies": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CONTENT_LENGTH_1",
+      "checklist_items": [
+        3
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3"
+      ],
+      "action": "validate_stream_content_shape",
+      "given": {
+        "ascii_content_length": 1
+      },
+      "expected": {
+        "shape_valid": true,
+        "size_policy_still_applies": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CONTENT_LENGTH_100000",
+      "checklist_items": [
+        3
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3"
+      ],
+      "action": "validate_stream_content_shape",
+      "given": {
+        "ascii_content_length": 100000
+      },
+      "expected": {
+        "shape_valid": true,
+        "size_policy_still_applies": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CONTENT_LENGTH_100001",
+      "checklist_items": [
+        3
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3"
+      ],
+      "action": "validate_stream_content_shape",
+      "given": {
+        "ascii_content_length": 100001
+      },
+      "expected": {
+        "shape_valid": false,
+        "size_policy_still_applies": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_1",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "A"
+      },
+      "expected": {
+        "valid": true,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_2",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "a0000000000000000000"
+      },
+      "expected": {
+        "valid": true,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_3",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "A_b9"
+      },
+      "expected": {
+        "valid": true,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_4",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "a00000000000000000000"
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_5",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": ""
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_6",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "1abc"
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_7",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "_abc"
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_8",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "a-b"
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_9",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "中a"
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_10",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "a b"
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_ID_11",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.4"
+      ],
+      "action": "validate_element_id",
+      "given": {
+        "element_id": "a\n"
+      },
+      "expected": {
+        "valid": false,
+        "regex": "^[A-Za-z][A-Za-z0-9_]{0,19}$",
+        "same_validator_in_builder_and_client": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_IDS_UNIQUE",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1"
+      ],
+      "action": "build_card",
+      "given": {
+        "element_ids": [
+          "answer_text",
+          "answer_text"
+        ]
+      },
+      "expected": {
+        "valid": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CARD_ID_LENGTH_0",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3",
+        "8.4"
+      ],
+      "action": "validate_ack_card_id",
+      "given": {
+        "card_id": ""
+      },
+      "expected": {
+        "valid": false,
+        "official_charset_not_invented": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CARD_ID_LENGTH_1",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3",
+        "8.4"
+      ],
+      "action": "validate_ack_card_id",
+      "given": {
+        "card_id": "7"
+      },
+      "expected": {
+        "valid": true,
+        "official_charset_not_invented": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CARD_ID_LENGTH_20",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3",
+        "8.4"
+      ],
+      "action": "validate_ack_card_id",
+      "given": {
+        "card_id": "77777777777777777777"
+      },
+      "expected": {
+        "valid": true,
+        "official_charset_not_invented": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CARD_ID_LENGTH_21",
+      "checklist_items": [
+        4
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3",
+        "8.4"
+      ],
+      "action": "validate_ack_card_id",
+      "given": {
+        "card_id": "777777777777777777777"
+      },
+      "expected": {
+        "valid": false,
+        "official_charset_not_invented": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_1",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": true
+      },
+      "expected": {
+        "valid": false,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_2",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": false
+      },
+      "expected": {
+        "valid": false,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_3",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": 0
+      },
+      "expected": {
+        "valid": false,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_4",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": -1
+      },
+      "expected": {
+        "valid": false,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_5",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": 1
+      },
+      "expected": {
+        "valid": true,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_6",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": 2147483647
+      },
+      "expected": {
+        "valid": true,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_7",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": 2147483648
+      },
+      "expected": {
+        "valid": false,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_8",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": "1"
+      },
+      "expected": {
+        "valid": false,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_TYPE_9",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "value": 1.5
+      },
+      "expected": {
+        "valid": false,
+        "required_python_type": "actual int, excluding bool"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_FLOAT_ONE",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4",
+        "8.5"
+      ],
+      "action": "validate_sequence",
+      "given": {
+        "python_value_type": "float",
+        "value": 1
+      },
+      "expected": {
+        "valid": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_EXHAUSTED",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.5"
+      ],
+      "action": "reserve_next_sequence",
+      "given": {
+        "last_reserved_sequence": 2147483647
+      },
+      "expected": {
+        "reason": "cardkit_sequence_exhausted",
+        "external_requests": 0
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_CARD_WIDE",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.4"
+      ],
+      "action": "reserve_operations",
+      "given": {
+        "kinds": [
+          "update",
+          "finalize",
+          "close_streaming"
+        ],
+        "first_sequence": 5
+      },
+      "expected": {
+        "sequences": [
+          5,
+          6,
+          7
+        ],
+        "single_card_shared_counter": true,
+        "create_consumes_sequence": false,
+        "send_consumes_sequence": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SEQUENCE_GAPS_POLICY",
+      "checklist_items": [
+        5
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.4",
+        "7.1",
+        "8.5"
+      ],
+      "action": "configure_allocator",
+      "given": {
+        "allow_sequence_gaps": "omitted"
+      },
+      "expected": {
+        "default": true,
+        "official_gap_acceptance": "unverified_stage",
+        "stage_may_require_false": true,
+        "reuse_only_if_explicitly_known_not_executed": true,
+        "reuse_unknown_sequence": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_10002",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 10002
+      },
+      "expected": {
+        "outcome": "rejected",
+        "handling": "parameter_defect",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_200740",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 200740
+      },
+      "expected": {
+        "outcome": "rejected",
+        "handling": "fallback_intent",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_200750",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 200750
+      },
+      "expected": {
+        "outcome": "rejected",
+        "handling": "fallback_intent",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_200860",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 200860
+      },
+      "expected": {
+        "outcome": "rejected",
+        "handling": "size_precheck_defect",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_300302",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 300302
+      },
+      "expected": {
+        "outcome": "rejected",
+        "handling": "update_multi_false",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_300311",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 300311
+      },
+      "expected": {
+        "outcome": "rejected",
+        "handling": "wrong_app",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_200810",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 200810
+      },
+      "expected": {
+        "outcome": "retryable",
+        "handling": "new_sequence",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_200850",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 200850
+      },
+      "expected": {
+        "outcome": "retryable",
+        "handling": "mainline_reopen_or_finalize",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_300309",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 300309
+      },
+      "expected": {
+        "outcome": "retryable",
+        "handling": "mainline_reopen_or_finalize",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_300317",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 300317
+      },
+      "expected": {
+        "outcome": "retryable",
+        "handling": "reread_confirmed_max_sequence",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_200770",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 200770
+      },
+      "expected": {
+        "outcome": "unknown",
+        "handling": "reconcile_original_wire_uuid",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_CODE_300120",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 300120
+      },
+      "expected": {
+        "outcome": "unknown",
+        "handling": "reconcile",
+        "automatic_new_card": false,
+        "resend_if_unknown": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_HTTP_500",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_error",
+      "given": {
+        "http_status": 500
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "handling": "reconcile"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_HTTP_502",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_error",
+      "given": {
+        "http_status": 502
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "handling": "reconcile"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_HTTP_503",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_error",
+      "given": {
+        "http_status": 503
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "handling": "reconcile"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_HTTP_504",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_error",
+      "given": {
+        "http_status": 504
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "handling": "reconcile"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_TRANSPORT_timeout_before_response",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_transport_failure",
+      "given": {
+        "failure": "timeout_before_response"
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "error_text_contains_private_request": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_TRANSPORT_connection_reset",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_transport_failure",
+      "given": {
+        "failure": "connection_reset"
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "error_text_contains_private_request": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_TRANSPORT_network_exception",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_transport_failure",
+      "given": {
+        "failure": "network_exception"
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "error_text_contains_private_request": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RATE_429",
+      "checklist_items": [
+        6,
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.6",
+        "2.8"
+      ],
+      "action": "classify_error",
+      "given": {
+        "http_status": 429,
+        "headers": {
+          "x-ogw-ratelimit-reset": "3"
+        }
+      },
+      "expected": {
+        "outcome": "retryable",
+        "known_not_executed": true,
+        "after_ms": 3000,
+        "retry_before_reset": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RATE_99991400",
+      "checklist_items": [
+        6,
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.6",
+        "2.8"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 99991400,
+        "headers": {
+          "x-ogw-ratelimit-reset": "3"
+        }
+      },
+      "expected": {
+        "outcome": "retryable",
+        "known_not_executed": true,
+        "after_ms": 3000,
+        "retry_before_reset": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RATE_BAD_RESET_1",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.6",
+        "8.6"
+      ],
+      "action": "classify_rate_limit_without_safe_delay",
+      "given": {
+        "http_status": 429,
+        "reset_header": null
+      },
+      "expected": {
+        "retry_immediately": false,
+        "invent_official_default": false,
+        "requires_safe_delay_policy": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RATE_BAD_RESET_2",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.6",
+        "8.6"
+      ],
+      "action": "classify_rate_limit_without_safe_delay",
+      "given": {
+        "http_status": 429,
+        "reset_header": ""
+      },
+      "expected": {
+        "retry_immediately": false,
+        "invent_official_default": false,
+        "requires_safe_delay_policy": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RATE_BAD_RESET_3",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.6",
+        "8.6"
+      ],
+      "action": "classify_rate_limit_without_safe_delay",
+      "given": {
+        "http_status": 429,
+        "reset_header": "-1"
+      },
+      "expected": {
+        "retry_immediately": false,
+        "invent_official_default": false,
+        "requires_safe_delay_policy": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RATE_BAD_RESET_4",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.6",
+        "8.6"
+      ],
+      "action": "classify_rate_limit_without_safe_delay",
+      "given": {
+        "http_status": 429,
+        "reset_header": "NaN"
+      },
+      "expected": {
+        "retry_immediately": false,
+        "invent_official_default": false,
+        "requires_safe_delay_policy": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "RATE_BAD_RESET_5",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.6",
+        "8.6"
+      ],
+      "action": "classify_rate_limit_without_safe_delay",
+      "given": {
+        "http_status": 429,
+        "reset_header": "not-seconds"
+      },
+      "expected": {
+        "retry_immediately": false,
+        "invent_official_default": false,
+        "requires_safe_delay_policy": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ERROR_UNKNOWN_CODE",
+      "checklist_items": [
+        6
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "2.8"
+      ],
+      "action": "classify_error",
+      "given": {
+        "code": 987654321
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "EXPIRED_STREAM_200850",
+      "checklist_items": [
+        1,
+        6,
+        10
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "handle_expired_stream",
+      "given": {
+        "code": 200850,
+        "elapsed_stream_minutes": 10
+      },
+      "expected": {
+        "requires_mainline_decision": [
+          "reopen_streaming",
+          "direct_finalize"
+        ],
+        "automatic_create": false,
+        "automatic_send_new_entity": false,
+        "freshness_and_sources_rechecked": true
+      },
+      "forbidden": [
+        "quietly create another card"
+      ]
+    },
+    {
+      "id": "EXPIRED_STREAM_300309",
+      "checklist_items": [
+        1,
+        6,
+        10
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.8",
+        "8.6"
+      ],
+      "action": "handle_expired_stream",
+      "given": {
+        "code": 300309,
+        "elapsed_stream_minutes": 10
+      },
+      "expected": {
+        "requires_mainline_decision": [
+          "reopen_streaming",
+          "direct_finalize"
+        ],
+        "automatic_create": false,
+        "automatic_send_new_entity": false,
+        "freshness_and_sources_rechecked": true
+      },
+      "forbidden": [
+        "quietly create another card"
+      ]
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_1",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": ">"
+      },
+      "expected": {
+        "literal_text": "&#62;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_2",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "<"
+      },
+      "expected": {
+        "literal_text": "&#60;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_3",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "*"
+      },
+      "expected": {
+        "literal_text": "&#42;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_4",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "_"
+      },
+      "expected": {
+        "literal_text": "&#95;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_5",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "~"
+      },
+      "expected": {
+        "literal_text": "&sim;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_6",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "`"
+      },
+      "expected": {
+        "literal_text": "&#96;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_7",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "["
+      },
+      "expected": {
+        "literal_text": "&#91;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_8",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "]"
+      },
+      "expected": {
+        "literal_text": "&#93;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_9",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "("
+      },
+      "expected": {
+        "literal_text": "&#40;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_10",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": ")"
+      },
+      "expected": {
+        "literal_text": "&#41;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_11",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "#"
+      },
+      "expected": {
+        "literal_text": "&#35;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_12",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "!"
+      },
+      "expected": {
+        "literal_text": "&#33;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_13",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "\\"
+      },
+      "expected": {
+        "literal_text": "&#92;",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_OFFICIAL_14",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "- synthetic item"
+      },
+      "expected": {
+        "literal_text": "&#45; synthetic item",
+        "backslash_escape": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_PROJECT_1",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "7.4",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "&"
+      },
+      "expected": {
+        "literal_text": "&#38;",
+        "official_rendering": "unverified_stage"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_PROJECT_2",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "7.4",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "|"
+      },
+      "expected": {
+        "literal_text": "&#124;",
+        "official_rendering": "unverified_stage"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_PROJECT_3",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "7.4",
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "&lt;"
+      },
+      "expected": {
+        "literal_text": "&#38;lt;",
+        "official_rendering": "unverified_stage"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ESCAPE_ONE_ORIGINAL_PASS",
+      "checklist_items": [
+        7
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.7"
+      ],
+      "action": "literal",
+      "given": {
+        "text": "\\*"
+      },
+      "expected": {
+        "literal_text": "&#92;&#42;",
+        "new_entities_reescaped": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SIZE_answer_10000_chinese_characters",
+      "checklist_items": [
+        8
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.8"
+      ],
+      "action": "build_card",
+      "given": {
+        "scenario": "answer_10000_chinese_characters",
+        "synthetic_only": true,
+        "open_url": "https://example.invalid/mingjing"
+      },
+      "expected": {
+        "measure": "actual_serialized_utf8_bytes",
+        "product_card_budget_bytes": 28000,
+        "max_wire_bytes": 30000,
+        "component_count_max": 200,
+        "oversized_full_text_in_fold": false,
+        "answer_fallback_prefix_characters_max": 1200,
+        "answer_open_url_if_supplied": true,
+        "official_limit_spelling": "30 KB"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SIZE_huge_evidence_alias_list",
+      "checklist_items": [
+        8
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.8"
+      ],
+      "action": "build_card",
+      "given": {
+        "scenario": "huge_evidence_alias_list",
+        "synthetic_only": true,
+        "open_url": "https://example.invalid/mingjing"
+      },
+      "expected": {
+        "measure": "actual_serialized_utf8_bytes",
+        "product_card_budget_bytes": 28000,
+        "max_wire_bytes": 30000,
+        "component_count_max": 200,
+        "oversized_full_text_in_fold": false,
+        "answer_fallback_prefix_characters_max": 1200,
+        "answer_open_url_if_supplied": true,
+        "official_limit_spelling": "30 KB"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SIZE_large_brief",
+      "checklist_items": [
+        8
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.8"
+      ],
+      "action": "build_card",
+      "given": {
+        "scenario": "large_brief",
+        "synthetic_only": true,
+        "open_url": "https://example.invalid/mingjing"
+      },
+      "expected": {
+        "measure": "actual_serialized_utf8_bytes",
+        "product_card_budget_bytes": 28000,
+        "max_wire_bytes": 30000,
+        "component_count_max": 200,
+        "oversized_full_text_in_fold": false,
+        "answer_fallback_prefix_characters_max": 1200,
+        "answer_open_url_if_supplied": true,
+        "official_limit_spelling": "30 KB"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SIZE_NO_OPEN_URL",
+      "checklist_items": [
+        8
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.8"
+      ],
+      "action": "build_oversized_answer",
+      "given": {
+        "open_url": null
+      },
+      "expected": {
+        "serialized_utf8_bytes_max": 28000,
+        "truncated": true,
+        "suffix_contains": "完整内容见明镜台",
+        "full_text_duplicated_in_fold": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "SIZE_UTF8_AND_ENVELOPE",
+      "checklist_items": [
+        8
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "8.8"
+      ],
+      "action": "measure_serialized_card",
+      "given": {
+        "text": "汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉汉",
+        "text_codepoints": 32,
+        "text_utf8_bytes": 96
+      },
+      "expected": {
+        "use_actual_serialized_utf8_bytes": true,
+        "measure_inner_and_max_finalize_envelope": true,
+        "include_string_escaping_and_envelope_overhead": true,
+        "character_count_as_bytes": false,
+        "official_30KB_exact_unit": "unverified_stage",
+        "safe_card_bytes": 28000,
+        "max_wire_bytes": 30000
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_COUNT_200",
+      "checklist_items": [
+        8
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "1",
+        "8.8"
+      ],
+      "action": "validate_component_count",
+      "given": {
+        "body_component_tree_total": 200
+      },
+      "expected": {
+        "valid": true,
+        "only_top_level_counting": false,
+        "button_text_or_header_title_property_is_component": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "ELEMENT_COUNT_201",
+      "checklist_items": [
+        8
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "1",
+        "8.8"
+      ],
+      "action": "validate_component_count",
+      "given": {
+        "body_component_tree_total": 201
+      },
+      "expected": {
+        "valid": false,
+        "only_top_level_counting": false,
+        "button_text_or_header_title_property_is_component": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "JSON_V2_REQUIRED",
+      "checklist_items": [
+        9,
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "8.9"
+      ],
+      "action": "build_card",
+      "given": {
+        "kind": "any"
+      },
+      "expected": {
+        "schema": "2.0",
+        "config_update_multi": true,
+        "explicit_fields": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UPDATE_MULTI_initial_card",
+      "checklist_items": [
+        9
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "1",
+        "8.9"
+      ],
+      "action": "initial_card",
+      "given": {
+        "schema": "2.0"
+      },
+      "expected": {
+        "config_update_multi": true,
+        "explicit": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UPDATE_MULTI_ordinary_patch_before",
+      "checklist_items": [
+        9
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "1",
+        "8.9"
+      ],
+      "action": "ordinary_patch_before",
+      "given": {
+        "schema": "2.0"
+      },
+      "expected": {
+        "config_update_multi": true,
+        "explicit": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UPDATE_MULTI_ordinary_patch_after",
+      "checklist_items": [
+        9
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "1",
+        "8.9"
+      ],
+      "action": "ordinary_patch_after",
+      "given": {
+        "schema": "2.0"
+      },
+      "expected": {
+        "config_update_multi": true,
+        "explicit": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UPDATE_MULTI_finalize",
+      "checklist_items": [
+        9
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "1",
+        "8.9"
+      ],
+      "action": "finalize",
+      "given": {
+        "schema": "2.0"
+      },
+      "expected": {
+        "config_update_multi": true,
+        "explicit": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "JSON_V2_STRUCTURE",
+      "checklist_items": [
+        9,
+        10
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "1"
+      ],
+      "action": "validate_card_structure",
+      "given": {},
+      "expected": {
+        "header_title_required": true,
+        "header_title_tags": [
+          "plain_text",
+          "lark_md"
+        ],
+        "body_elements_array": true,
+        "markdown_content_field": true,
+        "legacy_action_container": false,
+        "legacy_note_component": false,
+        "product_max_buttons": 4,
+        "callback_business_token_path": "behaviors[].value.t",
+        "open_url_uses_default_url": true,
+        "collapsible_panel_expanded": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "WIRE_CREATE",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.1"
+      ],
+      "action": "prepare_create_card",
+      "given": {
+        "card": "synthetic card JSON"
+      },
+      "expected": {
+        "method": "POST",
+        "path": "/open-apis/cardkit/v1/cards",
+        "body": {
+          "type": "card_json",
+          "data_type": "serialized_json_string"
+        },
+        "wire_uuid_field": false,
+        "sequence_field": false,
+        "data_character_max": 3000000,
+        "ack_card_id_path": "data.card_id",
+        "scope": "cardkit:card:write"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "WIRE_SEND_ENTITY",
+      "checklist_items": [
+        2,
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.2"
+      ],
+      "action": "prepare_send_card_entity",
+      "given": {
+        "receive_id": "ou_syntheticOwner",
+        "card_id": "12345"
+      },
+      "expected": {
+        "method": "POST",
+        "path": "/open-apis/im/v1/messages",
+        "query": {
+          "receive_id_type": "open_id"
+        },
+        "body": {
+          "receive_id": "ou_syntheticOwner",
+          "msg_type": "interactive",
+          "content_type": "serialized_json_string",
+          "content_json": {
+            "type": "card",
+            "data": {
+              "card_id": "12345"
+            }
+          }
+        },
+        "optional_uuid_max_characters": 50,
+        "ack_message_id_path": "data.message_id",
+        "same_creating_app": true,
+        "entity_send_count_max": 1,
+        "message_uuid_dedupe_seconds": 3600
+      },
+      "forbidden": []
+    },
+    {
+      "id": "WIRE_CONTENT",
+      "checklist_items": [
+        3,
+        4,
+        5,
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "2.3"
+      ],
+      "action": "prepare_content_update",
+      "given": {
+        "card_id": "12345",
+        "element_id": "answer_text",
+        "full_current_text": "合成完整文本",
+        "sequence": 3
+      },
+      "expected": {
+        "method": "PUT",
+        "path": "/open-apis/cardkit/v1/cards/12345/elements/answer_text/content",
+        "body_fields": [
+          "content",
+          "sequence",
+          "uuid"
+        ],
+        "content_is_full_current_text": true,
+        "scope": "cardkit:card:write"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "STREAM_THROTTLE",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "2.3",
+        "2.6"
+      ],
+      "action": "configure_streaming",
+      "given": {
+        "interval_omitted": true
+      },
+      "expected": {
+        "default_throttle_ms": 400,
+        "allowed_throttle_range_ms": [
+          300,
+          500
+        ],
+        "same_card_max_updates_per_second": 10,
+        "interface_max_per_minute": 1000,
+        "interface_max_per_second": 50,
+        "streaming_qps_contradiction": "unverified_stage"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "STREAM_CLIENT_LIFETIME",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "1",
+        "2.5"
+      ],
+      "action": "describe_prerequisites",
+      "given": {},
+      "expected": {
+        "minimum_client": "7.20",
+        "custom_config_minimum_client": "7.23",
+        "client_7_20_to_7_22_platform_defaults": true,
+        "autoclose_minutes": 10,
+        "forward_while_streaming": false,
+        "entity_update_lifetime_days": 14,
+        "closing_alone_refreshes_custom_summary": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_TOKEN_NAMESPACES",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "3.2",
+        "3.4"
+      ],
+      "action": "parse_callback",
+      "given": {
+        "header": {
+          "token": "synthetic_verification"
+        },
+        "event": {
+          "token": "synthetic_platform_delay",
+          "action": {
+            "value": {
+              "t": "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
+            }
+          }
+        }
+      },
+      "expected": {
+        "verification_token_path": "header.token",
+        "platform_delay_token_path": "event.token",
+        "business_action_token_path": "event.action.value.t",
+        "namespaces_interchangeable": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "TOKEN_CONFUSION_header.token",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "business_token_supplied_only_at": "header.token"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "tokens_logged": false,
+        "diagnostic_contains_token": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "TOKEN_CONFUSION_event.token",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "business_token_supplied_only_at": "event.token"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "tokens_logged": false,
+        "diagnostic_contains_token": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_operator.open_id",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "operator.open_id"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_header.app_id",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "header.app_id"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_context.open_chat_id",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "context.open_chat_id"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_context.open_message_id",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "context.open_message_id"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_owner",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "owner"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_subject",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "subject"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_entity_id",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "entity_id"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_entity_revision",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "entity_revision"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_kind",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "kind"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_payload_fingerprint",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "payload_fingerprint"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_BIND_current_source_revision",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "authenticate_business_command",
+      "given": {
+        "mismatched_binding": "current_source_revision"
+      },
+      "expected": {
+        "business_command_enqueued": false,
+        "business_effect": false,
+        "generic_safe_toast": true,
+        "sensitive_fields_in_toast_or_log": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_OPERATOR_AUTHORITY",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "resolve_owner",
+      "given": {
+        "authenticated_operator_open_id": "ou_syntheticOwner",
+        "action_value_claimed_open_id": "ou_otherSynthetic"
+      },
+      "expected": {
+        "identity_source": "event.operator.open_id_after_transport_authentication",
+        "trust_action_value_owner": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_RESPONSE",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "3.3",
+        "8.10"
+      ],
+      "action": "accept_callback_command",
+      "given": {
+        "card_type": "entity",
+        "transport": "authenticated_long_connection"
+      },
+      "expected": {
+        "ordered_steps": [
+          "authenticate_envelope",
+          "validate_business_token_and_current_scope",
+          "durably_enqueue_unique_command",
+          "return_toast"
+        ],
+        "http_status": 200,
+        "deadline_ms_max": 3000,
+        "sync_model_calls": 0,
+        "sync_business_execution": 0,
+        "response_card_raw": false,
+        "toast_only": true,
+        "later_effect_channel": "CardKit",
+        "local_fake_proves_live_deadline": false,
+        "memory_queue_proves_durable_DB_enqueue": false
+      },
+      "forbidden": [
+        "HTTP redirect",
+        "waiting for model before response"
+      ]
+    },
+    {
+      "id": "CALLBACK_ENQUEUE_FAILURE",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "3.3"
+      ],
+      "action": "handle_enqueue_failure",
+      "given": {
+        "durable_enqueue_succeeded": false
+      },
+      "expected": {
+        "claim_queued": false,
+        "platform_redelivery_expected": false,
+        "safe_retry_click_instruction": true,
+        "business_effect": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_IDEMPOTENCY",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "3.4"
+      ],
+      "action": "replay_callback",
+      "given": {
+        "same_business_token": true,
+        "same_or_different_event_id": true
+      },
+      "expected": {
+        "record_header_event_id": true,
+        "atomic_token_consume_and_command_ledger": true,
+        "stable_operation_id": true,
+        "business_effect_count_max": 1
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_WEBHOOK_AUTH",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "3.1"
+      ],
+      "action": "verify_webhook",
+      "given": {
+        "transport": "webhook"
+      },
+      "expected": {
+        "require_encrypt_key": true,
+        "signature_inputs": [
+          "timestamp",
+          "nonce",
+          "encrypt_key",
+          "raw_body"
+        ],
+        "algorithm": "sha256",
+        "verify_before_json_parse_or_business_token_use": true,
+        "json_reencoding_for_signature": false,
+        "header_verification_token_alone_sufficient": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_LONG_CONNECTION",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "3.1"
+      ],
+      "action": "describe_long_connection",
+      "given": {},
+      "expected": {
+        "preferred_transport": "SDK_long_connection",
+        "authentication_at_connect": true,
+        "extra_webhook_signature_or_decryption": false,
+        "connection_max": 50,
+        "cluster_receives_event_on_one_client": true,
+        "event_type": "card.action.trigger",
+        "callback_event_requires_scope": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "DELAYED_UPDATE_TOKEN",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "3.5"
+      ],
+      "action": "prepare_delayed_update",
+      "given": {
+        "platform_token_source": "event.token"
+      },
+      "expected": {
+        "method": "POST",
+        "path": "/open-apis/interactive/v1/card/update",
+        "token_lifetime_seconds": 1800,
+        "uses_max": 2,
+        "call_only_after_callback_response": true,
+        "call_parallel_with_response": false,
+        "business_token_as_platform_token": false,
+        "request_limit_spelling": "30 KB"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "CALLBACK_LIFETIMES",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "3.5"
+      ],
+      "action": "describe_lifetimes",
+      "given": {},
+      "expected": {
+        "platform_interaction_days": 30,
+        "card_update_days": 14,
+        "delayed_update_minutes": 30,
+        "business_k3_ttl_independent_and_shorter": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_question",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "issue_business_token",
+      "given": {
+        "action_kind": "question"
+      },
+      "expected": {
+        "ttl_seconds": 86400,
+        "caller_supplied_longer_ttl": false,
+        "dangerous_action_disguised_as_question": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_decision",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "issue_business_token",
+      "given": {
+        "action_kind": "decision"
+      },
+      "expected": {
+        "ttl_seconds": 86400,
+        "caller_supplied_longer_ttl": false,
+        "dangerous_action_disguised_as_question": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_memory_receipt",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "issue_business_token",
+      "given": {
+        "action_kind": "memory_receipt"
+      },
+      "expected": {
+        "ttl_seconds": 86400,
+        "caller_supplied_longer_ttl": false,
+        "dangerous_action_disguised_as_question": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_brief",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "issue_business_token",
+      "given": {
+        "action_kind": "brief"
+      },
+      "expected": {
+        "ttl_seconds": 86400,
+        "caller_supplied_longer_ttl": false,
+        "dangerous_action_disguised_as_question": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_delete_memory",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "issue_business_token",
+      "given": {
+        "action_kind": "delete_memory"
+      },
+      "expected": {
+        "ttl_seconds": 900,
+        "caller_supplied_longer_ttl": false,
+        "dangerous_action_disguised_as_question": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_delete_source",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "issue_business_token",
+      "given": {
+        "action_kind": "delete_source"
+      },
+      "expected": {
+        "ttl_seconds": 900,
+        "caller_supplied_longer_ttl": false,
+        "dangerous_action_disguised_as_question": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_apply_organize",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "issue_business_token",
+      "given": {
+        "action_kind": "apply_organize"
+      },
+      "expected": {
+        "ttl_seconds": 900,
+        "caller_supplied_longer_ttl": false,
+        "dangerous_action_disguised_as_question": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_EXPIRED_CLICK",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "consume_business_token",
+      "given": {
+        "fully_bound": true,
+        "record_exists": true,
+        "now_equals_or_exceeds_expires_at": true
+      },
+      "expected": {
+        "toast": "这张卡已过期，我重新发一张",
+        "refresh_needed": true,
+        "automatic_new_card": false,
+        "business_effect": false,
+        "requires_current_entity_and_sources_before_refresh": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "K3_INVALID_NOT_EXPIRED",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "prior_K3_contract"
+      ],
+      "action": "consume_business_token",
+      "given": {
+        "one_of": [
+          "wrong_owner",
+          "wrong_subject",
+          "unknown_token",
+          "revoked",
+          "store_failure"
+        ]
+      },
+      "expected": {
+        "outcome": "invalid",
+        "refresh_needed": false,
+        "expired_record_disclosure": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_PERMANENT_230053",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "code": 230053
+      },
+      "expected": {
+        "outcome": "permanent_rejected",
+        "automatic_resend": false,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_PERMANENT_230013",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "code": 230013
+      },
+      "expected": {
+        "outcome": "permanent_rejected",
+        "automatic_resend": false,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_PERMANENT_230038",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "code": 230038
+      },
+      "expected": {
+        "outcome": "permanent_rejected",
+        "automatic_resend": false,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_PERMANENT_230028",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "code": 230028
+      },
+      "expected": {
+        "outcome": "permanent_rejected",
+        "automatic_resend": false,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_UNKNOWN_230049",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "code": 230049
+      },
+      "expected": {
+        "outcome": "unknown",
+        "automatic_resend": false,
+        "reconcile": true,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_RETRY_230020",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "code": 230020
+      },
+      "expected": {
+        "outcome": "retryable",
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_RETRY_99991400",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "code": 99991400
+      },
+      "expected": {
+        "outcome": "retryable",
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_RETRY_429",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.2",
+        "8.11"
+      ],
+      "action": "classify_mainline_message_error",
+      "given": {
+        "http_status": 429
+      },
+      "expected": {
+        "outcome": "retryable",
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_STOPPED_BOT",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "project_policy",
+      "source_sections": [
+        "4.2",
+        "6"
+      ],
+      "action": "handle_message_error",
+      "given": {
+        "code": 230053
+      },
+      "expected": {
+        "stop_proactive_sends": true,
+        "record_in_aggregate": true,
+        "automatic_external_notification": false,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "TOKEN_CACHE_1801",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.3",
+        "8.11"
+      ],
+      "action": "select_cached_tenant_access_token",
+      "given": {
+        "remaining_seconds": 1801
+      },
+      "expected": {
+        "refresh": false,
+        "reuse_cache": true,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "TOKEN_CACHE_1800",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.3",
+        "8.11"
+      ],
+      "action": "select_cached_tenant_access_token",
+      "given": {
+        "remaining_seconds": 1800
+      },
+      "expected": {
+        "refresh": false,
+        "reuse_cache": true,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "TOKEN_CACHE_1799",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4.3",
+        "8.11"
+      ],
+      "action": "select_cached_tenant_access_token",
+      "given": {
+        "remaining_seconds": 1799
+      },
+      "expected": {
+        "refresh": true,
+        "reuse_cache": false,
+        "mainline_hint_only": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "TOKEN_CACHE_LIFETIME",
+      "checklist_items": [
+        11
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "4.3"
+      ],
+      "action": "describe_mainline_cache",
+      "given": {},
+      "expected": {
+        "maximum_lifetime_seconds": 7200,
+        "use_response_expire_seconds": true,
+        "share_cache_for_cardkit": true,
+        "old_and_new_token_valid_during_refresh_overlap": true,
+        "credentials_in_logs": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MAINLINE_SCOPES",
+      "checklist_items": [
+        10,
+        11
+      ],
+      "evidence_class": "official_with_project_policy",
+      "source_sections": [
+        "4",
+        "5",
+        "6"
+      ],
+      "action": "describe_mainline_prerequisites",
+      "given": {},
+      "expected": {
+        "send_permission_any_of": [
+          "im:message:send_as_bot",
+          "im:message",
+          "im:message:send"
+        ],
+        "cardkit_scope": "cardkit:card:write",
+        "ordinary_patch_permission_any_of": [
+          "im:message:update",
+          "im:message",
+          "im:message:send_as_bot"
+        ],
+        "p2p_receive_permission_any_of": [
+          "im:message.p2p_msg:readonly",
+          "im:message.p2p_msg"
+        ],
+        "subscribe_receive_event": "im.message.receive_v1",
+        "request_employee_user_id_permission": false,
+        "bot_enabled_and_published": true,
+        "target_in_availability": true,
+        "not_cross_tenant_unless_supported": true,
+        "target_not_disabled_resigned_or_stopped_bot": true,
+        "per_user_qps_max": 5,
+        "backend_changes_are_user_steps": true,
+        "delayed_update_scope_id_mapping": "unverified_stage"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "MESSAGE_REPLY",
+      "checklist_items": [
+        10,
+        11
+      ],
+      "evidence_class": "official",
+      "source_sections": [
+        "4.5"
+      ],
+      "action": "describe_mainline_reply",
+      "given": {},
+      "expected": {
+        "method": "POST",
+        "path": "/open-apis/im/v1/messages/:message_id/reply",
+        "content_type": "serialized_json_string",
+        "reply_in_thread_default": false,
+        "uuid_max_characters": 50,
+        "reply_entity_support": "unverified_stage",
+        "safe_entity_path_until_verified": "send_entity"
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_owner_and_run_scope",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "owner_and_run_scope"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_entity_revision",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "entity_revision"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_current_source_active",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "current_source_active"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_source_revision",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "source_revision"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_global_optout",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "global_optout"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_freshness_deadline",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "freshness_deadline"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_occurrence_lease",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "occurrence_lease"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "PRESERVE_one_time_business_effect",
+      "checklist_items": [
+        1,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "existing_freshness_and_K3_contracts"
+      ],
+      "action": "plan_or_claim_official_operation",
+      "given": {
+        "invalidated_invariant": "one_time_business_effect"
+      },
+      "expected": {
+        "new_wire_mutation": false,
+        "fallback_send": false,
+        "automatic_new_card": false,
+        "original_source_not_revived": true,
+        "unknown_outcome_can_be_readonly_reconciled": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNKNOWN_NOT_RESENT",
+      "checklist_items": [
+        1,
+        2,
+        6,
+        10
+      ],
+      "evidence_class": "regression_invariant",
+      "source_sections": [
+        "2.8",
+        "8.1"
+      ],
+      "action": "recover_unknown_delivery",
+      "given": {
+        "operation": "create_or_send_or_update_or_finalize_or_close_streaming"
+      },
+      "expected": {
+        "automatic_resend": false,
+        "fresh_uuid_resend": false,
+        "fresh_card_resend": false,
+        "readonly_reconciliation_intent": true,
+        "truth_must_be_confirmed_before_followup_mutation": true
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U01",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.1"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "sequence_gap_acceptance"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "project default true configurable; unknown is never reusable",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U02",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.2"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "final_json_false_alone_closes"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "always separate close_streaming settings operation",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U03",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.3"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "initial_markdown_empty"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "nonempty synthetic placeholder",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U04",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.4"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "ampersand_and_pipe_rendering"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "project emits &#38; and &#124;; rendering not proven",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U05",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.5"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "entity_callback_raw_and_sequence"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "entity toast only, later CardKit",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U06",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.6"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "cardkit_uuid_dedupe_window"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "no invented platform window for internal idempotency",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U07",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.7"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "open_id_charset_length"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "authenticated opaque platform identity; old regex is project policy",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U08",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.8"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "reply_entity_support"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "send entity until verified",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U09",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.9"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "lockscreen_push_preview"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "safe preview retained; no real-device proof",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U10",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "7.10"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "streaming_rate_contradiction"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "enforce stricter single-card 10 updates/second",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U11",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "6"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "first_user_DM_required"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "do not infer official prerequisites from old runtime",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U12",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "1"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "30KB_exact_unit"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "project 28000/30000 byte budgets are engineering choices",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    },
+    {
+      "id": "UNVERIFIED_U13",
+      "checklist_items": [
+        10
+      ],
+      "evidence_class": "unverified_stage",
+      "source_sections": [
+        "5"
+      ],
+      "action": "reserve_stage_or_console_verification",
+      "given": {
+        "topic": "delayed_update_scope_id_mapping"
+      },
+      "expected": {
+        "verification_status": "unverified_stage",
+        "safe_project_policy": "console mapping requires mainline confirmation",
+        "real_business_request_performed": false,
+        "local_fake_is_official_proof": false
+      },
+      "forbidden": []
+    }
+  ]
+}
