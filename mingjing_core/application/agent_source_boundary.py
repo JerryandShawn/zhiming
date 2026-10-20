@@ -7,7 +7,7 @@ from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.timekit.clock import get_clock
 
 
-def authorize_boundary(repo: Any, owner: str, subject: str, source: dict, supplied: dict) -> None:
+def authorize_boundary(repo: Any, owner: str, subject: str, source: dict, supplied: dict) -> dict:
     with repo.transaction(owner) as connection:
         row = repo._run(repo._leased(connection, owner, supplied["id"], supplied["lease_token"]))
         if (
@@ -22,3 +22,4 @@ def authorize_boundary(repo: Any, owner: str, subject: str, source: dict, suppli
             and row["deadline_at"] <= get_clock().now()
         ):
             raise EvidenceError("上下文旧边界缺少本轮受信租约")
+        return row

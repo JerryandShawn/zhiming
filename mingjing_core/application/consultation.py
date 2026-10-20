@@ -60,13 +60,15 @@ def selected_facts(snapshot, message, limit=100):
 
 
 class ConsultationService:
-    def __init__(self, repo, *, model=None, runtime=None, charts_factory=None):
+    def __init__(self, repo, *, model=None, runtime=None, charts_factory=None, agent_runtime=None):
+        from .runtime_assembly import RuntimeAssembly
         self.repo = repo
         self.memory = MemoryService(repo)
         self.tarot = TarotService(repo)
         self.outbox = OutboxService(repo)
         self.model = model or ConfiguredModel()
-        self.runtime = runtime or LangGraphRuntime(repo)
+        self.runtime_assembly = RuntimeAssembly(repo, runtime or LangGraphRuntime(repo), agent_runtime)
+        self.runtime = self.runtime_assembly if agent_runtime is not None else self.runtime_assembly.legacy
         self.memory.on_revoke = self._on_revoke
         self.knowledge = KnowledgeRegistry.load_builtin()
         self.charts_factory = charts_factory or ChartAdapter
@@ -96,6 +98,15 @@ class ConsultationService:
         return cls(repo, model=model, runtime=LangGraphRuntime(repo, initialize=False))
 
     def submit(self, *, owner, subject='self', message, conversation_id='shared', request_id,
+               case_ids=None, mode='chat', depth='standard', selection=None, draw_id=None,
+               images=None, parent_run=None, source_message_id=None, reading_id=None):
+        from .runtime_assembly import route_submit
+        return route_submit(self, dict(owner=owner, subject=subject, message=message,
+            conversation_id=conversation_id, request_id=request_id, case_ids=case_ids, mode=mode, depth=depth,
+            selection=selection, draw_id=draw_id, images=images, parent_run=parent_run,
+            source_message_id=source_message_id, reading_id=reading_id))
+
+    def _submit_validated(self, *, owner, subject='self', message, conversation_id='shared', request_id,
                case_ids=None, mode='chat', depth='standard', selection=None, draw_id=None,
                images=None, parent_run=None, source_message_id=None, reading_id=None):
         self.repo.ensure_owner(owner)
@@ -138,6 +149,9 @@ class ConsultationService:
         if run['status'] == 'succeeded':
             return run['result']
         token = run['lease_token']
+        if run['runtime'] == 'v4':
+            from .runtime_execution import execute_agent
+            return execute_agent(self, run, emit)
         try:
             return self.runtime.execute(self, owner, run_id, token, emit)
         except Exception as exc:

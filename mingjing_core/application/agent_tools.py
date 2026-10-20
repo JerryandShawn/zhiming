@@ -88,9 +88,11 @@ class AgentToolsService:
                 raise ScopeError("事项不属于当前人物")
 
     def source(self, ctx: ToolContext, message_id: str) -> dict[str, Any]:
+        from mingjing_core.application.agent_current_sources import current_source_ids
+
         run = self.repo.fetch_run(ctx.owner, ctx.run_id)
-        actual = run["request"].get("source_message_id")
-        if message_id != actual or ctx.source_ids and message_id not in ctx.source_ids:
+        allowed = current_source_ids(self.repo, run)
+        if message_id not in allowed or ctx.source_ids and message_id not in ctx.source_ids:
             raise ScopeError("来源不在本轮受信范围")
         source = self.memory.get_source(ctx.owner, message_id)
         source_policy(source, ctx.subject, ctx.thread_id)

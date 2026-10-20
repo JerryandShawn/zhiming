@@ -11,6 +11,7 @@ from mingjing_core.models.port import ChatMessage
 from mingjing_core.timekit.clock import Clock
 from mingjing_core.timekit.now_block import render_now_block
 
+from .context_current import current_layer
 from .context_types import BudgetPolicy, ContextItem, ContextLayer, SourceSnapshot
 
 
@@ -241,16 +242,7 @@ def build_layers(
                     ),
                 ),
             ),
-            ContextLayer(
-                "L6",
-                (
-                    ContextItem(
-                        snapshot.current["id"],
-                        (ChatMessage("user", snapshot.current["content"]),),
-                        True,
-                    ),
-                ),
-            ),
+            current_layer(snapshot, aliases),
         ]
     )
     return layers, aliases.values
