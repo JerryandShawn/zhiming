@@ -80,6 +80,12 @@ class MeterResult:
     token_meter_version: str | None = None
     provider: str | None = None
     model: str | None = None
+    tokenizer_version: str | None = None
+    tokenizer_sha256: str | None = None
+    encoder_version: str | None = None
+    encoder_sha256: str | None = None
+    estimate_multiplier: str | None = None
+    framing_allowance: int | None = None
 
 
 @dataclass(frozen=True)
@@ -107,6 +113,19 @@ class SourceSnapshot:
 
 
 @dataclass(frozen=True)
+class ContextEpoch:
+    base_generation: int
+    epoch: int
+    l5_hashes: tuple[str, ...]
+    stable_sha256: str
+    prefix_sha256: str
+    window_sha256: str
+    source_versions: dict[str, int]
+    snapshot_revision: int
+    reset_reason: str | None
+
+
+@dataclass(frozen=True)
 class ContextBuild:
     budget: BudgetResult
     snapshot_revision: int
@@ -120,6 +139,7 @@ class ContextBuild:
             "provider_framing_unverified",
         )
     )
+    cache_epoch: ContextEpoch | None = None
 
     @property
     def messages(self) -> tuple[ChatMessage, ...]:

@@ -37,15 +37,17 @@ class TokenReading:
             raise ContextInputError("context_token_meter_invalid")
         if self.upper_bound is None:
             raise InputMeterUnverified()
-        if any(value is not None and value > self.upper_bound for value in (self.estimated, self.actual)):
+        # Z1 treats actual > estimate upper as an observed calibration breach,
+        # not corrupt provider usage. The three quantities remain independent.
+        if self.estimated is not None and self.estimated > self.upper_bound:
             raise ContextInputError("context_token_meter_invalid")
 
 
 class TokenMeter(Protocol):
     """Trusted application dependency, never an option controlled by model output.
 
-    Implementations must include provider framing, tools, tool_choice and reasoning.
-    This tree intentionally has no certified live member-endpoint implementation.
+    Implementations must cover tools, tool_choice and reasoning. Z1 permits a
+    documented estimate with framing allowance; it does not certify equivalence.
     Synthetic meters are usable for threshold tests, with live_admissible=False.
     """
 
@@ -86,6 +88,12 @@ def measure_request(
         token_meter_version=meter.version,
         provider=meter.provider,
         model=meter.model,
+        tokenizer_version=getattr(meter, "tokenizer_version", None),
+        tokenizer_sha256=getattr(meter, "tokenizer_sha256", None),
+        encoder_version=getattr(meter, "encoder_version", None),
+        encoder_sha256=getattr(meter, "encoder_sha256", None),
+        estimate_multiplier=getattr(meter, "estimate_multiplier", None),
+        framing_allowance=getattr(meter, "framing_allowance", None),
     )
 
 

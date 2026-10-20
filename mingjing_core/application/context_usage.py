@@ -8,6 +8,7 @@ from typing import Any
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
+from mingjing_core.agent.context_k3 import calibration
 from mingjing_core.agent.context_types import MeterResult
 from mingjing_core.agent.journal import JournalStep
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
@@ -35,6 +36,24 @@ def _advance(state: dict[str, Any], actual: int | None, upper: int | None) -> di
     return result
 
 
+def _receipt(counters: dict[str, Any], preflight: MeterResult, actual: int | None, operation: str) -> dict[str, Any]:
+    return dict(
+        counters,
+        actual_input_tokens=actual,
+        estimated_input_tokens=_number(preflight.estimated_input_tokens),
+        input_token_upper_bound=preflight.input_token_upper_bound,
+        token_meter_version=preflight.token_meter_version,
+        operation_id=operation,
+        tokenizer_version=preflight.tokenizer_version,
+        tokenizer_sha256=preflight.tokenizer_sha256,
+        encoder_version=preflight.encoder_version,
+        encoder_sha256=preflight.encoder_sha256,
+        estimate_multiplier=preflight.estimate_multiplier,
+        framing_allowance=preflight.framing_allowance,
+        warnings=["input_token_upper_bound_exceeded"] if counters["calibration"]["upper_bound_breached"] else [],
+    )
+
+
 class ContextUsageService:
     def __init__(self, repo: PostgresRepository) -> None:
         self.repo = repo
@@ -43,6 +62,10 @@ class ContextUsageService:
         if step.kind != "model" or not step.completed:
             raise EvidenceError("上下文用量只能确认已持久完成的模型步骤")
         return self._record(step, preflight)
+
+    def factor(self, owner: str, subject: str, thread_id: str, preflight: MeterResult) -> str:
+        state = self._thread(owner, subject, thread_id).get("context_guard", {})
+        return calibration(state.get("calibration", {}), preflight, None)["factor"]
 
     def _record(self, step: JournalStep, preflight: MeterResult) -> dict[str, Any]:
         with self.repo.transaction(step.owner) as connection:
@@ -75,16 +98,16 @@ class ContextUsageService:
             actual = _number(stored["usage"].get("input_tokens", stored["usage"].get("prompt_tokens")))
             upper = _number(preflight.input_token_upper_bound)
             thread_id = run["thread_id"] or "life:" + step.subject
+            connection.execute(
+                "SELECT pg_advisory_xact_lock(hashtextextended(%s,0))",
+                ("context-epoch:" + step.owner + ":" + thread_id,),
+            )
             state = self._thread(step.owner, step.subject, thread_id)
             counters = _advance(state.get("context_guard", {}), actual, upper)
-            receipt = dict(
-                counters,
-                actual_input_tokens=actual,
-                estimated_input_tokens=preflight.estimated_input_tokens,
-                input_token_upper_bound=upper,
-                token_meter_version=preflight.token_meter_version,
-                operation_id=step.operation_id,
+            counters["calibration"] = calibration(
+                state.get("context_guard", {}).get("calibration", {}), preflight, actual
             )
+            receipt = _receipt(counters, preflight, actual, step.operation_id)
             self._save_thread(step, thread_id, state, counters)
             recorded = dict(recorded, **{step.operation_id: {"meter_fp": digest, "receipt": receipt}})
             usage = dict(run["usage"], context_guard=receipt, context_steps=recorded)

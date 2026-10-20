@@ -97,7 +97,6 @@ def test_configuration_cannot_raise_the_absolute_hard_limit() -> None:
         TokenReading(3, None),
         TokenReading(True, 4),
         TokenReading(5, 4),
-        TokenReading(2, 4, 5),
         TokenReading(-1, 3),
     ],
 )
@@ -108,6 +107,15 @@ def test_unknown_or_inconsistent_meter_never_passes(reading: TokenReading) -> No
 
     with pytest.raises(ContextInputError):
         measure_request((ChatMessage("user", "合成"),), (), BadMeter(), tool_choice="auto")
+
+
+def test_z1_observed_usage_above_estimate_is_preserved_for_calibration() -> None:
+    class BreachedMeter(SyntheticMeter):
+        def measure(self, *args, **kwargs):
+            return TokenReading(2, 4, 5)
+
+    result = measure_request((ChatMessage("user", "合成"),), (), BreachedMeter(), tool_choice="auto")
+    assert (result.estimated_input_tokens, result.input_token_upper_bound, result.actual_input_tokens) == (2, 4, 5)
 
 
 def test_all_request_fields_reach_injected_meter_separately_from_serialized_size() -> None:
