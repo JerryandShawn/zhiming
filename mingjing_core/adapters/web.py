@@ -486,7 +486,7 @@ def create_app(service=None):
 
     async def chart(req,system,date):
         svc=core(req);owner=auth(req);snap=svc.memory.snapshot(owner)
-        result=svc.charts_factory(owner).calculate(svc.authorized_archive(owner,'self',snap),date or today(),[system],snap['revision'],'self')
+        result=svc.calculate_chart(owner,'self',snap,date or today(),[system])
         if not result['artifacts']: raise MissingInput('；'.join(e.get('reason','计算资料不足') for e in result['errors']))
         first=next(iter(result['artifacts'].values()))
         return dict(first['data'],core_meta={'profiles':result['profiles'],'branches':result['branches'],'warnings':first.get('warnings',[])})
