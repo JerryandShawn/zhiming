@@ -82,7 +82,7 @@ def test_envelope_projects_only_public_receipt_and_usage_fields() -> None:
     assert validated_result(result) and result["answer"] == result["text"]
     assert result["receipts"] == [{"kind": "fact", "id": "fact-synthetic", "write_status": "saved"}]
     assert result["usage"]["reported_tokens"] == {"input_tokens": 15}
-    assert "private" not in str(result) and result["review"]["status"] == "skipped"
+    assert "private" not in str(result) and result["review"] == {"state": "skipped", "reasons": []}
 
 
 @pytest.mark.parametrize(
