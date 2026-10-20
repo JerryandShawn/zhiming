@@ -10,6 +10,7 @@ from tools.eval.judges import ModelJudge, check_assertions
 from tools.eval.quota import ProviderStopped, guard_judge
 from tools.eval.schema import Scenario
 from tools.eval.targets.base import Target, TurnResult
+from tools.manual_grant import scoped_scenario
 
 
 def _case(identity: str, category: str, status: str) -> dict[str, Any]:
@@ -30,6 +31,7 @@ def _case(identity: str, category: str, status: str) -> dict[str, Any]:
     }
 
 
+@scoped_scenario
 def evaluate_scenario(
     scenario: Scenario,
     target: Target,

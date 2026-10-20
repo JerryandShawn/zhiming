@@ -15,7 +15,7 @@ from mingjing_core.models.errors import (
     ModelBadRequest,
     ModelCancelled,
     ModelProtocolError,
-    ModelQuotaExhausted,
+    ModelRateLimited,
     ModelUnavailable,
 )
 from mingjing_core.models.openai_compat import OpenAICompat, encode_messages
@@ -33,7 +33,7 @@ def test_untagged_reasoning_is_never_replayed() -> None:
 
 
 @pytest.mark.parametrize("protocol", [None, AnthropicMessages])
-def test_streamed_membership_rate_limit_stops_after_one_request(protocol: Any) -> None:
+def test_streamed_membership_rate_limit_uses_bounded_backoff(protocol: Any) -> None:
     data = recording({"type": "error", "error": {"type": "rate_limit_error", "message": "synthetic-private"}})
     kwargs = {"settings": {"membership": True}}
     model = (
@@ -41,9 +41,9 @@ def test_streamed_membership_rate_limit_stops_after_one_request(protocol: Any) -
         if protocol
         else adapter(lambda _: httpx.Response(200, content=data), **kwargs)
     )
-    with pytest.raises(ModelQuotaExhausted) as caught:
+    with pytest.raises(ModelRateLimited) as caught:
         model.complete([ChatMessage("user", "查询")])
-    assert model.request_count == 1 and model.quota_errors == 1
+    assert model.request_count == 4 and model.quota_errors == 0
     assert "private" not in str(caught.value.safe_diagnostic())
 
 
@@ -221,7 +221,7 @@ def test_anthropic_tool_result_part_list_is_wire_json_and_checks_vision() -> Non
         anthropic_encode(messages, {"vision": False})
 
 
-@pytest.mark.parametrize("status,error", [(429, ModelQuotaExhausted), (401, ModelBadRequest)])
+@pytest.mark.parametrize("status,error", [(429, ModelRateLimited), (401, ModelBadRequest)])
 def test_unreadable_error_body_cannot_change_known_membership_status(status: int, error: Any) -> None:
     class BrokenBody(httpx.SyncByteStream):
         def __iter__(self) -> Any:
@@ -230,5 +230,5 @@ def test_unreadable_error_body_cannot_change_known_membership_status(status: int
     model = adapter(lambda _: httpx.Response(status, stream=BrokenBody()), settings={"membership": True})
     with pytest.raises(error):
         model.complete([])
-    assert model.request_count == 1
-    assert model.quota_errors == (1 if status == 429 else 0)
+    assert model.request_count == (4 if status == 429 else 1)
+    assert model.quota_errors == 0

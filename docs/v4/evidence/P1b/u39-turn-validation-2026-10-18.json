@@ -1,0 +1,156 @@
+{
+  "central_guard_entrypoints_wired": false,
+  "decisions_sha256": "484d15b31cbc15839d5435e429627d1f83684d5c2638c126b512a016fb6ee8a3",
+  "effort_policy": "server_default/high; no guessed controls",
+  "effort_verified": false,
+  "execplan_sha256": "c2fd3265541e2fd5ea83b4feb865d016ce6cb30028002868699732267083912b",
+  "files": {
+    "mingjing_core/models/anthropic_messages.py": {
+      "git_blob_sha1": "897897bc8da0a0f30be42adbfa984b1989d2c646",
+      "lines": 195,
+      "max_function_lines": 60,
+      "max_line_columns": 119,
+      "sha256": "6aba488ade652ac2bf9ec939edac096941726c87c284a5229520932222192112"
+    },
+    "mingjing_core/models/openai_compat.py": {
+      "git_blob_sha1": "52516701db57ec944100656b1092c1df1cf9f379",
+      "lines": 163,
+      "max_function_lines": 58,
+      "max_line_columns": 119,
+      "sha256": "f5742317d95c5d42213beb5b0a9c8d06e01e2d3ac5ad0e620be534b346ab340a"
+    },
+    "mingjing_core/models/port.py": {
+      "git_blob_sha1": "8bcefe354674e53fcaab638cf73f7deb6ea6ed83",
+      "lines": 154,
+      "max_function_lines": 27,
+      "max_line_columns": 115,
+      "sha256": "390a3b01e32e741c19433eb736854af446ef8166c653ce8d82fa6ca2e202af2a"
+    },
+    "mingjing_core/models/registry.py": {
+      "git_blob_sha1": "c26cc979e89b0f0b6e867e3e9e4be6a517fd772a",
+      "lines": 221,
+      "max_function_lines": 40,
+      "max_line_columns": 120,
+      "sha256": "c709d8c365b164c5f01699e2bd1441fb27e24226ab0739b3a02e50cc5c4f4acd"
+    },
+    "mingjing_core/models/turn_coercion.py": {
+      "git_blob_sha1": "1d51ba9208a09c420218ac24172c027f0234cdb7",
+      "lines": 185,
+      "max_function_lines": 24,
+      "max_line_columns": 113,
+      "sha256": "7a335abdecf92b03b7f2cec56cd663b51ae64c1984f5df19804397894b101724"
+    },
+    "tests/v4/models/test_protocols.py": {
+      "git_blob_sha1": "8ae60fb90d07326791988b4a9c996ed94804323c",
+      "lines": 303,
+      "max_function_lines": 25,
+      "max_line_columns": 118,
+      "sha256": "001b3ef29a308bc28094c4232af1ec040d383a02cbf354627026c3ea126c562e"
+    },
+    "tests/v4/models/test_request_policy_wire.py": {
+      "git_blob_sha1": "17455fd4459d765c5f747ae00b0aca02cd1fa2ac",
+      "lines": 166,
+      "max_function_lines": 36,
+      "max_line_columns": 120,
+      "sha256": "89074d0cc147c5a258ec5e32bf389e864a06b3c38617dc86016c6d7a6238c80c"
+    },
+    "tests/v4/models/test_u39_anthropic_wire.py": {
+      "git_blob_sha1": "7e9e88fa1c1074b0a968489984c197a34946bdda",
+      "lines": 181,
+      "max_function_lines": 26,
+      "max_line_columns": 112,
+      "sha256": "7b13a35dbbfd933b7c051cbe9ad6a55a5af82a8cf0333d7a089a26a90bb029b7"
+    },
+    "tests/v4/models/test_u39_openai_wire.py": {
+      "git_blob_sha1": "a82aecce5a024caaadb39ed9315d5f17d57b82c6",
+      "lines": 92,
+      "max_function_lines": 21,
+      "max_line_columns": 117,
+      "sha256": "9c245b66e21d9c177b8d757e500e1d5fc552f9228759d6b96fb5c6e443b97bd7"
+    },
+    "tests/v4/models/test_u39_policy_wire.py": {
+      "git_blob_sha1": "5d15fcb7c8b044ab138076fe4a4e1ed0b5a05cb5",
+      "lines": 120,
+      "max_function_lines": 17,
+      "max_line_columns": 115,
+      "sha256": "310d1c4a54a9a7bae023fe5c65de9245fa8990705865795da7d073aebaf33b18"
+    },
+    "tests/v4/models/test_u39_request_size.py": {
+      "git_blob_sha1": "36c9d4733ed95485206ce93575e3ea20d8f7a8ac",
+      "lines": 75,
+      "max_function_lines": 18,
+      "max_line_columns": 115,
+      "sha256": "2f0ee8837bdc86d893604aaeb322688c73ce4853c849decafd7a383f58dd5696"
+    },
+    "tests/v4/models/test_u39_stream_shapes.py": {
+      "git_blob_sha1": "edfaab4bbb95cfd6768ab6d2b9b15004eb191c02",
+      "lines": 94,
+      "max_function_lines": 11,
+      "max_line_columns": 115,
+      "sha256": "0dc8ec9fbab4dba7a9543545e99db5205bbb57c06ec62219abcd396dbb0fa140"
+    }
+  },
+  "fixture_changes": {
+    "tests/v4/models/test_protocols.py": "one content_block_stop event for thinking index 0; assertions unchanged",
+    "tests/v4/models/test_request_policy_wire.py": "one content_block_stop event for text index 0; assertions unchanged"
+  },
+  "other_unchanged_paths": [
+    "config/models.yaml",
+    "mingjing_core/models/request_policy.py",
+    "mingjing_core/models/transport.py",
+    "mingjing_core/models/config_policy.py",
+    "mingjing_core/models/legacy.py"
+  ],
+  "published_equivalent_base": "18352da4be65becc4985f91397bf48e008e01154",
+  "real_model_requests": 0,
+  "real_server_operations": 0,
+  "receipt_sha256": "febe35720675ff7734a5ba00ef19c200575f2c79eafc990c773eb96d5e76eae8",
+  "report_ledger_effort_wired": false,
+  "schema": "p1b-u39-turn-evidence-v1",
+  "scope": "offline-canonical-content-and-local-role-policy",
+  "source_commit_base": "2cb0277a282431ddcf7d8392fd885ce1c8eff41b",
+  "static": {
+    "ast_bounds": true,
+    "file_limit": 400,
+    "format_check": true,
+    "function_limit": 60,
+    "git_diff_check": true,
+    "line_limit": 120,
+    "ruff_check": true,
+    "ruff_rules": [
+      "E",
+      "F",
+      "I",
+      "B",
+      "UP",
+      "SIM"
+    ],
+    "utf8_lf_no_bom": true
+  },
+  "u38_frozen_sources_unchanged": 13,
+  "uncommitted_candidate": true,
+  "validation": {
+    "command": "python -m pytest tests/v4/models tests/v4/test_p2_foundation.py -q --tb=short -o faulthandler_timeout=60",
+    "cwd": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p1b",
+    "duration_seconds": 65.66,
+    "log": {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-17\\v4-ai-claude-c-users-administrator-4\\work\\night\\u39\\models-final.log",
+      "sha256": "0bb61605a1e737ffaebcb6a9c9b5061269f5f8d600f12ecd2a8661b07a5c3790"
+    },
+    "new_http": "httpx.MockTransport only",
+    "new_tests_by_module": {
+      "tests/v4/models/test_u39_anthropic_wire.py": 9,
+      "tests/v4/models/test_u39_openai_wire.py": 8,
+      "tests/v4/models/test_u39_policy_wire.py": 27,
+      "tests/v4/models/test_u39_request_size.py": 8,
+      "tests/v4/models/test_u39_stream_shapes.py": 22
+    },
+    "new_tests_total": 74,
+    "passed": 810,
+    "python": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+    "skipped": 0,
+    "targeted_duration_seconds": 1.36,
+    "targeted_passed": 363
+  },
+  "yaml_model_switch_performed": false
+}

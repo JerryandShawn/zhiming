@@ -8,9 +8,11 @@ from collections.abc import Iterator
 from typing import Any
 
 from .errors import CapabilityError, ModelProtocolError
-from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec, active_tool_cycle
+from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec, reasoning_indices, with_execution_meta
+from .request_policy import safe_tool_choice
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
+from .turn_coercion import replay_caps
 
 
 def _content(content: str | list[Part], vision: bool) -> str | list[dict[str, Any]]:
@@ -30,8 +32,8 @@ def _content(content: str | list[Part], vision: bool) -> str | list[dict[str, An
 def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> list[dict[str, Any]]:
     result = []
     # A caller tags the active tool cycle; reasoning from earlier user turns is excluded.
-    active_cycle = active_tool_cycle(messages)
-    for message in messages:
+    replay = reasoning_indices(messages, caps)
+    for index, message in enumerate(messages):
         row: dict[str, Any] = {"role": message.role, "content": _content(message.content, caps.get("vision", False))}
         if message.tool_calls:
             row["tool_calls"] = [
@@ -48,13 +50,7 @@ def encode_messages(messages: list[ChatMessage], caps: dict[str, Any]) -> list[d
         if message.tool_call_id:
             row["tool_call_id"] = message.tool_call_id
         field = caps.get("reasoning_field")
-        if (
-            active_cycle
-            and field
-            and caps.get("reasoning_replay")
-            and message.reasoning
-            and message.tool_cycle == active_cycle
-        ):
+        if index in replay and field and (message.reasoning or message.reasoning_present):
             row[field] = message.reasoning
         result.append(row)
     return result
@@ -87,7 +83,9 @@ def parse_events(
             delta = choice.get("delta", {})
             if delta.get("content"):
                 yield StreamEvent("text", delta["content"])
-            if reasoning_field and delta.get(reasoning_field):
+            if reasoning_field and reasoning_field in delta and delta[reasoning_field] is not None:
+                if not isinstance(delta[reasoning_field], str):
+                    raise ModelProtocolError()
                 yield StreamEvent("reasoning", delta[reasoning_field])
             for item in delta.get("tool_calls", []):
                 call = calls.setdefault(item.get("index", 0), {"id": "", "name": "", "arguments": ""})
@@ -116,9 +114,13 @@ class OpenAICompat(StreamingHTTP):
         temperature: float | None = None,
         cancel_event: threading.Event | None = None,
     ) -> Iterator[StreamEvent]:
+        tool_choice = safe_tool_choice(self.model, tools, tool_choice)
+        metadata = self.execution_metadata(role)
+        self.last_execution_meta = dict(metadata)
+        caps = replay_caps(self.model, self.caps, self.settings, openai=True)
         body: dict[str, Any] = {
             "model": self.model,
-            "messages": encode_messages(messages, self.caps),
+            "messages": encode_messages(messages, caps),
             "stream": True,
             "max_tokens": max_output or self.settings.get("max_output", 14000),
         }
@@ -149,10 +151,13 @@ class OpenAICompat(StreamingHTTP):
             else:
                 body["tool_choice"] = tool_choice
         headers = {"Authorization": "Bearer " + self.api_key, "User-Agent": "MingjingCore/3.0"}
-        yield from self._events(
-            "/chat/completions",
-            body,
-            headers,
-            lambda chunks: parse_events(chunks, self.caps.get("reasoning_field"), membership=self.membership),
-            cancel_event,
+        yield from with_execution_meta(
+            self._events(
+                "/chat/completions",
+                body,
+                headers,
+                lambda chunks: parse_events(chunks, caps.get("reasoning_field"), membership=self.membership),
+                cancel_event,
+            ),
+            metadata,
         )

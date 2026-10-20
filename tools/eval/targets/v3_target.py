@@ -74,7 +74,7 @@ class V3Target:
         self.schema = "eval_p0_" + uuid.uuid4().hex
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
         self.repo.ensure_owner(self.owner, settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})})
-        self.model = TrackingModel(self.provider or ConfiguredModel(model=self.model_name))
+        self.model = TrackingModel(self.provider or ConfiguredModel(model=self.model_name, role="evaluation"))
         self.service = ConsultationService(self.repo, model=self.model)
         self.seeder = V3Seeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
         self.seeder.seed(seed)

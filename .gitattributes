@@ -4,3 +4,6 @@
 *.jpg binary
 *.webp binary
 tests/legacy/production_v5/*.py -text
+# These original fixtures are byte-pinned by CORE_V3_BEHAVIOR_COVERAGE.json.
+tests/legacy/test_quality_v6.py -text
+tests/legacy/test_review_v6.py -text

@@ -1,0 +1,176 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Taipei",
+  "phase": "P1b",
+  "scope": "offline-first-slice",
+  "phase_complete": false,
+  "source": {
+    "branch": "v4/p1b-k3-hardening",
+    "base_commit": "b9a89b6f84f7bebb640de080548010859aae630c",
+    "local_code_commit": "2cf6b1f1edefac46e2b5d035484713326eacf7d0",
+    "immutable_remote_code_object": "be8119e475034306681b6d168ab49073b2a23b76",
+    "code_tree": "ff652a9d1e4a8b64cd83e364aebf10be1234cb47",
+    "remote_ref_updated_at_documentation_snapshot": false,
+    "publication_owner": "root",
+    "final_code_ci": "pending_final_evidence_publication_and_exact_head_verification"
+  },
+  "tests": {
+    "core": {
+      "passed": 553,
+      "seconds": 638.777,
+      "exit_code": 0,
+      "exit_code_evidence": "root observed process exit0; independently read log ends553/OK",
+      "exact_final_commit_run": false
+    },
+    "models": {
+      "passed": 511,
+      "seconds": 75.04,
+      "coverage": {
+        "covered_statements": 903,
+        "total_statements": 944,
+        "percent": 95.6568,
+        "displayed_percent": 96,
+        "threshold_percent": 95,
+        "threshold_passed": true
+      }
+    },
+    "v4": {
+      "passed": 918,
+      "seconds": 153.58,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "scripted": {
+      "passed": 80,
+      "total": 80,
+      "self_tests": 48,
+      "self_test_seconds": 10.72
+    },
+    "transport_pg": {
+      "passed": 92,
+      "seconds": 2.72
+    },
+    "static": {
+      "ruff_and_format": "passed_by_root_before_documentation",
+      "ast_limits": "passed_by_root_before_documentation",
+      "rerun_during_documentation": false
+    }
+  },
+  "source_chronology": {
+    "note": "Core ran during this production slice before the final membership=False HTTP402 narrowing. Final models/v4 reruns cover that narrowing. Logs are not claimed to bind one simultaneous source snapshot.",
+    "final_production_delta_since_core": "Only membership=False HTTP402 keeps ModelBadRequest with no retry; added negative test.",
+    "documentation_change_only": true
+  },
+  "fixtures": {
+    "path": "tools/eval/fixtures/u37_error_matrix.json",
+    "tracked": true,
+    "sha256": "853719fc0b9893f1b69704415f696778b5949f5fe9cf377dc012c0858ddb7156",
+    "case_count": 78,
+    "synthetic": true,
+    "provider_capture": false,
+    "former_ignored_location": "tests/v4/models/fixtures/u37_error_matrix.json",
+    "predecessor": {
+      "path": "task/work/daytime/p1b-error-matrix.json",
+      "case_count": 84,
+      "sha256": "92396c24196e22de4dc5694ac57bbf457f63aac35c147ef5735aa41f74569547",
+      "meaning": "derived offline design-matrix predecessor, not a brain original prompt"
+    },
+    "original_prompt": {
+      "path": "docs/v4/prompts/supplements/P1b_增补_K3会员端点加固.md",
+      "sha256": "e403a07903217d537b69e2482806c28619328abe5c28a30747b16fc4ccb8da8b"
+    },
+    "deferred_execution_cases": [
+      "transport_connect_error",
+      "transport_read_timeout",
+      "transport_connection_reset",
+      "transport_cancelled_after_post",
+      "local_cancelled_before_post",
+      "local_payload_over_1_8mb"
+    ]
+  },
+  "environment": {
+    "postgres": "isolated PostgreSQL15, loopback55480, core_test_main, disposable schemas",
+    "model_credentials": "cleared for checks",
+    "tracing": false,
+    "core_charts_environments": "separate"
+  },
+  "real_model_posts": 0,
+  "live_probe_executed": false,
+  "model_equivalence_verified": false,
+  "actual_primary_model_switched_to_256k": false,
+  "stage_production_feishu_executed": false,
+  "decisions": {
+    "D1": "Kimi Code membership for all roles; project-global in-flight<=2 is pending U38 integration; concurrency_limited/access_terminated require persistent all-stop and user notice",
+    "manual_batches": "user online and explicit start in this chat for each E1/E2 batch<=10;20min gap;<=80 actualPOST/rolling5h shared across target/judge/probe/retries;no night calls;no autonomous resume",
+    "D2": "primary and critic target k3-256k;<=20-call equivalence subset before actual switch, only after explicit start",
+    "D4": "usage reminders default off;no emergency contact",
+    "D5": "E2 only2025 subset"
+  },
+  "ownership": {
+    "quota_guard_core": "independent module line",
+    "mainline": "existing registry/transport/config/eval/probe/migration and integration",
+    "P3": "context compression and agent integration;only after P1b merger for real guard interface",
+    "protected_untouched": "P10/web,P8/charts/skills/knowledge"
+  },
+  "central_ledger_requirement": "One explicit ledger DSN/schema/account namespace shared by all business DBs and roles; per-business-DB advisory locks are insufficient. No central ledger or migration implemented in this slice.",
+  "not_completed": [
+    "U38 central PG ledger/reservations/slots/persistent global stops and all-entry wiring",
+    "migration0008 and deployment grants",
+    "U39 full reasoning/signature replay and effort locking",
+    "sampling removal and tool_choice restriction",
+    "serialized1.8MB payload guard",
+    "manual batch admission implementation and fresh E1 k3-256k compatibility source",
+    "real probes/cache/signature/effort/equivalence evidence",
+    "actual config/model256k switch",
+    "exact-final-head CI and phase completion"
+  ],
+  "private_log_digests": [
+    {
+      "kind": "core",
+      "name": "p1b-core-full.log",
+      "sha256": "15d5dff7c49be89569b9e550ec2e910163fc832128cd3efc8a564cc4ee2382ef",
+      "bytes": 3724,
+      "passed": 553,
+      "seconds": 638.777,
+      "source_binding": "slice_regression_before_final_nonmembership_402_scope_change"
+    },
+    {
+      "kind": "models",
+      "name": "p1b-model-coverage-final.log",
+      "sha256": "f3d20982a0fa6bc2af548ad0b6a36cd4caf7d9035418b5d01f0860814210e8c8",
+      "bytes": 1972,
+      "passed": 511,
+      "seconds": 75.04,
+      "source_binding": "final_production_sources_after_nonmembership_402_scope_change"
+    },
+    {
+      "kind": "v4",
+      "name": "p1b-v4-full.log",
+      "sha256": "47d33323cc741f56a07b56060aa4a7ab6d89f88c4006348192ae2c6ee344cd38",
+      "bytes": 1651,
+      "passed": 918,
+      "seconds": 153.58,
+      "source_binding": "final_production_sources_after_nonmembership_402_scope_change"
+    },
+    {
+      "kind": "scripted",
+      "name": "p1b-scripted.log",
+      "sha256": "6e300fa9b0d3d7b610fabd4d03e5859b61b591a69500dcbfe4b73d6b79e54c9c",
+      "bytes": 2326,
+      "passed": 80,
+      "seconds": 10.72,
+      "source_binding": "slice_regression_not_claimed_same_instant_as_all_other_logs"
+    },
+    {
+      "kind": "transport_pg",
+      "name": "p1b-boundary-pg-final.log",
+      "sha256": "3be26030b2554f92fc0f95adc099480aebdc86c26e3625e7f2601e09486babee",
+      "bytes": 182,
+      "passed": 92,
+      "seconds": 2.72,
+      "source_binding": "slice_boundary_regression_not_claimed_same_instant_as_all_other_logs"
+    }
+  ],
+  "PR": "https://github.com/JerryandShawn/zhiming/pull/9",
+  "final_ci": "pending on final published draft head"
+}
