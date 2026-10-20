@@ -50,9 +50,12 @@ class AgentToolsService:
         if ctx.thread_id != thread:
             raise ScopeError("工具不属于当前线程")
         self._case_scope(row, ctx)
-        if any(row["state_version"].get(key) != version for key, version in ctx.source_versions.items()):
+        from mingjing_core.application.agent_commit_versions import reconcile_versions
+
+        effective = reconcile_versions(self.repo, row, ctx.source_versions)
+        if any(row["state_version"].get(key) != version for key, version in effective.items()):
             raise ScopeError("工具不能扩展或更改本轮来源版本")
-        if ctx.source_versions and not self.repo.verify_versions(ctx.owner, ctx.source_versions):
+        if effective and not self.repo.verify_versions(ctx.owner, effective):
             raise EvidenceError("工具来源版本已经改变")
         step = connection.execute(
             sql.SQL("SELECT * FROM {} WHERE owner=%s AND run_id=%s AND epoch=%s AND seq=%s FOR UPDATE").format(
