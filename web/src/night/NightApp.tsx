@@ -12,10 +12,11 @@ import { EyeOff } from 'lucide-react';
 import { createBirthPort } from './onboarding/birth';
 import { createOnboardingController } from './onboarding/controller';
 import { createSettingsPort } from './settings/port';
+import { createTodayPort } from './today/port';
 import './night.css';
 
 const otherPages = {
-  today: lazy(() => import('../pages/Today')),
+  today: lazy(() => import('./today/TodayPage')),
   chart: lazy(() => import('../charts/ChartDemo')),
   tarot: lazy(() => import('../pages/Tarot')),
   cases: lazy(() => import('../pages/Cases')),
@@ -26,6 +27,7 @@ const AboutMePage = lazy(() => import('./me/AboutMePage'));
 const OnboardingChat = lazy(() => import('./onboarding/OnboardingChat'));
 const SettingsPage = lazy(() => import('./settings/SettingsPage'));
 const SampleChartPage = lazy(() => import('./charts/SampleChartPage'));
+const TodayPage = otherPages.today;
 
 export default function NightApp({ page }: { page: string }) {
   const [port] = useState(createNightPort);
@@ -34,6 +36,7 @@ export default function NightApp({ page }: { page: string }) {
   const privacy = usePrivacySession();
   const [birth] = useState(createBirthPort);
   const [settings] = useState(createSettingsPort);
+  const [today] = useState(createTodayPort);
   const [guide] = useState(() =>
     createOnboardingController({
       aboutMe: port.aboutMe,
@@ -143,6 +146,14 @@ export default function NightApp({ page }: { page: string }) {
               }
             />
           )
+        ) : page === 'today' ? (
+          <TodayPage
+            port={today}
+            settings={settings}
+            onChat={() => {
+              location.hash = '/chat';
+            }}
+          />
         ) : page === 'chart' ? (
           <SampleChartPage />
         ) : page === 'me' ? (
@@ -150,7 +161,7 @@ export default function NightApp({ page }: { page: string }) {
         ) : page === 'settings' ? (
           <SettingsPage port={settings} />
         ) : (
-          <Other />
+          <Other port={today} settings={settings} />
         )}
       </Suspense>
     </Layout>

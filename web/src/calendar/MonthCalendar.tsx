@@ -52,6 +52,9 @@ export function MonthCalendar({
   source: CalendarSource;
 }) {
   const [view, setView] = useState({ selected, month: selected.slice(0, 7) });
+  // Remember each new selection, so returning to a previously selected day also
+  // returns to its month instead of reviving an old browsing month.
+  if (view.selected !== selected) setView({ selected, month: selected.slice(0, 7) });
   const month = view.selected === selected ? view.month : selected.slice(0, 7);
   const [year, number] = month.split('-').map(Number);
   const data = source(month);

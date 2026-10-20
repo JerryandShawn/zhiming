@@ -169,4 +169,15 @@ describe('today calendar placement and safe data source', () => {
     expect(screen.queryByRole('link', { name: '查看该日命盘' })).not.toBeInTheDocument();
     expect(screen.getByText(/选择不会改变排盘或保存安排/)).toBeVisible();
   });
+
+  it('returns to the current month after browsing and selecting a day in another month', async () => {
+    viewport(true);
+    render(<TodayCalendar today="2026-10-21" />);
+    await userEvent.click(screen.getByRole('button', { name: '下个月' }));
+    await userEvent.click(screen.getByRole('button', { name: /^2026-11-03 / }));
+    expect(screen.getByRole('region', { name: '2026年11月日历' })).toBeVisible();
+    await userEvent.click(screen.getByRole('button', { name: '回到今天' }));
+    const calendar = screen.getByRole('region', { name: '2026年10月日历' });
+    expect(within(calendar).getByRole('button', { name: /^2026-10-21 / })).toHaveAttribute('aria-pressed', 'true');
+  });
 });
