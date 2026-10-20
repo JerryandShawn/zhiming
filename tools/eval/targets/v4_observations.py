@@ -74,3 +74,24 @@ def local_entity(row: dict[str, Any], zone: str) -> dict[str, Any]:
 
 def repeat_count(steps: list[dict[str, Any]]) -> int:
     return max(Counter((step["epoch"], step["input_fp"]) for step in steps).values(), default=0)
+
+
+def delivery_rows(repo: PostgresRepository, owner: str) -> list[dict[str, Any]]:
+    with repo.transaction(owner) as connection:
+        rows = connection.execute(
+            sql.SQL("SELECT id,run_id,status,business_id,channel,target FROM {} WHERE owner=%s").format(
+                repo.table("delivery_outbox")
+            ),
+            (owner,),
+        ).fetchall()
+    return [
+        {
+            "id": row["id"],
+            "kind": "outbox",
+            "status": "queued" if row["status"] == "pending" else row["status"],
+            "data": dict(row),
+            "source_store": "delivery_outbox",
+            "native_status": row["status"],
+        }
+        for row in rows
+    ]

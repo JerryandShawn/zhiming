@@ -1,0 +1,88 @@
+id: Q06
+title: 明确拒答后同槽不可再问
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  profile_overrides: {}
+  facts: []
+  thread: []
+  entities: []
+  settings: {}
+  context: {}
+  controls: {}
+  thread_id: life-synthetic
+  incognito: false
+turns:
+- user: 帮我比较岗位
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called: []
+    tools_not_called: []
+    receipts: []
+    db: []
+    events:
+    - ask_user
+    - final
+    chart_structure: false
+- user: 先别问了
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called: []
+    tools_not_called: []
+    receipts: []
+    db:
+    - kind: thread
+      where:
+        data.clarify_slots.0.status: declined
+      count: 1
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.error
+      equals: slot_declined
+      absent: false
+    events: []
+    max_questions: 0
+    chart_structure: false
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: ask_user
+      arguments:
+        question: 你更看重成长还是稳定？
+        options:
+        - 选项甲
+        - 选项乙
+        allow_free_text: true
+        why: 答案改变建议范围
+        slot: 工作取舍偏好
+        changes_conclusion: 影响建议的取舍顺序
+- turn: 2
+  model:
+  - tool_call:
+      name: ask_user
+      arguments:
+        question: 你更看重成长还是稳定？
+        options:
+        - 选项甲
+        - 选项乙
+        allow_free_text: true
+        why: 答案改变建议范围
+        slot: 工作取舍偏好
+        changes_conclusion: 影响建议的取舍顺序
+  - text: 好，先按已有信息给一个保守框架。
+notes: 独立v4扩充契约；实际工具结果/线程/信封断言，不替换冻结47项。

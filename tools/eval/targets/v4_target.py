@@ -19,7 +19,9 @@ from .base import TurnResult
 from .local_db import local_dsn, verify_local_postgres
 from .v3_seed import V3Seeder
 from .v4_cancellation import cancel_stream
-from .v4_observations import decision_rows, local_entity, repeat_count, semantic_observations, tool_steps
+from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
+from .v4_feishu import FeishuBatchDriver
+from .v4_observations import decision_rows, delivery_rows, local_entity, repeat_count, semantic_observations, tool_steps
 from .v4_protocols import ScriptedWirePort, run_matrix
 from .v4_runtime import DeclaredDateParser, EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
@@ -38,6 +40,9 @@ class V4Target:
         self.cancellation: dict[str, Any] = {}
         self.protocol, self.candidate, self.portability = protocol, candidate, {}
         self.semantic: list[dict[str, Any]] = []
+        self.semantic_history: list[dict[str, Any]] = []
+        self.crashed_run: str | None = None
+        self.feishu: FeishuBatchDriver | None = None
 
     def reset(self, seed: dict[str, Any]) -> None:
         self.close()
@@ -48,13 +53,13 @@ class V4Target:
         self.cancellation = {}
         self.portability = {}
         self.semantic = []
+        self.semantic_history = []
+        self.crashed_run = None
+        self.feishu = None
         self.schema = "eval_v4_" + uuid.uuid4().hex
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
         self.repo.ensure_owner(self.owner, settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})})
-        self.port = ScriptedWirePort(self.protocol, self.candidate) if self.protocol else ScriptedModelPort()
-        self.runtime = EvaluationRuntime(
-            self.repo, self.port, ScriptedMeter(), parser=DeclaredDateParser(seed.get("_scripted", [])), offline=True
-        )
+        self._ports()
         self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
         self.provider = ScriptedProvider(seed.get("_scripted", []))
         self.seeder = V3Seeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
@@ -65,6 +70,25 @@ class V4Target:
         self.bindings.update(self.tarot.ids)
         self.thread = ThreadService(self.repo).create(
             self.owner, request_id="eval-thread", incognito=seed.get("incognito", False)
+        )
+
+    def _ports(self) -> None:
+        controls = self.seed.get("controls", {})
+        self.port = (
+            ScriptedWirePort(self.protocol, self.candidate)
+            if self.protocol
+            else FaultScriptedPort(crash_after_tool=controls.get("crash_after") == "tool_commit")
+        )
+        self.critic = ScriptedModelPort() if controls.get("critic_scripted") else None
+        self.critic_provider = ScriptedProvider(controls.get("critic_scripted", []))
+        self.runtime = EvaluationRuntime(
+            self.repo,
+            self.port,
+            None if controls.get("meter_missing") else ScriptedMeter(),
+            parser=DeclaredDateParser(self.seed.get("_scripted", [])),
+            offline=True,
+            critic=self.critic,
+            critic_meter=ScriptedMeter(),
         )
 
     def _draw_selection(self, turn: dict[str, Any]) -> tuple[str | None, list[str]]:
@@ -82,6 +106,9 @@ class V4Target:
     def _request(self, turn: dict[str, Any]) -> dict[str, Any]:
         if self.repo is None:
             raise RuntimeError("Call reset before send")
+        if turn.get("action", {}).get("type") == "ingest_batch":
+            self.feishu = FeishuBatchDriver(self)
+            return self.feishu.prepare()
         index = turn["_index"]
         operation = f"v4-eval:{self.seed['_scenario_id']}:{index}"
         draw_id, cases = self._draw_selection(turn)
@@ -125,24 +152,50 @@ class V4Target:
             self.tarot.resume(run)
         return self.repo.claim_run(self.owner, run["id"], lease_seconds=150)
 
-    def send(self, turn: dict[str, Any]) -> TurnResult:
-        started, before = time.perf_counter(), self.port.calls
-        if turn.get("action", {}).get("type") == "cancel_run":
-            return self._cancel(turn, started)
-        run = self._request(turn)
-        self.run_ids.append(run["id"])
+    def _start_turn(self, turn: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any] | None]:
+        resumed = None
+        if turn.get("action", {}).get("type") == "resume_run":
+            if not self.crashed_run or turn["action"]["operation_id"] != self.seed["controls"]["operation_id"]:
+                raise ValueError("No exact synthetic crashed operation to resume")
+            run, resumed = reclaim_crashed(self.repo, self.owner, self.crashed_run)
+        else:
+            run = self._request(turn)
+            self.run_ids.append(run["id"])
         self.port.start(self.provider, turn["_index"], self.bindings)
-        events: list[dict[str, Any]] = []
+        if isinstance(self.port, FaultScriptedPort):
+            self.port.failure = self.seed.get("controls", {}).get("provider_failures", {}).get(str(turn["_index"]))
+        if self.critic:
+            self.critic.start(self.critic_provider, turn["_index"], self.bindings)
+        return run, resumed
+
+    def _attempt(self, run: dict[str, Any], events: list[dict]) -> tuple[dict, dict | None, str | None, bool]:
         result: dict[str, Any] = {}
-        error, retry = None, None
+        error, retry, crashed = None, None, False
         try:
             result = self.runtime.execute(self.service, self.owner, run["id"], run["lease_token"], events.append)
             retry = self.tarot.finish(result)
+        except SystemExit:
+            self.crashed_run, crashed = run["id"], True
         except Exception as exc:
             error = type(exc).__name__
-        current = self.repo.fetch_run(self.owner, run["id"])
-        steps = tool_steps(self.repo, self.owner, run["id"])
+        return result, retry, error, crashed
+
+    def _semantics(
+        self,
+        steps: list[dict],
+        turn: dict,
+        *,
+        result: dict,
+        retry: dict | None,
+        resumed: dict | None,
+        crashed: bool,
+        run_id: str,
+    ) -> list[dict]:
         semantic = semantic_observations(steps)
+        if crashed:
+            semantic += crash_observations(steps, run_id)
+        if resumed:
+            semantic.insert(0, resumed)
         if result and retry:
             semantic.insert(0, retry)
         if result and self.seed.get("controls", {}).get("model_matrix") and not self.protocol:
@@ -156,18 +209,38 @@ class V4Target:
                         "rule": "all committed; encoded tool results roundtripped",
                     }
                 )
+        return semantic
+
+    def send(self, turn: dict[str, Any]) -> TurnResult:
+        started, before = time.perf_counter(), self.port.calls + (self.critic.calls if self.critic else 0)
+        if turn.get("action", {}).get("type") == "cancel_run":
+            return self._cancel(turn, started)
+        run, resumed = self._start_turn(turn)
+        events: list[dict[str, Any]] = []
+        result, retry, error, crashed = self._attempt(run, events)
+        if result and self.feishu:
+            self.feishu.finish(run["id"])
+        current = self.repo.fetch_run(self.owner, run["id"])
+        steps = tool_steps(self.repo, self.owner, run["id"])
+        semantic = self._semantics(
+            steps, turn, result=result, retry=retry, resumed=resumed, crashed=crashed, run_id=run["id"]
+        )
         names = [event["type"] for event in events]
         if semantic:
             names = [name for name in names if name != "final"] + [item["name"] for item in semantic]
         if current["status"] == "succeeded":
             names += ["run.completed"]
         self.semantic = semantic
+        self.semantic_history += semantic
         return TurnResult(
             text=result.get("text", ""),
             tools_called=[step["name"] for step in steps],
             receipts=[step["output"]["receipt"] for step in steps if (step["output"] or {}).get("receipt")],
             events=names,
-            model_calls=self.port.calls - before + self.portability.get("model_calls", 0),
+            model_calls=self.port.calls
+            + (self.critic.calls if self.critic else 0)
+            - before
+            + self.portability.get("model_calls", 0),
             elapsed_seconds=round(time.perf_counter() - started, 4),
             error=error,
             metadata={
@@ -209,14 +282,23 @@ class V4Target:
             if kind != "fact" or row["id"] not in self.seeder.profile_fact_ids
         ]
         steps = tool_steps(self.repo, self.owner, self.run_ids[-1]) if self.run_ids else []
+        run = self.repo.fetch_run(self.owner, self.run_ids[-1]) if self.run_ids else {}
         rows += decision_rows(steps)
         rows += self.tarot.rows()
+        rows += delivery_rows(self.repo, self.owner)
         return {
             "entities": rows,
             "settings": self.repo.assert_scope(self.owner)["settings"],
-            "run_meta": {"repeated_call_count": repeat_count(steps), **self.cancellation},
+            "run_meta": {
+                "repeated_call_count": repeat_count(steps),
+                "usage": run.get("usage", {}),
+                **({"ingress": self.feishu.proof} if self.feishu else {}),
+                **self.cancellation,
+            },
             "evaluator_observations": semantic_observations(steps),
             "portability": self.portability,
+            "observed_tools": steps,
+            "run_result": run.get("result") or {},
             **kinds,
         }
 
@@ -242,10 +324,11 @@ class V4Target:
             "external_provider_requests": 0,
             "u4_scope": "declared parser substitute; no natural language accuracy claim",
             "tool_steps": [{key: step[key] for key in ("run_id", "epoch", "seq", "name", "status")} for step in steps],
-            "semantic_observations": self.semantic,
+            "semantic_observations": self.semantic_history,
             "decision_rows": [
                 {key: row[key] for key in ("id", "source_store", "source_seq")} for row in decision_rows(steps)
             ],
             "cancellation": self.cancellation,
             "portability": self.portability,
+            "ingress": self.feishu.proof if self.feishu else {},
         }

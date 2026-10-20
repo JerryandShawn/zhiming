@@ -33,7 +33,10 @@ def target(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(httpx.Client, "send", local_only)
     monkeypatch.setattr(httpx.AsyncClient, "send", reject)
     monkeypatch.setattr("subprocess.run", reject)
-    target = V4Target(dsn=os.environ["CORE_TEST_DSN"])
+    dsn = os.getenv("CORE_TEST_DSN")
+    if not dsn:
+        pytest.skip("requires disposable loopback PostgreSQL15")
+    target = V4Target(dsn=dsn)
     try:
         yield target
     finally:
