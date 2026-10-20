@@ -22,6 +22,10 @@ class ContextEpochService:
         self.repo = repo
 
     def _thread(self, owner: str, subject: str, thread_id: str) -> dict[str, Any]:
+        if thread_id.startswith("incognito:"):
+            from mingjing_core.application.threads import ThreadService
+
+            return ThreadService(self.repo).get(owner, thread_id, subject=subject)
         if thread_id != "life:" + subject:
             raise ContextInputError("context_thread_unsupported")
         try:

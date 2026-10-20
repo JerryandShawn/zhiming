@@ -17,6 +17,7 @@ from typing import Any, Literal, Union, get_args, get_origin, get_type_hints
 
 from mingjing_core.agent.context_types import ContextBuild
 from mingjing_core.application.agent_commit_versions import reconcile_versions
+from mingjing_core.application.agent_thread_scope import assert_thread
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, RevisionConflict, ScopeError
 from mingjing_core.domain.json_values import ensure_finite_json
@@ -102,9 +103,7 @@ class AgentSnapshotStore:
         if row["runtime"] != "v4" or row["subject"] != run.get("subject"):
             raise ScopeError("初始上下文人物或运行版本不符")
         self.repo.assert_scope(owner, row["subject"])
-        thread = row["thread_id"] or row["request"].get("thread_id") or "life:" + row["subject"]
-        if thread != "life:" + row["subject"] or row["request"].get("incognito"):
-            raise ScopeError("当前初始上下文快照仅支持长期线程，无痕快照未实现")
+        thread = assert_thread(self.repo, row)
         selected = row["request"].get("case_ids", [])
         if not isinstance(selected, list) or any(not isinstance(ident, str) for ident in selected) or len(selected) > 8:
             raise ScopeError("初始上下文事项范围无效")

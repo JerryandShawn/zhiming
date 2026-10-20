@@ -56,6 +56,7 @@ class ContextEngine:
         tool_summaries: Mapping[str, str] | None = None,
         query: str | None = None,
         tool_choice: str = "auto",
+        run_context: dict | None = None,
     ) -> ContextBuild:
         if self.clock is not get_clock():
             raise ContextInputError("context_clock_mismatch")
@@ -64,7 +65,20 @@ class ContextEngine:
         tags = {message.tool_cycle for message in current_epoch_messages}
         if current_epoch_messages and (len(tags) != 1 or not isinstance(next(iter(tags)), str) or not next(iter(tags))):
             raise ContextInputError("context_cycle_invalid")
-        snapshot = BoundedSources(self.memory, self.policy).read(
+        if thread_id and thread_id.startswith("incognito:"):
+            from .context_private import private_sources
+
+            if case_ids:
+                raise ContextInputError("private_context_cases_not_allowed")
+            snapshot = private_sources(
+                self.memory, owner, subject, thread_id, source_message_id, self.policy, run_context=run_context
+            )
+        else:
+            snapshot = self._sources(owner, subject, source_message_id, thread_id, case_ids, query, run_context)
+        return self._assemble(snapshot, tools, current_epoch_messages, tool_summaries or {}, tool_choice)
+
+    def _sources(self, owner, subject, source_message_id, thread_id, case_ids, query, run_context) -> SourceSnapshot:
+        return BoundedSources(self.memory, self.policy, run_context=run_context).read(
             owner,
             subject,
             source_message_id,
@@ -72,7 +86,6 @@ class ContextEngine:
             case_ids=case_ids,
             query=query,
         )
-        return self._assemble(snapshot, tools, current_epoch_messages, tool_summaries or {}, tool_choice)
 
     def _assemble(
         self,
@@ -107,7 +120,7 @@ class ContextEngine:
         aliases = {key: value for key, value in aliases.items() if value["id"] in retained}
         versions = injected_versions(snapshot, budget)
         cache_epoch = ContextEpochService(self.memory.repo).preview(
-            snapshot.owner, snapshot.subject, "life:" + snapshot.subject, budget, versions, snapshot.revision
+            snapshot.owner, snapshot.subject, snapshot.current["thread_id"], budget, versions, snapshot.revision
         )
         limitations = ("runtime_unconnected",)
         if not budget.meter.live_admissible:

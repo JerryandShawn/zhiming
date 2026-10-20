@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 from typing import Any
 
 from psycopg import sql
@@ -85,21 +85,27 @@ class ThreadService:
         channel: str = "web",
         external_id: str | None = None,
         conversation_id: str = "shared",
+        at: datetime | None = None,
+        source_id: str | None = None,
     ) -> dict[str, Any]:
         if not isinstance(request_id, str) or not 1 <= len(request_id) <= 200:
             raise EvidenceError("消息需要稳定请求标识")
+        if at is not None and (not isinstance(at, datetime) or at.tzinfo is None or at.utcoffset() is None):
+            raise EvidenceError("原话时间必须是带时区的时刻")
         with self.repo.transaction(owner) as connection:
             self._lock(connection, owner, ident)
             thread = self.get(owner, ident, subject=subject)
+            stable_source = source_id if source_id is not None else "thread-source:" + fingerprint([ident, request_id])
+            existed = self._existing_source(owner, ident, channel, stable_source)
             row = self.memory.receive(
                 owner,
                 subject,
                 text,
-                source_id="thread-source:" + fingerprint([ident, request_id]),
+                source_id=stable_source,
                 channel=channel,
                 external_id=external_id,
                 conversation_id=conversation_id,
-                at=self.clock.now(),
+                at=at or self.clock.now(),
             )
             if thread.get("mode") == "incognito":
                 if row.get("thread_id") not in {"life:" + subject, ident}:
@@ -112,20 +118,43 @@ class ThreadService:
                         {"thread_id": ident, "incognito": True, "policy": dict(row["policy"], persist_allowed=False)},
                         expected_revision=row["revision"],
                     )
-            self.touch(owner, ident, subject=subject)
+            if not existed:
+                self.touch(owner, ident, subject=subject)
             return row
 
-    def history(self, owner: str, ident: str, *, subject: str = "self", limit: int = 80) -> list[dict[str, Any]]:
+    def _existing_source(self, owner: str, ident: str, channel: str, source_id: str) -> bool:
+        if not isinstance(source_id, str) or not 1 <= len(source_id) <= 200:
+            raise EvidenceError("消息需要有效来源标识")
+        message_id = "msg_" + fingerprint([owner, channel, source_id, "user"])[:32]
+        try:
+            original = self.repo.get(owner, "message", message_id, include_deleted=True)
+        except ScopeError:
+            return False
+        if original.get("thread_id") != ident:
+            raise ScopeError("已存在的原话不能移到其他线程")
+        return True
+
+    def history(
+        self, owner: str, ident: str, *, subject: str = "self", limit: int = 80, through: str | None = None
+    ) -> list[dict[str, Any]]:
         self.get(owner, ident, subject=subject)
         if type(limit) is not int or not 1 <= limit <= 1000:
             raise EvidenceError("线程历史数量无效")
+        boundary = (None, None, None)
+        if through is not None:
+            source = self.memory.get_source(owner, through, for_context=True)
+            if source["subject_id"] != subject or source.get("thread_id") != ident or source["status"] != "active":
+                raise ScopeError("历史边界不属于当前有效线程")
+            boundary = (source["at_ms"], source["created_at"], source["id"])
         with self.repo.transaction(owner) as connection:
             rows = connection.execute(
                 sql.SQL(
                     "SELECT * FROM {} WHERE owner=%s AND subject=%s AND kind='message' AND status='active' "
-                    "AND data->>'thread_id'=%s ORDER BY (data->>'at_ms')::bigint DESC,created_at DESC,id DESC LIMIT %s"
+                    "AND data->>'thread_id'=%s AND (%s::bigint IS NULL OR "
+                    "((data->>'at_ms')::bigint,created_at,id)<= (%s,%s::timestamptz,%s)) "
+                    "ORDER BY (data->>'at_ms')::bigint DESC,created_at DESC,id DESC LIMIT %s"
                 ).format(self.repo.table("core_entities")),
-                (owner, subject, ident, limit),
+                (owner, subject, ident, boundary[0], *boundary, limit),
             ).fetchall()
         sources = [self.memory.get_source(owner, row["id"], for_context=True) for row in reversed(rows)]
         return project_sources(

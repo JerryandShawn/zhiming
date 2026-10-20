@@ -22,7 +22,9 @@ from mingjing_core.application.agent_review import AgentReviewer
 from mingjing_core.application.agent_runtime_events import RuntimeEvents
 from mingjing_core.application.agent_runtime_state import RuntimeState
 from mingjing_core.application.agent_snapshots import AgentSnapshotStore
+from mingjing_core.application.agent_thread_scope import thread_id
 from mingjing_core.application.agent_tools import AgentToolsService
+from mingjing_core.application.agent_tools_private import consume_private_answer
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.read_result import read_result
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
@@ -63,8 +65,9 @@ class AgentRuntime:
                 run["owner"],
                 run["request"]["source_message_id"],
                 subject=run["subject"],
-                thread_id="life:" + run["subject"],
+                thread_id=thread_id(run),
                 case_ids=tuple(run["request"].get("case_ids", [])),
+                run_context=run,
             ),
         )
 
@@ -83,6 +86,7 @@ class AgentRuntime:
             control=control,
             budget_policy=self.budget,
             crisis=crisis,
+            incognito=thread_id(run).startswith("incognito:"),
             ledger=self.ledger,
             emit=events.send,
         )
@@ -92,9 +96,9 @@ class AgentRuntime:
         events.send(
             "started",
             {
-                "thread_id": "life:" + run["subject"],
+                "thread_id": thread_id(run),
                 "message_id": request["source_message_id"],
-                "incognito": False,
+                "incognito": thread_id(run).startswith("incognito:"),
                 **{name: request[name] for name in ("area_id", "topic_id") if request.get(name)},
             },
         )
@@ -147,9 +151,16 @@ class AgentRuntime:
         run = self.state.authority(owner, run_id, lease_token)
         events = RuntimeEvents(self.repo, run, emit)
         self._start(run, events)
+        confirmation = consume_private_answer(self.repo, run)
+        if confirmation:
+            self.state.metadata(run, private_reminder_status=confirmation["write_status"])
         for attempt in range(2):
             crisis = crisis_detected(run["request"]["message"])
             system = self.prompts.system(onboarding=self.state.onboarding(run), crisis=crisis)
+            if confirmation:
+                system += (
+                    "\n本轮单独提醒确认已由程序处理，提醒状态：" + confirmation["write_status"] + "。这不是长期记忆。"
+                )
             self.state.pin(run, self.prompts, system, crisis=crisis)
             frozen = self._snapshot(run, system)
             cycle = self._cycle(run, frozen, events, crisis=crisis)
@@ -160,7 +171,10 @@ class AgentRuntime:
                 used = replace(frozen, injected_versions=cycle.versions)
                 if attempt or not AgentRegenerator(self.repo)._related(run, used):
                     raise
+                previous = run
                 run = AgentRegenerator(self.repo).restart(run, used)
+                if callable(handoff := getattr(service, "agent_lease_changed", None)):
+                    handoff(previous, run)
                 events.run = run
                 events.send("text_reset", {"text": "", "reason": "resumed"})
         raise EvidenceError("本轮重新生成次数已用尽")

@@ -18,13 +18,14 @@ from .context_types import BudgetPolicy, ContextInputError, SourceSnapshot
 
 
 class BoundedSources:
-    def __init__(self, memory: MemoryService, policy: BudgetPolicy) -> None:
+    def __init__(self, memory: MemoryService, policy: BudgetPolicy, *, run_context: dict | None = None) -> None:
         self.memory, self.repo, self.policy = memory, memory.repo, policy
         self.cache: dict[str, dict[str, Any]] = {}
         self.spans: dict[str, list[dict[str, Any]]] = {}
         self.deleted: set[str] = set()
         self.boundary: tuple[int, str, str] | None = None
         self.history_counts: dict[str, int] = {}
+        self.run_context = run_context
 
     @staticmethod
     def _key(source: dict[str, Any]) -> tuple[int, str, str]:
@@ -33,6 +34,13 @@ class BoundedSources:
         return source["at_ms"], source["created_at"], source["id"]
 
     def _set_boundary(self, owner: str, subject: str, source: dict[str, Any]) -> None:
+        if self.run_context is not None:
+            from mingjing_core.application.agent_source_boundary import authorize_boundary
+
+            authorize_boundary(self.repo, owner, subject, source, self.run_context)
+            self.boundary = self._key(source)
+            self._reject_ambiguous_boundary(owner, subject, source)
+            return
         with self.repo.transaction(owner) as connection:
             query = sql.SQL("""SELECT id FROM {} WHERE owner=%s AND subject=%s AND kind='message'
                 AND status='active' AND data->>'thread_id'=%s AND data->>'role'='user'

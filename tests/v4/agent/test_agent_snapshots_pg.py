@@ -272,11 +272,12 @@ def test_two_repositories_compete_without_holding_owner_lock_during_builder(snap
         other.close()
 
 
-def test_incognito_and_builder_failure_leave_no_snapshot(snapshots: PostgresRepository) -> None:
+def test_forged_incognito_flag_and_builder_failure_leave_no_snapshot(snapshots: PostgresRepository) -> None:
     repo, run = snapshots, run_for(snapshots, incognito=True)
-    with pytest.raises(ScopeError):
+    with pytest.raises(EvidenceError, match="无痕"):
         AgentSnapshotStore(repo).load_or_build(run, never)
     assert repo.list("alice", "runtime_step") == []
+    repo.fail_run("alice", run["id"], "component fixture ended after expected rejection", run["lease_token"])
     ordinary = run_for(repo)
     with pytest.raises(AssertionError):
         AgentSnapshotStore(repo).load_or_build(ordinary, never)

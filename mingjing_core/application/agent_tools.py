@@ -148,6 +148,10 @@ class AgentToolsService:
             return execute_chart(self, arguments, ctx, charts=self.charts)
         if name in UPDATE_NAMES:
             return execute_update(self, name, arguments, ctx)
+        if ctx.private and name == "set_reminder":
+            from mingjing_core.application.agent_tools_private import private_reminder
+
+            return private_reminder(self, arguments, ctx)
         writes = {"memory_write", "memory_forget", "note_write"}
         if ctx.private and name in writes:
             return ToolResult(

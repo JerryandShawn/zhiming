@@ -18,6 +18,7 @@ from mingjing_core.agent.context_types import (
 )
 from mingjing_core.agent.journal import Journal, JournalStep
 from mingjing_core.application.agent_snapshots import _decode
+from mingjing_core.application.agent_thread_scope import thread_id
 from mingjing_core.application.context_epochs import ContextEpochService
 from mingjing_core.application.context_usage import ContextUsageService
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
@@ -54,7 +55,7 @@ class RequestLedger:
             encoder_sha256=base.encoder_sha256,
             estimate_multiplier=base.estimate_multiplier,
         )
-        factor = self.usage.factor(run["owner"], run["subject"], "life:" + run["subject"], identity)
+        factor = self.usage.factor(run["owner"], run["subject"], thread_id(run), identity)
         return K3EstimatedMeter(base.counter, factor=factor)
 
     @staticmethod
@@ -117,7 +118,7 @@ class RequestLedger:
                 else self.epochs.preview(
                     step.owner,
                     step.subject,
-                    "life:" + step.subject,
+                    thread_id(self.repo.fetch_run(step.owner, step.run_id)),
                     budget,
                     versions,
                     frozen.snapshot_revision,
