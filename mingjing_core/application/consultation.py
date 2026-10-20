@@ -24,6 +24,8 @@ from ..knowledge import KnowledgeRegistry
 from ..runtime import LangGraphRuntime
 from ..timekit.clock import Clock, get_clock
 from .memory import MemoryService
+from .charts_service import ChartsService, authorized_archive
+from .charts_projection import chart_diagnostics
 from .consultation_context import SYSTEM_POLICY_VERSION, crisis_policy, now_context, program_clock, recent_history
 
 SHANGHAI = timezone(timedelta(hours=8))
@@ -457,14 +459,11 @@ class ConsultationService:
         return plan
 
     def authorized_archive(self, owner, subject, snapshot):
-        user = {}
-        for path, value in snapshot.get('profile', {}).items():
-            keys = path.removeprefix('user.').split('.')
-            node = user
-            for key in keys[:-1]:
-                node = node.setdefault(key, {})
-            node[keys[-1]] = value
-        return {'owner_user_id': owner, 'subject_id': subject, 'user': user}
+        return authorized_archive(owner, subject, snapshot)
+
+    def calculate_chart(self, owner, subject, snapshot, target, systems, *, topic=None):
+        return ChartsService(self.charts_factory, self.knowledge).calculate(
+            owner, subject, snapshot, target, systems, topic=topic)
 
     def _phase_calculation(self, owner, run, token):
         plan = self._record(owner, run['id'], 'plan')
@@ -473,16 +472,15 @@ class ConsultationService:
         if not self.repo.verify_versions(owner, dependencies):
             raise RevisionConflict('资料在计算前已更正，请恢复并核对')
         systems = [s for s in plan['systems'] if s != 'tarot']
-        archive = self.authorized_archive(owner, run['subject'], snap)
-        archive['calculation_topic'] = plan['topic']
-        result = self.charts_factory(owner).calculate(archive,
-                   plan['target_date'], systems, snap['revision'], run['subject'])
+        evaluation = ChartsService(self.charts_factory, self.knowledge).evaluate(
+            owner, run['subject'], snap, plan['target_date'], systems,
+            topic=plan['topic'], scale=plan['time_scale'])
+        result = evaluation['calculation']
         for ident, artifact in result['artifacts'].items():
             self._derived(owner, run, 'artifact', run['id'] + ':e' + str(run.get('retry_epoch', 0)) + ':' + ident,
                           {'run_id': run['id'], 'artifact': artifact},
                           run['id'] + ':e' + str(run.get('retry_epoch', 0)) + ':artifact:' + ident)
-        claims = self.knowledge.claims_for(result, owner=owner, subject=run['subject'],
-                   revision=snap['revision'], topic=plan['topic'], time_scale=plan['time_scale'], target_date=plan['target_date'])
+        claims = {'claims': evaluation['claims'], 'gaps': evaluation['gaps']}
         tarot_provenance = None
         if 'tarot' in plan['systems']:
             draw = self.tarot.get_for_reading(owner, run['request']['draw_id'])
@@ -977,49 +975,9 @@ class ConsultationService:
         # model prose. Keep ownership, birth inputs, artifact IDs and raw engine
         # exceptions out of this display projection.
         computed = calculation['calculation']
-        display_systems = {'bazi', 'ziwei', 'astro', 'tarot'}
-        display_codes = {'RULE_GAP', 'unsupported', 'UNSUPPORTED', 'UNSUPPORTED_INFERENCE', 'MISSING_INPUT',
-                         'REFERENCE_ERROR', 'AUTH_SCOPE_ERROR', 'SCOPE_MISMATCH',
-                         'STALE_INPUT', 'DRAW_MISMATCH', 'CALCULATION_ERROR'}
-        coverage_gaps = []
-        for gap in calculation['gaps']:
-            if not isinstance(gap, dict): continue
-            status = gap.get('status') if gap.get('status') in display_codes else 'RULE_GAP'
-            system = gap.get('system') or computed.get('artifacts', {}).get(gap.get('artifact_id'), {}).get('system')
-            public = {'status': status}
-            if system in display_systems: public['system'] = system
-            if isinstance(gap.get('rule_id'), str) and re.fullmatch(r'[a-zA-Z0-9_.-]{1,160}', gap['rule_id']):
-                public['rule_id'] = gap['rule_id']
-            # Registry reasons/details are generated rule diagnostics; the
-            # registry never puts source quotes or arbitrary engine stderr here.
-            if isinstance(gap.get('reason'), str): public['reason'] = gap['reason'][:600]
-            public['issues'] = [{'code': issue.get('code') if issue.get('code') in display_codes else 'RULE_GAP',
-                                 'detail': issue.get('detail', '')[:600]}
-                                for issue in gap.get('issues', []) if isinstance(issue, dict) and isinstance(issue.get('detail', ''), str)]
-            coverage_gaps.append(public)
-        error_reasons = {'MISSING_INPUT': '本次计算缺少可用且已确认的出生参数，不能补出结果。',
-                         'AUTH_SCOPE_ERROR': '计算资料不属于本轮授权范围。',
-                         'RULE_GAP': '请求的计算能力尚未实现，不能补成支持。',
-                         'CALCULATION_ERROR': '本次计算未完成；未静默更换计算方法或出生参数。'}
-        calculation_errors = [{'code': error.get('code') if error.get('code') in error_reasons else 'CALCULATION_ERROR',
-                               'reason': error_reasons.get(error.get('code'), error_reasons['CALCULATION_ERROR']),
-                               **({'system': error['system']} if error.get('system') in display_systems else {})}
-                              for error in computed['errors'] if isinstance(error, dict)]
-        calculation_fallbacks = []
-        methods = {'Moshier', 'Swiss Ephemeris', 'JPL', 'unrecognized_ephemeris_flags'}
-        bodies = {'太阳', '月亮', '水星', '金星', '火星', '木星', '土星', '天王星', '海王星', '冥王星'}
-        for profile in computed.get('profiles', {}).values():
-            for fallback in profile.get('fallback', []):
-                if (not isinstance(fallback, dict) or fallback.get('requested') not in methods
-                        or fallback.get('actual') not in methods): continue
-                public = {'system': profile['system'], 'requested': fallback['requested'], 'actual': fallback['actual']}
-                if fallback.get('body') in bodies: public['body'] = fallback['body']
-                if fallback.get('layer') in ('natal', 'transit_snapshot'): public['layer'] = fallback['layer']
-                if type(fallback.get('returned_flags')) is int: public['returned_flags'] = fallback['returned_flags']
-                calculation_fallbacks.append(public)
+        diagnostics = chart_diagnostics(computed, calculation['gaps'])
         result = {**final, 'answer': render_answer(final), 'professional_appendix': appendix.strip(),
-            'coverage_gaps': coverage_gaps, 'calculation_errors': calculation_errors,
-            'calculation_fallbacks': calculation_fallbacks,
+            **diagnostics,
             'schema_version': 'core3.0', 'validation': {'status': 'validated', 'valid': True, 'schema': 'core3.0'},
             'evidence': [{'ref': ('source:' if f.get('context_only') else 'fact:') + f['id'],
                           'claim': f.get('content',''),
