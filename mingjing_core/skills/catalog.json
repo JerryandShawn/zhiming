@@ -1,5 +1,5 @@
 {
-  "version": "p8-skills-draft-2026-10-19-v2.2",
+  "version": "p8-skills-draft-2026-10-21-v2.3",
   "status": "draft_requires_owner_review",
   "systems": {
     "bazi": {
@@ -1027,6 +1027,176 @@
               "title": "A. E. Waite, The Pictorial Key to the Tarot",
               "locator": "Part III §6：历史读牌背景；自主决策、危机边界与防依赖均为项目规则",
               "url": "https://www.sacred-texts.com/tarot/pkt/pkt0306.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        }
+      ]
+    },
+    "calendar-tools": {
+      "name": "calendar-tools",
+      "description": "按只读计算结果讲解流日、区间择日、黄历和合盘，保留方法分歧、隐私确认与真实依据别名。",
+      "chapters": [
+        {
+          "topic": "daily-transit",
+          "title": "流日与流月：把结构讲清",
+          "file": "01_daily-transit.md",
+          "question_types": [
+            "今天有什么流日结构",
+            "晨报如何解释流月与流日"
+          ],
+          "artifact_root": "P8ToolEvidenceResult",
+          "required_fields": [
+            "/version",
+            "/data",
+            "/rule_hits",
+            "/aliases",
+            "/sources",
+            "/effects"
+          ],
+          "pending_fields": [
+            "主线Agent工具接入与上下文别名账本尚待主线验证"
+          ],
+          "sources": [
+            {
+              "title": "三命通会卷二公开转录",
+              "locator": "论十干合、支元六合、三刑、六害、冲击；概念依据，非原刊校勘",
+              "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+            },
+            {
+              "title": "iztro v2.5.0天干四化程序表",
+              "locator": "heavenlyStems.mutagen；固定程序表，不代表各派共识",
+              "url": "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/data/heavenlyStems.ts"
+            },
+            {
+              "title": "Swiss Ephemeris API",
+              "locator": "黄经、UTC/UT1与计算接口；不提供事件或关系效度证明",
+              "url": "https://www.astro.com/swisseph/swephprg.htm"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "window-search",
+          "title": "择日与区间搜索：透明比较",
+          "file": "02_window-search.md",
+          "question_types": [
+            "一段日期中哪天更合适",
+            "候选日为什么有加减分"
+          ],
+          "artifact_root": "P8ToolEvidenceResult",
+          "required_fields": [
+            "/version",
+            "/data",
+            "/rule_hits",
+            "/aliases",
+            "/sources",
+            "/effects"
+          ],
+          "pending_fields": [
+            "主线Agent工具接入与上下文别名账本尚待主线验证"
+          ],
+          "sources": [
+            {
+              "title": "三命通会卷二公开转录",
+              "locator": "论十干合、支元六合、三刑、六害、冲击；概念依据，非原刊校勘",
+              "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+            },
+            {
+              "title": "lunar官方API目录",
+              "locator": "日历与宜忌、冲煞、建除、值神、星宿、彭祖字段",
+              "url": "https://6tail.cn/calendar/api.html"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": []
+        },
+        {
+          "topic": "almanac",
+          "title": "黄历：传统标签与现实安排",
+          "file": "03_almanac.md",
+          "question_types": [
+            "今天黄历宜忌",
+            "冲煞和值神怎样理解"
+          ],
+          "artifact_root": "P8ToolEvidenceResult",
+          "required_fields": [
+            "/data/date",
+            "/data/yi",
+            "/data/ji",
+            "/data/chong_sha",
+            "/data/duty",
+            "/data/mansion",
+            "/data/pengzu",
+            "/data/method",
+            "/rule_hits",
+            "/aliases",
+            "/sources",
+            "/effects"
+          ],
+          "pending_fields": [
+            "主线Agent工具接入与上下文别名账本尚待主线验证"
+          ],
+          "sources": [
+            {
+              "title": "lunar官方API目录",
+              "locator": "日历与宜忌、冲煞、建除、值神、星宿、彭祖字段",
+              "url": "https://6tail.cn/calendar/api.html"
+            },
+            {
+              "title": "lunar-python官方源码",
+              "locator": "实际固定安装包；版本及源码指纹见工具method",
+              "url": "https://github.com/6tail/lunar-python"
+            }
+          ],
+          "status": "draft_requires_owner_review",
+          "rule_ids": [
+            "p8-almanac-yi",
+            "p8-almanac-ji",
+            "p8-almanac-duty",
+            "p8-almanac-mansion",
+            "p8-almanac-pengzu",
+            "p8-almanac-chong-sha"
+          ]
+        },
+        {
+          "topic": "synastry",
+          "title": "合盘：尊重两个人的意愿",
+          "file": "04_synastry.md",
+          "question_types": [
+            "获得确认后比较两人盘面",
+            "结构互补是否等于关系成功"
+          ],
+          "artifact_root": "P8ToolEvidenceResult",
+          "required_fields": [
+            "/version",
+            "/data",
+            "/rule_hits",
+            "/aliases",
+            "/sources",
+            "/effects",
+            "/data/consent",
+            "/data/kind",
+            "/data/as_of_date",
+            "/data/bazi",
+            "/data/astro",
+            "/data/ziwei"
+          ],
+          "pending_fields": [
+            "主线Agent工具接入与上下文别名账本尚待主线验证"
+          ],
+          "sources": [
+            {
+              "title": "三命通会卷二公开转录",
+              "locator": "论十干合、支元六合、三刑、六害、冲击；概念依据，非原刊校勘",
+              "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+            },
+            {
+              "title": "Swiss Ephemeris API",
+              "locator": "黄经、UTC/UT1与计算接口；不提供事件或关系效度证明",
+              "url": "https://www.astro.com/swisseph/swephprg.htm"
             }
           ],
           "status": "draft_requires_owner_review",

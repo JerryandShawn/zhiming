@@ -27,7 +27,7 @@ Python：`daily_transit(natal, date, *, orb_degrees=2.0)`。`date` 为严格 `YY
 
 调用方传入的 `date` 是唯一目标日期，不读取本机“今天”。时区来自明确的 IANA 出生时区，夏令时按固定数据源转换；不存在的钟表时刻和有多个物理 UTC 瞬间的时刻拒绝，不自动平移、猜 fold 或倒推。
 
-主解读本命八字与紫微采用真太阳坐标。北京时间同一物理瞬间的本命四柱不同时，保留 `data.time_basis.comparisons`；同盘时该数组为空。西占本命只采用真实出生 UTC，不把真太阳坐标当成另一个物理瞬间。具体时区版本、转换依据及所选坐标见 `data.time_basis.primary`。
+主解读本命八字与紫微采用真太阳坐标。北京时间同一物理瞬间的四柱，或实际紫微农历日、命宫、身宫、十二宫、五行局中任一不同，保留 `data.time_basis.comparisons`；每项含 `fields_changed` 与实际 `ziwei_natal`。同盘时数组为空。晚子/月末可能四柱相同而紫微宫位不同，不能只按四柱去重。西占本命只采用真实出生 UTC，不把真太阳坐标当成另一个物理瞬间。具体时区版本、转换依据及所选坐标见 `data.time_basis.primary`。
 
 ## 输出与规则命中
 
@@ -82,7 +82,7 @@ Pointer 遵循严格 RFC 6901，别名附所指值 SHA256。文档 ID 绑定版�
 
 ## 拒绝与限制
 
-直接 Python 层抛出 `ValueError`；参数错误不得携带出生原文或私有正文。新增稳定码包括 `daily_transit_date_invalid`、`daily_transit_date_out_of_range`、`daily_transit_before_birth`、`daily_transit_unconfirmed_physical_instant`。原 `time_basis` 校验错误继续沿用；适配器的进程失败仍按其既有错误包装，由主线映射成对人可读提示。
+直接 Python 层抛出 `ValueError`；参数错误不得携带出生原文或私有正文。新增稳定码包括 `daily_transit_natal_object_required`、`daily_transit_date_invalid`、`daily_transit_date_out_of_range`、`daily_transit_before_birth`、`daily_transit_unconfirmed_physical_instant`。原 `time_basis` 校验错误继续沿用；适配器的进程失败仍按其既有错误包装，由主线映射成对人可读提示。
 
 不接受未知出生时刻进行倒推；不改变冻结/隐藏的实验政策。没有投资、疾病、灾祸或关系结局保证。流日结构不能代替真实日程、天气、交通、合同审阅或当事人意愿。实际项目筛选权重由 `window_search` 单独具名，不偷偷写入流日。
 

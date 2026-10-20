@@ -1,0 +1,149 @@
+{
+  "version": "p8-night28-m2-validation-v1",
+  "recorded_at_beijing": "2026-10-20T23:21:49+08:00",
+  "base": "cfe01c0",
+  "full_v4": {
+    "started_at_beijing": "2026-10-20T23:17:01+08:00",
+    "passed": 1175,
+    "skipped": 0,
+    "seconds": 121.31
+  },
+  "scripted_regression": {
+    "scenarios": "80/80",
+    "self_tests": "48/48",
+    "model_calls": 0
+  },
+  "style": {
+    "python_files": 156,
+    "protected_files_unchanged": 141,
+    "secret_check": "passed"
+  },
+  "real_local_worker_routes": {
+    "daily_transit": {
+      "rules": 40,
+      "schema": "passed"
+    },
+    "window_search_offset1_limit3": {
+      "rules": 112,
+      "schema": "passed"
+    },
+    "almanac": {
+      "rules": 6,
+      "schema": "passed"
+    },
+    "synastry": {
+      "rules": 45,
+      "schema": "passed"
+    }
+  },
+  "performance": "night28-tools-performance.json; one warmup plus ten observations per function",
+  "samples": [
+    {
+      "path": "docs/v4/contracts/samples/almanac-20261021.json",
+      "sha256": "104bb11e34a343b3a38a86bd63c4f4d6a75cc1ebc1508cd5dc98a92f5d60403f",
+      "bytes": 13652,
+      "version": "p8-almanac-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/ayuan_astro.json",
+      "sha256": "1e2fb3f95a30e9508a625d96e296d9f186a6c6d73c8b53a1fb55c78a854a4771",
+      "bytes": 1394832,
+      "version": "p8-chart-compute-preview-v1.1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/ayuan_bazi.json",
+      "sha256": "9ebc69617a531e75b788e9ea397a472940ea3d7ee21570766c0854ed4dcdd793",
+      "bytes": 1226377,
+      "version": "p8-chart-compute-preview-v1.1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/ayuan_ziwei.json",
+      "sha256": "d2b6e9586902070646f0d6463f69251481df78a6b83cacd4740f21e5b0bfc01e",
+      "bytes": 1203219,
+      "version": "p8-chart-compute-preview-v1.1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-21.json",
+      "sha256": "0b0984e1a6cf9c48f060071e861da1438d9ee2122a7635095d7f71933a589205",
+      "bytes": 166682,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-22.json",
+      "sha256": "1de44c4f5268b6b660ce982064e2fd34b3f2bdfd9cc333cbbe9a8df789778576",
+      "bytes": 158985,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-23.json",
+      "sha256": "98ffeb68f3a9d47e0f3c4fab607672e11d78c532d0ef3b8d00dc7a3e2cb8d4d8",
+      "bytes": 162853,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-24.json",
+      "sha256": "f20ec9d7c6d5d91ef82e8eaf32235632cf5de95dcf0e5417833ef0b7eeecf353",
+      "bytes": 172184,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-25.json",
+      "sha256": "a5c04a2a7d9bb0208e7a5dc0322cedc076a7042c567503f99765df60de0df98f",
+      "bytes": 160344,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-26.json",
+      "sha256": "c6a0b32d6badad1cadaa9dad6897e401ced79fe53141e6847d9e247271cde6ac",
+      "bytes": 164468,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-27.json",
+      "sha256": "3886f6377f50e14ad25e876c04b6e7d064054341949d057f9aff87e69629d5cc",
+      "bytes": 154294,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/daily_transit/manifest.json",
+      "sha256": "3bc9081cd0e61bfcb3d0f1aec55a0c1c93d3a3f6d9cfbcb84bb98aa8393103f0",
+      "bytes": 1872,
+      "version": "p8-daily-transit-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/synastry-ayuan-xiaohe-input.json",
+      "sha256": "a3494d26f9389e0576754958c331ae6d18c7c0cfe6bdeb0fc4bccc5db81dad4c",
+      "bytes": 968,
+      "version": null
+    },
+    {
+      "path": "docs/v4/contracts/samples/synastry-ayuan-xiaohe.json",
+      "sha256": "5e707188c19c01948312c66e9b83ed20064bd01b6573905e93f808af3f780254",
+      "bytes": 84009,
+      "version": "p8-synastry-v1"
+    },
+    {
+      "path": "docs/v4/contracts/samples/window-search-ayuan-contract-20261021-27.json",
+      "sha256": "d6c9f82c01fb5be2b24d3c5efce27c4c4ac1cb7638dc2e201618bd14b36d9867",
+      "bytes": 1098142,
+      "version": "p8-window-search-v1"
+    }
+  ],
+  "skills": {
+    "old_chapters": 28,
+    "new_calendar_tools": 4,
+    "max_new_context_utf8_bytes": 3517
+  },
+  "model_calls": 0,
+  "server_access": false,
+  "feishu_calls": 0,
+  "database": "127.0.0.1:55480/core_test_meta",
+  "application_server": "not_started; port8003_reserved",
+  "migration": null,
+  "merge": null,
+  "pr": "5 draft; fresh HEAD CI pending publication",
+  "limitations": [
+    "pure numerical/contract testing is not predictive validity",
+    "mainline API and persistent aliases not wired"
+  ]
+}

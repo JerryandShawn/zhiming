@@ -1,6 +1,6 @@
 # chart_compute 接线契约 v1.1（P8 命理线草稿）
 
-本文件交主线与前端线只读使用。已有实现是 `P8ChartAdapter` 的三个本机 Python 入口；主线的 `chart_compute` 工具、授权档案读取、别名账本、API、持久化和前端接线尚不在本线实现。本文约定与离线样例不能作为已经上线的证明。
+本文件交主线与前端线只读使用。已有实现是 `P8ChartAdapter` 的三个原生计算入口与四个只读工具入口；主线的 `chart_compute` 工具、授权档案读取、别名账本、API、持久化和前端接线尚不在本线实现。本文约定与离线样例不能作为已经上线的证明。
 
 设计依据：蓝图§8/§10、18号推理增补§A/B、23号第二节、24号审校§6；用户本夜直接要求的范围优先于旧阶段提示词。数据来自程序，解释来自有出处的技能；规则成立仅指条件命中，不代表格局或现实事件已经成立。
 
@@ -190,7 +190,7 @@ Ref严格为`{document_id,path}`，path始终相对于该document的**payload根
 | [ayuan_ziwei.json](samples/ayuan_ziwei.json) | 同一合成出生记录的真太阳时/北京时间紫微列、默认iztro48边飞化；未提供的运限层如实unavailable |
 | [ayuan_astro.json](samples/ayuan_astro.json) | 实际UTC本命、7日月亮/太阳区间（1小时步长）、具名次限与2026周年太阳回归；样例显式选择成都坐标，不是推定真实回归所在地 |
 
-两口径如果恰有相同四柱或宫位，comparison可为空；原始documents仍保留两个坐标。前端可将诊断坐标放可展开的核对区，不为演示制造差异。没有U12八字规则的体系不发r别名。前端使用说明见[samples/README.md](samples/README.md)，本线不改web/。
+两口径如果恰有相同四柱或宫位，comparison可为空；原始documents仍保留两个坐标。前端可将诊断坐标放可展开的核对区，不为演示制造差异。没有U12八字规则的体系不分配U12规则别名；真实边界命中仍有独立r别名。前端使用说明见[samples/README.md](samples/README.md)，本线不改web/。
 
 ### 5.2 重现与验证
 
@@ -209,6 +209,21 @@ JSON Schema需启用FormatChecker并结合`ensure_finite_json`；归属、内容
 附带的`validate_preview`只校验当前builder的canonical阿远固定合成请求及其表示形式，会拒绝其它人物、日期或时间标签。Schema本身仅约束结构；固定输入核对后仍检查原生目标日、西占实际输入与显式地点、时序目标、内容hash、scope和依据引用。原生time_basis没有完整输入回显，因此它不是任意请求的通用校验器。主线通用接线需单独设计实际输入回显和内容绑定，不能照搬固定合成输入白名单作为真实用户API。修复缘由与反例见[请求绑定复核](../evidence/P8/night24-handoff-binding-review.md)。
 
 
-### 5.3 本机验证回执
+### 5.3 v1历史本机验证回执（不代替v1.1验收）
 
 完整v4 **816/816、0跳过、110.72s**；新增预览负例等47项通过。三JSON的Schema、原生scope、内容hash、全部依据Pointer和当前源码hash检查通过；前端README的JavaScript在三份JSON上共68次引用读取通过。103个Python样式检查、141保护文件不变。精确文件SHA/字节数见`../evidence/P8/night24-m2-validation.json`。单次构建观测八字1.122s、紫微1.114s、西占2.766s，含子进程/验证/文件写出，n=1，仅为本机观测，不是已接线chart_compute的API耗时或SLA。新提交CI发布后另核，不借用M1绿色。
+
+## 6. 四个新增只读入口
+
+| P8ChartAdapter入口 | 原生计算能力与独立契约 |
+| --- | --- |
+| `daily_transit(natal,date,orb_degrees=2)` | [流日](daily_transit.md)：真太阳本命、北京时间正午三体系快照，七日样例；快照不是区间 |
+| `window_search(natal,date_range,purpose,offset=0,limit=31)` | [择日](window_search.md)：六用途公开权重，全区间排序、显式分页、实际正负命中；不建立结果保证 |
+| `almanac(date)` | [黄历](almanac.md)：已有lunar-python具名日期口径，实际版本与安装包源码摘要 |
+| `synastry(request)` | [合盘](synastry.md)：先检查consent=user_confirmed，再核对两资料当前owner；三体系结构对读，无适配百分比 |
+
+四个工具使用独立`tool_evidence`信封，其`aliases[].path`相对于该工具结果自身根，
+不同于本文件预览的`ref={document_id,path}`。两种别名结构不要混读；各工具仍需主线登记当前上下文账本。
+Core入口通过现有P8隔离子进程运行原生库；直接Charts函数及其预计算缓存用于顺序本机计算，
+不声称Swiss或pythonmonkey全局状态在共享应用线程中并发安全。所有API注册、主线资料授权/撤销、
+持久化、HTTP和前端交互仍由主线实现；本线没有启动8003或部署服务。

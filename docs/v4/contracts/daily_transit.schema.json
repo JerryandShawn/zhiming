@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mingjing:p8:daily-transit:v1",
+  "title": "P8 daily_transit read-only result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "scope", "data", "rule_hits", "sources", "document_id", "aliases", "effects", "limits"],
+  "properties": {
+    "version": {"const": "p8-daily-transit-v1"},
+    "scope": {"$ref": "#/$defs/scope"},
+    "data": {"$ref": "#/$defs/data"},
+    "rule_hits": {"type": "array", "items": {"$ref": "#/$defs/hit"}},
+    "sources": {"type": "array", "minItems": 3, "items": {"type": "object"}},
+    "document_id": {"type": "string", "pattern": "^tool-[0-9a-f]{64}$"},
+    "aliases": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["c", "r"],
+      "properties": {
+        "c": {"type": "array", "items": {"$ref": "#/$defs/chartAlias"}},
+        "r": {"type": "array", "items": {"$ref": "#/$defs/ruleAlias"}}
+      }
+    },
+    "effects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model_calls", "writes", "alias_registry"],
+      "properties": {
+        "model_calls": {"const": 0},
+        "writes": {"const": 0},
+        "alias_registry": {"const": "ephemeral_only"}
+      }
+    },
+    "limits": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_user_id", "subject_id", "revision", "operation_id"],
+      "properties": {
+        "owner_user_id": {"type": "string", "minLength": 1},
+        "subject_id": {"type": "string", "minLength": 1},
+        "operation_id": {"type": "string", "minLength": 1},
+        "revision": {"type": "integer", "minimum": 0}
+      }
+    },
+    "pillars": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["year", "month", "day", "hour"],
+      "properties": {
+        "year": {"$ref": "#/$defs/ganzhi"},
+        "month": {"$ref": "#/$defs/ganzhi"},
+        "day": {"$ref": "#/$defs/ganzhi"},
+        "hour": {"$ref": "#/$defs/ganzhi"}
+      }
+    },
+    "ganzhi": {"type": "string", "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"},
+    "date": {"type": "string", "format": "date", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "data": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["date", "snapshot_at", "snapshot_at_utc", "time_basis", "bazi", "ziwei", "astro"],
+      "properties": {
+        "date": {"$ref": "#/$defs/date"},
+        "snapshot_at": {"type": "string", "format": "date-time", "pattern": "T12:00:00\\+08:00$"},
+        "snapshot_at_utc": {"type": "string", "format": "date-time", "pattern": "T04:00:00Z$"},
+        "time_basis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["primary", "comparisons"],
+          "properties": {
+            "primary": {
+              "type": "object",
+              "required": ["basis", "utc", "pillars", "coordinate_datetime", "calendar_datetime", "timezone_source"],
+              "properties": {"basis": {"const": "true_solar"}, "pillars": {"$ref": "#/$defs/pillars"}}
+            },
+            "comparisons": {"type": "array", "maxItems": 1, "items": {"type": "object"}}
+          }
+        },
+        "bazi": {
+          "type": "object",
+          "required": ["natal_pillars", "snapshot", "interactions", "selected_schools"],
+          "properties": {
+            "natal_pillars": {"$ref": "#/$defs/pillars"},
+            "snapshot": {
+              "type": "object",
+              "required": ["date", "sample_at", "year", "month", "day", "hour_is_snapshot_only"]
+            },
+            "interactions": {"type": "object", "required": ["nodes", "relations", "source_refs", "school"]},
+            "selected_schools": {"type": "object"}
+          }
+        },
+        "ziwei": {
+          "type": "object",
+          "required": ["school", "versions", "natal", "horoscope", "transformations"],
+          "properties": {
+            "school": {"type": "string", "minLength": 1},
+            "versions": {"type": "object"},
+            "natal": {"type": "object", "required": ["palaces"], "properties": {"palaces": {"type": "array", "minItems": 12, "maxItems": 12}}},
+            "horoscope": {
+              "type": "object",
+              "required": ["target_date", "snapshot_time_index", "yearly", "monthly", "daily"],
+              "properties": {"snapshot_time_index": {"const": 6}}
+            },
+            "transformations": {"type": "object", "required": ["yearly", "monthly", "daily"]}
+          }
+        },
+        "astro": {
+          "type": "object",
+          "required": ["natal_at_utc", "snapshot_at_utc", "natal_planets", "transit_planets", "orb_limit_degrees", "aspects", "method"],
+          "properties": {
+            "natal_at_utc": {"type": "string", "format": "date-time"},
+            "snapshot_at_utc": {"type": "string", "format": "date-time"},
+            "natal_planets": {"type": "object", "minProperties": 10, "maxProperties": 10},
+            "transit_planets": {"type": "object", "minProperties": 10, "maxProperties": 10},
+            "orb_limit_degrees": {"type": "number", "minimum": 0, "maximum": 10},
+            "aspects": {"type": "array", "items": {"$ref": "#/$defs/aspect"}},
+            "method": {"type": "object"}
+          }
+        }
+      }
+    },
+    "aspect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "aspect", "angle", "orb_degrees"],
+      "properties": {
+        "from": {"type": "string", "minLength": 1},
+        "to": {"type": "string", "minLength": 1},
+        "aspect": {"enum": ["合相", "六合", "刑相", "拱相", "冲相"]},
+        "angle": {"enum": [0, 60, 90, 120, 180]},
+        "orb_degrees": {"type": "number", "minimum": 0, "maximum": 10}
+      }
+    },
+    "hit": {
+      "type": "object",
+      "required": ["rule_id", "met", "school", "source", "evidence_paths", "context"],
+      "properties": {
+        "rule_id": {"type": "string", "pattern": "^daily\\.(bazi|ziwei|astro)\\."},
+        "met": {"const": true},
+        "school": {"type": "string", "minLength": 1},
+        "source": {"type": "object"},
+        "evidence_paths": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^/data/"}},
+        "context": {"type": "object", "required": ["system", "kind"], "properties": {"system": {"enum": ["bazi", "ziwei", "astro"]}}}
+      }
+    },
+    "chartAlias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alias", "path", "value_sha256", "claim_id"],
+      "properties": {
+        "alias": {"type": "string", "pattern": "^c[1-9][0-9]*$"},
+        "path": {"type": "string", "pattern": "^/data/"},
+        "value_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "claim_id": {"type": "string", "pattern": "^claim-[0-9a-f]{64}$"}
+      }
+    },
+    "ruleAlias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alias", "path", "rule_id", "value_sha256", "claim_id", "evidence_aliases"],
+      "properties": {
+        "alias": {"type": "string", "pattern": "^r[1-9][0-9]*$"},
+        "path": {"type": "string", "pattern": "^/rule_hits/(0|[1-9][0-9]*)$"},
+        "rule_id": {"type": "string", "minLength": 1},
+        "value_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "claim_id": {"type": "string", "pattern": "^claim-[0-9a-f]{64}$"},
+        "evidence_aliases": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^c[1-9][0-9]*$"}}
+      }
+    }
+  }
+}

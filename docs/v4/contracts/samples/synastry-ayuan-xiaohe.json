@@ -1,0 +1,2478 @@
+{
+  "version": "p8-synastry-v1",
+  "scope": {
+    "owner_user_id": "synthetic-owner-ayuan",
+    "subject_ids": [
+      "synthetic-ayuan",
+      "synthetic-xiaohe"
+    ],
+    "revisions": [
+      1,
+      1
+    ],
+    "operation_ids": [
+      "synthetic-ayuan-night28-tools",
+      "synthetic-xiaohe-night28-tools"
+    ]
+  },
+  "data": {
+    "kind": "romantic",
+    "consent": "user_confirmed",
+    "as_of_date": "2026-10-21",
+    "bazi": {
+      "pillars_a": {
+        "year": "甲戌",
+        "month": "丁卯",
+        "day": "丁酉",
+        "hour": "甲辰"
+      },
+      "pillars_b": {
+        "year": "乙亥",
+        "month": "甲申",
+        "day": "庚寅",
+        "hour": "癸未"
+      },
+      "day_stem_combination": {
+        "a": "丁",
+        "b": "庚",
+        "met": false,
+        "transformation_established": false
+      },
+      "branch_relations": [],
+      "visible_a": {
+        "stems": [
+          "甲",
+          "戊",
+          "丁",
+          "乙",
+          "丁",
+          "辛",
+          "甲",
+          "戊"
+        ],
+        "element_counts": {
+          "木": 3,
+          "火": 2,
+          "土": 2,
+          "金": 1,
+          "水": 0
+        },
+        "method": "four_exposed_stems_plus_selected_hidden_table_first_stem_per_branch",
+        "qi_strength_assessed": false
+      },
+      "visible_b": {
+        "stems": [
+          "乙",
+          "壬",
+          "甲",
+          "庚",
+          "庚",
+          "甲",
+          "癸",
+          "己"
+        ],
+        "element_counts": {
+          "木": 3,
+          "火": 0,
+          "土": 1,
+          "金": 2,
+          "水": 2
+        },
+        "method": "four_exposed_stems_plus_selected_hidden_table_first_stem_per_branch",
+        "qi_strength_assessed": false
+      },
+      "element_complement": [
+        {
+          "recipient": "a",
+          "absent_in_own_present_in_other": [
+            "水"
+          ],
+          "meaning": "表层计数的缺项对照；不表示缺项就是用神或需由他人补足"
+        },
+        {
+          "recipient": "b",
+          "absent_in_own_present_in_other": [
+            "火"
+          ],
+          "meaning": "表层计数的缺项对照；不表示缺项就是用神或需由他人补足"
+        }
+      ],
+      "useful_complement": [
+        {
+          "recipient": "a",
+          "method": "扶抑",
+          "candidate_stems": [
+            "壬",
+            "己",
+            "庚",
+            "戊",
+            "癸",
+            "辛"
+          ],
+          "other_exposed_stems": [
+            "乙",
+            "甲",
+            "庚",
+            "癸"
+          ],
+          "overlap": [
+            "庚",
+            "癸"
+          ],
+          "candidate_only": true,
+          "aggregation": "union_of_parallel_candidates_not_consensus",
+          "effective_strength_assessed": false
+        },
+        {
+          "recipient": "a",
+          "method": "调候",
+          "candidate_stems": [
+            "庚",
+            "甲"
+          ],
+          "other_exposed_stems": [
+            "乙",
+            "甲",
+            "庚",
+            "癸"
+          ],
+          "overlap": [
+            "庚",
+            "甲"
+          ],
+          "candidate_only": true,
+          "aggregation": "union_of_parallel_candidates_not_consensus",
+          "effective_strength_assessed": false
+        },
+        {
+          "recipient": "a",
+          "method": "格局",
+          "candidate_stems": [
+            "壬",
+            "庚"
+          ],
+          "other_exposed_stems": [
+            "乙",
+            "甲",
+            "庚",
+            "癸"
+          ],
+          "overlap": [
+            "庚"
+          ],
+          "candidate_only": true,
+          "aggregation": "union_of_parallel_candidates_not_consensus",
+          "effective_strength_assessed": false
+        },
+        {
+          "recipient": "b",
+          "method": "扶抑",
+          "candidate_stems": [],
+          "other_exposed_stems": [
+            "甲",
+            "丁",
+            "丁",
+            "甲"
+          ],
+          "overlap": [],
+          "candidate_only": true,
+          "aggregation": "union_of_parallel_candidates_not_consensus",
+          "effective_strength_assessed": false
+        },
+        {
+          "recipient": "b",
+          "method": "调候",
+          "candidate_stems": [
+            "丁",
+            "甲"
+          ],
+          "other_exposed_stems": [
+            "甲",
+            "丁",
+            "丁",
+            "甲"
+          ],
+          "overlap": [
+            "丁",
+            "甲"
+          ],
+          "candidate_only": true,
+          "aggregation": "union_of_parallel_candidates_not_consensus",
+          "effective_strength_assessed": false
+        },
+        {
+          "recipient": "b",
+          "method": "格局",
+          "candidate_stems": [
+            "乙",
+            "甲"
+          ],
+          "other_exposed_stems": [
+            "甲",
+            "丁",
+            "丁",
+            "甲"
+          ],
+          "overlap": [
+            "甲"
+          ],
+          "candidate_only": true,
+          "aggregation": "union_of_parallel_candidates_not_consensus",
+          "effective_strength_assessed": false
+        }
+      ],
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1"
+    },
+    "astro": {
+      "positions_a": {
+        "太阳": {
+          "longitude": 351.1965446207021,
+          "latitude": 0.00011143989513376271,
+          "distance_au": 0.9936573184608443,
+          "speed_degrees_per_day": 0.9985174078030244,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "月亮": {
+          "longitude": 348.05536204525185,
+          "latitude": 4.676199418969718,
+          "distance_au": 0.0026798873058223776,
+          "speed_degrees_per_day": 12.199225827685389,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "水星": {
+          "longitude": 324.80355045110576,
+          "latitude": 0.23117777901609338,
+          "distance_au": 0.8125823900548482,
+          "speed_degrees_per_day": 0.6012649840962325,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "金星": {
+          "longitude": 4.245227597115715,
+          "latitude": -1.2066746521116445,
+          "distance_au": 1.6568104578727887,
+          "speed_degrees_per_day": 1.243735942129807,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "火星": {
+          "longitude": 333.58264388970207,
+          "latitude": -1.1140724755947295,
+          "distance_au": 2.29917892520574,
+          "speed_degrees_per_day": 0.7864953409221513,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "木星": {
+          "longitude": 224.45109362497598,
+          "latitude": 1.33736469383033,
+          "distance_au": 4.783881383503372,
+          "speed_degrees_per_day": -0.03580401653331104,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "土星": {
+          "longitude": 335.049527227853,
+          "latitude": -1.4518245446402631,
+          "distance_au": 10.710850696782186,
+          "speed_degrees_per_day": 0.11852531454652532,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "天王": {
+          "longitude": 295.3277596433744,
+          "latitude": -0.4722132762953179,
+          "distance_au": 20.18471461986454,
+          "speed_degrees_per_day": 0.03915209160175062,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "海王": {
+          "longitude": 292.81644739152176,
+          "latitude": 0.6100335334868623,
+          "distance_au": 30.688612757749432,
+          "speed_degrees_per_day": 0.02329891922460015,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "冥王": {
+          "longitude": 238.04063340870727,
+          "latitude": 14.198755385218254,
+          "distance_au": 29.377462076133902,
+          "speed_degrees_per_day": -0.0061500286517002754,
+          "retrograde": true,
+          "returned_flags": 260
+        }
+      },
+      "positions_b": {
+        "太阳": {
+          "longitude": 153.52095306811376,
+          "latitude": -0.0002000454856388275,
+          "distance_au": 1.010481432344246,
+          "speed_degrees_per_day": 0.9655450705443006,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "月亮": {
+          "longitude": 166.28471090652204,
+          "latitude": -3.3791672125406045,
+          "distance_au": 0.0025888109473884316,
+          "speed_degrees_per_day": 13.019205703721523,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "水星": {
+          "longitude": 177.51271874705404,
+          "latitude": -0.6042118105970129,
+          "distance_au": 1.1332349395409542,
+          "speed_degrees_per_day": 1.3824108734026934,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "金星": {
+          "longitude": 155.23696286695673,
+          "latitude": 1.3946757300550479,
+          "distance_au": 1.7276225628446233,
+          "speed_degrees_per_day": 1.2393847408586698,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "火星": {
+          "longitude": 202.79327744083912,
+          "latitude": -0.07486871919721813,
+          "distance_au": 1.9999805292065955,
+          "speed_degrees_per_day": 0.6455303268451187,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "木星": {
+          "longitude": 246.43630664304442,
+          "latitude": 0.5255398034161108,
+          "distance_au": 5.164033253027804,
+          "speed_degrees_per_day": 0.07251499071731966,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "土星": {
+          "longitude": 352.71354532113446,
+          "latitude": -2.3196784647535713,
+          "distance_au": 8.654880633558014,
+          "speed_degrees_per_day": -0.0703835643201792,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "天王": {
+          "longitude": 297.1612280478111,
+          "latitude": -0.568893920390788,
+          "distance_au": 18.90480980439656,
+          "speed_degrees_per_day": -0.02960701606310718,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "海王": {
+          "longitude": 293.1647131719121,
+          "latitude": 0.5413645747145502,
+          "distance_au": 29.391419816978136,
+          "speed_degrees_per_day": -0.01896200291809384,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "冥王": {
+          "longitude": 237.9136460135727,
+          "latitude": 13.3230126798643,
+          "distance_au": 29.932204447053053,
+          "speed_degrees_per_day": 0.010432040942807691,
+          "retrograde": false,
+          "returned_flags": 260
+        }
+      },
+      "orb_degrees": 6.0,
+      "aspects": [
+        {
+          "from": "海王",
+          "to": "火星",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 0.023169950682643048
+        },
+        {
+          "from": "火星",
+          "to": "太阳",
+          "aspect": "冲相",
+          "angle": 180,
+          "orb_degrees": 0.06169082158828587
+        },
+        {
+          "from": "海王",
+          "to": "土星",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 0.10290207038730159
+        },
+        {
+          "from": "冥王",
+          "to": "冥王",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 0.12698739513456303
+        },
+        {
+          "from": "土星",
+          "to": "金星",
+          "aspect": "冲相",
+          "angle": 180,
+          "orb_degrees": 0.1874356391037395
+        },
+        {
+          "from": "海王",
+          "to": "海王",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 0.3482657803903635
+        },
+        {
+          "from": "冥王",
+          "to": "水星",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 0.5279146616532273
+        },
+        {
+          "from": "冥王",
+          "to": "天王",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 0.8794053608961576
+        },
+        {
+          "from": "土星",
+          "to": "木星",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 1.3867794151914268
+        },
+        {
+          "from": "太阳",
+          "to": "土星",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 1.5170007004323338
+        },
+        {
+          "from": "土星",
+          "to": "太阳",
+          "aspect": "冲相",
+          "angle": 180,
+          "orb_degrees": 1.5285741597392644
+        },
+        {
+          "from": "火星",
+          "to": "金星",
+          "aspect": "冲相",
+          "angle": 180,
+          "orb_degrees": 1.6543189772546611
+        },
+        {
+          "from": "月亮",
+          "to": "月亮",
+          "aspect": "冲相",
+          "angle": 180,
+          "orb_degrees": 1.7706511387298178
+        },
+        {
+          "from": "天王",
+          "to": "天王",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 1.833468404436701
+        },
+        {
+          "from": "木星",
+          "to": "月亮",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 1.8336172815460543
+        },
+        {
+          "from": "太阳",
+          "to": "海王",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 1.968168551209999
+        },
+        {
+          "from": "水星",
+          "to": "火星",
+          "aspect": "拱相",
+          "angle": 120,
+          "orb_degrees": 2.010273010266644
+        },
+        {
+          "from": "天王",
+          "to": "海王",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 2.1630464714622804
+        },
+        {
+          "from": "天王",
+          "to": "水星",
+          "aspect": "拱相",
+          "angle": 120,
+          "orb_degrees": 2.1849591036796028
+        },
+        {
+          "from": "金星",
+          "to": "木星",
+          "aspect": "拱相",
+          "angle": 120,
+          "orb_degrees": 2.1910790459286886
+        },
+        {
+          "from": "天王",
+          "to": "火星",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 2.534482202535287
+        },
+        {
+          "from": "天王",
+          "to": "冥王",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 2.5858863701982955
+        },
+        {
+          "from": "天王",
+          "to": "土星",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 2.6142143222399454
+        },
+        {
+          "from": "火星",
+          "to": "木星",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 2.8536627533423484
+        },
+        {
+          "from": "水星",
+          "to": "冥王",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 3.110095562466938
+        },
+        {
+          "from": "海王",
+          "to": "天王",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 4.344780656289345
+        },
+        {
+          "from": "月亮",
+          "to": "土星",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 4.658183275882607
+        },
+        {
+          "from": "海王",
+          "to": "水星",
+          "aspect": "拱相",
+          "angle": 120,
+          "orb_degrees": 4.6962713555323035
+        },
+        {
+          "from": "冥王",
+          "to": "海王",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 4.875920236795139
+        },
+        {
+          "from": "太阳",
+          "to": "月亮",
+          "aspect": "冲相",
+          "angle": 180,
+          "orb_degrees": 4.911833714180091
+        },
+        {
+          "from": "海王",
+          "to": "冥王",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 5.097198622050939
+        },
+        {
+          "from": "月亮",
+          "to": "海王",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 5.109351126660272
+        },
+        {
+          "from": "冥王",
+          "to": "土星",
+          "aspect": "拱相",
+          "angle": 120,
+          "orb_degrees": 5.327088087572804
+        },
+        {
+          "from": "冥王",
+          "to": "太阳",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 5.480319659406518
+        },
+        {
+          "from": "火星",
+          "to": "冥王",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 5.668997876129367
+        },
+        {
+          "from": "太阳",
+          "to": "天王",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 5.96468342710898
+        }
+      ],
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "time_basis": "actual_UTC_not_true_solar",
+      "method": {
+        "engine": "pyswisseph",
+        "swisseph_version": "2.10.03",
+        "pyswisseph_version": "2.10.3.2",
+        "ephemeris": "Moshier",
+        "requested_flags": 260,
+        "returned_flags": [
+          260
+        ],
+        "zodiac": "tropical",
+        "coordinates": "geocentric apparent ecliptic longitude of date",
+        "time_scale": "Swiss utc_to_jd: UTC -> TT and UT1; calc_ut uses UT1",
+        "tidal_acceleration_arcsec_per_century_squared": -25.58,
+        "delta_t": "Swiss automatic model with explicit Moshier tidal acceleration; no user fixed delta-T",
+        "utc_caveat": "1972年前由Swiss按UT1处理；未来UTC取决于其闰秒与Delta-T模型。",
+        "legacy_difference": "v3以julday将民用UTC近似当UT；本入口不改动v3计算。"
+      },
+      "natal_at_utc": {
+        "a": "1994-03-12T00:20:00Z",
+        "b": "1995-08-27T06:10:00Z"
+      }
+    },
+    "ziwei": {
+      "cross_views": [
+        {
+          "recipient": "a",
+          "own_spouse_palace": {
+            "index": 7,
+            "name": "夫妻",
+            "ganzhi": "癸酉",
+            "major": [
+              {
+                "name": "紫微",
+                "brightness": "旺"
+              },
+              {
+                "name": "贪狼",
+                "brightness": "利"
+              }
+            ],
+            "minor": [
+              {
+                "name": "右弼"
+              }
+            ]
+          },
+          "other_life_palace": {
+            "index": 0,
+            "name": "命宫",
+            "ganzhi": "戊寅",
+            "major": [],
+            "minor": [
+              {
+                "name": "陀罗",
+                "brightness": "陷"
+              }
+            ]
+          },
+          "same_branch": false,
+          "shared_star_names": [],
+          "interpretation": "两盘实际宫位并列供沟通学习；未建立星曜配对吉凶或适配分数算法"
+        },
+        {
+          "recipient": "b",
+          "own_spouse_palace": {
+            "index": 10,
+            "name": "夫妻",
+            "ganzhi": "戊子",
+            "major": [],
+            "minor": [
+              {
+                "name": "天魁"
+              }
+            ]
+          },
+          "other_life_palace": {
+            "index": 9,
+            "name": "命宫",
+            "ganzhi": "乙亥",
+            "major": [
+              {
+                "name": "天相",
+                "brightness": "得"
+              }
+            ],
+            "minor": []
+          },
+          "same_branch": false,
+          "shared_star_names": [],
+          "interpretation": "两盘实际宫位并列供沟通学习；未建立星曜配对吉凶或适配分数算法"
+        }
+      ],
+      "school": "installed-py-iztro-natal-plus-project-side-by-side-v1",
+      "compatibility_score": null
+    },
+    "methods": {
+      "a": {
+        "year_month": "physical_UTC_plus8_exact_jie",
+        "day_hour": "declared_coordinate_sect1_late_zi",
+        "day_boundary": "23:00_advances_day",
+        "subsecond_handling": "floor_to_engine_second"
+      },
+      "b": {
+        "year_month": "physical_UTC_plus8_exact_jie",
+        "day_hour": "declared_coordinate_sect1_late_zi",
+        "day_boundary": "23:00_advances_day",
+        "subsecond_handling": "floor_to_engine_second"
+      }
+    },
+    "time_basis": {
+      "a": {
+        "primary": {
+          "basis": "true_solar",
+          "utc": "1994-03-12T00:20:00Z",
+          "instant_id": "instant-d84ee400f41ac0430bcc690c",
+          "coordinate_datetime": "1994-03-12T07:06:20.536889",
+          "calendar_datetime": "1994-03-12T08:20:00",
+          "civil_datetime": "1994-03-12 08:20",
+          "civil_datetime_basis": "standard_clock_minute_for_legacy_only_when_compatible; exact UTC is authoritative",
+          "timezone_offset": 8.0,
+          "engine_longitude": 101.58557037249676,
+          "engine_longitude_role": "effective_meridian_not_geographic_birth_longitude",
+          "legacy_args_compatible": true,
+          "pillars": {
+            "year": "甲戌",
+            "month": "丁卯",
+            "day": "丁酉",
+            "hour": "甲辰"
+          },
+          "pillar_method": {
+            "year_month": "physical_UTC_plus8_exact_jie",
+            "day_hour": "declared_coordinate_sect1_late_zi",
+            "day_boundary": "23:00_advances_day",
+            "subsecond_handling": "floor_to_engine_second"
+          },
+          "solar_time": {
+            "standard": "1994-03-12T08:20:00",
+            "beijing_standard": "1994-03-12T08:20:00",
+            "mean_solar": "1994-03-12T07:16:16.800000",
+            "true_solar": "1994-03-12T07:06:20.536889",
+            "longitude": 104.07,
+            "standard_central_meridian": 120.0,
+            "longitude_correction_minutes": -63.72000000000003,
+            "eot_minutes": -9.937718510012912,
+            "eot_sign": "apparent_minus_mean",
+            "method": "noaa-meeus-julian-century-equation-of-time-v1",
+            "eot_evaluated_at": "1994-03-12T00:20:00Z",
+            "source": "https://gml.noaa.gov/grad/solcalc/calcdetails.html",
+            "limits": [
+              "天文公式近似，不将同算法数值对照称为独立实测。",
+              "太阳时是时钟坐标，不是另一个UTC瞬间。"
+            ]
+          },
+          "jie_uncertainty": {
+            "uncertain": false,
+            "nearest_jie": "惊蛰",
+            "calendar_boundary": "1994-03-06T03:37:42+08:00",
+            "distance_seconds": 535338.0,
+            "method": "physical_instant_UTC_plus8_not_solar_coordinate"
+          },
+          "assumptions": [
+            "clock"
+          ],
+          "requires_confirmation": false,
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "explicit_environment_tzpath",
+            "iana_version": "2026e",
+            "tzdata_package_version": null,
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "caller_selected_files_may_differ_from_package_lock"
+          },
+          "engine_versions": {
+            "lunar-python": "1.4.8"
+          }
+        },
+        "comparisons": []
+      },
+      "b": {
+        "primary": {
+          "basis": "true_solar",
+          "utc": "1995-08-27T06:10:00Z",
+          "instant_id": "instant-8875a7c07a8898668b5abe2b",
+          "coordinate_datetime": "1995-08-27T14:08:53.711723",
+          "calendar_datetime": "1995-08-27T14:10:00",
+          "civil_datetime": "1995-08-27 14:10",
+          "civil_datetime_basis": "standard_clock_minute_for_legacy_only_when_compatible; exact UTC is authoritative",
+          "timezone_offset": 8.0,
+          "engine_longitude": 119.72379884656851,
+          "engine_longitude_role": "effective_meridian_not_geographic_birth_longitude",
+          "legacy_args_compatible": true,
+          "pillars": {
+            "year": "乙亥",
+            "month": "甲申",
+            "day": "庚寅",
+            "hour": "癸未"
+          },
+          "pillar_method": {
+            "year_month": "physical_UTC_plus8_exact_jie",
+            "day_hour": "declared_coordinate_sect1_late_zi",
+            "day_boundary": "23:00_advances_day",
+            "subsecond_handling": "floor_to_engine_second"
+          },
+          "solar_time": {
+            "standard": "1995-08-27T14:10:00",
+            "beijing_standard": "1995-08-27T14:10:00",
+            "mean_solar": "1995-08-27T14:10:36",
+            "true_solar": "1995-08-27T14:08:53.711723",
+            "longitude": 120.15,
+            "standard_central_meridian": 120.0,
+            "longitude_correction_minutes": 0.6000000000000227,
+            "eot_minutes": -1.704804613725982,
+            "eot_sign": "apparent_minus_mean",
+            "method": "noaa-meeus-julian-century-equation-of-time-v1",
+            "eot_evaluated_at": "1995-08-27T06:10:00Z",
+            "source": "https://gml.noaa.gov/grad/solcalc/calcdetails.html",
+            "limits": [
+              "天文公式近似，不将同算法数值对照称为独立实测。",
+              "太阳时是时钟坐标，不是另一个UTC瞬间。"
+            ]
+          },
+          "jie_uncertainty": {
+            "uncertain": false,
+            "nearest_jie": "白露",
+            "calendar_boundary": "1995-09-08T10:48:34+08:00",
+            "distance_seconds": 1024714.0,
+            "method": "physical_instant_UTC_plus8_not_solar_coordinate"
+          },
+          "assumptions": [
+            "clock"
+          ],
+          "requires_confirmation": false,
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "explicit_environment_tzpath",
+            "iana_version": "2026e",
+            "tzdata_package_version": null,
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "caller_selected_files_may_differ_from_package_lock"
+          },
+          "engine_versions": {
+            "lunar-python": "1.4.8"
+          }
+        },
+        "comparisons": []
+      }
+    }
+  },
+  "rule_hits": [
+    {
+      "rule_id": "synastry.bazi.visible-element-complement",
+      "met": true,
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1",
+      "source": {
+        "title": "P8显式用神三候选与表层五行对读",
+        "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+      },
+      "evidence_paths": [
+        "/data/bazi/element_complement/0",
+        "/data/bazi/pillars_a",
+        "/data/bazi/pillars_b"
+      ]
+    },
+    {
+      "rule_id": "synastry.bazi.visible-element-complement",
+      "met": true,
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1",
+      "source": {
+        "title": "P8显式用神三候选与表层五行对读",
+        "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+      },
+      "evidence_paths": [
+        "/data/bazi/element_complement/1",
+        "/data/bazi/pillars_a",
+        "/data/bazi/pillars_b"
+      ]
+    },
+    {
+      "rule_id": "synastry.bazi.useful-candidate-overlap",
+      "met": true,
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1",
+      "source": {
+        "title": "P8显式用神三候选与表层五行对读",
+        "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+      },
+      "evidence_paths": [
+        "/data/bazi/useful_complement/0",
+        "/data/bazi/pillars_a",
+        "/data/bazi/pillars_b"
+      ]
+    },
+    {
+      "rule_id": "synastry.bazi.useful-candidate-overlap",
+      "met": true,
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1",
+      "source": {
+        "title": "P8显式用神三候选与表层五行对读",
+        "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+      },
+      "evidence_paths": [
+        "/data/bazi/useful_complement/1",
+        "/data/bazi/pillars_a",
+        "/data/bazi/pillars_b"
+      ]
+    },
+    {
+      "rule_id": "synastry.bazi.useful-candidate-overlap",
+      "met": true,
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1",
+      "source": {
+        "title": "P8显式用神三候选与表层五行对读",
+        "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+      },
+      "evidence_paths": [
+        "/data/bazi/useful_complement/2",
+        "/data/bazi/pillars_a",
+        "/data/bazi/pillars_b"
+      ]
+    },
+    {
+      "rule_id": "synastry.bazi.useful-candidate-overlap",
+      "met": true,
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1",
+      "source": {
+        "title": "P8显式用神三候选与表层五行对读",
+        "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+      },
+      "evidence_paths": [
+        "/data/bazi/useful_complement/4",
+        "/data/bazi/pillars_a",
+        "/data/bazi/pillars_b"
+      ]
+    },
+    {
+      "rule_id": "synastry.bazi.useful-candidate-overlap",
+      "met": true,
+      "school": "ziping-structural-pairs-and-project-candidate-overlap-v1",
+      "source": {
+        "title": "P8显式用神三候选与表层五行对读",
+        "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+      },
+      "evidence_paths": [
+        "/data/bazi/useful_complement/5",
+        "/data/bazi/pillars_a",
+        "/data/bazi/pillars_b"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.刑相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/0",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/海王",
+        "/data/astro/positions_b/火星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.冲相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/1",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/火星",
+        "/data/astro/positions_b/太阳"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/2",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/海王",
+        "/data/astro/positions_b/土星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.合相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/3",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/冥王",
+        "/data/astro/positions_b/冥王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.冲相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/4",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/土星",
+        "/data/astro/positions_b/金星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.合相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/5",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/海王",
+        "/data/astro/positions_b/海王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/6",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/冥王",
+        "/data/astro/positions_b/水星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/7",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/冥王",
+        "/data/astro/positions_b/天王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.刑相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/8",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/土星",
+        "/data/astro/positions_b/木星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.合相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/9",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/太阳",
+        "/data/astro/positions_b/土星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.冲相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/10",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/土星",
+        "/data/astro/positions_b/太阳"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.冲相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/11",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/火星",
+        "/data/astro/positions_b/金星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.冲相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/12",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/月亮",
+        "/data/astro/positions_b/月亮"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.合相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/13",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/天王",
+        "/data/astro/positions_b/天王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/14",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/木星",
+        "/data/astro/positions_b/月亮"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/15",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/太阳",
+        "/data/astro/positions_b/海王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.拱相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/16",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/水星",
+        "/data/astro/positions_b/火星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.合相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/17",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/天王",
+        "/data/astro/positions_b/海王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.拱相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/18",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/天王",
+        "/data/astro/positions_b/水星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.拱相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/19",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/金星",
+        "/data/astro/positions_b/木星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.刑相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/20",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/天王",
+        "/data/astro/positions_b/火星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/21",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/天王",
+        "/data/astro/positions_b/冥王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/22",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/天王",
+        "/data/astro/positions_b/土星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.刑相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/23",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/火星",
+        "/data/astro/positions_b/木星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.刑相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/24",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/水星",
+        "/data/astro/positions_b/冥王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.合相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/25",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/海王",
+        "/data/astro/positions_b/天王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.合相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/26",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/月亮",
+        "/data/astro/positions_b/土星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.拱相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/27",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/海王",
+        "/data/astro/positions_b/水星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/28",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/冥王",
+        "/data/astro/positions_b/海王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.冲相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/29",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/太阳",
+        "/data/astro/positions_b/月亮"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/30",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/海王",
+        "/data/astro/positions_b/冥王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/31",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/月亮",
+        "/data/astro/positions_b/海王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.拱相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/32",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/冥王",
+        "/data/astro/positions_b/土星"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.刑相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/33",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/冥王",
+        "/data/astro/positions_b/太阳"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.刑相",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/34",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/火星",
+        "/data/astro/positions_b/冥王"
+      ]
+    },
+    {
+      "rule_id": "synastry.astro.六合",
+      "met": true,
+      "school": "tropical-geocentric-five-major-aspects-uniform-orb",
+      "source": "https://www.astro.com/swisseph/swephprg.htm",
+      "evidence_paths": [
+        "/data/astro/aspects/35",
+        "/data/astro/orb_degrees",
+        "/data/astro/positions_a/太阳",
+        "/data/astro/positions_b/天王"
+      ]
+    },
+    {
+      "rule_id": "synastry.ziwei.spouse-life-readout",
+      "met": true,
+      "claim_kind": "computed_side_by_side_view_not_affinity_judgment",
+      "school": "installed-py-iztro-natal-plus-project-side-by-side-v1",
+      "source": {
+        "title": "iztro本命十二宫；跨盘并列为项目展示约定",
+        "url": "https://docs.iztro.com/posts/astrolabe",
+        "status": "installed_named_convention_not_independent_compatibility_validation"
+      },
+      "evidence_paths": [
+        "/data/ziwei/cross_views/0"
+      ]
+    },
+    {
+      "rule_id": "synastry.ziwei.spouse-life-readout",
+      "met": true,
+      "claim_kind": "computed_side_by_side_view_not_affinity_judgment",
+      "school": "installed-py-iztro-natal-plus-project-side-by-side-v1",
+      "source": {
+        "title": "iztro本命十二宫；跨盘并列为项目展示约定",
+        "url": "https://docs.iztro.com/posts/astrolabe",
+        "status": "installed_named_convention_not_independent_compatibility_validation"
+      },
+      "evidence_paths": [
+        "/data/ziwei/cross_views/1"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "三命通会卷二：十干合、支元六合、冲击",
+      "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+      "status": "public_transcription_original_edition_pending"
+    },
+    {
+      "title": "P8显式用神三候选与表层五行对读",
+      "status": "project_descriptive_comparison_not_traditional_compatibility_algorithm"
+    },
+    {
+      "title": "iztro本命十二宫；跨盘并列为项目展示约定",
+      "url": "https://docs.iztro.com/posts/astrolabe",
+      "status": "installed_named_convention_not_independent_compatibility_validation"
+    },
+    {
+      "url": "https://www.astro.com/swisseph/swephprg.htm"
+    }
+  ],
+  "document_id": "tool-469316cf15ee75cfd4f7f6ad9f61fc38a84e758372cc045ba5a3cf8a8b5cc2d2",
+  "aliases": {
+    "c": [
+      {
+        "alias": "c1",
+        "path": "/data/astro/aspects/0",
+        "value_sha256": "5a0ce56098a63c7293a2346a3fb7a77aaf5cddb4b624a787dd25771ee455f2e2",
+        "claim_id": "claim-e0037fd72f1e14dae7e39e89bf4c20471cd32c240f18d04184a80874c7fc4481"
+      },
+      {
+        "alias": "c2",
+        "path": "/data/astro/aspects/1",
+        "value_sha256": "3cbe520d17dddf735d18b2448ffb0cc76bae29785832ee5c69e49c13ae1cb4ed",
+        "claim_id": "claim-717e573345e687c9678324483e6c9a02997408da9546ce902f4716810eb19e9e"
+      },
+      {
+        "alias": "c3",
+        "path": "/data/astro/aspects/10",
+        "value_sha256": "e8e501e9ee3611e35ddb6c0061523a0d7de7eed69adc8832420183c15d3ce6a2",
+        "claim_id": "claim-f44c5b0c5722af2f82173a24d272a621544c91945320cbfb99d5e295bd6ce2af"
+      },
+      {
+        "alias": "c4",
+        "path": "/data/astro/aspects/11",
+        "value_sha256": "a1d2eb01ff8a82db992c974ea5a81e3f55153e691bc6ae2a53c69876473da6f4",
+        "claim_id": "claim-65b01cc356de25f9b4a985a5caab6fef2b23788319f5e31871ed3655843088e8"
+      },
+      {
+        "alias": "c5",
+        "path": "/data/astro/aspects/12",
+        "value_sha256": "4c771de63458c49145913c5538bb202a995b1482239b83d81b1ed10cee195935",
+        "claim_id": "claim-9a82923ad30b631f261c7c4f460db47914a6991aa1f6531b665878f764031a1e"
+      },
+      {
+        "alias": "c6",
+        "path": "/data/astro/aspects/13",
+        "value_sha256": "f6c6d30a55c27e5d8cfd4ad7feb12d9e6c0905d1f4c42bd4f824ea085ceb5e7c",
+        "claim_id": "claim-2d9fcd3974a3fa28cdb2435f2f3876fcc9f890e92b432b10dbecb2682e4b1882"
+      },
+      {
+        "alias": "c7",
+        "path": "/data/astro/aspects/14",
+        "value_sha256": "f8d6d2b351f17844ea94be580cbfb1e758b757616ed67f352fc5ad2a8a51c3db",
+        "claim_id": "claim-66aa1c3770ba0a9da92faafd4f2f9f596b7ceac67afb65ac915f09d160733a43"
+      },
+      {
+        "alias": "c8",
+        "path": "/data/astro/aspects/15",
+        "value_sha256": "567214cd7bd24aed655abd93d8ed6c9213e3fe2bb2c54a9f35abce7f5ba4b9e2",
+        "claim_id": "claim-fa12bb7a93241cffb17615b64bcd8c792a4c64e235fc9239b988e61dbc7bede9"
+      },
+      {
+        "alias": "c9",
+        "path": "/data/astro/aspects/16",
+        "value_sha256": "2e1bccc899353de4a1a123f90d656f66dafe30c68e556765be2a6f0a3f0577a9",
+        "claim_id": "claim-dd0fae5c31a8ad14023f63bd2752246b15323d3c474458b360ac779e93123856"
+      },
+      {
+        "alias": "c10",
+        "path": "/data/astro/aspects/17",
+        "value_sha256": "a205ce0a5a8aaa3cae9c4b162f0365ebf1c1abea90e2d6b21ff497c559bef6b9",
+        "claim_id": "claim-0ac0a6e4192c1558c296a245c6cdf3e390d5f38d73e42604fee9be1d0afcf278"
+      },
+      {
+        "alias": "c11",
+        "path": "/data/astro/aspects/18",
+        "value_sha256": "6c4a3e33e59aa99c26f1fa3cd020687a9ac35a1e515e5a4fdebd5e47501ca65d",
+        "claim_id": "claim-b47bf9a569e950e24f5f9d5a0044c505ae380db25bdc23c0ff51382b76b175cc"
+      },
+      {
+        "alias": "c12",
+        "path": "/data/astro/aspects/19",
+        "value_sha256": "566466a29c1976fafa79245e6c2f20e4f52e08dc53bbb6d10cd37b0fde5bd967",
+        "claim_id": "claim-e2f4b63f55164faaf9ba83abcd821b3d9d8308e01518d4dd5d4d39b1460425cc"
+      },
+      {
+        "alias": "c13",
+        "path": "/data/astro/aspects/2",
+        "value_sha256": "86640c623af5ac14cbc3e75cf4ae31ff28eded1dcf3dd98d7e7acd2f259d7f73",
+        "claim_id": "claim-5a33edddd8b9e0d8118139d7dd27346db57d86856f724c2ebf706a39f81515cc"
+      },
+      {
+        "alias": "c14",
+        "path": "/data/astro/aspects/20",
+        "value_sha256": "5f2d3ab41420f0fb4ee5872a079eef9a06b648d8a20fbd2eb9c6483b39c5b5a2",
+        "claim_id": "claim-5c0666ad2ec65fde94a20e43cead6e3bc0ceaa05d1681d94837dcde45b142934"
+      },
+      {
+        "alias": "c15",
+        "path": "/data/astro/aspects/21",
+        "value_sha256": "6adc5ec4931efa13c90b2ed5fef3a9f8db4568842e4b2c8c7210734a1cdfdf86",
+        "claim_id": "claim-386a2094bd8beab96aa1598d9962a481ff72d34ab7f7e1e2c08d1056c8de4e19"
+      },
+      {
+        "alias": "c16",
+        "path": "/data/astro/aspects/22",
+        "value_sha256": "707ea2878c13800a368d2497d5b3d0cdd8a80226a6d916960eb67dad13cf7521",
+        "claim_id": "claim-103603fd0c3cbcd36b2cecb79e1992f9a16d243b79a4bdcca60f160bc1d85fdb"
+      },
+      {
+        "alias": "c17",
+        "path": "/data/astro/aspects/23",
+        "value_sha256": "e26c68d3e53249b1cfd0a4ea77fd0f81adee377a42a9e779f712bee074bfb17d",
+        "claim_id": "claim-fc1542ef5903117f77ec7fb2e323e76a07995ab51494e8d55e11041d4e52f96b"
+      },
+      {
+        "alias": "c18",
+        "path": "/data/astro/aspects/24",
+        "value_sha256": "36ee748b193bafd068f42b2176791c8034bb717ff6f21d27761add86a790b62c",
+        "claim_id": "claim-a2ea510a47835ae2c6735bd8dafc12414543fc3bbf8f626df86d844c0a041850"
+      },
+      {
+        "alias": "c19",
+        "path": "/data/astro/aspects/25",
+        "value_sha256": "31062a88603234a9f1d9eab9f76b2e5943a103a7a1978c7883d4304b162985ed",
+        "claim_id": "claim-8fc586e01816a681bf1a71307b16cac5e3143644f2092fd2315c4a873e51c00d"
+      },
+      {
+        "alias": "c20",
+        "path": "/data/astro/aspects/26",
+        "value_sha256": "594fbb165d446de4ddec14b8681098a01a2dd0812ce12c4c3a08382382c10670",
+        "claim_id": "claim-2198f6cc281fc275e3e1301fc27d11a38818df3667b00c483946bc646cd83e78"
+      },
+      {
+        "alias": "c21",
+        "path": "/data/astro/aspects/27",
+        "value_sha256": "e8ab5b12750176712fd2ca857e46f619b10e5b97228373a3a11ea2f50679c991",
+        "claim_id": "claim-c17e672bc79a2889a41f81757cef2e6add2260fbc13ecece1cbe883a8b55ebe8"
+      },
+      {
+        "alias": "c22",
+        "path": "/data/astro/aspects/28",
+        "value_sha256": "72ec579eb60336a273c4c8905f9b1c344b425c2599fb00e3bea6827d11788f42",
+        "claim_id": "claim-91e9339e5c0b5828da4d9cb2f51af52564ad787147dc2be5f430d09f89469700"
+      },
+      {
+        "alias": "c23",
+        "path": "/data/astro/aspects/29",
+        "value_sha256": "56e680dd555d4ad2301f123d68ff71c61b5e89cb6fa00e42a35b3faf16342f05",
+        "claim_id": "claim-b1d9df42c86b3d8af6d17dfcbbd4119fc6e3959276ed5577560d7b72fabfc036"
+      },
+      {
+        "alias": "c24",
+        "path": "/data/astro/aspects/3",
+        "value_sha256": "fedaa74f4a86c9db974a0b41e9abac1cfd770a5dfcc4c5e2bc4d3d21adeb69d8",
+        "claim_id": "claim-fe50cbccd2f14070fb6c3b80bac88f10d82a395e18b38ff5e56ebbba6d5d4cfc"
+      },
+      {
+        "alias": "c25",
+        "path": "/data/astro/aspects/30",
+        "value_sha256": "947b10733d13c2de8b592896fca1b7bae98261225be6687f60b77a3b5eee382a",
+        "claim_id": "claim-c0c5ed0d1bc5180284e57d0d36f1bbed67d7ed6c74ebbf4e4e54cc039ae84b32"
+      },
+      {
+        "alias": "c26",
+        "path": "/data/astro/aspects/31",
+        "value_sha256": "e0f150d6cdd728aa2af057464d4e482422ae2f92fb9eee8f1be8ed46c5f740fa",
+        "claim_id": "claim-a42301fa1b46dd40af9a93c01039cf215eff27e7f5a306ce19603ac4f1946797"
+      },
+      {
+        "alias": "c27",
+        "path": "/data/astro/aspects/32",
+        "value_sha256": "76821dee410e7e2e5f68ad67fa2863eeb05b7e80b765f26a8b293ca0e3978a03",
+        "claim_id": "claim-2b212e4c2930e59591ab7bf0b322a930f2d417e3f7bf1376a8d41c9eae1892ea"
+      },
+      {
+        "alias": "c28",
+        "path": "/data/astro/aspects/33",
+        "value_sha256": "8696237abc1de4abbcc35da879309afbd867fe455bc9a8d1290fd32e67824700",
+        "claim_id": "claim-808d191218e17e66e0cc8603d371cf9141c77d409e0e7871eaaefb7439309a44"
+      },
+      {
+        "alias": "c29",
+        "path": "/data/astro/aspects/34",
+        "value_sha256": "d7ae029efc0b54300e9e3947e449de6b79d21910be68db0bdb66244010502edc",
+        "claim_id": "claim-6b83c209aeda83ca38081991cec9aa1131993c51f0c59cae38cd85bed8adb78b"
+      },
+      {
+        "alias": "c30",
+        "path": "/data/astro/aspects/35",
+        "value_sha256": "56b9181aa1a03e60a43b17ea6bab5632bda512ac7015c0da68e56566bfbce98e",
+        "claim_id": "claim-45b78c6e1cec721261569dad58b519fe281f8557b319a0770f56e7fdeca02de2"
+      },
+      {
+        "alias": "c31",
+        "path": "/data/astro/aspects/4",
+        "value_sha256": "a32e840d71c054ddb0866b1b779ebcef2323ddd1b71bd852eaef6121275f45e6",
+        "claim_id": "claim-6dc4e61cb03770a7133c7166e1e94930bc3c7b3dafbf9d71c6827cb780de60de"
+      },
+      {
+        "alias": "c32",
+        "path": "/data/astro/aspects/5",
+        "value_sha256": "e62f2b603552f4b4d997bf49e618b0c53186f3ffc85e523775cc80bef88fe171",
+        "claim_id": "claim-a83bfa4c3a1d580b2b6834966909e71af182c65e3bd2a62b095b43e90acd3a9f"
+      },
+      {
+        "alias": "c33",
+        "path": "/data/astro/aspects/6",
+        "value_sha256": "0faca05a754129ca4153a5fa96a41cac1d0dfd9c36c0d5d9178fe1d7b6715e04",
+        "claim_id": "claim-2f0449b2aeab15a1fa3d336888c5b649a5968b7e1eae46589fa02b57160b8248"
+      },
+      {
+        "alias": "c34",
+        "path": "/data/astro/aspects/7",
+        "value_sha256": "d14d09abea80564e6854595578e21386d03f88f56a06d5c36aa0669053c1f252",
+        "claim_id": "claim-57b65d085668c32fdf4b375219d929f16afc4ee9b2285d7e931fb953513e9851"
+      },
+      {
+        "alias": "c35",
+        "path": "/data/astro/aspects/8",
+        "value_sha256": "a57fa816b1f1ac308dcb4a02346e39cbbec7be78483abcd093606714d51c0615",
+        "claim_id": "claim-898304e1d2f30c74fa7d6772c18b2757d4ebd1db5c07f0d7cb4d832a0cfc7a8b"
+      },
+      {
+        "alias": "c36",
+        "path": "/data/astro/aspects/9",
+        "value_sha256": "1d81fff2f09a0969b21428eed93d8b6e7070abda949576b67a5ebec45fd4e632",
+        "claim_id": "claim-06c84bae5da56ea655a854ea39b2a5ce68936ef9083c5f160da1685dbc3ec3f4"
+      },
+      {
+        "alias": "c37",
+        "path": "/data/astro/orb_degrees",
+        "value_sha256": "8ab31b5afaea56114427e1f01b81d001b079a0f59539f6db3f099816ca794055",
+        "claim_id": "claim-f3204d014da6c638c43568b7f76c2aa651d8cd66fbebf5f14f32ce35edecaa97"
+      },
+      {
+        "alias": "c38",
+        "path": "/data/astro/positions_a/冥王",
+        "value_sha256": "d0b29975bef207f5177b22a9b266fc5d7f8c08ae5c156828f0fd1bdcb49aebfa",
+        "claim_id": "claim-8ca65ee18a58b4cca4d604c23d7f3ea9dcee7db32f91bb9cce97ca67c50eb75f"
+      },
+      {
+        "alias": "c39",
+        "path": "/data/astro/positions_a/土星",
+        "value_sha256": "765934a0d952d0a84c98d8ba7955ff232d379da19dbc89f6c09ef3426c135977",
+        "claim_id": "claim-8337c95aae8db8a4a9c8c2d35fae259e21676d40d05d16676b5f6d59ee368867"
+      },
+      {
+        "alias": "c40",
+        "path": "/data/astro/positions_a/天王",
+        "value_sha256": "3560a0302d0471a1987846cba7cb94948644f1c9b99171b92b04bc3c141c61bd",
+        "claim_id": "claim-d41a732b7a361da58c0445809b8521e87eaca08e0e6a17749625c4a152773aae"
+      },
+      {
+        "alias": "c41",
+        "path": "/data/astro/positions_a/太阳",
+        "value_sha256": "3185f5f81dc18af0c0b3e1b1abd50f92f73bc7b2f63280dd165954692c7c54a2",
+        "claim_id": "claim-802aad50aef7acbf3d65155e2a3027e44804ea5e7712c94ce6302f3e8fcb1e8e"
+      },
+      {
+        "alias": "c42",
+        "path": "/data/astro/positions_a/月亮",
+        "value_sha256": "91e02bbb90bd95b0f572ed1797d58d506b22c6bafeb254cc8f1148bc1adcb89a",
+        "claim_id": "claim-63dcbf8023535f652083f09711610b2e50df248f1d1438c5eda208cbbe3b2a0c"
+      },
+      {
+        "alias": "c43",
+        "path": "/data/astro/positions_a/木星",
+        "value_sha256": "41d6c7e92305e7ee36f8b6d94946bd1f564ae0af445a4bf2ab49984ddf737318",
+        "claim_id": "claim-7fb70e2dba6e8771843983770f563b41f6caa03aca4b890d2bcc8bb11383a1af"
+      },
+      {
+        "alias": "c44",
+        "path": "/data/astro/positions_a/水星",
+        "value_sha256": "38d0360d715952455311c4c308eb1a64bbefa66f0c696765e50eaeba098a3765",
+        "claim_id": "claim-c49cc7af14cb63258867e35900f425d3d9ad8eb46532aeffaf8ce26f45fb36f8"
+      },
+      {
+        "alias": "c45",
+        "path": "/data/astro/positions_a/海王",
+        "value_sha256": "279a1e0bff131b59b86856acf568978224cb1adf2325b728dc3ff0804a99d551",
+        "claim_id": "claim-50ff8077ac4dac0620f59590c7b6376aa033e2015b01d3f4d693f2c231e61cd0"
+      },
+      {
+        "alias": "c46",
+        "path": "/data/astro/positions_a/火星",
+        "value_sha256": "402ece761120d20c27dd3e57695f1bcc81e6dedd983884b94952637c5dc01ac8",
+        "claim_id": "claim-98ad7269b10c4e27b057733dc32b3b2a0e392f2170ca2cee859c5936b62b9f62"
+      },
+      {
+        "alias": "c47",
+        "path": "/data/astro/positions_a/金星",
+        "value_sha256": "ad6a0a170727986cab8f4e8f7ad9c9aa7256081ce930807391fe474604e28d30",
+        "claim_id": "claim-7cf85eeb079a25b9c7866679bd1dbe80abd7b4d89d0759995f6be4cb0d680fc7"
+      },
+      {
+        "alias": "c48",
+        "path": "/data/astro/positions_b/冥王",
+        "value_sha256": "cdb0c0cf8c56c7f2b90d6766bd90fdce47be2827d1872b8bf6705e84e40b95f1",
+        "claim_id": "claim-a0607bf6a3b90096622b444bd92f1728b29eaac276fc3b978a96909323be7d5d"
+      },
+      {
+        "alias": "c49",
+        "path": "/data/astro/positions_b/土星",
+        "value_sha256": "be285d427395324a6624353d732da85ac481635e7ba8b9301971ac55449e27dd",
+        "claim_id": "claim-e2b9ac0cd22417748d97ac69727873ab0124743b74632c2038f1faa252e47070"
+      },
+      {
+        "alias": "c50",
+        "path": "/data/astro/positions_b/天王",
+        "value_sha256": "edb067e9244418640063be1d32ef3640d65b5dd7287c24d7b0560721a347716a",
+        "claim_id": "claim-a97d9afed85dcaa69d9a06ec25282b5303d0da61033ddd3ec4f925046c2b2e01"
+      },
+      {
+        "alias": "c51",
+        "path": "/data/astro/positions_b/太阳",
+        "value_sha256": "c5603a6123e4ede53c33ae79ea921ba38397c07477d8cefa5f8e7be502871b29",
+        "claim_id": "claim-77ec4919b74cb7e21be98af8f67e5d29da79bb03dedd0932f93c4fac73b218cb"
+      },
+      {
+        "alias": "c52",
+        "path": "/data/astro/positions_b/月亮",
+        "value_sha256": "66f341cf78417222dd8cc6cfa69fd72a3ddf658ccbcd55858d966de2531b7bbc",
+        "claim_id": "claim-7ba1985acc8aa893e4c1fbbe71de3be0ccede23bc0a38db832cd3a833ddd71b7"
+      },
+      {
+        "alias": "c53",
+        "path": "/data/astro/positions_b/木星",
+        "value_sha256": "75cdd4b6d978223146421c06edb7fd6ec8716a591018e3b88c9403f35f0e9418",
+        "claim_id": "claim-e8845b29f027e3cb545f834baf39231891a89efaa7f84ff2dd8c6c9eb851eb33"
+      },
+      {
+        "alias": "c54",
+        "path": "/data/astro/positions_b/水星",
+        "value_sha256": "fe2c60d324f2fe0d75b0963b09603e42b10512914f63db48dc2a909c896e6bca",
+        "claim_id": "claim-75102380e3977b001be860ea5305b5fd5d082628eeac985abdfa036592300bd1"
+      },
+      {
+        "alias": "c55",
+        "path": "/data/astro/positions_b/海王",
+        "value_sha256": "480517fe3657f12e20271535408c5bf6cf3f7708a4bcf6f71c83851841b376d4",
+        "claim_id": "claim-b77504d21c82e6a8d0e73e2e96f1323ed330a931b86115371b821104b0fe3a1d"
+      },
+      {
+        "alias": "c56",
+        "path": "/data/astro/positions_b/火星",
+        "value_sha256": "b5d9a2727048e2dfb9832e4a96e2628054cc7866519996cfe0493aee974cc6c1",
+        "claim_id": "claim-3ec4c1d317e6d4b6dd34001579bf9d6dea9237d676f8d7095103cad07f7cb184"
+      },
+      {
+        "alias": "c57",
+        "path": "/data/astro/positions_b/金星",
+        "value_sha256": "8390a6c3d9347a2864f59b67bf72d23b3410bce8c133fa113b19a0e799b96ac3",
+        "claim_id": "claim-ff5e2d37a7a38b3c17091e8726695182cd23fb391fe7fb8585cee889b2d546f9"
+      },
+      {
+        "alias": "c58",
+        "path": "/data/bazi/element_complement/0",
+        "value_sha256": "14c95a03695825631847b5e4b8d3a34e4e80e246e56c1efc174fb09c608efdef",
+        "claim_id": "claim-989a9c67c1b03d067f294ef41813f9c014ebd76cf3d493c0b131f78c181fc838"
+      },
+      {
+        "alias": "c59",
+        "path": "/data/bazi/element_complement/1",
+        "value_sha256": "c674db08cfeffd9c90bbc60dd996900df873c588f1a527fdd18fffdef6497581",
+        "claim_id": "claim-8cd0a63a89ed368b3ea3c745b1b43eb089d02532652e852ebf5040e9e5e5a770"
+      },
+      {
+        "alias": "c60",
+        "path": "/data/bazi/pillars_a",
+        "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+        "claim_id": "claim-eb8df190ed7e3507a250eea36fa334d5b4f64e74dd0ad6406d3d64fcd09b107f"
+      },
+      {
+        "alias": "c61",
+        "path": "/data/bazi/pillars_b",
+        "value_sha256": "454ee97de8085a666310ecba08768998f8b01ba38e28cd4738aef075939ab6e5",
+        "claim_id": "claim-08b19ab1bb1212fa5dd8913132d9dc5e3641a631aa9acd1a197b3ee0102a23ee"
+      },
+      {
+        "alias": "c62",
+        "path": "/data/bazi/useful_complement/0",
+        "value_sha256": "71aee228c304f11b7d367ac2948d0af09d6f0e4beeea1bdb68382bbd03351169",
+        "claim_id": "claim-fcee877e01d5ac56847ea2837f4998a7a1804a9fefa9204e55676eaf378e6a8b"
+      },
+      {
+        "alias": "c63",
+        "path": "/data/bazi/useful_complement/1",
+        "value_sha256": "fd48d3991e24fc9e8b70b23af20168f399f6a99b7cc7394964eae86fe17ca50f",
+        "claim_id": "claim-ff1da476b615b429921a6a3811ff1f510b5110e30923cdf722e31b38de37f0e9"
+      },
+      {
+        "alias": "c64",
+        "path": "/data/bazi/useful_complement/2",
+        "value_sha256": "0b511383da75ccf03bf1cace6dd65a2a68d79760f45175196a4fdc8b3b39edf4",
+        "claim_id": "claim-c4ed4456c6750c066c69dd74b17f8a2edca611d204a08d528708c60e45c1a714"
+      },
+      {
+        "alias": "c65",
+        "path": "/data/bazi/useful_complement/4",
+        "value_sha256": "1fcf3c718f969c9556d841ebcc20b31e3e729f85d739cf80a82b2f0a36299cb2",
+        "claim_id": "claim-d6a0aab9caff859f67f57cf4b38d1da24a4e2fec190c5e4011135c8776cdd2e2"
+      },
+      {
+        "alias": "c66",
+        "path": "/data/bazi/useful_complement/5",
+        "value_sha256": "a58730cbf77221e46aee5408858016b7132baf2c9223a427589ad0c5e1b7a91f",
+        "claim_id": "claim-50bda4fd3132cc91a8e13262e74eb15e39f7b0739b45a1e8763af0842c0bbe60"
+      },
+      {
+        "alias": "c67",
+        "path": "/data/ziwei/cross_views/0",
+        "value_sha256": "9ccf4295af4b12a23755b7d0fc0d83339f9de18adfb93e81462747b784a4f41b",
+        "claim_id": "claim-9cff8609cfa68bce8b2f9f997d22a22fe8a55aa4fd8cf628e995f5abf7dc28c5"
+      },
+      {
+        "alias": "c68",
+        "path": "/data/ziwei/cross_views/1",
+        "value_sha256": "9aaeaf72c96edeac13b0ed5183eaa7fa520010e642bccd853da6c35c049382d6",
+        "claim_id": "claim-f104f378239e8d1eee30b34e2f9476a7c18a3d9d3f5ca64f740f520b5c2024de"
+      }
+    ],
+    "r": [
+      {
+        "alias": "r1",
+        "path": "/rule_hits/0",
+        "rule_id": "synastry.bazi.visible-element-complement",
+        "value_sha256": "0509231c5c303554793c3a433ebda72163a1c15ee4ed1c0317a8e5e00c11de15",
+        "claim_id": "claim-9a69bd9e701f23f08a5166e2969ae10a323c23330aac17a477b17912ddf6dee6",
+        "evidence_aliases": [
+          "c58",
+          "c60",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r2",
+        "path": "/rule_hits/1",
+        "rule_id": "synastry.bazi.visible-element-complement",
+        "value_sha256": "bb5ee4b95ab6ed94c25d2a38a114f86b0c73774980495545fb2e587a304fa737",
+        "claim_id": "claim-f2b8e951949813658a109af253ed53986ff6f1e1d655e9bc74df864dfe970c00",
+        "evidence_aliases": [
+          "c59",
+          "c60",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r3",
+        "path": "/rule_hits/2",
+        "rule_id": "synastry.bazi.useful-candidate-overlap",
+        "value_sha256": "5a7f95641c870d1acb11850808d08ef678e30721fc981ec24ca0e13dfb018396",
+        "claim_id": "claim-6d6a60d127951b5f61a59121029e1ea63b8599d57b6033045e1d4d0a204f5cec",
+        "evidence_aliases": [
+          "c62",
+          "c60",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r4",
+        "path": "/rule_hits/3",
+        "rule_id": "synastry.bazi.useful-candidate-overlap",
+        "value_sha256": "f971cbd4fb9665e9fdb49fd8cd819cf5f991328647016d955e9b0f928ed25d3a",
+        "claim_id": "claim-1ccad40d883f3afcab2d1ca7ce2a670f2b7f0847fe8f24051a812593b4a3b91b",
+        "evidence_aliases": [
+          "c63",
+          "c60",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r5",
+        "path": "/rule_hits/4",
+        "rule_id": "synastry.bazi.useful-candidate-overlap",
+        "value_sha256": "f41f6eed1ab273f80860dc25ee408919c516593a50ce3518d800479ff47a377a",
+        "claim_id": "claim-f365d1f8bda8a4521dd4722f6cce4855c610a02d29c23b6f1f05fb4a25cae64a",
+        "evidence_aliases": [
+          "c64",
+          "c60",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r6",
+        "path": "/rule_hits/5",
+        "rule_id": "synastry.bazi.useful-candidate-overlap",
+        "value_sha256": "268714a1994328b621d872f2af0e57b8cf6535b05243b607e74c4adaf2c6ec2d",
+        "claim_id": "claim-bce0e75b334c2dc516e76d091634b8b24875d908cc7dbfd175b362304a2a1180",
+        "evidence_aliases": [
+          "c65",
+          "c60",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r7",
+        "path": "/rule_hits/6",
+        "rule_id": "synastry.bazi.useful-candidate-overlap",
+        "value_sha256": "75d85f9a6a80ecb106c7bd272ed2ae9ac79a2d3d090eafe4be94e196b7f22586",
+        "claim_id": "claim-0f04ba67cfc1264425c10133c72732f54edaf5bab538d24dda30c689051c96ed",
+        "evidence_aliases": [
+          "c66",
+          "c60",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r8",
+        "path": "/rule_hits/7",
+        "rule_id": "synastry.astro.刑相",
+        "value_sha256": "52d35133ea0c036f6017cb01950058c32b9fefce2221d640e9ab17f95399c8e4",
+        "claim_id": "claim-a81fc035c3decb6f5fb3775ea599f1c9744d921d7672c4fa0e67f2983e1025c1",
+        "evidence_aliases": [
+          "c1",
+          "c37",
+          "c45",
+          "c56"
+        ]
+      },
+      {
+        "alias": "r9",
+        "path": "/rule_hits/8",
+        "rule_id": "synastry.astro.冲相",
+        "value_sha256": "c44277a24b70227a991f41a17e3f95169061c6f0fddaf78e4740c60b6600dcd3",
+        "claim_id": "claim-47a9df598d6acfd7fdf45d013c07a1ef0d41ad1394a48929b221731fe710bacf",
+        "evidence_aliases": [
+          "c2",
+          "c37",
+          "c46",
+          "c51"
+        ]
+      },
+      {
+        "alias": "r10",
+        "path": "/rule_hits/9",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "5d5577a8750c2dcdad1539b4b27ead2ebd7a4101c2795f3fe6f816825a634a1e",
+        "claim_id": "claim-3db4a7414a500e6c01d2bebded4ae09650ed1dab56f3c62549e5bc46b8042855",
+        "evidence_aliases": [
+          "c13",
+          "c37",
+          "c45",
+          "c49"
+        ]
+      },
+      {
+        "alias": "r11",
+        "path": "/rule_hits/10",
+        "rule_id": "synastry.astro.合相",
+        "value_sha256": "bd1c2bf14ec28adeca69514f107a1cd65c016ef1ec7c0ca39ea0127a5f40f3a3",
+        "claim_id": "claim-54e6c9bd84ea7503aa9808c18c98b86b597a3988ff83836687ee6af46191104a",
+        "evidence_aliases": [
+          "c24",
+          "c37",
+          "c38",
+          "c48"
+        ]
+      },
+      {
+        "alias": "r12",
+        "path": "/rule_hits/11",
+        "rule_id": "synastry.astro.冲相",
+        "value_sha256": "129581950078786c692586b14390058a1b0df240cc0051700247376f7bead658",
+        "claim_id": "claim-97977911d1453a7c119f141bbeb95c1f44e8f839b46338978f2df62b1c65a2f8",
+        "evidence_aliases": [
+          "c31",
+          "c37",
+          "c39",
+          "c57"
+        ]
+      },
+      {
+        "alias": "r13",
+        "path": "/rule_hits/12",
+        "rule_id": "synastry.astro.合相",
+        "value_sha256": "6d33ccb2637ad710112d0a82e7454c5cd99596f33853a07e7d59e30a2c7d2ebe",
+        "claim_id": "claim-fc60ca7bba93c18927b6f4747d901b934d02bdbf7d5c0b518f99e2149e5dc433",
+        "evidence_aliases": [
+          "c32",
+          "c37",
+          "c45",
+          "c55"
+        ]
+      },
+      {
+        "alias": "r14",
+        "path": "/rule_hits/13",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "598f1e737b8108416469c6b8ceae6a6df12af95b52e6a9c916d318e74f44ffa1",
+        "claim_id": "claim-5d4cc6aba9f0490df545ae64e7db5402181fdf5fd413606d2ae7a9eb2a1b1444",
+        "evidence_aliases": [
+          "c33",
+          "c37",
+          "c38",
+          "c54"
+        ]
+      },
+      {
+        "alias": "r15",
+        "path": "/rule_hits/14",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "d5750f3f1d9f0f323da3a3f913f80d39340ffa29a135c724c8b35a09fbcbc1c3",
+        "claim_id": "claim-3721f8545725d5f4f217ca35adc5711216a23ecadd0b3700300ed0a80b8b8c01",
+        "evidence_aliases": [
+          "c34",
+          "c37",
+          "c38",
+          "c50"
+        ]
+      },
+      {
+        "alias": "r16",
+        "path": "/rule_hits/15",
+        "rule_id": "synastry.astro.刑相",
+        "value_sha256": "d70f87fe4ba8410bf0551da1a9661b0a89d023b08a759a5b935de5a47cbe3b2e",
+        "claim_id": "claim-4c3d6511e2b25ae949147d67670a11d7fd6348243b272298fcbc0b0ab7a6ccd3",
+        "evidence_aliases": [
+          "c35",
+          "c37",
+          "c39",
+          "c53"
+        ]
+      },
+      {
+        "alias": "r17",
+        "path": "/rule_hits/16",
+        "rule_id": "synastry.astro.合相",
+        "value_sha256": "f43d3612e77369f4e97fc271b00b2539a7e90c1d0ce6fc9663af85bdb42709d6",
+        "claim_id": "claim-b8bed9b90be9302a89b2d9b723d8b9c79c9cb7823f5f9253135fd4b1cc380835",
+        "evidence_aliases": [
+          "c36",
+          "c37",
+          "c41",
+          "c49"
+        ]
+      },
+      {
+        "alias": "r18",
+        "path": "/rule_hits/17",
+        "rule_id": "synastry.astro.冲相",
+        "value_sha256": "34b440a61ef8d6ee13e298817ed43c0be244f6c64400f14407991df292c68e41",
+        "claim_id": "claim-b6f47cdac82862f8eb71f356e14e37928b354427957039dcbee9288b354bd5c9",
+        "evidence_aliases": [
+          "c3",
+          "c37",
+          "c39",
+          "c51"
+        ]
+      },
+      {
+        "alias": "r19",
+        "path": "/rule_hits/18",
+        "rule_id": "synastry.astro.冲相",
+        "value_sha256": "023c4b3bffad4d98db20ff3405f5fb5587df378da7c2d6c6e47ff6af4a25b0fa",
+        "claim_id": "claim-1ae9ddf57d73d3937fdc2957f5cd2c067fa54409e61699c530e39afdb0b5515a",
+        "evidence_aliases": [
+          "c4",
+          "c37",
+          "c46",
+          "c57"
+        ]
+      },
+      {
+        "alias": "r20",
+        "path": "/rule_hits/19",
+        "rule_id": "synastry.astro.冲相",
+        "value_sha256": "13422f0146eaa51bc02c770fab8dd05a6dc236045945065482bff05e9d898de4",
+        "claim_id": "claim-377f345089c2c7c9a462111a6e85938bcc14b54cfb6fa6db7cf69b62d5eeddfd",
+        "evidence_aliases": [
+          "c5",
+          "c37",
+          "c42",
+          "c52"
+        ]
+      },
+      {
+        "alias": "r21",
+        "path": "/rule_hits/20",
+        "rule_id": "synastry.astro.合相",
+        "value_sha256": "d453357e0916d91c8d4fd9aa2e09651fb23c91928fc0e9649726b86f692ac5ca",
+        "claim_id": "claim-7db95cc50b9f21772bfc5a5f3352c0ee9b6400e5f7212433b6f4c62b841bfc22",
+        "evidence_aliases": [
+          "c6",
+          "c37",
+          "c40",
+          "c50"
+        ]
+      },
+      {
+        "alias": "r22",
+        "path": "/rule_hits/21",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "d2874384c554aeb138ea9ed00fdbf93822e068a4c5433c8e635d9ee7d007dec1",
+        "claim_id": "claim-bdd135412f6ef3626317d23760ad4346ba560ec3f78cc65aa0d4c1cd67f1a43b",
+        "evidence_aliases": [
+          "c7",
+          "c37",
+          "c43",
+          "c52"
+        ]
+      },
+      {
+        "alias": "r23",
+        "path": "/rule_hits/22",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "393e51580ed3eb287ca12f4489fcc67d885a2c7f5d0cb4e5bb2080ee4180f0a5",
+        "claim_id": "claim-90a661a7fdd9e732e00ad737b06d3742fa4a96db5ab4ee1b421a8a2127f32531",
+        "evidence_aliases": [
+          "c8",
+          "c37",
+          "c41",
+          "c55"
+        ]
+      },
+      {
+        "alias": "r24",
+        "path": "/rule_hits/23",
+        "rule_id": "synastry.astro.拱相",
+        "value_sha256": "345d1a8bedf17336efaeb22583c11b9e7694c01c96c9ca633ea89a66a7df6ab3",
+        "claim_id": "claim-b95abcbb2655d4e7d7f87f00580743b3527e87b15abe7793b7fb09b51ef7eb59",
+        "evidence_aliases": [
+          "c9",
+          "c37",
+          "c44",
+          "c56"
+        ]
+      },
+      {
+        "alias": "r25",
+        "path": "/rule_hits/24",
+        "rule_id": "synastry.astro.合相",
+        "value_sha256": "3bf8e90e6b83dd2fcaeebae98607aa8658cf24f17d8627437bb55614ace78da8",
+        "claim_id": "claim-11522b04953299abaa36add2ef8eb3c42cf871aa2f4696735e0a93dd60ffa8dc",
+        "evidence_aliases": [
+          "c10",
+          "c37",
+          "c40",
+          "c55"
+        ]
+      },
+      {
+        "alias": "r26",
+        "path": "/rule_hits/25",
+        "rule_id": "synastry.astro.拱相",
+        "value_sha256": "100565086eac6c2061ec8edaab6dc9be484b44a23e06a096ee08507b937cce80",
+        "claim_id": "claim-9cadefd854bc5e62bcd6960fa5eb751cbf5e7c4388844e757ac1347b52ae3a86",
+        "evidence_aliases": [
+          "c11",
+          "c37",
+          "c40",
+          "c54"
+        ]
+      },
+      {
+        "alias": "r27",
+        "path": "/rule_hits/26",
+        "rule_id": "synastry.astro.拱相",
+        "value_sha256": "d68cfc374ec2becf3c5a3e49e4993e703224c5761abd433577aa9e891028609c",
+        "claim_id": "claim-04703f617150e2f5570762418eae01310911947a4552d48ee9ef2fac10cc79e5",
+        "evidence_aliases": [
+          "c12",
+          "c37",
+          "c47",
+          "c53"
+        ]
+      },
+      {
+        "alias": "r28",
+        "path": "/rule_hits/27",
+        "rule_id": "synastry.astro.刑相",
+        "value_sha256": "90de19f74b664fcb06ebbd5de98c3885c44aa365b797e6890b751e3092f53ef6",
+        "claim_id": "claim-3fa8543ec2e531085807d0f65600a0a9def55fb59aca3cb1370026aff4dd918f",
+        "evidence_aliases": [
+          "c14",
+          "c37",
+          "c40",
+          "c56"
+        ]
+      },
+      {
+        "alias": "r29",
+        "path": "/rule_hits/28",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "48f1c03f807cdd4afe13e033d4204a282f4772abfef1020a67023eb31e61471b",
+        "claim_id": "claim-97c12107917559ad7acb10dd67162d495a0c4e5edd4868b5efceea572c0083fb",
+        "evidence_aliases": [
+          "c15",
+          "c37",
+          "c40",
+          "c48"
+        ]
+      },
+      {
+        "alias": "r30",
+        "path": "/rule_hits/29",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "9c94353a17a9484578f152591b76d2549477539a9f41fdcdc3dadae79a154ebe",
+        "claim_id": "claim-f2e78eefdfc47ce5bf5cb5d3bb1c911108ebc2c7199ef792add7d69f3c0cca7d",
+        "evidence_aliases": [
+          "c16",
+          "c37",
+          "c40",
+          "c49"
+        ]
+      },
+      {
+        "alias": "r31",
+        "path": "/rule_hits/30",
+        "rule_id": "synastry.astro.刑相",
+        "value_sha256": "098e7db073dbb145095f3b22a60f34d50943598877687613edea2e8575455c9c",
+        "claim_id": "claim-a922bdbe530dcdb5db02d8ea961d116c5930a26bb897afe91d6f929f3094335c",
+        "evidence_aliases": [
+          "c17",
+          "c37",
+          "c46",
+          "c53"
+        ]
+      },
+      {
+        "alias": "r32",
+        "path": "/rule_hits/31",
+        "rule_id": "synastry.astro.刑相",
+        "value_sha256": "4334c6a7837a6915396965e2a1179fd0279b0e90ad834be1edf4e2f9a0bed8c7",
+        "claim_id": "claim-f8c5c7696c492fdd81577bc91739e6a36b716b0afef6acb7c6718a649b60f75d",
+        "evidence_aliases": [
+          "c18",
+          "c37",
+          "c44",
+          "c48"
+        ]
+      },
+      {
+        "alias": "r33",
+        "path": "/rule_hits/32",
+        "rule_id": "synastry.astro.合相",
+        "value_sha256": "5099bc8a4cce163019ffea31d039649b707f78006459fc08c81f33f9113f7ba1",
+        "claim_id": "claim-44ae524337b213c35218cb54add78c266e2ecbe8505d69b5bfa5de62701629a1",
+        "evidence_aliases": [
+          "c19",
+          "c37",
+          "c45",
+          "c50"
+        ]
+      },
+      {
+        "alias": "r34",
+        "path": "/rule_hits/33",
+        "rule_id": "synastry.astro.合相",
+        "value_sha256": "87d845f5884c5553caf698d343b4508fb0afddac9fb39308f027099ef1318f91",
+        "claim_id": "claim-54fddcf24ab53e21c7be2c46e2252cd97b81d847c7fad526515e6a89bad9846d",
+        "evidence_aliases": [
+          "c20",
+          "c37",
+          "c42",
+          "c49"
+        ]
+      },
+      {
+        "alias": "r35",
+        "path": "/rule_hits/34",
+        "rule_id": "synastry.astro.拱相",
+        "value_sha256": "13e8a20eff8ffe22f85c81e8e633eff5b15fd807ecbc15cc600245cbe85a95a6",
+        "claim_id": "claim-45f6a69320d58bd2993ba5e1a3522717d81d2e8c6c85ae2f34301fc3b3e2274a",
+        "evidence_aliases": [
+          "c21",
+          "c37",
+          "c45",
+          "c54"
+        ]
+      },
+      {
+        "alias": "r36",
+        "path": "/rule_hits/35",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "19ed14e77672caff2c056b130992923dff72299e639f59e52e071147e496e01a",
+        "claim_id": "claim-c681d488e802ba5bcf42ea8b30bea61844969ecb9029949dc20bded2d787ea26",
+        "evidence_aliases": [
+          "c22",
+          "c37",
+          "c38",
+          "c55"
+        ]
+      },
+      {
+        "alias": "r37",
+        "path": "/rule_hits/36",
+        "rule_id": "synastry.astro.冲相",
+        "value_sha256": "773d7ca8b5f98b497f7fd2d95a1647f7d6e896229ecd7487186942e73135feb4",
+        "claim_id": "claim-ab890056ece92798ad3bfbe5236d87a1e68820a8007bf04eb395c717b66c2692",
+        "evidence_aliases": [
+          "c23",
+          "c37",
+          "c41",
+          "c52"
+        ]
+      },
+      {
+        "alias": "r38",
+        "path": "/rule_hits/37",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "7e7ea0b997914be9435176379e365573de7750fcfafef0a513e430feb18dd4ee",
+        "claim_id": "claim-a45c4e535df6aeec48ce1300cd2ae269c0adfa539cd0a5e5bdc6bc33915a6de3",
+        "evidence_aliases": [
+          "c25",
+          "c37",
+          "c45",
+          "c48"
+        ]
+      },
+      {
+        "alias": "r39",
+        "path": "/rule_hits/38",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "eef0daca89d0bd4ff912887a893dc24ea66bb1394ddb8d6c27960dd6c521b7bc",
+        "claim_id": "claim-f482339bc6b678cd9edde092acd77d8ae5003b71b6e979a322994c53ee02dea3",
+        "evidence_aliases": [
+          "c26",
+          "c37",
+          "c42",
+          "c55"
+        ]
+      },
+      {
+        "alias": "r40",
+        "path": "/rule_hits/39",
+        "rule_id": "synastry.astro.拱相",
+        "value_sha256": "30a1f52092ee9939564f20023f3138488340c076290f69a07415357ebad7b5f3",
+        "claim_id": "claim-89269d45ddb09c0b43605b04f107f5bc41935a3208270abc885c88edcdaee9d3",
+        "evidence_aliases": [
+          "c27",
+          "c37",
+          "c38",
+          "c49"
+        ]
+      },
+      {
+        "alias": "r41",
+        "path": "/rule_hits/40",
+        "rule_id": "synastry.astro.刑相",
+        "value_sha256": "fb6e8488d409d08f273a3613de131957c3cfc14332d51c0b3bc4a60181c82bf3",
+        "claim_id": "claim-29b13946a3351bef7dca49d610f00ff17d35ee0813e9944a0da94115c725c376",
+        "evidence_aliases": [
+          "c28",
+          "c37",
+          "c38",
+          "c51"
+        ]
+      },
+      {
+        "alias": "r42",
+        "path": "/rule_hits/41",
+        "rule_id": "synastry.astro.刑相",
+        "value_sha256": "d24f865bbb9405906aae6f21bdaee88ea11d5fef7adcd7dd355286f31484db89",
+        "claim_id": "claim-adb4ef24e50e773a8c5a2095f86262da8678c899f0bbd8904752aa20d4120709",
+        "evidence_aliases": [
+          "c29",
+          "c37",
+          "c46",
+          "c48"
+        ]
+      },
+      {
+        "alias": "r43",
+        "path": "/rule_hits/42",
+        "rule_id": "synastry.astro.六合",
+        "value_sha256": "5e996d8c1e7f193ff92021ddc26822690779075318348f1258d88eaea6c2012b",
+        "claim_id": "claim-b85f0ba83bdba919ae5408174b5839f9833c0005c801fc223c2c0d126f027b62",
+        "evidence_aliases": [
+          "c30",
+          "c37",
+          "c41",
+          "c50"
+        ]
+      },
+      {
+        "alias": "r44",
+        "path": "/rule_hits/43",
+        "rule_id": "synastry.ziwei.spouse-life-readout",
+        "value_sha256": "5f8ebbd0b96ebcc20e96ed4eff8f9aa8193a3e801c4cac47709ca234a7a1324b",
+        "claim_id": "claim-603224532f7cb86799dd8ac816a1d04d2eaaab52fd7c82d6488452010527b51e",
+        "evidence_aliases": [
+          "c67"
+        ]
+      },
+      {
+        "alias": "r45",
+        "path": "/rule_hits/44",
+        "rule_id": "synastry.ziwei.spouse-life-readout",
+        "value_sha256": "42c444672554871afd32387308a6282cd23af427e092c3ad444b2db8d5ebf8b4",
+        "claim_id": "claim-426a81776813b26581d018af6a57e2189c78c73a01c2698cb70d26ca12b38189",
+        "evidence_aliases": [
+          "c68"
+        ]
+      }
+    ]
+  },
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "alias_registry": "ephemeral_only"
+  },
+  "limits": [
+    "短别名仅此结果有效，主线接入时须登记到当前上下文，不是持久化依据账本。",
+    "传统条件及数值计算不证明现实预测有效；没有确认或写入出生资料。",
+    "consent是调用方明确确认字段，不能替代主线真实授权与撤销检查；不发送或保存对方资料。",
+    "同一结构可用于讨论相处方式，不表示婚配概率、人格结论或关系成败。",
+    "五行缺项不等于用神；扶抑/调候/格局候选分别列出，力量与合化未判。"
+  ]
+}

@@ -21,6 +21,7 @@ def test_all_systems_have_requested_chapter_coverage_and_open_frontmatter() -> N
         "ziwei": 6,
         "astro": 5,
         "tarot": 7,
+        "calendar-tools": 4,
     }
     for system in library.catalog["systems"]:
         manifest = (ROOT / system / "SKILL.md").read_text(encoding="utf-8")
@@ -30,7 +31,9 @@ def test_all_systems_have_requested_chapter_coverage_and_open_frontmatter() -> N
             assert f"({chapter['file']})" in manifest
 
 
-@pytest.mark.parametrize("system", ["bazi", "ziwei", "astro", "tarot"])
+@pytest.mark.parametrize(
+    "system", ["bazi", "ziwei", "astro", "tarot", "calendar-tools"]
+)
 def test_every_chapter_has_substantive_structure_sources_and_bounded_context(
     system: str,
 ) -> None:

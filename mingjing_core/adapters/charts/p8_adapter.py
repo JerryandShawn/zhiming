@@ -84,6 +84,56 @@ class P8ChartAdapter(ChartAdapter):
         validate_timing_request(request, self.owner_user_id)
         return self._request("western_timing", request)
 
+    def _natal_input(self, natal: dict[str, Any]) -> dict[str, Any]:
+        if not isinstance(natal, dict) or natal.get("owner_user_id") != self.owner_user_id:
+            raise ValueError("AUTH_SCOPE_ERROR：计算资料归属不匹配")
+        ensure_finite_json(natal)
+        return dict(deepcopy(natal), p8_options=self.p8_options)
+
+    def daily_transit(self, natal: dict[str, Any], date: str, *, orb_degrees: float = 2.0) -> dict[str, Any]:
+        return self._request(
+            "daily_transit",
+            {
+                "natal": self._natal_input(natal),
+                "date": date,
+                "orb_degrees": orb_degrees,
+            },
+        )
+
+    def window_search(
+        self,
+        natal: dict[str, Any],
+        date_range: dict[str, str],
+        purpose: str,
+        *,
+        offset: int = 0,
+        limit: int = 31,
+    ) -> dict[str, Any]:
+        return self._request(
+            "window_search",
+            {
+                "natal": self._natal_input(natal),
+                "range": deepcopy(date_range),
+                "purpose": purpose,
+                "offset": offset,
+                "limit": limit,
+            },
+        )
+
+    def almanac(self, date: str) -> dict[str, Any]:
+        return self._request("almanac", {"date": date})
+
+    def synastry(self, request: dict[str, Any]) -> dict[str, Any]:
+        from .synastry import _preflight
+
+        if not isinstance(request, dict):
+            raise ValueError("synastry_input_invalid")
+        _preflight(request.get("chart_a"), request.get("chart_b"), request.get("kind"), request.get("consent"))
+        value = deepcopy(request)
+        value["chart_a"] = self._natal_input(value["chart_a"])
+        value["chart_b"] = self._natal_input(value["chart_b"])
+        return self._request("synastry", value)
+
     def _request(self, system: str, args: dict[str, Any]) -> Any:
         process = subprocess.run(
             [self.python, "-X", "utf8", str(Path(__file__).with_name("p8_worker.py"))],

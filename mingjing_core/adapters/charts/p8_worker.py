@@ -26,9 +26,8 @@ def source_hashes() -> dict[str, str]:
     paths += sorted((ROOT / "mingjing_core/calculations/bazi").glob("*.py"))
     paths += sorted((ROOT / "mingjing_core/knowledge/p8_bazi").glob("*.json"))
     paths += sorted((ROOT / "mingjing_core/knowledge/p8_ziwei").glob("*.json"))
-    paths += [
-        ROOT / "mingjing_core/knowledge" / name for name in ("p8_interactions.json", "rectification_rules_v1.json")
-    ]
+    paths += sorted((ROOT / "mingjing_core/knowledge").glob("p8_*.json"))
+    paths += [ROOT / "mingjing_core/knowledge/rectification_rules_v1.json"]
     # Normalize line endings only for the new cross-platform method fingerprint.
     return {
         path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
@@ -56,6 +55,11 @@ def calculate(args: dict[str, Any]) -> dict[str, Any]:
 def main() -> None:
     request = json.load(sys.stdin)
     ensure_finite_json(request)
+    from mingjing_core.adapters.charts.p8_pure_tools import PURE_TOOLS, calculate_pure_tool
+
+    if request.get("system") in PURE_TOOLS:
+        print(json.dumps(calculate_pure_tool(request["system"], request["args"]), ensure_ascii=False, allow_nan=False))
+        return
     if request.get("system") == "transit_windows":
         from mingjing_core.adapters.charts.interactions_transits import transit_windows
 

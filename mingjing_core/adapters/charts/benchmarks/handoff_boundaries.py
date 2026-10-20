@@ -44,7 +44,11 @@ def rule_refs(preview: dict) -> list[dict]:
 
 def validate_boundary_views(preview: dict, docs: dict) -> None:
     current = preview["contract_version"] == CONTRACT_VERSION
-    if not current and "boundary_alerts" not in preview:
+    if (
+        not current
+        and "boundary_alerts" not in preview
+        and "boundary_alerts" not in preview["view"]
+    ):
         return
     basis_docs = [doc for doc in docs.values() if doc["kind"] == "time_basis"]
     if len(basis_docs) != 1:
