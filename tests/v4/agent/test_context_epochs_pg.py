@@ -45,6 +45,11 @@ def started(memory: MemoryService, source: dict[str, Any], context: ContextBuild
     return Journal(repo, "alice").next_or_replay(run, kind="model", input_fp=input_fingerprint("model", "", identity))
 
 
+def finish_component(memory: MemoryService, step: JournalStep) -> None:
+    if memory.repo.fetch_run("alice", step.run_id)["status"] == "running":
+        memory.repo.fail_run("alice", step.run_id, "component-fixture-completed", step.lease_token)
+
+
 def test_two_turns_append_bytes_and_reopen_keeps_metadata_only(memory: MemoryService) -> None:
     engine, repo = ContextEngine(memory, "合成系统"), memory.repo
     first_source = receive(memory, "第一轮合成正文", "first")
@@ -55,6 +60,7 @@ def test_two_turns_append_bytes_and_reopen_keeps_metadata_only(memory: MemorySer
     receipt = service.mark_sent(step, first)
     assert service.mark_sent(step, first) == receipt and repo.get_revision("alice") == before + 1
     memory.record_assistant_message("alice", "self", "life:self", "合成回答", run_id=step.run_id, channel="web")
+    finish_component(memory, step)
     get_clock().advance(timedelta(minutes=1))
     second_source = receive(memory, "第二轮合成正文", "second")
     second = engine.build("alice", second_source["id"])
@@ -80,6 +86,7 @@ def test_withdrawal_rebuild_starts_new_epoch_and_old_snapshot_cannot_send(memory
     memory.retire_fact("alice", fact["id"], expected_revision=fact["revision"])
     with pytest.raises((RevisionConflict, EvidenceError)):
         service.mark_sent(step, first)
+    finish_component(memory, step)
     clean = engine.build("alice", current["id"])
     assert clean.cache_epoch.epoch == first.cache_epoch.epoch + 1
     assert clean.cache_epoch.reset_reason == "sources_changed"
@@ -91,7 +98,12 @@ def test_withdrawal_rebuild_starts_new_epoch_and_old_snapshot_cannot_send(memory
 def test_two_concurrent_reservations_from_same_generation_only_one_commits(memory: MemoryService) -> None:
     source = receive(memory, "合成并发问题")
     context = ContextEngine(memory, "合成系统").build("alice", source["id"])
-    steps = [started(memory, source, context, "concurrent-" + str(index)) for index in range(2)]
+    initial = started(memory, source, context, "concurrent")
+    run = memory.repo.fetch_run("alice", initial.run_id)
+    journal = Journal(memory.repo, "alice")
+    # Two speculative requests in one valid leased run can preview the same
+    # cache generation; separate simultaneous run leases are now forbidden.
+    steps = [journal.next_or_replay(run, kind="model", input_fp=initial.input_fp) for _ in range(2)]
 
     def send(step: JournalStep) -> str:
         try:
@@ -137,5 +149,6 @@ def test_window_compression_changes_epoch_but_next_appends_do_not(memory: Memory
             context = engine.build("alice", source["id"])
             step = started(memory, source, context, "window-" + str(index))
             epochs[index] = service.mark_sent(step, context)["compression_epoch"]
+            finish_component(memory, step)
         get_clock().advance(timedelta(minutes=1))
     assert epochs == {40: 0, 41: 1, 50: 1, 51: 2}

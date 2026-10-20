@@ -21,6 +21,7 @@ from mingjing_core.domain.contracts import BudgetExceeded, EvidenceError, LeaseC
 from mingjing_core.memory.projections import tokenized_payload
 from .foundation import list_entities, migration_manifest, search as search_entities, validate_history
 from .privacy_foundation import DERIVED_KINDS, invalidate_foundation
+from .dispatch_hooks import admit_v4, notify_run
 
 ENTITY_KINDS = frozenset({'message','fact','case','episode','draw','reading','report','report_schedule','chart','delivery','upload','session','consent','legacy','feedback','request','interpretive_claim','runtime_step','artifact','model_call'})
 ENTITY_KINDS |= frozenset({'thread','thread_summary','note','profile_doc','knowledge_gap','followup','reminder','proposal'})
@@ -415,6 +416,7 @@ class PostgresRepository:
                 return self._run(row)
             run_id=new_id('run')
             row=c.execute(sql.SQL('INSERT INTO {}(id,owner,subject,operation_id,fingerprint,request,call_limit) VALUES(%s,%s,%s,%s,%s,%s,%s) RETURNING *').format(self.table('core_runs')), (run_id,owner,subject,operation_id,digest,Jsonb(request),CALL_LIMITS[depth])).fetchone()
+            notify_run(c,self.schema,run_id)
             return self._run(row)
 
     def fetch_run(self,owner,run_id):
@@ -431,6 +433,7 @@ class PostgresRepository:
             if row['status']=='succeeded': return self._run(row)
             if row['status'] not in ('queued','running'): raise LeaseConflict('Run is terminal')
             if row['status']=='running' and row['live']: raise LeaseConflict('Run already leased')
+            admit_v4(self,c,row)
             if self.max_running is not None:
                 # One shared capacity fence covers Web, Feishu and report
                 # workers, including distinct owners and connection pools.
