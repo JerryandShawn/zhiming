@@ -84,13 +84,6 @@ function FormExamples() {
           options={['默认', '选中', '另一项'].map((value) => ({ value, label: value }))}
         />
         <div className="row wrap">
-          {['neutral', 'rest', 'work', 'festival', 'accent'].map((tone, index) => (
-            <Tag key={tone} tone={tone}>
-              {['普通', '休息日', '调休上班', '重阳', '日主'][index]}
-            </Tag>
-          ))}
-        </div>
-        <div className="row wrap">
           <Panel title="对话框示例" description="按Esc关闭，焦点回到打开按钮。" trigger={<Button>打开对话框</Button>}>
             <Input aria-label="对话框中的输入" />
           </Panel>
@@ -198,6 +191,13 @@ export default function Design() {
       </section>
       <section className="design-section">
         <h2>空、加载与错误</h2>
+        <div className="row wrap">
+          {['neutral', 'rest', 'work', 'festival', 'accent'].map((tone, index) => (
+            <Tag key={tone} tone={tone}>
+              {['普通', '休息日', '调休上班', '重阳', '日主'][index]}
+            </Tag>
+          ))}
+        </div>
         <Skeleton label="正在展开记录" />
         <ErrorBanner action={() => notify('仅演示重试状态，没有发起网络请求。')}>
           这次没连上明镜的大脑。你的话没有丢，可以再试一次。

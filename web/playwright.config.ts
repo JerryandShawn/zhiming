@@ -8,6 +8,8 @@ export default defineConfig({
     /components.*\.spec\.ts/,
     /night-.*\.spec\.ts/,
     /overnight-matrix\.spec\.ts/,
+    // The frozen Q9 matrix has dedicated safety/setup and evidence directories.
+    /q9-.*\.spec\.ts/,
   ],
   timeout: 60000,
   fullyParallel: false,

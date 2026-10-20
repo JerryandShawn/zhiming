@@ -205,7 +205,7 @@ export function AskCard() {
 export function DecisionCard() {
   const options = ['先准备，再决定', '现在就试着申请'];
   return (
-    <div className="decision-options">
+    <div className="decision-options" role="region" aria-label="两种选择的收益与风险" tabIndex={0}>
       {options.map((title, index) => (
         <section className="decision-card" key={title}>
           <h3>{title}</h3>
