@@ -11,6 +11,7 @@ from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
+from p8_coverage_history_context import historical_snapshot
 
 from mingjing_core.adapters.charts.benchmarks import line_coverage_own_sources as source
 from mingjing_core.adapters.charts.benchmarks.line_coverage_manifest import ROOT, digest
@@ -142,8 +143,10 @@ def _resign(value: dict, field: str):
     value[field] = digest(value)
 
 
-def test_real_fixed_history_keeps_initial_ten_and_all_tools_native_and_helpers():
-    result = build_own_inventory(ROOT, base_commit=source.ORIGIN, commit=HISTORICAL)
+def test_fixed_real_artifact_keeps_historical_scope_without_git_reconstruction():
+    result = historical_snapshot()
+    assert result["history_base_commit"] == source.ORIGIN
+    assert result["cutover_reference_commit"] == source.CUTOVER
     assert result["summary"]["own_scope_total"] == {
         "files": 214,
         "denominator_lines": 22741,
@@ -331,9 +334,12 @@ def test_core_fixture_or_parameter_requirement_is_not_silently_bypassed(
         _plan(changed, _build(changed))
 
 
-def test_cutover_f23_cannot_replace_the_approved_before_initial_base():
-    with pytest.raises(ValueError, match="approved_origin_required"):
-        build_own_inventory(ROOT, base_commit=source.CUTOVER, commit=HISTORICAL)
+def test_cutover_cannot_replace_the_approved_before_initial_base(repository):
+    with (
+        _policy(repository) as (root, _, observed),
+        pytest.raises(ValueError, match="approved_origin_required"),
+    ):
+        build_own_inventory(root, base_commit=source.CUTOVER, commit=observed)
 
 
 @pytest.mark.parametrize("number", [1.0, True])

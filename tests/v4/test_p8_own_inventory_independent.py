@@ -12,6 +12,7 @@ from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
+from p8_coverage_history_context import INITIAL_PATHS, synthetic_history_repository
 
 from mingjing_core.adapters.charts.benchmarks import line_coverage_own_sources as source
 from mingjing_core.adapters.charts.benchmarks.line_coverage_manifest import ROOT, digest
@@ -26,7 +27,6 @@ from mingjing_core.adapters.charts.benchmarks.line_coverage_own_plan import (
     validate_static_plan,
 )
 
-HISTORICAL = "ef5fed9a3fc4e1b727e6077f5b99f41be31e6f7b"
 CORE_NODE = next(node for node, runtime in CANDIDATES.items() if runtime == "core")
 
 
@@ -113,8 +113,8 @@ def _resign(value: dict, key: str) -> None:
 
 
 @pytest.fixture(scope="module")
-def real_inventory() -> dict:
-    return build_own_inventory(ROOT, base_commit=source.ORIGIN, commit=HISTORICAL)
+def portable_history() -> tuple:
+    return synthetic_history_repository()
 
 
 @pytest.fixture(scope="module")
@@ -122,17 +122,19 @@ def repository() -> tuple:
     return _repository()
 
 
-def test_initial_ten_are_the_actual_unchanged_paths_not_just_a_matching_count(
-    real_inventory,
+def test_synthetic_initial_ten_are_full_paths_not_just_a_matching_count(
+    portable_history,
 ) -> None:
+    root, base, cutover, observed = portable_history
+    inventory = _build(portable_history)
     first = set(
         _git(
-            ROOT,
+            root,
             "diff",
             "--name-only",
             "--no-renames",
-            source.ORIGIN,
-            source.CUTOVER,
+            base,
+            cutover,
             "--",
             "*.py",
         )
@@ -141,12 +143,12 @@ def test_initial_ten_are_the_actual_unchanged_paths_not_just_a_matching_count(
     )
     later = set(
         _git(
-            ROOT,
+            root,
             "diff",
             "--name-only",
             "--no-renames",
-            source.CUTOVER,
-            HISTORICAL,
+            cutover,
+            observed,
             "--",
             "*.py",
         )
@@ -156,21 +158,48 @@ def test_initial_ten_are_the_actual_unchanged_paths_not_just_a_matching_count(
     expected = first - later
     recorded = {
         row["path"]
-        for row in real_inventory["files"]
+        for row in inventory["files"]
         if row["initial_carry_forward_unchanged_since_cutover"]
     }
-    assert len(expected) == 10 and recorded == expected
-    assert expected <= {row["path"] for row in real_inventory["static_source_guards"]}
+    assert len(expected) == 10 and recorded == expected == set(INITIAL_PATHS)
+    assert expected <= {row["path"] for row in inventory["static_source_guards"]}
 
 
-def test_resigning_an_inventory_with_f23_as_the_origin_does_not_authorize_the_base(
-    real_inventory,
+def test_resigning_an_inventory_with_cutover_as_origin_does_not_authorize_the_base(
+    portable_history,
 ) -> None:
-    changed = deepcopy(real_inventory)
-    changed["history_base_commit"] = source.CUTOVER
+    root, _, cutover, _ = portable_history
+    changed = deepcopy(_build(portable_history))
+    changed["history_base_commit"] = cutover
     _resign(changed, "inventory_sha256")
-    with pytest.raises(ValueError, match="approved_origin_required"):
-        validate_own_inventory(ROOT, changed)
+    with (
+        _policy(portable_history),
+        pytest.raises(ValueError, match="approved_origin_required"),
+    ):
+        validate_own_inventory(root, changed)
+
+
+def test_synthetic_ten_carry_fixture_exercises_every_owned_group(portable_history):
+    inventory = _build(portable_history)
+    assert inventory["summary"]["own_scope_total"] == {
+        "files": 15,
+        "denominator_lines": 15,
+    }
+    assert inventory["initial_carry_forward_unchanged_count"] == 10
+    assert set(inventory["summary"]) == {
+        "charts_runtime",
+        "bazi_calculations",
+        "core_skills",
+        "research",
+        "native_tests",
+        "v4_helpers",
+        "v4_tests",
+        "verification_tool",
+        "own_scope_total",
+    }
+    assert inventory["inventory_complete_for_p8_history"] is True
+    assert inventory["coverage_collected"] is False
+    assert not any("line_counts" in row for row in inventory["files"])
 
 
 def test_unchanged_legacy_python_symlink_is_rejected_by_full_tree_scan() -> None:
