@@ -118,7 +118,9 @@ def lf_hash(raw: bytes) -> str:
 
 
 def deleted_paths(root: Path, base: str, commit: str, current: dict) -> list[str]:
-    revisions = git_bytes(root, "rev-list", "--ancestry-path", base + ".." + commit)
+    revisions = git_bytes(
+        root, "rev-list", "--ancestry-path", base + ".." + commit, "--"
+    )
     raw = git_bytes(
         root,
         "diff-tree",

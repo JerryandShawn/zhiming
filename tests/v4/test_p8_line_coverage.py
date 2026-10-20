@@ -292,6 +292,7 @@ def test_fresh_temporary_directory_is_new_and_inside_this_worktree():
 
 def test_existing_trace_and_non_core_execution_are_refused(repository, monkeypatch):
     _, manifest = repository
+    monkeypatch.setattr(runner, "CORE_PYTHON", Path(runner.sys.executable).resolve())
     monkeypatch.setattr(runner.sys, "gettrace", lambda: object())
     with pytest.raises(ValueError, match="existing_trace_refused"):
         runner.collect(manifest, runner.NODES[0])
