@@ -1,0 +1,76 @@
+{
+  "observed_at": "2026-10-21T01:47:27.655111+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "supplement_100_complete_label_review_replay_undo_chains",
+      "units_per_run": 100,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.13807770000130404,
+        0.1381652000000031,
+        0.15074640000057116,
+        0.1450007999992522,
+        0.1429917999994359
+      ],
+      "median_seconds": 0.1429917999994359,
+      "max_seconds": 0.15074640000057116,
+      "separate_tracemalloc_peak_bytes": 198086
+    },
+    {
+      "name": "supplement_1000_topic_archive_review_project_undo",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        7.307341099998666,
+        7.292700500000137,
+        7.142104999998992,
+        7.149617999999464,
+        7.137238799999977
+      ],
+      "median_seconds": 7.149617999999464,
+      "max_seconds": 7.307341099998666,
+      "separate_tracemalloc_peak_bytes": 4883771
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "e6b5a98bf95241d29470d2236b899a05bfd86615b130c13445a5529e85451c9b",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "tools/mod_week/benchmark_supplement_v2.py": "45a9edd4bb407b93a0dcb8b8c30dbb67b8567d8076429368b74439d793a6e8ec"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ],
+  "source_stable_during_measurement": true,
+  "source_sha256_before": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "e6b5a98bf95241d29470d2236b899a05bfd86615b130c13445a5529e85451c9b",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "tools/mod_week/benchmark_supplement_v2.py": "45a9edd4bb407b93a0dcb8b8c30dbb67b8567d8076429368b74439d793a6e8ec"
+  },
+  "workload_notes": [
+    "Each of 100 entities runs its own frozen Q5 prediction, proposal, review plan, copy projection, replay and undo",
+    "Missing and explicit-null label fields alternate; six entity kinds retain raw content and anchors",
+    "1000 topics share one synthetic source with distinct exact quote offsets; all are 15 days old",
+    "Each observed workload includes synthetic fixture construction and correctness assertions",
+    "Business clocks are FrozenClock; the report clock is SystemClock rendered explicitly in Asia/Shanghai",
+    "ReviewApproval is a synthetic trusted-host receipt, not authentication or a database commit"
+  ]
+}
