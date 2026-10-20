@@ -14,24 +14,31 @@
 
 - [x] (2026-10-21 01:42) 第一片：成功工具事务保存真实输入与 native viewer 摘要，复核完成步骤、来源区间、可选真实 reading。
 - [x] (2026-10-21 01:44) 第一片：隔离 PG 正反例与三十天/来源撤销缓存清理验证通过。
-- [ ] 第二片：真实 allowed-kind artifact/interpretive_claim、受信 c/r 注册和 Runtime 正反例。
-- [ ] 第二片：native 删除与撤销闭包、重复读牌不新抽及私密拒绝；完整回归。
+- [x] (2026-10-21 01:57) 第二片：真实 allowed-kind artifact/interpretive_claim、受信 c/r 注册和 Runtime 正反例。
+- [x] (2026-10-21 01:58) 第二片：native 取消/删除/来源撤销闭包、重复读牌不新抽、真实私密线程拒绝及严格 core4 回填。
+- [ ] 下一次固定提交头全量回归；本片已完成相关目标与旧 native 删除目标，不能替代全库回归。
 
 ## Surprises & Discoveries
 
 `tarot_read` 当前只读取固定已翻牌结果，并不会调用 `begin_reading`；因此正常证明中的 reading 为 null 是准确结果。旧 native context_snapshot 可能缺少原话区间或混入未适配的历史事实；这些牌阵继续可读，但不能凭问题哈希取得新的专业引用。运行的消息依赖必须在保存缓存的同一个事务落盘，才能让已有撤销闭包立即清空缓存。
 
+取消会清空缓存，之后删除若只找缓存会丢掉原 start run。第二片另查当前 epoch 的实际 `agent_tarot_start` 持久成功回执补链，不以 stage 字符串或模型自报 ID 关联。标准 SourceRef 必须带 quote，故长期 mirror 使用单独 `source_ranges` 元数据并持有真实 source_ids/消息版本，不能把缺 quote 的对象塞进同名字段。
+
 ## Decision Log
 
 第一片只证明，不注册别名；避免工具返回中的 ID 自证。缓存使用已有 runtime_step，包含私有工具参数和原话区间，服从三十天保留与同步撤销，公开证据不含正文或推理。新增牌阵除问题区间，还记录选项和明确重抽短语的精确授权区间；撤销这些区间即拒绝，而撤销无关片段仍可沿用固定牌。原画、牌义版本与专业别名将在第二片复核后接入，不把首片验收写成全血缘完成。2026-10-21，开发主线，无需额外用户决定。
 
+第二片只对 ready 且与冻结本机原创 deck/meaning/method、牌位、方向、实际 card_snapshot 一致的牌注册 c/r；待翻牌牌阵没有专业别名。r 明确为 symbolic_reflection/not_user_fact，不生成 fact。mirror 存牌面、时间、真实 reading 身份、问题/选项摘要和真实来源 ID/版本/区间，保留中不复制用户原话。注册同时采用 native case 的 aggregate 版本，仅用于失效检测，不把该事项加入 case_ids 或取得修改权。cancel 在原事务清私有缓存、mirror 和步骤/事件正文，保留 native 牌阵实现 U7，并允许原组件合法终止；delete 撤销完整派生运行、回复和 outbox，不删除同运行中真实 memory_write 保存的独立用户事实。2026-10-21，开发主线，经主协调复核。
+
 ## Outcomes & Retrospective
 
-第一片已能证明实际完成步骤的结果与当前数据库原牌、原话、输入指纹一致，重放沿用原牌且不新增修订。跨 owner/epoch、取消、来源版本/区间变更、native 输入/牌面/reading 身份或工具结果篡改都拒绝。没有 native reading 时不虚构。专业引用、删除后全读取端闭包与 Runtime 发布仍待第二片，不能宣称塔罗全血缘完成。
+第一片证明实际完成步骤与当前数据库原牌、原话、输入指纹一致。第二片真实 Runtime 已发布 core4 的固定牌面 c 与象征解释 r，严格回填能在删除合成 assistant 后重建相同 used_claim_ids/来源，且不会生成用户事实。重复读牌复用同一套 mirror；取消发生在第二次模型 I/O 时仍不能提交。删除清空相关运行、回复、步骤/事件、缓存和 mirror，并令待投递记录不可领取；同运行的独立 memory_write 用户偏好及普通原话保留。无关片段撤销后，新运行仍能引用未撤销的问题/固定牌，模型输入不含已撤销片段。旧 native 删除回归保持通过。此为离线 PG/ScriptedRuntime 功能证据，无真实模型质量或部署验收。
 
 ## Plan of Work
 
 第一片新增 `application/agent_tarot_lineage.py`，`save_tarot_snapshot` 只由实际成功工具事务调用。`attest_tarot_snapshot` 要求本轮完成 journal 输出精确匹配，再复核缓存输入指纹、当前 native viewer、真实可选 reading 身份和精确原话区间。第二片在这些证据之上创建已有允许实体 kind 的牌面与象征解释投影，单独接入 `agent/loop_codec.py` 的 professional 证明分支；最后补 native 删除闭包和真实 ScriptedRuntime 发布测试。
+
+第二片 `application/agent_tarot_records.py` 生成并逐字段复核长期 mirror；`application/tarot.py` 从实际 cache/mirror/成功 start 回执查派生运行，`adapters/tarot.py:cancel` 仅增加 late-import 同事务应用钩子。`loop_codec._registries` 明确分流 chart 与 tarot 原生证明，通用 professional kind 仍不能凭工具输出自证。
 
 ## Concrete Steps
 
@@ -53,6 +60,8 @@
 
 第一片证据为 `docs/v4/evidence/P3/2026-10-21-tarot-snapshot-lineage.md`。测试只在本机隔离 schema，证据仅记录数量与拒绝类别，不记录原话、模型推理、密钥或 DSN。
 
+第二片证据为 `docs/v4/evidence/P3/2026-10-21-tarot-professional-lineage.md`。无 SourceRefs 或不受支持 deck/meaning/method 的历史牌阵不能获得 c/r；既有标准读端继续兼容 core3/core4，不引入新实体 kind。
+
 ## Interfaces and Dependencies
 
 `save_tarot_snapshot(service,ctx,args,result)->None` 是真实副作用事务内钩子；`attest_tarot_snapshot(service,run,name,result)->dict|None` 返回当前已完成步骤的受保护快照，失败工具返回 None。`reading_identity` 仅返回实际 ID、draw ID、version、model、prompt_version 和创建时刻。无新依赖、无新表或 API。
@@ -60,3 +69,4 @@
 ## 修订记录
 
 - 2026-10-21 01:44 创建并记录第一片验证；明确 professional 别名与删除闭包尚未完成。
+- 2026-10-21 01:58 第二片接入 c/r 和取消/删除闭包，记录真实 Runtime、严格回填与旧 native 删除验证；全量回归交固定提交头窗口。

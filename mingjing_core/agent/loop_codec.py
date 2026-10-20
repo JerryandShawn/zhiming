@@ -188,27 +188,32 @@ def _source_links(service: Any, run: dict[str, Any], kind: str, row: dict[str, A
     return pending
 
 
+def _registries(service: Any, run: dict[str, Any], name: str, result: ToolResult) -> tuple[dict, dict, dict]:
+    from mingjing_core.application.agent_case_index_lineage import case_index_lineage
+    from mingjing_core.application.agent_chart_lineage import chart_lineage
+    from mingjing_core.application.agent_tarot_lineage import tarot_lineage
+
+    rows, captured = [], {}
+    if name == "chart_compute":
+        rows, captured = chart_lineage(service, run, result)
+    elif name in {"tarot_start", "tarot_read"}:
+        rows, captured = tarot_lineage(service, run, name, result)
+    indexes = case_index_lineage(service, run, result) if name == "case_list" else []
+    return {(row["kind"], row["id"]): row for row in rows}, {(row["kind"], row["id"]): row for row in indexes}, captured
+
+
 def verified_versions(
     service: Any, run: dict[str, Any], name: str, result: ToolResult
 ) -> tuple[dict[str, int], list[dict]]:
     """Resolve identifiers against PG, never trust returned revision/scope claims."""
     pending, versions, records = candidates(name, result), {}, []
     with service.repo.transaction(run["owner"]):
-        from mingjing_core.application.agent_case_index_lineage import case_index_lineage
-        from mingjing_core.application.agent_chart_lineage import chart_lineage
-
-        chart_records, captured = chart_lineage(service, run, result) if name == "chart_compute" else ([], {})
-        chart = {(row["kind"], row["id"]): row for row in chart_records}
-        pending.extend(chart)
-        indexes = (
-            {(row["kind"], row["id"]): row for row in case_index_lineage(service, run, result)}
-            if name == "case_list"
-            else {}
-        )
+        professional, indexes, captured = _registries(service, run, name, result)
+        pending.extend(professional)
         pending.extend(indexes)
         while pending:
             kind, ident = pending.pop(0)
-            if kind in {"artifact", "interpretive_claim"} and (kind, ident) not in chart:
+            if kind in {"artifact", "interpretive_claim"} and (kind, ident) not in professional:
                 raise EvidenceError("专业依据缺少本轮计算步骤证明")
             index_case = (kind, ident) in indexes
             row = _verified_row(service, run, kind, ident, index_case=index_case)
@@ -233,7 +238,10 @@ def verified_versions(
                     revision=row["revision"],
                     **{
                         key: value
-                        for key, value in {**chart.get((kind, ident), {}), **indexes.get((kind, ident), {})}.items()
+                        for key, value in {
+                            **professional.get((kind, ident), {}),
+                            **indexes.get((kind, ident), {}),
+                        }.items()
                         if key not in {"kind", "id", "revision"}
                     },
                 )

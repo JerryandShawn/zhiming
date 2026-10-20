@@ -204,3 +204,26 @@ def attest_tarot_snapshot(service: Any, run: dict[str, Any], name: str, result: 
         if not service.repo.verify_versions(ctx.owner, cached["versions"]):
             raise RevisionConflict("塔罗来源版本已经改变")
         return cached
+
+
+def tarot_lineage(
+    service: Any, run: dict[str, Any], name: str, result: ToolResult
+) -> tuple[list[dict[str, Any]], dict[str, int]]:
+    from mingjing_core.application.agent_tarot_records import persist_records
+    from mingjing_core.application.privacy_run_barrier import run_persistence_blocked
+
+    if not result.ok:
+        return [], {}
+    with service.repo.transaction(run["owner"]):
+        cached = attest_tarot_snapshot(service, run, name, result)
+        current = service.repo.fetch_run(run["owner"], run["id"])
+        if cached is None or run_persistence_blocked(service.repo, current):
+            raise ScopeError("塔罗长期依据在本轮已停止保存")
+        draw = result.data["draw"]
+        records = persist_records(service, current, cached, draw)
+        versions = dict(cached["versions"])
+        if records:
+            versions["case:" + draw["case_id"]] = service.repo.versions(
+                run["owner"], run["subject"], [draw["case_id"]]
+            )["case:" + draw["case_id"]]
+        return records, versions
