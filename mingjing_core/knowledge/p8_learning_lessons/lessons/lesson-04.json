@@ -1,0 +1,112 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-04",
+  "order": 4,
+  "title": "阴阳五行先作符号关系",
+  "level": "入门",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-03"
+  ],
+  "objectives": [
+    "识别天干的阴阳五行属性。",
+    "避免缺项就补的跳步。"
+  ],
+  "paragraphs": [
+    "甲乙都归木，阴阳却不同；这些属性参与关系分类，不是好坏排名。五行也不是身体里五种能用盘面测量的物质。",
+    "阿远年干甲可以作为阳木符号举例，日干丁则是阴火。这里只是在读符号属性，不从木火多少推健康，也不据缺什么就直接决定用神。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "阿远实际年干为甲，先有这个字段，才讨论甲的符号属性。〔c3〕",
+      "evidence_ids": [
+        "year_stem"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-04-q1",
+      "question": "阿远年柱实际天干是哪一个？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "乙",
+          "value": "乙"
+        },
+        {
+          "option_id": "b",
+          "text": "丁",
+          "value": "丁"
+        },
+        {
+          "option_id": "c",
+          "text": "甲",
+          "value": "甲"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "字段为甲；甲阳木的概念解释要另沿十干映射阅读，不由模型补年干。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "year_stem",
+        "expected": "甲"
+      }
+    },
+    {
+      "quiz_id": "lesson-04-q2",
+      "question": "看到某五行数量少，下一步较稳妥的是？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "直接购买对应物品补足",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "先说明取用方法和未判条件",
+          "value": "declare_method"
+        },
+        {
+          "option_id": "c",
+          "text": "据此判断身体缺少某物质",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "数量、力量与取用不是同一栏，不能从缺项跳到现实补救。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-elements",
+          "p8-strength"
+        ],
+        "expected": "declare_method"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-elements",
+    "p8-strength"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "当前元素关系是符号映射，旺衰分数是另外的项目方法。",
+      "source_ids": [
+        "p8-elements",
+        "p8-strength"
+      ]
+    }
+  ],
+  "pending_review": [
+    "数值权重没有专家标定，不能转成医学或能力量表。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

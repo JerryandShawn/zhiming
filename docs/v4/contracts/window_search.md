@@ -34,4 +34,14 @@
 
 实际合成样例：[`samples/window-search-ayuan-contract-20261021-27.json`](samples/window-search-ayuan-contract-20261021-27.json)，完全合成的阿远、7 日签约排序，由实际三体系计算产生，267 条命中；Schema 为 [`window_search.schema.json`](window_search.schema.json)。定向脚本 40 项通过，其中 Charts 子进程含 5 项实际计算检查，检查结果与单独请求的 daily_transit 逐项相符。它验证数值、血缘、排序和接口，不验证预测。
 
+前端可直接使用同一实际查询的[第二页](samples/window-search-ayuan-page2.json)（offset3/limit3，114命中）
+和[末尾空页](samples/window-search-ayuan-empty.json)（offset7/limit3，0命中）；它们共享全区间排序与查询hash，
+但短别名按各自页面重新分配。空页的0命中不等于所选区间无条件，只表示没有下一页。
+重放命令为Charts解释器下：
+
+    python -m mingjing_core.adapters.charts.benchmarks.window_search_samples --mode scripted --offset 3 --limit 3 --output <样例JSON路径>
+
+独立实际32日闰年区间检查31/1/0页及完整排序拼接，详见`night28-api-independent-review.md`；
+样例静态检查另保护Schema、页内Pointer/内容hash、r→c血缘及当前页分值，未将静态结构检查当再次排盘。
+
 存疑/待核：本排序未纳入独立命理师盲评、实际事件结果或传统择日全套神煞、通书体系。没有证明正分日比负分日更适合现实事务。原典择日体系的版本、页码和流派冲突仍需逐项核查。31 日一页仍保留 worker 输出保护；阿远单例测量不等于证明所有本命数据的最坏体积。全区间重新计算的成本需要在前端明确表达，不承诺缓存或毫秒响应。

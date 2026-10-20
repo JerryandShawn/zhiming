@@ -1,0 +1,117 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-19",
+  "order": 19,
+  "title": "紫微宫名与八字同名字要分开",
+  "level": "跨体系",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-18"
+  ],
+  "objectives": [
+    "按实际宫位找命宫。",
+    "区分命主、身主和宫内主星。"
+  ],
+  "paragraphs": [
+    "紫微用十二宫和安星结构组织问题，与八字四柱不是同一张表。命宫随盘移动，不能默认数组第0项；命主、身主又是全盘标签，不会因此自动住进相应宫位。",
+    "阿远这份紫微主盘命宫在亥、身宫在未，实际命宫主星另读天相。紫微的太阳、七杀与其它体系同名，计算对象仍不同，不能当两份独立现实证据。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-ziwei",
+      "text": "实际紫微命宫地支为亥，身宫另为未。〔c3〕",
+      "evidence_ids": [
+        "ziwei_life"
+      ],
+      "learning_point_ids": [
+        "learning-1"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-19-q1",
+      "question": "阿远这份紫微主盘命宫在什么地支格？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "未",
+          "value": "未"
+        },
+        {
+          "option_id": "b",
+          "text": "寅",
+          "value": "寅"
+        },
+        {
+          "option_id": "c",
+          "text": "亥",
+          "value": "亥"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "ming_gong为亥；未来自shen_gong，不能用身宫字段替命宫。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "ziwei_life",
+        "expected": "亥"
+      }
+    },
+    {
+      "quiz_id": "lesson-19-q2",
+      "question": "看到紫微七杀和八字七杀同名，可以推出什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "二者不是同一计算对象",
+          "value": "different_objects"
+        },
+        {
+          "option_id": "b",
+          "text": "两个符号就使结论更确定",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "可把十神值直接放进紫微宫",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "跨体系同名不自动建立因果或独立印证，须各读实际字段。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "iztro-palace",
+          "p8-ziwei-structure",
+          "p8-ziwei-stars-editorial"
+        ],
+        "expected": "different_objects"
+      }
+    }
+  ],
+  "source_ids": [
+    "iztro-palace",
+    "p8-ziwei-structure",
+    "p8-ziwei-stars-editorial"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "本例沿安装py-iztro默认；宫干可选表不覆盖原生生年和运限标签。",
+      "source_ids": [
+        "iztro-palace",
+        "p8-ziwei-structure",
+        "p8-ziwei-stars-editorial"
+      ]
+    }
+  ],
+  "pending_review": [
+    "壬科天府原刊页码仍待核，星性提问词是项目原创而非人物诊断。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

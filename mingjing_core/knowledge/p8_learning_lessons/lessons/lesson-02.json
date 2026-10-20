@@ -1,0 +1,117 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-02",
+  "order": 2,
+  "title": "记录时刻和太阳时是两回事",
+  "level": "入门",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-01"
+  ],
+  "objectives": [
+    "区分原始钟表读数与换算坐标。",
+    "知道西占保留实际UTC。"
+  ],
+  "paragraphs": [
+    "先保住原始记录，再谈换算。经度和均时差改变太阳时钟读数，同一个出生瞬间的UTC并没有因此重新发生一次。",
+    "阿远记录08:20，当前真太阳坐标约07:06。两个数字相差不少，却是在描述同一瞬间。遇到夏令时或重复时刻，要先核清时间依据，不能凭哪张盘顺眼来选。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本例的真太阳坐标为1994-03-12T07:06:20.536889，原记录08:20仍保留。〔c26〕",
+      "evidence_ids": [
+        "solar"
+      ],
+      "learning_point_ids": [
+        "learning-11"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-02-q1",
+      "question": "原信封登记的真太阳坐标是哪一项？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "07:06:20.536889",
+          "value": "1994-03-12T07:06:20.536889"
+        },
+        {
+          "option_id": "b",
+          "text": "08:20整",
+          "value": "1994-03-12T08:20:00"
+        },
+        {
+          "option_id": "c",
+          "text": "09:20整",
+          "value": "1994-03-12T09:20:00"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "读取坐标原值，而不是再次加减宿主电脑时区。该坐标没有被当成新的实际UTC。〔c26〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "solar",
+        "expected": "1994-03-12T07:06:20.536889"
+      }
+    },
+    {
+      "quiz_id": "lesson-02-q2",
+      "question": "计算西占时，应把真太阳坐标再次作为UTC输入吗？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "应当，否则不统一",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "只要结果更好看就可以",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "不应，使用同一出生瞬间的实际UTC",
+          "value": "preserve_actual_utc"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "太阳时与UTC承担不同角色，重复换算会把天体位置移到另一瞬间。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-time-basis",
+          "p8-solar",
+          "p8-basis-pillars"
+        ],
+        "expected": "preserve_actual_utc"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-time-basis",
+    "p8-solar",
+    "p8-basis-pillars"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "P8主解读选真太阳；这属于项目方法选择，不替所有流派定论。",
+      "source_ids": [
+        "p8-time-basis",
+        "p8-solar",
+        "p8-basis-pillars"
+      ]
+    }
+  ],
+  "pending_review": [
+    "历史钟表记录是否已去夏令时，仍须记录来源确认。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

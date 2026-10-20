@@ -1,0 +1,117 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-20",
+  "order": 20,
+  "title": "西占几何与三体系复盘",
+  "level": "跨体系",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-19"
+  ],
+  "objectives": [
+    "读出实际黄经、落座与参数。",
+    "把多体系结果和现实核验分层。"
+  ],
+  "paragraphs": [
+    "西占先讲位置：太阳黄经在哪个30度区段，相位角距在什么容许度内，宫制是什么。热带双鱼不是形状不规则的恒星星座，也不等于一份人格鉴定。",
+    "阿远样例太阳黄经约351.19654度，显示双鱼21.20度。本命统一6度是项目参数。三体系一起看时，先分别保留实际计算，再把现实事实放回中心；重复的象征主题不按出现次数增加概率。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-astro",
+      "text": "实际太阳落座显示双鱼，读取的是当前样例天体字段。〔c1〕",
+      "evidence_ids": [
+        "astro_sun_sign"
+      ],
+      "learning_point_ids": [
+        "learning-1"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-20-q1",
+      "question": "该西占样例太阳sign字段是什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "双鱼",
+          "value": "双鱼"
+        },
+        {
+          "option_id": "b",
+          "text": "白羊",
+          "value": "白羊"
+        },
+        {
+          "option_id": "c",
+          "text": "水瓶",
+          "value": "水瓶"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "351.19654度处在热带330至360度段，所以实际显示双鱼；不由此推人格。〔c1〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "astro_sun_sign",
+        "expected": "双鱼"
+      }
+    },
+    {
+      "quiz_id": "lesson-20-q2",
+      "question": "多体系出现相近主题，合适的复盘方式是？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "相似越多，结果概率直接倍增",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "各自列依据和限制，再用现实进展核对",
+          "value": "separate_then_reality_check"
+        },
+        {
+          "option_id": "c",
+          "text": "舍弃矛盾，只保留一致部分",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "同题材可能共享输入和解释，不能把多个符号自动当独立证据相乘。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-astro-signs",
+          "p8-astro-aspects",
+          "p8-astro-natal-editorial"
+        ],
+        "expected": "separate_then_reality_check"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-astro-signs",
+    "p8-astro-aspects",
+    "p8-astro-natal-editorial"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "本例热带黄道、地心、Placidus、Moshier；次限象征时刻不能冒充当日行运。",
+      "source_ids": [
+        "p8-astro-signs",
+        "p8-astro-aspects",
+        "p8-astro-natal-editorial"
+      ]
+    }
+  ],
+  "pending_review": [
+    "当前民用UTC近似UT及容许度为具名方法，预测有效性与全部流派校勘未验证。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

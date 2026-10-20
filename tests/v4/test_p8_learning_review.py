@@ -78,6 +78,12 @@ def _boolean_native_revision(source: dict) -> None:
     _rehash(source)
 
 
+def _boolean_alias_revision(source: dict) -> None:
+    row = source["aliases"]["c"][0]
+    row["scope"]["revision"] = bool(source["scope"]["revision"])
+    row["claim_id"] = claim_id(row)
+
+
 @pytest.mark.parametrize(
     ("mutation", "expected"),
     [
@@ -87,6 +93,7 @@ def _boolean_native_revision(source: dict) -> None:
         (_missing_request, "learning_input_invalid"),
         (_null_request, "learning_input_invalid"),
         (_boolean_native_revision, "learning_document_scope_invalid"),
+        (_boolean_alias_revision, "learning_alias_content_invalid"),
     ],
     ids=[
         "rehashed-c-foreign-branch-basis",
@@ -95,6 +102,7 @@ def _boolean_native_revision(source: dict) -> None:
         "request-missing",
         "request-null",
         "native-bool-revision-cannot-equal-integer",
+        "alias-bool-revision-cannot-equal-integer",
     ],
 )
 def test_reviewed_invalid_projection_is_rejected(

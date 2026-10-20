@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-07",
+  "order": 7,
+  "title": "透干和藏干分开看",
+  "level": "基础",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-06"
+  ],
+  "objectives": [
+    "找到实际透出的天干。",
+    "不把支内藏干移到柱上。"
+  ],
+  "paragraphs": [
+    "透干指天干实际出现在柱的干位，藏干是所选表列在地支中的成员。两处都能标十神，却不是同一种出现方式。",
+    "阿远时干是甲；辰支里按当前具名表另列戊、壬、乙。不能因为辰里有壬，就说壬已经在天干透出；这种偷换会直接影响候选筛选。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本例时干实际为甲，藏于辰的其它干并没有因此透到时干位置。〔c3〕",
+      "evidence_ids": [
+        "hour_stem"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-07-q1",
+      "question": "时柱天干实际是什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "壬",
+          "value": "壬"
+        },
+        {
+          "option_id": "b",
+          "text": "乙",
+          "value": "乙"
+        },
+        {
+          "option_id": "c",
+          "text": "甲",
+          "value": "甲"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "直接读取时干甲，不把辰内的壬或乙冒充已透。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "hour_stem",
+        "expected": "甲"
+      }
+    },
+    {
+      "quiz_id": "lesson-07-q2",
+      "question": "某干只在支内出现，想满足透干条件应怎样处理？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "如实保留仅藏，不能补成透出",
+          "value": "keep_hidden_distinct"
+        },
+        {
+          "option_id": "b",
+          "text": "为了判断方便视为相同",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "把它移到任意天干位置",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "条件需要什么就核什么，缺少透干证据时应让该条件不满足。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-named-methods"
+        ],
+        "expected": "keep_hidden_distinct"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-named-methods"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "P8藏干来自所选司令表，和旧v3常用藏干表分开保留。",
+      "source_ids": [
+        "p8-named-methods"
+      ]
+    }
+  ],
+  "pending_review": [
+    "具体藏干异文须按表名对读，不拼接不同表来增加成员。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

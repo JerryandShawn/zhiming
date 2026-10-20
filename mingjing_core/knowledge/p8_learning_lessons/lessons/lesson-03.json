@@ -1,0 +1,111 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-03",
+  "order": 3,
+  "title": "日主是关系参照",
+  "level": "入门",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-02"
+  ],
+  "objectives": [
+    "从日柱定位日干。",
+    "不把日主当完整人格。"
+  ],
+  "paragraphs": [
+    "日主就是日柱的天干。它像表格里的参照列：说某干是印、财或官，都要先说明相对谁而言。",
+    "阿远日柱丁酉，日主为丁。知道这一点之后，才能解释同一个甲为什么在这里叫正印；不能把别人的甲日主十神表直接搬来。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "阿远的日主字段为丁，后续十神都围绕这个参照计算。〔c3〕",
+      "evidence_ids": [
+        "master"
+      ],
+      "learning_point_ids": [
+        "learning-1"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-03-q1",
+      "question": "当前样例用于十神比较的日主是什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "酉",
+          "value": "酉"
+        },
+        {
+          "option_id": "b",
+          "text": "丁",
+          "value": "丁"
+        },
+        {
+          "option_id": "c",
+          "text": "甲",
+          "value": "甲"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "酉是日支，甲在其它柱出现；实际day_master为丁。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "master",
+        "expected": "丁"
+      }
+    },
+    {
+      "quiz_id": "lesson-03-q2",
+      "question": "丁日主可以独自证明哪项？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "此人性格已被完整确定",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "此人的职业应固定为一种",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "它是本盘十神比较的参照",
+          "value": "relation_reference"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "一个参照符号不等于人格、职业或经历的完整描述。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-elements"
+        ],
+        "expected": "relation_reference"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-elements"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "子平十神按日干定位；旺衰、调候与格局还须各自说明方法。",
+      "source_ids": [
+        "p8-elements"
+      ]
+    }
+  ],
+  "pending_review": [
+    "日主的人格化类比不在本课计算事实范围。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

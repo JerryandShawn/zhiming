@@ -14,11 +14,17 @@ SWISS_SOURCE = "https://www.astro.com/swisseph/swephprg.htm"
 
 
 def finite(value: float, lower: float, upper: float) -> float:
-    if isinstance(value, bool) or not isinstance(value, (float, int)) or not isfinite(value):
+    if isinstance(value, bool) or not isinstance(value, (float, int)):
         raise ValueError("西占计算参数须为有限数值")
-    if not lower <= value <= upper:
+    try:
+        result = float(value)
+    except OverflowError:
+        raise ValueError("西占计算参数须为有限数值") from None
+    if not isfinite(result):
+        raise ValueError("西占计算参数须为有限数值")
+    if not lower <= result <= upper:
         raise ValueError("西占计算参数超出支持范围")
-    return float(value)
+    return result
 
 
 def actual_utc(value: str) -> datetime:

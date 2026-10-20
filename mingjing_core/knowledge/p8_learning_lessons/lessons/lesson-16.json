@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-16",
+  "order": 16,
+  "title": "大运与流年月日各留一层",
+  "level": "进阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-15"
+  ],
+  "objectives": [
+    "按实际起止读大运。",
+    "分清时间背景与具体事件。"
+  ],
+  "paragraphs": [
+    "大运是较长背景，流年、流月、流日是另外的时间层。先看日期和边界，再连原局，不能让十年标签变成每一天相同的结论。",
+    "阿远样例第三步大运列庚午，起止另有具名日历时刻；目标日快照则是2026-10-19。样例不是今天自动更新的日历，不能把快照日期悄悄改成现在。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本例大运第三步干支为庚午；它与某一天的流日不是同一字段。〔c3〕",
+      "evidence_ids": [
+        "decade"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-16-q1",
+      "question": "大运列表第三步实际干支为何？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "丙寅",
+          "value": "丙寅"
+        },
+        {
+          "option_id": "b",
+          "text": "戊戌",
+          "value": "戊戌"
+        },
+        {
+          "option_id": "c",
+          "text": "庚午",
+          "value": "庚午"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "列表index为3的一步是庚午；另外两组是样例其它时间层，不能串用。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "decade",
+        "expected": "庚午"
+      }
+    },
+    {
+      "quiz_id": "lesson-16-q2",
+      "question": "旧样例目标日写10月19日，10月21日阅读时应怎样做？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "保留样例日期，新日期须另算",
+          "value": "keep_snapshot_date"
+        },
+        {
+          "option_id": "b",
+          "text": "直接把所有结果称今天",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "只改显示日期保留旧值",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "时间层必须绑定实际目标日期；教学样例不自动变成实时晨报。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-calendar"
+        ],
+        "expected": "keep_snapshot_date"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-calendar"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "起运、顺逆与十年边界是具名方法；不把虚岁年表与精确瞬间混同。",
+      "source_ids": [
+        "p8-calendar"
+      ]
+    }
+  ],
+  "pending_review": [
+    "交运精度沿用所声明折算，不能解释成天文精确的事件应期。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

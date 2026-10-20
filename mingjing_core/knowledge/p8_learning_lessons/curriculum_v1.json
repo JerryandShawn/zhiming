@@ -1,0 +1,436 @@
+{
+  "schema_version": "p8-learning-curriculum-v1",
+  "title": "命理研习：从四柱入门到具名条件判断",
+  "status": "draft_for_review",
+  "mode": "static_synthetic_only",
+  "lesson_count": 20,
+  "quiz_count": 40,
+  "source_registry": {
+    "path": "mingjing_core/knowledge/p8_glossary/sources_v1.json",
+    "version": "p8-glossary-sources-v1",
+    "sha256": "3e1d2035b299548b1b413a707d3bb28c0e5c8991b96ef3b0c0b723eb2c3aaf12"
+  },
+  "cases": [
+    {
+      "case_id": "ayuan-bazi",
+      "system": "bazi",
+      "chart_path": "docs/v4/contracts/samples/ayuan_bazi.json",
+      "chart_sha256": "8f8e8dafb6ee9ad4cfd9fc6042b10def0f1ed660a7c91f6b440964c020bbb28a",
+      "learning_path": "docs/v4/contracts/samples/learning-ayuan-bazi.json",
+      "learning_sha256": "5bb275406c2364f6e027d532c7d302bb4ecdfd8486bddd58f0a04f5b35d8c11b",
+      "learning_point_ids": [
+        "learning-1",
+        "learning-2",
+        "learning-3",
+        "learning-4",
+        "learning-5",
+        "learning-6",
+        "learning-7",
+        "learning-8",
+        "learning-9",
+        "learning-10",
+        "learning-11"
+      ],
+      "scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-bazi-20261019"
+      }
+    },
+    {
+      "case_id": "ayuan-ziwei",
+      "system": "ziwei",
+      "chart_path": "docs/v4/contracts/samples/ayuan_ziwei.json",
+      "chart_sha256": "125de08efaa75586ded08ef0feb8f25dc9f8a7c09653af5d9658154cdcaa3bc2",
+      "learning_path": "docs/v4/contracts/samples/learning-ayuan-ziwei.json",
+      "learning_sha256": "c2d60900b4a73a3df615949fa9b14a68c8be9ac5f523ee7df0c66db18414d0c2",
+      "learning_point_ids": [
+        "learning-1",
+        "learning-2"
+      ],
+      "scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-ziwei-20261019"
+      }
+    },
+    {
+      "case_id": "ayuan-astro",
+      "system": "astro",
+      "chart_path": "docs/v4/contracts/samples/ayuan_astro.json",
+      "chart_sha256": "fc8f39223f0a1532921c97666bfc4eb81550f732afac7b61d8fce7143c2cabf7",
+      "learning_path": "docs/v4/contracts/samples/learning-ayuan-astro.json",
+      "learning_sha256": "80a25586fae04daa1d5787b568713cc9a7fee35afbbbedad7d3a24f2bf2df9be",
+      "learning_point_ids": [
+        "learning-1",
+        "learning-2"
+      ],
+      "scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-astro-20261019"
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "year",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/pillars/year/ganzhi",
+      "expected": "甲戌",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "master",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/ten_gods/day_master",
+      "expected": "丁",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "year_stem",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/pillars/year/gan",
+      "expected": "甲",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "food",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/ten_gods/complete_table/己",
+      "expected": "食神",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "wealth",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/ten_gods/complete_table/庚",
+      "expected": "正财",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "hour_stem",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/pillars/hour/gan",
+      "expected": "甲",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "residual",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/ten_gods/pillars/month/hidden/1/role",
+      "expected": "余气",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "command",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/month_command/commanding_stem",
+      "expected": "甲",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "strength_a",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/strength/methods/0/score",
+      "expected": 63.0,
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "seal_exposed",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c7",
+      "relative_path": "/satisfied",
+      "expected": true,
+      "r_aliases": [
+        "r8"
+      ],
+      "role": "rule_input"
+    },
+    {
+      "evidence_id": "hurting_clear",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c12",
+      "relative_path": "/satisfied",
+      "expected": true,
+      "r_aliases": [
+        "r1"
+      ],
+      "role": "rule_input"
+    },
+    {
+      "evidence_id": "indirect_seal_screen",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/patterns/regular_eight/3/screen_passed",
+      "expected": false,
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "established_lu_screen",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/patterns/regular_extra/0/screen_passed",
+      "expected": false,
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "useful_intersection",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/useful_candidates/consensus_stems",
+      "expected": [
+        "庚"
+      ],
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "decade",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/decade_luck/decades/2/ganzhi",
+      "expected": "庚午",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "month_hour_clash",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "relative_path": "/p8/calendar_layers/day/month/natal_relations/3/relations/0",
+      "expected": "地支六冲",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "solar",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c26",
+      "relative_path": "",
+      "expected": "1994-03-12T07:06:20.536889",
+      "r_aliases": [],
+      "role": "basis"
+    },
+    {
+      "evidence_id": "solar_boundary",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c26",
+      "relative_path": "",
+      "expected": "1994-03-12T07:06:20.536889",
+      "r_aliases": [
+        "r10"
+      ],
+      "role": "rule_input"
+    },
+    {
+      "evidence_id": "ziwei_life",
+      "case_id": "ayuan-ziwei",
+      "c_alias": "c3",
+      "relative_path": "/ming_gong",
+      "expected": "亥",
+      "r_aliases": [],
+      "role": "primary"
+    },
+    {
+      "evidence_id": "astro_sun_sign",
+      "case_id": "ayuan-astro",
+      "c_alias": "c1",
+      "relative_path": "/planets/太阳/sign",
+      "expected": "双鱼",
+      "r_aliases": [],
+      "role": "primary"
+    }
+  ],
+  "lessons": [
+    {
+      "lesson_id": "lesson-01",
+      "order": 1,
+      "title": "四柱先按位置读",
+      "path": "lessons/lesson-01.json",
+      "level": "入门",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-02",
+      "order": 2,
+      "title": "记录时刻和太阳时是两回事",
+      "path": "lessons/lesson-02.json",
+      "level": "入门",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-03",
+      "order": 3,
+      "title": "日主是关系参照",
+      "path": "lessons/lesson-03.json",
+      "level": "入门",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-04",
+      "order": 4,
+      "title": "阴阳五行先作符号关系",
+      "path": "lessons/lesson-04.json",
+      "level": "入门",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-05",
+      "order": 5,
+      "title": "比劫与食伤：同类和输出",
+      "path": "lessons/lesson-05.json",
+      "level": "基础",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-06",
+      "order": 6,
+      "title": "财官杀与印：谁生谁、谁克谁",
+      "path": "lessons/lesson-06.json",
+      "level": "基础",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-07",
+      "order": 7,
+      "title": "透干和藏干分开看",
+      "path": "lessons/lesson-07.json",
+      "level": "基础",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-08",
+      "order": 8,
+      "title": "本中余是具名顺序",
+      "path": "lessons/lesson-08.json",
+      "level": "基础",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-09",
+      "order": 9,
+      "title": "节界、月令与司令不是一栏",
+      "path": "lessons/lesson-09.json",
+      "level": "中阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-10",
+      "order": 10,
+      "title": "旺衰两种项目法并排读",
+      "path": "lessons/lesson-10.json",
+      "level": "中阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-11",
+      "order": 11,
+      "title": "筛选通过距离成格还有多远",
+      "path": "lessons/lesson-11.json",
+      "level": "中阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-12",
+      "order": 12,
+      "title": "伤官牵制神与庚辛例外",
+      "path": "lessons/lesson-12.json",
+      "level": "进阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-13",
+      "order": 13,
+      "title": "有藏印不等于偏印格已过筛",
+      "path": "lessons/lesson-13.json",
+      "level": "进阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-14",
+      "order": 14,
+      "title": "建禄月劫阳刃按复合条件展开",
+      "path": "lessons/lesson-14.json",
+      "level": "进阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-15",
+      "order": 15,
+      "title": "三种用神提案保留分歧",
+      "path": "lessons/lesson-15.json",
+      "level": "进阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-16",
+      "order": 16,
+      "title": "大运与流年月日各留一层",
+      "path": "lessons/lesson-16.json",
+      "level": "进阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-17",
+      "order": 17,
+      "title": "冲合刑害破只先认结构",
+      "path": "lessons/lesson-17.json",
+      "level": "进阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-18",
+      "order": 18,
+      "title": "交界提示用于敏感性核对",
+      "path": "lessons/lesson-18.json",
+      "level": "进阶",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-19",
+      "order": 19,
+      "title": "紫微宫名与八字同名字要分开",
+      "path": "lessons/lesson-19.json",
+      "level": "跨体系",
+      "status": "draft_for_review"
+    },
+    {
+      "lesson_id": "lesson-20",
+      "order": 20,
+      "title": "西占几何与三体系复盘",
+      "path": "lessons/lesson-20.json",
+      "level": "跨体系",
+      "status": "draft_for_review"
+    }
+  ],
+  "limits": [
+    "课程使用合成人物阿远的固定实际计算样例，不读取或保存当前用户资料。",
+    "静态教学依据只在所列case的operation范围内使用，不新登记c/r或伪造规则命中。",
+    "题目通过结构与依据解析验证，不等于古籍原刊、全部门派或现实预测效果已验收。",
+    "未接前端课程页、进度持久化、Agent或当前用户排盘；倒推继续冻结隐藏。"
+  ]
+}

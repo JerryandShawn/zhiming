@@ -59,3 +59,9 @@ artifact/profile/feature 的 owner、subject、revision 值及类型；这项为
 最终代码的1次预热+10次观测另存 `night28-learning-performance-final.json`，
 该文件绑定原三份输入及最终源码 hash；八字/紫微/西占中位分别20.37615/15.609/15.57525毫秒，
 不含文件读写、序列化、Schema验证，不是排盘/HTTP/模型耗时或生产SLA。
+
+2026-10-21 00:09（北京时间）：root额外检查别名行scope，发现普通dict相等会把别名revision=true
+视为原信封revision=1；即使claim可重算，别名scope仍必须值和类型均一致。
+新增`_same_scope`与独立反例，不改变合法学习卡内容；审阅反例现在7/7、0skip、0.27秒。
+该最终scope代码性能另存`night28-learning-performance-scope-final.json`；以前观测按各自源码hash保留，
+不将23:55代码的性能报告误标为00:09代码。调用方来源授权与撤销仍未接线。

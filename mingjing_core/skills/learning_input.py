@@ -9,6 +9,17 @@ from ..adapters.charts.tool_evidence import content_hash, pointer
 from ..domain.json_values import ensure_finite_json
 
 
+def _same_scope(actual: dict, expected: dict) -> bool:
+    return (
+        isinstance(actual, dict)
+        and set(actual) == set(expected)
+        and all(
+            type(actual[key]) is type(item) and actual[key] == item
+            for key, item in expected.items()
+        )
+    )
+
+
 def resolve_ref(documents: dict, ref: dict) -> Any:
     if not isinstance(ref, dict) or set(ref) != {"document_id", "path"}:
         raise ValueError("learning_reference_invalid")
@@ -94,9 +105,9 @@ def _aliases(value: dict, documents: dict) -> dict:
             claim.update(
                 {key: row[key] for key in ("rule_id", "rules_version") if key in row}
             )
-            if row["scope"] != value["scope"] or row["value_sha256"] != content_hash(
-                actual
-            ):
+            if not _same_scope(row["scope"], value["scope"]) or row[
+                "value_sha256"
+            ] != content_hash(actual):
                 raise ValueError("learning_alias_content_invalid")
             if row["claim_id"] != "demo-claim-" + content_hash(claim):
                 raise ValueError("learning_alias_claim_invalid")

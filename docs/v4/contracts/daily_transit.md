@@ -82,7 +82,7 @@ Pointer 遵循严格 RFC 6901，别名附所指值 SHA256。文档 ID 绑定版�
 
 ## 拒绝与限制
 
-直接 Python 层抛出 `ValueError`；参数错误不得携带出生原文或私有正文。新增稳定码包括 `daily_transit_natal_object_required`、`daily_transit_date_invalid`、`daily_transit_date_out_of_range`、`daily_transit_before_birth`、`daily_transit_unconfirmed_physical_instant`。原 `time_basis` 校验错误继续沿用；适配器的进程失败仍按其既有错误包装，由主线映射成对人可读提示。
+直接 Python 层抛出 `ValueError`；参数错误不得携带出生原文或私有正文。新增稳定码包括 `daily_transit_natal_object_required`、`daily_transit_natal_invalid`、`daily_transit_date_invalid`、`daily_transit_date_out_of_range`、`daily_transit_before_birth`、`daily_transit_unconfirmed_physical_instant`。新增准备器先核出生日期为完整ISO日、明确时分、归属/修订、坐标类型与范围、时钟依据；这些形状错误统一为`daily_transit_natal_invalid`，不泄漏KeyError/TypeError或私有值。有限orb拒绝bool、非有限数与超大整数溢出。原独立 `time_basis` 入口没有改动；适配器的进程失败仍按其既有错误包装，由主线映射成对人可读提示。
 
 不接受未知出生时刻进行倒推；不改变冻结/隐藏的实验政策。没有投资、疾病、灾祸或关系结局保证。流日结构不能代替真实日程、天气、交通、合同审阅或当事人意愿。实际项目筛选权重由 `window_search` 单独具名，不偷偷写入流日。
 

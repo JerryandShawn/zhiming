@@ -89,9 +89,11 @@ def synastry(
     orb_degrees: float = 6.0,
 ) -> dict:
     _preflight(chart_a, chart_b, kind, consent)
-    from .daily_transit_natal import prepare_natal
+    from .daily_transit_natal import prepare_natal, validate_natal
 
     orb = finite(orb_degrees, 0, 10)
+    validate_natal(chart_a, as_of_date)
+    validate_natal(chart_b, as_of_date)
     left, right = prepare_natal(chart_a, as_of_date), prepare_natal(chart_b, as_of_date)
     data, hits = _comparison_data(left, right, kind, as_of_date, orb)
     scope = {

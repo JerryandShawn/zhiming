@@ -136,10 +136,11 @@ as_of_date只用于资料核对与计算准备，不把“今天的行运”混�
 | `AUTH_SCOPE_ERROR` | 双方owner不一致/缺失，或Core当前owner不匹配 |
 | `synastry_ziwei_palace_unresolved` | 命宫/夫妻宫缺失或不唯一，不猜一个落点 |
 | `daily_transit_date_invalid/out_of_range` | 复用准备器的as_of_date格式或范围错误 |
+| `daily_transit_natal_invalid` | 任一方日期/时刻、归属修订、经纬度或时钟依据形状非法；两侧全部预检后才准备任何本命 |
 | `daily_transit_unconfirmed_physical_instant` | 出生物理瞬间未唯一确认，不能默选 |
 
 出生资料格式、经纬度、时区、修订版本和出生晚于as_of_date还会由复用校验器拒绝。
-orb非法由有限数值校验器拒绝；不能把NaN写入JSON。
+orb非法由有限数值校验器拒绝，超大整数也转换为固定ValueError，不泄漏OverflowError；不能把NaN写入JSON。
 这些是纯入口异常前缀，主线应转换为面向用户的结构化错误，不能直接泄露参数或stderr。
 现有worker失败的Core封装可能只返回 `chart_engine_failure`，依赖缺失为 `missing_chart_dependency`；
 不能声称全部底层错误前缀已穿透现有进程边界。

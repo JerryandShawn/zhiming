@@ -8,8 +8,8 @@ from dataclasses import dataclass
 from datetime import UTC, date, datetime, timedelta, timezone
 from typing import Any
 
-from .astro_ephemeris import Ephemeris, actual_utc
-from .time_basis import time_basis_candidates
+from .astro_ephemeris import Ephemeris, actual_utc, finite
+from .time_basis import _reported, time_basis_candidates
 from .time_basis_chart import bazi_context
 from .time_basis_request import validate_request
 from .worker import load_engine
@@ -97,12 +97,31 @@ def _comparisons(
     return comparisons
 
 
-def prepare_natal(natal: dict[str, Any], day: str) -> PreparedNatal:
+def validate_natal(natal: dict[str, Any], day: str) -> dict[str, Any]:
+    """Validate request shapes before either side of a comparison is calculated."""
     if not isinstance(natal, dict):
         raise ValueError("daily_transit_natal_object_required")
     snapshot(day)
     request = dict(deepcopy(natal), as_of_date=day)
-    validate_request(request)
+    try:
+        birth = request["birth"]
+        _reported(birth["date"], birth.get("reported_time"))
+        validate_request(request)
+        place = birth["place"]
+        if not isinstance(place, dict) or not isinstance(place.get("tz"), str):
+            raise ValueError("daily_transit_natal_invalid")
+        finite(place["lon"], -180, 180)
+        if "lat" in place:
+            finite(place["lat"], -90, 90)
+        if birth.get("clock_basis") not in ("clock", "standard", "unknown"):
+            raise ValueError("daily_transit_natal_invalid")
+    except (KeyError, TypeError, AttributeError, OverflowError, ValueError):
+        raise ValueError("daily_transit_natal_invalid") from None
+    return request
+
+
+def prepare_natal(natal: dict[str, Any], day: str) -> PreparedNatal:
+    request = validate_natal(natal, day)
     candidate, candidates = _basis(request)
     bazi_engine, ziwei_engine = load_engine("bazi"), load_engine("ziwei")
     gender = request["birth"]["gender"]

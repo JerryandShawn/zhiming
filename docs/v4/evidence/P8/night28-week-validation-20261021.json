@@ -1,0 +1,74 @@
+{
+  "version": "p8-night28-week-validation-v1",
+  "recorded_at_beijing": "2026-10-21T00:22:38.771330+08:00",
+  "branch": "v4/p8-calc",
+  "mode": "offline_synthetic_and_local_isolated_postgresql",
+  "full_v4": {
+    "command": "python -m pytest tests/v4 -q",
+    "start_clock_bracket_beijing": [
+      "2026-10-21T00:15:19+08:00",
+      "2026-10-21T00:15:41+08:00"
+    ],
+    "completed_by_clock_beijing": "2026-10-21T00:18:18+08:00",
+    "passed": 2143,
+    "skipped": 0,
+    "seconds": 148.46,
+    "maximum_test_processes": "one Core plus at most one Charts",
+    "log_utf8_sha256": "98e3e072575e6532b90e0f1665af898fa6d4370a7c94011bafd837100d5d0358",
+    "after_full_change": "Only three adjacent regex literal wraps; AST identical. 495 checker tests passed again in 10.92s."
+  },
+  "format_only_proof": {
+    "file": "mingjing_core/skills/consistency_text.py",
+    "ast_without_locations_identical": true,
+    "before_and_after_ast_sha256": "e2839de4c2494802a5f5c4d03fdc30f76bbc40b92fa4268893f7d2f89653684f"
+  },
+  "deduplicated_full_test_breakdown": {
+    "prior_main_queue": 1175,
+    "reserves": 45,
+    "glossary_and_learning": 305,
+    "api_review": 36,
+    "public_window_pages": 5,
+    "consistency": 495,
+    "lessons": 82
+  },
+  "scripted_evaluation": {
+    "scenarios": "80/80",
+    "self_tests": "48/48",
+    "report": "night28-learning-scripted-regression",
+    "real_model_calls": 0
+  },
+  "style_and_protection": {
+    "python_files": 186,
+    "old_files_unchanged": 141,
+    "style_and_secret_patterns": "passed",
+    "unpublished_drafts_excluded": []
+  },
+  "performance_reports": [
+    "night28-api-reviewed-tools/night28-tools-performance.json",
+    "night28-learning-performance-scope-final.json",
+    "night28-consistency-performance-final.json"
+  ],
+  "legacy_core_check": {
+    "started_beijing_minute": "2026-10-21T00:18+08:00",
+    "status": "running; not counted as passed"
+  },
+  "ci": {
+    "a92b889": "success, run 39453812425",
+    "new_commit": "not_published_yet"
+  },
+  "effects": {
+    "real_model_calls": 0,
+    "project_server_or_feishu_access": false,
+    "database": "127.0.0.1:55480/core_test_meta",
+    "reserved_port_8003": "not_started",
+    "migrations": [],
+    "merged_prs": []
+  },
+  "limits": [
+    "This is not full P8 acceptance; source editions, prediction validity and human lesson review are pending.",
+    "Mainline API/UI/review 15/auth/revocation/KnowledgeRegistry wiring remain unverified.",
+    "Agent Skills end-to-end/token budgets and all 38 named-rule contradiction assertions still require follow-up.",
+    "E2 placebo 2/14 temporal blockers remain; professional scores null.",
+    "Coverage has not been sampled; no 90 percent claim."
+  ]
+}
