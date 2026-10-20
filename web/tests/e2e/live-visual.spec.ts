@@ -9,6 +9,8 @@ const batch = runId.replace(/[^a-zA-Z0-9-]/g, '-');
 const evidence = path.resolve('test-results/live-evidence', batch);
 const checkedIn = path.resolve(process.env.LIVE_VISUAL_SUMMARY_DIR || 'evidence/2026-10-18');
 const names = ['today', 'chat', 'chart', 'tarot', 'cases', 'me', 'settings'] as const;
+const fixtureDate = '2026-10-21';
+const fixtureTime = `${fixtureDate}T07:15:00+08:00`;
 const viewports = [
   { width: 375, height: 812 },
   { width: 390, height: 844 },
@@ -92,7 +94,7 @@ test.beforeAll(async ({ request }) => {
       ).ok(),
     ).toBe(true);
   }
-  const chart = await request.get('/api/chart?date=2026-10-18', { headers });
+  const chart = await request.get(`/api/chart?date=${fixtureDate}`, { headers });
   expect(chart.ok()).toBe(true);
   dayLabel = ((await chart.json()) as { day: { day_ganzhi: string } }).day.day_ganzhi;
 });
@@ -191,6 +193,8 @@ for (const viewport of viewports)
     for (const name of names) {
       test(`live ${name} ${theme} ${viewport.width}`, async ({ page }) => {
         await page.setViewportSize(viewport);
+        // Freeze the calendar, while timers continue for requests and animations.
+        await page.clock.setFixedTime(new Date(fixtureTime));
         await page.addInitScript(
           ({ token, theme }) => {
             sessionStorage.setItem('mingjing-auth-token', token);
@@ -230,7 +234,7 @@ for (const viewport of viewports)
           page.waitForResponse((response) => new URL(response.url()).pathname === endpoint && response.ok()),
         );
         const route =
-          name === 'tarot' ? `tarot?draw=${drawId}` : name === 'chart' ? 'chart?tab=bazi&date=2026-10-18' : name;
+          name === 'tarot' ? `tarot?draw=${drawId}` : name === 'chart' ? `chart?tab=bazi&date=${fixtureDate}` : name;
         await page.goto(`/#/${route}`, { waitUntil: 'domcontentloaded' });
         await Promise.all(arrivals);
         await expect(page.locator(`[data-page="${name}"]`)).toBeVisible();

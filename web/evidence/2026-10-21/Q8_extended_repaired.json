@@ -1,0 +1,46 @@
+{
+  "schema": "frontend-extended-regression-repair-v1",
+  "runtime_source_commit": "6878469b21fc606e44557da918c198e19c32dc27",
+  "captured_beijing": "2026-10-21T01:47:29.804+08:00",
+  "initial_evidence": "web/evidence/2026-10-21/Q8_extended_initial.json",
+  "initial_browser_passed": 484,
+  "initial_browser_failed": 9,
+  "repaired_suites": {
+    "contracts": {
+      "stats": {
+        "startTime": "2026-10-20T17:45:04.409Z",
+        "duration": 25615.487,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "sha256": "fe7a97b185f78f660f34694dbe755e2e15fa32645e03ad1114f3c54d7839092a"
+    },
+    "live-visual": {
+      "stats": {
+        "startTime": "2026-10-20T17:45:30.884Z",
+        "duration": 86849.289,
+        "expected": 56,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "sha256": "10c3aa114aa6fd981c294342bc7d0d9acfa505f0bfdb478a20e333aefe96eb50"
+    }
+  },
+  "final_unique_unit_passed": 842,
+  "final_unique_browser_passed": 493,
+  "changes": "Frontend tests only: fixed Asia/Shanghai fixture date with continuing timers; v2 source fixture uses independent Vite dev 4174. Runtime source and frozen build unchanged.",
+  "build_manifest_sha256": "a03fb08ce183e0dde242992b5d4facf9956b3e67b75082fd0533075123e95816",
+  "images": [
+    {
+      "path": "web/evidence/2026-10-21/Q8_repair_today_light_390.png",
+      "sha256": "142024a7a58a72cb6fdb5871f28d178459eb5ed4486eb650c187cc7bdd399d29"
+    },
+    {
+      "path": "web/evidence/2026-10-21/Q8_repair_today_dark_390.png",
+      "sha256": "0dd17788e0f62b1bf6ebf1c4a3db73bebe1703297a6d3557b3d7d3a1b4f86e72"
+    }
+  ]
+}

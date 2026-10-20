@@ -1,6 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
-const port = Number(process.env.FRONTEND_TEST_PORT ?? 4173);
+// v2.html imports TSX directly and needs Vite dev, separate from the 4173 build preview.
+const port = Number(process.env.FRONTEND_TEST_PORT ?? 4174);
 if (![4173, 4174].includes(port)) throw new Error('Frontend contracts require a local test port');
 const baseURL = `http://127.0.0.1:${port}`;
 
