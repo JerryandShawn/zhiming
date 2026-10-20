@@ -3,7 +3,7 @@ import { readSse } from '../chat/sse';
 import type { ChatEvent } from '../chat/types';
 import { beijingTimestamp } from '../time/beijing';
 
-export type DemoScenario = 'cards' | 'review' | 'error' | 'resumed';
+export type DemoScenario = 'cards' | 'review' | 'error' | 'resumed' | 'streaming' | 'queued';
 export type DemoStep = { type: string; payload: Record<string, unknown>; hold?: number };
 const options = {
   options_id: 'local-options',
@@ -107,6 +107,36 @@ export function demoSteps(scenario: DemoScenario): DemoStep[] {
     },
     { type: 'status', payload: { text: '我把要点理一理。', phase: 'writing' } },
   ];
+  if (scenario === 'streaming' || scenario === 'queued') {
+    const parts =
+      scenario === 'streaming'
+        ? [
+            '我先把这段话慢慢说完。',
+            '你想到新的情况，',
+            '可以随时写在下面。',
+            '新的补充会先排队，',
+            '等这一段完成后，',
+            '再按收到的顺序继续。',
+            '排队时仍能修改下一条草稿，',
+            '也能取消其中一条。',
+            '停止后不会擅自继续，',
+            '其余补充会保留在列表里。',
+            '这是本机合成演示，',
+            '没有连接模型。',
+          ]
+        : ['这条补充已接到当前对话后面。', '这里只演示接收与顺序处理，未连接模型。'];
+    return [
+      start[0],
+      { type: 'status', payload: { text: '本地演示正在逐段展开。', phase: 'writing' } },
+      ...parts.map((part) => ({
+        type: 'text_delta',
+        payload: { text: part },
+        hold: scenario === 'streaming' ? 500 : 350,
+      })),
+      { type: 'review', payload: { state: 'passed', reasons: [] } },
+      finalStep(parts.join(''), false, false),
+    ];
+  }
   if (scenario === 'error')
     return [
       ...start.slice(0, 3),

@@ -65,6 +65,7 @@ export default function NightApp({ page }: { page: string }) {
   }, [page, privacy.active, chat.busy]);
   function setPrivacy(active: boolean) {
     if (active) {
+      chat.clearQueueForPrivacy();
       chat.pause();
       guide.pause();
     }

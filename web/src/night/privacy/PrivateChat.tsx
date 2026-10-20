@@ -56,7 +56,7 @@ export function PrivateChat({ privacy }: { privacy: PrivacySessionController }) 
               退出无痕
             </Button>
           </section>
-          <div className="chat-messages">
+          <div className="chat-messages" tabIndex={0} role="region" aria-label="对话内容">
             <div className="chat-inner">
               <p className="meta">这段只在当前页面保留，退出无痕或刷新后会清空，不会写入长期记忆。</p>
               {session.messages.map((message) =>

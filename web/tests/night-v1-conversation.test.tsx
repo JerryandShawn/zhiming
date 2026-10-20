@@ -104,4 +104,44 @@ describe('v1 parent conversation acknowledgement boundary', () => {
     expect(result.current.draft).toBe('下一轮新写的合成草稿');
     expect(result.current.reply).toBe('');
   });
+
+  it('rejects an acknowledgement for another answer request even when the ask and choice match', async () => {
+    const { result, port } = await ready();
+    vi.spyOn(port, 'answer').mockImplementation(async (text, requestId, source) => ({
+      status: 'accepted',
+      answer: text,
+      request_id: `${requestId}-another`,
+      ...source,
+    }));
+    act(() => result.current.setDraft(draft));
+    await act(async () => {
+      await expect(result.current.answer(answer, context)).rejects.toThrow('有效确认');
+    });
+    expect(result.current.answered).toBe('');
+    expect(result.current.draft).toBe(draft);
+  });
+
+  it('preserves later composer edits after a valid delayed answer and accepts trimmed free text', async () => {
+    const { result, port } = await ready();
+    let complete!: () => void;
+    const submit = vi.spyOn(port, 'answer').mockImplementationOnce(
+      (text, requestId, source) =>
+        new Promise((resolve) => {
+          complete = () => resolve({ status: 'accepted', answer: text, request_id: requestId, ...source });
+        }),
+    );
+    act(() => result.current.setDraft('  我想先把时间问清楚  '));
+    const pending = result.current.answer('  我想先把时间问清楚  ');
+    act(() => result.current.setDraft('确认期间新写的草稿'));
+    await act(async () => {
+      complete();
+      await pending;
+    });
+    expect(submit).toHaveBeenCalledWith('我想先把时间问清楚', expect.any(String), {
+      askId: 'local-ask',
+      optionIds: [],
+    });
+    expect(result.current.answered).toBe('我想先把时间问清楚');
+    expect(result.current.draft).toBe('确认期间新写的草稿');
+  });
 });

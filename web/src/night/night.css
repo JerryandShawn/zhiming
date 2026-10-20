@@ -24,6 +24,13 @@
 .night-chat .chat-inner {
   padding-bottom: var(--s-6);
 }
+.night-chat .user-bubble img,
+.night-chat .composer img {
+  max-width: 100%;
+  max-height: calc(var(--tarot-width) * 2);
+  object-fit: contain;
+  display: block;
+}
 .night-private-away {
   padding: var(--s-3) var(--s-4);
   background: var(--jade-wash);

@@ -28,7 +28,7 @@ export default function Chat() {
       <h1 className="sr-only">和明镜对话</h1>
       <div className="chat-layout">
         <div className="chat-main">
-          <div className="chat-messages">
+          <div className="chat-messages" tabIndex={0} role="region" aria-label="对话内容">
             <div className="chat-inner">
               {chat.history.hasNextPage && (
                 <Button loading={chat.history.isFetchingNextPage} onClick={() => void chat.history.fetchNextPage()}>
@@ -75,7 +75,7 @@ export default function Chat() {
               {!chat.state.complete && (chat.state.runId || chat.state.text || chat.state.status) && (
                 <Answer
                   receiptRegistry={receiptRegistry}
-                  state={chat.state}
+                  state={chat.state.status === chat.stopStatus ? { ...chat.state, status: '' } : chat.state}
                   onReply={
                     chat.busy
                       ? undefined
@@ -84,6 +84,11 @@ export default function Chat() {
                 />
               )}
               {chat.error && <p role="alert">{chat.error}</p>}
+              {chat.stopStatus && (
+                <p role="status" className="meta" aria-label="停止反馈">
+                  {chat.stopStatus}
+                </p>
+              )}
               {chat.pending && !chat.busy && (
                 <section className="ask-card">
                   <p>本轮记录已保留，继续会沿用已保存的问题与资料。</p>

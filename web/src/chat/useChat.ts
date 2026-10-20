@@ -26,10 +26,13 @@ export function useChat() {
   const [state, setState] = useState<StreamState>(initialStream);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState('');
+  const [stopStatus, setStopStatus] = useState('');
   const [currentMessage, setCurrentMessage] = useState(loadPending()?.payload.message || '');
   const [completedTurns, setCompletedTurns] = useState<CompletedTurn[]>([]);
   const controller = useRef<AbortController>();
   const active = useRef(false);
+  const operationEpoch = useRef(0),
+    draftRevision = useRef(0);
   const history = useInfiniteQuery({
     queryKey: ['chat', 'history', namespace],
     enabled: Boolean(token) && !loginRequired,
@@ -46,6 +49,7 @@ export function useChat() {
   const historyRows = [...(history.data?.pages || [])].reverse().flat();
   const setText = (value: string) => {
     if (namespace !== operationNamespace()) return;
+    draftRevision.current++;
     setDraft(value);
     saveDraft(value, namespace);
   };
@@ -54,8 +58,11 @@ export function useChat() {
     async (operation: PendingChat, retry: boolean) => {
       if (active.current || namespace !== operationNamespace() || !isCurrentChat(operation)) return;
       active.current = true;
+      const epoch = ++operationEpoch.current,
+        submittedDraftRevision = draftRevision.current;
       setBusy(true);
       setError('');
+      setStopStatus('');
       setState(initialStream());
       setPending(operation);
       setCurrentMessage(operation.payload.message);
@@ -86,16 +93,20 @@ export function useChat() {
         );
         if (complete && !abort.signal.aborted && clearPending(operation)) {
           setPending(undefined);
-          setDraft('');
-          saveDraft('', namespace);
+          if (draftRevision.current === submittedDraftRevision) {
+            setDraft('');
+            saveDraft('', namespace);
+          }
           void cache.invalidateQueries({ queryKey: ['chat', 'history', namespace] });
         }
       } catch (reason) {
         if (!abort.signal.aborted && isCurrentChat(operation))
           setError(reason instanceof Error ? reason.message : '本轮未完成，请继续原来这一轮');
       } finally {
-        active.current = false;
-        if (namespace === operationNamespace()) setBusy(false);
+        if (operationEpoch.current === epoch) {
+          active.current = false;
+          if (namespace === operationNamespace()) setBusy(false);
+        }
       }
     },
     [cache, namespace],
@@ -122,21 +133,38 @@ export function useChat() {
     }
   }
   async function cancel() {
-    if (!pending || !isCurrentChat(pending)) return;
+    if (!pending || namespace !== operationNamespace() || !isCurrentChat(pending)) return;
+    const operation = pending,
+      targetRunId = state.runId || operation.runId;
+    const targetController = controller.current,
+      epoch = operationEpoch.current;
+    const current = () =>
+      namespace === operationNamespace() &&
+      isCurrentChat(operation) &&
+      operationEpoch.current === epoch &&
+      controller.current === targetController &&
+      !targetController?.signal.aborted;
+    setStopStatus('正在请求停止');
+    setError('');
     try {
       const receipt = await api<{ ok: boolean; run_id: string }>(
-        `/api/runs/${encodeURIComponent(state.runId || pending.runId)}/cancel`,
+        `/api/runs/${encodeURIComponent(targetRunId)}/cancel`,
         {
           method: 'POST',
-          body: JSON.stringify({ request_id: `cancel:${pending.payload.request_id}` }),
+          body: JSON.stringify({ request_id: `cancel:${operation.payload.request_id}` }),
         },
       );
-      if (!isCurrentChat(pending)) return;
-      if (receipt.ok !== true || !receipt.run_id) throw new Error('未收到停止回执，请核对运行状态');
-      controller.current?.abort();
+      if (!current()) return;
+      if (receipt.ok !== true || receipt.run_id !== targetRunId || operation.runId !== targetRunId)
+        throw new Error('未收到本轮停止回执，请核对运行状态');
+      targetController?.abort();
+      setStopStatus('已停止本轮');
       setState((current) => ({ ...current, status: '已停止本轮' }));
     } catch (reason) {
-      if (isCurrentChat(pending)) setError(reason instanceof Error ? reason.message : '尚未确认停止，请重试');
+      if (current()) {
+        setStopStatus('尚未确认停止，可以重试');
+        setError(reason instanceof Error ? reason.message : '尚未确认停止，请重试');
+      }
     }
   }
   async function resumeFrom(runId: string, interrupt: NonNullable<Envelope['interrupt']>, message: string) {
@@ -198,6 +226,7 @@ export function useChat() {
     state,
     busy,
     error,
+    stopStatus,
     history,
     historyRows,
     currentMessage,
