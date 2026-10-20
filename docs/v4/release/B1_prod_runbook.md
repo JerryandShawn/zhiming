@@ -57,7 +57,7 @@ B2/B3/B4三阶段沿用受审 `tools.core_incremental`，请求scope=live、owne
 
     "$CONTROL_PYTHON" -m tools.core_incremental --request "$LIVE_REQUEST" --apply --native --action backfill --approval "$B1_OP/approval-backfill.json" --host-config "$LIVE_HOST_CONFIG" --backup "$B1_OP/backup-object.json" --restore "$B1_OP/restore-proof.json" --migration "$B1_OP/migrate-result.json" --review "$B1_OP/review-primary.json" --output "$B1_OP/backfill-result.json"
 
-上述成功输出仍为publication=false，业务保持关闭。新`tools.b1_publication`已有默认纯输入验证与可移植控制器，目标11项离线测试通过；Native生产恢复未实现，故verify/open/rollback明确阻塞NATIVE_PRODUCTION_RESTORE_UNAVAILABLE，不能用自填proof解除，不用旧publish代替。下列命令仅校验计划格式，不创建Native、不访问PG、不发HTTP：
+上述成功输出仍为publication=false，业务保持关闭。新`tools.b1_publication`已有默认纯输入验证与可移植控制器，目标19项离线测试通过；Native生产恢复未实现，故verify/open/rollback明确阻塞NATIVE_PRODUCTION_RESTORE_UNAVAILABLE，不能用自填proof解除，不用旧publish代替。下列命令仅校验计划格式，不创建Native、不访问PG、不发HTTP：
 
     "$CONTROL_PYTHON" -m tools.b1_publication --action verify --plan "$B1_OP/publication-plan.json"
 
@@ -82,6 +82,8 @@ Hermes只改知命Core wrapper固定入口及其受审manifest；环境顺序为
 用户预授权仅限**开门后60分钟内严重故障**：网页或飞书无法回答、数据异常、错误率明显上升。有效回滚必须先重设维护/排空，保存最新无正文撤销与sent/uncertain收据，再按已验证的恢复方法把维护前schema4备份恢复、重放最新单调账本、核旧7dbc/schema4兼容，恢复原unit/env/CHART/wrapper精确hash，门内核验后才开门。原7dbc和0aa433a、备份均保留，不能自动清理。
 
 回滚会丢开门后的新消息，此损失只在用户明确预授权60分钟范围内接受。超过60分钟不自动恢复旧备份；保持必要止损/向前修复并写日报等大脑。尚无生产scope受审恢复/replay入口与真PG证明时，**rollback门阻塞且open也阻塞**，不能冒用stage专用CLI或手填恢复proof。
+
+stage专用`tools.b1_restore_replay`已完成25项Windows PG15.19/纯护栏对照（27.70秒），详见`../evidence/B1/2026-10-21-stage-replay.md/.json`；其目标只允许schema7的stage恢复副本，raw withdrawals-v2和stage replay receipt不构成生产schema4恢复/重绑定证明。该成功不解除本节阻塞。
 
 任何操作本身异常立即停，不能自行修了再试；SSH连接被拒才按10分钟间隔最多3次短会话。既有窗口之外不因“已经做了一半”继续未获准写入。
 
