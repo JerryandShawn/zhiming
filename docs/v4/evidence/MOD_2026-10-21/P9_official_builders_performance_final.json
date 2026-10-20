@@ -1,0 +1,50 @@
+{
+  "observed_at": "2026-10-21T07:35:26.405900+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "1000 large answers with real typed receipts and four actions",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 3,
+      "seconds": [
+        1.1791216999990866,
+        1.149058299997705,
+        1.1593782999989344
+      ],
+      "median_seconds": 1.1593782999989344,
+      "max_seconds": 1.1791216999990866,
+      "separate_tracemalloc_peak_bytes": 708987
+    },
+    {
+      "name": "100 large seven-area briefs with nested wire budget",
+      "units_per_run": 100,
+      "warmup": 1,
+      "observations": 3,
+      "seconds": [
+        1.0714262999972561,
+        1.0131420999969123,
+        1.1691540000028908
+      ],
+      "median_seconds": 1.0714262999972561,
+      "max_seconds": 1.1691540000028908,
+      "separate_tracemalloc_peak_bytes": 7173439
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/adapters/channels/card_limits_official_v3.py": "dfe82426a6345405b7e53eeb247c8d29acae47fd3e5ec8606bb15ec5f4b45a5d",
+    "mingjing_core/adapters/channels/cards_contracts.py": "3cf5ed6d8b8e1289ebd7d064709332f242faa53a60943ca73530a7207d4e985a",
+    "mingjing_core/adapters/channels/cards_official_v3/__init__.py": "ae8e4d74f1333d8f221855a98b81727679c630c7bd10fc9bd6fe93362fbd9cfe",
+    "mingjing_core/adapters/channels/cards_official_v3/answers.py": "72865589fdce3d7b3e29a7673a295619ea307ce0ad086e584dec41bd9047676f",
+    "mingjing_core/adapters/channels/cards_official_v3/budget.py": "1ca6504d477729d669972ec2e3fc098428d8615ba2977c68fd86b1fba53cb767",
+    "mingjing_core/adapters/channels/cards_official_v3/elements.py": "a4af13b6c371291f5058993934e9270a206005fb4a2c698327c8583611e80f6b",
+    "mingjing_core/adapters/channels/cards_official_v3/notices.py": "1e1e6f08ebb653ff936b208b61e139f480cf8b4c3baa79525c42ce1d49ecbe33",
+    "mingjing_core/adapters/channels/cards_official_v3/validation.py": "726502f888e2be3f15f5d11516ff172a866a62dd67523d3688614de02339856f",
+    "tools/mod_week/benchmark_cards_official_v3.py": "016728985efd4e57298b7a170859e99749ef5c7ccf9f42ec477cb68ecead5b3c"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

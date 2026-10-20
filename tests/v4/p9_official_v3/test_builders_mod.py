@@ -71,7 +71,7 @@ def test_all_kinds_are_isolated_budgeted_update_multi(document: dict) -> None:
         ("&", "&#38;"),
         ("|", "&#124;"),
         ("-a", "&#45;a"),
-        ("a-b", "a-b"),
+        ("a-b", "a&#45;b"),
         ("a\n-b", "a\n&#45;b"),
         ("&#60;", "&#38;&#35;60;"),
     ],

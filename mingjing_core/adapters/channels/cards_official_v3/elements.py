@@ -12,7 +12,7 @@ from mingjing_core.adapters.channels.cards_contracts import (
 )
 
 CardJSON = dict[str, Any]
-# 已核实（26 §2.6）：https://open.feishu.cn/document/feishu-cards/card-components/content-components/rich-text
+# 已核实（26）：https://open.feishu.cn/document/feishu-cards/card-json-v2-components/content-components/rich-text
 # Ampersand/pipe encoding is a conservative project policy; platform behavior remains a stage unknown.
 _ENTITIES = {
     ">": "&#62;",
@@ -30,17 +30,13 @@ _ENTITIES = {
     "\\": "&#92;",
     "&": "&#38;",
     "|": "&#124;",
+    "-": "&#45;",
 }
 
 
 def literal(value: str) -> str:
     """Escape once from the original string, never reverse an older escaped JSON body."""
-    result = []
-    line_start = True
-    for char in value:
-        result.append("&#45;" if char == "-" and line_start else _ENTITIES.get(char, char))
-        line_start = char == "\n"
-    return "".join(result)
+    return "".join(_ENTITIES.get(char, char) for char in value)
 
 
 def markdown(content: str, element_id: str) -> CardJSON:

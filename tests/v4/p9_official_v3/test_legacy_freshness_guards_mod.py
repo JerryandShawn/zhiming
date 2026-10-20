@@ -7,7 +7,26 @@ from datetime import timedelta
 from random import Random
 
 import pytest
-from legacy_freshness_support_mod import (
+
+from mingjing_core.adapters.channels.card_limits_official_v3 import (
+    MAX_SEQUENCE,
+    validate_sequence,
+)
+from mingjing_core.adapters.channels.cardkit_contracts import (
+    CardKitStateError,
+    PendingOperation,
+)
+from mingjing_core.adapters.channels.stream_outbox_v2 import (
+    StreamError,
+    fallback_intent,
+    next_intent,
+    prepare_intent,
+    restore_state,
+    state_metadata,
+)
+from mingjing_core.timekit.clock import FrozenClock
+
+from .legacy_freshness_support_mod import (
     AT,
     BODY,
     CARD,
@@ -23,18 +42,6 @@ from legacy_freshness_support_mod import (
     proof,
     settled,
 )
-
-from mingjing_core.adapters.channels.card_limits_official_v3 import MAX_SEQUENCE, validate_sequence
-from mingjing_core.adapters.channels.cardkit_contracts import CardKitStateError, PendingOperation
-from mingjing_core.adapters.channels.stream_outbox_v2 import (
-    StreamError,
-    fallback_intent,
-    next_intent,
-    prepare_intent,
-    restore_state,
-    state_metadata,
-)
-from mingjing_core.timekit.clock import FrozenClock
 
 
 @pytest.fixture(autouse=True)

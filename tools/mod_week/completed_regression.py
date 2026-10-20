@@ -36,6 +36,7 @@ SUITES = (
     "organize_supplement_v2",
     "partition_context_v2",
     "day_pipeline",
+    "p9_official_v3",
 )
 
 

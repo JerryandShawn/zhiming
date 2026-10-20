@@ -1,6 +1,6 @@
 """Preserve mandatory actions/receipts while shortening only explicitly optional body text."""
 
-from .elements import CardJSON, markdown
+from .elements import CardJSON
 from .validation import validate_card
 
 
@@ -40,9 +40,3 @@ def finish(
             if str(error) != "card_byte_budget_exceeded":
                 raise
     raise ValueError("card_byte_budget_exceeded")
-
-
-def truncated(value: str, element_id: str, maximum: int = 1200) -> CardJSON:
-    return markdown(
-        value if len(value) <= maximum else value[:maximum] + "\n（内容已缩略，完整内容见明镜台）", element_id
-    )

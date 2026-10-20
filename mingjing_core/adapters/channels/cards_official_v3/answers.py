@@ -4,7 +4,7 @@ from collections.abc import Sequence
 
 from mingjing_core.adapters.channels.cards_contracts import CardAction, ReceiptLine, RouteLabel, app_url, text_value
 
-from .budget import finish, truncated
+from .budget import finish
 from .elements import CardJSON, action_button, link_button, literal, markdown, receipt_elements, route_elements
 
 
@@ -30,9 +30,9 @@ def answer_card(
             markdown(text or "正在整理回复…", "answer"),
         ]
     else:
-        elements = [truncated(text, "answer") if len(text) > 1500 else markdown(text, "answer")]
+        elements = [markdown(text, "answer")]
     if evidence:
-        elements.append(truncated(evidence, "evidence"))
+        elements.append(markdown(evidence, "evidence"))
     elements.extend(receipt_elements(receipts))
     if route is not None:
         elements.extend(route_elements(route))
