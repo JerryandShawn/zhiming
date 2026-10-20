@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
+from mingjing_core.application.context_epochs import ContextEpochService
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.models.port import ChatMessage, ToolSpec
 from mingjing_core.timekit.clock import Clock, get_clock
@@ -105,11 +106,16 @@ class ContextEngine:
         retained = {ident for layer in budget.layers for item in layer.items for ident in (item.key, *item.source_ids)}
         aliases = {key: value for key, value in aliases.items() if value["id"] in retained}
         versions = injected_versions(snapshot, budget)
+        cache_epoch = ContextEpochService(self.memory.repo).preview(
+            snapshot.owner, snapshot.subject, "life:" + snapshot.subject, budget, versions, snapshot.revision
+        )
         limitations = ("runtime_unconnected",)
         if not budget.meter.live_admissible:
             limitations += ("provider_framing_unverified",)
         if self.token_meter is None:
             limitations += ("offline_policy_units",)
+        if budget.meter.token_meter_version == "public_k3_estimate_v1":
+            limitations += ("estimated_input_bound",)
         return ContextBuild(
             budget,
             snapshot.revision,
@@ -117,4 +123,5 @@ class ContextEngine:
             versions,
             snapshot.read_counts,
             limitations,
+            cache_epoch,
         )
