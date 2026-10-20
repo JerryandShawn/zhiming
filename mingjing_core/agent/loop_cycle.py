@@ -135,7 +135,10 @@ class LoopCycle:
             for message in item.messages
         ):
             raise ContextInputError("loop_prior_reasoning_not_allowed")
-        tools = self.registry.specs(self._context())
+        tools = self.registry.specs(
+            self._context(),
+            required=(self.policy.only_tool,) if self.policy.only_tool and self.usage["model_steps"] == 0 else (),
+        )
         if self.policy.text_only:
             tools = []
         required = self.policy.only_tool if self.usage["model_steps"] == 0 else None

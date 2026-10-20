@@ -19,6 +19,7 @@ from mingjing_core.timekit.clock import Clock, get_clock
 if TYPE_CHECKING:
     from psycopg import Connection
 
+    from mingjing_core.agent.tool_visibility import VisibilityState
     from mingjing_core.repositories.postgres import PostgresRepository
 
 
@@ -112,6 +113,11 @@ class AgentToolsService:
         from mingjing_core.application.agent_tools_tarot_guard import tarot_mode
 
         return tarot_mode(self, ctx)
+
+    def visibility_state(self, ctx: ToolContext) -> VisibilityState:
+        from mingjing_core.application.agent_tool_visibility import visibility_state
+
+        return visibility_state(self, ctx)
 
     def execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
         from mingjing_core.application.agent_tools_interactions import INTERACTION_NAMES, execute_interaction
