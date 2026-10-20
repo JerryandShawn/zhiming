@@ -119,6 +119,8 @@ class MemoryService:
 
     def grant_authorization(self,owner,subject,message_id,quote,*,kinds=None,case_id=None,operation_id=None):
         source=self.get_source(owner,message_id)
+        from mingjing_core.memory.private import require_persistent_source
+        require_persistent_source(source)
         if source['subject_id']!=subject or source.get('role')!='user' or quote not in source.get('content',''):raise ScopeError('Authorization requires this subject original user quote')
         if has_optout(source['content']) or not explicit_save_authorization(quote):raise EvidenceError('Explicit save authorization is absent')
         ident='consent_'+fingerprint([owner,message_id,quote,kinds,case_id])[:32]
@@ -143,6 +145,8 @@ class MemoryService:
         if not isinstance(proposals,list) or len(proposals)>12:raise EvidenceError('Invalid current source proposals')
         with self.repo.transaction(owner):
             source=self.get_source(owner,message_id)
+            from mingjing_core.memory.private import is_private
+            if is_private(source):return empty
             if source['subject_id']!=subject:raise ScopeError('Current source belongs to another subject')
             policy=source.get('policy',{})
             if (source['status']!='active' or source.get('role')!='user' or not isinstance(policy,dict) or
@@ -177,6 +181,8 @@ class MemoryService:
         kind=fact_kind(kind,category)
         with self.repo.transaction(owner):
             source=self.get_source(owner,message_id)
+            from mingjing_core.memory.private import require_persistent_source
+            require_persistent_source(source)
             if source['subject_id']!=subject or source['status']!='active':raise ScopeError('Original does not belong to current subject or is withdrawn')
             if case_id is not None and case_id not in source.get('case_ids',[]):raise ScopeError('Fact case is not linked to current original source')
             if source.get('role')!='user' and not (source.get('role')=='legacy' and assertion_status=='legacy_unverified'):raise EvidenceError('Assistant or tool output cannot become user facts')
@@ -261,6 +267,8 @@ class MemoryService:
 
     def retire_from_message(self,owner,fact_id,source_id,operation_id):
         source=self.get_source(owner,source_id);fact=self.repo.get(owner,'fact',fact_id,include_deleted=True)
+        from mingjing_core.memory.private import require_persistent_source
+        require_persistent_source(source)
         text=source.get('content','')
         if source['subject_id']!=fact['subject_id'] or source.get('role')!='user':raise ScopeError('Withdrawal source must belong to target subject')
         if fact['case_id'] is not None and fact['case_id'] not in source.get('case_ids',[]):raise ScopeError('Withdrawal target case is not selected by current source')
@@ -340,6 +348,8 @@ class MemoryService:
         refs=[]
         if message_id:
             source=self.get_source(owner,message_id)
+            from mingjing_core.memory.private import require_persistent_source
+            require_persistent_source(source)
             if source['subject_id']!=subject or source.get('role')!='user' or goal and goal not in source['content']:raise EvidenceError('Case goal/source mismatch')
             refs=[{'message_id':message_id,'version':source['revision']}]
         elif goal:raise EvidenceError('Case goal requires original user source')

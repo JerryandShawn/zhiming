@@ -23,6 +23,7 @@ from ..domain.consultation import CoreError, MissingInput
 from ..domain.json_values import ensure_finite_json
 from ..domain.contracts import ScopeError, RevisionConflict, EvidenceError, LeaseConflict, BudgetExceeded
 from ..memory.history import history_window
+from ..memory.private import is_private
 from .tarot import IdempotencyConflict
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -474,7 +475,10 @@ def create_app(service=None):
         return history_window(svc.repo,owner,subject_id,session,limit,boundary,q)
 
     @app.get('/api/feishu_history')
-    async def feishu_history(req:Request): return [m for m in core(req).repo.list(auth(req),'message') if m.get('channel')=='feishu'][-100:]
+    async def feishu_history(req:Request):
+        svc=core(req);owner=auth(req)
+        rows=[m for m in svc.repo.list(owner,'message') if m.get('channel')=='feishu' and not is_private(m)][-100:]
+        return [svc.memory.get_source(owner,m['id'],for_context=True) for m in rows]
 
     @app.get('/api/sessions')
     async def sessions(req:Request): return core(req).repo.list(auth(req),'session')

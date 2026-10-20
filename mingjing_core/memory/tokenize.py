@@ -6,6 +6,8 @@ from functools import lru_cache
 
 import jieba
 
+from .private import is_private
+
 TERMS = [
     "日主",
     "喜用神",
@@ -58,6 +60,8 @@ def tokenize(text: str) -> list[str]:
 def searchable_data(kind: str, data: dict) -> dict:
     result = dict(data)
     if kind in SEARCHABLE and result:
+        if is_private(result):
+            return dict(result, search_tokens="")
         text = "\n".join(str(result.get(key, "")) for key in ("content", "text", "title", "summary", "answer"))
         result["search_tokens"] = " ".join(tokenize(text))
     return result
