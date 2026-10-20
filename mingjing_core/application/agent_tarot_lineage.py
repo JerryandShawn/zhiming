@@ -16,7 +16,7 @@ from mingjing_core.application.agent_tools_contracts import (
 )
 from mingjing_core.application.agent_tools_memory import source_ref
 from mingjing_core.application.agent_tools_policy import source_policy
-from mingjing_core.application.agent_tools_tarot_guard import INSIST, NOT_INSIST
+from mingjing_core.application.agent_tools_tarot_guard import INSIST, NOT_INSIST, validate_draw_source
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
 from mingjing_core.memory.policy import clause, mask_quoted
 from mingjing_core.repositories.postgres import fingerprint
@@ -215,10 +215,14 @@ def tarot_lineage(
     if not result.ok:
         return [], {}
     with service.repo.transaction(run["owner"]):
-        cached = attest_tarot_snapshot(service, run, name, result)
         current = service.repo.fetch_run(run["owner"], run["id"])
-        if cached is None or run_persistence_blocked(service.repo, current):
+        if run_persistence_blocked(service.repo, current):
             raise ScopeError("塔罗长期依据在本轮已停止保存")
+        if unregistered_legacy_read(service, run, name, result):
+            return [], {}
+        cached = attest_tarot_snapshot(service, run, name, result)
+        if cached is None:
+            raise EvidenceError("塔罗依据缺少已完成步骤")
         draw = result.data["draw"]
         records = persist_records(service, current, cached, draw)
         versions = dict(cached["versions"])
@@ -227,3 +231,42 @@ def tarot_lineage(
                 run["owner"], run["subject"], [draw["case_id"]]
             )["case:" + draw["case_id"]]
         return records, versions
+
+
+def unregistered_legacy_read(service: Any, run: dict[str, Any], name: str, result: ToolResult) -> bool:
+    """A proven legacy read stays readable; insufficient ranges never create c/r."""
+    if name != "tarot_read":
+        return False
+    with service.repo.transaction(run["owner"]) as connection:
+        ctx = completed_context(service, run, name, result)
+        current = service.authority(connection, ctx)
+        if ctx.private or current["request"].get("incognito") is True:
+            raise ScopeError("无痕线程不能采用长期塔罗结果")
+        cached = connection.execute(
+            sql.SQL("SELECT 1 FROM {} WHERE owner=%s AND kind='runtime_step' AND id=%s").format(
+                service.repo.table("core_entities")
+            ),
+            (ctx.owner, cache_id(ctx)),
+        ).fetchone()
+        operation = connection.execute(
+            sql.SQL("SELECT 1 FROM {} WHERE owner=%s AND operation_id=%s").format(
+                service.repo.table("core_operations")
+            ),
+            (ctx.owner, ctx.operation_id + ":tarot_cache"),
+        ).fetchone()
+        # Deleted or tampered new caches must not silently become legacy reads.
+        if cached is not None or operation is not None:
+            return False
+        actual = current["request"].get("draw_id")
+        try:
+            draw = TarotService(service.repo).get_for_reading(ctx.owner, actual)
+        except (KeyError, ValueError):
+            raise EvidenceError("旧牌读取不属于本轮有效固定牌阵") from None
+        if draw["subject_id"] != ctx.subject or not draw.get("context_snapshot", {}).get("question_message_id"):
+            raise ScopeError("旧牌缺少可核对的同人物用户问题来源")
+        expected = ToolResult(ok=True, data={"draw": draw}, summary="固定牌面与牌义已读取")
+        if fingerprint(expected.model_dump()) != fingerprint(result.model_dump()):
+            raise EvidenceError("旧牌结果与当前真实固定牌面不符")
+        validate_draw_source(service, ctx, draw)
+        reading_identity(service, current, draw)
+        return question_sources(service, ctx, draw) is None
