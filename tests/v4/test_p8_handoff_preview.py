@@ -109,7 +109,10 @@ def test_same_pillars_do_not_create_a_visible_disagreement(originals: dict) -> N
 def test_rules_are_true_only_and_all_38_assessments_remain(originals: dict) -> None:
     preview = originals["bazi"]
     hits = [value(preview, ref) for ref in preview["view"]["rules"]]
-    assert len(hits) == len(preview["aliases"]["r"]) == 9
+    structural = [
+        row for row in preview["aliases"]["r"] if "/rule_hits/" in row["ref"]["path"]
+    ]
+    assert len(hits) == len(structural) == 9
     assert all(row["met"] is True for row in hits)
     assessments = value(preview, preview["view"]["assessments"][0])
     assert len(assessments) == 38
@@ -127,7 +130,10 @@ def test_ziwei_full_flying_and_unavailable_temporal_layers_are_preserved(
         row["status"] == "unavailable" and row["links"] == []
         for row in flying["temporal_layers"].values()
     )
-    assert preview["aliases"]["r"] == []
+    assert all(
+        row["ref"]["path"].startswith("/boundary_alerts/")
+        for row in preview["aliases"]["r"]
+    )
 
 
 def test_astro_has_real_windows_and_both_named_timings(originals: dict) -> None:
@@ -218,7 +224,7 @@ def test_dropping_all_rules_and_r_aliases_does_not_hide_hits(originals: dict) ->
     preview = deepcopy(originals["bazi"])
     preview["view"]["rules"] = []
     preview["aliases"]["r"] = []
-    with pytest.raises(ValueError, match="basis_view"):
+    with pytest.raises(ValueError, match="basis_view|rule_alias_coverage"):
         validate_preview(preview)
 
 

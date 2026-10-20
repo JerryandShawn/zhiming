@@ -1,5 +1,5 @@
 {
-  "contract_version": "p8-chart-compute-preview-v1",
+  "contract_version": "p8-chart-compute-preview-v1.1",
   "status": "draft_integration_contract",
   "mode": "scripted_synthetic_preview",
   "display_name": "阿远",
@@ -29,14 +29,18 @@
   },
   "documents": [
     {
-      "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+      "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
       "kind": "time_basis",
       "source_sha256": {
         "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
         "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+        "mingjing_core/adapters/charts/almanac.py": "831a385754ae4d0b2864ca75eb5ffe2441da4869573ed97febd6ab1a4d0e2af7",
         "mingjing_core/adapters/charts/astro_ephemeris.py": "4488ba4255484b1d76be3d3593b3a27eeb2dfef8a1bb95e8949ba36568a5d141",
         "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
         "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+        "mingjing_core/adapters/charts/boundary_alerts.py": "f6d3817496778c37d7e3f605b26ca244775a4fa58c9885b63b5bd8dcc4545d69",
+        "mingjing_core/adapters/charts/boundary_candidates.py": "773c78b6458d165d978a4f3bbea97a5f8bd110ed2aee28310f6ba6c48bd604a6",
+        "mingjing_core/adapters/charts/boundary_solar_reference.py": "28af1e0ad0cfba64ecd45b7db7c120f6934f4bd8150e6de4f98a442a42e1c8d1",
         "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
         "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
         "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
@@ -70,9 +74,10 @@
         "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
         "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
         "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
-        "mingjing_core/adapters/charts/time_basis_request.py": "d7c2ce633e3fa1ead77d8799f4bad43223a7cc69ec52512db8ff61f539d30d32",
+        "mingjing_core/adapters/charts/time_basis_request.py": "2f8a81f7e1831924b1e8af036a6f8a0e037fbd586008102ae14fb92eefb5fa70",
         "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
         "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+        "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
         "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
         "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
         "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
@@ -28470,6 +28475,75 @@
             "visible_by_default": false
           }
         ],
+        "boundary_alerts": [
+          {
+            "rule_id": "time_boundary.hour_branch",
+            "rules_version": "p8-boundary-alerts-v1",
+            "matched": true,
+            "met": true,
+            "critical": true,
+            "boundary_kind": "hour_branch",
+            "boundary_at": "1994-03-12T07:00:00",
+            "boundary_basis": "true_solar_coordinate",
+            "distance_seconds": 380.536889,
+            "threshold_seconds": 900,
+            "source_instant_id": "instant-d84ee400f41ac0430bcc690c",
+            "instant_id": "instant-d84ee400f41ac0430bcc690c",
+            "source_utc": "1994-03-12T00:20:00Z",
+            "current_pillars": {
+              "year": "甲戌",
+              "month": "丁卯",
+              "day": "丁酉",
+              "hour": "甲辰"
+            },
+            "alternatives": [
+              {
+                "label": "before",
+                "is_birth_fact": false,
+                "physical_utc": "1994-03-12T00:13:38.533817Z",
+                "coordinate_datetime": "1994-03-12T06:59:59",
+                "coordinate_basis": "true_solar",
+                "pillars": {
+                  "year": "甲戌",
+                  "month": "丁卯",
+                  "day": "丁酉",
+                  "hour": "癸卯"
+                },
+                "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+                "day_boundary": "23:00_advances_day",
+                "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+                "subsecond_handling": "floor_to_engine_second"
+              },
+              {
+                "label": "after",
+                "is_birth_fact": false,
+                "physical_utc": "1994-03-12T00:13:40.533447Z",
+                "coordinate_datetime": "1994-03-12T07:00:01",
+                "coordinate_basis": "true_solar",
+                "pillars": {
+                  "year": "甲戌",
+                  "month": "丁卯",
+                  "day": "丁酉",
+                  "hour": "甲辰"
+                },
+                "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+                "day_boundary": "23:00_advances_day",
+                "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+                "subsecond_handling": "floor_to_engine_second"
+              }
+            ],
+            "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+            "source": "docs/v4/evidence/P8/night28-boundary-policy.md",
+            "evidence_paths": [
+              "/time_basis/items/0/source_variants/1/coordinate_datetime",
+              "/time_basis/items/0/source_variants/1/pillars",
+              "/time_basis/items/0/source_variants/1/solar_time"
+            ],
+            "text": "临界：请把下列候选并列核对；敏感性采样不是新的出生事实，不据此改档或倒推时辰。",
+            "default_formula_changed": false,
+            "id": "boundary-06a2d8696a4c2b553c2d8179"
+          }
+        ],
         "interpretation": {
           "version": "p8-time-basis-readout-23-v1",
           "primary_basis": "true_solar",
@@ -28518,9 +28592,13 @@
         "source_sha256": {
           "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
           "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+          "mingjing_core/adapters/charts/almanac.py": "831a385754ae4d0b2864ca75eb5ffe2441da4869573ed97febd6ab1a4d0e2af7",
           "mingjing_core/adapters/charts/astro_ephemeris.py": "4488ba4255484b1d76be3d3593b3a27eeb2dfef8a1bb95e8949ba36568a5d141",
           "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
           "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+          "mingjing_core/adapters/charts/boundary_alerts.py": "f6d3817496778c37d7e3f605b26ca244775a4fa58c9885b63b5bd8dcc4545d69",
+          "mingjing_core/adapters/charts/boundary_candidates.py": "773c78b6458d165d978a4f3bbea97a5f8bd110ed2aee28310f6ba6c48bd604a6",
+          "mingjing_core/adapters/charts/boundary_solar_reference.py": "28af1e0ad0cfba64ecd45b7db7c120f6934f4bd8150e6de4f98a442a42e1c8d1",
           "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
           "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
           "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
@@ -28554,9 +28632,10 @@
           "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
           "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
           "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
-          "mingjing_core/adapters/charts/time_basis_request.py": "d7c2ce633e3fa1ead77d8799f4bad43223a7cc69ec52512db8ff61f539d30d32",
+          "mingjing_core/adapters/charts/time_basis_request.py": "2f8a81f7e1831924b1e8af036a6f8a0e037fbd586008102ae14fb92eefb5fa70",
           "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
           "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+          "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
           "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
           "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
           "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
@@ -28592,80 +28671,86 @@
   "view": {
     "time_basis": [
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/time_basis"
       }
     ],
     "primary": [
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data"
       }
     ],
     "comparisons": [],
     "diagnostics": [
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/0/data"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/2/data"
       }
     ],
     "rules": [
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/0"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/1"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/2"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/3"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/4"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/5"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/6"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/7"
       },
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_hits/8"
       }
     ],
     "assessments": [
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/rule_assessments"
       }
     ],
     "interactions": [
       {
-        "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
         "path": "/charts/1/data/p8/time_interactions"
       }
     ],
     "flying": [],
     "transits": [],
-    "timings": []
+    "timings": [],
+    "boundary_alerts": [
+      {
+        "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+        "path": "/boundary_alerts/0"
+      }
+    ]
   },
   "aliases": {
     "c": [
@@ -28678,13 +28763,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/0/data"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/boundary_alerts/0"
         },
-        "value_sha256": "d94da4dfa67a2fbb5f3b83bf86a11253700353f738752b6c538de9eefd99c927",
-        "branch_id": "time-chart-ba490339ceb6905279f04a59",
-        "basis": "standard",
-        "claim_id": "demo-claim-0797c2c1847e216c96866ac24ef0dc8c994d29ffd0708ca9f90cf0e77fdf7de9"
+        "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+        "basis": "true_solar",
+        "claim_id": "demo-claim-cb3bd3cd0f17d5a1cc02224e44b7e89511ec5f173a2715e17b40e3d88ffdc8fc"
       },
       {
         "alias": "c2",
@@ -28695,13 +28780,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/0/data"
         },
         "value_sha256": "d94da4dfa67a2fbb5f3b83bf86a11253700353f738752b6c538de9eefd99c927",
-        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
-        "basis": "true_solar",
-        "claim_id": "demo-claim-7a0def5f3e55f4b339e9683e6c0c85af49031cbb61f91ffaebb6d3e156453216"
+        "branch_id": "time-chart-ba490339ceb6905279f04a59",
+        "basis": "standard",
+        "claim_id": "demo-claim-981ed0cd515476c45c7e421c722e114c04987d1fdca73905204f0e140a6fd761"
       },
       {
         "alias": "c3",
@@ -28712,13 +28797,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/0/conditions/2"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data"
         },
-        "value_sha256": "a2ad603562277a0e74c09f4b2100b3b34e6542d8830dc3f012e81266ff3fbcc8",
+        "value_sha256": "d94da4dfa67a2fbb5f3b83bf86a11253700353f738752b6c538de9eefd99c927",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-1f1d22238378daf2fb3ee15aaaecaafe84473f52cb187c63c91e5bc547ffe364"
+        "claim_id": "demo-claim-582403e0a68a65cb24e2f7c74f6fdacb0a611ecd3c27192948f0a713447634e3"
       },
       {
         "alias": "c4",
@@ -28729,13 +28814,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/1/conditions/2"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/0/conditions/2"
         },
-        "value_sha256": "76fa0b7c70bd24a8200a04e09295c045d8033228fe7375f4468ea6848833cd71",
+        "value_sha256": "a2ad603562277a0e74c09f4b2100b3b34e6542d8830dc3f012e81266ff3fbcc8",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-c8fae4b0925f8d038521e5e83355894ec0c9250bdd9d512c6ad205eeae1f6612"
+        "claim_id": "demo-claim-dc06d1deff453441848ed7bd789a0a21005e2025a443511ac186c595be453b7a"
       },
       {
         "alias": "c5",
@@ -28746,13 +28831,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/2/conditions/0"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/1/conditions/2"
         },
-        "value_sha256": "022b50eccd7b0c6a99828693672be87330aab204d9a58bea843e2b904417d291",
+        "value_sha256": "76fa0b7c70bd24a8200a04e09295c045d8033228fe7375f4468ea6848833cd71",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-22713b6f1b818051d78438ace8303335abda293b8696bfed7b5230c0039d8be3"
+        "claim_id": "demo-claim-2079d0eacc208cf327d740b7fc13b28e7b69571d14221dcb65e7c20aa3ba56a7"
       },
       {
         "alias": "c6",
@@ -28763,13 +28848,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/2/conditions/1"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/2/conditions/0"
         },
-        "value_sha256": "b7994c4c4706dde9931f1b112c16d211f61f7301784d5bfb75138f8ac49ce1f9",
+        "value_sha256": "022b50eccd7b0c6a99828693672be87330aab204d9a58bea843e2b904417d291",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-ddc3e0af03868902747e094685b9e2b2133432bc7f2a9876b38161fde2e05061"
+        "claim_id": "demo-claim-e5916c6f264dd17e86c83c9afa53b0f50899f425e77a3c300d5107513ce7163f"
       },
       {
         "alias": "c7",
@@ -28780,13 +28865,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/2/conditions/2"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/2/conditions/1"
         },
-        "value_sha256": "e06071284ea0722bcc56fd07d2cd2267e5e3aca099d8fe4bf2bd67bdd63dd529",
+        "value_sha256": "b7994c4c4706dde9931f1b112c16d211f61f7301784d5bfb75138f8ac49ce1f9",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-24ab5340b6f0a712f6d7101a1e5b17dd34ef058789fd3b1a1229d94b6d522c8a"
+        "claim_id": "demo-claim-bf010f05a478e0a1e65cd7abe89194b4adc3789dd50d74f91e732913036aea96"
       },
       {
         "alias": "c8",
@@ -28797,13 +28882,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/3/conditions/0"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/2/conditions/2"
         },
-        "value_sha256": "184c4af356bc7601cc227715b439b9838c8a69c76b97b8838272aa1f64369e51",
+        "value_sha256": "e06071284ea0722bcc56fd07d2cd2267e5e3aca099d8fe4bf2bd67bdd63dd529",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-183399d0e88b392dd4bd09f0b5728f996639ffb7a0876d0aa5b696b63c37894c"
+        "claim_id": "demo-claim-4713d94d1c5ac82934581ae51c7adf6b72cd4393db46858b29b7587b5442d035"
       },
       {
         "alias": "c9",
@@ -28814,13 +28899,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/3/conditions/2"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/3/conditions/0"
         },
-        "value_sha256": "e06071284ea0722bcc56fd07d2cd2267e5e3aca099d8fe4bf2bd67bdd63dd529",
+        "value_sha256": "184c4af356bc7601cc227715b439b9838c8a69c76b97b8838272aa1f64369e51",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-da243079c3161c9bf9a6d6d6303ce25c4561fb3dc0f37a34d78f38211cb0272d"
+        "claim_id": "demo-claim-8f366c4956c9e1903ae5bbe124e2ac5c56a32bd56995ed73e91b1d55835b88b9"
       },
       {
         "alias": "c10",
@@ -28831,13 +28916,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/6/conditions/2"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/3/conditions/2"
         },
-        "value_sha256": "e302fbc47835c4e9fd747f5cb43909e8e4551ddd71bd467cc515c57e69366c4e",
+        "value_sha256": "e06071284ea0722bcc56fd07d2cd2267e5e3aca099d8fe4bf2bd67bdd63dd529",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-7fac6052dd3df5fac191f45ba06a871ad8ee11df7a8d3ef8e17193031faf3c2a"
+        "claim_id": "demo-claim-c44aeaaba419b4bf5704c97d370140a86d994b21e1337b5a86c4e44c5ecc365d"
       },
       {
         "alias": "c11",
@@ -28848,13 +28933,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/patterns/regular_eight/7/conditions/2"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/6/conditions/2"
         },
-        "value_sha256": "ecfe9693b5ecccbbdb1b630c2bc19cefdfbf66e37b52c37d72a186198500bb64",
+        "value_sha256": "e302fbc47835c4e9fd747f5cb43909e8e4551ddd71bd467cc515c57e69366c4e",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-b087431595a494c2383bb30251fa083fb35948562dfb46d73f52e47b74d3a3e0"
+        "claim_id": "demo-claim-8bd8553952cf1cbb9d663b2fccb963045ce37e342ef9529b012cee9de2b791c4"
       },
       {
         "alias": "c12",
@@ -28865,13 +28950,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_assessments"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/patterns/regular_eight/7/conditions/2"
         },
-        "value_sha256": "cde02fd7ca4e822c0ff31d48d26e204f76eda5a40aa7148464bd7f9096d6ab1c",
+        "value_sha256": "ecfe9693b5ecccbbdb1b630c2bc19cefdfbf66e37b52c37d72a186198500bb64",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-904959277e522fc2c9f2e457d1d09e57184e4635dc17bc06d17e2b63417f4ce0"
+        "claim_id": "demo-claim-f722cc9f898215ef0c90baafdd62124692cfeb9138eeaa1fd5ed8d72ca342660"
       },
       {
         "alias": "c13",
@@ -28882,13 +28967,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/0"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_assessments"
         },
-        "value_sha256": "c550a2c421bbea307c725a38e6033539692917609f94e100a9453bb6e0088ce3",
+        "value_sha256": "cde02fd7ca4e822c0ff31d48d26e204f76eda5a40aa7148464bd7f9096d6ab1c",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-40aaea54f2cfddfd6c774a550328671db17794a801269dcaeb67ef1fff912955"
+        "claim_id": "demo-claim-755d29efa0211cf67c1d9a75dfeb04e7f0b3153d744d1d19228cd76d85d9f4c3"
       },
       {
         "alias": "c14",
@@ -28899,13 +28984,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/1"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/0"
         },
-        "value_sha256": "16a458e8f32a9d34dc314efa80c35186b3490e598ec2eeaad3e0bfefe60e5746",
+        "value_sha256": "c550a2c421bbea307c725a38e6033539692917609f94e100a9453bb6e0088ce3",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-5c1306d86a35cab10c256dfbb5a740031b0350356d3508a4d96431755fa44053"
+        "claim_id": "demo-claim-6d8bc2b5806fe61bfacf92a82fc544f509c036ae039fd9dad7d54d4149cd644c"
       },
       {
         "alias": "c15",
@@ -28916,13 +29001,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/2"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/1"
         },
-        "value_sha256": "1e5bd8e13cb115b1d1f6ced4677146c1e8aeb4f89c48f49b4a4078e1b453bd74",
+        "value_sha256": "16a458e8f32a9d34dc314efa80c35186b3490e598ec2eeaad3e0bfefe60e5746",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-5e6f1f929d88696a61d784e9d99c06f51ac149876505f3cc3fe7a9b2fd4a89a3"
+        "claim_id": "demo-claim-43e27483e6e7ba7b30d1a9014db9e4c4018a527f797f9a6ef9ea45094dedfa50"
       },
       {
         "alias": "c16",
@@ -28933,13 +29018,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/3"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/2"
         },
-        "value_sha256": "dfbf06d7f782ee5a412db6df02b0637c36e5aa9b27e15a4026eaacfba23cf40f",
+        "value_sha256": "1e5bd8e13cb115b1d1f6ced4677146c1e8aeb4f89c48f49b4a4078e1b453bd74",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-e1be6bf7f8133a63608f6d801590472f5ac63a0c7bed6972f89179dcb3f7e5cc"
+        "claim_id": "demo-claim-58b0cddb111fc7813d609eb8d7cee996d15622be7357f0e4bca2d734130f74a6"
       },
       {
         "alias": "c17",
@@ -28950,13 +29035,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/4"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/3"
         },
-        "value_sha256": "ad565834adfe4ea47a2e964a74f884fb2f2a3cf2f8f130ff1868fda1d279a8b3",
+        "value_sha256": "dfbf06d7f782ee5a412db6df02b0637c36e5aa9b27e15a4026eaacfba23cf40f",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-454b04fe9021d563287310de4b6811b9d42b939bd410c99f2b68aa302181a7c5"
+        "claim_id": "demo-claim-f3787141648f63dddde9dff54f6aebcda22920c0f443a84f8e28826a1e358af8"
       },
       {
         "alias": "c18",
@@ -28967,13 +29052,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/5"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/4"
         },
-        "value_sha256": "44c94871852f2330e0e4c108ed17e7a1112181901cd81dfd28c1ec30e97ad5a4",
+        "value_sha256": "ad565834adfe4ea47a2e964a74f884fb2f2a3cf2f8f130ff1868fda1d279a8b3",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-5afc1736144968b47ba56074c303024c76d4530c54ced42f1b6e45ead4f4c439"
+        "claim_id": "demo-claim-192bf9acda90c6ce1e55c1ce576588714fb5f0e5272b96adc8b433f19e2bd31f"
       },
       {
         "alias": "c19",
@@ -28984,13 +29069,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/6"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/5"
         },
-        "value_sha256": "8d50bf66dc8822dcc0a503d4207e368216eaef621ceb42545fcbd190fd233805",
+        "value_sha256": "44c94871852f2330e0e4c108ed17e7a1112181901cd81dfd28c1ec30e97ad5a4",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-9eb568291f5138f6797c04b58327a3d89b592af02d57357e06845d5f46b5ab2a"
+        "claim_id": "demo-claim-dbd0d218ffb940701cd9f21a9fd15899fead690a08412b7b662bf175b726c2c1"
       },
       {
         "alias": "c20",
@@ -29001,13 +29086,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/7"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/6"
         },
-        "value_sha256": "40635ce8971a08e1329398697101bc613436a14de8dd6cc780c9a379177238c3",
+        "value_sha256": "8d50bf66dc8822dcc0a503d4207e368216eaef621ceb42545fcbd190fd233805",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-deab816da6078f8b722442c84ba0b2b57b166079c774c0a68e5ae8b87929ad11"
+        "claim_id": "demo-claim-1cfceb48d990cf213fb68251e862edc551e286d358d8a993d6c8df94060aa8b0"
       },
       {
         "alias": "c21",
@@ -29018,13 +29103,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/rule_hits/8"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/7"
         },
-        "value_sha256": "310aa2156f38af8cd85628072b422ebaf2be4914a63ef570b5c25e14aff4d716",
+        "value_sha256": "40635ce8971a08e1329398697101bc613436a14de8dd6cc780c9a379177238c3",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-0861061aad42842ba42146f55b90be60f285e78a536fb42ac469ace4770fe0c0"
+        "claim_id": "demo-claim-15b18dea4233392c99a96833e3aa2c49694decbcb8a95f44337cb0d8f0c41a31"
       },
       {
         "alias": "c22",
@@ -29035,13 +29120,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/1/data/p8/time_interactions"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/rule_hits/8"
         },
-        "value_sha256": "67dcfb8ec9ab94864b8bf26462bf01bfe0080bfc5c42bb4e9925b8182805b48b",
+        "value_sha256": "310aa2156f38af8cd85628072b422ebaf2be4914a63ef570b5c25e14aff4d716",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-7402c4f56705f4f444b1a5d8345c8b070564337b2d39d098a4e17346e5f7183b"
+        "claim_id": "demo-claim-19c5fa19fec80755e87c0e6f1d33e392ae25cdc62bebd28c4528cba8aaa3c441"
       },
       {
         "alias": "c23",
@@ -29052,13 +29137,13 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
-          "path": "/charts/2/data"
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/1/data/p8/time_interactions"
         },
-        "value_sha256": "d94da4dfa67a2fbb5f3b83bf86a11253700353f738752b6c538de9eefd99c927",
-        "branch_id": "time-chart-20594c37cfbb8761db54bc54",
-        "basis": "beijing_standard",
-        "claim_id": "demo-claim-2e2a0b6b6f63d84c74deaf51692a35dc42fe22624e7a820a7eaa1f5dea21a8b8"
+        "value_sha256": "67dcfb8ec9ab94864b8bf26462bf01bfe0080bfc5c42bb4e9925b8182805b48b",
+        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+        "basis": "true_solar",
+        "claim_id": "demo-claim-2a9d5571b2fe17bb512bfaf957a8ce20e45c2baa65874bed528fa5b73c542302"
       },
       {
         "alias": "c24",
@@ -29069,13 +29154,81 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/charts/2/data"
+        },
+        "value_sha256": "d94da4dfa67a2fbb5f3b83bf86a11253700353f738752b6c538de9eefd99c927",
+        "branch_id": "time-chart-20594c37cfbb8761db54bc54",
+        "basis": "beijing_standard",
+        "claim_id": "demo-claim-9b3f71b8447e80b54180e8e78680f9cdd08bf3655e553dc50a76db3544b8d55f"
+      },
+      {
+        "alias": "c25",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-bazi-20261019"
+        },
+        "ref": {
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/time_basis"
         },
         "value_sha256": "df2efd985e904e279652f81e90f0eea2d0fdfa62d28194884eedb5d1464dc324",
         "branch_id": "instant-d84ee400f41ac0430bcc690c",
         "basis": "actual_UTC",
-        "claim_id": "demo-claim-5f799e341ff600904efe8dea4bc8e6e4bd85958bd7d5a1624977650b3d7680b8"
+        "claim_id": "demo-claim-e4a52c52f81be7ad4b78d38370f327b70a3ca27a64bb63cb00bc671a67b8b959"
+      },
+      {
+        "alias": "c26",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-bazi-20261019"
+        },
+        "ref": {
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/time_basis/items/0/source_variants/1/coordinate_datetime"
+        },
+        "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-47752628d3b599dda07e8cfe74ee01de3c8d2ea1b8556d4547d872cf9d4bbc5e"
+      },
+      {
+        "alias": "c27",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-bazi-20261019"
+        },
+        "ref": {
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/time_basis/items/0/source_variants/1/pillars"
+        },
+        "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-fd61b011944b43f4c6da63bb77f0032fc53f1672f89549a58d7a60a6e811396d"
+      },
+      {
+        "alias": "c28",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-bazi-20261019"
+        },
+        "ref": {
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/time_basis/items/0/source_variants/1/solar_time"
+        },
+        "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-5081de1d8ee659c15e505d40c48c2237476ad88e4186ca48bf9d58e7b08f6dd3"
       }
     ],
     "r": [
@@ -29088,7 +29241,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/0"
         },
         "value_sha256": "c550a2c421bbea307c725a38e6033539692917609f94e100a9453bb6e0088ce3",
@@ -29097,9 +29250,9 @@
         "rule_id": "u12-pattern-hurting-officer-c3",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c11"
+          "c12"
         ],
-        "claim_id": "demo-claim-9cb21df8505e02c78cbb5c754c625b3474c92e363794f871151526b3f61977bf"
+        "claim_id": "demo-claim-d6e9e87a86b3619c11efb149b9d0b792446a86a64baa9e660c7e14b950b074f6"
       },
       {
         "alias": "r2",
@@ -29110,7 +29263,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/1"
         },
         "value_sha256": "16a458e8f32a9d34dc314efa80c35186b3490e598ec2eeaad3e0bfefe60e5746",
@@ -29119,9 +29272,9 @@
         "rule_id": "u12-pattern-indirect-seal-c1",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c8"
+          "c9"
         ],
-        "claim_id": "demo-claim-5409b899772c4086e8012276a5263a778d8691c7bd402a4292c8ca4fe5ad7570"
+        "claim_id": "demo-claim-80f0f3b191786695fbb76d32d8d66d8c8e10f590b09eddeb22b1c50b8ed8a723"
       },
       {
         "alias": "r3",
@@ -29132,7 +29285,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/2"
         },
         "value_sha256": "1e5bd8e13cb115b1d1f6ced4677146c1e8aeb4f89c48f49b4a4078e1b453bd74",
@@ -29141,9 +29294,9 @@
         "rule_id": "u12-pattern-indirect-seal-c3",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c9"
+          "c10"
         ],
-        "claim_id": "demo-claim-c57ca4ec01988f23422c6b395e80183e4e0cab61d2d56c711f35d6ac54dbaac5"
+        "claim_id": "demo-claim-c471116d5c8a35aa280dd7c871b5d9ab2f9d4f598869d9d6f37c87cc0231bc0f"
       },
       {
         "alias": "r4",
@@ -29154,7 +29307,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/3"
         },
         "value_sha256": "dfbf06d7f782ee5a412db6df02b0637c36e5aa9b27e15a4026eaacfba23cf40f",
@@ -29163,9 +29316,9 @@
         "rule_id": "u12-pattern-killer-c3",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c4"
+          "c5"
         ],
-        "claim_id": "demo-claim-f18a559a4899d0d01d1b029786c7ec20ed46bb6222d40c43ed3348c6415a56d3"
+        "claim_id": "demo-claim-3cc6304d0580e99883057cc91fbc949072a86ab845fd140c2af942faf3e0ae2a"
       },
       {
         "alias": "r5",
@@ -29176,7 +29329,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/4"
         },
         "value_sha256": "ad565834adfe4ea47a2e964a74f884fb2f2a3cf2f8f130ff1868fda1d279a8b3",
@@ -29185,9 +29338,9 @@
         "rule_id": "u12-pattern-officer-c3",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c3"
+          "c4"
         ],
-        "claim_id": "demo-claim-d581a0963071429a39279968e752437938ddeb21c55ac551295080c09e2a4971"
+        "claim_id": "demo-claim-1f835a738265ed544c6b825b86922b17eb7836ba5703a0d4e92b2f98217f33c4"
       },
       {
         "alias": "r6",
@@ -29198,7 +29351,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/5"
         },
         "value_sha256": "44c94871852f2330e0e4c108ed17e7a1112181901cd81dfd28c1ec30e97ad5a4",
@@ -29207,9 +29360,9 @@
         "rule_id": "u12-pattern-output-c3",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c10"
+          "c11"
         ],
-        "claim_id": "demo-claim-27a956c3fd88101b0f57160bac1992852403b725afbb69e4cfbd48be966f7729"
+        "claim_id": "demo-claim-69bec2368dccf97082628fb0b166ccdf3829ae92f67dfe246d6e0b7e84f700e4"
       },
       {
         "alias": "r7",
@@ -29220,7 +29373,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/6"
         },
         "value_sha256": "8d50bf66dc8822dcc0a503d4207e368216eaef621ceb42545fcbd190fd233805",
@@ -29229,9 +29382,9 @@
         "rule_id": "u12-pattern-seal-c1",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c5"
+          "c6"
         ],
-        "claim_id": "demo-claim-803b4cedf26f2d0af84b0fdc9485d05b499d235175a81a6126dcbb74ced21a04"
+        "claim_id": "demo-claim-9bec45315e8e3299059589a3789aaa08b8cb0a1ad21e937df22f1b906c836afa"
       },
       {
         "alias": "r8",
@@ -29242,7 +29395,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/7"
         },
         "value_sha256": "40635ce8971a08e1329398697101bc613436a14de8dd6cc780c9a379177238c3",
@@ -29251,9 +29404,9 @@
         "rule_id": "u12-pattern-seal-c2",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c6"
+          "c7"
         ],
-        "claim_id": "demo-claim-8fe0ba566723c7acd3a246501ab99add191d85985d955019aafee32cd9fc5864"
+        "claim_id": "demo-claim-1f3dc642dbaea7e9175a9989230e8ed9961b12376e9f2a0c795764bf24614b7e"
       },
       {
         "alias": "r9",
@@ -29264,7 +29417,7 @@
           "operation_id": "synthetic-ayuan-bazi-20261019"
         },
         "ref": {
-          "document_id": "doc-be48f7d506ca3ec8cadc5f88a8cfc9e91fa4222d6b6d562dc7951b1cff4a72ce",
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
           "path": "/charts/1/data/p8/rule_hits/8"
         },
         "value_sha256": "310aa2156f38af8cd85628072b422ebaf2be4914a63ef570b5c25e14aff4d716",
@@ -29273,9 +29426,33 @@
         "rule_id": "u12-pattern-seal-c3",
         "rules_version": "p8-bazi-rules-v2-reviewed-24",
         "evidence_aliases": [
-          "c7"
+          "c8"
         ],
-        "claim_id": "demo-claim-1fe081b34840218ca1a3b92160e7a4877cb0c0a28373a49153379e187ac344e9"
+        "claim_id": "demo-claim-9eb71bddafd10803080a0908a9e09d4cea2e196928818229e7fe42150610acbc"
+      },
+      {
+        "alias": "r10",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-bazi-20261019"
+        },
+        "ref": {
+          "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+          "path": "/boundary_alerts/0"
+        },
+        "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+        "basis": "true_solar",
+        "rule_id": "time_boundary.hour_branch",
+        "rules_version": "p8-boundary-alerts-v1",
+        "evidence_aliases": [
+          "c26",
+          "c27",
+          "c28"
+        ],
+        "claim_id": "demo-claim-146ebcd2bd60d6b989ba36ea2994355979885cfa66b89d21dfdf854b0bc3bbbd"
       }
     ]
   },
@@ -29288,5 +29465,11 @@
     "完全合成的阿远，使用07号§0.4同一画像；不是用户出生资料。",
     "这是待主线接入的只读契约草稿；原生产物保留，演示别名仅本文件本轮有效。",
     "传统结构、候选与数值正确性不证明人生预测有效；未创建API、档案或持久化别名。"
+  ],
+  "boundary_alerts": [
+    {
+      "document_id": "doc-5e232ab81e150b0a9d982a58efb959def3b16218e83f550c003f6d4e935e1e6e",
+      "path": "/boundary_alerts/0"
+    }
   ]
 }

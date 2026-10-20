@@ -7,7 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-CONTRACT_VERSION = "p8-chart-compute-preview-v1"
+LEGACY_CONTRACT_VERSION = "p8-chart-compute-preview-v1"
+CONTRACT_VERSION = "p8-chart-compute-preview-v1.1"
 SCHEMA_FILENAME = "chart_compute.schema.json"
 VIEW_KEYS = (
     "time_basis",
@@ -20,6 +21,7 @@ VIEW_KEYS = (
     "flying",
     "transits",
     "timings",
+    "boundary_alerts",
 )
 
 
@@ -199,7 +201,7 @@ def schema() -> dict[str, Any]:
     """Return a fresh 2020-12 schema; semantic provenance checks are separate."""
     result = _object(
         {
-            "contract_version": {"const": CONTRACT_VERSION},
+            "contract_version": {"enum": [LEGACY_CONTRACT_VERSION, CONTRACT_VERSION]},
             "status": {"const": "draft_integration_contract"},
             "mode": {"const": "scripted_synthetic_preview"},
             "display_name": _text(),
@@ -218,8 +220,20 @@ def schema() -> dict[str, Any]:
                 }
             ),
             "warnings": _array(_text(), 1),
+            "boundary_alerts": _array(_ref("Ref")),
         }
     )
+    result["required"].remove("boundary_alerts")
+    result["properties"]["view"]["required"].remove("boundary_alerts")
+    result["allOf"] = [
+        {
+            "if": {"properties": {"contract_version": {"const": CONTRACT_VERSION}}},
+            "then": {
+                "required": ["boundary_alerts"],
+                "properties": {"view": {"required": ["boundary_alerts"]}},
+            },
+        }
+    ]
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "title": "P8 chart_compute synthetic preview integration contract",

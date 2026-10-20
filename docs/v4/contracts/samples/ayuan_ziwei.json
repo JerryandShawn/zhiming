@@ -1,5 +1,5 @@
 {
-  "contract_version": "p8-chart-compute-preview-v1",
+  "contract_version": "p8-chart-compute-preview-v1.1",
   "status": "draft_integration_contract",
   "mode": "scripted_synthetic_preview",
   "display_name": "阿远",
@@ -29,14 +29,18 @@
   },
   "documents": [
     {
-      "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
+      "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
       "kind": "time_basis",
       "source_sha256": {
         "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
         "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+        "mingjing_core/adapters/charts/almanac.py": "831a385754ae4d0b2864ca75eb5ffe2441da4869573ed97febd6ab1a4d0e2af7",
         "mingjing_core/adapters/charts/astro_ephemeris.py": "4488ba4255484b1d76be3d3593b3a27eeb2dfef8a1bb95e8949ba36568a5d141",
         "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
         "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+        "mingjing_core/adapters/charts/boundary_alerts.py": "f6d3817496778c37d7e3f605b26ca244775a4fa58c9885b63b5bd8dcc4545d69",
+        "mingjing_core/adapters/charts/boundary_candidates.py": "773c78b6458d165d978a4f3bbea97a5f8bd110ed2aee28310f6ba6c48bd604a6",
+        "mingjing_core/adapters/charts/boundary_solar_reference.py": "28af1e0ad0cfba64ecd45b7db7c120f6934f4bd8150e6de4f98a442a42e1c8d1",
         "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
         "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
         "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
@@ -70,9 +74,10 @@
         "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
         "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
         "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
-        "mingjing_core/adapters/charts/time_basis_request.py": "d7c2ce633e3fa1ead77d8799f4bad43223a7cc69ec52512db8ff61f539d30d32",
+        "mingjing_core/adapters/charts/time_basis_request.py": "2f8a81f7e1831924b1e8af036a6f8a0e037fbd586008102ae14fb92eefb5fa70",
         "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
         "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+        "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
         "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
         "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
         "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
@@ -28470,6 +28475,75 @@
             "visible_by_default": false
           }
         ],
+        "boundary_alerts": [
+          {
+            "rule_id": "time_boundary.hour_branch",
+            "rules_version": "p8-boundary-alerts-v1",
+            "matched": true,
+            "met": true,
+            "critical": true,
+            "boundary_kind": "hour_branch",
+            "boundary_at": "1994-03-12T07:00:00",
+            "boundary_basis": "true_solar_coordinate",
+            "distance_seconds": 380.536889,
+            "threshold_seconds": 900,
+            "source_instant_id": "instant-d84ee400f41ac0430bcc690c",
+            "instant_id": "instant-d84ee400f41ac0430bcc690c",
+            "source_utc": "1994-03-12T00:20:00Z",
+            "current_pillars": {
+              "year": "甲戌",
+              "month": "丁卯",
+              "day": "丁酉",
+              "hour": "甲辰"
+            },
+            "alternatives": [
+              {
+                "label": "before",
+                "is_birth_fact": false,
+                "physical_utc": "1994-03-12T00:13:38.533817Z",
+                "coordinate_datetime": "1994-03-12T06:59:59",
+                "coordinate_basis": "true_solar",
+                "pillars": {
+                  "year": "甲戌",
+                  "month": "丁卯",
+                  "day": "丁酉",
+                  "hour": "癸卯"
+                },
+                "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+                "day_boundary": "23:00_advances_day",
+                "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+                "subsecond_handling": "floor_to_engine_second"
+              },
+              {
+                "label": "after",
+                "is_birth_fact": false,
+                "physical_utc": "1994-03-12T00:13:40.533447Z",
+                "coordinate_datetime": "1994-03-12T07:00:01",
+                "coordinate_basis": "true_solar",
+                "pillars": {
+                  "year": "甲戌",
+                  "month": "丁卯",
+                  "day": "丁酉",
+                  "hour": "甲辰"
+                },
+                "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+                "day_boundary": "23:00_advances_day",
+                "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+                "subsecond_handling": "floor_to_engine_second"
+              }
+            ],
+            "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+            "source": "docs/v4/evidence/P8/night28-boundary-policy.md",
+            "evidence_paths": [
+              "/time_basis/items/0/source_variants/1/coordinate_datetime",
+              "/time_basis/items/0/source_variants/1/pillars",
+              "/time_basis/items/0/source_variants/1/solar_time"
+            ],
+            "text": "临界：请把下列候选并列核对；敏感性采样不是新的出生事实，不据此改档或倒推时辰。",
+            "default_formula_changed": false,
+            "id": "boundary-06a2d8696a4c2b553c2d8179"
+          }
+        ],
         "interpretation": {
           "version": "p8-time-basis-readout-23-v1",
           "primary_basis": "true_solar",
@@ -28518,9 +28592,13 @@
         "source_sha256": {
           "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
           "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+          "mingjing_core/adapters/charts/almanac.py": "831a385754ae4d0b2864ca75eb5ffe2441da4869573ed97febd6ab1a4d0e2af7",
           "mingjing_core/adapters/charts/astro_ephemeris.py": "4488ba4255484b1d76be3d3593b3a27eeb2dfef8a1bb95e8949ba36568a5d141",
           "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
           "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+          "mingjing_core/adapters/charts/boundary_alerts.py": "f6d3817496778c37d7e3f605b26ca244775a4fa58c9885b63b5bd8dcc4545d69",
+          "mingjing_core/adapters/charts/boundary_candidates.py": "773c78b6458d165d978a4f3bbea97a5f8bd110ed2aee28310f6ba6c48bd604a6",
+          "mingjing_core/adapters/charts/boundary_solar_reference.py": "28af1e0ad0cfba64ecd45b7db7c120f6934f4bd8150e6de4f98a442a42e1c8d1",
           "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
           "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
           "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
@@ -28554,9 +28632,10 @@
           "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
           "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
           "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
-          "mingjing_core/adapters/charts/time_basis_request.py": "d7c2ce633e3fa1ead77d8799f4bad43223a7cc69ec52512db8ff61f539d30d32",
+          "mingjing_core/adapters/charts/time_basis_request.py": "2f8a81f7e1831924b1e8af036a6f8a0e037fbd586008102ae14fb92eefb5fa70",
           "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
           "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+          "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
           "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
           "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
           "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
@@ -28592,24 +28671,24 @@
   "view": {
     "time_basis": [
       {
-        "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
+        "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
         "path": "/time_basis"
       }
     ],
     "primary": [
       {
-        "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
+        "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
         "path": "/charts/1/ziwei_column"
       }
     ],
     "comparisons": [],
     "diagnostics": [
       {
-        "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
+        "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
         "path": "/charts/0/ziwei_column"
       },
       {
-        "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
+        "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
         "path": "/charts/2/ziwei_column"
       }
     ],
@@ -28618,12 +28697,18 @@
     "interactions": [],
     "flying": [
       {
-        "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
+        "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
         "path": "/charts/1/ziwei_column/p8_flying_transformations"
       }
     ],
     "transits": [],
-    "timings": []
+    "timings": [],
+    "boundary_alerts": [
+      {
+        "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+        "path": "/boundary_alerts/0"
+      }
+    ]
   },
   "aliases": {
     "c": [
@@ -28636,13 +28721,13 @@
           "operation_id": "synthetic-ayuan-ziwei-20261019"
         },
         "ref": {
-          "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
-          "path": "/charts/0/ziwei_column"
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/boundary_alerts/0"
         },
-        "value_sha256": "15e67fa3f9f8320a4ee663e4c3cbfd8d43a27f2f2ce73d07fd03c15bf5844a2e",
-        "branch_id": "time-chart-ba490339ceb6905279f04a59",
-        "basis": "standard",
-        "claim_id": "demo-claim-5c9681f3ba66650ca2b44960c75ea7127286152758b861f63da85efe393e70c5"
+        "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+        "basis": "true_solar",
+        "claim_id": "demo-claim-16f2dc9c6f1c854b7c8d3c692a8d09c3a70283ce396543e08b5dae2bb74efb83"
       },
       {
         "alias": "c2",
@@ -28653,13 +28738,13 @@
           "operation_id": "synthetic-ayuan-ziwei-20261019"
         },
         "ref": {
-          "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
-          "path": "/charts/1/ziwei_column"
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/charts/0/ziwei_column"
         },
-        "value_sha256": "35e07289fb047655ad898043fc7e2f437387338c881f085e8413c4ff9e3e518c",
-        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
-        "basis": "true_solar",
-        "claim_id": "demo-claim-fbc3529d570a51f58b6b6214853ff2dcd07a42cb6ed4954b06a3c63d12585014"
+        "value_sha256": "15e67fa3f9f8320a4ee663e4c3cbfd8d43a27f2f2ce73d07fd03c15bf5844a2e",
+        "branch_id": "time-chart-ba490339ceb6905279f04a59",
+        "basis": "standard",
+        "claim_id": "demo-claim-44adab12e797d4b3e44a725f6eccb118e91f6e698fead1b5a8408c207cbe6996"
       },
       {
         "alias": "c3",
@@ -28670,13 +28755,13 @@
           "operation_id": "synthetic-ayuan-ziwei-20261019"
         },
         "ref": {
-          "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
-          "path": "/charts/1/ziwei_column/p8_flying_transformations"
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/charts/1/ziwei_column"
         },
-        "value_sha256": "84846de4b910c653ba79fb9f0c0391149da1095105f2abc919ac6dcb0b5ebae7",
+        "value_sha256": "35e07289fb047655ad898043fc7e2f437387338c881f085e8413c4ff9e3e518c",
         "branch_id": "time-chart-0dae00e864cc58abf97376b0",
         "basis": "true_solar",
-        "claim_id": "demo-claim-97f354d43fae6b72dae915212311e42c3c3c2972981f3923369691a2a22ef0fd"
+        "claim_id": "demo-claim-77ded4e6de57908d5b45e2b5fee37f869a0a9a6fd034677e6abbc4c1d1aacf69"
       },
       {
         "alias": "c4",
@@ -28687,13 +28772,13 @@
           "operation_id": "synthetic-ayuan-ziwei-20261019"
         },
         "ref": {
-          "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
-          "path": "/charts/2/ziwei_column"
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/charts/1/ziwei_column/p8_flying_transformations"
         },
-        "value_sha256": "43cef883249167e806f07541fb1028f2809c7ab4fcda2724d93a7755facb671f",
-        "branch_id": "time-chart-20594c37cfbb8761db54bc54",
-        "basis": "beijing_standard",
-        "claim_id": "demo-claim-20d77fb500c68009b8f61b406275803ae9e1b490de3237b987eec10b60a4565f"
+        "value_sha256": "84846de4b910c653ba79fb9f0c0391149da1095105f2abc919ac6dcb0b5ebae7",
+        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+        "basis": "true_solar",
+        "claim_id": "demo-claim-e1265b0dab2bdd1c415a30563247c5c1403e369301ed722c6c09dfa9ffe0e9b2"
       },
       {
         "alias": "c5",
@@ -28704,16 +28789,109 @@
           "operation_id": "synthetic-ayuan-ziwei-20261019"
         },
         "ref": {
-          "document_id": "doc-dbd53baf830831a5c7b189ea12b8bce221bbc68ba4c97792d555f0c05cbaa7ad",
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/charts/2/ziwei_column"
+        },
+        "value_sha256": "43cef883249167e806f07541fb1028f2809c7ab4fcda2724d93a7755facb671f",
+        "branch_id": "time-chart-20594c37cfbb8761db54bc54",
+        "basis": "beijing_standard",
+        "claim_id": "demo-claim-28c4710b3de227a7ec4fda8d943b68eb9e0c101be1227b10db23830271fec06e"
+      },
+      {
+        "alias": "c6",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-ziwei-20261019"
+        },
+        "ref": {
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
           "path": "/time_basis"
         },
         "value_sha256": "df2efd985e904e279652f81e90f0eea2d0fdfa62d28194884eedb5d1464dc324",
         "branch_id": "instant-d84ee400f41ac0430bcc690c",
         "basis": "actual_UTC",
-        "claim_id": "demo-claim-7d9418fe79e50a78fbef45005b0ceb02577d73709dd294796c4f601879441447"
+        "claim_id": "demo-claim-9e46b533b4472bcbeaaf594cee6199bb285508791a39db0e64acf033b3a8f44a"
+      },
+      {
+        "alias": "c7",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-ziwei-20261019"
+        },
+        "ref": {
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/time_basis/items/0/source_variants/1/coordinate_datetime"
+        },
+        "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-bb00b162664b83d6a2a4b6e5be2f8d42a6daecdac796130d980545fe1d77cdcf"
+      },
+      {
+        "alias": "c8",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-ziwei-20261019"
+        },
+        "ref": {
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/time_basis/items/0/source_variants/1/pillars"
+        },
+        "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-9d062f511708a42f88bb1344836b25e116ec8d7e53838d2a907a363cd99726ea"
+      },
+      {
+        "alias": "c9",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-ziwei-20261019"
+        },
+        "ref": {
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/time_basis/items/0/source_variants/1/solar_time"
+        },
+        "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-416b74583f90347f416af07244485d2653c70244794864af07470882ce27a880"
       }
     ],
-    "r": []
+    "r": [
+      {
+        "alias": "r1",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-ziwei-20261019"
+        },
+        "ref": {
+          "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+          "path": "/boundary_alerts/0"
+        },
+        "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+        "basis": "true_solar",
+        "rule_id": "time_boundary.hour_branch",
+        "rules_version": "p8-boundary-alerts-v1",
+        "evidence_aliases": [
+          "c7",
+          "c8",
+          "c9"
+        ],
+        "claim_id": "demo-claim-1d478edc8d6fbb8d51c6b5089e0a2a702e5887b1a7abfe40fc293ed53c4b4322"
+      }
+    ]
   },
   "effects": {
     "model_calls": 0,
@@ -28724,5 +28902,11 @@
     "完全合成的阿远，使用07号§0.4同一画像；不是用户出生资料。",
     "这是待主线接入的只读契约草稿；原生产物保留，演示别名仅本文件本轮有效。",
     "传统结构、候选与数值正确性不证明人生预测有效；未创建API、档案或持久化别名。"
+  ],
+  "boundary_alerts": [
+    {
+      "document_id": "doc-ead9f05f4253fc25080474d550e92a923e05d6c5f59b2a9cd9eac66b3eb6fc4d",
+      "path": "/boundary_alerts/0"
+    }
   ]
 }

@@ -7,6 +7,12 @@ from datetime import timedelta
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 
 from ....domain.json_values import ensure_finite_json
+from .handoff_boundaries import (
+    boundary_binding,
+    rule_evidence,
+    rule_refs,
+    validate_boundary_views,
+)
 from .handoff_refs import claim_id, digest, document_id, resolve
 from .handoff_schema import schema
 from .handoff_validate_data import native_document, same_scope, utc
@@ -44,6 +50,8 @@ def _value(docs: dict, ref: dict):
 
 def _binding(preview: dict, doc: dict, path: str) -> tuple[str, str]:
     if doc["kind"] == "time_basis":
+        if path.startswith("/boundary_alerts/"):
+            return boundary_binding(doc["payload"], path)
         if path.startswith("/charts/"):
             parts = path.split("/")
             chart = resolve(doc["payload"], "/".join(parts[:3]))
@@ -88,28 +96,24 @@ def _aliases(preview: dict, docs: dict) -> dict:
 
 
 def _rules(preview: dict, docs: dict, aliases: dict) -> None:
-    expected_hits = {
-        (row["document_id"], row["path"]) for row in preview["view"]["rules"]
-    }
+    expected_hits = {(row["document_id"], row["path"]) for row in rule_refs(preview)}
     actual_hits = set()
     for row in preview["aliases"]["r"]:
         ref = row["ref"]
         hit = _value(docs, ref)
         path, ident = ref["path"], ref["document_id"]
         if (
-            "/data/p8/rule_hits/" not in path
+            (
+                "/data/p8/rule_hits/" not in path
+                and not path.startswith("/boundary_alerts/")
+            )
             or hit.get("met") is not True
             or row["rule_id"] != hit.get("rule_id")
         ):
             raise ValueError("preview_rule_must_reference_true_hit")
-        prefix = "/".join(path.split("/")[:3])
-        version = resolve(docs[ident]["payload"], prefix + "/data/p8/rules_version")
+        version, expected = rule_evidence(docs[ident], path, hit)
         if row["rules_version"] != version:
             raise ValueError("preview_rule_version_mismatch")
-        expected = [
-            {"document_id": ident, "path": prefix + item}
-            for item in hit["evidence_paths"]
-        ]
         if not expected or len(set(row["evidence_aliases"])) != len(expected):
             raise ValueError("preview_rule_evidence_count_mismatch")
         evidence = []
@@ -117,7 +121,7 @@ def _rules(preview: dict, docs: dict, aliases: dict) -> None:
             if name not in aliases or not name.startswith("c"):
                 raise ValueError("preview_rule_evidence_alias_missing")
             source = aliases[name]
-            if (
+            if not path.startswith("/boundary_alerts/") and (
                 source["branch_id"] != row["branch_id"]
                 or source["basis"] != row["basis"]
             ):
@@ -164,7 +168,7 @@ def _basis_view(preview: dict, docs: dict) -> None:
                 _basis_details(expected, chart, ident, path, system)
     if any(preview["view"][key] != value for key, value in expected.items()):
         raise ValueError("preview_basis_view_mismatch")
-    if system == "ziwei" and (preview["view"]["rules"] or preview["aliases"]["r"]):
+    if system == "ziwei" and preview["view"]["rules"]:
         raise ValueError("preview_no_unimplemented_ziwei_rules")
 
 
@@ -189,7 +193,7 @@ def _basis_details(
 
 
 def _astro_view(preview: dict, docs: dict) -> None:
-    if preview["view"]["rules"] or preview["aliases"]["r"]:
+    if preview["view"]["rules"]:
         raise ValueError("preview_no_unimplemented_astro_rules")
     _astro_refs(preview, docs)
     timings = [_value(docs, ref) for ref in preview["view"]["timings"]]
@@ -233,6 +237,8 @@ def _astro_refs(preview: dict, docs: dict) -> None:
     expected["timings"] = [
         {"document_id": doc["document_id"], "path": "/data"} for doc in timings
     ]
+    if "boundary_alerts" in expected:
+        expected["boundary_alerts"] = preview["boundary_alerts"]
     if preview["view"] != expected:
         raise ValueError("preview_astro_view_binding_mismatch")
 
@@ -247,6 +253,7 @@ def validate_preview(value: dict, *, verify_runtime_sources: bool = False) -> No
     canonical_fixture_request(value)
     try:
         docs = _documents(value, verify_runtime_sources)
+        validate_boundary_views(value, docs)
         for group in value["view"].values():
             for ref in group:
                 _value(docs, ref)

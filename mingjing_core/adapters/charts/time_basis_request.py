@@ -8,6 +8,7 @@ from typing import Any
 
 from ...domain.json_values import ensure_finite_json
 from .adapter import stable_id
+from .boundary_alerts import boundary_alerts
 from .p8_policy import release_policy
 from .time_basis import time_basis_candidates
 from .time_basis_chart import bazi_context, ziwei_column
@@ -82,6 +83,7 @@ def calculate_time_basis(request: dict[str, Any]) -> dict[str, Any]:
         **{key: request[key] for key in ("owner_user_id", "subject_id", "revision", "operation_id")},
         "time_basis": result,
         "charts": variants,
+        "boundary_alerts": boundary_alerts(result),
         "interpretation": interpretation,
         "profile_basis_record": {
             "basis": result["selected_basis"],

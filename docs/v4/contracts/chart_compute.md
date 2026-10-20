@@ -1,10 +1,38 @@
-# chart_compute 接线契约（P8 命理线草稿）
+# chart_compute 接线契约 v1.1（P8 命理线草稿）
 
 本文件交主线与前端线只读使用。已有实现是 `P8ChartAdapter` 的三个本机 Python 入口；主线的 `chart_compute` 工具、授权档案读取、别名账本、API、持久化和前端接线尚不在本线实现。本文约定与离线样例不能作为已经上线的证明。
 
 设计依据：蓝图§8/§10、18号推理增补§A/B、23号第二节、24号审校§6；用户本夜直接要求的范围优先于旧阶段提示词。数据来自程序，解释来自有出处的技能；规则成立仅指条件命中，不代表格局或现实事件已经成立。
 
 ## 1. 输入边界与路由
+
+### 1.0 v1.1 增量（28号 M3）
+
+2026-10-20升级仅增加交界信息：原生time_basis顶层`boundary_alerts[]`为完整提示对象；
+集成信封顶层`boundary_alerts[]`及`view.boundary_alerts[]`为指向这些对象的Ref数组，两者相等。
+旧字段含义、默认NOAA/Meeus公式、原38条结构规则和原35条编号不变。
+Schema和语义校验继续接受`p8-chart-compute-preview-v1`且无这两个新数组的旧信封；
+v1.1则必须提供数组，未命中时是`[]`，不能静默丢弃已有提示。
+
+| boundary_kind | 触发条件（端点包含） | 对照 |
+| --- | --- | --- |
+| hour_branch | 真太阳时距奇数整点时辰交界≤900秒 | 边界两侧实际计算四柱 |
+| late_zi_day | 真太阳时距23:00≤900秒 | sect1晚子换日两侧；可与hour_branch同时出现 |
+| zi_midnight | 真太阳时距00:00≤900秒 | 默认sect1可能同柱，另附具名sect2差异；不篡改默认日界 |
+| jie_month | 物理UTC+8距最近节月交接≤7200秒 | 物理交接两侧，日/时仍用相应真太阳坐标 |
+| eot_implementations | NOAA/Meeus与独立Swiss公式在同一物理时刻算出不同四柱 | 保留默认柱与独立实现柱及实际差值 |
+
+提示包含`rule_id,rules_version,met=true,critical=true,instant_id,current_pillars,alternatives,`
+`distance_seconds,threshold_seconds,school,source,evidence_paths,text,default_formula_changed=false`。
+独立算法的一致或差异不等于观测真值，也不据此修改记录、确认时辰或解冻倒推。
+`source`指向[边界口径与原始资料](../evidence/P8/night28-boundary-policy.md)，原刊未核继续明示。
+
+新增提示也注册真实r别名；`view.rules`继续仅为38条U12评估中的true命中，
+不能再用`aliases.r.length == view.rules.length`猜规则数，应按ref路径或rules_version区分。
+边界r绑定其instant_id对应的真太阳主盘；其c依据可以指向同原生文档的物理时间或坐标源值，
+因此保留c的实际UTC输入属性，不把物理输入改名真太阳坐标。原U12同分支校验不放宽。
+主线若合并不同样例别名仍须重登记。三份阿远固定出生与2026-10-19目标日保持，
+真实太阳07:06靠近07:00，故新增卯/辰候选而不改变主盘辰时。
 
 模型只提出 `system / target / scale` 等能力意图。主线必须从已授权的同一人物档案读取出生资料，校验 owner、subject、revision、确认状态及撤销状态，再调用下表。禁止让模型补出生地、经纬度、UTC偏移、时辰或原盘字段。
 
@@ -135,11 +163,11 @@ document_id为`doc-`加完整scope、kind、source_sha256及payload的内容SHA2
 
 ## 5. Schema、样例与验证边界
 
-结构Schema：[chart_compute.schema.json](chart_compute.schema.json)，draft 2020-12。本文件的工具集成信封是`p8-chart-compute-preview-v1`草稿，**不是**对主线已有HTTP返回的描述。
+结构Schema：[chart_compute.schema.json](chart_compute.schema.json)，draft 2020-12。本文件的工具集成信封是`p8-chart-compute-preview-v1.1`草稿，**不是**对主线已有HTTP返回的描述。
 
 | 顶层字段 | 结构 |
 | --- | --- |
-| contract_version / status / mode | `p8-chart-compute-preview-v1` / `draft_integration_contract` / `scripted_synthetic_preview` |
+| contract_version / status / mode | `p8-chart-compute-preview-v1.1` / `draft_integration_contract` / `scripted_synthetic_preview` |
 | display_name / scope | 阿远；owner_user_id、subject_id、非负整数revision、独立operation_id |
 | request | system、target_date、time_scale、birth、physical_birth_at_utc；birth为本节明确标注的合成资料 |
 | documents[] | document_id、kind、source_sha256、完整未改写payload；kind为time_basis、calculation_bundle或western_timing |
@@ -148,6 +176,7 @@ document_id为`doc-`加完整scope、kind、source_sha256及payload的内容SHA2
 | aliases.r[] | 同上，另有rule_id、rules_version、evidence_aliases；对应源值必须met=true |
 | effects | model_calls=0、writes=0、alias_registry=ephemeral_demo_only |
 | warnings[] | 草稿/合成/来源限制，不能当作已上线或预测有效 |
+| boundary_alerts[] | v1.1新增，等于view.boundary_alerts；原生time_basis顶层完整提示的Ref数组 |
 
 Ref严格为`{document_id,path}`，path始终相对于该document的**payload根**。空path表示整个payload；对象键按`~1→/`、`~0→~`解码；数组只接受0或不带前导0的正整数，拒绝负索引、`01`、`-`及越界。不能把文档外层的`documents[i]`或其它样例当同一根。[RFC 6901](https://www.rfc-editor.org/rfc/rfc6901)定义引用语法；[JSON Schema 2020-12](https://json-schema.org/draft/2020-12/json-schema-core)定义结构验证框架。
 

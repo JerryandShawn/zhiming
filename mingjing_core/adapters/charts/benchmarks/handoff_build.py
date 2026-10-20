@@ -11,6 +11,12 @@ from time import perf_counter
 
 from ..p8_adapter import P8ChartAdapter
 from ..p8_worker import source_hashes
+from .handoff_boundaries import (
+    add_boundary_views,
+    boundary_binding,
+    rule_evidence,
+    rule_refs,
+)
 from .handoff_offline import offline_runtime
 from .handoff_refs import alias, document, reference, resolve
 from .handoff_schema import CONTRACT_VERSION, VIEW_KEYS, schema
@@ -137,6 +143,8 @@ def _astro_documents(preview: dict, adapter: P8ChartAdapter, instant: dict) -> N
 
 def _binding(preview: dict, doc: dict, path: str) -> tuple[str, str]:
     if doc["kind"] == "time_basis":
+        if path.startswith("/boundary_alerts/"):
+            return boundary_binding(doc["payload"], path)
         if path.startswith("/charts/"):
             chart = doc["payload"]["charts"][int(path.split("/")[2])]
             return chart["id"], chart["time_basis"]["basis"]
@@ -161,14 +169,13 @@ def _aliases(preview: dict) -> None:
         for group in preview["view"].values()
         for ref in group
     }
-    rule_evidence = []
-    for ref in preview["view"]["rules"]:
+    rule_records = []
+    for ref in rule_refs(preview):
         doc = docs[ref["document_id"]]
         hit = resolve(doc["payload"], ref["path"])
-        prefix = "/".join(ref["path"].split("/")[:3])
-        evidence = [reference(doc, prefix + path) for path in hit["evidence_paths"]]
+        _, evidence = rule_evidence(doc, ref["path"], hit)
         refs.update((item["document_id"], item["path"]) for item in evidence)
-        rule_evidence.append((ref, hit, evidence))
+        rule_records.append((ref, hit, evidence))
     by_ref = {}
     for index, (ident, path) in enumerate(sorted(refs), 1):
         doc = docs[ident]
@@ -176,11 +183,10 @@ def _aliases(preview: dict) -> None:
         row = alias(f"c{index}", preview["scope"], doc, path, branch, basis)
         preview["aliases"]["c"].append(row)
         by_ref[(ident, path)] = row["alias"]
-    for index, (ref, hit, evidence) in enumerate(rule_evidence, 1):
+    for index, (ref, hit, evidence) in enumerate(rule_records, 1):
         doc = docs[ref["document_id"]]
         branch, basis = _binding(preview, doc, ref["path"])
-        chart_prefix = "/".join(ref["path"].split("/")[:3])
-        version = resolve(doc["payload"], chart_prefix + "/data/p8/rules_version")
+        version, _ = rule_evidence(doc, ref["path"], hit)
         row = alias(
             f"r{index}",
             preview["scope"],
@@ -228,6 +234,7 @@ def build_preview(system: str, chart_python: str) -> dict:
             _astro_documents(preview, adapter, valid[0])
         else:
             _basis_views(preview, basis_doc)
+        add_boundary_views(preview, basis_doc)
         _aliases(preview)
     return preview
 

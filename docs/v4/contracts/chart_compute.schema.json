@@ -5,7 +5,10 @@
   "type": "object",
   "properties": {
     "contract_version": {
-      "const": "p8-chart-compute-preview-v1"
+      "enum": [
+        "p8-chart-compute-preview-v1",
+        "p8-chart-compute-preview-v1.1"
+      ]
     },
     "status": {
       "const": "draft_integration_contract"
@@ -103,6 +106,13 @@
             "$ref": "#/$defs/Ref"
           },
           "minItems": 0
+        },
+        "boundary_alerts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
         }
       },
       "required": [
@@ -171,6 +181,13 @@
         "pattern": "\\S"
       },
       "minItems": 1
+    },
+    "boundary_alerts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "minItems": 0
     }
   },
   "required": [
@@ -187,6 +204,29 @@
     "warnings"
   ],
   "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "contract_version": {
+            "const": "p8-chart-compute-preview-v1.1"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "boundary_alerts"
+        ],
+        "properties": {
+          "view": {
+            "required": [
+              "boundary_alerts"
+            ]
+          }
+        }
+      }
+    }
+  ],
   "$defs": {
     "Scope": {
       "type": "object",

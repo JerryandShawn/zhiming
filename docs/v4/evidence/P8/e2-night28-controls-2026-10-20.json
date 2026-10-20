@@ -1,0 +1,1972 @@
+{
+  "contract": "e2-night28-scripted-controls-v1",
+  "disclaimer": "本评测衡量的是与命理比赛标准答案的一致性，不是现实预测的效度；2025 年比赛题可能已进入 2026 年发布模型的训练数据；40 题量级的子集，95% 置信区间约为 ±15 个百分点。",
+  "mode": "scripted",
+  "competition_year_filter": 2025,
+  "year_basis": "question_explicit_target_year",
+  "evidence_span_indexing": "python_str_unicode_codepoints_zero_based_half_open",
+  "metadata_year_fallback": false,
+  "counts": {
+    "full_source_questions": 360,
+    "subset_source_questions": 80,
+    "included_questions": 14,
+    "excluded_questions": 66
+  },
+  "reference_counts_match": true,
+  "included_audit": [
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "28c69bf996835433f4c11ee9173c48ca4810907c6465c30dca1522735edf4128",
+      "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+      "competition_year": 2025,
+      "question_target_year": 1980,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "a34184f22b3ff78d9aa8e117cc11906cfb8cd10b63839cd6186eced06bab9f5f",
+      "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+      "competition_year": 2025,
+      "question_target_year": 1993,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "c4b29fb216468c80854c776c663a72cbf6d0b2c6501a65afdefb95c3066e8802",
+      "case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+      "competition_year": 2025,
+      "question_target_year": 2018,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "932ea6dedada9ef6f9f7667cccb3bcbe5999c25a184fa190b2b32572e7da8e84",
+      "case_identity_sha256": "91a9bc61ca24e21df6b01456d44f620c21ecea0f6bf1e047943e0d2055ee26e0",
+      "competition_year": 2025,
+      "question_target_year": 2022,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "e00fb8971fe3ee0a1f413c935a32fd94e6cf9f2f4d62dfd070c0dd4f3dc370e9",
+      "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+      "competition_year": 2025,
+      "question_target_year": 2001,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "88a714d6e3d758ba5742c9f10696dc9428b9ca3ddf2a462157b4605256e3c5dc",
+      "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+      "competition_year": 2025,
+      "question_target_year": 2022,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          2,
+          7
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "873c148bf90b5f266c084a835cd6b757dbb051fd735cc19633c5b3ea02f7da02",
+      "case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+      "competition_year": 2025,
+      "question_target_year": 2004,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "a42fd86ad870e25aa29f999b278fd48c8c2c8f46f0cc6c95ae5b567d72fe2b2f",
+      "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+      "competition_year": 2025,
+      "question_target_year": 2021,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "e6fbf53ed8d60c52f02e08cf5005a946585be5eaa7e67fdd83510ba26b4d4a26",
+      "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+      "competition_year": 2025,
+      "question_target_year": 2024,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "484cb80021ddf63974c796ebb4199403d33533ac4aac0c151bf629f9f7cbe1e9",
+      "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+      "competition_year": 2025,
+      "question_target_year": 1980,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "4b2cdd433a85a2c18e6d8c310a626c581f8802dca2c2673a31b26baa25f33351",
+      "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+      "competition_year": 2025,
+      "question_target_year": 1993,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "bee32fa733e414f9cfc1ef87a291d77dcc27880cb9e5f7e7d7bec1850d1e472a",
+      "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+      "competition_year": 2025,
+      "question_target_year": 2001,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "3c2fc947abf8824b03df76cda08cc6ea769603d115faa16cd347b80881b22aa0",
+      "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+      "competition_year": 2025,
+      "question_target_year": 2022,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "35750486bd46040f2de0b1f25ecb166d871a3888fd1e1fb7279e0914807003bf",
+      "case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+      "competition_year": 2025,
+      "question_target_year": 2024,
+      "year_basis": "question_explicit_target_year",
+      "reason": "explicit_target_clause",
+      "evidence_spans": [
+        [
+          3,
+          8
+        ]
+      ]
+    }
+  ],
+  "excluded_audit": [
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "0a8378d2f97a35f5831702dc2d405d8916f41ab4c52b5246e3ad0c228b732c6b",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "2a23da2364ef87232f6b9022e3c51435556c44b9883bcff2614044b1cf7b91fa",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "a4b28f557127e0e64bffa1261002685a10f6422b90985442559ef20c4eefced9",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "ffcaba9ab2a0d8fb8a24231f69a1860b51c192d499b6074ba2cbfcef52d0ad6d",
+      "reason": "explicit_year_target_unresolved",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "811aed1f537cd5a164c3df60e529c28dd7c9cac774230a990887b2dd9722e6fd",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "9a9b9add2f3ac69d403f7a7b82f744b91f8a662647604f2b59b3fcb11898f4a7",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "34cdc3597e81a420a27d898526f1c7fcb8e11a33abfd093d622f85140b644315",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "f96fe04ab6ab82d8d9c90bd4d647dd267a8d172bbd7bf75bb524bb05b4dfab07",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "09b0a799e5a16c677bb25d87aebbf341fe9a3b87cacfc8876e3bd36e813bb36e",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "3ee63ceb61d576ce3c3ad594575eab0c301c757f4760d9f3314d0c5b0c6e10b6",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "ecf3683279756f83f18411dd9bebd9aa589343a1ef6881704119a9ab57df950a",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "93a73f0031a1962073c14805c931110f7eb1e1e02a13096bea3bcd1c1ffd8444",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "0c68f5a6edf7d80823fa09cb6a4cf9f3e69ff01df725f7ea7dc3594e91ea0d1d",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "e9bda49cd08b89cbea0ba61cc7fd1babe0760a423350e6b15d25564cab4e5608",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "c1ffd0d8e7ccc4d29325c1527cc2c8e9cb5c53aa35f3edf2bd2167c8d499bfa0",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "f18d661336147b1c4d16345b0dddecb69a20a71851a75273ff0f09d382d95dc8",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "244816b4eee4388eace9e5a93ba49cf0b757a83c74fc8fe508f8862a27136da1",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "17d5b3ff257b2a1791710d1fade537b3c9fdfa630797eb58408f042f4270b385",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "d9ff266b496e5bb36b7d2b5cfd2a67f2e866ffd37d8f4b93868d6155fed9349a",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "cf8c028b50dd96e79cd95ddd6a9af04f7db5c06878b5be57efdefeee4775b9f1",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "d2e1ed5a9a981a1b2f42e9c4938afd3c1940f7cc7ffa65a0d7559c2c2bc08f1f",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "35efc70385a1d30802e16a4ddf8acbcdc709cd3f1b17428cae72a181af40d166",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "0bab098a945079183266ef8167090ea9cf68e5124612213e276180d47b8055cb",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "7e409cf07c06191bbf1f0b7bea0f50e7f7c395697bf5bf333c5908296d3b143e",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "d615acd5da4ceff7bebd08c4158175f252ad402d14967ce3de6bc6dd7fff378c",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "aad312af3f431b63a707bd72ace725fe9fa8ce2441b8e38a30f2d30a4ba9731a",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "884a6dc8c96c8dff12f0926e5d7367555e7a7829627bf229c26a8380c7204cf4",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "a64d07f9b8932f9165b2b47584ec2f63c3011d49a9f40ff6f126735a1a43cc97",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "29b302dfbd115a5cb9d6c04a60f056cda81115bf48c816459ec96c588fb139ea",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "a833be4158eacf76dee4ab58a54144591700c01d97c6eddf2faa4d40574feee1",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "MingLi-Bench",
+      "question_identity_sha256": "0a56dc135c3749be91f87d3413aed0c34053bfd23daf44ca2d214bb13fef2894",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "ac5175660bcd0e9cf15514e494a3f6e99b29b58c3a3ea9da8f230487cd79ce5c",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "5280c138385561c866424985685951105f6e648cd0621d4eb7d75e37b63db710",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "dac430faa43dd105f14b73745e4982bf9f5d5d7eba5eb97074c5bbb9f7ff4435",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "d4fee89d42f48578fb49c1401cf895eed53b5d086454e2720fe7b1a3e7f12ea0",
+      "reason": "explicit_year_target_unresolved",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "996a302afb5447afd9cf74f12ea7ef4cb72d56d7aa5e6f81901c7a74c564ea42",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "f83d7b9323768877060039c704de630896ca4febdc6e9672fac21573c7ec774a",
+      "reason": "explicit_year_target_unresolved",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "343263f5e83a1f3ea611dcfceddb9e8ab589c5b02ede28235df807669694ccd4",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "70140b2b4bd61074c142a184ff157a44e0cddf413b65654ad7d62a1300be27e2",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "a708a3372856d1d7cc309a0dd04c4cf864d414be7b1aa1f2fc966166a72b2375",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "5c189c36fe34f3f670c80ad47e4990d52aa02f1bf1f1c34594b7ae2ac7255e97",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "557e1e694495b482aa1c2aafd0cc659e32c640b6138fd9947138cf3696c7245e",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "940900599ee9c72405126987079612eb1171f582f5f4019d380fb4e87dbc4e61",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "eb860436019d22346e706f9ac463acd410c6a664a6ef683d5ab2e5b67a3afdf6",
+      "reason": "explicit_year_target_unresolved",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "b9ecb037de452e9c6f6e05d60537f2c016ebb405cce4ca2e540382ceb597db78",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "e91f0aabbf12dcdbc0931555bb59eef99ac862771980b5e1808a8eecc1f0ee8e",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "b84d7ddacb0a890306a4d28364f142c9ddeefc3620243f1d983182d150e708b7",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "f598d0930d7f001fb3aa4a60d6e5d43df803cfd77f316606787bf65e1df1fae9",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "98abfe8537b85c31b193e4da59660a3cff23acc0677f6e2e4e5b8a3ff3c6fe86",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "d0f983087b5cb2e395eddcb527e81476b8b18de524e6f60abc22c7f6159e7835",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "bced8f6b7de85a6f3070f2159a31b60fc014029288553b21d86ae3d213f5344c",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "fc59524809caa2c376fc47a865cd9e5be03674fcfa1e1c0b7f759e2bdf92cce4",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "70c6c1c0e57cd104b1ac7ee31d42f544ded365eb65c4a1b0a76b161be08f959c",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "4dd982af112cb3efa27f6f15f72b61cc2cc7d6178ba7f0c4bf92fa6566354249",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "e2a8d76aee3349c62068ebc7a3a9677bce9971a6b11694e5d4bdeb83847f60a5",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "23fc8fb183e4184771dd46e6e91ffde58ed7eec28e4656e9a442c9be60194792",
+      "reason": "explicit_year_target_unresolved",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "4667113979dd8941ad968100226e2990597cd3fb8cf8dd38f6e6ae46eabcb5fe",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "34cecd37603b63fe0b762083d7fbbd86285c49ea5fa59399d921b8eb98461562",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "9f8a9639e9ab69c232400003ed1c8a2ed91cbf4b594e46cf4ac80c6c252599b0",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "09e410a6f011ec665544b0871376cd161f8832567b44ae9837bf8977a85a7c35",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "8237adc3d43b4bb47dcf2611fe1e810a7353ee52e733a931db8ef1f4062db8d7",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "4f514f05c4a1f6d9dd4260c344d945f5bba3eed2dd30522bb7bddc42e71c3611",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "072a4f22bb2dd07dd9e879e32fb69402ea0ad35cb2414e38c281905a62138d19",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "c43aeb30195a49bb25cf6865c9832d801b63656d2760decd3cf523980f1a3e75",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "ee92017fd64e4e05abda55f6ba38fc7eb8dc3b6e1987b8af1580786a1b81d04b",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    },
+    {
+      "source": "BaziQA",
+      "question_identity_sha256": "b971bc8dbc58a8dc3522f30a28f8b709c3436272b15092fae79cd6bacb292833",
+      "reason": "no_explicit_target_year",
+      "year_basis": null,
+      "evidence_spans": []
+    }
+  ],
+  "excluded_reasons": {
+    "no_explicit_target_year": 61,
+    "explicit_year_target_unresolved": 5
+  },
+  "target_years": [
+    1980,
+    1993,
+    2001,
+    2004,
+    2018,
+    2021,
+    2022,
+    2024
+  ],
+  "target_year_equals_competition_year_count": 0,
+  "sources": [
+    {
+      "source": "mingli",
+      "source_commit": "b7433280fd86d7a7c27debbc47d0303c218f0bfd",
+      "source_commit_scope": "local_repository_HEAD_not_clean_file_attestation",
+      "full_source_questions": 160,
+      "full_source_cases": 32,
+      "full_schema_valid_questions": 160,
+      "full_included_questions": 22,
+      "full_excluded_questions": 138,
+      "subset_source_questions": 40,
+      "subset_source_cases": 8,
+      "subset_schema_valid_questions": 40,
+      "subset_included_questions": 9,
+      "subset_excluded_questions": 31,
+      "outside_2025_rows": 120,
+      "unresolved_contest_year_rows": 0,
+      "subset_excluded_reasons": {
+        "no_explicit_target_year": 30,
+        "explicit_year_target_unresolved": 1
+      },
+      "files": [
+        {
+          "file": "data.json",
+          "source_file_sha256": "8a1eb273ff555b757a618651a7175800564c48f6f17111d09d1c28ea5c7068ce",
+          "full_source_questions": 160,
+          "full_source_cases": 32,
+          "full_schema_valid_questions": 160,
+          "full_included_questions": 22,
+          "full_excluded_questions": 138,
+          "full_excluded_reasons": {
+            "no_explicit_target_year": 126,
+            "explicit_year_target_unresolved": 11,
+            "ambiguous_multiple_target_years": 1
+          },
+          "subset_source_questions": 40,
+          "subset_source_cases": 8,
+          "subset_schema_valid_questions": 40,
+          "subset_included_questions": 9,
+          "subset_excluded_questions": 31,
+          "outside_2025_rows": 120,
+          "unresolved_contest_year_rows": 0,
+          "subset_excluded_reasons": {
+            "no_explicit_target_year": 30,
+            "explicit_year_target_unresolved": 1
+          },
+          "included_audit": [
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "28c69bf996835433f4c11ee9173c48ca4810907c6465c30dca1522735edf4128",
+              "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+              "competition_year": 2025,
+              "question_target_year": 1980,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  0,
+                  5
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "a34184f22b3ff78d9aa8e117cc11906cfb8cd10b63839cd6186eced06bab9f5f",
+              "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+              "competition_year": 2025,
+              "question_target_year": 1993,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  0,
+                  5
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "c4b29fb216468c80854c776c663a72cbf6d0b2c6501a65afdefb95c3066e8802",
+              "case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+              "competition_year": 2025,
+              "question_target_year": 2018,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "932ea6dedada9ef6f9f7667cccb3bcbe5999c25a184fa190b2b32572e7da8e84",
+              "case_identity_sha256": "91a9bc61ca24e21df6b01456d44f620c21ecea0f6bf1e047943e0d2055ee26e0",
+              "competition_year": 2025,
+              "question_target_year": 2022,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  0,
+                  5
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "e00fb8971fe3ee0a1f413c935a32fd94e6cf9f2f4d62dfd070c0dd4f3dc370e9",
+              "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+              "competition_year": 2025,
+              "question_target_year": 2001,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "88a714d6e3d758ba5742c9f10696dc9428b9ca3ddf2a462157b4605256e3c5dc",
+              "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+              "competition_year": 2025,
+              "question_target_year": 2022,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  2,
+                  7
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "873c148bf90b5f266c084a835cd6b757dbb051fd735cc19633c5b3ea02f7da02",
+              "case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+              "competition_year": 2025,
+              "question_target_year": 2004,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "a42fd86ad870e25aa29f999b278fd48c8c2c8f46f0cc6c95ae5b567d72fe2b2f",
+              "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+              "competition_year": 2025,
+              "question_target_year": 2021,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "e6fbf53ed8d60c52f02e08cf5005a946585be5eaa7e67fdd83510ba26b4d4a26",
+              "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+              "competition_year": 2025,
+              "question_target_year": 2024,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            }
+          ],
+          "excluded_audit": [
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "0a8378d2f97a35f5831702dc2d405d8916f41ab4c52b5246e3ad0c228b732c6b",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "2a23da2364ef87232f6b9022e3c51435556c44b9883bcff2614044b1cf7b91fa",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "a4b28f557127e0e64bffa1261002685a10f6422b90985442559ef20c4eefced9",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "ffcaba9ab2a0d8fb8a24231f69a1860b51c192d499b6074ba2cbfcef52d0ad6d",
+              "reason": "explicit_year_target_unresolved",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "811aed1f537cd5a164c3df60e529c28dd7c9cac774230a990887b2dd9722e6fd",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "9a9b9add2f3ac69d403f7a7b82f744b91f8a662647604f2b59b3fcb11898f4a7",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "34cdc3597e81a420a27d898526f1c7fcb8e11a33abfd093d622f85140b644315",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "f96fe04ab6ab82d8d9c90bd4d647dd267a8d172bbd7bf75bb524bb05b4dfab07",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "09b0a799e5a16c677bb25d87aebbf341fe9a3b87cacfc8876e3bd36e813bb36e",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "3ee63ceb61d576ce3c3ad594575eab0c301c757f4760d9f3314d0c5b0c6e10b6",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "ecf3683279756f83f18411dd9bebd9aa589343a1ef6881704119a9ab57df950a",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "93a73f0031a1962073c14805c931110f7eb1e1e02a13096bea3bcd1c1ffd8444",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "0c68f5a6edf7d80823fa09cb6a4cf9f3e69ff01df725f7ea7dc3594e91ea0d1d",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "e9bda49cd08b89cbea0ba61cc7fd1babe0760a423350e6b15d25564cab4e5608",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "c1ffd0d8e7ccc4d29325c1527cc2c8e9cb5c53aa35f3edf2bd2167c8d499bfa0",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "f18d661336147b1c4d16345b0dddecb69a20a71851a75273ff0f09d382d95dc8",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "244816b4eee4388eace9e5a93ba49cf0b757a83c74fc8fe508f8862a27136da1",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "17d5b3ff257b2a1791710d1fade537b3c9fdfa630797eb58408f042f4270b385",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "d9ff266b496e5bb36b7d2b5cfd2a67f2e866ffd37d8f4b93868d6155fed9349a",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "cf8c028b50dd96e79cd95ddd6a9af04f7db5c06878b5be57efdefeee4775b9f1",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "d2e1ed5a9a981a1b2f42e9c4938afd3c1940f7cc7ffa65a0d7559c2c2bc08f1f",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "35efc70385a1d30802e16a4ddf8acbcdc709cd3f1b17428cae72a181af40d166",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "0bab098a945079183266ef8167090ea9cf68e5124612213e276180d47b8055cb",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "7e409cf07c06191bbf1f0b7bea0f50e7f7c395697bf5bf333c5908296d3b143e",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "d615acd5da4ceff7bebd08c4158175f252ad402d14967ce3de6bc6dd7fff378c",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "aad312af3f431b63a707bd72ace725fe9fa8ce2441b8e38a30f2d30a4ba9731a",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "884a6dc8c96c8dff12f0926e5d7367555e7a7829627bf229c26a8380c7204cf4",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "a64d07f9b8932f9165b2b47584ec2f63c3011d49a9f40ff6f126735a1a43cc97",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "29b302dfbd115a5cb9d6c04a60f056cda81115bf48c816459ec96c588fb139ea",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "a833be4158eacf76dee4ab58a54144591700c01d97c6eddf2faa4d40574feee1",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "MingLi-Bench",
+              "question_identity_sha256": "0a56dc135c3749be91f87d3413aed0c34053bfd23daf44ca2d214bb13fef2894",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "source": "baziqa",
+      "source_commit": "8ea8222f8bd8ef8a6f1a5fb012344935a66e7686",
+      "source_commit_scope": "local_repository_HEAD_not_clean_file_attestation",
+      "full_source_questions": 200,
+      "full_source_cases": 41,
+      "full_schema_valid_questions": 199,
+      "full_included_questions": 26,
+      "full_excluded_questions": 174,
+      "subset_source_questions": 40,
+      "subset_source_cases": 8,
+      "subset_schema_valid_questions": 40,
+      "subset_included_questions": 5,
+      "subset_excluded_questions": 35,
+      "outside_2025_rows": 160,
+      "unresolved_contest_year_rows": 0,
+      "subset_excluded_reasons": {
+        "no_explicit_target_year": 31,
+        "explicit_year_target_unresolved": 4
+      },
+      "files": [
+        {
+          "file": "contest8_2021.json",
+          "source_file_sha256": "96fbdaff6ba3f0ffbebc387dd7acbea0b49c48821153b444e5c139e038801cef",
+          "full_source_questions": 40,
+          "full_source_cases": 9,
+          "full_schema_valid_questions": 40,
+          "full_included_questions": 8,
+          "full_excluded_questions": 32,
+          "full_excluded_reasons": {
+            "no_explicit_target_year": 26,
+            "explicit_year_target_unresolved": 5,
+            "ambiguous_multiple_target_years": 1
+          },
+          "subset_source_questions": 0,
+          "subset_source_cases": 0,
+          "subset_schema_valid_questions": 0,
+          "subset_included_questions": 0,
+          "subset_excluded_questions": 0,
+          "outside_2025_rows": 40,
+          "unresolved_contest_year_rows": 0,
+          "subset_excluded_reasons": {},
+          "included_audit": [],
+          "excluded_audit": []
+        },
+        {
+          "file": "contest8_2022.json",
+          "source_file_sha256": "d2e7978f61100a2c1104d01b5bbaee29008dcacf2c63ca51f8a52903f0aa5bef",
+          "full_source_questions": 40,
+          "full_source_cases": 8,
+          "full_schema_valid_questions": 40,
+          "full_included_questions": 8,
+          "full_excluded_questions": 32,
+          "full_excluded_reasons": {
+            "no_explicit_target_year": 30,
+            "explicit_year_target_unresolved": 2
+          },
+          "subset_source_questions": 0,
+          "subset_source_cases": 0,
+          "subset_schema_valid_questions": 0,
+          "subset_included_questions": 0,
+          "subset_excluded_questions": 0,
+          "outside_2025_rows": 40,
+          "unresolved_contest_year_rows": 0,
+          "subset_excluded_reasons": {},
+          "included_audit": [],
+          "excluded_audit": []
+        },
+        {
+          "file": "contest8_2023.json",
+          "source_file_sha256": "920afd8acbc1e17c360dc940c79833b096893a7483420b832f9929a1d8f0eed4",
+          "full_source_questions": 40,
+          "full_source_cases": 8,
+          "full_schema_valid_questions": 39,
+          "full_included_questions": 4,
+          "full_excluded_questions": 36,
+          "full_excluded_reasons": {
+            "missing_or_invalid_option_labels": 1,
+            "no_explicit_target_year": 34,
+            "explicit_year_target_unresolved": 1
+          },
+          "subset_source_questions": 0,
+          "subset_source_cases": 0,
+          "subset_schema_valid_questions": 0,
+          "subset_included_questions": 0,
+          "subset_excluded_questions": 0,
+          "outside_2025_rows": 40,
+          "unresolved_contest_year_rows": 0,
+          "subset_excluded_reasons": {},
+          "included_audit": [],
+          "excluded_audit": []
+        },
+        {
+          "file": "contest8_2024.json",
+          "source_file_sha256": "df82d66b948206f755d7d5255583b8c3a217ed01de787283ef79ab73a52e769a",
+          "full_source_questions": 40,
+          "full_source_cases": 8,
+          "full_schema_valid_questions": 40,
+          "full_included_questions": 1,
+          "full_excluded_questions": 39,
+          "full_excluded_reasons": {
+            "no_explicit_target_year": 34,
+            "explicit_year_target_unresolved": 5
+          },
+          "subset_source_questions": 0,
+          "subset_source_cases": 0,
+          "subset_schema_valid_questions": 0,
+          "subset_included_questions": 0,
+          "subset_excluded_questions": 0,
+          "outside_2025_rows": 40,
+          "unresolved_contest_year_rows": 0,
+          "subset_excluded_reasons": {},
+          "included_audit": [],
+          "excluded_audit": []
+        },
+        {
+          "file": "contest8_2025.json",
+          "source_file_sha256": "6b39f6cea061ec54e92f0b2cace4a168389be1aa1eabb2ef3877d39f07880e2c",
+          "full_source_questions": 40,
+          "full_source_cases": 8,
+          "full_schema_valid_questions": 40,
+          "full_included_questions": 5,
+          "full_excluded_questions": 35,
+          "full_excluded_reasons": {
+            "no_explicit_target_year": 31,
+            "explicit_year_target_unresolved": 4
+          },
+          "subset_source_questions": 40,
+          "subset_source_cases": 8,
+          "subset_schema_valid_questions": 40,
+          "subset_included_questions": 5,
+          "subset_excluded_questions": 35,
+          "outside_2025_rows": 0,
+          "unresolved_contest_year_rows": 0,
+          "subset_excluded_reasons": {
+            "no_explicit_target_year": 31,
+            "explicit_year_target_unresolved": 4
+          },
+          "included_audit": [
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "484cb80021ddf63974c796ebb4199403d33533ac4aac0c151bf629f9f7cbe1e9",
+              "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+              "competition_year": 2025,
+              "question_target_year": 1980,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  0,
+                  5
+                ]
+              ]
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "4b2cdd433a85a2c18e6d8c310a626c581f8802dca2c2673a31b26baa25f33351",
+              "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+              "competition_year": 2025,
+              "question_target_year": 1993,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  0,
+                  5
+                ]
+              ]
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "bee32fa733e414f9cfc1ef87a291d77dcc27880cb9e5f7e7d7bec1850d1e472a",
+              "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+              "competition_year": 2025,
+              "question_target_year": 2001,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "3c2fc947abf8824b03df76cda08cc6ea769603d115faa16cd347b80881b22aa0",
+              "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+              "competition_year": 2025,
+              "question_target_year": 2022,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "35750486bd46040f2de0b1f25ecb166d871a3888fd1e1fb7279e0914807003bf",
+              "case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+              "competition_year": 2025,
+              "question_target_year": 2024,
+              "year_basis": "question_explicit_target_year",
+              "reason": "explicit_target_clause",
+              "evidence_spans": [
+                [
+                  3,
+                  8
+                ]
+              ]
+            }
+          ],
+          "excluded_audit": [
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "ac5175660bcd0e9cf15514e494a3f6e99b29b58c3a3ea9da8f230487cd79ce5c",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "5280c138385561c866424985685951105f6e648cd0621d4eb7d75e37b63db710",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "dac430faa43dd105f14b73745e4982bf9f5d5d7eba5eb97074c5bbb9f7ff4435",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "d4fee89d42f48578fb49c1401cf895eed53b5d086454e2720fe7b1a3e7f12ea0",
+              "reason": "explicit_year_target_unresolved",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "996a302afb5447afd9cf74f12ea7ef4cb72d56d7aa5e6f81901c7a74c564ea42",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "f83d7b9323768877060039c704de630896ca4febdc6e9672fac21573c7ec774a",
+              "reason": "explicit_year_target_unresolved",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "343263f5e83a1f3ea611dcfceddb9e8ab589c5b02ede28235df807669694ccd4",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "70140b2b4bd61074c142a184ff157a44e0cddf413b65654ad7d62a1300be27e2",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "a708a3372856d1d7cc309a0dd04c4cf864d414be7b1aa1f2fc966166a72b2375",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "5c189c36fe34f3f670c80ad47e4990d52aa02f1bf1f1c34594b7ae2ac7255e97",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "557e1e694495b482aa1c2aafd0cc659e32c640b6138fd9947138cf3696c7245e",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "940900599ee9c72405126987079612eb1171f582f5f4019d380fb4e87dbc4e61",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "eb860436019d22346e706f9ac463acd410c6a664a6ef683d5ab2e5b67a3afdf6",
+              "reason": "explicit_year_target_unresolved",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "b9ecb037de452e9c6f6e05d60537f2c016ebb405cce4ca2e540382ceb597db78",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "e91f0aabbf12dcdbc0931555bb59eef99ac862771980b5e1808a8eecc1f0ee8e",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "b84d7ddacb0a890306a4d28364f142c9ddeefc3620243f1d983182d150e708b7",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "f598d0930d7f001fb3aa4a60d6e5d43df803cfd77f316606787bf65e1df1fae9",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "98abfe8537b85c31b193e4da59660a3cff23acc0677f6e2e4e5b8a3ff3c6fe86",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "d0f983087b5cb2e395eddcb527e81476b8b18de524e6f60abc22c7f6159e7835",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "bced8f6b7de85a6f3070f2159a31b60fc014029288553b21d86ae3d213f5344c",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "fc59524809caa2c376fc47a865cd9e5be03674fcfa1e1c0b7f759e2bdf92cce4",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "70c6c1c0e57cd104b1ac7ee31d42f544ded365eb65c4a1b0a76b161be08f959c",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "4dd982af112cb3efa27f6f15f72b61cc2cc7d6178ba7f0c4bf92fa6566354249",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "e2a8d76aee3349c62068ebc7a3a9677bce9971a6b11694e5d4bdeb83847f60a5",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "23fc8fb183e4184771dd46e6e91ffde58ed7eec28e4656e9a442c9be60194792",
+              "reason": "explicit_year_target_unresolved",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "4667113979dd8941ad968100226e2990597cd3fb8cf8dd38f6e6ae46eabcb5fe",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "34cecd37603b63fe0b762083d7fbbd86285c49ea5fa59399d921b8eb98461562",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "9f8a9639e9ab69c232400003ed1c8a2ed91cbf4b594e46cf4ac80c6c252599b0",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "09e410a6f011ec665544b0871376cd161f8832567b44ae9837bf8977a85a7c35",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "8237adc3d43b4bb47dcf2611fe1e810a7353ee52e733a931db8ef1f4062db8d7",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "4f514f05c4a1f6d9dd4260c344d945f5bba3eed2dd30522bb7bddc42e71c3611",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "072a4f22bb2dd07dd9e879e32fb69402ea0ad35cb2414e38c281905a62138d19",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "c43aeb30195a49bb25cf6865c9832d801b63656d2760decd3cf523980f1a3e75",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "ee92017fd64e4e05abda55f6ba38fc7eb8dc3b6e1987b8af1580786a1b81d04b",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            },
+            {
+              "source": "BaziQA",
+              "question_identity_sha256": "b971bc8dbc58a8dc3522f30a28f8b709c3436272b15092fae79cd6bacb292833",
+              "reason": "no_explicit_target_year",
+              "year_basis": null,
+              "evidence_spans": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "professional_corpus_scores": null,
+  "professional_corpus_confidence_interval": null,
+  "source_content_redistributed": false,
+  "real_model_requests": 0,
+  "chart_calculations": 0,
+  "new_downloads": 0,
+  "server_requests": 0,
+  "historical_strict_control": {
+    "seed": 20261019,
+    "year_basis": "question_year",
+    "actual_call_count": 1,
+    "complete_batch_only": true,
+    "retries": 0,
+    "cross_source_fallback": false,
+    "cross_year_fallback": false,
+    "input_questions": 14,
+    "eligible_questions": 14,
+    "multi_year_case_count": 5,
+    "multi_year_cases": [
+      {
+        "source": "BaziQA",
+        "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+        "target_years": [
+          1980,
+          1993
+        ]
+      },
+      {
+        "source": "BaziQA",
+        "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+        "target_years": [
+          2001,
+          2022
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+        "target_years": [
+          1980,
+          1993
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+        "target_years": [
+          2001,
+          2022
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+        "target_years": [
+          2021,
+          2024
+        ]
+      }
+    ],
+    "group_count": 13,
+    "singleton_group_count": 12,
+    "groups": [
+      {
+        "source": "BaziQA",
+        "target_year": 1980,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "BaziQA",
+        "target_year": 1993,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "BaziQA",
+        "target_year": 2001,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "BaziQA",
+        "target_year": 2022,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "BaziQA",
+        "target_year": 2024,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 1980,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 1993,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 2001,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 2004,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 2018,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 2021,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 2022,
+        "case_count": 2,
+        "distinct_birth_count": 2,
+        "structurally_unmatchable": false
+      },
+      {
+        "source": "MingLi-Bench",
+        "target_year": 2024,
+        "case_count": 1,
+        "distinct_birth_count": 1,
+        "structurally_unmatchable": true
+      }
+    ],
+    "status": "unavailable",
+    "error_code": "placebo_case_spans_question_years_cannot_preserve_one_donor",
+    "placebo_questions": 0,
+    "changed_births_count": 0
+  },
+  "current_controls": {
+    "control_name": "宽松安慰剂（同源跨案例）",
+    "status": "available",
+    "seed": 20261020,
+    "year_basis": "question_explicit_target_year_unchanged",
+    "donor_pool": "eligible_2025_competition_subset_same_source_cases",
+    "cross_target_year_allowed": true,
+    "cross_source_allowed": false,
+    "same_case_donor_consistent": true,
+    "distinct_birth_required": true,
+    "matching": "seeded_one_to_one_case_derangement",
+    "questions": 14,
+    "placebo_inputs_built": 14,
+    "no_chart_inputs_built": 14,
+    "checks_passed": {
+      "birth_changed": 14,
+      "question_unchanged": 14,
+      "target_year_unchanged": 14,
+      "same_displayed_question": 14,
+      "no_chart_allowlist": 14,
+      "answer_key_external": 14
+    },
+    "all_structural_checks_passed": true,
+    "pairs": [
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "28c69bf996835433f4c11ee9173c48ca4810907c6465c30dca1522735edf4128",
+        "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+        "donor_case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+        "question_target_year": 1980,
+        "donor_question_target_years": [
+          2001,
+          2022
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "a34184f22b3ff78d9aa8e117cc11906cfb8cd10b63839cd6186eced06bab9f5f",
+        "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+        "donor_case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+        "question_target_year": 1993,
+        "donor_question_target_years": [
+          2001,
+          2022
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "c4b29fb216468c80854c776c663a72cbf6d0b2c6501a65afdefb95c3066e8802",
+        "case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+        "donor_case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+        "question_target_year": 2018,
+        "donor_question_target_years": [
+          1980,
+          1993
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "932ea6dedada9ef6f9f7667cccb3bcbe5999c25a184fa190b2b32572e7da8e84",
+        "case_identity_sha256": "91a9bc61ca24e21df6b01456d44f620c21ecea0f6bf1e047943e0d2055ee26e0",
+        "donor_case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+        "question_target_year": 2022,
+        "donor_question_target_years": [
+          2021,
+          2024
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "e00fb8971fe3ee0a1f413c935a32fd94e6cf9f2f4d62dfd070c0dd4f3dc370e9",
+        "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+        "donor_case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+        "question_target_year": 2001,
+        "donor_question_target_years": [
+          2018
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "88a714d6e3d758ba5742c9f10696dc9428b9ca3ddf2a462157b4605256e3c5dc",
+        "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+        "donor_case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+        "question_target_year": 2022,
+        "donor_question_target_years": [
+          2018
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "873c148bf90b5f266c084a835cd6b757dbb051fd735cc19633c5b3ea02f7da02",
+        "case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+        "donor_case_identity_sha256": "91a9bc61ca24e21df6b01456d44f620c21ecea0f6bf1e047943e0d2055ee26e0",
+        "question_target_year": 2004,
+        "donor_question_target_years": [
+          2022
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "a42fd86ad870e25aa29f999b278fd48c8c2c8f46f0cc6c95ae5b567d72fe2b2f",
+        "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+        "donor_case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+        "question_target_year": 2021,
+        "donor_question_target_years": [
+          2004
+        ]
+      },
+      {
+        "source": "MingLi-Bench",
+        "question_identity_sha256": "e6fbf53ed8d60c52f02e08cf5005a946585be5eaa7e67fdd83510ba26b4d4a26",
+        "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+        "donor_case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+        "question_target_year": 2024,
+        "donor_question_target_years": [
+          2004
+        ]
+      },
+      {
+        "source": "BaziQA",
+        "question_identity_sha256": "484cb80021ddf63974c796ebb4199403d33533ac4aac0c151bf629f9f7cbe1e9",
+        "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+        "donor_case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+        "question_target_year": 1980,
+        "donor_question_target_years": [
+          2001,
+          2022
+        ]
+      },
+      {
+        "source": "BaziQA",
+        "question_identity_sha256": "4b2cdd433a85a2c18e6d8c310a626c581f8802dca2c2673a31b26baa25f33351",
+        "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+        "donor_case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+        "question_target_year": 1993,
+        "donor_question_target_years": [
+          2001,
+          2022
+        ]
+      },
+      {
+        "source": "BaziQA",
+        "question_identity_sha256": "bee32fa733e414f9cfc1ef87a291d77dcc27880cb9e5f7e7d7bec1850d1e472a",
+        "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+        "donor_case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+        "question_target_year": 2001,
+        "donor_question_target_years": [
+          2024
+        ]
+      },
+      {
+        "source": "BaziQA",
+        "question_identity_sha256": "3c2fc947abf8824b03df76cda08cc6ea769603d115faa16cd347b80881b22aa0",
+        "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+        "donor_case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+        "question_target_year": 2022,
+        "donor_question_target_years": [
+          2024
+        ]
+      },
+      {
+        "source": "BaziQA",
+        "question_identity_sha256": "35750486bd46040f2de0b1f25ecb166d871a3888fd1e1fb7279e0914807003bf",
+        "case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+        "donor_case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+        "question_target_year": 2024,
+        "donor_question_target_years": [
+          1980,
+          1993
+        ]
+      }
+    ],
+    "professional_corpus_scores": null,
+    "real_model_requests": 0,
+    "chart_calculations": 0,
+    "inference_calls": 0
+  },
+  "no_chart_control": {
+    "name": "无盘对照",
+    "status": "available",
+    "seed": 20261020,
+    "inputs_built": 14,
+    "input_allowlist": [
+      "question",
+      "options"
+    ],
+    "all_input_allowlists_valid": true,
+    "raw_source_ids_in_input": false,
+    "question_prose_unchanged": true,
+    "question_may_itself_contain_birth_hints": true,
+    "structured_birth_or_derived_chart_provided": false,
+    "professional_corpus_scores": null,
+    "inference_calls": 0
+  },
+  "historical_synthetic_workflow": {
+    "executed_by_this_audit": false,
+    "questions": 3,
+    "source": "explicitly_synthetic_v2",
+    "entry_point": "mingjing_core.adapters.charts.benchmarks.scripted_v2",
+    "configurations": [
+      "C0",
+      "C1",
+      "C2",
+      "C3",
+      "C4a",
+      "C4b"
+    ],
+    "steps": [
+      "fixtures()生成3道显式2025年合成时支读数题，不取专业题库正文。",
+      "固定种子打乱选项，评分器保管正确选项映射，推理回调不接触答案。",
+      "C0无盘；C1盘面文字；C2结构化盘与技能；C3增加当前规则命中。",
+      "C4a按时间交互顺序生成专科请求；C4b不附顺序约束，再用脚本合参。",
+      "同题目标年安慰剂在3合成案例间固定错配，再与C3脚本读数比较。",
+      "现有scripted_v2另含比赛年口径兼容烟测，仅历史对照，不充当当前控制。"
+    ],
+    "repeat_policy": "本次仅写流程；既有脚本为每题1次，不把5次多数票说成已运行。",
+    "interpretation": "脚本读盘面字段只验证软件流程，不验证命理推理或现实预测。",
+    "professional_corpus_execution": false,
+    "real_provider_or_agent": false,
+    "real_model_requests": 0,
+    "chart_calculations_in_this_audit": 0
+  },
+  "current_workflow": {
+    "policy": "brain28_M2",
+    "executed_by_this_audit": true,
+    "steps": [
+      "全来源结构验证后筛选2025赛季，按明确题面目标年纳入。",
+      "固定种子对同源纳入案例作一对一出生错配，保留原题与目标年。",
+      "按同一选项置换构造无盘对照，仅原题与选项，答案映射留在评分侧。",
+      "核对案例一致性、出生变化、原题/目标年/选项一致性，仅发布哈希和计数。"
+    ],
+    "repeats": 1,
+    "inference_calls": 0
+  }
+}
