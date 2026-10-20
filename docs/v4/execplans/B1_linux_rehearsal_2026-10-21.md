@@ -10,10 +10,11 @@
 
 - [x] (2026-10-20 22:49 +08:00) 已完整阅读 28 前四节、29 授权原文、33 公共/主线及 B1 旧操作单、控制器、离线验证；文件和命令按源码核查。
 - [x] (2026-10-20 22:49 +08:00) 明确三轨：固定 b9 的 schema1–7；另行 P1b schema8 本机兼容；真实 B/D 只获准 0005–0007。不得混包、不得改旧迁移。
-- [ ] 本机 Docker/WSL 与 PG15 容器可用性、镜像身份和专属资源登记；当前仅知代理正在核查，尚无启动/测试成功证据。
+- [ ] (2026-10-20 23:07 +08:00) 本机 Linux 阻塞：Docker Inference Unix socket 不可访问，精确重命名仍拒绝；WSL VHDX 启动 E_ACCESSDENIED。已停止修复；没有 Reset、删卷或碰服务器。可重复演练入口和22项传输测试已交，不能代替 PG/systemd/fcntl 实证。
 - [ ] 合成 schema4 → dump → 新库 restore → 固定 b9 迁 schema7、owner/writer、容量、回滚的真实演练。
 - [ ] stage 恢复副本专用撤销/收据重放 CLI 与真实 PG 正反例、幂等验证。
 - [ ] 三 unit/timer、CHART_PYTHON、Hermes wrapper、维护门/fence、部分失败止损的 Linux 验证。
+- [x] (2026-10-20 23:07 +08:00) 新 publication 可移植控制器11项离线目标测试通过：31原文/hash/用户上线引用、北京时间窗口、分阶段开门、失败关门、60分钟配置回退边界；Native真实恢复未实现，明确拒绝手填proof。该计数不是Linux验收。
 - [ ] 两份执行单已初稿，待实际工具参数与演练结果补齐；未核环节保持阻塞，不写 Go。
 - [ ] root 审查、目标测试、提交/推送，汇总第一段报告通过与阻塞；执行 stage 另按 30 号条件授权。
 
@@ -29,9 +30,15 @@
 
 2026-10-20 22:49 +08:00 / Codex：30/31 号文件当前不存在，今晚不访问服务器。用户委托允许在条件满足时执行：B 要北京时间10-21 08:30以后、30明确 Go、先完成修改；D 只按31明确 Go 的工作日10:00–13:00窗口、写出后至少12小时，并遵守29第五节b。服务器操作异常停在原状态等大脑，只有SSH拒绝按10分钟间隔最多3次。
 
+2026-10-20 23:07 +08:00 / Codex：Native目标46项通过与52个子测试、Ruff绿，属于注入命令/PG/文件的离线证据。旧fixture补入真实CHART_PYTHON行，是因为新增精确单行变更需要核环境覆盖；保留原断言，再新增CHART/模型不漂移断言。新helper沿用既有Windows0600替身，不能因此声称POSIX权限已验证。二进制不查PATH并保留venv调用路径，防止resolve系统Python丢venv；受保护env完整备份且其他字节不变。
+
+2026-10-20 23:07 +08:00 / Codex、root同意形成待脑复核提案：旧b9只有Web受维护flag保护，飞书/报告不共用此门；不能先恢复后台再谎称flag最后才开业务。拟采用web_then_background：门内启动Web/健康→重核文件/fence/空队列/窗口→记录首次移门时间并开Web→恢复后台原状态。存在短暂非原子opening，60分钟从首次Web移门开始；任何失败立刻重设门并停全部writer。报告timer为Persistent=true，每分钟触发，恢复可补触发正常业务；控制器自身零模型/零发送不是后台流量为零的证明。31必须明确审同这一偏离，未获复核不得生产执行。
+
+2026-10-20 23:07 +08:00 / Codex：Web启动后会有自己的PG池会话，不能仍要求other_sessions=0。新适配器拟核MainPID/子进程socket inode与PG client_port，只允许该Web writer连接；这一路径未有Linux实证。生产restore-to-new-DB、最新旁账重放与旧包重绑定尚无实现，Native verify/open/rollback都以NATIVE_PRODUCTION_RESTORE_UNAVAILABLE阻塞，不接受任何自填true补洞；可移植rollback目前只证明“外部已恢复后配置回退并继续关门”的协议。
+
 ## Outcomes & Retrospective
 
-当前仅交执行单/计划初稿；真实 Linux/PG 测试与完整开门/回滚接口尚未核准，B1仍 No-Go。测试、提交号与正式结论由 root 随演练追加，不沿用旧替身或预期当结果。今晚0服务器、0真实模型、0飞书、0合并到主干。
+执行单/计划和可重复本机PG演练CLI已交，传输与publication替身目标测试通过；真实 Linux/PG、完整生产恢复仍阻塞，B1仍 No-Go。测试、提交号与正式结论由 root 随演练追加，不沿用旧替身或预期当结果。今晚0服务器、0真实模型、0飞书、0合并到主干。
 
 ## Context and Orientation
 

@@ -1,6 +1,6 @@
 # B1 stage 执行单：已有 Core PG 的增量升级（B0–B8）
 
-版本：2026-10-20 22:49 +08:00 初稿。**当前 No-Go：本机 Linux/真实 PG、B7 专用重放和完整权限/停写证据尚未交付。** 本单不是执行授权或已完成回执。root随实际工具/演练补全后交大脑审阅；不能只因为标题存在就进入服务器。
+版本：2026-10-20 23:07 +08:00。**当前 No-Go：真实 Linux PG15、systemd/fcntl/恢复和完整权限/停写证据未通过。** Docker Inference socket不可访问，独立WSL启动E_ACCESSDENIED，精确重命名仍拒绝后已停止修复；没有Reset或删卷。本单不是执行授权或已完成回执。root随实际工具/演练补全后交大脑审阅；不能只因为标题存在就进入服务器。
 
 ## 1. 固定输入、授权与禁止项
 
@@ -18,9 +18,9 @@
 
 | 门 | 继续证据 | 当前状态 |
 | --- | --- | --- |
-| 本机PG15真实增量/恢复 | 独立容器及镜像身份、schema4备份恢复、b9 4→7、权限、primary幂等、恢复兼容 | 阻塞：代理演练中，未交成功结果 |
+| 本机PG15真实增量/恢复 | 独立容器及镜像身份、schema4备份恢复、b9 4→7、权限、primary幂等、恢复兼容 | 阻塞：Docker/WSL不可用；22项传输测试不等于真实恢复 |
 | B7重放入口 | 新stage恢复副本allowlist CLI、候选b9底层调用、最新撤销+sent/uncertain单调、重复无变化 | 阻塞：旧restore-withdrawals硬live不可用 |
-| 固定命令与解释器 | systemctl/pg_dump/pg_restore绝对路径/版本/hash/权限；Core/Charts解释器和锁定依赖完整性 | 阻塞：旧Native只靠PATH/排除venv，不足 |
+| 固定命令与解释器 | systemctl/pg_dump/pg_restore绝对路径/版本/hash/权限；Core/Charts解释器和锁定依赖完整性 | 固定路径/root所有权/保留venv调用路径已补替身测试，真实Linux版本与依赖完整性仍阻塞 |
 | 停写与失败恢复 | 实际Linux fence覆盖跨exec、部分retarget失败不启动、stage不影响live | 阻塞：替身结果不能替代实证 |
 | 受保护执行配置 | 精确scope/DB/角色/host/hash请求、独立0600配置/审批、输出不覆盖、loader无密钥回显 | 阻塞：实际配置须B0后据当前元数据生成 |
 
@@ -36,9 +36,10 @@
     RELEASE_DIR=/root/zhiming-core-releases/$B1_SHA
     CONTROL_DIR=/root/zhiming-core-b1-control
     CONTROL_PYTHON="$CONTROL_DIR/venv/bin/python"
+    test -n "${B1_OP:?requires-reviewed-new-operation-directory}"
+    export B1_OP
     REQUEST="$B1_OP/request-stage.json"
     HOST_CONFIG="$B1_OP/host-stage.json"
-    test -n "${B1_OP:?requires-reviewed-new-operation-directory}"
     test -x "$CONTROL_PYTHON"
 
 说明：`B1_OP`、具体工具commit、审批哈希和各输出文件须在30复核后记录；本单不预填合成proof来解锁。只读输入校验的真实现有CLI为：

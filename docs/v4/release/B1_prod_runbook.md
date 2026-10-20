@@ -32,7 +32,7 @@ B1包固定 b9a89b6f84f7bebb640de080548010859aae630c；原包7dbc951eaffebd3d812
 | D4 | 只对primary dry-run→审计→apply→第二apply；另owner只计数 | repeat新增全0，原文/撤销/Outbox/牌面保持；未授权owner未改 | 任一变化异常保持停写待脑 | 10–30分 |
 | D5 | 三服务/报告timer、CHART_PYTHON、Hermes Core wrapper/manifest同步重定向b9 | 精确新hash、环境加载顺序、固定Core/Charts解释器；退役stub/最初备份保留 | 部分改写或hash漂移则全停；不重启整个Hermes | 5–15分 |
 | D6 | 门内启动受审Web并核健康/状态/历史/撤销/固定牌，检查空队列与错误安全 | 本机回环GET/合成受审检查通过，0模型、0飞书 | 严重错误立即止损，维护门不移除 | 10–20分 |
-| D7 | 受审publication verify→open；按原启用状态恢复获准writer，维护flag最后移除 | 31窗口仍有效，schema7/回执/全部有效unit/CHART/wrapper同SHA，门内核验通过 | 任一条件变动keep_closed；不能只手删flag | 3–10分 |
+| D7 | 受审publication verify→门内启动Web/健康→重核→首次移除Web门并记时→恢复后台原状态 | 31窗口仍有效且明确接受web_then_background非原子opening，schema7/全部文件/完整生产回滚有证据 | 任一步失败keep_closed并停全部writer；不能只手删flag | 3–10分 |
 | D8 | 唯一一次Web真实冒烟：“今天几号？星期几？” | 日期/星期按Asia/Shanghai正确；记run ID、POST计数=1、实际usage | 失败立即止损，不重试、不换模型、不发飞书 | 1–3分 |
 | D9 | 开门后观察30–60分，安全错误率/入口可用/数据摘要 | 无严重异常，结束时记录版本与观察证据 | 开门≤60分严重故障按下面回滚；超过60分仅向前修复并等脑 | 30–60分 |
 
@@ -57,7 +57,11 @@ B2/B3/B4三阶段沿用受审 `tools.core_incremental`，请求scope=live、owne
 
     "$CONTROL_PYTHON" -m tools.core_incremental --request "$LIVE_REQUEST" --apply --native --action backfill --approval "$B1_OP/approval-backfill.json" --host-config "$LIVE_HOST_CONFIG" --backup "$B1_OP/backup-object.json" --restore "$B1_OP/restore-proof.json" --migration "$B1_OP/migrate-result.json" --review "$B1_OP/review-primary.json" --output "$B1_OP/backfill-result.json"
 
-上述成功输出仍为publication=false，业务保持关闭。`tools.b1_publication`的verify/open/rollback参数和真实受审结果尚未冻结；本段保持阻塞，未到位时不写可运行的开门/回滚命令，不用旧publish代替。CLI定稿后追加确切命令与源码hash。
+上述成功输出仍为publication=false，业务保持关闭。新`tools.b1_publication`已有默认纯输入验证与可移植控制器，目标11项离线测试通过；Native生产恢复未实现，故verify/open/rollback明确阻塞NATIVE_PRODUCTION_RESTORE_UNAVAILABLE，不能用自填proof解除，不用旧publish代替。下列命令仅校验计划格式，不创建Native、不访问PG、不发HTTP：
+
+    "$CONTROL_PYTHON" -m tools.b1_publication --action verify --plan "$B1_OP/publication-plan.json"
+
+显式应用接口已经固定为`--action verify|open|rollback --plan ... --approval ... --output ... --apply --native`，但当前不可用来生产放行。plan须精确绑定31原字节hash、写出/窗口+08:00、用户本人上线确认引用、所有新/旧unit/env/技能文件hash、升级与生产恢复证据。approval绑定plan与完整工具依赖hash，不能用合成JSON充当授权。当前rollback仅有“外部已恢复后的配置回退并保持关门”协议，不含实际恢复或重开旧业务；真生产回滚入口和Linux验证补齐前，open也阻塞。
 
 ## 5. 三个服务、环境与Hermes的具体切换约束
 
@@ -66,6 +70,10 @@ Web `mingjingtai.service`、飞书 `zhiming-core-feishu.service`、报告 `zhimi
 `WorkingDirectory`、Core解释器、`CHART_PYTHON`须一起指向b9。旧环境文件可能覆写unit环境，须核最终生效值；先备份受保护env、只改已批准的精确单行、重算hash，不输出key/DSN或把env放Git。MODELS_CONFIG/MINGJING_MODEL_PORT保持未开启，模型仍k3和现有端点，追踪关闭。
 
 Hermes只改知命Core wrapper固定入口及其受审manifest；环境顺序为 `/root/.hermes/.env` 后 `/root/zhiming-core-secrets/live-runtime.env`。维护门先置，整个切换持有 `/root/zhiming-core-secrets/core-skill-writer.lock` 排他锁，旧/新wrapper都必须在共享锁内再次检查门且锁覆盖exec。所有退役stub与最初技能备份原字节保留，manifest最后原子写。不得触碰其他技能/服务、不得整体restart Hermes。
+
+**需大脑审的偏离**：固定b9飞书/报告不受Web flag保护；报告timer为Persistent=true且每分钟触发。拟先在门内启动Web并健康检查，重核fence/空队列/文件/窗口后移除Web门、立即记录opened_at，再恢复后台原状态，最后才认定完整opened。此过程不是原子切换，timer可能恢复正常业务；控制器自身0模型/0外发不能当作后台流量为0。60分钟从首次Web移门计时，任一步失败重设门+停全部writer。31须明确接受`web_then_background`，未接受不执行。不能伪装“flag最后”来掩盖后台提前启动；也不能未经授权修改固定b9来补门。
+
+门内Web健康会留下自身PG池会话。新适配器拟以受审systemd MainPID及子进程的socket inode核对PG client_port，只允许准确归属该Web的writer连接；其他服务仍停、队列仍0、fence仍持有。该Linux核验尚未实测，属于当前No-Go的一部分。
 
 ## 6. 失败止损与60分钟回滚
 
