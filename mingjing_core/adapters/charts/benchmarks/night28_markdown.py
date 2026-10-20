@@ -57,6 +57,25 @@ def render_markdown(report: dict[str, Any]) -> str:
     for section in (_source_tables, _inclusion_tables, _exclusion_tables, _controls):
         lines.extend(section(report))
         lines.append("")
+    temporal = report["temporal_calculability"]
+    later = temporal.get("donor_birth_year_after_target_year_count", "未检查")
+    lines += [
+        "## 可计算性限制：结构可构建，不等于完整对照可排盘",
+        "",
+        f"时间先后元数据检查状态：{temporal['status']}。",
+        f"捐赠出生年晚于保留题目目标年的题数：{later}。",
+        "按既有年度视图07-01北京时间正午采样，以全部允许[-14,+14]小时偏移判界，不选造时区。",
+        "确定出生晚于采样的配对不能当作有效年度排盘；"
+        f"本次仍保留全部{report['counts']['included_questions']}题，不隐性排题，不改seed或题目年份。",
+        "没有真正启动排盘preflight，也没有验证坐标、历法和分钟精度，不能把其余配对说成已可排盘。",
+        "待大脑决定是否显式增加donor出生不得晚于原题目标年的匹配约束，再在同一seed下重新生成一次；",
+        "未获指令板裁定前维持原匹配，不重抽、不改规则；若新约束不可行应明确拒绝。",
+        "",
+        "```json",
+        json.dumps(temporal, ensure_ascii=False, indent=2),
+        "```",
+        "",
+    ]
     lines += [
         "## 历史严格控制与当前界限",
         "",

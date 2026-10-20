@@ -160,6 +160,7 @@ year_basis固定为question_explicit_target_year，不回退到出生年、比�
 {
   "control_name": "宽松安慰剂（同源跨案例）",
   "status": "available",
+  "status_scope": "input_structure_only_not_chart_calculability",
   "seed": 20261020,
   "year_basis": "question_explicit_target_year_unchanged",
   "donor_pool": "eligible_2025_competition_subset_same_source_cases",
@@ -187,6 +188,161 @@ year_basis固定为question_explicit_target_year，不回退到出生年、比�
 }
 ```
 
+
+## 可计算性限制：结构可构建，不等于完整对照可排盘
+
+时间先后元数据检查状态：metadata_temporal_order_checked。
+捐赠出生年晚于保留题目目标年的题数：2。
+按既有年度视图07-01北京时间正午采样，以全部允许[-14,+14]小时偏移判界，不选造时区。
+确定出生晚于采样的配对不能当作有效年度排盘；本次仍保留全部14题，不隐性排题，不改seed或题目年份。
+没有真正启动排盘preflight，也没有验证坐标、历法和分钟精度，不能把其余配对说成已可排盘。
+待大脑决定是否显式增加donor出生不得晚于原题目标年的匹配约束，再在同一seed下重新生成一次；
+未获指令板裁定前维持原匹配，不重抽、不改规则；若新约束不可行应明确拒绝。
+
+```json
+{
+  "status": "metadata_temporal_order_checked",
+  "contract": "e2-night28-fixed-donor-temporal-preflight-v1",
+  "seed": 20261020,
+  "sampling_basis": "annual_basis_question_year_July01_noon_UTC+08:00",
+  "questions": 14,
+  "donor_birth_year_after_target_year_count": 2,
+  "donor_temporal_order_counts": {
+    "birth_definitely_after_annual_snapshot": 2,
+    "birth_definitely_not_after_annual_snapshot": 12
+  },
+  "original_temporal_order_counts": {
+    "birth_definitely_not_after_annual_snapshot": 14
+  },
+  "pair_assignment_sha256": "d2e93d7f66756fd73c33338ae4a53bd099ee3168eff2643f53c93302c0603538",
+  "pair_audit": [
+    {
+      "question_identity_sha256": "28c69bf996835433f4c11ee9173c48ca4810907c6465c30dca1522735edf4128",
+      "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+      "donor_case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+      "donor_birth_year_after_target_year": true,
+      "donor_temporal_order": "birth_definitely_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "a34184f22b3ff78d9aa8e117cc11906cfb8cd10b63839cd6186eced06bab9f5f",
+      "case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+      "donor_case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "c4b29fb216468c80854c776c663a72cbf6d0b2c6501a65afdefb95c3066e8802",
+      "case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+      "donor_case_identity_sha256": "adcc402d9b36ac9eb01c622a67d52b8584d0aa3ca41999f1f74fafd54487f362",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "932ea6dedada9ef6f9f7667cccb3bcbe5999c25a184fa190b2b32572e7da8e84",
+      "case_identity_sha256": "91a9bc61ca24e21df6b01456d44f620c21ecea0f6bf1e047943e0d2055ee26e0",
+      "donor_case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "e00fb8971fe3ee0a1f413c935a32fd94e6cf9f2f4d62dfd070c0dd4f3dc370e9",
+      "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+      "donor_case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "88a714d6e3d758ba5742c9f10696dc9428b9ca3ddf2a462157b4605256e3c5dc",
+      "case_identity_sha256": "e55891995e64bd6c2d19d6e4b6d777441453e14b34a3dcfaa7d21361c41b1807",
+      "donor_case_identity_sha256": "1206150b1b2377993d7de65883c0f7b6b358f8f99d8443e81e6e628ce43ce5c6",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "873c148bf90b5f266c084a835cd6b757dbb051fd735cc19633c5b3ea02f7da02",
+      "case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+      "donor_case_identity_sha256": "91a9bc61ca24e21df6b01456d44f620c21ecea0f6bf1e047943e0d2055ee26e0",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "a42fd86ad870e25aa29f999b278fd48c8c2c8f46f0cc6c95ae5b567d72fe2b2f",
+      "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+      "donor_case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "e6fbf53ed8d60c52f02e08cf5005a946585be5eaa7e67fdd83510ba26b4d4a26",
+      "case_identity_sha256": "cc78f4d88cabefbcb99a2ed3f62d87edf065db9c80a50fa652b5b3662e68f335",
+      "donor_case_identity_sha256": "75aac7684729050a22897323aaa8f1583a205338625d9274b6ef894699ba2caa",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "484cb80021ddf63974c796ebb4199403d33533ac4aac0c151bf629f9f7cbe1e9",
+      "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+      "donor_case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+      "donor_birth_year_after_target_year": true,
+      "donor_temporal_order": "birth_definitely_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "4b2cdd433a85a2c18e6d8c310a626c581f8802dca2c2673a31b26baa25f33351",
+      "case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+      "donor_case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "bee32fa733e414f9cfc1ef87a291d77dcc27880cb9e5f7e7d7bec1850d1e472a",
+      "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+      "donor_case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "3c2fc947abf8824b03df76cda08cc6ea769603d115faa16cd347b80881b22aa0",
+      "case_identity_sha256": "6709015614cc88b6af03be209eccbfd608098a64cdd6709abf66990b97cee0d1",
+      "donor_case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    },
+    {
+      "question_identity_sha256": "35750486bd46040f2de0b1f25ecb166d871a3888fd1e1fb7279e0914807003bf",
+      "case_identity_sha256": "b936a8a347f4741c8bdd102164662dfecc8bdeb2d00dd1e6f8de44219a86e86c",
+      "donor_case_identity_sha256": "72f868f61e1b4ccb0c25bac5ad930c328b2ac84709f2fd39f9373b67dba22cb8",
+      "donor_birth_year_after_target_year": false,
+      "donor_temporal_order": "birth_definitely_not_after_annual_snapshot",
+      "original_temporal_order": "birth_definitely_not_after_annual_snapshot"
+    }
+  ],
+  "matching_changed": false,
+  "seed_changed": false,
+  "retries": 0,
+  "chart_calculations": 0,
+  "real_model_requests": 0,
+  "chart_preflight_executed": false,
+  "complete_chart_calculability_established": false,
+  "limits": [
+    "宽松对照的输入结构可构建，不等于每题可排盘；不为修复时间先后关系而重抽、改年份或删题。",
+    "仅按源出生元数据与既有07-01正午年度采样检查先后，不推造未确认地理、时区或缺失分钟。",
+    "非阳历或缺字段题保持未判；没有输出任何出生数值、出生哈希、题面或答案。"
+  ]
+}
+```
 
 ## 历史严格控制与当前界限
 

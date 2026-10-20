@@ -11,6 +11,7 @@ from .night24_audit import _assembled_report
 from .night24_placebo import placebo_preflight
 from .night24_sources import audit_source
 from .night28_controls import CONTROL_NAME, SEED, rehearse_controls, rehearse_no_chart
+from .night28_temporal_preflight import temporal_preflight
 from .records import Question
 
 SAFE_ERRORS = frozenset(
@@ -46,6 +47,18 @@ def _rehearsal(records: list[Question]) -> dict[str, Any]:
         }
 
 
+def _temporal(records: list[Question], available: bool) -> dict[str, Any]:
+    if not available:
+        return {"status": "not_attempted_structural_control_unavailable"}
+    try:
+        return {
+            "status": "metadata_temporal_order_checked",
+            **temporal_preflight(records),
+        }
+    except Exception:
+        return {"status": "unavailable", "error_code": "e2_temporal_preflight_failed"}
+
+
 def build_audit(mingli_root: Path, baziqa_root: Path) -> dict[str, Any]:
     sources, records = [], []
     for root, source in ((mingli_root, "mingli"), (baziqa_root, "baziqa")):
@@ -56,6 +69,12 @@ def build_audit(mingli_root: Path, baziqa_root: Path) -> dict[str, Any]:
     report["contract"] = "e2-night28-scripted-controls-v1"
     report["historical_strict_control"] = report.pop("placebo_preflight")
     report["current_controls"] = _rehearsal(records)
+    report["current_controls"]["status_scope"] = (
+        "input_structure_only_not_chart_calculability"
+    )
+    report["temporal_calculability"] = _temporal(
+        records, report["current_controls"]["status"] == "available"
+    )
     report["no_chart_control"] = rehearse_no_chart(records, SEED)
     report["historical_synthetic_workflow"] = report.pop("synthetic_workflow")
     report["current_workflow"] = {

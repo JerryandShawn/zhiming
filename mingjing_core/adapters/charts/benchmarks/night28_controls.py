@@ -64,6 +64,7 @@ def rehearse_no_chart(records: list[Question], seed: int = SEED) -> dict[str, An
     return {
         "name": "无盘对照",
         "status": "available" if records else "no_eligible_questions",
+        "status_scope": "input_structure_only_not_chart_calculability",
         "seed": seed,
         "inputs_built": len(inputs),
         "input_allowlist": ["question", "options"],
@@ -128,6 +129,7 @@ def rehearse_controls(records: list[Question], seed: int = SEED) -> dict[str, An
     return {
         "control_name": CONTROL_NAME,
         "status": "available" if records else "no_eligible_questions",
+        "status_scope": "input_structure_only_not_chart_calculability",
         "seed": seed,
         "year_basis": "question_explicit_target_year_unchanged",
         "donor_pool": "eligible_2025_competition_subset_same_source_cases",
