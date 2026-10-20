@@ -7,7 +7,7 @@ import path from 'node:path';
 const runId = process.env.MINGJING_LIVE_VISUAL_RUN_ID ?? new Date().toISOString();
 const batch = runId.replace(/[^a-zA-Z0-9-]/g, '-');
 const evidence = path.resolve('test-results/live-evidence', batch);
-const checkedIn = path.resolve('evidence/2026-10-18');
+const checkedIn = path.resolve(process.env.LIVE_VISUAL_SUMMARY_DIR || 'evidence/2026-10-18');
 const names = ['today', 'chat', 'chart', 'tarot', 'cases', 'me', 'settings'] as const;
 const viewports = [
   { width: 375, height: 812 },

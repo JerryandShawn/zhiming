@@ -98,7 +98,10 @@ fieldset {
     top: calc(var(--app-vv-top) + var(--app-vv-height));
     transform: translateY(-100%);
     padding-bottom: var(--s-6);
-    animation: none;
+    --sheet-away: translateY(-100%);
+    --sheet-rest: translateY(-100%);
+    animation-duration: 0s;
+    animation-delay: 0s;
   }
 }
 @media (min-width: 640px) and (max-width: 1023px) {

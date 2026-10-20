@@ -108,6 +108,7 @@ export default function NightApp({ page }: { page: string }) {
         </div>
       )}
       <Suspense
+        key={page === 'chat' ? (privacy.active ? 'private-chat' : showGuide ? 'guide-chat' : 'normal-chat') : page}
         fallback={
           <div className="page">
             <Skeleton label="正在展开页面" />

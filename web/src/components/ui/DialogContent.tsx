@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import type { DialogContentProps } from './DeferredPanel';
 
 export default function DialogContent({
+  open,
   title,
   description,
   children,
@@ -12,7 +13,7 @@ export default function DialogContent({
   onReturnFocus,
 }: DialogContentProps) {
   return (
-    <Dialog.Root open onOpenChange={onOpenChange}>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="overlay" />
         <Dialog.Content

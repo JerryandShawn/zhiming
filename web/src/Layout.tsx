@@ -17,6 +17,7 @@ import { Toast } from './components/ui/Feedback';
 import { DeferredPanel } from './components/ui/DeferredPanel';
 import { useKeyboardViewport } from './useKeyboardViewport';
 import { useViewportPortalStyles } from './useViewportPortalStyles';
+import { useRouteMotion } from './useRouteMotion';
 import { detectContainer } from './embed/feishu';
 
 export const embeddedAppearance = (userAgent: string) => detectContainer(userAgent).host === 'feishu';
@@ -75,6 +76,7 @@ export function Layout({
 }) {
   const [privateMode, setPrivate] = useState(false);
   const viewport = useKeyboardViewport();
+  const main = useRouteMotion();
   useViewportPortalStyles(viewport);
   const embedded = embeddedAppearance(navigator.userAgent);
   const label =
@@ -184,7 +186,7 @@ export function Layout({
           </DeferredPanel>
         )}
       </header>
-      <main id="main" tabIndex={-1} aria-label={label}>
+      <main ref={main} id="main" tabIndex={-1} aria-label={label}>
         {children}
       </main>
       <nav className="tabbar" aria-label="底部导航">

@@ -12,6 +12,7 @@ import { usePanelHistory } from '../../usePanelHistory';
 import { Button } from './Controls';
 
 export type DialogContentProps = {
+  open: boolean;
   title: string;
   description: string;
   children: ReactNode;
@@ -62,9 +63,11 @@ export function DeferredPanel({
 
   useEffect(() => {
     latestOpen.current = open;
-    if (wasOpen.current && !open) returnFocus();
+    // Loaded content returns focus after its exit Presence finishes. An import
+    // that has not arrived has no focus scope, so cancellation returns it now.
+    if (wasOpen.current && !open && !Content) returnFocus();
     wasOpen.current = open;
-  }, [open, returnFocus]);
+  }, [open, Content, returnFocus]);
 
   useEffect(() => {
     if (!open || Content) return;
@@ -109,38 +112,38 @@ export function DeferredPanel({
         'aria-expanded': open,
         'aria-controls': open ? contentId : undefined,
       })}
-      {open &&
-        (Content ? (
-          <Content
-            title={title}
-            description={description}
-            sheet={sheet}
-            contentId={contentId}
-            onOpenChange={onOpenChange}
-            onReturnFocus={returnFocus}>
-            {children}
-          </Content>
-        ) : (
-          <div
-            id={contentId}
-            role={failed ? 'alert' : 'status'}
-            aria-label={`${failed ? '无法' : '正在'}展开${title}`}
-            className="stack small">
-            <p className="meta">{failed ? '这次没有展开，请再试一次。' : `正在展开${title}…`}</p>
-            {failed && (
-              <Button
-                onClick={() => {
-                  setFailed(false);
-                  setAttempt((value) => value + 1);
-                }}>
-                再试一次
-              </Button>
-            )}
-            <Button variant="ghost" onClick={() => onOpenChange(false)}>
-              取消展开
+      {Content ? (
+        <Content
+          open={open}
+          title={title}
+          description={description}
+          sheet={sheet}
+          contentId={contentId}
+          onOpenChange={onOpenChange}
+          onReturnFocus={returnFocus}>
+          {children}
+        </Content>
+      ) : open ? (
+        <div
+          id={contentId}
+          role={failed ? 'alert' : 'status'}
+          aria-label={`${failed ? '无法' : '正在'}展开${title}`}
+          className="stack small">
+          <p className="meta">{failed ? '这次没有展开，请再试一次。' : `正在展开${title}…`}</p>
+          {failed && (
+            <Button
+              onClick={() => {
+                setFailed(false);
+                setAttempt((value) => value + 1);
+              }}>
+              再试一次
             </Button>
-          </div>
-        ))}
+          )}
+          <Button variant="ghost" onClick={() => onOpenChange(false)}>
+            取消展开
+          </Button>
+        </div>
+      ) : null}
     </>
   );
 }

@@ -225,6 +225,24 @@
   background: var(--scrim);
   z-index: 70;
 }
+.overlay[data-state='open'],
+.dialog[data-state='open'] {
+  animation: layer-enter var(--slow) ease-out both;
+}
+.overlay[data-state='closed'],
+.dialog[data-state='closed'] {
+  animation: layer-exit 180ms ease-out both;
+}
+@keyframes layer-enter {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes layer-exit {
+  to {
+    opacity: 0;
+  }
+}
 .dialog {
   position: fixed;
   z-index: 71;
@@ -259,7 +277,10 @@
   width: 100%;
   max-height: 88dvh;
   border-radius: var(--r-3) var(--r-3) 0 0;
-  padding-bottom: calc(var(--s-6) + env(safe-area-inset-bottom));
+  padding-bottom: calc(var(--s-6) + env(safe-area-inset-bottom, 0px));
+  padding-left: max(var(--s-6), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--s-6), env(safe-area-inset-right, 0px));
+  overscroll-behavior: contain;
 }
 .dialog.sheet::before {
   content: '';
@@ -270,17 +291,33 @@
   background: var(--line-strong);
   margin: 0 auto var(--s-3);
 }
+.dialog.sheet .dialog-close {
+  right: max(var(--s-3), env(safe-area-inset-right, 0px));
+}
 .dialog.sheet[data-state='open'] {
-  animation: sheet-enter var(--slow) ease-out;
+  animation-name: sheet-enter;
+}
+.dialog.sheet[data-state='closed'] {
+  animation-name: sheet-exit;
 }
 @keyframes sheet-enter {
   from {
     opacity: 0;
-    transform: translateY(100%);
+    transform: var(--sheet-away, translateY(100%));
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: var(--sheet-rest, translateY(0));
+  }
+}
+@keyframes sheet-exit {
+  from {
+    opacity: 1;
+    transform: var(--sheet-rest, translateY(0));
+  }
+  to {
+    opacity: 0;
+    transform: var(--sheet-away, translateY(100%));
   }
 }
 .popover {
@@ -335,6 +372,9 @@
   .dialog.sheet[data-state='open'] {
     animation-name: drawer-enter;
   }
+  .dialog.sheet[data-state='closed'] {
+    animation-name: drawer-exit;
+  }
 }
 @keyframes drawer-enter {
   from {
@@ -344,5 +384,15 @@
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+@keyframes drawer-exit {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
   }
 }

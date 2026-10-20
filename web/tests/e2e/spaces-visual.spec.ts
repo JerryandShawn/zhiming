@@ -6,7 +6,8 @@ import path from 'node:path';
 
 const runId = process.env.MINGJING_SPACES_VISUAL_RUN_ID ?? new Date().toISOString();
 const batch = runId.replace(/[^a-zA-Z0-9-]/g, '-');
-const evidence = path.resolve('evidence/2026-10-18/spaces');
+const evidence = path.resolve(process.env.SPACES_VISUAL_EVIDENCE_DIR || 'evidence/2026-10-18/spaces');
+const evidenceReference = `web/${path.relative(process.cwd(), evidence).replaceAll('\\', '/')}`;
 const auditsDirectory = path.resolve('test-results/spaces-visual-evidence', batch, 'audits');
 const pages = [
   { name: 'chat', route: 'chat?space=career&topic=interview', heading: '跳槽 · 面试' },
@@ -94,7 +95,7 @@ test.afterAll(async () => {
     model_requests: 0,
     expected_combinations: 24,
     captured_combinations: audits.length,
-    screenshots_directory: 'web/evidence/2026-10-18/spaces/screenshots',
+    screenshots_directory: `${evidenceReference}/screenshots`,
     raw_audits_directory: `web/test-results/spaces-visual-evidence/${batch}/audits`,
     source_hashes: sourceHashes,
     build_hashes: buildHashes,
@@ -187,7 +188,7 @@ for (const viewport of viewports)
           route,
           theme,
           viewport,
-          screenshot: `web/evidence/2026-10-18/spaces/screenshots/${filename}`,
+          screenshot: `${evidenceReference}/screenshots/${filename}`,
           screenshot_sha256: await hashFile(screenshotFile),
           api_requests: api,
           outside_requests: outside,

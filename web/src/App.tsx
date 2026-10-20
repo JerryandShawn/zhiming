@@ -90,6 +90,7 @@ export default function App() {
   const content = (
     <Layout page={page} preview={preview && !componentsPreview} spacesPreview={spacesPreview}>
       <Suspense
+        key={spacesPreview && page === 'chat' ? 'spaces-chat' : route}
         fallback={
           <div className="page">
             <Skeleton label="正在展开页面" />

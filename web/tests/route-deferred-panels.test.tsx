@@ -1,6 +1,6 @@
-import { useState, type ComponentProps } from 'react';
+import { useEffect, useState, type ComponentProps } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Button } from '../src/components/ui/Controls';
@@ -51,6 +51,29 @@ function Example({ load }: { load: Loader }) {
   );
 }
 const settled = () => waitFor(() => expect(history.state).toEqual({ page: 'chart' }));
+
+function enableExitAnimations() {
+  const compute = window.getComputedStyle.bind(window);
+  vi.stubGlobal('CSS', { escape: (value: string) => value });
+  // Browsers return live computed styles; jsdom otherwise snapshots the open
+  // selector. Supply that platform behavior while exercising real Radix Presence.
+  vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudo) => {
+    const styles = compute(element, pseudo);
+    return new Proxy(styles, {
+      get(target, key) {
+        if (key === 'animationName' && element.classList.contains('dialog'))
+          return element.getAttribute('data-state') === 'closed' ? 'q8-exit' : 'q8-enter';
+        const value = Reflect.get(target, key, target);
+        return typeof value === 'function' ? value.bind(target) : value;
+      },
+    });
+  });
+}
+function animation(node: HTMLElement, kind: 'animationstart' | 'animationend', name: string) {
+  const event = new Event(kind, { bubbles: true });
+  Object.defineProperty(event, 'animationName', { value: name });
+  fireEvent(node, event);
+}
 
 describe('a lightweight panel owns navigation before its deferred dialog arrives', () => {
   it('does not load or mount closed dialog content', () => {
@@ -155,6 +178,115 @@ describe('a lightweight panel owns navigation before its deferred dialog arrives
     await userEvent.click(screen.getByRole('button', { name: '再试一次' }));
     expect(await screen.findByRole('dialog', { name: '依据说明' })).toBeVisible();
     expect(load).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe('controlled dialog exit Presence', () => {
+  it('finishes its exit before removing all portal content without writing back controlled state', async () => {
+    enableExitAnimations();
+    const onOpenChange = vi.fn(),
+      onReturnFocus = vi.fn();
+    const props = {
+      title: '退出说明',
+      description: '合成过渡',
+      sheet: true,
+      contentId: 'exit-dialog',
+      onOpenChange,
+      onReturnFocus,
+    };
+    const view = render(
+      <DialogContent {...props} open>
+        临时内容应随退出移除
+      </DialogContent>,
+    );
+    const dialog = await screen.findByRole('dialog', { name: '退出说明' });
+    animation(dialog, 'animationstart', 'q8-enter');
+    view.rerender(
+      <DialogContent {...props} open={false}>
+        临时内容应随退出移除
+      </DialogContent>,
+    );
+    expect(dialog).toHaveAttribute('data-state', 'closed');
+    expect(dialog).toBeInTheDocument();
+    expect(onReturnFocus).not.toHaveBeenCalled();
+    animation(dialog, 'animationend', 'q8-enter');
+    expect(dialog).toBeInTheDocument();
+    animation(dialog, 'animationend', 'q8-exit');
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.queryByText('临时内容应随退出移除')).not.toBeInTheDocument();
+    await waitFor(() => expect(onReturnFocus).toHaveBeenCalledTimes(1));
+    expect(onOpenChange).not.toHaveBeenCalled();
+    view.rerender(
+      <DialogContent {...props} open>
+        新的临时内容
+      </DialogContent>,
+    );
+    expect(await screen.findByRole('dialog', { name: '退出说明' })).not.toBe(dialog);
+    expect(onOpenChange).not.toHaveBeenCalled();
+  });
+
+  it('keeps only the loaded control mounted after close and reuses it on the next open', async () => {
+    enableExitAnimations();
+    const mounted = vi.fn(),
+      unmounted = vi.fn();
+    function TrackedContent(props: ComponentProps<typeof DialogContent>) {
+      useEffect(() => {
+        mounted();
+        return () => {
+          unmounted();
+        };
+      }, []);
+      return <DialogContent {...props} />;
+    }
+    const load = vi.fn<Loader>().mockResolvedValue({ default: TrackedContent });
+    const view = render(<Example load={load} />);
+    const trigger = screen.getByRole('button', { name: '查看依据' });
+    await userEvent.click(trigger);
+    const dialog = await screen.findByRole('dialog', { name: '依据说明' });
+    animation(dialog, 'animationstart', 'q8-enter');
+    const back = vi.spyOn(history, 'back');
+    await userEvent.keyboard('{Escape}');
+    await settled();
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(dialog).toHaveAttribute('data-state', 'closed');
+    fireEvent.click(screen.getByRole('button', { name: '关闭' }));
+    expect(back).toHaveBeenCalledTimes(1);
+    animation(dialog, 'animationend', 'q8-exit');
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(screen.queryByRole('textbox', { name: '面板输入' })).not.toBeInTheDocument();
+    expect(mounted).toHaveBeenCalledTimes(1);
+    expect(unmounted).not.toHaveBeenCalled();
+    await waitFor(() => expect(trigger).toHaveFocus());
+    await userEvent.click(trigger);
+    expect(await screen.findByRole('dialog', { name: '依据说明' })).not.toBe(dialog);
+    expect(load).toHaveBeenCalledTimes(1);
+    expect(mounted).toHaveBeenCalledTimes(1);
+    view.unmount();
+    expect(unmounted).toHaveBeenCalledTimes(1);
+  });
+
+  it('ignores an old exit event after rapid reopen and leaves focus inside the current dialog', async () => {
+    enableExitAnimations();
+    const load = vi.fn<Loader>().mockResolvedValue(module);
+    render(<Example load={load} />);
+    const trigger = screen.getByRole('button', { name: '查看依据' });
+    await userEvent.click(trigger);
+    const dialog = await screen.findByRole('dialog', { name: '依据说明' });
+    const input = screen.getByRole('textbox', { name: '面板输入' });
+    animation(dialog, 'animationstart', 'q8-enter');
+    act(() => input.focus());
+    expect(input).toHaveFocus();
+    await userEvent.keyboard('{Escape}');
+    await settled();
+    expect(dialog).toHaveAttribute('data-state', 'closed');
+    fireEvent.click(trigger);
+    expect(dialog).toHaveAttribute('data-state', 'open');
+    animation(dialog, 'animationend', 'q8-exit');
+    expect(dialog).toBeInTheDocument();
+    expect(input).toHaveFocus();
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(history.state).toMatchObject({ page: 'chart', __mingjing_panel: expect.any(String) });
+    expect(load).toHaveBeenCalledTimes(1);
   });
 });
 
