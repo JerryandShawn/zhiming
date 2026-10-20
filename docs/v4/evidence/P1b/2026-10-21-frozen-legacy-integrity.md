@@ -20,3 +20,9 @@
 - `git diff --check` 通过。结构化全11文件SHA/Git blob见同名JSON。
 
 本机目录为 `zhiming-v4-p1b`，验证基底 `a662c63`；远端head通过主代理的发布流程映射，最终新头CI仍待运行。本片没有运行新一轮全部Core/v4回归，不能把旧CI的552个通过当成修复后完整验收。无供应商请求、飞书发送、服务器访问、迁移或新依赖；PR保持草稿，由主代理提交和发布。
+
+## 01:31 精确新头复核
+
+北京时间2026-10-21 01:31重新读取GitHub：本机修复提交`4ec0d97818538b03238fc9247f8c6948c1081512`对应远端`03230c6bd180305fa8b4dfd47f8f8a5ae8e9677c`，同一tree `2918b79c4d8580adc690112373b1234084715f6f`。[CI运行39462173453](https://github.com/JerryandShawn/zhiming/actions/runs/39462173453)的[Core job118764176145](https://github.com/JerryandShawn/zhiming/actions/runs/39462173453/job/118764176145)已completed/success；旧Core和计算器、前端、v4时钟/评测框架、ModelPort合成传输与覆盖步骤全部success。上文“待运行”保留为00:56当时状态，此处更新最终结果。
+
+这只证明该精确P1b候选的合成CI通过。没有真实Kimi等价结果，没有与P3实际集成，没有部署；后续文档提交需与此代码测试身份区分。PR #9保持草稿。
