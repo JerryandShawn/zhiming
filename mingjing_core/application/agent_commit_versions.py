@@ -17,6 +17,8 @@ class RegenerationRequired(RevisionConflict):
 
 
 def persisted_receipts(repo: PostgresRepository, run: Mapping[str, Any]) -> tuple[dict[str, Any], ...]:
+    from mingjing_core.application.agent_pending_effects import pending_case_receipts
+
     owner, ident, epoch = run["owner"], run["id"], run["retry_epoch"]
     with repo.transaction(owner) as connection:
         rows = connection.execute(
@@ -43,6 +45,7 @@ def persisted_receipts(repo: PostgresRepository, run: Mapping[str, Any]) -> tupl
             if stored is None or fingerprint(stored["receipt"]) != fingerprint(receipt):
                 raise EvidenceError("步骤回执缺少实际写入证明")
             receipts.append(dict(receipt, _operation=operation))
+        receipts.extend(pending_case_receipts(repo, run))
     return tuple(receipts)
 
 

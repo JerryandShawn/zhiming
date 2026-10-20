@@ -193,6 +193,11 @@ class AgentSnapshotStore:
             "privacy_sha256"
         ) != self._privacy(row["owner"], build.injected_versions):
             raise RevisionConflict("初始上下文依赖或撤销范围已改变")
+        if registered != row["state_version"]:
+            # Reconciliation only admits exact current-epoch effects. Preserve the
+            # original frozen bytes and let ToolRegistry replay the actual receipt.
+            self.repo.set_run_dependencies(row["owner"], row["id"], registered, row["lease_token"])
+            row["state_version"] = registered
         return copy.deepcopy(build)
 
     def load_or_build(self, run: Mapping[str, Any], builder: Callable[[], ContextBuild]) -> ContextBuild:
