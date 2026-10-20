@@ -41,16 +41,18 @@ export function createNightPort(seed?: AboutMeState): NightPort {
     if (current && current.summary === item.summary) wireSources.set(key, source);
     return source;
   }
+  // Both views expose the same adapter and still write the one authoritative local aggregate.
+  const memory: MemoryCommands = {
+    supports: (action, item) => aboutMe.memory.supports(action, commandSource(item)),
+    execute: (action, item) => aboutMe.memory.execute(action, commandSource(item)),
+  };
   return {
     mode: 'local-demo',
-    aboutMe,
+    aboutMe: { ...aboutMe, memory },
     get autoSaveCategories() {
       return new Set(aboutMe.getSnapshot().autoSaveCategories);
     },
-    memory: {
-      supports: (action, item) => aboutMe.memory.supports(action, commandSource(item)),
-      execute: (action, item) => aboutMe.memory.execute(action, commandSource(item)),
-    },
+    memory,
     currentReceipts: aboutMe.currentReceipts,
     subscribe: aboutMe.subscribe,
     async answer(answer, requestId, context) {

@@ -1,7 +1,7 @@
 import { expect, type Page } from '@playwright/test';
 import fs from 'node:fs/promises';
 
-export const componentEvidence = 'evidence/2026-10-18/components-m5';
+export const componentEvidence = process.env.COMPONENT_EVIDENCE_DIR || 'evidence/2026-10-18/components-m5';
 type Activity = { api: string[]; external: string[]; errors: string[]; console: string[] };
 const activities = new WeakMap<Page, Activity>();
 export function guardDemo(page: Page) {

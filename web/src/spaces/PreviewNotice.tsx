@@ -19,6 +19,7 @@ export default function PreviewNotice() {
           ['chat', '区与话题'],
           ['me', '分区记忆'],
           ['organize', '整理建议'],
+          ['organize-review', '旧对话审阅'],
         ].map(([route, label]) => (
           <a
             key={route}

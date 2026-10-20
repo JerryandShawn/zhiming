@@ -25,8 +25,9 @@ async function moreAction(page: Page, title: string, action: string) {
     .click();
 }
 async function capture(page: Page, name: string) {
-  await fs.mkdir('evidence/2026-10-18/spaces/interactions', { recursive: true });
-  await page.screenshot({ path: `evidence/2026-10-18/spaces/interactions/${name}.png`, animations: 'disabled' });
+  const directory = process.env.SPACES_EVIDENCE_DIR || 'evidence/2026-10-18/spaces/interactions';
+  await fs.mkdir(directory, { recursive: true });
+  await page.screenshot({ path: `${directory}/${name}.png`, animations: 'disabled' });
 }
 
 test.beforeEach(async ({ page }) => {

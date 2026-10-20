@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { cinnabarUsages } from './appearance';
 
 const runId = process.env.MINGJING_OVERNIGHT_RUN_ID!;
-const evidence = path.resolve('evidence/2026-10-19/07');
+const evidence = path.resolve(process.env.OVERNIGHT_EVIDENCE_DIR || 'evidence/2026-10-19/07');
 const states = [
   ...['today', 'chat', 'chart', 'tarot', 'cases', 'me', 'settings'].map((name) => ({
     id: `night-${name}`,
@@ -194,7 +194,7 @@ for (const viewport of viewports)
           route: item.url,
           theme,
           viewport,
-          screenshot: `web/evidence/2026-10-19/07/screenshots/${filename}.png`,
+          screenshot: `web/${path.relative(process.cwd(), screenshot).replaceAll('\\', '/')}`,
           screenshot_sha256: hash(await fs.readFile(screenshot)),
           captured_at: new Date().toISOString(),
           ...visual,

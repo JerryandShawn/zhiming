@@ -50,7 +50,7 @@ export function useNormalConversation(port: NightPort, enabled: boolean) {
       if (!abort.signal.aborted) setReply(reason instanceof Error ? reason.message : '演示暂时停下了。');
     });
     return () => abort.abort();
-  }, [enabled, episode, scenario]);
+  }, [enabled, episode, scenario, mountId]);
   async function answer(text: string, context?: AskAnswerContext) {
     const question = latest.current.question;
     const source = question?.askId ? (context ?? { askId: question.askId, optionIds: [] }) : context;
