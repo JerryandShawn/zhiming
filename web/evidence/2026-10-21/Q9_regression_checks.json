@@ -1,0 +1,311 @@
+{
+  "schema": "mingjing-local-regression-v1",
+  "recorded_at_beijing": "2026-10-21T07:45:28.792+08:00",
+  "source_commit": "2aef6e5c73ab22a0cd07191c0ca888024f1275e3",
+  "started_at_beijing": "2026-10-21T07:30:50.9910232+08:00",
+  "scope": {
+    "environment": "Local core_test_fe:55481/8002; scripted model; no real calls; build frozen",
+    "max_unit_workers": 4,
+    "max_browser_workers": 2,
+    "real_model_calls": 0,
+    "server_access": false,
+    "feishu_requests": 0,
+    "merges": 0,
+    "claim": "Local synthetic/loopback validation; does not establish production, real-device, or real-model acceptance"
+  },
+  "inputs": [
+    {
+      "path": "web/test-results/Q9-regression-0733/manifest.json",
+      "bytes": 4358,
+      "sha256": "58d8035af47aedd13ee407ea63a24c26f37761e718fb3e4f36a2a32e7359ccdc"
+    },
+    {
+      "path": "web/test-results/Q9-regression-0733/progress.json",
+      "bytes": 535,
+      "sha256": "3202bd4c4e9f6903912dea79f60f032c557b41c8d6f58a0f7c70eab704afd5b2"
+    }
+  ],
+  "unit": {
+    "path": "web/test-results/Q9-regression-0733/unit.json",
+    "bytes": 322251,
+    "sha256": "43d0106e82a1f755db9b56c1f5c88e9093131f4a71eeb251c21517899c685170",
+    "total": 842,
+    "passed": 842,
+    "failed": 0,
+    "files": 71,
+    "success": true
+  },
+  "browser_first_pass": {
+    "expected": 492,
+    "unexpected": 1,
+    "flaky": 0,
+    "skipped": 0,
+    "total": 493,
+    "all_green": false,
+    "reports": [
+      {
+        "suite": "static",
+        "path": "web/test-results/Q9-regression-0733/static.json",
+        "bytes": 84223,
+        "sha256": "c2972bc48a9072af19e759b807fb5ce93db4443251ffa8eb2c36738e335b8ae4",
+        "stats": {
+          "startTime": "2026-10-20T23:31:51.695Z",
+          "duration": 49170.535,
+          "expected": 80,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      },
+      {
+        "suite": "spaces",
+        "path": "web/test-results/Q9-regression-0733/spaces.json",
+        "bytes": 13643,
+        "sha256": "562dd2a48a034e1d91ea85a3126635ee025e2fb8c927959807bb6826c69b0355",
+        "stats": {
+          "startTime": "2026-10-20T23:32:41.758Z",
+          "duration": 6464.904,
+          "expected": 10,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      },
+      {
+        "suite": "components",
+        "path": "web/test-results/Q9-regression-0733/components.json",
+        "bytes": 23609,
+        "sha256": "51cab0b8747a572ec950512445d4741fc0aef04486f34bf5a1bf8362f9dc21fa",
+        "stats": {
+          "startTime": "2026-10-20T23:32:49.085Z",
+          "duration": 9287.776,
+          "expected": 18,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      },
+      {
+        "suite": "components-visual",
+        "path": "web/test-results/Q9-regression-0733/components-visual.json",
+        "bytes": 68528,
+        "sha256": "15074655d200d6ad7da8392dbb9ed585b36e3b512e0fcc0da9996801585ee2e6",
+        "stats": {
+          "startTime": "2026-10-20T23:32:59.222Z",
+          "duration": 80994.646,
+          "expected": 64,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      },
+      {
+        "suite": "night",
+        "path": "web/test-results/Q9-regression-0733/night.json",
+        "bytes": 158936,
+        "sha256": "29f1d3b52f661956ef6a4988823ad3693949f9ac7f5992e460d2ff40b39bb4c1",
+        "stats": {
+          "startTime": "2026-10-20T23:34:21.057Z",
+          "duration": 136898.622,
+          "expected": 141,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      },
+      {
+        "suite": "overnight",
+        "path": "web/test-results/Q9-regression-0733/overnight.json",
+        "bytes": 104330,
+        "sha256": "3bd53adf4b449d0b2dc823821b2744e73849a1536c30a8e6d95a70cb43e01ded",
+        "stats": {
+          "startTime": "2026-10-20T23:36:38.818Z",
+          "duration": 108042.326,
+          "expected": 87,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 1
+      },
+      {
+        "suite": "contracts",
+        "path": "web/test-results/Q9-regression-0733/contracts.json",
+        "bytes": 15905,
+        "sha256": "bbdad10f6488023e8ccb9b417af575efa9fc466266c0428936b76fb41f71e5b4",
+        "stats": {
+          "startTime": "2026-10-20T23:38:27.746Z",
+          "duration": 30112.361999999997,
+          "expected": 12,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      },
+      {
+        "suite": "live-visual",
+        "path": "web/test-results/Q9-regression-0733/live-visual.json",
+        "bytes": 59595,
+        "sha256": "cd46bb3d919528f9f42a356e7f75beca2b406c1d4ca53cfe6d239b32a3b89a19",
+        "stats": {
+          "startTime": "2026-10-20T23:38:58.756Z",
+          "duration": 86991.87,
+          "expected": 56,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      },
+      {
+        "suite": "spaces-visual",
+        "path": "web/test-results/Q9-regression-0733/spaces-visual.json",
+        "bytes": 27439,
+        "sha256": "eb5ce45be0e5802eee82f5072c223eb3175382f8a7c6e4da68dc6e45d842e17a",
+        "stats": {
+          "startTime": "2026-10-20T23:40:26.572Z",
+          "duration": 31024.951999999997,
+          "expected": 24,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "top_level_errors": [],
+        "exit": 0
+      }
+    ],
+    "failures": [
+      {
+        "title": "overnight-matrix.spec.ts > night-chat light 1440",
+        "file": "overnight-matrix.spec.ts",
+        "line": 122,
+        "status": "unexpected",
+        "attempts": [
+          {
+            "status": "failed",
+            "retry": 0,
+            "startTime": "2026-10-20T23:37:49.047Z",
+            "duration": 15647,
+            "errors": [
+              "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"\"\nReceived: \"expect(locator).toBeVisible() failed·\nLocator: locator('[data-page=\\\"chat\\\"]')\nExpected: visible\nTimeout: 15000ms\nError: element(s) not found·\nCall log:\n  - Expect \\\"toBeVisible\\\" locator('[data-page=\\\"chat\\\"]') with timeout 15000ms\n  - waiting for locator('[data-page=\\\"chat\\\"]')\n\"\n\n  205 |           axe_error: axeError,\n  206 |         });\n> 207 |         expect.soft(readinessError).toBe('');\n      |                                     ^\n  208 |         expect.soft(axeError).toBe('');\n  209 |         expect.soft(activity).toEqual({ api: [], external: [], errors: [], console: [] });\n  210 |         expect.soft(visual.overflow).toBe(false);\n    at C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e\\overnight-matrix.spec.ts:207:37",
+              "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  - 1\n+ Received  + 3\n\n  Object {\n    \"api\": Array [],\n-   \"console\": Array [],\n+   \"console\": Array [\n+     \"error: Failed to load resource: net::ERR_NO_BUFFER_SPACE\",\n+   ],\n    \"errors\": Array [],\n    \"external\": Array [],\n  }\n\n  207 |         expect.soft(readinessError).toBe('');\n  208 |         expect.soft(axeError).toBe('');\n> 209 |         expect.soft(activity).toEqual({ api: [], external: [], errors: [], console: [] });\n      |                               ^\n  210 |         expect.soft(visual.overflow).toBe(false);\n  211 |         expect.soft(visual.font_faces).toBeGreaterThan(0);\n  212 |         expect.soft(visual.rendered_theme).toBe(theme);\n    at C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e\\overnight-matrix.spec.ts:209:31",
+              "Error: expect(received).toBe(expected) // Object.is equality\n\nExpected: \"light\"\nReceived: undefined\n\n  210 |         expect.soft(visual.overflow).toBe(false);\n  211 |         expect.soft(visual.font_faces).toBeGreaterThan(0);\n> 212 |         expect.soft(visual.rendered_theme).toBe(theme);\n      |                                            ^\n  213 |         expect.soft(visual.small_text).toEqual([]);\n  214 |         expect.soft(accents.length, JSON.stringify(accents)).toBeLessThanOrEqual(3);\n  215 |         expect.soft(violations).toEqual([]);\n    at C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e\\overnight-matrix.spec.ts:212:44",
+              "Error: expect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 28\n\n- Array []\n+ Array [\n+   Object {\n+     \"id\": \"landmark-one-main\",\n+     \"impact\": \"moderate\",\n+     \"nodes\": Array [\n+       Object {\n+         \"summary\": \"Fix all of the following:\n+   Document does not have a main landmark\",\n+         \"target\": Array [\n+           \"html\",\n+         ],\n+       },\n+     ],\n+   },\n+   Object {\n+     \"id\": \"page-has-heading-one\",\n+     \"impact\": \"moderate\",\n+     \"nodes\": Array [\n+       Object {\n+         \"summary\": \"Fix all of the following:\n+   Page must have a level-one heading\",\n+         \"target\": Array [\n+           \"html\",\n+         ],\n+       },\n+     ],\n+   },\n+ ]\n\n  213 |         expect.soft(visual.small_text).toEqual([]);\n  214 |         expect.soft(accents.length, JSON.stringify(accents)).toBeLessThanOrEqual(3);\n> 215 |         expect.soft(violations).toEqual([]);\n      |                                 ^\n  216 |       });\n  217 |     }\n  218 |\n    at C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e\\overnight-matrix.spec.ts:215:33"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "isolated_unchanged_rerun": {
+    "path": "web/test-results/Q9-regression-repair-2/overnight.json",
+    "bytes": 4393,
+    "sha256": "712d262edd15795d142001e7702b875e6214c903ddbb17148c44290d1cc06868",
+    "stats": {
+      "startTime": "2026-10-20T23:41:27.570Z",
+      "duration": 3599.015,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "test": "night-chat light 1440",
+    "run_id": "Q9-2026-10-21-0742-repair-2",
+    "assertions_changed": false,
+    "source_and_build_changed": false,
+    "workers": 1,
+    "capture": {
+      "run_id": "Q9-2026-10-21-0742-repair-2",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-21/Q9_regression/night-chat-light-1440-rerun.png",
+      "screenshot_sha256": "b10b186122be0c656d285a452503eed629349fd84260bb64bd1b6f9de3f317e6",
+      "captured_at": "2026-10-20T23:41:30.906Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": "",
+      "original_screenshot": "web/test-results/Q9-regression-repair-2/matrix/screenshots/night-chat-light-1440.png"
+    },
+    "copied_screenshot": {
+      "path": "web/evidence/2026-10-21/Q9_regression/night-chat-light-1440-rerun.png",
+      "bytes": 336140,
+      "sha256": "b10b186122be0c656d285a452503eed629349fd84260bb64bd1b6f9de3f317e6"
+    }
+  },
+  "fingerprint_verification": {
+    "kind": "Capture-selected runtime/build SHA-256 maps; not a claim of every build/font file",
+    "source_files": 247,
+    "build_files": 81,
+    "original_workers_vs_rerun_equal": true,
+    "current_disk_matches": true,
+    "tracked_runtime_diff_from_source_empty": true,
+    "inputs": [
+      {
+        "path": "web/test-results/Q9-regression-0733/matrix/worker-0.json",
+        "bytes": 94208,
+        "sha256": "8b35e545087a8a2d9c1f19484186bbfeedd63fe6fb3013386c978e458bdc574f"
+      },
+      {
+        "path": "web/test-results/Q9-regression-0733/matrix/worker-1.json",
+        "bytes": 110975,
+        "sha256": "82c604e98264bdbf1883c484347935598711334f86f3a9b3a70b4b02f8ffadec"
+      },
+      {
+        "path": "web/test-results/Q9-regression-repair-2/matrix/worker-0.json",
+        "bytes": 36878,
+        "sha256": "977b88ca557d53171f5f2ca5684883f3d065a963c3b1d36c434b0966b673bcb5"
+      }
+    ]
+  },
+  "final_unique_coverage": {
+    "unit_passed": 842,
+    "browser_total": 493,
+    "browser_passed_after_isolated_rerun": 493,
+    "initial_failures_retained": 1,
+    "unstable_execution_count": 1,
+    "first_pass_all_green": false
+  },
+  "stability_issue": {
+    "test": "night-chat light 1440",
+    "observation": "Resource console error net::ERR_NO_BUFFER_SPACE, page not ready, theme unavailable, downstream Axe landmark/heading failures on the unrendered page. Isolated unchanged rerun passed.",
+    "root_cause": "Unconfirmed; retain for stability investigation and the planned three full repetitions.",
+    "not_fixed_by_this_record": true
+  },
+  "limits": [
+    "The full run exited 1 because one test failed initially; it was not an all-green first pass.",
+    "The isolated rerun used one worker and the original assertions. No runtime or assertion fix is claimed.",
+    "Q9 separate 296-combination visual acceptance remains a distinct batch; these 493 checks are broader regression coverage.",
+    "A previously anchored grep attempt selected zero tests; it is not counted as a successful run."
+  ]
+}
