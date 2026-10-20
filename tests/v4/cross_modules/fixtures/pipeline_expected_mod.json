@@ -1,0 +1,418 @@
+{
+  "schema": "mod-cross-pipeline-acceptance-v1",
+  "provenance": "Synthetic independent semantic expectations frozen before reading new extended event projection source",
+  "policies": {
+    "reference": "Only original source said_at, never extraction recorded_at or current job clock",
+    "persistence": "No profile-based date without dependency ledger; write guard and sensitive consent still apply",
+    "reminder": "Pure host composition calls source authorization before building explicit user reminder; no scheduler I/O",
+    "archive": "event_end expiration archives, never deletes or revokes the original source; undo restores all fact content fields",
+    "time": "Explicit IANA zones; storage UTC; exact 09:00 instants"
+  },
+  "cases": [
+    {
+      "id": "PIPE001",
+      "category": "clear",
+      "text": "下周三上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-21",
+      "hour": 9
+    },
+    {
+      "id": "PIPE002",
+      "category": "clear",
+      "text": "下周三上午九点面试，请提醒我",
+      "ref": "2026-10-18T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-21",
+      "hour": 9
+    },
+    {
+      "id": "PIPE003",
+      "category": "clear",
+      "text": "下周三上午九点面试，请提醒我",
+      "ref": "2026-10-19T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28",
+      "hour": 9
+    },
+    {
+      "id": "PIPE004",
+      "category": "clear",
+      "text": "下周三上午九点面试，请提醒我",
+      "ref": "2026-10-21T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28",
+      "hour": 9
+    },
+    {
+      "id": "PIPE005",
+      "category": "clear",
+      "text": "明天上午九点开会，请提醒我",
+      "ref": "2026-10-17T23:55:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-18",
+      "hour": 9
+    },
+    {
+      "id": "PIPE006",
+      "category": "clear",
+      "text": "后天上午九点开会，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-19",
+      "hour": 9
+    },
+    {
+      "id": "PIPE007",
+      "category": "clear",
+      "text": "大后天上午九点开会，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-20",
+      "hour": 9
+    },
+    {
+      "id": "PIPE008",
+      "category": "clear",
+      "text": "下下周一上午九点开会，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-26",
+      "hour": 9
+    },
+    {
+      "id": "PIPE009",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-18",
+      "hour": 9
+    },
+    {
+      "id": "PIPE010",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-12-31T23:50:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2027-01-01",
+      "hour": 9
+    },
+    {
+      "id": "PIPE011",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2028-02-28T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2028-02-29",
+      "hour": 9
+    },
+    {
+      "id": "PIPE012",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2027-02-28T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2027-03-01",
+      "hour": 9
+    },
+    {
+      "id": "PIPE013",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-17T23:55:00+09:00",
+      "tz": "Asia/Tokyo",
+      "date": "2026-10-18",
+      "hour": 9
+    },
+    {
+      "id": "PIPE014",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-17T23:55:00+00:00",
+      "tz": "UTC",
+      "date": "2026-10-18",
+      "hour": 9
+    },
+    {
+      "id": "PIPE015",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-31T23:55:00-04:00",
+      "tz": "America/New_York",
+      "date": "2026-11-01",
+      "hour": 9
+    },
+    {
+      "id": "PIPE016",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-03-07T23:55:00-05:00",
+      "tz": "America/New_York",
+      "date": "2026-03-08",
+      "hour": 9
+    },
+    {
+      "id": "PIPE017",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-24T23:55:00+02:00",
+      "tz": "Europe/Berlin",
+      "date": "2026-10-25",
+      "hour": 9
+    },
+    {
+      "id": "PIPE018",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-03-28T23:55:00+01:00",
+      "tz": "Europe/Berlin",
+      "date": "2026-03-29",
+      "hour": 9
+    },
+    {
+      "id": "PIPE019",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-03T23:55:00+10:00",
+      "tz": "Australia/Sydney",
+      "date": "2026-10-04",
+      "hour": 9
+    },
+    {
+      "id": "PIPE020",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-04-04T23:55:00+11:00",
+      "tz": "Australia/Sydney",
+      "date": "2026-04-05",
+      "hour": 9
+    },
+    {
+      "id": "PIPE021",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-17T22:30:00+00:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-19",
+      "hour": 9
+    },
+    {
+      "id": "PIPE022",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-17T22:30:00+00:00",
+      "tz": "America/New_York",
+      "date": "2026-10-18",
+      "hour": 9
+    },
+    {
+      "id": "PIPE023",
+      "category": "clear",
+      "text": "tomorrow at 9am 面试，请提醒我",
+      "ref": "2026-10-17T00:30:00+09:00",
+      "tz": "America/New_York",
+      "date": "2026-10-17",
+      "hour": 9
+    },
+    {
+      "id": "PIPE024",
+      "category": "clear",
+      "text": "October 28, 2026 at 9am 面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28",
+      "hour": 9
+    },
+    {
+      "id": "PIPE025",
+      "category": "clear",
+      "text": "明天 at 9am 面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-18",
+      "hour": 9
+    },
+    {
+      "id": "PIPE026",
+      "category": "clear",
+      "text": "tomorrow 上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-18",
+      "hour": 9
+    },
+    {
+      "id": "PIPE027",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "inactive"
+    },
+    {
+      "id": "PIPE028",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "revoked"
+    },
+    {
+      "id": "PIPE029",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "changed_revision"
+    },
+    {
+      "id": "PIPE030",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "missing_source"
+    },
+    {
+      "id": "PIPE031",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "wrong_owner"
+    },
+    {
+      "id": "PIPE032",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "wrong_subject"
+    },
+    {
+      "id": "PIPE033",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "incognito"
+    },
+    {
+      "id": "PIPE034",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "assistant"
+    },
+    {
+      "id": "PIPE035",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "import_origin"
+    },
+    {
+      "id": "PIPE036",
+      "category": "source_guard",
+      "text": "明天上午九点面试，请提醒我，但不要保存这条",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "guard": "optout"
+    },
+    {
+      "id": "PIPE037",
+      "category": "clarify",
+      "text": "下周三或下周五上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "PIPE038",
+      "category": "clarify",
+      "text": "tomorrow or Friday at 9am 面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "PIPE039",
+      "category": "clarify",
+      "text": "next Friday at 9am 面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "next_weekday"
+    },
+    {
+      "id": "PIPE040",
+      "category": "clarify",
+      "text": "我的生日，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "missing_profile_dependency_ledger"
+    },
+    {
+      "id": "PIPE041",
+      "category": "clarify",
+      "text": "明天或后天上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "PIPE042",
+      "category": "clarify",
+      "text": "每周三上午九点面试，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "recurring_not_one_event"
+    },
+    {
+      "id": "PIPE043",
+      "category": "policy",
+      "text": "明天上午九点去医院治疗，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "categories": [
+        "health"
+      ],
+      "action": "proposal"
+    },
+    {
+      "id": "PIPE044",
+      "category": "policy",
+      "text": "tomorrow at 9am 支付3000元，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "categories": [
+        "finance"
+      ],
+      "action": "proposal"
+    },
+    {
+      "id": "PIPE045",
+      "category": "policy",
+      "text": "明天上午九点陪妈妈复诊糖尿病，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "categories": [
+        "health",
+        "third_party"
+      ],
+      "action": "proposal"
+    },
+    {
+      "id": "PIPE046",
+      "category": "policy",
+      "text": "明天上午九点更换密码，请提醒我",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "categories": [],
+      "action": "reject"
+    }
+  ]
+}

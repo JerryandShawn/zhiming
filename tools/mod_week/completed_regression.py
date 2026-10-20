@@ -30,6 +30,7 @@ SUITES = (
     "organize_v2",
     "p9_v2",
     "timeparse_extended",
+    "cross_modules",
 )
 
 
