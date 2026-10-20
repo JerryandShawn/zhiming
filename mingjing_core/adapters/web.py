@@ -108,7 +108,7 @@ def effect_receipt(result,kind):
 
 
 def create_app(service=None):
-    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None}
+    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None}
     def core(req=None):
         if state['service'] is None: state['service'] = ConsultationService.from_base()
         if req: state['service'].repo.ensure_owner(auth(req))
@@ -133,6 +133,7 @@ def create_app(service=None):
         while True:
             from ..application.runtime_assembly import legacy_queue
             svc = core()
+            await asyncio.to_thread(state['maintenance'].tick)
             svc.repo.cleanup_media_deletions()
             if not state['workers']:
                 queue = legacy_queue(svc.repo,limit=1)
@@ -141,7 +142,9 @@ def create_app(service=None):
 
     @asynccontextmanager
     async def lifespan(app):
+        from ..application.maintenance_schedule import PrivacyMaintenanceSchedule
         svc=core(); assembly=getattr(svc,'runtime_assembly',None)
+        state['maintenance']=PrivacyMaintenanceSchedule(svc.repo)
         if assembly:state['dispatcher']=assembly.dispatcher(svc)
         if state['dispatcher']:state['dispatcher'].start()
         state['task'] = asyncio.create_task(worker())
