@@ -30,6 +30,9 @@ def validate_model_settings(model: str, settings: Mapping[str, Any]) -> None:
     Missing/None thinking values retain the server default; this narrow policy
     does not validate token budgets, unknown effort values or provider schemas.
     """
+    locked = settings.get("model_lock")
+    if locked is not None and (not isinstance(locked, str) or model != locked):
+        raise ConfigError("模型身份已锁定，不能由环境或调用参数切换")
     if not settings.get("membership", False) or not model.strip().casefold().startswith("k3"):
         return
     thinking = settings.get("thinking")

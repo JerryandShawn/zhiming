@@ -228,7 +228,7 @@ def test_default_registry_loads_no_network() -> None:
     reg = ModelRegistry(
         root / "config/models.yaml", environment={"KIMI_API_KEY": "synthetic-value", "KIMI_MODEL": "k3"}
     )
-    assert [handle.model for handle in reg.resolve()] == ["k3"]
+    assert [handle.model for handle in reg.resolve()] == ["k3-256k"]
     assert reg.resolve("critic")[0].model == "k3-256k"
     assert reg.resolve("fast")[0].provider == "kimi_code"
 

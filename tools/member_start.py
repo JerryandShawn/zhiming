@@ -13,7 +13,12 @@ from typing import Any
 
 from mingjing_core.models.quota_guard import QuotaGuard
 from mingjing_core.models.quota_runtime import CentralLocation
-from mingjing_core.models.quota_types import GuardConfigurationError, GuardRejected, identifier
+from mingjing_core.models.quota_types import (
+    GuardConfigurationError,
+    GuardRejected,
+    identifier,
+)
+from tools.manual_grant_io import write_private_receipt
 
 SUITES = {"E1": "E1", "E2": "E2", "PROBE": "探针"}
 
@@ -52,7 +57,12 @@ def grant_batch(guard: QuotaGuard, suite: str, batch_number: int, scenarios: lis
     batch = f"manual-{suite.lower()}-{batch_number}-" + uuid.uuid4().hex
     authorization = "terminal-" + uuid.uuid4().hex
     expires = stamp + timedelta(minutes=15)
-    guard.begin_batch(batch_id=batch, authorization_id=authorization, scenario_ids=scenarios, expires_at=expires)
+    guard.begin_batch(
+        batch_id=batch,
+        authorization_id=authorization,
+        scenario_ids=scenarios,
+        expires_at=expires,
+    )
     return {
         "schema": "member-manual-start-v1",
         "suite": suite,
@@ -79,12 +89,45 @@ def main(argv: list[str] | None = None) -> int:
         confirm_local(args.suite, args.batch_number)
         guard = CentralLocation.from_environment().guard()
         receipt = grant_batch(guard, args.suite, args.batch_number, args.scenario)
-        with args.receipt.open("x", encoding="utf-8") as stream:
-            json.dump(receipt, stream, ensure_ascii=False, sort_keys=True, indent=2)
-        print(json.dumps({"ok": True, "receipt": str(args.receipt), "model_calls": 0, "automatic_next_batch": False}))
+        try:
+            protection = write_private_receipt(args.receipt, receipt)
+        except OSError:
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "code": "GRANT_CREATED_RECEIPT_WRITE_FAILED",
+                        "batch_id": receipt["batch_id"],
+                        "expires_at": receipt["expires_at"],
+                        "requires_manual_close_or_expiry": True,
+                        "model_calls": 0,
+                    }
+                )
+            )
+            return 2
+        print(
+            json.dumps(
+                {
+                    "ok": True,
+                    "receipt": str(args.receipt),
+                    "model_calls": 0,
+                    "automatic_next_batch": False,
+                    "file_protection": protection,
+                }
+            )
+        )
         return 0
     except (ManualStartRejected, GuardConfigurationError, GuardRejected) as error:
-        print(json.dumps({"ok": False, "code": error.code, "model_calls": 0, "automatic_next_batch": False}))
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "code": error.code,
+                    "model_calls": 0,
+                    "automatic_next_batch": False,
+                }
+            )
+        )
         return 2
 
 

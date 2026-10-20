@@ -18,6 +18,9 @@
 
 ## Progress
 
+- [x] (2026-10-21 00:00 +08:00) 人工scope/D2第三切片：收据新建0600或Windows私有DACL+fsync、不覆盖、写盘失败保留PG批次；只读加载已授权场景并接eval/probe物理lane，中央时钟独立于评测冻结时钟。六角色默认锁k3-256k/high/replay且旧KIMI_MODEL不降级。首组58/1.90s，最终含旧subset正反例75/14.10s通过；宽回归1002通过/1旧fixture失败已定向修复，不计全绿，真实请求0。
+- [ ] (2026-10-21 00:00 +08:00) 下一切片：历史ConfiguredModel未显式model的会员默认锁256；旧1024 thinking物理入口改走规范新端口或失败关闭，保留显式冻结E1历史身份及未运行产物。
+
 - [x] (2026-10-20 23:45 +08:00) 旧HTTP/人工门第二切片：ConfiguredModel同中央PG、退役Hermes/compare实际HTTP失败关闭、真实TTY匹配句逐批授权CLI、Code漏flag仍绑定critic完成；目标59通过+19subtests/11.51s、零skip，既有Charts补实际验证；真实供应商0。文件再次交root冻结。
 - [ ] (2026-10-20 23:45 +08:00) 下一切片：eval/probe可信授权scope接线与收据引用；root另准备≤20等价脚本。CLI只发短时PG授权，不等于E1可运行，旧冻结E1执行身份不得冒名恢复。
 
@@ -49,6 +52,10 @@
 
 ## Surprises & Discoveries
 
+2026-10-21 00:04 +08:00 / 旧subset正例暗依赖D2之前默认k3；新默认256必须拒绝历史子集，另显式历史fixture保留原预算和绑定断言。宽回归错误地在00–15窗口外启动，已向root报告流程错误，后续近千项范围同样按该窗口。
+
+2026-10-21 00:00 +08:00 / 收据ID属于能力元数据，普通open(x)在POSIX可能644，故改为exclusive 0600+fsync；Windows在写内容前核当前用户SID并施加只允许当前用户与SYSTEM的显式DACL，父目录ACL只哈希审计。已真实Windows+PG验证。评测全局FrozenClock原会影响中央准入时间，runtime显式SystemClock解耦；场景时间仍冻结，不依赖本机Tokyo时区。
+
 2026-10-20 23:45 +08:00 / 第二切片发现：退役控制器仍保留真实HTTP，不能仅称非生产入口而漏掉；现实际transport失败关闭，离线无HTTP夹具显式标记。已知Code endpoint漏membership时传输会识别会员，因此ModelHandle也必须按相同身份绑定critic，避免默认primary误拒。旧非会员403测试原继承本机KIMI_MODEL，已固定合成非会员model，保留诊断断言并新增k3 proxy零POST反例。
 
 2026-10-20 23:27 +08:00 / 物理入口盘点确认：只接Registry会漏旧ConfiguredModel，旧hermes/compare也仍有HTTP代码，因此分切片列已接/退役待拒绝/尚缺。直接adapter原可用调用参数自选角色；新守卫必须在可信构造时绑定，测试夹具随新契约补绑定而不删U39 wire断言。OpenAI nested cached_tokens 原在safe_usage被丢，本次在实际permit内归一记录；private_content与推理不落用量表。
@@ -78,6 +85,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-21 00:00 +08:00 / 第三切片：读取收据不创建/续期/结束授权，严格schema、suite、场景子集与绝对有效期核验，PG每POST仍复核。收据写盘失败返回GRANT_CREATED_RECEIPT_WRITE_FAILED并保留已建批次待人工收口/到期，不自动恢复。根代理独占≤20等价脚本，本切片只改通用旧probe入口，真实模式必须已有TTY授权收据；取消关推理比较，none/named继续零POST拒绝。默认Registry按D2锁256，配置状态标policy_locked_unverified，不能当实测。旧默认配置测试k3断言按D2改256；人工TTL断言从精确900改899–900秒，因SystemClock两次读取相隔微秒，仍保护15分钟上限。
 
 2026-10-20 23:45 +08:00 / 第二切片：所有仍可调用的退役Hermes/compare物理POST明确拒绝真实HTTP，保留算法与显式离线I/O回归；冻结production_v5十文件不改。五处测试夹具仅声明无HTTP传输，未改业务断言。旧legacy_other_403例补固定synthetic-nonmember，保护旧非会员诊断，不让宿主KIMI_MODEL决定测试合同。真实TTY是创建批授权的必要条件，参数/环境不得代表确认；每次新批仍需用户输入准确句，CLI不发模型、不清stop、不自动下一批。
 
@@ -114,6 +123,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-21 00:00 +08:00 / 第三切片首组58 passed/1.90s，包含真实PG与Windows DACL，Ruff指定规则通过。最终具体失败文件加首组75/14.10s通过；宽回归1002通过/1旧fixture失败后修正并定向复验，未宣称宽回归全绿。首轮使用缺jieba的老主树Core环境在收集前退出，改用既有P2 Core解释器后通过；没有安装依赖。证据[manual-scope-d2](../evidence/P1b/2026-10-21-manual-scope-d2-slice.md)。历史v3 body、U39旧入口收口、等价真实验证、部署、完整P1b验收仍未完成。
 
 2026-10-20 23:45 +08:00 / 第二切片：59项与19subtests目标通过、零skip；真实三引擎固定牌用例在显式既有Charts后通过。两旧pytest helper警告如实保留。证据 [2026-10-21-legacy-manual-slice.md](../evidence/P1b/2026-10-21-legacy-manual-slice.md)。旧body/算法和新端口U39均保留，eval/probe接线/等价/CI仍未完成，P1b不作整阶段完成结论。
 

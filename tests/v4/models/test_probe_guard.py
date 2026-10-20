@@ -2,13 +2,16 @@
 
 import json
 from dataclasses import replace
+from datetime import timedelta
 from typing import Any
 from unittest.mock import patch
 
 import httpx
 
 from mingjing_core.models.registry import ModelHandle
+from mingjing_core.timekit.clock import SystemClock
 from tools import probe_models
+from tools.manual_grant import ManualGrant
 from tools.model_probe_cases import cases
 
 
@@ -34,7 +37,12 @@ def test_probe_quota_is_one_actual_request_and_no_body_in_result() -> None:
             transport=httpx.MockTransport(
                 lambda _: httpx.Response(
                     403,
-                    json={"error": {"type": "permission_error", "message": "You've reached your 5-hour usage limit."}},
+                    json={
+                        "error": {
+                            "type": "permission_error",
+                            "message": "You've reached your 5-hour usage limit.",
+                        }
+                    },
                 )
             ),
             **kwargs,
@@ -68,11 +76,30 @@ def test_probe_main_stops_global_after_first_quota(tmp_path: Any) -> None:
         }
 
     stop = tmp_path / "quota.json"
-    argv = ["probe_models", "--stop-file", str(stop), "--output", str(tmp_path / "probe")]
+    argv = [
+        "probe_models",
+        "--stop-file",
+        str(stop),
+        "--output",
+        str(tmp_path / "probe"),
+        "--manual-grant",
+        str(tmp_path / "already-issued.json"),
+    ]
     with (
         patch("sys.argv", argv),
         patch.object(probe_models, "ModelRegistry", Registry),
         patch.object(probe_models, "_run", run),
+        patch.object(
+            probe_models,
+            "load_manual_grant",
+            lambda *_: ManualGrant(
+                "PROBE",
+                "synthetic-batch",
+                "synthetic-authorization",
+                ("text_stream",),
+                SystemClock().now() + timedelta(minutes=5),
+            ),
+        ),
     ):
         assert probe_models.main() == 2
     assert calls == ["k3"] and stop.exists()
@@ -84,3 +111,19 @@ def test_probe_main_stops_global_after_first_quota(tmp_path: Any) -> None:
             assert "no calls after" in str(error)
         else:
             raise AssertionError("quota stop must be permanent for the night")
+
+
+def test_probe_cli_without_manual_receipt_stops_before_registry_or_http(
+    tmp_path: Any,
+) -> None:
+    argv = ["probe_models", "--stop-file", str(tmp_path / "stop.json")]
+    with (
+        patch("sys.argv", argv),
+        patch.object(probe_models, "ModelRegistry", side_effect=AssertionError("no I/O")),
+    ):
+        try:
+            probe_models.main()
+        except SystemExit as error:
+            assert "manual grant" in str(error)
+        else:
+            raise AssertionError("manual grant must be required")

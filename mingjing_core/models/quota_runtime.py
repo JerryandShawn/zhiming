@@ -8,6 +8,8 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import dataclass, field
 
+from mingjing_core.timekit.clock import SystemClock
+
 from .quota_guard import QuotaGuard
 from .quota_types import LANES, GuardConfigurationError, GuardRejected, identifier
 
@@ -78,6 +80,7 @@ class CentralLocation:
                 central_schema=self.central_schema,
                 account_id=self.account_id,
                 ledger_identity=self.ledger_identity,
+                clock=SystemClock(),
             )
         except GuardConfigurationError:
             raise GuardRejected("ledger_unavailable") from None

@@ -30,7 +30,9 @@ def terminal(monkeypatch: pytest.MonkeyPatch, text: str) -> None:
     monkeypatch.setattr("os.isatty", lambda _: True)
 
 
-def test_redirected_input_and_confirmation_environment_cannot_authorize(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_redirected_input_and_confirmation_environment_cannot_authorize(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setattr("sys.stdin", io.StringIO("开始 E1 第 1 批\n"))
     monkeypatch.setenv("MEMBER_CONFIRM", "开始 E1 第 1 批")
     with pytest.raises(member_start.ManualStartRejected, match="本机终端"):
@@ -49,10 +51,26 @@ def test_noninteractive_cli_does_not_load_central_database(
     tmp_path: Path,
 ) -> None:
     monkeypatch.setattr("sys.stdin", io.StringIO("开始 E1 第 1 批\n"))
-    monkeypatch.setattr(CentralLocation, "from_environment", lambda: pytest.fail("no PG before terminal approval"))
+    monkeypatch.setattr(
+        CentralLocation,
+        "from_environment",
+        lambda: pytest.fail("no PG before terminal approval"),
+    )
     output = tmp_path / "receipt.json"
     assert (
-        member_start.main(["--suite", "E1", "--batch-number", "1", "--scenario", "T01", "--receipt", str(output)]) == 2
+        member_start.main(
+            [
+                "--suite",
+                "E1",
+                "--batch-number",
+                "1",
+                "--scenario",
+                "T01",
+                "--receipt",
+                str(output),
+            ]
+        )
+        == 2
     )
     assert not output.exists()
 
@@ -68,7 +86,19 @@ def test_exact_terminal_confirmation_creates_only_one_short_lived_pg_grant(
     terminal(monkeypatch, "开始 E1 第 1 批")
     output = tmp_path / "receipt.json"
     assert (
-        member_start.main(["--suite", "E1", "--batch-number", "1", "--scenario", "T01", "--receipt", str(output)]) == 0
+        member_start.main(
+            [
+                "--suite",
+                "E1",
+                "--batch-number",
+                "1",
+                "--scenario",
+                "T01",
+                "--receipt",
+                str(output),
+            ]
+        )
+        == 0
     )
     receipt = json.loads(output.read_text(encoding="utf-8"))
     assert receipt["scenario_ids"] == ["T01"] and receipt["automatic_next_batch"] is False
@@ -81,4 +111,46 @@ def test_exact_terminal_confirmation_creates_only_one_short_lived_pg_grant(
             (receipt["batch_id"],),
         ).fetchone()
     assert batch["authorization_id"] == receipt["authorization_id"]
-    assert (batch["expires_at"] - batch["started_at"]).total_seconds() == 900
+    assert 899 <= (batch["expires_at"] - batch["started_at"]).total_seconds() <= 900
+
+
+def test_receipt_write_failure_retains_pg_batch_without_reopening_or_posting(
+    p2_repo: PostgresRepository,
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    values = configure_central(p2_repo, monkeypatch)
+    for key, name in ENVIRONMENT.items():
+        monkeypatch.setenv(name, values[key])
+    terminal(monkeypatch, "开始 E1 第 1 批")
+
+    def fail_write(*_: object) -> None:
+        raise OSError("private failure")
+
+    monkeypatch.setattr(member_start, "write_private_receipt", fail_write)
+    assert (
+        member_start.main(
+            [
+                "--suite",
+                "E1",
+                "--batch-number",
+                "1",
+                "--scenario",
+                "T01",
+                "--receipt",
+                str(tmp_path / "receipt.json"),
+            ]
+        )
+        == 2
+    )
+    diagnostic = json.loads(capsys.readouterr().out.splitlines()[-1])
+    assert diagnostic["code"] == "GRANT_CREATED_RECEIPT_WRITE_FAILED"
+    assert diagnostic["requires_manual_close_or_expiry"] is True
+    guard = QuotaGuard(**values)
+    with guard.store.connect() as connection:
+        batches = connection.execute(
+            sql.SQL("SELECT * FROM {}").format(guard.store.table("core_model_batches"))
+        ).fetchall()
+    assert len(batches) == 1 and batches[0]["batch_id"] == diagnostic["batch_id"]
+    assert guard.status()["window"]["total"] == 0
