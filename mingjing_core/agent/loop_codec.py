@@ -44,12 +44,14 @@ def tool_message(
     call_id: str, result: ToolResult, cycle: str, *, aliases: dict[str, dict[str, Any]] | None = None
 ) -> ChatMessage:
     output = result.model_dump()
+    output["data"].pop("registered_aliases", None)
+    output["data"].pop("alias_registration", None)
     if aliases is not None:
         # Only the caller's already attested registry is projected, never tool-supplied aliases.
         registered = {
             key: {name: row[name] for name in ("kind", "id", "revision", "native_id", "basis") if name in row}
             for key, row in aliases.items()
-            if re.fullmatch(r"[cr][1-9][0-9]*", key)
+            if re.fullmatch(r"[cr][1-9][0-9]*", key) or row.get("kind") == "case" and row.get("basis") == "case_index"
         }
         if registered:
             output["data"]["registered_aliases"] = registered
@@ -106,7 +108,9 @@ def candidates(name: str, result: ToolResult) -> list[tuple[str, str]]:
     return list(dict.fromkeys(rows))
 
 
-def _verified_row(service: Any, run: dict[str, Any], kind: str, ident: str) -> dict[str, Any]:
+def _verified_row(
+    service: Any, run: dict[str, Any], kind: str, ident: str, *, index_case: bool = False
+) -> dict[str, Any]:
     allowed = {
         "fact",
         "message",
@@ -127,7 +131,13 @@ def _verified_row(service: Any, run: dict[str, Any], kind: str, ident: str) -> d
     selected = set(run["request"].get("case_ids", []))
     if row["subject_id"] != run["subject"] or row["status"] in {"deleted", "stopped", "superseded"}:
         raise ScopeError("工具依赖不属于有效人物资料")
-    if row.get("case_id") is not None and row["case_id"] not in selected or kind == "case" and ident not in selected:
+    if (
+        row.get("case_id") is not None
+        and row["case_id"] not in selected
+        or kind == "case"
+        and ident not in selected
+        and not index_case
+    ):
         raise ScopeError("工具依赖不在已选择事项")
     if service.repo.is_revoked(run["owner"], kind, ident):
         raise EvidenceError("工具依赖已经撤销")
@@ -184,16 +194,24 @@ def verified_versions(
     """Resolve identifiers against PG, never trust returned revision/scope claims."""
     pending, versions, records = candidates(name, result), {}, []
     with service.repo.transaction(run["owner"]):
+        from mingjing_core.application.agent_case_index_lineage import case_index_lineage
         from mingjing_core.application.agent_chart_lineage import chart_lineage
 
         chart_records, captured = chart_lineage(service, run, result) if name == "chart_compute" else ([], {})
         chart = {(row["kind"], row["id"]): row for row in chart_records}
         pending.extend(chart)
+        indexes = (
+            {(row["kind"], row["id"]): row for row in case_index_lineage(service, run, result)}
+            if name == "case_list"
+            else {}
+        )
+        pending.extend(indexes)
         while pending:
             kind, ident = pending.pop(0)
             if kind in {"artifact", "interpretive_claim"} and (kind, ident) not in chart:
                 raise EvidenceError("专业依据缺少本轮计算步骤证明")
-            row = _verified_row(service, run, kind, ident)
+            index_case = (kind, ident) in indexes
+            row = _verified_row(service, run, kind, ident, index_case=index_case)
             receipt = result.receipt or {}
             if (
                 receipt.get("write_status") == "saved"
@@ -215,12 +233,13 @@ def verified_versions(
                     revision=row["revision"],
                     **{
                         key: value
-                        for key, value in chart.get((kind, ident), {}).items()
+                        for key, value in {**chart.get((kind, ident), {}), **indexes.get((kind, ident), {})}.items()
                         if key not in {"kind", "id", "revision"}
                     },
                 )
             )
-            pending.extend(_source_links(service, run, kind, row))
+            if not index_case or ident in run["request"].get("case_ids", []):
+                pending.extend(_source_links(service, run, kind, row))
         for key, value in captured.items():
             if key in versions and versions[key] != value:
                 raise RevisionConflict("计算来源版本与实际资料不一致")
