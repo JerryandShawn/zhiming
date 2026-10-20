@@ -2,6 +2,8 @@
 
 本文件是顺序与测试闸门，不是合并或部署回执。依据用户10-20夜间队列、28号Z5与33号本周队列；本周集成只进`v4/integration`，向`v4/main`保持草稿PR，等大脑与用户复核。任何一条线不得自行合并`v4/main`或`main`。普通merge，不rebase、不强推。B1发布包仍固定b9a89b6，以下集成不能改变B1包或放行其Linux阻塞。
 
+2026-10-21 01:06（北京时间）状态复核：路线图已具备，尚非组合验收。P3的实际v4目标、Runtime/HTTP/线程/调度与读取端候选已形成；原指定脚本46/47、独立扩展13/13。01:00固定新头宽回归已出现失败，尚待完整栈与结论，不能称绿色；P1b在独立分支未集成，真实K3 encoder未配置，公开options由API代理补齐中。具体门和历史记录见`../execplans/P3_agent_runtime.md`。
+
 ## 1. 基线、版本与责任
 
 第一次集成从已核`v4/main`新建`v4/integration`；已有该分支时保留历史、核前次回执并续作，不重建或reset。每次记录merge前base、远端精确SHA、merge后SHA、契约版本和测试数字。PR号以下来自33号队列，执行前仍须核实际head/CI，不能把当前远端快照当未来验收。
@@ -14,7 +16,7 @@
 | --- | --- | --- | --- |
 | 0 | `v4/main`当前已合P1+P2基线 | 核精确SHA、干净工作树、迁移1–7不变；记录独立Core/Charts环境 | 基线Core、v4、Charts、web回归可复现；凭据清空、追踪关闭、隔离PG |
 | 1 | P1b `v4/p1b-k3-hardening`，#9 | models配置、中央HTTP守卫、usage账本、0008；P3不得保留第二套guard/可信角色生成逻辑 | U37错误分类、U38≤2全局在途/按角色分区/额度立即全停、U39推理回传/高effort/禁止关闭思考、体积守卫、所有物理入口经过中央门；全用替身 |
-| 2 | P3 `v4/p3-agent-runtime`，#8 | Agent Loop、ContextEngine、RuntimePort、工具、dispatcher、旧读取端；与P1b模型端口与epoch/lease冲突风险高 | M2–M8、core3/core4兼容、事件/信封v1契约、2秒取消、串行/续租、U41；P3脚本100%，真正`--target v4`入口实现后才验收 |
+| 2 | P3 `v4/p3-agent-runtime`，#8 | Agent Loop、ContextEngine、RuntimePort、工具、dispatcher、旧读取端；与P1b模型端口与epoch/lease冲突风险高 | 当前真实`--target v4`原46/47，X03原发送断言待脑；须完成M2–M8、公开options、core3/core4、事件契约、取消/串行/续租/U41与新组合回归，才能满足脚本100%门 |
 | 3 | 模块线 `v4/mod-organize`，#10 | 先合新增纯模块，再逐个接线；不能一次导入便宣称全部运行集成完成 | 下节各模块专门门+完整回归；记录现有质量限制，开发集分数不能盖盲评失败 |
 | 4 | 命理线 `v4/p8-calc`，#5 | charts_service适配器切P8原生口径；chart_compute参数/多文档依据/方法/时区/别名可能冲突 | Charts合成黄金值与边界测试；owner/subject/revision/撤销、真实源Pointer、跨方法差异、boundary_alerts；无P8时保留v3适配器并明确降级 |
 | 5 | 前端线 `v4/p10-frontend`，#6 | 依据`web/src/night/**/port.ts`和主线`api_*.md`接线；事件payload/错误/游标/无痕/区话题差异 | 生产构建、单元/DOM/无障碍/性能与视觉矩阵；本机HTTP/SSE端到端，不以Mock图替代真实API |
@@ -46,7 +48,7 @@
 
 ## 5. 共享契约与组合测试
 
-事件类型、序列化和客户端按`docs/v4/contracts/events_v1.md`、`events_v1.schema.json`冻结；结果按`core4_envelope_v1.md`及相应Schema冻结。文档文件由主线契约里程碑补齐，未落盘前不能称冻结完成。新增字段/枚举必走版本兼容策略和正反例；服务端/模块/前端不得各写一套看似相同的类型。core3.0读取端保留兼容，旧payload不能被新版解析默认覆盖成成功结果。
+事件类型、序列化和客户端按已落盘的`docs/v4/contracts/events_v1.md`、`events_v1.schema.json`冻结；结果按`core4_envelope_v1.md`及相应Schema冻结，已有89项契约切片证据。冻结形状不等于所有公开事件已接通，present_options/options仍须完成实际运行到HTTP投影的独立验收。新增字段/枚举必走版本兼容策略和正反例；服务端/模块/前端不得各写一套看似相同的类型。core3.0读取端保留兼容，旧payload不能被新版解析默认覆盖成成功结果。
 
 完整回归入口以当次`.github/workflows/ci.yml`为准，当前已有：
 
@@ -60,7 +62,7 @@
     node --check static/app.js
     npm run build
 
-Charts使用独立锁定Charts解释器，Core配置`CHART_PYTHON`，命理线Golden/属性/边界入口接入后追加精确命令；新`web/`采用其package脚本，不假设旧根目录npm命令已覆盖新前端。`--target fake`只验证框架，P3 v4验收必须实际运行ScriptedProvider/v4目标，入口尚未实现时标阻塞，不用fake成绩补位。ModelPort用MockTransport，全部真实入口都清凭据/关追踪；真人开始CLI只做替身演练，不能无人值守自动触发真实批次。
+Charts使用独立锁定Charts解释器，Core配置`CHART_PYTHON`，命理线Golden/属性/边界入口接入后追加精确命令；新`web/`采用其package脚本，不假设旧根目录npm命令已覆盖新前端。`--target fake`只验证框架；实际ScriptedProvider/v4目标现已接通，01:00窗口原47为46/47，报告见`../evidence/P3/m8-v4-2026-10-21/full-0100/`，扩展13单独报告，不用fake或改断言补成绩。ModelPort用MockTransport/ScriptedProvider，全部真实入口都清凭据/关追踪；真人开始CLI只做替身演练，不能无人值守自动触发真实批次。所有物理入口经过P1b统一守卫的组合结论仍须集成后证明。
 
 每次完整回归在北京时间每小时00–15分开始，测试并行进程总≤4；目标回归可在其余时间跑。每40分钟至少提交推送一次；长任务先保留可审wip/局部证据。CI须是本次精确merge head，旧绿、排队和skip均不替代通过。
 
@@ -68,4 +70,11 @@ Charts使用独立锁定Charts解释器，Core配置`CHART_PYTHON`，命理线Go
 
 每步输出`docs/v4/release/integration/<日期>_<分支>.md`：base/source/merge SHA，修改/冲突决策，迁移号与checksum，实际命令/通过失败跳过/耗时，契约正反例及仍未验证项，0模型/0真实飞书/0服务器声明（有授权动作另分轨）；阶段回执按AGENTS§11。汇总引用对应回执，不复用上次数字。
 
-当前仅完成路线图，未创建/merge集成分支，未核本次PR新head。B1仍受真实Linux恢复阻塞；P3脚本v4入口、模块主线接线、P8运行适配、新前端真实API与完整组合回归均由后续里程碑证明。真实Kimi评测仍须用户在线说“开始”，正式上线仍须本人“上线”和相应条件授权；本周集成代码不是部署许可。
+路线图已交；截至本次复核未执行本路线图的集成merge，本片未核PR新head或访问服务器。B1仍受真实Linux/native恢复阻塞，固定b9不改。P3运行候选与v4评测已经存在，但M8的X03四条原发送断言、公开options、K3实际encoder、P1b组合、旧前端DOM和切换演练仍须各自通过；不能以本机目标绿替代出现失败的01:00宽回归或尚未完成的新精确头CI。模块主线接线、P8原生适配、新前端真实API与完整组合回归继续按上表推进。
+
+P3 stage仅有离线计划`P3_stage_plan.md`，当前No-Go，先在本机隔离库用合成模型完成v3→v4→v3。当前B1的条件B/D只覆盖固定b9，不含P3启用；正式P3服务器部署或真实质量请求需相应明确授权。本周集成代码不是部署许可。
+
+## 修订记录
+
+- 2026-10-20夜：建立合并顺序、冲突/迁移与组合闸门草案，未执行合并。
+- 2026-10-21 01:06 +08:00：对齐实际v4候选、46/47及独立13报告、公开options待接、P1b未集成/K3缺失和宽回归失败状态；未运行测试或外部操作。
