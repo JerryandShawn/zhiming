@@ -14,7 +14,7 @@ import httpx
 
 from mingjing_core.domain.json_values import ensure_finite_json
 
-from .config_policy import validate_model_settings
+from .config_policy import ConfigError, validate_model_settings
 from .error_classification import classify_error
 from .errors import (
     ModelBadRequest,
@@ -26,8 +26,11 @@ from .errors import (
 from .metering import before_provider_request
 from .port import ModelPort, StreamEvent
 from .provider_diagnostics import parse_error_sample
+from .quota_guard import QuotaGuard
+from .quota_http import membership_endpoint, observe_usage, provider_attempt
 from .request_policy import check_request_size, sampling_body
 from .retry_policy import retry_delay, wait_for_retry
+from .turn_coercion import turn_policy
 
 
 def safe_usage(data: Any) -> dict[str, int]:
@@ -41,12 +44,18 @@ def safe_usage(data: Any) -> dict[str, int]:
         "total_tokens",
         "cache_creation_input_tokens",
         "cache_read_input_tokens",
+        "cache_read_tokens",
+        "cache_write_tokens",
     }
-    return {
+    result = {
         key: value
         for key, value in (data or {}).items()
         if key in names and type(value) is int and 0 <= value <= 2**63 - 1
     }
+    details = data.get("prompt_tokens_details")
+    if isinstance(details, dict) and type(value := details.get("cached_tokens")) is int and 0 <= value <= 2**63 - 1:
+        result["cache_read_tokens"] = value
+    return result
 
 
 def check_cancel(event: threading.Event | None) -> None:
@@ -144,6 +153,7 @@ class StreamingHTTP(ModelPort):
         transport: httpx.BaseTransport | None = None,
         sleep: Callable[[float], None] = time.sleep,
         max_retries: int = 3,
+        guard: QuotaGuard | None = None,
     ) -> None:
         parsed = urlsplit(base_url)
         if (
@@ -157,12 +167,23 @@ class StreamingHTTP(ModelPort):
             raise ValueError("Model base URL must be an HTTP origin/path without credentials or query")
         self.base_url = base_url.rstrip("/")
         self.api_key, self.model, self.provider = api_key, model, provider
-        self.caps, self.settings = caps or {}, settings or {}
+        self.caps, self.settings = caps or {}, dict(settings or {})
+        if membership_endpoint(self.base_url, self.provider):
+            self.settings["membership"] = True
         validate_model_settings(model, self.settings)
         self.transport, self.sleep, self.max_retries = transport, sleep, max_retries
         self.membership = bool(self.settings.get("membership", False))
+        self.guard, self._guard_role = guard, self.settings.get("role_binding", "primary")
         self.request_count = 0
         self.quota_errors = 0
+
+    def assert_role(self, role: str) -> None:
+        if self.membership and role != self._guard_role:
+            raise ConfigError("会员端口角色已在可信构造时绑定")
+
+    def execution_metadata(self, role: str) -> dict[str, Any]:
+        self.assert_role(role)
+        return turn_policy(self.model, self.settings, role)
 
     def _events(
         self,
@@ -236,21 +257,28 @@ class StreamingHTTP(ModelPort):
             check_cancel(cancel)
             if time.monotonic() >= deadline:
                 raise ModelUnavailable()
-            before_provider_request()
-            self.request_count += 1
-            with (
-                closing(client.send(request, stream=True)) as response,
-                close_on_cancel(response, cancel, deadline) as expired,
-            ):
-                if response.status_code != 200:
-                    failure = http_error(response, membership=self.membership)
-                    check_cancel(cancel)
-                    raise failure
-                for event in parser(sse(response, cancel)):
+            with provider_attempt(
+                membership=self.membership, role=self._guard_role, provider=self.provider, model=self.model,
+                transport=self.transport, guard=self.guard, cancel_event=cancel,
+                timeout=max(0, min(10, deadline - time.monotonic())),
+            ) as attempt:
+                before_provider_request()
+                self.request_count += 1
+                with (
+                    closing(client.send(request, stream=True)) as response,
+                    close_on_cancel(response, cancel, deadline) as expired,
+                ):
+                    if response.status_code != 200:
+                        failure = http_error(response, membership=self.membership)
+                        check_cancel(cancel)
+                        raise failure
+                    for event in parser(sse(response, cancel)):
+                        check_cancel(cancel)
+                        if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
+                            raise ModelUnavailable()
+                        if event.type == "usage":
+                            observe_usage(attempt, event.data)
+                        yield event
                     check_cancel(cancel)
                     if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
                         raise ModelUnavailable()
-                    yield event
-                check_cancel(cancel)
-                if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
-                    raise ModelUnavailable()

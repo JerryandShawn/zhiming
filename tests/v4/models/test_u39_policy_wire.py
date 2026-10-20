@@ -33,7 +33,8 @@ def data(protocol: type[Any]) -> bytes:
 @pytest.mark.parametrize("role", ["primary", "critic", "fast", "vision", "evaluation", "background"])
 def test_member_k3_uses_documented_default_without_guessing_wire_controls(protocol: type[Any], role: str) -> None:
     port, requests = model_for(
-        protocol, content=data(protocol), settings={"thinking": {"type": "enabled", "budget_tokens": 1024}}
+        protocol, content=data(protocol),
+        settings={"thinking": {"type": "enabled", "budget_tokens": 1024}, "role_binding": role},
     )
     result = port.complete([], role=role)
     body = json.loads(requests[0].content)

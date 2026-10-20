@@ -51,7 +51,7 @@ class ModelHandle:
             provider=self.provider,
             caps=self.caps,
             settings={**self.settings, "role_binding": self.role}
-            if member_k3(self.model, self.settings)
+            if self.settings.get("membership", False)
             else self.settings,
             **kwargs,
         )

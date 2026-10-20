@@ -12,7 +12,7 @@ from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec, reasoning_
 from .request_policy import safe_tool_choice
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
-from .turn_coercion import replay_caps, turn_policy
+from .turn_coercion import replay_caps
 
 
 def _content(content: str | list[Part], vision: bool) -> str | list[dict[str, Any]]:
@@ -115,7 +115,7 @@ class OpenAICompat(StreamingHTTP):
         cancel_event: threading.Event | None = None,
     ) -> Iterator[StreamEvent]:
         tool_choice = safe_tool_choice(self.model, tools, tool_choice)
-        metadata = turn_policy(self.model, self.settings, role)
+        metadata = self.execution_metadata(role)
         self.last_execution_meta = dict(metadata)
         caps = replay_caps(self.model, self.caps, self.settings, openai=True)
         body: dict[str, Any] = {

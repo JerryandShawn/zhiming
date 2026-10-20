@@ -14,7 +14,7 @@ from .port import ChatMessage, StreamEvent, ToolCall, ToolSpec, reasoning_indice
 from .request_policy import safe_tool_choice
 from .schema_flatten import flatten_schema
 from .transport import StreamingHTTP, safe_usage, stream_error, strict_json
-from .turn_coercion import ContentBlocks, canonical_content, legacy_thinking, member_k3, replay_caps, turn_policy
+from .turn_coercion import ContentBlocks, canonical_content, legacy_thinking, member_k3, replay_caps
 
 
 def encode_messages(
@@ -138,7 +138,7 @@ class AnthropicMessages(StreamingHTTP):
         cancel_event: threading.Event | None = None,
     ) -> Iterator[StreamEvent]:
         tool_choice = safe_tool_choice(self.model, tools, tool_choice)
-        metadata = turn_policy(self.model, self.settings, role)
+        metadata = self.execution_metadata(role)
         caps = replay_caps(self.model, self.caps, self.settings)
         system, encoded = encode_messages(messages, caps, allow_missing_signature=member_k3(self.model, self.settings))
         if metadata:

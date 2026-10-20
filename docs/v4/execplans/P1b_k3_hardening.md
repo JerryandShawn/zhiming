@@ -18,6 +18,9 @@
 
 ## Progress
 
+- [x] (2026-10-20 23:27 +08:00) 中央HTTP接线第一切片：显式账号位置、可信构造角色/运行scope、双协议每次物理重试 acquire、SSE用量与错误持久化、close/cancel释放、终止后零POST完成。新18项含13真实隔离PG，最终八模块295/6.13s通过；真实供应商0，文件交root冻结提交。
+- [ ] (2026-10-20 23:27 +08:00) 接线剩余：旧ConfiguredModel、退役入口拒绝、eval/probe可信scope、真TTY人工开始CLI及≤20等价脚本；本切片不算所有HTTP入口闭环，完整回归/CI/真实256k验证/部署未完成。
+
 - [x] (2026-10-18 23:34 +08:00) U39规范消息/角色策略子片：私有完整content原序回传、独立签名/空thinking/redacted、双协议真实user边界、Kimi缺签名诊断、绑定角色与默认high未实测元数据已实现。新增5模块74项，定向363/1.36s、最终models+foundation810/65.66s通过；12Python文件静态边界通过，源码冻结。旧两fixture仅补stop，原断言不变；U38冻结13/13源hash不变。
 - [ ] (2026-10-18 23:34 +08:00) U39剩余：YAML配置/采样能力启用、准确effort wire/low效果探针、用量账本effort持久字段、probe/eval报告头和P3私有消息接线尚未完成；真实供应商0，不切换实际主模型。U38中央入口/部署与人工启动门仍未闭环。
 
@@ -42,6 +45,8 @@
 - [ ] (2026-10-18 18:29 +08:00) M2a后续阶段边界不变：仅本子范围382项，未跑coverage/整库/PG/CI；完整U39、YAML/模型配置、U38/0008/全部入口、人工批门、真实探针及实际256k切换仍未闭环，P1b阶段未完成。
 
 ## Surprises & Discoveries
+
+2026-10-20 23:27 +08:00 / 物理入口盘点确认：只接Registry会漏旧ConfiguredModel，旧hermes/compare也仍有HTTP代码，因此分切片列已接/退役待拒绝/尚缺。直接adapter原可用调用参数自选角色；新守卫必须在可信构造时绑定，测试夹具随新契约补绑定而不删U39 wire断言。OpenAI nested cached_tokens 原在safe_usage被丢，本次在实际permit内归一记录；private_content与推理不落用量表。
 
 2026-10-18 / U39规范消息发现：旧flat reasoning与signature会合并多块签名、丢start初值/空文本签名/redacted/原内容顺序，不能无损重建。新增private_content规范回执作为回传依据，flat兼容视图保留，私有字段与StreamEvent数据不进入repr；原text/tool_calls与规范回执不一致时发送前拒绝。单凭cycle字符串相同仍可能带回最新user之前的旧推理，因此双协议再加真实user位置边界。
 
@@ -68,6 +73,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-20 23:24 +08:00 / 夜间接线：中央账本角色从端口可信构造快照取得，不能由 stream(role=...)、模型参数或请求 headers 提升。现有 U39 六角色 wire 用例原本默认 primary 构造后在 complete 切换角色；其保护的是六角色均用 documented server_default/high、不发送猜测参数、保持完整推理回传。只给该夹具补 role_binding=role，所有原 effort/wire/metadata 断言保留；新增运行时切角色零 POST 反例。初轮因旧夹具10失败/194通过，修后需复验，未计绿。纯协议 MockTransport 无真实网络可不配置中央PG；守卫集成必须传真实隔离PG guard。真实会员HTTP缺显式中央身份一律零POST拒绝，不从业务库推断或自动创建账号。
 
 2026-10-19 07:15 +08:00 / Codex：精确头ee2e6de的Core CI唯一失败为旧test_core_memory版本断言仍固定7（553项，552通过/1失败，658.242s）；迁移0008后预期改8，迁移序列追加8，原64位checksum检查、篡改version1后initialize/verify均拒绝及fact为空断言全部保留。定向真实PG复验1 passed/0.90s；这不代表完整CI已恢复绿，修复头需另等结果。
 
@@ -100,6 +107,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-20 23:27 +08:00 / HTTP第一切片：295/295目标回归、Ruff通过，真实中央PG只用本机独立schema。已接双协议每物理尝试，未声称旧v3/E1/探针全覆盖，未运行真实模型。证据为 [2026-10-21-http-guard-slice.md](../evidence/P1b/2026-10-21-http-guard-slice.md)；后续先补旧入口与人工门，所有发布仍由root处理、PR9草稿不合并。
 
 2026-10-18 23:34 +08:00 / U39子片可独立审查：以U38本机提交2cb0277a282431ddcf7d8392fd885ce1c8eff41b（远端等价18352da4）为基底，5端口/codec/helper、2旧fixture闭合增补与5新测试已冻结；最终810/810通过65.66s，新增74项均在内，Ruff完整规则/format120/AST/UTF8 LF/diff通过。精确来源见[结构化记录](../evidence/P1b/u39-turn-validation-2026-10-18.json)，命令/§11边界见[子片回执](../evidence/P1b/2026-10-18-u39-turn-slice.md)。没有修改模型YAML、旧适配器、U38源码、P3或服务器；probe/eval头/账本effort/真实效果/全入口/部署仍未完成，不能宣称整个U39或P1b验收。当前未提交，由root统一发布。
 
@@ -178,6 +187,8 @@ Decision Log补充（2026-10-18/Codex）：旧test_membership_quota_never_retry�
 2026-10-18 / Codex：402会员验证60秒重试仅限membership提供方，非会员402保留原ModelBadRequest且不重试；避免把Kimi专项动作扩到其他供应商。新增非会员反例；真实供应商兼容/探针仍未执行。
 
 ## 修订记录
+
+- 2026-10-20 23:27 +08:00：追加中央HTTP第一切片四活节、可信角色夹具变更依据、295项证据与所有入口未完成清单；实际模型调用保持0。
 
 - 2026-10-18 17:11 +08:00：建立并补全task草案，纳入18索引§4a与明确人工开始门；P1已合并、P2尚在完整回归，不抢先建正式分支。
 - 2026-10-18 17:34 +08:00：P2合并后M0完成，补U37接口/动作与旧测试替换依据，中央账本仍等模块接口接线，真实请求0。
