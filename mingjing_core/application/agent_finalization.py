@@ -9,12 +9,15 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from mingjing_core.agent.envelope import build_envelope
+from mingjing_core.agent.options import merge_card_structure
 from mingjing_core.agent.review import TrustedReviewReceipt
 from mingjing_core.application.agent_commit_versions import (
     assert_no_withdrawal,
     persisted_receipts,
     reconcile_versions,
 )
+from mingjing_core.application.agent_options import load_options
+from mingjing_core.application.agent_options_review import card_veto
 from mingjing_core.application.agent_review_proofs import ReviewProofStore
 from mingjing_core.application.agent_thread_scope import assert_thread, thread_id
 from mingjing_core.application.memory import MemoryService
@@ -126,6 +129,8 @@ class AgentFinalizer:
             if asked and asked["question"] not in text:
                 text = (text.strip() + "\n\n" + asked["question"]).strip()
             checked = check_structure(text, alias_map, receipts)
+            options = self._options(current)
+            checked = merge_card_structure(checked, options, alias_map, receipts)
             if review is not None:
                 if not isinstance(review, TrustedReviewReceipt):
                     raise EvidenceError("最终评审需要受信持久证明")
@@ -134,7 +139,14 @@ class AgentFinalizer:
             source = self._source(current, effective)
             message = self._message(current, source, checked, effective)
             envelope = build_envelope(
-                current, checked, message_id=message["id"], receipts=receipts, asked=asked, usage=usage, review=review
+                current,
+                checked,
+                message_id=message["id"],
+                receipts=receipts,
+                asked=asked,
+                options=options,
+                usage=usage,
+                review=review,
             )
             connection.execute(
                 sql.SQL(
@@ -144,6 +156,15 @@ class AgentFinalizer:
                 (Jsonb(envelope), Jsonb(effective), owner, current["id"]),
             )
             return envelope
+
+    def _options(self, current: dict[str, Any]) -> dict[str, Any] | None:
+        policy = current["usage"].get("agent_runtime", {})
+        if policy.get("crisis") or policy.get("fallback") == "crisis_template":
+            return None
+        selected = load_options(self.repo, current)
+        if card_veto(self.repo, current, selected):
+            return None
+        return selected.value if selected else None
 
     def _message(self, current, source, checked, effective):
         if thread_id(current).startswith("incognito:"):

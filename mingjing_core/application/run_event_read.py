@@ -61,6 +61,8 @@ class RunEventReader:
                 events = RuntimeEvents(self.repo, run, None)
                 if run["result"].get("asked"):
                     events.send("ask_user", run["result"]["asked"])
+                if run["result"].get("options"):
+                    events.send("present_options", run["result"]["options"])
                 events.send("final", {"message_id": run["result"]["message_id"], "envelope": run["result"]})
                 return run
             self._error(connection, run)

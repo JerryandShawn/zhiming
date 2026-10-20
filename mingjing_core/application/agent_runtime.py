@@ -128,6 +128,7 @@ class AgentRuntime:
             events.send("text_reset", {"text": outcome.text, "reason": "resumed"})
         elif not crisis:
             outcome, review = self.reviewer.review(cycle, outcome)
+        self.state.metadata(cycle.run, crisis=crisis)
         envelope = AgentFinalizer(self.repo).finalize(
             cycle.run,
             text=outcome.text,
@@ -140,6 +141,8 @@ class AgentRuntime:
         )
         if envelope["asked"]:
             events.send("ask_user", envelope["asked"])
+        if envelope["options"]:
+            events.send("present_options", envelope["options"])
         events.send("final", {"message_id": envelope["message_id"], "envelope": envelope})
         return envelope
 

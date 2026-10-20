@@ -55,15 +55,16 @@ class RuntimeEvents:
     def send(self, kind: str, payload: dict[str, Any]) -> None:
         owner, ident = self.run["owner"], self.run["id"]
         with self.repo.transaction(owner) as connection:
-            if kind in {"final", "ask_user"}:
+            if kind in {"final", "ask_user", "present_options"}:
                 row = connection.execute(
                     sql.SQL("SELECT * FROM {} WHERE owner=%s AND id=%s FOR UPDATE").format(
                         self.repo.table("core_runs")
                     ),
                     (owner, ident),
                 ).fetchone()
+                field = "asked" if kind == "ask_user" else "options"
                 expected = (
-                    row["result"] if row and kind == "final" else (row["result"] or {}).get("asked") if row else None
+                    row["result"] if row and kind == "final" else (row["result"] or {}).get(field) if row else None
                 )
                 actual = payload.get("envelope") if kind == "final" else payload
                 if not row or row["status"] != "succeeded" or expected != actual:
@@ -72,7 +73,9 @@ class RuntimeEvents:
                 row = self.repo._leased(connection, owner, ident, self.run["lease_token"])
                 if row["retry_epoch"] != self.run["retry_epoch"]:
                     raise EvidenceError("事件不属于当前运行批次")
-            event = self._existing(connection, kind, payload) if kind in {"final", "ask_user"} else None
+            event = (
+                self._existing(connection, kind, payload) if kind in {"final", "ask_user", "present_options"} else None
+            )
             event = event or self._append(connection, kind, payload)
         if self.callback:
             try:

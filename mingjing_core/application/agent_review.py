@@ -13,9 +13,11 @@ from mingjing_core.agent.context_types import BudgetResult, ContextItem, Context
 from mingjing_core.agent.journal import JournalStep, input_fingerprint
 from mingjing_core.agent.loop_codec import ObservedPort, assistant_from, assistant_output
 from mingjing_core.agent.loop_cycle import LoopCycle, LoopOutcome
+from mingjing_core.agent.options import review_material
 from mingjing_core.agent.prompts import PromptBundle
 from mingjing_core.agent.review import CriticVerdict, TrustedReviewReceipt
 from mingjing_core.application.agent_model_calls import RequestLedger
+from mingjing_core.application.agent_options import load_options
 from mingjing_core.application.agent_review_proofs import ReviewProofStore
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, RevisionConflict, ScopeError
 from mingjing_core.models.errors import ModelUnavailable
@@ -31,6 +33,7 @@ class AgentReviewer:
         material = {
             "user_message": cycle.run["request"]["message"],
             "draft": outcome.text,
+            "options": (selected.value if (selected := load_options(self.ledger.repo, cycle.run)) else None),
             "context": [
                 message.content
                 for layer in cycle.frozen.budget.layers
@@ -100,7 +103,8 @@ class AgentReviewer:
             cycle.emit("review", {"state": "pending", "reasons": []})
         try:
             raw, critic, replayed = self._call(cycle, outcome)
-            verdict = CriticVerdict.parse(raw, outcome.text)
+            selected = load_options(self.ledger.repo, cycle.run)
+            verdict = CriticVerdict.parse(raw, review_material(outcome.text, selected.value if selected else None))
             revision = None
             if verdict.verdict == "revise":
                 outcome = cycle.revise(verdict.instructions())
