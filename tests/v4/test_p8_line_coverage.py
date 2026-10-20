@@ -29,6 +29,10 @@ from mingjing_core.adapters.charts.benchmarks.line_coverage_merge import (
 
 
 def _git(root: Path, *arguments: str) -> str:
+    if not root.resolve().is_relative_to(ROOT / "private/tmp"):
+        raise ValueError("coverage_test_repository_outside_private_tmp")
+    hooks = root / "empty-hooks"
+    hooks.mkdir(exist_ok=True)
     result = subprocess.run(
         [
             "git",
@@ -40,6 +44,8 @@ def _git(root: Path, *arguments: str) -> str:
             "user.email=coverage-synthetic@example.invalid",
             "-c",
             "commit.gpgsign=false",
+            "-c",
+            "core.hooksPath=" + str(hooks),
             *arguments,
         ],
         capture_output=True,
