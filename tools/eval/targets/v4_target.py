@@ -1,0 +1,251 @@
+"""Real v4 RuntimePort on a loopback PG15 schema, with scripted ModelPort only."""
+
+from __future__ import annotations
+
+import os
+import re
+import time
+import uuid
+from typing import Any
+
+from psycopg import sql
+
+from mingjing_core.application.consultation import ConsultationService
+from mingjing_core.application.threads import ThreadService
+from mingjing_core.repositories.postgres import ENTITY_KINDS, PostgresRepository
+from tools.eval.providers.scripted import ScriptedProvider
+
+from .base import TurnResult
+from .local_db import local_dsn, verify_local_postgres
+from .v3_seed import V3Seeder
+from .v4_cancellation import cancel_stream
+from .v4_observations import decision_rows, local_entity, repeat_count, semantic_observations, tool_steps
+from .v4_protocols import ScriptedWirePort, run_matrix
+from .v4_runtime import DeclaredDateParser, EvaluationRuntime
+from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
+from .v4_tarot import TarotDriver
+
+
+class V4Target:
+    def __init__(self, *, dsn: str | None = None, protocol: str | None = None, candidate: str = "scripted-v4") -> None:
+        self.dsn = local_dsn(dsn or os.getenv("CORE_TEST_DSN", ""))
+        self.owner = "synthetic-eval-owner"
+        self.repo: PostgresRepository | None = None
+        self.schema = ""
+        self.seed: dict[str, Any] = {}
+        self.bindings: dict[str, str] = {}
+        self.run_ids: list[str] = []
+        self.cancellation: dict[str, Any] = {}
+        self.protocol, self.candidate, self.portability = protocol, candidate, {}
+        self.semantic: list[dict[str, Any]] = []
+
+    def reset(self, seed: dict[str, Any]) -> None:
+        self.close()
+        if seed.get("synthetic") is not True:
+            raise ValueError("v4 evaluation requires explicitly synthetic data")
+        verify_local_postgres(self.dsn)
+        self.seed = seed
+        self.cancellation = {}
+        self.portability = {}
+        self.semantic = []
+        self.schema = "eval_v4_" + uuid.uuid4().hex
+        self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
+        self.repo.ensure_owner(self.owner, settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})})
+        self.port = ScriptedWirePort(self.protocol, self.candidate) if self.protocol else ScriptedModelPort()
+        self.runtime = EvaluationRuntime(
+            self.repo, self.port, ScriptedMeter(), parser=DeclaredDateParser(seed.get("_scripted", [])), offline=True
+        )
+        self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
+        self.provider = ScriptedProvider(seed.get("_scripted", []))
+        self.seeder = V3Seeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
+        self.seeder.seed(seed)
+        self.tarot = TarotDriver(self.service, self.seeder)
+        self.tarot.seed(seed)
+        self.bindings = dict(self.seeder.ids)
+        self.bindings.update(self.tarot.ids)
+        self.thread = ThreadService(self.repo).create(
+            self.owner, request_id="eval-thread", incognito=seed.get("incognito", False)
+        )
+
+    def _draw_selection(self, turn: dict[str, Any]) -> tuple[str | None, list[str]]:
+        draw_id = None
+        if turn.get("kind") == "action":
+            if turn.get("action", {}).get("type") != "tarot_reveal":
+                raise ValueError("This action needs an implemented v4 evaluation driver")
+            draw_id = self.tarot.reveal(turn["action"])
+            self.bindings.update(self.tarot.ids)
+        script = next(step for step in self.seed["_scripted"] if step["turn"] == turn["_index"])
+        draw_id = draw_id or self.tarot.requested(script)
+        cases = [self.tarot.cards.get(self.owner, draw_id)["case_id"]] if draw_id else self.seeder.case_ids
+        return draw_id, cases
+
+    def _request(self, turn: dict[str, Any]) -> dict[str, Any]:
+        if self.repo is None:
+            raise RuntimeError("Call reset before send")
+        index = turn["_index"]
+        operation = f"v4-eval:{self.seed['_scenario_id']}:{index}"
+        draw_id, cases = self._draw_selection(turn)
+        channel, external = turn.get("channel", "web"), None
+        if channel == "feishu":
+            external = "synthetic-eval-feishu"
+            self.repo.bind_channel(self.owner, channel, external)
+        source = ThreadService(self.repo).receive(
+            self.owner,
+            self.thread["id"],
+            turn["user"],
+            request_id=operation,
+            channel=channel,
+            external_id=external,
+            conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
+        )
+        self.bindings[f"turn-{index}"] = source["id"]
+        run = self.repo.queue_run(
+            self.owner,
+            operation,
+            {
+                "message": turn["user"],
+                "source_message_id": source["id"],
+                "case_ids": cases,
+                "draw_id": draw_id,
+                "reading_id": self.tarot.failed_reading if draw_id else None,
+                "thread_id": self.thread["id"],
+                "incognito": self.seed.get("incognito", False),
+                "depth": "standard",
+            },
+            case_ids=cases,
+        )
+        with self.repo.transaction(self.owner) as connection:
+            connection.execute(
+                sql.SQL("UPDATE {} SET runtime='v4',thread_id=%s WHERE owner=%s AND id=%s").format(
+                    self.repo.table("core_runs")
+                ),
+                (self.thread["id"], self.owner, run["id"]),
+            )
+        if draw_id:
+            self.tarot.resume(run)
+        return self.repo.claim_run(self.owner, run["id"], lease_seconds=150)
+
+    def send(self, turn: dict[str, Any]) -> TurnResult:
+        started, before = time.perf_counter(), self.port.calls
+        if turn.get("action", {}).get("type") == "cancel_run":
+            return self._cancel(turn, started)
+        run = self._request(turn)
+        self.run_ids.append(run["id"])
+        self.port.start(self.provider, turn["_index"], self.bindings)
+        events: list[dict[str, Any]] = []
+        result: dict[str, Any] = {}
+        error, retry = None, None
+        try:
+            result = self.runtime.execute(self.service, self.owner, run["id"], run["lease_token"], events.append)
+            retry = self.tarot.finish(result)
+        except Exception as exc:
+            error = type(exc).__name__
+        current = self.repo.fetch_run(self.owner, run["id"])
+        steps = tool_steps(self.repo, self.owner, run["id"])
+        semantic = semantic_observations(steps)
+        if result and retry:
+            semantic.insert(0, retry)
+        if result and self.seed.get("controls", {}).get("model_matrix") and not self.protocol:
+            self.portability = run_matrix(self.seed, turn, self.dsn)
+            if not self.portability["protocol_errors"]:
+                semantic.append(
+                    {
+                        "name": "portability.protocol_passed",
+                        "source_store": "four isolated PG runs + MockTransport wire proofs",
+                        "proofs": self.portability["proofs"],
+                        "rule": "all committed; encoded tool results roundtripped",
+                    }
+                )
+        names = [event["type"] for event in events]
+        if semantic:
+            names = [name for name in names if name != "final"] + [item["name"] for item in semantic]
+        if current["status"] == "succeeded":
+            names += ["run.completed"]
+        self.semantic = semantic
+        return TurnResult(
+            text=result.get("text", ""),
+            tools_called=[step["name"] for step in steps],
+            receipts=[step["output"]["receipt"] for step in steps if (step["output"] or {}).get("receipt")],
+            events=names,
+            model_calls=self.port.calls - before + self.portability.get("model_calls", 0),
+            elapsed_seconds=round(time.perf_counter() - started, 4),
+            error=error,
+            metadata={
+                "runtime": "v4",
+                "run_id": run["id"],
+                "run_status": current["status"],
+                "offline": True,
+                "physical_model_requests": 0,
+                "evaluator_observations": semantic,
+                "error_category": "business" if error else None,
+            },
+        )
+
+    def _cancel(self, turn: dict[str, Any], started: float) -> TurnResult:
+        self.cancellation = cancel_stream(
+            self.repo, self.owner, partial=self.seed["controls"]["partial_text"], after_ms=turn["action"]["after_ms"]
+        )
+        self.run_ids.append(self.cancellation["run_id"])
+        return TurnResult(
+            events=["run.cancel_requested", "stream.stopped"],
+            model_calls=self.cancellation["scripted_http_requests"],
+            elapsed_seconds=time.perf_counter() - started,
+            metadata={"offline": True, "physical_model_requests": 0, "evaluator_observations": [self.cancellation]},
+        )
+
+    def inspect_db(self) -> dict[str, Any]:
+        if self.repo is None:
+            raise RuntimeError("Call reset before inspect_db")
+        kinds = {
+            kind: self.repo.list(self.owner, kind, include_deleted=True)
+            for kind in sorted(ENTITY_KINDS)
+            if kind not in {"model_call", "runtime_step"}
+        }
+        zone = self.repo.assert_scope(self.owner)["settings"].get("timezone", "Asia/Shanghai")
+        rows = [
+            {"id": row["id"], "kind": kind, "status": row["status"], "data": local_entity(row, zone)}
+            for kind, values in kinds.items()
+            for row in values
+            if kind != "fact" or row["id"] not in self.seeder.profile_fact_ids
+        ]
+        steps = tool_steps(self.repo, self.owner, self.run_ids[-1]) if self.run_ids else []
+        rows += decision_rows(steps)
+        rows += self.tarot.rows()
+        return {
+            "entities": rows,
+            "settings": self.repo.assert_scope(self.owner)["settings"],
+            "run_meta": {"repeated_call_count": repeat_count(steps), **self.cancellation},
+            "evaluator_observations": semantic_observations(steps),
+            "portability": self.portability,
+            **kinds,
+        }
+
+    def close(self) -> None:
+        if self.repo is None:
+            return
+        repo, self.repo = self.repo, None
+        try:
+            if not re.fullmatch(r"eval_v4_[a-f0-9]{32}", self.schema):
+                raise ValueError("Refusing cleanup outside this evaluation schema")
+            with repo.transaction() as connection:
+                connection.execute(sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(self.schema)))
+        finally:
+            repo.close()
+            self.run_ids, self.bindings = [], {}
+
+    def case_evidence(self) -> dict[str, Any]:
+        if self.repo is None or not self.run_ids:
+            return {"observed_runs": 0, "external_provider_requests": 0}
+        steps = tool_steps(self.repo, self.owner, self.run_ids[-1])
+        return {
+            "run_ids": list(self.run_ids),
+            "external_provider_requests": 0,
+            "u4_scope": "declared parser substitute; no natural language accuracy claim",
+            "tool_steps": [{key: step[key] for key in ("run_id", "epoch", "seq", "name", "status")} for step in steps],
+            "semantic_observations": self.semantic,
+            "decision_rows": [
+                {key: row[key] for key in ("id", "source_store", "source_seq")} for row in decision_rows(steps)
+            ],
+            "cancellation": self.cancellation,
+            "portability": self.portability,
+        }

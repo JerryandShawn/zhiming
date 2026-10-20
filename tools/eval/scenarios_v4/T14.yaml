@@ -1,0 +1,33 @@
+id: T14
+title: 临近面试安排召回
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  facts:
+  - id: interview
+    kind: event
+    summary: 10月21日我有面试。
+    quote: 10月21日我有面试。
+    source_message_id: source-synthetic
+    event_at: '2026-10-21'
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 10月21日我有面试。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+turns:
+- user: 我这周还有什么安排吗？
+  expect:
+    must_include_all:
+    - 下周
+    - 10月21日|10/21|21号
+    must_not_include:
+    - 这周三
+    - 本周三
+    judge: 能区分本周（到10/18周日为止）和下周；没有把10/21说成本周；可以提到明天重阳。
+scripted:
+- turn: 1
+  model:
+  - text: 今天是周六，本周到明天10月18日周日为止没有已知个人安排。面试在下周三10月21日〔f1〕，明天还是重阳节。
+notes: 按大脑11复核第4条定稿：本周截止10/18周日，10/21面试属于下周。

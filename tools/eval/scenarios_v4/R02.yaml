@@ -1,0 +1,30 @@
+id: R02
+title: 接续助手方案B
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  thread:
+  - id: options-user
+    role: user
+    content: 我想换工作，但担心风险。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+  - id: options-assistant
+    role: assistant
+    content: A：留在原岗并补技能。B：先内部转岗。C：裸辞后再找工作。
+    at: '2026-10-16T15:01:00+08:00'
+    channel: web
+turns:
+- user: 那第二个方案具体怎么做？
+  expect:
+    must_include_all:
+    - 内部转岗
+    - 负责人|沟通
+    - 试岗|岗位
+    must_not_include:
+    - 第二个方案是裸辞
+    - 第二个方案是留在原岗
+scripted:
+- turn: 1
+  model:
+  - text: 第二个方案B是先内部转岗。先找内部岗位和负责人，约一次沟通，再确认试岗安排。

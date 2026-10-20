@@ -1,0 +1,18 @@
+id: T06
+title: 周日调休提醒
+category: time
+clock: '2026-09-20T09:00:00+08:00'
+seed: {}
+turns:
+- user: 今天周日，好好休息一下
+  expect:
+    must_include_all:
+    - 9月20日|9/20
+    - 调休
+    - 上班|补班
+    must_not_include:
+    - 今天放假
+scripted:
+- turn: 1
+  model:
+  - text: 提醒一下，今天9月20日虽是周日，却是国庆调休上班日，先核对你的单位安排。

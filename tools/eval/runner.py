@@ -59,7 +59,7 @@ def _endpoint_digest() -> str:
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--mode", choices=["scripted", "live"], default="scripted")
-    result.add_argument("--target", choices=["fake", "v3"], default=None)
+    result.add_argument("--target", choices=["fake", "v3", "v4"], default=None)
     result.add_argument("--model", default="kimi")
     result.add_argument("--models", help="Comma-separated primary model names; each gets its own report")
     result.add_argument("--config", type=Path, default=EVAL_ROOT / "config.yaml")
@@ -79,7 +79,7 @@ def parser() -> argparse.ArgumentParser:
 
 def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dict[str, Any]:
     rubric = EVAL_ROOT / config["judge"]["rubric"]
-    return {
+    metadata = {
         "date": get_clock().now().astimezone(ZoneInfo("Asia/Shanghai")).date().isoformat(),
         "mode": mode,
         "target": target,
@@ -96,9 +96,20 @@ def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dic
         "synthetic_only": True,
         "status": "running",
     }
+    if target == "v4":
+        metadata.update(
+            evaluation_scope="real local PG + scripted ports/codec mocks; no live quality claim",
+            external_provider_requests=0,
+            u4_parser="declared substitute under Z6",
+        )
+    return metadata
 
 
 def _target(name: str, model: str) -> Target:
+    if name == "v4":
+        from tools.eval.targets.v4_target import V4Target
+
+        return V4Target()
     if name == "fake":
         from tools.eval.targets.fake_target import FakeTarget
 
@@ -178,6 +189,8 @@ def _observe_case(
     case = (
         deepcopy(cached) if reused else evaluate_scenario(scenario, target, target_name=metadata["target"], judge=judge)
     )
+    if not reused and metadata["target"] == "v4":
+        case["v4_evidence"] = target.case_evidence()
     case["fingerprint"] = fingerprint
     return case, reused
 
@@ -253,8 +266,10 @@ def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[st
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     args.target = args.target or ("v3" if args.mode == "live" else "fake")
-    if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3")}:
-        raise SystemExit("P0 supports scripted/fake and live/v3 only")
+    if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3"), ("scripted", "v4")}:
+        raise SystemExit("Supported modes: scripted/fake, scripted/v4 and live/v3")
+    if args.target == "v4" and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve():
+        args.scenarios = EVAL_ROOT / "scenarios_v4"
     scenarios = load_scenarios(args.scenarios)
     if not scenarios:
         raise SystemExit("No scenarios found")
@@ -273,7 +288,8 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit("Live preflight failed: provide KIMI_API_KEY or MOONSHOT_API_KEY through process environment")
     os.environ["LANGSMITH_TRACING"] = "false"
     os.environ["LANGCHAIN_TRACING_V2"] = "false"
-    models = (args.models or args.model).split(",") if args.mode == "live" else ["scripted-v1"]
+    scripted_model = "scripted-v4" if args.target == "v4" else "scripted-v1"
+    models = (args.models or args.model).split(",") if args.mode == "live" else [scripted_model]
     status = _run_models(args, scenarios, config, models)
     if status == 2:
         return 2
