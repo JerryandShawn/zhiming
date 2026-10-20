@@ -304,8 +304,12 @@ class TarotService:
                 validation=result['validation']
             p.update(status='failed' if error is not None else 'success',result=None if error is not None else result,
                      validation=validation or {},error=str(error)[:1500] if error is not None else '',updated_at=_stamp())
-            if result and result.get('meta'):
-                core=result['meta']['core_run'];p['execution_snapshot']={'run_id':core['run_id'],'revision':result['meta'].get('revision'),'dependencies':core['dependencies']}
+            if error is None:
+                # core4 keeps authoritative source versions on the run rather
+                # than copying private dependency metadata into its envelope.
+                p['execution_snapshot']={
+                    'run_id':run['id'],'revision':result['meta'].get('revision'),
+                    'dependencies':deepcopy(run['dependencies'])}
             conn.execute(sql.SQL('UPDATE {} SET payload=%s WHERE owner=%s AND id=%s').format(self.repo.table('tarot_readings')), (Jsonb(p),owner,reading_id))
             return p
 

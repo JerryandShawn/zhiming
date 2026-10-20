@@ -149,18 +149,35 @@ class HermesChannelAdapter:
 
 def validated_payload(result: dict) -> dict:
     """Rendering cannot grant validity to an unverified or legacy result."""
-    if not isinstance(result, dict) or result.get('schema_version') != 'core3.0' or result.get('validation',{}).get('valid') is not True or result.get('validation',{}).get('schema') != 'core3.0':
+    # application.__init__ still eagerly imports ConsultationService, whose
+    # outbox imports this adapter. Delay the read helper until that graph loads.
+    from mingjing_core.application.read_result import read_result
+
+    projected = read_result(result)
+    if projected["schema_version"] == "core4.0":
+        meta = projected.get("meta")
+        if (
+            not isinstance(meta, dict)
+            or not isinstance(meta.get("core_run"), dict)
+            or not meta["core_run"].get("run_id")
+        ):
+            raise EvidenceError("结果缺少权威执行标识")
+        return projected
+    validation = projected["validation"]
+    if validation.get("valid") is not True or validation.get("schema") != "core3.0":
         raise EvidenceError("渠道只接受明镜 Core 已校验的最终 payload")
     meta = result.get("meta", {})
-    run = meta.get('core_run',{})
-    if not isinstance(run,dict) or not run.get('run_id') or not run.get('dependencies'):
+    run = meta.get("core_run", {}) if isinstance(meta, dict) else {}
+    if not isinstance(run, dict) or not run.get("run_id") or not run.get("dependencies"):
         raise EvidenceError("结果缺少权威执行或解读版本标识")
     if not isinstance(result.get("answer"), str) or not result["answer"].strip():
         raise EvidenceError("已校验结果没有可投递正文")
     try:
-        FinalAnswer.model_validate({k:v for k,v in result.items() if k in FinalAnswer.model_fields})
+        FinalAnswer.model_validate({k: v for k, v in result.items() if k in FinalAnswer.model_fields})
     except Exception as exc:
-        raise EvidenceError('已校验 payload 不符合 Core 展示契约') from exc
+        raise EvidenceError("已校验 payload 不符合 Core 展示契约") from exc
+    # Old outbox content hashes bind the original core3 bytes/keys. A read
+    # projection must not add a new text key to an already archived payload.
     return result
 
 
