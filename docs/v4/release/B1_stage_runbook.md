@@ -19,7 +19,7 @@
 | 门 | 继续证据 | 当前状态 |
 | --- | --- | --- |
 | 本机PG15真实增量/恢复 | 独立容器及镜像身份、schema4备份恢复、b9 4→7、权限、primary幂等、恢复兼容 | 阻塞：Docker/WSL不可用；22项传输测试不等于真实恢复 |
-| B7重放入口 | 新stage恢复副本allowlist CLI、候选b9底层调用、最新撤销+sent/uncertain单调、重复无变化 | 阻塞：旧restore-withdrawals硬live不可用 |
+| B7重放入口 | 新stage恢复副本allowlist CLI、候选b9底层调用、最新撤销+sent/uncertain单调、重复无变化 | 新入口定稿，25项Windows PG15.19/纯护栏通过；Linux及完整restore-proof生成仍阻塞 |
 | 固定命令与解释器 | systemctl/pg_dump/pg_restore绝对路径/版本/hash/权限；Core/Charts解释器和锁定依赖完整性 | 固定路径/root所有权/保留venv调用路径已补替身测试，真实Linux版本与依赖完整性仍阻塞 |
 | 停写与失败恢复 | 实际Linux fence覆盖跨exec、部分retarget失败不启动、stage不影响live | 阻塞：替身结果不能替代实证 |
 | 受保护执行配置 | 精确scope/DB/角色/host/hash请求、独立0600配置/审批、输出不覆盖、loader无密钥回显 | 阻塞：实际配置须B0后据当前元数据生成 |
@@ -134,9 +134,19 @@ request.owners必须恰为primary；其余16只核计数。工具每owner再次d
 
 ### B7：恢复与单调重放
 
-**当前阻塞：stage专用CLI和真实PG证据未定稿。** 不运行旧deploy_core restore-withdrawals；它硬编码live。新入口必须先核目标仅zhiming_core_b1_restore、PG15、owner、候选b9、schema、源dump/ledger原始hash、停写与空队列，默认只校验，apply显式选择。
+stage专用CLI已定稿，Windows PG15.19对照25项通过（17纯护栏+8真实PG，27.70秒），[精确证据](../evidence/B1/2026-10-21-stage-replay.md)及同名JSON保留结果；这不是Linux通过，B1仍No-Go。不运行旧deploy_core restore-withdrawals；它硬编码live。新入口只允许指定恢复副本，不创建库、不迁移、不启停服务，不支持生产回滚。
 
-恢复库新建时使用独立owner/writer；不得覆盖stage/live，不给writer DDL。源dump为schema4，先核1–4前缀和原始安全计数，再用b9迁5–7/重授；不能initialize=False直接把schema4当7。真实pg_restore后重放最新无正文withdrawals-v2，保持sent与uncertain终态，验证重复重放零变化。只有实际入口与proof生成工具到位才补其可运行命令；输出proof须绑定B2精确backup对象hash、b9 manifest、恢复目标、七checksum和四项真实验证，不能手填true。
+恢复库新建时使用独立owner/writer；不得覆盖stage/live，不给writer DDL。源dump为schema4，先核1–4前缀和原始安全计数，再用b9迁5–7/重授；不能initialize=False直接把schema4当7。真实pg_restore后才可在schema7恢复副本运行下列入口。变量只含路径/原始文件SHA，DSN仅由受保护loader注入`B1_RESTORE_OWNER_DSN`，不能放argv或显示环境。
+
+    "$CONTROL_PYTHON" -m tools.b1_restore_replay --operation-id "$B7_OPERATION_ID" --scope stage --database zhiming_core_b1_restore --schema mingjing_core --candidate-source "$RELEASE_DIR" --candidate-python "$RELEASE_DIR/venv/core/bin/python" --ledger "$B1_OP/latest-withdrawals-v2.json" --ledger-sha256 "$REVIEWED_LEDGER_RAW_SHA256" --quiesced
+
+上式缺省无`--apply`只核本地输入/包，PG连接数0；源ledger是raw `core3-withdrawals-v2`，不能包额外envelope。审核最新ledger原始字节hash、候选636 blobs/manifest、恢复目标/完整owner集、空队列与无其它会话后，真实应用命令为：
+
+    "$CONTROL_PYTHON" -m tools.b1_restore_replay --operation-id "$B7_OPERATION_ID" --scope stage --database zhiming_core_b1_restore --schema mingjing_core --candidate-source "$RELEASE_DIR" --candidate-python "$RELEASE_DIR/venv/core/bin/python" --ledger "$B1_OP/latest-withdrawals-v2.json" --ledger-sha256 "$REVIEWED_LEDGER_RAW_SHA256" --quiesced --apply --output "$B1_OP/stage-replay-receipt.json"
+
+正式入口强制Linux、PG15、回环5432、`zhiming_core_b1_restore_owner`、schema `mingjing_core`、七checksum、私有文件与无symlink、advisory lock。`--quiesced`不替代上层维护门/writer fence；`--local-drill`只允许本机55480/55481和合成`b1_replay_<32hex>`，不能在服务器使用它绕过Linux/身份检查。receipt为`b1-stage-restore-replay-v1`，含ledger原始hash、目标/checksum、前后状态hash/计数、解释器hash、POSIX是否实核；第二次重放须changed=false且hash不变。重复验证须单独受审新receipt路径，不自动重试异常。
+
+Windows真实对照已证明原文/事实/塔罗tombstone不复活、三张checkpoint清除、sent/uncertain不能再次claim、冲突整事务回滚及重复无变化；没有sender。**B7 replay receipt不是`b1-isolated-restore-proof-v1`**：B2精确backup绑定、Linux真实pg_restore/权限、完整四项验证仍须经真实演练与受审proof生成工具补齐，当前不能手工填true供B3放行。写最终receipt失败可能发生在PG提交后，须保持现状停审，不能自行重放。
 
 ### B8：回执、保留与停机状态
 
@@ -144,9 +154,16 @@ request.owners必须恰为primary；其余16只核计数。工具每owner再次d
 
 备份保留14天，权限0700/0600；不在本单授权内删除已有备份或目录。阶段任一异常保持当前停写/维护，不启动旧schema4包，不擅自恢复dump覆盖原库。B1仍No-Go时继续主线开发，不等待睡觉用户。
 
-## 5. 本机演练结果（待真实交付更新）
+## 5. 本机演练结果
 
-尚无本轮Linux/PG实测成功结果。10-18的28项为Windows替身，不能填进本表。后续追加精确脚本参数、容器/镜像digest、DB身份、实际计数、源码hash、测试结果与未覆盖项；0008另轨结果单列，不改变B1候选。
+Linux真实演练未通过。可重复入口与边界22项见[Linux准备证据](../evidence/B1/2026-10-21-linux-drill-prepared.md)，Docker/WSL阻塞见[环境证据](../evidence/B1/2026-10-21-linux-environment-blocked.md)。默认只输出计划，环境恢复并审查后才可能运行显式apply：
+
+    python -m tools.b1_linux_drill
+    python -m tools.b1_linux_drill --apply --pull-postgres15 --run-id b1-20261021-local --p1b-migration8 C:/Users/Administrator/Documents/Codex/zhiming-v4-p1b/mingjing_core/repositories/migrations/0008_model_usage.sql --output docs/v4/evidence/B1/2026-10-21-linux-actual.json
+
+第二条本轮未运行。入口只覆盖PG迁移切片：固定b9 4→7、源/恢复摘要、角色权限、schema4另空库回滚、容量；0008另库且hash固定，不混B1。不会产生全流程restore-proof，backfill/Native/fcntl/三个unit/wrapper仍另验。唯一container/volume标签/loopback55481/PG15 digest必须匹配；未知既有资源或任一目标库已存在立即停止，不自动删除或重放。
+
+B7 Windows PG15.19真实对照25项、publication19项离线控制流/临时文件测试已通过；后者见[publication证据](../evidence/B1/2026-10-21-publication-offline.md)。不能将任一项当Linux、stage或生产Go。10-18旧28项替身保留历史，不混新计数。
 
 ## 6. 证据来源
 

@@ -12,9 +12,10 @@
 - [x] (2026-10-20 22:49 +08:00) 明确三轨：固定 b9 的 schema1–7；另行 P1b schema8 本机兼容；真实 B/D 只获准 0005–0007。不得混包、不得改旧迁移。
 - [ ] (2026-10-20 23:07 +08:00) 本机 Linux 阻塞：Docker Inference Unix socket 不可访问，精确重命名仍拒绝；WSL VHDX 启动 E_ACCESSDENIED。已停止修复；没有 Reset、删卷或碰服务器。可重复演练入口和22项传输测试已交，不能代替 PG/systemd/fcntl 实证。
 - [ ] 合成 schema4 → dump → 新库 restore → 固定 b9 迁 schema7、owner/writer、容量、回滚的真实演练。
-- [ ] stage 恢复副本专用撤销/收据重放 CLI 与真实 PG 正反例、幂等验证。
+- [x] (2026-10-20 23:11 +08:00) stage专用重放入口定稿；25项/27.70秒（17纯护栏+8 Windows PG15.19）通过，含checkpoint/撤销/Outbox单调与冲突回滚。Linux权限/正式stage和完整restore-proof仍阻塞。
 - [ ] 三 unit/timer、CHART_PYTHON、Hermes wrapper、维护门/fence、部分失败止损的 Linux 验证。
 - [x] (2026-10-20 23:07 +08:00) 新 publication 可移植控制器11项离线目标测试通过：31原文/hash/用户上线引用、北京时间窗口、分阶段开门、失败关门、60分钟配置回退边界；Native真实恢复未实现，明确拒绝手填proof。该计数不是Linux验收。
+- [x] (2026-10-20 23:11 +08:00) publication补8项临时真实文件/合成proc、host、receipt写失败关门、禁止health重定向测试；合计19项/0.087秒通过，Ruff通过；仍不是Linux/systemd/PG证明。
 - [ ] 两份执行单已初稿，待实际工具参数与演练结果补齐；未核环节保持阻塞，不写 Go。
 - [ ] root 审查、目标测试、提交/推送，汇总第一段报告通过与阻塞；执行 stage 另按 30 号条件授权。
 
@@ -70,11 +71,11 @@ B1已有脚本基线为80场景/48自检和Core/v4/Charts，无真实模型；�
 
 ## Artifacts and Notes
 
-执行单：`docs/v4/release/B1_stage_runbook.md`、`B1_prod_runbook.md`；本机证据由 `docs/v4/evidence/B1/2026-10-21-linux*` 与 `2026-10-21-replay*` 提供。旧A盘点与旧28项替身验证保留为历史；新证据不覆盖旧hash/旧计数。root日报、08:00四线汇总须先写B1通过与否、操作单是否就绪、剩余阻塞。
+执行单：`docs/v4/release/B1_stage_runbook.md`、`B1_prod_runbook.md`；本机证据为`docs/v4/evidence/B1/2026-10-21-linux-environment-blocked.md`、`2026-10-21-linux-drill-prepared.md`、`2026-10-21-stage-replay.md/.json`、`2026-10-21-publication-offline.md`。旧A盘点与旧28项替身验证保留为历史；新证据不覆盖旧hash/旧计数。root日报、08:00四线汇总须先写B1通过与否、操作单是否就绪、剩余阻塞。
 
 ## Interfaces and Dependencies
 
-外部控制器请求/approval/hash/proof契约仍以 `B1_incremental_runbook.md` 为基础。stage重放与开门/回滚接口尚在实现，定稿后补执行命令和源码hash，不推测可用选项。无新增第三方依赖；容器PG15镜像及已锁定Python依赖之外需要新依赖则列待决。B1包与工具版本分别记录。
+外部增量控制器请求/approval/hash/proof契约以`B1_incremental_runbook.md`为基础。stage重放入口`tools.b1_restore_replay`参数已冻结，精确命令见stage单；raw core3-withdrawals-v2与b1-stage-restore-replay-v1不能替代完整Linux restore-proof。publication接口`--action verify|open|rollback --plan ...`默认纯校验，显式Native需`--apply --native --approval ... --output ...`；生产恢复未实现时硬拒绝，不冒充已可开门。无新增第三方依赖；容器PG15镜像及已锁定Python依赖之外需要新依赖则列待决。B1包与工具版本分别记录。
 
 ## 修订记录
 
