@@ -1,0 +1,44 @@
+id: TA03
+title: 重抽创建新draw保留旧牌
+category: tarot
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  entities:
+  - id: old-draw
+    kind: tarot_draw
+    status: revealed
+    data:
+      cards:
+      - id: major-16
+        orientation: upright
+turns:
+- user: 这张不好，重抽一张
+  expect:
+    must_include_all:
+    - 固定
+    - 新的一次|新的
+    - 保留
+    tools_called:
+    - tarot_start
+    db:
+    - kind: tarot_draw
+      count: 2
+    - kind: tarot_draw
+      id: old-draw
+      status: revealed
+    - kind: tarot_draw
+      id: new-draw
+      status: pending
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: tarot_start
+      arguments:
+        question: 这张不好，重抽一张
+        spread_id: focus1
+        draw_source: pick
+        message_id: turn-1
+  - text: 这次牌面已经固定，旧牌会保留。你可以开始新的一次抽牌，我给你准备新的牌背。
