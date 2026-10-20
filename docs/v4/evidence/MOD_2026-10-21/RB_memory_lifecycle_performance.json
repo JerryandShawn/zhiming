@@ -1,0 +1,81 @@
+{
+  "observed_at": "2026-10-21T00:47:46.096869+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "memory_100_write_100_replay_50_undo",
+      "units_per_run": 250,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        1.4874098999989656,
+        1.520300700000007,
+        1.4941749999998137,
+        1.5000144000005093,
+        1.5197645999996894
+      ],
+      "median_seconds": 1.5000144000005093,
+      "max_seconds": 1.520300700000007,
+      "separate_tracemalloc_peak_bytes": 282214
+    },
+    {
+      "name": "memory_archive_1000_and_restore",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        2.684410999998363,
+        2.689037799998914,
+        2.710894699999699,
+        2.6767837000006693,
+        2.691471799998908
+      ],
+      "median_seconds": 2.689037799998914,
+      "max_seconds": 2.710894699999699,
+      "separate_tracemalloc_peak_bytes": 10650460
+    },
+    {
+      "name": "memory_reflection_1000_candidates",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        1.121578899999804,
+        1.1322617000005266,
+        1.1184850999998162,
+        1.1132574999992357,
+        1.1148126999996748
+      ],
+      "median_seconds": 1.1184850999998162,
+      "max_seconds": 1.1322617000005266,
+      "separate_tracemalloc_peak_bytes": 908926
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/memory2/__init__.py": "310af2f5d4051717ed2e2be301d3d45585163ca3afcc2eba4bba13a3e893669e",
+    "mingjing_core/memory2/archive.py": "fd4c51c1c06f849c887b8049845112f4a6a1ad6064f1105e9f6934a6061ea364",
+    "mingjing_core/memory2/conflicts.py": "80f9e4b935e06596ee6fb5cbf0188365672990accf97f1d18b67599aef60650f",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/current_guard.py": "9adbd022141fee245f1c4678f38cdfe7349c135e4813c589b9e4fbeb60a280a8",
+    "mingjing_core/memory2/dedup.py": "971143372b412e47d634b0fb1d975d5958fe686541856bad46015945eb64c6de",
+    "mingjing_core/memory2/event_time.py": "836eca5323b6ffb825374c64e53a3f48848d0793828c470df694b7988128d6da",
+    "mingjing_core/memory2/forget.py": "7d339ff4807b4fde1b82d06fe6c9630f4c41444ea0d0c354ac6f45a701cd1bf6",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "mingjing_core/memory2/mutation_contracts.py": "08f4b8e521a863718ff2d37ec1fbf1a4336154dd464fe29138b60c6fb3b61d0c",
+    "mingjing_core/memory2/mutations.py": "82bb1b6aad7fe6b62ca327a38823f4ba614ba3d0aa1c23ff14949aae04c993d4",
+    "mingjing_core/memory2/plan_builder.py": "20e65408ffcf3aa60f366745e5ab8f5c2d42fd92e03958e90007abc6b1b5cf16",
+    "mingjing_core/memory2/reflection.py": "df3688910259150265194b1b8b381c837dd307d06f34df1f274d026c4346cc49",
+    "mingjing_core/memory2/retrieval_projection.py": "fe6cc38b3a9a8566e5d5a2e9585fa29845228b9a2c79d7b2711db9c53e2284dd",
+    "mingjing_core/memory2/scoring.py": "92e0035d4e42a28b6ebe40af038e96c0b4a54c3f7b0b16cde266725f964117e1",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/undo.py": "cb91edcec6f9d9e65e011936250154166a251136fd633e3b774d2784174f7aca",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "tools/mod_week/benchmark_memory_lifecycle.py": "b0e01285a29577521ea72f26d3b685371139b030998644f1ed96fc43077e7aef"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}
