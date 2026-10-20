@@ -1,57 +1,111 @@
 import { chatEvent } from '../chat/events';
 import { readSse } from '../chat/sse';
 import type { ChatEvent } from '../chat/types';
+import { beijingTimestamp } from '../time/beijing';
 
 export type DemoScenario = 'cards' | 'review' | 'error' | 'resumed';
-export type DemoStep = { type: string; payload: Record<string, unknown>; reviewPending?: boolean; hold?: number };
-const options = [
-  {
-    option: '先做一周小试验',
-    benefit: '留出实际体验的空间',
-    cost: '每天花二十分钟',
-    risk: '进展可能比预想慢',
-    reversibility: '随时可停',
-    first_step: '写下最想验证的一件事',
-  },
-  {
-    option: '先把信息问清楚',
-    benefit: '减少信息缺口',
-    cost: '需要等一次沟通',
-    risk: '容易一直停在准备阶段',
-    reversibility: '沟通后仍可换方向',
-    first_step: '列三个具体问题',
-  },
-];
+export type DemoStep = { type: string; payload: Record<string, unknown>; hold?: number };
+const options = {
+  options_id: 'local-options',
+  prompt: '两种走法，可以先比较再决定。',
+  options: [
+    {
+      id: 'trial',
+      title: '先做一周小试验',
+      benefit: '留出实际体验的空间',
+      cost: '每天花二十分钟',
+      risk: '进展可能比预想慢',
+      reversibility: 'easy',
+      first_step: '写下最想验证的一件事',
+      unknowns: [],
+    },
+    {
+      id: 'clarify',
+      title: '先把信息问清楚',
+      benefit: '减少信息缺口',
+      cost: '需要等一次沟通',
+      risk: '',
+      reversibility: 'partial',
+      first_step: '列三个具体问题',
+      unknowns: ['risk'],
+    },
+  ],
+};
 const question = {
+  ask_id: 'local-ask',
   question: '你更想先理清哪一部分？',
-  options: ['先做个小试验', '先把信息问清楚'],
+  options: [
+    { id: 'trial', label: '先做个小试验' },
+    { id: 'clarify', label: '先把信息问清楚' },
+  ],
   allow_free_text: true,
+  multi: false,
   why: '先从你最在意的地方开始，不替你做决定。',
 };
 const saved = {
   fact_id: 'local-preference',
   write_status: 'saved',
+  sensitive: false,
   summary: '偏好先看简短结论（合成示例）',
-  revision: 1,
+  undo_token: 'local-undo-token',
 };
 const pending = {
   proposal_id: 'local-proposal',
-  write_status: 'pending_confirmation',
-  category: 'health',
+  write_status: 'pending_confirm',
+  sensitive: true,
   summary: '希望跟进一项健康安排（合成示例）',
-  revision: 1,
 };
 const text = '先把选择缩小到一个可验证的小步骤。下面两种走法各有代价，你可以按自己的节奏来。';
 
+function finalStep(answer: string, revised = false, cards = true): DemoStep {
+  return {
+    type: 'final',
+    payload: {
+      message_id: 'local-message',
+      envelope: {
+        schema: 'core4.0',
+        message_id: 'local-message',
+        text: answer,
+        receipts: cards ? [saved, pending] : [],
+        used_fact_ids: [],
+        used_claim_ids: [],
+        asked: cards ? question : null,
+        options: cards ? options : null,
+        review: {
+          state: revised ? 'revised' : 'passed',
+          reasons: [],
+          ...(revised ? { revision_id: 'local-revision-1' } : {}),
+        },
+        usage: {},
+      },
+    },
+  };
+}
+
+/** Emit frozen server wire shapes; view state is never smuggled in as an event extension. */
 export function demoSteps(scenario: DemoScenario): DemoStep[] {
   const start: DemoStep[] = [
     {
       type: 'started',
-      payload: { run_id: `local-${scenario}`, thread_id: 'local-thread', message_id: 'local-message' },
+      payload: {
+        thread_id: 'local-thread',
+        message_id: 'local-message',
+        area_id: 'daily',
+        topic_id: 'local-topic',
+        incognito: false,
+      },
     },
-    { type: 'status', payload: { text: '我先看看你刚才提到的情况。' } },
-    { type: 'tool_call', payload: { name: 'memory_search', summary: '正在查看相关记忆' }, hold: 450 },
-    { type: 'tool_result', payload: { name: 'memory_search', summary: '找到 2 条相关记忆' } },
+    { type: 'status', payload: { text: '我先看看你刚才提到的情况。', phase: 'thinking' } },
+    {
+      type: 'tool_call',
+      payload: { call_id: 'local-memory-1', name: 'memory_search', summary: '正在查看相关记忆' },
+      hold: 450,
+    },
+    {
+      type: 'tool_result',
+      payload: { call_id: 'local-memory-1', name: 'memory_search', ok: true, summary: '找到 2 条相关记忆' },
+    },
+    { type: 'status', payload: { text: '我把要点理一理。', phase: 'writing' } },
   ];
   if (scenario === 'error')
     return [
@@ -62,57 +116,64 @@ export function demoSteps(scenario: DemoScenario): DemoStep[] {
         payload: { code: 'LOCAL_INTERRUPTED', message: '这次演示中途停下了，可以重试这一轮。', retryable: true },
       },
     ];
-  if (scenario === 'resumed')
+  if (scenario === 'resumed') {
+    const restored = '从已确认的片段继续，原来的重复文字已替换。';
     return [
       ...start,
       { type: 'text_delta', payload: { text: '旧片段' } },
-      { type: 'text_reset', payload: { text: '从已确认的片段继续，原来的重复文字已替换。', reason: 'resumed' } },
-      {
-        type: 'final',
-        payload: { envelope: { schema: 'core3.0', answer: '从已确认的片段继续，原来的重复文字已替换。' } },
-      },
+      { type: 'text_reset', payload: { text: restored, reason: 'resumed', revision_id: 'local-restored-1' } },
+      finalStep(restored, false, false),
     ];
+  }
   const content: DemoStep[] =
     scenario === 'review'
       ? [
+          { type: 'text_delta', payload: { text: '第一版：现在就把所有安排定下来。' } },
+          { type: 'review', payload: { state: 'pending', reasons: [] }, hold: 1600 },
+          { type: 'text_reset', payload: { text, reason: 'revised', revision_id: 'local-revision-1' } },
           {
-            type: 'text_delta',
-            payload: { text: '第一版：现在就把所有安排定下来。' },
-            reviewPending: true,
-            hold: 1600,
+            type: 'review',
+            payload: {
+              state: 'revised',
+              reasons: [{ code: 'generic_barnum', severity: 2 }],
+              revision_id: 'local-revision-1',
+            },
           },
-          { type: 'text_reset', payload: { text, reason: 'revised' }, reviewPending: false },
         ]
       : [
           { type: 'text_delta', payload: { text: text.slice(0, 20) } },
           { type: 'text_delta', payload: { text: text.slice(20) } },
+          { type: 'review', payload: { state: 'passed', reasons: [] } },
         ];
   return [
     ...start,
     ...content,
     { type: 'memory_receipt', payload: saved },
     { type: 'memory_receipt', payload: pending },
-    { type: 'present_options', payload: { options } },
+    { type: 'present_options', payload: options },
     { type: 'ask_user', payload: question },
-    {
-      type: 'final',
-      payload: {
-        envelope: { schema: 'core4.0', message_id: 'local-message', text, receipts: [saved, pending], asked: question },
-      },
-    },
+    finalStep(text, scenario === 'review'),
   ];
 }
 
-// Exercise the same byte decoder and public event projection as a real stream.
 export async function playDemo(
   scenario: DemoScenario,
-  accept: (event: ChatEvent, pending?: boolean) => void,
+  accept: (event: ChatEvent) => void,
   signal: AbortSignal,
   delay = 100,
+  context: { runId?: string; now?: () => Date } = {},
 ) {
   for (const [index, step] of demoSteps(scenario).entries()) {
     signal.throwIfAborted();
-    const frame = `id: ${index + 1}\nevent: ${step.type}\ndata: ${JSON.stringify(step.payload)}\n\n`;
+    const payload = {
+      ...step.payload,
+      v: 1,
+      run_id: context.runId || 'local-' + scenario,
+      seq: index + 1,
+      ts: beijingTimestamp(context.now?.() ?? new Date()),
+    };
+    const frame =
+      ': ping\n\nid: ' + (index + 1) + '\nevent: ' + step.type + '\ndata: ' + JSON.stringify(payload) + '\n\n';
     const bytes = new TextEncoder().encode(frame);
     const response = new Response(
       new ReadableStream<Uint8Array>({
@@ -128,7 +189,7 @@ export async function playDemo(
       response,
       (raw) => {
         const event = chatEvent(JSON.parse(raw.data) as unknown, raw.event);
-        if (event && !signal.aborted) accept(event, step.reviewPending);
+        if (event && !signal.aborted) accept(event);
       },
       signal,
     );

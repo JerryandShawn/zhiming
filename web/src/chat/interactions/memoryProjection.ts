@@ -32,7 +32,11 @@ export function receiptKey(receipt: Receipt) {
   return receipt.proposal_id ? `proposal:${receipt.proposal_id}` : `fact:${receipt.fact_id}`;
 }
 const rank = (receipt: Receipt) =>
-  ['stopped', 'deleted', 'dismissed'].includes(receipt.write_status) ? 2 : receipt.write_status === 'saved' ? 1 : 0;
+  ['stopped', 'deleted', 'dismissed', 'undone', 'rejected'].includes(receipt.write_status)
+    ? 2
+    : receipt.write_status === 'saved'
+      ? 1
+      : 0;
 function newer(left: DisplayReceipt, right: DisplayReceipt): DisplayReceipt {
   const bothVersions = Number.isInteger(left.revision) && Number.isInteger(right.revision);
   let winner = left;
@@ -72,6 +76,7 @@ export function receiptSignature(receipt: DisplayReceipt) {
     receipt.category,
     receipt.category_saved,
     receipt.undo_token,
+    receipt.sensitive,
   ]);
 }
 // A late final can repeat an older saved receipt after a confirmed withdrawal.

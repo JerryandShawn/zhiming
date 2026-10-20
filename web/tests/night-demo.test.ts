@@ -5,7 +5,7 @@ import { demoSteps, playDemo } from '../src/night/events';
 import { createNightPort } from '../src/night/port';
 
 describe('夜间模拟接线层', () => {
-  it('字节流经正式解码，覆盖蓝图十事件与客户端选择扩展', async () => {
+  it('字节流经正式解码，覆盖冻结v1的十二类事件', async () => {
     const seen = new Set<string>();
     let state = initialStream();
     await playDemo(
@@ -54,6 +54,7 @@ describe('夜间模拟接线层', () => {
         'final',
         'error',
         'present_options',
+        'review',
       ].sort(),
     );
   });

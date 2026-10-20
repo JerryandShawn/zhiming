@@ -14,7 +14,7 @@ export default defineConfig({
     channel: process.env.CI ? undefined : 'chrome',
     headless: true,
     locale: 'zh-CN',
-    timezoneId: 'Asia/Taipei',
+    timezoneId: 'Asia/Shanghai',
     reducedMotion: 'reduce',
     deviceScaleFactor: 1,
     trace: 'retain-on-failure',

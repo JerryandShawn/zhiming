@@ -1,5 +1,6 @@
-import { object, rows, string, type Decision, type Envelope, type Question, type Receipt } from './types';
+import { object, rows, string, type Decision, type Envelope, type Question, type Receipt, type Review } from './types';
 import { hasBirthFields, publicChatText } from './publicProjection';
+import { isWireOptionsV1, isWireReviewV1 } from './wireV1';
 
 export function receipt(value: unknown): Receipt | undefined {
   const data = object(value);
@@ -31,19 +32,29 @@ export function receipt(value: unknown): Receipt | undefined {
     revision: Number.isInteger(data.revision) && Number(data.revision) >= 0 ? Number(data.revision) : undefined,
     undo_token:
       string(data.undo_token) && !hasBirthFields(string(data.undo_token)) ? string(data.undo_token) : undefined,
+    ...(typeof data.sensitive === 'boolean' ? { sensitive: data.sensitive } : {}),
   };
 }
 
 export function question(value: unknown): Question | undefined {
   const data = object(value);
   if (!string(data.question).trim()) return;
+  const items = rows(data.options)
+    .map((item) => ({
+      label: typeof item === 'string' ? item : string(object(item).label),
+      id: typeof item === 'string' ? '' : string(object(item).id),
+    }))
+    .filter((item) => item.label.trim() && !hasBirthFields(item.label));
+  const askId = string(data.ask_id);
+  const hasStableIds =
+    Boolean(askId) && !hasBirthFields(askId) && items.every((item) => item.id && !hasBirthFields(item.id));
   return {
     question: publicChatText(string(data.question)),
-    options: rows(data.options)
-      .map((item) => (typeof item === 'string' ? item : string(object(item).label)))
-      .filter((label) => label.trim() && !hasBirthFields(label)),
+    options: items.map((item) => publicChatText(item.label)),
     allow_free_text: data.allow_free_text === true,
     why: publicChatText(string(data.why)),
+    ...(hasStableIds ? { askId, optionIds: items.map((item) => item.id) } : {}),
+    ...(typeof data.multi === 'boolean' ? { multi: data.multi } : {}),
   };
 }
 
@@ -58,7 +69,26 @@ export function decisions(value: unknown): Decision[] {
       risk: publicChatText(string(item.risk)),
       reversibility: publicChatText(string(item.reversibility)),
       first_step: publicChatText(string(item.first_step)),
+      ...(string(item.id) && !hasBirthFields(string(item.id)) ? { id: string(item.id) } : {}),
+      ...(Array.isArray(item.unknowns)
+        ? {
+            unknowns: rows(item.unknowns)
+              .filter((entry): entry is string => typeof entry === 'string')
+              .map(publicChatText),
+          }
+        : {}),
     }));
+}
+
+export function review(value: unknown): Review | undefined {
+  if (!isWireReviewV1(value)) return;
+  return {
+    state: value.state,
+    reasons: value.reasons
+      .filter((reason) => !hasBirthFields(reason.code))
+      .map((reason) => ({ code: reason.code, severity: reason.severity })),
+    ...(value.revision_id && !hasBirthFields(value.revision_id) ? { revisionId: value.revision_id } : {}),
+  };
 }
 
 function emptyEnvelope(): Envelope {
@@ -80,6 +110,8 @@ export function normalizeEnvelope(value: unknown): Envelope | undefined {
   if (schema === 'core4.0') {
     if (typeof data.text !== 'string') return;
     const asked = question(data.asked);
+    const options = isWireOptionsV1(data.options) ? decisions(data.options.options) : [];
+    const checked = review(data.review);
     return {
       ...emptyEnvelope(),
       schema,
@@ -91,8 +123,8 @@ export function normalizeEnvelope(value: unknown): Envelope | undefined {
         .map(receipt)
         .filter((item) => item !== undefined),
       ...(asked ? { question: asked } : {}),
-      // review's child fields and persisted present_options are not frozen yet.
-      // They do not authorize badges, memory permissions or fabricated decisions.
+      decisions: options,
+      ...(checked ? { review: checked } : {}),
     };
   }
   if (typeof data.answer !== 'string' && typeof data.plain_summary !== 'string') return;

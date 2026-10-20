@@ -24,8 +24,8 @@ export function MemoryCard({
     setError('');
     setConflicted(false);
   }, [receipt.revision, receipt.fact_id, receipt.proposal_id]);
-  const pending = ['pending', 'pending_confirmation'].includes(receipt.write_status);
-  const undone = ['stopped', 'deleted', 'dismissed'].includes(receipt.write_status);
+  const pending = ['pending', 'pending_confirmation', 'pending_confirm'].includes(receipt.write_status);
+  const undone = ['stopped', 'deleted', 'dismissed', 'undone'].includes(receipt.write_status);
   const supports = (action: MemoryAction) =>
     (action !== 'remember-category' || Boolean(receipt.category)) && commands.supports(action, receipt);
   async function act(action: MemoryAction) {
@@ -47,6 +47,12 @@ export function MemoryCard({
       if (guard.current()) setBusy(undefined);
     }
   }
+  if (receipt.write_status === 'rejected')
+    return (
+      <p className="meta" role="status">
+        这条没有保存为记忆。
+      </p>
+    );
   if (undone)
     return (
       <p className="meta row" role="status">

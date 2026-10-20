@@ -16,8 +16,33 @@ export interface MemoryCommands {
   execute(action: MemoryAction, receipt: Receipt): Promise<MemoryCommandReceipt>;
 }
 export type MemoryActionHandler = MemoryCommands['execute'];
-export type AskAnswerReceipt = { status: 'accepted'; answer: string; request_id: string };
-export type AskAnswerHandler = (answer: string) => Promise<AskAnswerReceipt>;
+export type AskAnswerContext = { askId: string; optionIds: string[] };
+export type AskAnswerReceipt = {
+  status: 'accepted';
+  answer: string;
+  request_id: string;
+  askId?: string;
+  optionIds?: string[];
+};
+export type AskAnswerHandler = (answer: string, context?: AskAnswerContext) => Promise<AskAnswerReceipt>;
+
+export function validAskAnswerReceipt(result: AskAnswerReceipt, answer: string, context?: AskAnswerContext) {
+  if (
+    !result ||
+    result.status !== 'accepted' ||
+    result.answer !== answer ||
+    typeof result.request_id !== 'string' ||
+    !result.request_id.trim()
+  )
+    return false;
+  return (
+    !context ||
+    (result.askId === context.askId &&
+      Array.isArray(result.optionIds) &&
+      result.optionIds.length === context.optionIds.length &&
+      result.optionIds.every((id, index) => id === context.optionIds[index]))
+  );
+}
 
 export function validMemoryReceipt(action: MemoryAction, source: Receipt, result: MemoryCommandReceipt) {
   const statuses =

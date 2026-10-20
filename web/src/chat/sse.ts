@@ -1,7 +1,12 @@
 export type Frame = { id: string; event: string; data: string };
 
 // A persistent decoder handles CRLF and UTF-8 characters split across reads.
-export async function readSse(response: Response, accept: (frame: Frame) => void, signal?: AbortSignal) {
+export async function readSse(
+  response: Response,
+  accept: (frame: Frame) => void,
+  signal?: AbortSignal,
+  onHeartbeat?: () => void,
+) {
   if (!response.body) throw new Error('服务器没有返回事件流');
   const reader = response.body.getReader(),
     decoder = new TextDecoder();
@@ -16,7 +21,11 @@ export async function readSse(response: Response, accept: (frame: Frame) => void
       data = [];
       return;
     }
-    if (value.startsWith(':')) return;
+    if (value.startsWith(':')) {
+      // Frozen-v1 heartbeats are comments: they never create a frame or move its id.
+      if (value.slice(1).trim() === 'ping') onHeartbeat?.();
+      return;
+    }
     const split = value.indexOf(':'),
       field = split < 0 ? value : value.slice(0, split);
     let content = split < 0 ? '' : value.slice(split + 1);

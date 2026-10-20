@@ -17,6 +17,7 @@ import type { MemoryReceiptRegistry } from './interactions/memoryProjection';
 export type AnswerInteractions = {
   onAskAnswer?: AskAnswerHandler;
   answered?: string;
+  answeredOptionIds?: string[];
   memoryCommands?: MemoryCommands;
   onMemoryAction?: MemoryActionHandler;
   reviewPending?: boolean;
@@ -30,6 +31,7 @@ export function Answer({
   source,
   onAskAnswer,
   answered,
+  answeredOptionIds,
   memoryCommands,
   onMemoryAction,
   reviewPending,
@@ -65,11 +67,12 @@ export function Answer({
       <DecisionCards options={state.decisions} />
       {state.question && (
         <InteractiveAskCard
-          key={`${state.runId}:${state.question.question}`}
+          key={`${state.runId}:${state.question.askId || state.question.question}`}
           question={state.question}
           onAnswer={onAskAnswer}
           onReply={onReply}
           answered={answered ?? state.answered}
+          answeredOptionIds={answeredOptionIds}
           composerId={composerId}
         />
       )}
@@ -137,6 +140,9 @@ export function HistoryMessage({
         receipts: data.receipts,
         decisions: data.decisions,
         question: data.question,
+        review: data.review,
+        revised: data.review?.state === 'revised',
+        revisionId: data.review?.revisionId,
       }}
     />
   );

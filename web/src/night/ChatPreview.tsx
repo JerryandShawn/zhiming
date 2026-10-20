@@ -45,6 +45,7 @@ export default function ChatPreview({
                 memoryCommands={port.memory}
                 onAskAnswer={answer}
                 answered={answered || undefined}
+                answeredOptionIds={chat.answeredOptionIds}
                 reviewPending={review}
                 receiptRegistry={receiptRegistry}
               />
