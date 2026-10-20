@@ -17,6 +17,20 @@ ANNOTATION = "（这条还没有真正保存，需要的话告诉我）"
 EMPTY_ANSWER = "这次还没整理出完整回答，请稍后继续。"
 
 
+def _has_save_annotation(text: str, match: re.Match[str]) -> bool:
+    tail = text[match.end() :]
+    if tail.startswith(ANNOTATION):
+        return True
+    target, found, _ = tail.partition(ANNOTATION)
+    if not found or not target or target[-1].isspace():
+        return False
+    punctuation = "，,。！？!?；;\n"
+    clause = target[:-1] if target[-1] in punctuation else target
+    # P6 annotates the complete clause. A note in another clause, quotation,
+    # or near-matching wording cannot excuse this persistence assertion.
+    return not any(character in punctuation + "“”‘’\"'（）()" for character in clause)
+
+
 @dataclass(frozen=True)
 class StructuralResult:
     text: str
@@ -62,7 +76,10 @@ def check_structure(
         warnings.append({"code": "unknown_alias_removed", "count": unknown})
     saved = any(item.get("write_status") == "saved" and item.get("kind") in SAVE_KINDS for item in receipts)
     if not saved and SAVE_CLAIM.search(checked):
-        checked = SAVE_CLAIM.sub(lambda match: match.group() + ANNOTATION, checked)
+        checked = SAVE_CLAIM.sub(
+            lambda match: match.group() if _has_save_annotation(checked, match) else match.group() + ANNOTATION,
+            checked,
+        )
         warnings.append({"code": "unsupported_save_claim", "count": 1})
     if not text.strip():
         warnings.append({"code": "empty_answer_fallback", "count": 1})
