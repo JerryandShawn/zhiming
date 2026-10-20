@@ -11,6 +11,10 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 
+from mingjing_core.adapters.charts.benchmarks.tarot_source_review import (
+    review_service_source,
+)
+
 ROOT = Path(__file__).resolve().parents[2]
 ASSET = ROOT / "mingjing_core/knowledge/p8_tarot/spreads_v1.json"
 DATA = json.loads(ASSET.read_text(encoding="utf8"))
@@ -82,6 +86,11 @@ def test_sources_have_real_local_locators_and_lf_normalized_hashes(
     if source["source_id"] == "p8-spread-guidance":
         assert "sha256" not in source and path == ASSET
         assert source["kind"] == "original_editorial"
+    elif source["source_id"] == "runtime-service":
+        review = review_service_source(path.read_text(encoding="utf8"))
+        assert source["sha_mode"] == "utf8-lf-sha256"
+        assert source["sha256"] == review["historical_lf_sha256"]
+        assert review["complete_service_ast_unchanged"] is True
     else:
         assert source["sha_mode"] == "utf8-lf-sha256"
         assert (

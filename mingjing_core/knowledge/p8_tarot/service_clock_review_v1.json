@@ -1,0 +1,49 @@
+{
+  "version": "p8-tarot-service-clock-review-v1",
+  "status": "static_provenance_review_not_runtime_execution",
+  "path": "mingjing_core/adapters/tarot.py",
+  "historical": {
+    "lf_sha256": "603d961da03bc076c3272ffc40350a575ed6423e06716ee01f3db1f0b10b5ee0",
+    "git_commit": "ef3947b2f8e1a2627c6216a23240625dff171ac2",
+    "blob_sha1": "42f2c1618824203a02475d709a60bf148ed7f6de",
+    "source_asset": "mingjing_core/knowledge/p8_tarot/spreads_v1.json#/sources/1",
+    "meaning": "original source integrity only; does not assert the Clock migration is installed"
+  },
+  "reviewed_clock": {
+    "lf_sha256": "742d022d2368420f51870c2df4b7b50e5802966006f671f95a0fd1ce20e8b9ad",
+    "git_commit": "5bbd2fccfe392e30dc4b1686bd06acf8d12225c7",
+    "blob_sha1": "66600110660608840d8182474ee6752f0204613c",
+    "meaning": "exact fetched PR merge blob, separately reviewed migration"
+  },
+  "exact_changes": [
+    {
+      "before": "from datetime import datetime, timezone",
+      "after": null
+    },
+    {
+      "anchor": "from psycopg.types.json import Jsonb",
+      "before": null,
+      "after": "from mingjing_core.timekit.clock import get_clock"
+    },
+    {
+      "locator": "_stamp",
+      "before": "return datetime.now(timezone.utc).isoformat()",
+      "after": "return get_clock().now().isoformat()"
+    }
+  ],
+  "invariants": [
+    "Full inverse migration reconstructs historical UTF8 LF bytes and SHA256 exactly",
+    "Complete TarotService class AST including owner/choice5/manual/order/ready is equal",
+    "Every replacement must occur exactly once; unknown hashes or added edits fail",
+    "Historical asset stays v1 and keeps its original source SHA"
+  ],
+  "clock_dependency": {
+    "path": "mingjing_core/timekit/clock.py",
+    "observed_local_lf_sha256": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "contract": "Clock.now returns timezone-aware UTC; SystemClock and FrozenClock implement this local protocol",
+    "runtime_dependency_verified": false,
+    "limit": "Adapter source review does not bind or authenticate externally changed Clock implementation; integration execution remains unverified"
+  },
+  "real_model_requests": 0,
+  "service_or_database_executions": 0
+}
