@@ -170,6 +170,9 @@ def test_new_user_round_contains_only_old_thread_text_not_old_reasoning(cycle_re
         channel="web",
         source_ids=[run["request"]["source_message_id"]],
     )
+    # This test runs the cycle component only. Explicitly finish its synthetic
+    # lease before starting a new turn under M7's shared thread admission fence.
+    repo.fail_run("alice", run["id"], "合成组件轮次结束", run["lease_token"])
     newer, next_registry, next_frozen = prepare(repo, "下一轮合成问题")
     port = ScriptedPort([answer("新轮回答")])
     assert cycle(port, next_registry, newer, next_frozen).execute().text == "新轮回答"

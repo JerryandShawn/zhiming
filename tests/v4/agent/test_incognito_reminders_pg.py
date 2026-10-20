@@ -23,6 +23,17 @@ def reminders(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch) -> I
 
 
 def user_run(service: IncognitoReminderService, thread_id: str, text: str, request: str) -> dict:
+    # These tests exercise reminder services without running AgentRuntime. End
+    # the previous component fixture lease before the next user turn.
+    with service.repo.transaction("alice") as connection:
+        previous = connection.execute(
+            sql.SQL("SELECT * FROM {} WHERE owner='alice' AND thread_id=%s AND status='running'").format(
+                service.repo.table("core_runs")
+            ),
+            (thread_id,),
+        ).fetchall()
+        for row in previous:
+            service.repo.fail_run("alice", row["id"], "component-fixture-completed", row["lease_token"])
     message = service.threads.receive("alice", thread_id, text, request_id=request)
     run = service.repo.queue_run("alice", request, {"message": text, "source_message_id": message["id"]})
     with service.repo.transaction("alice") as connection:
