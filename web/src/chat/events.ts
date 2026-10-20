@@ -86,7 +86,7 @@ function projectReview(value: WireReviewV1): Review {
   return {
     state: value.state,
     reasons: value.reasons.filter((reason) => Boolean(publicId(reason.code))),
-    ...(publicId(value.revision_id) ? { revisionId: value.revision_id } : {}),
+    ...(typeof value.revision_id === 'string' && publicId(value.revision_id) ? { revisionId: value.revision_id } : {}),
   };
 }
 
@@ -100,8 +100,8 @@ function projectWire(wire: WireEventV1): ChatEvent | undefined {
         run_id: wire.run_id,
         thread_id: wire.thread_id,
         message_id: wire.message_id,
-        ...(publicId(wire.area_id) ? { area_id: wire.area_id } : {}),
-        ...(publicId(wire.topic_id) ? { topic_id: wire.topic_id } : {}),
+        ...(typeof wire.area_id === 'string' && publicId(wire.area_id) ? { area_id: wire.area_id } : {}),
+        ...(typeof wire.topic_id === 'string' && publicId(wire.topic_id) ? { topic_id: wire.topic_id } : {}),
         incognito: wire.incognito,
       };
     case 'status':
@@ -114,7 +114,8 @@ function projectWire(wire: WireEventV1): ChatEvent | undefined {
         call_id: wire.call_id,
         name: wire.name,
         summary: publicChatText(wire.summary),
-        ...(wire.type === 'tool_result' ? { ok: wire.ok, receipt: receipt(wire.receipt) } : {}),
+        // Public command receipts have no memory display or authorization context.
+        ...(wire.type === 'tool_result' ? { ok: wire.ok } : {}),
       };
     case 'text_delta':
       return { type: wire.type, text: wire.text };
@@ -123,7 +124,9 @@ function projectWire(wire: WireEventV1): ChatEvent | undefined {
         type: wire.type,
         text: wire.text,
         reason: wire.reason,
-        ...(publicId(wire.revision_id) ? { revision_id: wire.revision_id } : {}),
+        ...(typeof wire.revision_id === 'string' && publicId(wire.revision_id)
+          ? { revision_id: wire.revision_id }
+          : {}),
       };
     case 'memory_receipt': {
       const item = receipt(wire);
@@ -150,7 +153,7 @@ function projectWire(wire: WireEventV1): ChatEvent | undefined {
       return {
         type: wire.type,
         optionsId: wire.options_id,
-        ...(wire.prompt !== undefined ? { prompt: publicChatText(wire.prompt) } : {}),
+        ...(wire.prompt != null ? { prompt: publicChatText(wire.prompt) } : {}),
         options: wire.options.map((item) => ({
           id: item.id,
           option: publicChatText(item.title),

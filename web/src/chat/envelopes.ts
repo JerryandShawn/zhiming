@@ -1,6 +1,7 @@
 import { object, rows, string, type Decision, type Envelope, type Question, type Receipt, type Review } from './types';
 import { hasBirthFields, publicChatText } from './publicProjection';
 import { isWireOptionsV1, isWireReviewV1 } from './wireV1';
+import { isWirePublicReceiptV1 } from './wirePublicV1';
 
 export function receipt(value: unknown): Receipt | undefined {
   const data = object(value);
@@ -96,7 +97,12 @@ function emptyEnvelope(): Envelope {
 }
 
 function version(data: Record<string, unknown>): 'core3.0' | 'core4.0' | 'legacy' | undefined {
-  const markers = ['schema', 'schema_version'].filter((key) => Object.hasOwn(data, key)).map((key) => data[key]);
+  const markers = ['schema', 'schema_version']
+    .filter(
+      (key) =>
+        Object.hasOwn(data, key) && (key !== 'schema_version' || data[key] !== null || data.schema !== 'core4.0'),
+    )
+    .map((key) => data[key]);
   if (!markers.length) return 'legacy';
   if (!markers.every((marker) => marker === markers[0])) return;
   return markers[0] === 'core3.0' || markers[0] === 'core4.0' ? markers[0] : undefined;
@@ -120,7 +126,10 @@ export function normalizeEnvelope(value: unknown): Envelope | undefined {
         ? { messageId: string(data.message_id) }
         : {}),
       receipts: rows(data.receipts)
-        .map(receipt)
+        // Generic public command acknowledgements do not contain the summary,
+        // consent state or undo capability needed to create a memory card. Earlier
+        // memory_receipt stream context stays authoritative in the reducer.
+        .map((item) => (isWirePublicReceiptV1(item) ? undefined : receipt(item)))
         .filter((item) => item !== undefined),
       ...(asked ? { question: asked } : {}),
       decisions: options,

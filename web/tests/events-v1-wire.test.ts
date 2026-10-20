@@ -37,7 +37,7 @@ const envelope = {
   schema: 'core4.0',
   message_id: 'message-1',
   text: '核对后的内容',
-  receipts: [memory],
+  receipts: [{ fact_id: memory.fact_id, write_status: memory.write_status }],
   used_fact_ids: [],
   used_claim_ids: [],
   asked: ask,
@@ -55,7 +55,13 @@ const bodies = {
   },
   status: { text: '正在核对', phase: 'reviewing' },
   tool_call: { call_id: 'call-1', name: 'memory_search', summary: '查找相关记忆' },
-  tool_result: { call_id: 'call-1', name: 'memory_search', ok: true, summary: '已核对', receipt: memory },
+  tool_result: {
+    call_id: 'call-1',
+    name: 'memory_search',
+    ok: true,
+    summary: '已核对',
+    receipt: { fact_id: memory.fact_id, write_status: memory.write_status },
+  },
   text_delta: { text: '一些内容' },
   text_reset: { text: '恢复的完整内容', reason: 'resumed', revision_id: 'revision-1' },
   memory_receipt: memory,
@@ -175,7 +181,7 @@ describe('frozen event contract v1', () => {
         { ...common, ...bodies.tool_result, receipt: { kind: 'profile', field: 'birth', ...memory } },
         'tool_result',
       ),
-    ).toMatchObject({ receipt: undefined });
+    ).toBeUndefined();
     expect(chatEvent({ ...common, ...bodies.started, thread_id: summary }, 'started')).toBeUndefined();
   });
 

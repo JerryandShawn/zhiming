@@ -66,7 +66,12 @@ function finalStep(answer: string, revised = false, cards = true): DemoStep {
         schema: 'core4.0',
         message_id: 'local-message',
         text: answer,
-        receipts: cards ? [saved, pending] : [],
+        receipts: cards
+          ? [
+              { fact_id: saved.fact_id, write_status: saved.write_status },
+              { proposal_id: pending.proposal_id, write_status: pending.write_status },
+            ]
+          : [],
         used_fact_ids: [],
         used_claim_ids: [],
         asked: cards ? question : null,
