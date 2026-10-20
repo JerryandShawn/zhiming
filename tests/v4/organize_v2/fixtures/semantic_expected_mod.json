@@ -1,0 +1,31 @@
+{
+  "schema": "organize.v2.independent_semantic_truth.v1",
+  "synthetic_only": true,
+  "oracle": "Independent area intent examples written before v2 classifier implementation; unrelated to sealed B231",
+  "clear": [
+    {"area": "daily", "text": "聊聊日常生活：今天散步时看到了一只橘猫。"},
+    {"area": "daily", "text": "这条是普通日常，晚饭后我在小区里慢慢散步。"},
+    {"area": "daily", "text": "想记个生活小事：周末给房间换了一束花，心情不错。"},
+    {"area": "career", "text": "明天下午参加产品经理岗位面试，我想练习自我介绍。"},
+    {"area": "career", "text": "这份求职简历的项目经历该怎样改，才更符合招聘岗位？"},
+    {"area": "career", "text": "我准备研究生入学考试，想安排复习计划和学习进度。"},
+    {"area": "relationships", "text": "我和恋人因为沟通方式吵架了，想修复这段亲密关系。"},
+    {"area": "relationships", "text": "暧昧对象最近不回复消息，我想谈谈两个人的相处边界。"},
+    {"area": "relationships", "text": "我刚结束一段恋爱，想整理分手后的感受。"},
+    {"area": "family", "text": "爸爸妈妈和我一起商量回家安排，想聊聊家庭相处。"},
+    {"area": "family", "text": "婆媳之间又有矛盾，我想理清家庭成员的边界。"},
+    {"area": "family", "text": "我和兄弟姐妹讨论如何照顾年迈父母，这属于家里的事。"},
+    {"area": "wellbeing", "text": "连续几晚失眠，我想调整睡眠和情绪状态。"},
+    {"area": "wellbeing", "text": "最近焦虑明显，身心很疲惫，想先谈谈如何休息。"},
+    {"area": "wellbeing", "text": "体检后我开始关心健康，想建立规律运动习惯。"},
+    {"area": "finance", "text": "我正在核对信用卡账单和月度预算，想控制支出。"},
+    {"area": "finance", "text": "这笔贷款每月需要还多少本金和利息，我想算清楚。"},
+    {"area": "finance", "text": "我想比较基金手续费和储蓄利率，安排自己的资金。"},
+    {"area": "metaphysics", "text": "帮我理解八字里的日主和十神是什么意思。"},
+    {"area": "metaphysics", "text": "我想学习紫微斗数，先讲讲四化如何入宫。"},
+    {"area": "metaphysics", "text": "塔罗的大阿尔卡纳和逆位牌义有什么区别？"}
+  ],
+  "uncertain": ["", "   ", "……", "嗯", "这个你怎么看？", "一条消息混着面试、恋爱、贷款和失眠，暂时没有主要话题。"],
+  "continuations": ["先接着刚才那个准备。", "我先按第一步试一次。", "这一段要不要放在开头？", "能帮我压缩成一分钟吗？", "我试着换一种说法。", "那个例子我还想再调整。", "接下来按哪一步练习？", "我想先把开场讲顺。", "刚才的回答可以再短一点吗？", "继续刚才这个话题。"],
+  "hard_change": "换个话题：请帮我算这笔贷款每月还款和利息支出。"
+}
