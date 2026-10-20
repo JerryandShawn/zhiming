@@ -2,6 +2,8 @@
 
 记录：2026-10-21 01:06，北京时间（Asia/Shanghai）。这是 P3 原提示词验收第7项要求的离线计划；本片只写文档，没有运行测试、改 owner 设置、启用模型或访问服务器。
 
+01:41更新：本机管理命令40项目标通过，原旧页面真实HTTP/PG三轮正文已跑通；真实回执DOM缺口已精确复现，不能放行stage。后文初始“尚不存在”状态以本更新为准；真实服务器操作仍为0。
+
 ## 1. 当前结论与范围
 
 **No-Go。先完成本机合成演练，再申请 P3 专项 stage 授权。** 默认 owner runtime=v3 和本机组件通过不代表生产可切v4。现有条件授权B/D属于B1固定包`b9a89b6`，不包含P3。本文不改B1包、迁移、服务器unit、Hermes wrapper、CHART_PYTHON或磁盘方案，不提供生产执行授权。
@@ -12,13 +14,13 @@
 
 | 阻塞 | 放行所需证据 |
 | --- | --- |
-| 01:00固定新头宽回归已经出现失败、尚待完整栈/结论 | 解释真实失败、独立修复片、在新固定tree重跑所有必需回归；精确PR头CI绿，不能引用旧绿 |
+| 01:00固定头v4为1484通过/42失败，Core581中1项runner工具路径失败 | 原因与定向修复已有独立证据，须02:00新固定tree完整回归及精确PR头CI绿；不能引用旧绿或相加子集 |
 | M8原指定47为46/47 | 大脑裁定X03混绑网页/飞书发送契约，保持原四失败可追溯；完成新的获批验收契约，不造Outbox修分 |
-| 公开present_options/options仍在独立接线 | 实际工具→Journal→事件→core4→HTTP回放一致及旧读端兼容，字段按冻结v1 |
+| 公开present_options已补齐定向证据，尚缺新固定tree组合验收 | 实际工具→Journal→事件→core4→HTTP回放已有16新PG/139相关目标通过；仍随组合头回归，字段按冻结v1 |
 | P1b仍在独立分支，尚未集成本树 | 在v4/integration组合P1b/P3，证明所有物理HTTP入口、可信角色、全停、额度/并发和人工开始门共用中央守卫 |
 | 真实K3 encoder未配置 | 本机经审artifact/version/hash接入、计数与1.15+4000上界、拒绝未知计量、actual校准离线证据；供应商实测另授权 |
-| 管理命令尚不存在 | 实现并审核原提示词指定`mingjing_core.tools.set_runtime`，带只读默认/显式apply、环境与owner白名单、旧值核对、幂等/回执和本机PG负例；不能直接SQL绕门 |
-| 旧前端DOM与v3→v4→v3完整演练未验 | 合成owner、本机HTTP、真实PG、两套离线模型；旧页面显示完整正文/收据，三轮run分别固定v3/v4/v3 |
+| 管理命令仅完成本机隔离入口，stage未启用 | 本机40项目标通过；stage目标白名单与受审窗口另实施，不能直接SQL绕门或复用B1授权 |
+| 旧页面三轮正文已实测，保存回执DOM失败 | 三轮v3/v4/v3及history正文通过，但旧UI仅读memory_receipts，core4字段为receipts；完整目标1 passed/1 strict xfailed。由前端补兼容后复核，不能隐藏期望失败或给冻结信封偷加字段 |
 
 附件、旧塔罗reading/report等未覆盖复杂输入在v4前置拒绝，不能在stage临时放开。U4仍用Z6接口替身；date_calc披露待脑，P8能力缺口继续诚实降级。真实供应商质量、缓存命中、真实渠道送达不由ScriptedProvider成绩替代。
 
@@ -30,11 +32,11 @@
 
 受信服务工厂须显式构造同repo的AgentRuntime、ScriptedPort和合成meter，再传入ConsultationService的agent_runtime；v3也使用离线模型替身。RuntimeAssembly.require_agent会拒绝缺meter/未审真实meter/不匹配repo/调度容量不足。CORE_RUN_CONCURRENCY及repo容量至少支持当前Dispatcher要求的3；所有worker配置一致。
 
-先确认指定管理入口文件与审核证据已经存在。下列为原提示词要求的**计划接口，当前不存在，禁止照抄执行**：
+管理入口已实现并提供本机目标证据（`../evidence/P3/2026-10-21-set-runtime.md`）。下列仅为本机隔离合成owner的默认只读命令，不连接stage：
 
-    python -m mingjing_core.tools.set_runtime --owner <合成或获准stage-owner> --runtime v4
+    python -m mingjing_core.tools.set_runtime --owner <合成owner> --runtime v4 --schema <隔离schema>
 
-具体只读/apply/环境参数以实施后审定的真实help为准，实施前不得自造参数、改SQL或把测试helper当stage工具。本文的owner必须来自受信配置，不接受网页传入runtime布尔或模型工具参数。
+实际写入还必须显式`--apply --expect-runtime v3 --request-id <稳定ID>`；反向用v4旧值和新的稳定ID。仅从明确loopback隔离CORE_TEST_DSN读取，校验实际PG15库/角色/schema，拒绝远程、生产和stage；不初始化库或owner。stage支持本片未启用。本文的owner必须来自受信配置，不接受网页传入runtime布尔或模型工具参数。
 
 ## 3. 本机 v3 → v4 → v3 操作顺序
 
@@ -64,7 +66,7 @@
     python -m unittest discover -s tests -p 'test_core*.py'
     python -m pytest tests/v4 -q
 
-管理命令和三轮DOM组合测试尚未实现，须补实际文件/命令后再宣称演练完成。旧页面要求DOM断言或手工截图，仅HTTP200、TestClient或Mock截图不够。前端线独占web/**，主线不回写其文件；本机整合时双方契约以冻结Schema为准。
+管理命令和三轮正文DOM组合已实现，见`tests/v4/agent/test_legacy_dom_runtime_pg.py`；完整回执DOM仍strict xfailed，不能宣称整个演练完成。jsdom证明真实DOM和旧JS路径，不提供浏览器布局截图。仅HTTP200或TestClient仍不足。前端独占文件由其负责，主线不回写；本机整合时双方契约以冻结Schema为准。
 
 报告逐项记录开始/结束北京时间、base/source/tree、通过/失败/跳过/耗时、owner切换旧值/新值、三轮run的runtime/schema、幂等operation观察、取消单调时延、来源/撤销及Outbox计数、回执hash和DOM截图路径。实际物理供应商请求必须为0，local HTTP/MockTransport步骤单列。
 
