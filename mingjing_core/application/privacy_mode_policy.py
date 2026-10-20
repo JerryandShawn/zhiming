@@ -40,8 +40,11 @@ def privacy_action(text: str) -> PrivacyAction | None:
     """This consumes authenticated raw input, never model text or an extracted quote."""
     if not isinstance(text, str):
         raise EvidenceError("隐私指令需要当前用户原话")
-    masked, found, prefix = _unquoted(text), set(), ""
+    masked, found = _unquoted(text), set()
+    if re.search(r"假如|假设|如果|要是|举个例子|比如说|例如", masked):
+        return None
     for hard in re.split(r"[。.!！；;\n]", masked):
+        prefix = ""
         for clause in re.split(r"[，,]", hard):
             prefix += clause
             if NON_DIRECT.search(prefix):
