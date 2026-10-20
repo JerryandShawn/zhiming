@@ -6,6 +6,7 @@ from typing import Any, Literal
 
 from psycopg import sql
 
+from mingjing_core.application.dispatcher_inbox import recover_inboxes
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.timekit.clock import get_clock
@@ -21,7 +22,7 @@ class DispatcherClaims:
 
     def recover(self) -> int:
         with self.repo.transaction() as connection:
-            return connection.execute(
+            changed = connection.execute(
                 sql.SQL(
                     "UPDATE {} SET status=CASE WHEN cancel_requested_at IS NOT NULL THEN 'cancelled' "
                     "WHEN deadline_at<=%s THEN 'failed' ELSE 'queued' END,lease_token=NULL,lease_until=NULL,"
@@ -30,6 +31,8 @@ class DispatcherClaims:
                 ).format(self.repo.table("core_runs")),
                 (get_clock().now(), get_clock().now()),
             ).rowcount
+        recover_inboxes(self.repo)
+        return changed
 
     def claim(self, lane: Lane) -> dict[str, Any] | None:
         if lane not in {"interactive", "background"}:

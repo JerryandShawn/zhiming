@@ -6,6 +6,7 @@ from collections.abc import Mapping
 
 from mingjing_core.application.context_epochs import ContextEpochService
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.domain.contracts import ScopeError
 from mingjing_core.models.port import ChatMessage, ToolSpec
 from mingjing_core.timekit.clock import Clock, get_clock
 
@@ -70,11 +71,17 @@ class ContextEngine:
 
             if case_ids:
                 raise ContextInputError("private_context_cases_not_allowed")
-            snapshot = private_sources(
-                self.memory, owner, subject, thread_id, source_message_id, self.policy, run_context=run_context
-            )
+            try:
+                snapshot = private_sources(
+                    self.memory, owner, subject, thread_id, source_message_id, self.policy, run_context=run_context
+                )
+            except ScopeError:
+                raise ContextInputError("context_thread_unsupported") from None
         else:
             snapshot = self._sources(owner, subject, source_message_id, thread_id, case_ids, query, run_context)
+        from .context_turn_sources import attach_turn_sources
+
+        snapshot = attach_turn_sources(self.memory, snapshot, run_context)
         return self._assemble(snapshot, tools, current_epoch_messages, tool_summaries or {}, tool_choice)
 
     def _sources(self, owner, subject, source_message_id, thread_id, case_ids, query, run_context) -> SourceSnapshot:

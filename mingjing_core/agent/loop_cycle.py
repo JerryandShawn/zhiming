@@ -27,6 +27,7 @@ from .context_types import (
     ContextLayer,
     InputMeterUnverified,
 )
+from .inbox_cycle import InboxCycle
 from .journal import Journal, JournalStep, input_fingerprint
 from .loop_codec import ObservedPort, assistant_from, assistant_output, extend_aliases, tool_message, verified_versions
 from .loop_policy import LoopPolicy, LoopStopped, RunControl
@@ -93,13 +94,15 @@ class LoopCycle:
         }
         self.used, self.text, self.partial, self.asked = False, "", "", None
         self.last_step: JournalStep | None = None
+        self.current_sources = tuple(run["request"].get("source_message_ids", [run["request"]["source_message_id"]]))
+        self.inbox = InboxCycle(registry.service.repo)
 
     def _context(self, step: JournalStep | None = None) -> ToolContext:
         if step is not None:
             return ToolContext.from_step(
                 step,
                 thread_id=thread_id(self.run),
-                source_ids=(self.run["request"]["source_message_id"],),
+                source_ids=self.current_sources,
                 case_ids=tuple(self.run["request"].get("case_ids", [])),
                 source_versions=self.frozen.injected_versions,
                 crisis=self.crisis,
@@ -115,7 +118,7 @@ class LoopCycle:
             "model",
             "0" * 64,
             thread_id(self.run),
-            source_ids=(self.run["request"]["source_message_id"],),
+            source_ids=self.current_sources,
             case_ids=tuple(self.run["request"].get("case_ids", [])),
             source_versions=self.frozen.injected_versions,
             crisis=self.crisis,
@@ -175,6 +178,7 @@ class LoopCycle:
         self.control.poll()
         name = "revision" if self.revising else ""
         restored = self.ledger.restore_next(self.journal, self.run, role="primary", name=name) if self.ledger else None
+        self.inbox.prepare(self, restored)
         budget, choice = (restored.budget, restored.choice) if restored else self._budget()
         versions = restored.versions if restored else self.versions
         self.exposed = {tool.name for tool in budget.tools}
@@ -214,6 +218,7 @@ class LoopCycle:
                 self.ledger.completed(completed)
             step = completed
         self.last_step = step
+        self.inbox.completed(self, step)
         self.usage["model_steps"] += 1
         for key, value in response.usage.items():
             if type(value) is int and value >= 0:

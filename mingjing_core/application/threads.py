@@ -130,6 +130,8 @@ class ThreadService:
             original = self.repo.get(owner, "message", message_id, include_deleted=True)
         except ScopeError:
             return False
+        if original["status"] == "deleted" or self.repo.is_revoked(owner, "message", message_id):
+            raise EvidenceError("已撤销的原话不能重新导入")
         if original.get("thread_id") != ident:
             raise ScopeError("已存在的原话不能移到其他线程")
         return True
@@ -161,7 +163,7 @@ class ThreadService:
             self.memory, owner, sources, [], set(), private_thread=ident if ident.startswith("incognito:") else None
         )
 
-    def record_private_reply(self, owner: str, run: dict[str, Any], text: str) -> dict[str, Any]:
+    def record_private_reply(self, owner: str, run: dict[str, Any], text: str, **lineage: Any) -> dict[str, Any]:
         with self.repo.transaction(owner) as connection:
             current = self.repo._leased(connection, owner, run["id"], run["lease_token"])
             if (
@@ -172,9 +174,11 @@ class ThreadService:
                 raise EvidenceError("无痕回答运行已失效")
             if current["deadline_at"] is not None and current["deadline_at"] <= self.clock.now():
                 raise EvidenceError("无痕回答执行超时")
-            return self._record_private_reply(owner, self.repo._run(current), text)
+            return self._record_private_reply(owner, self.repo._run(current), text, **lineage)
 
-    def _record_private_reply(self, owner: str, run: dict[str, Any], text: str) -> dict[str, Any]:
+    def _record_private_reply(
+        self, owner: str, run: dict[str, Any], text: str, *, source_ids=None, used_fact_ids=(), used_claim_ids=()
+    ) -> dict[str, Any]:
         ident, subject = run["thread_id"], run["subject"]
         self.get(owner, ident, subject=subject)
         if not ident.startswith("incognito:") or not text.strip() or len(text) > 200_000:
@@ -182,6 +186,7 @@ class ThreadService:
         source = self.memory.get_source(owner, run["request"]["source_message_id"])
         if source.get("thread_id") != ident or not is_private(source):
             raise ScopeError("无痕回答来源不符")
+        lineage = self._reply_lineage(owner, run, source, source_ids, used_fact_ids, used_claim_ids)
         message_id = "msg_" + fingerprint([owner, "assistant", run["id"]])[:32]
         try:
             old = self.repo.get(owner, "message", message_id, include_deleted=True)
@@ -205,7 +210,7 @@ class ThreadService:
                 thread_id=ident,
                 incognito=True,
                 run_id=run["id"],
-                source_ids=[source["id"]],
+                **lineage,
                 case_ids=[],
                 policy={"origin": "system", "run_context": False, "persist_allowed": False},
             ),
@@ -213,3 +218,25 @@ class ThreadService:
             expected_revision=0,
             operation_id="private-assistant:" + run["id"],
         )
+
+    def _reply_lineage(self, owner, run, source, source_ids, used_fact_ids, used_claim_ids):
+        sources = list(dict.fromkeys(source_ids or [source["id"]]))
+        for linked in sources:
+            original = self.memory.get_source(owner, linked)
+            if (
+                original["subject_id"] != run["subject"]
+                or original["status"] != "active"
+                or original.get("thread_id") not in {run["thread_id"], "life:" + run["subject"]}
+                or source_ids is not None
+                and run["state_version"].get("message:" + linked) != original["revision"]
+            ):
+                raise EvidenceError("无痕回答来源未获本轮有效依赖授权")
+        for kind, identifiers in (("fact", used_fact_ids), ("interpretive_claim", used_claim_ids)):
+            for linked in identifiers:
+                row = self.repo.get(owner, kind, linked)
+                if (
+                    row["subject_id"] != run["subject"]
+                    or run["state_version"].get(kind + ":" + linked) != row["revision"]
+                ):
+                    raise EvidenceError("无痕回答引用不在本轮已核依赖中")
+        return dict(source_ids=sources, used_fact_ids=list(used_fact_ids), used_claim_ids=list(used_claim_ids))

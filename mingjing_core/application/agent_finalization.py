@@ -148,7 +148,12 @@ class AgentFinalizer:
     def _message(self, current, source, checked, effective):
         if thread_id(current).startswith("incognito:"):
             return ThreadService(self.repo, clock=self.clock).record_private_reply(
-                current["owner"], current, checked.text
+                current["owner"],
+                current,
+                checked.text,
+                source_ids=[key[8:] for key in effective if key.startswith("message:")],
+                used_fact_ids=checked.used_fact_ids,
+                used_claim_ids=checked.used_claim_ids,
             )
         return self.memory.record_assistant_message(
             current["owner"],
