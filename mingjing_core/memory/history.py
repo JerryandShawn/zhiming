@@ -12,6 +12,8 @@ from psycopg.rows import dict_row
 
 from mingjing_core.timekit.timestamps import history_instant
 
+from .private import is_private
+
 if TYPE_CHECKING:
     from collections.abc import Iterator
 
@@ -30,9 +32,11 @@ def sort_key(row: dict[str, Any]) -> tuple[datetime, str, int, str]:
 def _runs(repo: PostgresRepository, owner: str, subject: str, session: str) -> list[dict[str, Any]]:
     with repo.transaction(owner) as connection:
         rows = connection.execute(
-            sql.SQL("SELECT * FROM {} WHERE owner=%s AND subject=%s ORDER BY created_at,id").format(
-                repo.table("core_runs")
-            ),
+            sql.SQL(
+                "SELECT * FROM {} WHERE owner=%s AND subject=%s "
+                "AND coalesce(thread_id,'') NOT LIKE 'incognito:%%' "
+                "AND coalesce(request->>'incognito','false')<>'true' ORDER BY created_at,id"
+            ).format(repo.table("core_runs")),
             (owner, subject),
         ).fetchall()
     return [row for row in rows if session in ("shared", "") or row["request"].get("conversation_id") == session]
@@ -58,7 +62,7 @@ def _messages(repo: PostgresRepository, owner: str, subject: str, session: str) 
             while rows := cursor.fetchmany(256):
                 for row in rows:
                     message = repo._decode(row)
-                    if message.get("content"):
+                    if message.get("content") and not is_private(message):
                         yield dict(
                             message,
                             source=message.get("channel", "web"),
