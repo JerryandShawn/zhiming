@@ -17,7 +17,7 @@
 
 上述346为本地合成程序测试，不是模型或平台质量分。实际模型调用0。没有修改或重跑旧v2.1/v2.2基线，没有再次开封Q5 B。旧P9/Q6入口保持冻结。
 
-构建器最终性能：1000条大回答含真实typed回执/4动作，中位1.159378秒、Python峰708987字节；100条七区大晨报1.071426秒、峰7173439字节。完整inner/wire预算校验和断言计入；synthetic CPU，不是网络吞吐。P9_official_builders_performance_final.json绑定最终builder源；旧提前截断版本的报告另留历史，不能混作最终结果。状态机单独性能仍待补。
+构建器最终性能：1000条大回答含真实typed回执/4动作，中位1.159378秒、Python峰708987字节；100条七区大晨报1.071426秒、峰7173439字节。完整inner/wire预算校验和断言计入；synthetic CPU，不是网络吞吐。P9_official_builders_performance_final.json绑定最终builder源；旧提前截断版本的报告另留历史，不能混作最终结果。状态机另测100完整五请求/三restore 0.659565秒/峰76124B，200崩溃或租约过期路径全部拒重发0.754900秒/峰47655B，见P9_official_state_performance_receipt.md。
 
 ## 改了哪些关键文件
 
