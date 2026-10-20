@@ -1,0 +1,90 @@
+{
+  "schema": "frontend-q9-v3-visual-v1",
+  "run_id": "Q9-v3-20261021-0206-final",
+  "id": "Q9-v3-chat-dark-390",
+  "mode": "v3",
+  "page": "chat",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "theme": "dark",
+  "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chat-dark-390.png",
+  "sha256": "87aa2197f0a6fd9869e6b6be5645fc6970302b4f5570e62ffc60e23cff79cbb2",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chat-dark-390-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chat-dark-390.png",
+      "sha256": "87aa2197f0a6fd9869e6b6be5645fc6970302b4f5570e62ffc60e23cff79cbb2",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chat-dark-390-full.png",
+      "sha256": "87aa2197f0a6fd9869e6b6be5645fc6970302b4f5570e62ffc60e23cff79cbb2",
+      "full_page": true
+    }
+  ],
+  "captured_at_beijing": "2026-10-21T02:06:19+08:00",
+  "clock": "2026-10-21T10:00:00+08:00",
+  "build_manifest_sha256": "1caccda67130820b980538ffac1e07a08b2678b5802a7083d52c67300bf309ff",
+  "synthetic_only": true,
+  "backend": "http://127.0.0.1:8002 / core_test_fe",
+  "fixture_model": "scripted-only, one reading preseeded per worker; no browser model trigger",
+  "checks": {
+    "ready": true,
+    "readiness_error": "",
+    "inspection": {
+      "document": {
+        "lang": "zh-CN",
+        "theme": "dark",
+        "font_faces": 202,
+        "overflow": false
+      },
+      "screens": [
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        },
+        {
+          "kind": "internal",
+          "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        },
+        {
+          "kind": "internal",
+          "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 276,
+          "small_text": [],
+          "cinnabar_uses": []
+        }
+      ],
+      "violations": []
+    },
+    "boundary": {
+      "arrivals": [
+        {
+          "path": "/api/history",
+          "status": 200
+        }
+      ],
+      "external": [],
+      "writes": [],
+      "errors": [],
+      "console": [],
+      "failed": [],
+      "expected_cancellations": [],
+      "http_errors": []
+    }
+  }
+}

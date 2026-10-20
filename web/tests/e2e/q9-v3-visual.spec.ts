@@ -132,7 +132,7 @@ for (const viewport of viewports)
     for (const name of names)
       test(`Q9 v3 ${name} ${theme} ${viewport.width}`, async ({ page, q9Seed }) => {
         await page.setViewportSize(viewport);
-        const activity = await guardV3(page);
+        const activity = await guardV3(page, name);
         let readinessError = '';
         try {
           await openPopulatedV3(page, name, theme, q9Seed);

@@ -1,0 +1,96 @@
+{
+  "run_id": "Q9-night-20261021-0156-final",
+  "captured_time_bjt": "2026-10-21T01:58:07.530+08:00",
+  "id": "spaces-organize",
+  "case_key": "spaces-organize-light-1440",
+  "state": "spaces-organize",
+  "route": "/?spaces=demo#/organize",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "light",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/spaces-organize-light-1440.png",
+  "screenshot_sha256": "aff2e58ab9f8132f2c6b6d43e11206f6eb515e6713f63e26f44ce32c3cf2898d",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/spaces-organize-light-1440-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/spaces-organize-light-1440.png",
+      "sha256": "aff2e58ab9f8132f2c6b6d43e11206f6eb515e6713f63e26f44ce32c3cf2898d",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/spaces-organize-light-1440-full.png",
+      "sha256": "9581d1f78630adc555c26726c75dfa0f7651ff8cf9b03ac88af018c204691012",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "light",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ]
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 780,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 1560,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 2211,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}

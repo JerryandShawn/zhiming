@@ -19,6 +19,7 @@ export type Activity = {
   errors: string[];
   console: string[];
   failed: string[];
+  expected_cancellations: string[];
   http_errors: { path: string; status: number }[];
 };
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -62,7 +63,7 @@ export async function fixtureSafety(api: APIRequestContext) {
   return metrics;
 }
 
-export async function guardV3(page: Page): Promise<Activity> {
+export async function guardV3(page: Page, name: Name): Promise<Activity> {
   const activity: Activity = {
     arrivals: [],
     external: [],
@@ -70,6 +71,7 @@ export async function guardV3(page: Page): Promise<Activity> {
     errors: [],
     console: [],
     failed: [],
+    expected_cancellations: [],
     http_errors: [],
   };
   page.on('pageerror', (error) => activity.errors.push(error.name));
@@ -78,7 +80,16 @@ export async function guardV3(page: Page): Promise<Activity> {
     const pathname = location.url ? new URL(location.url, frontend).pathname : 'unknown';
     activity.console.push(`${message.type()}:${pathname}:${location.lineNumber ?? 0}`);
   });
-  page.on('requestfailed', (request) => activity.failed.push(`${request.method()} ${new URL(request.url()).pathname}`));
+  page.on('requestfailed', (request) => {
+    const pathname = new URL(request.url()).pathname;
+    const error = request.failure()?.errorText ?? 'unknown';
+    const detail = `${request.method()} ${pathname}: ${error}`;
+    // Restoring a fixed draw unmounts QuestionForm and cancels its React Query GET.
+    // Only this exact cancellation is expected; all other failures stay fatal.
+    if (name === 'tarot' && request.method() === 'GET' && pathname === '/api/cases' && error === 'net::ERR_ABORTED')
+      activity.expected_cancellations.push(detail);
+    else activity.failed.push(detail);
+  });
   page.on('response', (response) => {
     const url = new URL(response.url());
     if (!url.pathname.startsWith('/api/')) return;
@@ -150,6 +161,7 @@ export async function openPopulatedV3(page: Page, name: Name, theme: 'light' | '
     await expect(page.locator('.pillar-glyphs')).toHaveCount(4);
   }
   if (name === 'tarot') {
+    await expect(page.getByRole('form', { name: '塔罗提问', exact: true })).toHaveCount(0);
     await expect(page.getByRole('heading', { name: seed.question, exact: true })).toBeVisible();
     await expect(page.getByRole('article', { name: '第1版解读' })).toBeVisible();
     await expect(page.getByRole('button', { name: '重新解读 · 不换牌', exact: true })).toBeEnabled();
@@ -235,6 +247,7 @@ export async function captureV3(
   expect(activity.errors).toEqual([]);
   expect(activity.console).toEqual([]);
   expect(activity.failed).toEqual([]);
+  expect(activity.expected_cancellations.length).toBeLessThanOrEqual(name === 'tarot' ? 1 : 0);
   expect(activity.http_errors).toEqual([]);
   return audit;
 }

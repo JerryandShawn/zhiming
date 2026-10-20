@@ -80,7 +80,12 @@ for (const [group, values] of groups) {
     if (group === 'static') require(emptyArrays(audit.activity), 'Static boundary failed');
     if (group === 'v3')
       require(audit.checks.ready === true &&
-        emptyArrays(audit.checks.boundary, ['arrivals']), 'v3 readiness/boundary failed');
+        emptyArrays(audit.checks.boundary, ['arrivals', 'expected_cancellations']) &&
+        Array.isArray(audit.checks.boundary.expected_cancellations) &&
+        audit.checks.boundary.expected_cancellations.length <= (audit.page === 'tarot' ? 1 : 0) &&
+        audit.checks.boundary.expected_cancellations.every(
+          (entry) => entry === 'GET /api/cases: net::ERR_ABORTED',
+        ), 'v3 readiness/boundary failed');
     const images = audit.images ?? [{ screenshot: audit.screenshot, sha256: audit.sha256, full_page: true }];
     for (const image of images) {
       require(typeof image.screenshot === 'string' &&
