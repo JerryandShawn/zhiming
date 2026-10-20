@@ -23,7 +23,7 @@ def assert_historical_case_index(
 ) -> None:
     if (
         alias.get("kind") != "case"
-        or row["status"] not in {"done", "archived"}
+        or row["status"] not in {"paused", "closed", "done", "archived"}
         or row["subject_id"] != run["subject"]
         or alias.get("basis") != "case_index"
         or alias.get("index_only") is not True
