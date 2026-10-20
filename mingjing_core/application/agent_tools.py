@@ -132,6 +132,44 @@ class AgentToolsService:
         return bool(profile_get(self, ctx)["profile"].get("birth.solar_datetime"))
 
     def execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
+        from mingjing_core.application.privacy_run_barrier import run_persistence_blocked
+
+        if ctx.name != name or tool_input_fingerprint(name, arguments, ctx.source_versions) != ctx.input_fp:
+            raise EvidenceError("隐私闸门调用与受信步骤不符")
+        persistent = {
+            "memory_write",
+            "memory_update",
+            "note_write",
+            "profile_update_request",
+            "case_update",
+            "case_add_event",
+            "schedule_followup",
+            "set_reminder",
+            "chart_compute",
+            "tarot_start",
+            "tarot_read",
+        }
+        if name in persistent:
+            # The owner lock spans both the opt-out recheck and the actual effect.
+            with self.repo.transaction(ctx.owner) as connection:
+                self.authority(connection, ctx)
+                if run_persistence_blocked(self.repo, self.repo.fetch_run(ctx.owner, ctx.run_id)):
+                    receipt = self.repo.mutation_request(
+                        ctx.owner,
+                        "agent_" + name,
+                        ctx.operation_id,
+                        arguments,
+                        lambda: {"write_status": "stopped", "code": "privacy_optout"},
+                    )
+                    return ToolResult(
+                        ok=receipt.get("write_status") == "saved",
+                        receipt=receipt,
+                        summary="本次保存状态已核对；本轮后续保存已停止",
+                    )
+                return self._execute(name, arguments, ctx)
+        return self._execute(name, arguments, ctx)
+
+    def _execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
         from mingjing_core.application.agent_tools_charts import execute_chart
         from mingjing_core.application.agent_tools_computation import date_calc
         from mingjing_core.application.agent_tools_interactions import INTERACTION_NAMES, execute_interaction
