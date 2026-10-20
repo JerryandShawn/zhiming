@@ -12,6 +12,7 @@
 - [x] (2026-10-21 00:43) RuntimeAssembly 与 submit/execute 路由，保持旧 v3 运行与 checkpoint 行为；重复请求固定首次 runtime。
 - [x] (2026-10-21 00:43) 线程 API、run cancel/events 与 lifespan 调度切换；旧 worker 只取 v3，v4 显式安装后排队运行。
 - [x] (2026-10-21 00:43) 最终 64 项真实隔离 PG / ScriptedPort 目标回归通过；旧 Core 兼容 32 项和 46 个 subtests 另通过；Ruff 与 400/60 检查通过。
+- [x] (2026-10-21 00:49) 独立维护片接入 worker：monotonic 每60秒、有界50项、不重入，失败固定code可观察而不中断旧v3；维护与HTTP窄回归15项通过。
 
 ## Context and Orientation
 
@@ -55,9 +56,10 @@ ThreadIngress.queue 需要旧 submit 验证，因此旧函数提取为 _submit_v
 
 ## Outcomes & Retrospective
 
-本机候选安装已通过真实隔离 PostgreSQL 和合成模型验证，覆盖线程人生/无痕、关闭、默认 v3、显式 v4、队列隔离、取消租约、冻结 SSE 游标回放和并发终态幂等。未部署、未发真实模型或飞书请求；复杂附件/旧牌阵/报告输入及模块线 SSE 核心合并未验，不能标记完整产品可启用。root 新增 PrivacyMaintenance 的 60 秒节流维护 hook 尚未接入本片，将独立补证据。
+本机候选安装已通过真实隔离 PostgreSQL 和合成模型验证，覆盖线程人生/无痕、关闭、默认 v3、显式 v4、队列隔离、取消租约、冻结 SSE 游标回放和并发终态幂等。未部署、未发真实模型或飞书请求；复杂附件/旧牌阵/报告输入及模块线 SSE 核心合并未验，不能标记完整产品可启用。后续独立片已接入 root PrivacyMaintenance 的60秒维护，证据见 `2026-10-21-privacy-maintenance-hook.md`。
 
 ## 修订记录
 
 - 2026-10-21 00:20 创建，记录候选装配与兼容边界。
 - 2026-10-21 00:43 冻结本机安装候选，补最终目标回归、旧 Core 兼容和公开事件并发核验结果。
+- 2026-10-21 00:49 独立补入有界、失败可观察的60秒保留维护 hook 和 owner/running/core3 真实PG边界。
