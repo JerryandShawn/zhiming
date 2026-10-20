@@ -1,0 +1,72 @@
+{
+  "schema": "p3-fixed-regression-evidence-v1",
+  "recorded_bjt": "2026-10-21T07:34:45.301293+08:00",
+  "local_sha": "2b25175884af6fc8d6756c9f8c7f20922fd73fc7",
+  "remote_sha": "54308ab45ec0cb1a88cf35688fa36861f37f3a5b",
+  "tree": "b85ae557d7e9a3e2a34d10a2d48342abdced1609",
+  "v4": {
+    "commit": "2b25175884af6fc8d6756c9f8c7f20922fd73fc7",
+    "started_at": "2026-10-21T02:00:23.669481+08:00",
+    "timezone": "Asia/Shanghai",
+    "test_timezone": "Asia/Tokyo",
+    "finished_at": "2026-10-21T02:08:59.280730+08:00",
+    "exit_code": 1
+  },
+  "core": {
+    "commit": "2b25175884af6fc8d6756c9f8c7f20922fd73fc7",
+    "started_at": "2026-10-21T02:00:33.829060+08:00",
+    "test_timezone": "Asia/Tokyo",
+    "finished_at": "2026-10-21T02:12:28.679030+08:00",
+    "exit_code": 0
+  },
+  "m8": {
+    "schema": "m8-fixed-snapshot-v1",
+    "local_sha": "2b25175884af6fc8d6756c9f8c7f20922fd73fc7",
+    "remote_sha": "54308ab45ec0cb1a88cf35688fa36861f37f3a5b",
+    "tree": "b85ae557d7e9a3e2a34d10a2d48342abdced1609",
+    "started_bjt": "2026-10-21T02:01:41.8107125+08:00",
+    "finished_bjt": "2026-10-21T02:02:45.9941983+08:00",
+    "full_exit": 1,
+    "extensions_exit": 0,
+    "external_provider_requests": 0,
+    "real_feishu_sends": 0,
+    "server_access": 0
+  },
+  "results": {
+    "v4_passed": 1768,
+    "v4_failed": 1,
+    "v4_xfailed": 1,
+    "v4_skipped": 0,
+    "v4_warnings": 6,
+    "core_passed": 581,
+    "scripted_original_passed": 45,
+    "scripted_original_total": 47,
+    "scripted_extensions_passed": 13,
+    "scripted_extensions_total": 13
+  },
+  "external_provider_requests": 0,
+  "server_access": 0,
+  "real_feishu_sends": 0,
+  "artifacts": [
+    {
+      "path": "docs/v4/evidence/P3/m8-v4-2026-10-21/full-0200/2026-10-21-scripted-v4-scripted-v4.json",
+      "sha256": "e07b564b36a5b6a15d59a9311806897310e57af3d4c6af8cfbe45472e47562a5",
+      "bytes": 97355
+    },
+    {
+      "path": "docs/v4/evidence/P3/m8-v4-2026-10-21/full-0200/2026-10-21-scripted-v4-scripted-v4.md",
+      "sha256": "1ec85f21e0aeb7d20008af16f9a8250e7b2175f181b6781783d2e0cade1bda61",
+      "bytes": 9006
+    },
+    {
+      "path": "docs/v4/evidence/P3/m8-v4-2026-10-21/extensions-0200/2026-10-21-scripted-v4-scripted-v4.json",
+      "sha256": "a999b864c78f9091a7d135a6c6da600d7c4977ac0a0598196de598edbd9bacc5",
+      "bytes": 33497
+    },
+    {
+      "path": "docs/v4/evidence/P3/m8-v4-2026-10-21/extensions-0200/2026-10-21-scripted-v4-scripted-v4.md",
+      "sha256": "58dad3f5b360535da389a69ed447db63bd0731b7111d9b485fa7365bba774316",
+      "bytes": 4102
+    }
+  ]
+}
