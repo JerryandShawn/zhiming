@@ -1,6 +1,7 @@
 """The existing ChatAgent's v6 workflow. No second model/runtime or fact writer."""
 import asyncio,json,re,time,copy
 import httpx
+from mingjing_core.models.quota_retired import retired_post
 from archive_store import read_json
 from context_engine import dump,choose_date
 from context_builder import ContextBuilder
@@ -96,7 +97,7 @@ async def run(agent,turn,emit):
             system=make_system();estimated=builder.guard(system,messages,tools)
             await emit({'type':'status','stage':'thinking','text':'正在结合有效记录核对解释' if iteration else '正在读取当前事项与已确认信息'})
             simple=route['mode'] in ('conversation','correction','memory_correction') and not draw
-            result=await client.post(agent.base+'/messages',headers=headers,json={'model':agent.model,'system':system,'messages':messages,'tools':tools,'max_tokens':4000 if simple else 14000,'temperature':1,'thinking':{'type':'enabled','budget_tokens':1024 if simple else 4000}})
+            result=await retired_post(client,agent.base+'/messages',headers=headers,json={'model':agent.model,'system':system,'messages':messages,'tools':tools,'max_tokens':4000 if simple else 14000,'temperature':1,'thinking':{'type':'enabled','budget_tokens':1024 if simple else 4000}})
             if result.status_code!=200:raise RuntimeError(f'模型服务 HTTP {result.status_code}；本轮记录已保留')
             result=result.json();usage.append(result.get('usage',{}))
             if result.get('stop_reason')=='max_tokens':raise RuntimeError('本轮输出达到上限，请缩小问题范围；没有展示未核验结论')

@@ -4,6 +4,7 @@ import json
 import logging
 import re
 import httpx
+from mingjing_core.models.quota_retired import retired_post
 from context_engine import compact, dump, choose_date
 from chart_context import bundle
 from archive_store import read_json
@@ -105,7 +106,7 @@ class ChatAgent:
                 await emit({'type':'status','stage':'thinking','text':'正在结合资料组织解读' if not iteration else '正在核对补充资料'})
                 payload={'model':self.model,'system':system,'messages':messages,'tools':TOOLS,'max_tokens':14000,
                          'temperature':1,'thinking':{'type':'enabled','budget_tokens':6000}}
-                r=await client.post(self.base+'/messages',headers=headers,json=payload)
+                r=await retired_post(client,self.base+'/messages',headers=headers,json=payload)
                 if r.status_code!=200:raise RuntimeError(f'模型服务 HTTP {r.status_code}，本轮已保留，可重试')
                 result=r.json();content=result.get('content',[])
                 if result.get('stop_reason')=='max_tokens':raise RuntimeError('模型达到单轮输出上限，请缩小问题范围后重试')

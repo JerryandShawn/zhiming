@@ -156,7 +156,7 @@ class ModelJudge:
         if provider is None:
             from mingjing_core.adapters.model import ConfiguredModel
 
-            provider = ConfiguredModel(model=model)
+            provider = ConfiguredModel(model=model, role="critic")
         self.provider = provider
         self.rubric = rubric.read_text(encoding="utf-8")
 

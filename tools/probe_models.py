@@ -21,8 +21,15 @@ import yaml  # noqa: E402
 
 from mingjing_core.models.errors import ModelQuotaExhausted, ModelUnavailable  # noqa: E402
 from mingjing_core.models.port import ChatMessage  # noqa: E402
+from mingjing_core.models.quota_runtime import (  # noqa: E402
+    CentralLocation,
+    call_scope,
+    current_scope,
+)
+from mingjing_core.models.quota_types import GuardRejected  # noqa: E402
 from mingjing_core.models.registry import ModelRegistry  # noqa: E402
 from mingjing_core.timekit.clock import get_clock  # noqa: E402
+from tools.manual_grant import load_manual_grant  # noqa: E402
 from tools.model_probe_cases import Probe, cases  # noqa: E402
 
 PROBE_CAPS = {
@@ -34,36 +41,34 @@ PROBE_CAPS = {
     "reasoning_replay": True,
     "schema_dialect": "anthropic",
     "probe_raw_schema": True,
+    "sampling_fixed": True,
 }
 
 
 def _run(handle: Any, probe: Probe) -> dict[str, Any]:
-    adapter = replace(
-        handle, protocol=probe.protocol, caps=PROBE_CAPS, settings={**handle.settings, "thinking": None}
-    ).adapter(max_retries=0)
+    adapter = replace(handle, protocol=probe.protocol, caps=PROBE_CAPS, role="evaluation").adapter(max_retries=0)
     started, first = time.monotonic(), None
     text, calls, usage, reasoning = "", [], {}, 0
     error, status, quota = None, None, False
     try:
-        for event in adapter.stream(
-            probe.messages, tools=probe.tools, tool_choice=probe.choice, max_output=probe.max_output
-        ):
-            if event.type in {"text", "tool_call", "reasoning"} and first is None:
-                first = time.monotonic() - started
-            if event.type == "text":
-                text += event.data
-            elif event.type == "tool_call":
-                calls.append(event.data)
-            elif event.type == "usage":
-                usage.update(event.data)
-            elif event.type == "reasoning":
-                reasoning += len(event.data)
-            elif event.type == "error":
-                raise event.data
+        with call_scope(replace(current_scope(), lane="probe", scenario_id=probe.name)):
+            events = adapter.stream(
+                probe.messages,
+                tools=probe.tools,
+                tool_choice=probe.choice,
+                max_output=probe.max_output,
+                role="evaluation",
+            )
+            for event in events:
+                text, calls, usage, reasoning, first = _observe(event, text, calls, usage, reasoning, first, started)
     except ModelQuotaExhausted as exc:
         error, status, quota = exc.code, exc.provider_http_status, True
     except ModelUnavailable as exc:
-        error, status = exc.code, exc.provider_http_status
+        error, status, quota = (
+            exc.code,
+            exc.provider_http_status,
+            exc.global_stop or isinstance(exc, GuardRejected),
+        )
     except Exception:
         error = "MODEL_PROTOCOL_ERROR"
     chinese = sum("\u4e00" <= char <= "\u9fff" for char in text)
@@ -99,31 +104,73 @@ def _run(handle: Any, probe: Probe) -> dict[str, Any]:
     }
 
 
+def _observe(
+    event: Any,
+    text: str,
+    calls: list[Any],
+    usage: dict[str, Any],
+    reasoning: int,
+    first: float | None,
+    started: float,
+) -> tuple[str, list[Any], dict[str, Any], int, float | None]:
+    if event.type in {"text", "tool_call", "reasoning"} and first is None:
+        first = time.monotonic() - started
+    if event.type == "text":
+        text += event.data
+    elif event.type == "tool_call":
+        calls.append(event.data)
+    elif event.type == "usage":
+        usage.update(event.data)
+    elif event.type == "reasoning":
+        reasoning += len(event.data)
+    elif event.type == "error":
+        raise event.data
+    return text, calls, usage, reasoning, first
+
+
 def _roundtrip(handle: Any, replay: bool) -> dict[str, Any]:
     from tools.model_probe_cases import cases
 
     caps = {**PROBE_CAPS, "reasoning_replay": replay}
-    adapter = replace(handle, caps=caps).adapter(max_retries=0)
+    adapter = replace(handle, caps=caps, role="evaluation").adapter(max_retries=0)
     started = time.monotonic()
     error, status, quota, passed = None, None, False, False
     try:
+        if not replay:
+            raise GuardRejected("manual_start_required")
         initial = cases()[1]
-        first = adapter.complete(initial.messages, tools=initial.tools, max_output=1800)
-        if len(first.tool_calls) != 1:
-            raise ModelUnavailable()
-        second = adapter.complete(
-            [
-                *initial.messages,
-                first.as_chat(tool_cycle="probe"),
-                ChatMessage("tool", "合成探针", tool_call_id=first.tool_calls[0].id, tool_cycle="probe"),
-            ],
-            max_output=800,
-        )
+        with call_scope(replace(current_scope(), lane="probe", scenario_id="reasoning_replay_true")):
+            first = adapter.complete(
+                initial.messages,
+                tools=initial.tools,
+                max_output=1800,
+                role="evaluation",
+            )
+            if len(first.tool_calls) != 1:
+                raise ModelUnavailable()
+            second = adapter.complete(
+                [
+                    *initial.messages,
+                    first.as_chat(tool_cycle="probe"),
+                    ChatMessage(
+                        "tool",
+                        "合成探针",
+                        tool_call_id=first.tool_calls[0].id,
+                        tool_cycle="probe",
+                    ),
+                ],
+                max_output=800,
+                role="evaluation",
+            )
         passed = bool(second.text)
     except ModelQuotaExhausted as exc:
         error, status, quota = exc.code, exc.provider_http_status, True
     except ModelUnavailable as exc:
-        error, status = exc.code, exc.provider_http_status
+        error, status, quota = (
+            exc.code,
+            exc.provider_http_status,
+            exc.global_stop or isinstance(exc, GuardRejected),
+        )
     except Exception:
         error = "MODEL_PROTOCOL_ERROR"
     return {
@@ -183,19 +230,79 @@ def update_caps(report: dict[str, Any], path: Path) -> None:
         def succeeded(name: str, observed: dict[str, Any] = rows) -> bool:
             return bool(observed.get(name, {}).get("passed", False))
 
-        entry = data["models"]["kimi-code-main" if model == "k3" else "kimi-critic"]
-        entry["caps"].update(
-            status="partial" if report["status"] != "complete" else "probed",
-            tools=succeeded("single_tool"),
-            parallel_tools=succeeded("parallel_tools"),
-            vision=succeeded("vision_corrected") if "vision_corrected" in rows else succeeded("vision"),
-            tool_choice=[
-                choice for choice in ("auto", "none", "required", "named") if succeeded("tool_choice_" + choice)
-            ],
-            reasoning_replay=succeeded("reasoning_replay_true") and not succeeded("reasoning_replay_false"),
-            probe_report="docs/v4/" + report["report_name"],
-        )
+        entries = [entry for entry in data["models"].values() if entry.get("model") == model]
+        for entry in entries:
+            _update_entry(entry, report, succeeded)
     path.write_text(yaml.safe_dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
+
+
+def _update_entry(entry: dict[str, Any], report: dict[str, Any], succeeded: Any) -> None:
+    entry["caps"].update(
+        status="partial" if report["status"] != "complete" else "probed",
+        tools=succeeded("single_tool"),
+        parallel_tools=succeeded("parallel_tools"),
+        vision=succeeded("vision"),
+        tool_choice=[choice for choice in ("auto", "required") if succeeded("tool_choice_" + choice)],
+        reasoning_replay=True,
+        sampling_fixed=True,
+        probe_report="docs/v4/" + report["report_name"],
+    )
+
+
+def _handles(registry: ModelRegistry) -> list[Any]:
+    # Explicit comparison is the only place where D2's default model lock is removed.
+    base = registry.resolve("primary")[0]
+    endpoint = urlsplit(base.base_url)
+    if (
+        base.provider != "kimi_code"
+        or endpoint.scheme != "https"
+        or endpoint.hostname != "api.kimi.com"
+        or endpoint.path.rstrip("/") != "/coding/v1"
+    ):
+        raise SystemExit("Probe preflight: unapproved membership endpoint")
+    settings = {key: value for key, value in base.settings.items() if key != "model_lock"}
+    return [replace(base, model=model, settings=settings, role="evaluation") for model in ("k3", "k3-256k")]
+
+
+def _jobs(handle: Any, approved: tuple[str, ...]) -> list[tuple[str, Any]]:
+    available = {probe.name: (lambda p=probe: _run(handle, p)) for probe in cases()}
+    available["reasoning_replay_true"] = lambda: _roundtrip(handle, True)
+    if not set(approved).issubset(available):
+        raise SystemExit("Probe preflight: unknown or policy-disabled scenario")
+    return [(name, available[name]) for name in approved]
+
+
+def _execute(handles: list[Any], grant: Any, report: dict[str, Any], args: Any) -> int:
+    for handle in handles:
+        for name, run in _jobs(handle, grant.scenario_ids):
+            with call_scope(grant.scope(name)):
+                row = run()
+            row["batch"] = 1
+            report["results"].append(row)
+            if row["quota"]:
+                report["status"] = "quota_stopped"
+                args.stop_file.parent.mkdir(parents=True, exist_ok=True)
+                args.stop_file.write_text(
+                    json.dumps(
+                        {
+                            "reason": row["error_code"],
+                            "role": "probe",
+                            "model": handle.model,
+                        }
+                    ),
+                    encoding="utf-8",
+                )
+            publish(report, args.output)
+            print(
+                f"{handle.model} {row['probe']}: {row['passed']}; calls={row['calls']}",
+                flush=True,
+            )
+            if row["quota"]:
+                return 2
+    CentralLocation.from_environment().guard().finish_batch(grant.batch_id, grant.authorization_id)
+    report["status"] = "complete"
+    publish(report, args.output)
+    return 0
 
 
 def main() -> int:
@@ -204,24 +311,17 @@ def main() -> int:
     parser.add_argument("--output", type=Path, default=ROOT / f"docs/v4/model-probe-{day}")
     parser.add_argument("--models", default="k3,k3-256k")
     parser.add_argument("--stop-file", type=Path, required=True)
+    parser.add_argument("--manual-grant", type=Path)
     parser.add_argument("--update-caps", action="store_true")
     args = parser.parse_args()
     if args.models != "k3,k3-256k" or args.stop_file.exists():
         raise SystemExit("Night policy: only k3/k3-256k and no calls after a quota stop")
+    if args.manual_grant is None:
+        raise SystemExit("Probe preflight: an existing local-terminal manual grant is required")
+    grant = load_manual_grant(args.manual_grant, "PROBE", [])
     registry = ModelRegistry()
-    handles = registry.resolve("primary")[:1] + registry.resolve("critic")[:1]
-    if [handle.model for handle in handles] != ["k3", "k3-256k"]:
-        raise SystemExit("Probe preflight: configure exactly the approved Kimi Code models")
-    if any(handle.provider != "kimi_code" for handle in handles):
-        raise SystemExit("Probe preflight: only Kimi Code is authorized")
-    for handle in handles:
-        endpoint = urlsplit(handle.base_url)
-        if (
-            endpoint.scheme != "https"
-            or endpoint.hostname != "api.kimi.com"
-            or endpoint.path.rstrip("/") != "/coding/v1"
-        ):
-            raise SystemExit("Probe preflight: unapproved membership endpoint")
+    handles = _handles(registry)
+    _jobs(handles[0], grant.scenario_ids)  # validate the whole batch before any physical call
     report = {
         "date": get_clock().now().isoformat(),
         "status": "running",
@@ -230,31 +330,11 @@ def main() -> int:
         "batch_size": 10,
         "report_name": args.output.name + ".json",
     }
-    for handle in handles:
-        jobs = [(probe.name, lambda p=probe, h=handle: _run(h, p)) for probe in cases()]
-        jobs.extend(("roundtrip", lambda replay=replay, h=handle: _roundtrip(h, replay)) for replay in (False, True))
-        for index, (_, run) in enumerate(jobs):
-            row = run()
-            row["batch"] = index // 10 + 1
-            report["results"].append(row)
-            if row["quota"]:
-                report["status"] = "quota_stopped"
-                args.stop_file.parent.mkdir(parents=True, exist_ok=True)
-                args.stop_file.write_text(
-                    json.dumps({"reason": "quota", "role": "probe", "model": handle.model}), encoding="utf-8"
-                )
-            publish(report, args.output)
-            print(f"{handle.model} {row['probe']}: {row['passed']}; calls={row['calls']}", flush=True)
-            if row["quota"]:
-                if args.update_caps:
-                    update_caps(report, registry.path)
-                return 2
-    report["status"] = "complete"
-    publish(report, args.output)
+    result = _execute(handles, grant, report, args)
     if args.update_caps:
         update_caps(report, registry.path)
     print(f"Actual probe calls: {report['total_calls']}")
-    return 0
+    return result
 
 
 if __name__ == "__main__":

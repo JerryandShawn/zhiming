@@ -133,9 +133,9 @@ def _prepare(
     from tools.eval.targets.local_db import verify_local_postgres
 
     verify_local_postgres(e1_dsn())
-    observed = EvidenceModel(ConfiguredModel(model="k3"))
+    observed = EvidenceModel(ConfiguredModel(model="k3", role="evaluation"))
     target = EvidenceTarget(observed=observed, model="k3", budget=budget)
-    judge = EvidenceJudge(ConfiguredModel(model="k3-256k"), EVAL / "rubric_v21.md", observed)
+    judge = EvidenceJudge(ConfiguredModel(model="k3-256k", role="critic"), EVAL / "rubric_v21.md", observed)
     judge.provider.budget = budget
     return judge, target
 

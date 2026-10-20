@@ -4,10 +4,13 @@ from __future__ import annotations
 
 import re
 import time
+from dataclasses import replace
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any
 
+from mingjing_core.models.errors import ModelUnavailable as TypedModelUnavailable
 from mingjing_core.models.metering import request_meter
+from mingjing_core.models.quota_runtime import call_scope, current_scope
 
 if TYPE_CHECKING:
     from tools.eval.member_budget import MemberBudget
@@ -17,6 +20,9 @@ STOP_REASONS = frozenset(
         "quota",
         "quota_5h",
         "quota_weekly",
+        "quota_monthly",
+        "concurrency_limited",
+        "access_terminated",
         "provider_http_error",
         "member_window_limit",
         "batch_cooldown",
@@ -81,6 +87,18 @@ def provider_http_status(exc: Exception) -> int | None:
 
 
 def provider_stop_reason(exc: Exception) -> str | None:
+    if isinstance(exc, TypedModelUnavailable):
+        if exc.kind in {
+            "quota",
+            "quota_5h",
+            "quota_weekly",
+            "quota_monthly",
+            "concurrency_limited",
+            "access_terminated",
+        }:
+            return exc.kind
+        # The adapter has already exhausted its own retry policy. Never re-label rate as quota.
+        return "provider_http_error"
     subtype = getattr(exc, "quota_subtype", None)
     if subtype in {"quota", "quota_5h", "quota_weekly"}:
         return subtype
@@ -129,7 +147,8 @@ class QuotaGuard:
         started = time.perf_counter()
         try:
             callback = (lambda: self.budget.before_provider_request(self.role)) if self.budget is not None else None
-            with request_meter(callback):
+            scope = replace(current_scope(), lane="probe" if self.role == "probe" else "eval")
+            with request_meter(callback), call_scope(scope):
                 return self.provider.generate(**kwargs)
         except ProviderStopped as exc:
             self.stop_reason = exc.reason

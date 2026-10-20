@@ -11,7 +11,7 @@ import pytest
 
 from mingjing_core.adapters.model import ConfiguredModel
 from mingjing_core.application.consultation import ConsultationService
-from mingjing_core.models.errors import ModelQuotaExhausted
+from mingjing_core.models.errors import ModelQuotaExhausted, ModelRateLimited
 from mingjing_core.models.legacy import PortBackedModel
 from tests.test_core_pg_channels import FixtureModel
 from tools.eval.targets.v3_target import V3Target
@@ -88,13 +88,22 @@ def test_from_base_opt_in_and_rollback_select_concrete_models(target: Any, monke
         assert isinstance(ConsultationService.from_base().model, ConfiguredModel)
 
 
-def test_real_service_quota_failure_is_one_charge_and_no_repair(target: Any) -> None:
+@pytest.mark.parametrize("status,error,attempts", [(403, ModelQuotaExhausted, 1), (429, ModelRateLimited, 4)])
+def test_real_service_provider_failure_is_one_charge_and_no_repair(
+    target: Any, status: int, error: Any, attempts: int
+) -> None:
     instance, shim = target
     requests = []
 
     def respond(request: httpx.Request) -> httpx.Response:
         requests.append(request)
-        return httpx.Response(429, text="synthetic quota")
+        return (
+            httpx.Response(
+                403, json={"error": {"type": "permission_error", "message": "You've reached your 5-hour usage limit."}}
+            )
+            if status == 403
+            else httpx.Response(429, text="synthetic rate")
+        )
 
     shim.port = shim.registry.port(
         factory=lambda _: adapter(respond, settings={"membership": True}, max_retries=0), stop_on_quota=True
@@ -104,8 +113,8 @@ def test_real_service_quota_failure_is_one_charge_and_no_repair(target: Any) -> 
         owner=instance.owner, message="合成额度保护验收", request_id="synthetic-port-quota"
     )
     instance.run_ids.append(request["id"])
-    with pytest.raises(ModelQuotaExhausted):
+    with pytest.raises(error):
         instance.service.execute(instance.owner, request["id"])
     run = instance.repo.fetch_run(instance.owner, request["id"])
-    assert len(requests) == 1
+    assert len(requests) == attempts
     assert run["calls"] == 1 and run["status"] == "failed" and not run["repair_used"]

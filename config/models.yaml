@@ -38,47 +38,48 @@ providers:
 models:
   kimi-code-main:
     provider: kimi_code
-    model: k3
-    model_env: KIMI_MODEL
+    model: k3-256k
     caps:
-      status: probed
+      status: policy_locked_unverified
       tools: true
       vision: true
       parallel_tools: true
       tool_choice:
       - auto
-      - none
       - required
       schema_dialect: anthropic
-      reasoning_replay: false
+      reasoning_replay: true
+      sampling_fixed: true
+      tool_choice_unusable:
+        none: returns_reasoning_only
+        named: incompatible_with_thinking
       probe_report: docs/v4/model-probe-2026-10-17.json
-      reasoning_replay_status: not-required-in-observed-roundtrip; signature-presence-unrecorded
+      reasoning_replay_status: required_by_policy_not_yet_reprobed
     settings:
-      thinking:
-        type: enabled
-        budget_tokens: 1024
-      temperature: 1
+      model_lock: k3-256k
+      effort: high
   kimi-critic:
     provider: kimi_code
     model: k3-256k
     caps:
-      status: probed
+      status: policy_locked_unverified
       tools: true
       vision: true
       parallel_tools: true
       tool_choice:
       - auto
-      - none
       - required
       schema_dialect: anthropic
-      reasoning_replay: false
+      reasoning_replay: true
+      sampling_fixed: true
+      tool_choice_unusable:
+        none: returns_reasoning_only
+        named: incompatible_with_thinking
       probe_report: docs/v4/model-probe-2026-10-17.json
-      reasoning_replay_status: not-required-in-observed-roundtrip; signature-presence-unrecorded
+      reasoning_replay_status: required_by_policy_not_yet_reprobed
     settings:
-      thinking:
-        type: enabled
-        budget_tokens: 1024
-      temperature: 1
+      model_lock: k3-256k
+      effort: high
   kimi-legacy:
     provider: kimi_anthropic
     model: kimi-k3
@@ -141,12 +142,11 @@ models:
 roles:
   primary:
   - kimi-code-main
-  - deepseek-main
-  - qwen-main
-  - glm-main
   critic:
   - kimi-critic
   evaluation:
+  - kimi-code-main
+  background:
   - kimi-code-main
   fast:
   - kimi-code-main
