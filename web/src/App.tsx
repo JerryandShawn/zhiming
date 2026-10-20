@@ -84,7 +84,7 @@ export default function App() {
   if (new URLSearchParams(location.search).get('night') === 'demo')
     return (
       <Suspense fallback={<Skeleton label="正在展开交互预览" />}>
-        <NightApp page={page} />
+        <NightApp page={routeName === 'recovery' ? 'recovery' : page} />
       </Suspense>
     );
   const content = (

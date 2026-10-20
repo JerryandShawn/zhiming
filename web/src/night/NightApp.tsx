@@ -28,6 +28,7 @@ const OnboardingChat = lazy(() => import('./onboarding/OnboardingChat'));
 const SettingsPage = lazy(() => import('./settings/SettingsPage'));
 const SampleChartPage = lazy(() => import('./charts/SampleChartPage'));
 const TodayPage = otherPages.today;
+const RecoveryPreview = lazy(() => import('./recovery/RecoveryPreview'));
 
 export default function NightApp({ page }: { page: string }) {
   const [port] = useState(createNightPort);
@@ -83,7 +84,7 @@ export default function NightApp({ page }: { page: string }) {
   const Other = otherPages[page as keyof typeof otherPages] || otherPages.today;
   return (
     <Layout
-      page={page}
+      page={page === 'recovery' ? 'chat' : page}
       privacy={{ active: privacy.active, onChange: setPrivacy, description: '本地无痕演示不会进入记忆，退出后清空。' }}>
       <aside className="night-notice" aria-label="本地演示说明" data-runtime="night-demo">
         <p>合成预览 · 操作仅本页，刷新重置。</p>
@@ -112,7 +113,13 @@ export default function NightApp({ page }: { page: string }) {
             <Skeleton label="正在展开页面" />
           </div>
         }>
-        {page === 'chat' ? (
+        {page === 'recovery' ? (
+          <RecoveryPreview
+            onBack={() => {
+              location.hash = '/chat';
+            }}
+          />
+        ) : page === 'chat' ? (
           privacy.active ? (
             <PrivateChat privacy={privacy} />
           ) : showGuide ? (

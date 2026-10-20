@@ -35,6 +35,9 @@ export default function ChatPreview({
         <Button onClick={() => replay('error')}>查看中断与重试</Button>
         <Button onClick={() => replay('resumed')}>查看恢复片段</Button>
         <Button onClick={() => replay('streaming')}>查看插话排队</Button>
+        <a className="button secondary" href="#/recovery">
+          模拟断线恢复
+        </a>
       </div>
       <div className="chat-layout">
         <div className="chat-main">

@@ -88,6 +88,22 @@ describe('chat event protocol', () => {
     expect(chatEvent({ type: 'final' })).toBeUndefined();
   });
   it('queries before reconnecting, sends Last-Event-ID and deduplicates replay', async () => {
+    // Synthetic replay uses an isolated fixture store; browser conversation caching is forbidden.
+    const values = new Map<string, string>();
+    const fixtureStorage = {
+      get length() {
+        return values.size;
+      },
+      clear: () => values.clear(),
+      key: (index: number) => [...values.keys()][index] ?? null,
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => {
+        values.set(key, value);
+      },
+      removeItem: (key: string) => {
+        values.delete(key);
+      },
+    };
     let connections = 0;
     const seenHeaders: Headers[] = [],
       events: unknown[] = [];
@@ -101,21 +117,44 @@ describe('chat event protocol', () => {
             'id: 1\ndata: {"type":"text_delta","text":"甲"}\n\nid: 2\ndata: {"type":"text_reset","text":"乙","reason":"revised"}\n\nid: 3\ndata: {"type":"final","envelope":{"answer":"乙"}}\n\n',
           ]);
     };
-    sessionStorage.clear();
-    await followV2('synthetic-run', { fetcher, accept: (event) => events.push(event) });
+    await followV2('synthetic-run', { fetcher, fixtureStorage, accept: (event) => events.push(event) });
     expect(seenHeaders[0].get('Last-Event-ID')).toBeNull();
     expect(seenHeaders[1].get('Last-Event-ID')).toBe('1');
     expect(events).toHaveLength(3);
-    expect(sessionStorage.getItem('mingjing-sse-v2:synthetic-run')).toBe('3');
+    expect(fixtureStorage.getItem('mingjing-sse-v2:synthetic-run')).toBe('3');
   });
   it('restores the text projection together with a saved cursor after refresh', async () => {
-    sessionStorage.clear();
-    sessionStorage.setItem(
+    const values = new Map<string, string>();
+    const fixtureStorage = {
+      get length() {
+        return values.size;
+      },
+      clear: () => values.clear(),
+      key: (index: number) => [...values.keys()][index] ?? null,
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => {
+        values.set(key, value);
+      },
+      removeItem: (key: string) => {
+        values.delete(key);
+      },
+    };
+    fixtureStorage.setItem(
       'mingjing-sse-v2:restored:events',
-      JSON.stringify([
-        { id: '1', event: '', data: { type: 'text_delta', text: '先前正文' } },
-        { id: '4', event: '', data: { type: 'memory_receipt', fact_id: 'synthetic', write_status: 'saved' } },
-      ]),
+      JSON.stringify({
+        format: 'mingjing-public-fixture-v1',
+        runId: 'restored',
+        events: [
+          { id: '1', projection: { type: 'text_delta', text: '先前正文' } },
+          {
+            id: '4',
+            projection: {
+              type: 'memory_receipt',
+              receipt: { fact_id: 'synthetic', write_status: 'saved', summary: '' },
+            },
+          },
+        ],
+      }),
     );
     let state = initialStream();
     const headers: Headers[] = [];
@@ -128,6 +167,7 @@ describe('chat event protocol', () => {
     };
     await followV2('restored', {
       fetcher,
+      fixtureStorage,
       restore: (restored) => {
         state = restored;
       },
