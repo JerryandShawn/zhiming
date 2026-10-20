@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useSyncExternalStore } from 'react';
 import { Layout } from './Layout';
-import { Skeleton } from './components/ui/Overlays';
+import { Skeleton } from './components/ui/Feedback';
 import { AuthGate } from './api/AuthGate';
 import LiveToday from './live/Today';
 

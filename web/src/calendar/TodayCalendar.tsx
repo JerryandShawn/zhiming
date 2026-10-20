@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CalendarDays } from 'lucide-react';
 import { Button } from '../components/ui/Controls';
-import { Panel } from '../components/ui/Overlays';
+import { DeferredPanel } from '../components/ui/DeferredPanel';
 import { MonthCalendar } from './MonthCalendar';
 import { dateLabel, unavailableCalendar, type CalendarSource } from './data';
 
@@ -41,18 +41,18 @@ export function TodayCalendar({ today, source = unavailableCalendar }: { today: 
     <div className="today-calendar">{content}</div>
   ) : (
     <div className="today-calendar-entry">
-      <Panel
+      <DeferredPanel
         title="本月日历"
         description="公历日期、节气节日与已载入的安排；未提供的数据会明确说明。"
         sheet
-        trigger={
-          <Button>
+        renderTrigger={(triggerProps) => (
+          <Button {...triggerProps}>
             <CalendarDays className="icon" />
             查看本月日历
           </Button>
-        }>
+        )}>
         {content}
-      </Panel>
+      </DeferredPanel>
     </div>
   );
 }

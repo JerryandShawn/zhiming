@@ -13,7 +13,8 @@ import {
 } from 'lucide-react';
 import { Fragment, lazy, Suspense, useState } from 'react';
 import { IconButton, Seal, Switch } from './components/ui/Controls';
-import { Panel, Toast } from './components/ui/Overlays';
+import { Toast } from './components/ui/Feedback';
+import { DeferredPanel } from './components/ui/DeferredPanel';
 import { useKeyboardViewport } from './useKeyboardViewport';
 import { useViewportPortalStyles } from './useViewportPortalStyles';
 import { detectContainer } from './embed/feishu';
@@ -163,15 +164,15 @@ export function Layout({
             <Settings2 className="icon" />
           </a>
         ) : (
-          <Panel
+          <DeferredPanel
             sheet
             title="去哪里看看"
             description="选择想看的页面。"
-            trigger={
-              <IconButton label="更多页面">
+            renderTrigger={(triggerProps) => (
+              <IconButton {...triggerProps} label="更多页面">
                 <MoreHorizontal className="icon" />
               </IconButton>
-            }>
+            )}>
             <Links current={page} />
             <a className="nav-link" href="#/settings">
               <Settings2 className="icon" />
@@ -180,7 +181,7 @@ export function Layout({
             <a className="nav-link" href={spacesPreview ? '#/organize' : '?spaces=demo#/chat'}>
               {spacesPreview ? '整理建议' : '功能区预览'}
             </a>
-          </Panel>
+          </DeferredPanel>
         )}
       </header>
       <main id="main" tabIndex={-1} aria-label={label}>

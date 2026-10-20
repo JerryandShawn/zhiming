@@ -1,8 +1,7 @@
-import { useState, type ReactNode } from 'react';
-import * as Dialog from '@radix-ui/react-dialog';
+import { useEffect, useState, type ComponentType, type ReactNode } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button, Input, Seal } from '../components/ui/Controls';
 import { operationNamespace, useAuth } from './client';
+import type { LoginDialogProps } from './LoginDialog';
 
 export function AuthGate({ children }: { children: ReactNode }) {
   const required = useAuth((state) => state.loginRequired);
@@ -11,6 +10,25 @@ export function AuthGate({ children }: { children: ReactNode }) {
   const [draft, setDraft] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [View, setView] = useState<ComponentType<LoginDialogProps> | null>(null);
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  useEffect(() => {
+    if (!required || View) return;
+    let current = true;
+    setLoadFailed(false);
+    void import('./LoginDialog').then(
+      (module) => {
+        if (current) setView(() => module.default);
+      },
+      () => {
+        if (current) setLoadFailed(true);
+      },
+    );
+    return () => {
+      current = false;
+    };
+  }, [required, View, loadAttempt]);
   async function login() {
     setBusy(true);
     setError('');
@@ -39,46 +57,31 @@ export function AuthGate({ children }: { children: ReactNode }) {
       <div key={operationNamespace()} className={required ? 'auth-hidden' : undefined}>
         {children}
       </div>
-      <Dialog.Root open={required}>
-        <Dialog.Portal>
-          <Dialog.Overlay className="overlay" />
-          <Dialog.Content
-            className="dialog login-dialog"
-            onEscapeKeyDown={(event) => event.preventDefault()}
-            onPointerDownOutside={(event) => event.preventDefault()}>
-            <Seal size="large" />
-            <Dialog.Title asChild>
-              <h2>登录明镜台</h2>
-            </Dialog.Title>
-            <Dialog.Description className="meta">输入网站口令。本页仅在当前浏览会话中保存登录。</Dialog.Description>
-            <form
-              className="stack"
-              onSubmit={(event) => {
-                event.preventDefault();
-                void login();
-              }}>
-              <label className="field">
-                网站口令
-                <Input
-                  type="password"
-                  autoComplete="current-password"
-                  value={draft}
-                  onChange={(event) => setDraft(event.target.value)}
-                  required
-                />
-              </label>
-              {error && (
-                <p role="alert" className="field-error">
-                  {error}
-                </p>
+      {required &&
+        (View ? (
+          <View draft={draft} error={error} busy={busy} onDraftChange={setDraft} onSubmit={login} />
+        ) : (
+          <>
+            <div className="overlay" />
+            <div
+              className="dialog login-dialog"
+              role={loadFailed ? 'alert' : 'status'}
+              aria-label={loadFailed ? '登录页面未展开' : '正在展开登录'}>
+              <p>{loadFailed ? '登录页面暂时没有展开，请再试一次。' : '正在展开登录…'}</p>
+              {loadFailed && (
+                <button
+                  type="button"
+                  className="button secondary"
+                  onClick={() => {
+                    setLoadFailed(false);
+                    setLoadAttempt((value) => value + 1);
+                  }}>
+                  再试一次
+                </button>
               )}
-              <Button variant="primary" type="submit" loading={busy}>
-                登录
-              </Button>
-            </form>
-          </Dialog.Content>
-        </Dialog.Portal>
-      </Dialog.Root>
+            </div>
+          </>
+        ))}
     </>
   );
 }
