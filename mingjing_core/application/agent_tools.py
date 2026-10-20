@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from psycopg import Connection
 
     from mingjing_core.agent.tool_visibility import VisibilityState
+    from mingjing_core.application.charts_service import ChartsService
     from mingjing_core.repositories.postgres import PostgresRepository
 
 
@@ -30,6 +31,7 @@ class AgentToolsService:
         *,
         relative_parser: RelativeDateParser | None = None,
         clock: Clock | None = None,
+        charts: ChartsService | None = None,
     ) -> None:
         self.repo, self.relative_parser, self.clock = (
             repo,
@@ -37,6 +39,7 @@ class AgentToolsService:
             clock or get_clock(),
         )
         self.memory = V4FactMemory(repo)
+        self.charts = charts
 
     def authority(self, connection: Connection[Any], ctx: ToolContext) -> dict[str, Any]:
         row = self.repo._leased(connection, ctx.owner, ctx.run_id, ctx.lease_token)
@@ -119,11 +122,21 @@ class AgentToolsService:
 
         return visibility_state(self, ctx)
 
+    def chart_available(self, ctx: ToolContext) -> bool:
+        from mingjing_core.application.agent_tools_reads import profile_get
+
+        if ctx.private or ctx.crisis:
+            return False
+        return bool(profile_get(self, ctx)["profile"].get("birth.solar_datetime"))
+
     def execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
+        from mingjing_core.application.agent_tools_charts import execute_chart
+        from mingjing_core.application.agent_tools_computation import date_calc
         from mingjing_core.application.agent_tools_interactions import INTERACTION_NAMES, execute_interaction
         from mingjing_core.application.agent_tools_memory import execute_write
         from mingjing_core.application.agent_tools_reads import execute_read
         from mingjing_core.application.agent_tools_tarot import execute_tarot
+        from mingjing_core.application.agent_tools_updates import UPDATE_NAMES, execute_update
 
         if ctx.name != name:
             raise EvidenceError("调用名称与受信步骤不符")
@@ -131,6 +144,10 @@ class AgentToolsService:
             raise EvidenceError("工具实际参数与持久输入不符")
         if ctx.crisis and name not in {"time_context", "memory_search"}:
             raise ScopeError("危机模式下此工具不可用")
+        if name == "chart_compute":
+            return execute_chart(self, arguments, ctx, charts=self.charts)
+        if name in UPDATE_NAMES:
+            return execute_update(self, name, arguments, ctx)
         writes = {"memory_write", "memory_forget", "note_write"}
         if ctx.private and name in writes:
             return ToolResult(
@@ -140,6 +157,8 @@ class AgentToolsService:
             )
         with self.repo.transaction(ctx.owner) as connection:
             self.authority(connection, ctx)
+            if name == "date_calc":
+                return date_calc(arguments)
             if name in {"tarot_start", "tarot_read"}:
                 return execute_tarot(self, name, arguments, ctx)
             if name in INTERACTION_NAMES:

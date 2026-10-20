@@ -7,6 +7,7 @@ from typing import Any
 
 from pydantic import BaseModel, ValidationError
 
+from mingjing_core.agent.tools.computation_definitions import computation_definitions
 from mingjing_core.agent.tools.interaction_definitions import interaction_definitions
 from mingjing_core.agent.tools.parameters import (
     CalendarLookup,
@@ -82,6 +83,7 @@ DEFINITIONS = (
     )
     + interaction_definitions()
     + tarot_definitions()
+    + tuple(item for item in computation_definitions() if item.name != "date_calc")
 )
 
 
@@ -98,7 +100,11 @@ class ToolRegistry:
         self._by_name = {item.name: item for item in definitions}
 
     def specs(self, ctx: ToolContext, *, required: tuple[str, ...] = ()) -> list[ToolSpec]:
-        visible = select_visible(self.definitions, ctx, self.service.visibility_state(ctx), required=required)
+        state = self.service.visibility_state(ctx)
+        definitions = tuple(
+            item for item in self.definitions if item.name != "chart_compute" or self.service.chart_available(ctx)
+        )
+        visible = select_visible(definitions, ctx, state, required=required)
         return [
             ToolSpec(item.name, item.description, flatten_schema(item.parameters.model_json_schema()))
             for item in visible

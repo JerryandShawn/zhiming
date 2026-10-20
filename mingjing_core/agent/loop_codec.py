@@ -40,10 +40,23 @@ def assistant_from(output: dict[str, Any]) -> AssistantMessage:
         raise ModelProtocolError() from None
 
 
-def tool_message(call_id: str, result: ToolResult, cycle: str) -> ChatMessage:
+def tool_message(
+    call_id: str, result: ToolResult, cycle: str, *, aliases: dict[str, dict[str, Any]] | None = None
+) -> ChatMessage:
+    output = result.model_dump()
+    if aliases is not None:
+        # Only the caller's already attested registry is projected, never tool-supplied aliases.
+        registered = {
+            key: {name: row[name] for name in ("kind", "id", "revision", "native_id", "basis") if name in row}
+            for key, row in aliases.items()
+            if re.fullmatch(r"[cr][1-9][0-9]*", key)
+        }
+        if registered:
+            output["data"]["registered_aliases"] = registered
+            output["data"]["alias_registration"] = "verified_current_run"
     return ChatMessage(
         "tool",
-        json.dumps(result.model_dump(), ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False),
+        json.dumps(output, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False),
         tool_call_id=call_id,
         tool_cycle=cycle,
     )
@@ -94,7 +107,20 @@ def candidates(name: str, result: ToolResult) -> list[tuple[str, str]]:
 
 
 def _verified_row(service: Any, run: dict[str, Any], kind: str, ident: str) -> dict[str, Any]:
-    allowed = {"fact", "message", "note", "episode", "proposal", "case", "feedback", "followup", "reminder", "thread"}
+    allowed = {
+        "fact",
+        "message",
+        "note",
+        "episode",
+        "proposal",
+        "case",
+        "feedback",
+        "followup",
+        "reminder",
+        "thread",
+        "artifact",
+        "interpretive_claim",
+    }
     if not isinstance(kind, str) or kind not in allowed or not isinstance(ident, str) or not 1 <= len(ident) <= 200:
         raise ScopeError("工具依赖身份无效")
     row = service.repo.get(run["owner"], kind, ident, include_deleted=True)
@@ -105,6 +131,10 @@ def _verified_row(service: Any, run: dict[str, Any], kind: str, ident: str) -> d
         raise ScopeError("工具依赖不在已选择事项")
     if service.repo.is_revoked(run["owner"], kind, ident):
         raise EvidenceError("工具依赖已经撤销")
+    if kind in {"artifact", "interpretive_claim"} and (
+        row.get("run_id") != run["id"] or type(row.get("epoch")) is not int or row["epoch"] != run["retry_epoch"]
+    ):
+        raise ScopeError("专业依据不属于当前运行批次")
     if kind == "message" and (
         row.get("thread_id") != "life:" + run["subject"] or row.get("role") not in {"user", "assistant"}
     ):
@@ -154,8 +184,15 @@ def verified_versions(
     """Resolve identifiers against PG, never trust returned revision/scope claims."""
     pending, versions, records = candidates(name, result), {}, []
     with service.repo.transaction(run["owner"]):
+        from mingjing_core.application.agent_chart_lineage import chart_lineage
+
+        chart_records, captured = chart_lineage(service, run, result) if name == "chart_compute" else ([], {})
+        chart = {(row["kind"], row["id"]): row for row in chart_records}
+        pending.extend(chart)
         while pending:
             kind, ident = pending.pop(0)
+            if kind in {"artifact", "interpretive_claim"} and (kind, ident) not in chart:
+                raise EvidenceError("专业依据缺少本轮计算步骤证明")
             row = _verified_row(service, run, kind, ident)
             receipt = result.receipt or {}
             if (
@@ -171,8 +208,23 @@ def verified_versions(
             if len(versions) >= 1024:
                 raise EvidenceError("工具依赖闭包超过当前上限")
             versions[key] = row["revision"]
-            records.append(dict(kind=kind, id=ident, revision=row["revision"]))
+            records.append(
+                dict(
+                    kind=kind,
+                    id=ident,
+                    revision=row["revision"],
+                    **{
+                        key: value
+                        for key, value in chart.get((kind, ident), {}).items()
+                        if key not in {"kind", "id", "revision"}
+                    },
+                )
+            )
             pending.extend(_source_links(service, run, kind, row))
+        for key, value in captured.items():
+            if key in versions and versions[key] != value:
+                raise RevisionConflict("计算来源版本与实际资料不一致")
+            versions[key] = value
         if not service.repo.verify_versions(run["owner"], versions):
             raise RevisionConflict("工具依赖在读取期间发生改变")
     return versions, records
@@ -182,6 +234,8 @@ def extend_aliases(aliases: dict[str, dict[str, Any]], records: list[dict[str, A
     for row in records:
         if any(value["kind"] == row["kind"] and value["id"] == row["id"] for value in aliases.values()):
             continue
-        prefix = {"fact": "f", "message": "m", "note": "n"}.get(row["kind"], "e")
+        prefix = {"fact": "f", "message": "m", "note": "n", "artifact": "c", "interpretive_claim": "r"}.get(
+            row["kind"], "e"
+        )
         number = max([int(key[1:]) for key in aliases if re.fullmatch(prefix + r"\d+", key)] or [0]) + 1
         aliases[prefix + str(number)] = copy.deepcopy(row)

@@ -25,6 +25,9 @@ class SchemaOnlyService(AgentToolsService):
     def visibility_state(self, ctx: ToolContext) -> VisibilityState:
         return VisibilityState(tarot_topic=True, case_bound=True)
 
+    def chart_available(self, ctx: ToolContext) -> bool:
+        return not ctx.private and not ctx.crisis
+
 
 def context(**changes: Any) -> ToolContext:
     return replace(
@@ -37,9 +40,11 @@ def test_registry_order_visibility_and_flattened_schemas() -> None:
     specs = registry.specs(context())
     registered = {item.name for item in DEFINITIONS}
     assert [item.name for item in specs] == [
-        name for name in (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS) if name in registered and name != "tarot_read"
-    ]
-    assert len(DEFINITIONS) == 16 and len(specs) == 15
+        name
+        for name in (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS)
+        if name in registered and name not in {"tarot_read", "memory_update", "profile_update_request"}
+    ][:15]
+    assert len(DEFINITIONS) == 19 and len(specs) == 15
     for item in specs:
         text = str(item.parameters)
         assert "$ref" not in text and "$defs" not in text and "anyOf" not in text
