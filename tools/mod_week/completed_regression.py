@@ -37,6 +37,7 @@ SUITES = (
     "partition_context_v2",
     "day_pipeline",
     "p9_official_v3",
+    "eval_material_v23",
 )
 
 
@@ -82,6 +83,10 @@ def source_snapshot() -> dict[str, str]:
     paths.add(Path(__file__).resolve())
     if "cross_modules" in SUITES:
         paths.add(ROOT / "mingjing_core/memory2/event_time_extended_v2.py")
+    if "eval_material_v23" in SUITES:
+        paths.update((ROOT / "tools/eval_material_v23").glob("*.py"))
+        for name in ("manifest.json", "casebook.schema.json", "observation.schema.json", "scenarios.v23.yaml"):
+            paths.add(ROOT / "tools/eval_material_v23" / name)
     return {
         path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
         for path in sorted(paths)

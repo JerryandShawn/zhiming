@@ -1,0 +1,247 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Isolated v2.3 candidate materials",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "contract",
+    "parent_contract",
+    "cases"
+  ],
+  "properties": {
+    "schema": {
+      "const": "eval-material-casebook-v1"
+    },
+    "contract": {
+      "const": "deterministic-eval-v2.3.0-candidate-material-v1"
+    },
+    "parent_contract": {
+      "const": "deterministic-eval-v2.2.0"
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 59,
+      "maxItems": 59,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "source",
+          "category",
+          "source_section",
+          "execution",
+          "profile",
+          "clock",
+          "setup",
+          "turns",
+          "availability",
+          "blocking_reasons",
+          "material_only",
+          "dataset_years",
+          "scope",
+          "assertions",
+          "review_points",
+          "status_note"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Z]{1,2}[0-9]{2}$"
+          },
+          "source": {
+            "enum": [
+              "19",
+              "P5b"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source_section": {
+            "type": "string",
+            "minLength": 1
+          },
+          "execution": {
+            "enum": [
+              "conversation",
+              "offline"
+            ]
+          },
+          "profile": {
+            "type": "string",
+            "minLength": 1
+          },
+          "clock": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "setup": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "turns": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "availability": {
+            "enum": [
+              "ready_for_observation",
+              "blocked_decision",
+              "blocked_dependency"
+            ]
+          },
+          "blocking_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "material_only": {
+            "type": "boolean"
+          },
+          "dataset_years": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "integer",
+              "minimum": 1900,
+              "maximum": 2100
+            }
+          },
+          "scope": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "owner_id",
+              "subject_id",
+              "thread_id",
+              "run_id"
+            ],
+            "properties": {
+              "owner_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "subject_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "thread_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "run_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              }
+            }
+          },
+          "assertions": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "kind",
+                "path",
+                "operator",
+                "expected"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^a[1-9][0-9]*$"
+                },
+                "kind": {
+                  "enum": [
+                    "text",
+                    "tools",
+                    "db",
+                    "context",
+                    "events",
+                    "meta",
+                    "offline_report",
+                    "manual_review"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_.]*$"
+                },
+                "operator": {
+                  "enum": [
+                    "eq",
+                    "text_all",
+                    "text_any",
+                    "text_none",
+                    "contains_all",
+                    "contains_any",
+                    "contains_none",
+                    "matches",
+                    "number_lte",
+                    "number_gte",
+                    "length_lte",
+                    "nonempty"
+                  ]
+                },
+                "expected": {
+                  "not": {
+                    "type": "null"
+                  }
+                }
+              }
+            }
+          },
+          "review_points": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "status_note": {
+            "const": "material_not_product_acceptance"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "availability": {
+                  "enum": [
+                    "blocked_decision",
+                    "blocked_dependency"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "blocking_reasons": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

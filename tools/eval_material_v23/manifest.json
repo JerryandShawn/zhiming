@@ -1,0 +1,27 @@
+{
+  "schema": "eval-material-manifest-v1",
+  "contract": "deterministic-eval-v2.3.0-candidate-material-v1",
+  "serialization": "json-compatible-yaml-1.2",
+  "case_count": 59,
+  "files": {
+    "scenarios.v23.yaml": "8aeee2948e3a0221ba127c69921ad436fb0166e85759655926de75999d071e21",
+    "casebook.schema.json": "a31774784bde6f0d9a3865a04989a151739753f130f2748354c937d84d6cb6fe",
+    "observation.schema.json": "9e6be01e434162f79eb6f64c5d13f80347bfec3a49b382908391907b0b345d9e"
+  },
+  "sources": {
+    "19_新增评测场景.md": "15cd27fe610be98dd68ae6ce913b133c96482476f5365455ae3b8ba04f391569",
+    "18_提示词增补包/P5b_功能区与旧对话整理.md": "f60b168b64d0b2029db2bccfbbc072aeafb199c6cda135f7f312b40cf22c6e44",
+    "33_全量开发队列_本周.md": "235b41e021367d9d82aca571114d41459c8d87f399152b1179c4b58bdb668315",
+    "25_P6评审难例与宽严样本.md": "356a1695b12548acd3d8782dc5a45c0003633e76d52b827ca55aa215ad25f791"
+  },
+  "limits": [
+    "materials are not product acceptance",
+    "no live provider/server/business requests",
+    "no historical runner or contract modification",
+    "rectification material-only",
+    "D4 usage reminders disabled",
+    "J02 brain25 samples and labels are available; private export/observation adapter pending; no human approval",
+    "E2 2025 only",
+    "calibration record_only without reviewed labels"
+  ]
+}
