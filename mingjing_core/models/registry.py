@@ -20,6 +20,7 @@ from .errors import (
 )
 from .openai_compat import OpenAICompat
 from .port import ChatMessage, ModelPort, StreamEvent
+from .quota_http import membership_endpoint
 from .retry_policy import retry_delay, wait_for_retry
 from .transport import StreamingHTTP, check_cancel
 from .turn_coercion import member_k3
@@ -51,7 +52,7 @@ class ModelHandle:
             provider=self.provider,
             caps=self.caps,
             settings={**self.settings, "role_binding": self.role}
-            if self.settings.get("membership", False)
+            if self.settings.get("membership", False) or membership_endpoint(self.base_url, self.provider)
             else self.settings,
             **kwargs,
         )

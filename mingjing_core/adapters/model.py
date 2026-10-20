@@ -5,16 +5,17 @@ import time
 import base64
 import httpx
 from ..domain.consultation import ModelUnavailable, ModelFailureReason
-from ..models.metering import before_provider_request
+from ..models.quota_legacy import post_legacy
 from ..models.provider_diagnostics import permission_quota
 from ..models.errors import ModelQuotaExhausted
 
 
 class ConfiguredModel:
-    def __init__(self, key=None, base=None, model=None):
+    def __init__(self, key=None, base=None, model=None, *, role="primary", guard=None):
         self.key = key if key is not None else os.getenv("KIMI_API_KEY") or os.getenv("MOONSHOT_API_KEY", "")
         self.base = (base or os.getenv("KIMI_BASE_URL", "https://api.moonshot.cn/v1")).rstrip("/")
         self.model = model or os.getenv("KIMI_MODEL", "kimi-k3")
+        self._guard_role, self.guard = role, guard
 
     def generate(self, *, system, payload, schema, purpose):
         if not self.key:
@@ -35,8 +36,8 @@ class ConfiguredModel:
         network_failed = False
         try:
             with httpx.Client(timeout=httpx.Timeout(240, connect=20), follow_redirects=False) as client:
-                before_provider_request()
-                response = client.post(self.base + "/messages", headers=headers, json=body)
+                response = post_legacy(client, base=self.base, model=self.model, role=self._guard_role,
+                                       headers=headers, body=body, guard=self.guard)
         except httpx.HTTPError:
             network_failed = True
         if network_failed:

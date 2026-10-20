@@ -74,6 +74,7 @@ class CoreProviderComparisonPreflight(unittest.TestCase):
             def __init__(self,body):self.body=body
             def json(self):return self.body
         class ProviderTransport:
+            _zhiming_offline_transport=True
             def __init__(self,**kwargs):pass
             async def __aenter__(self):return self
             async def __aexit__(self,*args):pass

@@ -5,7 +5,9 @@ from __future__ import annotations
 import httpx
 import pytest
 
+from mingjing_core.adapters.model import ConfiguredModel
 from mingjing_core.models.config_policy import ConfigError
+from mingjing_core.models.errors import ModelUnavailable
 from mingjing_core.models.openai_compat import OpenAICompat
 from mingjing_core.models.quota_http import membership_endpoint
 from mingjing_core.models.quota_runtime import (
@@ -16,6 +18,7 @@ from mingjing_core.models.quota_runtime import (
     current_scope,
 )
 from mingjing_core.models.quota_types import GuardRejected
+from mingjing_core.models.registry import ModelHandle
 
 
 def test_real_transport_missing_central_identity_has_zero_posts(
@@ -70,3 +73,26 @@ def test_model_role_parameter_cannot_change_trusted_constructed_binding() -> Non
     with pytest.raises(ConfigError, match="可信构造"):
         port.complete([], role="critic")
     assert port.request_count == 0
+
+
+@pytest.mark.parametrize(
+    "provider,base", [("kimi_code", "https://synthetic.invalid"), ("synthetic", "https://api.kimi.com/coding/v1")]
+)
+def test_known_member_without_membership_flag_keeps_constructed_critic(provider: str, base: str) -> None:
+    handle = ModelHandle("synthetic", provider, "k3", "openai_compat", base, "synthetic", {}, {}, role="critic")
+    port = handle.adapter(transport=httpx.MockTransport(lambda _: httpx.Response(503)), max_retries=0)
+    assert port.settings["role_binding"] == "critic" and port._guard_role == "critic"
+    with pytest.raises(ModelUnavailable) as caught:
+        port.complete([], role="critic")
+    assert caught.value.kind == "unavailable" and port.request_count == 1
+
+
+def test_legacy_k3_proxy_cannot_avoid_central_guard(monkeypatch: pytest.MonkeyPatch) -> None:
+    for name in ENVIRONMENT.values():
+        monkeypatch.delenv(name, raising=False)
+    calls = []
+    monkeypatch.setattr(httpx.Client, "send", lambda *args, **kwargs: calls.append(1))
+    model = ConfiguredModel(key="synthetic", base="https://synthetic-proxy.invalid", model="k3")
+    with pytest.raises(GuardRejected):
+        model.generate(system="synthetic", payload={}, schema={}, purpose="intake")
+    assert calls == []
