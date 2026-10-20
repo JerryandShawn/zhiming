@@ -31,6 +31,11 @@ SUITES = (
     "p9_v2",
     "timeparse_extended",
     "cross_modules",
+    "briefing_v2",
+    "organize_supplement",
+    "organize_supplement_v2",
+    "partition_context_v2",
+    "day_pipeline",
 )
 
 
