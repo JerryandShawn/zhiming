@@ -22,6 +22,11 @@
 
 错误码：`window_purpose_invalid`、`window_range_invalid`、`window_range_too_large`、`window_date_invalid`、`window_daily_scope_mismatch`、`window_daily_date_mismatch`、`window_daily_evidence_invalid`。归属、资料精度或引擎依赖错误沿用 daily_transit；不自动补出生地点或时刻，不把异常的日子默默丢掉后仍宣称完成全区间。
 
+内部daily聚合也逐scope字段核类型和值，revision的true/1.0不能替代整数1。
+已识别八字关系的complete须为真正布尔值，并与实际引用关系fact相同；缺少、0、字符串或互相矛盾均报
+window_daily_evidence_invalid。原生关系fact未提供complete时沿用其既有True约定；明确False仍计0分。
+这些拒绝不证明任意自报JSON的provider可信，主线仍须验证授权与实际计算来源。
+
 请求缺少归属标识或修订版本另报 `window_natal_scope_invalid`。`observations.kind=derived_copy_of_actual_daily_evidence` 明示派生复制；其中原 daily 的路径只用于外部溯源，不能对当前 window 根解析。新窗口的 `rule_hits[].evidence_paths` 才是当前结果可解析的路径。
 
 分页参数错误为 `window_offset_invalid`、`window_limit_invalid`，在本命预计算之前拒绝。资源决定：实际年度 366 日全明细紧凑约 33.7 MB，超过既有 worker 8 MB，所以采用最多 31 日一页；没有扩大共享输出上限。一次排序仍覆盖整个声明范围，当前页只携带自己的必要观测和局部依据。

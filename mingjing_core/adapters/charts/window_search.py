@@ -60,7 +60,15 @@ def _scope(natal: dict) -> dict:
 
 
 def _validate_daily(daily: dict, day: str, scope: dict) -> None:
-    if daily.get("scope") != scope:
+    actual_scope = daily.get("scope")
+    if (
+        not isinstance(actual_scope, dict)
+        or set(actual_scope) != set(scope)
+        or any(
+            type(actual_scope[key]) is not type(value) or actual_scope[key] != value
+            for key, value in scope.items()
+        )
+    ):
         raise ValueError("window_daily_scope_mismatch")
     if daily.get("data", {}).get("date") != day:
         raise ValueError("window_daily_date_mismatch")

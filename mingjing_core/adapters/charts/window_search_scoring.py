@@ -25,6 +25,8 @@ def weight_of(context: dict, weights: dict, purpose: str) -> dict[str, Any]:
     choices = weights["purpose_weights"][purpose]
     if family not in choices or label not in choices[family]:
         return {"recognized": False, "reason": "unsupported_daily_condition"}
+    if family == "bazi_relation" and type(context.get("complete")) is not bool:
+        raise ValueError("window_daily_evidence_invalid")
     base = choices[family][label]
     layers = context.get("target_layers", [context.get("layer")])
     factor = max(
@@ -46,6 +48,26 @@ def weight_of(context: dict, weights: dict, purpose: str) -> dict[str, Any]:
     }
 
 
+def _relation_completeness(context: dict, facts: list[dict]) -> None:
+    if category(context)[0] != "bazi_relation":
+        return
+    actual = facts[0]["value"]
+    if not isinstance(actual, dict):
+        raise ValueError("window_daily_evidence_invalid")
+    label = (
+        actual.get("relation")
+        if actual.get("kind") == "relation"
+        else actual.get("kind")
+    )
+    complete = actual.get("complete", True)
+    if (
+        label != context.get("relation")
+        or type(complete) is not bool
+        or complete is not context.get("complete")
+    ):
+        raise ValueError("window_daily_evidence_invalid")
+
+
 def observation(daily: dict, hit: dict, day: str, index: int) -> dict:
     if hit.get("met") is not True or not hit.get("evidence_paths"):
         raise ValueError("window_daily_evidence_invalid")
@@ -56,6 +78,7 @@ def observation(daily: dict, hit: dict, day: str, index: int) -> dict:
         ]
     except (TypeError, ValueError, KeyError, IndexError) as error:
         raise ValueError("window_daily_evidence_invalid") from error
+    _relation_completeness(hit.get("context", {}), facts)
     return {
         "date": day,
         "kind": "derived_copy_of_actual_daily_evidence",

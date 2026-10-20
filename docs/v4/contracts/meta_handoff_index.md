@@ -22,7 +22,7 @@
 | 能力 | 入口 / 数据 / 契约 | 当前边界 |
 | --- | --- | --- |
 | 技能加载 | `mingjing_core.skills.loader.chart_skill(system, topic)`；[skill_assets](skill_assets.md) | 五包32章、目录v2.4、37组字段绑定；5500字节为上下文代理预算，实际模型tokens待主线核 |
-| 术语词典 | `knowledge/p8_glossary/terms_v1.json`；[glossary](glossary.md) | 212术语/36来源；多数school说明是项目范围与待对读，不能称历史门派逐条校勘 |
+| 术语词典 | `knowledge/p8_glossary/terms_v1.json`；[glossary](glossary.md) | 212术语/39来源；多数school说明是项目范围与待对读，不能称历史门派逐条校勘 |
 | 学习要点 | `skills.learning.learning_outline`；[learning_outline](learning_outline.md) | 受信chart_compute输入、纯规则，复用实际c/r；不排新盘、不调用模型 |
 | 20课与小测 | `knowledge/p8_learning_lessons/curriculum_v1.json`；[learning_lessons](learning_lessons.md) | 20课40题，真实合成观察绑定六输入SHA；`draft_for_review`，无教学进度存储 |
 | 六类明确断言 | `skills.consistency.check_chart_consistency`；[chart_consistency](chart_consistency.md) | 日主/候选格局/分方法用神/大运/紫微主星/西占位置；有限语法、record_only |

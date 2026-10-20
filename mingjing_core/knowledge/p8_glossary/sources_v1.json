@@ -361,6 +361,36 @@
       "locator": "daily_transit/daily_transit_prepared: orb_degrees=2.0；传入astro_day",
       "verification_status": "implementation_locator_checked",
       "edition_page_status": "项目源码定位，无刊页；不证明古籍效度。"
+    },
+    {
+      "source_id": "p8-daily-snapshot",
+      "title": "P8北京时间正午采样约定",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/daily_transit_natal.py",
+      "locator": "BEIJING/snapshot；显式ISO日期，返回该日12:00、固定UTC+08:00，不读取宿主当前时间",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用；采样为项目约定，无古籍刊页，不证明传统应期有效。"
+    },
+    {
+      "source_id": "p8-daily-astro",
+      "title": "P8流日真实天空采样调用",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/daily_transit_astro.py",
+      "locator": "astro_day：snapshot(day,birth_date) -> ephemeris.julian -> planets；明确正午快照与连续区间不同",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用；采样为项目约定，无古籍刊页，不证明传统应期有效。"
+    },
+    {
+      "source_id": "p8-daily-ziwei",
+      "title": "P8紫微流日显式午时索引",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/daily_transit_ziwei.py",
+      "locator": "ziwei_day：prepared.ziwei_ast.horoscope(day,6)；保存snapshot_time_index=6与真实运限层",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用；采样为项目约定，无古籍刊页，不证明传统应期有效。"
     }
   ]
 }

@@ -106,3 +106,18 @@ Junit：`private/p8-validation/u12-final.xml`。没有跑Charts或声称本次�
 以及条件语句旁边另写成格结论；未发现需要再改源码的新反例。
 作者269、原495、独立25分别是测试集合，后者不混称已经并入此前764项的同一实跑。
 独立证据由该代理另交父代理；本报告只登记其已收到的25项结果。
+
+## 输入预检修正后的引用重绑
+
+root修正window scope严格类型与daily IANA/出生前日期预检后，排盘源码指纹改变，三份chart样例重建。
+本子代理按明确授权仅重生U12合成样例和新的`night28-u12-assertions-preflight-final.json`，
+旧性能文件保留原观测。U12三模块和原四模块均未修改。
+
+新阿远输入LF SHA `fe11a98184a296417f927d16cc57ee3ba664d77865393b9f20b2f867b0ea313b`；
+U12样例LF SHA `a0bd85c47fe2073911304e1c61c6529444c58103e01513a63cbecf91b50cae8c`。
+样例的原盘document引用随输入指纹重绑，仍为3条checked和1条deferred。
+
+2026-10-21T01:07:21+08:00新Core公开API预热1次、观测10次，中位22.610ms，
+最小22.082ms、最大23.276ms，源码SHA与新输入LF SHA均绑定新性能文件。
+重绑后的契约10项及独立25项合计35/35、0skip、1.55秒；Junit `private/p8-validation/u12-rebound-contract.xml`。
+这是引用重绑后的35项定向，不冒称原764在本次被重新全跑；root的01:15全量另记。

@@ -2203,6 +2203,11 @@
           "source_id": "p8-time-basis",
           "locator": "resolve_birth_instants与已声明clock_basis",
           "support_scope": "支持时钟坐标、时区和准确记录核对，不支持人生事件倒推。"
+        },
+        {
+          "source_id": "p8-solar",
+          "locator": "solar_time：correction=4*lon-standard_offset_minutes；mean=standard+correction；apparent=mean+equation_of_time",
+          "support_scope": "支持平太阳经度分钟修正、真太阳另加apparent_minus_mean均时差；不将坐标当另一UTC。"
         }
       ],
       "school_differences": [
@@ -2210,7 +2215,8 @@
           "school": "具名项目口径与跨派核对状态",
           "note": "平太阳与真太阳不是同一口径；项目P8主解读选真太阳，旧v3计算仍保留原方式。",
           "source_ids": [
-            "p8-time-basis"
+            "p8-time-basis",
+            "p8-solar"
           ]
         }
       ],
@@ -2231,6 +2237,11 @@
           "source_id": "p8-time-basis",
           "locator": "resolve_birth_instants与已声明clock_basis",
           "support_scope": "支持时钟坐标、时区和准确记录核对，不支持人生事件倒推。"
+        },
+        {
+          "source_id": "p8-solar",
+          "locator": "solar_time返回beijing_standard=(utc+timedelta(hours=8)).replace(tzinfo=None)",
+          "support_scope": "支持固定UTC+8比较坐标；不把输入地点的历史标准偏移默认为北京时间。"
         }
       ],
       "school_differences": [
@@ -2238,7 +2249,8 @@
           "school": "具名项目口径与跨派核对状态",
           "note": "北京时间与当地太阳时可能跨时辰；并列差异是口径透明，不代表修改出生记录。",
           "source_ids": [
-            "p8-time-basis"
+            "p8-time-basis",
+            "p8-solar"
           ]
         }
       ],
@@ -3749,6 +3761,11 @@
           "source_id": "p8-ziwei-time-editorial",
           "locator": "运限各层与实际horoscope字段",
           "support_scope": "支持具名时间层和本命/运限宫名区分；不支持某日应验或概率。"
+        },
+        {
+          "source_id": "p8-daily-ziwei",
+          "locator": "ziwei_day：horoscope(day,6)；native.horoscope.snapshot_time_index=6",
+          "support_scope": "支持当前项目日限采样的显式午时时辰索引6及层级返回，不支持古籍唯一查法或具体应验。"
         }
       ],
       "school_differences": [
@@ -3756,7 +3773,8 @@
           "school": "具名项目口径与跨派核对状态",
           "note": "两种独立实现的交叉核对只能证明同具名算法一致，不证明传统应期有效。",
           "source_ids": [
-            "p8-ziwei-time-editorial"
+            "p8-ziwei-time-editorial",
+            "p8-daily-ziwei"
           ]
         }
       ],
@@ -4869,6 +4887,16 @@
           "source_id": "p8-astro-transit",
           "locator": "连续区间entry_at/exact_at/exit_at与实际黄经误差",
           "support_scope": "支持区间边界、几何接近与截断状态，不能支持现实事件预约。"
+        },
+        {
+          "source_id": "p8-daily-snapshot",
+          "locator": "BEIJING/snapshot：显式目标日12:00、固定UTC+08:00",
+          "support_scope": "支持本项目晨报正午快照参数，不代表全天行运、当地整日或传统流派统一约定。"
+        },
+        {
+          "source_id": "p8-daily-astro",
+          "locator": "astro_day：snapshot -> ephemeris.julian -> planets；aspects(transits,natal_planets,orb)",
+          "support_scope": "支持从真实目标日正午瞬间求行运天体并比本命；次限和连续区间不能替代这份单点快照。"
         }
       ],
       "school_differences": [
@@ -4876,7 +4904,9 @@
           "school": "具名项目口径与跨派核对状态",
           "note": "单点快照与连续区间是不同能力；没有区间产物时不说已给出整月应期。",
           "source_ids": [
-            "p8-astro-transit"
+            "p8-astro-transit",
+            "p8-daily-snapshot",
+            "p8-daily-astro"
           ]
         }
       ],

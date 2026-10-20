@@ -51,6 +51,8 @@ as_of_date是调用方通过Clock明确给出的北京时间日期，不从电�
 日期是严格ASCII ISO格式，支持1901–2099，不能早于任一人物出生日期。
 orb_degrees为有限数值，0至10度（含边界），默认6度；bool、NaN、Infinity均不能作为数值。
 `birth.clock_basis` 为clock、standard或unknown；当前只接受报告准确时分的precision=reported。
+双方在准备任何一盘前均验证IANA标签可由当前明确时区源读取；未知标签报daily_transit_natal_invalid。
+目标日早于任一出生日报daily_transit_before_birth，两侧均不进入本命准备；consent拒绝仍最先执行。
 unknown若产生多个物理瞬间、夏令时gap或fold未确认，失败关闭，不据关系事件倒推。
 
 ## 授权与资料归属闸门

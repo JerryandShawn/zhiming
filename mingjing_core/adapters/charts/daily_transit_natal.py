@@ -12,6 +12,7 @@ from .astro_ephemeris import Ephemeris, actual_utc, finite
 from .time_basis import _reported, time_basis_candidates
 from .time_basis_chart import bazi_context
 from .time_basis_request import validate_request
+from .time_basis_zones import load_zone
 from .worker import load_engine
 
 BEIJING = timezone(timedelta(hours=8))
@@ -106,10 +107,15 @@ def validate_natal(natal: dict[str, Any], day: str) -> dict[str, Any]:
     try:
         birth = request["birth"]
         _reported(birth["date"], birth.get("reported_time"))
+    except (KeyError, TypeError, AttributeError, ValueError):
+        raise ValueError("daily_transit_natal_invalid") from None
+    snapshot(day, birth["date"])
+    try:
         validate_request(request)
         place = birth["place"]
         if not isinstance(place, dict) or not isinstance(place.get("tz"), str):
             raise ValueError("daily_transit_natal_invalid")
+        load_zone(place["tz"])
         finite(place["lon"], -180, 180)
         if "lat" in place:
             finite(place["lat"], -90, 90)
