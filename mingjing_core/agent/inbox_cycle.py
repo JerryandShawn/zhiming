@@ -8,6 +8,7 @@ from mingjing_core.application.agent_current_sources import current_source_ids
 from mingjing_core.application.thread_inbox import ThreadInbox
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
+from .inbox_crisis import refresh_crisis
 from .loop_codec import extend_aliases
 
 
@@ -38,8 +39,12 @@ class InboxCycle:
             with self.repo.transaction(run["owner"]) as connection:
                 current = self.repo._run(self.repo._leased(connection, run["owner"], run["id"], run["lease_token"]))
                 cycle.versions = reconcile_versions(self.repo, current, current["state_version"])
+            cycle.current_sources = tuple(
+                ident for ident in current_source_ids(self.repo, run) if "message:" + ident in restored.versions
+            )
         self.pending = tuple(claim for claim in claims if self._admit(cycle, claim, restored))
         self._register_sources(cycle)
+        refresh_crisis(cycle)
 
     def _admit(self, cycle, claim, restored):
         identifiers = tuple(key[8:] for key in claim.versions if key.startswith("message:"))
@@ -74,10 +79,7 @@ class InboxCycle:
             cycle.versions = versions
 
     def _register_sources(self, cycle):
-        # Adopted originals from a replay are re-authorized from PG, never a cached bool.
-        cycle.current_sources = tuple(
-            dict.fromkeys((*cycle.current_sources, *current_source_ids(self.repo, cycle.run)))
-        )
+        # Restored requests authorize their own chronological source set, not future steps.
         records = []
         for ident in cycle.current_sources:
             row = self.repo.get(cycle.run["owner"], "message", ident)
@@ -89,4 +91,6 @@ class InboxCycle:
         for claim in self.pending:
             inbox.ack(cycle.run, claim, model_seq=step.seq)
         self.pending = ()
+        if not set(cycle.current_sources).issubset(current_source_ids(self.repo, cycle.run)):
+            raise EvidenceError("模型完成后的补充原话缺少真实采用证明")
         self._register_sources(cycle)

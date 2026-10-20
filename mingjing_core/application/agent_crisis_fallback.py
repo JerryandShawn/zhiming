@@ -1,6 +1,8 @@
 """No-provider crisis template also works when input metering cannot admit a request."""
 
 from mingjing_core.agent.crisis import fallback_text
+from mingjing_core.application.agent_commit_versions import reconcile_versions
+from mingjing_core.application.agent_crisis_sources import turn_sources
 from mingjing_core.application.agent_finalization import AgentFinalizer
 from mingjing_core.application.agent_runtime_state import RuntimeState
 from mingjing_core.application.memory import MemoryService
@@ -23,7 +25,8 @@ def commit_crisis_template(repo, supplied, events, *, reason: str):
             or repo.is_revoked(owner, "message", source["id"])
         ):
             raise EvidenceError("危机兜底仍须有效的当前用户原话")
-        versions = {"message:" + source["id"]: source["revision"]}
+        versions = reconcile_versions(repo, current, current["state_version"])
+        versions.update({"message:" + row["id"]: row["revision"] for row in turn_sources(repo, current)})
         revision = repo.assert_scope(owner, current["subject"])["revision"]
         repo.set_run_dependencies(owner, current["id"], versions, current["lease_token"])
         state.metadata(current, fallback="crisis_template", fallback_reason=reason)
