@@ -1,0 +1,366 @@
+{
+  "version": "p8-glossary-sources-v1",
+  "stage": "draft_source_registry",
+  "sources": [
+    {
+      "source_id": "p8-elements",
+      "title": "P8五行阴阳与十神独立算式",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/calculations/bazi/elements.py",
+      "locator": "STEMS/ELEMENTS/RELATIONS/ten_gods；按日干定位day_master",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用，无刊页"
+    },
+    {
+      "source_id": "p8-pattern-review",
+      "title": "P8显式格局筛选与24号审校",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/p8_structure.py",
+      "locator": "restraint/checks[伤官]：正官透出且master不在庚辛；metal_water_exception；reviewed_regular/reviewed_extra/reviewed_useful",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "子平真诠第九/十四/四十一章公开转录已有审校记录，具体原刊版页待核"
+    },
+    {
+      "source_id": "noaa-solar",
+      "title": "NOAA Solar Calculation Details",
+      "kind": "official_scientific_documentation",
+      "url": "https://gml.noaa.gov/grad/solcalc/calcdetails.html",
+      "path": null,
+      "locator": "Meeus-based solar calculations；项目具体太阳时方法见time_basis_solar.py",
+      "verification_status": "official_document_read",
+      "edition_page_status": "在线技术说明，无纸页"
+    },
+    {
+      "source_id": "p8-solar",
+      "title": "P8具名太阳时坐标换算",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/time_basis_solar.py",
+      "locator": "solar_time/equation_of_time；apparent_minus_mean",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用，无刊页"
+    },
+    {
+      "source_id": "iztro-palace",
+      "title": "iztro宫位系统与官方宫位接口",
+      "kind": "official_implementation_documentation",
+      "url": "https://docs.iztro.com/posts/palace",
+      "path": null,
+      "locator": "前言十二人事宫与palaces/FunctionalPalace；只取结构概念，不沿用人格或吉凶断语",
+      "verification_status": "official_document_read",
+      "edition_page_status": "本次页面显示v2.6.2；只作术语结构资料，不冒称安装包已升级"
+    },
+    {
+      "source_id": "iztro-mutagen",
+      "title": "iztro四化与飞星系统",
+      "kind": "official_implementation_documentation",
+      "url": "https://docs.iztro.com/learn/mutagen",
+      "path": null,
+      "locator": "前言、飞星系统、十天干四化表；四化依附星曜，运限与宫位四化分开",
+      "verification_status": "official_document_read",
+      "edition_page_status": "现代作者原始说明，非古籍原刊校勘"
+    },
+    {
+      "source_id": "p8-ziwei-flying",
+      "title": "P8具名宫干飞化结构",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/ziwei_flying.py",
+      "locator": "palace_flying_transformations；配表知识p8_ziwei/flying_v1.json",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "iztro默认与quanshu可选口径具名；全书壬科天府原刊版页待核"
+    },
+    {
+      "source_id": "p8-astro-aspects",
+      "title": "P8五大黄经相位和容许度筛选",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/astro_ephemeris.py",
+      "locator": "ASPECTS/aspects；数值误差小于等于显式容许度",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目参数定义，不冒称某古籍给定同一角度上限"
+    },
+    {
+      "source_id": "p8-progressions",
+      "title": "P8具名次限UT1一日对应一年映射",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/astro_progressions.py",
+      "locator": "secondary_progressions；(目标JD_UT1−出生JD_UT1)/365.2422",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "Alan Leo历史附录仅为方法背景；项目365.2422细化不是历史原书逐字算法"
+    },
+    {
+      "source_id": "project-tarot-editorial",
+      "title": "知命明镜台项目原创塔罗象征解释",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/knowledge/tarot_meanings.json",
+      "locator": "meaning_version=zhiming-editorial-2026-10-10-v1；逐牌/cards/<index>/source",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "原创产品文本，无古籍纸页；不是Waite逐句翻译"
+    },
+    {
+      "source_id": "project-tarot-reversals",
+      "title": "项目逆位解释方法草稿",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/tarot/06_reversals.md",
+      "locator": "逆位的几种读法与牌义版本；过程性四类为项目编辑方法",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "历史牌义只作背景，不声称所有牌组均采用逆位"
+    },
+    {
+      "source_id": "p8-named-methods",
+      "title": "P8具名司令、藏干与十神方法",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/named_bazi.py",
+      "locator": "options/hidden_for/named_command/named_ten_gods",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-strength",
+      "title": "P8两种项目旺衰口径",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/named_strength.py",
+      "locator": "named_scores与已声明得令/得地/得势参数",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-calendar",
+      "title": "P8运限与节界历法层",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/calculations/bazi/calendar_layers.py",
+      "locator": "snapshot/decade_luck/节年节月与明确采样日期",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-interaction-table",
+      "title": "P8跨时间层干支结构表",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/knowledge/p8_interactions.json",
+      "locator": "pair_relations/group_relations/self_punishment；古籍与项目表状态分列",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-time-basis",
+      "title": "P8物理瞬间与时钟依据",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/time_basis.py",
+      "locator": "resolve_birth_instants/time_basis_candidates；显式时区与clock_basis",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-pattern-registry",
+      "title": "P8显式格局及38条件规则",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/knowledge/p8_bazi/rules_v1.json",
+      "locator": "rules；只表示所列显性条件，未宣布完整成格",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-stars-editorial",
+      "title": "P8十四主星原创解释草稿",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/ziwei/02_major-stars.md",
+      "locator": "方法步骤第2项：十四主星的项目白话提问词",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-structure",
+      "title": "P8实际紫微结构输出",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "hermes/ziwei.py",
+      "locator": "natal/palace/star：本命宫、身宫、命身主、五行局、主辅星与几何关联",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-combination-editorial",
+      "title": "P8三方四正与主题宫解释",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/ziwei/04_combinations.md",
+      "locator": "主题宫/linked_palaces/三合与对宫；原创解释边界",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-time-editorial",
+      "title": "P8紫微运限分层说明",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/ziwei/05_time-layers.md",
+      "locator": "大限、流年/月/日与实际运限字段，虚岁/限界/闰月差异",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "iztro-palace-learning",
+      "title": "iztro作者宫位系统原始说明",
+      "kind": "official_implementation_documentation",
+      "url": "https://docs.iztro.com/learn/palace",
+      "path": null,
+      "locator": "十二宫名称与各宫主题小节；仅作现代作者具名领域标签，不沿用其人格或事件断语",
+      "verification_status": "official_document_read",
+      "edition_page_status": "现代作者说明，非全书原刊校勘；不冒称各派统一主题规则"
+    },
+    {
+      "source_id": "p8-astro-signs",
+      "title": "项目热带黄道星座与宫位输出",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "hermes/astro.py",
+      "locator": "SIGNS/fmt/house_of/chart；只读参考，不改v3",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-natal-editorial",
+      "title": "P8本命西占解释边界",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/astro/01_natal.md",
+      "locator": "方法、热带黄道与宫制差异、现实事实边界",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-aspect-editorial",
+      "title": "P8相位与软件口径说明",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/astro/02_aspects.md",
+      "locator": "五大相位/入离相条件/度数与整星座差异",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-transit",
+      "title": "P8真实天空相位区间",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/interactions_transits.py",
+      "locator": "transit_windows；entry/exact/exit与多次经过、截断",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-return",
+      "title": "P8太阳回归数值求解",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/astro_returns.py",
+      "locator": "solar_return；实际UTC、本命太阳黄经、明确回归地点",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "swiss-houses",
+      "title": "Swiss Ephemeris宫制技术接口",
+      "kind": "official_scientific_documentation",
+      "url": "https://www.astro.com/swisseph/swephprg.htm",
+      "path": null,
+      "locator": "§15宫位接口/hsys P、A或E、W及ascmc数组；技术定义不支持人生断语",
+      "verification_status": "official_document_read",
+      "edition_page_status": "线上技术文档，接口说明无古籍纸页；不冒称已提供其它宫制的产品入口"
+    },
+    {
+      "source_id": "p8-tarot-minor-editorial",
+      "title": "项目小阿卡纳花色与数字读法",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/tarot/02_minor.md",
+      "locator": "方法步骤第2/3项；火水风土与数字词是项目现代编辑选择",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-tarot-court-editorial",
+      "title": "项目宫廷牌角色读法",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/tarot/03_court.md",
+      "locator": "方法步骤第1项Page/Knight/Queen/King角色；不据外貌性别认人",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-tarot-major-editorial",
+      "title": "项目固定大阿卡纳与编号说明",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/tarot/01_major.md",
+      "locator": "RWS编号、固定牌与原创建议；不与古典文本互称相同",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-tarot-spread-editorial",
+      "title": "项目牌阵与位置解释",
+      "kind": "project_editorial",
+      "url": null,
+      "path": "mingjing_core/skills/tarot/04_spread.md",
+      "locator": "固定牌阵、位置、24小时防反复与现实上下文",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-basis-pillars",
+      "title": "P8物理节界与声明日时坐标",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/time_basis_candidates.py",
+      "locator": "_candidate: physical.getYearInGanZhiExact/getMonthInGanZhiExact；local.setSect(1)/getDay/getTime；pillar_method",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目源码定位，无刊页；不证明古籍效度。"
+    },
+    {
+      "source_id": "p8-school-tables",
+      "title": "P8具名阳刃/阴刃可选表",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/knowledge/p8_bazi/schools.json",
+      "locator": "/defaults/blade；/blade/yang_only、yuanhai_yin_included、yin_reverse_pending；执行见named_bazi.named_stars",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "默认与异说表仅核当前项目数据；阴刃逆行第三表原典出处未找到，不能冒称三命通会支持。"
+    },
+    {
+      "source_id": "p8-synastry-default",
+      "title": "P8合盘显式参数默认值",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/synastry.py",
+      "locator": "synastry: orb_degrees=6.0；_comparison_data -> _astro -> aspects；先检查consent",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目源码定位，无刊页；不证明古籍效度。"
+    },
+    {
+      "source_id": "p8-daily-transit-default",
+      "title": "P8流日显式参数默认值",
+      "kind": "project_implementation",
+      "url": null,
+      "path": "mingjing_core/adapters/charts/daily_transit.py",
+      "locator": "daily_transit/daily_transit_prepared: orb_degrees=2.0；传入astro_day",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目源码定位，无刊页；不证明古籍效度。"
+    }
+  ]
+}

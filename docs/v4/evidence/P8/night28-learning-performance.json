@@ -1,0 +1,63 @@
+{
+  "version": "p8-learning-performance-v1",
+  "mode": "scripted_synthetic",
+  "measurements": {
+    "bazi": {
+      "warmups": 1,
+      "observations": 10,
+      "milliseconds": [
+        20.1254,
+        19.7418,
+        19.5464,
+        20.512,
+        19.9965,
+        21.3749,
+        21.9843,
+        20.3494,
+        20.5002,
+        21.0119
+      ],
+      "median_ms": 20.424799999999998,
+      "points": 11
+    },
+    "ziwei": {
+      "warmups": 1,
+      "observations": 10,
+      "milliseconds": [
+        15.4129,
+        15.2367,
+        15.0311,
+        15.8914,
+        16.6576,
+        16.3124,
+        15.7125,
+        15.5803,
+        15.4792,
+        15.0586
+      ],
+      "median_ms": 15.52975,
+      "points": 2
+    },
+    "astro": {
+      "warmups": 1,
+      "observations": 10,
+      "milliseconds": [
+        15.1005,
+        15.4086,
+        15.1154,
+        17.1537,
+        15.2383,
+        14.9385,
+        14.9204,
+        15.1243,
+        15.18,
+        14.9775
+      ],
+      "median_ms": 15.11985,
+      "points": 2
+    }
+  },
+  "method": "Core in-process verified original chart envelope, hashing and pure rule cards; excludes serialization/I/O",
+  "model_calls": 0,
+  "writes": 0
+}

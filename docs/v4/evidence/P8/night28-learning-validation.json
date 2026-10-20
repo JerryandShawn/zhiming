@@ -1,0 +1,47 @@
+{
+  "version": "p8-night28-learning-validation-v1",
+  "recorded_at_beijing": "2026-10-21T00:01:16+08:00",
+  "mode": "offline_synthetic",
+  "branch": "v4/p8-calc",
+  "targeted_tests": {
+    "command": "python -m pytest tests/v4/test_p8_glossary.py tests/v4/test_p8_learning_outline.py tests/v4/test_p8_learning_review.py tests/v4/test_p8_learning_preview.py -q",
+    "passed": 304,
+    "skipped": 0,
+    "seconds": 2.47
+  },
+  "scripted_regression": {
+    "scenarios": "80/80",
+    "self_tests": "48/48",
+    "report_dir": "night28-learning-scripted-regression"
+  },
+  "delivery": {
+    "report": "meta-validation.json",
+    "python_files": 174,
+    "protected_legacy_files_unchanged": 141,
+    "style_and_secret_patterns": "passed",
+    "untracked_unpublished_drafts_excluded": "Only draft consistency modules and the next API review tests; exact list in meta-validation.json. None are staged for this delivery."
+  },
+  "artifacts": {
+    "glossary_terms": 212,
+    "glossary_systems": {"bazi": 72, "ziwei": 55, "astro": 50, "tarot": 35},
+    "glossary_sources": 36,
+    "glossary_terms_lf_sha256": "b9d310c560df92666b9c1f2d4bdcf6c6a821d099908d113cc4a22acfb32e14a4",
+    "glossary_sources_lf_sha256": "3e1d2035b299548b1b413a707d3bb28c0e5c8991b96ef3b0c0b723eb2c3aaf12",
+    "school_comparison_rows": 32,
+    "learning_system_samples": ["bazi", "ziwei", "astro"],
+    "learning_final_performance": "night28-learning-performance-final.json"
+  },
+  "full_v4_for_this_increment": "not_started; next allowed start 00:15-00:30 Beijing",
+  "ci": "new_head_not_published_yet; previous b51470b CI in progress at last observation",
+  "model_calls": 0,
+  "server_or_feishu_access": false,
+  "migrations": [],
+  "merged_prs": [],
+  "limits": [
+    "Content integrity and metadata checks do not prove original editions or prediction validity.",
+    "202 school notes mainly describe project scope and pending cross-school checks; not 202 completed primary-source comparisons.",
+    "Input content hashes do not establish origin authorization or revocation status.",
+    "Four-tool API malformed-input findings are recorded for the next milestone; this increment does not claim they are fixed.",
+    "E2 placebo 2/14 temporal blockers remain; professional scores null."
+  ]
+}

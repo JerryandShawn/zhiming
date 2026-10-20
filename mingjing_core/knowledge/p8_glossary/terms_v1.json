@@ -1,0 +1,6127 @@
+{
+  "version": "p8-glossary-v1",
+  "stage": "draft_complete_200_for_review",
+  "language": "zh-CN",
+  "description": "命理研习术语：原创白话、具体例句、具名来源范围与流派差异；不是计算依据或预测结论。",
+  "systems": {
+    "bazi": "八字",
+    "ziwei": "紫微斗数",
+    "astro": "西方占星",
+    "tarot": "塔罗"
+  },
+  "planned_minimum_entries": 200,
+  "entry_count": 212,
+  "system_counts": {
+    "bazi": 72,
+    "ziwei": 55,
+    "astro": 50,
+    "tarot": 35
+  },
+  "entries": [
+    {
+      "term_id": "bazi-day-master",
+      "system": "bazi",
+      "term": "日主",
+      "aliases": [
+        "日元",
+        "日干"
+      ],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "八字中日柱的天干，用作比较其他天干与五行关系的参照。它是盘里的坐标，不是一个人的完整性格。",
+      "example": "例：甲子日的日主是甲；再说丁是伤官时，是以甲为参照。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "ten_gods: master = pillars[day][0]",
+          "support_scope": "支持日干作为十神参照的计算定义，不支持性格结论"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "子平十神坐标",
+          "note": "以日干为参照；旺衰、调候和格局如何取用仍各有方法，不能由日主一词自动选定。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条的白话解释是项目编写，不构成现实预测有效性的证据。"
+      ]
+    },
+    {
+      "term_id": "bazi-hurting-officer",
+      "system": "bazi",
+      "term": "伤官",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十神之一：日主所生的五行、且阴阳不同的天干关系。名字里的伤不是受伤预告，也不是品行评价。",
+      "example": "例：甲木日主见丁火，丁记为伤官；仍要分清它是透干还是藏干。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "RELATIONS/ten_god",
+          "support_scope": "支持阴阳五行关系标签"
+        },
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "restraint: checks[伤官][非庚辛日主且正官透出]；metal_water_exception",
+          "support_scope": "支持P8显式伤官格候选的牵制与庚辛例外，不等于完整成格"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "子平显式候选筛选",
+          "note": "本项目P8伤官牵制查正官，庚辛例外按24号裁定；旧v3保留原口径，两者不能默混。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "子平真诠相关章节有公开转录审校，原刊版次页码和全部季节救应条件仍待核。"
+      ]
+    },
+    {
+      "term_id": "bazi-true-solar-time",
+      "system": "bazi",
+      "term": "真太阳时",
+      "aliases": [
+        "视太阳时"
+      ],
+      "definition_kind": "astronomical_time_coordinate",
+      "plain_explanation": "按当地经度并计入均时差得到的太阳时钟坐标。同一出生瞬间可有不同钟表读数，不能把换算后的坐标当成另一个UTC。",
+      "example": "例：阿远记录08:20；按本项目成都经度和公式，主坐标约07:06，原记录仍保留。",
+      "sources": [
+        {
+          "source_id": "noaa-solar",
+          "locator": "Meeus-based solar calculations",
+          "support_scope": "支持均时差天文近似背景"
+        },
+        {
+          "source_id": "p8-solar",
+          "locator": "solar_time/equation_of_time",
+          "support_scope": "支持本项目坐标与符号约定"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "北京时间/平太阳时/真太阳时",
+          "note": "北京时间是统一标准钟；平太阳时只作经度换算，真太阳时再计均时差。默认选真太阳是项目口径，不证明其它流派无效。",
+          "source_ids": [
+            "p8-solar"
+          ]
+        }
+      ],
+      "pending_review": [
+        "出生记录是否已去夏令时须另外核实；公式近似与日界流派差异不能靠此词条消除。"
+      ]
+    },
+    {
+      "term_id": "ziwei-life-palace",
+      "system": "ziwei",
+      "term": "命宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微十二人事宫之一，是读盘时定位本人相关主题的起点。它在十二地支格中的位置由出生资料计算，并不固定在某一格。",
+      "example": "例：先读结果中name为命宫的宫位，再看其中实际主星，不能默认数组第0项就是命宫。",
+      "sources": [
+        {
+          "source_id": "iztro-palace",
+          "locator": "前言与palaces数据顺序",
+          "support_scope": "支持宫名、地支格和实际索引的区分，不支持据此给人定性"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "宫名与地支位",
+          "note": "宫名随盘而变，地支格的位置是另一套称呼；三方四正或飞化只是后续观察法，不能互相代替。",
+          "source_ids": [
+            "iztro-palace"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条的白话解释是项目编写，不构成现实预测有效性的证据。"
+      ]
+    },
+    {
+      "term_id": "ziwei-four-transformations",
+      "system": "ziwei",
+      "term": "四化",
+      "aliases": [
+        "禄权科忌"
+      ],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "把禄、权、科、忌四种标签按所选天干表附到具体星曜上，再定位星曜所在宫。它们不是四颗额外天体。",
+      "example": "例：先说明这次是流年四化，再说化科星落在哪个本命宫，不能和生年四化合成一条。",
+      "sources": [
+        {
+          "source_id": "iztro-mutagen",
+          "locator": "前言、运限/宫位四化与表格",
+          "support_scope": "支持四种标签、天干表和层级划分，不能支持现实吉凶"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "iztro与quanshu可选表",
+          "note": "本项目默认壬干科为左辅，quanshu可选表为天府；表不同需具名展示，不静默改引擎实际四化。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "壬科天府所据全书原刊版次与页码待核；程序表一致不等于各派一致。"
+      ]
+    },
+    {
+      "term_id": "ziwei-palace-stem-flying",
+      "system": "ziwei",
+      "term": "宫干飞化",
+      "aliases": [
+        "宫干四化"
+      ],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以来源宫的天干查四化表，再找被标记星曜在本命十二宫的实际位置，组成一条有起点和落点的连接。",
+      "example": "例：某宫宫干起化后，先核化星确实在目标宫；缺星时保留missing，不能补一个落点。",
+      "sources": [
+        {
+          "source_id": "iztro-mutagen",
+          "locator": "飞星系统",
+          "support_scope": "支持来源宫干至目标星宫的结构描述"
+        },
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "palace_flying_transformations",
+          "support_scope": "支持本项目实际边、缺失状态和选表"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "宫干飞化与运限四化",
+          "note": "前者从宫干出发，后者从对应运限干出发；两条线可以并列，但不能用可选宫干表覆盖原生流年四化。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "向心/离心等细分不在当前同宫自化定义里，古籍原刊与流派差异另待核。"
+      ]
+    },
+    {
+      "term_id": "astro-orb",
+      "system": "astro",
+      "term": "容许度",
+      "aliases": [
+        "orb"
+      ],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "判断角距是否足够接近某个相位角度的误差上限。它是筛选宽度，不是事件概率或精确时刻。",
+      "example": "例：六合中心为60度；实际61.4度，误差1.4度，在上限2度内就纳入本次筛选。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "ASPECTS/aspects",
+          "support_scope": "支持本项目角距误差与包含边界的定义，不支持所有流派同一上限"
+        },
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "hermes/astro.py: aspects(left,right=None,orb=6)；chart.aspects=aspects(planets)/aspect_orb=6",
+          "support_scope": "支持现存本命默认6度；仅只读定位，不改旧v3实现。"
+        },
+        {
+          "source_id": "p8-synastry-default",
+          "locator": "synastry(..., orb_degrees=6.0)",
+          "support_scope": "支持本次P8合盘默认6度，可由调用方显式覆盖。"
+        },
+        {
+          "source_id": "p8-daily-transit-default",
+          "locator": "daily_transit/daily_transit_prepared(...,orb_degrees=2.0)",
+          "support_scope": "支持本次P8流日默认2度，可由调用方显式覆盖。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "本命/行运/合盘",
+          "note": "不同技术和软件可用不同上限；本项目本命与合盘默认6度、流日默认2度，回答时必须写本次实际参数。",
+          "source_ids": [
+            "p8-astro-aspects",
+            "p8-astro-signs",
+            "p8-synastry-default",
+            "p8-daily-transit-default"
+          ]
+        }
+      ],
+      "pending_review": [
+        "统一容许度是具名项目约定，未由现实事件结果校准。"
+      ]
+    },
+    {
+      "term_id": "astro-secondary-progressions",
+      "system": "astro",
+      "term": "次限推运",
+      "aliases": [
+        "secondary progressions"
+      ],
+      "definition_kind": "symbolic_timing_technique",
+      "plain_explanation": "把出生后的历表日数象征性映射为人生经过的年数，再计算那个象征时刻的行星。它不同于目标日真实天空的行运。",
+      "example": "例：约30岁对应出生后约30个历表日；不能把这个象征月亮位置说成今天真实月亮。",
+      "sources": [
+        {
+          "source_id": "p8-progressions",
+          "locator": "secondary_progressions与UT1映射",
+          "support_scope": "支持本项目365.2422日返一年细化及不提供宫位的限制"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "一日对应一年变体",
+          "note": "历史方法有不同日/年计量；本项目用实际UT1间隔除365.2422，不按整岁取整，也不提供未定义的次限宫位。",
+          "source_ids": [
+            "p8-progressions"
+          ]
+        }
+      ],
+      "pending_review": [
+        "历史著作具体版本页码与本项目数值细化分开；象征方法的预测效度未验证。"
+      ]
+    },
+    {
+      "term_id": "tarot-tower",
+      "system": "tarot",
+      "term": "高塔",
+      "aliases": [
+        "The Tower"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "在本项目牌义里，用来提醒检查脆弱假设、变化缓冲和修复方式的象征图像。它不是事故、灾难或分手的证据。",
+      "example": "例：讨论高塔时，可以问计划最依赖的前提变了怎么办，而不是预告哪天会出事。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[16] card_id=major-16；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "支持本项目原创白话与反例，不表示Waite原文逐句同义"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "项目原创与历史牌义",
+          "note": "本数据是版本化的现代反思表达；历史牌义和不同牌组另有文本，不能把本段署名成古典原句。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "没有做逐牌古籍版本同义校勘；图像和读牌表达不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-reversed",
+      "system": "tarot",
+      "term": "逆位",
+      "aliases": [
+        "reversed"
+      ],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "牌在固定抽牌记录中采用的一个朝向及对应解释分支。当前项目分别保存正逆位文本，逆位不总是正位的简单反义。",
+      "example": "例：逆位可以讨论投入失衡或行动受阻；要先读这张牌的版本文本，不能看到逆位就说坏事。",
+      "sources": [
+        {
+          "source_id": "project-tarot-reversals",
+          "locator": "逆位的几种读法",
+          "support_scope": "支持过程性编辑读法与方法分歧"
+        },
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "逐牌reversed字段",
+          "support_scope": "支持本项目原创的实际逆位文本，不冒称历史作者逐句原文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "是否使用逆位",
+          "note": "有的读法不采用逆位，有的把它视为阻滞或内在过程；当前固定抽牌的朝向不能为了结论重抽或改写。",
+          "source_ids": [
+            "project-tarot-reversals"
+          ]
+        }
+      ],
+      "pending_review": [
+        "四类过程读法为项目编辑归纳，不是所有传统牌组的统一规定。"
+      ]
+    },
+    {
+      "term_id": "bazi-eight-characters",
+      "system": "bazi",
+      "term": "八字",
+      "aliases": [
+        "四柱"
+      ],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "出生年、月、日、时各用一个天干和地支表示，共八个字；按位置组成四柱。它是一种历法符号记录，不是完整人生事实。",
+      "example": "例：甲戌、丁卯、丁酉、甲辰按年/月/日/时分成四柱，位置不能调换。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "四柱历法边界依方法而异；同一记录先对时区、节界与日界，不能只比八字字符串。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-heavenly-stems",
+      "system": "bazi",
+      "term": "天干",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "甲乙丙丁戊己庚辛壬癸十个循环符号，分别带所选体系的阴阳与五行属性。",
+      "example": "例：查甲和乙的五行都为木，阴阳却不同，十神名称可能因此不同。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本词登记十干基本集合；具体取用与干合是否化另属具名规则，未作全部异文对读。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-earthly-branches",
+      "system": "bazi",
+      "term": "地支",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "子丑寅卯辰巳午未申酉戌亥十二个循环符号，能表示年、月、时等层次，须保留所在层。",
+      "example": "例：流年的午与时柱的午是不同位置，不能因同字就合并成一个节点。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "支的藏干、月令司令与时辰日界有方法差异；地支名称相同不代表算法完全相同。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-yin-yang",
+      "system": "bazi",
+      "term": "阴阳",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在天干地支体系中区分两类符号的属性，用来参与十神与有效干支配对等计算，不是优劣等级。",
+      "example": "例：甲阳乙阴；比较日主与另一天干时，先分五行再核阴阳同异。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "这里只谈符号属性，不把阴阳当真实性别、好坏或医学诊断；未核全部派别的延伸解释。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-five-elements",
+      "system": "bazi",
+      "term": "五行",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "木火土金水五类关系标签，用来组织相生相克等符号运算；不等于身体里五种可测物质。",
+      "example": "例：先说甲属木，再算木与火的关系，不能据缺火就推断身体出问题。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目旺衰与表层计数是不同方法；数量多不自动等于强，缺项也不自动等于用神。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-year-pillar",
+      "system": "bazi",
+      "term": "年柱",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四柱中表示出生年干支的那一组；八字用哪一时刻换年须在历法方法里明确。",
+      "example": "例：立春附近的出生记录先核交节瞬间，不凭公历年份直接填年柱。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        },
+        {
+          "source_id": "p8-basis-pillars",
+          "locator": "_candidate: UTC转固定+08:00物理calendar；physical.getYearInGanZhiExact()",
+          "support_scope": "支持P8年柱按实际UTC所对应的精确立春界计算；不以太阳时坐标挪动节界。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "八字节年与农历纪年不同；本项目P8按实际物理瞬间核精确立春界。",
+          "source_ids": [
+            "p8-elements",
+            "p8-basis-pillars"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-month-pillar",
+      "system": "bazi",
+      "term": "月柱",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四柱中表示所选节月干支的一组，是月令等方法的入口，不直接等于公历月份或农历月份。",
+      "example": "例：公历11月初仍可能在戌月，先查立冬交节再读月柱。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        },
+        {
+          "source_id": "p8-basis-pillars",
+          "locator": "_candidate: physical.getMonthInGanZhiExact()；pillar_method.year_month=physical_UTC_plus8_exact_jie",
+          "support_scope": "支持P8月柱用物理UTC+8精确节界，不直接取公历或农历月。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "节月与紫微运限月界不能混用；本项目按实际UTC对应节界选月柱。",
+          "source_ids": [
+            "p8-elements",
+            "p8-basis-pillars"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-day-pillar",
+      "system": "bazi",
+      "term": "日柱",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四柱中表示出生日期干支的一组，其中天干为日主。靠近子时须注明何时换日。",
+      "example": "例：23点附近若两种日界产生不同日柱，应把方法和差异并列。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        },
+        {
+          "source_id": "p8-basis-pillars",
+          "locator": "_candidate: local=declared_coordinate.getEightChar()；setSect(1)/getDay()；day_boundary=23:00_advances_day",
+          "support_scope": "支持P8声明坐标下的sect1晚子换日日柱；不改旧v3口径。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "P8日时坐标用sect1晚子换日；旧v3口径保留，不把两者默认为同法。",
+          "source_ids": [
+            "p8-elements",
+            "p8-basis-pillars"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-hour-pillar",
+      "system": "bazi",
+      "term": "时柱",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四柱中表示出生时段干支的一组；时干还依所选日干推算，因此不仅由钟表小时决定。",
+      "example": "例：同是子时，换到另一个日干后时干可能改变，不能只填一个子字。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "真太阳坐标与北京时间可能跨时辰；先确认时间口径，不借人生事件倒推改时柱。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-ten-gods",
+      "system": "bazi",
+      "term": "十神",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以日主为参照，把其他天干的生克和阴阳同异分成十种名称。它们描述符号关系，不是十位现实人物。",
+      "example": "例：同一个丁干，对甲日主与丁日主的十神名称不同。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "藏干与透干均可标十神，但力量和解释不能视为同等；未做所有六亲异文对读。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-peer",
+      "system": "bazi",
+      "term": "比肩",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "与日主五行相同且阴阳相同的天干关系，是十神之一，不直接说明身边有某个朋友。",
+      "example": "例：甲日主见甲记比肩，是否有真实合作伙伴仍要听用户事实。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目按五行阴阳算式标注；传统兄弟等映射有语境，不据此确认亲属身份。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-rob-wealth",
+      "system": "bazi",
+      "term": "劫财",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "与日主五行相同、阴阳不同的天干关系。名字中的劫不是财物会被夺走的事件证据。",
+      "example": "例：甲日主见乙记劫财，讨论预算仍需实际收支而非这个名称。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "是否有帮身或争财的传统解释要看条件；本词没有完成力量与救应判断。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-food-god",
+      "system": "bazi",
+      "term": "食神",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "日主所生的五行、且阴阳相同的天干关系，是十神的一类输出关系，不是饮食健康指标。",
+      "example": "例：甲日主见丙为食神；食杀同透也不自动证明食神制杀已有效。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目把同透与制伏有效分开；古籍的身健、力量和先后条件仍未完整数字化。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-direct-wealth",
+      "system": "bazi",
+      "term": "正财",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "日主所克的五行、阴阳不同的天干关系。名称不表示有多少真实钱，也不是收入类型证明。",
+      "example": "例：甲日主见己为正财，不能由它推断工资稳定或已经结婚。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "传统六亲映射有性别语境；本项目把关系标签与实际婚姻、职业事实分开。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-indirect-wealth",
+      "system": "bazi",
+      "term": "偏财",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "日主所克的五行、阴阳相同的天干关系。偏字不是偏门收入、中奖或投资机会的证据。",
+      "example": "例：甲日主见戊为偏财，具体财务决定仍核预算和风险。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "财星在格局候选与扶抑中可能有不同作用，不能只凭名称判统一喜忌。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-direct-officer",
+      "system": "bazi",
+      "term": "正官",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "克日主的五行、阴阳不同的天干关系。它是关系分类，不等于已有职位、法律结果或真实配偶。",
+      "example": "例：甲日主见辛为正官，谈面试时仍先核岗位要求和准备。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        },
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "restraint: checks[伤官][非庚辛日主且正官透出]；metal_water_exception",
+          "support_scope": "支持P8显式伤官牵制查正官与庚辛例外；未判完整救应，不等于成格。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "P8伤官候选查正官牵制并保留庚辛例外，不能借此称所有官伤条件已判。",
+          "source_ids": [
+            "p8-elements",
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-seven-killings",
+      "system": "bazi",
+      "term": "七杀",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "克日主的五行、阴阳相同的天干关系，又常称偏官。杀字不能用来推断暴力、灾祸或死亡。",
+      "example": "例：甲日主见庚记七杀；遇食神同透，仍只报告制杀候选。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "食制与用印是不同候选路径；本项目未判力量与先后，不能把两条路径混为同时成立。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-direct-seal",
+      "system": "bazi",
+      "term": "正印",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "生扶日主的五行、阴阳不同的天干关系。印不是学历证书或某个亲属身份的实物证明。",
+      "example": "例：甲日主见癸为正印；学习资源是否充足还需现实材料。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "传统印母等解释有特定语境；项目标签不验证母亲情况，也不以印星数判断学历。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-indirect-seal",
+      "system": "bazi",
+      "term": "偏印",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "生扶日主的五行、阴阳相同的天干关系，另有枭神等传统称谓；不能据名称给人贴偏执标签。",
+      "example": "例：甲日主见壬为偏印；枭食同透不等于已经夺食。",
+      "sources": [
+        {
+          "source_id": "p8-elements",
+          "locator": "PILLARS/STEMS/BRANCHES/ELEMENTS/ten_god/validate_pillars",
+          "support_scope": "支持四柱坐标与阴阳五行计算定义，不支持以符号推断人格或事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "偏印与枭的使用语境有条件；本项目先标同透，不把不完整制化解释为已成立。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-hidden-stems",
+      "system": "bazi",
+      "term": "藏干",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "按所选表为一个地支列出的天干集合，和实际透在柱上的天干不同。使用时需保留表名与顺序。",
+      "example": "例：读辰支藏干时先看采用哪张表，不把两张异表的字拼成一张。",
+      "sources": [
+        {
+          "source_id": "p8-named-methods",
+          "locator": "hidden_for/named_ten_gods/named_command",
+          "support_scope": "支持具名司令表、藏干位置与透藏区分；不把项目位置标签当统一古法。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "默认司令表存在辰壬等异文，不能冒称与旧v3或现代常见藏干表完全一致。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-exposed-stems",
+      "system": "bazi",
+      "term": "透干",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "某个天干实际出现在年、月、日、时柱的天干位置；格局判断常还区分是否在年月时透出。",
+      "example": "例：丙仅藏于地支时说丙藏，不能为满足条件把它写成丙已透。",
+      "sources": [
+        {
+          "source_id": "p8-named-methods",
+          "locator": "hidden_for/named_ten_gods/named_command",
+          "support_scope": "支持具名司令表、藏干位置与透藏区分；不把项目位置标签当统一古法。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "调候候选的透、藏与仅藏分列；本项目不把两种出现方式判为同等效力。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-main-qi",
+      "system": "bazi",
+      "term": "本气",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在所选藏干排序中被标为主要位置的那项。这个位置标签不等于已经测量或证明了实际气量。",
+      "example": "例：当前输出qi_rank为0时读取本气；换表后先重新核排序依据。",
+      "sources": [
+        {
+          "source_id": "p8-named-methods",
+          "locator": "hidden_for/named_ten_gods/named_command",
+          "support_scope": "支持具名司令表、藏干位置与透藏区分；不把项目位置标签当统一古法。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "P8按所选司令段逆序作位置标签；这是具名项目定义，不是所有古法统一次序。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-middle-qi",
+      "system": "bazi",
+      "term": "中气",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "某些三藏干支中位于本气与余气之间的位置标签；不要和二十四节气里的中气混为一个概念。",
+      "example": "例：藏干字段写中气时，要看该支第三类结构；问历法中气则转历法语境。",
+      "sources": [
+        {
+          "source_id": "p8-named-methods",
+          "locator": "hidden_for/named_ten_gods/named_command",
+          "support_scope": "支持具名司令表、藏干位置与透藏区分；不把项目位置标签当统一古法。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "同词存在不同语境，藏干角色顺序取决于所选表，本项目不把它当比例测量。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-residual-qi",
+      "system": "bazi",
+      "term": "余气",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "所选藏干顺序中较后的角色标签，用来保留层次；出现为余气并不表示没有作用或可直接忽略。",
+      "example": "例：两藏干的第二项在本项目记余气，不自动补一个不存在的中气。",
+      "sources": [
+        {
+          "source_id": "p8-named-methods",
+          "locator": "hidden_for/named_ten_gods/named_command",
+          "support_scope": "支持具名司令表、藏干位置与透藏区分；不把项目位置标签当统一古法。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "二藏干与三藏干角色结构不同；不是古籍给出了本项目精确权重的证据。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-month-command",
+      "system": "bazi",
+      "term": "月令",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "出生时所处节月的地支及其季节背景，是取用和旺衰方法常用的参照，不等于所有判断的唯一条件。",
+      "example": "例：先核月柱是卯，再讨论卯月木的季节语境，不能直接说某格已成。",
+      "sources": [
+        {
+          "source_id": "p8-named-methods",
+          "locator": "hidden_for/named_ten_gods/named_command",
+          "support_scope": "支持具名司令表、藏干位置与透藏区分；不把项目位置标签当统一古法。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "月令取用、扶抑与调候侧重点不同，项目保留三思路，不强合成唯一答案。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-human-qi-command",
+      "system": "bazi",
+      "term": "人元司令",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "按具名分日表判断节后某段由哪个藏干司事的传统查表方法。它依赖节界和经过时长。",
+      "example": "例：先读前节到出生的连续日数，再按所选分日段查司令干。",
+      "sources": [
+        {
+          "source_id": "p8-named-methods",
+          "locator": "hidden_for/named_ten_gods/named_command",
+          "support_scope": "支持具名司令表、藏干位置与透藏区分；不把项目位置标签当统一古法。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "默认表与徐表分日数不同；申月戊己合土的徐表还须显式选择，不能默猜。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-strength",
+      "system": "bazi",
+      "term": "旺衰",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在某种具名方法中综合季节、根气和透干等条件对日主强弱的描述，不是人的体力或能力等级。",
+      "example": "例：两种项目法给一强一弱时并列展示，不能把分数相加当唯一结论。",
+      "sources": [
+        {
+          "source_id": "p8-strength",
+          "locator": "named_scores与已声明项目两种方法",
+          "support_scope": "支持当前项目旺衰参数及角色，不支持古籍数值权重或人格、健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "两种项目权重与45/55阈值未经专家标定，不能说它们就是原典唯一算法。",
+          "source_ids": [
+            "p8-strength"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-season-support",
+      "system": "bazi",
+      "term": "得令",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在所选方法里，日主与月令季节关系被判为有支持的情况；得令不等于全部条件都强。",
+      "example": "例：月支本气为印比触发项目得令项，还要另看根和透干。",
+      "sources": [
+        {
+          "source_id": "p8-strength",
+          "locator": "named_scores与已声明项目两种方法",
+          "support_scope": "支持当前项目旺衰参数及角色，不支持古籍数值权重或人格、健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "当前得令是项目明示定义；不能拿此标签代替所有流派的季节判断。",
+          "source_ids": [
+            "p8-strength"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-root-support",
+      "system": "bazi",
+      "term": "得地",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "所选旺衰方法对地支根气支持的归纳项，与天干透出的支持分开，不是地理位置优越。",
+      "example": "例：读完四支根气再看得地项，不因为出生在南方就说得地。",
+      "sources": [
+        {
+          "source_id": "p8-strength",
+          "locator": "named_scores与已声明项目两种方法",
+          "support_scope": "支持当前项目旺衰参数及角色，不支持古籍数值权重或人格、健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "两种项目法对根的处理不同；未做其它门派逐项对读，不把计数当通用标准。",
+          "source_ids": [
+            "p8-strength"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-exposed-support",
+      "system": "bazi",
+      "term": "得势",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "所选方法中来自其他透干的同类或生扶力量这一部分的概括，与名望、地位无直接关系。",
+      "example": "例：项目法把年月时印比透干列入得势，现实是否有人支持需另外询问。",
+      "sources": [
+        {
+          "source_id": "p8-strength",
+          "locator": "named_scores与已声明项目两种方法",
+          "support_scope": "支持当前项目旺衰参数及角色，不支持古籍数值权重或人格、健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "具体计分是项目参数；传统势的完整解释未被几个透干数量完全覆盖。",
+          "source_ids": [
+            "p8-strength"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-rooting",
+      "system": "bazi",
+      "term": "通根",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "一个天干在地支藏干中找到同类根的关系概念，用于进一步讨论支持条件，不等于已经合成固定强度。",
+      "example": "例：先列实际有哪些支含对应根，再说明未评估冲合造成的变化。",
+      "sources": [
+        {
+          "source_id": "p8-strength",
+          "locator": "named_scores与已声明项目两种方法",
+          "support_scope": "支持当前项目旺衰参数及角色，不支持古籍数值权重或人格、健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目按具名藏干表检查根；藏透、旺衰与根气权重因方法而异。",
+          "source_ids": [
+            "p8-strength"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-support-suppress",
+      "system": "bazi",
+      "term": "扶抑",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "围绕所选旺衰结论考虑生扶或制泄等候选的取用思路，需先说明采用哪一种强弱方法。",
+      "example": "例：两旺衰法结论不同，就保留两套候选，不先挑一个顺耳的喜用。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "扶抑不等于调候或格局取用；项目把各提案分开，交集为空也不强选。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-climate-balance",
+      "system": "bazi",
+      "term": "调候",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "从寒暖燥湿等季节语境讨论候选的传统思路；项目目前采用具名开篇摘表，不是全文条件算法。",
+      "example": "例：乙申候选先读月段和例外说明，不能拿两个字当无条件优先序。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "总论、月段与条件例外可能不同；原刊异本、佐神和全文条件仍未完整核定。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-useful-god",
+      "system": "bazi",
+      "term": "用神",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "不同方法中被选作取用重点的概念；先问是月令格局取用、扶抑候选还是调候需求，不能混叫一个结论。",
+      "example": "例：回答喜什么之前，分别列出扶抑、调候、格局的候选及冲突。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "子平原文用神与现代喜用用法不能无说明等同；本项目只输出具名三候选。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-favorable-god",
+      "system": "bazi",
+      "term": "喜神",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在明确取用语境下讨论可能有助于所选路径的符号，不是看到这个五行就适合所有现实事务。",
+      "example": "例：某候选被列为助力时，还要说明是哪种方法、哪些前提尚未判断。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "喜神与用神的术语范围各书用法可能不同，本词未做完整跨派异文对读。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-unfavorable-god",
+      "system": "bazi",
+      "term": "忌神",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在某种已说明的方法和前提下被视为牵制的符号；忌字不是灾祸、疾病或需要花钱化解的证明。",
+      "example": "例：某透干触发候选筛选阻断，只说条件未过，不说现实会受罚。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "同一干在调候和扶抑中可能角色不同，不能把一栏忌神扩成全局禁忌。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-pattern",
+      "system": "bazi",
+      "term": "格局",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "按月令、透干与其它条件组织取用路径的传统框架。项目的条件筛选只是候选，不等于已经完成成格救应。",
+      "example": "例：看见正官格候选后逐项读已过与未过条件，而非直接给身份标签。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "八正格、杂气及特殊路径有不同前提；项目未把全部古书规则数字化。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-officer-pattern",
+      "system": "bazi",
+      "term": "正官格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以正官取用为中心的一类格局路径名称；当前候选查月支藏神、透干和显性牵制，仍有未判条件。",
+      "example": "例：正官三项筛选过了，也要说明刑冲和印星救应未完整评估。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目只检查所列显性条件，不把缺少完整救应判断的screen_passed翻成已成格。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-killer-pattern",
+      "system": "bazi",
+      "term": "七杀格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以七杀取用为中心讨论食制、用印等不同路径的格局名称，不能从杀字推断命运危险。",
+      "example": "例：看到食神透出只说明一条候选路径存在，制杀力量仍待判断。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "食与印是并列路径，不主张同时混用；身强弱和财食先后未被本筛选完全覆盖。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-seal-pattern",
+      "system": "bazi",
+      "term": "正印格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以正印取用为中心的一类候选框架；月令藏神与透出还不够判尽印轻、财印力量和救应。",
+      "example": "例：财星透出使本条显性筛选受阻，不等于现实的学习或母亲有问题。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "正偏财都在当前筛选中检查，但印轻前提未判；不能用工程布尔替代全章古法。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-indirect-seal-pattern",
+      "system": "bazi",
+      "term": "偏印格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以偏印取用为中心的一类候选框架，与单独出现偏印这个十神关系不是同一层次。",
+      "example": "例：盘里有壬干偏印，仍须核月令和透干条件，不能直接宣布偏印格成立。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目正偏印同查财星；完整力量、身强印重和救应未判，保留候选性质。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-wealth-pattern",
+      "system": "bazi",
+      "term": "正财格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "围绕正财取用条件讨论的一类格局路径，不是现实固定收入或配偶情况的分类表。",
+      "example": "例：财格候选出现比劫或七杀显性牵制时，说明筛选原因及未评估救应。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "财轻比重等前提尚未判断；不能仅凭工程检查把财星一律视为好坏。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-indirect-wealth-pattern",
+      "system": "bazi",
+      "term": "偏财格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "围绕偏财取用的格局候选名称；与偏财十神出现、偏门赚钱或中奖是不同命题。",
+      "example": "例：先读月支与透干是否满足，再讨论为什么本条候选未过筛。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "当前比肩劫财及七杀都查，食神化劫、合杀等救应尚未完整实现。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-food-pattern",
+      "system": "bazi",
+      "term": "食神格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以食神取用为中心的一类路径，项目候选核月令、透出与偏印等显性条件，不证明制化已成。",
+      "example": "例：食神与七杀同透可列候选关系，却不能因此说食神格已完整成立。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "生财露杀及力量先后没有全判；本筛选不等于完整食神专章规则。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-hurting-pattern",
+      "system": "bazi",
+      "term": "伤官格",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以伤官取用为中心的格局路径名称；不能因为名称就评价人叛逆或会伤害官职关系。",
+      "example": "例：非庚辛日主正官透出触发本条牵制，七杀并不是这条的阻断神。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "P8按24号裁定有庚辛金水例外；季节财印与官伤并透专章限制仍待补齐。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-established-lu",
+      "system": "bazi",
+      "term": "建禄",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目指日干禄位与月令锚点相合的一类候选，再查透干路径和显性败因，作为一条复合规则展示。",
+      "example": "例：建禄候选展开三个子条件，有一项不满足就不生成真实命中。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "三项为具名项目筛选，根气强弱与合去救应未全判；不能当作三章全文算法。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-month-robber",
+      "system": "bazi",
+      "term": "月劫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目增补候选中，阴干日主以月令本气劫财为锚点的路径；不是劫财十神出现就叫月劫格。",
+      "example": "例：先核日主阴阳与月令本气，再看取用路径，不拿任一藏劫财代替。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "限定为当前具名候选口径，月劫与阳刃不混为同一条，其他古籍范围待对读。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-yang-blade",
+      "system": "bazi",
+      "term": "阳刃",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "传统神煞或格局语境中的一个名称；当前默认只对五阳干定刃位，不从刃字推出伤害事件。",
+      "example": "例：甲日主取卯为默认刃位，但是否为阳刃格还要另核月令和取用条件。",
+      "sources": [
+        {
+          "source_id": "p8-pattern-review",
+          "locator": "reviewed_regular/reviewed_extra/reviewed_useful",
+          "support_scope": "支持P8显性候选和三种用神提案，不支持完整成格、救应或现实结果断言。"
+        },
+        {
+          "source_id": "p8-school-tables",
+          "locator": "/defaults/blade=yang_only；/blade/*/table及yin_reverse_pending.source_status",
+          "support_scope": "支持五阳干默认、阴干纳入/逆行第三两异说实表；逆行表原典归属仍未核实。"
+        },
+        {
+          "source_id": "p8-named-methods",
+          "locator": "named_stars: selected[blade]取schools.blade；target_branches/applicability/source_status",
+          "support_scope": "支持实际执行按所选表匹配柱支，阴干默认not_defined_for_yin_stem；不推断伤害事件。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "阴干有两类可选异说，其中逆行第三表原典待核；不改五阳干默认，也不据此倒推。",
+          "source_ids": [
+            "p8-pattern-review",
+            "p8-school-tables",
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。",
+        "yin_reverse_pending仅为可选异说表；本轮所核三命通会卷五未找到该阴刃表，需原书版次及页码，不以数据表替代原典。"
+      ]
+    },
+    {
+      "term_id": "bazi-decadal-luck",
+      "system": "bazi",
+      "term": "大运",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "按具名起运和顺逆方法生成的约十年一层时间框架。它是传统运限，不等于这十年现实固定好坏。",
+      "example": "例：先看实际起止时刻，再列这一步大运干支，不能只按年龄整数猜运。",
+      "sources": [
+        {
+          "source_id": "p8-calendar",
+          "locator": "历法快照、节界与运限层",
+          "support_scope": "支持当前日期/周期层与具名计算方法，不支持根据名称推断应验时间。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同起运或顺逆算法可改变边界；本项目保留dayun_sect等方法信息，不强说各家同法。",
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-annual-luck",
+      "system": "bazi",
+      "term": "流年",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在目标日期所处年份层使用的干支或运限信息，必须说明换年标准，不能只用公历数字代替。",
+      "example": "例：2027立春前后的年层先对节界，再和本命作交互。",
+      "sources": [
+        {
+          "source_id": "p8-calendar",
+          "locator": "历法快照、节界与运限层",
+          "support_scope": "支持当前日期/周期层与具名计算方法，不支持根据名称推断应验时间。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "八字节年与紫微所选运限年界可能不同，统一显示日期不代表统一换年算法。",
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-monthly-luck",
+      "system": "bazi",
+      "term": "流月",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "目标日期所在月层的传统时间信息，用于与原局比较；不是直接拿公历月份当月柱。",
+      "example": "例：10月某日先核节月，再说月干十神，不能把整月固定归一个旧边界。",
+      "sources": [
+        {
+          "source_id": "p8-calendar",
+          "locator": "历法快照、节界与运限层",
+          "support_scope": "支持当前日期/周期层与具名计算方法，不支持根据名称推断应验时间。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "节月、农历月和紫微月限各有方法；跨体系时保留具名来源，不移植月干。",
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-daily-luck",
+      "system": "bazi",
+      "term": "流日",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "针对明确日期所计算的日层干支与原局交互；项目晨报取北京时间正午快照，不涵盖全天变化。",
+      "example": "例：说10月21日正午的流日连接时，同时标出采样而非称全天吉凶。",
+      "sources": [
+        {
+          "source_id": "p8-calendar",
+          "locator": "历法快照、节界与运限层",
+          "support_scope": "支持当前日期/周期层与具名计算方法，不支持根据名称推断应验时间。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "民用日与晚子时日界需区分；当前daily快照不代表每个出生时区的整日择时。",
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-luck-start",
+      "system": "bazi",
+      "term": "起运",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "把出生到某个节界的间隔按具名规则换成首步大运开始时间的过程，需要保留算法与方向。",
+      "example": "例：对两个软件起运年龄不同时，先核顺逆、节界和换算方法。",
+      "sources": [
+        {
+          "source_id": "p8-calendar",
+          "locator": "历法快照、节界与运限层",
+          "support_scope": "支持当前日期/周期层与具名计算方法，不支持根据名称推断应验时间。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "各书起运取节与折算可能不同；项目方法不是所有流派的唯一公历时刻。",
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-solar-term",
+      "system": "bazi",
+      "term": "节气",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "太阳周年位置相关的二十四个历法节点的统称；八字换月通常还要分清其中的节与中气。",
+      "example": "例：寒露与霜降都叫节气，但不能都当作同一种月柱交接点。",
+      "sources": [
+        {
+          "source_id": "p8-calendar",
+          "locator": "历法快照、节界与运限层",
+          "support_scope": "支持当前日期/周期层与具名计算方法，不支持根据名称推断应验时间。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "二十四节点与十二节换月的用途不同；这里不以节气名解释现实吉凶。",
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-jie-boundary",
+      "system": "bazi",
+      "term": "节界",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "具名历法里切换节月的交接瞬间，靠近它时不同时间换算或精度可能让月柱不同。",
+      "example": "例：出生距交节一小时，保留临界提示与两侧候选，而非隐藏另一种月柱。",
+      "sources": [
+        {
+          "source_id": "p8-calendar",
+          "locator": "历法快照、节界与运限层",
+          "support_scope": "支持当前日期/周期层与具名计算方法，不支持根据名称推断应验时间。"
+        },
+        {
+          "source_id": "p8-basis-pillars",
+          "locator": "_candidate: physical.getMonthInGanZhiExact()；_jie记录physical_instant_UTC_plus8_not_solar_coordinate",
+          "support_scope": "支持P8按物理瞬间核节界，而不是把真太阳时坐标再次当UTC。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "P8按实际物理UTC核节月，不把真太阳时坐标再次当UTC去移动节界。",
+          "source_ids": [
+            "p8-calendar",
+            "p8-basis-pillars"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-stem-five-combinations",
+      "system": "bazi",
+      "term": "天干五合",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "甲己、乙庚、丙辛、丁壬、戊癸五种成对关系；成员出现与合化成功是两个判断。",
+      "example": "例：两人日干甲与己形成五合结构，不据此宣布合化或关系适配。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "各派合化还看季节、力量与其它条件；本项目只登记结构，不完成合化判定。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-six-combinations",
+      "system": "bazi",
+      "term": "六合",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "地支六组成对关系的名称，用来连接实际出现的两个支；不能把合字等同现实合作顺利。",
+      "example": "例：子与丑同见可列六合；它们在哪两柱、哪个时间层仍要保留。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "六合结构与合化前提分开，项目不据一个合就抵消所有其它关系。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-six-clashes",
+      "system": "bazi",
+      "term": "六冲",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "子午、丑未等六组相对支的关系标签，表示传统结构连接，不是冲突事件已经发生。",
+      "example": "例：流日辰连到本命戌时说六冲结构，不预告事故或亲属出事。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "冲与冲去、冲动等解释须额外条件；当前只确认成员和层级，未做事件校准。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-three-harmony",
+      "system": "bazi",
+      "term": "三合",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "申子辰等三支组成的关系集合；只出现其中两支时应标成员未齐，而不是说三合已经全部成立。",
+      "example": "例：午戌同见但无寅，结果保留missing_branches，排序中不按完整组三合加分。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目不把两支自动命名半合，也不由成员齐全宣布合化成功。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-seasonal-meeting",
+      "system": "bazi",
+      "term": "三会",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "寅卯辰等同一季节方向的三支集合，用来描述成员联系；不是三个年份都会发生某事。",
+      "example": "例：原局与流年凑出巳午未成员时，先列各成员位置再说明未判合化。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目按具名结构表查三会；传统解释与力度没有被这个集合条件完全实现。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-triple-punishment",
+      "system": "bazi",
+      "term": "三刑",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "寅巳申、丑戌未以及子卯等具名刑组的传统统称；必须分别看组定义、方向和是否齐全。",
+      "example": "例：只有寅巳时保留未齐状态及方向，不能假装申也在盘里。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目把组完整性和有向配对分列，不把名称里的三一律理解为任何刑都需三不同支。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-self-punishment",
+      "system": "bazi",
+      "term": "自刑",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "当前具名表中辰午酉亥同支重复时登记的结构，不是自伤或心理疾病的证据。",
+      "example": "例：两节点都是辰并命中当前表时列自刑，仍不据此评价人的情绪状态。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "自刑查法各说有差异；这里只按当前具名集合，不作其它派别已同意的陈述。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-six-harms",
+      "system": "bazi",
+      "term": "六害",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "子未、丑午等六组配对的传统关系名称，实际只确认相应支在输入中出现。",
+      "example": "例：原局卯与目标辰成六害结构，解释仍须回到用户现实安排。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "害字不是有人害你的证据；本项目未建立六害对现实事件的因果或概率模型。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-six-breaks",
+      "system": "bazi",
+      "term": "六破",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "子酉、卯午等具名配对表的结构标签；项目保留其查法，但原刊来源没有全部校勘。",
+      "example": "例：寅亥既可能触发六合也触发本表六破，两条都保留，不删掉看似矛盾的一条。",
+      "sources": [
+        {
+          "source_id": "p8-interaction-table",
+          "locator": "pair_relations/group_relations/self_punishment",
+          "support_scope": "仅支持实际干支成员结构；不证明合化、吉凶或现实关系。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "当前六破标项目表/原典待核，不能冒称古籍统一表，更不推出关系会破裂。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-mean-solar-time",
+      "system": "bazi",
+      "term": "平太阳时",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "按当地经度相对于标准经线的差换算的均匀太阳时钟，不再包含随季节变化的均时差修正。",
+      "example": "例：先做经度分钟修正得到平太阳，再加当时均时差才得真太阳坐标。",
+      "sources": [
+        {
+          "source_id": "p8-time-basis",
+          "locator": "resolve_birth_instants与已声明clock_basis",
+          "support_scope": "支持时钟坐标、时区和准确记录核对，不支持人生事件倒推。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "平太阳与真太阳不是同一口径；项目P8主解读选真太阳，旧v3计算仍保留原方式。",
+          "source_ids": [
+            "p8-time-basis"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-beijing-standard-time",
+      "system": "bazi",
+      "term": "北京时间",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "中国统一采用的UTC+8标准时坐标；历史钟表若处在夏令时，还要先辨明记录是否已经去掉夏令时。",
+      "example": "例：同一实际UTC加8小时得到比较口径，不把过去夏令时钟直接等同标准时。",
+      "sources": [
+        {
+          "source_id": "p8-time-basis",
+          "locator": "resolve_birth_instants与已声明clock_basis",
+          "support_scope": "支持时钟坐标、时区和准确记录核对，不支持人生事件倒推。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "北京时间与当地太阳时可能跨时辰；并列差异是口径透明，不代表修改出生记录。",
+          "source_ids": [
+            "p8-time-basis"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-late-zi-hour",
+      "system": "bazi",
+      "term": "晚子时",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "通常指23点至午夜附近的子时部分；不同日界口径可能把它归当日或次日，需明确方法。",
+      "example": "例：23:05在sect1按次日日柱处理，而旧口径可能不同，不能省略日界说明。",
+      "sources": [
+        {
+          "source_id": "p8-time-basis",
+          "locator": "resolve_birth_instants与已声明clock_basis",
+          "support_scope": "支持时钟坐标、时区和准确记录核对，不支持人生事件倒推。"
+        },
+        {
+          "source_id": "p8-basis-pillars",
+          "locator": "_candidate: local.setSect(1)/getDay/getTime；pillar_method.day_boundary=23:00_advances_day",
+          "support_scope": "支持P8声明日时坐标23:00换日方法；不声称所有紫微/八字方法一致。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "P8与原生紫微晚子处理也不能概称完全一致；农历月末仍可能有命宫差异。",
+          "source_ids": [
+            "p8-time-basis",
+            "p8-basis-pillars"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-daylight-saving",
+      "system": "bazi",
+      "term": "夏令时",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "历史上把民用钟表临时拨快的时区规则，会影响记录钟表时间对应的实际UTC，不是经度或均时差。",
+      "example": "例：1988夏季的09:30若是当时钟表读数，先由显式IANA规则转换，不能硬减8小时。",
+      "sources": [
+        {
+          "source_id": "p8-time-basis",
+          "locator": "resolve_birth_instants与已声明clock_basis",
+          "support_scope": "支持时钟坐标、时区和准确记录核对，不支持人生事件倒推。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "clock与已标准化记录必须区分；遇不存在或重复时刻先保留待确认，不据经历挑一个。",
+          "source_ids": [
+            "p8-time-basis"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "bazi-two-hour-period",
+      "system": "bazi",
+      "term": "时辰",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "传统以地支命名的约两小时一段时钟区间；用哪种时钟坐标分段会影响边界附近的归属。",
+      "example": "例：真太阳时06:59与07:01可能跨卯辰界，不能用城市钟表小时直接代替。",
+      "sources": [
+        {
+          "source_id": "p8-time-basis",
+          "locator": "resolve_birth_instants与已声明clock_basis",
+          "support_scope": "支持时钟坐标、时区和准确记录核对，不支持人生事件倒推。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "时辰交界与晚子日界是不同边界，项目分别提示，不用人生大事倒推补精确时分。",
+          "source_ids": [
+            "p8-time-basis"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-siblings-palace",
+      "system": "ziwei",
+      "term": "兄弟宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫中以同辈和手足主题命名的宫位。它是讨论入口，不说明真实兄弟姊妹人数或现实关系。",
+      "example": "例：先核兄弟宫在这张盘的实际位置，再问用户真实同辈互动，不能据此猜家谱。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "宫位转义与转宫说法另有体系；此词只保留直接主题，未做各派转义完整对读。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-spouse-palace",
+      "system": "ziwei",
+      "term": "夫妻宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫中讨论伴侣与亲密关系主题的宫位，不是结婚、离婚、性取向或对方内心的证据。",
+      "example": "例：合盘时并列自己的夫妻宫与对方命宫，仍不替双方决定是否交往。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目跨盘对读只是结构展示，没有据此建立传统相容度或关系成功分数。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-children-palace",
+      "system": "ziwei",
+      "term": "子女宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫中与子女等主题相联系的传统宫名；不由此判断是否应生育、怀孕时间或孩子命运。",
+      "example": "例：用户没有子女也保留该宫结构，不用宫名强迫对应一个现实孩子。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同现代解释还涉及合作等转义；这里未做转义跨派核定，不自动扩成事实。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-wealth-palace",
+      "system": "ziwei",
+      "term": "财帛宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫中用来讨论资源收支主题的宫位。它不是账户余额，也不能作为收益或投资建议。",
+      "example": "例：把财帛宫主题放回本月实际预算核对，而非见禄就说会收入增加。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "财帛与田宅的资源侧重点可能不同；本词不把某一现代解释判为所有流派共识。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-health-palace",
+      "system": "ziwei",
+      "term": "疾厄宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫里带身体与负担主题的传统宫名，不是医疗检查、体质诊断或疾病风险模型。",
+      "example": "例：身体不适先就医；盘里疾厄宫的星曜不代替症状和医生判断。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "现代软件也有健康宫称呼；名称变化不使本工具获得医学诊断能力。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-travel-palace",
+      "system": "ziwei",
+      "term": "迁移宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫中用于讨论外部环境与外出互动主题的宫位，不会直接指出旅行地点或某次行程结果。",
+      "example": "例：考虑换城市时，先核住房工作等条件，再把迁移主题当一个讨论角度。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "部分现代解释谈对外呈现，不能扩成真实社交评价；未完成跨派语义对读。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-friends-palace",
+      "system": "ziwei",
+      "term": "仆役宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫的传统名称，现代也常称交友宫，用来展开同伴和圈子主题，不按旧称评价人的地位。",
+      "example": "例：讨论合作伙伴时先听实际行为，不凭仆役宫给某人定为贵人或小人。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "传统地位语境不沿用；同伴主题是具名现代释义，不用于确认第三人身份。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-career-palace",
+      "system": "ziwei",
+      "term": "官禄宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫里讨论工作、做事与职责主题的宫位，学生也可把它作为学习任务的提问入口。",
+      "example": "例：面试问题先看岗位和准备，再核实际官禄宫资料，不能直接说会录取。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目把career与study映射到此宫只是检索约定，不能称原典已经给出现代职业分类。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-home-palace",
+      "system": "ziwei",
+      "term": "田宅宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫中以居处、家宅和长期资源主题命名的宫位，不是房产证或继承事实的证据。",
+      "example": "例：搬家前先核预算和合同，不能用田宅宫说某处房子值得购买。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "与财帛宫如何分资源主题各家可不同；本词未建立收益或家运判断算法。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-inner-life-palace",
+      "system": "ziwei",
+      "term": "福德宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫中常用于谈内在体验、休息和满足等主题的宫位，不是道德积分或心理诊断。",
+      "example": "例：用户说最近很累，就先讨论真实休息需求，不拿福德宫给人评善恶。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "内在生活是项目现代讨论标签，原典福祸断语不沿用；没有完整跨派比较。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-parents-palace",
+      "system": "ziwei",
+      "term": "父母宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "十二宫里以长辈主题命名的宫位；不能由某颗星推断父母身份、身体情况或家庭经历。",
+      "example": "例：先让用户说明长辈互动，再核相关宫位，不把盘面填进未知家庭事实。",
+      "sources": [
+        {
+          "source_id": "iztro-palace-learning",
+          "locator": "十二宫的对应名称小节",
+          "support_scope": "仅支持具名宫位的传统领域标签；本词条不照搬作者的人格、财富或健康断语。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "旧书性别和地位语境不能直接套用现代家庭；转宫父母的细分另待核。",
+          "source_ids": [
+            "iztro-palace-learning"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-ziwei-star",
+      "system": "ziwei",
+      "term": "紫微星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；本项目以组织与统筹作为讨论关键词，须结合实际落宫和同宫资料，不能单星给人定性。",
+      "example": "例：谈紫微时问最近是否在协调分工，也允许用户说实际并不负责组织。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "关键词为项目原创概括，诸星性质的各派解释未完整对读；不沿用帝王贵贱断语。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-tianji-star",
+      "system": "ziwei",
+      "term": "天机星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目把它转成方案变化和调整的提问线索，不认为遇到此星就会多变。",
+      "example": "例：看见天机实际落在主题宫，可问计划要先试小版本还是继续原方案。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "三合与飞星可从不同结构看天机；这里不把项目关键词当统一门派定义。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-sun-star",
+      "system": "ziwei",
+      "term": "太阳星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "紫微十四主星中的太阳这一符号名称，项目用表达和向外投入作提问；不是西占实时太阳位置。",
+      "example": "例：先确认讲的是紫微太阳星，不把它的宫位和西占太阳黄经混成一条依据。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "两个体系同名但计算对象和安星方法不同，不能从同名推断相互印证。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-wuqu-star",
+      "system": "ziwei",
+      "term": "武曲星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；本项目借执行和资源处理讨论具体任务，不据此判定财富、职业或冷硬性格。",
+      "example": "例：把武曲关键词落到预算执行是否有清楚步骤，而不说用户天生适合金融。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "这是项目提问框架；各派对星性组合的条件不同，未做全部职业断语校勘。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-tiantong-star",
+      "system": "ziwei",
+      "term": "天同星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目把舒适和支持条件作反思主题，不把追求轻松当懒惰或命运好坏。",
+      "example": "例：问这周怎样安排更能恢复精力，同时检查是否有任务一直拖着。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同四化和同宫背景不能省略；单一舒适关键词不是完整传统星性算法。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-lianzhen-star",
+      "system": "ziwei",
+      "term": "廉贞星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目用边界与约束作讨论词，名字不证明谁忠诚、守法或值得信任。",
+      "example": "例：遇到廉贞主题先聊具体边界约定，而不是根据星名指控伴侣。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "旧书道德与性别断语不沿用；本词为具名项目白话，跨派原刊尚待核。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-tianfu-star",
+      "system": "ziwei",
+      "term": "天府星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；本项目用管理和维护资源作提问主题，不能据此判断资产或家庭地位。",
+      "example": "例：谈天府时可以核一项长期资源如何维护，不把它当房产增值信号。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "壬干化科是否取天府属于另一个具名表差异，不能由星名自动选表。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-moon-star",
+      "system": "ziwei",
+      "term": "太阴星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目把感受和细致照料当讨论词。它是紫微安星符号，不等于西占本命月亮。",
+      "example": "例：问当前感受如何被照顾，同时检查太阴确实位于所述宫，而非模型补星。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "默认庚干太阴化科与其它表不同之处要另标；本词不把词义决定为四化表。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-tanlang-star",
+      "system": "ziwei",
+      "term": "贪狼星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目用探索和多样需求作提问，不把贪字当贪婪、成瘾或不忠证据。",
+      "example": "例：先问最近有哪些兴趣分散精力，再核是否需要减少同时进行的项目。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目不继承古籍人格贬词；不同组合的星性解释尚未完整跨派校勘。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-jumen-star",
+      "system": "ziwei",
+      "term": "巨门星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目以辨析和语言上的澄清作反思，不据名称说某人招口舌或必有官非。",
+      "example": "例：把巨门话题转成关键概念有没有说清，先看真实沟通记录。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "表达关键词不等于现实事件断言；飞化与同宫条件仍须来自实际产物。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-tianxiang-star",
+      "system": "ziwei",
+      "term": "天相星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；本项目以协调和程序感作提问，不以星名判断道德高低或是否能任某职位。",
+      "example": "例：可以问团队规则是否让各方都能参与，而不是直接贴和事佬标签。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "未把此现代提问词当作所有传统门派的唯一星义，原刊条件仍待核。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-tianliang-star",
+      "system": "ziwei",
+      "term": "天梁星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目用照顾与经验支持作讨论入口，不能据此许诺长寿、健康或贵人出现。",
+      "example": "例：关注谁能提供真实帮助，并核对帮助的边界，而不是等天梁替你解决问题。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "旧书寿病断语不沿用，现代支持主题为项目原创，不验证现实救应。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-qisha-star",
+      "system": "ziwei",
+      "term": "七杀星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "紫微十四主星之一，项目借决断与取舍作提问。它与八字十神七杀不是同一计算对象。",
+      "example": "例：先写明是紫微宫中的七杀，再问目前哪项取舍需要现实信息支持。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "跨体系同名不算两份独立证据；不从杀字推断暴力或危险。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-pojun-star",
+      "system": "ziwei",
+      "term": "破军星",
+      "aliases": [],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "十四主星之一；项目以更新旧做法的主题展开，不把破字解释成灾难、破产或关系结局。",
+      "example": "例：先找一项可安全调整的旧流程，不因破军就催促辞职或分手。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-stars-editorial",
+          "locator": "方法步骤第2项与十四主星列表",
+          "support_scope": "支持本项目原创象征提问词，不是性格诊断或古籍逐字译文。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同四化下的解释不能由单星关键词替代；项目未建立事件成败评分。",
+          "source_ids": [
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-body-palace",
+      "system": "ziwei",
+      "term": "身宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微盘里一项补充宫位标记，通常和命宫一起核对；它不自动对应某个人生年龄或确定职业。",
+      "example": "例：按is_body或shen_gong定位实际身宫，不凭书上的示意图猜其位置。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "身宫的解释重心各派可异，本项目不编造命身宫的年龄分界。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-major-stars",
+      "system": "ziwei",
+      "term": "主星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目紫微输出中major数组里的十四类主要星曜，与命主身主这类全盘标签分开。",
+      "example": "例：某宫major为空时，只说无这组主星，不能说这个人生领域不存在。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "借星解读不会让主星实体搬宫，飞化和三合也不改变实际major数组。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-minor-stars",
+      "system": "ziwei",
+      "term": "辅星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微输出中minor数组里的辅助星曜类别；不能因为叫辅就省略与当前问题有关的真实资料。",
+      "example": "例：先读同宫的文昌或左辅实际字段，不能把它们误写成十四主星之一。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "主辅分类与其它星类表可能不同；这里按当前引擎数组，不宣称所有派同分。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-same-palace",
+      "system": "ziwei",
+      "term": "同宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "两颗或多颗星在同一实际宫位索引内的结构关系，不等于它们在天文天空中靠在一起。",
+      "example": "例：太阳和某辅星都在palace_index=3时说同宫，同时保留各自四化。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "同宫不等于合相；这是紫微结构，不能借西占容许度来认定。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-opposite-palace",
+      "system": "ziwei",
+      "term": "对宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在十二宫环上相隔六格的那一宫，是明确的几何关联，不自动与本宫发生相同现实事件。",
+      "example": "例：本宫索引2的对宫为8，先按模12计算再读实际星曜。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "借对宫、化忌冲对宫和普通几何对宫是不同用法，不能混成一条吉凶。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-three-directions-four-positions",
+      "system": "ziwei",
+      "term": "三方四正",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "看本宫、相隔四格和八格的两宫、以及相隔六格的对宫所成的一组结构视角。",
+      "example": "例：主题宫索引1时，关联宫为5、9、7；先核实际宫名再谈主题。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "三合会照与宫干飞化重心不同；结构关联不说明某派已给出了现实事件结论。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-empty-palace",
+      "system": "ziwei",
+      "term": "空宫",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "通常指该宫没有十四主星的情形，仍可能有辅星、四化关联和对宫资料，不能称没有人生主题。",
+      "example": "例：夫妻宫major为空，继续读minor和关联宫，不把对方星曜复制入本宫。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "借星是解释方法而非移动数据；各派空宫处理未完整对读，当前保留原字段。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-star-brightness",
+      "system": "ziwei",
+      "term": "庙旺利陷",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微对星曜在宫位状态的一类传统亮度标签，当前由引擎brightness返回，不是对人的优劣评分。",
+      "example": "例：原生没有brightness就保留未知，不让模型凭星名补一个庙或陷。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "各版本亮度表可能不同；项目不把文字标签换算成专家校准的人格分数。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-palace-stem",
+      "system": "ziwei",
+      "term": "宫干",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微某宫干支字段中的天干，可作为宫干飞化查表的起点；它不等于流年天干。",
+      "example": "例：从来源宫ganzhi首字取宫干，再选当前具名四化表，不能改用当天日干。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "宫干飞化与年干四化的起点不同，不将所选宫干表覆盖生年标签。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-palace-branch",
+      "system": "ziwei",
+      "term": "宫支",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "某宫所在十二地支格的地支标识，用来核对索引和宫位环上的位置，不是某人的八字月支。",
+      "example": "例：索引从寅起的当前结构中核ganzhi地支，不能把数组0号默认当子宫。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同数据数组的起点可不同；本项目按实际索引和BRANCHES一起核，不跨系统借索引。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-soul-ruler",
+      "system": "ziwei",
+      "term": "命主",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微结果中的全盘命主星标签，和实际落在命宫major数组里的主星不是同一字段。",
+      "example": "例：ming_zhu写某星时，仍需另读命宫星曜，不能把命主星凭空放进去。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "此词只按当前引擎字段解释；命主星的其它派别查法与人生断语未完整对读。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-body-ruler",
+      "system": "ziwei",
+      "term": "身主",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微结果中的全盘身主星标签；它与身宫所在位置或身宫实际主星要分别读取。",
+      "example": "例：shen_zhu和shen_gong同时存在时分别展示，不用一个名称替代另一个值。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "身主与身宫不是同义词；本项目不据身主自动推断中晚年经历。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-five-element-class",
+      "system": "ziwei",
+      "term": "五行局",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微安星中使用的具名局数参数，当前在wuxing_ju字段返回；不等于八字五行数量比例。",
+      "example": "例：读到水二局时按当前紫微算法使用，不说这个人八字水有两份。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "局数与不同历法/安星方法相关；不是可与八字旺衰分数相加的量。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-natal-chart",
+      "system": "ziwei",
+      "term": "本命盘",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "按一份明确出生资料与方法计算的基础紫微宫星结构，用来与运限层区分，不是实时天空地图。",
+      "example": "例：流年宫名变了，本命星仍留在原实际宫位，不能一并挪走。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-structure",
+          "locator": "natal/palace/star以及linked_palaces几何",
+          "support_scope": "支持实际宫位、主辅星、命身主与索引结构；解释不超过已给定数据。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "出生时间口径和闰月晚子规则可能改变盘；项目保存方法差异，不据经历挑盘。",
+          "source_ids": [
+            "p8-ziwei-structure"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-lu-transformation",
+      "system": "ziwei",
+      "term": "化禄",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四化中的禄标签，附在按具名天干表查得的星曜上；它不是金额或某日进账的事实。",
+      "example": "例：先说哪一层的哪颗星化禄，再报实际落宫，不写自动获得收入。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "各派表和解释侧重可异；本词只固定当前程序标签，不把禄一律当现实收益。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-quan-transformation",
+      "system": "ziwei",
+      "term": "化权",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四化中的权标签，需连同起化来源、星曜和实际宫位看；不等于升职、控制别人或已有权力。",
+      "example": "例：同星同时有生年和流年权时分两层说，不能相乘成晋升概率。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "标签重叠不代表证据独立或力度倍增；本项目不作未经校准的权力分值。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-ke-transformation",
+      "system": "ziwei",
+      "term": "化科",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四化中的科标签；具体是哪颗星由具名天干表决定，不能直接推出成绩、名誉或贵人事件。",
+      "example": "例：壬科先写所用表：默认左辅，可选quanshu天府，不能隐去差异。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "壬科天府原刊版页仍待核；默认程序标签不被可选宫干表重写。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-ji-transformation",
+      "system": "ziwei",
+      "term": "化忌",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "四化中的忌标签，附在实际星曜并落到某宫；不是事故、惩罚、破财或关系失败的证明。",
+      "example": "例：先分生年忌和流日忌，再核真实落点，不把忌字译成今天会出事。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目只算结构和几何对宫，不沿用灾祸断语，也不输出吉凶概率。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-self-transformation",
+      "system": "ziwei",
+      "term": "自化",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "当前具名实现中，来源宫干查出的化星实际仍落在同一宫位的情况，用布尔值登记。",
+      "example": "例：来源宫索引4且目标星也在4时标自化，缺星时不能假定false。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目采用同宫定义，不细分向心离心；其它飞星术语不能据此说已完整实现。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-ji-opposition",
+      "system": "ziwei",
+      "term": "化忌冲",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "当前实现把化忌所落宫的对宫列为几何关联，用索引加6取模12得到，不是现实冲击事件。",
+      "example": "例：忌落索引1，ji_opposition对应7；只说结构对宫，不指控对方关系。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "几何化忌冲不等于已实现所有飞星吉凶论法，相关传统前提另待核。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-natal-transformations",
+      "system": "ziwei",
+      "term": "生年四化",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "按出生年干及原生方法产生、附在本命星曜上的禄权科忌标签，与目标年的四化不同。",
+      "example": "例：同一星生年有忌，流年有禄，保留两层标签，不互相覆盖。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "可选宫干表不改原生生年mutagen；表不匹配时照实显示差异。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-temporal-transformations",
+      "system": "ziwei",
+      "term": "运限四化",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "由大限、流年、流月、流日等对应层的干产生的四化，需要标清来源层和目标日期。",
+      "example": "例：输出monthly四化时写明目标日期及实际月限干，不借八字月干替换。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-flying",
+          "locator": "生年标签、_edge/_temporal_layer与具名表",
+          "support_scope": "支持四化标签、连接与原生层保持；不支持吉凶、性格或相容度结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "运限分界与所选配置有关；当前只映射真实返回层，不猜缺失层的四化。",
+          "source_ids": [
+            "p8-ziwei-flying"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-decadal-period",
+      "system": "ziwei",
+      "term": "大限",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微以一段年龄范围为单位的运限层，常以十年为跨度，起止和宫位由实际算法返回。",
+      "example": "例：读decadal.range和宫位，不把十年范围里的每一天说成一样。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-time-editorial",
+          "locator": "运限各层与实际horoscope字段",
+          "support_scope": "支持具名时间层和本命/运限宫名区分；不支持某日应验或概率。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "虚岁、起点和顺逆方法可能有差异；不能把包装库默认等同某原典唯一解。",
+          "source_ids": [
+            "p8-ziwei-time-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-ziwei-annual",
+      "system": "ziwei",
+      "term": "紫微流年",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微运限中的年份层，有自己的干支、命宫位置、宫名数组及四化，不能只用一个八字年柱代替。",
+      "example": "例：流年命宫映到本命疾厄时分清两种宫名，不把本命命宫搬走。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-time-editorial",
+          "locator": "运限各层与实际horoscope字段",
+          "support_scope": "支持具名时间层和本命/运限宫名区分；不支持某日应验或概率。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "年份分界按实际引擎配置；不据自然年数字猜农历或节年的切换。",
+          "source_ids": [
+            "p8-ziwei-time-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-ziwei-monthly",
+      "system": "ziwei",
+      "term": "紫微流月",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微目标月的运限层，保留实际月限宫位和四化；不因名称相似就套八字节月算法。",
+      "example": "例：先读取horoscope.monthly的真实干支再映射星曜，不让模型自行起月。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-time-editorial",
+          "locator": "运限各层与实际horoscope字段",
+          "support_scope": "支持具名时间层和本命/运限宫名区分；不支持某日应验或概率。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "闰月处理和起流月方式可有差异；当前方法声明与结果优先，不冒充各派统一。",
+          "source_ids": [
+            "p8-ziwei-time-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-ziwei-daily",
+      "system": "ziwei",
+      "term": "紫微流日",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "紫微目标日期的日限结构，包括本层干支、宫位和四化落点；不表示这个日期已发生某件事。",
+      "example": "例：晨报读明确日期午时采样的日限，保留实际运限时辰索引。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-time-editorial",
+          "locator": "运限各层与实际horoscope字段",
+          "support_scope": "支持具名时间层和本命/运限宫名区分；不支持某日应验或概率。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "两种独立实现的交叉核对只能证明同具名算法一致，不证明传统应期有效。",
+          "source_ids": [
+            "p8-ziwei-time-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "ziwei-temporal-chart",
+      "system": "ziwei",
+      "term": "运限盘",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在本命基础上针对明确目标时间展开的层级视图；本命宫名、运限宫名和四化来源须分开。",
+      "example": "例：同一星的位置仍在本命宫里，而流年宫名数组提供另一个对应名称。",
+      "sources": [
+        {
+          "source_id": "p8-ziwei-time-editorial",
+          "locator": "运限各层与实际horoscope字段",
+          "support_scope": "支持具名时间层和本命/运限宫名区分；不支持某日应验或概率。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同时间层和起限规则会产生不同视图，不把多层同主题当多倍确定性。",
+          "source_ids": [
+            "p8-ziwei-time-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-aries",
+      "system": "astro",
+      "term": "白羊座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "本项目热带黄道从0度起至30度前的第一段名称，不等同天文学中形状不规则的同名恒星星座。",
+      "example": "例：黄经12度显示白羊12度，不由此推断这个人做事冲动。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "热带与恒星黄道起点不同；本项目不切换恒星黄道，也不把两套名称默混。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-taurus",
+      "system": "astro",
+      "term": "金牛座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "本项目热带黄道30度至60度前的一段，用名称与座内度数共同表示位置，而不是财富或固执程度。",
+      "example": "例：黄经45度写金牛15度，不能只写金牛而丢掉实际角度。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "座名是等分位置标签，不用太阳星座概括人格；不同黄道体系要另标起点。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-gemini",
+      "system": "astro",
+      "term": "双子座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道60度至90度前的一段；名字中的双不是两种人格或实际双胞胎信息。",
+      "example": "例：黄经82度对应双子22度，问沟通能力仍以现实情况核对。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "未对所有星座心理流派做比较；本词只登记当前等分角度，不读心。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-cancer",
+      "system": "astro",
+      "term": "巨蟹座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道90度至120度前的一段名称，和某颗星落在哪个房屋宫位是不同坐标。",
+      "example": "例：黄经100度为巨蟹10度，但所属第几宫还要另看宫头。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "落座与落宫不可互换，宫制改变未必改变热带星座度数。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-leo",
+      "system": "astro",
+      "term": "狮子座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道120度至150度前的一段；它表示黄经范围，不证明领导才能、优越性或他人的赞许。",
+      "example": "例：太阳黄经134度可记狮子14度，不能直接说用户天生该当领导。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "星座象征词不是事实评估；本词未将任何人物描述标成跨派共识。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-virgo",
+      "system": "astro",
+      "term": "处女座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道150度至180度前的区段，名称不是对性别、身体或关系经历的分类。",
+      "example": "例：黄经179度显示处女29度，不能四舍五入到下一座再解释。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "边界按实际黄经分段，显示保留与算法精度分开；未用座名作人格诊断。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-libra",
+      "system": "astro",
+      "term": "天秤座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道180度至210度前的区段，用来标记位置；不能因秤字就判断公正或犹豫。",
+      "example": "例：黄经180.2度属于天秤0.2度，比较相位仍用未简化的角度。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "十二座为等长区段，不是司法或道德结论，不把现代象征当古籍统一解释。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-scorpio",
+      "system": "astro",
+      "term": "天蝎座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道210度至240度前的区段；它不说明谁危险、嫉妒或不可信。",
+      "example": "例：金星黄经223度只说明落天蝎13度，第三人的动机仍是未知。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同解释传统可赋象征，但本词只支持角度命名，不用星座猜他人内心。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-sagittarius",
+      "system": "astro",
+      "term": "射手座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道240度至270度前的一段；区段名称不等于某人注定旅行或适合冒险。",
+      "example": "例：黄经251度为射手11度，出行计划仍先核交通和预算。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "象征主题不能代替现实适配；没有做跨派人格解释的效度验证。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-capricorn",
+      "system": "astro",
+      "term": "摩羯座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道270度至300度前的区段，须与实际天体和时间一起读，不是事业成绩分数。",
+      "example": "例：土星黄经278度为摩羯8度，也不能直接推出事业会成功。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本词不把古典守护或现代职业词汇当已计算的事实，具体方法需另给。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-aquarius",
+      "system": "astro",
+      "term": "水瓶座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道300度至330度前的区段名称；水瓶字面不决定它和五行水的对应。",
+      "example": "例：黄经312度写水瓶12度，不能拿瓶字把它算进八字水元素。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "跨体系同字不建立对应；本项目未将星座名与八字五行混算。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-pisces",
+      "system": "astro",
+      "term": "双鱼座",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "热带黄道330度至360度前的最后一段，接着在0度循环；座内度数不是黄经总度数。",
+      "example": "例：黄经359度为双鱼29度，和白羊1度的最短距离是2度。",
+      "sources": [
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "SIGNS/fmt：黄经按30度分段",
+          "support_scope": "支持项目热带黄道分段与显示；不支持星座人格或恒星星座位置结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "跨零点角距用环形计算，不能按359减1得到358度后误判相位。",
+          "source_ids": [
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-sun",
+      "system": "astro",
+      "term": "太阳",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "西占位置计算中的太阳对象，使用实际出生瞬间的视黄经。所谓太阳星座只是其中一个位置标签，不是完整人格。",
+      "example": "例：先读太阳黄经和本次方法，再说明仅凭太阳落座不能概括用户经历。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "传统七曜与现代外行星方法有差别；本词不把太阳在占星中的称法等同天文学行星分类。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-moon",
+      "system": "astro",
+      "term": "月亮",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "西占盘中用历表求得位置的月亮对象，时刻误差可影响其角度及相位；不是紫微太阴星的同一计算。",
+      "example": "例：出生时分不明确时，不把月亮相位说成已经精确核定。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "真实月亮位置与紫微符号安星分开；不同时间分支应保留，不借同名相互证明。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-mercury",
+      "system": "astro",
+      "term": "水星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目十天体位置中的水星对象，可返回黄经和视运动状态。它的位置不能用来诊断智力或沟通能力。",
+      "example": "例：记录水星retrograde=true时说明这是视运动字段，不说人会失去表达能力。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "水星逆行的象征解读与数值事实分开；未验证任何软件式生活禁忌。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-venus",
+      "system": "astro",
+      "term": "金星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目计算的金星黄经与速度对象，可能参与本命或跨盘相位，但不直接证明爱意、美貌或收入。",
+      "example": "例：金星与另一盘月亮有相位，只报告角距与参数，不说两人相爱。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本命、行运与合盘的用途和容许度不同，不能共用一条未标方法的金星判断。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-mars",
+      "system": "astro",
+      "term": "火星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "西占十天体之一，在项目中以实际历表位置和相位参与计算，不从名称推出暴力、冲动或事故。",
+      "example": "例：火星刑相在容许度内只说明角距条件，安全风险仍以现实信息核对。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "火星的象征主题未做现实风险校准，不能把相位权重翻成伤害概率。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-jupiter",
+      "system": "astro",
+      "term": "木星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目计算的木星位置对象，能与本命天体形成相位；它不等于好运、录取或投资回报的证据。",
+      "example": "例：木星拱相可作为讨论线索，申请结果仍取决于材料与评审。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "古典吉星称谓不自动转成现实成功承诺，现代解释也须标方法与反例。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-saturn",
+      "system": "astro",
+      "term": "土星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "西占位置里的土星对象，其角距和速度可复核；不能据此给人贴失败、惩罚或宿命负担标签。",
+      "example": "例：土星对冲出现时，可以先核近期任务压力，不预告关系破裂。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "传统凶星和现代成长象征是不同解释语境，数值工具不裁定哪一种现实有效。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-uranus",
+      "system": "astro",
+      "term": "天王星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目十天体集合中的天王星，其位置属于现代外行星计算；不能把其解释归给未收录它的古典原书。",
+      "example": "例：说明天王星相位来自现代历表输出，而不是称托勒密已给出同一规则。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "古典七曜体系不含这一现代对象；本词不将现代象征冒标为古典共同传统。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-neptune",
+      "system": "astro",
+      "term": "海王星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "本项目计算的现代外行星对象，以真实位置参加几何相位；不是欺骗、成瘾或心理状况的诊断标签。",
+      "example": "例：海王星相位不能证明对方在隐瞒，仍要分事实和猜测。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "现代心理读法与古典七曜有时代边界，不能借古典书名给现代人格判断背书。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-pluto",
+      "system": "astro",
+      "term": "冥王星",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "当前十天体计算中保留的冥王星对象；占星软件选用它与天文学分类是不同问题，不表示死亡力量。",
+      "example": "例：实际输出冥王星角度时保留软件对象名，不把冥字解释成灾祸。",
+      "sources": [
+        {
+          "source_id": "p8-astro-natal-editorial",
+          "locator": "本命字段、天文位置与解释边界；天体集合由astro_ephemeris.BODIES定义",
+          "support_scope": "支持本项目天体名称及如何读取位置；象征主题不构成人格、事件或健康结论。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同占星方法可不采用外行星；本词只说明当前集合，不宣称全流派都使用。",
+          "source_ids": [
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-tropical-zodiac",
+      "system": "astro",
+      "term": "热带黄道",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "以季节参考起点划分十二个等长星座区段的坐标约定，本项目用它标记黄经和落座。",
+      "example": "例：先确认zodiac=tropical，再与另一个软件的同一时刻比对落座。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "恒星黄道有另一套起点；本项目未提供自动混合或以一个体系裁判另一个的功能。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-ecliptic-longitude",
+      "system": "astro",
+      "term": "黄经",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "沿黄道一周量出的角度，通常规范到0至360度前；相位计算比较的是这种环形位置。",
+      "example": "例：359度与1度相隔2度，不能用普通绝对差得到358度。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "地心、日心及视位置等设置须保留；本项目明确热带地心视黄经。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-ecliptic-latitude",
+      "system": "astro",
+      "term": "黄纬",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "天体在黄道南北方向的角位置，与沿黄道量的黄经不同；当前五大相位只比较黄经。",
+      "example": "例：两个对象黄经相近，也不能据此说它们在三维天空完全重合。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目未把黄纬并入相位或落宫修正，不能说所有几何接近都已判尽。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-sign-degree",
+      "system": "astro",
+      "term": "星座度数",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "把完整黄经拆成星座区段与该段内0至30度前的角度，是显示方式，不是另一种物理位置。",
+      "example": "例：黄经75度显示双子15度；做相位仍使用完整75度。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "显示小数舍入不应反改计算原值，边界比较时先核未舍入黄经与坐标系。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-aspect",
+      "system": "astro",
+      "term": "相位",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "在明示容许度下，两对象黄经的最短角距接近某个预定角度的结构名称。",
+      "example": "例：先读from/to和实际误差，再说明本次采用哪五种角度。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "古典整星座相位与本项目度数筛选不同，不把当前五种相位说成所有占星相位。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-conjunction",
+      "system": "astro",
+      "term": "合相",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "本项目五大相位中以0度角距为中心的关系，是否纳入还取决于本次容许度，不自动表示好事。",
+      "example": "例：角距1.2度在2度门槛内记合相，仍保留实际1.2度误差。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "天体性质和技法会影响解释；项目不为所有合相预设相同正负现实含义。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-sextile",
+      "system": "astro",
+      "term": "六分相",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "西占以60度为中心的相位，中文也常叫六合；它与八字地支六合不是同一个算法。",
+      "example": "例：两天体黄经相差60.8度时核0.8度误差，不去查子丑等支表。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "跨体系同名不能当相互印证，几何六分相没有证明现实合作或顺利。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-square",
+      "system": "astro",
+      "term": "刑相",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "西占以90度为中心的相位，属于角距分类；刑字不对应法律惩罚、事故或八字三刑。",
+      "example": "例：以91.5度角距和2度容许度纳入刑相，不预告发生冲突。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "度数筛选和象征解释须分开，不将当前负权重变成现实损害概率。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-trine",
+      "system": "astro",
+      "term": "三分相",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "以120度为中心的西占相位，中文常称拱相；它不是紫微三方会照或八字三合。",
+      "example": "例：检查实际角距119度是否在本次门槛内，再标误差1度。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "所谓易协作只是象征读法，不能直接许诺成功，也不与其它体系同字混算。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-opposition",
+      "system": "astro",
+      "term": "对冲",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "以180度为中心的西占相位，是黄经环上的相对关系，不是两个人会敌对或分开的证据。",
+      "example": "例：角距178.9度与上限2度形成对冲，仍须核现实问题。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "对冲与紫微对宫、八字六冲的计算对象不同，不合并为更强的坏事判断。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-retrograde",
+      "system": "astro",
+      "term": "逆行",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "从所选参考系观察到黄经视速度为负的状态，天体不是因此在轨道上倒着走，也不表示失能。",
+      "example": "例：retrograde字段为true时核speed的负号，不直接给出不宜沟通清单。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "速度是可算字段，水逆等生活禁忌属于另一个解释层，未被该字段验证。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-station",
+      "system": "astro",
+      "term": "留",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "天体视运动接近转向时速度很小的状态，需要邻近时刻的速度或专门求解，不能只凭一个近零显示数断定精确时刻。",
+      "example": "例：速度四舍五入为0时先核原始值和前后变化，不能宣称留点已找到。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "当前工具未独立搜索全部留点，词典介绍概念不等于新增了留点计算功能。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-natal-aspects",
+      "system": "astro",
+      "term": "本命相位",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "同一份出生盘的天体之间的相位集合，和行运到本命或两个人跨盘的角距集合分开。",
+      "example": "例：太阳与月亮都来自natal_planets时才称这条为本命相位。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同技术可取不同容许度，不能把流日2度过滤后的集合冒充本命6度全集。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-interchart-aspects",
+      "system": "astro",
+      "term": "跨盘相位",
+      "aliases": [],
+      "definition_kind": "geometric_parameter",
+      "plain_explanation": "来自两份不同盘面对象之间的黄经相位；必须标清a与b及实际参数，不能把一人的行星替成另一人。",
+      "example": "例：合盘的a太阳对b月亮和a月亮对b太阳是两条不同配对。",
+      "sources": [
+        {
+          "source_id": "p8-astro-aspects",
+          "locator": "signed_angle/aspects与实际角度、速度字段",
+          "support_scope": "支持几何参数和项目五大相位定义，不支持事件概率或所有传统解释。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "跨盘几何不构成关系成功率，也不因为出现更多配对就成为多份独立现实证据。",
+          "source_ids": [
+            "p8-astro-aspects"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-applying",
+      "system": "astro",
+      "term": "入相",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在特定时间段内朝相位精确角度接近的过程，需时间变化证据，不能从一次快照的误差小就猜入相。",
+      "example": "例：前一时刻误差1.5度、后一时刻1度且同一路径时，才讨论正在接近。",
+      "sources": [
+        {
+          "source_id": "p8-astro-transit",
+          "locator": "连续区间entry_at/exact_at/exit_at与实际黄经误差",
+          "support_scope": "支持区间边界、几何接近与截断状态，不能支持现实事件预约。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同技法可用不同入离相定义；本项目以实际搜索产物和精确根分段，不冒称所有软件同法。",
+          "source_ids": [
+            "p8-astro-transit"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-separating",
+      "system": "astro",
+      "term": "出相",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "在经过相位精确点后逐步远离该角度的过程，不等于某个现实事件结束。",
+      "example": "例：区间结果明确已经过精确时刻，才说后续阶段在离开，不靠日期印象。",
+      "sources": [
+        {
+          "source_id": "p8-astro-transit",
+          "locator": "连续区间entry_at/exact_at/exit_at与实际黄经误差",
+          "support_scope": "支持区间边界、几何接近与截断状态，不能支持现实事件预约。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "起止范围截断时不能补造离开时间，逆行也可能再度接近，保留各次窗口。",
+          "source_ids": [
+            "p8-astro-transit"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-transit",
+      "system": "astro",
+      "term": "行运",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "把目标时刻的真实天空位置与本命位置作比较的技术，与次限等象征推进方法不同。",
+      "example": "例：晨报用明确北京时间正午行星，不能拿次限月亮冒充当日月亮。",
+      "sources": [
+        {
+          "source_id": "p8-astro-transit",
+          "locator": "连续区间entry_at/exact_at/exit_at与实际黄经误差",
+          "support_scope": "支持区间边界、几何接近与截断状态，不能支持现实事件预约。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "单点快照与连续区间是不同能力；没有区间产物时不说已给出整月应期。",
+          "source_ids": [
+            "p8-astro-transit"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-ascendant",
+      "system": "astro",
+      "term": "上升点",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "出生地点与时刻对应的东方地平线和黄道的交点之一，需准确地点和时间，不是只凭生日确定的太阳星座。",
+      "example": "例：出生时刻未确认时，不把上升度数说成精确，也不补一个宫位判断。",
+      "sources": [
+        {
+          "source_id": "swiss-houses",
+          "locator": "§15宫位接口与上升/MC/宫制代码",
+          "support_scope": "支持技术坐标和宫制的区分；本项目实际提供范围仍以产物为准。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不同宫制如何使用上升点有差异；术语介绍不代表P8所有新函数都返回宫位。",
+          "source_ids": [
+            "swiss-houses"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-midheaven",
+      "system": "astro",
+      "term": "天顶",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "占星MC这个技术点与本地子午圈/黄道关系有关，不是天空正上方的天文学天顶点本身。",
+      "example": "例：读mc字段时不称它为头顶星座；先区分MC与日常说的正上方。",
+      "sources": [
+        {
+          "source_id": "swiss-houses",
+          "locator": "§15宫位接口与上升/MC/宫制代码",
+          "support_scope": "支持技术坐标和宫制的区分；本项目实际提供范围仍以产物为准。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "MC和第十宫宫头在部分宫制中不等同，不把某宫制的关系当所有软件共识。",
+          "source_ids": [
+            "swiss-houses"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-house-cusp",
+      "system": "astro",
+      "term": "宫头",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "所选宫制中标示某宫起始边界的黄经位置，用来判断行星落宫；它与星座边界不是同一组线。",
+      "example": "例：本命第2宫宫头为某度时，按前后宫区间判落宫，不直接按星座数宫。",
+      "sources": [
+        {
+          "source_id": "swiss-houses",
+          "locator": "§15宫位接口与上升/MC/宫制代码",
+          "support_scope": "支持技术坐标和宫制的区分；本项目实际提供范围仍以产物为准。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "整宫、等宫与Placidus宫头可能不同，先注明宫制再比较软件差异。",
+          "source_ids": [
+            "swiss-houses"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-house-system",
+      "system": "astro",
+      "term": "宫制",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "把盘面划分为十二宫的一套几何约定，同一出生时刻在不同宫制下可能产生不同落宫。",
+      "example": "例：两软件行星落座相同但落宫不同，先核hsys是否相同，不急判计算错。",
+      "sources": [
+        {
+          "source_id": "swiss-houses",
+          "locator": "§15宫位接口与上升/MC/宫制代码",
+          "support_scope": "支持技术坐标和宫制的区分；本项目实际提供范围仍以产物为准。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "当前旧本命与回归用具名Placidus；词典列其它方法不表示已接它们的产品参数。",
+          "source_ids": [
+            "swiss-houses"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-placidus",
+      "system": "astro",
+      "term": "普拉西德制",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "一种把昼夜运动关系用于分宫的宫制，在Swiss接口用P表示；宫头通常不是十二等分。",
+      "example": "例：高纬地区求该宫制失败时应明确拒绝或说明，不悄悄换别的宫制。",
+      "sources": [
+        {
+          "source_id": "swiss-houses",
+          "locator": "§15宫位接口与上升/MC/宫制代码",
+          "support_scope": "支持技术坐标和宫制的区分；本项目实际提供范围仍以产物为准。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "库可能给出回退结果与错误；本项目应保留失败，不能说回退盘仍是原Placidus。",
+          "source_ids": [
+            "swiss-houses"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-whole-sign",
+      "system": "astro",
+      "term": "整宫制",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以整个星座区段作为一宫的宫制，上升所在星座作为第一宫，其宫头与精确上升度数不同。",
+      "example": "例：上升在金牛中段时，整宫第一宫从金牛起点算，而非从那个中段度数起。",
+      "sources": [
+        {
+          "source_id": "swiss-houses",
+          "locator": "§15宫位接口与上升/MC/宫制代码",
+          "support_scope": "支持技术坐标和宫制的区分；本项目实际提供范围仍以产物为准。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "和等宫制不同；目前这里只介绍术语，未提供自动更换当前本命宫制的入口。",
+          "source_ids": [
+            "swiss-houses"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-equal-houses",
+      "system": "astro",
+      "term": "等宫制",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "以Ascendant（上升点）的具体黄经度数为第一宫宫头，再每30度分一宫的方式。宫头不随意改为上升星座0度；本P8当前未实现此可选宫制。",
+      "example": "例：上升白羊15度，等宫第二宫从金牛15度起；整宫第二宫则从金牛0度起，两者不同。",
+      "sources": [
+        {
+          "source_id": "swiss-houses",
+          "locator": "§15宫位接口与上升/MC/宫制代码",
+          "support_scope": "支持技术坐标和宫制的区分；本项目实际提供范围仍以产物为准。"
+        },
+        {
+          "source_id": "p8-astro-signs",
+          "locator": "chart: swe.houses_ex(...,b'P')/house_system=Placidus",
+          "support_scope": "支持本项目当前实际只计算Placidus；不把词条介绍的等宫制冒充已实现可选功能。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "这里明确指以Ascendant精确度数为一宫宫头的A/E口径；Swiss另有MC等基准的等宫变体。本P8当前仅输出Placidus，未实现该可选制。",
+          "source_ids": [
+            "swiss-houses",
+            "p8-astro-signs"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-solar-return",
+      "system": "astro",
+      "term": "太阳回归",
+      "aliases": [],
+      "definition_kind": "traditional_concept",
+      "plain_explanation": "寻找太阳黄经再次回到本命太阳黄经的时刻，再按明确地点构造相关视图，不是简单把生日中午当回归时刻。",
+      "example": "例：先核唯一求解时刻和回归地点；没有地点时不能凭空给出回归宫位。",
+      "sources": [
+        {
+          "source_id": "p8-astro-return",
+          "locator": "solar_return及明确回归地点/目标周年搜索",
+          "support_scope": "支持实际本命太阳黄经回归求解与地点需求，不支持现实年度结果预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "生日周年锚、搜索范围和地点选择有口径差异，本项目明示方法，不将其作唯一年度命运盘。",
+          "source_ids": [
+            "p8-astro-return"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "astro-symbolic-ephemeris-time",
+      "system": "astro",
+      "term": "象征历表时刻",
+      "aliases": [],
+      "definition_kind": "symbolic_timing_technique",
+      "plain_explanation": "次限等象征技术中真正去查历表的映射时刻，与用户正在生活的目标时刻不同，即使都写成UTC也不能混为一瞬间。",
+      "example": "例：目标2026年而象征历表时刻落在出生后几十日时，须分别标明两种时间。",
+      "sources": [
+        {
+          "source_id": "p8-progressions",
+          "locator": "symbolic_ephemeris_at_UTC与mapping",
+          "support_scope": "支持象征时刻的计算角色和真实目标UTC区分，不支持它是当日真实天空。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "当前次限用明确UT1间隔映射，未提供其它象征技法的统一时刻转换。",
+          "source_ids": [
+            "p8-progressions"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-fool",
+      "system": "tarot",
+      "term": "愚人",
+      "aliases": [
+        "The Fool"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "本项目用这张牌讨论好奇、新的探索和可撤回的小实验，也核对冲动与准备不足；不是鼓励不看代价。",
+      "example": "例：把愚人转成今天能试哪一个小步骤，而不是宣称冒险会成功。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[0] card_id=major-00；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "采用当前RWS式0号编号；与其它牌组编号和历史文本不混用，原创建议不改署经典。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-magician",
+      "system": "tarot",
+      "term": "魔术师",
+      "aliases": [
+        "The Magician"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "在当前原创牌义里，提醒把已有能力和资源组织成具体行动，并检查是否高估掌控。",
+      "example": "例：先盘点真正可用的资源，再选一个动作，不把魔术师解释成无所不能。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[1] card_id=major-01；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "这里是项目反思读法，不以神秘传统的仪式语言作为现实能力证明。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-high-priestess",
+      "system": "tarot",
+      "term": "女祭司",
+      "aliases": [
+        "The High Priestess"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目借这张牌讨论观察、感受与尚未明确的信息，同时把直觉和外部事实分开，不能据此读心。",
+      "example": "例：说感觉有疑问时列已知和待核，不因女祭司就断言有人藏秘密。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[2] card_id=major-02；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "历史神秘象征与现代信息边界读法不同；当前文本保留原创署名，未称逐句译文。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-empress",
+      "system": "tarot",
+      "term": "皇后",
+      "aliases": [
+        "The Empress"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "当前牌义把照顾、创造和持续投入作为主题，并核对是否照顾过量或忽略自己；不推断怀孕生育。",
+      "example": "例：问如何安排照顾与休息的边界，而不是用皇后确认某人会成为母亲。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[3] card_id=major-03；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "项目不把女性图像强配现实性别或家庭角色，历史人物指代另有语境。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-emperor",
+      "system": "tarot",
+      "term": "皇帝",
+      "aliases": [
+        "The Emperor"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "在本项目中用于谈规则、边界和承担责任，也检查规则是否僵化；不说明男性或权威天然正确。",
+      "example": "例：先找一条可调整的分工规则，不让皇帝牌替某个人取得支配权。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[4] card_id=major-04；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "现代角色反思与传统权威象征分开，牌义不替代真实专业与公平评估。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-hierophant",
+      "system": "tarot",
+      "term": "教皇",
+      "aliases": [
+        "The Hierophant"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目借这张牌检视学习路径、经验和共同惯例：哪些可借用，哪些需要因现实处境调整。",
+      "example": "例：问这条旧惯例还适不适合，而不是因为教皇就服从资历更高的人。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[5] card_id=major-05；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不把宗教人物图像当宗教或道德裁决，现代学习框架为项目原创概括。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-lovers",
+      "system": "tarot",
+      "term": "恋人",
+      "aliases": [
+        "The Lovers"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "本项目把价值取向、选择与关系中的诚实作为主题，不是爱情回应或灵魂伴侣认证。",
+      "example": "例：先问这个选择最不想牺牲什么价值，不据恋人判断对方爱不爱你。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[6] card_id=major-06；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "关系牌不局限恋爱结果；具体牌位和现实双方意愿比固定浪漫解释优先。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-chariot",
+      "system": "tarot",
+      "term": "战车",
+      "aliases": [
+        "The Chariot"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目用方向、协调和推进来讨论行动，也核对是否用加速掩盖失控；不是比赛获胜或出行预告。",
+      "example": "例：让计划明确哪些能推进、何时停下，不因战车就加大冒险。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[7] card_id=major-07；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "行动主题是编辑提问框架，不将图像转成就会交通或竞争事件。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-strength",
+      "system": "tarot",
+      "term": "力量",
+      "aliases": [
+        "Strength"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "当前牌义强调温和、耐心和稳定练习，并检查自我苛责与精力不足；不要求用户忍受伤害。",
+      "example": "例：把力量用来讨论更坚定的界限，而不是劝人一直忍耐越界。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[8] card_id=major-08；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目采用RWS式8号；其它编号传统不能静默套到这份牌组。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-hermit",
+      "system": "tarot",
+      "term": "隐者",
+      "aliases": [
+        "The Hermit"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目以减少噪声、独立整理经验为主题，也核对独处是否变成隔离；它不是要求切断支持。",
+      "example": "例：问现在更需要安静还是找人一起想，而不是见隐者就拒绝求助。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[9] card_id=major-09；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "独处象征与现实关系需求分开，当前不给固定人格或职业类型结论。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-wheel-of-fortune",
+      "system": "tarot",
+      "term": "命运之轮",
+      "aliases": [
+        "Wheel of Fortune"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "当前原创读法用它观察环境变化和重复模式，区分能调整与暂时不能改变的部分，不预告幸运或倒霉。",
+      "example": "例：找这个循环里一处可改的环节，不等待命运之轮自动解决问题。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[10] card_id=major-10；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "历史命运象征不转为宿命判断，现代可控行动读法为项目选择。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-justice",
+      "system": "tarot",
+      "term": "正义",
+      "aliases": [
+        "Justice"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目用事实、责任和一致标准解释这张牌，并核对信息是否对称；不是诉讼胜负或报应预告。",
+      "example": "例：对各个选项使用同一条标准，而不是用正义牌宣布谁会受罚。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[11] card_id=major-11；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "本项目采用RWS式11号，图像和编号不证明法律结果或道德终审。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-hanged-man",
+      "system": "tarot",
+      "term": "倒吊人",
+      "aliases": [
+        "The Hanged Man"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "当前牌义把暂停、换角度与取舍作为讨论主题，也提醒等待应有期限；不把牺牲当成功交换条件。",
+      "example": "例：问暂停帮看清了什么、什么时候结束，而不是要求为好结果持续受苦。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[12] card_id=major-12；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "象征性暂停与现实被迫受伤不同，项目不沿用以痛苦换命运的断语。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-death",
+      "system": "tarot",
+      "term": "死神",
+      "aliases": [
+        "Death"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目用它讨论阶段结束、告别和改变，不把牌名转成死亡、疾病或灾祸预测。",
+      "example": "例：问哪种旧做法确实不适合，可以怎样结束，而不是报一个危险日期。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[13] card_id=major-13；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "当前反思文本和历史凶象语言分开；牌名不能赋予健康或生命判断权。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-temperance",
+      "system": "tarot",
+      "term": "节制",
+      "aliases": [
+        "Temperance"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "本项目以比例、节奏和逐步协调解释这张牌，检查投入失衡或期待过快，不要求对所有人退让。",
+      "example": "例：调整一个可以观察的工作休息环节，而不是放弃底线求表面和气。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[14] card_id=major-14；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "现代过程性解释不等于古典图像所有神秘含义，本词保留具体牌义版本。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-devil",
+      "system": "tarot",
+      "term": "恶魔",
+      "aliases": [
+        "The Devil"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目借牌讨论难退出的习惯、诱因与交换，也寻找恢复选择余地的办法；不是邪灵或人格恶劣的证据。",
+      "example": "例：先核哪项短期好处带来不想承担的代价，不把某个人说成恶魔。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[15] card_id=major-15；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不使用诅咒或付费化解叙述；历史宗教图像与产品边界分开。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-star",
+      "system": "tarot",
+      "term": "星星",
+      "aliases": [
+        "The Star"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "当前牌义以小进步、支持和长期方向谈希望，也允许希望感不足；它不承诺将来顺利。",
+      "example": "例：找一个实际恢复的小证据，而不是以星星牌要求用户只往好处想。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[17] card_id=major-17；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "现代支持性解释不是结果承诺，逆位也不说明从此没有希望。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-moon-card",
+      "system": "tarot",
+      "term": "月亮牌",
+      "aliases": [
+        "The Moon"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目以信息模糊、感受与事实分离为主题，不把画面的不确定性变成有人欺骗或将有危险。",
+      "example": "例：列最需要核实的一件事，不用月亮牌证明第三人隐瞒。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[18] card_id=major-18；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "与西占真实月亮位置不同；它是固定牌的原创文本，不参与天文角距计算。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-sun-card",
+      "system": "tarot",
+      "term": "太阳牌",
+      "aliases": [
+        "The Sun"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "当前牌义重视清晰表达、反馈与已能看见的进展，也核对期待压力；不承诺成功或健康。",
+      "example": "例：承认一项实际做成的事，不用太阳牌替代结果验收。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[19] card_id=major-19；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "牌面太阳象征与西占太阳坐标分开；本词不把明亮图像解释成全领域好结局。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-judgement",
+      "system": "tarot",
+      "term": "审判",
+      "aliases": [
+        "Judgement"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "项目借这张牌回看经验、承担选择并修订回应方式，不是人格终审，也不代表别人会回头。",
+      "example": "例：问从过去学到哪一项现在可修改，不以审判牌确认前任会联系。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[20] card_id=major-20；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "历史审判图像不转成道德裁决，当前只提供可反思与可撤回的行动框架。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-world",
+      "system": "tarot",
+      "term": "世界",
+      "aliases": [
+        "The World"
+      ],
+      "definition_kind": "editorial_symbol",
+      "plain_explanation": "当前牌义谈阶段整合、完成和收尾边界，也允许结束前仍有缺口；不是从此没有问题。",
+      "example": "例：在结束项目之前列最后需交代的事，而不是用世界牌宣布万事圆满。",
+      "sources": [
+        {
+          "source_id": "project-tarot-editorial",
+          "locator": "cards[21] card_id=major-21；upright/reversed/misreading，meaning_version=zhiming-editorial-2026-10-10-v1",
+          "support_scope": "仅支持当前牌义版本的项目原创象征与反例，不能冒称历史作者原句或预测。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "完成象征须和现实验收分开，牌义不替代材料、关系或任务的实际进展。",
+          "source_ids": [
+            "project-tarot-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-wands",
+      "system": "tarot",
+      "term": "权杖",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "本项目四花色之一，常用行动、动力和创意作为讨论面向；仍须以每张具体牌义和位置为准。",
+      "example": "例：权杖八先读其信息节奏主题，不能只凭权杖多就说行动越多越好。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-minor-editorial",
+          "locator": "方法步骤第2项：项目选用的四花色主题",
+          "support_scope": "支持花色的当前项目现代讨论框架；不称为古代唯一元素对应或事件规则。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "火元素对应与数字词是项目选用的现代框架，不能硬归给Waite唯一体系。",
+          "source_ids": [
+            "p8-tarot-minor-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-cups",
+      "system": "tarot",
+      "term": "圣杯",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "本项目花色之一，用感受与连接作为话题入口，不等于恋情出现或别人已经有相同感受。",
+      "example": "例：圣杯二可用来确认双方愿意什么，不用它判断对方内心。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-minor-editorial",
+          "locator": "方法步骤第2项：项目选用的四花色主题",
+          "support_scope": "支持花色的当前项目现代讨论框架；不称为古代唯一元素对应或事件规则。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "情感主题不只限爱情；牌阵位置和原文快照优先于笼统的水元素通则。",
+          "source_ids": [
+            "p8-tarot-minor-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-swords",
+      "system": "tarot",
+      "term": "宝剑",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "本项目四花色里的判断、语言和思考主题入口，牌名不能当伤害、疾病或背叛证据。",
+      "example": "例：宝剑首牌问怎样把问题说清，不把全部宝剑都解为坏事。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-minor-editorial",
+          "locator": "方法步骤第2项：项目选用的四花色主题",
+          "support_scope": "支持花色的当前项目现代讨论框架；不称为古代唯一元素对应或事件规则。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "现代风元素与思考框架是具名选择，具体每张牌的差异不能被花色通则抹平。",
+          "source_ids": [
+            "p8-tarot-minor-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-pentacles",
+      "system": "tarot",
+      "term": "星币",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "本项目用于讨论资源、时间和落实条件的花色，包含实际投入的反思，不预告金钱或投资回报。",
+      "example": "例：星币七问继续投入的条件，不因星币就推荐购买资产。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-minor-editorial",
+          "locator": "方法步骤第2项：项目选用的四花色主题",
+          "support_scope": "支持花色的当前项目现代讨论框架；不称为古代唯一元素对应或事件规则。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "也有钱币等名称传统，词条只固定当前牌组称名，元素主题为现代编辑方法。",
+          "source_ids": [
+            "p8-tarot-minor-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-page",
+      "system": "tarot",
+      "term": "侍从",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "宫廷牌的一种等级名称，项目先作学习和尝试的参与方式看待，不以年龄或外貌直接对应一个人。",
+      "example": "例：圣杯侍从可以问怎样尝试表达感受，不能指定某个年轻人会来。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-court-editorial",
+          "locator": "方法步骤第1/2项：宫廷牌角色读法",
+          "support_scope": "支持学习/推进/照顾/管理等当前角色提问框架，不支持识别固定第三人。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "传统人物指代与现代角色方式不同，本项目不照搬历史发色性别分类。",
+          "source_ids": [
+            "p8-tarot-court-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-knight",
+      "system": "tarot",
+      "term": "骑士",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "宫廷牌的一类等级，项目用推进事情的方式展开；具体花色决定提问方向，不是某位男性的身份证明。",
+      "example": "例：权杖骑士核冲刺和停止条件，不把热情当作关系承诺可靠。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-court-editorial",
+          "locator": "方法步骤第1/2项：宫廷牌角色读法",
+          "support_scope": "支持学习/推进/照顾/管理等当前角色提问框架，不支持识别固定第三人。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "相同骑士跨问题不自动是同一人，也不据逆位指控欺骗或恶意。",
+          "source_ids": [
+            "p8-tarot-court-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-queen",
+      "system": "tarot",
+      "term": "王后",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "宫廷牌等级之一，项目常从照顾、接纳和自主界限切入，不把它固定成女性、母亲或照顾义务。",
+      "example": "例：星币王后问日常照顾如何分担，不规定某位女性必须承担。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-court-editorial",
+          "locator": "方法步骤第1/2项：宫廷牌角色读法",
+          "support_scope": "支持学习/推进/照顾/管理等当前角色提问框架，不支持识别固定第三人。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "现代角色读法与传统人物/性格指代有别，实际身份需由现实资料确认。",
+          "source_ids": [
+            "p8-tarot-court-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-king",
+      "system": "tarot",
+      "term": "国王",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "宫廷牌等级之一，项目以管理、责任和维持条件讨论参与方式，不等于有钱男性、上司或权威正确。",
+      "example": "例：宝剑国王先检查判断能否说明依据，不把专业口吻当事实证明。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-court-editorial",
+          "locator": "方法步骤第1/2项：宫廷牌角色读法",
+          "support_scope": "支持学习/推进/照顾/管理等当前角色提问框架，不支持识别固定第三人。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "角色词是编辑概括，不能以牌的等级给现实人排高低或推断性别。",
+          "source_ids": [
+            "p8-tarot-court-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-upright",
+      "system": "tarot",
+      "term": "正位",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "固定抽牌记录中的一种朝向及其解释分支，须读取当前牌义快照；正位不等于每张牌都是好事。",
+      "example": "例：高塔正位仍按脆弱假设和缓冲讨论，不因正位就认定变化会轻松。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-major-editorial",
+          "locator": "方法步骤：group/card_id/固定牌组和RWS编号",
+          "support_scope": "支持牌组结构与固定朝向的使用边界，不证明现实结果或任何统一牌义。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "不使用逆位的牌法另有约定；当前朝向不能为了想要的结论重新改写。",
+          "source_ids": [
+            "p8-tarot-major-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-major-arcana",
+      "system": "tarot",
+      "term": "大阿卡纳",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "当前78张牌组中的22张大牌类别，使用牌组版本的编号与名称；大牌多不等于重大事件概率更高。",
+      "example": "例：先核group=major和具体编号，不把力量8号与另一牌组的编号混用。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-major-editorial",
+          "locator": "方法步骤：group/card_id/固定牌组和RWS编号",
+          "support_scope": "支持牌组结构与固定朝向的使用边界，不证明现实结果或任何统一牌义。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "RWS式与其它编号传统有差异，现代反思文本也不等于历史原文逐字义。",
+          "source_ids": [
+            "p8-tarot-major-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-minor-arcana",
+      "system": "tarot",
+      "term": "小阿卡纳",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "当前牌组中四花色各14张、共56张的类别，包含数字牌和宫廷牌；它们仍需逐张与牌位解释。",
+      "example": "例：先区分星币十与星币国王，不能因为同花色就给同一段结论。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-major-editorial",
+          "locator": "方法步骤：group/card_id/固定牌组和RWS编号",
+          "support_scope": "支持牌组结构与固定朝向的使用边界，不证明现实结果或任何统一牌义。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "花色、数字和宫廷等级是不同分类轴，通则不能取代每张固定快照的具体文本。",
+          "source_ids": [
+            "p8-tarot-major-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    },
+    {
+      "term_id": "tarot-spread",
+      "system": "tarot",
+      "term": "牌阵",
+      "aliases": [],
+      "definition_kind": "editorial_method",
+      "plain_explanation": "给一次固定抽牌的各位置安排问题角色的结构，同一张牌在不同位置可引出不同提问，但不能改变已抽牌本身。",
+      "example": "例：把建议位与现状位分开，不能为让结论一致把两位置偷偷对调。",
+      "sources": [
+        {
+          "source_id": "p8-tarot-spread-editorial",
+          "locator": "位置与问题/固定抽牌/repeat_guard",
+          "support_scope": "支持项目牌阵位置及上下文解释，不支持为了确定答案反复重抽。"
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "具名项目口径与跨派核对状态",
+          "note": "产品reflect3等为项目牌阵，不冒称是Waite原凯尔特十字；24小时守卫是项目规则。",
+          "source_ids": [
+            "p8-tarot-spread-editorial"
+          ]
+        }
+      ],
+      "pending_review": [
+        "本词条仅核所列来源范围；未做全部流派异文与原刊版次页码的独立校勘，也不验证现实预测。"
+      ]
+    }
+  ],
+  "limits": [
+    "当前212条已完成项目编辑审校，仍待大脑/所有者抽查；不声称传统方法效度已验证。",
+    "书名、版本和页码未知时保留待核，不补造。",
+    "术语文本不是本轮计算依据，不能自动据此生成〔c#〕或〔r#〕。",
+    "不读取个人出生资料、不调用模型、不写档案；前端读取与对话点击解释由其它线接入。"
+  ],
+  "sources_file": "sources_v1.json",
+  "source_registry_version": "p8-glossary-sources-v1",
+  "planned_system_minimums": {
+    "bazi": 60,
+    "ziwei": 55,
+    "astro": 50,
+    "tarot": 35
+  },
+  "review_tag": "v1_ready_editorial_reviewed"
+}
