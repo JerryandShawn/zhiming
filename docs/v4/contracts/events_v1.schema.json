@@ -1,0 +1,1801 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mingjing:events:v1",
+  "title": "明镜公开事件契约v1",
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "started"
+        },
+        "data": {
+          "$ref": "#/$defs/Started"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "status"
+        },
+        "data": {
+          "$ref": "#/$defs/Status"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "tool_call"
+        },
+        "data": {
+          "$ref": "#/$defs/ToolCallEvent"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "tool_result"
+        },
+        "data": {
+          "$ref": "#/$defs/ToolResultEvent"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "text_delta"
+        },
+        "data": {
+          "$ref": "#/$defs/TextDelta"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "text_reset"
+        },
+        "data": {
+          "$ref": "#/$defs/TextReset"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "memory_receipt"
+        },
+        "data": {
+          "$ref": "#/$defs/MemoryReceipt"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "ask_user"
+        },
+        "data": {
+          "$ref": "#/$defs/AskUserEvent"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "present_options"
+        },
+        "data": {
+          "$ref": "#/$defs/PresentOptionsEvent"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "review"
+        },
+        "data": {
+          "$ref": "#/$defs/ReviewEvent"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "final"
+        },
+        "data": {
+          "$ref": "#/$defs/Final"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "data"
+      ],
+      "properties": {
+        "type": {
+          "const": "error"
+        },
+        "data": {
+          "$ref": "#/$defs/Error"
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Started": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "thread_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Thread Id",
+          "type": "string"
+        },
+        "message_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Message Id",
+          "type": "string"
+        },
+        "area_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Area Id"
+        },
+        "topic_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Topic Id"
+        },
+        "incognito": {
+          "title": "Incognito",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "thread_id",
+        "message_id",
+        "incognito"
+      ],
+      "title": "Started",
+      "type": "object"
+    },
+    "Status": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "thinking",
+            "tool",
+            "writing",
+            "reviewing"
+          ],
+          "title": "Phase",
+          "type": "string"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "text",
+        "phase"
+      ],
+      "title": "Status",
+      "type": "object"
+    },
+    "ToolCallEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "call_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Call Id",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,79}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "call_id",
+        "name",
+        "summary"
+      ],
+      "title": "ToolCallEvent",
+      "type": "object"
+    },
+    "PublicReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "write_status": {
+          "title": "Write Status",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "fact_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fact Id"
+        },
+        "proposal_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Proposal Id"
+        },
+        "draw_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Draw Id"
+        },
+        "kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Kind"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
+        "affected_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "title": "Affected Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "write_status"
+      ],
+      "title": "PublicReceipt",
+      "type": "object"
+    },
+    "ToolResultEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "call_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Call Id",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[a-z][a-z0-9_]{0,79}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "ok": {
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "receipt": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PublicReceipt"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "call_id",
+        "name",
+        "summary",
+        "ok"
+      ],
+      "title": "ToolResultEvent",
+      "type": "object"
+    },
+    "TextDelta": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 200000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "text"
+      ],
+      "title": "TextDelta",
+      "type": "object"
+    },
+    "TextReset": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 200000,
+          "title": "Text",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "revised",
+            "resumed"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision Id"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "text",
+        "reason"
+      ],
+      "title": "TextReset",
+      "type": "object"
+    },
+    "MemoryReceipt": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "properties": {
+            "fact_id": {
+              "type": "string"
+            },
+            "proposal_id": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "fact_id"
+          ]
+        },
+        {
+          "properties": {
+            "proposal_id": {
+              "type": "string"
+            },
+            "fact_id": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "proposal_id"
+          ]
+        }
+      ],
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "fact_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fact Id"
+        },
+        "proposal_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Proposal Id"
+        },
+        "write_status": {
+          "enum": [
+            "saved",
+            "pending_confirm",
+            "undone",
+            "rejected"
+          ],
+          "title": "Write Status",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "undo_token": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Undo Token"
+        },
+        "sensitive": {
+          "title": "Sensitive",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "write_status",
+        "summary",
+        "sensitive"
+      ],
+      "title": "MemoryReceipt",
+      "type": "object"
+    },
+    "AskOption": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "AskOption",
+      "type": "object"
+    },
+    "AskUserEvent": {
+      "additionalProperties": false,
+      "description": "The same question object terminates this turn and appears in core4.0.",
+      "properties": {
+        "ask_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Ask Id",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/AskOption"
+          },
+          "maxItems": 4,
+          "title": "Options",
+          "type": "array"
+        },
+        "allow_free_text": {
+          "title": "Allow Free Text",
+          "type": "boolean"
+        },
+        "multi": {
+          "title": "Multi",
+          "type": "boolean"
+        },
+        "why": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        },
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ask_id",
+        "question",
+        "options",
+        "allow_free_text",
+        "multi",
+        "why",
+        "v",
+        "run_id",
+        "seq",
+        "ts"
+      ],
+      "title": "AskUserEvent",
+      "type": "object"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "benefit": {
+          "maxLength": 500,
+          "title": "Benefit",
+          "type": "string"
+        },
+        "cost": {
+          "maxLength": 500,
+          "title": "Cost",
+          "type": "string"
+        },
+        "risk": {
+          "maxLength": 500,
+          "title": "Risk",
+          "type": "string"
+        },
+        "reversibility": {
+          "enum": [
+            "easy",
+            "partial",
+            "hard",
+            "unknown"
+          ],
+          "title": "Reversibility",
+          "type": "string"
+        },
+        "first_step": {
+          "maxLength": 500,
+          "title": "First Step",
+          "type": "string"
+        },
+        "unknowns": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Unknowns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "benefit",
+        "cost",
+        "risk",
+        "reversibility",
+        "first_step",
+        "unknowns"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "PresentOptionsEvent": {
+      "additionalProperties": false,
+      "description": "Decision options are identical in the event and final envelope.",
+      "properties": {
+        "options_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Options Id",
+          "type": "string"
+        },
+        "prompt": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Decision"
+          },
+          "maxItems": 4,
+          "minItems": 2,
+          "title": "Options",
+          "type": "array"
+        },
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        }
+      },
+      "required": [
+        "options_id",
+        "options",
+        "v",
+        "run_id",
+        "seq",
+        "ts"
+      ],
+      "title": "PresentOptionsEvent",
+      "type": "object"
+    },
+    "ReviewReason": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "off_topic",
+            "time_error",
+            "memory_error",
+            "false_receipt",
+            "unsupported_chart",
+            "fatalism",
+            "unsafe_advice",
+            "crisis_missed",
+            "over_asking",
+            "overpromise",
+            "tone",
+            "fabrication",
+            "generic_barnum",
+            "sycophancy",
+            "chart_inconsistency"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Severity",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "code",
+        "severity"
+      ],
+      "title": "ReviewReason",
+      "type": "object"
+    },
+    "ReviewEvent": {
+      "additionalProperties": false,
+      "description": "Only reason codes and severity, never critic quotes or private trace.",
+      "properties": {
+        "state": {
+          "enum": [
+            "pending",
+            "passed",
+            "revised",
+            "skipped"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "$ref": "#/$defs/ReviewReason"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision Id"
+        },
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        }
+      },
+      "required": [
+        "state",
+        "reasons",
+        "v",
+        "run_id",
+        "seq",
+        "ts"
+      ],
+      "title": "ReviewEvent",
+      "type": "object"
+    },
+    "Asked": {
+      "additionalProperties": false,
+      "properties": {
+        "ask_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Ask Id",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/AskOption"
+          },
+          "maxItems": 4,
+          "title": "Options",
+          "type": "array"
+        },
+        "allow_free_text": {
+          "title": "Allow Free Text",
+          "type": "boolean"
+        },
+        "multi": {
+          "title": "Multi",
+          "type": "boolean"
+        },
+        "why": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ask_id",
+        "question",
+        "options",
+        "allow_free_text",
+        "multi",
+        "why"
+      ],
+      "title": "Asked",
+      "type": "object"
+    },
+    "CoreRun": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Operation Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "operation_id"
+      ],
+      "title": "CoreRun",
+      "type": "object"
+    },
+    "EnvelopeV1": {
+      "additionalProperties": false,
+      "properties": {
+        "schema": {
+          "const": "core4.0",
+          "title": "Schema",
+          "type": "string"
+        },
+        "message_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Message Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 200000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "receipts": {
+          "items": {
+            "$ref": "#/$defs/PublicReceipt"
+          },
+          "title": "Receipts",
+          "type": "array"
+        },
+        "used_fact_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Used Fact Ids",
+          "type": "array"
+        },
+        "used_claim_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Used Claim Ids",
+          "type": "array"
+        },
+        "asked": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Asked"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "options": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Options"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "review": {
+          "$ref": "#/$defs/Review"
+        },
+        "usage": {
+          "$ref": "#/$defs/PublicUsage"
+        },
+        "schema_version": {
+          "anyOf": [
+            {
+              "const": "core4.0",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Schema Version"
+        },
+        "answer": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Answer"
+        },
+        "validation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Validation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "meta": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PublicMeta"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "schema",
+        "message_id",
+        "text",
+        "receipts",
+        "used_fact_ids",
+        "used_claim_ids",
+        "asked",
+        "options",
+        "review",
+        "usage"
+      ],
+      "title": "EnvelopeV1",
+      "type": "object"
+    },
+    "Options": {
+      "additionalProperties": false,
+      "properties": {
+        "options_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Options Id",
+          "type": "string"
+        },
+        "prompt": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Decision"
+          },
+          "maxItems": 4,
+          "minItems": 2,
+          "title": "Options",
+          "type": "array"
+        }
+      },
+      "required": [
+        "options_id",
+        "options"
+      ],
+      "title": "Options",
+      "type": "object"
+    },
+    "PublicMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "core_run": {
+          "$ref": "#/$defs/CoreRun"
+        },
+        "subject_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Subject Id",
+          "type": "string"
+        },
+        "case_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Case Ids",
+          "type": "array"
+        },
+        "structural_warnings": {
+          "items": {
+            "$ref": "#/$defs/StructuralWarning"
+          },
+          "title": "Structural Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "core_run",
+        "subject_id",
+        "case_ids",
+        "structural_warnings"
+      ],
+      "title": "PublicMeta",
+      "type": "object"
+    },
+    "PublicUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "model_steps": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Steps"
+        },
+        "model_streams_this_execution": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Streams This Execution"
+        },
+        "replayed_model_steps": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Replayed Model Steps"
+        },
+        "reported_tokens": {
+          "$ref": "#/$defs/TokenUsage"
+        },
+        "usage_known": {
+          "default": false,
+          "title": "Usage Known",
+          "type": "boolean"
+        },
+        "offline": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Offline"
+        }
+      },
+      "title": "PublicUsage",
+      "type": "object"
+    },
+    "Review": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "pending",
+            "passed",
+            "revised",
+            "skipped"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "$ref": "#/$defs/ReviewReason"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision Id"
+        }
+      },
+      "required": [
+        "state",
+        "reasons"
+      ],
+      "title": "Review",
+      "type": "object"
+    },
+    "StructuralWarning": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "count": {
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "code",
+        "count"
+      ],
+      "title": "StructuralWarning",
+      "type": "object"
+    },
+    "TokenUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Tokens"
+        },
+        "cache_creation_input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Creation Input Tokens"
+        },
+        "cache_read_input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Read Input Tokens"
+        }
+      },
+      "title": "TokenUsage",
+      "type": "object"
+    },
+    "Validation": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "validated",
+          "title": "Status",
+          "type": "string"
+        },
+        "valid": {
+          "const": true,
+          "title": "Valid",
+          "type": "boolean"
+        },
+        "schema": {
+          "const": "core4.0",
+          "title": "Schema",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "valid",
+        "schema"
+      ],
+      "title": "Validation",
+      "type": "object"
+    },
+    "Final": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "message_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Message Id",
+          "type": "string"
+        },
+        "envelope": {
+          "$ref": "#/$defs/EnvelopeV1"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "message_id",
+        "envelope"
+      ],
+      "title": "Final",
+      "type": "object"
+    },
+    "Error": {
+      "additionalProperties": false,
+      "properties": {
+        "v": {
+          "const": 1,
+          "title": "V",
+          "type": "integer"
+        },
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "seq": {
+          "minimum": 1,
+          "title": "Seq",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d{1,6})?\\+08:00$",
+          "title": "Ts",
+          "type": "string"
+        },
+        "code": {
+          "pattern": "^[A-Z][A-Z0-9_]{0,79}$",
+          "title": "Code",
+          "type": "string"
+        },
+        "message": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "v",
+        "run_id",
+        "seq",
+        "ts",
+        "code",
+        "message",
+        "retryable"
+      ],
+      "title": "Error",
+      "type": "object"
+    }
+  }
+}

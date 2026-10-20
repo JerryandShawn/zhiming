@@ -49,11 +49,30 @@ D4不开2小时使用提醒、不登记紧急联系人；上下文连续3次60k�
 
 范围硬边界：不再写`zhiming-v4-p10`、`zhiming-v4-p8`、`web/**`、charts、skills、knowledge。模块线独占新增`timekit/relative_dates.py`（U4/parse_time_range）、`models/quota_guard.py`核心和`organize/**`；主线只按约定接口接线并做真实PG集成，不在这些文件创建第二实现。前端线独占P5b C；模块线独占P5b A。P1b修改models/配置/迁移/探针/评测守卫，P3修改agent及应用接线；跨分支接口要记录依赖，不能抄一份假guard或抢迁移编号。
 
+## 最新执行裁定（2026-10-20夜，北京时间，覆盖上文旧草案）
+
+依据用户本夜指令、28号Z1–Z7、29、33及指令板v1，持续至2026-10-27 22:00（Asia/Shanghai）。旧记录中Asia/Taipei表示当时同为+08:00，今后显式北京，不用本机东京时区。每40分钟小提交/推送；小时真实进度和每天08/22汇总；测试总并行≤4，整库00–15分开始。禁止合并v4/main/main，集成只在v4/integration；默认0服务器/真实模型/飞书。条件B/D严格取29原文与30/31 Go、时间和前置证据，不由指令板扩大。
+
+顺序改为队列0→9本机B1→1事件→2Z规则→3工具→4Runtime/读取端/U41→5线程/inbox/网关→6dispatcher→7v4脚本→8P1b接线→10路线图→储备→29〇-A/33。B1固定b9、迁移5–7，0008仅独立本机轨，Linux环境阻塞立即切可做项，Windows或替身不算Linux通过。
+
+- Z1：公开K3 tokenizer真实本地计数×1.15+4000作为带来源/version/hash的**估算上界**；180k硬拒绝。actual大于上界报警并按actual/estimate×1.1提高系数；不称协议精确证明，不用strlen冒充tokens。取代旧“等framing精确验证才做估算门”的待决；若连受信词表/计数器都缺，仍不得造计数。
+- Z2：L5按compression epoch只追加已发字节；压缩/失效启动新epoch，缓存前缀为L0+L2+L3稳定+已发L5。取代旧整块L5永远不变的矛盾待决。
+- Z3：固定12常驻（28原顺序）和条件工具，≤15、按条件优先序截断、当前必需不截；危机/无痕限制先执行，不能借required越权。未实现工具不注册空壳。
+- Z4：无痕提醒须精确文案问一次，只保存已批准提醒内容/时间，source=incognito_explicit、不关联无痕thread，发送7天后删除；不写长期记忆。
+- Z5：按实际合并顺序编号。0008=P1b，0009=P5b B预留；0010起按后续模块/迁移实际顺序分配。覆盖本计划旧P5/P11预占号，不创建空迁移占位。
+- Z6：主线只定义TimeRangeParser接口与替身；实际U4在模块线，后续接入，不重复词表。
+- Z7：公开事件/core4以contracts/events_v1.md、core4_envelope_v1.md及对应Schema冻结，评审为state/reasons、asked有稳定ID、options明确nullable；未来跨线修改须升级契约。
+
 ## Purpose / Big Picture（目的与全局）
 
 让模型根据当前消息与可核验证据，自己选择工具、观察工具结果后继续决定下一步，最终给出自由文本或一个明确问题。写入通过真实应用服务并返回回执，崩溃恢复后不重复写事实、跟进、抽牌或outbox。网页与飞书共用人生线程和持久队列，同线程串行，可取消，所有旧读取端仍显示回答。默认继续走v3；v4只在本机合成owner显式开启。用户看到的闭环是“发消息→模型真实请求工具→PG状态改变/返回→模型收到结果→回答入库→API回读”，不是某个工具类能单独调用。
 
 ## Progress（进度）
+
+- [x] (2026-10-20 23:10 +08:00) 队列0历史cc372c7与三日报已推；B1控制器46项通过并推25b1d3c；容器脚本22、B7 stage入口25（8真实Windows PG15）、publication协议11替身通过，推0df939e。Linux runtime阻塞，B1真实演练/生产Native恢复仍No-Go。
+- [x] (2026-10-20 23:10 +08:00) Z7事件/core4类型、序列化、两个Schema/文档及构造器对齐，89项契约/兼容投影/真实PG提交测试通过。只冻结形状和编码，事件持久订阅/完整Runtime仍未完成。
+- [ ] Z1/Z2受信计量/epoch与Z3可见性并行接线，后续M4/M6–M8依队列完成，不以组件绿称P3完成。
+
 
 - [x] (2026-10-19 07:46) 收口补充：case_update后下一真实profile_get原先误拒，新增PG先红后绿；ToolService接同一精确修订证明，冻结参数指纹不变。80项相关回归20.03s，见self-write-followup证据；其余完整RuntimePort等缺口不变。
 
@@ -81,6 +100,9 @@ D4不开2小时使用提醒、不登记紧急联系人；上下文连续3次60k�
 - [x] (2026-10-18 本轮) 外部草案纳入v4.2增补、索引§4a决定、手动批次闸门和P5b B后续依赖；未实施。
 
 ## Surprises & Discoveries（意外发现）
+
+2026-10-20夜：Docker Desktop的临时AF_UNIX socket失败、WSL挂载拒绝，三条本机路径停止；未删除/reset/改权限。真实Linux证据缺失不能用Windows PG替代。冻结契约时发现旧合法ask_user内部参数changes_conclusion会被信封拒绝，现明确投影为稳定ask_id/选项ID并剔除内部控制字段；原事务真实步骤校验不变。
+
 
 2026-10-19收口：case:ID在v3表示事项聚合版本，直接用case实体revision会被两条feedback造成3!=1拒绝。新增entity:case:ID精确命名空间，保留v3旧聚合语义，并同步隐私闭包与快照解析。新写注册前发生外部修订也必须核对receipt.revision，不能把读取到的最新行冒充自己的写入。23:07至07:09没有小时记录，恢复时本机PG已停；只恢复既有本机测试cluster，没有服务器连接，不补造连续运行证据。
 
@@ -112,6 +134,11 @@ C21/E1冻结逻辑主动拒绝P2源码。P3基于P2，不能调用其旧v3冻结
 
 ## Decision Log（决策记录）
 
+2026-10-20 / 用户28裁定：以上最新执行段优先；旧Z1 framing、L5整块与迁移编号草案均属历史，不再待问用户。B1阻塞记日报后继续事件，不重试环境破坏性修复。系统时区不改，所有时刻显式注入+08:00。
+
+2026-10-20 / Z7契约：旧单测review.status改为28冻结的review.state/reasons，原私有字段拒绝、core3兼容及事务安全断言保留。Schema只含公开字段；跨字段消息标识/选项ID另做Core语义校验，JSON日期format必须启用；无新增依赖，测试为锁内jsonschema注册标准库日期检查。
+
+
 2026-10-19收口 / Codex：提交可验证组件，不宣布P3完成或启用v4。无痕/inbox/Feishu合并、完整RuntimePort、charts_service、所有core4读取端、U41、dispatcher和v4评测留未完成。自身写入只接受同epoch完成Journal与mutation receipt一致、当前entity revision一致及对应core_operations证明；原事项写入后日志完成前崩溃目前拒绝恢复，不改旧scope/撤销规则来掩盖。
 
 2026-10-18 夜间 / Codex：B1增量控制器作为固定b9包外的独立受审工具，以源码合集hash绑定审批；backup→隔离恢复proof→迁移7与授权→dry-run审查→apply两次与retarget，始终保持全部writer停写，真实发布另获授权。不增加tzdata到B1；磁盘两方案只文档，明天用户裁定。
@@ -132,7 +159,7 @@ C21/E1冻结逻辑主动拒绝P2源码。P3基于P2，不能调用其旧v3冻结
 
 2026-10-18 / 用户与大脑增补：**P3增补v4.2已纳入**。D1/D2/D4/D5按索引§4a执行；它们覆盖增补P1b§G的“默认不启用/等待决定”以及旧自动续跑许可。P3/P1b真实请求均等待本聊天明确开始；本次草案没有请求。ContextEngine守卫作为M3a首先实现，可与M1日志闭环并行离线验证。原有U4/U7不删除，U4模块线实现、主线接线。
 
-2026-10-18 / P5b B拟选技术方案：保留`case`与`topic`双向关联（选项b），理由是已存在的`/api/cases*`、事件/修订、原话引用和塔罗case链路均有真实兼容契约；先加关联可减少迁移与回滚风险。此为拟选，正式F1启动时核查P5实际schema后记录最终决定，不把此草案当已实施。F1只做B；A、C不进入主线。迁移排0009之后，**待P5协调具体编号**，不得抢用0008/0009/0010/0011（分别为model_usage、memory_proactive、pgvector、retire_langgraph），也不先创建空迁移占号。
+2026-10-18 / P5b B拟选技术方案：保留`case`与`topic`双向关联（选项b），理由是已存在的`/api/cases*`、事件/修订、原话引用和塔罗case链路均有真实兼容契约；先加关联可减少迁移与回滚风险。此为拟选，正式F1启动时核查P5实际schema后记录最终决定，不把此草案当已实施。F1只做B；A、C不进入主线。此段原迁移草案已由2026-10-20的Z5覆盖：0008=P1b，0009=P5b B预留，0010+按合并顺序分配，不创建空迁移。
 
 2026-10-18 / 计量真实性：Core锁无已安装Kimi tokenizer；官方公开K3词表与XTML encoder已有固定版本只读证据，但会员服务端framing等价仍缺证明。采用独立TokenMeter接口并在计量报告标`source/model/version/is_upper_bound`；没有可证明覆盖最终请求全部组件的计数/上界时，真实发送守卫失败关闭，脚本/PG压力测试继续。UTF-8字节数可作保守裁剪单位，但仅在计量器具备已核验byte-fallback及framing上界契约时才称token上界；否则标policy_units，不发布“实际token≤180k”结论。最终供应商usage另记actual_input_tokens，绝不回填为估算值。
 
@@ -148,6 +175,9 @@ C21/E1冻结逻辑主动拒绝P2源码。P3基于P2，不能调用其旧v3冻结
 2026-10-18 / 范围决定：chart_skill在P8；consult_specialist可留P8，正式回执写清未实现与理由，不静默把独立专家分析假装普通工具。P3只做未知别名移除/告警与空回答兜底；不调用v3 `_validate`、不提前启用P6 critic/legacy lint。撤销触发的一次重新生成属于提交安全，不是任意风格评审。
 
 ## Outcomes & Retrospective（结果与复盘）
+
+2026-10-20 23:10：B1脚本/执行单可审阅，但Linux容器和生产恢复未通过，No-Go；Z7新契约89项通过，正准备独立发布。完整P3、真实token计量、HTTP取消/dispatcher及全部读端仍未完。没有服务器/模型/飞书动作或主干合并。
+
 
 2026-10-19收口：第二批工具220、Loop组件59、信封/提交组件47分别通过，不能简单相加当全阶段成绩。B1离线28已推；P1b U38/U39核心已推，旧schema断言修复头b8d98a5完整Core CI39175535078成功。完整主线目标未完成，真实模型、stage/生产、真实飞书仍0；当前仍Draft且未合并。
 
@@ -220,7 +250,7 @@ U7真实PG测试包含1小时内相同/同义问题护栏、跨session/channel/c
 
 阈值默认target=30,000、compress_above=120,000、hard_max=180,000、large_tool=8,000，均从配置读取并校验顺序。先按各层预算争取30k；每轮装配后检查最终请求估算/可信上界，超过120k立即按旧L5前移→L4降K→大工具结果summary+alias顺序压缩，循环必须每步减少预算并有最大次数，压缩后再计量；仍超过180k阻止发送。规则产生的摘要只说明消息数/时间段及“更早的对话见检索”，不能凭空用模型写摘要或将未读取历史编成事实。P5已有有效摘要时才引用该摘要与来源，撤销后不得重放。
 
-TokenMeter区分三种产物：本地估计`estimated_input_tokens`、有依据的保守上界`input_token_upper_bound`、供应商成功返回的`actual_input_tokens`。估算不作为硬上限证明。可以首先实现与标注tokenizer配套的本地计量器和字节策略计量器用于脚本/PG压力，但Kimi分词器与协议framing上界未确认时**真实发送不可声称安全**，必须由发送前可信meter拒绝未知计量；不得为了能跑而把bytes/4记作token。若官方本地tokenizer可直接从已锁依赖复用，记录版本/hash与覆盖字段；若需要新依赖先在root统一锁文件后接入，不在本任务升级环境。严格180k门控应在每次端口调用前重复执行，以包含循环里新增reasoning/工具结果，而非仅prepare_context一次。
+TokenMeter区分本地估计`estimated_input_tokens`、28 Z1批准的**估算上界**`input_token_upper_bound`和供应商`actual_input_tokens`。使用公开K3 tokenizer对完整请求计数×1.15+4000，来源/version/hash明确；不是协议精确证明。actual超过上界则警报并按actual/estimate×1.1提高系数。缺受信计数器/词表仍拒绝真实发送，不用bytes/4或strlen冒充tokens。依赖仅用已锁环境；新增依赖先统一锁定。每次实际发送前检查完整新增reasoning/工具结果，180k硬门不能只做prepare_context一次。
 
 每次调用准备记录输入计量与thread/run/epoch/step/model/meter_version及压缩前后层大小（不含正文）。P1b合并前保存在既有`core_run_steps.usage`/run usage中；P1b接线后写其`core_model_usage`实际usage与可选计量元数据，schema变更由P1b统一，P3不抢0008。供应商不返usage或失败时实际输入保持null，不能用0代替未知；即使有usage也不能倒推未发请求。线程连续3个实际请求超过60k生成一次持久安全汇总标记，下一个≤60k重置；只有可信预估而无actual时另标“计量超阈值”，不能混成actual提醒。使用步骤唯一键去重，不因journal重放重复推进计数，重启后延续。如何在同一条账本列保留provider值与preflight上界需要P1b接口确认，不能误覆盖actual。
 
@@ -230,7 +260,7 @@ TokenMeter区分三种产物：本地估计`estimated_input_tokens`、有依据�
 
 工具定义固定注册顺序，工具可见性只随资料确认/塔罗/无痕/危机等状态变化、不按话题轮换；然后按L0→L2→L3稳定→L5→L4→L3易变→L1→L6装配。system初始逐字取06 P1，onboarding/crisis逐字取P2/P8；在M6§H逐字叠加后system升v1.1.0并写run meta/hash。P5前L2有效事实按类别分组、约束始终置顶；L3稳定含未结事项标题/目标/最近3事件、命盘/档案已有摘要；易变含≤5未过期澄清槽、知识缺口Top5/待跟进，缺少数据就省略，不造摘要。
 
-L5采用分块推进，默认原文30轮，超过40轮起点前移10轮；块内只追加、不改写既有字节。预算提前前移记录原因。P5前没有有效摘要时写“更早的对话见检索”，不得自动发模型压缩。稳定工具定义到L3稳定应逐字节一致；L5既有前缀一致和窗口前移变化另测，增补要求整个前五层一致的冲突保持待决。run usage保留cache_read_tokens/cache_write_tokens（缺失null），报告统计多轮缓存命中率而不设虚假门槛。
+L5采用分块推进，默认原文30轮，超过40轮起点前移10轮；块内只追加、不改写既有字节。预算提前前移记录原因。P5前没有有效摘要时写“更早的对话见检索”，不得自动发模型压缩。稳定工具定义到L3稳定应逐字节一致；L5既有前缀一致和窗口前移变化另测，28 Z2已裁：同compression epoch只追加已发字节，压缩换epoch；缓存前缀L0+L2+L3稳定+已发L5。run usage保留cache_read_tokens/cache_write_tokens（缺失null），报告统计多轮缓存命中率而不设虚假门槛。
 
 L4与memory_search共用P2 FTS应用入口，查询含本轮+最近2轮及有限可解释的指代展开。先调用模块线`parse_time_range(text, now, tz)`：可信区间按since/until检索，再无过滤补足K、去重、时间命中优先；不识别/低置信则不过滤。块头显式time_filter。当前P2 foundation.search过滤created_at而不是event_at；TR01所需事件时刻语义必须在应用/查询接线明确区分，不能把入库时间当事件时间。P5再扩展双时间/向量，主线不写parse_time_range词表或timekit模块。TR01–TR03脚本证明具体节日/日期而非只测解析器。
 
@@ -242,7 +272,7 @@ L4每条一行固定JSON `{alias,date,kind,source,valid,text}`，source明确用
 
 ### F1：P5b B后续里程碑（严格依赖M3完成）
 
-只实现B的space/topic实体、标签字段/索引、幂等revision API、topic_route及分区ContextEngine；不实现A切段/分类/聚类/建议纯模块、不实现C界面。依赖模块线按公开接口交付，缺模块不写替身冒充应用整理。拟选保留case与topic双向关联并保证旧/api/cases*兼容，最终DecisionLog在P5迁移协调时确认。新增迁移排0009之后但具体号待P5协调，保留0008/9/10/11归属。
+只实现B的space/topic实体、标签字段/索引、幂等revision API、topic_route及分区ContextEngine；不实现A切段/分类/聚类/建议纯模块、不实现C界面。依赖模块线按公开接口交付，缺模块不写替身冒充应用整理。拟选保留case与topic双向关联并保证旧/api/cases*兼容，最终DecisionLog在P5迁移协调时确认。迁移0009为P5b B预留，0008归P1b，0010+按实际合并顺序分配（28 Z5）。
 
 owner首次使用幂等创建7默认区。space包含id/name/description/sensitive/order/hidden/revision；topic包含id/space_id/title/status(open/archived/case)/summary/summary_until_message_id/case_goal/created_at/last_at，14天无新消息归档并保留摘要。消息/事实/笔记/情景/draw新增space_id/topic_id/space_secondary/route_source/route_confidence；route_source限rule/embedding/model/user/migration，只增字段/索引，不改原正文。新增消息表达式索引(owner,space_id,topic_id,at_ms)，具体迁移编号仍等协调。
 
@@ -351,12 +381,12 @@ P1b实际合并前只按现有ModelPort完成离线脚本，不写假guard。合
 | v4.2 A/B/C | DC01–04/TR01–03、date_calc≥30例、模块线parse_time_range≥20表达式对接 | 真实tool轨迹/FTS时间语义/JSON行格式、脚本结果；真实分批授权后DC/TR/CL合计≥80%，未授权0。 |
 | v4.2 D/H | CL01–05、slot第3次拒问、拒答/告别正反≥15、FW01无问句 | PG线程槽状态/原用户消息锚点、system v1.1.0逐字差异与hash、farewell meta；P6结构审查尚未接写明。 |
 | v4.2 E/F/I | K01–06、同epoch reasoning原样/跨轮不回传、tool_choice无named/none、危机20秒兜底 | MockTransport请求体断言、PG持久守卫/计数、实际单调时钟延迟、全停时无HTTP；真实probe待明确开始。 |
-| v4.2 G | L5块内旧前缀不改写、40轮后10轮前移、固定工具顺序 | 字节diff及源revision、缓存usage存在则统计；整块L5一致矛盾待大脑，缺实际cache字段不写命中。 |
+| v4.2 G | L5块内旧前缀不改写、40轮后10轮前移、固定工具顺序 | 字节diff及源revision、缓存usage存在则统计；按28 Z2用compression epoch界定前缀，缺实际cache字段不写命中。 |
 | F1/P5b B（后续） | M3完成后space/topic/route API幂等revision、case兼容、SP01–04/SP06后端 | 真实PG应用→撤销逐字段、owner隔离、topic/跨区摘要撤销闭包、route_changed协议小版本；A/C和stage旧史整理不归本任务。 |
 
 ## Idempotence and Recovery（幂等、迁移、回滚与隐私）
 
-复用P2现有迁移校验，禁止编辑0001–0007；0008归P1b、0009/0010/0011归P5/P11既定迁移，不得抢号；确需新索引/线程持久锁结构时由root先与P1b/P5统一编号后前向迁移，由迁移角色在合成库验证两次运行无额外效果、运行角色无DDL。正式部署前另行备份/授权，本轮不触碰真实数据。回滚以owner runtime=v3与停dispatcher的受控路径为主，不删v4表或正文来“还原”；保留新数据供恢复/隐私处理，旧版本能否读取新schema须在stage计划注明。
+复用P2现有迁移校验，禁止编辑0001–0007；0008归P1b、0009为P5b B预留、0010+按实际合并顺序分配（28 Z5），不得抢号；确需新索引/线程持久锁结构时由root先与P1b/P5统一编号后前向迁移，由迁移角色在合成库验证两次运行无额外效果、运行角色无DDL。正式部署前另行备份/授权，本轮不触碰真实数据。回滚以owner runtime=v3与停dispatcher的受控路径为主，不删v4表或正文来“还原”；保留新数据供恢复/隐私处理，旧版本能否读取新schema须在stage计划注明。
 
 Journal恢复需有效当前lease，旧worker即使仍有内存结果也不能提交；崩溃重claim不重置操作指纹或自动换epoch逃过幂等。epoch用于规定的一次撤销再生成，不用于无限供应商重试。未完成模型步骤重发可能产生新的回答，实际调用必须记账；已经完成并持久的模型步骤不再请求。不可恢复或配额停止留状态和安全error_code，不吞异常或伪造完成。
 
@@ -372,7 +402,7 @@ Journal恢复需有效当前lease，旧worker即使仍有内存结果也不能�
 
 需要大脑确认但不阻止M1的事项：无痕线程中用户显式要求持久提醒时如何与“不写记忆”兼容；首版高相似塔罗问题规则若边界测试暴露误伤，列具体样例再裁定；consult_specialist选择P3末尾或P8须在正式进度明确。默认先执行不依赖这些决定的M1/U4：无痕不生成长期实体、塔罗完全相同问题护栏先闭环，复杂相似度不冒充完成。
 
-需要用户/外部资源的事项：stage那次执行授权、每一批真实E1/E2/P3与probe的开始指令、k3-256k等价性≤20次的实测；无授权就保持0真实，不设定时自动恢复。需要大脑的事项另含L5整块逐字节矛盾与可信token计量器/协议framing上界，先完成不依赖这些的脚本和PG装配。用户不在线时统一写入每日汇总“需要用户/需要大脑”，立即切换到可进行的里程碑，不等待、不自己改产品设计。若主模型L01频繁协议/格式错误，先保存具体失败与重放证据，再由root提出模型选择，不能偷偷换被测模型。
+需要用户/外部资源的事项：stage那次执行授权、每一批真实E1/E2/P3与probe的开始指令、k3-256k等价性≤20次的实测；无授权就保持0真实，不设定时自动恢复。28 Z1/Z2已解决旧framing估算策略和L5整块待决；仍缺已配置受信K3计数器时如实记录，先做接口/替身与PG证据。用户不在线时统一写入每日汇总“需要用户/需要大脑”，立即切换到可进行的里程碑，不等待、不自己改产品设计。若主模型L01频繁协议/格式错误，先保存具体失败与重放证据，再由root提出模型选择，不能偷偷换被测模型。
 
 ## Interfaces and Dependencies（拟定接口与依赖）
 
