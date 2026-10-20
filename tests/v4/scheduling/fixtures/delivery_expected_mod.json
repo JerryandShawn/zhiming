@@ -1,0 +1,18 @@
+{
+  "schema": "scheduling.independent_delivery_truth.v1",
+  "synthetic_only": true,
+  "oracle": "Frozen from brain K1/K2 exact late bounds; custom quiet_end is deliberately excluded from this fixed matrix",
+  "cases": [
+    {"id": "brief-seven", "kind": "brief", "due": "2026-10-21T07:00:00+08:00", "now": "2026-10-21T07:00:00+08:00", "brief_subscribed": true, "disposition": "push"},
+    {"id": "reminder-exact-night", "kind": "reminder", "due": "2026-10-21T23:00:00+08:00", "now": "2026-10-21T23:00:00+08:00", "disposition": "push"},
+    {"id": "late-60-night", "kind": "reminder", "due": "2026-10-21T22:00:00+08:00", "now": "2026-10-21T23:00:00+08:00", "disposition": "push", "late_seconds": 3600},
+    {"id": "late-60-plus-epsilon", "kind": "reminder", "due": "2026-10-21T22:00:00+08:00", "now": "2026-10-21T23:00:00.000001+08:00", "disposition": "deferred", "next_due": "2026-10-22T08:00:00+08:00"},
+    {"id": "late-61-night", "kind": "reminder", "due": "2026-10-21T21:59:00+08:00", "now": "2026-10-21T23:00:00+08:00", "disposition": "deferred", "next_due": "2026-10-22T08:00:00+08:00", "late_seconds": 3660},
+    {"id": "late-61-day", "kind": "reminder", "due": "2026-10-21T09:00:00+08:00", "now": "2026-10-21T10:01:00+08:00", "disposition": "push", "late_seconds": 3660},
+    {"id": "late-12h-exact", "kind": "reminder", "due": "2026-10-21T00:00:00+08:00", "now": "2026-10-21T12:00:00+08:00", "disposition": "push", "late_seconds": 43200},
+    {"id": "late-12h-epsilon", "kind": "reminder", "due": "2026-10-21T00:00:00+08:00", "now": "2026-10-21T12:00:00.000001+08:00", "disposition": "app_inbox"},
+    {"id": "ordinary-followup-quiet", "kind": "followup", "due": "2026-10-21T22:00:00+08:00", "now": "2026-10-21T22:00:00+08:00", "disposition": "deferred", "next_due": "2026-10-22T08:30:00+08:00"},
+    {"id": "ordinary-followup-before-quiet", "kind": "followup", "due": "2026-10-21T21:59:59+08:00", "now": "2026-10-21T21:59:59+08:00", "disposition": "push"},
+    {"id": "reminder-not-due", "kind": "reminder", "due": "2026-10-21T23:00:00+08:00", "now": "2026-10-21T22:59:59+08:00", "disposition": "not_due", "next_due": "2026-10-21T23:00:00+08:00"}
+  ]
+}
