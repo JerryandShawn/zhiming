@@ -56,6 +56,19 @@ class ContextEpochService:
                 return True
         return False
 
+    @staticmethod
+    def _visibility(case_ids: tuple[str, ...] | list[str]) -> str:
+        if len(case_ids) > 8 or any(not isinstance(ident, str) or not ident for ident in case_ids):
+            raise ContextInputError("context_case_scope_invalid")
+        return fingerprint({"case_ids": sorted(set(case_ids))})
+
+    def _view_invalidated(self, owner: str, previous: dict[str, Any], visibility: str) -> bool:
+        # Valid old messages may disappear from a newly restricted case view.
+        # Unknown legacy view identity must also start a fresh prefix epoch.
+        return bool(previous) and (
+            previous.get("visibility_sha256") != visibility or self._invalidated(owner, previous)
+        )
+
     def preview(
         self,
         owner: str,
@@ -66,11 +79,16 @@ class ContextEpochService:
         snapshot_revision: int,
         *,
         role: str = "primary",
+        case_ids: tuple[str, ...] = (),
     ) -> ContextEpoch:
         with self.repo.transaction(owner):
             previous = self._thread(owner, subject, thread_id).get(self._key(role), {})
             return epoch_plan(
-                budget, versions, snapshot_revision, previous, invalidated=self._invalidated(owner, previous)
+                budget,
+                versions,
+                snapshot_revision,
+                previous,
+                invalidated=self._view_invalidated(owner, previous, self._visibility(case_ids)),
             )
 
     def _validate_send(self, step: JournalStep, context: ContextBuild, budget: BudgetResult, choice: str) -> None:
@@ -164,11 +182,15 @@ class ContextEpochService:
             context.injected_versions,
             context.snapshot_revision,
             previous,
-            invalidated=self._invalidated(step.owner, previous),
+            invalidated=self._view_invalidated(
+                step.owner, previous, self._visibility(run["request"].get("case_ids", []))
+            ),
         )
         if fresh != context.cache_epoch:
             raise RevisionConflict("发送前上下文压缩周期已改变，请重建")
-        receipt = self._save(step, context.cache_epoch, thread_id, state, role)
+        receipt = self._save(
+            step, context.cache_epoch, thread_id, state, role, self._visibility(run["request"].get("case_ids", []))
+        )
         marks = dict(marks, **{step.operation_id: {"fingerprint": digest, "receipt": receipt}})
         usage = dict(run["usage"], context_sends=marks)
         connection.execute(
@@ -178,11 +200,18 @@ class ContextEpochService:
         return receipt
 
     def _save(
-        self, step: JournalStep, plan: ContextEpoch, thread_id: str, state: dict[str, Any], role: str
+        self,
+        step: JournalStep,
+        plan: ContextEpoch,
+        thread_id: str,
+        state: dict[str, Any],
+        role: str,
+        visibility: str,
     ) -> dict[str, Any]:
         cache = asdict(plan)
         cache.pop("base_generation")
         cache["generation"] = plan.base_generation + 1
+        cache["visibility_sha256"] = visibility
         self.repo.put(
             step.owner,
             "thread",
