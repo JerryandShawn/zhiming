@@ -77,7 +77,8 @@ def test_one_scripted_model_request_calls_registered_application_and_persists_re
     output = h.registry.execute(call.name, call.arguments, ctx)
     completed = h.journal.complete(step, output.model_dump())
     assert output.ok and completed.output["receipt"]["write_status"] == "saved"
-    assert port.calls == 1 and len(port.tool_names) == 15
+    assert port.calls == 1 and 1 <= len(port.tool_names) <= 15
+    assert "case_update" not in port.tool_names and "tarot_start" not in port.tool_names
     if name == "set_reminder":
         row = tool_repo.get("alice", "reminder", output.receipt["id"])
         assert row["due_at"] == "2026-10-21T12:00:00+00:00"

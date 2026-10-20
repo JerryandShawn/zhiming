@@ -7,6 +7,7 @@ from typing import Any
 
 import pytest
 
+from mingjing_core.agent.tool_visibility import CONDITIONAL_TOOLS, RESIDENT_TOOLS, VisibilityState
 from mingjing_core.agent.toolkit import DEFINITIONS, ToolContext, ToolDefinition, ToolRegistry, ToolResult
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.domain.contracts import EvidenceError
@@ -21,6 +22,9 @@ class SchemaOnlyService(AgentToolsService):
     def tarot_visibility(self, ctx: ToolContext) -> str:
         return "tarot_start"
 
+    def visibility_state(self, ctx: ToolContext) -> VisibilityState:
+        return VisibilityState(tarot_topic=True, case_bound=True)
+
 
 def context(**changes: Any) -> ToolContext:
     return replace(
@@ -31,7 +35,10 @@ def context(**changes: Any) -> ToolContext:
 def test_registry_order_visibility_and_flattened_schemas() -> None:
     registry = ToolRegistry(SchemaOnlyService())
     specs = registry.specs(context())
-    assert [item.name for item in specs] == [item.name for item in DEFINITIONS if item.name != "tarot_read"]
+    registered = {item.name for item in DEFINITIONS}
+    assert [item.name for item in specs] == [
+        name for name in (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS) if name in registered and name != "tarot_read"
+    ]
     assert len(DEFINITIONS) == 16 and len(specs) == 15
     for item in specs:
         text = str(item.parameters)
@@ -56,11 +63,11 @@ def test_registry_refuses_extra_authority_parameters_and_hidden_tools() -> None:
         ToolRegistry(AgentToolsService(None), definitions=DEFINITIONS + DEFINITIONS)
 
 
-def test_actual_visible_spec_overflow_fails_closed_instead_of_truncating() -> None:
+def test_unreviewed_extra_tool_is_not_disclosed() -> None:
     extra = ToolDefinition("extra_time", DEFINITIONS[0].parameters, DEFINITIONS[0].description)
     registry = ToolRegistry(SchemaOnlyService(), definitions=DEFINITIONS + (extra,))
-    with pytest.raises(ValueError, match="超过15"):
-        registry.specs(context())
+    specs = registry.specs(context())
+    assert len(specs) == 15 and "extra_time" not in {tool.name for tool in specs}
 
 
 @pytest.mark.parametrize("changes", [{"epoch": True}, {"seq": 0}, {"input_fp": "raw"}, {"thread_id": ""}])

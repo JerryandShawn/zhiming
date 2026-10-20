@@ -24,6 +24,8 @@ from mingjing_core.domain.contracts import CoreError
 from mingjing_core.models.port import ToolSpec
 from mingjing_core.models.schema_flatten import flatten_schema
 
+from .tool_visibility import select_visible
+
 __all__ = ["ToolContext", "ToolResult", "ToolRegistry", "ToolDefinition"]
 
 
@@ -95,21 +97,12 @@ class ToolRegistry:
         self.service, self.definitions = service, definitions
         self._by_name = {item.name: item for item in definitions}
 
-    def specs(self, ctx: ToolContext) -> list[ToolSpec]:
-        tarot = {"tarot_start", "tarot_read"}
-        visible_tarot = None
-        if not ctx.crisis and not ctx.private and tarot.intersection(self._by_name):
-            visible_tarot = self.service.tarot_visibility(ctx)
-        specs = [
+    def specs(self, ctx: ToolContext, *, required: tuple[str, ...] = ()) -> list[ToolSpec]:
+        visible = select_visible(self.definitions, ctx, self.service.visibility_state(ctx), required=required)
+        return [
             ToolSpec(item.name, item.description, flatten_schema(item.parameters.model_json_schema()))
-            for item in self.definitions
-            if (not ctx.crisis or item.name in {"time_context", "memory_search"})
-            and (not ctx.private or item.read_only or item.private_allowed)
-            and (item.name not in tarot or item.name == visible_tarot)
+            for item in visible
         ]
-        if len(specs) > 15:
-            raise ValueError("本轮可见工具超过15个，拒绝发送")
-        return specs
 
     def read_only(self, name: str) -> bool:
         return self._by_name[name].read_only
@@ -122,7 +115,7 @@ class ToolRegistry:
 
     def execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
         try:
-            if name not in {spec.name for spec in self.specs(ctx)}:
+            if name not in {spec.name for spec in self.specs(ctx, required=(name,))}:
                 return ToolResult(
                     ok=False,
                     data={"code": "tool_unavailable"},
