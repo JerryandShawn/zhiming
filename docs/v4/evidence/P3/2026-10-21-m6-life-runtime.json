@@ -1,0 +1,35 @@
+{
+  "schema": "p3-m6-life-runtime-evidence-v1",
+  "recorded_at": "2026-10-20T23:57:00+08:00",
+  "scope": "local Windows PostgreSQL 15, isolated synthetic owner/schema; injected ScriptedPort only",
+  "target_tests": {"passed": 130, "failed": 0, "seconds": 18.65},
+  "ruff": "E,F,I,B,UP,SIM and format120 passed for owned changed Python files",
+  "real_provider_requests": 0,
+  "server_accesses": 0,
+  "feishu_sends": 0,
+  "new_dependencies": [],
+  "migrations": [],
+  "verified": [
+    "AgentRuntime life thread snapshot -> Loop -> request preview/mark_sent -> actual usage -> atomic Finalizer",
+    "completed provider and tool replay without new physical requests or duplicate assistant commit",
+    "independent critic pass, strict quote validation, malformed critic fail-open and one text-only revision",
+    "critic input excludes primary reasoning; full private primary reasoning remains in revision request",
+    "forged review receipt does not publish; actual critic/revision PG journal proof required",
+    "one clean epoch after adopted source withdrawal; withdrawn original and old draft absent on regeneration",
+    "current-user source withdrawal cannot reconstruct request or publish assistant",
+    "program crisis template on unavailable/quota and 20 seconds without body",
+    "v1 public event validation, ordered seq and Beijing timestamps; no public reasoning",
+    "official P1/P2/P4/P8 and supplement H SHA/version pinning; crisis config remains v3 compatible",
+    "existing epoch, loop, envelope and Finalizer target regressions"
+  ],
+  "limitations": [
+    "candidate RuntimePort/router not yet installed in ConsultationService; parent owns route integration",
+    "incognito deliberately rejected until private runtime lifecycle is connected",
+    "all legacy reading endpoints are separately owned and not claimed by this evidence",
+    "actual K3 tokenizer/framing/equivalence/quality remain unverified; scripted meter is not K3 evidence",
+    "crisis trigger is conservative first-person intent rules, not comprehensive clinical classification",
+    "complex attachment/tarot input withdrawal rejects automatic request resurrection",
+    "ordinary private model-step retention cleanup worker remains later work",
+    "real HTTP cancellation, dispatcher and live model acceptance not included"
+  ]
+}

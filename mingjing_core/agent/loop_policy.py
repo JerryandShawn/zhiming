@@ -81,12 +81,18 @@ class RunControl:
         clock: Clock | None = None,
         monotonic: Callable[[], float] = time.monotonic,
         cancel_event: threading.Event | None = None,
+        no_text_seconds: float | None = None,
     ) -> None:
         self.repo, self.run, self.policy = repo, dict(run), policy
         self.clock, self.monotonic = clock or get_clock(), monotonic
         self.cancel_event = cancel_event or threading.Event()
         self.started, self.renewed = monotonic(), monotonic()
         self.lock, self.failure = threading.RLock(), None
+        self.no_text_seconds, self.has_text = no_text_seconds, False
+
+    def note_text(self, text: str) -> None:
+        if isinstance(text, str) and text.strip():
+            self.has_text = True
 
     def poll(self) -> None:
         with self.lock:
@@ -96,6 +102,12 @@ class RunControl:
                 raise LoopStopped("cancelled")
             if self.monotonic() - self.started >= self.policy.seconds:
                 raise LoopStopped("wall_time_limit")
+            if (
+                self.no_text_seconds is not None
+                and not self.has_text
+                and self.monotonic() - self.started >= self.no_text_seconds
+            ):
+                raise LoopStopped("crisis_no_text")
             try:
                 self._poll_database()
             except CoreError:

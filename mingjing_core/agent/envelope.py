@@ -9,6 +9,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from mingjing_core.agent.event_contracts import Asked, EnvelopeV1
+from mingjing_core.agent.review import TrustedReviewReceipt
 from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.domain.json_values import ensure_finite_json
 from mingjing_core.validation.structural import StructuralResult
@@ -83,11 +84,20 @@ def build_envelope(
     receipts: tuple[dict[str, Any], ...] = (),
     asked: dict[str, Any] | None = None,
     usage: Mapping[str, Any] | None = None,
-    review: Mapping[str, Any] | None = None,
+    review: TrustedReviewReceipt | Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     # Review has its own trusted service. Until connected it is explicitly skipped.
-    if review is not None and review != {"state": "skipped", "reasons": []}:
+    if (
+        review is not None
+        and not isinstance(review, TrustedReviewReceipt)
+        and review != {"state": "skipped", "reasons": []}
+    ):
         raise EvidenceError("评审结果尚未通过受信服务校验")
+    reviewed = (
+        review.public()
+        if isinstance(review, TrustedReviewReceipt)
+        else dict(review or {"state": "skipped", "reasons": []})
+    )
     result = {
         "schema": "core4.0",
         "schema_version": "core4.0",
@@ -99,7 +109,7 @@ def build_envelope(
         "used_claim_ids": list(checked.used_claim_ids),
         "asked": public_question(asked, message_id),
         "options": None,
-        "review": dict(review or {"state": "skipped", "reasons": []}),
+        "review": reviewed,
         "usage": public_usage(usage or {}),
         "validation": {"status": "validated", "valid": True, "schema": "core4.0"},
         "meta": {

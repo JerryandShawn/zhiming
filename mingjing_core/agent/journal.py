@@ -99,6 +99,12 @@ class Journal:
             raise EvidenceError("步骤日志时钟无效")
         return value.astimezone(UTC)
 
+    def next_position(self, run: Mapping[str, Any]) -> int:
+        if run.get("owner") != self.owner:
+            raise ScopeError("步骤游标不属于当前身份")
+        with self._lock:
+            return self._cursors.get((run["id"], run["retry_epoch"]), 1)
+
     def _leased(self, connection: Connection[Any], run: Mapping[str, Any]) -> dict[str, Any]:
         if run.get("owner") != self.owner or run.get("owner_user_id", self.owner) != self.owner:
             raise ScopeError("运行不属于当前身份")

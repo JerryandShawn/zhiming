@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import copy
-from collections.abc import Mapping
-from dataclasses import asdict, dataclass, field
+from collections.abc import Callable, Mapping
+from dataclasses import asdict, dataclass, field, replace
 from typing import Any
 
 from pydantic import ValidationError
 
 from mingjing_core.application.agent_commit_versions import reconcile_versions
+from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult
 from mingjing_core.domain.contracts import CoreError, EvidenceError, RevisionConflict
 from mingjing_core.models.errors import ModelProtocolError, ModelUnavailable
@@ -62,6 +63,8 @@ class LoopCycle:
         budget_policy: BudgetPolicy | None = None,
         crisis: bool = False,
         incognito: bool = False,
+        ledger: RequestLedger | None = None,
+        emit: Callable[[str, dict[str, Any]], None] | None = None,
     ) -> None:
         self.port, self.registry, self.journal, self.run, self.frozen = (
             port,
@@ -73,6 +76,7 @@ class LoopCycle:
         self.policy, self.token_meter, self.offline = policy or LoopPolicy(), token_meter, offline
         self.control = control or RunControl(registry.service.repo, run, self.policy)
         self.budget_policy, self.crisis, self.incognito = budget_policy or BudgetPolicy(), crisis, incognito
+        self.ledger, self.emit, self.revising, self.revised = ledger, emit, False, False
         self.cycle = f"{run['id']}:e{run['retry_epoch']}"
         self.messages: list[ChatMessage] = []
         self.aliases, self.versions = copy.deepcopy(frozen.alias_map), copy.deepcopy(frozen.injected_versions)
@@ -87,6 +91,7 @@ class LoopCycle:
             "offline": offline,
         }
         self.used, self.text, self.partial, self.asked = False, "", "", None
+        self.last_step: JournalStep | None = None
 
     def _context(self, step: JournalStep | None = None) -> ToolContext:
         if step is not None:
@@ -151,8 +156,9 @@ class LoopCycle:
             "CYCLE",
             tuple(ContextItem(f"cycle:{index}", (message,), True) for index, message in enumerate(self.messages)),
         )
+        meter = self.ledger.meter(self.run) if self.ledger else self.token_meter
         result = apply_token_budget(
-            (*base, cycle), tuple(tools), meter=self.token_meter, policy=self.budget_policy, tool_choice=choice
+            (*base, cycle), tuple(tools), meter=meter, policy=self.budget_policy, tool_choice=choice
         )
         if not self.offline:
             assert_live_allowed(result)
@@ -160,24 +166,36 @@ class LoopCycle:
 
     def _text_delta(self, text: str) -> None:
         self.partial += text
+        self.control.note_text(text)
+        if self.emit and not self.revising and text:
+            self.emit("text_delta", {"text": text})
 
     def _model(self) -> Any:
         self.control.poll()
-        budget, choice = self._budget()
+        name = "revision" if self.revising else ""
+        restored = self.ledger.restore_next(self.journal, self.run, role="primary", name=name) if self.ledger else None
+        budget, choice = (restored.budget, restored.choice) if restored else self._budget()
+        versions = restored.versions if restored else self.versions
         self.exposed = {tool.name for tool in budget.tools}
         identity = {
             "messages": [asdict(message) for message in budget.messages],
             "tools": [asdict(tool) for tool in budget.tools],
             "tool_choice": choice,
-            "source_versions": self.frozen.injected_versions,
+            "source_versions": versions,
         }
-        step = self.journal.next_or_replay(self.run, kind="model", input_fp=input_fingerprint("model", "", identity))
+        step = self.journal.next_or_replay(
+            self.run, kind="model", name=name, input_fp=input_fingerprint("model", name, identity)
+        )
         if step.completed:
             response = assistant_from(step.output or {})
             self.usage["replayed_model_steps"] += 1
+            if self.ledger:
+                self.ledger.completed(step)
         else:
             self.partial = ""
             self.usage["model_streams_this_execution"] += 1
+            if self.ledger:
+                self.ledger.reserve(step, self.frozen, budget, choice, versions)
             with self.control.monitor():
                 response = ObservedPort(self.port, self.control, self._text_delta).complete(
                     list(budget.messages),
@@ -190,7 +208,11 @@ class LoopCycle:
                 call.id in used_ids for call in response.tool_calls
             ):
                 raise ModelProtocolError()
-            self.journal.complete(step, assistant_output(response), response.usage)
+            completed = self.journal.complete(step, assistant_output(response), response.usage)
+            if self.ledger:
+                self.ledger.completed(completed)
+            step = completed
+        self.last_step = step
         self.usage["model_steps"] += 1
         for key, value in response.usage.items():
             if type(value) is int and value >= 0:
@@ -216,6 +238,8 @@ class LoopCycle:
 
     def _tool(self, call: ToolCall, ended: bool) -> tuple[ToolResult, str | None]:
         self.control.poll()
+        if self.emit:
+            self.emit("tool_call", {"call_id": call.id, "name": call.name, "summary": "正在处理这一步"})
         failure = None
         try:
             fingerprint = self.registry.fingerprint(
@@ -245,8 +269,30 @@ class LoopCycle:
             self.receipts.append(copy.deepcopy(result.receipt))
         if result.ends_turn:
             self.asked = copy.deepcopy(result.data.get("asked"))
-        self.messages.append(tool_message(call.id, result, self.cycle))
+        self.messages.append(tool_message(call.id, result, self.cycle, aliases=self.aliases))
+        if self.emit:
+            self.emit(
+                "tool_result",
+                {
+                    "call_id": call.id,
+                    "name": call.name,
+                    "ok": result.ok,
+                    "summary": "已完成" if result.ok else "这一步尚未完成",
+                },
+            )
         return result, "repeated_tool" if repeated and not ended else None
+
+    def revise(self, instructions: str) -> LoopOutcome:
+        if not self.used or self.revised or not isinstance(instructions, str) or not instructions.strip():
+            raise EvidenceError("评审改写最多执行一次且需要受信意见")
+        self.revised, self.revising = True, True
+        self.messages.append(ChatMessage("system", instructions))
+        self.policy = replace(self.policy, text_only=True, only_tool=None)
+        response = self._model()
+        if response.tool_calls or not response.text.strip():
+            raise ModelProtocolError()
+        self.revising = False
+        return self._outcome("revised")
 
     def _outcome(self, reason: str) -> LoopOutcome:
         text = self.text or self.partial or (self.asked or {}).get("question") or FALLBACK

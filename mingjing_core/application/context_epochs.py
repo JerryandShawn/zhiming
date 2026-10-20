@@ -32,6 +32,12 @@ class ContextEpochService:
             raise ScopeError("上下文缓存线程不属于当前人物")
         return row
 
+    @staticmethod
+    def _key(role: str) -> str:
+        if role not in {"primary", "critic"}:
+            raise ContextInputError("context_cache_role_invalid")
+        return "context_cache" if role == "primary" else "context_cache_critic"
+
     def _invalidated(self, owner: str, previous: dict[str, Any]) -> bool:
         versions = previous.get("source_versions", {})
         if not self.repo.verify_versions(owner, versions):
@@ -54,9 +60,11 @@ class ContextEpochService:
         budget: BudgetResult,
         versions: dict[str, int],
         snapshot_revision: int,
+        *,
+        role: str = "primary",
     ) -> ContextEpoch:
         with self.repo.transaction(owner):
-            previous = self._thread(owner, subject, thread_id).get("context_cache", {})
+            previous = self._thread(owner, subject, thread_id).get(self._key(role), {})
             return epoch_plan(
                 budget, versions, snapshot_revision, previous, invalidated=self._invalidated(owner, previous)
             )
@@ -68,7 +76,7 @@ class ContextEpochService:
             "tool_choice": choice,
             "source_versions": context.injected_versions,
         }
-        if step.kind != "model" or step.input_fp != input_fingerprint("model", "", identity):
+        if step.kind != "model" or step.input_fp != input_fingerprint("model", step.name, identity):
             raise EvidenceError("发送标记与模型步骤输入不符")
         actual = epoch_plan(budget, context.injected_versions, context.snapshot_revision, {}, invalidated=False)
         if actual.prefix_sha256 != context.cache_epoch.prefix_sha256:
@@ -77,11 +85,20 @@ class ContextEpochService:
             raise RevisionConflict("发送前上下文来源版本已改变")
 
     def mark_sent(
-        self, step: JournalStep, context: ContextBuild, *, budget: BudgetResult | None = None, tool_choice: str = "auto"
+        self,
+        step: JournalStep,
+        context: ContextBuild,
+        *,
+        budget: BudgetResult | None = None,
+        tool_choice: str = "auto",
+        role: str = "primary",
     ) -> dict[str, Any]:
         if context.cache_epoch is None:
             raise ContextInputError("context_cache_epoch_missing")
         budget = budget or context.budget
+        self._key(role)
+        if step.name not in ({"", "revision"} if role == "primary" else {"critic"}):
+            raise EvidenceError("模型步骤与受信角色不符")
         with self.repo.transaction(step.owner) as connection:
             current = Journal(self.repo, step.owner)._leased(
                 connection,
@@ -100,7 +117,7 @@ class ContextEpochService:
             )
             self._validate_send(step, context, budget, tool_choice)
             assert_no_withdrawal(self.repo, current, context.injected_versions, context.snapshot_revision)
-            return self._mark(connection, step, context, current, thread_id, budget)
+            return self._mark(connection, step, context, current, thread_id, budget, role)
 
     def _mark(
         self,
@@ -110,6 +127,7 @@ class ContextEpochService:
         run: dict[str, Any],
         thread_id: str,
         budget: BudgetResult,
+        role: str,
     ) -> dict[str, Any]:
         stored = connection.execute(
             sql.SQL(
@@ -128,13 +146,13 @@ class ContextEpochService:
             raise EvidenceError("发送标记缺少有效模型步骤")
         marks = run["usage"].get("context_sends", {})
         value = asdict(context.cache_epoch)
-        digest = fingerprint({"epoch": value, "input_fp": step.input_fp})
+        digest = fingerprint({"epoch": value, "input_fp": step.input_fp, "role": role})
         if step.operation_id in marks:
             if marks[step.operation_id]["fingerprint"] != digest:
                 raise EvidenceError("已有发送标记不能改写上下文")
             return marks[step.operation_id]["receipt"]
         state = self._thread(step.owner, step.subject, thread_id)
-        previous = state.get("context_cache", {})
+        previous = state.get(self._key(role), {})
         if previous.get("generation", 0) != context.cache_epoch.base_generation:
             raise RevisionConflict("上下文缓存代次已改变，请重建发送上下文")
         fresh = epoch_plan(
@@ -146,7 +164,7 @@ class ContextEpochService:
         )
         if fresh != context.cache_epoch:
             raise RevisionConflict("发送前上下文压缩周期已改变，请重建")
-        receipt = self._save(step, context.cache_epoch, thread_id, state)
+        receipt = self._save(step, context.cache_epoch, thread_id, state, role)
         marks = dict(marks, **{step.operation_id: {"fingerprint": digest, "receipt": receipt}})
         usage = dict(run["usage"], context_sends=marks)
         connection.execute(
@@ -155,7 +173,9 @@ class ContextEpochService:
         )
         return receipt
 
-    def _save(self, step: JournalStep, plan: ContextEpoch, thread_id: str, state: dict[str, Any]) -> dict[str, Any]:
+    def _save(
+        self, step: JournalStep, plan: ContextEpoch, thread_id: str, state: dict[str, Any], role: str
+    ) -> dict[str, Any]:
         cache = asdict(plan)
         cache.pop("base_generation")
         cache["generation"] = plan.base_generation + 1
@@ -163,7 +183,7 @@ class ContextEpochService:
             step.owner,
             "thread",
             thread_id,
-            dict(state, context_cache=cache),
+            dict(state, **{self._key(role): cache}),
             subject=step.subject,
             expected_revision=state.get("revision", 0),
             operation_id=step.operation_id + ":context_sent",
@@ -176,4 +196,5 @@ class ContextEpochService:
             "reset_reason": plan.reset_reason,
             "operation_id": step.operation_id,
             "send_reserved": True,
+            "role": role,
         }

@@ -9,11 +9,13 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from mingjing_core.agent.envelope import build_envelope
+from mingjing_core.agent.review import TrustedReviewReceipt
 from mingjing_core.application.agent_commit_versions import (
     assert_no_withdrawal,
     persisted_receipts,
     reconcile_versions,
 )
+from mingjing_core.application.agent_review_proofs import ReviewProofStore
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
 from mingjing_core.repositories.dependencies import entity_dependency
@@ -107,6 +109,7 @@ class AgentFinalizer:
         snapshot_revision: int,
         asked: dict[str, Any] | None = None,
         usage: Mapping[str, Any] | None = None,
+        review: TrustedReviewReceipt | None = None,
     ) -> dict[str, Any]:
         owner = run["owner"]
         with self.repo.transaction(owner) as connection:
@@ -123,6 +126,10 @@ class AgentFinalizer:
             if asked and asked["question"] not in text:
                 text = (text.strip() + "\n\n" + asked["question"]).strip()
             checked = check_structure(text, alias_map, receipts)
+            if review is not None:
+                if not isinstance(review, TrustedReviewReceipt):
+                    raise EvidenceError("最终评审需要受信持久证明")
+                ReviewProofStore(self.repo).verify(review, current, checked.text)
             self._aliases(current, alias_map, checked.cited_keys, effective)
             source = self._source(current, effective)
             message = self.memory.record_assistant_message(
@@ -140,7 +147,7 @@ class AgentFinalizer:
                 conversation_id=current["request"].get("conversation_id", "shared"),
             )
             envelope = build_envelope(
-                current, checked, message_id=message["id"], receipts=receipts, asked=asked, usage=usage
+                current, checked, message_id=message["id"], receipts=receipts, asked=asked, usage=usage, review=review
             )
             connection.execute(
                 sql.SQL(
