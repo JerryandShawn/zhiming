@@ -1,0 +1,33 @@
+{
+  "version": "p8-history-portable-shallow-local-check-v2",
+  "commit": "ef3947b2f8e1a2627c6216a23240625dff171ac2",
+  "started_at_beijing": "2026-10-21T07:42:25.073871+08:00",
+  "completed_at_beijing": "2026-10-21T07:42:50.141474+08:00",
+  "clone_transport": "local file URI, no network",
+  "shallow": true,
+  "reachable_commits": 1,
+  "old_history_absent": {
+    "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2": true,
+    "f23b942ce698a3f7ee0b98c918d43053fe773433": true,
+    "ef5fed9a3fc4e1b727e6077f5b99f41be31e6f7b": true
+  },
+  "exit_code": 0,
+  "source_before_after_equal": true,
+  "source_lf_sha256": {
+    "tests/v4/test_p8_line_coverage.py": "7370f688281b1ddb899527dc20c1d38dddaeb0f8e52f7933b3422d9293549213",
+    "tests/v4/test_p8_line_coverage_own.py": "3053fc7a01d6f9676c3b7b8ef9d9d6e1a5c506354d6a8cf06bfb8db8554b7adb",
+    "tests/v4/test_p8_own_inventory_independent.py": "63f1cebb90a493cc010c162623308a9103282095e593252a707135da1957583b",
+    "tests/v4/test_p8_git_range_portability.py": "3c85fe99027f0f255df0c87040a20f56d7556e2165a85e3e12f38c56fc762817",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_own_sources.py": "09d89cfca3b234d9a4cdb35243a2bdf29dab5174192eb98ed8c79a76cf5f357a",
+    "tests/v4/p8_coverage_history_context.py": "7458c44ef2e2dd6cc7548a855132da81763b29ef51d5fab7e2a3956090ff48f1",
+    "docs/v4/evidence/P8/night28-own-inventory-ef5fed9-static.json": "53ef77123ea0f82860442cf316bfc5087903e5b43bf8f9971b0c3c7fb50a43c9"
+  },
+  "tests": 93,
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "database_access": false,
+  "limits": [
+    "Windows local shallow checkout, not Linux GitHub Actions success",
+    "Real historical archive integrity plus synthetic Git guards; no historical reconstruction in shallow checkout"
+  ]
+}
