@@ -114,3 +114,9 @@ Node24 本机 DOM/build 的实际结果独立记录；同集成头 Node22 CI 成
 - 2026-10-21 07:44 准备固定 archive 私有 runner，默认只计划，静态检查通过。
 - 2026-10-21 07:45 根据实测与主代理裁定保留 Node24 完整功能证据，并将 Node22 parity 单独标未验；未执行套件。
 - 2026-10-21 07:46 对齐四位调度为整体串行入口，v4 错过启动窗口则明确推迟，仍继续 Charts/legacy。
+
+## 2026-10-21 07:53:24 +08:00 root合并候选与门状态
+
+已从真实b9创建独立v4/integration，计划提交092ec036后，普通--no-ff合并精确P1b8087d7fa为 **49d40dd69d299200d4549f22b70931dbf47ac171**，双父092ec036/8087d7fa，tree **8b0754ef42ab34383894064da236ba840a947cf8**。无文本冲突，无rebase/强推，尚未推送或合入v4/main/main。7份原迁移git blob逐字节不变；唯一新增0008_model_usage.sql SHA256=5eef5d65363baa0ab4dc8ec9763b85136f4ba249688330b9cd8448f0b39ccbcb，0009未创建，B1包仍b9/1–7。此后仅更新本计划，最终固定头以runner expected-head为准。
+
+尚无本次完整回归，不能以P1b源头CI代替集成头。08点准备四位以内执行P3Core/P3v4/M8及本集成串行门。root核runner后补入实际本机PGbin绝对路径并验证pg_dump/pg_restore存在，避免重演01点工具路径失败；测试TZ显式Tokyo，记录/调度仍北京。Node实际24功能证据与Node22CI门分开。全部检查只隔离PG、清凭据/关追踪、Python网络仅loopback，未发真实模型/飞书或访问服务器。
