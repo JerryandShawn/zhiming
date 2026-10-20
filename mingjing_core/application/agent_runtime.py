@@ -9,12 +9,13 @@ from typing import Any
 from mingjing_core.agent.context import ContextEngine
 from mingjing_core.agent.context_tokens import TokenMeter
 from mingjing_core.agent.context_types import BudgetPolicy, ContextBuild, ContextInputError
-from mingjing_core.agent.crisis import crisis_detected, fallback_text
+from mingjing_core.agent.crisis import fallback_text
 from mingjing_core.agent.journal import Journal
 from mingjing_core.agent.loop_cycle import LoopCycle, LoopOutcome
 from mingjing_core.agent.loop_policy import LoopPolicy, RunControl
 from mingjing_core.agent.prompts import load_prompts
 from mingjing_core.agent.toolkit import ToolRegistry
+from mingjing_core.application.agent_crisis_sources import turn_has_crisis
 from mingjing_core.application.agent_finalization import AgentFinalizer
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_regeneration import AgentRegenerator
@@ -157,7 +158,7 @@ class AgentRuntime:
         if confirmation:
             self.state.metadata(run, private_reminder_status=confirmation["write_status"])
         for attempt in range(2):
-            crisis = crisis_detected(run["request"]["message"])
+            crisis = turn_has_crisis(self.repo, run)
             system = self.prompts.system(onboarding=self.state.onboarding(run), crisis=crisis)
             if confirmation:
                 system += (
@@ -175,9 +176,9 @@ class AgentRuntime:
             cycle = self._cycle(run, frozen, events, crisis=crisis)
             try:
                 outcome = cycle.execute()
-                return self._finish(cycle, outcome, events, crisis=crisis)
+                return self._finish(cycle, outcome, events, crisis=cycle.crisis)
             except ContextInputError as error:
-                if not crisis:
+                if not cycle.crisis:
                     raise
                 from mingjing_core.application.agent_crisis_fallback import commit_crisis_template
 
