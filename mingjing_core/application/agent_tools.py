@@ -159,10 +159,9 @@ class AgentToolsService:
 
     def _execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
         from mingjing_core.application.agent_tools_charts import execute_chart
-        from mingjing_core.application.agent_tools_computation import date_calc
         from mingjing_core.application.agent_tools_interactions import INTERACTION_NAMES, execute_interaction
         from mingjing_core.application.agent_tools_memory import execute_write
-        from mingjing_core.application.agent_tools_reads import execute_read
+        from mingjing_core.application.agent_tools_parallel_reads import PURE_READS, execute_pure_read
         from mingjing_core.application.agent_tools_tarot import execute_tarot
         from mingjing_core.application.agent_tools_updates import UPDATE_NAMES, execute_update
 
@@ -187,14 +186,14 @@ class AgentToolsService:
                 receipt={"write_status": "stopped", "code": "incognito"},
                 summary="无痕模式未写入长期资料",
             )
+        if name in PURE_READS:
+            return execute_pure_read(self, name, arguments, ctx)
         with self.repo.transaction(ctx.owner) as connection:
             self.authority(connection, ctx)
-            if name == "date_calc":
-                return date_calc(arguments)
             if name in {"tarot_start", "tarot_read"}:
                 return execute_tarot(self, name, arguments, ctx)
             if name in INTERACTION_NAMES:
                 return execute_interaction(self, name, arguments, ctx)
             if name in writes:
                 return execute_write(self, name, arguments, ctx)
-            return execute_read(self, name, arguments, ctx)
+            raise EvidenceError("未注册的工具")
