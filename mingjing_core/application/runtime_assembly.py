@@ -79,6 +79,12 @@ def route_submit(service: Any, values: dict[str, Any]) -> dict[str, Any]:
         ).fetchone()
     runtime = existing["runtime"] if existing else owner_runtime(service.repo.assert_scope(owner, subject)["settings"])
     if runtime == "v3":
+        from mingjing_core.application.privacy_mode import PrivacyModeService
+
+        if isinstance(values["message"], str) and values["message"].strip():
+            PrivacyModeService(service.repo).assert_legacy_safe(
+                owner, subject, values["message"], conversation_id=values.get("conversation_id", "shared")
+            )
         return service._submit_validated(**values)
     return submit_agent(service, values, existing)
 
@@ -86,6 +92,24 @@ def route_submit(service: Any, values: dict[str, Any]) -> dict[str, Any]:
 def submit_agent(service: Any, values: dict[str, Any], existing: Any = None) -> dict[str, Any]:
     owner, subject = values["owner"], values.get("subject", "self")
     service.runtime_assembly.require_agent()
+    validate_agent_input(values)
+    thread, sources = agent_source_route(service, values, existing)
+    ingress = ThreadIngress(service)
+    common = dict(
+        owner=owner,
+        subject=subject,
+        thread_id=thread,
+        request_id=values["request_id"],
+        conversation_id=values.get("conversation_id", "shared"),
+        case_ids=values.get("case_ids"),
+        depth=values.get("depth", "standard"),
+    )
+    if sources:
+        return ingress.queue(source_ids=sources, **common)
+    return ingress.submit(message=values["message"], **common)
+
+
+def validate_agent_input(values: dict[str, Any]) -> None:
     if (
         not isinstance(values.get("request_id"), str)
         or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:-]{0,199}", values["request_id"]) is None
@@ -102,33 +126,43 @@ def submit_agent(service: Any, values: dict[str, Any], existing: Any = None) -> 
         raise EvidenceError("此 v4 入口尚未支持附件或既有牌阵、报告等输入，请保留原记录等待接线")
     if values.get("depth", "standard") not in {"standard", "deep"}:
         raise EvidenceError("v4 目前支持标准或深入模式")
+
+
+def agent_source_route(service: Any, values: dict[str, Any], existing: Any) -> tuple[str, list[str] | None]:
+    owner, subject = values["owner"], values.get("subject", "self")
+    identifiers, expected_thread = None, None
     if existing:
         old = existing["request"]
         if (
             existing["subject"] != subject
-            or old.get("incognito")
             or old.get("message") != values["message"]
             or not old.get("source_message_id")
+            or values.get("source_message_id") not in (None, old["source_message_id"])
         ):
             raise EvidenceError("原请求已改变、撤销或属于其他线程，不能重建")
-        values = dict(values, source_message_id=old["source_message_id"])
-    thread = ThreadService(service.repo).create(owner, subject=subject, request_id="runtime-life:" + subject)
-    ingress = ThreadIngress(service)
-    common = dict(
-        owner=owner,
-        subject=subject,
-        thread_id=thread["id"],
-        request_id=values["request_id"],
-        conversation_id=values.get("conversation_id", "shared"),
-        case_ids=values.get("case_ids"),
-        depth=values.get("depth", "standard"),
-    )
-    if values.get("source_message_id"):
-        source = service.memory.get_source(owner, values["source_message_id"])
-        if source.get("content") != values["message"]:
-            raise EvidenceError("当前问题与授权原话不符")
-        return ingress.queue(source_ids=[source["id"]], **common)
-    return ingress.submit(message=values["message"], **common)
+        identifiers = old.get("source_message_ids", [old["source_message_id"]])
+        expected_thread = existing.get("thread_id") or old.get("thread_id")
+        if not isinstance(expected_thread, str):
+            raise EvidenceError("原运行缺少固定线程身份")
+    elif values.get("source_message_id"):
+        identifiers = [values["source_message_id"]]
+    if identifiers is None:
+        row = ThreadService(service.repo).create(owner, subject=subject, request_id="runtime-life:" + subject)
+        return row["id"], None
+    if not isinstance(identifiers, list) or not identifiers or any(not isinstance(ident, str) for ident in identifiers):
+        raise EvidenceError("原运行的来源身份无效")
+    source = service.memory.get_source(owner, identifiers[-1])
+    thread = source.get("thread_id")
+    if (
+        source["subject_id"] != subject
+        or source.get("content") != values["message"]
+        or not isinstance(thread, str)
+        or expected_thread is not None
+        and thread != expected_thread
+    ):
+        raise EvidenceError("当前问题与原人物、线程或授权原话不符")
+    ThreadService(service.repo).get(owner, thread, subject=subject)
+    return thread, identifiers
 
 
 def legacy_queue(repo: Any, owner: str | None = None, limit: int = 1) -> list[dict[str, Any]]:

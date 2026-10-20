@@ -32,7 +32,7 @@ class FeishuIngress:
         if not isinstance(message_id, str) or not 1 <= len(message_id) <= 200:
             raise EvidenceError("飞书原话需要稳定消息标识")
         with self.repo.transaction(owner):
-            thread = self.threads.create(owner, subject=subject, request_id="feishu-life-thread")
+            thread = self._life_thread(owner, subject)
             operation = "feishu:message:" + message_id
             source = self.ingress.receive(
                 owner=owner,
@@ -46,8 +46,8 @@ class FeishuIngress:
                 conversation_id="feishu:p2p:" + chat_id,
                 at=at,
             )
-            if at is not None and history_instant(source.get("at")) != at:
-                raise EvidenceError("飞书消息标识不能替换原始时间")
+            self._assert_time(source, at)
+            thread = self.threads.get(owner, source["thread_id"], subject=subject)
             ident = "feishu-inbound:" + fingerprint([owner, message_id])[:32]
             try:
                 old = self.repo.get(owner, "request", ident)
@@ -85,6 +85,14 @@ class FeishuIngress:
             )
             self._attach(batch, source["id"], ident)
             return self._accepted(item)
+
+    def _life_thread(self, owner: str, subject: str) -> dict[str, Any]:
+        return self.threads.create(owner, subject=subject, request_id="feishu-life-thread:" + fingerprint(subject)[:32])
+
+    @staticmethod
+    def _assert_time(source: dict[str, Any], at: datetime | None) -> None:
+        if at is not None and history_instant(source.get("at")) != at:
+            raise EvidenceError("飞书消息标识不能替换原始时间")
 
     def _binding(self, owner: str, subject: str, author: str) -> None:
         binding = self.repo.resolve_channel("feishu", author)

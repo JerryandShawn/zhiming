@@ -5,6 +5,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
+from mingjing_core.application.privacy_mode import PrivacyModeService
+from mingjing_core.application.privacy_run_barrier import inherit_source_barrier
 from mingjing_core.application.thread_queue import queue_thread
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError
@@ -15,6 +17,7 @@ class ThreadIngress:
     def __init__(self, service: Any, *, clock: Clock | None = None) -> None:
         self.service, self.repo = service, service.repo
         self.threads = ThreadService(self.repo, clock=clock)
+        self.privacy = PrivacyModeService(self.repo, clock=clock)
 
     def receive(
         self,
@@ -32,10 +35,10 @@ class ThreadIngress:
     ) -> dict[str, Any]:
         if not isinstance(message, str) or not 1 <= len(message.strip()) <= 16000:
             raise EvidenceError("消息需要一至16000字")
-        return self.threads.receive(
-            owner,
-            thread_id,
-            message,
+        return self.privacy.receive(
+            owner=owner,
+            thread_id=thread_id,
+            message=message,
             request_id=request_id,
             subject=subject,
             channel=channel,
@@ -75,7 +78,7 @@ class ThreadIngress:
             )
             return self.queue(
                 owner=owner,
-                thread_id=thread_id,
+                thread_id=source["thread_id"],
                 source_ids=[source["id"]],
                 request_id=request_id,
                 subject=subject,
@@ -94,16 +97,20 @@ class ThreadIngress:
         conversation_id: str = "shared",
         **options: Any,
     ) -> dict[str, Any]:
-        return queue_thread(
-            self.service,
-            owner=owner,
-            subject=subject,
-            thread=thread_id,
-            sources=source_ids,
-            request_id=request_id,
-            conversation_id=conversation_id,
-            options=options,
-        )
+        if thread_id.startswith("incognito:") and options.get("case_ids"):
+            raise EvidenceError("无痕线程不能绑定长期事项")
+        with self.repo.transaction(owner):
+            run = queue_thread(
+                self.service,
+                owner=owner,
+                subject=subject,
+                thread=thread_id,
+                sources=source_ids,
+                request_id=request_id,
+                conversation_id=conversation_id,
+                options=options,
+            )
+            return inherit_source_barrier(self.repo, run, source_ids)
 
     def history(self, owner: str, thread_id: str, *, subject: str = "self", limit: int = 80) -> list[dict[str, Any]]:
         return self.threads.history(owner, thread_id, subject=subject, limit=limit)
