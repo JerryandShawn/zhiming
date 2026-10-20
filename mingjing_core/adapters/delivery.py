@@ -48,12 +48,16 @@ class OutboxService:
         self.repo.assert_scope(owner,subject)
         if run.get('owner_user_id',run.get('owner'))!=owner:raise ScopeError('执行记录归属不符')
         if run.get('status') not in ('succeeded','complete','completed','validated','success'):raise RevisionConflict('报告执行已过时或尚未成功')
+        result=validated_payload(run.get('result'))
+        if result['meta']['core_run']['run_id']!=run['id']:
+            raise EvidenceError('结果与权威执行不一致')
+        if result['meta'].get('subject_id',subject)!=subject:
+            raise ScopeError('结果人物与执行不一致')
         dependencies=run.get('dependencies',run.get('state_version',{}))
         request=run.get('request',{})
-        cases=request.get('case_ids') or run.get('result',{}).get('meta',{}).get('case_ids') or []
+        cases=request.get('case_ids') or result.get('meta',{}).get('case_ids') or []
         self.repo.versions(owner,subject,cases)
         if not dependencies or not self.repo.verify_versions(owner,dependencies):raise RevisionConflict('资料依赖已更新，旧报告不能投递')
-        result=validated_payload(run.get('result'))
         return subject,dependencies,result
 
     def prepare_delivery(self,*,owner,run_id,business_id,channel,target,due=None,replace_stale=False):

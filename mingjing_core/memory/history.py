@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 from psycopg import sql
 from psycopg.rows import dict_row
 
+from mingjing_core.application.read_result import read_result
 from mingjing_core.timekit.timestamps import history_instant
 
 from .private import is_private
@@ -93,7 +94,8 @@ def _attach_run(
     elif row["role"] == "assistant":
         run = by_id.get(row.get("run_id"))
         if run and run["status"] == "succeeded":
-            row.update(turn_id=run["operation_id"], meta=run["result"])
+            final = read_result(run["result"])
+            row.update(turn_id=run["operation_id"], content=final["text"], meta=final)
     return run
 
 
@@ -132,14 +134,15 @@ def history_window(
         retain(row)
     for run in runs:
         if run["status"] == "succeeded" and run["id"] not in stored:
+            final = read_result(run["result"])
             retain(
                 {
                     "role": "assistant",
-                    "content": run["result"]["answer"],
+                    "content": final["text"],
                     "at": run["updated_at"].isoformat(),
                     "turn_id": run["operation_id"],
                     "source": "web",
-                    "meta": run["result"],
+                    "meta": final,
                 }
             )
     return [item[2] for item in sorted(heap, key=lambda item: item[:2])]

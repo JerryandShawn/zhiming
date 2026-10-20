@@ -19,6 +19,7 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 from hermes.tarot_deck import public_catalog
 from ..application.consultation import ConsultationService, today
+from ..application.read_result import read_result
 from ..domain.consultation import CoreError, MissingInput
 from ..domain.json_values import ensure_finite_json
 from ..domain.contracts import ScopeError, RevisionConflict, EvidenceError, LeaseConflict, BudgetExceeded
@@ -176,7 +177,10 @@ def create_app(service=None):
                     yield 'data: '+json.dumps({'type':'status','stage':phase,'text':'正在核对本轮资料与依据'},ensure_ascii=False)+'\n\n'
                     if phase=='snapshot': yield 'data: '+json.dumps({'type':'context','meta':{'core_run':run['id'],'dependency_versions':current['dependencies']}})+'\n\n'
                 if current['status']=='succeeded':
-                    yield 'data: '+json.dumps({'type':'result','result':current['result'],'reading_id':reading_id,'draw_id':draw_id},ensure_ascii=False)+'\n\n'; break
+                    final={'type':'result','result':read_result(current['result']),
+                           'reading_id':reading_id,'draw_id':draw_id}
+                    yield 'data: '+json.dumps(final,ensure_ascii=False)+'\n\n'
+                    break
                 if current['status'] not in ('running','queued'):
                     yield 'data: '+json.dumps({'type':'error','message':current['error'] or '本轮已停止','run_id':run['id']},ensure_ascii=False)+'\n\n'; break
                 yield ': heartbeat\n\n'
@@ -431,13 +435,15 @@ def create_app(service=None):
 
     @app.get('/api/chat/{ident}')
     async def get_chat(ident:str,req:Request):
-        owner=auth(req);core(req);run=lookup(owner,ident);final=run['result'] or {}
+        owner=auth(req);core(req);run=lookup(owner,ident)
+        final=read_result(run['result']) if run['status']=='succeeded' else {}
         return {'id':ident,'run_id':run['id'],'status':{'succeeded':'complete','queued':'running'}.get(run['status'],run['status']),
                 'answer':final.get('answer',''),'meta':final if final else {'error':run['error']}}
 
     @app.get('/api/runs/{ident}')
     async def get_run(ident:str,req:Request):
         owner=auth(req);core(req);run=lookup(owner,ident)
+        if run['status']=='succeeded':run=dict(run,result=read_result(run['result']))
         return {k:run[k] for k in ('id','operation_id','status','calls','call_limit','attempts','checkpoint','dependencies','error','result')}
 
     async def stop(ident,req):
