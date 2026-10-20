@@ -118,8 +118,8 @@ def execute_tarot(
             or name not in {"tarot_start", "tarot_read"}
         ):
             raise ScopeError("塔罗工具身份或模式不符")
-        if name == "tarot_start" and ctx.private:
-            return ToolResult(ok=False, data={"code": "incognito"}, summary="无痕模式未建立长期牌阵")
+        if ctx.private:
+            return ToolResult(ok=False, data={"code": "incognito"}, summary="无痕模式未读取或建立长期牌阵")
         if stopped := privacy_refusal(service, name, args, ctx):
             return stopped
         mode = tarot_mode(service, ctx)
