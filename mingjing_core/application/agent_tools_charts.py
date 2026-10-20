@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from mingjing_core.agent.tools.computation_parameters import ChartCompute
+from mingjing_core.application.agent_tool_persistence import privacy_refusal
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult, tool_input_fingerprint
 from mingjing_core.application.agent_tools_projection import sources_active
 from mingjing_core.application.charts_projection import chart_diagnostics, public_errors
@@ -191,6 +192,10 @@ def execute_chart(
         raise ScopeError("危机模式下不进行排盘")
     if getattr(service.repo._local, "connection", None) is not None:
         raise EvidenceError("排盘必须在外层数据库事务之外执行")
+    with service.repo.transaction(ctx.owner) as connection:
+        service.authority(connection, ctx)
+        if stopped := privacy_refusal(service, "chart_compute", args, ctx):
+            return stopped
     cached = cached_chart(service, ctx)
     if cached is not None:
         return cached
@@ -214,6 +219,8 @@ def execute_chart(
     )
     with service.repo.transaction(ctx.owner) as connection:
         service.authority(connection, ctx)
+        if stopped := privacy_refusal(service, "chart_compute", args, ctx):
+            return stopped
         recheck_chart(service, ctx, snapshot)
         records = persist_calculation(service, ctx, snapshot, evaluation)
         result = chart_result(evaluation, records)
