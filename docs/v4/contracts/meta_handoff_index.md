@@ -29,6 +29,7 @@
 | U12明确条件断言 | `skills.consistency_u12.check_u12_rule_assertions`；[u12_rule_assertions](u12_rule_assertions.md) | 独立v1，主线显式另调；38登记ID/完整名、实际assessment.met；条件命中不升级完整成格或效力 |
 | 塔罗牌阵资产 | `knowledge/p8_tarot/spreads_v1.json`；[tarot_spreads](tarot_spreads.md) | 三个现有牌阵/九牌位，原创说明；只读交付，不自动成为运行注册源，不修改既有78牌义 |
 | 方法差异 | [school_comparisons](school_comparisons.md) | 32项具名默认、可选、未实现与待核；不以项目权重冒充传统统一标准 |
+| E2 M2控制输入 | `benchmarks.night28_controls.no_chart_input`；[e2_m2_controls](e2_m2_controls.md) | 模型可见严格两键题目/选项；评分元数据留外侧，旧C0含出生的语义保持独立；仅离线演练 |
 
 两个文本检查器拥有不同的版本和Schema。不要将新`u12_rule`字段塞进旧v1 Schema，
 也不要因`no_contradiction_found`就判定整段回答正确。引用、他人、比较口径、假设等保守待复核。
