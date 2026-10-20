@@ -8,7 +8,7 @@ from typing import Any
 
 from mingjing_core.agent.context import ContextEngine
 from mingjing_core.agent.context_tokens import TokenMeter
-from mingjing_core.agent.context_types import BudgetPolicy, ContextBuild
+from mingjing_core.agent.context_types import BudgetPolicy, ContextBuild, ContextInputError
 from mingjing_core.agent.crisis import crisis_detected, fallback_text
 from mingjing_core.agent.journal import Journal
 from mingjing_core.agent.loop_cycle import LoopCycle, LoopOutcome
@@ -24,6 +24,7 @@ from mingjing_core.application.agent_runtime_state import RuntimeState
 from mingjing_core.application.agent_snapshots import AgentSnapshotStore
 from mingjing_core.application.agent_thread_scope import thread_id
 from mingjing_core.application.agent_tools import AgentToolsService
+from mingjing_core.application.agent_tools_clarification import apply_clarification_answer
 from mingjing_core.application.agent_tools_private import consume_private_answer
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.read_result import read_result
@@ -149,6 +150,7 @@ class AgentRuntime:
             read_result(current["result"])
             return current["result"]
         run = self.state.authority(owner, run_id, lease_token)
+        apply_clarification_answer(self.repo, run)
         events = RuntimeEvents(self.repo, run, emit)
         self._start(run, events)
         confirmation = consume_private_answer(self.repo, run)
@@ -162,11 +164,24 @@ class AgentRuntime:
                     "\n本轮单独提醒确认已由程序处理，提醒状态：" + confirmation["write_status"] + "。这不是长期记忆。"
                 )
             self.state.pin(run, self.prompts, system, crisis=crisis)
-            frozen = self._snapshot(run, system)
+            try:
+                frozen = self._snapshot(run, system)
+            except ContextInputError as error:
+                if not crisis:
+                    raise
+                from mingjing_core.application.agent_crisis_fallback import commit_crisis_template
+
+                return commit_crisis_template(self.repo, run, events, reason=error.code)
             cycle = self._cycle(run, frozen, events, crisis=crisis)
             try:
                 outcome = cycle.execute()
                 return self._finish(cycle, outcome, events, crisis=crisis)
+            except ContextInputError as error:
+                if not crisis:
+                    raise
+                from mingjing_core.application.agent_crisis_fallback import commit_crisis_template
+
+                return commit_crisis_template(self.repo, run, events, reason=error.code)
             except CoreError:
                 used = replace(frozen, injected_versions=cycle.versions)
                 if attempt or not AgentRegenerator(self.repo)._related(run, used):
