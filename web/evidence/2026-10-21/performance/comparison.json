@@ -1,0 +1,146 @@
+{
+  "schema": "frontend-performance-comparison-v1",
+  "phases": [
+    {
+      "label": "baseline",
+      "path": "web/evidence/2026-10-21/performance/baseline/report.json",
+      "sha256": "dc145162647cf449aa89784e9e080c87bea15c999ed8638b588679e3842e89f7",
+      "head": "6d917713c1e0d58c7ae769e9e01e5bb813e59bb0",
+      "dirty_runtime_source": true,
+      "stable": true,
+      "lcp_ms": [
+        2504,
+        2496,
+        2552,
+        2480,
+        2552
+      ],
+      "p75_ms": 2552,
+      "all_below_target": false,
+      "formal_acceptance": false,
+      "bundle_gzip_bytes": 160365,
+      "js_gzip_bytes": 85632,
+      "font_css": {
+        "path": "/fonts/fonts.css",
+        "start": 198.59999999962747,
+        "responseEnd": 1641.9000000003725,
+        "duration": 1443.300000000745,
+        "transferSize": 64174,
+        "encodedBodySize": 63874,
+        "decodedBodySize": 200744,
+        "initiatorType": "link"
+      },
+      "font_requests": 18,
+      "font_encoded_bytes": 1069544
+    },
+    {
+      "label": "font",
+      "path": "web/evidence/2026-10-21/performance/font/report.json",
+      "sha256": "aabf2a13f35b248e714725f0086832ba87c7247829768372a0d59705188c8216",
+      "head": "6d917713c1e0d58c7ae769e9e01e5bb813e59bb0",
+      "dirty_runtime_source": true,
+      "stable": true,
+      "lcp_ms": [
+        2468,
+        2472,
+        2476,
+        2500,
+        2480
+      ],
+      "p75_ms": 2480,
+      "all_below_target": false,
+      "formal_acceptance": false,
+      "bundle_gzip_bytes": 159286,
+      "js_gzip_bytes": 85628,
+      "font_css": {
+        "path": "/fonts/fonts.css",
+        "start": 199.09999999962747,
+        "responseEnd": 1642,
+        "duration": 1442.9000000003725,
+        "transferSize": 63090,
+        "encodedBodySize": 62790,
+        "decodedBodySize": 187451,
+        "initiatorType": "link"
+      },
+      "font_requests": 18,
+      "font_encoded_bytes": 1069544
+    },
+    {
+      "label": "route",
+      "path": "web/evidence/2026-10-21/performance/route/report.json",
+      "sha256": "05799e938cfda91c60998666f0c6bbd0edc52f5fc3fd8e73d3947d95493f0511",
+      "head": "6d917713c1e0d58c7ae769e9e01e5bb813e59bb0",
+      "dirty_runtime_source": true,
+      "stable": true,
+      "lcp_ms": [
+        2412,
+        2400,
+        2404,
+        2416,
+        2440
+      ],
+      "p75_ms": 2416,
+      "all_below_target": true,
+      "formal_acceptance": false,
+      "bundle_gzip_bytes": 149360,
+      "js_gzip_bytes": 75703,
+      "font_css": {
+        "path": "/fonts/fonts.css",
+        "start": 189.40000000037253,
+        "responseEnd": 1581.0999999996275,
+        "duration": 1391.699999999255,
+        "transferSize": 63090,
+        "encodedBodySize": 62790,
+        "decodedBodySize": 187451,
+        "initiatorType": "link"
+      },
+      "font_requests": 18,
+      "font_encoded_bytes": 1069544
+    },
+    {
+      "label": "final",
+      "path": "web/evidence/2026-10-21/performance/final/report.json",
+      "sha256": "03b06c425de826227967c5e12a6404861e18f71360f9bea180b0a464f1db25ba",
+      "head": "0b41d34ae026e6119bee5b948cc370a06535fb8b",
+      "dirty_runtime_source": false,
+      "stable": true,
+      "lcp_ms": [
+        2436,
+        2432,
+        2400,
+        2440,
+        2392
+      ],
+      "p75_ms": 2436,
+      "all_below_target": true,
+      "formal_acceptance": true,
+      "bundle_gzip_bytes": 149360,
+      "js_gzip_bytes": 75703,
+      "font_css": {
+        "path": "/fonts/fonts.css",
+        "start": 194.59999999962747,
+        "responseEnd": 1578.7999999988824,
+        "duration": 1384.199999999255,
+        "transferSize": 63090,
+        "encodedBodySize": 62790,
+        "decodedBodySize": 187451,
+        "initiatorType": "link"
+      },
+      "font_requests": 18,
+      "font_encoded_bytes": 1069544
+    }
+  ],
+  "savings": {
+    "font_css_raw_bytes": 13293,
+    "font_css_encoded_bytes": 1084,
+    "route_js_gzip_bytes": 9925,
+    "overall_js_gzip_bytes": 9929,
+    "overall_static_closure_gzip_bytes": 11005
+  },
+  "limits": [
+    "Local emulated 4G, not physical device or deployment.",
+    "Browser cold cache; each batch reuses one synthetic owner and backend artifacts may be reused.",
+    "Sequential five-sample measurements, not a statistical guarantee; final maximum2440 leaves60ms margin.",
+    "Existing Unicode font binaries are unchanged; no newly generated glyph subset."
+  ]
+}
