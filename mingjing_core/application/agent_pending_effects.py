@@ -14,6 +14,7 @@ from mingjing_core.agent.context_types import BudgetResult, ContextBuild, Contex
 from mingjing_core.agent.journal import Journal, input_fingerprint
 from mingjing_core.agent.tools.interaction_parameters import CaseUpdate
 from mingjing_core.application.agent_current_sources import current_source_ids
+from mingjing_core.application.agent_tools_contracts import ToolResult
 from mingjing_core.application.agent_tools_memory import source_ref
 from mingjing_core.application.agent_tools_policy import source_policy, source_span
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict
@@ -267,3 +268,49 @@ def _attest(
     # The operation digest covers an old full payload, which cannot be reconstructed.
     # Exact operation, transaction time, normalized intent and current receipt bind causality.
     return dict(mutation["receipt"], _operation=operation)
+
+
+def completed_case_effect(
+    repo: PostgresRepository, run: Mapping[str, Any], sequence: int
+) -> tuple[ContextBuild, dict[str, Any], dict[str, Any]]:
+    """Attest an existing acknowledgement; never upgrade a started Journal step."""
+    if type(sequence) is not int or sequence < 1:
+        _reject()
+    with repo.transaction(run["owner"]) as connection:
+        current = repo._run(Journal(repo, run["owner"])._leased(connection, run))
+        rows = connection.execute(
+            sql.SQL(
+                "SELECT * FROM {} WHERE owner=%s AND run_id=%s AND epoch=%s AND seq<=%s ORDER BY seq FOR UPDATE"
+            ).format(repo.table("core_run_steps")),
+            (current["owner"], current["id"], current["retry_epoch"], sequence),
+        ).fetchall()
+        if not rows:
+            _reject()
+        step = rows[-1]
+        if (
+            step["seq"] != sequence
+            or (step["kind"], step["name"], step["status"]) != ("tool", "case_update", "completed")
+            or step["error_code"] is not None
+            or step["finished_at"] is None
+        ):
+            _reject()
+        operation = f"run:{current['id']}:e{current['retry_epoch']}:s{sequence}"
+        mutation = connection.execute(
+            sql.SQL("SELECT * FROM {} WHERE owner=%s AND operation='agent_case_update' AND request_key=%s").format(
+                repo.table("core_mutation_requests")
+            ),
+            (current["owner"], operation),
+        ).fetchone()
+        if mutation is None:
+            _reject()
+        try:
+            result = ToolResult.model_validate(step["output"])
+            base = _initial(repo, current)
+            args, _ = _original_call(repo, current, rows, base)
+            receipt = _attest(repo, connection, current, rows, mutation, operation)
+            actual = {key: value for key, value in receipt.items() if key != "_operation"}
+            if not result.ok or result.ends_turn or fingerprint(result.receipt) != fingerprint(actual):
+                _reject()
+        except (KeyError, TypeError, ValueError, ValidationError):
+            raise EvidenceError("已完成事项写入的持久证明结构无效") from None
+        return base, args, receipt
