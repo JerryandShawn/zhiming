@@ -52,10 +52,13 @@ def test_registry_order_visibility_and_flattened_schemas() -> None:
         assert "返回" in item.description and ("副作用" in item.description or "会" in item.description)
     assert [item.name for item in registry.specs(context(crisis=True))] == ["time_context", "memory_search"]
     assert all(
-        registry.read_only(item.name) or item.name == "ask_user" for item in registry.specs(context(incognito=True))
+        registry.read_only(item.name) or item.name in {"ask_user", "set_reminder"}
+        for item in registry.specs(context(incognito=True))
     )
     assert not registry.read_only("ask_user")
-    assert len(registry.specs(context(thread_id="incognito:one"))) == 7
+    private_names = {item.name for item in registry.specs(context(thread_id="incognito:one"))}
+    assert len(private_names) == 8 and "set_reminder" in private_names
+    assert not private_names.intersection({"memory_write", "note_write", "memory_forget", "schedule_followup"})
 
 
 def test_registry_refuses_extra_authority_parameters_and_hidden_tools() -> None:

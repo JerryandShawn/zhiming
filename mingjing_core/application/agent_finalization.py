@@ -16,7 +16,9 @@ from mingjing_core.application.agent_commit_versions import (
     reconcile_versions,
 )
 from mingjing_core.application.agent_review_proofs import ReviewProofStore
+from mingjing_core.application.agent_thread_scope import assert_thread, thread_id
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
 from mingjing_core.repositories.dependencies import entity_dependency
 from mingjing_core.repositories.postgres import PostgresRepository
@@ -39,9 +41,7 @@ class AgentFinalizer:
         if row["deadline_at"] is not None and row["deadline_at"] <= self.clock.now():
             raise LeaseConflict("本轮已超过执行时限")
         self.repo.assert_scope(run["owner"], row["subject"])
-        thread = row["thread_id"] or row["request"].get("thread_id") or "life:" + row["subject"]
-        if thread != "life:" + row["subject"] or row["request"].get("incognito"):
-            raise EvidenceError("无痕提交接线尚未完成")
+        assert_thread(self.repo, row)
         return self.repo._run(row)
 
     def _asked(self, connection: Any, run: Mapping[str, Any], asked: dict[str, Any] | None) -> None:
@@ -132,20 +132,7 @@ class AgentFinalizer:
                 ReviewProofStore(self.repo).verify(review, current, checked.text)
             self._aliases(current, alias_map, checked.cited_keys, effective)
             source = self._source(current, effective)
-            message = self.memory.record_assistant_message(
-                owner,
-                current["subject"],
-                "life:" + current["subject"],
-                checked.text,
-                run_id=current["id"],
-                channel=source["channel"],
-                at=self.clock.now(),
-                used_fact_ids=checked.used_fact_ids,
-                used_claim_ids=checked.used_claim_ids,
-                source_ids=[key[8:] for key in effective if key.startswith("message:")],
-                case_ids=current["request"].get("case_ids", []),
-                conversation_id=current["request"].get("conversation_id", "shared"),
-            )
+            message = self._message(current, source, checked, effective)
             envelope = build_envelope(
                 current, checked, message_id=message["id"], receipts=receipts, asked=asked, usage=usage, review=review
             )
@@ -157,3 +144,23 @@ class AgentFinalizer:
                 (Jsonb(envelope), Jsonb(effective), owner, current["id"]),
             )
             return envelope
+
+    def _message(self, current, source, checked, effective):
+        if thread_id(current).startswith("incognito:"):
+            return ThreadService(self.repo, clock=self.clock).record_private_reply(
+                current["owner"], current, checked.text
+            )
+        return self.memory.record_assistant_message(
+            current["owner"],
+            current["subject"],
+            "life:" + current["subject"],
+            checked.text,
+            run_id=current["id"],
+            channel=source["channel"],
+            at=self.clock.now(),
+            used_fact_ids=checked.used_fact_ids,
+            used_claim_ids=checked.used_claim_ids,
+            source_ids=[key[8:] for key in effective if key.startswith("message:")],
+            case_ids=current["request"].get("case_ids", []),
+            conversation_id=current["request"].get("conversation_id", "shared"),
+        )

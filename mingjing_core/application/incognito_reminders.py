@@ -134,7 +134,16 @@ class IncognitoReminderService:
                 owner,
                 "thread",
                 thread["id"],
-                {"reminder_confirmation": dict(pending, state=state, reminder_id=ident)},
+                {
+                    "reminder_confirmation": dict(
+                        pending,
+                        state=state,
+                        reminder_id=ident,
+                        answer_source_id=source["id"],
+                        answer_revision=source["revision"],
+                        confirmation_run_id=current["id"],
+                    )
+                },
                 expected_revision=thread["revision"],
             )
             return {"write_status": state, "id": ident, "kind": "reminder"}

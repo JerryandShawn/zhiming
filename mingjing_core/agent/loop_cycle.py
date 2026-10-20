@@ -11,6 +11,7 @@ from pydantic import ValidationError
 
 from mingjing_core.application.agent_commit_versions import reconcile_versions
 from mingjing_core.application.agent_model_calls import RequestLedger
+from mingjing_core.application.agent_thread_scope import thread_id
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult
 from mingjing_core.domain.contracts import CoreError, EvidenceError, RevisionConflict
 from mingjing_core.models.errors import ModelProtocolError, ModelUnavailable
@@ -97,7 +98,7 @@ class LoopCycle:
         if step is not None:
             return ToolContext.from_step(
                 step,
-                thread_id="life:" + self.run["subject"],
+                thread_id=thread_id(self.run),
                 source_ids=(self.run["request"]["source_message_id"],),
                 case_ids=tuple(self.run["request"].get("case_ids", [])),
                 source_versions=self.frozen.injected_versions,
@@ -113,7 +114,7 @@ class LoopCycle:
             self.run["lease_token"],
             "model",
             "0" * 64,
-            "life:" + self.run["subject"],
+            thread_id(self.run),
             source_ids=(self.run["request"]["source_message_id"],),
             case_ids=tuple(self.run["request"].get("case_ids", [])),
             source_versions=self.frozen.injected_versions,
@@ -280,6 +281,10 @@ class LoopCycle:
                     "summary": "已完成" if result.ok else "这一步尚未完成",
                 },
             )
+        if call.name == "set_reminder" and result.data.get("privacy_confirmation"):
+            from .private_confirmation import ask_privacy
+
+            result = ask_privacy(self, result.data["privacy_confirmation"])
         return result, "repeated_tool" if repeated and not ended else None
 
     def revise(self, instructions: str) -> LoopOutcome:

@@ -65,8 +65,9 @@ def interaction_definitions() -> tuple[ToolDefinition, ...]:
         ToolDefinition(
             "set_reminder",
             SetReminder,
-            "仅当用户本轮明确要求提醒时使用。提醒文本须来自原话，绝对日期和当地时分须确认；缺时间先问，无痕不可写。"
+            "仅当用户本轮明确要求提醒时使用。提醒文本须来自原话，绝对日期和当地时分须确认；缺时间先问，无痕需要单独保存确认。"
             "返回本地提醒回执；会保存due_at和来源，支持幂等，不直接发送消息。",
             False,
+            private_allowed=True,
         ),
     )

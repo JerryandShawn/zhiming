@@ -10,7 +10,8 @@ from psycopg.types.json import Jsonb
 
 from mingjing_core.agent.prompts import PromptBundle
 from mingjing_core.application.agent_regeneration import lease_hash
-from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
+from mingjing_core.application.agent_thread_scope import assert_thread
+from mingjing_core.domain.contracts import LeaseConflict, ScopeError
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.timekit.clock import get_clock
 
@@ -29,10 +30,7 @@ class RuntimeState:
             if row["deadline_at"] is not None and row["deadline_at"] <= get_clock().now():
                 raise LeaseConflict("本轮已超过执行时限")
             self.repo.assert_scope(owner, row["subject"])
-            if (row["thread_id"] or "life:" + row["subject"]) != "life:" + row["subject"] or row["request"].get(
-                "incognito"
-            ):
-                raise EvidenceError("无痕运行接线尚未完成")
+            assert_thread(self.repo, row)
             return row
 
     def metadata(self, run: dict[str, Any], **values: Any) -> None:
