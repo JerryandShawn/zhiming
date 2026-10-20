@@ -1,6 +1,7 @@
 """Sequential offline module regression; every round must start in Beijing minutes 45–59."""
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -28,6 +29,7 @@ SUITES = (
     "scheduling",
     "organize_v2",
     "p9_v2",
+    "timeparse_extended",
 )
 
 
@@ -45,12 +47,43 @@ def environment() -> dict[str, str]:
     values = dict(os.environ)
     for name in ("KIMI_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY", "LANGSMITH_API_KEY"):
         values.pop(name, None)
-    values.update(PYTHONDONTWRITEBYTECODE="1", LANGCHAIN_TRACING_V2="false", LANGSMITH_TRACING="false")
+    values.update(
+        PYTHONDONTWRITEBYTECODE="1",
+        LANGCHAIN_TRACING_V2="false",
+        LANGSMITH_TRACING="false",
+        PYTHONUTF8="1",
+        PYTHONIOENCODING="utf-8",
+    )
     values["TEMP"] = values["TMP"] = str(ROOT / "private/mod-week/tmp")
     return values
 
 
+def source_snapshot() -> dict[str, str]:
+    """Hash only source/tests, never reopen B or collect private/model-data files."""
+    tracked = subprocess.run(
+        ["git", "ls-files", "-z", "--", "mingjing_core"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        check=True,
+    ).stdout.split("\0")
+    paths = {ROOT / value for value in tracked if value.endswith(".py")}
+    paths.update((ROOT / "mingjing_core/timeparse").glob("*.py"))
+    for suite in SUITES:
+        paths.update((ROOT / "tests/v4" / suite).rglob("*.py"))
+    paths.add(Path(__file__).resolve())
+    if "cross_modules" in SUITES:
+        paths.add(ROOT / "mingjing_core/memory2/event_time_extended_v2.py")
+    return {
+        path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted(paths)
+        if path.is_file() and "__pycache__" not in path.parts
+    }
+
+
 def run_round(clock: Clock, index: int, stamp: str) -> dict:
+    sources = source_snapshot()
     started = window_time(clock)
     temporary = ROOT / "private/mod-week/tmp" / f"completed-{stamp}-{index}"
     if not temporary.resolve().is_relative_to((ROOT / "private/mod-week/tmp").resolve()):
@@ -73,12 +106,19 @@ def run_round(clock: Clock, index: int, stamp: str) -> dict:
         timeout=600,
         check=False,
     )
+    current_sources = source_snapshot()
+    drift = sorted(
+        path for path in sources.keys() | current_sources.keys() if sources.get(path) != current_sources.get(path)
+    )
     return {
         "round": index,
         "started_at": started.isoformat(),
         "finished_at": clock.now().astimezone(ZONE).isoformat(),
         "command": command,
-        "exit_code": result.returncode,
+        "exit_code": result.returncode or (2 if drift else 0),
+        "pytest_exit_code": result.returncode,
+        "source_files": sources,
+        "source_drift": drift,
         "stdout": result.stdout,
         "stderr": result.stderr,
     }
@@ -101,7 +141,11 @@ def main() -> None:
         print(current["stdout"].splitlines()[-1] if current["stdout"].splitlines() else "no_test_summary", flush=True)
         if current["exit_code"]:
             break
-    report = {"scope": "completed offline module suites Q1-Q6 only; no PG/live model/HTTP", "rounds": rounds}
+    report = {
+        "scope": "completed offline module suites explicitly listed; no PG/live model/HTTP",
+        "suites": SUITES,
+        "rounds": rounds,
+    }
     with output.open("x", encoding="utf-8", newline="\n") as handle:
         json.dump(report, handle, ensure_ascii=False, indent=2)
         handle.write("\n")

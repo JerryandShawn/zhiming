@@ -1,0 +1,57 @@
+{
+  "observed_at": "2026-10-21T01:06:25.764435+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "mixed_profile_absolutize_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.13327899999967485,
+        0.13462129999970784,
+        0.13415660000100615,
+        0.13729020000027958,
+        0.13801059999968857
+      ],
+      "median_seconds": 0.13462129999970784,
+      "max_seconds": 0.13801059999968857,
+      "separate_tracemalloc_peak_bytes": 38566
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/timeparse/__init__.py": "d0c2cae835cee1e91eed9947f2c030fe7d330e16b86c8e8b31ec2892873163c9",
+    "mingjing_core/timeparse/calendar_expressions.py": "bc92857ba122de657c4f8c33fbbf1762a54891e29ff7d8dd7c8b7e54737df3ef",
+    "mingjing_core/timeparse/calendar_helpers.py": "b40c02f378c125312a8b2e81bf95957d50181e196ee32b33c694690f7881ebb0",
+    "mingjing_core/timeparse/calendar_holidays.py": "350f4ced1d03eb848256f26962f4cfff588e152eea88bf97ba0d46c2aa29c98b",
+    "mingjing_core/timeparse/calendar_lunar.py": "1d7360f931e277fa248d9a077abcc4154f162a5e40b415dc37947ba959d74a8d",
+    "mingjing_core/timeparse/calendar_lunar_cycles.py": "0775b3fb91ac7fe15f75d16f52ae12a6695fcfb70124c3764530050b16e0e25a",
+    "mingjing_core/timeparse/calendar_port.py": "c907ad42628e008f9a9ab8277b69e26dd0c61fa94ddd2b9e0dc707f642e3b5a6",
+    "mingjing_core/timeparse/calendar_terms.py": "0d3bdad0e9981669fc9bf3dd2516d2edf56ac0d4d14f849c96f173083879f786",
+    "mingjing_core/timeparse/clocks.py": "d250c248316ac4cdb5ceac5b87f62124b2508ab5470c0c8e3f1c7df03486c38e",
+    "mingjing_core/timeparse/contracts.py": "2e1b344dfd6fea2d82c67b50d7344d08c75ff078115b1b266a763d8ceb1e64b5",
+    "mingjing_core/timeparse/english_absolute_v2.py": "b4e5bc8c03656329f2404d3e4b55629d85a0690a49e197f9751fe1ecee7e66d3",
+    "mingjing_core/timeparse/english_calendar_v2.py": "8a0e22ca1dbfca9b1269b3e540f06d98312501adcc1e14055ee3040a8b066f6a",
+    "mingjing_core/timeparse/english_clocks_v2.py": "1999cbcafaac131eab5bfdba55f9ae3f9c58efc189c0aec6f00abaf086124975",
+    "mingjing_core/timeparse/english_dates_v2.py": "95bac0a839d16fd404f11e1613ccac472cb29a2bc2e0a1dd736ecb254644cd4e",
+    "mingjing_core/timeparse/english_helpers_v2.py": "060311b03155f5a85df83996f22e4dd9ddfebd33e79fc7bc4390052ecc3ded32",
+    "mingjing_core/timeparse/english_relative_v2.py": "b7e873da1f7570be1fb6944312b26baa35f53b59ffdc2ef358227d2c6b1db826",
+    "mingjing_core/timeparse/extended_v2.py": "8fa2a44ca84f927d99e586ce566b9e7778629e30ac02de8996d27f883434eb78",
+    "mingjing_core/timeparse/months.py": "9e765635612552d6978f2cb75e185b7fa571afcef3d259617a28e6498cfab6e0",
+    "mingjing_core/timeparse/numerals.py": "d87fc3ff15685b5dd4f904f22098cba97c81a9709fab07503f7ca46c6b24e61e",
+    "mingjing_core/timeparse/parser.py": "24f2948163d412c1202baf9014d56fe15536f7b85bb4ed50a2ca5b516f34198b",
+    "mingjing_core/timeparse/profile_calendar_v2.py": "07717ed6e3c9a4a361817246b76b08d5283081961cfae33eee0efee8f9b91e98",
+    "mingjing_core/timeparse/profile_contracts_v2.py": "68dedcce1c7a08df6c15dc6eab92392e266a857234e841366fc8ca744b5cba52",
+    "mingjing_core/timeparse/profile_dates_v2.py": "8157bc1d405a37d351902124527f096201da29523eed45751f9e83577ad3c9c7",
+    "mingjing_core/timeparse/profile_patterns_v2.py": "390b617915db284f974a1100ef2186397f857862203b46ae376dd466b0165800",
+    "mingjing_core/timeparse/recurrence.py": "fa2de7c01b8bdcbed98cfa4eb4d08555c94cad961ae272205822197a51700747",
+    "mingjing_core/timeparse/relative.py": "d302998f93b53e4469c794555fb733160e1e00498d72764c23438845a7f22435",
+    "mingjing_core/timeparse/weekdays.py": "e8fae746bad39bc4b8877fbea2afd8db040a85e01f409b1392af98366743f43d",
+    "tools/mod_week/benchmark_timeparse_extended.py": "810317e22bb54dab6e40d0f49f6c2cbe7a1b1d05924cfb7e73bd5602dd3f1bbe"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}
