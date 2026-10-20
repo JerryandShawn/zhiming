@@ -31,6 +31,7 @@ const PreviewNotice = lazy(() => import('./spaces/PreviewNotice'));
 const ComponentNotice = lazy(() => import('./demos/ComponentNotice'));
 const ChartDemo = lazy(() => import('./charts/ChartDemo'));
 const NightApp = lazy(() => import('./night/NightApp'));
+const ToolsDemo = lazy(() => import('./tools/ToolsDemo'));
 const aliases: Record<string, string> = {
   memory: 'me?section=memory',
   timeline: 'me?section=timeline',
@@ -50,6 +51,7 @@ export default function App() {
   if (aliases[name]) route = aliases[name];
   const spacesPreview = new URLSearchParams(location.search).get('spaces') === 'demo';
   const componentsPreview = new URLSearchParams(location.search).get('components') === 'demo';
+  const toolsPreview = new URLSearchParams(location.search).get('tools') === 'demo';
   const routeName = route.split(/[/?]/)[0];
   const pageName =
     routeName === 'reports'
@@ -61,22 +63,25 @@ export default function App() {
   const preview =
     spacesPreview ||
     componentsPreview ||
+    toolsPreview ||
     new URLSearchParams(location.search).get('preview') === '1' ||
     page === '__design';
   const Component =
-    spacesPreview && routeName === 'organize-review'
-      ? OrganizeReviewPage
-      : spacesPreview && routeName === 'organize'
-        ? OrganizePage
-        : spacesPreview && page === 'chat'
-          ? SpacesChat
-          : spacesPreview && page === 'me'
-            ? SpacesMe
-            : componentsPreview && page === 'chart'
-              ? ChartDemo
-              : preview
-                ? pages[page]
-                : livePages[page as keyof typeof livePages];
+    toolsPreview && page === 'chart'
+      ? ToolsDemo
+      : spacesPreview && routeName === 'organize-review'
+        ? OrganizeReviewPage
+        : spacesPreview && routeName === 'organize'
+          ? OrganizePage
+          : spacesPreview && page === 'chat'
+            ? SpacesChat
+            : spacesPreview && page === 'me'
+              ? SpacesMe
+              : componentsPreview && page === 'chart'
+                ? ChartDemo
+                : preview
+                  ? pages[page]
+                  : livePages[page as keyof typeof livePages];
   useEffect(() => {
     if (aliases[name]) location.replace(`#/${route}`);
     window.scrollTo(0, 0);
@@ -88,7 +93,7 @@ export default function App() {
       </Suspense>
     );
   const content = (
-    <Layout page={page} preview={preview && !componentsPreview} spacesPreview={spacesPreview}>
+    <Layout page={page} preview={preview && !componentsPreview && !toolsPreview} spacesPreview={spacesPreview}>
       <Suspense
         key={spacesPreview && page === 'chat' ? 'spaces-chat' : route}
         fallback={
