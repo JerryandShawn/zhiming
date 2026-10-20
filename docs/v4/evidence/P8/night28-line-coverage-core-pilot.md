@@ -63,6 +63,10 @@ CLI：`python -m mingjing_core.adapters.charts.benchmarks.line_coverage_run`，�
 
 ## 后续扩大采样方案（本轮未执行）
 
+发布装配时，七份JSON仅改为每文件/记录一行的紧凑序列化，592780文本行压到4124行。
+逐份解析对象与嵌入摘要完全相同；原序列化保存在本机private/p8-validation/line-evidence-original-serialization。
+没有删除分母、零命中文件、计数、历史结果或来源，也没有重新运行或扩大采样。
+
 U12 等源提交后，当前固定 6c collector 会因所选 Python 改变而诚实拒绝。这时可对旧回执继续作 Git 固定来源的历史合并验证，**不能在新 HEAD 自称已重跑 6c 或已覆盖当前全部代码**。
 
 下一轮须明确新完整 40 位观测提交与分母基线，生成新 manifest 和新的文件名；工具不自动提升 commit、不修改旧报告。先审计新增/删除/排除文件、分母范围和来源 hash，再分别批准 Core 的确切节点及 Charts 的原生节点/独立采样器。Charts 不得假定继承 Core trace，不改 worker/CI/依赖来偷接追踪。分别观测开销、遵守进程预算和整点错峰后才扩大；仅在 hash 和完整行集合一致时合并，保留每运行时来源及缺口。若目标是“全部自身代码”，须先另立可审阅的完整范围清单，本轮固定 changed-file 范围不得冒充该目标。
