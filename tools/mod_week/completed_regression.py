@@ -141,6 +141,10 @@ def material_paths() -> set[Path]:
         paths.add(ROOT / "tools/eval/fixtures/mod_20261021/final_pipeline_synthetic.json")
     if "reflection_projection_exp" in SUITES:
         paths.add(ROOT / "tools/eval/fixtures/mod_20261021/reflection_projection_vectors_synthetic.json")
+        paths.update(
+            ROOT / "tools/mod_week" / name
+            for name in ("benchmark_reflection_projection_RPF01.py", "benchmark_reflection_v3.py", "performance.py")
+        )
     return paths
 
 

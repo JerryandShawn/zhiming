@@ -13,6 +13,9 @@ from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
+if sys.flags.optimize:
+    raise RuntimeError("该离线测量工具需要标准解释器模式，请关闭优化模式")
+
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 

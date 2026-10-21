@@ -140,6 +140,8 @@ def _validate_payload(state: StreamState, evidence: FreshnessEvidence) -> None:
             validated_payload(raw)
             if raw.get("meta", {}).get("core_run", {}).get("run_id") != state.scope.run_id:
                 raise StreamError("validated_run_mismatch")
+            if raw.get("meta", {}).get("subject_id") != state.scope.subject_id:
+                raise StreamError("validated_subject_mismatch")
     except StreamError:
         raise
     except Exception:
