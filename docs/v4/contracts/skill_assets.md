@@ -10,6 +10,13 @@
 每包有一个 `SKILL.md`，当前采用两个单行 frontmatter 字段 `name`、`description`。
 本地检查要求它们与 `catalog.json` 一致，章节注册、文件与链接一一对应，不接受重复键或未登记章节。
 这只是项目使用的有限 frontmatter 子集，不实现任意 YAML 解析器。
+此处重复键拒绝是开发期资产检查；只读loader并未宣称对任意外部YAML/JSON执行通用验证。
+
+2026-10-21另行读取[官方Agent Skills规范](https://agentskills.io/specification)，
+对五份实际入口核对目录名、两个必填字段及长度、正文和直接相对引用；有限检查全部符合本项目使用的子集。
+官方参考验证器未安装、未执行；可选字段未使用，实际模型token与客户端激活仍未验证。
+具体清单与文件hash见[官方格式只读复核](../evidence/P8/week-oct21-agent-skills-spec-review.md)，
+不将其称为全规范认证或主线Agent端到端验收。
 
 [skill_assets.schema.json](skill_assets.schema.json) 是目录的 JSON Schema 2020-12 本地档案。
 它检查来源标题、定位、HTTPS 地址形状、问题类型、字段 Pointer、可选能力、额外根、状态和规则ID等结构。

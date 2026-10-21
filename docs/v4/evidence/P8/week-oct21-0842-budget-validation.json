@@ -1,0 +1,118 @@
+{
+  "version": "p8-budget-contract-milestone-validation-v1",
+  "recorded_at_beijing": "2026-10-21T08:50:32.3085236+08:00",
+  "parent_commit": "e0b18e0adbac886d4a999280f9dd675281c158b5",
+  "started_at_beijing": "2026-10-21T08:48:14.298657+08:00",
+  "completed_at_beijing": "2026-10-21T08:48:27.377359+08:00",
+  "selected_regression": {
+    "passed": 302,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_seconds": 8.7,
+    "junit_seconds": 8.677,
+    "modules": [
+      {
+        "module": "tests.v4.test_p8_core_coverage_job",
+        "tests": 56
+      },
+      {
+        "module": "tests.v4.test_p8_core_coverage_supervisor",
+        "tests": 26
+      },
+      {
+        "module": "tests.v4.test_p8_night28_api_review",
+        "tests": 36
+      },
+      {
+        "module": "tests.v4.test_p8_skill_assets_contract",
+        "tests": 23
+      },
+      {
+        "module": "tests.v4.test_p8_skill_binding_matrix",
+        "tests": 77
+      },
+      {
+        "module": "tests.v4.test_p8_skill_budget_boundary",
+        "tests": 8
+      },
+      {
+        "module": "tests.v4.test_p8_synastry",
+        "tests": 21
+      },
+      {
+        "module": "tests.v4.test_p8_synastry_contract",
+        "tests": 24
+      },
+      {
+        "module": "tests.v4.test_p8_synastry_latitude_contract",
+        "tests": 31
+      }
+    ],
+    "raw_log": "week-oct21-budget-contract-302.txt",
+    "junit": "week-oct21-budget-contract-302.xml"
+  },
+  "supervisor": {
+    "pure_mock_tests": 82,
+    "new_tests": 27,
+    "earlier_job_and_tarot_aggregate": 225,
+    "aggregate_has_overlap": true,
+    "empty_native_job": "week-oct21-0846-empty-job-budget.json",
+    "actual_supervisor_runs": 0,
+    "collector_runs": 0,
+    "trace_runs": 0,
+    "acceptance": false
+  },
+  "process_budget": {
+    "mechanism": "Windows Job ACTIVE_PROCESS_LIMIT=4 including this inline coordinator and all descendants; no BREAKAWAY flags",
+    "configured_limit": 4,
+    "active_before": 1,
+    "active_after": 1
+  },
+  "single_job_includes_tests_then_style": true,
+  "chart_launch_transport": "original configured Charts venv wrapper",
+  "tested_source_lf_sha256": {
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_job.py": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+    "tests/v4/test_p8_core_coverage_job.py": "8578f7a74aa9c74f6a4f5fa1f209719c34b9925dabc7043eb36d75dbb321e2ea",
+    "tests/v4/test_p8_synastry_latitude_contract.py": "1248ae083fd6a699d536a2756618a534a84677540e48506a9b19c87cc889463d",
+    "docs/v4/contracts/synastry.schema.json": "625d261436963060f901fb2335078f97c6ab3fa57284a92288d13a9ea44424dc"
+  },
+  "validation_harness_lf_sha256": "9afbe781dff2873bf04e89803d30b1f462266f98fd156835dbd593d8bca09d4e",
+  "source_snapshots": "week-oct21-budget-contract-process.json",
+  "style": {
+    "python_files": 230,
+    "protected_unchanged": 141,
+    "ruff": "passed",
+    "format": "passed",
+    "secret_pattern": "passed"
+  },
+  "earlier_attempts": [
+    {
+      "result": "style_check_refused",
+      "observed_output": "Would reformat tests/v4/test_p8_synastry_latitude_contract.py; 1 file would be reformatted, 202 files already formatted",
+      "later_action": "formatter applied then all 302 tests and full style reran"
+    },
+    {
+      "result": "private_formatter_source_guard_refused",
+      "formatter_command_exit": 0,
+      "transport_exit": 1,
+      "reason": "intended one-file formatting changed the project snapshot; not counted as a passing validation",
+      "raw_record": "week-oct21-format-source-change-refusal.json"
+    }
+  ],
+  "historical_full": {
+    "source_commit": "0f1d6e676259b961819de4da5ea3f343d58dbe98",
+    "direct_transport_passed": 3010,
+    "original_wrapper_passed": 3008,
+    "original_wrapper_failed": 2,
+    "applies_to_new_increment": false
+  },
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "feishu_requests": 0,
+  "limitations": [
+    "Selected regression and empty Job do not establish actual coverage, full supervisor lifecycle, global original wrapper repair or current full-suite acceptance.",
+    "No full regression started outside the permitted Beijing minute15-29 window.",
+    "Official Agent Skills review is finite format inspection, not official validator execution, tokenizer measurement or client activation."
+  ]
+}

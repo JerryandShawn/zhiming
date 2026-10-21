@@ -14,6 +14,9 @@ class API:
         self.count = 1
         self.last_error = 18
         self.thread_rows = [(123, 321)]
+        self.flags = 0x2008
+        self.limit = 3
+        self.returned_size = None
 
     def _result(self, name, result):
         self.calls.append(name)
@@ -23,7 +26,9 @@ class API:
         return self._result("create", 10)
 
     def SetInformationJobObject(self, handle, kind, value, size):
-        assert handle == 10 and kind == 9 and value._obj.basic.flags == 0x2000
+        assert handle == 10 and kind == 9
+        assert value._obj.basic.flags & 0x2000
+        assert value._obj.basic.flags == 0x2008 and value._obj.basic.active == 3
         return self._result("limits", 1)
 
     def GetProcessId(self, handle):
@@ -33,6 +38,15 @@ class API:
         return self._result("assign", 1)
 
     def QueryInformationJobObject(self, handle, kind, result, size, length):
+        if kind == 9:
+            assert handle == 10 and isinstance(result._obj, native.Extended)
+            assert size == native.ctypes.sizeof(native.Extended)
+            result._obj.basic.flags = self.flags
+            result._obj.basic.active = self.limit
+            length._obj.value = (
+                size if self.returned_size is None else self.returned_size
+            )
+            return self._result("limits_query", 1)
         assert kind == 1
         result._obj.active = self.count
         return self._result("accounting", 1)
@@ -241,3 +255,94 @@ def test_constructor_cleanup_failure_keeps_original_failure_context(setup):
     with pytest.raises(native.JobFailure, match="job_handle_close_failed") as result:
         native.WindowsJob()
     assert result.value.__context__.code == "job_kill_on_close_failed"
+
+
+def test_fixed_limits_read_back_before_assign_and_resume(setup):
+    job = native.WindowsJob()
+    assert setup.calls[-1] == "limits_query"
+    setup.calls.clear()
+    job.assign(child())
+    assert setup.calls.index("limits_query") < setup.calls.index("assign")
+    setup.calls.clear()
+    job.resume(child())
+    assert setup.calls.index("limits_query") < setup.calls.index("resume")
+
+
+@pytest.mark.parametrize("flags", [0, 0x8, 0x2000, 0x2808, 0x3008])
+def test_mismatched_or_breakaway_limits_refuse_construction(setup, flags):
+    setup.flags = flags
+    with pytest.raises(native.JobFailure, match="job_limits_configuration_mismatch"):
+        native.WindowsJob()
+    assert "close" in setup.calls and "assign" not in setup.calls
+
+
+@pytest.mark.parametrize("limit", [0, 1, 2, 4, 0xFFFFFFFF])
+def test_nonfixed_process_limit_refuses_construction(setup, limit):
+    setup.limit = limit
+    with pytest.raises(native.JobFailure, match="job_limits_configuration_mismatch"):
+        native.WindowsJob()
+    assert "close" in setup.calls
+
+
+@pytest.mark.parametrize("size", [0, 1, 8])
+def test_incomplete_extended_query_size_refused(setup, size):
+    setup.returned_size = size
+    with pytest.raises(native.JobFailure, match="job_limits_size_mismatch"):
+        native.WindowsJob()
+    assert "close" in setup.calls
+
+
+def test_limits_query_failure_closes_constructor_handle(setup):
+    setup.failed.add("limits_query")
+    with pytest.raises(native.JobFailure, match="job_limits_query_failed"):
+        native.WindowsJob()
+    assert "close" in setup.calls
+
+
+@pytest.mark.parametrize("operation", ["assign", "resume"])
+@pytest.mark.parametrize("change", ["flags", "limit", "query", "size"])
+def test_limits_drift_refused_before_child_effects(setup, operation, change):
+    job = native.WindowsJob()
+    setup.calls.clear()
+    if change == "flags":
+        setup.flags |= 0x800
+    elif change == "limit":
+        setup.limit = 4
+    elif change == "query":
+        setup.failed.add("limits_query")
+    else:
+        setup.returned_size = 0
+    with pytest.raises(native.JobFailure, match="job_limits_"):
+        getattr(job, operation)(child())
+    assert "assign" not in setup.calls and "resume" not in setup.calls
+
+
+@pytest.mark.parametrize("count", [0, 2, 3])
+def test_nonsentinel_suspend_count_has_no_stale_winerror(setup, monkeypatch, count):
+    job = native.WindowsJob()
+    setup.last_error = 1234
+    monkeypatch.setattr(setup, "ResumeThread", lambda handle: count)
+    with pytest.raises(native.JobFailure) as result:
+        job.resume(child())
+    assert result.value.code == "primary_thread_resume_count_invalid"
+    assert result.value.winerror == 0
+
+
+def test_resume_failure_sentinel_preserves_last_error(setup, monkeypatch):
+    job = native.WindowsJob()
+    original_close = setup.CloseHandle
+
+    def resume(handle):
+        setup.last_error = 1234
+        return 0xFFFFFFFF
+
+    def close(handle):
+        setup.last_error = 9999
+        return original_close(handle)
+
+    monkeypatch.setattr(setup, "ResumeThread", resume)
+    monkeypatch.setattr(setup, "CloseHandle", close)
+    with pytest.raises(native.JobFailure) as result:
+        job.resume(child())
+    assert result.value.code == "primary_thread_resume_failed"
+    assert result.value.winerror == 1234

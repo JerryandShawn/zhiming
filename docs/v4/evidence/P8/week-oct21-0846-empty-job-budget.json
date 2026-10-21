@@ -1,0 +1,27 @@
+{
+  "version": "p8-empty-native-job-budget-v1",
+  "observed_at_beijing": "2026-10-21T08:43:00.359787+08:00",
+  "outer_coordinator_job": {
+    "active_limit": 4,
+    "flags": 8,
+    "active": 1
+  },
+  "inner_empty_job": {
+    "active_limit": 3,
+    "flags": 8200,
+    "returned_bytes": 144,
+    "expected_bytes": 144,
+    "active": 0
+  },
+  "job_source_lf_sha256": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+  "probe_source_lf_sha256": "93581205949994760762609b6372faece437b15169c501ae7a2fcd504db11c34",
+  "child_processes_created": 0,
+  "actual_supervisor_runs": 0,
+  "collector_runs": 0,
+  "trace_runs": 0,
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "limitations": [
+    "Empty Job native configuration only; not child cap exhaustion, cleanup, supervisor lifecycle or coverage acceptance."
+  ]
+}

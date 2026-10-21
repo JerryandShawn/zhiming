@@ -8,6 +8,9 @@ import subprocess
 from ctypes import wintypes as w
 from time import monotonic, sleep
 
+JOB_FLAGS = 0x2008  # KILL_ON_JOB_CLOSE | ACTIVE_PROCESS; no breakaway.
+ACTIVE_PROCESS_LIMIT = 3  # Root must separately enforce its global cap of four.
+
 
 class JobFailure(RuntimeError):
     def __init__(self, code: str, winerror: int = 0) -> None:
@@ -101,15 +104,15 @@ class WindowsJob:
             self._fail("job_create_failed")
         try:
             limits = Extended()
-            limits.basic.flags = (
-                0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE; no breakaway.
-            )
+            limits.basic.flags = JOB_FLAGS
+            limits.basic.active = ACTIVE_PROCESS_LIMIT
             self._check(
                 self.api.SetInformationJobObject(
                     self.handle, 9, ctypes.byref(limits), ctypes.sizeof(limits)
                 ),
                 "job_kill_on_close_failed",
             )
+            self.verify_limits()
         except BaseException:
             self.close()
             raise
@@ -131,7 +134,26 @@ class WindowsJob:
         )
         return owner == child.pid
 
+    def verify_limits(self) -> None:
+        limits = Extended()
+        returned = w.DWORD()
+        size = ctypes.sizeof(limits)
+        self._check(
+            self.api.QueryInformationJobObject(
+                self.handle, 9, ctypes.byref(limits), size, ctypes.byref(returned)
+            ),
+            "job_limits_query_failed",
+        )
+        if returned.value != size:
+            raise JobFailure("job_limits_size_mismatch")
+        if (
+            limits.basic.flags != JOB_FLAGS
+            or limits.basic.active != ACTIVE_PROCESS_LIMIT
+        ):
+            raise JobFailure("job_limits_configuration_mismatch")
+
     def assign(self, child: subprocess.Popen) -> None:
+        self.verify_limits()
         if not self.owns(child) or child.poll() is not None:
             raise JobFailure("suspended_child_ownership_failed")
         self._check(
@@ -173,6 +195,7 @@ class WindowsJob:
             self._check(self.api.CloseHandle(snapshot), "thread_snapshot_close_failed")
 
     def resume(self, child: subprocess.Popen) -> None:
+        self.verify_limits()
         if not self.owns(child) or self.active() != 1:
             raise JobFailure("resume_ownership_failed")
         threads = self._threads(child.pid)
@@ -184,8 +207,11 @@ class WindowsJob:
         try:
             if self.api.GetProcessIdOfThread(thread) != child.pid:
                 raise JobFailure("primary_thread_owner_mismatch")
-            if self.api.ResumeThread(thread) != 1:
-                self._fail("primary_thread_resume_count_invalid")
+            previous = self.api.ResumeThread(thread)
+            if previous == 0xFFFFFFFF:
+                self._fail("primary_thread_resume_failed")
+            if previous != 1:
+                raise JobFailure("primary_thread_resume_count_invalid")
         finally:
             self._check(self.api.CloseHandle(thread), "primary_thread_close_failed")
 

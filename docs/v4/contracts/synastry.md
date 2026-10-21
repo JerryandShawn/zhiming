@@ -51,9 +51,17 @@ as_of_date是调用方通过Clock明确给出的北京时间日期，不从电�
 日期是严格ASCII ISO格式，支持1901–2099，不能早于任一人物出生日期。
 orb_degrees为有限数值，0至10度（含边界），默认6度；bool、NaN、Infinity均不能作为数值。
 `birth.clock_basis` 为clock、standard或unknown；当前只接受报告准确时分的precision=reported。
+`birth.place`要求经度lon和IANA时区tz；纬度lat可选，提供时仍须为-90至90的有限数值，拒绝bool。
+当前三体系合盘未计算地理纬度相关的宫位；不因缺纬度猜值，也不将合盘相位称为宫位合盘。
+Request Schema已与既有原生预检的可选纬度保持一致，没有改变计算、输出版本或同意闸门。
 双方在准备任何一盘前均验证IANA标签可由当前明确时区源读取；未知标签报daily_transit_natal_invalid。
 目标日早于任一出生日报daily_transit_before_birth，两侧均不进入本命准备；consent拒绝仍最先执行。
 unknown若产生多个物理瞬间、夏令时gap或fold未确认，失败关闭，不据关系事件倒推。
+
+缺纬度专项31项覆盖两侧分别/同时缺省、错误类型、范围、有限JSON与原生预检。
+本机以独立Charts解释器实际对照同一阿远/小禾输入含纬度与两侧缺纬度，三体系结果、
+文档ID与别名完整相同；这是合成单例及确定性验证，不代表任意输入的外部精度。
+详见`../evidence/P8/week-oct21-latitude-contract-validation.json`。
 
 ## 授权与资料归属闸门
 

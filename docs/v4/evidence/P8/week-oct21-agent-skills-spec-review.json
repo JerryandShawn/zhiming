@@ -1,0 +1,66 @@
+{
+  "version": "p8-agent-skills-official-spec-readonly-review-v1",
+  "observed_at_beijing": "2026-10-21T08:42:59.9579077+08:00",
+  "source_url": "https://agentskills.io/specification",
+  "source_basis": "Official page read this run; no release number or immutable revision supplied by the page.",
+  "catalog_version": "p8-skills-draft-2026-10-21-v2.4",
+  "packages": [
+    {
+      "name": "bazi",
+      "description_characters": 39,
+      "manifest_lines": 25,
+      "manifest_utf8_bytes": 3538,
+      "direct_existing_chapter_links": 10,
+      "lf_sha256": "c98c428aa739e12d5ae3e00e2834dbca55541d4f37124737d7de8272dd39f209",
+      "required_metadata_local_profile": "passed",
+      "single_line_plain_scalar_manually_reviewed": true
+    },
+    {
+      "name": "ziwei",
+      "description_characters": 36,
+      "manifest_lines": 21,
+      "manifest_utf8_bytes": 2301,
+      "direct_existing_chapter_links": 6,
+      "lf_sha256": "999b1deead579a62bd95ad445ce8a2485bab0d6d9bbaf1ce264d70f0f9a15f75",
+      "required_metadata_local_profile": "passed",
+      "single_line_plain_scalar_manually_reviewed": true
+    },
+    {
+      "name": "astro",
+      "description_characters": 43,
+      "manifest_lines": 20,
+      "manifest_utf8_bytes": 2128,
+      "direct_existing_chapter_links": 5,
+      "lf_sha256": "a887de6e02f50690d83130f5d644af023e75cc164b674c3ba6259795a7d037ea",
+      "required_metadata_local_profile": "passed",
+      "single_line_plain_scalar_manually_reviewed": true
+    },
+    {
+      "name": "tarot",
+      "description_characters": 38,
+      "manifest_lines": 22,
+      "manifest_utf8_bytes": 2406,
+      "direct_existing_chapter_links": 7,
+      "lf_sha256": "ffd917dc535d5a7ed90a296f015c76e130971867e1b9896852834884aa325a1c",
+      "required_metadata_local_profile": "passed",
+      "single_line_plain_scalar_manually_reviewed": true
+    },
+    {
+      "name": "calendar-tools",
+      "description_characters": 42,
+      "manifest_lines": 21,
+      "manifest_utf8_bytes": 1433,
+      "direct_existing_chapter_links": 4,
+      "lf_sha256": "ef6dc0910cd8091bf5bf783958adeb7124afcdbfa188cc5e8acae64d95ebae05",
+      "required_metadata_local_profile": "passed",
+      "single_line_plain_scalar_manually_reviewed": true
+    }
+  ],
+  "runtime_changes": 0,
+  "real_model_requests": 0,
+  "limitations": [
+    "Independent finite checks plus manual review of the actual two plain-string keys; not an arbitrary YAML parser or official skills-ref execution.",
+    "No new dependency installed; optional fields absent, client execution and model token counts unverified.",
+    "Byte and line sizes are observations, not measured tokens or full Agent Skills certification."
+  ]
+}
