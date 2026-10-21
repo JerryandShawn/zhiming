@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from mingjing_core.application.private_retention import retire_private_thread
+from mingjing_core.application.run_acceptance import run_acceptance
 from mingjing_core.application.thread_history import thread_history
 from mingjing_core.application.thread_ingress import ThreadIngress
 from mingjing_core.application.thread_queue import owner_runtime
@@ -117,7 +118,9 @@ def message_routes(router: APIRouter, core: Any, auth: Any, body: Any) -> None:
             case_ids=value.case_ids,
             depth=value.depth,
         )
-        return JSONResponse(run_projection(run), status_code=202)
+        return JSONResponse(
+            run_projection(service.repo, owner, run), status_code=202, headers={"Cache-Control": "no-store"}
+        )
 
     @router.post("/api/threads/{ident}/close")
     async def close(ident: str, request: Request) -> dict:
@@ -159,14 +162,5 @@ def thread_projection(row: dict) -> dict:
     return {key: row[key] for key in fields if key in row}
 
 
-def run_projection(run: dict) -> dict:
-    result = {
-        "run_id": run["id"],
-        "thread_id": run["thread_id"],
-        "status": run["status"],
-        "runtime": run["runtime"],
-        "run_url": "/api/runs/" + run["id"],
-    }
-    if run["runtime"] == "v4":
-        result["events_url"] = result["run_url"] + "/events"
-    return result
+def run_projection(repo: Any, owner: str, run: dict) -> dict:
+    return run_acceptance(repo, owner, run["id"])

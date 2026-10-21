@@ -461,15 +461,28 @@ def create_app(service=None, *, event_hints: bool = False):
 
     @app.post('/api/chat')
     async def chat(req:Request):
-        svc=core(req);owner=auth(req);data=await body(req);request_id=data.get('retry_of') or key(data)
+        from .http_negotiation import parse_chat_accept
+        from ..application.run_acceptance import run_acceptance, submission_target
+        owner=auth(req);accept=parse_chat_accept(req.headers.getlist('accept'))
+        svc=core();data=await body(req);request_id=data.get('retry_of') or key(data)
         if data.get('incognito') or data.get('thread_id') or 'runtime' in data:
             raise EvidenceError('请通过线程入口发送消息，运行版本由持久设置决定')
-        from ..application.thread_queue import owner_runtime
-        if data.get('images') and owner_runtime(svc.repo.assert_scope(owner)['settings'])=='v4':
-            raise EvidenceError('v4 附件入口尚未接线，请保留原文件')
-        images=save_images(svc,owner,request_id,data.get('images') or [])
-        run=svc.submit(owner=owner,subject=data.get('subject_id','self'),message=data.get('message',''),conversation_id=data.get('session_id','shared'),
-            request_id=request_id,case_ids=data.get('case_ids') or ([data['case_id']] if data.get('case_id') else []),depth=data.get('depth','standard'),selection=data.get('selection') or {},draw_id=data.get('draw_id'),images=images)
+        with svc.repo.transaction(owner):
+            runtime,_=submission_target(svc.repo,owner,data.get('subject_id','self'),request_id)
+            representation=accept.representation(runtime)
+            if representation=='json':
+                if not state['dispatcher']:raise EvidenceError('v4 调度尚未启动，请保留原请求稍后再试')
+                svc.runtime_assembly.require_agent()
+            if data.get('images') and runtime=='v4':
+                raise EvidenceError('v4 附件入口尚未接线，请保留原文件')
+            core(req)
+            images=save_images(svc,owner,request_id,data.get('images') or [])
+            run=svc.submit(owner=owner,subject=data.get('subject_id','self'),message=data.get('message',''),conversation_id=data.get('session_id','shared'),
+                request_id=request_id,case_ids=data.get('case_ids') or ([data['case_id']] if data.get('case_id') else []),depth=data.get('depth','standard'),selection=data.get('selection') or {},draw_id=data.get('draw_id'),images=images)
+            if representation=='json':receipt=run_acceptance(svc.repo,owner,run['id'])
+        if representation=='json':
+            state['dispatcher'].wake.set()
+            return JSONResponse(receipt,status_code=202,headers={'Vary':'Accept','Cache-Control':'no-store'})
         return await stream(owner,run,request=req)
 
     @app.get('/api/chat/{ident}')
