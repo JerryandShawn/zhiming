@@ -1,0 +1,145 @@
+"""A-only private process observation. No sampling and no relaxed acceptance."""
+
+from __future__ import annotations
+
+import importlib.util
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+from time import monotonic, sleep
+from uuid import uuid4
+
+HERE = Path(__file__).resolve().parent
+
+
+def load(name):
+    spec = importlib.util.spec_from_file_location(name, HERE / (name + ".py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+protocol = load("core_direct_launch_parent_probe")
+observer_module = load("core_direct_job_observer")
+CHILD = HERE / "core_direct_launch_hold_child.py"
+
+
+def fixed_hashes():
+    paths = [Path(__file__).resolve(), CHILD, HERE / "core_direct_job_observer.py"]
+    result = protocol.hashes()
+    result.update({str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths})
+    return result
+
+
+def observe(child, job, structure, row, observer, output):
+    end = monotonic() + protocol.TIMEOUT
+    while child.poll() is None or job.active() != 0:
+        observer.sample()
+        if monotonic() >= end:
+            raise TimeoutError("diagnostic_deadline")
+        sleep(0.005)
+    observer.sample()
+    row.update(exit_code=child.returncode, inner_after=protocol.accounting(job, structure))
+    if output.is_file():
+        row["identity"] = json.loads(output.read_bytes())
+        row["identity_sha256"] = hashlib.sha256(output.read_bytes()).hexdigest()
+    # Keep the old gate exactly: extra cumulative processes refuse the launch.
+    if child.returncode != 0 or row["inner_after"]["total"] != 1:
+        raise RuntimeError("probe_nonzero_exit_or_unexplained_descendants")
+    data = row["identity"]
+    if (
+        data["pid"] != child.pid
+        or data["project_or_pytest_imported"]
+        or Path(data["process_image"]).resolve() != protocol.BASE.resolve()
+        or Path(data["executable"]).resolve() != protocol.CORE.resolve()
+        or data["orig_argv"][1:6] != row["command"][1:6]
+        or data["trace_active"] or data["profile_active"]
+        or data["launcher_state"] != "absent_consumed"
+    ):
+        raise RuntimeError("probe_child_identity_mismatch")
+    row["state"] = "exited_job_empty"
+
+
+def one(folder, structure, kind):
+    cache = folder / "cache-A"
+    cache.mkdir()
+    output = folder / "identity.json"
+    command = [str(protocol.BASE), "-I", "-S", "-B", "-X", "pycache_prefix=" + str(cache), str(CHILD), str(output)]
+    row = {"kind": "A-only-observation", "started_at_beijing": protocol.clock(), "command": command, "state": "started_not_final"}
+    child, job, observer, assigned = None, None, None, False
+    try:
+        job = kind()
+        observer = observer_module.JobObserver(job)
+        row["inner_before"] = protocol.accounting(job, structure)
+        child = subprocess.Popen(command, cwd=protocol.ROOT, env=protocol.environment(), stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=False, close_fds=True, creationflags=0x0000000C)
+        row.update(owned_popen_pid=child.pid, suspended_image=protocol.image(job, int(child._handle)))
+        if not job.owns(child) or Path(row["suspended_image"]).resolve() != protocol.BASE.resolve():
+            raise RuntimeError("probe_child_image_or_pid_mismatch")
+        job.assign(child)
+        assigned = True
+        row["assigned"] = protocol.accounting(job, structure)
+        observer.sample()
+        job.resume(child)
+        observe(child, job, structure, row, observer, output)
+    except BaseException as error:
+        row.update(state="refused", error_type=type(error).__name__, error_code=str(error))
+    finally:
+        errors = []
+        if observer is not None:
+            try:
+                row["observations"] = observer.record()
+            except BaseException as error:
+                errors.append("observation_record_failed:" + type(error).__name__)
+            try:
+                observer.close()
+            except BaseException as error:
+                errors.append("observation_close_failed:" + type(error).__name__)
+        errors.extend(protocol.cleanup(child, job, assigned, structure, row))
+        if errors:
+            row.update(state="cleanup_unverified", cleanup_errors=errors)
+    row["completed_at_beijing"] = protocol.clock()
+    return row
+
+
+def main():
+    structure, extended, kind = protocol.initialize()
+    folder = protocol.ROOT / "private/tmp" / ("direct-core-detached-" + uuid4().hex)
+    if folder.parent.absolute() != folder.parent.resolve():
+        raise RuntimeError("diagnostic_private_path_alias_refused")
+    folder.mkdir(parents=True, exist_ok=False)
+    before = fixed_hashes()
+    record = {"version": "p8-direct-base-detached-job-observation-v1", "started_at_beijing": protocol.clock(), "fixed_sha256_before": before, "outer_limit": 4, "inner_limit": 3, "child_hold_seconds": 0.75, "creation_flags": 12, "real_model_requests": 0, "server_access": False, "collector_invocations": 0, "pytest_invocations": 0, "trace_invocations": 0, "bootstrap_help_invocations": 0, "transport_approved_for_sampling": False, "acceptance_gate": "child_exit_zero_and_inner_total_exactly_one", "observations_are_exhaustive": False, "state": "started_not_final"}
+    protocol.save(folder / "started.json", record)
+    outer = None
+    try:
+        outer = protocol.outer_job(kind, extended, structure)
+        record["outer_before"] = protocol.accounting(outer, structure)
+        record["row"] = one(folder, structure, kind)
+        record["fixed_sha256_after"] = fixed_hashes()
+        record["state"] = "diagnostic_only" if record["row"]["state"] == "exited_job_empty" and before == record["fixed_sha256_after"] else "refused"
+    except BaseException as error:
+        record.update(state="refused", error_type=type(error).__name__, error_code=str(error))
+    finally:
+        if outer is not None:
+            try:
+                record["outer_final"] = protocol.accounting(outer, structure)
+                if record["outer_final"]["active"] != 1:
+                    raise RuntimeError("outer_descendants_not_cleared")
+            except BaseException:
+                record.update(state="cleanup_unverified", completed_at_beijing=protocol.clock(), cleanup="Terminating entire owned Job including coordinator; no stale PID kill.")
+                protocol.save(folder / "final.json", record)
+                outer.terminate(3.0)
+                raise SystemExit(1)
+            try:
+                outer.close()
+            except BaseException:
+                record["state"] = "cleanup_unverified"
+    record["completed_at_beijing"] = protocol.clock()
+    protocol.save(folder / "final.json", record)
+    print(str(folder / "final.json"))
+    return 0 if record["state"] == "diagnostic_only" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
