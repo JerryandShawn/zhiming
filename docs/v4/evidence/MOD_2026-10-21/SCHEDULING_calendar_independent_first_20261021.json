@@ -1,0 +1,62 @@
+{
+  "scope": "scheduling_calendar_public_independent_28",
+  "observed_log_completed_at_beijing": "2026-10-21T09:58:20.2665469+08:00",
+  "command": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p2/.venv-core/Scripts/python.exe -m pytest tests/v4/scheduling/test_calendar_boundaries_calendar_mod.py -q --basetemp=private/mod-week/tmp/calendar-scheduling-first",
+  "result": {
+    "passed": 28,
+    "failed": 0,
+    "seconds": 0.11
+  },
+  "first_run": true,
+  "frozen_plan": "docs/v4/execplans/MOD_scheduling_public_boundaries_calendar_20261021.md",
+  "frozen_plan_sha256": "d1ed28e9093dac3a78a15ccabd816253fa21d3caaa27b36d77ebef2696963c93",
+  "new_test_sha256": {
+    "tests/v4/scheduling/test_calendar_boundaries_calendar_mod.py": "9b17b923b1ad3334931c092fdee37be629121b8621afc24d19f45c270c93aaab"
+  },
+  "source_sha256_before": {
+    "mingjing_core/scheduling/__init__.py": "8d567b2932bcd76c6d569856f6eb9bf990ccc3e2a7c27451df6fa0fdcfca1a79",
+    "mingjing_core/scheduling/brief_schedule.py": "3e3e33d13f44ff46a8b2fd82d3ed3bf239022a90fee2fda1f9399695269882db",
+    "mingjing_core/scheduling/delivery_contracts.py": "eb696cf0d964ed71885c8d94bd33ab0b0335714254116abfbab2333506a4d3c1",
+    "mingjing_core/scheduling/delivery_rules.py": "4620ebb73c2eb7674b2c8257df0461ecd60797c0d854bb6a485ce6735c350080",
+    "mingjing_core/scheduling/recurrence.py": "5c7acf3eb5527dfc108349e4c05d3b433063622abe0fbe7559dae9aa8c5d0046",
+    "mingjing_core/scheduling/recurrence_calendar.py": "57173b352496bb513fef47714a80ff5f59ab5ef0c904df5f1d2708c95085a622",
+    "mingjing_core/scheduling/recurrence_civil.py": "a7260919264f427f5a1e65ca04338da9b177ff8a71549d249c66251b1fe4f174",
+    "mingjing_core/scheduling/recurrence_contracts.py": "061cb1756e30e27f6e23795d7cbec0d9a28646b51111cd440d4ad7fc07d9a47d",
+    "mingjing_core/scheduling/recurrence_machine.py": "78ae5ca6ed066faae295477ca19cbd2fad81c833f441ba37a1709ed58b2e397e",
+    "mingjing_core/scheduling/recurrence_wall.py": "7947c130234e5b0b6f246ccc546be1bf46eed6b4ba2b260503be1503b4302b1c",
+    "mingjing_core/timeparse/calendar_port.py": "c907ad42628e008f9a9ab8277b69e26dd0c61fa94ddd2b9e0dc707f642e3b5a6",
+    "mingjing_core/timekit/calendar_cn.py": "353f21e04d232bacf48148f489e29fb78e1849c358fb4e24637414e137fcf42c",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3"
+  },
+  "source_sha256_after": {
+    "mingjing_core/scheduling/__init__.py": "8d567b2932bcd76c6d569856f6eb9bf990ccc3e2a7c27451df6fa0fdcfca1a79",
+    "mingjing_core/scheduling/brief_schedule.py": "3e3e33d13f44ff46a8b2fd82d3ed3bf239022a90fee2fda1f9399695269882db",
+    "mingjing_core/scheduling/delivery_contracts.py": "eb696cf0d964ed71885c8d94bd33ab0b0335714254116abfbab2333506a4d3c1",
+    "mingjing_core/scheduling/delivery_rules.py": "4620ebb73c2eb7674b2c8257df0461ecd60797c0d854bb6a485ce6735c350080",
+    "mingjing_core/scheduling/recurrence.py": "5c7acf3eb5527dfc108349e4c05d3b433063622abe0fbe7559dae9aa8c5d0046",
+    "mingjing_core/scheduling/recurrence_calendar.py": "57173b352496bb513fef47714a80ff5f59ab5ef0c904df5f1d2708c95085a622",
+    "mingjing_core/scheduling/recurrence_civil.py": "a7260919264f427f5a1e65ca04338da9b177ff8a71549d249c66251b1fe4f174",
+    "mingjing_core/scheduling/recurrence_contracts.py": "061cb1756e30e27f6e23795d7cbec0d9a28646b51111cd440d4ad7fc07d9a47d",
+    "mingjing_core/scheduling/recurrence_machine.py": "78ae5ca6ed066faae295477ca19cbd2fad81c833f441ba37a1709ed58b2e397e",
+    "mingjing_core/scheduling/recurrence_wall.py": "7947c130234e5b0b6f246ccc546be1bf46eed6b4ba2b260503be1503b4302b1c",
+    "mingjing_core/timeparse/calendar_port.py": "c907ad42628e008f9a9ab8277b69e26dd0c61fa94ddd2b9e0dc707f642e3b5a6",
+    "mingjing_core/timekit/calendar_cn.py": "353f21e04d232bacf48148f489e29fb78e1849c358fb4e24637414e137fcf42c",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3"
+  },
+  "source_stable": true,
+  "product_or_existing_test_edits": 0,
+  "expected_cases_unchanged": true,
+  "stdout": "............................                                             [100%]\n28 passed in 0.11s\n",
+  "stdout_sha256": "779c066c457f784c8733bc60a67ba3a8b201dc93417b5e68674acfd531200d0d",
+  "effects": {
+    "model_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0,
+    "notifications": 0,
+    "git_operations": 0
+  },
+  "limits": [
+    "28 synthetic injected-port public cases only",
+    "not a quality evaluation or real PG/notification acceptance"
+  ]
+}
