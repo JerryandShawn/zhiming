@@ -28,7 +28,7 @@ def classify_response(
     # 已核实（26转录）：https://open.feishu.cn/document/server-docs/api-call-guide/frequency-control (2024-10-10).
     if network_error or type(http_status) is not int or http_status >= 500:
         return OfficialOutcome("uncertain", "transport_or_unclassified_response")
-    if http_status == 429 or code == 99991400:
+    if http_status == 429 or (type(code) is int and code == 99991400):
         return OfficialOutcome("retryable", "rate_limited", _delay(headers))
     if type(code) is not int:
         return OfficialOutcome("uncertain", "transport_or_unclassified_response")
