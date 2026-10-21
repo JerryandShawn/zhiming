@@ -114,6 +114,7 @@ class PostgresPort:
         row = connection.execute(
             "SELECT rolsuper OR rolcreatedb OR rolcreaterole OR rolreplication OR rolbypassrls "
             "OR has_database_privilege(current_user,current_database(),'CREATE') "
+            "OR has_database_privilege(current_user,current_database(),'TEMP') "
             "OR has_schema_privilege(current_user,'mingjing_core','CREATE') "
             "OR has_schema_privilege(current_user,'public','CREATE') "
             "OR EXISTS(SELECT 1 FROM pg_auth_members "
