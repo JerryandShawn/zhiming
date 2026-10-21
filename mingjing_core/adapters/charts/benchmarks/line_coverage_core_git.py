@@ -115,6 +115,14 @@ def safe_environment() -> dict[str, str]:
         and not key.upper().startswith(
             ("GIT_", "PYTEST_", "KIMI_", "OPENAI_", "ANTHROPIC_")
         )
+        and key.upper()
+        not in (
+            "__PYVENV_LAUNCHER__",
+            "PYTHONHOME",
+            "PYTHONEXECUTABLE",
+            "PYTHONPATH",
+            "VIRTUAL_ENV",
+        )
     }
     result.update(
         GIT_CONFIG_NOSYSTEM="1",

@@ -1,0 +1,45 @@
+{
+  "started_at_beijing": "2026-10-21T10:04:09.222321+08:00",
+  "effective_core_executable": "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+  "actual_base_executable": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+  "core_prefix": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core",
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+    "-I",
+    "-B",
+    "private/p8-validation/guarded_members_validation.py",
+    "milestone",
+    "--label",
+    "week-oct21-1005-env-after",
+    "--nodes",
+    "tests/v4/test_p8_core_environment_roles.py",
+    "tests/v4/test_p8_core_coverage_job.py",
+    "tests/v4/test_p8_core_coverage_supervisor.py",
+    "tests/v4/test_p8_core_coverage_guards.py"
+  ],
+  "process_budget": {
+    "mechanism": "Windows Job ACTIVE_PROCESS_LIMIT=4 including this inline coordinator and all descendants; no BREAKAWAY flags",
+    "configured_limit": 4,
+    "active_before": 1,
+    "active_after": 1
+  },
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "validation_harness_lf_sha256": "b262cfff639c7a3ff106e64be9a42d70d6960a7be088a05ccb884e1876f809bd",
+  "chart_launch_transport": "original configured Charts venv wrapper",
+  "completed_at_beijing": "2026-10-21T10:04:14.449978+08:00",
+  "exit_code": 1,
+  "sources_unchanged": true,
+  "artifact_kind": "derived_compact_coordinator_receipt",
+  "raw_private_receipt_sha256": "f73a7ca84383c99f60ee37889099ff4d3a404249b32ee78643816b4d58279035",
+  "source_file_count_before": 384,
+  "source_file_count_after": 384,
+  "source_lf_sha256_before": {
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py": "3a3614316d664f4f3ad71c717655f3fcbc046923cd17ff42f234b88dd82fcad1",
+    "tests/v4/test_p8_core_environment_roles.py": "a784e25deaed467c33f29db0017c339816b207c1592429a8a4e374058be8f78f"
+  },
+  "source_lf_sha256_after": {
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py": "3a3614316d664f4f3ad71c717655f3fcbc046923cd17ff42f234b88dd82fcad1",
+    "tests/v4/test_p8_core_environment_roles.py": "a784e25deaed467c33f29db0017c339816b207c1592429a8a4e374058be8f78f"
+  }
+}
