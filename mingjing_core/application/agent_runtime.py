@@ -41,6 +41,7 @@ from mingjing_core.application.agent_tools_clarification import (
 from mingjing_core.application.agent_tools_private import consume_private_answer
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.read_result import read_result
+from mingjing_core.application.run_event_stream import ModelDeltaStream
 from mingjing_core.application.runtime_limits import RuntimeLimits
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
 from mingjing_core.models.port import ModelPort
@@ -61,7 +62,10 @@ class AgentRuntime:
         budget: BudgetPolicy | None = None,
         control_factory: Callable[..., RunControl] = RunControl,
         runtime_config: RuntimeConfig | None = None,
+        streaming_candidate: bool = False,
     ) -> None:
+        if type(streaming_candidate) is not bool:
+            raise EvidenceError("流式候选开关只能由受信程序集明确配置")
         if runtime_config is not None and type(runtime_config) is not RuntimeConfig:
             raise RuntimeConfigError("运行安全配置只能由受信构造注入")
         self.config = load_runtime_config() if runtime_config is None else validate_runtime_config(runtime_config)
@@ -73,6 +77,7 @@ class AgentRuntime:
             critic, RequestLedger(repo, critic_meter or meter, offline=offline), self.prompts, offline=offline
         )
         self.control_factory = control_factory
+        self.streaming_candidate = streaming_candidate
 
     def _snapshot(self, run: dict[str, Any], system: str) -> ContextBuild:
         engine = ContextEngine(
@@ -110,6 +115,9 @@ class AgentRuntime:
             incognito=thread_id(run).startswith("incognito:"),
             ledger=self.ledger,
             emit=events.send,
+            text_stream=ModelDeltaStream(self.repo, run, self.ledger, events.callback)
+            if self.streaming_candidate
+            else None,
         )
 
     def _start(self, run: dict[str, Any], events: RuntimeEvents) -> None:
