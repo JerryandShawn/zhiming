@@ -160,7 +160,7 @@ class PostgresPortTests(unittest.TestCase):
         self.port.backfill("primary", apply=False)
         for args, options in self.commands.calls:
             self.assertEqual(args[0], self.request.release + "/venv/core/bin/python")
-            self.assertEqual(args[1], "-c")
+            self.assertEqual(args[1:6], ["-I", "-B", "-X", "pycache_prefix=" + os.path.abspath(os.devnull), "-c"])
             self.assertIn(repr(self.request.release), args[-1])
             self.assertNotIn("KIMI_API_KEY", options["env"])
             self.assertNotIn("MOONSHOT_API_KEY", options["env"])

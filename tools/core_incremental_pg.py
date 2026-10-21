@@ -188,7 +188,15 @@ class PostgresPort:
         prefix = "import sys,json,os\nsys.path.insert(0," + repr(self.request.release) + ")\n"
         prefix += "from mingjing_core.repositories.postgres import PostgresRepository\n"
         raw = self.runner.run(
-            [self.request.release + "/venv/core/bin/python", "-c", prefix + body],
+            [
+                self.request.release + "/venv/core/bin/python",
+                "-I",
+                "-B",
+                "-X",
+                "pycache_prefix=" + os.path.abspath(os.devnull),
+                "-c",
+                prefix + body,
+            ],
             env=self.environment(),
             stdin=json.dumps(payload or {}),
         )
