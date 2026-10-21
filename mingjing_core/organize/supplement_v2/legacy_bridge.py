@@ -21,6 +21,10 @@ def _message_matches(record: dict[str, Any], entity: EntityRecord, snapshot: Sup
         raise SupplementConflict("message_source_identity_mismatch")
     if (anchor.start, anchor.end, anchor.quote) != (0, len(source.text), source.text) or entity.text != source.text:
         raise SupplementConflict("complete_message_source_required")
+    revision = record.get("revision", 1)
+    # Numeric equality must not let bool/float impersonate the typed message evidence.
+    if type(revision) is not int or revision < 1 or type(record.get("at_ms")) is not int:
+        raise SupplementConflict("legacy_message_evidence_changed")
     expected = {
         "id": entity.id,
         "owner_id": entity.scope.owner_id,
