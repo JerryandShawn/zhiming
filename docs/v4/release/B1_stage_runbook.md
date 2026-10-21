@@ -178,6 +178,8 @@ Windows真实对照已证明原文/事实/塔罗tombstone不复活、三张check
 
 ## 5. 本机演练结果
 
+2026-10-21 09:55:15 +08:00新增实际阻塞：[固定b9 schema4 seed探针](../evidence/B1/2026-10-21-schema4-bootstrap-seed.md)34目标仅证明存储兼容与失败原子性；源保持4时新撤销路径缺core_embeddings，不能用此源生成最新delta。独立delta副本仍只设计，不偷偷迁源7或改b9，不据此申请B。另[额外表ACL门](../evidence/B1/2026-10-21-runtime-acl.md)已实现两门实际拒绝，28+4子断言来自Windows，非Linux解锁。P4草稿不进B1包。
+
 Linux真实演练未通过。B3生成器[55项目标](../evidence/B1/2026-10-21-restore-proof-generator.md)、[consumer59项+41子断言](../evidence/B1/2026-10-21-restore-proof-consumer.md)、[无Git联合88项及独立PG11项](../evidence/B1/2026-10-21-restore-proof-portability.md)、[应用48项](../evidence/B1/2026-10-21-linux-application-gap.md)、[旧入口26项+4子断言](../evidence/B1/2026-10-21-existing-candidate-bytecode.md)、[PG路由71项+4子断言](../evidence/B1/2026-10-21-incremental-pg-routing.md)与[TEMP修复73项+4子断言](../evidence/B1/2026-10-21-runtime-temp.md)各为独立范围，重叠不相加，全部不当Linux放行。总编排/共同fixture仍在实现，见[完整差额计划](../execplans/B1_bootstrap_replay_orchestration_20261021.md)。可重复入口与旧边界22项见[Linux准备证据](../evidence/B1/2026-10-21-linux-drill-prepared.md)，Docker/WSL阻塞见[环境证据](../evidence/B1/2026-10-21-linux-environment-blocked.md)。默认只输出计划，环境恢复并审查后才可能运行显式apply：
 
     python -m tools.b1_linux_drill
