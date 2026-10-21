@@ -1,0 +1,59 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "chart-bazi",
+  "mode": "components",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "light",
+  "url": "/?components=demo#/chart?tab=bazi",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/components-chart-bazi-light-768.png",
+  "sha256": "7c1b4ee7f92c987e1b003908debeca96888f8bf6ca6da8ef40bbb3c866b93bd3",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "light",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "chart-luck-period current",
+            "text": "查看庚午大运解释 所选年份示意2022–2031庚午起始 29 岁正财"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 718,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "chart-luck-period current",
+            "text": "查看庚午大运解释 所选年份示意2022–2031庚午起始 29 岁正财"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

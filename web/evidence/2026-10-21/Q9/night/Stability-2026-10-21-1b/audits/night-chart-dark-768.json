@@ -1,0 +1,82 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "captured_time_bjt": "2026-10-21T10:55:31.180+08:00",
+  "id": "night-chart",
+  "case_key": "night-chart-dark-768",
+  "state": "night-chart",
+  "route": "/?night=demo#/chart",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "dark",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-dark-768.png",
+  "screenshot_sha256": "131d4dd58fad127e378c285a14382c380bf89b0b4e9b5858ea432484296a31c4",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-dark-768-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-dark-768.png",
+      "sha256": "131d4dd58fad127e378c285a14382c380bf89b0b4e9b5858ea432484296a31c4",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-dark-768-full.png",
+      "sha256": "162f8f19131f6284e423ec1163230e3e35bb04a02c28944c3cd607a905785e5b",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "dark",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 904,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 985,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}

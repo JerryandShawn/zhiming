@@ -1,0 +1,105 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "captured_time_bjt": "2026-10-21T10:55:48.819+08:00",
+  "id": "organize-review",
+  "case_key": "organize-review-light-1440",
+  "state": "organize-review",
+  "route": "/?spaces=demo#/organize-review",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "light",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/organize-review-light-1440.png",
+  "screenshot_sha256": "1386c57012890c1d1717d625ee9fef0661af7f1bd454e9fcdcc981ba0fb0ada1",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/organize-review-light-1440-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/organize-review-light-1440.png",
+      "sha256": "1386c57012890c1d1717d625ee9fef0661af7f1bd454e9fcdcc981ba0fb0ada1",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/organize-review-light-1440-full.png",
+      "sha256": "821078c0ff3afd1d2897ee364ee95ce0b45ee6cf2b9d780b88d05e06f852b8bd",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "light",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用已接受的整理"
+        }
+      ]
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 780,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 1560,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 2340,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 2538,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}
