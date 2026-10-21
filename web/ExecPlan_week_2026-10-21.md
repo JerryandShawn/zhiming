@@ -47,6 +47,8 @@
 
 ## Surprises & Discoveries
 
+11:26只读审查补验证器：原判绿缺显式unit pending/todo、逐case身份、全配置与独占trace目录。第1原始97/1185和48/856全部actual passed单attempt、Python裸OK已复核，成绩不改；后两轮仅ignored补逐项身份/计数、all stage、suite独占output和21根配置额外快照。原1031不声称包括全部入口配置，首轮补核不是历史快照补造；静态preview四字节已匹配dist。见Stability_plan与supplement/preflight。
+
 11:05只读P3@a83复核：自然隐私改道采用回执线程；RunEventReader允许已清payload永久缺号，而现演示followV1严格连续且将422作可重试。取消回执不等于running已停止，inbox_wait当前不改状态。正式受测源码未改；具体依赖/后续A→B→C离线切片见Thread_runtime_integration_notes，不猜端点或授权。
 
 10:32 一天脚本初轮2折叠定位失败，次轮2真Axe landmark-unique，最终22/34绿。第一轮JSON因启动器复用路径被覆盖，原trace/error-context/6图保留，不造报告。格式化误从repo根npx临时下载3.9.10，违反无新依赖要求；package/lock未改，已切现有本地bin/offline并如实记证据。

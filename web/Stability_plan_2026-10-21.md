@@ -31,3 +31,11 @@
 恢复时先确认没有仍运行的测试；在11:30–45启动第2轮、12:30–45启动第3轮，未到窗口只做只读/ignored候选及文档。每轮约18分钟，开始前核40分钟推送期限，必要先提交真实文档检查点；不能为了推送改受测源码。每轮结束先collector再证据提交/普通push/小回执。11:20等自动唤醒若发生在已有批次中，不重复启动。
 
 未来33候选已在ignored准备：`thread-dto-draft`及`thread-dto-tests-draft`、`thread-http-draft`及`thread-http-tests-draft`，只读复核及静态测试清单不等于通过；根线在三遍完成后再统一迁入和验证。H5与20课也只有计划。新版API发现索引及课程别名漂移已经写入正式接线笔记，当前七资产/普通入口未改。
+
+## 11:26 验证器补强（正式受测代码未改）
+
+独立只读审查找到证据收集盲点，已仅改ignored启动/收集脚本：第2/3轮每suite显式`--output`到其独占batch，固定components stage为all，避免继承环境只跑子集；完整97单测文件/1185用例与48浏览器文件/856用例身份逐项对照第1轮，拒绝pending/todo、expected-failure、多attempt或跳过。Q9精确128/112/56，常规560。第1轮原始报告也已只读补核全部实际passed、单attempt、Python裸OK；这不是重跑。
+
+原1031指纹覆盖src/public/scripts/tests/dist，不含全部根入口与配置。后两轮额外对21份根入口/config/package建立实际字节前后快照；从7d8提交核对当前21文件未改，第三轮还要与第二轮相同。第1轮补充只证明原报告完整和当前配置与Git一致，不事后虚构其历史额外快照。原成功批次没有失败trace附件；原共享Playwright诊断目录不能称全独占，后两轮已修。见`stability_1_completeness_supplement.json`。
+
+11:25另用127.0.0.1:4173纯静态GET核HTML、entry JS、React预载、CSS四份字节与冻结dist完全相同，未执行JS或访问API；见`stability_2_preview_preflight.json`。两个收证helper首次分别误用Git工作目录前缀与假设绝对资源路径，已按实际Git/HTML修正，不是产品/测试失败。未新增依赖、未重建、未改断言；仍仅1/3，第二轮尚未开始。
