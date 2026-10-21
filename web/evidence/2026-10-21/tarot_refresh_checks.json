@@ -1,0 +1,1638 @@
+{
+  "schema": "frontend-tarot-refresh-fix-v1",
+  "recorded_at_beijing": "2026-10-21T08:02:11.850103+08:00",
+  "source_base_commit": "d204a67987c85cc1eeabe35692e9c5c17678ca73",
+  "reports": [
+    {
+      "path": "web/test-results/tarot-refresh-before.json",
+      "bytes": 9819,
+      "sha256": "f4e92bf65195de17500103bb61128d9f671ffb6cba9917abfb8c9c43aea616f2",
+      "stats": {
+        "numTotalTests": 8,
+        "numPassedTests": 0,
+        "numFailedTests": 8,
+        "success": false
+      }
+    },
+    {
+      "path": "web/test-results/tarot-refresh-final-unit.json",
+      "bytes": 8373,
+      "sha256": "a8ebee647e21767546f4df4be28c7a236d0f9e84b8240207162cf184606c0db3",
+      "stats": {
+        "numTotalTests": 21,
+        "numPassedTests": 21,
+        "numFailedTests": 0,
+        "success": true
+      }
+    },
+    {
+      "path": "web/test-results/tarot-refresh-browser/report.json",
+      "bytes": 7105,
+      "sha256": "733ba6859c450a3df6ebc8a2634fa73d4c5caa17853e5217f17dd4acb62597cf",
+      "stats": {
+        "startTime": "2026-10-21T00:00:05.023Z",
+        "duration": 5040.884999999999,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "path": "web/test-results/tarot-refresh-browser-final/report.json",
+      "bytes": 7154,
+      "sha256": "87e928684704e4f983df486a47f296c185f87432a8bc601605e06fb9e9f58f22",
+      "stats": {
+        "startTime": "2026-10-21T00:01:15.629Z",
+        "duration": 5209.2210000000005,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  ],
+  "files": [
+    {
+      "path": "web/src/tarot/ReadingPanel.tsx",
+      "bytes": 7006,
+      "sha256": "c4461f89763428459a0853b6f1a94c79f2abd96ca821d1bfec953a13d9e3b0de"
+    },
+    {
+      "path": "web/tests/tarot-refresh.test.tsx",
+      "bytes": 11779,
+      "sha256": "7c2cd397c5b9ec49ec8541dac85b8a1faac22aef2ae21e4807da97dec3e6a6b7"
+    },
+    {
+      "path": "web/tests/e2e/night-tarot-refresh.spec.ts",
+      "bytes": 6211,
+      "sha256": "3b50ec6a3c8f210b055cd713a261f93d37f3ce9bfbbd50ee1f55b50fafc4e600"
+    }
+  ],
+  "validation": {
+    "typecheck": "passed",
+    "lint_zero_warnings": "passed",
+    "build": "passed",
+    "browser_widths": [
+      390,
+      1440
+    ],
+    "browser_theme": [
+      "dark",
+      "light"
+    ],
+    "axe_violations": 0,
+    "cinnabar_max": 3,
+    "external_requests": 0,
+    "real_model_calls": 0,
+    "browser_backend_requests": 0,
+    "browser_transport": "all known GET requests intercepted in browser; 0 POST, no backend hit"
+  },
+  "claims": [
+    "Unmount/drawId change/namespace change/new refresh invalidate prior manual GET",
+    "Starting generate/cancel invalidates pending refresh; refresh disabled while busy or cancelling",
+    "Refresh success clears old error; failures preserve confirmed versions",
+    "Does not alter original draw, POST request body, idempotency or cancellation behavior"
+  ],
+  "limits": [
+    "Focused unit and browser coverage; not whole-site regression",
+    "Generation race tested with synthetic SSE only, no real model or real backend",
+    "Existing parent busy guards prevent real user switching during generation; unchanged"
+  ],
+  "initial_images": [
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/refresh-failed-preserved-1440.png",
+      "bytes": 278020,
+      "sha256": "85c4ac994a465412fd4173c0c3ac9158ce01905c47a207b68cd46feda2d98636"
+    },
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/refresh-failed-preserved-390.png",
+      "bytes": 245434,
+      "sha256": "0f09596c8ac7d5f529316e0d3529f4893f45b905cd3116fa52f169bc062fb1b9"
+    },
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/refresh-retried-current-1440.png",
+      "bytes": 276500,
+      "sha256": "f06f07a6aa43337368c28d4d64e9edf558bd3f9a84931e4de5ecce41acc3cf94"
+    },
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/refresh-retried-current-390.png",
+      "bytes": 244282,
+      "sha256": "d4d087db2be4cecfb96593dddd9000d78c078bba89d763209d2b1254f269f928"
+    }
+  ],
+  "images": [
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/final/refresh-failed-preserved-1440.png",
+      "bytes": 274841,
+      "sha256": "5e82f9bc06b6adfc0b9d6e19f56b5b10628ff866c26dc703bb65ebb9aba46a21"
+    },
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/final/refresh-failed-preserved-390.png",
+      "bytes": 253012,
+      "sha256": "e6436008452f3bb9a778003ac84aaa503290b26ce386cdab4d605bc69ea94c92"
+    },
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/final/refresh-retried-current-1440.png",
+      "bytes": 273884,
+      "sha256": "78a3dd4bec0870fff823afaddee2a29477b271b6481ed10c00c03d6df63b8c17"
+    },
+    {
+      "path": "web/evidence/2026-10-21/tarot-refresh/final/refresh-retried-current-390.png",
+      "bytes": 252143,
+      "sha256": "a60ec899e8f3dba07ae428c54659ab28ccb934010a0e53f14567ccf83a719669"
+    }
+  ],
+  "build_files": [
+    {
+      "path": "static/dist/.vite/manifest.json",
+      "bytes": 21206,
+      "sha256": "cfd0431a311832adf8282904db01a91bca5b3c8ae93f279650ef1ee61e345b57"
+    },
+    {
+      "path": "static/dist/assets/AboutMePage-CVHtHsDS.css",
+      "bytes": 2045,
+      "sha256": "30e22688465f61b387cfee799992359794b26603970f38c30ab5a7ada2176a6f"
+    },
+    {
+      "path": "static/dist/assets/AboutMePage-DCZF-5DD.js",
+      "bytes": 24057,
+      "sha256": "2ae5dbac4257f81470a3825827fe22e35f7ff62d58e68e47288bf6cdfa51edf0"
+    },
+    {
+      "path": "static/dist/assets/beijing-CZ95lBIa.js",
+      "bytes": 452,
+      "sha256": "70eb8ce0f69f488e503dc17286a27e45739a5ce69e914c20c83c3dad0a07a684"
+    },
+    {
+      "path": "static/dist/assets/Calendar-B6qKsjcf.js",
+      "bytes": 1406,
+      "sha256": "c721be7e2d428922e1cbf723c8d7fce6259c61c1ab2d30cb5df4511bd0cb5931"
+    },
+    {
+      "path": "static/dist/assets/Cases-DkVOOwhH.js",
+      "bytes": 3220,
+      "sha256": "4f0e5b4f6c0bdf49627ae8d9f8c7588ef6f06ea111c6cefd205cb23374151fc3"
+    },
+    {
+      "path": "static/dist/assets/Cases-DnHZmzLu.js",
+      "bytes": 6342,
+      "sha256": "5828e99707a243e69791a7b9b4934dd2b0d1ebd82d202a2c6eea6ff2503a81a0"
+    },
+    {
+      "path": "static/dist/assets/Chart-Bi-_WbcO.js",
+      "bytes": 4055,
+      "sha256": "88a6e00b7df88055b0ad28b5dd34f3c50851dd4abd640f653e10353b480e1e4d"
+    },
+    {
+      "path": "static/dist/assets/Chart-CnF1R9aY.js",
+      "bytes": 2800,
+      "sha256": "83d56a3de625ce56e285e3ea08615237e3477cae61085faab11bbba055bb8f43"
+    },
+    {
+      "path": "static/dist/assets/ChartData-BDqD1kx6.js",
+      "bytes": 5859,
+      "sha256": "afc56933a6378003775e4459126be5d1dcd858b2815cacd3c26067fb9fe76097"
+    },
+    {
+      "path": "static/dist/assets/ChartDemo-C73KcCjI.js",
+      "bytes": 3846,
+      "sha256": "b11e75cabe705910618ca953341892946240da8fb4e28d97534d26c19288dece"
+    },
+    {
+      "path": "static/dist/assets/Charts-a6VDAlqK.js",
+      "bytes": 5998,
+      "sha256": "3162e880b3f851f7a33c6bb1a3017d18abe8c54329628af472d72c5612ec6db9"
+    },
+    {
+      "path": "static/dist/assets/Chat-8h04rC9D.js",
+      "bytes": 13321,
+      "sha256": "361ca8a9f2e74ac0a630977519c41c117703a53e69f21e262ec623b37c996bca"
+    },
+    {
+      "path": "static/dist/assets/Chat-CK3R6Wnr.js",
+      "bytes": 2767,
+      "sha256": "9e718190b5ea4ddc8949a4a91fb82cd694fbd7d51e2adfda5104e9e7e54d564d"
+    },
+    {
+      "path": "static/dist/assets/ChatPreview-83CkFrhy.js",
+      "bytes": 7001,
+      "sha256": "192e38d7f37e2ba082f236a30f5b962dc81000227bf41bcb51515a4fdab26f2a"
+    },
+    {
+      "path": "static/dist/assets/chevron-down-DOfLF5j_.js",
+      "bytes": 124,
+      "sha256": "d92665f718306389cd7f34ff7ad8dc5f068a5e28f8c2e6e39290789d1f4defee"
+    },
+    {
+      "path": "static/dist/assets/common-Cmd9HAar.css",
+      "bytes": 800,
+      "sha256": "cb82c6da3859e24ff4b64ab8107434e98af8bf11c2667f8b92a72cfe08d4aad2"
+    },
+    {
+      "path": "static/dist/assets/ComponentNotice-BIoJSqjK.css",
+      "bytes": 190,
+      "sha256": "110d8be426ba4a2d5063ad0a7b31d999fc0babf1be9be7fe7b5538650db493fa"
+    },
+    {
+      "path": "static/dist/assets/ComponentNotice-DbnesLdo.js",
+      "bytes": 784,
+      "sha256": "829d989d0cda8d8db6e4377d8fa4f5360874a6d950c796fca66c5674c6a6c7d9"
+    },
+    {
+      "path": "static/dist/assets/Composer-BPtselhH.js",
+      "bytes": 1244,
+      "sha256": "b0e56a6eaa744ca05d6b92c6e4200321c45da046fd9c30cfe5bbd46eadc3b67d"
+    },
+    {
+      "path": "static/dist/assets/DateField-Cb3mwAX0.js",
+      "bytes": 1639,
+      "sha256": "39cd013b6f8ad5942c7615b4589cd8cd210181389825193de71feafc09614c84"
+    },
+    {
+      "path": "static/dist/assets/Design-DJyve-KE.js",
+      "bytes": 5947,
+      "sha256": "1deadb8a3af14fd1a95e99b5798b9242e97cb5dc706ad3c0d40ba5d67a9d87ab"
+    },
+    {
+      "path": "static/dist/assets/DialogContent-Civ5vXn6.js",
+      "bytes": 852,
+      "sha256": "0ada39effa7a1a9d0c2fe7c811798f653e0d5ef0ca529ee1195c04aca62bd134"
+    },
+    {
+      "path": "static/dist/assets/FlipFace-BOc8ev7Z.js",
+      "bytes": 2203,
+      "sha256": "1c252fda2c3fee5ebbf576228c47ce5fd2a3b1a66e70301325ca74aa62a41698"
+    },
+    {
+      "path": "static/dist/assets/index-9tSQ8ftl.js",
+      "bytes": 5126,
+      "sha256": "ff39dc2dd66571bfde5837361d8f30ffcd27bd7e9f1d087003ad2eb8dc853f8a"
+    },
+    {
+      "path": "static/dist/assets/index-B0ZyRZpD.css",
+      "bytes": 46903,
+      "sha256": "be9af7e228f3a8198f11d5c1e517d2a3136fcf6c3c4b6d308a098c48e0d04654"
+    },
+    {
+      "path": "static/dist/assets/index-cDZpeGnc.js",
+      "bytes": 26883,
+      "sha256": "dfc8bce2a50796200b3eb7e5614f9237d98cc75a1d88440ca11799ce98b25351"
+    },
+    {
+      "path": "static/dist/assets/index-r-4RwlTH.js",
+      "bytes": 31550,
+      "sha256": "8a7a31fbf533bda3f16524327d23ff844ad557b9c14d9bfb5e99cc44417aa9b8"
+    },
+    {
+      "path": "static/dist/assets/index-uf92S1UK.js",
+      "bytes": 90618,
+      "sha256": "fb8a4401ec29bd9d3dd99f0b9b7cf083c271cadb917254dab645d27be01fad2e"
+    },
+    {
+      "path": "static/dist/assets/lock-keyhole-uT4A0D18.js",
+      "bytes": 251,
+      "sha256": "e39692c16ee47a39292f686dad7d655f8b57b27bb70c0084ca782b7c29dc8593"
+    },
+    {
+      "path": "static/dist/assets/LoginDialog-B7vF2WzX.js",
+      "bytes": 1097,
+      "sha256": "17ead2c124697d58fe6b96beabc6662ada498525184b384547e247bfb80b5824"
+    },
+    {
+      "path": "static/dist/assets/Markdown-CK3yipd3.js",
+      "bytes": 75354,
+      "sha256": "2c112fa220c316f70fa44cfbef30a9db5b3323aef9997613e014cefe1efa90aa"
+    },
+    {
+      "path": "static/dist/assets/Me-BhfdvHSu.js",
+      "bytes": 15608,
+      "sha256": "5eb7470155368bc476cd5abf31eb3257b6b37b8490a190bbb4c31001b86cdefe"
+    },
+    {
+      "path": "static/dist/assets/Me-yOlTDH3w.js",
+      "bytes": 6161,
+      "sha256": "c02128c3fd85eda98c79124e42bed9cba71581fd23adf1dbc8aea33ce4a57b1d"
+    },
+    {
+      "path": "static/dist/assets/MemoryPreview-CEibap3x.js",
+      "bytes": 2331,
+      "sha256": "0194380e6961210a7eb258bfcc3719c17a2da1a658d23d75a5f86396a6ef8e95"
+    },
+    {
+      "path": "static/dist/assets/Messages-Pylek4Ci.js",
+      "bytes": 6311,
+      "sha256": "81d0cd6db44884c23f606c7119f35acc5920fecf26b2c039817ff47e0024c855"
+    },
+    {
+      "path": "static/dist/assets/NightApp-BIHHJIJL.css",
+      "bytes": 2779,
+      "sha256": "93e1cf723d3203f89937381f1245e75b64b42d66ec56bf6eddea1013ef3a2678"
+    },
+    {
+      "path": "static/dist/assets/NightApp-CWuqXU91.js",
+      "bytes": 112456,
+      "sha256": "f4e2bdd8261b4d34b313b6ff35de5ae04fd7b1405794b05b9bc24218a1078a46"
+    },
+    {
+      "path": "static/dist/assets/OnboardingChat-B4MKUt9l.css",
+      "bytes": 1054,
+      "sha256": "90d61d746ac6a99f426dd61b48debc1e9bf41c0ab9525e999ff54e8a21c784f2"
+    },
+    {
+      "path": "static/dist/assets/OnboardingChat-BSlFWx3F.js",
+      "bytes": 11269,
+      "sha256": "f540dba088f78a915e27b1438d01e5cc804869df32bd19d208ceadafb9b8463a"
+    },
+    {
+      "path": "static/dist/assets/OrganizePage-PY0J8f-2.js",
+      "bytes": 11882,
+      "sha256": "0459995ce9eb142f024a6b04a28e6d66db988a4aeb70e4fd29158497bd669c9d"
+    },
+    {
+      "path": "static/dist/assets/OrganizePage-Xf4G6qj_.css",
+      "bytes": 1414,
+      "sha256": "9432693f29a1cc6f8d6fd75e8998de199c8bf73997cbd7d0cb6cc8b7fc5d282b"
+    },
+    {
+      "path": "static/dist/assets/OrganizeReviewPage-BdKkwMiX.css",
+      "bytes": 3253,
+      "sha256": "0dea21c0825edd7fff7457cce83489ed36246bc9ba4db9361a1580817aa18e57"
+    },
+    {
+      "path": "static/dist/assets/OrganizeReviewPage-C4Bg4-ql.js",
+      "bytes": 38261,
+      "sha256": "61b00b0472f0c7c2499f0783128a9f8a7f9103f4e53d12a5c6da5efee47450bc"
+    },
+    {
+      "path": "static/dist/assets/Overlays-DrwOe7q6.js",
+      "bytes": 787,
+      "sha256": "045e16dc61cc93b9828cbe7bd84f4880f9432e2c9f063476775e753e9399e736"
+    },
+    {
+      "path": "static/dist/assets/PreviewNotice-Bw-HJjcN.js",
+      "bytes": 1105,
+      "sha256": "4fa6cb1c7f6fbe77eb28fcb6cff0dea1f87888fa9640db8b717d910eb6614b34"
+    },
+    {
+      "path": "static/dist/assets/react-DnxA9v5e.js",
+      "bytes": 140911,
+      "sha256": "753bd94c54c1746ba790ce3be16209c47ecd154709b319251a98c86b24408187"
+    },
+    {
+      "path": "static/dist/assets/RecoveryPreview-BqIqo_41.js",
+      "bytes": 8602,
+      "sha256": "00f07e61f429fceeb1624f49263fec0eaa537818ec056b3fc381f8baf0c47dc5"
+    },
+    {
+      "path": "static/dist/assets/RecoveryPreview-iMEwyZ5g.css",
+      "bytes": 348,
+      "sha256": "f967be422783f4ba037beb1dcf357b73bae20fd613afeaa4c8c24555fb76f29b"
+    },
+    {
+      "path": "static/dist/assets/reducer-7mfSONGT.js",
+      "bytes": 35014,
+      "sha256": "805f4c83119b95ff80713ab371130f9b0eda26f366a3e5e29b28e3bf8b3c3261"
+    },
+    {
+      "path": "static/dist/assets/ReportSchedule-C0QduTAs.js",
+      "bytes": 4011,
+      "sha256": "855178967da8a686e673b84bd67f93e8dd7b772d4cc3beeeee996bd081e3f58c"
+    },
+    {
+      "path": "static/dist/assets/SampleChartPage-DtKjQuU7.css",
+      "bytes": 169,
+      "sha256": "2a2e88519eb28653292cf5dd6db249c44d249f1ec1329d38a39a6356c66e1e3e"
+    },
+    {
+      "path": "static/dist/assets/SampleChartPage-DxpGTWsH.js",
+      "bytes": 28385,
+      "sha256": "318a783ecbae318c3711298b680fbb9348f8c34ea23e40f5261569805f98331c"
+    },
+    {
+      "path": "static/dist/assets/Selection-BfJYDq68.js",
+      "bytes": 2479,
+      "sha256": "101a7771e3d4e50738ea03fc9437d289c240adcc66ab43472f6633a33853aab8"
+    },
+    {
+      "path": "static/dist/assets/Settings-cZ1Fq9fo.js",
+      "bytes": 6281,
+      "sha256": "20da5987fb51e0cd5ade60973754693ad0b499b6a24e25f5589ca909230a8559"
+    },
+    {
+      "path": "static/dist/assets/Settings-D2MaLIly.js",
+      "bytes": 5546,
+      "sha256": "c5abdc6587ad2cc455d91ee08110c36ffd4d05bc33299663592b55bda927b90e"
+    },
+    {
+      "path": "static/dist/assets/SettingsPage-ClpuIC-i.css",
+      "bytes": 862,
+      "sha256": "97177d77a33ea5c5a23d9152ad1891be4dda8b4ad92fb33138768584e091e1ad"
+    },
+    {
+      "path": "static/dist/assets/SettingsPage-zVXraTvW.js",
+      "bytes": 13226,
+      "sha256": "fa8ffd6626be5954477e5c15289ca439d3a78235b1193fb02af3918ebbdebc94"
+    },
+    {
+      "path": "static/dist/assets/shield-check-xkgRuHUc.js",
+      "bytes": 482,
+      "sha256": "eaa9e54d4056b1f06e0b91c35c204acfcbbde675577fa9345aac5ae14aede441"
+    },
+    {
+      "path": "static/dist/assets/SpaceNavigation-GhbSpRLo.js",
+      "bytes": 2258,
+      "sha256": "e51fddd2d76e02e1b89c85a3d10adb4cdbda8319667a2b4785888f645f7c8a99"
+    },
+    {
+      "path": "static/dist/assets/SpaceNavigation-p_7PkAVI.css",
+      "bytes": 2357,
+      "sha256": "49493df00aa7f9de9a1ec95a1cb1ed987c24760804177ee5810fdcbf623879e1"
+    },
+    {
+      "path": "static/dist/assets/square-BzvlxMy6.js",
+      "bytes": 563,
+      "sha256": "ac68735f37a4ae2066b4553e65304fda04f13b95e424065921ff3dba2bf31825"
+    },
+    {
+      "path": "static/dist/assets/sse-DBqZjprq.js",
+      "bytes": 976,
+      "sha256": "b963eaa5e89223dd45b58f664d80bf3c2c5e01fae67384df9bc2a10221c8badd"
+    },
+    {
+      "path": "static/dist/assets/store-BoWmntNL.js",
+      "bytes": 11601,
+      "sha256": "eb37bddd4c39c75df95da4e1fca4e6088db3cef94a1e76fb8ffb9aefc9cad815"
+    },
+    {
+      "path": "static/dist/assets/Tarot-CHZ65bjN.js",
+      "bytes": 23869,
+      "sha256": "d218bb586d199807df594b7a25b5c1f8808c0255178cc98736a9fb00afbb166a"
+    },
+    {
+      "path": "static/dist/assets/Tarot-DGXuGS9K.js",
+      "bytes": 6005,
+      "sha256": "985879612371be6eb238df71aed7d3a55b705551c66cf071c7f4b95d1deb3f11"
+    },
+    {
+      "path": "static/dist/assets/TarotCards-V4i6_r0G.js",
+      "bytes": 10116,
+      "sha256": "1f4bdb8393bd21335e8a538f944d4fcecea2839bb79fd8b5726612d6c3ddd555"
+    },
+    {
+      "path": "static/dist/assets/TimeBasis-AcUsQWxw.css",
+      "bytes": 3502,
+      "sha256": "7cded079729772e8246ded578877dc964bb50b74d7c433e61cffd007b8fe229a"
+    },
+    {
+      "path": "static/dist/assets/TimeBasis-NlZXKlMO.js",
+      "bytes": 15977,
+      "sha256": "06e27911d4ed8a17a5237db3ce72ce6329470a5252f175568eaa761d84040ca4"
+    },
+    {
+      "path": "static/dist/assets/TimeField-DZbOHST1.js",
+      "bytes": 657,
+      "sha256": "417c30c987ee23ba59b8dc95b58698cd177deb2e940662878728bae122234229"
+    },
+    {
+      "path": "static/dist/assets/Today-BQ3FKFEa.js",
+      "bytes": 2943,
+      "sha256": "d11052be8b4835befeb86d144edd989b5d86d2bb276cd9dcbaf26e79ead6531e"
+    },
+    {
+      "path": "static/dist/assets/TodayPage-D77z179j.css",
+      "bytes": 1178,
+      "sha256": "d2353643e7786ac1cb2fc605d7d7ad80ec9b1350f70ee8184953725b24e48e8f"
+    },
+    {
+      "path": "static/dist/assets/TodayPage-U4LMKfA5.js",
+      "bytes": 11296,
+      "sha256": "be9f86c353aab4dd6d3709d5ad869868bb5780de6c782f1cb5bbac3e2b6d12f6"
+    },
+    {
+      "path": "static/dist/assets/ToolsDemo-BQnfSQrY.css",
+      "bytes": 2405,
+      "sha256": "98a0b7d6430eeefb588bdb7c3f44a5604e859b65157905407f39d3409baef700"
+    },
+    {
+      "path": "static/dist/assets/ToolsDemo-DCjKX1R1.js",
+      "bytes": 27507,
+      "sha256": "64af5f242b275e7f658c3ce2ecdade8f8f9a65f459e67ebf4493711c3212355d"
+    },
+    {
+      "path": "static/dist/assets/triangle-alert-D7V4RE-G.js",
+      "bytes": 261,
+      "sha256": "cd73f86ace6fb4f85a1d54f490a19c0d0b11ea9e6ccc2877e530655f35286c68"
+    },
+    {
+      "path": "static/dist/assets/x-wLUvML9d.js",
+      "bytes": 151,
+      "sha256": "9474b1f0f93dde90b95f811ba1d1db3625167f054671cb9676c733e758c9dc33"
+    },
+    {
+      "path": "static/dist/data/tools/manifest.json",
+      "bytes": 1290,
+      "sha256": "f9f52462c709b86ff044658b8596849565f3c4c7b62dad93d2761e799022350c"
+    },
+    {
+      "path": "static/dist/data/tools/synastry-ayuan-xiaohe.json",
+      "bytes": 107213,
+      "sha256": "0e5bca193ab59d929e94084cd3e7104f9e2430f04cb49884144c1022b682376e"
+    },
+    {
+      "path": "static/dist/data/tools/window-search-ayuan-contract-20261021-27.json",
+      "bytes": 669795,
+      "sha256": "abca437d50b27b537cd94f0d5ae954006ed0c05a5a44afd965a9d04a6ff8d083"
+    },
+    {
+      "path": "static/dist/data/tools/window-search-ayuan-empty.json",
+      "bytes": 8661,
+      "sha256": "a8317d5434c438a818be6522954c491ff4c405f61a2a750860ba673d000aed44"
+    },
+    {
+      "path": "static/dist/data/tools/window-search-ayuan-page2.json",
+      "bytes": 290842,
+      "sha256": "2bf92668caf05073cdc1c1e3d768672e2473a3f91f1c128765887779d76a0696"
+    },
+    {
+      "path": "static/dist/favicon.svg",
+      "bytes": 289,
+      "sha256": "59a2ba884a398c65cc546c9aea052d5009c82698d8d4044ef54750f39b193f74"
+    },
+    {
+      "path": "static/dist/fonts/fonts.css",
+      "bytes": 187451,
+      "sha256": "34d2a7f58131126839c1fee72a06c4cacefe140f07914dde1025889d7a73178e"
+    },
+    {
+      "path": "static/dist/fonts/manifest.json",
+      "bytes": 34409,
+      "sha256": "9ea67a4034118346b82cc54e5e653db2db2603f571a49b5ac5d40375d753e2cf"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-100-wght-normal.woff2",
+      "bytes": 64376,
+      "sha256": "2c5ddf9cdfad73afb5235e06bc8ed3b5c627849200d673978148700c78f84160"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-101-wght-normal.woff2",
+      "bytes": 58028,
+      "sha256": "a33308bf652e64ac2884bfe830996e933322b939b915bb823fd47383580664ad"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-102-wght-normal.woff2",
+      "bytes": 60516,
+      "sha256": "4ea85e144cb385ce086b21b307730d3fdb70a587aaf350b12d0c4c2f13e66d27"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-103-wght-normal.woff2",
+      "bytes": 63732,
+      "sha256": "1bfdb1f001006c62434577b60064c3ec0562e4a68191acbc7feeba4b303bf095"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-104-wght-normal.woff2",
+      "bytes": 61404,
+      "sha256": "1e716b78655e396075808be52a9e749df1b6b5d17bd0ccedc6dcb89586903737"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-105-wght-normal.woff2",
+      "bytes": 61612,
+      "sha256": "ade910a27a4bd65baed59a8a86a3a6a80f6083daa7123bb9ff32da15e56fda9d"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-106-wght-normal.woff2",
+      "bytes": 62444,
+      "sha256": "d31c838eb0e43043109bd6ddc23c295c340fc50f9a2f2381076ae8c0fa7f980b"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-107-wght-normal.woff2",
+      "bytes": 60828,
+      "sha256": "d8d9b5fd2b266fdf3f6855444e7769e54f39806e48994e7fe5e0c4ace9553c81"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-108-wght-normal.woff2",
+      "bytes": 64340,
+      "sha256": "12fcc1175cb6370acb056743f4fea7fdde85b6376ada2f15dfbab59f02b45988"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-109-wght-normal.woff2",
+      "bytes": 60208,
+      "sha256": "85ebc9985c665dd55346ebc78b93f8d8ef6ff972d78afc288b75d697a242d780"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-110-wght-normal.woff2",
+      "bytes": 61188,
+      "sha256": "51785f4a4d2a011d877052cab1bc4c36cabcc4e186ed0176214061c174b7f024"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-111-wght-normal.woff2",
+      "bytes": 62400,
+      "sha256": "aaa67a70f5e8b351c558e32345093fdfd86f089726b3b86d84b58de6a2475104"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-112-wght-normal.woff2",
+      "bytes": 57460,
+      "sha256": "34e76675ceffd89824fb130d7649dc92df9e57843a73b9996d405baa2ff9ecff"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-113-wght-normal.woff2",
+      "bytes": 58428,
+      "sha256": "40290d98d5c121bdbb1909e39c9c0242eae3a5a88f1bbe302857e525b90056df"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-114-wght-normal.woff2",
+      "bytes": 57740,
+      "sha256": "c49b2eb658a0c2d76de9a279945de30bf32acd8fdd6d56cf84aea9c6b14aacae"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-115-wght-normal.woff2",
+      "bytes": 56264,
+      "sha256": "6c0cda055b31066fb60058ac30ede37f6f9ca02265c2e1a84aee81175f567fa8"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-116-wght-normal.woff2",
+      "bytes": 52796,
+      "sha256": "002e502515bee8b9efa1b17abf7e52b51d4cfa20538ae2b2bd82ac52e1153f5e"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-117-wght-normal.woff2",
+      "bytes": 52228,
+      "sha256": "3d7ced7101c03dfa9bf0e60460a1b91fc6f1166fb33f718506e8110bb12e74a7"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-118-wght-normal.woff2",
+      "bytes": 45992,
+      "sha256": "f26330ce4056382832c0f2a0d7f411e0b4140fc87937e8865d91664410cfb98c"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-119-wght-normal.woff2",
+      "bytes": 76324,
+      "sha256": "09b9fa5a9521fbeccb8267a5abe7443c83cbe25b32eb15b00de316d913235525"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-21-wght-normal.woff2",
+      "bytes": 11276,
+      "sha256": "0c5afc8752b151a444ccb3b21d740cc8e429347ea52bd4cf9d22b73937624bbf"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-22-wght-normal.woff2",
+      "bytes": 65220,
+      "sha256": "b15b23e18f7b765bd08d12d13210c0af8d32bee34712bc3152d0b386d043ec04"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-23-wght-normal.woff2",
+      "bytes": 56700,
+      "sha256": "a8f6664d83439cd5d329e9b35a54fb4d9d3786e80d3eaebbaeac24e3acf950fc"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-24-wght-normal.woff2",
+      "bytes": 62552,
+      "sha256": "fc59757db66129052cd8e4248045f92f8273b37f719be2a058a55859de190a0e"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-25-wght-normal.woff2",
+      "bytes": 58224,
+      "sha256": "074e6162a8ba4f9cf25881da25ce522bb949c1e2516142746daf85471bc48a9c"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-26-wght-normal.woff2",
+      "bytes": 50744,
+      "sha256": "68074245ba1ea9745cad9cf3780b69c9def3568891296e44d60e070e45df7b7a"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-27-wght-normal.woff2",
+      "bytes": 47324,
+      "sha256": "4e0dafaa26d924f5612a138a34a817aa06b8f72bad9798fe64d221fb13001d31"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-28-wght-normal.woff2",
+      "bytes": 50016,
+      "sha256": "31bb7facf7a62ee189026f7ff725b9c4639c712762036394c2996db140549746"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-29-wght-normal.woff2",
+      "bytes": 53848,
+      "sha256": "67d137f738bc8294a0365f60661e31b33a6e534d56d7e5ed6982d5e6ffa5663c"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-30-wght-normal.woff2",
+      "bytes": 54416,
+      "sha256": "12acd771479c93c76f064a81447266c349d6a33d2f1893d5413c6303b1156fef"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-31-wght-normal.woff2",
+      "bytes": 47084,
+      "sha256": "def5793483c7abc922de654bc16262646c9ae263819e663990b52fd56a3d5d69"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-32-wght-normal.woff2",
+      "bytes": 52368,
+      "sha256": "2d884d1cfd97c6f72518a2d690573e4130b0b707423f25963d7cc975388adf3e"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-33-wght-normal.woff2",
+      "bytes": 47332,
+      "sha256": "02fd273486d8e0c876b3b5d2c3c131b9ce85058196ee3ed77c7d38a7a10e139c"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-34-wght-normal.woff2",
+      "bytes": 46748,
+      "sha256": "13a18e443a4bf6557e252a63061914ce19c4be018c9b16eaf5c75842ee88baf5"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-35-wght-normal.woff2",
+      "bytes": 50464,
+      "sha256": "68413e3f3e5b912efd25702281aae9acb37c9920bb7bb941404506ab520add49"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-36-wght-normal.woff2",
+      "bytes": 41692,
+      "sha256": "21b841e271833161fe5f70a2052399e79faac029667abdcdffe81f260f2ce6b5"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-37-wght-normal.woff2",
+      "bytes": 53356,
+      "sha256": "bcbdf5fd7899c7ed192a0c89de9c6c92477be74b8c2343e74914359bfd32a10f"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-38-wght-normal.woff2",
+      "bytes": 54424,
+      "sha256": "ca375e4a6ecc230333656ad11081b26e6b8f3240f4160e22f75150d4fdddcc9f"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-39-wght-normal.woff2",
+      "bytes": 51616,
+      "sha256": "e73a947fa1fb1a7385e9d654fa0fe7dd8a2241e9b73282f67941c650c94de326"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-4-wght-normal.woff2",
+      "bytes": 3764,
+      "sha256": "29634170d5eb07f460a9eb1b2d0ef126ad0b5ef705e4c25191fd5794dc930d4d"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-40-wght-normal.woff2",
+      "bytes": 46432,
+      "sha256": "2f186187cfd9a546d199aac41fbaed1241a47a7d5aad1804f98127506af80340"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-41-wght-normal.woff2",
+      "bytes": 36284,
+      "sha256": "7e2a21f95e969165ff32e2fdab8422b489d2c7b0f899f69bfc83d71872cde2af"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-42-wght-normal.woff2",
+      "bytes": 45432,
+      "sha256": "c53279f786dde3590baf0343d080fad8c7bd976e9dccecd2adea893cfad2f99a"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-43-wght-normal.woff2",
+      "bytes": 46488,
+      "sha256": "a98ffa0839e353eb7e768084e27892596616f6a3d8bb65c94202898bccb1fd68"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-44-wght-normal.woff2",
+      "bytes": 54096,
+      "sha256": "aa1a541dfacfcad0c66fb7f9dd4f9c12ce729d98311336c634702d066aabbbc2"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-45-wght-normal.woff2",
+      "bytes": 67436,
+      "sha256": "ea12aaa5635e53eaf7429500be57e9e8a6030e0906f985426412a1303761f77f"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-46-wght-normal.woff2",
+      "bytes": 57520,
+      "sha256": "d4a75aa10eb4487dcd94ff2009ef0f185d35f0e3264fa87532887c5c1517c816"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-47-wght-normal.woff2",
+      "bytes": 55972,
+      "sha256": "d5c48bd3b5502918adf253c96909f27be4eda7653fc0254a6564557b516cb2e1"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-48-wght-normal.woff2",
+      "bytes": 50616,
+      "sha256": "c4f53f8b05fa6350ac20f8a12b550f9634ed31b084dc50b1263f2080e392b9f7"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-49-wght-normal.woff2",
+      "bytes": 52768,
+      "sha256": "2418a76f14f6299b160af41cd283ed529b0030e2448b2ec11895ea5009561e25"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-5-wght-normal.woff2",
+      "bytes": 20044,
+      "sha256": "08f7b17fb6a88382277dfa1b6969f1f0b73a1f87819713849bb9e1ff6017088e"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-50-wght-normal.woff2",
+      "bytes": 45724,
+      "sha256": "050cbf869048801588356d05f1145c601ddb9063a9e9fd241bbd0997a5ca263f"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-51-wght-normal.woff2",
+      "bytes": 41476,
+      "sha256": "48810df68807cb9a06052daa52495183575373dc1f3294cce7739a6f37ff25cf"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-52-wght-normal.woff2",
+      "bytes": 51772,
+      "sha256": "bf40713c12d0ae841b4cbe9d487724e4ee780fdb84844a96ba8ebae6b79a3191"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-53-wght-normal.woff2",
+      "bytes": 43284,
+      "sha256": "13b6821eb6534f1ac72a4bab506de7012bec7fe0b9bb0a73733d5c798dd45e29"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-54-wght-normal.woff2",
+      "bytes": 51816,
+      "sha256": "db60ee4c755151c036004e39bde39fa9676c6a9d1753d9842ae1a7b2e5899b83"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-55-wght-normal.woff2",
+      "bytes": 47948,
+      "sha256": "70105493871b782981352a0cf696487afc098a69a4708d87a7931607fe15a128"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-56-wght-normal.woff2",
+      "bytes": 53332,
+      "sha256": "cc5fe9a6dedd91e7b95482713b12c84d99a04f90d5124e50db3efa9f2450923f"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-57-wght-normal.woff2",
+      "bytes": 55348,
+      "sha256": "3a4bddf6442271be898390e29e344183f5f10a97eefa04595c9537f535f34927"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-58-wght-normal.woff2",
+      "bytes": 57468,
+      "sha256": "b4a952b513ca0e1b594a856e5398d1e40d69b0bf220825210955fde747faa8d0"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-59-wght-normal.woff2",
+      "bytes": 47504,
+      "sha256": "0557109d55c77ff9c9b5c9732d732c5328bd0b61038cffe611d9d62b26ded420"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-6-wght-normal.woff2",
+      "bytes": 11388,
+      "sha256": "675ff09731b49aeff9031c6d8edb3d54766aec64e4c6c699be5766729e4dad98"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-60-wght-normal.woff2",
+      "bytes": 41300,
+      "sha256": "105d09095364787b4eef08ecd4faa975d66ad3ce2be43bb968dd37b9285e6667"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-61-wght-normal.woff2",
+      "bytes": 45096,
+      "sha256": "21c21d2375925f742573edc50e3bca85a63350bf1d5d566d2d762f8ce2b259d9"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-62-wght-normal.woff2",
+      "bytes": 58956,
+      "sha256": "d532c89a0da063c68ce871a7f85fa75448efc3089335e012f107d80618512fd4"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-63-wght-normal.woff2",
+      "bytes": 49052,
+      "sha256": "0897654d316342cdf37bb3d16fcf1a51fdcc38fcf1fb39880b5d3f17e87bf7de"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-64-wght-normal.woff2",
+      "bytes": 41408,
+      "sha256": "d490960a491521936b84a4be078a9570444960a2dc73c584b802d2c9c8fba1c1"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-65-wght-normal.woff2",
+      "bytes": 41392,
+      "sha256": "086958b9f441a2ba9fca76e9ac4924bc4acb60559bd5620d348c707ff154ee83"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-66-wght-normal.woff2",
+      "bytes": 52620,
+      "sha256": "50c8a455f282618211dacd6a0a30c1dee510d6d46eea9be79937b24e69cb0353"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-67-wght-normal.woff2",
+      "bytes": 52464,
+      "sha256": "54fc8c9eca1c929480b2c090907dfd9d42875cec49989b0737af2b6a60097f29"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-68-wght-normal.woff2",
+      "bytes": 41380,
+      "sha256": "3ed406ceb43b6f73a6a42ad9e8b2a9aab96fd6603bab5b73a908ca53f0d354a8"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-69-wght-normal.woff2",
+      "bytes": 55520,
+      "sha256": "c7d1f5b0f95f358dee4cf9e76eda5c0465eb9d0f4e21a13ef39d0cf8761e5b9d"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-70-wght-normal.woff2",
+      "bytes": 42080,
+      "sha256": "8474823a5264bfdee208fd16e2e5f3fe689e8eb18941446678426dc5f1264d19"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-71-wght-normal.woff2",
+      "bytes": 47768,
+      "sha256": "734da1dcc260ca6cc29c9e42078125ae8e4583fbc1f7cc76d82572a73767f04d"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-72-wght-normal.woff2",
+      "bytes": 46916,
+      "sha256": "71d3da5b2d0e05b8899e271aaa49982fa73a589168be26a8350ff6f79f20bfd7"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-73-wght-normal.woff2",
+      "bytes": 39096,
+      "sha256": "92f8b99dc1a79089d18b1684447e31ef62abf48de736555cf5840b781aeb9d56"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-74-wght-normal.woff2",
+      "bytes": 56260,
+      "sha256": "5c8faf77fe0277b9e59904396fdf3fe24088bcb2decfc5729895b279c53754f6"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-75-wght-normal.woff2",
+      "bytes": 43824,
+      "sha256": "216c1c94ee016db46f8d1dc5c51f402215dbf9013fbf9f60f3db3901f9a3b035"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-76-wght-normal.woff2",
+      "bytes": 48240,
+      "sha256": "8a31272bf31f9340747866ad1a59ff6073bf92fe802e2ba5a531f6a8aac2a42b"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-77-wght-normal.woff2",
+      "bytes": 36664,
+      "sha256": "bc249f82f40ec61d6ec096c748603fdb4e946adaf659392b06c6810169e81513"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-78-wght-normal.woff2",
+      "bytes": 48916,
+      "sha256": "26210c38ccee9b53194481bed1dfc1aa4f74810d5672b2e7ed6a2e44b169835d"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-79-wght-normal.woff2",
+      "bytes": 41064,
+      "sha256": "db79df334235f3d72cc0a7e625bfee1c3d6a76104af15e0814c4926ceee6188e"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-80-wght-normal.woff2",
+      "bytes": 32448,
+      "sha256": "c9ce6e0654379a2dd291a6f29323ff2d7f06156389ffb3e4d087a9d211887a6b"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-81-wght-normal.woff2",
+      "bytes": 47504,
+      "sha256": "9958d614924fa54de4f661febd02c1de787ef640d58970e4d928e1ecd7c17990"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-82-wght-normal.woff2",
+      "bytes": 46008,
+      "sha256": "2129264ef35c203e3a2c2bc16abc437c110c57006d108ff107ad775dc7ea1e39"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-83-wght-normal.woff2",
+      "bytes": 43356,
+      "sha256": "24a037cbb07cb4de1f92993a9ceda16ba4483f1d63f6f529ea26ae44f01243fd"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-84-wght-normal.woff2",
+      "bytes": 32516,
+      "sha256": "e1b9b9aee81a74fc4ec19e1709c64a0042d9d898a2f00f6c3b2012564b6a4783"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-85-wght-normal.woff2",
+      "bytes": 26768,
+      "sha256": "cce97c39b9304c87e55ed84d511d479afd3343b91c04b3ac7bdc5beb9ecf709d"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-86-wght-normal.woff2",
+      "bytes": 33428,
+      "sha256": "55fd1a42ab8ace744691b59c535499ad22b22c7c98b1d69a22fe101a2cd9b0e9"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-87-wght-normal.woff2",
+      "bytes": 7956,
+      "sha256": "40292a14f8f52accb05252b7ec7c68e00f35781d2a726223bec1685eee6312b5"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-88-wght-normal.woff2",
+      "bytes": 7228,
+      "sha256": "008f38db74bc1c346ba8f4d6065dd41d0fe33a4ed2f9909cb880b81c5a3f9334"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-89-wght-normal.woff2",
+      "bytes": 10792,
+      "sha256": "74a75243aa93eb61367a28d217ce82b76c6cf9e86d0f23fd96708bfd91b68f46"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-90-wght-normal.woff2",
+      "bytes": 9224,
+      "sha256": "80d51f95afbebcbed0cc53985fbce43eec3a37c8ec88b08d316c56a32aa77843"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-91-wght-normal.woff2",
+      "bytes": 8616,
+      "sha256": "7bf857d9d1285675fe572e64f968ae1f3213da7654ffd335633fb5b39493c057"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-97-wght-normal.woff2",
+      "bytes": 2072,
+      "sha256": "7671f7b32d4c5c11ba72df9e6b9a18a6441f863aade2623ac0562ebd34b82bc7"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-98-wght-normal.woff2",
+      "bytes": 3412,
+      "sha256": "94e55b60e87bfb909709592144002c0b10a4214612ea512b38bb719c9ef45c49"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-99-wght-normal.woff2",
+      "bytes": 9696,
+      "sha256": "6b2d1065f737c83608088c2e241c605683d94c6160121ca976496507ebc6cc94"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-cyrillic-wght-normal.woff2",
+      "bytes": 9896,
+      "sha256": "811e869a2b23ff46086eeff6fa59185bb1aa982f5bcd8d34db51e10ea8e5f7e1"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-latin-ext-wght-normal.woff2",
+      "bytes": 8128,
+      "sha256": "0049f7154dcc3fa0d585f80383b232cb9e497084ee77e10519747d668db3cb55"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-latin-wght-normal.woff2",
+      "bytes": 24880,
+      "sha256": "cf5346b0747cd71123c8f74da0ad41fc0f63eda07b9d8e0382e00882ae743733"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-OFL.txt",
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "path": "static/dist/fonts/noto-sans-sc-vietnamese-wght-normal.woff2",
+      "bytes": 8976,
+      "sha256": "310e65da63933201c3381173106418442de6441742594001290b4056abbc9ed8"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-100-wght-normal.woff2",
+      "bytes": 84696,
+      "sha256": "fed9f7a5c10a94cbe0a7e6789512607a1abdf797ac9c6d1f2462e6bca2573734"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-101-wght-normal.woff2",
+      "bytes": 77788,
+      "sha256": "5054480a15959f80c101094a5d9eb749a0c8c5654e17b3219e16f7a5abe006e0"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-102-wght-normal.woff2",
+      "bytes": 79680,
+      "sha256": "6d6aedcf1f83747c7b38f7045470ba70b3352b162616313c7923a6bbde81915c"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-103-wght-normal.woff2",
+      "bytes": 84088,
+      "sha256": "c94541da7c8ec39d9f581019203b36f53c719151623281cc14ec9984731a1f47"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-104-wght-normal.woff2",
+      "bytes": 81044,
+      "sha256": "3f24940446111010a3117ae4054c7265f9d90bfd8acc16c41a7c9092150fde3d"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-105-wght-normal.woff2",
+      "bytes": 81516,
+      "sha256": "f43c00b1e7e213add01d19eecf6ef2e8a96f7087b46b908df407490b72fe09d9"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-106-wght-normal.woff2",
+      "bytes": 81652,
+      "sha256": "1066b4dc2f377882adc40e8501b1fdf1ab020a6aed5522503e5b1fadfe36281a"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-107-wght-normal.woff2",
+      "bytes": 79804,
+      "sha256": "c5026c625c58b58b56e629faf50cb622aa9f03ab223eaaab89033b6ba5960aab"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-108-wght-normal.woff2",
+      "bytes": 83484,
+      "sha256": "4665f9383f65a4fb003c53808f5b91d1e93fcccd3d2d8c799cfda6e3d14656d7"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-109-wght-normal.woff2",
+      "bytes": 79044,
+      "sha256": "45838ba623192deef4a4a71d1c1ddca77ea5b3281b96e3017972ce14e2f10f6d"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-110-wght-normal.woff2",
+      "bytes": 79548,
+      "sha256": "1a109586fcc58c9daa102480dc0de03623a59be55a8726b3c7a83f19475f2f13"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-111-wght-normal.woff2",
+      "bytes": 81144,
+      "sha256": "8164af476b514e30654ecf3aa34edeecbad209782f4b026964032e4f594a2881"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-112-wght-normal.woff2",
+      "bytes": 75996,
+      "sha256": "675553f67dda471ccc684b734a07db465fb6bb9ec1ce5a70b6d6b0f9a36a7a26"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-113-wght-normal.woff2",
+      "bytes": 75872,
+      "sha256": "1594e53f4ab5fe067f7ba108b65a71ed07b2fb9da68af01349b4966c871e4d36"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-114-wght-normal.woff2",
+      "bytes": 74744,
+      "sha256": "f402c381cb2eb5c6d1e65a8bae7629b5cb97faaa42759af6874f6d33fcc98273"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-115-wght-normal.woff2",
+      "bytes": 72508,
+      "sha256": "a56a7e1d3efa7e7a4b30b086153398d3ed87a2b984551c046b614c03b4c3f9cd"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-116-wght-normal.woff2",
+      "bytes": 67304,
+      "sha256": "06ad3ccc929aa35ffb271c64ba4b1a8a14c8a2076b583eb2b32c7169f74c33c3"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-117-wght-normal.woff2",
+      "bytes": 66656,
+      "sha256": "fd992a95c6a01de7bfb520c01ca4ad20c60cb5a91f0fb21cf46fe1e13e78fd2b"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-118-wght-normal.woff2",
+      "bytes": 58224,
+      "sha256": "b75a2da2189e8db96e83563b650fb04466ca9284d28a1e27ff4d4aaaee5d13b6"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-119-wght-normal.woff2",
+      "bytes": 104964,
+      "sha256": "25412edffa19ad8baf75508052ec4b5c8ecfcf75384f98b67cea291886f8d0c4"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-21-wght-normal.woff2",
+      "bytes": 26040,
+      "sha256": "c56fed07baa5368c483c00d7963847caf0f9aff18bc78561fe8b14db7171b572"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-22-wght-normal.woff2",
+      "bytes": 85288,
+      "sha256": "4e943fdd06982ac9a81d192846dab76a2797321c990774600dc65ff8fe1d4e68"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-23-wght-normal.woff2",
+      "bytes": 73872,
+      "sha256": "e50204d9c99dee1b284a8f5c9508295fe6209c54e089ba7146813360d9c17713"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-24-wght-normal.woff2",
+      "bytes": 82664,
+      "sha256": "03de62bc4c94fcf00ad2a87ed76731c95b0852b0b41c9028844e1a05c06082c0"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-25-wght-normal.woff2",
+      "bytes": 77944,
+      "sha256": "9fa23b6cf30829d06600bda44f2b5d31880d088ef9bd5626aaf4557941457c10"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-26-wght-normal.woff2",
+      "bytes": 71356,
+      "sha256": "158a0be2cbba07d17824a5ba52319a3f914c59857f4bd70a332596bbe1b1128f"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-27-wght-normal.woff2",
+      "bytes": 64664,
+      "sha256": "dc5909d502de13c096a9d4b6f674433f2da1ef62f71cce1e3f43be499f1a4a52"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-28-wght-normal.woff2",
+      "bytes": 67936,
+      "sha256": "93daeb451edfe65dad18a468cc90933d6a5fc79e9411ce28027bacbfd7bfa0b8"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-29-wght-normal.woff2",
+      "bytes": 72784,
+      "sha256": "d4ba29a42d58e9c71f523225d6c2257e231e4d3fe92b720bbcbf99dd08add33c"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-30-wght-normal.woff2",
+      "bytes": 76908,
+      "sha256": "106e18d90034e75630790ad203bc69850747bf96c0a398b96bd88bcaa81e9480"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-31-wght-normal.woff2",
+      "bytes": 64260,
+      "sha256": "b9df2ce5d328a524975728c051385e14c1c823798e084c1227101ed4acc6174a"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-32-wght-normal.woff2",
+      "bytes": 68000,
+      "sha256": "87fdad598fb7ab598784e43f87f1da2c5476f88e4a5a9aba56abc73973449a42"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-33-wght-normal.woff2",
+      "bytes": 66088,
+      "sha256": "a1e18c863c00ab7e6f17fddcc42b193fb94ccb5e3e01ee394a189c149aef447e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-34-wght-normal.woff2",
+      "bytes": 64724,
+      "sha256": "ba9fbd7fdbf7cce92c1a95946a7ad7b10ff9d3098403174b2b2b11ba6b282eb0"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-35-wght-normal.woff2",
+      "bytes": 63760,
+      "sha256": "0eb731d70aa1f4966dfffab308b3fb11975886fd5375f45ce6b16f1eaebafb83"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-36-wght-normal.woff2",
+      "bytes": 57848,
+      "sha256": "b36a86aa9d07ae91a379ef0661f723c323677fb9106457318b1194d5c5f7cbc9"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-37-wght-normal.woff2",
+      "bytes": 67828,
+      "sha256": "5b42c53aa93cc2a7fd855c85a5ca733d4da8d06984df8b4c9b2b76ce1090bc80"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-38-wght-normal.woff2",
+      "bytes": 75304,
+      "sha256": "60bae2b9a8bf65e1b4c1a06d529079cea1824bbab0a37840469f24b698880aab"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-39-wght-normal.woff2",
+      "bytes": 72288,
+      "sha256": "ef454fca50875c2536bfbcf4e0b540f456c012a61d08ff778ea4e3e640bd938b"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-4-wght-normal.woff2",
+      "bytes": 4644,
+      "sha256": "92b93561d8af27754352918934377dc09ecbf91d2d65a0951fb1d60895367330"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-40-wght-normal.woff2",
+      "bytes": 66144,
+      "sha256": "5392252c91bd0707d647df33a9a279501a029388c7882a0ad420a40b760e5a62"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-41-wght-normal.woff2",
+      "bytes": 51516,
+      "sha256": "0f39f0bbe9a7a450b994c3c3bd9aa0627ae2dea8d36b67fc5a3554830f28005e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-42-wght-normal.woff2",
+      "bytes": 62740,
+      "sha256": "2db79fd3aa1d48c07e30664553e9d1ddb9fc4c23fdf02d48c63e094ebf275a5d"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-43-wght-normal.woff2",
+      "bytes": 58348,
+      "sha256": "7e94834579a87ac5bbeae3c8d0cfc33206d7e0fc85e7c59568f75358fb000c44"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-44-wght-normal.woff2",
+      "bytes": 72500,
+      "sha256": "3f116c05fbb0abc3fba86bb85b4426eca3a41650d2763ed4c5b31fe8b28f752e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-45-wght-normal.woff2",
+      "bytes": 91672,
+      "sha256": "6b583a41d620c6b504ce9d451fdbb8e08d073b2573e46d444820959647d7f3e0"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-46-wght-normal.woff2",
+      "bytes": 77584,
+      "sha256": "1581af3bbb4e78f52db3b1078a85595e0ffa30ee334b7dbb49baf42ba9fbb28a"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-47-wght-normal.woff2",
+      "bytes": 74000,
+      "sha256": "a491a10a853d1fb3480d4471a275fd8824726b0e1a795fe8a98eb946001ac80e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-48-wght-normal.woff2",
+      "bytes": 64612,
+      "sha256": "cad6d79ef7a000ed533559c080e92351797bb90d800243fa3a25c7064a3ce93e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-49-wght-normal.woff2",
+      "bytes": 70316,
+      "sha256": "ca078411ddf19a164747d6e2220b0b2022f08e1682a1dc660a8902da13f2b0e0"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-5-wght-normal.woff2",
+      "bytes": 27568,
+      "sha256": "7610e185ab6d54a3d50860f45dac1db9614e70acf4fde1cc419b85b48ad1bd4f"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-50-wght-normal.woff2",
+      "bytes": 64520,
+      "sha256": "80938d29c0efdbd634308ac52ecbbda6707a0b3e3b7d1c84e197c28a6c8c837b"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-51-wght-normal.woff2",
+      "bytes": 57320,
+      "sha256": "6e0e93e30ac6e513ffdb1e5ddc50337e81c5f33d54bc3bb0e044113f228f5727"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-52-wght-normal.woff2",
+      "bytes": 67828,
+      "sha256": "6f05dd92f2f040024ed6f401c03a78ec8f8058313ecab04b6ff195a0041a4a5a"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-53-wght-normal.woff2",
+      "bytes": 53856,
+      "sha256": "039698b9bc16db3439b86528c88c369086ed237f7baa13873ca33a0922edce18"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-54-wght-normal.woff2",
+      "bytes": 69316,
+      "sha256": "2263f0841a3499dd34793a4b21c831760bcae5582b047cbcab0b55cf9b105ab5"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-55-wght-normal.woff2",
+      "bytes": 61532,
+      "sha256": "c940bed82b2192c9a436af93a8ae990c9e66d1384376f56878c3906c6de35353"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-56-wght-normal.woff2",
+      "bytes": 69656,
+      "sha256": "373d1b4d724f4ee5fa02eb5ee5474033a914a990d966f2abbb36c96682e5e993"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-57-wght-normal.woff2",
+      "bytes": 74032,
+      "sha256": "a8e46481396f2a9e4ac4875b64645f26e4e9ff185a8503c2402c2bc9bf46219c"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-58-wght-normal.woff2",
+      "bytes": 82552,
+      "sha256": "4fb8ac1d7a95c72aa66de7673a352e3e8b9046ffa90c444d0f961221f7052e40"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-59-wght-normal.woff2",
+      "bytes": 69524,
+      "sha256": "f69a03144d47d4987530030eceff2c2c4e37388ce5e45976a7a15f4dcd849d30"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-6-wght-normal.woff2",
+      "bytes": 15672,
+      "sha256": "aba77127699e71bc7d13fd80c4eaaebcb5065862590f6dfbb05ba14bb0c0d2d8"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-60-wght-normal.woff2",
+      "bytes": 61376,
+      "sha256": "952351694a0ada3a721a73decd3afeac99fac4637e0dbd2af987c7e147205ff1"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-61-wght-normal.woff2",
+      "bytes": 61312,
+      "sha256": "90a9d9858975f1c073521af5df9a7286356ff78397d274cfe7b64cb97f719920"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-62-wght-normal.woff2",
+      "bytes": 79496,
+      "sha256": "854a14f63241e795bc8a17e64d472f09c834a02f9b59258637063aabca530070"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-63-wght-normal.woff2",
+      "bytes": 63936,
+      "sha256": "9d345b17ad128918a7d4eea67714a376f8840ffdc82b77da8dbc416071491f65"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-64-wght-normal.woff2",
+      "bytes": 51012,
+      "sha256": "ab7aef1b30a10f6643f3271cb55e64c49e6d8c4b91a2e68287196cde66ad7614"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-65-wght-normal.woff2",
+      "bytes": 58572,
+      "sha256": "24f7302e65f8adaec36d642aa8caf68cdf4c50c91e54f75e9e535382366766b4"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-66-wght-normal.woff2",
+      "bytes": 69204,
+      "sha256": "5c818243ce70b138c5e7edd2798f92d311d8d9158eb60bad6c4f5cebe4d46fc6"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-67-wght-normal.woff2",
+      "bytes": 71680,
+      "sha256": "a4557ab88bbc6bb5272d315402d2448f92a7e53bdf3e89f1d839e95e5b67999a"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-68-wght-normal.woff2",
+      "bytes": 54196,
+      "sha256": "bca8897bbf2ee33d854e2d2cb19a31c66d549c2eb585af439e905378486df29e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-69-wght-normal.woff2",
+      "bytes": 73588,
+      "sha256": "52740303931d8b85ab9529076bf835aeaf877c56e47aead612281bc128318282"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-70-wght-normal.woff2",
+      "bytes": 53064,
+      "sha256": "b677122aea77998b4b6c991cc0268585a48690a9347bd17057ac589728176c5d"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-71-wght-normal.woff2",
+      "bytes": 62884,
+      "sha256": "6b91a10abb4a03d31c63d528f6ef6b0fcdf4dbe7c030d67e1943f6139c115d73"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-72-wght-normal.woff2",
+      "bytes": 65720,
+      "sha256": "713d2bb29db38602e97e272bdafa666c5b426b7b779dbf3beb32313fd95b8551"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-73-wght-normal.woff2",
+      "bytes": 56040,
+      "sha256": "c5cbbb60e77f863af35524ec5a6674f5ce15735f05746923caa8d07e99b55886"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-74-wght-normal.woff2",
+      "bytes": 74576,
+      "sha256": "365512ffc9e2717c81cf5d9af42646426d657d5494b4fd04501a5beb0af6f2e7"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-75-wght-normal.woff2",
+      "bytes": 57824,
+      "sha256": "f0e12f7e577876bf2d554e924f0a2bbce375b647d885a568b37dd5b042133ad1"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-76-wght-normal.woff2",
+      "bytes": 65740,
+      "sha256": "f0dbe158fa641cc4297af81a4d44d2a9a2b775a32a96d4f665d62820ee2e6562"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-77-wght-normal.woff2",
+      "bytes": 51780,
+      "sha256": "cfabb52e72825965ec66b18bc1bab646d150206f2a3aa6d4fa6f29040058515e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-78-wght-normal.woff2",
+      "bytes": 71048,
+      "sha256": "2101d62af080d6803513f4fe5d91aba6831b61bc95ed172dace75caa2a5b8c2d"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-79-wght-normal.woff2",
+      "bytes": 58804,
+      "sha256": "a5fdbb67e3dadebda5b447c1707fe47a2d9e40f095fb22dedc63aadf969d6609"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-80-wght-normal.woff2",
+      "bytes": 45184,
+      "sha256": "0a97bd54c22add0ce1fd54256f20bcafa92b8db870b3f80cefd3672da29eb3ae"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-81-wght-normal.woff2",
+      "bytes": 60576,
+      "sha256": "5945538dcbfc11c1db2d573e1a0889c33b90b45d8445cb9ce1f18b38db36336c"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-82-wght-normal.woff2",
+      "bytes": 62128,
+      "sha256": "45f3ed82e9bd8231532b58a0de47d0b26fbe8e4ceba610615903e346e5213263"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-83-wght-normal.woff2",
+      "bytes": 58812,
+      "sha256": "bf628db08549cbf5090c3486717d5121d48af1d82c79b6ab181ed9b49ba5e31b"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-84-wght-normal.woff2",
+      "bytes": 42656,
+      "sha256": "60e71123f0b838bf4fd52cb5de5e3d6af8e48c8f7f32481a39da625d1e63fd2e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-85-wght-normal.woff2",
+      "bytes": 40440,
+      "sha256": "d8f48bbf844eadbaa2e3db648ed6889ccb8083572437eb6f0f717f9097b9e45b"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-86-wght-normal.woff2",
+      "bytes": 47820,
+      "sha256": "a07d70eab2f78b6978c9e3e93056c5c3afdf649940959fa78cf345dd35b1f7a9"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-87-wght-normal.woff2",
+      "bytes": 7400,
+      "sha256": "50751cd23b3787eff2af23d3b9676b13cb5263e750a72fd258328f5812520b08"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-88-wght-normal.woff2",
+      "bytes": 6892,
+      "sha256": "45cb9a16cbc13eff333b49bfa5c63f0478078ac6bdc327de9d69bdb6cdd8ce2b"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-89-wght-normal.woff2",
+      "bytes": 12280,
+      "sha256": "ba142270184772c2bbc1985bf88e42d05e9462b14163001b8c253765c3f1d55e"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-90-wght-normal.woff2",
+      "bytes": 9736,
+      "sha256": "5968dd127304a59f1e2ea36b875f3702dadb0a229bc87a9053727c26807a15dc"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-91-wght-normal.woff2",
+      "bytes": 10640,
+      "sha256": "b86248889e23aba82ffa3e7327bf94eb44a73ca14e74dd3587848ff5adc1cacf"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-97-wght-normal.woff2",
+      "bytes": 2416,
+      "sha256": "91923c87f9f32c46056285e69b1009fbb71c0bd27a1a1f9d386bc9248217606f"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-98-wght-normal.woff2",
+      "bytes": 4376,
+      "sha256": "26b9dec17f125371d5f5089f89de39094a11f98ffebb061011158d7e4aa602d0"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-99-wght-normal.woff2",
+      "bytes": 12324,
+      "sha256": "7bf7c8fd9809004cba36338a94c338cffbce66069c2b091a7472e0b4dfa6b041"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-cyrillic-wght-normal.woff2",
+      "bytes": 14476,
+      "sha256": "d6e6ed7b0a14b508f94072aea3bb29abe236fd012ba6174b49292a6c900718e6"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-latin-ext-wght-normal.woff2",
+      "bytes": 10332,
+      "sha256": "b07e7e5e090ed9220e5fd4afc6a22339a77f63f79f1f7ac010e3b05a8849c5ce"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-latin-wght-normal.woff2",
+      "bytes": 32964,
+      "sha256": "be8c3c315592fbeda0f6acbe9914a0b4c1da1b7e30889ddab5e145d346ae4928"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-OFL.txt",
+      "bytes": 4314,
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3"
+    },
+    {
+      "path": "static/dist/fonts/noto-serif-sc-vietnamese-wght-normal.woff2",
+      "bytes": 10920,
+      "sha256": "9826143bb6278155de4f76910fd6ec34fe450385dd0d85df10e4497bb174eac7"
+    },
+    {
+      "path": "static/dist/index.html",
+      "bytes": 1043,
+      "sha256": "4acd13783202737213ebc96ba21b7f5f464a68d17c7eb27690f3d56da504e977"
+    },
+    {
+      "path": "static/dist/pwa/icon-192.png",
+      "bytes": 2766,
+      "sha256": "88994a834693f39c5ae64bf7855b087bbbb967307396e3d875f8c7549dfa8cdd"
+    },
+    {
+      "path": "static/dist/pwa/icon-512.png",
+      "bytes": 7617,
+      "sha256": "5e52c1da9924bcc07cef9a65a22310b1251797e115322f429cb60c50ee7c621b"
+    },
+    {
+      "path": "static/dist/pwa/manifest.webmanifest",
+      "bytes": 704,
+      "sha256": "e1f68e021d555756a2c100cf958403826e23a604901ea02b59c25e93cc21da1e"
+    },
+    {
+      "path": "static/dist/pwa/seal.svg",
+      "bytes": 456,
+      "sha256": "6a159c3661db56f1bc141ba9203ff8c6f5f165af5f8827a6e8c61375ce6288e0"
+    },
+    {
+      "path": "static/dist/pwa/shell-manifest.json",
+      "bytes": 14279,
+      "sha256": "c3a0052021593a1c429401a893406ac384bf9558fe3ae8049cd0e9a1998833d0"
+    },
+    {
+      "path": "static/dist/pwa/shell-runtime.js",
+      "bytes": 3662,
+      "sha256": "a7c50b2d925db3088923895485dca9e3895682f834edbd87e017c5e6e9988efd"
+    },
+    {
+      "path": "static/dist/shell-sw.js",
+      "bytes": 14996,
+      "sha256": "bfe7644367c948b14d2be57b98a3951a4a91bcb15dcdc57bd6fe5b20bbbbea77"
+    }
+  ],
+  "manual_review": [
+    "390dark failed version preserved",
+    "1440light GET retry current version"
+  ],
+  "initial_capture_note": "Full-page snapshots at prior scroll position misrepresented fixed skip-link/sticky rail placement. Retaken at scroll zero without runtime or behavior assertion changes."
+}

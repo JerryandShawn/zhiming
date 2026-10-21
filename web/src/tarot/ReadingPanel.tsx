@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Button, Textarea } from '../components/ui/Controls';
 import { Select } from '../components/ui/Selection';
 import { Markdown } from '../components/Markdown';
-import { api } from '../api/client';
+import { api, operationNamespace } from '../api/client';
 import { pendingPayload, write } from '../api/operations';
 import {
   clearReading,
@@ -34,13 +34,35 @@ export function ReadingPanel({
   const [cancelled, setCancelled] = useState(false);
   const runId = useRef(pendingReading(drawId)?.run_id ?? '');
   const controller = useRef<AbortController>();
+  const refreshEpoch = useRef(0);
+  useLayoutEffect(
+    () => () => {
+      refreshEpoch.current++;
+    },
+    [drawId],
+  );
   useEffect(() => () => controller.current?.abort(), []);
   useEffect(() => {
     onBusy(busy || cancelling);
   }, [busy, cancelling, onBusy]);
   const completed = versions.filter((v) => v.status === 'success' && v.answer);
   const current = completed.find((v) => v.id === selected) ?? completed.at(-1);
+  async function refreshVersions() {
+    if (busy || cancelling) return;
+    const version = ++refreshEpoch.current;
+    const namespace = operationNamespace();
+    const isCurrentRefresh = () => version === refreshEpoch.current && namespace === operationNamespace();
+    try {
+      const next = await loadReadings(drawId);
+      if (!isCurrentRefresh()) return;
+      onChange(next);
+      setStatus('解读记录已刷新。');
+    } catch {
+      if (isCurrentRefresh()) setStatus('解读记录暂时无法读取。');
+    }
+  }
   async function generate() {
+    refreshEpoch.current++;
     setBusy(true);
     setCancelled(false);
     controller.current = new AbortController();
@@ -67,6 +89,7 @@ export function ReadingPanel({
     }
   }
   async function cancel() {
+    refreshEpoch.current++;
     const ident = runId.current;
     setCancelling(true);
     setStopRequested(true);
@@ -157,13 +180,7 @@ export function ReadingPanel({
             明确开始另一版解读
           </Button>
         )}
-        <Button
-          disabled={busy}
-          onClick={() => {
-            void loadReadings(drawId)
-              .then(onChange)
-              .catch(() => setStatus('解读记录暂时无法读取。'));
-          }}>
+        <Button disabled={busy || cancelling} onClick={() => void refreshVersions()}>
           刷新解读记录
         </Button>
       </div>
