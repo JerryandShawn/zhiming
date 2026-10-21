@@ -11,7 +11,7 @@
 
 首轮原产品得到 **10 失败、13 通过，0.28 秒**，已完整保留
 [初失败证据](P9_history_calendar_initial_failure_20261021.json)，
-SHA256 `f323b74b83e520f48f7bda57b2eb10415aaa914fb7994a8621d212af8b01611e`。
+SHA256 `e0b4e491c7038e402b032389953ff62ab327d37751a88e6587a140fd7868e261`。
 这是对先前已报告缺陷的独立扩展，范围为未接线的纯状态候选，不据此声称生产漏洞。
 
 ## 修后核验
@@ -24,7 +24,7 @@ root 仅修改 `stream_outbox_v2/contracts.py`，补已知历史顺序及确认�
 - aggregate 算法：排序仓库路径 UTF-8、NUL、文件原始字节；该值不是 Git 提交号。
 
 见[修后核验证据](P9_history_calendar_post_verification_20261021.json)，
-SHA256 `29a3d853c4a9aa7e73648caf5699f768aa010d3157899496da50311eb1439dfc`。
+SHA256 `34daad59494e51dc7a5e891c61379dc888ce89ec88db15af1ff0528fece8bd03`。
 其中保留旧/新源码摘要、完整 stdout、命令和原始失败链接。
 
 ## 仅排版变更与冻结
@@ -39,3 +39,6 @@ SHA256 `29a3d853c4a9aa7e73648caf5699f768aa010d3157899496da50311eb1439dfc`。
 
 Ruff/格式检查通过；281 行，最长函数 40 行，最长行 98 字符。独立目标和证据到此冻结。
 这 23 项不代表整个 PR、真实飞书投递或数据库并发验收；当前来源授权仍须由 host 在领取及发送边界重新检查。
+
+公开JSON采用LF；原观测CRLF原件与原SHA保留，post仅更正初失败文件的发布SHA引用。
+数值、时刻、stdout、源hash及测试/AST证明未改，详见P9_history_eol_audit_20261021.json。
