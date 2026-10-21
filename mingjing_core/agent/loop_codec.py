@@ -224,7 +224,11 @@ def verified_versions(
                 and receipt.get("id", receipt.get("fact_id")) == ident
                 and (type(receipt.get("revision")) is not int or receipt["revision"] != row["revision"])
             ):
-                raise RevisionConflict("工具写入后实体已被其他修订改变，不能采用旧回执")
+                if name != "case_update" or kind != "case" or not result.ok or result.ends_turn:
+                    raise RevisionConflict("工具写入后实体已被其他修订改变，不能采用旧回执")
+                from mingjing_core.application.agent_case_receipt_replay import assert_case_receipt_replay
+
+                assert_case_receipt_replay(service.repo, run, receipt, row)
             key = entity_dependency(kind, ident)
             if key in versions:
                 continue
