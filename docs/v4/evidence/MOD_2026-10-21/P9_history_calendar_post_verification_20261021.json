@@ -1,0 +1,81 @@
+{
+  "experiment": "stream_outbox_v2_known_history_invariants",
+  "observed_log_completed_at_beijing": "2026-10-21T09:22:44.5649501+08:00",
+  "command": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p2/.venv-core/Scripts/python.exe -m pytest tests/v4/p9_v2/test_history_calendar_mod.py -q --basetemp=private/mod-week/tmp/calendar-history-post",
+  "result": {
+    "total": 23,
+    "passed": 23,
+    "failed": 0,
+    "seconds": 0.15
+  },
+  "original_assertions_and_parameter_matrix_unchanged": true,
+  "formatting_only_verification": {
+    "test_sha256_before": "d5bdb4bc551b6567de2acc46fce19e51ce9536793240121565324c4aadcc5a62",
+    "test_before_lines": 293,
+    "test_sha256_after": "3582296216d8389f2e7f9a93babd05dc6e683a85c3d221f509076d963bb961ce",
+    "ast_equal": true,
+    "ast_sha256": "0b5a5ce03dba88b0b89620f807478f268076fbe68860768b5c67538a20a98ea8",
+    "test_after_lines": 281
+  },
+  "initial_failure_evidence": "docs/v4/evidence/MOD_2026-10-21/P9_history_calendar_initial_failure_20261021.json",
+  "initial_failure_evidence_sha256": "f323b74b83e520f48f7bda57b2eb10415aaa914fb7994a8621d212af8b01611e",
+  "old_source_sha256": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "55a45bf1baa99b4126f7de7b0fd562b0d1704af0b9a91c6c4847b21bfe3c54b5",
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182"
+  },
+  "source_sha256_before_target": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "ade48456779b131d3eff32873c12cecac1961ed801f3a8ab05d42c95b1fae624",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f"
+  },
+  "source_sha256_after_target": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "ade48456779b131d3eff32873c12cecac1961ed801f3a8ab05d42c95b1fae624",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f"
+  },
+  "sources_unchanged_during_target": true,
+  "changed_source_paths_since_initial_failure": [
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py"
+  ],
+  "post_source_aggregate_sha256": "bb3747f62aa16896f6308a55711c378d05aa30d0fa1923dc902c6ca63da96f51",
+  "source_aggregate_method": "sorted repository path UTF8 + NUL + exact file bytes; not a Git commit",
+  "stdout": ".......................                                                  [100%]\n23 passed in 0.15s\n",
+  "stdout_sha256": "f03c82cbce89574824b4ebc188884b578702d255adb6bd1283d2e89eecdbe608",
+  "size_checks": {
+    "test_lines": 281,
+    "max_function_lines": 40,
+    "max_line_chars": 98
+  },
+  "preserved_positive_controls": [
+    "checkpoint bootstrap without history",
+    "rejected sequence gaps",
+    "partial earlier history without complete prefix",
+    "unknown restore never resends",
+    "full public create-send-update lifecycle"
+  ],
+  "limits": [
+    "23 independent offline cases, not whole-PR or deployment acceptance",
+    "unconnected state candidate; source authority remains a separate host check"
+  ],
+  "effects": {
+    "model_calls": 0,
+    "network_calls": 0,
+    "server_calls": 0,
+    "database_calls": 0,
+    "notifications": 0,
+    "git_operations": 0
+  }
+}

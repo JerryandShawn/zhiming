@@ -1,0 +1,48 @@
+{
+  "schema": "stream-outbox-independent-failure-v1",
+  "observed_at": "2026-10-21T09:10:55.250813+08:00",
+  "kind": "synthetic_local_only",
+  "test": "tests/v4/p9_v2/test_recovery_coverage_acceptance_mod.py::test_future_acked_sequence_in_history_cannot_restore_as_lower_sendable_current_intent",
+  "command": "python -m pytest tests/v4/p9_v2/test_recovery_coverage_acceptance_mod.py::test_future_acked_sequence_in_history_cannot_restore_as_lower_sendable_current_intent -q --tb=short",
+  "returncode": 1,
+  "pytest_summary": "1 failed in 0.21s",
+  "failure": "DID NOT RAISE StreamError",
+  "independent_truth": "acked historical sequence cannot be later than a lower current reserved/sendable sequence",
+  "setup": {
+    "public_lifecycle": [
+      "prepare update1",
+      "claim",
+      "dispatch",
+      "acknowledge",
+      "next_intent update2"
+    ],
+    "current_reserved_sequence": 2,
+    "serialized_history_acked_sequence_before": 1,
+    "serialized_history_acked_sequence_after": 3
+  },
+  "products_unchanged": true,
+  "source_sha256": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "55a45bf1baa99b4126f7de7b0fd562b0d1704af0b9a91c6c4847b21bfe3c54b5",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182"
+  },
+  "test_sha256": {
+    "tests/v4/p9_v2/coverage_support_acceptance_mod.py": "5a4cbac32b990fde2bdc2ec6be17b40bebf85fd25819bf6937a6c2034c4beec0",
+    "tests/v4/p9_v2/test_recovery_coverage_acceptance_mod.py": "d638a7dbd8c9d06b009a48b48b9b0a59dcd8559e60785e5e88c4ed6a9be97d8b"
+  },
+  "effects": {
+    "network": 0,
+    "models": 0,
+    "pg": 0,
+    "notifications": 0,
+    "runtime_writes": 0
+  },
+  "limits": [
+    "Synthetic tampered metadata only; no claim of observed production corruption or duplicate delivery",
+    "Product repair is root-owned and deferred until RPF source checkpoint is published"
+  ]
+}

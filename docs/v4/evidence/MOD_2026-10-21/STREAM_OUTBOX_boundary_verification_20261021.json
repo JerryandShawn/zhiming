@@ -1,0 +1,68 @@
+{
+  "schema": "stream-outbox-independent-verification-v1",
+  "observed_at": "2026-10-21T09:20:36.101204+08:00",
+  "independent_target": {
+    "command": "python -m pytest tests/v4/p9_v2/test_recovery_coverage_acceptance_mod.py tests/v4/p9_v2/test_capability_coverage_acceptance_mod.py tests/v4/p9_v2/test_freshness_coverage_acceptance_mod.py -q --tb=short",
+    "passed": 127,
+    "deselected": 0,
+    "seconds": 0.29,
+    "returncode": 0
+  },
+  "compatibility_target": {
+    "passed": 1955,
+    "seconds": 25.63,
+    "returncode": 0,
+    "scope": "p9_v2 + p9_official_v3; source statistics only seven stream_outbox_v2 products"
+  },
+  "source_changes_from_failure": [
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py"
+  ],
+  "source_sha256": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "ade48456779b131d3eff32873c12cecac1961ed801f3a8ab05d42c95b1fae624",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182"
+  },
+  "new_test_sha256": {
+    "tests/v4/p9_v2/coverage_support_acceptance_mod.py": "04f7f6529992f218b5fb1127add08938fde591cd1cebdcedf851bfc1fba75db7",
+    "tests/v4/p9_v2/test_capability_coverage_acceptance_mod.py": "9010fddc784fa23a726179a7b1fda0a84e948d31953aefbac93107241c5dd8dd",
+    "tests/v4/p9_v2/test_freshness_coverage_acceptance_mod.py": "b6706fd3607a3b97b807db7c405df15cb1640cddb99810dea8757f0c2b38fb72",
+    "tests/v4/p9_v2/test_recovery_coverage_acceptance_mod.py": "efae9c96f7662695644954c7c027bbcb57c448a984cfcf0c45e85a4098a047cb"
+  },
+  "coverage_report_sha256": "d13357cbc8365eb8232b40155bf81f7f2e408ef41dda6fb9d9de7711d96f162f",
+  "initial_failure_report_sha256": "469e170374455c020a62ea753e461d3ba3f20c0a436e22757d3318edf9a630e5",
+  "checks": {
+    "ruff_E_F_I_B_UP_SIM": true,
+    "ruff_format_120": true,
+    "AST_annotations_and_size": true,
+    "old_tests_modified": false,
+    "independent_truth_changed": false,
+    "fixture_source_stable_during_coverage": true
+  },
+  "coverage": {
+    "covered_lines": 492,
+    "statements": 528,
+    "line_percent": 93.18181818181819,
+    "covered_branches": 210,
+    "branches": 246,
+    "branch_percent": 85.36585365853658,
+    "combined_percent": 90.69767441860465
+  },
+  "branch_target_90_met": false,
+  "runtime_effects": {
+    "real_model_calls": 0,
+    "network_calls": 0,
+    "pg_connections": 0,
+    "notifications": 0,
+    "runtime_writes": 0
+  },
+  "limitations": [
+    "Injected host evidence/ports only; no authenticated PG transaction proved",
+    "Metadata fingerprints are consistency marks, not signatures or delivery authorization",
+    "No real Feishu, network or production delivery exercised",
+    "Historical DAY report predates official legacy-guard tests; no claim that all coverage gains came from these 127 tests"
+  ]
+}

@@ -144,9 +144,24 @@ class StreamState:
             raise StreamError("history_operation_duplicate")
         if any(item.intent.operation_id == self.intent.operation_id for item in self.history):
             raise StreamError("current_operation_in_history")
+        _history_sequences(self)
         if self.dispatch_fingerprint is not None:
             digest(self.dispatch_fingerprint)
         _state_shape(self)
+
+
+def _history_sequences(state: StreamState) -> None:
+    # Checkpoint bootstrap can retain a suffix: order and bounds matter, not a complete or contiguous history.
+    previous = 0
+    for record in state.history:
+        sequence = record.intent.sequence
+        if sequence is None:
+            continue
+        if state.intent.sequence is None or not previous < sequence < state.intent.sequence:
+            raise StreamError("history_sequence_invalid")
+        if record.status == "acked" and sequence > state.last_acked_sequence:
+            raise StreamError("history_acked_sequence_invalid")
+        previous = sequence
 
 
 def _state_shape(state: StreamState) -> None:
