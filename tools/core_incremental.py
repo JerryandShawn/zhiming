@@ -219,6 +219,11 @@ def native_apply(args: argparse.Namespace, raw: dict[str, Any]) -> int:
             documents[key] = json.loads(path.read_text(encoding="utf-8"))
     request = authorize(raw, documents["approval"], controller_digest(), get_clock().now())
     require(raw.get("host_config_sha256") == digest(documents["host_config"]), "HOST_CONFIG_APPROVAL")
+    if args.action in {"migrate", "backfill"}:
+        backup, restore = documents.get("backup"), documents.get("restore")
+        require(backup is not None and restore is not None, "BACKUP_AND_RESTORE_REQUIRED")
+        require(documents["approval"].get("restore_sha256") == digest(restore), "RESTORE_PROOF_APPROVAL")
+        validate_restore(request, backup, restore)
     require(HostFiles().root == Path("/"), "NATIVE_ROOT")
     port = NativePort(request, documents["host_config"])
     result = execute(
