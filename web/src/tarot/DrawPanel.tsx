@@ -3,6 +3,7 @@ import { Button, Textarea } from '../components/ui/Controls';
 import { ManualCards, manualValid, type ManualCard } from './ManualCards';
 import { ServerSpread } from './ServerSpread';
 import { ReadingPanel } from './ReadingPanel';
+import type { VersionsState } from './useReadingVersions';
 import { pendingPayload } from '../api/operations';
 import { list, object, text, type Deck, type Draw, type Reading } from './public';
 
@@ -11,6 +12,8 @@ export function DrawPanel({
   deck,
   busy,
   versions,
+  versionsState,
+  readActivation,
   onChangeVersions,
   mutate,
   newRound,
@@ -20,6 +23,8 @@ export function DrawPanel({
   deck: Deck;
   busy: boolean;
   versions: Reading[];
+  versionsState?: VersionsState;
+  readActivation?: number;
   onChangeVersions: (value: Reading[]) => void;
   mutate: (action: 'select' | 'reveal' | 'cancel' | 'manual', payload: Record<string, unknown>) => void;
   newRound: () => void;
@@ -75,6 +80,8 @@ export function DrawPanel({
           key={draw.id}
           drawId={draw.id}
           versions={versions}
+          versionsState={versionsState}
+          readActivation={readActivation}
           onChange={onChangeVersions}
           onBusy={onReadingBusy}
         />

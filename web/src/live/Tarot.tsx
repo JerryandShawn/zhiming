@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button } from '../components/ui/Controls';
 import { api, ApiError, operationNamespace, useAuth } from '../api/client';
 import { createDraw, loadDraw, mutateDraw } from '../tarot/draws';
-import { loadReadings } from '../tarot/readings';
-import { deck as projectDeck, draw as projectDraw, list, type Deck, type Draw, type Reading } from '../tarot/public';
+import { useReadingVersions } from '../tarot/useReadingVersions';
+import { deck as projectDeck, draw as projectDraw, list, type Deck, type Draw } from '../tarot/public';
 import { QuestionForm } from '../tarot/QuestionForm';
 import { DrawPanel } from '../tarot/DrawPanel';
 
@@ -13,7 +13,8 @@ export default function Tarot() {
   const [history, setHistory] = useState<Draw[]>([]);
   const [current, setCurrent] = useState<Draw>();
   const [previous, setPrevious] = useState<Draw>();
-  const [versions, setVersions] = useState<Reading[]>([]);
+  const [versionsActivation, setVersionsActivation] = useState(0);
+  const { versions, versionsState, acceptVersions } = useReadingVersions(current?.id, versionsActivation);
   const [status, setStatus] = useState('正在读取牌库与抽牌记录…');
   const [busy, setBusy] = useState(false);
   const [readingBusy, setReadingBusy] = useState(false);
@@ -37,16 +38,10 @@ export default function Tarot() {
         const value = await loadDraw(id);
         if (version !== generation.current || !loaded.current) return;
         remember(value);
+        setVersionsActivation((value) => value + 1);
         setPrevious(undefined);
-        setVersions([]);
         setStatus('');
         setConflict(false);
-        try {
-          const values = await loadReadings(id);
-          if (version === generation.current && loaded.current) setVersions(values);
-        } catch {
-          if (version === generation.current && loaded.current) setStatus('解读版本暂时无法读取，固定牌阵仍可查看。');
-        }
       } catch {
         if (version === generation.current && loaded.current)
           setStatus('恢复未完成，请刷新核对。已保存的抽牌不会因此改变。');
@@ -84,15 +79,10 @@ export default function Tarot() {
       const result = await createDraw(payload);
       if (!loaded.current || namespace !== operationNamespace()) return;
       remember(result.draw);
+      setVersionsActivation((value) => value + 1);
       setPrevious(undefined);
-      setVersions([]);
       setStatus(result.reused ? '已恢复这件事原来的固定牌阵。' : '抽牌已保存，牌面已固定。');
       window.history.replaceState(null, '', `#/tarot?draw=${encodeURIComponent(result.draw.id)}`);
-      try {
-        setVersions(await loadReadings(result.draw.id));
-      } catch {
-        setStatus('抽牌已保存，解读版本暂时无法读取；请刷新解读记录。');
-      }
     } catch (error) {
       setStatus(error instanceof Error ? error.message : '保存未确认，请保留原内容重试。');
     } finally {
@@ -109,7 +99,6 @@ export default function Tarot() {
       if (!loaded.current || namespace !== operationNamespace()) return;
       remember(value);
       if (action === 'manual') {
-        setVersions([]);
         window.history.replaceState(null, '', `#/tarot?draw=${encodeURIComponent(value.id)}`);
       }
       setStatus(
@@ -138,7 +127,6 @@ export default function Tarot() {
           onClick={() => {
             setCurrent(undefined);
             setPrevious(undefined);
-            setVersions([]);
             setStatus('');
             window.history.replaceState(null, '', '#/tarot');
           }}>
@@ -164,13 +152,14 @@ export default function Tarot() {
                 deck={deck}
                 busy={busy || readingBusy || conflict}
                 versions={versions}
-                onChangeVersions={setVersions}
+                versionsState={versionsState}
+                readActivation={versionsActivation}
+                onChangeVersions={acceptVersions}
                 onReadingBusy={setReadingBusy}
                 mutate={(action, payload) => void mutate(action, payload)}
                 newRound={() => {
                   setPrevious(current);
                   setCurrent(undefined);
-                  setVersions([]);
                   setStatus('');
                   window.history.replaceState(null, '', '#/tarot');
                 }}

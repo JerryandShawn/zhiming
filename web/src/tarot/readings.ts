@@ -1,7 +1,7 @@
 import { api, ApiError, authHeaders, operationNamespace, requireLogin } from '../api/client';
 import { readSse } from '../chat/sse';
 import { path } from './draws';
-import { list, object, reading, text, type Reading } from './public';
+import { object, reading, text, type Reading } from './public';
 
 type Attempt = {
   request_id: string;
@@ -43,7 +43,9 @@ function attempt(drawId: string, supplement: string): Attempt {
   return value;
 }
 export async function loadReadings(drawId: string): Promise<Reading[]> {
-  return list(await api<unknown>(`${path(drawId)}/readings`)).map(reading);
+  const values = await api<unknown>(`${path(drawId)}/readings`);
+  if (!Array.isArray(values)) throw new Error('解读记录暂时无法读取。');
+  return values.map(reading);
 }
 async function postStream(url: string, payload: Record<string, unknown>, signal: AbortSignal): Promise<Response> {
   const namespace = operationNamespace();

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Button, Textarea } from '../components/ui/Controls';
 import { Select } from '../components/ui/Selection';
 import { Markdown } from '../components/Markdown';
@@ -13,15 +13,20 @@ import {
   requestReading,
 } from './readings';
 import { object, text, type Reading } from './public';
+import type { VersionsState } from './useReadingVersions';
 
 export function ReadingPanel({
   drawId,
   versions,
+  versionsState = 'ready',
+  readActivation = 0,
   onChange,
   onBusy,
 }: {
   drawId: string;
   versions: Reading[];
+  versionsState?: VersionsState;
+  readActivation?: number;
   onChange: (versions: Reading[]) => void;
   onBusy: (value: boolean) => void;
 }) {
@@ -35,12 +40,13 @@ export function ReadingPanel({
   const runId = useRef(pendingReading(drawId)?.run_id ?? '');
   const controller = useRef<AbortController>();
   const refreshEpoch = useRef(0);
-  useLayoutEffect(
-    () => () => {
-      refreshEpoch.current++;
-    },
-    [drawId],
-  );
+  const invalidateRefresh = useCallback(() => {
+    refreshEpoch.current++;
+  }, []);
+  useLayoutEffect(() => {
+    setStatus('');
+    return invalidateRefresh;
+  }, [drawId, readActivation, invalidateRefresh]);
   useEffect(() => () => controller.current?.abort(), []);
   useEffect(() => {
     onBusy(busy || cancelling);
@@ -62,6 +68,7 @@ export function ReadingPanel({
     }
   }
   async function generate() {
+    if (versionsState !== 'ready' || busy || cancelling || cancelled || stopRequested) return;
     refreshEpoch.current++;
     setBusy(true);
     setCancelled(false);
@@ -147,7 +154,16 @@ export function ReadingPanel({
           )}
         </article>
       )}
-      {!current && <p className="meta">先读静态牌意也可以。解释失败不会更换已经固定的牌。</p>}
+      {!current && versionsState === 'ready' && (
+        <p className="meta">先读静态牌意也可以。解释失败不会更换已经固定的牌。</p>
+      )}
+      {versionsState !== 'ready' && (
+        <p role="status" aria-live="polite">
+          {versionsState === 'loading'
+            ? '正在读取已保存的解读版本…'
+            : '解读版本暂时无法读取。先刷新记录，再决定是否开始新解读。'}
+        </p>
+      )}
       <label className="field">
         补充现实背景
         <Textarea
@@ -161,11 +177,14 @@ export function ReadingPanel({
         <Button
           loading={busy}
           variant="primary"
-          disabled={cancelled || cancelling || stopRequested}
+          disabled={versionsState !== 'ready' || cancelled || cancelling || stopRequested}
           onClick={() => void generate()}>
           {pendingReading(drawId) ? '重试原解读 · 不换牌' : completed.length ? '重新解读 · 不换牌' : '生成 AI 解读'}
         </Button>
-        {(busy || stopRequested || (runId.current && pendingPayload(`tarot:run:${runId.current}:cancel`))) && (
+        {(busy ||
+          stopRequested ||
+          (!cancelled && runId.current && pendingReading(drawId)) ||
+          (runId.current && pendingPayload(`tarot:run:${runId.current}:cancel`))) && (
           <Button loading={cancelling} disabled={!runId.current} onClick={() => void cancel()}>
             {stopRequested || pendingPayload(`tarot:run:${runId.current}:cancel`) ? '重试停止解读' : '停止解读'}
           </Button>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '../../components/ui/Controls';
-import type { AboutMeCommand, AboutMePort, AboutMeReceipt } from './types';
+import { AboutMeError, type AboutMeCommand, type AboutMePort, type AboutMeReceipt } from './types';
 
 function validReceipt(command: AboutMeCommand, receipt: AboutMeReceipt, category?: string) {
   const status =
@@ -61,13 +61,22 @@ export function useMeCommand(port: AboutMePort, category?: string) {
     } catch (reason: unknown) {
       if (!mounted.current) return;
       const status = reason && typeof reason === 'object' && 'status' in reason ? reason.status : undefined;
+      const rejected =
+        (original.type === 'profile-edit' || original.type === 'memory-edit') &&
+        reason instanceof AboutMeError &&
+        reason.code === 'INVALID' &&
+        reason.status === 422;
+      // Only the local aggregate's pre-commit edit rejection releases a pending operation.
+      if (rejected) pending.current = undefined;
       setConflict(status === 409);
       setError(
         status === 409
           ? '内容已更新，草稿仍保留。请先核对当前版本，再继续。'
-          : status === 429
-            ? '这次暂时忙，原操作和内容已保留，可以再试一次。'
-            : '尚未收到有效确认，原操作和内容已保留，可以再试一次。',
+          : rejected
+            ? '内容未通过核对，尚未保存；草稿仍保留，可以修改后重试。'
+            : status === 429
+              ? '这次暂时忙，原操作和内容已保留，可以再试一次。'
+              : '尚未收到有效确认，原操作和内容已保留，可以再试一次。',
       );
     } finally {
       active.current = false;
