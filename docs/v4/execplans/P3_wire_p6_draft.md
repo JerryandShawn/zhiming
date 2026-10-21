@@ -103,3 +103,13 @@ run/epoch固定时刻与阶段/hash记录幂等保存。重放不替换已有Clo
 - 2026-10-21 08:07 完成252项串行窄验证，记录新增夹具修正原因、全case窄投影依据、精确父提交及尚未验证的Linux CI边界。
 - 2026-10-21 09:31 +08:00 根据root核实的P6精确Linux单一case失败，登记普通合入指定e72的最小计划、双图共同祖先/冲突先报规则及P6源与权限不变量；未运行新测试。
 - 2026-10-21 09:34 +08:00 改用root授权同树本机c7映射普通merge并完成141+17两组串行窄验证；记录0冲突、1个未屏蔽的JUnit兼容warning、11源完整证明与Linux仍待验，待root发布普通双父候选。
+
+## 2026-10-21 10:18 +08:00 精确CI回执
+
+Progress：普通双父已于09:37发布337e66fb，tree与本机4eac85ec完全一致；新Linux run39528346446/job118988178456 completed/success。Core581 OK；v4 2297pass/19skip/1严格xfail/2warning，ModelPort222/95%，fake80与c21 80分别通过。详evidence/P3_wire/2026-10-21-p6-linux-337e66fb。
+
+Surprises & Discoveries：-q日志只有19skip总数，不能据summary认定原因或零skip验收；原直接case失败历史保留，新全头无failure/error不改写旧结果。
+
+Decision Log：只在受信构造默认关闭候选交离线/CI证据，不合integration/main；19skip分类继续作为未完成门，不凭Windows目标绿替代Linux缺项。当前记录只写文档，不再跑测试。
+
+Outcomes & Retrospective：取得此精确头Linux CI成功，但P6 v2 critic/校准/专业claim、P1b组合、旧DOM及普通skip仍未完成，不宣P6整阶段验收或可发布。真实模型/服务器/飞书0。

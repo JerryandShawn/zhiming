@@ -1,0 +1,61 @@
+{
+  "schema": "p6-exact-linux-ci-evidence-v1",
+  "recorded_bjt": "2026-10-21T10:18:24.253955+08:00",
+  "local_sha": "4eac85ecc2d4ab7ef7bc99cca670c79b55784e70",
+  "remote_sha": "337e66fba24e8c949d956f655453cd6f9ae1664f",
+  "tree": "523fe45e026d25015530fcbd8794d6b8a221d4dd",
+  "run_id": 39528346446,
+  "job_id": 118988178456,
+  "conclusion": "success",
+  "node_actual": "22.23.3",
+  "python_actual": "3.11.17",
+  "postgres_major": 15,
+  "core": {
+    "tests": 581,
+    "seconds": 1091.54,
+    "conclusion": "OK"
+  },
+  "v4": {
+    "passed": 2297,
+    "ordinary_skipped": 19,
+    "strict_xfailed": 1,
+    "warnings": 2,
+    "seconds": 707.58,
+    "skip_nodes_not_exposed_by_q_log": true
+  },
+  "framework_self_test": {
+    "passed": 48,
+    "warnings": 1,
+    "seconds": 17.13,
+    "fake_scenarios_passed": 80,
+    "fake_scenarios_count": 80
+  },
+  "modelport": {
+    "passed": 222,
+    "warnings": 1,
+    "seconds": 89.09,
+    "coverage_percent": 95,
+    "transport": "synthetic"
+  },
+  "c21_scripted": {
+    "passed": 80,
+    "count": 80
+  },
+  "frontend_commands_step": "success; legacy checks, not P10 acceptance",
+  "connector_utf8_log_copy": {
+    "bytes": 216343,
+    "sha256": "8ff53e6b54573a9390fd0fc20684bfef72e91631013d8054e2abb238f17a21ce"
+  },
+  "safety": {
+    "real_provider_requests": 0,
+    "feishu_sends": 0,
+    "server_access": 0
+  },
+  "limitations": [
+    "19 ordinary skips remain unclassified; not zero-skip acceptance",
+    "old strict receipt DOM xfail not a pass",
+    "P1b is not integrated on this P6 source",
+    "not whole P6/P3 acceptance or deployment",
+    "later docs source does not inherit this exact result"
+  ]
+}
