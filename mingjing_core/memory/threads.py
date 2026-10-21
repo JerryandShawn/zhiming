@@ -10,6 +10,7 @@ from mingjing_core.repositories.postgres import fingerprint
 from mingjing_core.timekit.clock import get_clock
 from mingjing_core.timekit.timestamps import history_instant
 
+from .private import is_private
 from .projections import redact_ranges
 
 if TYPE_CHECKING:
@@ -118,6 +119,8 @@ def project_sources(
     rows: list[dict[str, Any]],
     facts: list[dict[str, Any]],
     selected: set[str],
+    *,
+    private_thread: str | None = None,
 ) -> list[dict[str, Any]]:
     spans = {}
     for row in memory.repo.revocations(owner) if rows else []:
@@ -126,6 +129,8 @@ def project_sources(
             spans.setdefault(span.get("message_id"), []).append(span)
     result = []
     for row in rows:
+        if is_private(row) and row.get("thread_id") != private_thread:
+            continue
         cases = set(row.get("case_ids", []))
         if cases and not selected.intersection(cases):
             continue

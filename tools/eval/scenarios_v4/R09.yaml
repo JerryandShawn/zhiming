@@ -1,0 +1,31 @@
+id: R09
+title: 复活的legacy习惯可召回
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  facts:
+  - id: revived-running
+    kind: habit
+    summary: 我喜欢晚上慢跑。
+    quote: 我喜欢晚上慢跑。
+    source_message_id: source-synthetic
+    legacy: true
+    data:
+      revival_status: confirmed
+      assertion_status: user_confirmed
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 我喜欢晚上慢跑。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+turns:
+- user: 我适合什么运动时间
+  expect:
+    must_include_all:
+    - 晚上
+    - 慢跑
+scripted:
+- turn: 1
+  model:
+  - text: 你以前说喜欢晚上慢跑〔f1〕。可以保留晚上的习惯，选安全路线并以不影响睡眠为准。

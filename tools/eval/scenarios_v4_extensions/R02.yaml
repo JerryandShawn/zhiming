@@ -1,0 +1,63 @@
+id: R02
+title: 搜索实际助手回复而非猜测方案B
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  profile_overrides: {}
+  facts: []
+  thread:
+  - id: prior-user
+    role: user
+    content: 请给三个方案
+    at: '2026-10-17T09:00:00+08:00'
+    channel: web
+  - id: prior-assistant
+    role: assistant
+    content: A留任；B内部转岗；C外部求职。
+    at: '2026-10-17T09:01:00+08:00'
+    channel: web
+  entities: []
+  settings: {}
+  context: {}
+  controls: {}
+  thread_id: life-synthetic
+  incognito: false
+turns:
+- user: 第二个方案是什么
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called:
+    - memory_search
+    tools_not_called: []
+    receipts: []
+    db:
+    - where: {}
+      path: observed_tools.0.output.data.items.0.role
+      equals: assistant
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.items.0.content
+      contains: 内部转岗
+      absent: false
+    events: []
+    chart_structure: false
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 内部转岗
+        kinds:
+        - message
+  - text: 第二个方案是内部转岗。
+notes: 独立v4扩充契约；实际工具结果/线程/信封断言，不替换冻结47项。

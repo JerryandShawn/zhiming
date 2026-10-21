@@ -1,0 +1,71 @@
+{
+  "pytest_passed": 63,
+  "pytest_seconds": 73.3,
+  "provider_calls": 0,
+  "scripted_component_calls": 300,
+  "r07_duration_seconds": 16.406999999999243,
+  "10000_duration_seconds": 50.07800000000134,
+  "policy_unit": "policy_units",
+  "actual_input_tokens": null,
+  "input_token_upper_bound": null,
+  "runtime_wired": false,
+  "ruff": "passed",
+  "format": "passed",
+  "ast_limits": "passed",
+  "source_files": [
+    {
+      "path": "mingjing_core/agent/__init__.py",
+      "lines": 1,
+      "max_function_lines": 0,
+      "sha256": "53ffb2bd3d7cd26e374d135893156af55755efdca52c97fa6748b54d69a9a5f0"
+    },
+    {
+      "path": "mingjing_core/agent/context.py",
+      "lines": 130,
+      "max_function_lines": 36,
+      "sha256": "4e745292e1481c8a2086dc13cf81a1dca25cad2f40fa16378a48f50f9da5773a"
+    },
+    {
+      "path": "mingjing_core/agent/context_budget.py",
+      "lines": 187,
+      "max_function_lines": 38,
+      "sha256": "9bdebd9d007e75f7afe1b89368651d2df59768fa266a69bef7b3fa2f53cbf6f6"
+    },
+    {
+      "path": "mingjing_core/agent/context_sources.py",
+      "lines": 236,
+      "max_function_lines": 50,
+      "sha256": "f9c896d2cf466cefe352d3ec58129cf0694c82ece6468d2337ba6fcd63f82c9b"
+    },
+    {
+      "path": "mingjing_core/agent/context_types.py",
+      "lines": 117,
+      "max_function_lines": 7,
+      "sha256": "c2b4fa8c324b52a0283cba4eb3b02badbc531c3416389c87591ace99926cfc0a"
+    },
+    {
+      "path": "tests/v4/agent/__init__.py",
+      "lines": 1,
+      "max_function_lines": 0,
+      "sha256": "019660fd9ad19ccb337d50bef6d211af749a2a7260406ff0bd65505b5f5e8f53"
+    },
+    {
+      "path": "tests/v4/agent/test_context_budget.py",
+      "lines": 199,
+      "max_function_lines": 13,
+      "sha256": "df6272071b743a9dc09e65b6ca42b9931a084915f9f8de0b64e5b8a022ee174e"
+    },
+    {
+      "path": "tests/v4/agent/test_context_pg.py",
+      "lines": 219,
+      "max_function_lines": 24,
+      "sha256": "b4025649da4c6d57d01013b0b8af13d42bd1f1b965e3a55edb1b994dd560f4f1"
+    },
+    {
+      "path": "tests/v4/agent/test_context_stress_pg.py",
+      "lines": 185,
+      "max_function_lines": 56,
+      "sha256": "422d464d55d40adacb4c593846256e756c16e4914ae6966b704c11a7886cfbe1"
+    }
+  ]
+}

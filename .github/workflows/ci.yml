@@ -1,5 +1,30 @@
 name: Core v3 checks
 on: [push, pull_request]
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{ github.event_name }}-${{
+      (
+        (github.head_ref == '' || github.event.pull_request.head.repo.full_name == github.repository) &&
+        (github.head_ref != '' || github.ref_type == 'branch') &&
+        (
+          (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
+          (github.head_ref || github.ref_name) == 'v4/integration'
+        )
+      ) && (github.head_ref || github.ref_name) || github.run_id
+    }}
+  cancel-in-progress: >-
+    ${{
+      (github.head_ref == '' || github.event.pull_request.head.repo.full_name == github.repository) &&
+      (github.head_ref != '' || github.ref_type == 'branch') &&
+      (
+        (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
+        (github.head_ref || github.ref_name) == 'v4/integration'
+      )
+    }}
 permissions:
   contents: read
 jobs:
@@ -16,6 +41,9 @@ jobs:
       LANGSMITH_TRACING: "false"
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Offline B1 fixtures verify the exact historic b9 tree, not the current release.
+          fetch-depth: 0
       - name: Start loopback PostgreSQL 15
         run: |
           docker run --detach --name p0-core-postgres --network host \

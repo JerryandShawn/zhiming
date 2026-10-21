@@ -1,0 +1,277 @@
+{
+  "schema": "p3-z1-z2-evidence-v1",
+  "recorded_at_beijing": "2026-10-20T23:26:11+08:00",
+  "targeted_tests": {
+    "passed": 128,
+    "failed": 0,
+    "seconds": 14.77
+  },
+  "stress_tests": {
+    "passed": 2,
+    "seconds": 55.6
+  },
+  "ruff_check": "passed",
+  "ruff_format": "passed",
+  "live_k3_counter_configured": false,
+  "loop_cycle_wired": false,
+  "physical_model_calls": 0,
+  "server_access": 0,
+  "feishu_sends": 0,
+  "r07": {
+    "rounds": 300,
+    "messages": 600,
+    "source_sha256": "063fd63bde9790a6e848747c05037a29bc67def42b4f98aecf5f7247f17b35b8",
+    "scripted_calls": 300,
+    "provider_calls": 0,
+    "unit": "policy_units",
+    "maximum_policy_units": 18411,
+    "candidate_counts": {
+      "fact_catalog": 3,
+      "revocations": 0,
+      "history_candidates": 81,
+      "search_candidates": 1,
+      "source_cache_entries": 82,
+      "extra_candidates": 0,
+      "thread_user_rounds": 300,
+      "history_truncated": 1
+    },
+    "duration_seconds": 14.42200000000048
+  },
+  "ten_thousand": {
+    "messages_before_extra_probes": 10000,
+    "source_sha256": "9c9979bb331e82b150830e9b34bc80df9bdbfd6a1f0054428171d0fc40817cfc",
+    "original_messages_unchanged": true,
+    "provider_calls": 0,
+    "unit": "policy_units",
+    "actual_input_tokens": null,
+    "input_token_upper_bound": null,
+    "checkpoints": [
+      {
+        "messages": 100,
+        "counts": {
+          "fact_catalog": 3,
+          "revocations": 0,
+          "history_candidates": 81,
+          "search_candidates": 1,
+          "source_cache_entries": 82,
+          "extra_candidates": 0,
+          "thread_user_rounds": 50,
+          "history_truncated": 1
+        }
+      },
+      {
+        "messages": 1000,
+        "counts": {
+          "fact_catalog": 3,
+          "revocations": 0,
+          "history_candidates": 81,
+          "search_candidates": 1,
+          "source_cache_entries": 82,
+          "extra_candidates": 0,
+          "thread_user_rounds": 500,
+          "history_truncated": 1
+        }
+      },
+      {
+        "messages": 5000,
+        "counts": {
+          "fact_catalog": 3,
+          "revocations": 0,
+          "history_candidates": 81,
+          "search_candidates": 1,
+          "source_cache_entries": 82,
+          "extra_candidates": 0,
+          "thread_user_rounds": 2500,
+          "history_truncated": 1
+        }
+      },
+      {
+        "messages": 10000,
+        "counts": {
+          "fact_catalog": 3,
+          "revocations": 0,
+          "history_candidates": 81,
+          "search_candidates": 1,
+          "source_cache_entries": 82,
+          "extra_candidates": 0,
+          "thread_user_rounds": 5000,
+          "history_truncated": 1
+        }
+      }
+    ],
+    "compression_trace": [
+      {
+        "action": "L5_drop",
+        "before": 139433,
+        "after": 139039
+      },
+      {
+        "action": "L5_drop",
+        "before": 139039,
+        "after": 138645
+      },
+      {
+        "action": "L5_drop",
+        "before": 138645,
+        "after": 138251
+      },
+      {
+        "action": "L5_drop",
+        "before": 138251,
+        "after": 137857
+      },
+      {
+        "action": "L5_drop",
+        "before": 137857,
+        "after": 137463
+      },
+      {
+        "action": "L5_drop",
+        "before": 137463,
+        "after": 137069
+      },
+      {
+        "action": "L5_drop",
+        "before": 137069,
+        "after": 136675
+      },
+      {
+        "action": "L5_drop",
+        "before": 136675,
+        "after": 136281
+      },
+      {
+        "action": "L5_drop",
+        "before": 136281,
+        "after": 135887
+      },
+      {
+        "action": "L5_drop",
+        "before": 135887,
+        "after": 135493
+      },
+      {
+        "action": "L5_drop",
+        "before": 135493,
+        "after": 135099
+      },
+      {
+        "action": "L5_drop",
+        "before": 135099,
+        "after": 134705
+      },
+      {
+        "action": "L5_drop",
+        "before": 134705,
+        "after": 134311
+      },
+      {
+        "action": "L5_drop",
+        "before": 134311,
+        "after": 133917
+      },
+      {
+        "action": "L5_drop",
+        "before": 133917,
+        "after": 133523
+      },
+      {
+        "action": "L5_drop",
+        "before": 133523,
+        "after": 133129
+      },
+      {
+        "action": "L5_drop",
+        "before": 133129,
+        "after": 132735
+      },
+      {
+        "action": "L5_drop",
+        "before": 132735,
+        "after": 132341
+      },
+      {
+        "action": "L5_drop",
+        "before": 132341,
+        "after": 131947
+      },
+      {
+        "action": "L5_drop",
+        "before": 131947,
+        "after": 131553
+      },
+      {
+        "action": "L5_drop",
+        "before": 131553,
+        "after": 131159
+      },
+      {
+        "action": "L5_drop",
+        "before": 131159,
+        "after": 130765
+      },
+      {
+        "action": "L5_drop",
+        "before": 130765,
+        "after": 130371
+      },
+      {
+        "action": "L5_drop",
+        "before": 130371,
+        "after": 129977
+      },
+      {
+        "action": "L5_drop",
+        "before": 129977,
+        "after": 129583
+      },
+      {
+        "action": "L5_drop",
+        "before": 129583,
+        "after": 129189
+      },
+      {
+        "action": "L5_drop",
+        "before": 129189,
+        "after": 128795
+      },
+      {
+        "action": "L5_drop",
+        "before": 128795,
+        "after": 128401
+      },
+      {
+        "action": "L5_drop",
+        "before": 128401,
+        "after": 128007
+      },
+      {
+        "action": "L5_drop",
+        "before": 128007,
+        "after": 127801
+      },
+      {
+        "action": "L5_drop",
+        "before": 127801,
+        "after": 2626
+      }
+    ],
+    "overflow_rejected": true,
+    "unknown_framing_live_blocked": true,
+    "duration_seconds": 40.39099999999962
+  },
+  "files_sha256": {
+    "mingjing_core/agent/context.py": "c75097360afa0fd0e0642468b5b4110debfdd8bdd69cef468c01e0cafa467d8d",
+    "mingjing_core/agent/context_tokens.py": "ebb3e8ee915a0daa79747ce68f390300b53f9ee1bf66752fedd211993e795b6b",
+    "mingjing_core/agent/context_types.py": "14fb0d06b11675150ba6d2e5868341b120281f84457ec4960b2fd44926615395",
+    "mingjing_core/agent/context_k3.py": "e823f6573e58a8683908864a7751121cf16b2159025dbad2b1126b669ff9e510",
+    "mingjing_core/agent/context_epochs.py": "9bd5718502c0e305d1cfe0c8a4d41d16d5a07e70a895a0273578ecf6498a7cbd",
+    "mingjing_core/application/context_usage.py": "d407667a68f2c3797e544db2c0153cf26caa872468204bf07711e777566247c6",
+    "mingjing_core/application/context_epochs.py": "426d2d03785a821161cc3956a3b7339689089f6190732264fbf6c20d60b72996",
+    "tests/v4/agent/test_context_tokens.py": "5f0fee4b285e33ca1a26d9730f8ecc717fc958e1fa7c11ede40ceba0c6621377",
+    "tests/v4/agent/test_context_k3.py": "93418fad60f9deb6b497935dbf6393f7d0a6eae52a1d8324edd0bc01baa7c6e3",
+    "tests/v4/agent/test_context_calibration_pg.py": "4922e67aa6ec43e351e1ca79e90d7a406e9f4fefb9f20cbaeafdd892cba904ac",
+    "tests/v4/agent/test_context_epochs.py": "e24cf6127f5158289ca8f25107d7e44f8409e3d51de66245e0961937aada7b97",
+    "tests/v4/agent/test_context_epochs_pg.py": "3b93d09ab032c8eb63294f536b93b94f1f1967239a17aab9c7977867d2a14544"
+  }
+}

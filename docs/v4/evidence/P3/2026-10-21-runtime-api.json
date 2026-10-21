@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-21T00:43:00+08:00",
+  "scope": "local-runtime-thread-api-candidate",
+  "platform": "Windows",
+  "postgres": {"major": 15, "host": "127.0.0.1", "port": 55480, "isolated": true},
+  "provider": "ScriptedPort only",
+  "real_model_requests": 0,
+  "real_feishu_sends": 0,
+  "server_connections": 0,
+  "migrations_added": 0,
+  "tests": [
+    {"scope": "assembly/routes/events/dispatcher/inbox/feishu/readers", "passed": 64, "seconds": 23.47, "warnings": 1},
+    {"scope": "legacy Core runtime/tarot compatibility plus assembly/routes", "passed": 32, "subtests_passed": 46, "seconds": 39.78, "warnings": 1},
+    {"scope": "routes and event replay after final corrections", "passed": 10, "seconds": 5.26, "warnings": 1}
+  ],
+  "static": {"ruff": "E,F,I,B,UP,SIM", "line_length": 120, "checked_files": 12, "result": "passed"},
+  "limitations": [
+    "not stage/production or Linux evidence",
+    "no real provider installed or called",
+    "complex attachments, old tarot reading, report input paths explicitly rejected for v4",
+    "SSE HTTP adapter does not replace module-line hub/merger/retention",
+    "PrivacyMaintenance throttled lifecycle hook not included"
+  ]
+}

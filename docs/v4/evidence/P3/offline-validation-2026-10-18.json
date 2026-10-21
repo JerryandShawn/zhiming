@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-18",
+  "timezone": "Asia/Taipei",
+  "base": "b9a89b6f84f7bebb640de080548010859aae630c",
+  "code_local": "97f656cd177d573a0eb9c11a668ea0d13a40881d",
+  "code_remote": "e9ad78b98e61a3d48e11253b7670f52701a8adff",
+  "PR": "https://github.com/JerryandShawn/zhiming/pull/8",
+  "checks": [
+    {
+      "log": "task/work/daytime/p3-context-target.log",
+      "sha256": "f346b4c0e1a10b4a5e127a6cbb7c8289e262717eee827b7c79132554bc09c8c0",
+      "observed": "63 passed",
+      "exit_code": 0
+    },
+    {
+      "log": "task/work/daytime/p3-v4-full.log",
+      "sha256": "913642d8e4043250f45f6b76f65828d310272e8c63cec0796a6e8e36944b26af",
+      "observed": "678 passed",
+      "exit_code": 0
+    },
+    {
+      "log": "task/work/daytime/p3-scripted.log",
+      "sha256": "790265a260fe6304050c5f09a0e1db65241c666cbb90b1d730f9cd5f00956fde",
+      "observed": "Result: 80/80",
+      "exit_code": 0
+    }
+  ],
+  "targeted": {
+    "passed": 63,
+    "seconds": 73.3
+  },
+  "v4": {
+    "passed": 678,
+    "seconds": 208.35,
+    "skipped": 0,
+    "upstream_warnings": 1
+  },
+  "scripted": {
+    "passed": 80,
+    "total": 80,
+    "self_tests": 48,
+    "seconds": 11.77
+  },
+  "old_core": {
+    "rerun_for_P3": false,
+    "base_P2_passed": 553,
+    "note": "P3 adds unconnected modules only; P1b separately ran old Core553 in this same turn; do not pretend P3 reran that command."
+  },
+  "physical_model_requests": 0,
+  "actual_input_tokens": null,
+  "input_token_upper_bound": null,
+  "meter_unit": "policy_units",
+  "runtime_wired": false,
+  "database_migrations": 0,
+  "CI": "draft final head pending publication/checks",
+  "stage_or_production_access": false
+}

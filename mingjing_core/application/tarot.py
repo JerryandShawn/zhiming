@@ -10,6 +10,46 @@ def _source_links(data):
             {data.get('message_id'), data.get('source_message_id')}) - {None}
 
 
+def tarot_linked_runs(repo, conn, owner, draw_ids, reading_ids=()):
+    """Only native-bound server cache/mirrors participate; user facts do not."""
+    rows = conn.execute(sql.SQL(
+        "SELECT DISTINCT data->>'run_id' AS run_id FROM {} WHERE owner=%s AND status!='deleted' "
+        "AND kind IN ('runtime_step','artifact','interpretive_claim') "
+        "AND (data->>'native_draw_id'=ANY(%s) OR data->>'native_reading_id'=ANY(%s)) "
+        "AND (data->>'basis'='fixed_tarot' OR "
+        "(kind='runtime_step' AND data->>'name' IN ('tarot_start','tarot_read')))"
+    ).format(repo.table('core_entities')), (owner, list(draw_ids), list(reading_ids))).fetchall()
+    starts = conn.execute(sql.SQL(
+        "SELECT r.id AS run_id FROM {} m JOIN {} r ON r.owner=m.owner "
+        "AND left(m.request_key,length('run:'||r.id||':e'||r.retry_epoch||':s'))="
+        "'run:'||r.id||':e'||r.retry_epoch||':s' "
+        "WHERE m.owner=%s AND m.operation='agent_tarot_start' "
+        "AND m.receipt->>'write_status'='saved' AND m.receipt->>'kind'='draw' "
+        "AND m.receipt->>'draw_id'=ANY(%s)"
+    ).format(repo.table('core_mutation_requests'), repo.table('core_runs')), (owner, list(draw_ids))).fetchall()
+    return {row['run_id'] for row in [*rows, *starts] if row['run_id']}
+
+
+def invalidate_cancelled_draw(repo, conn, owner, draw_id):
+    """Keep the fixed draw for U7, but expire its private cache and mirrors."""
+    runs = tarot_linked_runs(repo, conn, owner, [draw_id])
+    if not runs:
+        return
+    ids = sorted(runs)
+    conn.execute(sql.SQL(
+        "UPDATE {} SET data='{{}}',status='deleted',revision=revision+1,updated_at=now() WHERE owner=%s "
+        "AND status!='deleted' AND ((kind='runtime_step' AND data->>'run_id'=ANY(%s)) OR "
+        "(kind IN ('artifact','interpretive_claim') AND data->>'basis'='fixed_tarot' "
+        "AND data->>'native_draw_id'=%s))"
+    ).format(repo.table('core_entities')), (owner, ids, draw_id))
+    conn.execute(sql.SQL(
+        "UPDATE {} SET output=NULL,error_code='TAROT_CANCELLED' WHERE owner=%s AND run_id=ANY(%s)"
+    ).format(repo.table('core_run_steps')), (owner, ids))
+    conn.execute(sql.SQL(
+        "UPDATE {} SET payload='{{}}' WHERE owner=%s AND run_id=ANY(%s)"
+    ).format(repo.table('core_run_events')), (owner, ids))
+
+
 def revoke_draw_dependencies(repo, conn, owner, draws, readings):
     """Called inside the owner transaction, before the draw FK cascade.
 
@@ -27,6 +67,7 @@ def revoke_draw_dependencies(repo, conn, owner, draws, readings):
     reading_runs.discard(None)
     runs = conn.execute(sql.SQL('SELECT id,subject,operation_id,request,result,state_version FROM {} WHERE owner=%s FOR UPDATE').format(
         repo.table('core_runs')), (owner,)).fetchall()
+    reading_runs.update(tarot_linked_runs(repo, conn, owner, draw_ids, reading_ids))
     affected = {run['id'] for run in runs if run['id'] in reading_runs or
                 run['request'].get('draw_id') in draw_ids or
                 run['request'].get('reading_id') in reading_ids or
@@ -50,6 +91,8 @@ def revoke_draw_dependencies(repo, conn, owner, draws, readings):
     operations = {(run['operation_id'], run['subject']) for run in runs if run['id'] in affected}
     sources.update(message['id'] for message in messages if message.get('channel') == 'tarot' and
                    message.get('role') == 'user' and (message.get('source_id'), message['subject_id']) in operations)
+    sources.update(message['id'] for message in messages if message.get('role') in ('assistant', 'tool') and
+                   message.get('run_id') in affected)
     # Assistant/tool copies are derived, unlike user messages that happen to
     # mention the same cards or question.
     while True:
@@ -113,6 +156,10 @@ def revoke_draw_dependencies(repo, conn, owner, draws, readings):
             repo.table('core_runs')), (owner, ids))
         conn.execute(sql.SQL("UPDATE {} SET data='{{}}',status='deleted',revision=revision+1,updated_at=now() WHERE owner=%s AND kind IN ('runtime_step','interpretive_claim','artifact','model_call','report') AND data->>'run_id'=ANY(%s)").format(
             repo.table('core_entities')), (owner, ids))
+        conn.execute(sql.SQL("UPDATE {} SET output=NULL,error_code='TAROT_DELETED' WHERE owner=%s AND run_id=ANY(%s)").format(
+            repo.table('core_run_steps')), (owner, ids))
+        conn.execute(sql.SQL("UPDATE {} SET payload='{{}}' WHERE owner=%s AND run_id=ANY(%s)").format(
+            repo.table('core_run_events')), (owner, ids))
         conn.execute(sql.SQL("UPDATE {} SET payload='{{}}',dependencies='{{}}',status=CASE WHEN status IN ('sending','uncertain') THEN 'uncertain' WHEN status='sent' THEN 'sent' ELSE 'cancelled' END,claim_token=NULL,lease_until=NULL,error='TAROT_DELETED',updated_at=now() WHERE owner=%s AND run_id=ANY(%s)").format(
             repo.table('delivery_outbox')), (owner, ids))
     return {'affected_ids': sorted(affected), 'source_ids': sorted(sources), 'fact_ids': sorted(facts)}
