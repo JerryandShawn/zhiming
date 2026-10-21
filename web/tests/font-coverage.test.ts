@@ -148,4 +148,15 @@ describe('published Fontsource coverage and binary invariants', () => {
     expect(copied.equals(original)).toBe(true);
     expect(copied.toString('utf8')).toContain('SIL OPEN FONT LICENSE Version 1.1');
   });
+
+  it('preloads only the common Sans slice at low priority while all other slices remain discoverable from CSS', () => {
+    const html = readFileSync(resolve(root, 'index.html'), 'utf8');
+    const links = [...html.matchAll(/<link\b[^>]*>/g)].map(([link]) => link);
+    const fontHints = links.filter((link) => /rel="preload"/.test(link) && /as="font"/.test(link));
+    expect(fontHints).toHaveLength(1);
+    expect(fontHints[0]).toContain('href="/fonts/noto-sans-sc-119-wght-normal.woff2"');
+    expect(fontHints[0]).toContain('fetchpriority="low"');
+    expect(links.some((link) => /rel="stylesheet"/.test(link) && /href="\/fonts\/fonts.css"/.test(link))).toBe(true);
+    expect(publicFaces().some((face) => face.src.includes('noto-sans-sc-latin-wght-normal.woff2'))).toBe(true);
+  });
 });
