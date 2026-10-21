@@ -5,6 +5,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from tools.b1_runtime_trust import inspect_core_venv
 from tools.core_incremental_contracts import TARGET, require
 
 CANDIDATES = {
@@ -37,6 +38,8 @@ def executable(name: str) -> str:
             stat = item.stat()
             require(stat.st_uid == 0 and stat.st_mode & 0o022 == 0, "HOST_EXECUTABLE_NOT_TRUSTED")
         require(os.access(resolved, os.X_OK), "HOST_EXECUTABLE_NOT_EXECUTABLE")
+        if name == candidate_python:
+            inspect_core_venv()
         # Preserve venv discovery: executing the resolved system Python loses it.
         return str(path) if name == candidate_python else str(resolved)
     require(False, "HOST_EXECUTABLE_MISSING")

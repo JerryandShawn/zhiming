@@ -14,6 +14,7 @@ from types import SimpleNamespace
 from typing import Any
 
 from tools.b1_linux_application_drill_contracts import ApplicationRequest, require
+from tools.b1_runtime_trust import inspect_core_venv
 
 INERT_CLI = """import json,os,pathlib,sys,time
 root=pathlib.Path(__file__).resolve().parents[1]
@@ -110,6 +111,8 @@ def fence(request: ApplicationRequest) -> dict[str, Any]:
     module = deployment(request)
     module.SKILL_WRITER_LOCK = str(directory / "writer.lock")
     module.MAINTENANCE = str(directory / "maintenance.flag")
+    if not request.local_drill:
+        inspect_core_venv()
     child = subprocess.Popen(
         command(request, writer_code(request, directory)),
         stdin=subprocess.PIPE,

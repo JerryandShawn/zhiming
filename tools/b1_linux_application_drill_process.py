@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from tools.b1_linux_application_drill_contracts import DSN_ENV, ApplicationBlocked, ApplicationRequest, require
+from tools.b1_runtime_trust import inspect_core_venv
 
 
 def environment(request: ApplicationRequest) -> dict[str, str]:
@@ -93,6 +94,8 @@ def worker_code(request: ApplicationRequest) -> str:
 
 def run_worker(request: ApplicationRequest) -> dict[str, Any]:
     request.validate()
+    if not request.local_drill:
+        inspect_core_venv()
     result = subprocess.run(
         command(request, worker_code(request)),
         input=json.dumps(fields(request)),

@@ -20,6 +20,7 @@ from tools.b1_restore_proof_pg import (
 from tools.b1_restore_proof_process import restore_archive, run_worker
 from tools.b1_restore_replay import protected_output
 from tools.b1_restore_replay_contracts import ReplayRejected, file_hash, require
+from tools.b1_runtime_trust import inspect_core_venv
 from tools.core_incremental_contracts import (
     EXPECTED_MANIFEST,
     MIGRATIONS,
@@ -27,6 +28,22 @@ from tools.core_incremental_contracts import (
     UpgradeRejected,
     digest,
     validate_restore,
+)
+
+GENERATOR_SOURCES = (
+    "tools/b1_restore_proof.py",
+    "tools/b1_restore_proof_contracts.py",
+    "tools/b1_restore_proof_pg.py",
+    "tools/b1_restore_proof_process.py",
+    "tools/b1_restore_proof_worker.py",
+    "tools/b1_restore_replay.py",
+    "tools/b1_restore_replay_contracts.py",
+    "tools/b1_restore_replay_worker.py",
+    "tools/b1_runtime_trust.py",
+    "tools/core_incremental_contracts.py",
+    "mingjing_core/__init__.py",
+    "mingjing_core/timekit/__init__.py",
+    "mingjing_core/timekit/clock.py",
 )
 
 
@@ -37,13 +54,16 @@ def output_preflight(path: Path, *, local: bool) -> None:
 
 
 def generator_hash() -> str:
-    return digest({path.name: file_hash(path) for path in sorted(Path(__file__).parent.glob("b1_restore_proof*.py"))})
+    root = Path(__file__).resolve().parents[1]
+    return digest({name: file_hash(root / name) for name in GENERATOR_SOURCES})
 
 
 def generate(request: ProofRequest) -> dict[str, Any]:
     request.platform()
     upgrade, backup, document = request.validate()
     request.dsns()
+    if not request.local_drill:
+        inspect_core_venv()
     observed = empty_target(request)
     archive = restore_archive(request)
     restored = restored_snapshot(request, backup["source_state_sha256"])

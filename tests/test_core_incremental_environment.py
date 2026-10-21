@@ -75,8 +75,10 @@ def test_reviewed_command_resolves_without_path_and_keeps_venv_identity(name: st
     with (
         patch("tools.core_incremental_binaries.Path", return_value=fake),
         patch("tools.core_incremental_binaries.os.access", return_value=True),
+        patch("tools.core_incremental_binaries.inspect_core_venv") as core_guard,
     ):
         assert executable(name) == str(fake)
+        assert core_guard.call_count == (0 if name == "systemctl" else 1)
     fake.stat = lambda: SimpleNamespace(st_uid=1000, st_mode=0o755)
     with (
         patch("tools.core_incremental_binaries.Path", return_value=fake),
