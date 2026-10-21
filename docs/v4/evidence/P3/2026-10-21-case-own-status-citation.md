@@ -12,7 +12,7 @@
 
 ## 真实本机验证
 
-原复现（见[07:50反例快照](2026-10-21-case-own-status-citation-repro.md)）是2fail/2.13秒；修后同原断言**2pass/2.16秒**。
+07:50原复现为2fail/2.13秒：已选事项的真实case_update已saved/rev+1并completed，Finalizer却要求case_index basis而ScopeError，0assistant/result；精确文件为下方原2例。修后同原断言**2pass/2.16秒**。最初反例和后续结果保持时间身份，不改写历史失败。
 
 本机回环PG `127.0.0.1:55480/core_test_main`，每例独立schema；TZ=Asia/Tokyo且显式业务时钟。清API凭据/关闭LangSmith、LangChain、OTel追踪，ScriptedPort，原HTTP/子进程拒绝夹具保留，单个pytest进程。
 

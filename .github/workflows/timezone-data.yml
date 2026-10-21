@@ -19,6 +19,32 @@ on:
       - .github/workflows/timezone-data.yml
   workflow_dispatch:
 
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{ github.event_name }}-${{
+      (
+        (github.head_ref == '' || github.event.pull_request.head.repo.full_name == github.repository) &&
+        (github.head_ref != '' || github.ref_type == 'branch') &&
+        (
+          (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
+          (github.head_ref || github.ref_name) == 'v4/integration'
+        )
+      ) && (github.head_ref || github.ref_name) || github.run_id
+    }}
+  cancel-in-progress: >-
+    ${{
+      (github.head_ref == '' || github.event.pull_request.head.repo.full_name == github.repository) &&
+      (github.head_ref != '' || github.ref_type == 'branch') &&
+      (
+        (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
+        (github.head_ref || github.ref_name) == 'v4/integration'
+      )
+    }}
+
 permissions:
   contents: read
 

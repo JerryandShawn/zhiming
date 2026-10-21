@@ -18,7 +18,7 @@ CaseChanges的合法状态为open/paused/closed；此处只处理已选Case变�
 - [x] (2026-10-21 07:52 +08:00) root确认先严格单次：初始alias revision=call.expected_revision、当前row=+1；多写链保留独立真实反例，不赶08。
 - [x] (2026-10-21 07:54 +08:00) 新独立helper与明确completed包装实现；原started入口未改，原两反例真实2pass/2.16秒。
 - [x] (2026-10-21 07:56 +08:00) 单次proof/原started恢复/matrix/ownrevisions75项通过39.81秒；另两条改写initial alias并重签hash负例通过。
-- [x] (2026-10-21 07:57 +08:00) 多写链另真实2fail/3.53秒组中核两次写已完成，无xfail；源码7件及3文档冻结交root，不把红文件纳已绿头。
+- [x] (2026-10-21 07:57 +08:00) 多写链另真实2fail/3.53秒组中核两次写已完成，无xfail；源码7件及本计划/最终回执共9件冻结交root，不把红文件纳已绿头。
 - [ ] 固定提交全量及case索引/Finalizer组合由root后续合法窗口核；08点四槽期间不再开pytest。
 
 ## Plan of Work
@@ -56,7 +56,7 @@ root已确认首片严格单次：初始alias revision=该call.expected_revision
 
 ## Outcomes & Retrospective
 
-严格单次的两条原失败已真实转绿，75项窄组合及另外2条重签初始alias负例通过。原始复现保留在`docs/v4/evidence/P3/2026-10-21-case-own-status-citation-repro.md`，最终单次回执见`2026-10-21-case-own-status-citation.md`。多写链仍有2条真实失败，不设xfail、不宣称一般闭环；全库/部署/真实模型未验证。
+严格单次的两条原失败已真实转绿，75项窄组合及另外2条重签初始alias负例通过。原始2fail/2.13秒与最终单次结果共同记录在`docs/v4/evidence/P3/2026-10-21-case-own-status-citation.md`。多写链仍有2条真实失败，不设xfail、不宣称一般闭环；全库/部署/真实模型未验证。
 
 ## 修订记录
 
