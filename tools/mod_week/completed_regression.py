@@ -38,6 +38,9 @@ SUITES = (
     "day_pipeline",
     "p9_official_v3",
     "eval_material_v23",
+    "calibration_v3",
+    "export_dry_run_v3",
+    "reports_v2",
 )
 
 
@@ -80,6 +83,7 @@ def source_snapshot() -> dict[str, str]:
     paths.update((ROOT / "mingjing_core/timeparse").glob("*.py"))
     for suite in SUITES:
         paths.update((ROOT / "tests/v4" / suite).rglob("*.py"))
+    paths.update(material_paths())
     paths.add(Path(__file__).resolve())
     if "cross_modules" in SUITES:
         paths.add(ROOT / "mingjing_core/memory2/event_time_extended_v2.py")
@@ -92,6 +96,33 @@ def source_snapshot() -> dict[str, str]:
         for path in sorted(paths)
         if path.is_file() and "__pycache__" not in path.parts
     }
+
+
+def material_paths() -> set[Path]:
+    """Only explicit new synthetic/golden inputs; no blind-B or private calibration material."""
+    paths: set[Path] = set()
+    if "calibration_v3" in SUITES:
+        paths.update((ROOT / "tools/calibration_v3").glob("*.py"))
+        paths.update((ROOT / "tools/calibration_v3").glob("*.json"))
+    if "export_dry_run_v3" in SUITES:
+        paths.update(
+            ROOT / name
+            for name in (
+                "tools/eval/fixtures/mod_20261021/v3_export_synthetic.json",
+                "tools/eval/fixtures/mod_20261021/v3_export_acceptance_core_synthetic.json",
+                "tests/v4/export_dry_run_v3/fixtures/acceptance_core_matrix.json",
+            )
+        )
+    if "reports_v2" in SUITES:
+        paths.update(
+            ROOT / name
+            for name in (
+                "tools/eval/fixtures/mod_20261021/reports_calendar_mod_synthetic.json",
+                "tests/v4/reports_v2/fixtures/expected_calendar_mod.json",
+                "tests/v4/reports_v2/fixtures/expected_calendar_mod.manifest.json",
+            )
+        )
+    return paths
 
 
 def run_round(clock: Clock, index: int, stamp: str) -> dict:
