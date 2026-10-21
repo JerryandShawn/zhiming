@@ -18,11 +18,8 @@ import './night.css';
 
 const otherPages = {
   today: lazy(() => import('./today/TodayPage')),
-  chart: lazy(() => import('../charts/ChartDemo')),
   tarot: lazy(() => import('../pages/Tarot')),
   cases: lazy(() => import('../pages/Cases')),
-  me: lazy(() => import('../pages/Me')),
-  settings: lazy(() => import('../pages/Settings')),
 };
 const AboutMePage = lazy(() => import('./me/AboutMePage'));
 const OnboardingChat = lazy(() => import('./onboarding/OnboardingChat'));
