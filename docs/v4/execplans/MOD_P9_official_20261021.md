@@ -16,6 +16,11 @@
 
 ## Surprises & Discoveries
 
+08:19后的独立储备验收复现旧stream prepared/leased与official候选并行投递权缺口：
+同/不同operation、租约未到/已过期共8项原先均未拒绝。根保存完整8失败证据后，只在本轮namespace
+加入两态显式迁移门禁；原unknown/fence/双CAS及旧proof不放松。修后53项namespace专项通过，
+完整457项目标含111新增均通过；未以测试降标消除缺陷。
+
 root五阶段namespace幂等测试发现1个真实缺陷：已持久化dispatched的完全相同快照再次CAS保存，被restore自动提升的revision误判为退步。修复仍先严格restore验证旧proof；仅完全相同metadata允许changed=False重放，实际变化仍通过原单调性/unknown/fence检查。原失败1/5保留于记录，五阶段断言不动；代理旧fe29源码摘要不再代表最终代码。
 
 独立复核发现builder不应按1500字符无条件丢弃全文：未超字节预算的回答/依据必须保留。新版改为先构造全文，只在实际inner/wire超预算时降级；独立真值不动。初版性能报告保留为补丁前hash，补丁后另存final报告。接线指南还补齐具体scope、event.action.value.t/header.event_id、平台不补推及实体toast-only，并纠正富文本官方URL。
@@ -37,6 +42,12 @@ root五阶段namespace幂等测试发现1个真实缺陷：已持久化dispatche
 工程预算内卡UTF8≤28000字节，最终序列化wire也独立检查≤30000字节，不据此宣称官方KB计数边界已实测。200组件按body组件树计数，文本属性不冒充独立组件；保留最多4按钮/1primary。大回答/依据/晨报降摘要+链接或明确截短提示，安全操作/回执不得静默丢弃。字面字段从原typed输入转义，不能全局反转旧JSON反斜杠。
 
 ## Outcomes & Retrospective
+
+08:19:43开始专项分支覆盖，最终457通过17.62秒；17产品行881/969=90.9185%，
+分支357/442=80.7692%，综合87.7392%。只行覆盖达90%，其余仍补；初始85.3154%报告留存。
+namespace并发修复后另出P9_official_state_performance_namespace_final.json，100完整五请求/三restore
+中位0.663010秒/峰76996B，200崩溃或过期均拒重发0.778110秒/峰48050B，旧性能保留历史。
+这些是本地合成证据，不能代替新的完整回归或最新HEAD远端CI。
 
 07:45:14–07:45:54合法窗口21组已完成模块9560通过/38.35秒，374源/测试/材料无漂移（P9_EVAL_completed_regression_0745.json）。P9纯候选里程碑已推83a48c4，不能把本地验证当平台/PG或CI已验收。
 

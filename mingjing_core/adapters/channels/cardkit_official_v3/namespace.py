@@ -85,6 +85,9 @@ def _legacy_binding(namespace: dict, state: OfficialState) -> None:
             raise OfficialError("legacy_state_invalid")
         if legacy.get("phase") in {"dispatched", "uncertain", "in_flight"} or legacy.get("pending") is not None:
             raise OfficialError("legacy_unknown_requires_reconciliation")
+        if legacy.get("phase") in {"prepared", "leased"}:
+            # Expiry does not revoke the old sender or migrate its operation ledger.
+            raise OfficialError("legacy_pending_requires_explicit_migration")
         for key in ("card_id", "message_id"):
             if legacy.get(key) is not None and legacy[key] != getattr(state, key):
                 raise OfficialError("legacy_remote_identity_changed")
