@@ -7,10 +7,12 @@ from typing import Any
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
-from mingjing_core.agent.events import make_event, validate_event
+from mingjing_core.agent.events import validate_event
 from mingjing_core.application.agent_runtime_events import RuntimeEvents
 from mingjing_core.application.agent_thread_scope import assert_thread
 from mingjing_core.domain.contracts import EvidenceError
+from mingjing_core.repositories.postgres import fingerprint
+from mingjing_core.repositories.run_event_log import append_event
 
 TERMINAL = {"succeeded", "failed", "stale", "cancelled", "revoked"}
 ERRORS = {
@@ -84,25 +86,15 @@ class RunEventReader:
             if any(value.get(key) != item for key, item in payload.items()) or value.get("run_id") != self.ident:
                 raise EvidenceError("已有停止事件损坏，不能覆盖")
             return
-        seq = connection.execute(
-            sql.SQL("SELECT coalesce(max(seq),0)+1 AS n FROM {} WHERE owner=%s AND run_id=%s").format(
-                self.repo.table("core_run_events")
-            ),
-            (self.owner, self.ident),
-        ).fetchone()["n"]
-        event = make_event("error", self.ident, seq, payload)
-        connection.execute(
-            sql.SQL("INSERT INTO {}(owner,run_id,seq,kind,payload) VALUES(%s,%s,%s,'error',%s)").format(
-                self.repo.table("core_run_events")
-            ),
-            (self.owner, self.ident, seq, Jsonb(event["data"])),
+        event = append_event(
+            self.repo, connection, run, "error", payload, operation_key="terminal-error:v1:" + fingerprint(tag)
         )
+        seq = event["data"]["seq"]
         usage = dict(run["usage"], event_terminal_error=dict(tag, seq=seq))
         connection.execute(
             sql.SQL("UPDATE {} SET usage=%s WHERE owner=%s AND id=%s").format(self.repo.table("core_runs")),
             (Jsonb(usage), self.owner, self.ident),
         )
-        connection.execute("SELECT pg_notify('mj_run',%s)", (self.ident + ":" + str(seq),))
 
     def page(self, after: int) -> tuple[list[dict[str, Any]], int, bool]:
         self.authority()
