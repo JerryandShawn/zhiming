@@ -53,6 +53,8 @@ class Connection:
             )
         if text.startswith("SELECT rolsuper"):
             return Rows({"elevated": self.factory.elevated})
+        if text.startswith("SELECT has_schema_privilege"):
+            return Rows({"safe": self.factory.schema_usage})
         if "has_table_privilege" in text:
             return Rows({"safe": self.factory.granted, "allowed": self.factory.granted})
         if "schemaname||" in text:
@@ -85,6 +87,7 @@ class Factory:
     def __init__(self, database: str) -> None:
         self.database, self.host = database, "127.0.0.1"
         self.migrated, self.elevated, self.granted = False, False, True
+        self.schema_usage = True
         self.statements: list[tuple[str, str, Any]] = []
 
     def __call__(self, dsn: str, **kwargs: Any) -> Connection:
@@ -153,6 +156,12 @@ class PostgresPortTests(unittest.TestCase):
         self.assertFalse(self.port.snapshot(migrated=False)["runtime_safe"])
         self.factory.granted, self.factory.elevated = True, True
         self.assertFalse(self.port.snapshot(migrated=False)["runtime_safe"])
+
+    def test_missing_effective_schema_usage_returns_false_before_table_privilege_queries(self) -> None:
+        self.factory.schema_usage = False
+        self.assertFalse(self.port.snapshot(migrated=False)["runtime_safe"])
+        writer_statements = [text for role, text, _ in self.factory.statements if role == "writer"]
+        self.assertFalse(any("has_table_privilege" in text for text in writer_statements))
 
     def test_candidate_mutations_use_pinned_interpreter_and_credential_free_provider_environment(
         self,
