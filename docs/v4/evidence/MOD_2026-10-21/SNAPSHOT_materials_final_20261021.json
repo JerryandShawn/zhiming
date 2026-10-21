@@ -1,0 +1,34 @@
+{
+  "scope": "explicit snapshot inputs and isolated child environment; targeted mod_week only",
+  "started_at": "2026-10-21T10:20:19.135614+08:00",
+  "finished_at": "2026-10-21T10:20:20.227040+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/v4/mod_week",
+    "-q",
+    "--basetemp=private/mod-week/tmp/snapshot-final-1020"
+  ],
+  "returncode": 0,
+  "stdout": "...........................                                              [100%]\n27 passed in 0.18s\n",
+  "stderr": "",
+  "source_sha256": {
+    "tools/mod_week/completed_regression.py": "7c8557ac2dc106bed47c01c4ed709c87f8fa101a8e32c4dc8ded743d46041da9",
+    "tools/mod_week/performance.py": "9e6feed2c4631f3685d46406c4ed0b7c2649578d41d926d6629a3f2e80e8c846",
+    "tools/mod_week/journal.py": "175fad4959fc0366ebce250cc2d9be6b606f9794f81aee9377a6abf5d1b5838a",
+    "tests/v4/mod_week/test_journal_mod.py": "947bac5cdfd9e84a9a76b1879dab8b46eb42cee2e7885ad2bd8a9e8c58c82e89",
+    "tests/v4/mod_week/test_performance_mod.py": "3f0300c8e7cb4d93c1217d2a5999f7b0dd851cdc1d9bd3501e476697a1ae7d06",
+    "tests/v4/mod_week/test_regression_window.py": "1bb898a943ef9570a6cebc0c9b7552257fa4391e9722e9502fa579dc2e154f96",
+    "tests/v4/mod_week/test_snapshot_materials_root_mod.py": "16d257b4c6d7611451698521c6546b9ef20f7e689fceb5feba933a0c21cad3ec"
+  },
+  "source_stable": true,
+  "AST_size_issues": [],
+  "new_tests": 6,
+  "prior_target_report": "SNAPSHOT_materials_target_20261021.json",
+  "prior_report_sha256": "d22f7ac90c471649ca07a41876dc819c5a530000be0fbaa812b90235b1799b71",
+  "limits": [
+    "Six new synthetic contracts only; full 27 suites still await legal window",
+    "No real B/private calibration material read, parent credentials never printed"
+  ]
+}

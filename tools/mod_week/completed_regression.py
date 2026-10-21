@@ -59,7 +59,20 @@ def window_time(clock: Clock) -> datetime:
 
 def environment() -> dict[str, str]:
     values = dict(os.environ)
-    for name in ("KIMI_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY", "LANGSMITH_API_KEY"):
+    for name in (
+        "KIMI_API_KEY",
+        "OPENAI_API_KEY",
+        "ANTHROPIC_API_KEY",
+        "LANGSMITH_API_KEY",
+        "LANGCHAIN_API_KEY",
+        "MOONSHOT_API_KEY",
+        "GOOGLE_API_KEY",
+        "GEMINI_API_KEY",
+        "DEEPSEEK_API_KEY",
+        "OPENROUTER_API_KEY",
+        "DASHSCOPE_API_KEY",
+        "XAI_API_KEY",
+    ):
         values.pop(name, None)
     values.update(
         PYTHONDONTWRITEBYTECODE="1",
@@ -145,6 +158,30 @@ def material_paths() -> set[Path]:
             ROOT / "tools/mod_week" / name
             for name in ("benchmark_reflection_projection_RPF01.py", "benchmark_reflection_v3.py", "performance.py")
         )
+    paths.update(contract_material_paths())
+    return paths
+
+
+def contract_material_paths() -> set[Path]:
+    """List known synthetic contracts only; never walk unknown JSON, blind sets or private inputs."""
+    names = {
+        "timeparse": ("u4_acceptance_expected_mod.json",),
+        "memory2": ("acceptance_policy_expected_mod.json",),
+        "streaming": ("event_samples_main_v1_mod.json", "event_samples_expected_mod.json"),
+        "scheduling": ("schedule_expected_mod.json", "delivery_expected_mod.json"),
+        "briefing_v2": ("daily_transit_synthetic_20261021.json", "acceptance_expected_mod.json"),
+    }
+    paths = {
+        ROOT / "tests/v4" / suite / "fixtures" / name
+        for suite, values in names.items()
+        if suite in SUITES
+        for name in values
+    }
+    if "streaming" in SUITES:
+        paths.add(ROOT / "docs/v4/evidence/MOD_2026-10-21/events_v1.origin.schema.json")
+    if "briefing_v2" in SUITES:
+        paths.add(ROOT / "docs/v4/evidence/MOD_2026-10-21/BRIEF_public_boundaries_frozen_matrix_20261021.json")
+    paths.update((ROOT / "config/holidays").glob("*.json"))
     return paths
 
 
