@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { AssistantMessage, UserMessage } from '../components/Messages';
 import { Button, Textarea } from '../components/ui/Controls';
 import { Select } from '../components/ui/Selection';
 import { RouteBadge } from './RouteBadge';
 import { chatHref, formatSpaceTime, SpaceNavigation, useSpaceRoute } from './SpaceNavigation';
 import { useSpacesDemo } from './store';
+import StudyWorkspace from '../study/StudyWorkspace';
 import './chat.css';
 
 export default function ChatPreview() {
@@ -20,6 +21,7 @@ export default function ChatPreview() {
   const messages = data.messages
     .filter((message) => !space || (message.spaceId === space.id && message.topicId === topic?.id))
     .sort((a, b) => a.at.localeCompare(b.at));
+  const Workspace = space?.id === 'study' ? StudyWorkspace : Fragment;
   return (
     <div className="page spaces-chat" data-page="chat" data-runtime="spaces-demo">
       <h1 className="sr-only">功能区对话预览</h1>
@@ -82,49 +84,51 @@ export default function ChatPreview() {
               />
             </div>
           )}
-          <div className="spaces-message-list" role="log" aria-label="合成消息时间线">
-            {messages.map((message) => (
-              <section key={message.id} data-message={message.id}>
-                {message.role === 'user' ? (
-                  <UserMessage time={formatSpaceTime(message.at)}>{message.text}</UserMessage>
-                ) : (
-                  <AssistantMessage time={formatSpaceTime(message.at)}>
-                    <p>{message.text}</p>
-                    <RouteBadge
-                      messageId={message.id}
-                      spaceId={message.spaceId}
-                      topicId={message.topicId}
-                      secondarySpaceId={message.secondarySpaceId}
-                    />
-                  </AssistantMessage>
-                )}
-              </section>
-            ))}
-            {!messages.length && <p className="secondary-text">这里还没有示例消息，可以切换其他话题。</p>}
-          </div>
-          <div className="spaces-composer">
-            <RouteBadge
-              key={origin}
-              prefix="将归入"
-              spaceId={composerSpace}
-              topicId={composerTopic}
-              onChange={(spaceId, topicId) => setInputRoute({ origin, spaceId, topicId })}
-            />
-            <label className="sr-only" htmlFor="spaces-preview-draft">
-              本地对话草稿
-            </label>
-            <Textarea
-              id="spaces-preview-draft"
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              placeholder="可以试写草稿，预览不会发送"
-              rows={2}
-            />
-            <div className="row between wrap">
-              <p className="meta">发送暂未开放；不会请求模型或保存草稿。</p>
-              <Button disabled>发送</Button>
+          <Workspace>
+            <div className="spaces-message-list" role="log" aria-label="合成消息时间线">
+              {messages.map((message) => (
+                <section key={message.id} data-message={message.id}>
+                  {message.role === 'user' ? (
+                    <UserMessage time={formatSpaceTime(message.at)}>{message.text}</UserMessage>
+                  ) : (
+                    <AssistantMessage time={formatSpaceTime(message.at)}>
+                      <p>{message.text}</p>
+                      <RouteBadge
+                        messageId={message.id}
+                        spaceId={message.spaceId}
+                        topicId={message.topicId}
+                        secondarySpaceId={message.secondarySpaceId}
+                      />
+                    </AssistantMessage>
+                  )}
+                </section>
+              ))}
+              {!messages.length && <p className="secondary-text">这里还没有示例消息，可以切换其他话题。</p>}
             </div>
-          </div>
+            <div className="spaces-composer">
+              <RouteBadge
+                key={origin}
+                prefix="将归入"
+                spaceId={composerSpace}
+                topicId={composerTopic}
+                onChange={(spaceId, topicId) => setInputRoute({ origin, spaceId, topicId })}
+              />
+              <label className="sr-only" htmlFor="spaces-preview-draft">
+                本地对话草稿
+              </label>
+              <Textarea
+                id="spaces-preview-draft"
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
+                placeholder="可以试写草稿，预览不会发送"
+                rows={2}
+              />
+              <div className="row between wrap">
+                <p className="meta">发送暂未开放；不会请求模型或保存草稿。</p>
+                <Button disabled>发送</Button>
+              </div>
+            </div>
+          </Workspace>
         </section>
       </div>
     </div>

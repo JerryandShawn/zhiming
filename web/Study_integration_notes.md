@@ -1,4 +1,4 @@
-# 命理研习接线笔记（只读准备）
+# 命理研习接线说明（本地只读）
 
 核对来源：已存在的本地 `origin/v4/p8-calc`，一次冻结为
 `0f1d6e676259b961819de4da5ea3f343d58dbe98`。只使用 `git show/ls-tree`；未fetch、未运行测试/计算、未HTTP或调用模型、未改其他工作树。本笔记不证明前端集成已完成。
@@ -47,7 +47,7 @@
 
 ## 4. 现有前端入口与不应混淆的内容
 
-- 功能区预览已有 `study` / “命理研习”：`web/src/spaces/fixtures.ts`。入口 `/?spaces=demo#/chat?space=study&topic=chart-study`；此处目前只有合成“我的命盘”话题，没有知识词典、学习卡或课程页。
+- 功能区预览已有 `study` / “命理研习”：`web/src/spaces/fixtures.ts`。入口 `/?spaces=demo#/chat?space=study&topic=chart-study`；本轮在原“我的命盘”话题接入对话、术语词典、学习卡三个视图，课程仍待后续。
 - `spaces/SpaceNavigation.tsx` 生成区/话题链接；`spaces/ChatPreview.tsx` 负责区内对话；可在研习区增加独立词典/学习入口，保留草稿与归区协议。
 - `App.tsx` 的旧 `#/dict` alias 指向 `#/me?section=dictionary`；`night/me/OtherTabs.tsx` 这里是“你自己的联想”，有删除个人联想和来源撤回语义。`live/LegacyPreview.tsx` 的 `/api/dict` 也是旧个人符号存档。两者都不是术语知识库，不能覆盖。
 - 聊天正文：`chat/Answers.tsx` → `components/Markdown.tsx`。Markdown经过DOMPurify后转换React节点，禁止innerHTML；术语点击宜在安全文本节点转换阶段添加显式按钮/Sheet，不扫描并替换DOM HTML、不改code/link节点、不自动发送给模型。先消歧体系，详情保留出处范围/待核。
@@ -59,3 +59,17 @@
 没有词典搜索API、对话术语弹窗API、学习进度存储、真实用户学习卡授权接口；集中typed只读静态端口即可，不猜HTTP。本轮源路径和字段可用，不需要合成200条替代真实词典。
 
 出处URL只作为登记的来源说明，不自动访问/加载。39来源中34是本地实现/原创；5 URL是来源方历史阅读记录，本次本线未外访，不冒称重新原典核验。渲染文本，不加载来源HTML/SDK；仓库源码path作为只读定位文字，不把它拼成公网API。知识本身不授权读取第三人生辰、更新档案、重抽或解冻时辰倒推。
+
+## 6. 本轮实现与验证
+
+导出器 `scripts/export_study_glossary.py` 与 `scripts/learning_samples/export_learning_samples.py` 从上述固定 Git 对象只读导出；所有来源、原Schema、源SHA、document/Pointer/alias/claim、分支和卡片模板通过后才创建新的输出目录。现有目录拒绝覆盖，不启动计算引擎或任何服务。
+
+公开资产仅七个 `public/data/study/{glossary,learning}/*.json`，不含原出生资料、原始时间坐标、任意observed或通用Pointer。学习正文有明确的受控摘要适配，保留具名流派、c/r原编号与来源范围。浏览器的固定七URL GET使用omit/no-store/redirect:error，并核对输出SHA、字节数、完整数量与封闭字段。SHA是资产一致性检查，不是签名或人物授权。
+
+集中接线点为 `src/study/staticLoader.ts` 的load session、`port.ts` 的只读StudyPort与独立scope。每次重载先撤销旧port，切换查询/体系/卸载先失效旧scope；依据须同时匹配sample/document/alias/claim。原对话与composer DOM在视图切换、资料失败/重试后保留。额外的术语点击提示单独标“合成示例”，没有改原消息。
+
+已实际通过34离线Python导出测试、152相关TS单测、14新浏览器+10原功能区浏览器；四尺寸双主题五状态40矩阵截图，加10交互截图，受测画面Axe全规则0、朱砂≤3、横溢出0、API/外域/非GET/真实模型0。精确源/测试/构建1002项哈希和各轮首失败记录在 `evidence/2026-10-21/study_checks.json`，阶段回执同目录 `study_receipt.md`。
+
+首轮发现“关闭后立即重开”新read被旧Back误取消，现显式close先退休自己的read；Back/Forward、迟到与A→B→A负例保留。完整视觉矩阵另发现词典按钮label没有包含可见体系/别名，已修正完整读屏名称而未关闭Axe规则。初轮报告、截图和精确测试名称修正均保留，最终50图位于 `study-verified/`。
+
+PWA外壳88文件中研习JSON为0，运行时数据不写缓存。当前只验证根路径预览；实际部署须把v4 bundle与 `/data/study/` 配置到同一根站点，不能以本地4173代替现有后端静态挂载。可选Python导出测试需要冻结Git对象，浅克隆CI需先取得该对象；Node标准测试直接读取已提交的七个公开资产，无此依赖。尚无学习进度持久化、20课页面或真实个人学习卡接口。
