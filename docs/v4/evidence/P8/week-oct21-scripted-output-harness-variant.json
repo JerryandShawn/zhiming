@@ -1,0 +1,14 @@
+{
+  "version": "p8-scripted-output-only-harness-variant-v1",
+  "original": "guarded_environment_validation.py",
+  "variant": "guarded_script_private_output.py",
+  "original_lf_sha256": "62588a249aeec374dd9f7104c8fee5c21985197d9fa5ba73bfd4606a8998ff46",
+  "variant_lf_sha256": "35b0844b7f7e7731aa0435a5feb19da8f1faa0affa90fca4c1287ae9c08a2275",
+  "exact_inverse_matches_original": true,
+  "changes": [
+    "scripted output directory root: docs/v4/evidence/P8 -> private/tmp",
+    "record private_scripted_output path; no evaluation/model/assertion/command/process-budget changes"
+  ],
+  "failure_reason_known": false,
+  "reason": "One original atomic-report replacement returned WinError 5; exact lock/permission cause not established."
+}

@@ -1,6 +1,6 @@
 # Detached transport 静态设计备忘：尚未实现或授权采样
 
-记录日期：2026-10-21，北京时间。本文只审阅当前源码和已有原生证据，不修改启动器、collector、守卫或运行时身份；没有运行解释器、测试、Git、格式器或新探针。本文不是新的执行批准，真实 supervisor、collector、baseline、trace 仍未由这些证据证明。
+记录日期：2026-10-21，北京时间；本备忘的源码基准为0fadb05，行引用固定到该提交。6508后续修正见文末，旧审阅不冒称当前全未实现。本文只审阅当前源码和已有原生证据，不修改启动器、collector、守卫或运行时身份；没有运行解释器、测试、Git、格式器或新探针。本文不是新的执行批准，真实 supervisor、collector、baseline、trace 仍未由这些证据证明。
 
 ## 1. 已有证据的准确边界
 
@@ -9,17 +9,17 @@
 - [09:42 detached B](week-oct21-0942-detached-bootstrap-help.json)：独立执行固定 bootstrap 的 `--help`，内层 total1/active0，外层 total2/active1，原始文件摘要与清理证据通过。B 没有再次输出全部 Python 内部身份，不能把 A/B 合成一次观测。
 - 私有程序与归档的绑定见 [源码摘要索引](week-oct21-launch-artifact-binding.json)；事实分层见 [原生诊断复核](week-oct21-detached-launch-review.md)。旧拒绝不因后来的具名候选通过而变绿。
 
-B 经过 bootstrap 的 `invalid_launch`、手工 Core site 路径及导入，但 argparse 帮助在解析处退出，未进入 `collect_core`。依据：[bootstrap:46](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py:46)、[bootstrap:69](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py:69)、[run:299](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_run.py:299)。`bootstrap_guard()` 位于 `collect_core` 内，见 [run:198](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_run.py:198)。B 没有调用它，没有运行 pytest、baseline、trace 或实际 `supervise`；导入 trace 模块不等于启用追踪。
+B 经过 bootstrap 的 `invalid_launch`、手工 Core site 路径及导入，但 argparse 帮助在解析处退出，未进入 `collect_core`。依据：[bootstrap:46](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py#L46)、[bootstrap:69](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py#L69)、[run:299](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_run.py#L299)。`bootstrap_guard()` 位于 `collect_core` 内，见 [run:198](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_run.py#L198)。B 没有调用它，没有运行 pytest、baseline、trace 或实际 `supervise`；导入 trace 模块不等于启用追踪。
 
 ## 2. 当前协议不能直接改名验收
 
 | 当前源码事实 | 新协议最小要求；本文均未实现 |
 | --- | --- |
-| [bootstrap:12](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py:12) 要求原生 `sys.executable == 固定 Core`；[bootstrap:30](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py:30) 固定选项和 bootstrap，但没有验证 orig_argv[0] | 保留现有全部拒绝条件；新增具名 transport 的 orig_argv[0]/物理 image 双重绑定，不能把 sys.executable 改成允许 base，也不赋值或改写任何 sys 身份。 |
-| [fingerprint:74](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py:74) 校验 argv[1:7]；[fingerprint:94](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py:94) 另拒绝错误实现、旧 trace/profile、错误 cwd/缓存 | 保留；不能让 A/B 或 `--help` 代替实际采样前这道完整守卫。 |
-| [fingerprint:210](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py:210) 指纹包括库、Core、base executable 和依赖；[fingerprint:239](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py:239) 的 executable 写的是固定 Core 常量 | 增补原生实际值、物理 image、pyvenv.cfg、prefix 与 transport 创建标志，并进入稳定 runtime 摘要；不能只记录一个常量路径。 |
-| [supervisor:102](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py:102) 仍从 Core wrapper 启动；[supervisor:295](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py:295) 仍为0x08000004 | 新 transport 必须显式选择物理 base、固定受控 launcher 环境和0xC，版本/名称与旧协议分开；未知 transport 一律拒绝，不能静默替换默认命令或旧回执。 |
-| [supervisor:174](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py:174) 只以 launcher 已退出、Job active0 判定退出，不检查累计 total | 活跃清零不能证明没有短命 relay。A/B 的 total1 闸门保持；实际采样的阶段账本另审，不能借当前 `_wait` 直接验收新 transport。 |
+| [bootstrap:12](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py#L12) 要求原生 `sys.executable == 固定 Core`；[bootstrap:30](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py#L30) 固定选项和 bootstrap，但没有验证 orig_argv[0] | 保留现有全部拒绝条件；新增具名 transport 的 orig_argv[0]/物理 image 双重绑定，不能把 sys.executable 改成允许 base，也不赋值或改写任何 sys 身份。 |
+| [fingerprint:74](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py#L74) 校验 argv[1:7]；[fingerprint:94](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py#L94) 另拒绝错误实现、旧 trace/profile、错误 cwd/缓存 | 保留；不能让 A/B 或 `--help` 代替实际采样前这道完整守卫。 |
+| [fingerprint:210](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py#L210) 指纹包括库、Core、base executable 和依赖；[fingerprint:239](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py#L239) 的 executable 写的是固定 Core 常量 | 增补原生实际值、物理 image、pyvenv.cfg、prefix 与 transport 创建标志，并进入稳定 runtime 摘要；不能只记录一个常量路径。 |
+| [supervisor:102](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py#L102) 仍从 Core wrapper 启动；[supervisor:295](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py#L295) 仍为0x08000004 | 新 transport 必须显式选择物理 base、固定受控 launcher 环境和0xC，版本/名称与旧协议分开；未知 transport 一律拒绝，不能静默替换默认命令或旧回执。 |
+| [supervisor:174](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py#L174) 只以 launcher 已退出、Job active0 判定退出，不检查累计 total | 活跃清零不能证明没有短命 relay。A/B 的 total1 闸门保持；实际采样的阶段账本另审，不能借当前 `_wait` 直接验收新 transport。 |
 
 建议名称仅为设计占位：`core-physical-base-native-launcher-detached-v1`。尚未在代码注册、未成为可选参数，也未取得采样批准。旧协议的缺失新字段、原 flags、未知 orig_argv[0]、不符映像/配置均不能被此名称自动豁免。
 
@@ -41,17 +41,17 @@ B 经过 bootstrap 的 `invalid_launch`、手工 Core site 路径及导入，但
 
 ## 4. 环境隔离与 Git 继承
 
-[safe_environment:98](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py:98) 会清凭据、provider、Git/pytest 与追踪项，但没有排除 `__PYVENV_LAUNCHER__`、PYTHONHOME、PYTHONEXECUTABLE、PYTHONPATH、VIRTUAL_ENV。A 中 CPython 原生消费 launcher 是本次事实，不是以后所有子进程环境都干净的证明。
+[safe_environment:98](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py#L98) 会清凭据、provider、Git/pytest 与追踪项，但没有排除 `__PYVENV_LAUNCHER__`、PYTHONHOME、PYTHONEXECUTABLE、PYTHONPATH、VIRTUAL_ENV。A 中 CPython 原生消费 launcher 是本次事实，不是以后所有子进程环境都干净的证明。
 
-最小职责分开：先从父环境移除全部这些继承项；只为已命名的 Python 子进程放回固定 Core launcher。MetadataGit 和 taskkill 等非 Python 角色不得收到它；读取前只记录固定键“存在/已清除/匹配”事实，不倾倒任意环境值。当前 [MetadataGit:137](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py:137) 保存环境快照，[MetadataGit:196](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py:196) 直接传给 Git，因此需要独立实现与反例保护，不能只在 supervisor 环境中清一次。
+最小职责分开：先从父环境移除全部这些继承项；只为已命名的 Python 子进程放回固定 Core launcher。MetadataGit 和 taskkill 等非 Python 角色不得收到它；读取前只记录固定键“存在/已清除/匹配”事实，不倾倒任意环境值。当前 [MetadataGit:137](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py#L137) 保存环境快照，[MetadataGit:196](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py#L196) 直接传给 Git，因此需要独立实现与反例保护，不能只在 supervisor 环境中清一次。
 
-保留 MetadataGit 的固定二进制、配置原始摘要、ROOT与只读精确参数白名单、fsmonitor禁用和目标执行内禁子进程，见 [MetadataGit:171](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py:171)。其 [creationflags:197](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py:197) 仍是 CREATE_NO_WINDOW；本次 detached A/B 没有验证 Git 的实际 helper/conhost 链，不能顺手改它或假定无额外成员。
+保留 MetadataGit 的固定二进制、配置原始摘要、ROOT与只读精确参数白名单、fsmonitor禁用和目标执行内禁子进程，见 [MetadataGit:171](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py#L171)。其 [creationflags:197](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py#L197) 仍是 CREATE_NO_WINDOW；本次 detached A/B 没有验证 Git 的实际 helper/conhost 链，不能顺手改它或假定无额外成员。
 
 ## 5. 数量门槛和超时预算
 
 - A/B launch-only 阶段没有获准的辅助任务，内层累计 total1 门槛保持；未知新增成员仍拒绝。完成端口与 PID 列表只是身份诊断，不能代替 accounting，也不能按名字放行进程。
 - 真正 collector 的目标执行外会串行调用 MetadataGit；成功运行会包含这些辅助进程，不能要求全程累计 total 为1。后续需要单独审定各元数据调用的实际映像、父子及创建时间账本；pytest目标阶段新增进程仍为0。不能把 launch-only 的 total1 原样当成整段采样门槛，也不能以“Git必需”为由直接删除累计数量审计。
-- 外层一个协调器加内层最多三个进程已满 cap4，额外启动 taskkill 可能需要第五个名额。当前 [supervisor:148](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py:148) 会启动它；启动失败后 [supervisor:183](C:/Users/Administrator/Documents/Codex/zhiming-v4-p8/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py:183) 才走 Job 终止。不能承诺满额时 taskkill 一定执行，也不提高 cap4。
+- 外层一个协调器加内层最多三个进程已满 cap4，额外启动 taskkill 可能需要第五个名额。当前 [supervisor:148](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py#L148) 会启动它；启动失败后 [supervisor:183](https://github.com/JerryandShawn/zhiming/blob/0fadb05c3d5318b80a25bb417f42116ab4875a8d/mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py#L183) 才走 Job 终止。不能承诺满额时 taskkill 一定执行，也不提高 cap4。
 - A/B 私有小试已获准直接用已拥有的 Job 句柄超时清理；这不等于修改了实际 supervisor 的超时协议。后续必须明确选择有预算的终止协议：保留 taskkill 尝试及失败回执/Job兜底，或另审具名的 job-handle-only 策略；本文没有替 root 决定。禁止按已退出/回收 PID 另杀进程。
 - 仍需分别验证：detached 睡眠超时、父进程先退出但后代仍活、元数据 helper 卡住、全额预算时失败路径、assign/query/resume/close失败。此前原 flags 的成功清理不能自动覆盖这些新 transport 分支。
 
@@ -65,3 +65,7 @@ B 经过 bootstrap 的 `invalid_launch`、手工 Core site 路径及导入，但
 
 本备忘交付的是静态缺口与验收顺序，不是新覆盖率、性能结果、专业正确性、部署或上线证据。
 用户已授权离线续作；这里的逐节点复核由本聊天 root 完成，不要求睡眠中的用户再次批准正常本地开发。
+
+## 7. 6508后续状态
+
+6508cc4已精确移除五个Python身份继承键，39角色+2消费者和旧131聚合172通过，随后当前完整3114通过；见[新阶段回执](P8_环境继承清理与3114回归_阶段回执_2026-10-21.md)。普通变量、PYTHONUTF8/PYTHONNOUSERSITE与非精确键保留，不扩张成全OS环境白名单。此修正不等于具名transport已经实现；实际MetadataGit的helper/console链、detached完整身份、目标阶段子进程账本与超时预算仍未验。上文源引用以0fad为历史基准，不因新源行号移动而错指当前文件。
