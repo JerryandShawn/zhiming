@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import tempfile
 import unittest
@@ -16,6 +17,7 @@ from unittest.mock import patch
 from test_core_incremental_upgrade import Sandbox, fixture
 
 from tools.core_incremental_contracts import (
+    MIGRATIONS,
     MODEL_BASE,
     PREVIOUS,
     TARGET,
@@ -157,7 +159,9 @@ class NativeAdapterTests(unittest.TestCase):
     def _release(self) -> None:
         root = self.files.path(self.request.release)
         rows = {}
-        for source in (REPO / "mingjing_core/repositories/migrations").glob("*.sql"):
+        for number, checksum in MIGRATIONS.items():
+            (source,) = (REPO / "mingjing_core/repositories/migrations").glob(f"{int(number):04d}_*.sql")
+            self.assertEqual(hashlib.sha256(source.read_bytes().replace(b"\r\n", b"\n")).hexdigest(), checksum)
             name = "mingjing_core/repositories/migrations/" + source.name
             private_write(root / name, source.read_bytes())
             rows[name] = {"sha256": file_sha(root / name)}
