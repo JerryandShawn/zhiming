@@ -72,12 +72,12 @@ def _wording(raw: dict[str, Any], hit: dict[str, Any]) -> str | None:
     context = hit["context"]
     system, kind = context["system"], context.get("kind")
     if system == "bazi" and kind == "ten_god" and context.get("layer") == "daily":
-        value = pointer(raw, hit["evidence_paths"][0])
+        value = _object_evidence(raw, hit)
         if context.get("ten_god") not in TEN_GODS or value.get("stem_ten_god") != context["ten_god"]:
             raise BriefingError("transit_ten_god_context_mismatch")
         return f"子平具名口径的流日天干十神为{context['ten_god']}；仅描述结构，不推断现实结果。"
     if system == "bazi" and kind == "relation" and "daily" in context.get("target_layers", []):
-        value = pointer(raw, hit["evidence_paths"][0])
+        value = _object_evidence(raw, hit)
         if context.get("relation") not in RELATIONS or type(context.get("complete")) is not bool:
             raise BriefingError("transit_relation_context_invalid")
         if value.get("kind") != context["relation"] or value.get("complete") is not context["complete"]:
@@ -116,7 +116,7 @@ def _ziwei(raw: dict[str, Any], hit: dict[str, Any]) -> str | None:
 
 def _astro(raw: dict[str, Any], hit: dict[str, Any]) -> str:
     context = hit["context"]
-    value = pointer(raw, hit["evidence_paths"][0])
+    value = _object_evidence(raw, hit)
     if context.get("from") not in PLANETS or context.get("to") not in PLANETS or context.get("aspect") not in ASPECTS:
         raise BriefingError("transit_aspect_context_invalid")
     orb, limit = context.get("orb_degrees"), context.get("orb_limit")
@@ -130,3 +130,10 @@ def _astro(raw: dict[str, Any], hit: dict[str, Any]) -> str:
         f"行运{context['from']}与本命{context['to']}呈{context['aspect']}，"
         f"偏离{orb:.2f}°（容许度{limit:g}°）；几何条件不证明预测有效。"
     )
+
+
+def _object_evidence(raw: dict[str, Any], hit: dict[str, Any]) -> dict[str, Any]:
+    value = pointer(raw, hit["evidence_paths"][0])
+    if type(value) is not dict:
+        raise BriefingError("transit_evidence_object_required")
+    return value

@@ -132,7 +132,7 @@ class CalendarSnapshot:
             object.__setattr__(self, "observed_at", aware(self.observed_at))
             object.__setattr__(self, "almanac", freeze_json(json_object(self.almanac)))
             validate_calendar(self)
-        except (TypeError, ValueError, OverflowError):
+        except (TypeError, ValueError, KeyError, OverflowError):
             raise BriefingError("invalid_calendar_snapshot") from None
 
 

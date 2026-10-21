@@ -31,6 +31,7 @@ from .contracts import (
     BriefSourceState,
     CalendarSnapshot,
 )
+from .current_manifest import validate_current_batch
 from .items import item_sections
 from .transit import transit_section
 
@@ -63,6 +64,15 @@ def compose_briefing(
     delivery, warnings = _delivery(scope, subscription, settings, receptivity, now, day, key, reason, sent_today)
     if delivery is None or delivery.disposition == "blocked":
         return BriefingResult(scope, day, calendar.timezone, now, (), (), delivery, (), warnings, key, "明镜的晨报到了")
+    validate_current_batch(
+        items,
+        scope=scope,
+        day=day,
+        subscription_state=subscription_state,
+        transit=transit,
+        transit_state=transit_state,
+        profile_revision=profile_revision,
+    )
     sections = [calendar_section(calendar)]
     areas, omissions = item_sections(
         items, scope=scope, day=day, now=now, settings=settings, receptivity=receptivity, sent_today=sent_today

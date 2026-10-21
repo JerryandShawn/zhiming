@@ -63,6 +63,8 @@ def validate_calendar(snapshot: CalendarSnapshot) -> None:
         raise BriefingError("calendar_term_label_required")
     if type(term["days_to_next"]) is not int or term["days_to_next"] < 0:
         raise BriefingError("calendar_term_days_invalid")
+    if term["days_to_next"] != (stamps[1].astimezone(zone).date() - snapshot.day).days:
+        raise BriefingError("calendar_term_day_difference_mismatch")
 
 
 def calendar_snapshot(
@@ -71,7 +73,10 @@ def calendar_snapshot(
     now = clock.now()
     if not isinstance(now, datetime) or now.tzinfo is None or now.utcoffset() is None:
         raise BriefingError("calendar_aware_clock_required")
-    zone = ZoneInfo(timezone)
+    try:
+        zone = ZoneInfo(timezone)
+    except (TypeError, ValueError, KeyError):
+        raise BriefingError("calendar_timezone_invalid") from None
     local = now.astimezone(zone)
     value = almanac(now, zone)
     status = calendar.day_status(local.date()) if calendar is not None else day_status(local.date())
