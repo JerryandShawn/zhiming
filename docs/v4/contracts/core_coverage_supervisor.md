@@ -61,5 +61,6 @@ ACTIVE_PROCESS_LIMIT=4限制协调器与全部后代，未配置breakaway。
 未因新增mock测试或空Job探针而视为修复；collector baseline/trace仍未运行。
 
 Python守卫不是OS安全沙箱，SHA不是身份认证；Job也不证明业务断言质量。
-当前完整归属固定3424036：239文件/26572行，Core/Charts静态计划execution_approved=false。
+历史完整归属3424036为239文件/26572行；本次实现提交c72ac9f已独立重建为240文件/26798行，
+443个源码/配置守卫、旧10文件结转、删除0。新Core/Charts静态计划execution_approved=false。
 静态分母不是执行覆盖率，不沿用旧局部4.30%或声称达到90%。
