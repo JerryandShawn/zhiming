@@ -1,6 +1,6 @@
 # 集成：从固定 v4/main 接入 P1b 并核完整本机门
 
-本 ExecPlan 遵循 `.agent/PLANS.md`。所有时间为北京时间 UTC+08。本片仅准备计划与私有检查入口；普通 merge、提交、推送均由主代理执行，不授权服务器、模型或消息操作。
+本 ExecPlan 遵循 `.agent/PLANS.md`。所有时间为北京时间 UTC+08。当前08:57口径：主代理已普通合P1b、在固定2ca完成本机功能门，并观察同精确头Node22配置push CI全部success；后续文档续作独立记录。本片不授权服务器、模型或消息操作。
 
 ## Purpose / Big Picture
 
@@ -22,9 +22,11 @@
 - [x] (2026-10-21 07:53) 主代理普通 merge P1b 固定候选为 49d40dd，记录双父、tree 与原 1–7 不变的证据；随后文档提交固定为 2ca1378。
 - [x] (2026-10-21 08:00–08:19) 主代理从 clean 2ca1378 的 archive 串行完成 Core→v4→Charts→legacy frontend。Core 08:00:37 开始，v4 08:13:38 开始，均在 00–15 分窗口；全部 14 条检查命令退出 0，没有 deferred/skip。
 - [x] (2026-10-21 08:26) 逐份完整读取 15 份私有安全日志及汇总，摘录实际数字、警告和原始字节 SHA256，形成 `docs/v4/release/integration/2026-10-21_P1b.md`；本片未重跑测试。
-- [ ] (2026-10-21 08:26 核验) 精确 2ca1378 的 push 39518064447 与 PR 39518095632 均 in_progress。Node24 本机 functional_passed=true，node22_parity=false、gate_passed=false；待同头 Node22 CI 完整通过，不能提前关闭此项。
+- [x] (2026-10-21 08:28:48 核验，08:57活节补记) 精确2ca1378的push39518064447/core118954903079全部completed/success，包括Models及清理。该workflow配置Node22，作为独立补充；原本机Node24 functional_passed=true、node22_parity=false、gate_passed=false及外层exit1全部保留。08:26两run在途是历史，PR run39518095632终态本次未复查。
 
 ## Surprises & Discoveries
+
+08:57补记：Node22是同头Hosted workflow配置与成功步骤的证据，并非本机版本变更。CI成功覆盖精确2ca；f756731/5658d640及本次只有文档更新，没有重新跑全部套件，也不借此声称后续业务树全部绿。
 
 新树没有自己的 venv/node_modules，但可直接用现有绝对解释器与 NODE_PATH，无需创建依赖 junction。当前未包含 web/ 新源码，前端门是根 package.json 的旧原生页面检查，不能写成新前端已验收。
 
@@ -35,6 +37,8 @@
 完整 v4 有 1 条 Starlette/AnyIO BlockingPortal 弃用警告，前端 build 有 caniuse-lite 过期提示；两者都没有造成命令失败。现有锁不更新，本片未安装依赖。fake/c21 汇总中的 85 次 model_calls 各自都是脚本模拟调用，不能误称真实 Kimi 请求。
 
 ## Decision Log
+
+2026-10-21 08:57 / root：按08:28:48实际保存的GitHub jobs终态关闭固定2ca的Node22配置CI补充门，不重跑已绿功能套件，不改原Node24报告。下一P3等业务普通合并须新固定archive和完整门，未合v4/main/main或部署。
 
 2026-10-21 07:41：只借已有锁定依赖，不安装、不改 lock、不改变 B1 固定 b9 发布包。集成可新增 P1b 0008；0001–0007 原字节/校验和不变，0009 留给分区/话题，不能因新集成把 B1 变成 schema8 包。
 
@@ -52,7 +56,7 @@
 
 截至 2026-10-21 08:26，主代理已完成普通 P1b 合并，并在固定集成 2ca1378/tree 665a3b0 上取得本机全部功能通过：Core 553、v4 1296、models 889（覆盖率 96%）、评测框架 self-test 48、fake 80/80、c21 scripted 80/80、Charts 60+10，以及六条旧页面 DOM/语法/build 命令。所有 manifest 检查 exit 0、skip=false；没有将重叠套件相加成独立测试总数。组合阶段回执及完整 hash 索引见 `docs/v4/release/integration/2026-10-21_P1b.md`。
 
-Node22 门仍未完成：本机 Node24.15.0 functional_passed=true、gate_passed=false；精确同头 push/PR CI 尚在途，未宣称全部 CI 绿。外层 PowerShell exit 1 与命令全 0 并列保留。本片仅文档收口，没有再运行测试、改 runner、merge、提交或推送。真实供应商、B1 Linux、stage、生产、飞书均未验证、没有访问。
+08:57更新：精确同头push CI的Node22配置门已有全部success；PR触发的另一run终态未复核，不声称两run均绿。本机Node24.15.0 functional_passed=true、gate_passed=false和外层PowerShell exit1仍原样保留。本片仅文档收口，无重复套件或业务修改；主代理已推后续文档，后续业务树另验。真实供应商、B1 Linux、stage、生产、飞书均未验证、没有访问。
 
 ## Plan of Work
 
