@@ -19,16 +19,20 @@
 - [x] (2026-10-21 07:41) 核清独立树 b9 精确头、P1b 原 CI 脚本及现有本机依赖路径；本片尚未 merge、提交或启动全量。
 - [x] (2026-10-21 07:44) 私有 runner 默认 plan_only 验证成功，tests_executed=false；静态 Ruff/format/AST 检查通过。
 - [x] (2026-10-21 07:45) 明确系统 Node24 与 CI Node22 不等价；保留 Node24 可做的本机 DOM/build，另记 node22_parity=false，不安装 Node22。
-- [ ] 主代理核同头 CI 与工作树后，普通 merge P1b 固定候选，记录父提交、merge commit/tree 及迁移证据。
-- [ ] 08:00–08:15 启动固定新提交的集成整体串行检查位，与 P3 Core、P3 v4、M8 共 4 位；集成 Core→v4→Charts→legacy frontend 串行，模型覆盖与 fake/c21 在 v4 后串行。
-- [ ] 位释放后跑 Charts 与当前 legacy frontend；复制私有报告中的脱敏数字到 `docs/v4/release/integration/2026-10-21_P1b.md`。
-- [ ] 核新集成头 GitHub Node22 CI；Node24 本机功能绿不能代替此门。P1b 门交付后才进入 P3 普通 merge/接线。
+- [x] (2026-10-21 07:53) 主代理普通 merge P1b 固定候选为 49d40dd，记录双父、tree 与原 1–7 不变的证据；随后文档提交固定为 2ca1378。
+- [x] (2026-10-21 08:00–08:19) 主代理从 clean 2ca1378 的 archive 串行完成 Core→v4→Charts→legacy frontend。Core 08:00:37 开始，v4 08:13:38 开始，均在 00–15 分窗口；全部 14 条检查命令退出 0，没有 deferred/skip。
+- [x] (2026-10-21 08:26) 逐份完整读取 15 份私有安全日志及汇总，摘录实际数字、警告和原始字节 SHA256，形成 `docs/v4/release/integration/2026-10-21_P1b.md`；本片未重跑测试。
+- [ ] (2026-10-21 08:26 核验) 精确 2ca1378 的 push 39518064447 与 PR 39518095632 均 in_progress。Node24 本机 functional_passed=true，node22_parity=false、gate_passed=false；待同头 Node22 CI 完整通过，不能提前关闭此项。
 
 ## Surprises & Discoveries
 
 新树没有自己的 venv/node_modules，但可直接用现有绝对解释器与 NODE_PATH，无需创建依赖 junction。当前未包含 web/ 新源码，前端门是根 package.json 的旧原生页面检查，不能写成新前端已验收。
 
 07:44 核系统 Node 为 v24.15.0，Codex 已捆绑 Node 为 v24.19.0；两者均非 CI 明确要求的 22。主代理裁定继续做已有 Node24 的完整 DOM/build，结果只记本机功能证据；Node22 对齐保持未验/No-Go，之后以同集成提交的 CI22 作为独立证据，不能下载新运行时来掩盖此边界。
+
+08:19 的实际报告为 functional_passed=true、gate_passed=false、actual_node_version=v24.15.0；14 条检查自身全为 exit 0，而主代理观察到外层 PowerShell 最终 exit 1。原计划中 parity-only 预期退出 2 没有成为这次外层实测值，必须分别记录，不能将 exit 1 改写为 2，也不能据此谎报有功能套件失败。本片只读证据，不修改 runner 或门判定。
+
+完整 v4 有 1 条 Starlette/AnyIO BlockingPortal 弃用警告，前端 build 有 caniuse-lite 过期提示；两者都没有造成命令失败。现有锁不更新，本片未安装依赖。fake/c21 汇总中的 85 次 model_calls 各自都是脚本模拟调用，不能误称真实 Kimi 请求。
 
 ## Decision Log
 
@@ -40,11 +44,15 @@
 
 2026-10-21 07:46：按主代理最新四位调度，新增 --suite all 同一固定快照依序运行完整门。每个 Core/v4 开始时重新检查北京时间；Core 完成后如 v4 已错过 00–15 分，则该阶段标 deferred_next_hour、tests_executed=false，立即继续可做的 Charts/legacy，不能假造 v4 已执行或睡到下小时占住调度。
 
+2026-10-21 08:26：保留 07:53 的历史“尚无回归”记录，另以实际 08:00–08:19 结果更新活文档；候选和证据均固定 2ca1378/tree 665a3b0，不借用后来 P3、P6 或 CI 分组提交成绩。记录原始 result/source/log 字节 hash，合成场景输出与完整日志继续只存 private，tracked 回执只摘录数字。
+
+2026-10-21 08:26：读取实际迁移测试 `test_quota_guard_migration_pg.py`，全 v4 与 models 两次套件均零 skip、零失败，因而包含 7→8 保数据/重复 initialize、旧清单拒新库和降权运行角色禁止 DDL/篡改账本的真实 PG 断言。它不是 B1 Linux 演练或任何远端部署证据；0008 不进入 B1 固定 b9 包。
+
 ## Outcomes & Retrospective
 
-已准备完整命令清单与私有安全入口，只有默认计划与静态检查被运行；没有启动 Core/v4/Charts/frontend 套件，没有 merge、提交或推送。P1b 自有 CI success 是候选已有证据，当前 b9 集成树尚未包含 P1b，不能写成组合已绿。
+截至 2026-10-21 08:26，主代理已完成普通 P1b 合并，并在固定集成 2ca1378/tree 665a3b0 上取得本机全部功能通过：Core 553、v4 1296、models 889（覆盖率 96%）、评测框架 self-test 48、fake 80/80、c21 scripted 80/80、Charts 60+10，以及六条旧页面 DOM/语法/build 命令。所有 manifest 检查 exit 0、skip=false；没有将重叠套件相加成独立测试总数。组合阶段回执及完整 hash 索引见 `docs/v4/release/integration/2026-10-21_P1b.md`。
 
-Node22 对齐未验证；本机真实供应商、B1 Linux、stage、生产、飞书均不在本片范围。后续必须填写每个实际固定提交的数字/skip/失败，不能继承旧分支成绩。
+Node22 门仍未完成：本机 Node24.15.0 functional_passed=true、gate_passed=false；精确同头 push/PR CI 尚在途，未宣称全部 CI 绿。外层 PowerShell exit 1 与命令全 0 并列保留。本片仅文档收口，没有再运行测试、改 runner、merge、提交或推送。真实供应商、B1 Linux、stage、生产、飞书均未验证、没有访问。
 
 ## Plan of Work
 
@@ -54,7 +62,7 @@ Node22 对齐未验证；本机真实供应商、B1 Linux、stage、生产、飞
 
 ## Concrete Steps
 
-以下是供主代理在确认版本后执行的本机命令，本片没有运行 merge 或任何 --execute。先记录：
+以下是原准备时交给主代理的本机命令，本子代理没有运行 merge 或任何 --execute；主代理后来完成的精确版本与实测见 Progress 和阶段回执。先记录：
 
     git -C C:/Users/Administrator/Documents/Codex/zhiming-v4-integration rev-parse HEAD
     git -C C:/Users/Administrator/Documents/Codex/zhiming-v4-integration merge --no-ff 8087d7fa64839dc5a080491fd5db4e358f5814ec
@@ -102,7 +110,7 @@ Node24 本机 DOM/build 的实际结果独立记录；同集成头 Node22 CI 成
 
 ## Artifacts and Notes
 
-可提交产物仅本 ExecPlan。私有本机入口 `private/integration_20261021_runner.py` 与网络护栏 `private/integration_network_guard/sitecustomize.py` 被现有 private/ ignore，不纳入产品包。每次执行报告在 `private/integration-checks/<北京时刻>-<suite>-<随机后缀>/result.json`；tracked 集成回执只摘录脱敏汇总及对应固定提交，不能把 private 日志或完整 DSN 加入 Git。
+可提交产物为本 ExecPlan 与集成阶段回执 `docs/v4/release/integration/2026-10-21_P1b.md`。私有本机入口 `private/integration_20261021_runner.py` 与网络护栏 `private/integration_network_guard/sitecustomize.py` 被现有 private/ ignore，不纳入产品包。实际报告在 `private/integration-checks/20261021-080036-all-ad7ee171/result.json`；tracked 集成回执只摘录脱敏汇总、原始 hash 与对应固定提交，不能把 private 日志或完整 DSN 加入 Git。
 
 ## Interfaces and Dependencies
 
@@ -114,6 +122,7 @@ Node24 本机 DOM/build 的实际结果独立记录；同集成头 Node22 CI 成
 - 2026-10-21 07:44 准备固定 archive 私有 runner，默认只计划，静态检查通过。
 - 2026-10-21 07:45 根据实测与主代理裁定保留 Node24 完整功能证据，并将 Node22 parity 单独标未验；未执行套件。
 - 2026-10-21 07:46 对齐四位调度为整体串行入口，v4 错过启动窗口则明确推迟，仍继续 Charts/legacy。
+- 2026-10-21 08:26 按实际固定候选的完整本机结果更新四活节，记录 Node24 功能通过、外层 exit 1、Node22 CI 在途以及两类警告；没有重跑或更改门。
 
 ## 2026-10-21 07:53:24 +08:00 root合并候选与门状态
 
