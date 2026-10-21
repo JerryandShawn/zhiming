@@ -1,0 +1,92 @@
+{
+  "schema_version": "reflection-independent-calendar-v1",
+  "frozen_at_beijing": "2026-10-21T08:15:26.116920+08:00",
+  "derived_from": [
+    "33 section4.7",
+    "P5 original C/D",
+    "P5 supplement A/B/C/D",
+    "02 blueprint section6",
+    "public typed contracts and documented scheduling semantics"
+  ],
+  "not_derived_from_peer_tests_or_implementation_outputs": true,
+  "semantic_groups": [
+    {
+      "id": "T01",
+      "expected": "Idle debounce is UTC elapsed; 599.999999 seconds no enqueue; 600 seconds eligible; explicit current permit required."
+    },
+    {
+      "id": "T02",
+      "expected": "03:00 daily fallback is independent of idle delay; before 03 no daily; owner timezone, same-day completion suppresses daily only."
+    },
+    {
+      "id": "T03",
+      "expected": "Across midnight or ISO/year boundary uses owner day; daily catchup supported; last_observed_at later than now blocks rollback."
+    },
+    {
+      "id": "T04",
+      "expected": "Ambiguous or missing local 03:00 is blocked pending an explicit host DST policy; no silently shifted instant."
+    },
+    {
+      "id": "G01",
+      "expected": "Default/disabled/quota-stopped/inactive/stale permit cannot yield enqueue or work."
+    },
+    {
+      "id": "G02",
+      "expected": "Cross owner/subject, revoked/inactive/incognito/optout/future source and temporary/incognito/inactive/running/leased thread cannot be processed."
+    },
+    {
+      "id": "I01",
+      "expected": "Stable scope/thread/source cursor/epoch produces stable operation identity; matching queued ledger is replay/no duplicate intent."
+    },
+    {
+      "id": "I02",
+      "expected": "Full original source text, revision, role, at, origin, epoch or thread source manifest changes must invalidate prior intent before work."
+    },
+    {
+      "id": "W01",
+      "expected": "Work is review-only: excerpts retain original source/role/time/anchors; assistant claims never become user facts."
+    },
+    {
+      "id": "W02",
+      "expected": "Sensitive sources preserve original policy: proposal/profile confirmation/stop/reject cannot be bypassed by reflection."
+    },
+    {
+      "id": "W03",
+      "expected": "Duplicate/archive/gap/followup/profile candidates never apply, delete, schedule, or claim saved receipts."
+    },
+    {
+      "id": "P01",
+      "expected": "Exactly eight about-me sections, in original design order; absent current profile authority yields eight empty sections."
+    },
+    {
+      "id": "P02",
+      "expected": "Profile/snapshot/source epoch/current revision/scope and exact source/fact anchors must all remain current."
+    },
+    {
+      "id": "P03",
+      "expected": "Revoked/changed/assistant-origin/retired/expired facts cannot reappear even when pinned or manually edited."
+    },
+    {
+      "id": "P04",
+      "expected": "Pinned/manual entries are preserved as protected review-only content; reflection cannot overwrite them."
+    },
+    {
+      "id": "P05",
+      "expected": "Markdown/HTML controls in source/profile wording are rendered literally, not as executable HTML, links, or new headings."
+    },
+    {
+      "id": "P06",
+      "expected": "Derived analysis is labelled inference, never as user original speech; chart section stays unverified without authoritative P8 contract."
+    },
+    {
+      "id": "E01",
+      "expected": "Every exposed effect field is true integer zero; no actual model/queue/fact/profile/notification/delete work."
+    }
+  ],
+  "random_plan": {
+    "seed": 3307,
+    "idle_cases": 500,
+    "explicit_timezone": true
+  },
+  "platform_model_database_calls": 0
+}

@@ -41,6 +41,7 @@ SUITES = (
     "calibration_v3",
     "export_dry_run_v3",
     "reports_v2",
+    "reflection_v3",
 )
 
 
@@ -120,6 +121,18 @@ def material_paths() -> set[Path]:
                 "tools/eval/fixtures/mod_20261021/reports_calendar_mod_synthetic.json",
                 "tests/v4/reports_v2/fixtures/expected_calendar_mod.json",
                 "tests/v4/reports_v2/fixtures/expected_calendar_mod.manifest.json",
+            )
+        )
+    if "p9_official_v3" in SUITES:
+        paths.update((ROOT / "tests/v4/p9_official_v3/fixtures").glob("*.json"))
+    if "reflection_v3" in SUITES:
+        paths.update(
+            ROOT / name
+            for name in (
+                "tools/eval/fixtures/mod_20261021/reflection_background_synthetic.json",
+                "tools/eval/fixtures/mod_20261021/reflection_calendar_mod_synthetic.json",
+                "tests/v4/reflection_v3/fixtures/expected_calendar_mod.json",
+                "tests/v4/reflection_v3/fixtures/expected_calendar_mod.manifest.json",
             )
         )
     return paths
