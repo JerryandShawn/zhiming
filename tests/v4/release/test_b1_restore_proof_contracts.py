@@ -13,7 +13,7 @@ from dataclasses import replace
 from pathlib import Path
 
 import pytest
-from b1_restore_proof_support import empty_document, make_fixture, write
+from b1_restore_proof_support import SUPPORT, empty_document, make_fixture, pg_tool, pinned_candidate, write
 
 from tools import b1_restore_proof as proof
 from tools.b1_restore_proof_contracts import (
@@ -37,8 +37,17 @@ from tools.core_incremental_contracts import (
 @pytest.fixture
 def inputs(tmp_path, monkeypatch):
     ident = "b1_restore_proof_" + uuid.uuid4().hex
-    fixture = make_fixture(tmp_path, "host=127.0.0.1 port=55480 dbname=postgres user=core_test", ident, "unused")
+    restore = tmp_path / "synthetic-pg-restore-never-executed"
+    restore.write_bytes(b"synthetic-contract-only-not-a-PG-executable")
+    fixture = make_fixture(
+        tmp_path,
+        "host=127.0.0.1 port=55480 dbname=postgres user=core_test",
+        ident,
+        "unused",
+        pg_restore=restore,
+    )
     fixture.request.dump.write_bytes(b"synthetic-invalid-dump-never-applied")
+    fixture.request.dump.chmod(0o600)
     write(
         fixture.request.backup,
         {
@@ -130,6 +139,7 @@ def test_verified_loopback_is_explicit_in_canonical_dsn_and_protected_passfile(i
 
     path = inputs.directory / "synthetic-pgpass"
     path.write_text("synthetic-not-a-real-password")
+    path.chmod(0o600)
     monkeypatch.setenv("B1_PROOF_PGPASSFILE", str(path))
     fields = conninfo_to_dict(inputs.request.dsn("owner"))
     assert fields["hostaddr"] == "127.0.0.1" and fields["port"] == "55480"
@@ -312,3 +322,54 @@ def test_pinned_worker_argv_forces_nonexistent_cache_prefix_and_filters_environm
     assert args[:5] == python_prefix(inputs.request.candidate_python)
     assert args[5] == "-c" and "PYTHONPYCACHEPREFIX" not in options["env"]
     assert args[4] == "pycache_prefix=" + os.path.abspath(os.devnull)
+
+
+def test_explicit_pin_bypasses_git_but_still_rejects_unverified_source(inputs, monkeypatch, tmp_path):
+    def forbidden():
+        pytest.fail("explicit candidate unexpectedly consulted Git")
+
+    monkeypatch.setitem(SUPPORT, "materialize", forbidden)
+    monkeypatch.setenv("B1_PROOF_TEST_CANDIDATE_SOURCE", str(inputs.request.candidate_source))
+    assert pinned_candidate() == inputs.request.candidate_source.resolve()
+    invalid = tmp_path / "not-a-pinned-release"
+    invalid.mkdir()
+    (invalid / "__release_manifest__.json").write_text("{}")
+    monkeypatch.setenv("B1_PROOF_TEST_CANDIDATE_SOURCE", str(invalid))
+    with pytest.raises(ReplayRejected, match="PINNED_MANIFEST"):
+        pinned_candidate()
+    monkeypatch.setenv("B1_PROOF_TEST_CANDIDATE_SOURCE", "relative-candidate")
+    with pytest.raises(RuntimeError, match="absolute"):
+        pinned_candidate()
+
+
+def test_pure_restore_fixture_is_synthetic_and_never_needs_installed_pg_tools(inputs, monkeypatch):
+    monkeypatch.setenv("B1_PROOF_TEST_PG_BIN", str(inputs.directory / "not-installed"))
+    assert inputs.request.pg_restore.read_bytes() == b"synthetic-contract-only-not-a-PG-executable"
+    assert inputs.request.pg_restore.parent == inputs.directory
+    inputs.request.validate()
+
+
+def test_explicit_pg_tool_must_report_version15_before_any_database_use(tmp_path, monkeypatch):
+    executable = tmp_path / ("pg_restore.exe" if os.name == "nt" else "pg_restore")
+    executable.write_bytes(b"synthetic-version-probe-only")
+    monkeypatch.setenv("B1_PROOF_TEST_PG_BIN", str(tmp_path))
+    calls = []
+
+    def version_only(arguments, **kwargs):
+        calls.append(arguments)
+        return subprocess.CompletedProcess(arguments, 0, b"pg_restore (PostgreSQL) 16.1", b"")
+
+    monkeypatch.setattr("b1_restore_proof_support.subprocess.run", version_only)
+    with pytest.raises(RuntimeError, match="version 15"):
+        pg_tool("pg_restore")
+    assert calls == [[str(executable), "--version"]]
+
+
+def test_missing_explicit_pg_tools_do_not_search_path_or_execute(tmp_path, monkeypatch):
+    def forbidden(*args, **kwargs):
+        pytest.fail("missing explicit PG tool tried another executable")
+
+    monkeypatch.setenv("B1_PROOF_TEST_PG_BIN", str(tmp_path))
+    monkeypatch.setattr("b1_restore_proof_support.subprocess.run", forbidden)
+    with pytest.raises(RuntimeError, match="absolute B1_PROOF_TEST_PG_BIN"):
+        pg_tool("pg_restore")

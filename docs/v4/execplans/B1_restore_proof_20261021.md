@@ -20,13 +20,16 @@
 - [x] (2026-10-21 09:07 +08:00) 空目标门补非默认namespace、public用户类型/域和非默认extension；enum/空schema真实反例在restore前拒绝且保留对象。最终53 passed /106.43秒（42纯契约+11真实Windows PG15），0失败/错误/跳过/警告；先前51为历史候选，最终源码/raw hash已更新。
 - [x] (2026-10-21 09:12 +08:00) root实际证明-B仍读污染pyc；唯一候选Python子进程固定-X pycache_prefix=绝对系统null，新增真实缓存/argv反例。最终55 passed /109.72秒（44纯/实际本机Python契约+11真实Windows PG15）；两cache node格式后2passed/0.21秒不重复计数。新源码/raw hash更新，旧53保留历史。
 - [ ] Linux 正式演练与正式 proof —— 环境阻塞，不以 Windows 替代。
-- [ ] 冻结文件/精确证据交 root 审查提交，不自行提交或推送。
+- [x] (2026-10-21 09:16 +08:00) root已原子提交producer+consumer：本机f8e7f760d4be28447c5bf04be08285397be906d7→远端9c3966b2fc9e321c8358e8def15008738eeece44；本任务没有git add/commit/push。
+- [x] (2026-10-21 09:28 +08:00) 第二窄片完成：support/B3纯contracts/App纯contracts/本计划/新portable证据五件。最终无.git、PATH空、无PG工具/管理DSN归档联合88 passed /13.90秒（B3 48+App 40），含两条POSIX0600修正；真实Windows PG11 passed /66.11秒独立复验。5生产工具/consumer/CI不改，未运行Linux。
 
 ## Surprises & Discoveries
 
 现有 `validate_restore` 只校 schema、绑定 hash 与四个 true，没有运行平台或生成器出处检查。因此本地演练绝不能输出正式 schema；正式签发逻辑必须由实际 Linux/PG 查询、实际命令结果决定。现有 replay CLI 的固定数据库身份不适合每例唯一的新本地数据库；生成器会在独立候选进程内复用底层重放，并自己核固定正式目标或严格本地前缀，不放宽旧 CLI。
 
 只读安全复核补出了三个实际边界：libpq 默认环境可在 identity 检查前改路由；源码逐 blob 相等不足以证明来自固定受保护发布目录/venv；PostgreSQL 默认 PUBLIC TEMP 仍属于 DDL。已分别前置拒绝隐式 PG 环境并规范 hostaddr/port、固定正式路径并核 root 所有权不可组他写、对精确恢复库撤 PUBLIC/writer 数据库权限后只授 CONNECT，最终加入真实临时表拒绝探针。另显式系统 null passfile 禁默认用户 home 回落；所有反例保留，不把历史30/33/46/47成绩当最终48。
+
+第二片确认两套纯夹具都依赖本地Git b9历史：B3在修复后，App仍直接materialize，不能仅把B3归档绿当联合可移植完成。获root追加授权后让App复用同一强核候选helper，未删改旧断言。两处纯夹具文件补0600，避免Linux上默认umask与正式private regular校验冲突；本机是Windows，改后通过本机归档不能冒称已执行POSIX权限验证。
 
 ## Decision Log
 
@@ -42,9 +45,13 @@
 
 2026-10-21 09:12 +08:00 / Codex：匹配mtime/size的污染pyc能绕过只核源码且-B的入口，固定-X null-prefix在读前屏蔽旧cache，实际合成对照保留缓存字节不变，不触固定包。Windows真实试验不能当Linuxcache隔离放行；只改本任务唯一spawn，旧replay/Native其它spawn由root另片处理。
 
+2026-10-21 09:28 +08:00 / Codex：纯测试不再借真实Windows pg_restore文件模拟默认校验，改为临时regular文件+实际hash，仅用于零apply契约；真实PG仍先核显式工具实际版本15与候选，再创建自己随机库。配置候选必须绝对路径且完整verify_candidate，不提供自动fetch或错误回退。App仅替换夹具候选来源，保留40个既有断言；新增4个B3反例保护显式pin、坏pin、版本15和缺工具零执行。不借测试路径放松正式目标/平台/端口/权限。
+
 ## Plan of Work
 
 先实现只校输入与受保护输出的契约，再实现候选隔离进程及 PG 观察器，最后接显式 apply CLI。目标数据库/角色由独立获准准备步骤创建，生成器拒绝已有业务对象，不创建或修改别的库。候选进程只加载固定 b9，migration/grant/replay 结果结合实际 PG 查询验证，公开证据仅 hash/计数/身份元数据。
+
+第二窄片只修测试前提：`B1_PROOF_TEST_CANDIDATE_SOURCE`优先且每次verify_candidate固定b9，未配置才用本地Git已有历史，不fetch。真实PG仅显式ADMIN_DSN opt-in，工具由绝对`B1_PROOF_TEST_PG_BIN`或现存Windows兼容路径提供并实际核15；pure fixture显式合成regular工具文件/hash，不把它拿去apply。最终验收包含B3与App两套纯contracts的真实无.git归档子进程：外部已核候选仍须完整blob核验，PATH为空且无管理DSN/PG工具；再独立真实WindowsPG复验，保留Linux未通过。默认浅Git CI仍须由root配置固定b9历史/候选，不借测试夹具放松正式入口。
 
 ## Concrete Steps
 
@@ -66,7 +73,7 @@
 
 ## Artifacts and Notes
 
-公开证据 `docs/v4/evidence/B1/2026-10-21-restore-proof-generator.md`；私有 dump/ledger 不入 Git。父任务独占日报与汇总，本任务提供状态由 root 记录。
+公开证据 `docs/v4/evidence/B1/2026-10-21-restore-proof-generator.md`，第二片见 `docs/v4/evidence/B1/2026-10-21-restore-proof-portability.md`；私有 dump/ledger 不入 Git。父任务独占日报与汇总，本任务提供状态由 root 记录。
 
 ## Interfaces and Dependencies
 
@@ -74,7 +81,7 @@
 
 ## Outcomes & Retrospective
 
-生成器本地实现与55项目标验证已完成，所有阶段结果来自实际 Windows 隔离 PG15/pg_restore/固定 b9 候选，输出只为不可放行的 local schema。正式 Linux 环境两次非破坏恢复仍失败，正式证明与 stage 放行继续阻塞；真实模型/飞书/服务器调用均为 0。测试可移植性另有明确未完成项。文件冻结交 root 审查提交；未继承任何旧 CI 或宣称全阶段验收。
+生成器本地实现与55项目标验证已由root提交；第二片完成88项目标归档联合验证与独立11项真实Windows PG复验，修复无Git/纯夹具误依赖真实工具与POSIX模式前提。所有PG结果仍来自Windows，输出只为不可放行的local schema。正式Linux环境两次非破坏恢复仍失败，正式证明与stage放行继续阻塞；真实模型/飞书/服务器调用均为0。Linux执行、固定头GitHub CI、默认浅克隆的固定b9候选准备仍未验证/未接，交root后续配置。五件冻结交root审查提交；未继承任何旧CI或宣称全阶段验收。
 
 ## 修订记录
 
@@ -83,3 +90,5 @@
 - 2026-10-21 09:02 +08:00 补两DSN同实例前置门、正式consumer ABI自校验及51项目标验证，更新最终原始hash和历史口径；root统一stage/原子提交，本任务冻结后只读。
 - 2026-10-21 09:07 +08:00 强化empty catalog并完成53项真实本地目标，更新最终hash，明确Windows路径/Git历史/CI前提缺口；待root提交后再另片做测试可移植性。
 - 2026-10-21 09:12 +08:00 隔离匹配timestamp/size的旧pyc并完成55目标/2子集复验，保留实际body-free本地回执与raw hash，正式Linux及其它旧spawn不冒称通过。
+- 2026-10-21 09:16 +08:00 root提交55里程碑后释放第二片，登记4件独占范围与无Git/合成纯fixture/显式真实PG15验证方案；不改运行工具、consumer或CI。
+- 2026-10-21 09:28 +08:00 获批追加App夹具同源接点；完成最终无Git/PATH空/无PG工具与管理DSN的88项目标及独立11项Windows PG复验，补两处0600并明确尚无Linux验证，冻结五件和独立原始hash。

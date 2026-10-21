@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import os
 import py_compile
-import runpy
 import subprocess
 import sys
 from dataclasses import replace
@@ -13,6 +12,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
+from b1_restore_proof_support import pinned_candidate
 from psycopg.conninfo import conninfo_to_dict
 
 from tools import b1_linux_application_drill as cli
@@ -25,15 +25,10 @@ from tools.b1_linux_application_drill_contracts import (
 from tools.b1_linux_application_drill_fence import check_gate, deployment, fence
 from tools.b1_linux_application_drill_process import command, environment, run_worker
 
-ROOT = Path(__file__).resolve().parents[3]
-SUPPORT = runpy.run_path(str(ROOT / "tests/test_b1_restore_replay_support.py"))
-
 
 @pytest.fixture(scope="module")
 def application_request() -> ApplicationRequest:
-    return ApplicationRequest(
-        "b1-application-contract", "runtime", SUPPORT["materialize"](), Path(sys.executable), True
-    )
+    return ApplicationRequest("b1-application-contract", "runtime", pinned_candidate(), Path(sys.executable), True)
 
 
 def test_default_plan_never_constructs_worker(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture) -> None:
