@@ -7,14 +7,22 @@ import { validMemoryReceipt, type MemoryAction, type MemoryCommands } from './co
 import type { DisplayReceipt } from './memoryProjection';
 import { useInteractionGuard } from './useInteractionGuard';
 
+export function memoryCardKind(receipt: DisplayReceipt) {
+  if (receipt.write_status === 'rejected') return 'rejected';
+  if (['stopped', 'deleted', 'dismissed', 'undone'].includes(receipt.write_status)) return 'undone';
+  return ['pending', 'pending_confirmation', 'pending_confirm'].includes(receipt.write_status) ? 'pending' : 'record';
+}
+
 export function MemoryCard({
   receipt,
   commands,
   onAttempt,
+  grouped = false,
 }: {
   receipt: DisplayReceipt;
   commands: MemoryCommands;
   onAttempt?: () => void;
+  grouped?: boolean;
 }) {
   const [busy, setBusy] = useState<MemoryAction>(),
     [error, setError] = useState(''),
@@ -24,8 +32,8 @@ export function MemoryCard({
     setError('');
     setConflicted(false);
   }, [receipt.revision, receipt.fact_id, receipt.proposal_id]);
-  const pending = ['pending', 'pending_confirmation', 'pending_confirm'].includes(receipt.write_status);
-  const undone = ['stopped', 'deleted', 'dismissed', 'undone'].includes(receipt.write_status);
+  const kind = memoryCardKind(receipt);
+  const pending = kind === 'pending';
   const supports = (action: MemoryAction) =>
     (action !== 'remember-category' || Boolean(receipt.category)) && commands.supports(action, receipt);
   async function act(action: MemoryAction) {
@@ -47,13 +55,13 @@ export function MemoryCard({
       if (guard.current()) setBusy(undefined);
     }
   }
-  if (receipt.write_status === 'rejected')
+  if (kind === 'rejected')
     return (
       <p className="meta" role="status">
         这条没有保存为记忆。
       </p>
     );
-  if (undone)
+  if (kind === 'undone')
     return (
       <p className="meta row" role="status">
         <Undo2 className="icon small" aria-hidden="true" />
@@ -68,6 +76,7 @@ export function MemoryCard({
   return (
     <section
       className={pending ? 'pending-receipt' : 'memory-receipt'}
+      role={grouped ? 'group' : undefined}
       aria-label={pending ? '待确认记忆' : '记忆记录'}>
       <div>
         {pending ? (

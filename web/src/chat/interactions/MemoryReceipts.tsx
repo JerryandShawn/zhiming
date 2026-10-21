@@ -5,7 +5,7 @@ import { publicChatText } from '../publicProjection';
 import type { Receipt } from '../types';
 import { validMemoryReceipt, type MemoryCommands, type MemoryCommandReceipt } from './contracts';
 import { v3MemoryCommands } from './memoryCommands';
-import { MemoryCard } from './MemoryCard';
+import { MemoryCard, memoryCardKind } from './MemoryCard';
 import { useInteractionGuard } from './useInteractionGuard';
 import {
   createMemoryReceiptRegistry,
@@ -63,6 +63,11 @@ export function MemoryReceipts({
   const resolved = [...current.values()];
   const saved = resolved.filter((receipt) => receipt.write_status === 'saved');
   const others = resolved.filter((receipt) => receipt.write_status !== 'saved');
+  const cardCounts = new Map<string, number>();
+  for (const receipt of resolved) {
+    const kind = memoryCardKind(receipt);
+    cardCounts.set(kind, (cardCounts.get(kind) ?? 0) + 1);
+  }
   function confirmed(source: DisplayReceipt, result: MemoryCommandReceipt) {
     const confirmedReceipt = rememberReceipt(seen, {
       ...source,
@@ -95,6 +100,7 @@ export function MemoryReceipts({
     <MemoryCard
       key={receiptKey(receipt)}
       receipt={receipt}
+      grouped={(cardCounts.get(memoryCardKind(receipt)) ?? 0) > 1}
       commands={projectedCommands}
       onAttempt={() => setFeedback(undefined)}
     />
