@@ -8,6 +8,7 @@ import unittest
 from typing import Any
 from unittest.mock import patch
 
+from psycopg.conninfo import conninfo_to_dict
 from test_core_incremental_upgrade import H, fixture
 
 from tools.core_incremental_contracts import MIGRATIONS, Request, UpgradeRejected
@@ -87,7 +88,7 @@ class Factory:
         self.statements: list[tuple[str, str, Any]] = []
 
     def __call__(self, dsn: str, **kwargs: Any) -> Connection:
-        return Connection(self, "writer" if "_writer@" in dsn else "owner")
+        return Connection(self, "writer" if conninfo_to_dict(dsn)["user"].endswith("_writer") else "owner")
 
 
 class Commands:
