@@ -11,7 +11,8 @@ from fastapi.responses import StreamingResponse
 
 from mingjing_core.agent.events import encode_sse, heartbeat
 from mingjing_core.application.run_event_read import RunEventReader
-from mingjing_core.domain.contracts import EvidenceError
+
+from .event_cursor import header_cursors, resolve_event_cursor
 
 
 class _SubscribedResponse(StreamingResponse):
@@ -35,15 +36,12 @@ def _subscribe(repo: Any, owner: str, ident: str, request: Request) -> Any:
 
 
 def event_response(
-    repo: Any, owner: str, ident: str, request: Request, after_seq: int = 0
+    repo: Any, owner: str, ident: str, request: Request, after_seq: int | None = None
 ) -> StreamingResponse:
-    header = request.headers.get("Last-Event-ID")
-    try:
-        after = int(header) if header is not None else after_seq
-    except (ValueError, TypeError):
-        raise EvidenceError("事件游标无效") from None
-    if header is not None and after_seq not in {0, after}:
-        raise EvidenceError("事件游标不一致")
+    # GET has already resolved its raw query aliases. Legacy POST only has this header.
+    after = resolve_event_cursor(
+        header_cursors(request.headers), trusted_after_seq=after_seq
+    )
     reader = RunEventReader(repo, owner, ident)
     reader.validate_cursor(after)
     subscription = _subscribe(repo, owner, ident, request)

@@ -40,14 +40,17 @@ class RunEventReader:
     def validate_cursor(self, after: int) -> None:
         if type(after) is not int or not 0 <= after < 2**63:
             raise EvidenceError("事件游标无效")
+        self.authority()
+        if after == 0:
+            return
         with self.repo.transaction(self.owner) as connection:
-            maximum = connection.execute(
-                sql.SQL("SELECT coalesce(max(seq),0) AS n FROM {} WHERE owner=%s AND run_id=%s").format(
+            original = connection.execute(
+                sql.SQL("SELECT 1 FROM {} WHERE owner=%s AND run_id=%s AND seq=%s").format(
                     self.repo.table("core_run_events")
                 ),
-                (self.owner, self.ident),
-            ).fetchone()["n"]
-        if after > maximum:
+                (self.owner, self.ident, after),
+            ).fetchone()
+        if original is None:
             raise EvidenceError("事件游标不可用，请重新读取运行状态")
 
     def ensure_terminal(self) -> dict[str, Any]:

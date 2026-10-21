@@ -16,6 +16,7 @@ from mingjing_core.application.thread_queue import owner_runtime
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
+from .event_cursor import header_cursors, resolve_event_cursor
 from .thread_events import event_response
 
 
@@ -137,9 +138,15 @@ def message_routes(router: APIRouter, core: Any, auth: Any, body: Any) -> None:
 
 def event_routes(router: APIRouter, core: Any, auth: Any) -> None:
     @router.get("/api/runs/{ident}/events")
-    async def events(ident: str, request: Request, after_seq: int = 0) -> Any:
+    async def events(ident: str, request: Request, after_seq: str | None = None, after: str | None = None) -> Any:
         service, owner = core(request), auth(request)
-        return event_response(service.repo, owner, ident, request, after_seq)
+        # Declared string params preserve OpenAPI names; raw lists retain duplicates.
+        cursor = resolve_event_cursor(
+            header_cursors(request.headers),
+            after=request.query_params.getlist("after"),
+            after_seq=request.query_params.getlist("after_seq"),
+        )
+        return event_response(service.repo, owner, ident, request, cursor)
 
 
 def close_private(repo: Any, owner: str, ident: str, subject: str) -> dict:
