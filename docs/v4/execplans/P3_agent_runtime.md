@@ -71,6 +71,7 @@ D4不开2小时使用提醒、不登记紧急联系人；上下文连续3次60k�
 
 ## Progress（进度）
 
+- [x] (2026-10-21 09:00:26 +08:00) 独立wire普通更新P3 a83ca8b7到5b691475/tree7c46d823，member scope和新case证明自动合并后人工复核、68目标通过。09:00:00.920从精确git archive启动完整v4/Core/M8三链；结果在途，B1新工具WIP不入快照。未合integration/v4/main/main。
 - [x] (2026-10-21 08:49 +08:00) c7d760ad→e72afc09提交case事务before/input/after全链、fresh Runtime能力钉与撤销闭包；22文件236目标/123.57s及额外90 Runtime/19.75s分别通过，独立审计两类负例先红后绿。固定08点旧失败保留，下一固定完整门未运行。
 - [x] (2026-10-21 08:49 +08:00) 独立P1b/P3 wire普通merge908fe2b6推送，Draft PR #13；中央物理HTTP守卫/可信PG角色scope/取消/socket保留，262唯一目标绿，旧直接幂等1失败明确保留。未合integration/v4/main/main；修复c7尚未带入该子树。
 - [x] (2026-10-21 08:49 +08:00) B1 v2优先执行，30 No-Go、两次非破坏Linux恢复失败后不再试；B6文本13资产hash/9 Python/11 Bash静态复核通过，B3与Linux应用差额另有独占计划，不将Windows或模板当Linux证据。
