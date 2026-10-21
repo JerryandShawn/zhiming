@@ -90,7 +90,15 @@ def run_candidate(request: RestoreRequest, document: dict[str, Any]) -> dict[str
     fields = asdict(request)
     fields.update({name: str(fields[name]) for name in ("candidate_source", "candidate_python", "ledger")})
     result = subprocess.run(
-        [str(request.candidate_python), "-I", "-B", "-c", worker_code()],
+        [
+            str(request.candidate_python),
+            "-I",
+            "-B",
+            "-X",
+            "pycache_prefix=" + os.path.abspath(os.devnull),
+            "-c",
+            worker_code(),
+        ],
         input=json.dumps({"request": fields, "document": document}),
         env=worker_environment(request),
         capture_output=True,
