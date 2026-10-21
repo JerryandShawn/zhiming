@@ -544,3 +544,13 @@ Journal恢复需有效当前lease，旧worker即使仍有内存结果也不能�
 - 2026-10-21 07:34:45 +08:00：更新四活节、02点固定头真实结果和08点四线汇总；保留额度空档、失败/xfail与WIP，未改历史证据。
 
 - 2026-10-21 09:41:34 +08:00 更新四活节：B1已发布组件/实际PG TEMP缺口、09点wire完整失败与fixture窄修、P6新双父候选及P4最小接线边界。
+
+## 2026-10-21 10:07:54 +08:00 续作增补
+
+Progress：非空deleted_draws反例49e22dd→8a77a355已推；10点四链固定source全量在途，未混WIP。P4 M1另树Draft14已交目标测试，M2/M3按独占文件继续，未宣P4完成。
+
+Surprises & Discoveries：固定b9真实恢复虽清除实体/牌/checkpoint，目标export丢失tarot-delete receipt，verify_monotone报STALE_WITHDRAWALS；schema4源retire缺表是另一独立问题。
+
+Decision Log：保留首红1failed和明确阻塞探针1passed各10.07秒；不伪造receipt/proof、不删字段、不改固定b9、不松单调门。独立delta仅计划，不能解除账本问题，写汇总待大脑而立即继续P4。
+
+Outcomes & Retrospective：Windows窄验非Linux整链，B1五门与30NoGo保持；生产restore按v2排stage之后。本周零服务器/真实模型/飞书/主干合并。

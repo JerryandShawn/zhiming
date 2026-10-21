@@ -1,6 +1,6 @@
 # B1 stage 执行单：已有 Core PG 的增量升级（B0–B8）
 
-版本：2026-10-21 09:41:34 +08:00。**当前 No-Go：30号08:16复核明确No-Go，真实 Linux PG15、systemd/fcntl/恢复和完整权限/停写证据未通过。** 两次非破坏环境恢复均已失败，不再探测/修复。B3真实生成器及consumer已交本机Windows证据，B6完整13资产/缓存隔离已交静态证据；均不能解除Linux门。生成器/应用与总编排差额见第5节；本单不是执行授权，不因工具存在而访问服务器。
+版本：2026-10-21 10:07 +08:00。**当前 No-Go：30号明确No-Go，真实Linux整链未通过，且固定b9非空deleted_draws重放存在已复现的账本往返阻塞。** 目标实体/牌/checkpoint虽实际清除，目标再次导出丢失tarot-delete收据，原verify_monotone拒绝STALE_WITHDRAWALS；不得签成功proof、伪造收据、删字段或更改b9。另有schema4源撤销引用未迁表的独立阻塞，delta克隆仅计划不能解决收据问题，须大脑裁定。两次非破坏环境恢复均已失败，不再探测/修复。B3/App已有Windows证据、B6有13资产静态核验，均不解除Linux门。详`../evidence/B1/2026-10-21-nonempty-deleted-draws.md`；本单不是执行授权。
 
 ## 1. 固定输入、授权与禁止项
 
@@ -19,7 +19,7 @@
 | 门 | 继续证据 | 当前状态 |
 | --- | --- | --- |
 | 本机PG15真实增量/恢复 | 独立容器及镜像身份、schema4备份恢复、b9 4→7、权限、primary幂等、恢复兼容 | 阻塞：Docker/WSL不可用；22项传输测试不等于真实恢复 |
-| B7重放入口 | 新stage恢复副本allowlist CLI、候选b9底层调用、最新撤销+sent/uncertain单调、重复无变化 | 入口及B3生成器/consumer已实现，Windows PG与归档窄组各自留证；Linux同一备份→B3→精确B7链仍阻塞 |
+| B7重放入口 | 新stage恢复副本allowlist CLI、候选b9底层调用、最新撤销+sent/uncertain单调、重复无变化 | 阻塞：真实非空deleted_draws在目标再次导出丢失，原单调校验拒绝；原空样本通过不覆盖本分支。另缺Linux同一备份→B3→B7整链 |
 | 固定命令与解释器 | systemctl/pg_dump/pg_restore绝对路径/版本/hash/权限；Core/Charts解释器和锁定依赖完整性 | 候选缓存隔离/严格PG路由与TEMP检查已补本机反例；真实Linux版本、venv来源/权限/依赖完整性仍阻塞 |
 | 停写与失败恢复 | 实际Linux fence覆盖跨exec、部分retarget失败不启动、stage不影响live | 阻塞：替身结果不能替代实证 |
 | 受保护执行配置 | 精确scope/DB/角色/host/hash请求、独立0600配置/审批、输出不覆盖、loader无密钥回显 | 阻塞：实际配置须B0后据当前元数据生成 |
