@@ -1,83 +1,83 @@
-import { useEffect, useState } from 'react';
-import { Button, Input } from '../components/ui/Controls';
-import { Select } from '../components/ui/Selection';
+import { useEffect, useId, useMemo, useState } from 'react';
+import { Button } from '../components/ui/Controls';
 import { Skeleton } from '../components/ui/Feedback';
-import { purposes, windowKey } from './port';
-import { useToolRead } from './useToolRead';
+import { useToolRead, type ToolViewOwnership } from './useToolRead';
+import { validateWindowInput } from './inputValidation';
+import { ToolInputErrors, ToolQuerySummary, windowInputLabels, type InputTargets } from './ToolInputFeedback';
+import { WindowSearchForm } from './WindowSearchForm';
 import WindowResults from './WindowResults';
-import type { Purpose, ToolPort, WindowChoice, WindowQuery, WindowSample } from './types';
+import type { InputValidation, WindowField } from './inputValidationTypes';
+import type { ToolPort, WindowQuery, WindowSample } from './types';
+import './tool-input.css';
+export { windowChoiceLabel } from './WindowSearchForm';
 
 const initial: WindowQuery = { purpose: '签约', startDate: '2026-10-21', endDate: '2026-10-27', offset: 0, limit: 31 };
-export const windowChoiceLabel = ({ summary }: WindowChoice) =>
-  !summary.returned
-    ? '末尾空页'
-    : summary.returned === summary.total
-      ? `全部 ${summary.total} 天`
-      : summary.first_rank === summary.last_rank
-        ? `第 ${summary.first_rank} 名`
-        : `第 ${summary.first_rank}–${summary.last_rank} 名`;
+const noIssues = [] as const;
 export default function WindowSearchPage({ port }: { port: ToolPort }) {
   const [selection, setSelection] = useState<{ owner: ToolPort; query: WindowQuery }>(() => ({
     owner: port,
     query: port.windows[0] ?? initial,
   }));
   const query = selection.owner === port ? selection.query : (port.windows[0] ?? initial);
-  const { view, reset, run } = useToolRead<WindowSample>(port);
+  const { view, reset, run, ownership } = useToolRead<WindowSample>(port);
+  const [snapshot, setSnapshot] = useState<{
+    owner: ToolViewOwnership;
+    value: InputValidation<WindowQuery, WindowField>;
+  }>();
+  const checked = snapshot?.owner === ownership ? snapshot.value : undefined;
+  const issues = checked?.status === 'invalid' ? checked.issues : noIssues;
+  const prefix = `window-input-${useId()}`;
+  const targets = useMemo<InputTargets<WindowField>>(
+    () => ({
+      purpose: `${prefix}-purpose`,
+      startDate: `${prefix}-startDate`,
+      endDate: `${prefix}-endDate`,
+      offset: `${prefix}-pagination`,
+      limit: `${prefix}-pagination`,
+      query: `${prefix}-errors`,
+    }),
+    [prefix],
+  );
   useEffect(reset, [port, reset]);
   function change(next: WindowQuery) {
     reset();
     setSelection({ owner: port, query: next });
+    setSnapshot(undefined);
+  }
+  function read() {
+    reset();
+    const value = validateWindowInput(query);
+    setSnapshot({ owner: ownership, value });
+    if (value.status === 'valid') void run((signal) => port.windowSearch(value.query, signal));
   }
   const compatible = port.windows.filter(
     (item) => item.purpose === query.purpose && item.startDate === query.startDate && item.endDate === query.endDate,
   );
   return (
-    <section className="stack tool-window" aria-labelledby="window-title">
+    <section
+      className="stack tool-window"
+      aria-labelledby="window-title"
+      data-input-status={checked?.status ?? 'unchecked'}>
       <h1 id="window-title" tabIndex={-1}>
         择日 · 看一段时间的条件
       </h1>
       <p>当前只有签约 10 月 21–27 日的固定合成样例。换条件不会借用旧结果，也不会发起实时计算。</p>
       <form
         className="tool-form"
+        noValidate
         onSubmit={(event) => {
           event.preventDefault();
-          void run((signal) => port.windowSearch(query, signal));
+          read();
         }}>
-        <Select
-          label="用途"
-          value={query.purpose}
-          options={purposes.map((value) => ({ value, label: value }))}
-          onChange={(purpose) => change({ ...query, purpose: purpose as Purpose })}
+        <ToolInputErrors issues={issues} targets={targets} prefix={prefix} labels={windowInputLabels} />
+        <WindowSearchForm
+          query={query}
+          compatible={compatible}
+          issues={issues}
+          prefix={prefix}
+          targets={targets}
+          change={change}
         />
-        <label className="field">
-          起始日期（北京时间）
-          <Input
-            type="date"
-            value={query.startDate}
-            onChange={(event) => change({ ...query, startDate: event.target.value })}
-            required
-          />
-        </label>
-        <label className="field">
-          结束日期（含当日）
-          <Input
-            type="date"
-            value={query.endDate}
-            onChange={(event) => change({ ...query, endDate: event.target.value })}
-            required
-          />
-        </label>
-        {!!compatible.length && (
-          <Select
-            label="查看范围"
-            value={windowKey(query)}
-            options={compatible.map((item) => ({ value: windowKey(item), label: windowChoiceLabel(item) }))}
-            onChange={(value) => {
-              const next = compatible.find((item) => windowKey(item) === value);
-              if (next) change(next);
-            }}
-          />
-        )}
         <div className="row wrap">
           <Button type="submit" variant="primary" loading={view.status === 'loading'}>
             查看当前样例条件
@@ -87,15 +87,20 @@ export default function WindowSearchPage({ port }: { port: ToolPort }) {
           </Button>
         </div>
       </form>
+      {checked?.status === 'valid' && <ToolQuerySummary summary={checked.summary} />}
       {view.status === 'idle' && <p className="meta">先核对用途、区间和样例页，再查看结果。</p>}
       {view.status === 'loading' && <Skeleton label="正在载入择日样例" />}
       {view.status === 'error' && (
         <div role="alert">
           <p>{view.message}</p>
-          <Button onClick={() => void run((signal) => port.windowSearch(query, signal))}>用当前条件重试</Button>
+          <Button onClick={read}>用当前条件重试</Button>
         </div>
       )}
-      {view.status === 'unavailable' && <p role="status">{view.message}</p>}
+      {view.status === 'unavailable' && (
+        <p role="status" data-published-state="unavailable">
+          字段格式已核对；暂无对应已发布样例。{view.message}
+        </p>
+      )}
       {view.status === 'ready' && <WindowResults key={view.sample.document_id} sample={view.sample} port={port} />}
     </section>
   );
