@@ -181,6 +181,21 @@ def contract_material_paths() -> set[Path]:
         paths.add(ROOT / "docs/v4/evidence/MOD_2026-10-21/events_v1.origin.schema.json")
     if "briefing_v2" in SUITES:
         paths.add(ROOT / "docs/v4/evidence/MOD_2026-10-21/BRIEF_public_boundaries_frozen_matrix_20261021.json")
+    additions = {
+        "organize_supplement_v2": (
+            "tools/eval/fixtures/mod_20261021/legacy_bridge_calendar_synthetic.json",
+            "tools/eval/fixtures/mod_20261021/legacy_scalar_independent_synthetic.json",
+            "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_frozen_matrix_20261021.json",
+            "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_frozen_matrix_20261021.json",
+        ),
+        "p9_v2": (
+            "tools/eval/fixtures/mod_20261021/k3_public_boundaries_synthetic.json",
+            "docs/v4/evidence/MOD_2026-10-21/K3_public_frozen_matrix_20261021.json",
+        ),
+    }
+    for suite, values in additions.items():
+        if suite in SUITES:
+            paths.update(ROOT / name for name in values)
     paths.update((ROOT / "config/holidays").glob("*.json"))
     return paths
 
