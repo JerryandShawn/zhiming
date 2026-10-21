@@ -40,6 +40,7 @@ from mingjing_core.application.agent_tools_clarification import (
 )
 from mingjing_core.application.agent_tools_private import consume_private_answer
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.p6_validation import P6ValidationBridge
 from mingjing_core.application.read_result import read_result
 from mingjing_core.application.runtime_limits import RuntimeLimits
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
@@ -60,6 +61,7 @@ class AgentRuntime:
         offline: bool = False,
         budget: BudgetPolicy | None = None,
         control_factory: Callable[..., RunControl] = RunControl,
+        p6_validation: P6ValidationBridge | None = None,
         runtime_config: RuntimeConfig | None = None,
     ) -> None:
         if runtime_config is not None and type(runtime_config) is not RuntimeConfig:
@@ -73,6 +75,11 @@ class AgentRuntime:
             critic, RequestLedger(repo, critic_meter or meter, offline=offline), self.prompts, offline=offline
         )
         self.control_factory = control_factory
+        if p6_validation is not None and (
+            not isinstance(p6_validation, P6ValidationBridge) or p6_validation.repo is not repo
+        ):
+            raise EvidenceError("P6草稿只允许同仓库的受信构造注入")
+        self.p6_validation = p6_validation
 
     def _snapshot(self, run: dict[str, Any], system: str) -> ContextBuild:
         engine = ContextEngine(
@@ -146,7 +153,16 @@ class AgentRuntime:
             # Any partial draft is explicitly superseded by the audited template.
             events.send("text_reset", {"text": outcome.text, "reason": "resumed"})
         elif not crisis:
-            outcome, review = self.reviewer.review(cycle, outcome)
+            before = outcome.text
+            if self.p6_validation:
+                outcome = self.p6_validation.apply(cycle, outcome, phase="draft")
+            if outcome.text == before:
+                outcome, review = self.reviewer.review(cycle, outcome)
+            if self.p6_validation:
+                before = outcome.text
+                outcome = self.p6_validation.apply(cycle, outcome, phase="final")
+                if outcome.text != before:
+                    review = None
         self.state.metadata(cycle.run, crisis=crisis)
         envelope = AgentFinalizer(self.repo).finalize(
             cycle.run,
