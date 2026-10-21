@@ -1,6 +1,6 @@
 # B1 stage 执行单：已有 Core PG 的增量升级（B0–B8）
 
-版本：2026-10-21 08:49 +08:00。**当前 No-Go：30号08:16复核明确No-Go，真实 Linux PG15、systemd/fcntl/恢复和完整权限/停写证据未通过。** 指令板v2允许的两次非破坏环境恢复均已失败，详情见[真实记录](../evidence/B1/2026-10-21-linux-v2-recovery-blocked.md)；没有Reset、删卷或改ACL，不再重复尝试。B6完整资产已补静态证据，B3生成器正在本机验证，均不能代表Linux通过。本单不是执行授权或已完成回执，不能只因为标题或工具存在就进入服务器。
+版本：2026-10-21 09:41:34 +08:00。**当前 No-Go：30号08:16复核明确No-Go，真实 Linux PG15、systemd/fcntl/恢复和完整权限/停写证据未通过。** 两次非破坏环境恢复均已失败，不再探测/修复。B3真实生成器及consumer已交本机Windows证据，B6完整13资产/缓存隔离已交静态证据；均不能解除Linux门。生成器/应用与总编排差额见第5节；本单不是执行授权，不因工具存在而访问服务器。
 
 ## 1. 固定输入、授权与禁止项
 
@@ -19,8 +19,8 @@
 | 门 | 继续证据 | 当前状态 |
 | --- | --- | --- |
 | 本机PG15真实增量/恢复 | 独立容器及镜像身份、schema4备份恢复、b9 4→7、权限、primary幂等、恢复兼容 | 阻塞：Docker/WSL不可用；22项传输测试不等于真实恢复 |
-| B7重放入口 | 新stage恢复副本allowlist CLI、候选b9底层调用、最新撤销+sent/uncertain单调、重复无变化 | 新入口定稿，25项Windows PG15.19/纯护栏通过；Linux及完整restore-proof生成仍阻塞 |
-| 固定命令与解释器 | systemctl/pg_dump/pg_restore绝对路径/版本/hash/权限；Core/Charts解释器和锁定依赖完整性 | 固定路径/root所有权/保留venv调用路径已补替身测试，真实Linux版本与依赖完整性仍阻塞 |
+| B7重放入口 | 新stage恢复副本allowlist CLI、候选b9底层调用、最新撤销+sent/uncertain单调、重复无变化 | 入口及B3生成器/consumer已实现，Windows PG与归档窄组各自留证；Linux同一备份→B3→精确B7链仍阻塞 |
+| 固定命令与解释器 | systemctl/pg_dump/pg_restore绝对路径/版本/hash/权限；Core/Charts解释器和锁定依赖完整性 | 候选缓存隔离/严格PG路由与TEMP检查已补本机反例；真实Linux版本、venv来源/权限/依赖完整性仍阻塞 |
 | 停写与失败恢复 | 实际Linux fence覆盖跨exec、部分retarget失败不启动、stage不影响live | 阻塞：替身结果不能替代实证 |
 | 受保护执行配置 | 精确scope/DB/角色/host/hash请求、独立0600配置/审批、输出不覆盖、loader无密钥回显 | 阻塞：实际配置须B0后据当前元数据生成 |
 
@@ -111,6 +111,14 @@
 
 ### B3/B4：迁移与回填
 
+B3恢复证明生成器现已实现；先完成B2，再在唯一新建空恢复库生成，不能把B7回执、Windows local回执或调用方手填JSON当证明。B0必须核`PG_RESTORE_ABSOLUTE`的绝对路径、PG15版本与`PG_RESTORE_RAW_SHA256`；dump/旧账本路径来自B2实际产物。专用受保护loader仅传`B1_PROOF_OWNER_DSN`/`B1_PROOF_WRITER_DSN`及必要显式密码文件；禁止继承11种通用PG路由变量，不显示DSN。以下只是未来Go后的受审命令，当前不执行：
+
+    PYTHONPYCACHEPREFIX=/dev/null "$CONTROL_PYTHON" -B -m tools.b1_restore_proof --request "$REQUEST" --backup "$B1_OP/backup-object.json" --dump "$REVIEWED_DUMP_FILE" --backup-ledger "$REVIEWED_BACKUP_LEDGER_FILE" --ledger "$B1_OP/latest-withdrawals-v2.json" --ledger-sha256 "$REVIEWED_LEDGER_RAW_SHA256" --database zhiming_core_b1_restore --candidate-source "$RELEASE_DIR" --candidate-python "$RELEASE_DIR/venv/core/bin/python" --pg-restore "$PG_RESTORE_ABSOLUTE" --pg-restore-sha256 "$PG_RESTORE_RAW_SHA256" --apply --quiesced --output "$B1_OP/restore-proof.json"
+
+省去`--apply --quiesced --output`时只核输入、0PG；不在正式路径使用`--local-drill`。实际生成器先观察空库（含未知type/namespace/extension拒绝），单事务pg_restore→核schema4全状态与checkpoint→固定b9迁5–7→最新撤销/收据两遍→writer权限/5个实际拒绝探针，再签正式Linux回执；它不创建库，库创建身份另核。第二遍必须changed=false且三段摘要连续，任意异常停留现状，不清目标重试。consumer会在Native副作用前严格核此观察字段与B2绑定；当前无Linux合格proof，不能继续。
+
+增量工具现也在连接前拒隐式路由、锁定同服角色/空passfile；TEMP权限会使runtime_safe=false。如历史stage角色存在多余权限，先停止交审，不自动撤权限修好再试。B0还须实核候选venv/pyvenv.cfg/site-packages来源、root不可组他写及锁依赖，版本元数据一致不能代替整个解释器/包目录信任。
+
 先完成下述B7生成的**真实**restore-proof，经大脑/授权范围内审核后将对象hash绑定migrate审批。已有CLI：
 
     "$CONTROL_PYTHON" -m tools.core_incremental --request "$REQUEST" --apply --native --action migrate --approval "$B1_OP/approval-migrate.json" --host-config "$HOST_CONFIG" --backup "$B1_OP/backup-object.json" --restore "$B1_OP/restore-proof.json" --output "$B1_OP/migrate-result.json"
@@ -170,12 +178,12 @@ Windows真实对照已证明原文/事实/塔罗tombstone不复活、三张check
 
 ## 5. 本机演练结果
 
-Linux真实演练未通过。可重复入口与边界22项见[Linux准备证据](../evidence/B1/2026-10-21-linux-drill-prepared.md)，Docker/WSL阻塞见[环境证据](../evidence/B1/2026-10-21-linux-environment-blocked.md)。默认只输出计划，环境恢复并审查后才可能运行显式apply：
+Linux真实演练未通过。B3生成器[55项目标](../evidence/B1/2026-10-21-restore-proof-generator.md)、[consumer59项+41子断言](../evidence/B1/2026-10-21-restore-proof-consumer.md)、[无Git联合88项及独立PG11项](../evidence/B1/2026-10-21-restore-proof-portability.md)、[应用48项](../evidence/B1/2026-10-21-linux-application-gap.md)、[旧入口26项+4子断言](../evidence/B1/2026-10-21-existing-candidate-bytecode.md)、[PG路由71项+4子断言](../evidence/B1/2026-10-21-incremental-pg-routing.md)与[TEMP修复73项+4子断言](../evidence/B1/2026-10-21-runtime-temp.md)各为独立范围，重叠不相加，全部不当Linux放行。总编排/共同fixture仍在实现，见[完整差额计划](../execplans/B1_bootstrap_replay_orchestration_20261021.md)。可重复入口与旧边界22项见[Linux准备证据](../evidence/B1/2026-10-21-linux-drill-prepared.md)，Docker/WSL阻塞见[环境证据](../evidence/B1/2026-10-21-linux-environment-blocked.md)。默认只输出计划，环境恢复并审查后才可能运行显式apply：
 
     python -m tools.b1_linux_drill
-    python -m tools.b1_linux_drill --apply --pull-postgres15 --run-id b1-20261021-local --p1b-migration8 C:/Users/Administrator/Documents/Codex/zhiming-v4-p1b/mingjing_core/repositories/migrations/0008_model_usage.sql --output docs/v4/evidence/B1/2026-10-21-linux-actual.json
+    python -m tools.b1_linux_drill --mode storage-preparation --apply --pull-postgres15 --run-id b1-20261021-local --p1b-migration8 C:/Users/Administrator/Documents/Codex/zhiming-v4-p1b/mingjing_core/repositories/migrations/0008_model_usage.sql --output docs/v4/evidence/B1/2026-10-21-linux-actual.json
 
-第二条本轮未运行。入口只覆盖PG迁移切片：固定b9 4→7、源/恢复摘要、角色权限、schema4另空库回滚、容量；0008另库且hash固定，不混B1。不会产生全流程restore-proof，backfill/Native/fcntl/三个unit/wrapper仍另验。唯一container/volume标签/loopback55481/PG15 digest必须匹配；未知既有资源或任一目标库已存在立即停止，不自动删除或重放。
+第二条本轮未运行且环境两次额度已用尽，不能现在重试。新storage-preparation只生成/观察schema4备份后停止，保留B3恢复目标为空，application_ready=false；旧完整SQL模式不能先消费该目标。后续合格checkpoint/B2→唯一B3→共同profile回填→精确B7→fcntl总链尚未完成。旧入口只覆盖PG迁移切片：固定b9 4→7、源/恢复摘要、角色权限、schema4另空库回滚、容量；0008另库且hash固定，不混B1。不会产生全流程restore-proof，backfill/Native/fcntl/三个unit/wrapper仍另验。唯一container/volume标签/loopback55481/PG15 digest必须匹配；未知既有资源或任一目标库已存在立即停止，不自动删除或重放。
 
 B7 Windows PG15.19真实对照25项、publication19项离线控制流/临时文件测试已通过；后者见[publication证据](../evidence/B1/2026-10-21-publication-offline.md)。不能将任一项当Linux、stage或生产Go。10-18旧28项替身保留历史，不混新计数。
 
