@@ -1,0 +1,3062 @@
+id: R07
+title: 真实跨渠道或长历史检索的精确事实
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides: {}
+  facts:
+  - id: early-no-night
+    kind: constraint
+    summary: 不能上夜班
+    quote: 我不能上夜班。
+    source_message_id: history-user-5
+    status: active
+    sensitivity: normal
+    legacy: false
+    data: {}
+  thread:
+  - id: history-user-1
+    role: user
+    content: 普通合成工作记录第1轮，没有新增长期约束。
+    at: '2026-10-16T08:01:00+08:00'
+    channel: web
+  - id: history-assistant-1
+    role: assistant
+    content: 收到第1轮。
+    at: '2026-10-16T08:01:00+08:00'
+    channel: web
+  - id: history-user-2
+    role: user
+    content: 普通合成工作记录第2轮，没有新增长期约束。
+    at: '2026-10-16T08:02:00+08:00'
+    channel: web
+  - id: history-assistant-2
+    role: assistant
+    content: 收到第2轮。
+    at: '2026-10-16T08:02:00+08:00'
+    channel: web
+  - id: history-user-3
+    role: user
+    content: 普通合成工作记录第3轮，没有新增长期约束。
+    at: '2026-10-16T08:03:00+08:00'
+    channel: web
+  - id: history-assistant-3
+    role: assistant
+    content: 收到第3轮。
+    at: '2026-10-16T08:03:00+08:00'
+    channel: web
+  - id: history-user-4
+    role: user
+    content: 普通合成工作记录第4轮，没有新增长期约束。
+    at: '2026-10-16T08:04:00+08:00'
+    channel: web
+  - id: history-assistant-4
+    role: assistant
+    content: 收到第4轮。
+    at: '2026-10-16T08:04:00+08:00'
+    channel: web
+  - id: history-user-5
+    role: user
+    content: 我不能上夜班。
+    at: '2026-10-16T08:05:00+08:00'
+    channel: web
+  - id: history-assistant-5
+    role: assistant
+    content: 收到第5轮。
+    at: '2026-10-16T08:05:00+08:00'
+    channel: web
+  - id: history-user-6
+    role: user
+    content: 普通合成工作记录第6轮，没有新增长期约束。
+    at: '2026-10-16T08:06:00+08:00'
+    channel: web
+  - id: history-assistant-6
+    role: assistant
+    content: 收到第6轮。
+    at: '2026-10-16T08:06:00+08:00'
+    channel: web
+  - id: history-user-7
+    role: user
+    content: 普通合成工作记录第7轮，没有新增长期约束。
+    at: '2026-10-16T08:07:00+08:00'
+    channel: web
+  - id: history-assistant-7
+    role: assistant
+    content: 收到第7轮。
+    at: '2026-10-16T08:07:00+08:00'
+    channel: web
+  - id: history-user-8
+    role: user
+    content: 普通合成工作记录第8轮，没有新增长期约束。
+    at: '2026-10-16T08:08:00+08:00'
+    channel: web
+  - id: history-assistant-8
+    role: assistant
+    content: 收到第8轮。
+    at: '2026-10-16T08:08:00+08:00'
+    channel: web
+  - id: history-user-9
+    role: user
+    content: 普通合成工作记录第9轮，没有新增长期约束。
+    at: '2026-10-16T08:09:00+08:00'
+    channel: web
+  - id: history-assistant-9
+    role: assistant
+    content: 收到第9轮。
+    at: '2026-10-16T08:09:00+08:00'
+    channel: web
+  - id: history-user-10
+    role: user
+    content: 普通合成工作记录第10轮，没有新增长期约束。
+    at: '2026-10-16T08:10:00+08:00'
+    channel: web
+  - id: history-assistant-10
+    role: assistant
+    content: 收到第10轮。
+    at: '2026-10-16T08:10:00+08:00'
+    channel: web
+  - id: history-user-11
+    role: user
+    content: 普通合成工作记录第11轮，没有新增长期约束。
+    at: '2026-10-16T08:11:00+08:00'
+    channel: web
+  - id: history-assistant-11
+    role: assistant
+    content: 收到第11轮。
+    at: '2026-10-16T08:11:00+08:00'
+    channel: web
+  - id: history-user-12
+    role: user
+    content: 普通合成工作记录第12轮，没有新增长期约束。
+    at: '2026-10-16T08:12:00+08:00'
+    channel: web
+  - id: history-assistant-12
+    role: assistant
+    content: 收到第12轮。
+    at: '2026-10-16T08:12:00+08:00'
+    channel: web
+  - id: history-user-13
+    role: user
+    content: 普通合成工作记录第13轮，没有新增长期约束。
+    at: '2026-10-16T08:13:00+08:00'
+    channel: web
+  - id: history-assistant-13
+    role: assistant
+    content: 收到第13轮。
+    at: '2026-10-16T08:13:00+08:00'
+    channel: web
+  - id: history-user-14
+    role: user
+    content: 普通合成工作记录第14轮，没有新增长期约束。
+    at: '2026-10-16T08:14:00+08:00'
+    channel: web
+  - id: history-assistant-14
+    role: assistant
+    content: 收到第14轮。
+    at: '2026-10-16T08:14:00+08:00'
+    channel: web
+  - id: history-user-15
+    role: user
+    content: 普通合成工作记录第15轮，没有新增长期约束。
+    at: '2026-10-16T08:15:00+08:00'
+    channel: web
+  - id: history-assistant-15
+    role: assistant
+    content: 收到第15轮。
+    at: '2026-10-16T08:15:00+08:00'
+    channel: web
+  - id: history-user-16
+    role: user
+    content: 普通合成工作记录第16轮，没有新增长期约束。
+    at: '2026-10-16T08:16:00+08:00'
+    channel: web
+  - id: history-assistant-16
+    role: assistant
+    content: 收到第16轮。
+    at: '2026-10-16T08:16:00+08:00'
+    channel: web
+  - id: history-user-17
+    role: user
+    content: 普通合成工作记录第17轮，没有新增长期约束。
+    at: '2026-10-16T08:17:00+08:00'
+    channel: web
+  - id: history-assistant-17
+    role: assistant
+    content: 收到第17轮。
+    at: '2026-10-16T08:17:00+08:00'
+    channel: web
+  - id: history-user-18
+    role: user
+    content: 普通合成工作记录第18轮，没有新增长期约束。
+    at: '2026-10-16T08:18:00+08:00'
+    channel: web
+  - id: history-assistant-18
+    role: assistant
+    content: 收到第18轮。
+    at: '2026-10-16T08:18:00+08:00'
+    channel: web
+  - id: history-user-19
+    role: user
+    content: 普通合成工作记录第19轮，没有新增长期约束。
+    at: '2026-10-16T08:19:00+08:00'
+    channel: web
+  - id: history-assistant-19
+    role: assistant
+    content: 收到第19轮。
+    at: '2026-10-16T08:19:00+08:00'
+    channel: web
+  - id: history-user-20
+    role: user
+    content: 普通合成工作记录第20轮，没有新增长期约束。
+    at: '2026-10-16T08:20:00+08:00'
+    channel: web
+  - id: history-assistant-20
+    role: assistant
+    content: 收到第20轮。
+    at: '2026-10-16T08:20:00+08:00'
+    channel: web
+  - id: history-user-21
+    role: user
+    content: 普通合成工作记录第21轮，没有新增长期约束。
+    at: '2026-10-16T08:21:00+08:00'
+    channel: web
+  - id: history-assistant-21
+    role: assistant
+    content: 收到第21轮。
+    at: '2026-10-16T08:21:00+08:00'
+    channel: web
+  - id: history-user-22
+    role: user
+    content: 普通合成工作记录第22轮，没有新增长期约束。
+    at: '2026-10-16T08:22:00+08:00'
+    channel: web
+  - id: history-assistant-22
+    role: assistant
+    content: 收到第22轮。
+    at: '2026-10-16T08:22:00+08:00'
+    channel: web
+  - id: history-user-23
+    role: user
+    content: 普通合成工作记录第23轮，没有新增长期约束。
+    at: '2026-10-16T08:23:00+08:00'
+    channel: web
+  - id: history-assistant-23
+    role: assistant
+    content: 收到第23轮。
+    at: '2026-10-16T08:23:00+08:00'
+    channel: web
+  - id: history-user-24
+    role: user
+    content: 普通合成工作记录第24轮，没有新增长期约束。
+    at: '2026-10-16T08:24:00+08:00'
+    channel: web
+  - id: history-assistant-24
+    role: assistant
+    content: 收到第24轮。
+    at: '2026-10-16T08:24:00+08:00'
+    channel: web
+  - id: history-user-25
+    role: user
+    content: 普通合成工作记录第25轮，没有新增长期约束。
+    at: '2026-10-16T08:25:00+08:00'
+    channel: web
+  - id: history-assistant-25
+    role: assistant
+    content: 收到第25轮。
+    at: '2026-10-16T08:25:00+08:00'
+    channel: web
+  - id: history-user-26
+    role: user
+    content: 普通合成工作记录第26轮，没有新增长期约束。
+    at: '2026-10-16T08:26:00+08:00'
+    channel: web
+  - id: history-assistant-26
+    role: assistant
+    content: 收到第26轮。
+    at: '2026-10-16T08:26:00+08:00'
+    channel: web
+  - id: history-user-27
+    role: user
+    content: 普通合成工作记录第27轮，没有新增长期约束。
+    at: '2026-10-16T08:27:00+08:00'
+    channel: web
+  - id: history-assistant-27
+    role: assistant
+    content: 收到第27轮。
+    at: '2026-10-16T08:27:00+08:00'
+    channel: web
+  - id: history-user-28
+    role: user
+    content: 普通合成工作记录第28轮，没有新增长期约束。
+    at: '2026-10-16T08:28:00+08:00'
+    channel: web
+  - id: history-assistant-28
+    role: assistant
+    content: 收到第28轮。
+    at: '2026-10-16T08:28:00+08:00'
+    channel: web
+  - id: history-user-29
+    role: user
+    content: 普通合成工作记录第29轮，没有新增长期约束。
+    at: '2026-10-16T08:29:00+08:00'
+    channel: web
+  - id: history-assistant-29
+    role: assistant
+    content: 收到第29轮。
+    at: '2026-10-16T08:29:00+08:00'
+    channel: web
+  - id: history-user-30
+    role: user
+    content: 普通合成工作记录第30轮，没有新增长期约束。
+    at: '2026-10-16T08:30:00+08:00'
+    channel: web
+  - id: history-assistant-30
+    role: assistant
+    content: 收到第30轮。
+    at: '2026-10-16T08:30:00+08:00'
+    channel: web
+  - id: history-user-31
+    role: user
+    content: 普通合成工作记录第31轮，没有新增长期约束。
+    at: '2026-10-16T08:31:00+08:00'
+    channel: web
+  - id: history-assistant-31
+    role: assistant
+    content: 收到第31轮。
+    at: '2026-10-16T08:31:00+08:00'
+    channel: web
+  - id: history-user-32
+    role: user
+    content: 普通合成工作记录第32轮，没有新增长期约束。
+    at: '2026-10-16T08:32:00+08:00'
+    channel: web
+  - id: history-assistant-32
+    role: assistant
+    content: 收到第32轮。
+    at: '2026-10-16T08:32:00+08:00'
+    channel: web
+  - id: history-user-33
+    role: user
+    content: 普通合成工作记录第33轮，没有新增长期约束。
+    at: '2026-10-16T08:33:00+08:00'
+    channel: web
+  - id: history-assistant-33
+    role: assistant
+    content: 收到第33轮。
+    at: '2026-10-16T08:33:00+08:00'
+    channel: web
+  - id: history-user-34
+    role: user
+    content: 普通合成工作记录第34轮，没有新增长期约束。
+    at: '2026-10-16T08:34:00+08:00'
+    channel: web
+  - id: history-assistant-34
+    role: assistant
+    content: 收到第34轮。
+    at: '2026-10-16T08:34:00+08:00'
+    channel: web
+  - id: history-user-35
+    role: user
+    content: 普通合成工作记录第35轮，没有新增长期约束。
+    at: '2026-10-16T08:35:00+08:00'
+    channel: web
+  - id: history-assistant-35
+    role: assistant
+    content: 收到第35轮。
+    at: '2026-10-16T08:35:00+08:00'
+    channel: web
+  - id: history-user-36
+    role: user
+    content: 普通合成工作记录第36轮，没有新增长期约束。
+    at: '2026-10-16T08:36:00+08:00'
+    channel: web
+  - id: history-assistant-36
+    role: assistant
+    content: 收到第36轮。
+    at: '2026-10-16T08:36:00+08:00'
+    channel: web
+  - id: history-user-37
+    role: user
+    content: 普通合成工作记录第37轮，没有新增长期约束。
+    at: '2026-10-16T08:37:00+08:00'
+    channel: web
+  - id: history-assistant-37
+    role: assistant
+    content: 收到第37轮。
+    at: '2026-10-16T08:37:00+08:00'
+    channel: web
+  - id: history-user-38
+    role: user
+    content: 普通合成工作记录第38轮，没有新增长期约束。
+    at: '2026-10-16T08:38:00+08:00'
+    channel: web
+  - id: history-assistant-38
+    role: assistant
+    content: 收到第38轮。
+    at: '2026-10-16T08:38:00+08:00'
+    channel: web
+  - id: history-user-39
+    role: user
+    content: 普通合成工作记录第39轮，没有新增长期约束。
+    at: '2026-10-16T08:39:00+08:00'
+    channel: web
+  - id: history-assistant-39
+    role: assistant
+    content: 收到第39轮。
+    at: '2026-10-16T08:39:00+08:00'
+    channel: web
+  - id: history-user-40
+    role: user
+    content: 普通合成工作记录第40轮，没有新增长期约束。
+    at: '2026-10-16T08:40:00+08:00'
+    channel: web
+  - id: history-assistant-40
+    role: assistant
+    content: 收到第40轮。
+    at: '2026-10-16T08:40:00+08:00'
+    channel: web
+  - id: history-user-41
+    role: user
+    content: 普通合成工作记录第41轮，没有新增长期约束。
+    at: '2026-10-16T08:41:00+08:00'
+    channel: web
+  - id: history-assistant-41
+    role: assistant
+    content: 收到第41轮。
+    at: '2026-10-16T08:41:00+08:00'
+    channel: web
+  - id: history-user-42
+    role: user
+    content: 普通合成工作记录第42轮，没有新增长期约束。
+    at: '2026-10-16T08:42:00+08:00'
+    channel: web
+  - id: history-assistant-42
+    role: assistant
+    content: 收到第42轮。
+    at: '2026-10-16T08:42:00+08:00'
+    channel: web
+  - id: history-user-43
+    role: user
+    content: 普通合成工作记录第43轮，没有新增长期约束。
+    at: '2026-10-16T08:43:00+08:00'
+    channel: web
+  - id: history-assistant-43
+    role: assistant
+    content: 收到第43轮。
+    at: '2026-10-16T08:43:00+08:00'
+    channel: web
+  - id: history-user-44
+    role: user
+    content: 普通合成工作记录第44轮，没有新增长期约束。
+    at: '2026-10-16T08:44:00+08:00'
+    channel: web
+  - id: history-assistant-44
+    role: assistant
+    content: 收到第44轮。
+    at: '2026-10-16T08:44:00+08:00'
+    channel: web
+  - id: history-user-45
+    role: user
+    content: 普通合成工作记录第45轮，没有新增长期约束。
+    at: '2026-10-16T08:45:00+08:00'
+    channel: web
+  - id: history-assistant-45
+    role: assistant
+    content: 收到第45轮。
+    at: '2026-10-16T08:45:00+08:00'
+    channel: web
+  - id: history-user-46
+    role: user
+    content: 普通合成工作记录第46轮，没有新增长期约束。
+    at: '2026-10-16T08:46:00+08:00'
+    channel: web
+  - id: history-assistant-46
+    role: assistant
+    content: 收到第46轮。
+    at: '2026-10-16T08:46:00+08:00'
+    channel: web
+  - id: history-user-47
+    role: user
+    content: 普通合成工作记录第47轮，没有新增长期约束。
+    at: '2026-10-16T08:47:00+08:00'
+    channel: web
+  - id: history-assistant-47
+    role: assistant
+    content: 收到第47轮。
+    at: '2026-10-16T08:47:00+08:00'
+    channel: web
+  - id: history-user-48
+    role: user
+    content: 普通合成工作记录第48轮，没有新增长期约束。
+    at: '2026-10-16T08:48:00+08:00'
+    channel: web
+  - id: history-assistant-48
+    role: assistant
+    content: 收到第48轮。
+    at: '2026-10-16T08:48:00+08:00'
+    channel: web
+  - id: history-user-49
+    role: user
+    content: 普通合成工作记录第49轮，没有新增长期约束。
+    at: '2026-10-16T08:49:00+08:00'
+    channel: web
+  - id: history-assistant-49
+    role: assistant
+    content: 收到第49轮。
+    at: '2026-10-16T08:49:00+08:00'
+    channel: web
+  - id: history-user-50
+    role: user
+    content: 普通合成工作记录第50轮，没有新增长期约束。
+    at: '2026-10-16T08:50:00+08:00'
+    channel: web
+  - id: history-assistant-50
+    role: assistant
+    content: 收到第50轮。
+    at: '2026-10-16T08:50:00+08:00'
+    channel: web
+  - id: history-user-51
+    role: user
+    content: 普通合成工作记录第51轮，没有新增长期约束。
+    at: '2026-10-16T08:51:00+08:00'
+    channel: web
+  - id: history-assistant-51
+    role: assistant
+    content: 收到第51轮。
+    at: '2026-10-16T08:51:00+08:00'
+    channel: web
+  - id: history-user-52
+    role: user
+    content: 普通合成工作记录第52轮，没有新增长期约束。
+    at: '2026-10-16T08:52:00+08:00'
+    channel: web
+  - id: history-assistant-52
+    role: assistant
+    content: 收到第52轮。
+    at: '2026-10-16T08:52:00+08:00'
+    channel: web
+  - id: history-user-53
+    role: user
+    content: 普通合成工作记录第53轮，没有新增长期约束。
+    at: '2026-10-16T08:53:00+08:00'
+    channel: web
+  - id: history-assistant-53
+    role: assistant
+    content: 收到第53轮。
+    at: '2026-10-16T08:53:00+08:00'
+    channel: web
+  - id: history-user-54
+    role: user
+    content: 普通合成工作记录第54轮，没有新增长期约束。
+    at: '2026-10-16T08:54:00+08:00'
+    channel: web
+  - id: history-assistant-54
+    role: assistant
+    content: 收到第54轮。
+    at: '2026-10-16T08:54:00+08:00'
+    channel: web
+  - id: history-user-55
+    role: user
+    content: 普通合成工作记录第55轮，没有新增长期约束。
+    at: '2026-10-16T08:55:00+08:00'
+    channel: web
+  - id: history-assistant-55
+    role: assistant
+    content: 收到第55轮。
+    at: '2026-10-16T08:55:00+08:00'
+    channel: web
+  - id: history-user-56
+    role: user
+    content: 普通合成工作记录第56轮，没有新增长期约束。
+    at: '2026-10-16T08:56:00+08:00'
+    channel: web
+  - id: history-assistant-56
+    role: assistant
+    content: 收到第56轮。
+    at: '2026-10-16T08:56:00+08:00'
+    channel: web
+  - id: history-user-57
+    role: user
+    content: 普通合成工作记录第57轮，没有新增长期约束。
+    at: '2026-10-16T08:57:00+08:00'
+    channel: web
+  - id: history-assistant-57
+    role: assistant
+    content: 收到第57轮。
+    at: '2026-10-16T08:57:00+08:00'
+    channel: web
+  - id: history-user-58
+    role: user
+    content: 普通合成工作记录第58轮，没有新增长期约束。
+    at: '2026-10-16T08:58:00+08:00'
+    channel: web
+  - id: history-assistant-58
+    role: assistant
+    content: 收到第58轮。
+    at: '2026-10-16T08:58:00+08:00'
+    channel: web
+  - id: history-user-59
+    role: user
+    content: 普通合成工作记录第59轮，没有新增长期约束。
+    at: '2026-10-16T08:59:00+08:00'
+    channel: web
+  - id: history-assistant-59
+    role: assistant
+    content: 收到第59轮。
+    at: '2026-10-16T08:59:00+08:00'
+    channel: web
+  - id: history-user-60
+    role: user
+    content: 普通合成工作记录第60轮，没有新增长期约束。
+    at: '2026-10-16T09:00:00+08:00'
+    channel: web
+  - id: history-assistant-60
+    role: assistant
+    content: 收到第60轮。
+    at: '2026-10-16T09:00:00+08:00'
+    channel: web
+  - id: history-user-61
+    role: user
+    content: 普通合成工作记录第61轮，没有新增长期约束。
+    at: '2026-10-16T09:01:00+08:00'
+    channel: web
+  - id: history-assistant-61
+    role: assistant
+    content: 收到第61轮。
+    at: '2026-10-16T09:01:00+08:00'
+    channel: web
+  - id: history-user-62
+    role: user
+    content: 普通合成工作记录第62轮，没有新增长期约束。
+    at: '2026-10-16T09:02:00+08:00'
+    channel: web
+  - id: history-assistant-62
+    role: assistant
+    content: 收到第62轮。
+    at: '2026-10-16T09:02:00+08:00'
+    channel: web
+  - id: history-user-63
+    role: user
+    content: 普通合成工作记录第63轮，没有新增长期约束。
+    at: '2026-10-16T09:03:00+08:00'
+    channel: web
+  - id: history-assistant-63
+    role: assistant
+    content: 收到第63轮。
+    at: '2026-10-16T09:03:00+08:00'
+    channel: web
+  - id: history-user-64
+    role: user
+    content: 普通合成工作记录第64轮，没有新增长期约束。
+    at: '2026-10-16T09:04:00+08:00'
+    channel: web
+  - id: history-assistant-64
+    role: assistant
+    content: 收到第64轮。
+    at: '2026-10-16T09:04:00+08:00'
+    channel: web
+  - id: history-user-65
+    role: user
+    content: 普通合成工作记录第65轮，没有新增长期约束。
+    at: '2026-10-16T09:05:00+08:00'
+    channel: web
+  - id: history-assistant-65
+    role: assistant
+    content: 收到第65轮。
+    at: '2026-10-16T09:05:00+08:00'
+    channel: web
+  - id: history-user-66
+    role: user
+    content: 普通合成工作记录第66轮，没有新增长期约束。
+    at: '2026-10-16T09:06:00+08:00'
+    channel: web
+  - id: history-assistant-66
+    role: assistant
+    content: 收到第66轮。
+    at: '2026-10-16T09:06:00+08:00'
+    channel: web
+  - id: history-user-67
+    role: user
+    content: 普通合成工作记录第67轮，没有新增长期约束。
+    at: '2026-10-16T09:07:00+08:00'
+    channel: web
+  - id: history-assistant-67
+    role: assistant
+    content: 收到第67轮。
+    at: '2026-10-16T09:07:00+08:00'
+    channel: web
+  - id: history-user-68
+    role: user
+    content: 普通合成工作记录第68轮，没有新增长期约束。
+    at: '2026-10-16T09:08:00+08:00'
+    channel: web
+  - id: history-assistant-68
+    role: assistant
+    content: 收到第68轮。
+    at: '2026-10-16T09:08:00+08:00'
+    channel: web
+  - id: history-user-69
+    role: user
+    content: 普通合成工作记录第69轮，没有新增长期约束。
+    at: '2026-10-16T09:09:00+08:00'
+    channel: web
+  - id: history-assistant-69
+    role: assistant
+    content: 收到第69轮。
+    at: '2026-10-16T09:09:00+08:00'
+    channel: web
+  - id: history-user-70
+    role: user
+    content: 普通合成工作记录第70轮，没有新增长期约束。
+    at: '2026-10-16T09:10:00+08:00'
+    channel: web
+  - id: history-assistant-70
+    role: assistant
+    content: 收到第70轮。
+    at: '2026-10-16T09:10:00+08:00'
+    channel: web
+  - id: history-user-71
+    role: user
+    content: 普通合成工作记录第71轮，没有新增长期约束。
+    at: '2026-10-16T09:11:00+08:00'
+    channel: web
+  - id: history-assistant-71
+    role: assistant
+    content: 收到第71轮。
+    at: '2026-10-16T09:11:00+08:00'
+    channel: web
+  - id: history-user-72
+    role: user
+    content: 普通合成工作记录第72轮，没有新增长期约束。
+    at: '2026-10-16T09:12:00+08:00'
+    channel: web
+  - id: history-assistant-72
+    role: assistant
+    content: 收到第72轮。
+    at: '2026-10-16T09:12:00+08:00'
+    channel: web
+  - id: history-user-73
+    role: user
+    content: 普通合成工作记录第73轮，没有新增长期约束。
+    at: '2026-10-16T09:13:00+08:00'
+    channel: web
+  - id: history-assistant-73
+    role: assistant
+    content: 收到第73轮。
+    at: '2026-10-16T09:13:00+08:00'
+    channel: web
+  - id: history-user-74
+    role: user
+    content: 普通合成工作记录第74轮，没有新增长期约束。
+    at: '2026-10-16T09:14:00+08:00'
+    channel: web
+  - id: history-assistant-74
+    role: assistant
+    content: 收到第74轮。
+    at: '2026-10-16T09:14:00+08:00'
+    channel: web
+  - id: history-user-75
+    role: user
+    content: 普通合成工作记录第75轮，没有新增长期约束。
+    at: '2026-10-16T09:15:00+08:00'
+    channel: web
+  - id: history-assistant-75
+    role: assistant
+    content: 收到第75轮。
+    at: '2026-10-16T09:15:00+08:00'
+    channel: web
+  - id: history-user-76
+    role: user
+    content: 普通合成工作记录第76轮，没有新增长期约束。
+    at: '2026-10-16T09:16:00+08:00'
+    channel: web
+  - id: history-assistant-76
+    role: assistant
+    content: 收到第76轮。
+    at: '2026-10-16T09:16:00+08:00'
+    channel: web
+  - id: history-user-77
+    role: user
+    content: 普通合成工作记录第77轮，没有新增长期约束。
+    at: '2026-10-16T09:17:00+08:00'
+    channel: web
+  - id: history-assistant-77
+    role: assistant
+    content: 收到第77轮。
+    at: '2026-10-16T09:17:00+08:00'
+    channel: web
+  - id: history-user-78
+    role: user
+    content: 普通合成工作记录第78轮，没有新增长期约束。
+    at: '2026-10-16T09:18:00+08:00'
+    channel: web
+  - id: history-assistant-78
+    role: assistant
+    content: 收到第78轮。
+    at: '2026-10-16T09:18:00+08:00'
+    channel: web
+  - id: history-user-79
+    role: user
+    content: 普通合成工作记录第79轮，没有新增长期约束。
+    at: '2026-10-16T09:19:00+08:00'
+    channel: web
+  - id: history-assistant-79
+    role: assistant
+    content: 收到第79轮。
+    at: '2026-10-16T09:19:00+08:00'
+    channel: web
+  - id: history-user-80
+    role: user
+    content: 普通合成工作记录第80轮，没有新增长期约束。
+    at: '2026-10-16T09:20:00+08:00'
+    channel: web
+  - id: history-assistant-80
+    role: assistant
+    content: 收到第80轮。
+    at: '2026-10-16T09:20:00+08:00'
+    channel: web
+  - id: history-user-81
+    role: user
+    content: 普通合成工作记录第81轮，没有新增长期约束。
+    at: '2026-10-16T09:21:00+08:00'
+    channel: web
+  - id: history-assistant-81
+    role: assistant
+    content: 收到第81轮。
+    at: '2026-10-16T09:21:00+08:00'
+    channel: web
+  - id: history-user-82
+    role: user
+    content: 普通合成工作记录第82轮，没有新增长期约束。
+    at: '2026-10-16T09:22:00+08:00'
+    channel: web
+  - id: history-assistant-82
+    role: assistant
+    content: 收到第82轮。
+    at: '2026-10-16T09:22:00+08:00'
+    channel: web
+  - id: history-user-83
+    role: user
+    content: 普通合成工作记录第83轮，没有新增长期约束。
+    at: '2026-10-16T09:23:00+08:00'
+    channel: web
+  - id: history-assistant-83
+    role: assistant
+    content: 收到第83轮。
+    at: '2026-10-16T09:23:00+08:00'
+    channel: web
+  - id: history-user-84
+    role: user
+    content: 普通合成工作记录第84轮，没有新增长期约束。
+    at: '2026-10-16T09:24:00+08:00'
+    channel: web
+  - id: history-assistant-84
+    role: assistant
+    content: 收到第84轮。
+    at: '2026-10-16T09:24:00+08:00'
+    channel: web
+  - id: history-user-85
+    role: user
+    content: 普通合成工作记录第85轮，没有新增长期约束。
+    at: '2026-10-16T09:25:00+08:00'
+    channel: web
+  - id: history-assistant-85
+    role: assistant
+    content: 收到第85轮。
+    at: '2026-10-16T09:25:00+08:00'
+    channel: web
+  - id: history-user-86
+    role: user
+    content: 普通合成工作记录第86轮，没有新增长期约束。
+    at: '2026-10-16T09:26:00+08:00'
+    channel: web
+  - id: history-assistant-86
+    role: assistant
+    content: 收到第86轮。
+    at: '2026-10-16T09:26:00+08:00'
+    channel: web
+  - id: history-user-87
+    role: user
+    content: 普通合成工作记录第87轮，没有新增长期约束。
+    at: '2026-10-16T09:27:00+08:00'
+    channel: web
+  - id: history-assistant-87
+    role: assistant
+    content: 收到第87轮。
+    at: '2026-10-16T09:27:00+08:00'
+    channel: web
+  - id: history-user-88
+    role: user
+    content: 普通合成工作记录第88轮，没有新增长期约束。
+    at: '2026-10-16T09:28:00+08:00'
+    channel: web
+  - id: history-assistant-88
+    role: assistant
+    content: 收到第88轮。
+    at: '2026-10-16T09:28:00+08:00'
+    channel: web
+  - id: history-user-89
+    role: user
+    content: 普通合成工作记录第89轮，没有新增长期约束。
+    at: '2026-10-16T09:29:00+08:00'
+    channel: web
+  - id: history-assistant-89
+    role: assistant
+    content: 收到第89轮。
+    at: '2026-10-16T09:29:00+08:00'
+    channel: web
+  - id: history-user-90
+    role: user
+    content: 普通合成工作记录第90轮，没有新增长期约束。
+    at: '2026-10-16T09:30:00+08:00'
+    channel: web
+  - id: history-assistant-90
+    role: assistant
+    content: 收到第90轮。
+    at: '2026-10-16T09:30:00+08:00'
+    channel: web
+  - id: history-user-91
+    role: user
+    content: 普通合成工作记录第91轮，没有新增长期约束。
+    at: '2026-10-16T09:31:00+08:00'
+    channel: web
+  - id: history-assistant-91
+    role: assistant
+    content: 收到第91轮。
+    at: '2026-10-16T09:31:00+08:00'
+    channel: web
+  - id: history-user-92
+    role: user
+    content: 普通合成工作记录第92轮，没有新增长期约束。
+    at: '2026-10-16T09:32:00+08:00'
+    channel: web
+  - id: history-assistant-92
+    role: assistant
+    content: 收到第92轮。
+    at: '2026-10-16T09:32:00+08:00'
+    channel: web
+  - id: history-user-93
+    role: user
+    content: 普通合成工作记录第93轮，没有新增长期约束。
+    at: '2026-10-16T09:33:00+08:00'
+    channel: web
+  - id: history-assistant-93
+    role: assistant
+    content: 收到第93轮。
+    at: '2026-10-16T09:33:00+08:00'
+    channel: web
+  - id: history-user-94
+    role: user
+    content: 普通合成工作记录第94轮，没有新增长期约束。
+    at: '2026-10-16T09:34:00+08:00'
+    channel: web
+  - id: history-assistant-94
+    role: assistant
+    content: 收到第94轮。
+    at: '2026-10-16T09:34:00+08:00'
+    channel: web
+  - id: history-user-95
+    role: user
+    content: 普通合成工作记录第95轮，没有新增长期约束。
+    at: '2026-10-16T09:35:00+08:00'
+    channel: web
+  - id: history-assistant-95
+    role: assistant
+    content: 收到第95轮。
+    at: '2026-10-16T09:35:00+08:00'
+    channel: web
+  - id: history-user-96
+    role: user
+    content: 普通合成工作记录第96轮，没有新增长期约束。
+    at: '2026-10-16T09:36:00+08:00'
+    channel: web
+  - id: history-assistant-96
+    role: assistant
+    content: 收到第96轮。
+    at: '2026-10-16T09:36:00+08:00'
+    channel: web
+  - id: history-user-97
+    role: user
+    content: 普通合成工作记录第97轮，没有新增长期约束。
+    at: '2026-10-16T09:37:00+08:00'
+    channel: web
+  - id: history-assistant-97
+    role: assistant
+    content: 收到第97轮。
+    at: '2026-10-16T09:37:00+08:00'
+    channel: web
+  - id: history-user-98
+    role: user
+    content: 普通合成工作记录第98轮，没有新增长期约束。
+    at: '2026-10-16T09:38:00+08:00'
+    channel: web
+  - id: history-assistant-98
+    role: assistant
+    content: 收到第98轮。
+    at: '2026-10-16T09:38:00+08:00'
+    channel: web
+  - id: history-user-99
+    role: user
+    content: 普通合成工作记录第99轮，没有新增长期约束。
+    at: '2026-10-16T09:39:00+08:00'
+    channel: web
+  - id: history-assistant-99
+    role: assistant
+    content: 收到第99轮。
+    at: '2026-10-16T09:39:00+08:00'
+    channel: web
+  - id: history-user-100
+    role: user
+    content: 普通合成工作记录第100轮，没有新增长期约束。
+    at: '2026-10-16T09:40:00+08:00'
+    channel: web
+  - id: history-assistant-100
+    role: assistant
+    content: 收到第100轮。
+    at: '2026-10-16T09:40:00+08:00'
+    channel: web
+  - id: history-user-101
+    role: user
+    content: 普通合成工作记录第101轮，没有新增长期约束。
+    at: '2026-10-16T09:41:00+08:00'
+    channel: web
+  - id: history-assistant-101
+    role: assistant
+    content: 收到第101轮。
+    at: '2026-10-16T09:41:00+08:00'
+    channel: web
+  - id: history-user-102
+    role: user
+    content: 普通合成工作记录第102轮，没有新增长期约束。
+    at: '2026-10-16T09:42:00+08:00'
+    channel: web
+  - id: history-assistant-102
+    role: assistant
+    content: 收到第102轮。
+    at: '2026-10-16T09:42:00+08:00'
+    channel: web
+  - id: history-user-103
+    role: user
+    content: 普通合成工作记录第103轮，没有新增长期约束。
+    at: '2026-10-16T09:43:00+08:00'
+    channel: web
+  - id: history-assistant-103
+    role: assistant
+    content: 收到第103轮。
+    at: '2026-10-16T09:43:00+08:00'
+    channel: web
+  - id: history-user-104
+    role: user
+    content: 普通合成工作记录第104轮，没有新增长期约束。
+    at: '2026-10-16T09:44:00+08:00'
+    channel: web
+  - id: history-assistant-104
+    role: assistant
+    content: 收到第104轮。
+    at: '2026-10-16T09:44:00+08:00'
+    channel: web
+  - id: history-user-105
+    role: user
+    content: 普通合成工作记录第105轮，没有新增长期约束。
+    at: '2026-10-16T09:45:00+08:00'
+    channel: web
+  - id: history-assistant-105
+    role: assistant
+    content: 收到第105轮。
+    at: '2026-10-16T09:45:00+08:00'
+    channel: web
+  - id: history-user-106
+    role: user
+    content: 普通合成工作记录第106轮，没有新增长期约束。
+    at: '2026-10-16T09:46:00+08:00'
+    channel: web
+  - id: history-assistant-106
+    role: assistant
+    content: 收到第106轮。
+    at: '2026-10-16T09:46:00+08:00'
+    channel: web
+  - id: history-user-107
+    role: user
+    content: 普通合成工作记录第107轮，没有新增长期约束。
+    at: '2026-10-16T09:47:00+08:00'
+    channel: web
+  - id: history-assistant-107
+    role: assistant
+    content: 收到第107轮。
+    at: '2026-10-16T09:47:00+08:00'
+    channel: web
+  - id: history-user-108
+    role: user
+    content: 普通合成工作记录第108轮，没有新增长期约束。
+    at: '2026-10-16T09:48:00+08:00'
+    channel: web
+  - id: history-assistant-108
+    role: assistant
+    content: 收到第108轮。
+    at: '2026-10-16T09:48:00+08:00'
+    channel: web
+  - id: history-user-109
+    role: user
+    content: 普通合成工作记录第109轮，没有新增长期约束。
+    at: '2026-10-16T09:49:00+08:00'
+    channel: web
+  - id: history-assistant-109
+    role: assistant
+    content: 收到第109轮。
+    at: '2026-10-16T09:49:00+08:00'
+    channel: web
+  - id: history-user-110
+    role: user
+    content: 普通合成工作记录第110轮，没有新增长期约束。
+    at: '2026-10-16T09:50:00+08:00'
+    channel: web
+  - id: history-assistant-110
+    role: assistant
+    content: 收到第110轮。
+    at: '2026-10-16T09:50:00+08:00'
+    channel: web
+  - id: history-user-111
+    role: user
+    content: 普通合成工作记录第111轮，没有新增长期约束。
+    at: '2026-10-16T09:51:00+08:00'
+    channel: web
+  - id: history-assistant-111
+    role: assistant
+    content: 收到第111轮。
+    at: '2026-10-16T09:51:00+08:00'
+    channel: web
+  - id: history-user-112
+    role: user
+    content: 普通合成工作记录第112轮，没有新增长期约束。
+    at: '2026-10-16T09:52:00+08:00'
+    channel: web
+  - id: history-assistant-112
+    role: assistant
+    content: 收到第112轮。
+    at: '2026-10-16T09:52:00+08:00'
+    channel: web
+  - id: history-user-113
+    role: user
+    content: 普通合成工作记录第113轮，没有新增长期约束。
+    at: '2026-10-16T09:53:00+08:00'
+    channel: web
+  - id: history-assistant-113
+    role: assistant
+    content: 收到第113轮。
+    at: '2026-10-16T09:53:00+08:00'
+    channel: web
+  - id: history-user-114
+    role: user
+    content: 普通合成工作记录第114轮，没有新增长期约束。
+    at: '2026-10-16T09:54:00+08:00'
+    channel: web
+  - id: history-assistant-114
+    role: assistant
+    content: 收到第114轮。
+    at: '2026-10-16T09:54:00+08:00'
+    channel: web
+  - id: history-user-115
+    role: user
+    content: 普通合成工作记录第115轮，没有新增长期约束。
+    at: '2026-10-16T09:55:00+08:00'
+    channel: web
+  - id: history-assistant-115
+    role: assistant
+    content: 收到第115轮。
+    at: '2026-10-16T09:55:00+08:00'
+    channel: web
+  - id: history-user-116
+    role: user
+    content: 普通合成工作记录第116轮，没有新增长期约束。
+    at: '2026-10-16T09:56:00+08:00'
+    channel: web
+  - id: history-assistant-116
+    role: assistant
+    content: 收到第116轮。
+    at: '2026-10-16T09:56:00+08:00'
+    channel: web
+  - id: history-user-117
+    role: user
+    content: 普通合成工作记录第117轮，没有新增长期约束。
+    at: '2026-10-16T09:57:00+08:00'
+    channel: web
+  - id: history-assistant-117
+    role: assistant
+    content: 收到第117轮。
+    at: '2026-10-16T09:57:00+08:00'
+    channel: web
+  - id: history-user-118
+    role: user
+    content: 普通合成工作记录第118轮，没有新增长期约束。
+    at: '2026-10-16T09:58:00+08:00'
+    channel: web
+  - id: history-assistant-118
+    role: assistant
+    content: 收到第118轮。
+    at: '2026-10-16T09:58:00+08:00'
+    channel: web
+  - id: history-user-119
+    role: user
+    content: 普通合成工作记录第119轮，没有新增长期约束。
+    at: '2026-10-16T09:59:00+08:00'
+    channel: web
+  - id: history-assistant-119
+    role: assistant
+    content: 收到第119轮。
+    at: '2026-10-16T09:59:00+08:00'
+    channel: web
+  - id: history-user-120
+    role: user
+    content: 普通合成工作记录第120轮，没有新增长期约束。
+    at: '2026-10-16T10:00:00+08:00'
+    channel: web
+  - id: history-assistant-120
+    role: assistant
+    content: 收到第120轮。
+    at: '2026-10-16T10:00:00+08:00'
+    channel: web
+  - id: history-user-121
+    role: user
+    content: 普通合成工作记录第121轮，没有新增长期约束。
+    at: '2026-10-16T10:01:00+08:00'
+    channel: web
+  - id: history-assistant-121
+    role: assistant
+    content: 收到第121轮。
+    at: '2026-10-16T10:01:00+08:00'
+    channel: web
+  - id: history-user-122
+    role: user
+    content: 普通合成工作记录第122轮，没有新增长期约束。
+    at: '2026-10-16T10:02:00+08:00'
+    channel: web
+  - id: history-assistant-122
+    role: assistant
+    content: 收到第122轮。
+    at: '2026-10-16T10:02:00+08:00'
+    channel: web
+  - id: history-user-123
+    role: user
+    content: 普通合成工作记录第123轮，没有新增长期约束。
+    at: '2026-10-16T10:03:00+08:00'
+    channel: web
+  - id: history-assistant-123
+    role: assistant
+    content: 收到第123轮。
+    at: '2026-10-16T10:03:00+08:00'
+    channel: web
+  - id: history-user-124
+    role: user
+    content: 普通合成工作记录第124轮，没有新增长期约束。
+    at: '2026-10-16T10:04:00+08:00'
+    channel: web
+  - id: history-assistant-124
+    role: assistant
+    content: 收到第124轮。
+    at: '2026-10-16T10:04:00+08:00'
+    channel: web
+  - id: history-user-125
+    role: user
+    content: 普通合成工作记录第125轮，没有新增长期约束。
+    at: '2026-10-16T10:05:00+08:00'
+    channel: web
+  - id: history-assistant-125
+    role: assistant
+    content: 收到第125轮。
+    at: '2026-10-16T10:05:00+08:00'
+    channel: web
+  - id: history-user-126
+    role: user
+    content: 普通合成工作记录第126轮，没有新增长期约束。
+    at: '2026-10-16T10:06:00+08:00'
+    channel: web
+  - id: history-assistant-126
+    role: assistant
+    content: 收到第126轮。
+    at: '2026-10-16T10:06:00+08:00'
+    channel: web
+  - id: history-user-127
+    role: user
+    content: 普通合成工作记录第127轮，没有新增长期约束。
+    at: '2026-10-16T10:07:00+08:00'
+    channel: web
+  - id: history-assistant-127
+    role: assistant
+    content: 收到第127轮。
+    at: '2026-10-16T10:07:00+08:00'
+    channel: web
+  - id: history-user-128
+    role: user
+    content: 普通合成工作记录第128轮，没有新增长期约束。
+    at: '2026-10-16T10:08:00+08:00'
+    channel: web
+  - id: history-assistant-128
+    role: assistant
+    content: 收到第128轮。
+    at: '2026-10-16T10:08:00+08:00'
+    channel: web
+  - id: history-user-129
+    role: user
+    content: 普通合成工作记录第129轮，没有新增长期约束。
+    at: '2026-10-16T10:09:00+08:00'
+    channel: web
+  - id: history-assistant-129
+    role: assistant
+    content: 收到第129轮。
+    at: '2026-10-16T10:09:00+08:00'
+    channel: web
+  - id: history-user-130
+    role: user
+    content: 普通合成工作记录第130轮，没有新增长期约束。
+    at: '2026-10-16T10:10:00+08:00'
+    channel: web
+  - id: history-assistant-130
+    role: assistant
+    content: 收到第130轮。
+    at: '2026-10-16T10:10:00+08:00'
+    channel: web
+  - id: history-user-131
+    role: user
+    content: 普通合成工作记录第131轮，没有新增长期约束。
+    at: '2026-10-16T10:11:00+08:00'
+    channel: web
+  - id: history-assistant-131
+    role: assistant
+    content: 收到第131轮。
+    at: '2026-10-16T10:11:00+08:00'
+    channel: web
+  - id: history-user-132
+    role: user
+    content: 普通合成工作记录第132轮，没有新增长期约束。
+    at: '2026-10-16T10:12:00+08:00'
+    channel: web
+  - id: history-assistant-132
+    role: assistant
+    content: 收到第132轮。
+    at: '2026-10-16T10:12:00+08:00'
+    channel: web
+  - id: history-user-133
+    role: user
+    content: 普通合成工作记录第133轮，没有新增长期约束。
+    at: '2026-10-16T10:13:00+08:00'
+    channel: web
+  - id: history-assistant-133
+    role: assistant
+    content: 收到第133轮。
+    at: '2026-10-16T10:13:00+08:00'
+    channel: web
+  - id: history-user-134
+    role: user
+    content: 普通合成工作记录第134轮，没有新增长期约束。
+    at: '2026-10-16T10:14:00+08:00'
+    channel: web
+  - id: history-assistant-134
+    role: assistant
+    content: 收到第134轮。
+    at: '2026-10-16T10:14:00+08:00'
+    channel: web
+  - id: history-user-135
+    role: user
+    content: 普通合成工作记录第135轮，没有新增长期约束。
+    at: '2026-10-16T10:15:00+08:00'
+    channel: web
+  - id: history-assistant-135
+    role: assistant
+    content: 收到第135轮。
+    at: '2026-10-16T10:15:00+08:00'
+    channel: web
+  - id: history-user-136
+    role: user
+    content: 普通合成工作记录第136轮，没有新增长期约束。
+    at: '2026-10-16T10:16:00+08:00'
+    channel: web
+  - id: history-assistant-136
+    role: assistant
+    content: 收到第136轮。
+    at: '2026-10-16T10:16:00+08:00'
+    channel: web
+  - id: history-user-137
+    role: user
+    content: 普通合成工作记录第137轮，没有新增长期约束。
+    at: '2026-10-16T10:17:00+08:00'
+    channel: web
+  - id: history-assistant-137
+    role: assistant
+    content: 收到第137轮。
+    at: '2026-10-16T10:17:00+08:00'
+    channel: web
+  - id: history-user-138
+    role: user
+    content: 普通合成工作记录第138轮，没有新增长期约束。
+    at: '2026-10-16T10:18:00+08:00'
+    channel: web
+  - id: history-assistant-138
+    role: assistant
+    content: 收到第138轮。
+    at: '2026-10-16T10:18:00+08:00'
+    channel: web
+  - id: history-user-139
+    role: user
+    content: 普通合成工作记录第139轮，没有新增长期约束。
+    at: '2026-10-16T10:19:00+08:00'
+    channel: web
+  - id: history-assistant-139
+    role: assistant
+    content: 收到第139轮。
+    at: '2026-10-16T10:19:00+08:00'
+    channel: web
+  - id: history-user-140
+    role: user
+    content: 普通合成工作记录第140轮，没有新增长期约束。
+    at: '2026-10-16T10:20:00+08:00'
+    channel: web
+  - id: history-assistant-140
+    role: assistant
+    content: 收到第140轮。
+    at: '2026-10-16T10:20:00+08:00'
+    channel: web
+  - id: history-user-141
+    role: user
+    content: 普通合成工作记录第141轮，没有新增长期约束。
+    at: '2026-10-16T10:21:00+08:00'
+    channel: web
+  - id: history-assistant-141
+    role: assistant
+    content: 收到第141轮。
+    at: '2026-10-16T10:21:00+08:00'
+    channel: web
+  - id: history-user-142
+    role: user
+    content: 普通合成工作记录第142轮，没有新增长期约束。
+    at: '2026-10-16T10:22:00+08:00'
+    channel: web
+  - id: history-assistant-142
+    role: assistant
+    content: 收到第142轮。
+    at: '2026-10-16T10:22:00+08:00'
+    channel: web
+  - id: history-user-143
+    role: user
+    content: 普通合成工作记录第143轮，没有新增长期约束。
+    at: '2026-10-16T10:23:00+08:00'
+    channel: web
+  - id: history-assistant-143
+    role: assistant
+    content: 收到第143轮。
+    at: '2026-10-16T10:23:00+08:00'
+    channel: web
+  - id: history-user-144
+    role: user
+    content: 普通合成工作记录第144轮，没有新增长期约束。
+    at: '2026-10-16T10:24:00+08:00'
+    channel: web
+  - id: history-assistant-144
+    role: assistant
+    content: 收到第144轮。
+    at: '2026-10-16T10:24:00+08:00'
+    channel: web
+  - id: history-user-145
+    role: user
+    content: 普通合成工作记录第145轮，没有新增长期约束。
+    at: '2026-10-16T10:25:00+08:00'
+    channel: web
+  - id: history-assistant-145
+    role: assistant
+    content: 收到第145轮。
+    at: '2026-10-16T10:25:00+08:00'
+    channel: web
+  - id: history-user-146
+    role: user
+    content: 普通合成工作记录第146轮，没有新增长期约束。
+    at: '2026-10-16T10:26:00+08:00'
+    channel: web
+  - id: history-assistant-146
+    role: assistant
+    content: 收到第146轮。
+    at: '2026-10-16T10:26:00+08:00'
+    channel: web
+  - id: history-user-147
+    role: user
+    content: 普通合成工作记录第147轮，没有新增长期约束。
+    at: '2026-10-16T10:27:00+08:00'
+    channel: web
+  - id: history-assistant-147
+    role: assistant
+    content: 收到第147轮。
+    at: '2026-10-16T10:27:00+08:00'
+    channel: web
+  - id: history-user-148
+    role: user
+    content: 普通合成工作记录第148轮，没有新增长期约束。
+    at: '2026-10-16T10:28:00+08:00'
+    channel: web
+  - id: history-assistant-148
+    role: assistant
+    content: 收到第148轮。
+    at: '2026-10-16T10:28:00+08:00'
+    channel: web
+  - id: history-user-149
+    role: user
+    content: 普通合成工作记录第149轮，没有新增长期约束。
+    at: '2026-10-16T10:29:00+08:00'
+    channel: web
+  - id: history-assistant-149
+    role: assistant
+    content: 收到第149轮。
+    at: '2026-10-16T10:29:00+08:00'
+    channel: web
+  - id: history-user-150
+    role: user
+    content: 普通合成工作记录第150轮，没有新增长期约束。
+    at: '2026-10-16T10:30:00+08:00'
+    channel: web
+  - id: history-assistant-150
+    role: assistant
+    content: 收到第150轮。
+    at: '2026-10-16T10:30:00+08:00'
+    channel: web
+  - id: history-user-151
+    role: user
+    content: 普通合成工作记录第151轮，没有新增长期约束。
+    at: '2026-10-16T10:31:00+08:00'
+    channel: web
+  - id: history-assistant-151
+    role: assistant
+    content: 收到第151轮。
+    at: '2026-10-16T10:31:00+08:00'
+    channel: web
+  - id: history-user-152
+    role: user
+    content: 普通合成工作记录第152轮，没有新增长期约束。
+    at: '2026-10-16T10:32:00+08:00'
+    channel: web
+  - id: history-assistant-152
+    role: assistant
+    content: 收到第152轮。
+    at: '2026-10-16T10:32:00+08:00'
+    channel: web
+  - id: history-user-153
+    role: user
+    content: 普通合成工作记录第153轮，没有新增长期约束。
+    at: '2026-10-16T10:33:00+08:00'
+    channel: web
+  - id: history-assistant-153
+    role: assistant
+    content: 收到第153轮。
+    at: '2026-10-16T10:33:00+08:00'
+    channel: web
+  - id: history-user-154
+    role: user
+    content: 普通合成工作记录第154轮，没有新增长期约束。
+    at: '2026-10-16T10:34:00+08:00'
+    channel: web
+  - id: history-assistant-154
+    role: assistant
+    content: 收到第154轮。
+    at: '2026-10-16T10:34:00+08:00'
+    channel: web
+  - id: history-user-155
+    role: user
+    content: 普通合成工作记录第155轮，没有新增长期约束。
+    at: '2026-10-16T10:35:00+08:00'
+    channel: web
+  - id: history-assistant-155
+    role: assistant
+    content: 收到第155轮。
+    at: '2026-10-16T10:35:00+08:00'
+    channel: web
+  - id: history-user-156
+    role: user
+    content: 普通合成工作记录第156轮，没有新增长期约束。
+    at: '2026-10-16T10:36:00+08:00'
+    channel: web
+  - id: history-assistant-156
+    role: assistant
+    content: 收到第156轮。
+    at: '2026-10-16T10:36:00+08:00'
+    channel: web
+  - id: history-user-157
+    role: user
+    content: 普通合成工作记录第157轮，没有新增长期约束。
+    at: '2026-10-16T10:37:00+08:00'
+    channel: web
+  - id: history-assistant-157
+    role: assistant
+    content: 收到第157轮。
+    at: '2026-10-16T10:37:00+08:00'
+    channel: web
+  - id: history-user-158
+    role: user
+    content: 普通合成工作记录第158轮，没有新增长期约束。
+    at: '2026-10-16T10:38:00+08:00'
+    channel: web
+  - id: history-assistant-158
+    role: assistant
+    content: 收到第158轮。
+    at: '2026-10-16T10:38:00+08:00'
+    channel: web
+  - id: history-user-159
+    role: user
+    content: 普通合成工作记录第159轮，没有新增长期约束。
+    at: '2026-10-16T10:39:00+08:00'
+    channel: web
+  - id: history-assistant-159
+    role: assistant
+    content: 收到第159轮。
+    at: '2026-10-16T10:39:00+08:00'
+    channel: web
+  - id: history-user-160
+    role: user
+    content: 普通合成工作记录第160轮，没有新增长期约束。
+    at: '2026-10-16T10:40:00+08:00'
+    channel: web
+  - id: history-assistant-160
+    role: assistant
+    content: 收到第160轮。
+    at: '2026-10-16T10:40:00+08:00'
+    channel: web
+  - id: history-user-161
+    role: user
+    content: 普通合成工作记录第161轮，没有新增长期约束。
+    at: '2026-10-16T10:41:00+08:00'
+    channel: web
+  - id: history-assistant-161
+    role: assistant
+    content: 收到第161轮。
+    at: '2026-10-16T10:41:00+08:00'
+    channel: web
+  - id: history-user-162
+    role: user
+    content: 普通合成工作记录第162轮，没有新增长期约束。
+    at: '2026-10-16T10:42:00+08:00'
+    channel: web
+  - id: history-assistant-162
+    role: assistant
+    content: 收到第162轮。
+    at: '2026-10-16T10:42:00+08:00'
+    channel: web
+  - id: history-user-163
+    role: user
+    content: 普通合成工作记录第163轮，没有新增长期约束。
+    at: '2026-10-16T10:43:00+08:00'
+    channel: web
+  - id: history-assistant-163
+    role: assistant
+    content: 收到第163轮。
+    at: '2026-10-16T10:43:00+08:00'
+    channel: web
+  - id: history-user-164
+    role: user
+    content: 普通合成工作记录第164轮，没有新增长期约束。
+    at: '2026-10-16T10:44:00+08:00'
+    channel: web
+  - id: history-assistant-164
+    role: assistant
+    content: 收到第164轮。
+    at: '2026-10-16T10:44:00+08:00'
+    channel: web
+  - id: history-user-165
+    role: user
+    content: 普通合成工作记录第165轮，没有新增长期约束。
+    at: '2026-10-16T10:45:00+08:00'
+    channel: web
+  - id: history-assistant-165
+    role: assistant
+    content: 收到第165轮。
+    at: '2026-10-16T10:45:00+08:00'
+    channel: web
+  - id: history-user-166
+    role: user
+    content: 普通合成工作记录第166轮，没有新增长期约束。
+    at: '2026-10-16T10:46:00+08:00'
+    channel: web
+  - id: history-assistant-166
+    role: assistant
+    content: 收到第166轮。
+    at: '2026-10-16T10:46:00+08:00'
+    channel: web
+  - id: history-user-167
+    role: user
+    content: 普通合成工作记录第167轮，没有新增长期约束。
+    at: '2026-10-16T10:47:00+08:00'
+    channel: web
+  - id: history-assistant-167
+    role: assistant
+    content: 收到第167轮。
+    at: '2026-10-16T10:47:00+08:00'
+    channel: web
+  - id: history-user-168
+    role: user
+    content: 普通合成工作记录第168轮，没有新增长期约束。
+    at: '2026-10-16T10:48:00+08:00'
+    channel: web
+  - id: history-assistant-168
+    role: assistant
+    content: 收到第168轮。
+    at: '2026-10-16T10:48:00+08:00'
+    channel: web
+  - id: history-user-169
+    role: user
+    content: 普通合成工作记录第169轮，没有新增长期约束。
+    at: '2026-10-16T10:49:00+08:00'
+    channel: web
+  - id: history-assistant-169
+    role: assistant
+    content: 收到第169轮。
+    at: '2026-10-16T10:49:00+08:00'
+    channel: web
+  - id: history-user-170
+    role: user
+    content: 普通合成工作记录第170轮，没有新增长期约束。
+    at: '2026-10-16T10:50:00+08:00'
+    channel: web
+  - id: history-assistant-170
+    role: assistant
+    content: 收到第170轮。
+    at: '2026-10-16T10:50:00+08:00'
+    channel: web
+  - id: history-user-171
+    role: user
+    content: 普通合成工作记录第171轮，没有新增长期约束。
+    at: '2026-10-16T10:51:00+08:00'
+    channel: web
+  - id: history-assistant-171
+    role: assistant
+    content: 收到第171轮。
+    at: '2026-10-16T10:51:00+08:00'
+    channel: web
+  - id: history-user-172
+    role: user
+    content: 普通合成工作记录第172轮，没有新增长期约束。
+    at: '2026-10-16T10:52:00+08:00'
+    channel: web
+  - id: history-assistant-172
+    role: assistant
+    content: 收到第172轮。
+    at: '2026-10-16T10:52:00+08:00'
+    channel: web
+  - id: history-user-173
+    role: user
+    content: 普通合成工作记录第173轮，没有新增长期约束。
+    at: '2026-10-16T10:53:00+08:00'
+    channel: web
+  - id: history-assistant-173
+    role: assistant
+    content: 收到第173轮。
+    at: '2026-10-16T10:53:00+08:00'
+    channel: web
+  - id: history-user-174
+    role: user
+    content: 普通合成工作记录第174轮，没有新增长期约束。
+    at: '2026-10-16T10:54:00+08:00'
+    channel: web
+  - id: history-assistant-174
+    role: assistant
+    content: 收到第174轮。
+    at: '2026-10-16T10:54:00+08:00'
+    channel: web
+  - id: history-user-175
+    role: user
+    content: 普通合成工作记录第175轮，没有新增长期约束。
+    at: '2026-10-16T10:55:00+08:00'
+    channel: web
+  - id: history-assistant-175
+    role: assistant
+    content: 收到第175轮。
+    at: '2026-10-16T10:55:00+08:00'
+    channel: web
+  - id: history-user-176
+    role: user
+    content: 普通合成工作记录第176轮，没有新增长期约束。
+    at: '2026-10-16T10:56:00+08:00'
+    channel: web
+  - id: history-assistant-176
+    role: assistant
+    content: 收到第176轮。
+    at: '2026-10-16T10:56:00+08:00'
+    channel: web
+  - id: history-user-177
+    role: user
+    content: 普通合成工作记录第177轮，没有新增长期约束。
+    at: '2026-10-16T10:57:00+08:00'
+    channel: web
+  - id: history-assistant-177
+    role: assistant
+    content: 收到第177轮。
+    at: '2026-10-16T10:57:00+08:00'
+    channel: web
+  - id: history-user-178
+    role: user
+    content: 普通合成工作记录第178轮，没有新增长期约束。
+    at: '2026-10-16T10:58:00+08:00'
+    channel: web
+  - id: history-assistant-178
+    role: assistant
+    content: 收到第178轮。
+    at: '2026-10-16T10:58:00+08:00'
+    channel: web
+  - id: history-user-179
+    role: user
+    content: 普通合成工作记录第179轮，没有新增长期约束。
+    at: '2026-10-16T10:59:00+08:00'
+    channel: web
+  - id: history-assistant-179
+    role: assistant
+    content: 收到第179轮。
+    at: '2026-10-16T10:59:00+08:00'
+    channel: web
+  - id: history-user-180
+    role: user
+    content: 普通合成工作记录第180轮，没有新增长期约束。
+    at: '2026-10-16T11:00:00+08:00'
+    channel: web
+  - id: history-assistant-180
+    role: assistant
+    content: 收到第180轮。
+    at: '2026-10-16T11:00:00+08:00'
+    channel: web
+  - id: history-user-181
+    role: user
+    content: 普通合成工作记录第181轮，没有新增长期约束。
+    at: '2026-10-16T11:01:00+08:00'
+    channel: web
+  - id: history-assistant-181
+    role: assistant
+    content: 收到第181轮。
+    at: '2026-10-16T11:01:00+08:00'
+    channel: web
+  - id: history-user-182
+    role: user
+    content: 普通合成工作记录第182轮，没有新增长期约束。
+    at: '2026-10-16T11:02:00+08:00'
+    channel: web
+  - id: history-assistant-182
+    role: assistant
+    content: 收到第182轮。
+    at: '2026-10-16T11:02:00+08:00'
+    channel: web
+  - id: history-user-183
+    role: user
+    content: 普通合成工作记录第183轮，没有新增长期约束。
+    at: '2026-10-16T11:03:00+08:00'
+    channel: web
+  - id: history-assistant-183
+    role: assistant
+    content: 收到第183轮。
+    at: '2026-10-16T11:03:00+08:00'
+    channel: web
+  - id: history-user-184
+    role: user
+    content: 普通合成工作记录第184轮，没有新增长期约束。
+    at: '2026-10-16T11:04:00+08:00'
+    channel: web
+  - id: history-assistant-184
+    role: assistant
+    content: 收到第184轮。
+    at: '2026-10-16T11:04:00+08:00'
+    channel: web
+  - id: history-user-185
+    role: user
+    content: 普通合成工作记录第185轮，没有新增长期约束。
+    at: '2026-10-16T11:05:00+08:00'
+    channel: web
+  - id: history-assistant-185
+    role: assistant
+    content: 收到第185轮。
+    at: '2026-10-16T11:05:00+08:00'
+    channel: web
+  - id: history-user-186
+    role: user
+    content: 普通合成工作记录第186轮，没有新增长期约束。
+    at: '2026-10-16T11:06:00+08:00'
+    channel: web
+  - id: history-assistant-186
+    role: assistant
+    content: 收到第186轮。
+    at: '2026-10-16T11:06:00+08:00'
+    channel: web
+  - id: history-user-187
+    role: user
+    content: 普通合成工作记录第187轮，没有新增长期约束。
+    at: '2026-10-16T11:07:00+08:00'
+    channel: web
+  - id: history-assistant-187
+    role: assistant
+    content: 收到第187轮。
+    at: '2026-10-16T11:07:00+08:00'
+    channel: web
+  - id: history-user-188
+    role: user
+    content: 普通合成工作记录第188轮，没有新增长期约束。
+    at: '2026-10-16T11:08:00+08:00'
+    channel: web
+  - id: history-assistant-188
+    role: assistant
+    content: 收到第188轮。
+    at: '2026-10-16T11:08:00+08:00'
+    channel: web
+  - id: history-user-189
+    role: user
+    content: 普通合成工作记录第189轮，没有新增长期约束。
+    at: '2026-10-16T11:09:00+08:00'
+    channel: web
+  - id: history-assistant-189
+    role: assistant
+    content: 收到第189轮。
+    at: '2026-10-16T11:09:00+08:00'
+    channel: web
+  - id: history-user-190
+    role: user
+    content: 普通合成工作记录第190轮，没有新增长期约束。
+    at: '2026-10-16T11:10:00+08:00'
+    channel: web
+  - id: history-assistant-190
+    role: assistant
+    content: 收到第190轮。
+    at: '2026-10-16T11:10:00+08:00'
+    channel: web
+  - id: history-user-191
+    role: user
+    content: 普通合成工作记录第191轮，没有新增长期约束。
+    at: '2026-10-16T11:11:00+08:00'
+    channel: web
+  - id: history-assistant-191
+    role: assistant
+    content: 收到第191轮。
+    at: '2026-10-16T11:11:00+08:00'
+    channel: web
+  - id: history-user-192
+    role: user
+    content: 普通合成工作记录第192轮，没有新增长期约束。
+    at: '2026-10-16T11:12:00+08:00'
+    channel: web
+  - id: history-assistant-192
+    role: assistant
+    content: 收到第192轮。
+    at: '2026-10-16T11:12:00+08:00'
+    channel: web
+  - id: history-user-193
+    role: user
+    content: 普通合成工作记录第193轮，没有新增长期约束。
+    at: '2026-10-16T11:13:00+08:00'
+    channel: web
+  - id: history-assistant-193
+    role: assistant
+    content: 收到第193轮。
+    at: '2026-10-16T11:13:00+08:00'
+    channel: web
+  - id: history-user-194
+    role: user
+    content: 普通合成工作记录第194轮，没有新增长期约束。
+    at: '2026-10-16T11:14:00+08:00'
+    channel: web
+  - id: history-assistant-194
+    role: assistant
+    content: 收到第194轮。
+    at: '2026-10-16T11:14:00+08:00'
+    channel: web
+  - id: history-user-195
+    role: user
+    content: 普通合成工作记录第195轮，没有新增长期约束。
+    at: '2026-10-16T11:15:00+08:00'
+    channel: web
+  - id: history-assistant-195
+    role: assistant
+    content: 收到第195轮。
+    at: '2026-10-16T11:15:00+08:00'
+    channel: web
+  - id: history-user-196
+    role: user
+    content: 普通合成工作记录第196轮，没有新增长期约束。
+    at: '2026-10-16T11:16:00+08:00'
+    channel: web
+  - id: history-assistant-196
+    role: assistant
+    content: 收到第196轮。
+    at: '2026-10-16T11:16:00+08:00'
+    channel: web
+  - id: history-user-197
+    role: user
+    content: 普通合成工作记录第197轮，没有新增长期约束。
+    at: '2026-10-16T11:17:00+08:00'
+    channel: web
+  - id: history-assistant-197
+    role: assistant
+    content: 收到第197轮。
+    at: '2026-10-16T11:17:00+08:00'
+    channel: web
+  - id: history-user-198
+    role: user
+    content: 普通合成工作记录第198轮，没有新增长期约束。
+    at: '2026-10-16T11:18:00+08:00'
+    channel: web
+  - id: history-assistant-198
+    role: assistant
+    content: 收到第198轮。
+    at: '2026-10-16T11:18:00+08:00'
+    channel: web
+  - id: history-user-199
+    role: user
+    content: 普通合成工作记录第199轮，没有新增长期约束。
+    at: '2026-10-16T11:19:00+08:00'
+    channel: web
+  - id: history-assistant-199
+    role: assistant
+    content: 收到第199轮。
+    at: '2026-10-16T11:19:00+08:00'
+    channel: web
+  - id: history-user-200
+    role: user
+    content: 普通合成工作记录第200轮，没有新增长期约束。
+    at: '2026-10-16T11:20:00+08:00'
+    channel: web
+  - id: history-assistant-200
+    role: assistant
+    content: 收到第200轮。
+    at: '2026-10-16T11:20:00+08:00'
+    channel: web
+  - id: history-user-201
+    role: user
+    content: 普通合成工作记录第201轮，没有新增长期约束。
+    at: '2026-10-16T11:21:00+08:00'
+    channel: web
+  - id: history-assistant-201
+    role: assistant
+    content: 收到第201轮。
+    at: '2026-10-16T11:21:00+08:00'
+    channel: web
+  - id: history-user-202
+    role: user
+    content: 普通合成工作记录第202轮，没有新增长期约束。
+    at: '2026-10-16T11:22:00+08:00'
+    channel: web
+  - id: history-assistant-202
+    role: assistant
+    content: 收到第202轮。
+    at: '2026-10-16T11:22:00+08:00'
+    channel: web
+  - id: history-user-203
+    role: user
+    content: 普通合成工作记录第203轮，没有新增长期约束。
+    at: '2026-10-16T11:23:00+08:00'
+    channel: web
+  - id: history-assistant-203
+    role: assistant
+    content: 收到第203轮。
+    at: '2026-10-16T11:23:00+08:00'
+    channel: web
+  - id: history-user-204
+    role: user
+    content: 普通合成工作记录第204轮，没有新增长期约束。
+    at: '2026-10-16T11:24:00+08:00'
+    channel: web
+  - id: history-assistant-204
+    role: assistant
+    content: 收到第204轮。
+    at: '2026-10-16T11:24:00+08:00'
+    channel: web
+  - id: history-user-205
+    role: user
+    content: 普通合成工作记录第205轮，没有新增长期约束。
+    at: '2026-10-16T11:25:00+08:00'
+    channel: web
+  - id: history-assistant-205
+    role: assistant
+    content: 收到第205轮。
+    at: '2026-10-16T11:25:00+08:00'
+    channel: web
+  - id: history-user-206
+    role: user
+    content: 普通合成工作记录第206轮，没有新增长期约束。
+    at: '2026-10-16T11:26:00+08:00'
+    channel: web
+  - id: history-assistant-206
+    role: assistant
+    content: 收到第206轮。
+    at: '2026-10-16T11:26:00+08:00'
+    channel: web
+  - id: history-user-207
+    role: user
+    content: 普通合成工作记录第207轮，没有新增长期约束。
+    at: '2026-10-16T11:27:00+08:00'
+    channel: web
+  - id: history-assistant-207
+    role: assistant
+    content: 收到第207轮。
+    at: '2026-10-16T11:27:00+08:00'
+    channel: web
+  - id: history-user-208
+    role: user
+    content: 普通合成工作记录第208轮，没有新增长期约束。
+    at: '2026-10-16T11:28:00+08:00'
+    channel: web
+  - id: history-assistant-208
+    role: assistant
+    content: 收到第208轮。
+    at: '2026-10-16T11:28:00+08:00'
+    channel: web
+  - id: history-user-209
+    role: user
+    content: 普通合成工作记录第209轮，没有新增长期约束。
+    at: '2026-10-16T11:29:00+08:00'
+    channel: web
+  - id: history-assistant-209
+    role: assistant
+    content: 收到第209轮。
+    at: '2026-10-16T11:29:00+08:00'
+    channel: web
+  - id: history-user-210
+    role: user
+    content: 普通合成工作记录第210轮，没有新增长期约束。
+    at: '2026-10-16T11:30:00+08:00'
+    channel: web
+  - id: history-assistant-210
+    role: assistant
+    content: 收到第210轮。
+    at: '2026-10-16T11:30:00+08:00'
+    channel: web
+  - id: history-user-211
+    role: user
+    content: 普通合成工作记录第211轮，没有新增长期约束。
+    at: '2026-10-16T11:31:00+08:00'
+    channel: web
+  - id: history-assistant-211
+    role: assistant
+    content: 收到第211轮。
+    at: '2026-10-16T11:31:00+08:00'
+    channel: web
+  - id: history-user-212
+    role: user
+    content: 普通合成工作记录第212轮，没有新增长期约束。
+    at: '2026-10-16T11:32:00+08:00'
+    channel: web
+  - id: history-assistant-212
+    role: assistant
+    content: 收到第212轮。
+    at: '2026-10-16T11:32:00+08:00'
+    channel: web
+  - id: history-user-213
+    role: user
+    content: 普通合成工作记录第213轮，没有新增长期约束。
+    at: '2026-10-16T11:33:00+08:00'
+    channel: web
+  - id: history-assistant-213
+    role: assistant
+    content: 收到第213轮。
+    at: '2026-10-16T11:33:00+08:00'
+    channel: web
+  - id: history-user-214
+    role: user
+    content: 普通合成工作记录第214轮，没有新增长期约束。
+    at: '2026-10-16T11:34:00+08:00'
+    channel: web
+  - id: history-assistant-214
+    role: assistant
+    content: 收到第214轮。
+    at: '2026-10-16T11:34:00+08:00'
+    channel: web
+  - id: history-user-215
+    role: user
+    content: 普通合成工作记录第215轮，没有新增长期约束。
+    at: '2026-10-16T11:35:00+08:00'
+    channel: web
+  - id: history-assistant-215
+    role: assistant
+    content: 收到第215轮。
+    at: '2026-10-16T11:35:00+08:00'
+    channel: web
+  - id: history-user-216
+    role: user
+    content: 普通合成工作记录第216轮，没有新增长期约束。
+    at: '2026-10-16T11:36:00+08:00'
+    channel: web
+  - id: history-assistant-216
+    role: assistant
+    content: 收到第216轮。
+    at: '2026-10-16T11:36:00+08:00'
+    channel: web
+  - id: history-user-217
+    role: user
+    content: 普通合成工作记录第217轮，没有新增长期约束。
+    at: '2026-10-16T11:37:00+08:00'
+    channel: web
+  - id: history-assistant-217
+    role: assistant
+    content: 收到第217轮。
+    at: '2026-10-16T11:37:00+08:00'
+    channel: web
+  - id: history-user-218
+    role: user
+    content: 普通合成工作记录第218轮，没有新增长期约束。
+    at: '2026-10-16T11:38:00+08:00'
+    channel: web
+  - id: history-assistant-218
+    role: assistant
+    content: 收到第218轮。
+    at: '2026-10-16T11:38:00+08:00'
+    channel: web
+  - id: history-user-219
+    role: user
+    content: 普通合成工作记录第219轮，没有新增长期约束。
+    at: '2026-10-16T11:39:00+08:00'
+    channel: web
+  - id: history-assistant-219
+    role: assistant
+    content: 收到第219轮。
+    at: '2026-10-16T11:39:00+08:00'
+    channel: web
+  - id: history-user-220
+    role: user
+    content: 普通合成工作记录第220轮，没有新增长期约束。
+    at: '2026-10-16T11:40:00+08:00'
+    channel: web
+  - id: history-assistant-220
+    role: assistant
+    content: 收到第220轮。
+    at: '2026-10-16T11:40:00+08:00'
+    channel: web
+  - id: history-user-221
+    role: user
+    content: 普通合成工作记录第221轮，没有新增长期约束。
+    at: '2026-10-16T11:41:00+08:00'
+    channel: web
+  - id: history-assistant-221
+    role: assistant
+    content: 收到第221轮。
+    at: '2026-10-16T11:41:00+08:00'
+    channel: web
+  - id: history-user-222
+    role: user
+    content: 普通合成工作记录第222轮，没有新增长期约束。
+    at: '2026-10-16T11:42:00+08:00'
+    channel: web
+  - id: history-assistant-222
+    role: assistant
+    content: 收到第222轮。
+    at: '2026-10-16T11:42:00+08:00'
+    channel: web
+  - id: history-user-223
+    role: user
+    content: 普通合成工作记录第223轮，没有新增长期约束。
+    at: '2026-10-16T11:43:00+08:00'
+    channel: web
+  - id: history-assistant-223
+    role: assistant
+    content: 收到第223轮。
+    at: '2026-10-16T11:43:00+08:00'
+    channel: web
+  - id: history-user-224
+    role: user
+    content: 普通合成工作记录第224轮，没有新增长期约束。
+    at: '2026-10-16T11:44:00+08:00'
+    channel: web
+  - id: history-assistant-224
+    role: assistant
+    content: 收到第224轮。
+    at: '2026-10-16T11:44:00+08:00'
+    channel: web
+  - id: history-user-225
+    role: user
+    content: 普通合成工作记录第225轮，没有新增长期约束。
+    at: '2026-10-16T11:45:00+08:00'
+    channel: web
+  - id: history-assistant-225
+    role: assistant
+    content: 收到第225轮。
+    at: '2026-10-16T11:45:00+08:00'
+    channel: web
+  - id: history-user-226
+    role: user
+    content: 普通合成工作记录第226轮，没有新增长期约束。
+    at: '2026-10-16T11:46:00+08:00'
+    channel: web
+  - id: history-assistant-226
+    role: assistant
+    content: 收到第226轮。
+    at: '2026-10-16T11:46:00+08:00'
+    channel: web
+  - id: history-user-227
+    role: user
+    content: 普通合成工作记录第227轮，没有新增长期约束。
+    at: '2026-10-16T11:47:00+08:00'
+    channel: web
+  - id: history-assistant-227
+    role: assistant
+    content: 收到第227轮。
+    at: '2026-10-16T11:47:00+08:00'
+    channel: web
+  - id: history-user-228
+    role: user
+    content: 普通合成工作记录第228轮，没有新增长期约束。
+    at: '2026-10-16T11:48:00+08:00'
+    channel: web
+  - id: history-assistant-228
+    role: assistant
+    content: 收到第228轮。
+    at: '2026-10-16T11:48:00+08:00'
+    channel: web
+  - id: history-user-229
+    role: user
+    content: 普通合成工作记录第229轮，没有新增长期约束。
+    at: '2026-10-16T11:49:00+08:00'
+    channel: web
+  - id: history-assistant-229
+    role: assistant
+    content: 收到第229轮。
+    at: '2026-10-16T11:49:00+08:00'
+    channel: web
+  - id: history-user-230
+    role: user
+    content: 普通合成工作记录第230轮，没有新增长期约束。
+    at: '2026-10-16T11:50:00+08:00'
+    channel: web
+  - id: history-assistant-230
+    role: assistant
+    content: 收到第230轮。
+    at: '2026-10-16T11:50:00+08:00'
+    channel: web
+  - id: history-user-231
+    role: user
+    content: 普通合成工作记录第231轮，没有新增长期约束。
+    at: '2026-10-16T11:51:00+08:00'
+    channel: web
+  - id: history-assistant-231
+    role: assistant
+    content: 收到第231轮。
+    at: '2026-10-16T11:51:00+08:00'
+    channel: web
+  - id: history-user-232
+    role: user
+    content: 普通合成工作记录第232轮，没有新增长期约束。
+    at: '2026-10-16T11:52:00+08:00'
+    channel: web
+  - id: history-assistant-232
+    role: assistant
+    content: 收到第232轮。
+    at: '2026-10-16T11:52:00+08:00'
+    channel: web
+  - id: history-user-233
+    role: user
+    content: 普通合成工作记录第233轮，没有新增长期约束。
+    at: '2026-10-16T11:53:00+08:00'
+    channel: web
+  - id: history-assistant-233
+    role: assistant
+    content: 收到第233轮。
+    at: '2026-10-16T11:53:00+08:00'
+    channel: web
+  - id: history-user-234
+    role: user
+    content: 普通合成工作记录第234轮，没有新增长期约束。
+    at: '2026-10-16T11:54:00+08:00'
+    channel: web
+  - id: history-assistant-234
+    role: assistant
+    content: 收到第234轮。
+    at: '2026-10-16T11:54:00+08:00'
+    channel: web
+  - id: history-user-235
+    role: user
+    content: 普通合成工作记录第235轮，没有新增长期约束。
+    at: '2026-10-16T11:55:00+08:00'
+    channel: web
+  - id: history-assistant-235
+    role: assistant
+    content: 收到第235轮。
+    at: '2026-10-16T11:55:00+08:00'
+    channel: web
+  - id: history-user-236
+    role: user
+    content: 普通合成工作记录第236轮，没有新增长期约束。
+    at: '2026-10-16T11:56:00+08:00'
+    channel: web
+  - id: history-assistant-236
+    role: assistant
+    content: 收到第236轮。
+    at: '2026-10-16T11:56:00+08:00'
+    channel: web
+  - id: history-user-237
+    role: user
+    content: 普通合成工作记录第237轮，没有新增长期约束。
+    at: '2026-10-16T11:57:00+08:00'
+    channel: web
+  - id: history-assistant-237
+    role: assistant
+    content: 收到第237轮。
+    at: '2026-10-16T11:57:00+08:00'
+    channel: web
+  - id: history-user-238
+    role: user
+    content: 普通合成工作记录第238轮，没有新增长期约束。
+    at: '2026-10-16T11:58:00+08:00'
+    channel: web
+  - id: history-assistant-238
+    role: assistant
+    content: 收到第238轮。
+    at: '2026-10-16T11:58:00+08:00'
+    channel: web
+  - id: history-user-239
+    role: user
+    content: 普通合成工作记录第239轮，没有新增长期约束。
+    at: '2026-10-16T11:59:00+08:00'
+    channel: web
+  - id: history-assistant-239
+    role: assistant
+    content: 收到第239轮。
+    at: '2026-10-16T11:59:00+08:00'
+    channel: web
+  - id: history-user-240
+    role: user
+    content: 普通合成工作记录第240轮，没有新增长期约束。
+    at: '2026-10-16T12:00:00+08:00'
+    channel: web
+  - id: history-assistant-240
+    role: assistant
+    content: 收到第240轮。
+    at: '2026-10-16T12:00:00+08:00'
+    channel: web
+  - id: history-user-241
+    role: user
+    content: 普通合成工作记录第241轮，没有新增长期约束。
+    at: '2026-10-16T12:01:00+08:00'
+    channel: web
+  - id: history-assistant-241
+    role: assistant
+    content: 收到第241轮。
+    at: '2026-10-16T12:01:00+08:00'
+    channel: web
+  - id: history-user-242
+    role: user
+    content: 普通合成工作记录第242轮，没有新增长期约束。
+    at: '2026-10-16T12:02:00+08:00'
+    channel: web
+  - id: history-assistant-242
+    role: assistant
+    content: 收到第242轮。
+    at: '2026-10-16T12:02:00+08:00'
+    channel: web
+  - id: history-user-243
+    role: user
+    content: 普通合成工作记录第243轮，没有新增长期约束。
+    at: '2026-10-16T12:03:00+08:00'
+    channel: web
+  - id: history-assistant-243
+    role: assistant
+    content: 收到第243轮。
+    at: '2026-10-16T12:03:00+08:00'
+    channel: web
+  - id: history-user-244
+    role: user
+    content: 普通合成工作记录第244轮，没有新增长期约束。
+    at: '2026-10-16T12:04:00+08:00'
+    channel: web
+  - id: history-assistant-244
+    role: assistant
+    content: 收到第244轮。
+    at: '2026-10-16T12:04:00+08:00'
+    channel: web
+  - id: history-user-245
+    role: user
+    content: 普通合成工作记录第245轮，没有新增长期约束。
+    at: '2026-10-16T12:05:00+08:00'
+    channel: web
+  - id: history-assistant-245
+    role: assistant
+    content: 收到第245轮。
+    at: '2026-10-16T12:05:00+08:00'
+    channel: web
+  - id: history-user-246
+    role: user
+    content: 普通合成工作记录第246轮，没有新增长期约束。
+    at: '2026-10-16T12:06:00+08:00'
+    channel: web
+  - id: history-assistant-246
+    role: assistant
+    content: 收到第246轮。
+    at: '2026-10-16T12:06:00+08:00'
+    channel: web
+  - id: history-user-247
+    role: user
+    content: 普通合成工作记录第247轮，没有新增长期约束。
+    at: '2026-10-16T12:07:00+08:00'
+    channel: web
+  - id: history-assistant-247
+    role: assistant
+    content: 收到第247轮。
+    at: '2026-10-16T12:07:00+08:00'
+    channel: web
+  - id: history-user-248
+    role: user
+    content: 普通合成工作记录第248轮，没有新增长期约束。
+    at: '2026-10-16T12:08:00+08:00'
+    channel: web
+  - id: history-assistant-248
+    role: assistant
+    content: 收到第248轮。
+    at: '2026-10-16T12:08:00+08:00'
+    channel: web
+  - id: history-user-249
+    role: user
+    content: 普通合成工作记录第249轮，没有新增长期约束。
+    at: '2026-10-16T12:09:00+08:00'
+    channel: web
+  - id: history-assistant-249
+    role: assistant
+    content: 收到第249轮。
+    at: '2026-10-16T12:09:00+08:00'
+    channel: web
+  - id: history-user-250
+    role: user
+    content: 普通合成工作记录第250轮，没有新增长期约束。
+    at: '2026-10-16T12:10:00+08:00'
+    channel: web
+  - id: history-assistant-250
+    role: assistant
+    content: 收到第250轮。
+    at: '2026-10-16T12:10:00+08:00'
+    channel: web
+  - id: history-user-251
+    role: user
+    content: 普通合成工作记录第251轮，没有新增长期约束。
+    at: '2026-10-16T12:11:00+08:00'
+    channel: web
+  - id: history-assistant-251
+    role: assistant
+    content: 收到第251轮。
+    at: '2026-10-16T12:11:00+08:00'
+    channel: web
+  - id: history-user-252
+    role: user
+    content: 普通合成工作记录第252轮，没有新增长期约束。
+    at: '2026-10-16T12:12:00+08:00'
+    channel: web
+  - id: history-assistant-252
+    role: assistant
+    content: 收到第252轮。
+    at: '2026-10-16T12:12:00+08:00'
+    channel: web
+  - id: history-user-253
+    role: user
+    content: 普通合成工作记录第253轮，没有新增长期约束。
+    at: '2026-10-16T12:13:00+08:00'
+    channel: web
+  - id: history-assistant-253
+    role: assistant
+    content: 收到第253轮。
+    at: '2026-10-16T12:13:00+08:00'
+    channel: web
+  - id: history-user-254
+    role: user
+    content: 普通合成工作记录第254轮，没有新增长期约束。
+    at: '2026-10-16T12:14:00+08:00'
+    channel: web
+  - id: history-assistant-254
+    role: assistant
+    content: 收到第254轮。
+    at: '2026-10-16T12:14:00+08:00'
+    channel: web
+  - id: history-user-255
+    role: user
+    content: 普通合成工作记录第255轮，没有新增长期约束。
+    at: '2026-10-16T12:15:00+08:00'
+    channel: web
+  - id: history-assistant-255
+    role: assistant
+    content: 收到第255轮。
+    at: '2026-10-16T12:15:00+08:00'
+    channel: web
+  - id: history-user-256
+    role: user
+    content: 普通合成工作记录第256轮，没有新增长期约束。
+    at: '2026-10-16T12:16:00+08:00'
+    channel: web
+  - id: history-assistant-256
+    role: assistant
+    content: 收到第256轮。
+    at: '2026-10-16T12:16:00+08:00'
+    channel: web
+  - id: history-user-257
+    role: user
+    content: 普通合成工作记录第257轮，没有新增长期约束。
+    at: '2026-10-16T12:17:00+08:00'
+    channel: web
+  - id: history-assistant-257
+    role: assistant
+    content: 收到第257轮。
+    at: '2026-10-16T12:17:00+08:00'
+    channel: web
+  - id: history-user-258
+    role: user
+    content: 普通合成工作记录第258轮，没有新增长期约束。
+    at: '2026-10-16T12:18:00+08:00'
+    channel: web
+  - id: history-assistant-258
+    role: assistant
+    content: 收到第258轮。
+    at: '2026-10-16T12:18:00+08:00'
+    channel: web
+  - id: history-user-259
+    role: user
+    content: 普通合成工作记录第259轮，没有新增长期约束。
+    at: '2026-10-16T12:19:00+08:00'
+    channel: web
+  - id: history-assistant-259
+    role: assistant
+    content: 收到第259轮。
+    at: '2026-10-16T12:19:00+08:00'
+    channel: web
+  - id: history-user-260
+    role: user
+    content: 普通合成工作记录第260轮，没有新增长期约束。
+    at: '2026-10-16T12:20:00+08:00'
+    channel: web
+  - id: history-assistant-260
+    role: assistant
+    content: 收到第260轮。
+    at: '2026-10-16T12:20:00+08:00'
+    channel: web
+  - id: history-user-261
+    role: user
+    content: 普通合成工作记录第261轮，没有新增长期约束。
+    at: '2026-10-16T12:21:00+08:00'
+    channel: web
+  - id: history-assistant-261
+    role: assistant
+    content: 收到第261轮。
+    at: '2026-10-16T12:21:00+08:00'
+    channel: web
+  - id: history-user-262
+    role: user
+    content: 普通合成工作记录第262轮，没有新增长期约束。
+    at: '2026-10-16T12:22:00+08:00'
+    channel: web
+  - id: history-assistant-262
+    role: assistant
+    content: 收到第262轮。
+    at: '2026-10-16T12:22:00+08:00'
+    channel: web
+  - id: history-user-263
+    role: user
+    content: 普通合成工作记录第263轮，没有新增长期约束。
+    at: '2026-10-16T12:23:00+08:00'
+    channel: web
+  - id: history-assistant-263
+    role: assistant
+    content: 收到第263轮。
+    at: '2026-10-16T12:23:00+08:00'
+    channel: web
+  - id: history-user-264
+    role: user
+    content: 普通合成工作记录第264轮，没有新增长期约束。
+    at: '2026-10-16T12:24:00+08:00'
+    channel: web
+  - id: history-assistant-264
+    role: assistant
+    content: 收到第264轮。
+    at: '2026-10-16T12:24:00+08:00'
+    channel: web
+  - id: history-user-265
+    role: user
+    content: 普通合成工作记录第265轮，没有新增长期约束。
+    at: '2026-10-16T12:25:00+08:00'
+    channel: web
+  - id: history-assistant-265
+    role: assistant
+    content: 收到第265轮。
+    at: '2026-10-16T12:25:00+08:00'
+    channel: web
+  - id: history-user-266
+    role: user
+    content: 普通合成工作记录第266轮，没有新增长期约束。
+    at: '2026-10-16T12:26:00+08:00'
+    channel: web
+  - id: history-assistant-266
+    role: assistant
+    content: 收到第266轮。
+    at: '2026-10-16T12:26:00+08:00'
+    channel: web
+  - id: history-user-267
+    role: user
+    content: 普通合成工作记录第267轮，没有新增长期约束。
+    at: '2026-10-16T12:27:00+08:00'
+    channel: web
+  - id: history-assistant-267
+    role: assistant
+    content: 收到第267轮。
+    at: '2026-10-16T12:27:00+08:00'
+    channel: web
+  - id: history-user-268
+    role: user
+    content: 普通合成工作记录第268轮，没有新增长期约束。
+    at: '2026-10-16T12:28:00+08:00'
+    channel: web
+  - id: history-assistant-268
+    role: assistant
+    content: 收到第268轮。
+    at: '2026-10-16T12:28:00+08:00'
+    channel: web
+  - id: history-user-269
+    role: user
+    content: 普通合成工作记录第269轮，没有新增长期约束。
+    at: '2026-10-16T12:29:00+08:00'
+    channel: web
+  - id: history-assistant-269
+    role: assistant
+    content: 收到第269轮。
+    at: '2026-10-16T12:29:00+08:00'
+    channel: web
+  - id: history-user-270
+    role: user
+    content: 普通合成工作记录第270轮，没有新增长期约束。
+    at: '2026-10-16T12:30:00+08:00'
+    channel: web
+  - id: history-assistant-270
+    role: assistant
+    content: 收到第270轮。
+    at: '2026-10-16T12:30:00+08:00'
+    channel: web
+  - id: history-user-271
+    role: user
+    content: 普通合成工作记录第271轮，没有新增长期约束。
+    at: '2026-10-16T12:31:00+08:00'
+    channel: web
+  - id: history-assistant-271
+    role: assistant
+    content: 收到第271轮。
+    at: '2026-10-16T12:31:00+08:00'
+    channel: web
+  - id: history-user-272
+    role: user
+    content: 普通合成工作记录第272轮，没有新增长期约束。
+    at: '2026-10-16T12:32:00+08:00'
+    channel: web
+  - id: history-assistant-272
+    role: assistant
+    content: 收到第272轮。
+    at: '2026-10-16T12:32:00+08:00'
+    channel: web
+  - id: history-user-273
+    role: user
+    content: 普通合成工作记录第273轮，没有新增长期约束。
+    at: '2026-10-16T12:33:00+08:00'
+    channel: web
+  - id: history-assistant-273
+    role: assistant
+    content: 收到第273轮。
+    at: '2026-10-16T12:33:00+08:00'
+    channel: web
+  - id: history-user-274
+    role: user
+    content: 普通合成工作记录第274轮，没有新增长期约束。
+    at: '2026-10-16T12:34:00+08:00'
+    channel: web
+  - id: history-assistant-274
+    role: assistant
+    content: 收到第274轮。
+    at: '2026-10-16T12:34:00+08:00'
+    channel: web
+  - id: history-user-275
+    role: user
+    content: 普通合成工作记录第275轮，没有新增长期约束。
+    at: '2026-10-16T12:35:00+08:00'
+    channel: web
+  - id: history-assistant-275
+    role: assistant
+    content: 收到第275轮。
+    at: '2026-10-16T12:35:00+08:00'
+    channel: web
+  - id: history-user-276
+    role: user
+    content: 普通合成工作记录第276轮，没有新增长期约束。
+    at: '2026-10-16T12:36:00+08:00'
+    channel: web
+  - id: history-assistant-276
+    role: assistant
+    content: 收到第276轮。
+    at: '2026-10-16T12:36:00+08:00'
+    channel: web
+  - id: history-user-277
+    role: user
+    content: 普通合成工作记录第277轮，没有新增长期约束。
+    at: '2026-10-16T12:37:00+08:00'
+    channel: web
+  - id: history-assistant-277
+    role: assistant
+    content: 收到第277轮。
+    at: '2026-10-16T12:37:00+08:00'
+    channel: web
+  - id: history-user-278
+    role: user
+    content: 普通合成工作记录第278轮，没有新增长期约束。
+    at: '2026-10-16T12:38:00+08:00'
+    channel: web
+  - id: history-assistant-278
+    role: assistant
+    content: 收到第278轮。
+    at: '2026-10-16T12:38:00+08:00'
+    channel: web
+  - id: history-user-279
+    role: user
+    content: 普通合成工作记录第279轮，没有新增长期约束。
+    at: '2026-10-16T12:39:00+08:00'
+    channel: web
+  - id: history-assistant-279
+    role: assistant
+    content: 收到第279轮。
+    at: '2026-10-16T12:39:00+08:00'
+    channel: web
+  - id: history-user-280
+    role: user
+    content: 普通合成工作记录第280轮，没有新增长期约束。
+    at: '2026-10-16T12:40:00+08:00'
+    channel: web
+  - id: history-assistant-280
+    role: assistant
+    content: 收到第280轮。
+    at: '2026-10-16T12:40:00+08:00'
+    channel: web
+  - id: history-user-281
+    role: user
+    content: 普通合成工作记录第281轮，没有新增长期约束。
+    at: '2026-10-16T12:41:00+08:00'
+    channel: web
+  - id: history-assistant-281
+    role: assistant
+    content: 收到第281轮。
+    at: '2026-10-16T12:41:00+08:00'
+    channel: web
+  - id: history-user-282
+    role: user
+    content: 普通合成工作记录第282轮，没有新增长期约束。
+    at: '2026-10-16T12:42:00+08:00'
+    channel: web
+  - id: history-assistant-282
+    role: assistant
+    content: 收到第282轮。
+    at: '2026-10-16T12:42:00+08:00'
+    channel: web
+  - id: history-user-283
+    role: user
+    content: 普通合成工作记录第283轮，没有新增长期约束。
+    at: '2026-10-16T12:43:00+08:00'
+    channel: web
+  - id: history-assistant-283
+    role: assistant
+    content: 收到第283轮。
+    at: '2026-10-16T12:43:00+08:00'
+    channel: web
+  - id: history-user-284
+    role: user
+    content: 普通合成工作记录第284轮，没有新增长期约束。
+    at: '2026-10-16T12:44:00+08:00'
+    channel: web
+  - id: history-assistant-284
+    role: assistant
+    content: 收到第284轮。
+    at: '2026-10-16T12:44:00+08:00'
+    channel: web
+  - id: history-user-285
+    role: user
+    content: 普通合成工作记录第285轮，没有新增长期约束。
+    at: '2026-10-16T12:45:00+08:00'
+    channel: web
+  - id: history-assistant-285
+    role: assistant
+    content: 收到第285轮。
+    at: '2026-10-16T12:45:00+08:00'
+    channel: web
+  - id: history-user-286
+    role: user
+    content: 普通合成工作记录第286轮，没有新增长期约束。
+    at: '2026-10-16T12:46:00+08:00'
+    channel: web
+  - id: history-assistant-286
+    role: assistant
+    content: 收到第286轮。
+    at: '2026-10-16T12:46:00+08:00'
+    channel: web
+  - id: history-user-287
+    role: user
+    content: 普通合成工作记录第287轮，没有新增长期约束。
+    at: '2026-10-16T12:47:00+08:00'
+    channel: web
+  - id: history-assistant-287
+    role: assistant
+    content: 收到第287轮。
+    at: '2026-10-16T12:47:00+08:00'
+    channel: web
+  - id: history-user-288
+    role: user
+    content: 普通合成工作记录第288轮，没有新增长期约束。
+    at: '2026-10-16T12:48:00+08:00'
+    channel: web
+  - id: history-assistant-288
+    role: assistant
+    content: 收到第288轮。
+    at: '2026-10-16T12:48:00+08:00'
+    channel: web
+  - id: history-user-289
+    role: user
+    content: 普通合成工作记录第289轮，没有新增长期约束。
+    at: '2026-10-16T12:49:00+08:00'
+    channel: web
+  - id: history-assistant-289
+    role: assistant
+    content: 收到第289轮。
+    at: '2026-10-16T12:49:00+08:00'
+    channel: web
+  - id: history-user-290
+    role: user
+    content: 普通合成工作记录第290轮，没有新增长期约束。
+    at: '2026-10-16T12:50:00+08:00'
+    channel: web
+  - id: history-assistant-290
+    role: assistant
+    content: 收到第290轮。
+    at: '2026-10-16T12:50:00+08:00'
+    channel: web
+  - id: history-user-291
+    role: user
+    content: 普通合成工作记录第291轮，没有新增长期约束。
+    at: '2026-10-16T12:51:00+08:00'
+    channel: web
+  - id: history-assistant-291
+    role: assistant
+    content: 收到第291轮。
+    at: '2026-10-16T12:51:00+08:00'
+    channel: web
+  - id: history-user-292
+    role: user
+    content: 普通合成工作记录第292轮，没有新增长期约束。
+    at: '2026-10-16T12:52:00+08:00'
+    channel: web
+  - id: history-assistant-292
+    role: assistant
+    content: 收到第292轮。
+    at: '2026-10-16T12:52:00+08:00'
+    channel: web
+  - id: history-user-293
+    role: user
+    content: 普通合成工作记录第293轮，没有新增长期约束。
+    at: '2026-10-16T12:53:00+08:00'
+    channel: web
+  - id: history-assistant-293
+    role: assistant
+    content: 收到第293轮。
+    at: '2026-10-16T12:53:00+08:00'
+    channel: web
+  - id: history-user-294
+    role: user
+    content: 普通合成工作记录第294轮，没有新增长期约束。
+    at: '2026-10-16T12:54:00+08:00'
+    channel: web
+  - id: history-assistant-294
+    role: assistant
+    content: 收到第294轮。
+    at: '2026-10-16T12:54:00+08:00'
+    channel: web
+  - id: history-user-295
+    role: user
+    content: 普通合成工作记录第295轮，没有新增长期约束。
+    at: '2026-10-16T12:55:00+08:00'
+    channel: web
+  - id: history-assistant-295
+    role: assistant
+    content: 收到第295轮。
+    at: '2026-10-16T12:55:00+08:00'
+    channel: web
+  - id: history-user-296
+    role: user
+    content: 普通合成工作记录第296轮，没有新增长期约束。
+    at: '2026-10-16T12:56:00+08:00'
+    channel: web
+  - id: history-assistant-296
+    role: assistant
+    content: 收到第296轮。
+    at: '2026-10-16T12:56:00+08:00'
+    channel: web
+  - id: history-user-297
+    role: user
+    content: 普通合成工作记录第297轮，没有新增长期约束。
+    at: '2026-10-16T12:57:00+08:00'
+    channel: web
+  - id: history-assistant-297
+    role: assistant
+    content: 收到第297轮。
+    at: '2026-10-16T12:57:00+08:00'
+    channel: web
+  - id: history-user-298
+    role: user
+    content: 普通合成工作记录第298轮，没有新增长期约束。
+    at: '2026-10-16T12:58:00+08:00'
+    channel: web
+  - id: history-assistant-298
+    role: assistant
+    content: 收到第298轮。
+    at: '2026-10-16T12:58:00+08:00'
+    channel: web
+  - id: history-user-299
+    role: user
+    content: 普通合成工作记录第299轮，没有新增长期约束。
+    at: '2026-10-16T12:59:00+08:00'
+    channel: web
+  - id: history-assistant-299
+    role: assistant
+    content: 收到第299轮。
+    at: '2026-10-16T12:59:00+08:00'
+    channel: web
+  - id: history-user-300
+    role: user
+    content: 普通合成工作记录第300轮，没有新增长期约束。
+    at: '2026-10-16T13:00:00+08:00'
+    channel: web
+  - id: history-assistant-300
+    role: assistant
+    content: 收到第300轮。
+    at: '2026-10-16T13:00:00+08:00'
+    channel: web
+  entities: []
+  settings: {}
+  context: {}
+  controls: {}
+  thread_id: life-synthetic
+  incognito: false
+turns:
+- user: 帮我看看这个夜班工作
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called:
+    - memory_search
+    tools_not_called: []
+    receipts: []
+    db:
+    - where: {}
+      path: observed_tools.0.output.data.items.0.id
+      equals: early-no-night
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.items.0.content
+      contains: 我不能上夜班。
+      absent: false
+    events: []
+    chart_structure: false
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 我不能上夜班。
+        kinds:
+        - fact
+  - text: 已查询实际授权来源，再继续讨论。
+notes: 独立v4扩充契约；实际工具结果/线程/信封断言，不替换冻结47项。

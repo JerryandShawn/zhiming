@@ -19,10 +19,12 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 from hermes.tarot_deck import public_catalog
 from ..application.consultation import ConsultationService, today
+from ..application.read_result import read_result
 from ..domain.consultation import CoreError, MissingInput
 from ..domain.json_values import ensure_finite_json
 from ..domain.contracts import ScopeError, RevisionConflict, EvidenceError, LeaseConflict, BudgetExceeded
 from ..memory.history import history_window
+from ..memory.private import is_private
 from .tarot import IdempotencyConflict
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -106,7 +108,7 @@ def effect_receipt(result,kind):
 
 
 def create_app(service=None):
-    state = {'service': service, 'workers': {}, 'task': None}
+    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None}
     def core(req=None):
         if state['service'] is None: state['service'] = ConsultationService.from_base()
         if req: state['service'].repo.ensure_owner(auth(req))
@@ -122,23 +124,37 @@ def create_app(service=None):
         finally: state['workers'].pop(run_id, None)
 
     def launch(owner, run_id, reading_id=None):
+        if core().repo.fetch_run(owner,run_id)['runtime']=='v4':
+            if state['dispatcher']:state['dispatcher'].wake.set()
+            return
         if run_id not in state['workers']: state['workers'][run_id] = asyncio.create_task(execute(owner, run_id, reading_id))
 
     async def worker():
         while True:
-            svc = core(); svc.repo.recover_runs()
+            from ..application.runtime_assembly import legacy_queue
+            svc = core()
+            await asyncio.to_thread(state['maintenance'].tick)
             svc.repo.cleanup_media_deletions()
             if not state['workers']:
-                queue = svc.repo.queued_runs(limit=1)
+                queue = legacy_queue(svc.repo,limit=1)
                 if queue: launch(queue[0]['owner'], queue[0]['id'], queue[0]['request'].get('reading_id'))
             await asyncio.sleep(2)
 
     @asynccontextmanager
     async def lifespan(app):
-        core(); state['task'] = asyncio.create_task(worker())
-        yield
-        state['task'].cancel()
-        await asyncio.gather(state['task'], return_exceptions=True)
+        from ..application.maintenance_schedule import PrivacyMaintenanceSchedule
+        svc=core(); assembly=getattr(svc,'runtime_assembly',None)
+        state['maintenance']=PrivacyMaintenanceSchedule(svc.repo)
+        if assembly:state['dispatcher']=assembly.dispatcher(svc)
+        if state['dispatcher']:state['dispatcher'].start()
+        state['task'] = asyncio.create_task(worker())
+        try:yield
+        finally:
+            state['task'].cancel()
+            await asyncio.gather(state['task'], return_exceptions=True)
+            if state['dispatcher']:
+                from ..application.runtime_assembly import stop_dispatcher
+                await asyncio.to_thread(stop_dispatcher,state['dispatcher'])
 
     app = FastAPI(title='知命明镜台 Core v3', lifespan=lifespan)
     app.state.core = state
@@ -160,8 +176,13 @@ def create_app(service=None):
         if not row: raise HTTPException(404, '记录不存在')
         return svc.repo.fetch_run(owner,row['id'])
 
-    async def stream(owner, run, reading_id=None, draw_id=None):
+    async def stream(owner, run, reading_id=None, draw_id=None, request=None):
         svc = core()
+        if run['runtime']=='v4':
+            from .thread_events import event_response
+            if not state['dispatcher']:raise EvidenceError('v4 调度尚未启动，原请求已保留')
+            state['dispatcher'].wake.set()
+            return event_response(svc.repo,owner,run['id'],request)
         if run['status']=='queued' and not state['workers']: launch(owner,run['id'],reading_id)
         async def events():
             yield 'data: '+json.dumps({'type':'started','turn_id':run['operation_id'],'run_id':run['id'],'reading_id':reading_id,'draw_id':draw_id})+'\n\n'
@@ -175,7 +196,10 @@ def create_app(service=None):
                     yield 'data: '+json.dumps({'type':'status','stage':phase,'text':'正在核对本轮资料与依据'},ensure_ascii=False)+'\n\n'
                     if phase=='snapshot': yield 'data: '+json.dumps({'type':'context','meta':{'core_run':run['id'],'dependency_versions':current['dependencies']}})+'\n\n'
                 if current['status']=='succeeded':
-                    yield 'data: '+json.dumps({'type':'result','result':current['result'],'reading_id':reading_id,'draw_id':draw_id},ensure_ascii=False)+'\n\n'; break
+                    final={'type':'result','result':read_result(current['result']),
+                           'reading_id':reading_id,'draw_id':draw_id}
+                    yield 'data: '+json.dumps(final,ensure_ascii=False)+'\n\n'
+                    break
                 if current['status'] not in ('running','queued'):
                     yield 'data: '+json.dumps({'type':'error','message':current['error'] or '本轮已停止','run_id':run['id']},ensure_ascii=False)+'\n\n'; break
                 yield ': heartbeat\n\n'
@@ -384,13 +408,16 @@ def create_app(service=None):
     @app.post('/api/tarot/draws/{ident}/readings')
     async def reading(ident:str,req:Request):
         svc=core(req);owner=auth(req);data=await body(req);draw=svc.tarot.get_for_reading(owner,ident);request=key(data)
+        from ..application.thread_queue import owner_runtime
+        if owner_runtime(svc.repo.assert_scope(owner,draw['subject_id'])['settings'])=='v4':
+            raise EvidenceError('v4 既有牌阵解读入口尚未接线，原牌阵已保留')
         snap=svc.memory.snapshot(owner,draw['subject_id'],[draw['case_id']])
         version=svc.tarot.begin_reading(owner,ident,model=getattr(svc.model,'model','configured'),prompt_version='core3.0',
                     context_snapshot={'revision':snap['revision'],'fact_ids':[f['id'] for f in snap['facts']],'supplement':data.get('supplement','')},idempotency_key=request)['reading']
         message='请解读这次固定牌阵。问题：'+draw['question']+('。补充背景：'+data['supplement'] if data.get('supplement') else '')
         run=svc.submit(owner=owner,subject=draw['subject_id'],message=message,conversation_id='shared',request_id='reading:'+request,
                        case_ids=[draw['case_id']],mode='tarot',depth=data.get('depth','standard'),draw_id=ident,reading_id=version['id'])
-        return await stream(owner,run,version['id'],ident)
+        return await stream(owner,run,version['id'],ident,request=req)
 
     def save_images(svc,owner,request_id,images):
         if not isinstance(images,list) or len(images)>4: raise MissingInput('每轮最多4张图片')
@@ -423,24 +450,36 @@ def create_app(service=None):
     @app.post('/api/chat')
     async def chat(req:Request):
         svc=core(req);owner=auth(req);data=await body(req);request_id=data.get('retry_of') or key(data)
+        if data.get('incognito') or data.get('thread_id') or 'runtime' in data:
+            raise EvidenceError('请通过线程入口发送消息，运行版本由持久设置决定')
+        from ..application.thread_queue import owner_runtime
+        if data.get('images') and owner_runtime(svc.repo.assert_scope(owner)['settings'])=='v4':
+            raise EvidenceError('v4 附件入口尚未接线，请保留原文件')
         images=save_images(svc,owner,request_id,data.get('images') or [])
         run=svc.submit(owner=owner,subject=data.get('subject_id','self'),message=data.get('message',''),conversation_id=data.get('session_id','shared'),
             request_id=request_id,case_ids=data.get('case_ids') or ([data['case_id']] if data.get('case_id') else []),depth=data.get('depth','standard'),selection=data.get('selection') or {},draw_id=data.get('draw_id'),images=images)
-        return await stream(owner,run)
+        return await stream(owner,run,request=req)
 
     @app.get('/api/chat/{ident}')
     async def get_chat(ident:str,req:Request):
-        owner=auth(req);core(req);run=lookup(owner,ident);final=run['result'] or {}
+        owner=auth(req);core(req);run=lookup(owner,ident)
+        final=read_result(run['result']) if run['status']=='succeeded' else {}
         return {'id':ident,'run_id':run['id'],'status':{'succeeded':'complete','queued':'running'}.get(run['status'],run['status']),
                 'answer':final.get('answer',''),'meta':final if final else {'error':run['error']}}
 
     @app.get('/api/runs/{ident}')
     async def get_run(ident:str,req:Request):
         owner=auth(req);core(req);run=lookup(owner,ident)
+        if run['status']=='succeeded':run=dict(run,result=read_result(run['result']))
         return {k:run[k] for k in ('id','operation_id','status','calls','call_limit','attempts','checkpoint','dependencies','error','result')}
 
-    async def stop(ident,req):
+    async def stop(ident:str,req:Request):
         owner=auth(req);svc=core(req);run=lookup(owner,ident)
+        if run['runtime']=='v4':
+            from ..application.dispatcher_cancellation import DispatcherCancellation
+            assembly=getattr(svc,'runtime_assembly',None)
+            DispatcherCancellation(svc.repo,assembly.signals if assembly else None).request(owner,run['id'])
+            return {'ok':True,'run_id':run['id']}
         with svc.repo.transaction(owner) as conn:
             conn.execute(sql.SQL("UPDATE {} SET status='cancelled',lease_token=NULL,lease_until=NULL,error='用户已停止本轮',updated_at=now() WHERE owner=%s AND id=%s AND status IN ('queued','running')").format(svc.repo.table('core_runs')),(owner,run['id']))
         return {'ok':True,'run_id':run['id']}
@@ -455,7 +494,7 @@ def create_app(service=None):
         current=prepared['run']
         if current['request'].get('reading_id'):
             svc.tarot.resume_reading(owner,current['request']['reading_id'],current['id'])
-        return await stream(owner,current,current['request'].get('reading_id'),current['request'].get('draw_id'))
+        return await stream(owner,current,current['request'].get('reading_id'),current['request'].get('draw_id'),request=req)
 
     @app.post('/api/runs/{ident}/resume')
     async def resume(ident:str,req:Request):
@@ -465,7 +504,7 @@ def create_app(service=None):
         new_id=key(data,'message_id')
         run=svc.submit(owner=owner,subject=old['subject'],message=data.get('message',''),conversation_id=old['request']['conversation_id'],
             request_id='resume:'+old['id']+':'+new_id,case_ids=old['request']['case_ids'],depth=old['request']['depth'],draw_id=old['request']['draw_id'],parent_run=old['id'])
-        return await stream(owner,run)
+        return await stream(owner,run,request=req)
 
     @app.get('/api/history')
     async def history(req:Request,session:str='shared',limit:int=60,before:str='',q:str='',subject_id:str='self'):
@@ -474,7 +513,10 @@ def create_app(service=None):
         return history_window(svc.repo,owner,subject_id,session,limit,boundary,q)
 
     @app.get('/api/feishu_history')
-    async def feishu_history(req:Request): return [m for m in core(req).repo.list(auth(req),'message') if m.get('channel')=='feishu'][-100:]
+    async def feishu_history(req:Request):
+        svc=core(req);owner=auth(req)
+        rows=[m for m in svc.repo.list(owner,'message') if m.get('channel')=='feishu' and not is_private(m)][-100:]
+        return [svc.memory.get_source(owner,m['id'],for_context=True) for m in rows]
 
     @app.get('/api/sessions')
     async def sessions(req:Request): return core(req).repo.list(auth(req),'session')
@@ -486,7 +528,7 @@ def create_app(service=None):
 
     async def chart(req,system,date):
         svc=core(req);owner=auth(req);snap=svc.memory.snapshot(owner)
-        result=svc.charts_factory(owner).calculate(svc.authorized_archive(owner,'self',snap),date or today(),[system],snap['revision'],'self')
+        result=svc.calculate_chart(owner,'self',snap,date or today(),[system])
         if not result['artifacts']: raise MissingInput('；'.join(e.get('reason','计算资料不足') for e in result['errors']))
         first=next(iter(result['artifacts'].values()))
         return dict(first['data'],core_meta={'profiles':result['profiles'],'branches':result['branches'],'warnings':first.get('warnings',[])})
@@ -546,4 +588,6 @@ def create_app(service=None):
     async def feedback(req:Request):
         svc=core(req);owner=auth(req);data=await body(req)
         return svc.repo.put(owner,'feedback',key(data),{'forecast_id':data.get('forecast_id'),'feedback':data.get('feedback'),'source':'user'},operation_id='feedback:'+key(data))
+    from .thread_routes import thread_router
+    app.include_router(thread_router(core,auth,body))
     return app

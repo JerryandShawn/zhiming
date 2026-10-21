@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING
 
 from psycopg import sql
 
+from mingjing_core.repositories.dependencies import lineage_key
+
 if TYPE_CHECKING:
     from collections.abc import Callable, Collection, Iterable
 
@@ -55,7 +57,7 @@ def contaminated_runs(
     for row in rows:
         if recomputable and row["status"] in ("revoked", "cancelled"):
             continue
-        dependencies = set(row["state_version"])
+        dependencies = {lineage_key(key) for key in row["state_version"]}
         tainted = keys.intersection(dependencies) or any("fact:" + ident in dependencies for ident in facts)
         tainted = tainted or any("message:" + ident in dependencies for ident in sources)
         tainted = (

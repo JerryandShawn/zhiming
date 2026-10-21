@@ -1,0 +1,19 @@
+id: T05
+title: 国庆调休周六上班
+category: time
+clock: '2026-10-10T09:00:00+08:00'
+seed: {}
+turns:
+- user: 今天周六我要不要上班？
+  expect:
+    must_include_all:
+    - 10月10日|10/10
+    - 调休
+    - 上班|补班
+    must_not_include:
+    - 周末休息
+    - 今天放假
+scripted:
+- turn: 1
+  model:
+  - text: 今天是10月10日，虽然周六，却是国庆调休上班日，要上班。

@@ -1,0 +1,23 @@
+id: T08
+title: 下周三必须使用时间工具
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed: {}
+turns:
+- user: 下周三我有个面试，那天是几号？农历多少？
+  expect:
+    must_include_all:
+    - 10月21日|10/21
+    - 九月十二
+    tools_called:
+    - time_context
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: time_context
+      arguments:
+        date: '2026-10-21'
+  - text: 下周三是10月21日，农历九月十二。面试日期可以这样记。

@@ -1,0 +1,25 @@
+id: Q05
+title: 先别问了本轮不追加问题
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  thread:
+  - id: stop-questions
+    role: user
+    content: 先别问了。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+turns:
+- user: 帮我看看这个月运势
+  expect:
+    must_include_any:
+    - 参考
+    - 安排
+    - 节奏
+    tools_not_called:
+    - ask_user
+    max_questions: 0
+scripted:
+- turn: 1
+  model:
+  - text: 这个月先把工作节奏稳住，优先处理已经明确的一件事；命理只作参考，现实安排以你的情况为准。

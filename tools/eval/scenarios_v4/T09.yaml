@@ -1,0 +1,21 @@
+id: T09
+title: 晚子时口径说明
+category: time
+clock: '2026-10-17T23:40:00+08:00'
+seed: {}
+turns:
+- user: 睡不着，今天的日柱时柱是什么？
+  expect:
+    must_include_all:
+    - 子时
+    - 丙子
+    - 甲子
+    - 不换日
+    - 流派|口径
+    must_not_include:
+    - 下午好
+    - 午时
+scripted:
+- turn: 1
+  model:
+  - text: 现在23:40已经是子时，时柱丙子。我采用晚子时不换日的口径，日柱甲子；有些流派在23点换日。

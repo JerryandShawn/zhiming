@@ -10,7 +10,10 @@ from typing import TYPE_CHECKING
 from psycopg import sql
 from psycopg.rows import dict_row
 
+from mingjing_core.application.read_result import read_result
 from mingjing_core.timekit.timestamps import history_instant
+
+from .private import is_private
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -30,9 +33,11 @@ def sort_key(row: dict[str, Any]) -> tuple[datetime, str, int, str]:
 def _runs(repo: PostgresRepository, owner: str, subject: str, session: str) -> list[dict[str, Any]]:
     with repo.transaction(owner) as connection:
         rows = connection.execute(
-            sql.SQL("SELECT * FROM {} WHERE owner=%s AND subject=%s ORDER BY created_at,id").format(
-                repo.table("core_runs")
-            ),
+            sql.SQL(
+                "SELECT * FROM {} WHERE owner=%s AND subject=%s "
+                "AND coalesce(thread_id,'') NOT LIKE 'incognito:%%' "
+                "AND coalesce(request->>'incognito','false')<>'true' ORDER BY created_at,id"
+            ).format(repo.table("core_runs")),
             (owner, subject),
         ).fetchall()
     return [row for row in rows if session in ("shared", "") or row["request"].get("conversation_id") == session]
@@ -58,7 +63,7 @@ def _messages(repo: PostgresRepository, owner: str, subject: str, session: str) 
             while rows := cursor.fetchmany(256):
                 for row in rows:
                     message = repo._decode(row)
-                    if message.get("content"):
+                    if message.get("content") and not is_private(message):
                         yield dict(
                             message,
                             source=message.get("channel", "web"),
@@ -89,7 +94,8 @@ def _attach_run(
     elif row["role"] == "assistant":
         run = by_id.get(row.get("run_id"))
         if run and run["status"] == "succeeded":
-            row.update(turn_id=run["operation_id"], meta=run["result"])
+            final = read_result(run["result"])
+            row.update(turn_id=run["operation_id"], content=final["text"], meta=final)
     return run
 
 
@@ -128,14 +134,15 @@ def history_window(
         retain(row)
     for run in runs:
         if run["status"] == "succeeded" and run["id"] not in stored:
+            final = read_result(run["result"])
             retain(
                 {
                     "role": "assistant",
-                    "content": run["result"]["answer"],
+                    "content": final["text"],
                     "at": run["updated_at"].isoformat(),
                     "turn_id": run["operation_id"],
                     "source": "web",
-                    "meta": run["result"],
+                    "meta": final,
                 }
             )
     return [item[2] for item in sorted(heap, key=lambda item: item[:2])]
