@@ -39,6 +39,7 @@ class UpgradePort(Protocol):
 
 def controller_digest() -> str:
     files = sorted(Path(__file__).parent.glob("core_incremental*.py"))
+    files.append(Path(__file__).parent / "b1_runtime_trust.py")
     return digest({path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in files})
 
 

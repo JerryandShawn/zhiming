@@ -19,6 +19,7 @@ from tools.b1_restore_replay_contracts import (
     regular,
     require,
 )
+from tools.b1_runtime_trust import inspect_core_venv
 
 
 def environment(request: ProofRequest) -> dict[str, str]:
@@ -118,6 +119,8 @@ def python_prefix(executable: Path) -> list[str]:
 
 
 def run_worker(request: ProofRequest, phase: str, document: dict[str, Any]) -> dict[str, Any]:
+    if not request.local_drill:
+        inspect_core_venv()
     fields = {key: str(value) if isinstance(value, Path) else value for key, value in asdict(request).items()}
     result = subprocess.run(
         [*python_prefix(request.candidate_python), "-c", worker_code(request, phase)],
