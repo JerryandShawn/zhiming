@@ -1,0 +1,100 @@
+{
+  "version": "p8-direct-base-launch-only-v1",
+  "transport": "physical-base-plus-native-pyvenv-launcher-core",
+  "started_at_beijing": "2026-10-21T09:08:47.234137+08:00",
+  "fixed_sha256_before": {
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe": "f79a5d8c0415d7946468864b02156bfd771a6a5336bce178721dbddb58b54672",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe": "f38084ff0b75c199883d4369bce0d142e08ade5e3b66a0a7f42085599468b751",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\pyvenv.cfg": "131b393661b76c90b7ff21cd8d465513787b500761bbe15c82a90cc23706fa44",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_identity_child.py": "b53380fa72e6597018789daee1887df4a0c3bb24175dde5377a557711ff8a371",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_parent_probe.py": "5619098ce313afd702f034bfbece338d6ad9a9e25deb7a91b98d407d9f94c23a",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_job.py": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.dll": "3432a83cbc355f017b7da313cc2ea661b01517f8772da67b603edd7203b1b6ef",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python3.dll": "6639c0fa6da4d3147711a817a373ac787bb605e0b910b78a84ee25eb5afac6bd"
+  },
+  "real_model_requests": 0,
+  "server_access": false,
+  "collector_invocations": 0,
+  "pytest_invocations": 0,
+  "trace_invocations": 0,
+  "outer_limit": 4,
+  "inner_limit": 3,
+  "transport_approved_for_sampling": false,
+  "rows": [
+    {
+      "kind": "A",
+      "started_at_beijing": "2026-10-21T09:08:47.236219+08:00",
+      "command": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+        "-I",
+        "-S",
+        "-B",
+        "-X",
+        "pycache_prefix=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-launch-81073102ec4f4d4796a23300eec5a479\\cache-A",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_identity_child.py",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-launch-81073102ec4f4d4796a23300eec5a479\\identity.json"
+      ],
+      "no_taskkill_or_supervisor": true,
+      "inner_before": {
+        "total": 0,
+        "active": 0,
+        "terminated": 0
+      },
+      "owned_popen_pid": 43428,
+      "suspended_image": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+      "assigned": {
+        "total": 1,
+        "active": 1,
+        "terminated": 0
+      },
+      "exit_code": 0,
+      "inner_after": {
+        "total": 2,
+        "active": 0,
+        "terminated": 0
+      },
+      "state": "refused",
+      "error_type": "RuntimeError",
+      "inner_cleanup_before_close": {
+        "total": 2,
+        "active": 0,
+        "terminated": 0
+      },
+      "completed_at_beijing": "2026-10-21T09:08:47.421519+08:00",
+      "outer_after": {
+        "total": 3,
+        "active": 1,
+        "terminated": 0
+      }
+    }
+  ],
+  "limits": [
+    "A identity is not production bootstrap execution.",
+    "B --help does not call collect_core or bootstrap_guard; B child internal identities not observed again.",
+    "This is launch-only and supplies no sampling authorization or coverage."
+  ],
+  "outer_before": {
+    "total": 1,
+    "active": 1,
+    "terminated": 0
+  },
+  "fixed_sha256_after": {
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe": "f79a5d8c0415d7946468864b02156bfd771a6a5336bce178721dbddb58b54672",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe": "f38084ff0b75c199883d4369bce0d142e08ade5e3b66a0a7f42085599468b751",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\pyvenv.cfg": "131b393661b76c90b7ff21cd8d465513787b500761bbe15c82a90cc23706fa44",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_identity_child.py": "b53380fa72e6597018789daee1887df4a0c3bb24175dde5377a557711ff8a371",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_parent_probe.py": "5619098ce313afd702f034bfbece338d6ad9a9e25deb7a91b98d407d9f94c23a",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_job.py": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.dll": "3432a83cbc355f017b7da313cc2ea661b01517f8772da67b603edd7203b1b6ef",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python3.dll": "6639c0fa6da4d3147711a817a373ac787bb605e0b910b78a84ee25eb5afac6bd"
+  },
+  "state": "refused",
+  "outer_final": {
+    "total": 3,
+    "active": 1,
+    "terminated": 0
+  },
+  "completed_at_beijing": "2026-10-21T09:08:47.426287+08:00"
+}

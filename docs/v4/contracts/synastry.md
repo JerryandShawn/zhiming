@@ -2,6 +2,9 @@
 
 版本 `p8-synastry-v1`。状态：P8只读计算候选；不代表主线Agent、持久化授权或HTTP路由已接入。
 Schema：[synastry.schema.json](synastry.schema.json)。根Schema验证成功输出，`#/$defs/Request` 验证输入。
+Request Schema只做结构检查，之后仍须通过原生语义预检；例如JSON Schema的整数类型可接受1.0，
+Python原生revision要求真正int，且身份字段不能只有空白。未知IANA时区也不能仅凭字符串结构通过。
+这些变体会在两侧预检阶段拒绝，不得因Schema通过而省略预检或开始准备另一盘。
 合成资料为阿远和小禾，双方均不是用户或真实他人资料；实际完整输出由对应样例生成器写入samples目录。
 
 ## 入口与输入
@@ -13,6 +16,8 @@ Charts原生纯入口：
 Core隔离入口：`P8ChartAdapter(current_owner).synastry(request)`，通过现有P8 worker运行；
 不得把Core与Charts依赖环境合并。`chart_a/chart_b` 是出生计算输入对象，不是两个旧CalculationArtifact，
 也不是把整个chart_compute预览信封直接传入。
+Core选表由适配器构造器的选项控制，会覆盖输入内的p8_options；原生Charts入口可分别显式提供选项。
+不能据一份原生示例推断Core会接受每个人任意指定的选表；实际方法与来源仍以返回结果为准。
 
 ```json
 {

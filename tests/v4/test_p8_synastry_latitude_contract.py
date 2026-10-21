@@ -110,6 +110,38 @@ def test_provided_latitude_keeps_inclusive_numeric_range(latitude: int) -> None:
     validate_request_and_native_preflight(value)
 
 
+@pytest.mark.parametrize("side", ["chart_a", "chart_b"])
+@pytest.mark.parametrize(
+    ("field", "replacement"),
+    [
+        pytest.param("revision", 1.0, id="integer-valued-float"),
+        pytest.param("subject_id", " ", id="blank-subject"),
+    ],
+)
+def test_schema_success_does_not_replace_native_scope_semantics(
+    side: str, field: str, replacement, monkeypatch
+) -> None:
+    value = request()
+    validate_request_and_native_preflight(value)
+    value[side][field] = replacement
+    before = deepcopy(value)
+    # JSON Schema accepts integer-valued numbers and nonempty whitespace strings.
+    # Native scope checks additionally require Python int and nonblank identity.
+    ensure_finite_json(value)
+    REQUEST_VALIDATOR.validate(value)
+    preparations = []
+
+    def forbid_scope_preparation(*args, **kwargs):
+        preparations.append(True)
+        raise AssertionError("invalid scope reached natal preparation")
+
+    monkeypatch.setattr(natal_module, "prepare_natal", forbid_scope_preparation)
+    with pytest.raises(ValueError, match="^daily_transit_natal_invalid$"):
+        synastry(**value)
+    assert preparations == []
+    assert value == before
+
+
 NATIVE_SCRIPT = r"""
 import json, platform
 from copy import deepcopy
