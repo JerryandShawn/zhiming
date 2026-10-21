@@ -121,7 +121,10 @@ class PostgresPort:
             "WHERE member=(SELECT oid FROM pg_roles WHERE rolname=current_user)) "
             "OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace "
             "WHERE n.nspname IN ('mingjing_core','public') "
-            "AND pg_has_role(current_user,c.relowner,'USAGE')) AS elevated "
+            "AND pg_has_role(current_user,c.relowner,'USAGE')) "
+            "OR EXISTS(SELECT 1 FROM pg_tables t WHERE t.schemaname IN ('mingjing_core','public') "
+            "AND has_table_privilege(current_user,quote_ident(t.schemaname)||'.'||quote_ident(t.tablename),"
+            "'TRUNCATE,REFERENCES,TRIGGER')) AS elevated "
             "FROM pg_roles WHERE rolname=current_user"
         ).fetchone()
         require(row is not None, "RUNTIME_ROLE_MISSING")
