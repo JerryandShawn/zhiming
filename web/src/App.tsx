@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useSyncExternalStore } from 'react';
 import { Layout } from './Layout';
+import { RouteErrorBoundary } from './components/RouteErrorBoundary';
 import { Skeleton } from './components/ui/Feedback';
 import { AuthGate } from './api/AuthGate';
 import LiveToday from './live/Today';
@@ -88,23 +89,33 @@ export default function App() {
   }, [name, route]);
   if (new URLSearchParams(location.search).get('night') === 'demo')
     return (
-      <Suspense fallback={<Skeleton label="正在展开交互预览" />}>
-        <NightApp page={routeName === 'recovery' ? 'recovery' : page} />
-      </Suspense>
+      <RouteErrorBoundary
+        resetKey={`night-entry:${hash}`}
+        homeHref="?preview=1#/today"
+        reloadNotice="交互演示资源尚未展开。回到今日将打开独立预览；重新载入会重置本地演示。"
+        wrapFallback={(recovery) => <Layout page={page}>{recovery}</Layout>}>
+        <Suspense fallback={<Skeleton label="正在展开交互预览" />}>
+          <NightApp page={routeName === 'recovery' ? 'recovery' : page} />
+        </Suspense>
+      </RouteErrorBoundary>
     );
   const content = (
     <Layout page={page} preview={preview && !componentsPreview && !toolsPreview} spacesPreview={spacesPreview}>
-      <Suspense
-        key={spacesPreview && page === 'chat' ? 'spaces-chat' : route}
-        fallback={
-          <div className="page">
-            <Skeleton label="正在展开页面" />
-          </div>
-        }>
-        {spacesPreview && <PreviewNotice />}
-        {componentsPreview && <ComponentNotice page={page} />}
-        <Component key={spacesPreview && page === 'chat' ? 'spaces-chat' : route} />
-      </Suspense>
+      <RouteErrorBoundary
+        atHome={page === 'today'}
+        resetKey={JSON.stringify([preview, spacesPreview, componentsPreview, toolsPreview, hash])}>
+        <Suspense
+          key={spacesPreview && page === 'chat' ? 'spaces-chat' : route}
+          fallback={
+            <div className="page">
+              <Skeleton label="正在展开页面" />
+            </div>
+          }>
+          {spacesPreview && <PreviewNotice />}
+          {componentsPreview && <ComponentNotice page={page} />}
+          <Component key={spacesPreview && page === 'chat' ? 'spaces-chat' : route} />
+        </Suspense>
+      </RouteErrorBoundary>
     </Layout>
   );
   return preview ? content : <AuthGate>{content}</AuthGate>;

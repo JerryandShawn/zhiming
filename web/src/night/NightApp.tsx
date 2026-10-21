@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Layout } from '../Layout';
+import { RouteErrorBoundary } from '../components/RouteErrorBoundary';
 import { Skeleton } from '../components/ui/Overlays';
 import { createNightPort } from './port';
 import { createMemoryReceiptRegistry } from '../chat/interactions/memoryProjection';
@@ -107,71 +108,76 @@ export default function NightApp({ page }: { page: string }) {
           <Button onClick={() => setPrivacy(false)}>退出无痕</Button>
         </div>
       )}
-      <Suspense
-        key={page === 'chat' ? (privacy.active ? 'private-chat' : showGuide ? 'guide-chat' : 'normal-chat') : page}
-        fallback={
-          <div className="page">
-            <Skeleton label="正在展开页面" />
-          </div>
-        }>
-        {page === 'recovery' ? (
-          <RecoveryPreview
-            onBack={() => {
-              location.hash = '/chat';
-            }}
-          />
-        ) : page === 'chat' ? (
-          privacy.active ? (
-            <PrivateChat privacy={privacy} />
-          ) : showGuide ? (
-            <OnboardingChat
-              controller={guide}
-              birth={birth}
-              onLeave={() => {
-                guide.pause();
-                setShowGuide(false);
+      <RouteErrorBoundary
+        atHome={page === 'today'}
+        resetKey={`${page}:${privacy.active ? 'private' : showGuide ? 'guide' : 'normal'}`}
+        reloadNotice="返回其他页面不会清除普通草稿；重新载入会重置本地演示。">
+        <Suspense
+          key={page === 'chat' ? (privacy.active ? 'private-chat' : showGuide ? 'guide-chat' : 'normal-chat') : page}
+          fallback={
+            <div className="page">
+              <Skeleton label="正在展开页面" />
+            </div>
+          }>
+          {page === 'recovery' ? (
+            <RecoveryPreview
+              onBack={() => {
+                location.hash = '/chat';
               }}
             />
-          ) : (
-            <ChatPreview
-              port={port}
-              receiptRegistry={receiptRegistry}
-              chat={chat}
-              onPrivacyChange={setPrivacy}
-              guideControls={
-                <div className="row wrap" role="group" aria-label="初次相识演示入口">
-                  {guideState.status === 'idle' ? (
-                    <>
-                      <Button onClick={() => startGuide('new')}>初次相识演示</Button>
-                      <Button onClick={() => startGuide('known')}>已有资料继续演示</Button>
-                    </>
-                  ) : (
-                    <Button onClick={() => setShowGuide(true)}>
-                      {guideState.status === 'complete' ? '回看相识小结' : '继续初次相识'}
-                    </Button>
-                  )}
-                </div>
-              }
+          ) : page === 'chat' ? (
+            privacy.active ? (
+              <PrivateChat privacy={privacy} />
+            ) : showGuide ? (
+              <OnboardingChat
+                controller={guide}
+                birth={birth}
+                onLeave={() => {
+                  guide.pause();
+                  setShowGuide(false);
+                }}
+              />
+            ) : (
+              <ChatPreview
+                port={port}
+                receiptRegistry={receiptRegistry}
+                chat={chat}
+                onPrivacyChange={setPrivacy}
+                guideControls={
+                  <div className="row wrap" role="group" aria-label="初次相识演示入口">
+                    {guideState.status === 'idle' ? (
+                      <>
+                        <Button onClick={() => startGuide('new')}>初次相识演示</Button>
+                        <Button onClick={() => startGuide('known')}>已有资料继续演示</Button>
+                      </>
+                    ) : (
+                      <Button onClick={() => setShowGuide(true)}>
+                        {guideState.status === 'complete' ? '回看相识小结' : '继续初次相识'}
+                      </Button>
+                    )}
+                  </div>
+                }
+              />
+            )
+          ) : page === 'today' ? (
+            <TodayPage
+              port={today}
+              settings={settings}
+              onChat={() => {
+                location.hash = '/chat';
+              }}
             />
-          )
-        ) : page === 'today' ? (
-          <TodayPage
-            port={today}
-            settings={settings}
-            onChat={() => {
-              location.hash = '/chat';
-            }}
-          />
-        ) : page === 'chart' ? (
-          <SampleChartPage />
-        ) : page === 'me' ? (
-          <AboutMePage port={port.aboutMe} />
-        ) : page === 'settings' ? (
-          <SettingsPage port={settings} />
-        ) : (
-          <Other port={today} settings={settings} />
-        )}
-      </Suspense>
+          ) : page === 'chart' ? (
+            <SampleChartPage />
+          ) : page === 'me' ? (
+            <AboutMePage port={port.aboutMe} />
+          ) : page === 'settings' ? (
+            <SettingsPage port={settings} />
+          ) : (
+            <Other port={today} settings={settings} />
+          )}
+        </Suspense>
+      </RouteErrorBoundary>
     </Layout>
   );
 }

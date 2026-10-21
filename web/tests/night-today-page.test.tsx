@@ -132,4 +132,33 @@ describe('morning page lifecycle and date isolation', () => {
     expect(screen.queryByRole('button', { name: '查看八字依据' })).not.toBeInTheDocument();
     expect(screen.queryByText('不应泄漏的错日说明')).not.toBeInTheDocument();
   });
+  it('treats a cleared date as input guidance, makes no empty-date read and restores today', async () => {
+    const api = port(async (date) => ready(date, '已经读取的要点'));
+    const { container } = render(<TodayPage port={api} settings={createSettingsPort()} now={noon} />);
+    await screen.findByText('已经读取的要点');
+    const plans = screen.getByRole('list', { name: '安排与提醒列表' }).textContent;
+    changeDate('');
+    expect(container.querySelector('[data-runtime="night-today"]')).toHaveAttribute('data-load-state', 'invalid');
+    expect(screen.getByText('请先选择日期，再查看这一天的流日。')).toBeVisible();
+    expect(select()).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.queryByRole('button', { name: '重试流日' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.queryByText('已经读取的要点')).not.toBeInTheDocument();
+    expect(screen.getByRole('list', { name: '安排与提醒列表' }).textContent).toBe(plans);
+    expect(api.read).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: '看今天的流日' }));
+    await screen.findByText('已经读取的要点');
+    expect(api.read).toHaveBeenCalledTimes(2);
+    expect(select()).not.toHaveAttribute('aria-invalid');
+  });
+  it('cannot revive a pending old day after the date is cleared', async () => {
+    const gate = deferred<TodayReadResult>(),
+      api = port(() => gate.promise);
+    const { container } = render(<TodayPage port={api} settings={createSettingsPort()} now={noon} />);
+    changeDate('');
+    await act(async () => gate.resolve(ready(day21, '不应复活的旧要点')));
+    expect(screen.queryByText('不应复活的旧要点')).not.toBeInTheDocument();
+    expect(container.querySelector('[data-runtime="night-today"]')).toHaveAttribute('data-load-state', 'invalid');
+    expect(api.read).toHaveBeenCalledTimes(1);
+  });
 });

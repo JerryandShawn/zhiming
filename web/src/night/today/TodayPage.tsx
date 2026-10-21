@@ -3,16 +3,15 @@ import { CalendarDays } from 'lucide-react';
 import { TodayCalendar } from '../../calendar/TodayCalendar';
 import { unavailableCalendar, validDate } from '../../calendar/data';
 import { Button, Input, Seal, Tag } from '../../components/ui/Controls';
-import { Skeleton } from '../../components/ui/Overlays';
 import { BEIJING_TIME_ZONE, beijingDateKey, systemClock } from '../../time/beijing';
 import type { SettingsPort } from '../settings/types';
 import { morningReportNote, todaySchedule } from './schedule';
-import type { TodayPort, TodayReadResult } from './types';
-import TodayTransit from './TodayTransit';
+import type { TodayPort } from './types';
+import TodayTransitState, { type TodayLoad } from './TodayTransitState';
 import './today.css';
 
 type Props = { port: TodayPort; settings: SettingsPort; now?: () => Date; onChat?: () => void };
-type Load = TodayReadResult | { status: 'loading' | 'error'; date: string };
+type Load = TodayLoad;
 
 const headingFormat = new Intl.DateTimeFormat('zh-CN', {
   timeZone: BEIJING_TIME_ZONE,
@@ -66,7 +65,7 @@ export default function TodayPage({ port, settings, now = systemClock.now, onCha
     const abort = new AbortController();
     setLoaded({ status: 'loading', date: selectedDate });
     if (!validDate(selectedDate)) {
-      setLoaded({ status: 'error', date: selectedDate });
+      setLoaded({ status: 'invalid', date: selectedDate });
       return () => abort.abort();
     }
     void port
@@ -84,7 +83,11 @@ export default function TodayPage({ port, settings, now = systemClock.now, onCha
       });
     return () => abort.abort();
   }, [port, selectedDate, attempt]);
-  const view: Load = loaded.date === selectedDate ? loaded : { status: 'loading', date: selectedDate };
+  const view: Load = !validDate(selectedDate)
+    ? { status: 'invalid', date: selectedDate }
+    : loaded.date === selectedDate
+      ? loaded
+      : { status: 'loading', date: selectedDate };
   return (
     <div
       className="page night-today"
@@ -135,6 +138,8 @@ export default function TodayPage({ port, settings, now = systemClock.now, onCha
               <Input
                 type="date"
                 aria-label="查看哪天的流日"
+                aria-invalid={!validDate(selectedDate) || undefined}
+                aria-describedby={!validDate(selectedDate) ? 'today-date-hint' : undefined}
                 value={selectedDate}
                 onChange={(event) => setSelectedDate(event.target.value)}
               />
@@ -147,23 +152,7 @@ export default function TodayPage({ port, settings, now = systemClock.now, onCha
                 </Button>
               </p>
             )}
-            {view.status === 'loading' && <Skeleton label="正在载入流日要点" />}
-            {view.status === 'error' && (
-              <div className="stack small" role="alert">
-                <p>这一天的流日暂时没载入，原有安排还在。你可以重试。</p>
-                <div>
-                  <Button onClick={() => setAttempt((value) => value + 1)}>重试流日</Button>
-                </div>
-              </div>
-            )}
-            {view.status === 'empty' && (
-              <p className="small-text" role="status">
-                {view.message}
-              </p>
-            )}
-            {view.status === 'ready' && (
-              <TodayTransit key={view.transit.documentId} transit={view.transit} port={port} />
-            )}
+            <TodayTransitState view={view} port={port} retry={() => setAttempt((value) => value + 1)} />
           </section>
         </div>
         <aside className="page-aside today-aside night-today-aside" aria-label="日历与订阅">

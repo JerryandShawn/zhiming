@@ -11,6 +11,9 @@ import { createMemoryReceiptRegistry } from '../chat/interactions/memoryProjecti
 export default function Chat() {
   const chat = useChat();
   const receiptRegistry = useRef(createMemoryReceiptRegistry()).current;
+  const historyReadPending = useRef(false);
+  const mounted = useRef(true);
+  const [historyRetrying, setHistoryRetrying] = useState(false);
   const [images, setImages] = useState(chat.pending?.payload.images || []);
   const inHistory = (requestId: string, runId: string, completed = false) =>
     chat.historyRows.some(
@@ -23,6 +26,27 @@ export default function Chat() {
   useEffect(() => {
     if (chat.state.complete) setImages([]);
   }, [chat.state.complete]);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+  async function readHistory(mode: 'earlier' | 'retry') {
+    if (historyReadPending.current || chat.history.isFetching) return;
+    historyReadPending.current = true;
+    if (mode === 'retry') setHistoryRetrying(true);
+    try {
+      // Refetch the same GET query; no session reset or conversation action.
+      if (mode === 'earlier') await chat.history.fetchNextPage({ cancelRefetch: false });
+      else await chat.history.refetch({ cancelRefetch: false });
+    } catch {
+      // React Query retains confirmed rows and owns the retry error display.
+    } finally {
+      historyReadPending.current = false;
+      if (mounted.current && mode === 'retry') setHistoryRetrying(false);
+    }
+  }
   return (
     <div className="page chat-page" data-page="chat" data-runtime="v3">
       <h1 className="sr-only">和明镜对话</h1>
@@ -31,12 +55,25 @@ export default function Chat() {
           <div className="chat-messages" tabIndex={0} role="region" aria-label="对话内容">
             <div className="chat-inner">
               {chat.history.hasNextPage && (
-                <Button loading={chat.history.isFetchingNextPage} onClick={() => void chat.history.fetchNextPage()}>
+                <Button
+                  loading={chat.history.isFetchingNextPage}
+                  disabled={historyRetrying || chat.history.isFetching}
+                  onClick={() => void readHistory('earlier')}>
                   查看更早对话
                 </Button>
               )}
-              {chat.history.isLoading && <p role="status">正在读取历史对话…</p>}
-              {chat.history.error && <p role="alert">历史暂时没有读取完整，可以稍后重试。</p>}
+              {chat.history.isLoading && !historyRetrying && <p role="status">正在读取历史对话…</p>}
+              {(chat.history.error || historyRetrying) && (
+                <div className="stack small" role={historyRetrying ? 'status' : 'alert'}>
+                  <p>{historyRetrying ? '正在重新读取历史对话…' : '历史暂时没有读取完整，可以稍后重试。'}</p>
+                  <Button
+                    loading={historyRetrying}
+                    disabled={chat.history.isFetching}
+                    onClick={() => void readHistory('retry')}>
+                    重新读取历史对话
+                  </Button>
+                </div>
+              )}
               {chat.historyRows.map((row) => (
                 <HistoryMessage
                   receiptRegistry={receiptRegistry}
