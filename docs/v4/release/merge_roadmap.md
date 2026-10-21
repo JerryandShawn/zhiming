@@ -2,7 +2,7 @@
 
 本文件是顺序与测试闸门，不是合并或部署回执。依据用户10-20夜间队列、28号Z5与33号本周队列；本周集成只进`v4/integration`，向`v4/main`保持草稿PR，等大脑与用户复核。任何一条线不得自行合并`v4/main`或`main`。普通merge，不rebase、不强推。B1发布包仍固定b9a89b6，以下集成不能改变B1包或放行其Linux阻塞。
 
-2026-10-21 01:06（北京时间）状态复核：路线图已具备，尚非组合验收。P3的实际v4目标、Runtime/HTTP/线程/调度与读取端候选已形成；原指定脚本46/47、独立扩展13/13。01:00固定新头宽回归已出现失败，尚待完整栈与结论，不能称绿色；P1b在独立分支未集成，真实K3 encoder未配置，公开options由API代理补齐中。具体门和历史记录见`../execplans/P3_agent_runtime.md`。
+2026-10-21 08:14（北京时间）状态复核：已从精确b9基线建立`v4/integration`并普通合入P1b；Draft PR #12头`2ca1378e958304547907671564b16aa631103fc0`，迁移/人工scope五项目标通过，完整组合门仍在途。P3尚未合入：08点固定`9a6f882d`（远端`428649b6`）Core581通过，完整v4为1934通过/1失败/1严格xfail；原指定脚本46/47、独立扩展13/13。失败为真实case_update效果后的直接幂等重放，后续修复独立进行，不能把目标绿改写成固定头全绿。公开options、可信runtime配置、只读并行、core4回填和切换CLI已有独立证据；真实K3 encoder、X03原发送断言及旧DOM回执仍未收口。具体门和历史记录见`../execplans/P3_agent_runtime.md`及08点固定头报告。
 
 ## 1. 基线、版本与责任
 
@@ -16,7 +16,7 @@
 | --- | --- | --- | --- |
 | 0 | `v4/main`当前已合P1+P2基线 | 核精确SHA、干净工作树、迁移1–7不变；记录独立Core/Charts环境 | 基线Core、v4、Charts、web回归可复现；凭据清空、追踪关闭、隔离PG |
 | 1 | P1b `v4/p1b-k3-hardening`，#9 | models配置、中央HTTP守卫、usage账本、0008；P3不得保留第二套guard/可信角色生成逻辑 | U37错误分类、U38≤2全局在途/按角色分区/额度立即全停、U39推理回传/高effort/禁止关闭思考、体积守卫、所有物理入口经过中央门；全用替身 |
-| 2 | P3 `v4/p3-agent-runtime`，#8 | Agent Loop、ContextEngine、RuntimePort、工具、dispatcher、旧读取端；与P1b模型端口与epoch/lease冲突风险高 | 当前真实`--target v4`原46/47，X03原发送断言待脑；须完成M2–M8、公开options、core3/core4、事件契约、取消/串行/续租/U41与新组合回归，才能满足脚本100%门 |
+| 2 | P3 `v4/p3-agent-runtime`，#8 | Agent Loop、ContextEngine、RuntimePort、工具、dispatcher、旧读取端；与P1b模型端口与epoch/lease冲突风险高，尤其保留中央HTTP guard与socket shutdown两边效果 | 当前真实`--target v4`原46/47，X03原发送断言待脑；公开options已接，不等于整项完成。须收口M2–M8、core3/core4、事件契约、取消/串行/续租/U41与新组合回归，才能满足脚本100%门 |
 | 3 | 模块线 `v4/mod-organize`，#10 | 先合新增纯模块，再逐个接线；不能一次导入便宣称全部运行集成完成 | 下节各模块专门门+完整回归；记录现有质量限制，开发集分数不能盖盲评失败 |
 | 4 | 命理线 `v4/p8-calc`，#5 | charts_service适配器切P8原生口径；chart_compute参数/多文档依据/方法/时区/别名可能冲突 | Charts合成黄金值与边界测试；owner/subject/revision/撤销、真实源Pointer、跨方法差异、boundary_alerts；无P8时保留v3适配器并明确降级 |
 | 5 | 前端线 `v4/p10-frontend`，#6 | 依据`web/src/night/**/port.ts`和主线`api_*.md`接线；事件payload/错误/游标/无痕/区话题差异 | 生产构建、单元/DOM/无障碍/性能与视觉矩阵；本机HTTP/SSE端到端，不以Mock图替代真实API |
@@ -48,7 +48,7 @@
 
 ## 5. 共享契约与组合测试
 
-事件类型、序列化和客户端按已落盘的`docs/v4/contracts/events_v1.md`、`events_v1.schema.json`冻结；结果按`core4_envelope_v1.md`及相应Schema冻结，已有89项契约切片证据。冻结形状不等于所有公开事件已接通，present_options/options仍须完成实际运行到HTTP投影的独立验收。新增字段/枚举必走版本兼容策略和正反例；服务端/模块/前端不得各写一套看似相同的类型。core3.0读取端保留兼容，旧payload不能被新版解析默认覆盖成成功结果。
+事件类型、序列化和客户端按已落盘的`docs/v4/contracts/events_v1.md`、`events_v1.schema.json`冻结；结果按`core4_envelope_v1.md`及相应Schema冻结，已有89项契约切片证据。present_options/options已有公开API目标证明，见`2026-10-21-runtime-api.md`；冻结形状和单项证明仍不等于各线已完整组合。新增字段/枚举必走版本兼容策略和正反例；服务端/模块/前端不得各写一套看似相同的类型。core3.0读取端保留兼容，旧payload不能被新版解析默认覆盖成成功结果。
 
 完整回归入口以当次`.github/workflows/ci.yml`为准，当前已有：
 
@@ -70,7 +70,9 @@ Charts使用独立锁定Charts解释器，Core配置`CHART_PYTHON`，命理线Go
 
 每步输出`docs/v4/release/integration/<日期>_<分支>.md`：base/source/merge SHA，修改/冲突决策，迁移号与checksum，实际命令/通过失败跳过/耗时，契约正反例及仍未验证项，0模型/0真实飞书/0服务器声明（有授权动作另分轨）；阶段回执按AGENTS§11。汇总引用对应回执，不复用上次数字。
 
-路线图已交；截至本次复核未执行本路线图的集成merge，本片未核PR新head或访问服务器。B1仍受真实Linux/native恢复阻塞，固定b9不改。P3运行候选与v4评测已经存在，但M8的X03四条原发送断言、公开options、K3实际encoder、P1b组合、旧前端DOM和切换演练仍须各自通过；不能以本机目标绿替代出现失败的01:00宽回归或尚未完成的新精确头CI。模块主线接线、P8原生适配、新前端真实API与完整组合回归继续按上表推进。
+已执行第一片普通merge：`49d40dd69d299200d4549f22b70931dbf47ac171`，父为基线计划提交`092ec036361a09171be204d7331b9157f2a721fc`与P1b`8087d7fa64839dc5a080491fd5db4e358f5814ec`；后续仅更新计划到`2ca1378e`并推送Draft PR #12，未合P3或其他线。原0001–0007字节不变，0008指纹`5eef5d65363baa0ab4dc8ec9763b85136f4ba249688330b9cd8448f0b39ccbcb`；完整回归、Node22等价与精确merge头CI尚待结果。详细记录见`../execplans/integration_20261021.md`。B1仍受真实Linux/native恢复阻塞，固定b9不改；本片无服务器操作。
+
+P3原X03四条发送断言、真实K3 encoder、P1b/P3组合、旧DOM回执与08点幂等重放失败仍是未完成门；不能以各项目标绿替代对应失败记录或尚未完成的新精确头Linux CI。P6接线只在独立Draft #11普通更新基线，默认关闭；不代表主P3或集成分支已接入。模块主线接线、P8原生适配、新前端真实API与完整组合回归继续按上表推进。
 
 P3 stage仅有离线计划`P3_stage_plan.md`，当前No-Go，先在本机隔离库用合成模型完成v3→v4→v3。当前B1的条件B/D只覆盖固定b9，不含P3启用；正式P3服务器部署或真实质量请求需相应明确授权。本周集成代码不是部署许可。
 
@@ -78,3 +80,4 @@ P3 stage仅有离线计划`P3_stage_plan.md`，当前No-Go，先在本机隔离�
 
 - 2026-10-20夜：建立合并顺序、冲突/迁移与组合闸门草案，未执行合并。
 - 2026-10-21 01:06 +08:00：对齐实际v4候选、46/47及独立13报告、公开options待接、P1b未集成/K3缺失和宽回归失败状态；未运行测试或外部操作。
+- 2026-10-21 08:14 +08:00：据已回收的固定头结果及实际P1b普通merge更新当前状态，保留01点历史和08点失败；完整集成门未预告通过，无主干合并或部署。
