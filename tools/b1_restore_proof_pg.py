@@ -134,7 +134,9 @@ def writer_permissions(request: ProofRequest) -> dict[str, Any]:
             "has_schema_privilege(current_user,'mingjing_core','CREATE') OR "
             "has_schema_privilege(current_user,'public','CREATE') OR EXISTS(SELECT 1 FROM pg_class c "
             "JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('mingjing_core','public') "
-            "AND pg_has_role(current_user,c.relowner,'USAGE')) AS elevated"
+            "AND pg_has_role(current_user,c.relowner,'USAGE')) OR EXISTS(SELECT 1 FROM pg_tables t "
+            "WHERE t.schemaname IN ('mingjing_core','public') AND has_table_privilege(current_user,"
+            "quote_ident(t.schemaname)||'.'||quote_ident(t.tablename),'TRUNCATE,REFERENCES,TRIGGER')) AS elevated"
         ).fetchone()["elevated"]
         require(not elevated, "WRITER_OWNERSHIP_OR_DDL")
         tables = conn.execute(
