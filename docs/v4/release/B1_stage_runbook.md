@@ -140,6 +140,8 @@ request.owners必须恰为primary；其余16只核计数。工具每owner再次d
 
 未来先核B0–B5和最新30 Go，逐项照资产第2–6节准备：所有新对象先核不存在；root打开SQL stdin交本机PG15管理员创建新角色/新Web库；仅新owner初始化与checkpoint setup；仅新writer做只读有效权限/空队列核验。env只含新PGPASSFILE/合成token文件路径，token本机0600生成不回显。b9无key可以构造ConfiguredModel并提供health/state/history，但不能据此声称可回答真实问题；不发chat/readings/retry/resume生成请求。
 
+09:34缓存边界补丁仅更新资产文本：所有B6候选Python命令、unit预检与launcher二次exec都显式`-I -B -X pycache_prefix=/dev/null`；二次uvicorn使用固定RELEASE的`--app-dir`，启动前校原manifest字节与636成员。env/launcher精确允许`PYTHONPYCACHEPREFIX=/dev/null`供固定b9无-I的Charts worker继承，CHART_PYTHON仍是原隔离解释器路径。13项摘要已重算，9段AST/Ruff E9/F、11段Bash -n、4条unit命令前缀静态核对通过；没有执行资产、Python服务、PG或网络，不能替代B0完整包/依赖检查、真实Linux或Charts缓存对照。
+
 出站阻断按资产第7–9节执行：只在已核本机RFC1918 IPv4上临时绑定随机高端口、仅接受同机源、180秒自停的合成listener。unit外阳性→同unit cgroup ExecStartPre阴性→同cgroup loopback PG阳性→启动→unit外再次阳性必须同时成立；没有私有IPv4、BPF/安全选项不生效或对照缺失立即停止，不改防火墙、不用真实外网探针冒充失败证明。unit明确 `IPAddressDeny=any` / `IPAddressAllow=localhost`、仅AF_UNIX/AF_INET且实核IPv6不能创建；只监听127.0.0.1:8788，Restart=no，不enable，不启动其他stage/报告/飞书unit。
 
 通过只读GET验证登录/health/state/history空库，随后只在新Web库调用b9真实TarotService建立合成固定牌、幂等重放不变，再两次GET对比牌面hash；无模型、无sender。DOM/截图、实际Linux/systemd/PG权限结果另列证据，不能把模板或HTTP200写成验收。命令、继续/停止条件、配置工具hash、隐私与同机对照细节以资产页为准；准备10–15分、初始化/权限5–15分、隔离/HTTP10–20分均为估计。任何异常保持现状停审，仅可止损停止本次新unit，不删除新旧对象、不自动修复重试。
