@@ -1,0 +1,8 @@
+{
+  "observed_at": "2026-10-21T08:34:54.6484111+08:00",
+  "scope": "isolated tracked HEAD LF archive; no Git checkout or file modifications outside module workspace",
+  "commit": "7556e277c34f1e2ddee64bd127746706df03d4b5",
+  "exit_code": 1,
+  "stdout": "F....................................................................... [ 30%]\n........................................................................ [ 60%]\n........................................................................ [ 90%]\n........................                                                 [100%]\n================================== FAILURES ===================================\n______________ test_frozen_semantics_precede_test_implementation ______________\n\n    def test_frozen_semantics_precede_test_implementation() -> None:\n>       assert len(expected()[\"semantic_groups\"]) == 18\n                   ^^^^^^^^^^\n\ntests\\v4\\reflection_v3\\test_acceptance_calendar_mod.py:27: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n\n    def expected() -> dict[str, Any]:\n        content = (Path(__file__).parent / \"fixtures/expected_calendar_mod.json\").read_bytes()\n>       assert hashlib.sha256(content).hexdigest() == EXPECTED_SHA\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE       AssertionError\n\ntests\\v4\\reflection_v3\\calendar_acceptance_support_mod.py:34: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/v4/reflection_v3/test_acceptance_calendar_mod.py::test_frozen_semantics_precede_test_implementation\n1 failed, 239 passed in 2.12s",
+  "real_requests": 0
+}

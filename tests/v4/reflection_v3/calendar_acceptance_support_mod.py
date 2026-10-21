@@ -17,6 +17,7 @@ from mingjing_core.timekit.clock import FrozenClock
 
 ROOT = Path(__file__).resolve().parents[3]
 EXPECTED_SHA = "c69f9956b75c891b2ca18e7a9df0cecf920f76db11b9a497ed4962f37c06464e"
+EXPECTED_LF_SHA = "4687a792b15d043f636a7a0f71f338ee5d4d74af17d04db158946a30b80ef918"
 SCOPE = MemoryScope("synthetic-reflection-owner", "synthetic-reflection-subject")
 NOW = datetime(2026, 10, 21, 2, tzinfo=UTC)
 
@@ -31,7 +32,12 @@ class Bundle:
 
 def expected() -> dict[str, Any]:
     content = (Path(__file__).parent / "fixtures/expected_calendar_mod.json").read_bytes()
-    assert hashlib.sha256(content).hexdigest() == EXPECTED_SHA
+    return frozen_expected_bytes(content)
+
+
+def frozen_expected_bytes(content: bytes) -> dict[str, Any]:
+    # Git may check out the identical frozen JSON as LF; only those two exact artifacts are accepted.
+    assert hashlib.sha256(content).hexdigest() in {EXPECTED_SHA, EXPECTED_LF_SHA}
     return json.loads(content)
 
 

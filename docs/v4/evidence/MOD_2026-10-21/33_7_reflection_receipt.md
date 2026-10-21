@@ -14,6 +14,9 @@
 
 ## 评测分数
 
+- 后续Git LF隔离副本真实复现1失败/239通过；只新增两个精确EOL字节版本兼容及9项篡改反例后，
+  同一LF副本249/249通过1.03秒。原18组gold/CRLF字节未改，见EOL_portability_receipt.md。
+
 - root报告+反思专项覆盖471项通过3.11秒；反思行930/1017=91.4454%、分支250/322=77.6398%、综合88.1255%。
   行覆盖达90，分支/综合尚未；原始REPORTS_REFLECTION_coverage_20261021-082526.json，范围/源hash见MORNING_candidate_coverage_boundary_0825.json。
 
