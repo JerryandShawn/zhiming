@@ -1,0 +1,49 @@
+{
+  "observed_at": "2026-10-21T08:10:19.531556+08:00",
+  "measurement_started_at": "2026-10-21T08:08:34+08:00",
+  "scope": "17 official P9 product files only; 346 local tests; no model/platform/PG quality claim",
+  "pytest_result": "346 passed in 17.85s with branch coverage",
+  "line_percent": 85.31540847983455,
+  "branch_percent": 68.86363636363636,
+  "combined_percent": 80.17057569296375,
+  "totals": {
+    "covered_lines": 825,
+    "num_statements": 967,
+    "percent_covered": 80.17057569296375,
+    "percent_covered_display": "80",
+    "missing_lines": 142,
+    "excluded_lines": 0,
+    "num_branches": 440,
+    "num_partial_branches": 117,
+    "covered_branches": 303,
+    "missing_branches": 137
+  },
+  "coverage_sha256": "799e16e6ddaf03cda0316d80873d2e1949655048d52f62b0e213fd678c967c54",
+  "source_sha256": {
+    "mingjing_core/adapters/channels/card_limits_official_v3.py": "dfe82426a6345405b7e53eeb247c8d29acae47fd3e5ec8606bb15ec5f4b45a5d",
+    "mingjing_core/adapters/channels/cardkit_official_v3/__init__.py": "b00bac2c0bfa336dfb3830d83b4a883b9fed613fa87a3e8de994af190689fb0f",
+    "mingjing_core/adapters/channels/cardkit_official_v3/artifacts.py": "0417aee061015d7ae6635b415d585834789d3bae66db45eea90bd36b46dc3372",
+    "mingjing_core/adapters/channels/cardkit_official_v3/codec.py": "bdacdd0be4483597ae33c31c067f16690061c3efc4ce520e5e6272147991d2fd",
+    "mingjing_core/adapters/channels/cardkit_official_v3/contracts.py": "07d1ca3a88b37844fd4067fadcdea18f1894a7bb5863e056cec85574f0270fc5",
+    "mingjing_core/adapters/channels/cardkit_official_v3/errors.py": "d3bee15f7867c1f583b03646cf403cc8ccda9a82f642a2a1e1d1f152b9d16080",
+    "mingjing_core/adapters/channels/cardkit_official_v3/namespace.py": "f4a3fa54ba9c6d954c591b03fb8b7af0acc5885b47a64c99091294e4e72be60b",
+    "mingjing_core/adapters/channels/cardkit_official_v3/operations.py": "4b825270a57d5e4c09f150fa519fb442e022252981fe360daaa49ad4a12d2eec",
+    "mingjing_core/adapters/channels/cardkit_official_v3/transitions.py": "b2f145d6aa35289169fffe8471af04efebc3d2249365ecbc530135bd940e778a",
+    "mingjing_core/adapters/channels/cardkit_official_v3/validation.py": "125ee94067c51b3524cc160348d0e7e90878e0b2a63d9fd74337c11c5c07c180",
+    "mingjing_core/adapters/channels/cardkit_official_v3/wire.py": "a72a0e0693d7d79f373488f182f89637d42ce11ac36b6c25841db22f0259da31",
+    "mingjing_core/adapters/channels/cards_official_v3/__init__.py": "ae8e4d74f1333d8f221855a98b81727679c630c7bd10fc9bd6fe93362fbd9cfe",
+    "mingjing_core/adapters/channels/cards_official_v3/answers.py": "72865589fdce3d7b3e29a7673a295619ea307ce0ad086e584dec41bd9047676f",
+    "mingjing_core/adapters/channels/cards_official_v3/budget.py": "1ca6504d477729d669972ec2e3fc098428d8615ba2977c68fd86b1fba53cb767",
+    "mingjing_core/adapters/channels/cards_official_v3/elements.py": "a4af13b6c371291f5058993934e9270a206005fb4a2c698327c8583611e80f6b",
+    "mingjing_core/adapters/channels/cards_official_v3/notices.py": "1e1e6f08ebb653ff936b208b61e139f480cf8b4c3baa79525c42ce1d49ecbe33",
+    "mingjing_core/adapters/channels/cards_official_v3/validation.py": "726502f888e2be3f15f5d11516ff172a866a62dd67523d3688614de02339856f"
+  },
+  "baseline": "8c554bd4af6788b3a4d98b9dd0d7618c591f7cfd",
+  "changed_preexisting_files": [],
+  "limits": [
+    "Raw coverage metadata uses the native clock format; Beijing start is explicitly recorded above",
+    "Source hashes observed after measurement; frozen P9 product was not edited during this measurement",
+    "Line target 90 percent not reached; add invariant and abnormal-path tests next",
+    "Old 119-file coverage is a different scope and cannot stand in for this result"
+  ]
+}

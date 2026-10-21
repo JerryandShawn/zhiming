@@ -1,0 +1,19 @@
+{
+  "schema": "offline-calibration-policy-v3",
+  "model": "k3-256k",
+  "effort": "high",
+  "critic_prompt_version": "2.0.0",
+  "rubric_version": "brain25-floor-0.6-v1",
+  "bootstrap_draws": 2000,
+  "bootstrap_seed": 2026102104,
+  "confidence_minimum": 2,
+  "human_kappa_minimum": 0.6,
+  "critic_kappa_floor": 0.6,
+  "evidence_kappa_minimum": 0.7,
+  "evidence_sensitivity_minimum": 0.9,
+  "minimum_positive_labels": 5,
+  "minimum_negative_labels": 5,
+  "always_record_only": ["J8", "J9"],
+  "required_dataset_sources": ["brain25", "baseline_c21", "seeded_defect"],
+  "runtime_configuration_writes": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "calibration-import-summary-v3",
+  "source_sha256": "356a1695b12548acd3d8782dc5a45c0003633e76d52b827ca55aa215ad25f791",
+  "dataset_sha256": "d42f97d5e50036f975e62daeca2cee89dd83c085ca5f87b078ef2429ad230771",
+  "plan_sha256": "0bc0970951374d699b0939e15b1137030d5d802494086bd4f2421a984c2a3cea",
+  "sample_count": 75,
+  "batch_count": 5,
+  "batch_size": 15,
+  "labels_origin": "brain_ai",
+  "human_verified_count": 0,
+  "critic_observation_count": 0,
+  "mode": "record_only",
+  "runtime_revision_enabled": false,
+  "limitations": [
+    "No human review or critic call occurred",
+    "Full text, labels and mapping stay private",
+    "Daily plan is pure and not yet persisted under an authenticated host lock",
+    "The 75 hard cases alone cannot enable critic revision"
+  ],
+  "private_output": "private/calibration/v2/brain25_356a1695b12548ac",
+  "critic_source_sha256": "30044ebacaddd367a867fc993f9ac5a2e6ec84a34032b1f3eafbbe379925f651",
+  "policy_sha256": "9745a05f8b7c029889168b3ae527dd001bfd713835bf55bb29b39cfb51f6f39d",
+  "authenticated_scope": false,
+  "stage": "M1_private_import_and_pure_batch_planning"
+}

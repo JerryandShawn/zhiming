@@ -1,0 +1,1326 @@
+{
+  "schema": "calibration-aggregate-v3",
+  "generated_at": "2026-10-21T08:05:08.884115+08:00",
+  "dataset_sha256": "d42f97d5e50036f975e62daeca2cee89dd83c085ca5f87b078ef2429ad230771",
+  "plan_sha256": "a246a79c3236b6c6c4c19e3988e90e348599322cf5f0b68817865056abdd5f77",
+  "protocol": {
+    "prompt_sha256": null,
+    "rubric_sha256": "95df106f850cc2fcfbda22b5ddd26d4251485d423b1f8836316c0c4089ef3b56",
+    "model": "k3-256k",
+    "effort": "high",
+    "prompt_version": "2.0.0"
+  },
+  "sample_count": 75,
+  "dataset_sources": {
+    "brain25": 75
+  },
+  "verified_human_reviewed_count": 0,
+  "critic_observation_count": 0,
+  "items": [
+    {
+      "item": "E1",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102104,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102105,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102106,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "evidence_item_threshold_not_met"
+      ]
+    },
+    {
+      "item": "E2",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102121,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102122,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102123,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "evidence_item_threshold_not_met"
+      ]
+    },
+    {
+      "item": "E3",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102138,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102139,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102140,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "evidence_item_threshold_not_met"
+      ]
+    },
+    {
+      "item": "E4",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102155,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102156,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102157,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "evidence_item_threshold_not_met"
+      ]
+    },
+    {
+      "item": "E5",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102172,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102173,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102174,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "evidence_item_threshold_not_met"
+      ]
+    },
+    {
+      "item": "E6",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102189,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102190,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102191,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "evidence_item_threshold_not_met"
+      ]
+    },
+    {
+      "item": "J1",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102206,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102207,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102208,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient"
+      ]
+    },
+    {
+      "item": "J2",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102223,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102224,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102225,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient"
+      ]
+    },
+    {
+      "item": "J3",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102240,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102241,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102242,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient"
+      ]
+    },
+    {
+      "item": "J4",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102257,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102258,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102259,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient"
+      ]
+    },
+    {
+      "item": "J5",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102274,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102275,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102276,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient"
+      ]
+    },
+    {
+      "item": "J6",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102291,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102292,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102293,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient"
+      ]
+    },
+    {
+      "item": "J7",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102308,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102309,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102310,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient"
+      ]
+    },
+    {
+      "item": "J8",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102325,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102326,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102327,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "always_record_only"
+      ]
+    },
+    {
+      "item": "J9",
+      "kappa_human": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102342,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_effective": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102343,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "kappa_critic_raw": {
+        "metrics": {
+          "paired_count": 0,
+          "positives": 0,
+          "negatives": 0,
+          "true_positive": 0,
+          "true_negative": 0,
+          "false_positive": 0,
+          "false_negative": 0,
+          "sensitivity": null,
+          "specificity": null,
+          "agreement": null,
+          "kappa": null,
+          "f1": null,
+          "agreement_wilson95": null
+        },
+        "kappa_bootstrap95": {
+          "interval95": null,
+          "draws": 2000,
+          "defined_draws": 0,
+          "seed": 2026102344,
+          "resampling_unit": "paired_answer"
+        }
+      },
+      "unresolved_count": 0,
+      "state": "record_only",
+      "reasons": [
+        "brain25_alone_requires_merged_baseline_and_seeded_set",
+        "no_verified_human_labels",
+        "critic_observations_incomplete",
+        "protocol_requires_recalibration",
+        "human_rubric_evidence_insufficient",
+        "critic_evidence_insufficient",
+        "always_record_only"
+      ]
+    }
+  ],
+  "macro_f1": null,
+  "metric_reference": "brain labels remain provisional except authenticated final adjudications",
+  "macro_defined_items": 0,
+  "mode": "record_only",
+  "runtime_revision_enabled": false,
+  "runtime_configuration_writes": 0,
+  "limits": [
+    "brain25 alone cannot enable revision; merged calibration adapter remains pending",
+    "Host attestation authenticates a host statement, not physical observation of a human",
+    "Critic observations are bound metadata; artifact contents and origin need independent host verification",
+    "No human or critic observations are synthesized from brain labels",
+    "Bootstrap resamples paired answers 2000 times; undefined draws are counted explicitly",
+    "Crisis program routing is unchanged; no runtime configuration or model call is performed"
+  ],
+  "stage": "M2_no_observations",
+  "authenticated_scope": false,
+  "actual_critic_prompt_available": false,
+  "brain_source_sha256": "356a1695b12548acd3d8782dc5a45c0003633e76d52b827ca55aa215ad25f791",
+  "rubric_design_source_sha256": "30044ebacaddd367a867fc993f9ac5a2e6ec84a34032b1f3eafbbe379925f651",
+  "policy_sha256": "9745a05f8b7c029889168b3ae527dd001bfd713835bf55bb29b39cfb51f6f39d",
+  "corrected_private_payloads_verified": 5,
+  "source_summary": "CALIB_V3_M1_import_summary_blind_corrected.json"
+}
