@@ -1,5 +1,6 @@
 import { Disclosure } from '../components/ui/Controls';
 import { EvidenceCatalog } from './EvidenceButton';
+import { ElementComparison } from './ElementComparison';
 import type { Side, SynastryData, SynastrySample, ToolPort } from './types';
 const pillarNames = { year: '年柱', month: '月柱', day: '日柱', hour: '时柱' } as const;
 function SideChart({ side, data }: { side: Side; data: SynastryData }) {
@@ -108,6 +109,7 @@ export default function SynastryResults({ sample, port }: { sample: SynastrySamp
         <p>
           两侧日干 {combine.a}、{combine.b}：{combine.met ? '有五合结构' : '未返回五合结构'}；不据此宣布合化。
         </p>
+        <ElementComparison a={data.bazi.visible_a} b={data.bazi.visible_b} />
         <Disclosure title={`已返回的跨盘六合与六冲（${data.bazi.branch_relations.length}组）`}>
           {data.bazi.branch_relations.map((row, index) => (
             <p key={index}>

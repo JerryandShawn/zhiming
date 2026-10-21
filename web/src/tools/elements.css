@@ -1,0 +1,20 @@
+.tool-elements {
+  min-inline-size: 0;
+  padding-block: var(--s-4);
+  border-block-start: var(--border) solid var(--line);
+}
+.tool-elements > p {
+  overflow-wrap: anywhere;
+}
+.tool-element-table {
+  table-layout: fixed;
+}
+.tool-element-table th,
+.tool-element-table td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.tool-element-table data {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}

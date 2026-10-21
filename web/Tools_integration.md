@@ -43,3 +43,9 @@
 常驻按钮用aria-disabled加事件guard，避免结果变化、末页或请求中丢焦；同一代际/owner和旧依据清理机制保持。190相关单测、27浏览器、40截图、1023项源/测试/构建前后一致，详见tools_pagination_checks/receipt。31/1/0仅纯metadata负例，不冒称新样例。M2c结果补全及真实资料适配仍后续。
 
 资料适配的具体依赖：v3只发布本人GET/POST `/api/subjects/self/profile[/confirm]`，确认有request_id/expected_revision/confirmed并写事实与授权；不能放入零业务请求预览。v3 solar_datetime+timezone_offset及exact/approximate/unknown不能直接当P8的IANA tz/clock_basis/reported/唯一物理瞬间；不能凭城市或偏移猜。未见他人出生确认/撤销权威或window_search/synastry HTTP。现有BirthPort.canComputeGift=false，完成初识不解锁计算。以上记录阻塞，继续可验证的合成结果展示，不等用户或假造端点。
+
+## 白天②·表层结果补全（M2c）
+
+`ElementComparison`仅展示已返回visible_a/b.element_counts，保留实际0，缺失/非法值不默认；无合计、比例、力量或适配分。原始stems8项是表层条目，原候选other_exposed_stems4项才是透干，均不改名或重排。四柱、跨盘相位、候选路径、紫微已返回侧视和113条完整依据保留，确认/参数/代际撤销作用于整个结果。
+
+199相关单测、29浏览器、42图，1028项源/测试/构建不变；类型/lint零警告/构建、Axe全规则0/朱砂≤3与零业务请求通过，见tools_elements_checks/receipt。白天②的当前公开合成路径具备字段、摘要、分页与结果证据；真实资料接口依赖尚未解除，继续下一项而不冒充打通计算。新头4G仍需处理此前2532ms失败，09:30全量不能沿用为本次全量。
