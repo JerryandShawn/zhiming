@@ -554,3 +554,13 @@ Surprises & Discoveries：固定b9真实恢复虽清除实体/牌/checkpoint，�
 Decision Log：保留首红1failed和明确阻塞探针1passed各10.07秒；不伪造receipt/proof、不删字段、不改固定b9、不松单调门。独立delta仅计划，不能解除账本问题，写汇总待大脑而立即继续P4。
 
 Outcomes & Retrospective：Windows窄验非Linux整链，B1五门与30NoGo保持；生产restore按v2排stage之后。本周零服务器/真实模型/飞书/主干合并。
+
+## 2026-10-21 10:33:10 +08:00 固定回归与后续接线
+
+Progress：10点主固定4f042e7的v4 2299passed/1严格xfail/1warning、Core582 OK归档；wire固定ff4Core583 OK。P4 M2a0af15de（新15/相关41）、M3 31c4967（28纯/实际PG/HTTP）分别已推，开关默认关，非全P4。B1元数据43与formal接线38/旧189+7分别已推。
+
+Surprises & Discoveries：当次v4未输出JUnit，仅保留console和完整源blob，不虚构XML；P6 CI实际测试GitHub合并预览c79b9e6a而非head337e单独tree，已纠正证据/PR；19 skip归属B1缺显式管理DSN的8+11，未执行仍是缺口。
+
+Decision Log：保留原失败与旧DOM严格xfail，46/47 X03四断言仍待裁定，不放宽设计。B1新venv门仅formally apply前，default/local不扫描/root、不假签Linux；新增controller/generator hash须重审绑定。P4 timer失败收口由原domain错误拒final，仍在独占候选片验证。
+
+Outcomes & Retrospective：本机宽绿不是Linux/真实模型/部署或盲评验收。B1删除收据往返+schema4源+Linux环境等门仍NoGo，两个执行单保留阻塞；下一固定新源宽验仅在允许窗口，不能让后来WIP继承10点结果。
