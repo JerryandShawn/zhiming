@@ -21,3 +21,13 @@
 先读指令板、ExecPlan与日报、git状态，确认有无本线仍运行的测试；不要并发重开同一批次。首轮执行脚本为ignored `web/test-results/run-week-stability-1b.ps1`，汇总脚本为`collect-stability-1b.py`；原始路径独占，后续轮必须新run_id与新报告目录，不复用旧输出文件。只用既有PowerShell7/本地node_modules/.bin，offline npm，不再用根目录npx获取临时工具。
 
 计划中的窗口不是完成记录。当前CI仍pending/queued，不能由本机完整回归代替；真实设备、部署、跨刷新真实恢复与预测效度不在这三轮证明范围。
+
+## 11时恢复补充
+
+第1轮证据已普通推送f02fbe2，PR #6已更新且仍Open Draft。另补三张原图引用副本到`stability-1-samples/`（不再计入892），root已查看手机分页、桌面术语Sheet与晚间视口。
+
+第2/3轮独占脚本已经只在ignored准备：`web/test-results/run-week-stability-2.ps1` / `run-week-stability-3.ps1`，对应`collect-stability-2.py` / `collect-stability-3.py`。尚未运行。collector除本轮完整检查外，还核1031项哈希、全部97/48测试清单与第1轮完全相同，并检查7d8以来运行入口/配置的Git差分为空；第3轮额外要求第2轮通过。仍须先直接用现有PowerShell7执行，不能套powershell.exe；收证据前不提交，以保持本轮HEAD不变。
+
+恢复时先确认没有仍运行的测试；在11:30–45启动第2轮、12:30–45启动第3轮，未到窗口只做只读/ignored候选及文档。每轮约18分钟，开始前核40分钟推送期限，必要先提交真实文档检查点；不能为了推送改受测源码。每轮结束先collector再证据提交/普通push/小回执。11:20等自动唤醒若发生在已有批次中，不重复启动。
+
+未来33候选已在ignored准备：`thread-dto-draft`及`thread-dto-tests-draft`、`thread-http-draft`及`thread-http-tests-draft`，只读复核及静态测试清单不等于通过；根线在三遍完成后再统一迁入和验证。H5与20课也只有计划。新版API发现索引及课程别名漂移已经写入正式接线笔记，当前七资产/普通入口未改。
