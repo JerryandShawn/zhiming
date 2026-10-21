@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import re
 import sys
 import time
 from datetime import date, datetime
@@ -28,7 +29,8 @@ def append_hour(clock: Clock, *, root: Path = ROOT) -> bool:
     day = max(local.date(), date(2026, 10, 21))
     target = root / "docs/v4/daily" / f"{day.isoformat()}_mod.md"
     current = target.read_text(encoding="utf-8") if target.exists() else ""
-    if local.strftime("%Y-%m-%d %H:") in current:
+    hour_entry = rf"^- {local:%Y-%m-%d %H}:\d{{2}}:\d{{2}} \+08:00：小时观察，"
+    if re.search(hour_entry, current, flags=re.MULTILINE):
         return False
     state_path = root / "private/mod-week/progress.json"
     try:
