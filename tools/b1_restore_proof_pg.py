@@ -128,6 +128,11 @@ def denied(conn: Any, query: str) -> bool:
 def writer_permissions(request: ProofRequest) -> dict[str, Any]:
     with connection(request, "writer") as conn:
         observed = identity(conn, request, "writer")
+        usage = conn.execute(
+            "SELECT has_schema_privilege(current_user,'mingjing_core','USAGE') AND "
+            "has_schema_privilege(current_user,'public','USAGE') AS safe"
+        ).fetchone()
+        require(usage is not None and usage["safe"], "WRITER_OWNERSHIP_OR_DDL")
         elevated = conn.execute(
             "SELECT has_database_privilege(current_user,current_database(),'CREATE') OR "
             "has_database_privilege(current_user,current_database(),'TEMP') OR "

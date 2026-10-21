@@ -111,6 +111,12 @@ class PostgresPort:
         return row
 
     def _runtime_safe(self, connection: Any) -> bool:
+        usage = connection.execute(
+            "SELECT has_schema_privilege(current_user,'mingjing_core','USAGE') AND "
+            "has_schema_privilege(current_user,'public','USAGE') AS safe"
+        ).fetchone()
+        if usage is None or not usage["safe"]:
+            return False
         row = connection.execute(
             "SELECT rolsuper OR rolcreatedb OR rolcreaterole OR rolreplication OR rolbypassrls "
             "OR has_database_privilege(current_user,current_database(),'CREATE') "
