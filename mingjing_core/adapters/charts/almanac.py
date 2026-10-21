@@ -15,6 +15,7 @@ from typing import Any
 from .tool_evidence import evidence_result
 
 VERSION = "p8-almanac-v1"
+SUPPORTED_LIBRARY_VERSION = "1.4.8"
 SOURCE = "https://6tail.cn/calendar/api.html"
 CODE_SOURCE = "https://github.com/6tail/lunar-python"
 BRANCHES = "子丑寅卯辰巳午未申酉戌亥"
@@ -38,6 +39,9 @@ def almanac_date(value: str) -> Date:
 
 @lru_cache(maxsize=1)
 def _package_identity() -> tuple[str, str, tuple[tuple[str, str], ...]]:
+    version = importlib.metadata.version("lunar-python")
+    if version != SUPPORTED_LIBRARY_VERSION:
+        raise ValueError("almanac_library_version_unsupported")
     from lunar_python import Lunar
 
     package = Path(inspect.getfile(Lunar)).parent
@@ -50,7 +54,7 @@ def _package_identity() -> tuple[str, str, tuple[tuple[str, str], ...]]:
     )
     encoded = json.dumps(dict(files), sort_keys=True, separators=(",", ":"))
     fingerprint = hashlib.sha256(encoded.encode("utf8")).hexdigest()
-    return importlib.metadata.version("lunar-python"), fingerprint, files
+    return version, fingerprint, files
 
 
 def _method() -> dict[str, Any]:
@@ -151,13 +155,14 @@ def _hits(data: dict[str, Any]) -> list[dict[str, Any]]:
 def almanac_data(day: str) -> tuple[dict, list[dict], list[dict]]:
     """Keep library values unchanged; metadata states the chosen date convention."""
     parsed = almanac_date(day)
+    method = _method()
     from lunar_python import Solar
 
     lunar = Solar.fromYmdHms(parsed.year, parsed.month, parsed.day, 12, 0, 0).getLunar()
     data = {
         **_calendar_fields(lunar, day),
         **_traditional_fields(lunar),
-        "method": _method(),
+        "method": method,
     }
     opposite = BRANCHES[(BRANCHES.index(data["ganzhi"]["day"][1]) + 6) % 12]
     if data["chong_sha"]["branch"] != opposite:

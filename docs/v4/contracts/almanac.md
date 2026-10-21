@@ -23,6 +23,9 @@ Python 入口为 `mingjing_core.adapters.charts.almanac.almanac(day: str) -> dic
 本版本固定 `lunar-python==1.4.8` 的每日宜忌 `sect=1`：采用库按日期划分的月干支。
 这和流日功能按精确交节时刻选月柱是不同的具名用途。
 `sect=2` 在库内改用精确交节月干支，本接口不隐式切换、不新增可选参数。
+日期校验后，首次包身份读取会先核对已安装发行元数据的版本；不等于 `1.4.8` 时，
+在导入历法库与生成日期字段前拒绝，不返回违反 v1 Schema 的成功信封。
+这项版本检查不认证发行包或源码真伪；实际源码摘要仍单列，也不改变锁文件。
 
 ## 输出结构
 
@@ -102,12 +105,15 @@ Python 入口为 `mingjing_core.adapters.charts.almanac.almanac(day: str) -> dic
 | --- | --- |
 | `almanac_date_invalid` | 缺失、非字符串、非严格ISO格式或无效公历日期；不导入历法库即拒绝 |
 | `almanac_date_out_of_range` | 不在1901–2099；不做外推 |
+| `almanac_library_version_unsupported` | 首次读取的发行版本不是严格的1.4.8；不执行该日期的历法计算，修复隔离环境后重启 |
 | `almanac_library_inconsistent` | 库输出冲支与独立的日支+6取模12不一致；失败关闭，不悄悄修值 |
 
 本函数不读取用户出生信息，无需他人资料授权，也不支持用人物资料改变黄历。
 `effects.model_calls=0`、`writes=0`、`alias_registry=ephemeral_only`。
 没有数据库、网络或模型调用；参数不合法时不返回半份黄历。依赖缺失属于 Charts 部署配置问题，
 不回退到模型或编造日历，适配器负责转换为其现有配置错误。
+直接 Python 入口保留上述错误前缀；当前跨进程 `P8ChartAdapter.almanac` 沿用既有
+`chart_engine_failure` 对外分类，不承诺已把新的细分错误透传给 Agent/API。
 
 ## 验证证据
 

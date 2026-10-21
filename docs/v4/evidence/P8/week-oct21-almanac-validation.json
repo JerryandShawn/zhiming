@@ -1,0 +1,127 @@
+{
+  "version": "p8-almanac-version-and-display-citations-validation-v1",
+  "started_at_beijing": "2026-10-21T10:53:32.107174+08:00",
+  "completed_at_beijing": "2026-10-21T10:53:41.491137+08:00",
+  "tests": {
+    "targeted": 387,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_seconds": 4.76
+  },
+  "new_tests_in_target": {
+    "almanac_version": 28,
+    "course_display_citations": 60
+  },
+  "not_additive": "52 and327 overlap387; display red60 is prior failing input, not additional acceptance",
+  "display_red": {
+    "passed": 58,
+    "failed": 2,
+    "reason": "lesson20 still used c2 while real solar-position evidence moved to c7"
+  },
+  "source_count": 387,
+  "source_map_reference": "docs/v4/evidence/P8/week-oct21-almanac-387-process.json",
+  "sources_unchanged_during_target_and_style": true,
+  "validation_harness_lf_sha256": "0d8649fb0eba0d98664a205dfe44dbefd0f0f20e8b87c6a7c70ba23282a7526b",
+  "chart_launch_transport": "direct base -S with only locked Charts site and project PYTHONPATH, no Core site, no venv wrapper execution",
+  "process_budget": {
+    "mechanism": "Windows Job ACTIVE_PROCESS_LIMIT=4 including this inline coordinator and all descendants; no BREAKAWAY flags",
+    "configured_limit": 4,
+    "active_before": 1,
+    "active_after": 1
+  },
+  "delivery": {
+    "python_files": 236,
+    "protected_files": 141,
+    "style_and_secret_check": "passed"
+  },
+  "bindings": "week-oct21-almanac-version-rebinding-final.json",
+  "archived_files": {
+    "387-process.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-387-process.json",
+      "lf_sha256": "4fccad92f99f826b58e85ae209fc9cc56819d3e82e104faef53330cd767a8b9a"
+    },
+    "387.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-387.txt",
+      "lf_sha256": "855a49c6f1be6402187e31868c0b40069078932ce6f4fbe995aacd82981e1f81"
+    },
+    "387-raw-host.xml": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-387-raw-host.xml",
+      "lf_sha256": "806c930a380975ba11e7b84c8651b8b863d8563f83ffbabc561cc049c3ce40d7"
+    },
+    "52-process.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-52-process.json",
+      "lf_sha256": "7f2bbd7a383a229b8446fe8cec6809144f9e888c1d232784cd5e357f1d178f7d"
+    },
+    "52.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-52.txt",
+      "lf_sha256": "69dab7b77c5b43f42193e105875d3b380209aa83c486ca83eeaf0e1a2cce7b61"
+    },
+    "327-process.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-327-process.json",
+      "lf_sha256": "cd1a3305c9e0e71a689628cd69a3ec604f0394fcd627b718924d212931c01bd6"
+    },
+    "327.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-327.txt",
+      "lf_sha256": "643118dcb7ea13c8fb0414b60bc49432f75b9ff11c09123b06108b2fa1e4cd52"
+    },
+    "display-red-process.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-display-red-process.json",
+      "lf_sha256": "f0cabf3935538367f0f057d727ef9a4570bd9729f2d23392b67250b350efc9aa"
+    },
+    "display-red.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-display-red.txt",
+      "lf_sha256": "b8b89bc8e1cee3ea7268f596ed662a6e2cf771221c11915b310300f5f7212895"
+    },
+    "binding-first-failure-process.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-binding-first-failure-process.json",
+      "lf_sha256": "ec0d74f9a805952ffe83e41230f4a8798d9214a5ccd0d1afa7ffaae33133251a"
+    },
+    "binding-first-failure.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-binding-first-failure.txt",
+      "lf_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "binding-16-process.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-binding-16-process.json",
+      "lf_sha256": "5c3c656abb1265afcca0ae9e6055fdf91a929262b474417478e90adf9f57b798"
+    },
+    "binding-17-process.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-binding-17-process.json",
+      "lf_sha256": "32e0e55980827ff6502346e195f8e5667181c9469a4c1276c73ebe2b9b17db9a"
+    },
+    "final-harness-source.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-final-harness-source.txt",
+      "lf_sha256": "0d8649fb0eba0d98664a205dfe44dbefd0f0f20e8b87c6a7c70ba23282a7526b"
+    },
+    "final-binding-helper-source.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-final-binding-helper-source.txt",
+      "lf_sha256": "cc36f70999153b94fe3fcf1afb5308660cce4ba3182034efc3c5d7a4e31c23a1"
+    },
+    "packaging-source.txt": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-packaging-source.txt",
+      "lf_sha256": "eb69c6be371cd7c00ee02a547ac4b4354a5a4d450d514cfbfc73e0d512bc2e05"
+    },
+    "style.json": {
+      "path": "docs/v4/evidence/P8/week-oct21-almanac-style.json",
+      "lf_sha256": "9d2ceb45b824aa66df327e7bc19b694975a045c4648e98684d13be67690181f3"
+    }
+  },
+  "current_full_regression_complete": false,
+  "previous_full": {
+    "source_commit": "6508cc48132d6dc55c00eafe725be79fe9e1b34c",
+    "v4": 3114,
+    "scripted_fake": 80,
+    "self_tests": 48,
+    "historical_only": true
+  },
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "profile_writes": 0,
+  "limits": [
+    "Direct Charts transport retains previously disclosed dependency and original-wrapper limits",
+    "Version metadata check is not package authentication",
+    "Full v4/scripted must start next legal minute15-29 window",
+    "Initial ambiguous mapping refusal retained; final mapping uses fixed f4da Git baseline and actual values, no source calculated by model",
+    "First failed binding helper source was not independently hashed in its original process receipt; traceback and source snapshots retained without retroactive claim"
+  ]
+}

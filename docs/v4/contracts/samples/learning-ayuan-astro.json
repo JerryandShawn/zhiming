@@ -105,7 +105,7 @@
         }
       },
       "c_aliases": [
-        "c2"
+        "c7"
       ],
       "r_aliases": [],
       "source_refs": [
@@ -154,11 +154,11 @@
         "ephemeris_files": "Moshier requested explicitly; no Swiss data-file fallback presumed"
       },
       "source_ref": {
-        "document_id": "doc-6c8c2df511dca34bf4e71af36986b2e047b9d139f9f10e75dd31d8e9e00dccc4",
-        "path": "/artifacts/chart-3686c55a4452d118711b00b7/data"
+        "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+        "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data"
       },
       "point_id": "learning-1",
-      "citations": "〔c2〕"
+      "citations": "〔c7〕"
     },
     {
       "kind": "boundary",
@@ -210,15 +210,15 @@
         "distance_seconds": 380.536889
       },
       "c_aliases": [
-        "c6",
-        "c7",
-        "c8"
+        "c3",
+        "c4",
+        "c5"
       ],
       "r_aliases": [
         "r1"
       ],
       "source_ref": {
-        "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+        "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
         "path": "/boundary_alerts/0"
       },
       "source_refs": [
@@ -229,13 +229,13 @@
         "条件与实际效度分开核对"
       ],
       "point_id": "learning-2",
-      "citations": "〔c6〕〔c7〕〔c8〕〔r1〕"
+      "citations": "〔c3〕〔c4〕〔c5〕〔r1〕"
     }
   ],
   "aliases": {
     "c": [
       {
-        "alias": "c2",
+        "alias": "c3",
         "scope": {
           "owner_user_id": "synthetic-owner-ayuan",
           "subject_id": "synthetic-subject-ayuan",
@@ -243,30 +243,47 @@
           "operation_id": "synthetic-ayuan-astro-20261019"
         },
         "ref": {
-          "document_id": "doc-6c8c2df511dca34bf4e71af36986b2e047b9d139f9f10e75dd31d8e9e00dccc4",
-          "path": "/artifacts/chart-3686c55a4452d118711b00b7/data"
-        },
-        "value_sha256": "fb3a95f855c9562c48863c5597f671b16c3a2e4190aa49809bd1ea315b5459a4",
-        "branch_id": "time-ce23fbc4a4c6c3e51da04e0a",
-        "basis": "actual_UTC",
-        "claim_id": "demo-claim-cfa4a35061618c69aaaec833cc048901337030175dba3dc74867e8bbb9c5ebb2"
-      },
-      {
-        "alias": "c6",
-        "scope": {
-          "owner_user_id": "synthetic-owner-ayuan",
-          "subject_id": "synthetic-subject-ayuan",
-          "revision": 1,
-          "operation_id": "synthetic-ayuan-astro-20261019"
-        },
-        "ref": {
-          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
           "path": "/time_basis/items/0/source_variants/1/coordinate_datetime"
         },
         "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
         "branch_id": "instant-d84ee400f41ac0430bcc690c",
         "basis": "actual_UTC",
-        "claim_id": "demo-claim-567498141fc263697156e804fb48fa87f4432d76d21728e7827b7b44987986d4"
+        "claim_id": "demo-claim-4be0a8599ad9dba5a76336786126a1797cb2bd01f8e88eb96b1c81c1289033f3"
+      },
+      {
+        "alias": "c4",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-astro-20261019"
+        },
+        "ref": {
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+          "path": "/time_basis/items/0/source_variants/1/pillars"
+        },
+        "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-5ef298d08f4157b58dc637d7b6eb7297192810482b73032f83de74b7ca0dad1f"
+      },
+      {
+        "alias": "c5",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-astro-20261019"
+        },
+        "ref": {
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+          "path": "/time_basis/items/0/source_variants/1/solar_time"
+        },
+        "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-8b71e2b0632f3e9d6b491217b8e2d9426521f72ae0579b9eb2ff4ecff5dbadd4"
       },
       {
         "alias": "c7",
@@ -277,30 +294,13 @@
           "operation_id": "synthetic-ayuan-astro-20261019"
         },
         "ref": {
-          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
-          "path": "/time_basis/items/0/source_variants/1/pillars"
+          "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+          "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data"
         },
-        "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
-        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "value_sha256": "fb3a95f855c9562c48863c5597f671b16c3a2e4190aa49809bd1ea315b5459a4",
+        "branch_id": "time-ce23fbc4a4c6c3e51da04e0a",
         "basis": "actual_UTC",
-        "claim_id": "demo-claim-0dbaeda08888ae6c116a6d3720db32115f176f6f9ca6b13a3172579271d55f5d"
-      },
-      {
-        "alias": "c8",
-        "scope": {
-          "owner_user_id": "synthetic-owner-ayuan",
-          "subject_id": "synthetic-subject-ayuan",
-          "revision": 1,
-          "operation_id": "synthetic-ayuan-astro-20261019"
-        },
-        "ref": {
-          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
-          "path": "/time_basis/items/0/source_variants/1/solar_time"
-        },
-        "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
-        "branch_id": "instant-d84ee400f41ac0430bcc690c",
-        "basis": "actual_UTC",
-        "claim_id": "demo-claim-703d35b43457faa546d41e36ff4a8d5721e9351d80e14efd4869903bf3b07907"
+        "claim_id": "demo-claim-fe925eb88bf4d787187a583b21abeef48945924f671428b02e83a601f16a07ca"
       }
     ],
     "r": [
@@ -313,7 +313,7 @@
           "operation_id": "synthetic-ayuan-astro-20261019"
         },
         "ref": {
-          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
           "path": "/boundary_alerts/0"
         },
         "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
@@ -322,11 +322,11 @@
         "rule_id": "time_boundary.hour_branch",
         "rules_version": "p8-boundary-alerts-v1",
         "evidence_aliases": [
-          "c6",
-          "c7",
-          "c8"
+          "c3",
+          "c4",
+          "c5"
         ],
-        "claim_id": "demo-claim-9dee54e6f9adb6d2d8c90397e8e4fdb438f8c55be286705a5260551bf0737c5f"
+        "claim_id": "demo-claim-b1ed236fba16eb54c8c47dbc11d6960b478914bf05c3b2388c5779fcf3e56bd1"
       }
     ]
   },
@@ -400,10 +400,10 @@
     }
   ],
   "source_document_ids": [
-    "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
-    "doc-6c8c2df511dca34bf4e71af36986b2e047b9d139f9f10e75dd31d8e9e00dccc4",
-    "doc-e71de7df60d8ced0a828f0e6f069111fe33edc0dfa0691361eccf98f3422c04c",
-    "doc-35cdcda8657b14e6dd883b5bdd9ff9c9f88fdbbd88143fc3e38c3c483260f3c7"
+    "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+    "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+    "doc-482ebeed6aab889875b154c8e79dda7dc7c1eb6c209b5bb24d663bdb64345c34",
+    "doc-ce0de687d4f35f8fe3a3be2fe325b64b93fad71965367db03e551c9d43f3ac31"
   ],
   "effects": {
     "model_calls": 0,
