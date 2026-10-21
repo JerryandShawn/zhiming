@@ -113,3 +113,13 @@ Surprises & Discoveries：-q日志只有19skip总数，不能据summary认定原
 Decision Log：只在受信构造默认关闭候选交离线/CI证据，不合integration/main；19skip分类继续作为未完成门，不凭Windows目标绿替代Linux缺项。当前记录只写文档，不再跑测试。
 
 Outcomes & Retrospective：取得此精确头Linux CI成功，但P6 v2 critic/校准/专业claim、P1b组合、旧DOM及普通skip仍未完成，不宣P6整阶段验收或可发布。真实模型/服务器/飞书0。
+
+## 2026-10-21 10:31 +08:00 CI实际checkout更正
+
+Progress：关联head337e的run39528346446成功，但完整原日志实际checkout refs/remotes/pull/11/merge：c79b9e6a/tree1e813551，base23ff14e4 + head337e；已取回只读Git对象逐父/树核验。本PR11当前base仍v4/p3-agent-runtime，非已合integration。
+
+Surprises & Discoveries：head自身collection2091与CI2317不符，不能凭关联head称独立树CI。实际merge tree只读collect2317与CI progress2317完全等长，19个s逐位对应B1 App PG8+restore PG11，原fixture要求显式B1_PROOF_TEST_ADMIN_DSN，CI未设。此诊断执行测试0/PG0/HTTP0，不补造JUnit。
+
+Decision Log：证据JSON分开head_tree与tested_tree，保留10:18初稿误归属的更正记录；CI成功只能用于实际合并预览，不回签head单独树或后续头。19个未执行B1目标仍是缺口，不能据fixture skip改放行。
+
+Outcomes & Retrospective：B1 NoGo、P6默认关闭、旧DOM/critic/校准和P1b组合未完照旧；无真实调用/服务器/飞书。后续集成只按受审v4/integration路线，不合v4/main/main。
