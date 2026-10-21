@@ -77,8 +77,12 @@ hook 没有线程级隔离或锁，其他线程可能观察临时别名。它只
 
 已只读核对[最终身份与时区版本报告](RESERVE_RPF01_projection_performance_final_identity_timezone.json)，
 其观察时刻为 `2026-10-21T09:07:20.791356+08:00`，
-SHA256 `0049f42c0b79fff1f1579c0f888a30237ed7768ab305be6c2ff8d45b17e76913`。
-报告内 287 份来源文件逐一与当前文件重算一致，其中 283 份为 Core Python 文件；三源 aggregate 为上表 707ed 版本。
+当前公开LF文件SHA256 `4d2e89e15144dbe557a6eb07b06fc2d167fca5d65a10e8902ec73c77225d4011`；
+原实测Windows CRLF字节SHA256 `0049f42c0b79fff1f1579c0f888a30237ed7768ab305be6c2ff8d45b17e76913`，
+两者以EOL谱系区分，不能将公开LF字节hash称作原实测字节hash。
+报告内287份来源在当次独立审查及root_source_review_at=2026-10-21T09:11:30+08:00复核时相同，
+其中283份为Core Python文件；三源aggregate为上表707ed版本。source_sha256是当时Windows快照，
+不保证后续其它模块开发后的HEAD仍全相同，亦不因后续变化回写旧快照。
 报告记录测量前后文件集合与字节均不变、四个别名恢复。独立审查没有再次运行该性能工作负载。
 
 | 单次工作量 | 原实现中位秒 | 候选中位秒 | 原/候选 Python 分配峰字节 |
@@ -108,3 +112,10 @@ SHA256 `0049f42c0b79fff1f1579c0f888a30237ed7768ab305be6c2ff8d45b17e76913`。
 5. 未验证并发输入变化、任意插件类型、全局 Python 复制行为改变或真实服务负载；没有本实验导致的数据库迁移或回滚动作。
 
 独立审查到此冻结。产品修复由 Core 实施；root 负责发布与 Git 状态。本文不宣称整个 PR 覆盖率、线上收益或生产验收。
+
+root后续授权的元数据修复说明（不是重跑独立测试）：09:17:40+08已将4性能JSON及coverage_scope
+原CRLF字节全部先备份到private/mod-week/evidence-originals，然后只将公开CRLF规范化为LF。
+逐文件old/new SHA256、JSON对象全等及可逆字节证明见RPF01_eol_normalization_audit_20261021.json；
+未改变观察时间、任何数值、source_sha256、stdout或上述9条断言，原本已LF的独立证据JSON未改。
+root随后实核HEAD `5a1a5e8`原有报告blob已是LF，与规范后工作副本相同，5报告本身无Git内容diff。
+修复的是发布hash引用的字节表示误认；原观测CRLF备份与SHA继续保留，没有重生成测量载荷。

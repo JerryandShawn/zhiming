@@ -13,6 +13,7 @@
 文件≤400/函数≤60及类型标注检查通过。旧反思18源、旧Q2/U4、已有测试均未修改。
 
 完整100链对照、失败门禁语义捕获、临时hook异常恢复与287来源集合/hash前后校验通过。
+287值属于09:07测量及root_source_review_at=09:11:30+08的Windows快照，不是永久当前HEAD证明。
 仅新离线进程替换四个反思别名，最后全部恢复；没有旧Q2/U4 monkeypatch。
 
 peer先保存metaclass实际5失败/1通过，自有时区3项也先保存真实失败及修前SHA，随后只修新候选。
@@ -34,7 +35,13 @@ Python分配峰294721→233489字节。1000失效链0.3821930→0.3734919秒，�
 `application/reflection_projection_exp/`三源；独立测试目录及显式synthetic向量；
 `tools/mod_week/benchmark_reflection_projection_RPF01.py`；final_identity_timezone性能、run_manifest、
 coverage_final/coverage_scope_final及接线指南。
-最终报告SHA256为`0049f42c0b79fff1f1579c0f888a30237ed7768ab305be6c2ff8d45b17e76913`。
+公开最终报告LF字节SHA256为`4d2e89e15144dbe557a6eb07b06fc2d167fca5d65a10e8902ec73c77225d4011`。
+原实测Windows CRLF字节SHA256为`0049f42c0b79fff1f1579c0f888a30237ed7768ab305be6c2ff8d45b17e76913`，
+以original_observed_sha256保留。09:17:40+08将4性能和coverage_scope共5份原字节先备份，再仅换行
+CRLF→LF；JSON对象完全相等、可逆，未改数值/时刻/source hash/stdout语义，也没有重跑性能。
+逐文件谱系见`RPF01_eol_normalization_audit_20261021.json`及run_manifest，不把LF hash当原实测字节。
+root实核HEAD `5a1a5e8`已有报告blob即LF；规范后的工作副本与它相同，5报告本身无Git内容变化。
+这次仅修发布引用并保留原观测SHA，不是重生成测量数据。本子任务没有运行Git。
 
 ## 数据库迁移与回滚
 

@@ -62,8 +62,10 @@ dict键必须是精确str；datetime使用原`instant`转换UTC ISO。每次重�
 ## 实际观测
 
 唯一最终证据是`docs/v4/evidence/MOD_2026-10-21/RESERVE_RPF01_projection_performance_final_identity_timezone.json`，
-实际北京时间2026-10-21 09:07:20，进程48708，283个Core源加工具/fixture共287来源全部前后及
-当前复核一致。候选aggregate为`707ed17655c261b35407ef26e9826bacd96befd82afb1f4b755b662de49c8005`；
+实际北京时间2026-10-21 09:07:20，进程48708，283个Core源加工具/fixture共287来源在测量前后和
+root于09:11:30+08复核时一致。这是当时Windows字节快照，不承诺后续HEAD始终同值；其它模块
+后续开发不回写该快照，也不要求为此重跑本次性能。候选aggregate为
+`707ed17655c261b35407ef26e9826bacd96befd82afb1f4b755b662de49c8005`；
 旧反思18源仍为`2eee084f643e38d0e32d918e52ecc93c7ce1564558332419a94ffa3321ef390d`。
 
 | 同一工具的配对路径 | 原实现中位秒 | 候选中位秒 | 原/候选独立Python分配峰（字节） |
@@ -81,6 +83,18 @@ dict键必须是精确str；datetime使用原`instant`转换UTC ISO。每次重�
 `RESERVE_RPF01_projection_performance.json`、`..._final.json`及`..._final_hardened.json`均保留，
 全是67a77修前产品；前两个还是工具加固前记录，首个还可能与短pytest重叠。旧文件名含final
 也不能当最终采用证据。详细分类在同目录run_manifest中。
+
+09:17:40+08仅修证据的公开字节表示：4份性能JSON及coverage_scope原Windows CRLF文件先逐字节
+备份到`private/mod-week/evidence-originals/`，再只将CRLF替换为LF。JSON对象全等且可逆还原原字节，
+没有重跑、重序列化或修改观察时刻、数值、source_sha256和stdout语义。公开最终报告LF SHA256为
+`4d2e89e15144dbe557a6eb07b06fc2d167fca5d65a10e8902ec73c77225d4011`；原实测CRLF字节SHA256
+`0049f42c0b79fff1f1579c0f888a30237ed7768ab305be6c2ff8d45b17e76913`仅作original_observed_sha256。
+这两个hash各指不同字节表示，不能把公开LF的hash称原实测原字节hash。审计
+`RPF01_eol_normalization_audit_20261021.json`逐文件保留old/new SHA、原备份、库存和semantic_equal；
+manifest中coverage_scope也分别登记原CRLF和公开LF hash。其它原已LF/单行JSON没有被规范化改写。
+root已核对Git HEAD `5a1a5e8`原先就以LF存储这些报告，规范化后的工作副本与已有Git blob相同，
+因此5份报告本身没有Git内容diff。本次实际修复是发布引用误用了本机观测CRLF hash；保留原观测
+SHA并改用已发布LF字节hash，不是重生成测量数据或改变Git中的报告载荷。本子任务没有运行Git。
 
 ## 主线接线和退出条件
 
