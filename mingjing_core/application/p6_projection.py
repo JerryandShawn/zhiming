@@ -7,6 +7,7 @@ from typing import Any
 from mingjing_core.agent.loop_cycle import LoopOutcome
 from mingjing_core.application.agent_commit_versions import persisted_receipts
 from mingjing_core.application.agent_options import load_options
+from mingjing_core.application.p6_case_projection import case_projection
 from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.repositories.dependencies import entity_dependency
 from mingjing_core.repositories.postgres import PostgresRepository
@@ -21,13 +22,18 @@ def trusted_records(repo: PostgresRepository, run: dict[str, Any], outcome: Loop
         if entity_dependency(kind, ident) not in outcome.versions:
             continue
         row = repo.get(run["owner"], kind, ident)
-        if row["subject_id"] != run["subject"] or row["status"] not in {"active", "open", "pending"}:
+        if row["subject_id"] != run["subject"]:
             raise EvidenceError("P6材料不属于当前有效人物")
         if row["revision"] != outcome.versions[entity_dependency(kind, ident)] or repo.is_revoked(
             run["owner"], kind, ident
         ):
             raise EvidenceError("P6材料来源版本已失效")
-        result[alias] = dict(row, entity_kind=kind)
+        if kind == "case":
+            result[alias] = case_projection(repo, run, value, row)
+        elif row["status"] not in {"active", "open", "pending"}:
+            raise EvidenceError("P6材料已不属于当前有效状态")
+        else:
+            result[alias] = dict(row, entity_kind=kind)
     return result
 
 

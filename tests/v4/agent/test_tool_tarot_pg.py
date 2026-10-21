@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor
 from dataclasses import replace
 from datetime import timedelta
 from typing import Any
@@ -38,8 +37,8 @@ def tarot_env(
     return repo, clock
 
 
-def harness(env: tuple[PostgresRepository, FrozenClock], text: str = QUESTION) -> Harness:
-    h = setup(env[0], text)
+def harness(env: tuple[PostgresRepository, FrozenClock], text: str = QUESTION, *, claim: bool = True) -> Harness:
+    h = setup(env[0], text, claim=claim)
     h.service.clock = env[1]
     return h
 
@@ -96,12 +95,14 @@ def test_twenty_four_hour_window_and_punctuation_do_not_create_new_decks(
     repo, clock = tarot_env
     first = harness(tarot_env)
     draw, _, _ = call(first)
+    first.finish()
     clock.advance(timedelta(hours=23, minutes=59))
     second = harness(tarot_env, QUESTION + "？")
     before = repo.get_revision("alice")
     repeated, _, _ = call(second, args={"question": QUESTION + "？", "message_id": second.source["id"]})
     assert not repeated.ok and repeated.data["code"] == "recent_draw_exists"
     assert repeated.data["draw_id"] == draw.data["draw"]["id"] and repo.get_revision("alice") == before
+    second.finish()
     clock.advance(timedelta(minutes=1))
     third = harness(tarot_env)
     renewed, _, _ = call(third)
@@ -125,6 +126,7 @@ def test_model_flag_needs_current_user_insistence_and_never_changes_old_cards(
     first = harness(tarot_env)
     result, _, _ = call(first, args={"question": QUESTION, "message_id": first.source["id"], "draw_source": "auto"})
     old = TarotService(first.repo).get("alice", result.receipt["draw_id"])
+    first.finish()
     second = harness(tarot_env, QUESTION + "。" + statement)
     result, _, _ = call(second, args={"question": QUESTION, "message_id": second.source["id"], "explicit_new": True})
     assert result.ok is allowed
@@ -138,16 +140,25 @@ def test_cancelled_draw_does_not_bypass_same_question_guard(tarot_env: tuple[Pos
     first = harness(tarot_env)
     result, _, _ = call(first)
     TarotService(first.repo).cancel("alice", result.receipt["draw_id"])
+    first.finish()
     second = harness(tarot_env)
     result, _, _ = call(second)
     assert not result.ok and result.receipt["code"] == "recent_draw_exists"
 
 
 def test_two_simultaneous_runs_only_shuffle_one_deck(tarot_env: tuple[PostgresRepository, FrozenClock]) -> None:
-    first, second = harness(tarot_env), harness(tarot_env)
-    with ThreadPoolExecutor(max_workers=2) as pool:
-        results = list(pool.map(call, (first, second)))
-    assert sorted(result[0].ok for result in results) == [False, True]
+    first = harness(tarot_env)
+    second = harness(tarot_env, claim=False)
+    with pytest.raises(LeaseConflict, match="同一线程"):
+        first.repo.claim_run("alice", second.run["id"])
+    assert first.repo.fetch_run("alice", second.run["id"])["status"] == "queued"
+    assert TarotService(first.repo).list_draws("alice") == []
+    draw, _, _ = call(first)
+    first.finish()
+    second.run = first.repo.claim_run("alice", second.run["id"])
+    repeated, _, _ = call(second)
+    assert draw.ok and not repeated.ok and repeated.receipt["code"] == "recent_draw_exists"
+    assert repeated.data["draw_id"] == draw.data["draw"]["id"]
     assert len(TarotService(first.repo).list_draws("alice")) == 1
 
 

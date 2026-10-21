@@ -18,6 +18,7 @@ from mingjing_core.agent.toolkit import ToolContext, ToolRegistry, ToolResult
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.application.agent_tools_contracts import DateResolution
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.timekit.clock import FrozenClock
 
@@ -48,6 +49,18 @@ class Harness:
     run: dict[str, Any]
     source: dict[str, Any]
 
+    def finish(self) -> dict[str, Any]:
+        """End only this component's leased run; no dialogue was finalized."""
+        terminal = self.repo.fail_run(
+            self.run["owner"],
+            self.run["id"],
+            "合成组件检查已结束，未生成对话",
+            self.run["lease_token"],
+            status="cancelled",
+        )
+        assert terminal["status"] == "cancelled" and terminal["lease_token"] is None
+        return terminal
+
     def call(self, name: str, args: dict[str, Any], **flags: Any) -> tuple[ToolResult, ToolContext]:
         step = self.journal.next_or_replay(
             self.run,
@@ -70,7 +83,9 @@ class Harness:
         return result, ctx, args
 
 
-def setup(repo: PostgresRepository, text: str, *, role: str = "user", parser: Any = None) -> Harness:
+def setup(
+    repo: PostgresRepository, text: str, *, role: str = "user", parser: Any = None, claim: bool = True
+) -> Harness:
     memory = MemoryService(repo)
     source = memory.receive("alice", content=text, source_id=uuid.uuid4().hex, role=role, at=SAID_AT)
     run = repo.queue_run("alice", uuid.uuid4().hex, {"message": text, "source_message_id": source["id"]})
@@ -79,7 +94,7 @@ def setup(repo: PostgresRepository, text: str, *, role: str = "user", parser: An
             sql.SQL("UPDATE {} SET runtime='v4',thread_id='life:self' WHERE id=%s").format(repo.table("core_runs")),
             (run["id"],),
         )
-    run = repo.claim_run("alice", run["id"], lease_seconds=3600)
+    run = repo.claim_run("alice", run["id"], lease_seconds=3600) if claim else repo.fetch_run("alice", run["id"])
     service = AgentToolsService(repo, relative_parser=parser, clock=FrozenClock(SAID_AT))
     return Harness(repo, service, ToolRegistry(service), Journal(repo, "alice"), run, source)
 
@@ -275,6 +290,7 @@ def test_notes_are_inferred_idempotent_and_forget_revokes_lineage(tool_repo: Pos
     row = tool_repo.get("alice", "note", note.receipt["id"])
     assert row["inferred"] is True and row["assertion_status"] == "derived"
     assert h.registry.execute("note_write", args, ctx).receipt == note.receipt
+    h.finish()
     deletion = setup(tool_repo, "请忘记我喜欢夜班")
     result, _ = deletion.call(
         "memory_forget", {"fact_id": fact.receipt["fact_id"], "message_id": deletion.source["id"]}
@@ -283,6 +299,8 @@ def test_notes_are_inferred_idempotent_and_forget_revokes_lineage(tool_repo: Pos
     assert tool_repo.get("alice", "note", row["id"], include_deleted=True)["status"] != "active"
     assert not h.registry.execute("memory_write", write_args, write_ctx).ok
     assert not h.registry.execute("note_write", args, ctx).ok
+    with pytest.raises(EvidenceError, match="Withdrawn source range"):
+        MemoryService(tool_repo).save_fact("alice", "self", h.source["id"], h.source["content"], "preference")
 
 
 def test_incognito_and_crisis_cannot_write(tool_repo: PostgresRepository) -> None:
@@ -333,6 +351,7 @@ def test_note_cannot_smuggle_credentials_or_ignore_optout(tool_repo: PostgresRep
     h = setup(tool_repo, "不要保存我喜欢夜班")
     result, _ = h.call("note_write", {"summary": "合成推断", "source_ids": [h.source["id"]]})
     assert result.receipt["write_status"] == "stopped"
+    h.finish()
     h = setup(tool_repo, "我喜欢夜班")
     result, _ = h.call("note_write", {"summary": "sk-" + "synthetic" * 4, "source_ids": [h.source["id"]]})
     assert result.receipt["code"] == "credential"

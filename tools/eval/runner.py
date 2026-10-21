@@ -36,6 +36,9 @@ EVAL_ROOT = Path(__file__).parent
 def _source_digest() -> str:
     candidates = list((ROOT / "tools/eval").rglob("*.py")) + list(ROOT.glob("requirements*.lock"))
     candidates += list((ROOT / "tools/eval/fixtures").glob("*.yaml"))
+    runtime_config = ROOT / "config/runtime.yaml"
+    if runtime_config.is_file():
+        candidates.append(runtime_config)
     candidates += [
         path for path in (ROOT / "mingjing_core").rglob("*") if path.suffix in {".py", ".md", ".json", ".sql"}
     ]

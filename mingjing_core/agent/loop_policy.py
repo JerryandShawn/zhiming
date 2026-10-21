@@ -27,6 +27,7 @@ class LoopStopped(RuntimeError):
 @dataclass(frozen=True)
 class LoopPolicy:
     depth: Literal["standard", "deep"] = "standard"
+    lane: Literal["interactive", "background"] | None = None
     max_iterations: int | None = None
     max_seconds: int | None = None
     max_tools: int | None = None
@@ -37,18 +38,20 @@ class LoopPolicy:
     text_only: bool = False
 
     def __post_init__(self) -> None:
-        if self.depth not in {"standard", "deep"}:
-            raise EvidenceError("循环深度无效")
+        if self.depth not in {"standard", "deep"} or self.lane not in {None, "interactive", "background"}:
+            raise EvidenceError("循环深度或通道无效")
         for value, maximum in (
-            (self.iterations, 60 if self.deep else 40),
-            (self.seconds, 1200 if self.deep else 480),
-            (self.tools_per_step, 10 if self.deep else 6),
+            (self.iterations, 60 if self.background_limits else 40),
+            (self.seconds, 1200 if self.background_limits else 480),
+            (self.tools_per_step, 10 if self.background_limits else 6),
             (self.repeat_limit, 3),
             (self.renew_seconds, 20),
             (self.lease_seconds, 150),
         ):
             if type(value) is not int or not 1 <= value <= maximum:
                 raise EvidenceError("循环策略不能扩大已批准上限")
+        if self.renew_seconds >= self.lease_seconds:
+            raise EvidenceError("续租间隔必须小于租约")
         if self.only_tool is not None and (not isinstance(self.only_tool, str) or not self.only_tool or self.text_only):
             raise EvidenceError("循环工具选择无效")
 
@@ -57,16 +60,20 @@ class LoopPolicy:
         return self.depth == "deep"
 
     @property
+    def background_limits(self) -> bool:
+        return self.lane == "background" or self.lane is None and self.deep
+
+    @property
     def iterations(self) -> int:
-        return self.max_iterations if self.max_iterations is not None else 60 if self.deep else 40
+        return self.max_iterations if self.max_iterations is not None else 60 if self.background_limits else 40
 
     @property
     def seconds(self) -> int:
-        return self.max_seconds if self.max_seconds is not None else 1200 if self.deep else 480
+        return self.max_seconds if self.max_seconds is not None else 1200 if self.background_limits else 480
 
     @property
     def tools_per_step(self) -> int:
-        return self.max_tools if self.max_tools is not None else 10 if self.deep else 6
+        return self.max_tools if self.max_tools is not None else 10 if self.background_limits else 6
 
 
 class RunControl:

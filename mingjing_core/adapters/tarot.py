@@ -215,9 +215,11 @@ class TarotService:
             return self._update(conn,row,p)
 
     def cancel(self,owner,draw_id):
+        from ..application.tarot import invalidate_cancelled_draw
         with self.repo.transaction(owner) as conn:
             row=self._row(conn,owner,draw_id,True);p=dict(row['payload'],status='cancelled')
             conn.execute(sql.SQL("UPDATE {} SET payload=payload||%s WHERE owner=%s AND draw_id=%s AND payload->>'status'='running'").format(self.repo.table('tarot_readings')), (Jsonb({'status':'failed','error':'牌阵已取消','updated_at':_stamp()}),owner,draw_id))
+            invalidate_cancelled_draw(self.repo,conn,owner,draw_id)
             return self._update(conn,row,p)
 
     def revise_manual(self,owner,draw_id,cards,reason,idempotency_key):

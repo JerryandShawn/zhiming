@@ -8,12 +8,22 @@ from typing import Any
 
 from mingjing_core.agent.context import ContextEngine
 from mingjing_core.agent.context_tokens import TokenMeter
-from mingjing_core.agent.context_types import BudgetPolicy, ContextBuild, ContextInputError
+from mingjing_core.agent.context_types import (
+    BudgetPolicy,
+    ContextBuild,
+    ContextInputError,
+)
 from mingjing_core.agent.crisis import fallback_text
 from mingjing_core.agent.journal import Journal
 from mingjing_core.agent.loop_cycle import LoopCycle, LoopOutcome
 from mingjing_core.agent.loop_policy import LoopPolicy, RunControl
 from mingjing_core.agent.prompts import load_prompts
+from mingjing_core.agent.runtime_config import (
+    RuntimeConfig,
+    RuntimeConfigError,
+    load_runtime_config,
+    validate_runtime_config,
+)
 from mingjing_core.agent.toolkit import ToolRegistry
 from mingjing_core.application.agent_crisis_sources import turn_has_crisis
 from mingjing_core.application.agent_finalization import AgentFinalizer
@@ -25,11 +35,14 @@ from mingjing_core.application.agent_runtime_state import RuntimeState
 from mingjing_core.application.agent_snapshots import AgentSnapshotStore
 from mingjing_core.application.agent_thread_scope import thread_id
 from mingjing_core.application.agent_tools import AgentToolsService
-from mingjing_core.application.agent_tools_clarification import apply_clarification_answer
+from mingjing_core.application.agent_tools_clarification import (
+    apply_clarification_answer,
+)
 from mingjing_core.application.agent_tools_private import consume_private_answer
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.p6_validation import P6ValidationBridge
 from mingjing_core.application.read_result import read_result
+from mingjing_core.application.runtime_limits import RuntimeLimits
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
 from mingjing_core.models.port import ModelPort
 from mingjing_core.repositories.postgres import PostgresRepository
@@ -49,7 +62,11 @@ class AgentRuntime:
         budget: BudgetPolicy | None = None,
         control_factory: Callable[..., RunControl] = RunControl,
         p6_validation: P6ValidationBridge | None = None,
+        runtime_config: RuntimeConfig | None = None,
     ) -> None:
+        if runtime_config is not None and type(runtime_config) is not RuntimeConfig:
+            raise RuntimeConfigError("运行安全配置只能由受信构造注入")
+        self.config = load_runtime_config() if runtime_config is None else validate_runtime_config(runtime_config)
         self.repo, self.port, self.offline = repo, port, offline
         self.meter, self.budget = meter, budget or BudgetPolicy()
         self.prompts, self.state = load_prompts(), RuntimeState(repo)
@@ -80,8 +97,10 @@ class AgentRuntime:
             ),
         )
 
-    def _cycle(self, run: dict[str, Any], frozen: ContextBuild, events: RuntimeEvents, *, crisis: bool) -> LoopCycle:
-        policy = LoopPolicy(depth="deep" if run["request"].get("depth") == "deep" else "standard", text_only=crisis)
+    def _cycle(
+        self, run: dict[str, Any], frozen: ContextBuild, events: RuntimeEvents, *, crisis: bool, policy: LoopPolicy
+    ) -> LoopCycle:
+        policy = replace(policy, text_only=crisis)
         control = self.control_factory(self.repo, run, policy, no_text_seconds=20 if crisis else None)
         return LoopCycle(
             self.port,
@@ -177,6 +196,7 @@ class AgentRuntime:
         if confirmation:
             self.state.metadata(run, private_reminder_status=confirmation["write_status"])
         for attempt in range(2):
+            policy = RuntimeLimits(self.repo).policy(run, self.config)
             crisis = turn_has_crisis(self.repo, run)
             system = self.prompts.system(onboarding=self.state.onboarding(run), crisis=crisis)
             if confirmation:
@@ -189,17 +209,21 @@ class AgentRuntime:
             except ContextInputError as error:
                 if not crisis:
                     raise
-                from mingjing_core.application.agent_crisis_fallback import commit_crisis_template
+                from mingjing_core.application.agent_crisis_fallback import (
+                    commit_crisis_template,
+                )
 
                 return commit_crisis_template(self.repo, run, events, reason=error.code)
-            cycle = self._cycle(run, frozen, events, crisis=crisis)
+            cycle = self._cycle(run, frozen, events, crisis=crisis, policy=policy)
             try:
                 outcome = cycle.execute()
                 return self._finish(cycle, outcome, events, crisis=cycle.crisis)
             except ContextInputError as error:
                 if not cycle.crisis:
                     raise
-                from mingjing_core.application.agent_crisis_fallback import commit_crisis_template
+                from mingjing_core.application.agent_crisis_fallback import (
+                    commit_crisis_template,
+                )
 
                 return commit_crisis_template(self.repo, run, events, reason=error.code)
             except CoreError:

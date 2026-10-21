@@ -7,8 +7,6 @@ from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass, field, replace
 from typing import Any
 
-from pydantic import ValidationError
-
 from mingjing_core.application.agent_commit_versions import reconcile_versions
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_thread_scope import thread_id
@@ -29,7 +27,8 @@ from .context_types import (
 )
 from .inbox_cycle import InboxCycle
 from .journal import Journal, JournalStep, input_fingerprint
-from .loop_codec import ObservedPort, assistant_from, assistant_output, extend_aliases, tool_message, verified_versions
+from .loop_batch import ToolBatch
+from .loop_codec import ObservedPort, assistant_from, assistant_output, extend_aliases, verified_versions
 from .loop_policy import LoopPolicy, LoopStopped, RunControl
 from .toolkit import ToolRegistry
 
@@ -243,54 +242,7 @@ class LoopCycle:
             extend_aliases(self.aliases, records)
 
     def _tool(self, call: ToolCall, ended: bool) -> tuple[ToolResult, str | None]:
-        self.control.poll()
-        if self.emit:
-            self.emit("tool_call", {"call_id": call.id, "name": call.name, "summary": "正在处理这一步"})
-        failure = None
-        try:
-            fingerprint = self.registry.fingerprint(
-                call.name, call.arguments, source_versions=self.frozen.injected_versions
-            )
-        except (ValidationError, ValueError, KeyError):
-            fingerprint = input_fingerprint(
-                "tool", call.name, {"arguments": call.arguments, "source_versions": self.frozen.injected_versions}
-            )
-            failure = "invalid_tool_request"
-        if call.name not in self.exposed:
-            failure = "tool_unavailable"
-        self.repeats[fingerprint] = self.repeats.get(fingerprint, 0) + 1
-        repeated = self.repeats[fingerprint] >= self.policy.repeat_limit
-        step = self.journal.next_or_replay(self.run, kind="tool", name=call.name, input_fp=fingerprint)
-        if step.completed:
-            result = ToolResult.model_validate(step.output)
-        else:
-            code = "turn_ended" if ended else "repeated_tool" if repeated else failure
-            if code:
-                result = ToolResult(ok=False, data={"code": code}, summary="本次工具未执行")
-            else:
-                result = self.registry.execute(call.name, call.arguments, self._context(step))
-            self.journal.complete(step, result.model_dump())
-        self._register(call.name, result)
-        if result.receipt:
-            self.receipts.append(copy.deepcopy(result.receipt))
-        if result.ends_turn:
-            self.asked = copy.deepcopy(result.data.get("asked"))
-        self.messages.append(tool_message(call.id, result, self.cycle, aliases=self.aliases))
-        if self.emit:
-            self.emit(
-                "tool_result",
-                {
-                    "call_id": call.id,
-                    "name": call.name,
-                    "ok": result.ok,
-                    "summary": "已完成" if result.ok else "这一步尚未完成",
-                },
-            )
-        if call.name == "set_reminder" and result.data.get("privacy_confirmation"):
-            from .private_confirmation import ask_privacy
-
-            result = ask_privacy(self, result.data["privacy_confirmation"])
-        return result, "repeated_tool" if repeated and not ended else None
+        return ToolBatch(self).serial(call, ended)
 
     def revise(self, instructions: str) -> LoopOutcome:
         if not self.used or self.revised or not isinstance(instructions, str) or not instructions.strip():
@@ -327,10 +279,7 @@ class LoopCycle:
                     return self._outcome("completed" if response.text.strip() else "empty_answer")
                 if len(response.tool_calls) > self.policy.tools_per_step:
                     return self._outcome("step_tool_limit")
-                ended, stopped = False, None
-                for call in response.tool_calls:
-                    result, reason = self._tool(call, ended or stopped is not None)
-                    ended, stopped = ended or result.ends_turn, stopped or reason
+                ended, stopped = ToolBatch(self).execute(response.tool_calls)
                 if ended or stopped:
                     return self._outcome("asked" if ended else stopped or "tool_stop")
             return self._outcome("iteration_limit")

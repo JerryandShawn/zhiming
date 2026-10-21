@@ -6,8 +6,14 @@ from functools import partial
 from typing import TYPE_CHECKING, Any
 
 from mingjing_core.adapters.tarot import TarotService
-from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult, tool_input_fingerprint
-from mingjing_core.application.agent_tools_memory import checked_source, source_ref
+from mingjing_core.application.agent_tarot_lineage import operation_source_refs, save_tarot_snapshot
+from mingjing_core.application.agent_tool_persistence import privacy_refusal
+from mingjing_core.application.agent_tools_contracts import (
+    ToolContext,
+    ToolResult,
+    tool_input_fingerprint,
+)
+from mingjing_core.application.agent_tools_memory import checked_source
 from mingjing_core.application.agent_tools_policy import CREDENTIAL, refusal
 from mingjing_core.application.agent_tools_tarot_guard import (
     explicit_redraw,
@@ -77,7 +83,7 @@ def start_effect(
     snapshot = {
         "question_message_id": source["id"],
         "source_ids": [source["id"]],
-        "source_refs": [source_ref(source, start, end)],
+        "source_refs": operation_source_refs(service, ctx, args, source, start, end),
         "thread_id": ctx.thread_id,
     }
     result = TarotService(service.repo).create_draw(
@@ -112,8 +118,10 @@ def execute_tarot(
             or name not in {"tarot_start", "tarot_read"}
         ):
             raise ScopeError("塔罗工具身份或模式不符")
-        if name == "tarot_start" and ctx.private:
-            return ToolResult(ok=False, data={"code": "incognito"}, summary="无痕模式未建立长期牌阵")
+        if ctx.private:
+            return ToolResult(ok=False, data={"code": "incognito"}, summary="无痕模式未读取或建立长期牌阵")
+        if stopped := privacy_refusal(service, name, args, ctx):
+            return stopped
         mode = tarot_mode(service, ctx)
         if name != mode:
             raise EvidenceError("请先选中并揭示固定牌阵，重抽需要明确的新请求")
@@ -123,7 +131,9 @@ def execute_tarot(
                 raise ScopeError("只能读取本轮真实选中的固定牌阵")
             draw = TarotService(service.repo).get_for_reading(ctx.owner, actual)
             validate_draw_source(service, ctx, draw)
-            return ToolResult(ok=True, data={"draw": draw}, summary="固定牌面与牌义已读取")
+            result = ToolResult(ok=True, data={"draw": draw}, summary="固定牌面与牌义已读取")
+            save_tarot_snapshot(service, ctx, args, result)
+            return result
         start_source(service, args, ctx)
         receipt = service.repo.mutation_request(
             ctx.owner,
@@ -136,7 +146,9 @@ def execute_tarot(
         if status == "saved":
             draw = TarotService(service.repo).get(ctx.owner, receipt["draw_id"])
             validate_draw_source(service, ctx, draw)
-            return ToolResult(ok=True, data={"draw": draw}, receipt=receipt, summary="固定牌阵已建立，请选择或揭牌")
+            result = ToolResult(ok=True, data={"draw": draw}, receipt=receipt, summary="固定牌阵已建立，请选择或揭牌")
+            save_tarot_snapshot(service, ctx, args, result)
+            return result
         return ToolResult(
             ok=False,
             data={"code": receipt["code"], "draw_id": receipt.get("draw_id")},

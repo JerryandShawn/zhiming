@@ -82,7 +82,7 @@ class ContextEngine:
         from .context_turn_sources import attach_turn_sources
 
         snapshot = attach_turn_sources(self.memory, snapshot, run_context)
-        return self._assemble(snapshot, tools, current_epoch_messages, tool_summaries or {}, tool_choice)
+        return self._assemble(snapshot, tools, current_epoch_messages, tool_summaries or {}, tool_choice, case_ids)
 
     def _sources(self, owner, subject, source_message_id, thread_id, case_ids, query, run_context) -> SourceSnapshot:
         return BoundedSources(self.memory, self.policy, run_context=run_context).read(
@@ -101,6 +101,7 @@ class ContextEngine:
         current_epoch_messages: tuple[ChatMessage, ...],
         tool_summaries: Mapping[str, str],
         tool_choice: str,
+        case_ids: tuple[str, ...] = (),
     ) -> ContextBuild:
         layers, aliases = self._layers(snapshot)
         cycle = tuple(
@@ -127,7 +128,13 @@ class ContextEngine:
         aliases = {key: value for key, value in aliases.items() if value["id"] in retained}
         versions = injected_versions(snapshot, budget)
         cache_epoch = ContextEpochService(self.memory.repo).preview(
-            snapshot.owner, snapshot.subject, snapshot.current["thread_id"], budget, versions, snapshot.revision
+            snapshot.owner,
+            snapshot.subject,
+            snapshot.current["thread_id"],
+            budget,
+            versions,
+            snapshot.revision,
+            case_ids=case_ids,
         )
         limitations = ("runtime_unconnected",)
         if not budget.meter.live_admissible:

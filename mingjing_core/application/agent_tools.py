@@ -132,7 +132,7 @@ class AgentToolsService:
         return bool(profile_get(self, ctx)["profile"].get("birth.solar_datetime"))
 
     def execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
-        from mingjing_core.application.privacy_run_barrier import run_persistence_blocked
+        from mingjing_core.application.agent_tool_persistence import privacy_refusal
 
         if ctx.name != name or tool_input_fingerprint(name, arguments, ctx.source_versions) != ctx.input_fp:
             raise EvidenceError("隐私闸门调用与受信步骤不符")
@@ -145,7 +145,6 @@ class AgentToolsService:
             "case_add_event",
             "schedule_followup",
             "set_reminder",
-            "chart_compute",
             "tarot_start",
             "tarot_read",
         }
@@ -153,28 +152,16 @@ class AgentToolsService:
             # The owner lock spans both the opt-out recheck and the actual effect.
             with self.repo.transaction(ctx.owner) as connection:
                 self.authority(connection, ctx)
-                if run_persistence_blocked(self.repo, self.repo.fetch_run(ctx.owner, ctx.run_id)):
-                    receipt = self.repo.mutation_request(
-                        ctx.owner,
-                        "agent_" + name,
-                        ctx.operation_id,
-                        arguments,
-                        lambda: {"write_status": "stopped", "code": "privacy_optout"},
-                    )
-                    return ToolResult(
-                        ok=receipt.get("write_status") == "saved",
-                        receipt=receipt,
-                        summary="本次保存状态已核对；本轮后续保存已停止",
-                    )
+                if stopped := privacy_refusal(self, name, arguments, ctx):
+                    return stopped
                 return self._execute(name, arguments, ctx)
         return self._execute(name, arguments, ctx)
 
     def _execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
         from mingjing_core.application.agent_tools_charts import execute_chart
-        from mingjing_core.application.agent_tools_computation import date_calc
         from mingjing_core.application.agent_tools_interactions import INTERACTION_NAMES, execute_interaction
         from mingjing_core.application.agent_tools_memory import execute_write
-        from mingjing_core.application.agent_tools_reads import execute_read
+        from mingjing_core.application.agent_tools_parallel_reads import PURE_READS, execute_pure_read
         from mingjing_core.application.agent_tools_tarot import execute_tarot
         from mingjing_core.application.agent_tools_updates import UPDATE_NAMES, execute_update
 
@@ -199,14 +186,14 @@ class AgentToolsService:
                 receipt={"write_status": "stopped", "code": "incognito"},
                 summary="无痕模式未写入长期资料",
             )
+        if name in PURE_READS:
+            return execute_pure_read(self, name, arguments, ctx)
         with self.repo.transaction(ctx.owner) as connection:
             self.authority(connection, ctx)
-            if name == "date_calc":
-                return date_calc(arguments)
             if name in {"tarot_start", "tarot_read"}:
                 return execute_tarot(self, name, arguments, ctx)
             if name in INTERACTION_NAMES:
                 return execute_interaction(self, name, arguments, ctx)
             if name in writes:
                 return execute_write(self, name, arguments, ctx)
-            return execute_read(self, name, arguments, ctx)
+            raise EvidenceError("未注册的工具")

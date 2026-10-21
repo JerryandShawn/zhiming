@@ -111,6 +111,7 @@ class RequestLedger:
     ) -> PreparedModelCall:
         self._admit(budget)
         with self.repo.transaction(step.owner):
+            run = self.repo.fetch_run(step.owner, step.run_id)
             saved = self._load(step.owner, step.run_id, step.epoch, step.seq)
             plan = (
                 saved.plan
@@ -118,11 +119,12 @@ class RequestLedger:
                 else self.epochs.preview(
                     step.owner,
                     step.subject,
-                    thread_id(self.repo.fetch_run(step.owner, step.run_id)),
+                    thread_id(run),
                     budget,
                     versions,
                     frozen.snapshot_revision,
                     role=role,
+                    case_ids=tuple(run["request"].get("case_ids", [])),
                 )
             )
             context = replace(frozen, budget=budget, injected_versions=versions, cache_epoch=plan)

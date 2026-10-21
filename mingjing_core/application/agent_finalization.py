@@ -11,6 +11,7 @@ from psycopg.types.json import Jsonb
 from mingjing_core.agent.envelope import build_envelope
 from mingjing_core.agent.options import merge_card_structure
 from mingjing_core.agent.review import TrustedReviewReceipt
+from mingjing_core.application.agent_case_write_citations import assert_case_status_citation
 from mingjing_core.application.agent_commit_versions import (
     assert_no_withdrawal,
     persisted_receipts,
@@ -75,8 +76,10 @@ class AgentFinalizer:
             if key not in versions:
                 raise EvidenceError("引用未进入本轮依赖集合")
             row = self.repo.get(run["owner"], kind, ident)
-            if row["subject_id"] != run["subject"] or row["status"] not in {"active", "open", "pending"}:
+            if row["subject_id"] != run["subject"]:
                 raise ScopeError("引用不在当前有效人物范围")
+            if row["status"] not in {"active", "open", "pending"}:
+                assert_case_status_citation(self.repo, run, value, row)
             if self.repo.is_revoked(run["owner"], kind, ident):
                 raise EvidenceError("引用已撤销")
 

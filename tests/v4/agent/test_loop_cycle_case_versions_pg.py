@@ -73,6 +73,10 @@ def existing_case_with_feedback(repo: PostgresRepository) -> tuple[dict[str, Any
         result = registry.execute("case_add_event", args, ctx)
         assert result.ok and result.receipt["kind"] == "feedback"
         journal.complete(step, result.model_dump())
+        terminal = repo.fail_run(
+            "alice", run["id"], "合成反馈组件已核验，未发布对话", run["lease_token"], status="cancelled"
+        )
+        assert terminal["status"] == "cancelled" and terminal["result"] is None
     assert len(repo.list("alice", "feedback")) == 2
     return case, registry
 
