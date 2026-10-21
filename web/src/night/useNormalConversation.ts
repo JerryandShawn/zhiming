@@ -225,6 +225,7 @@ export function useNormalConversation(port: NightPort, enabled: boolean, supplie
   }
   function continueQueue() {
     if (!enabledRef.current || busyRef.current) return;
+    const previous = document.activeElement;
     busyRef.current = true;
     const item = queue.claimNext();
     if (!item) {
@@ -235,6 +236,7 @@ export function useNormalConversation(port: NightPort, enabled: boolean, supplie
     haltedRef.current = false;
     setHalted(false);
     start({ id: `queued-${++sequence.current}`, scenario: 'queued', prompt: item.text, images: [...item.images] });
+    restoreComposerFocus(previous);
   }
   function send() {
     if (!busyRef.current && latest.current.question && !answerRef.current.text)

@@ -1,4 +1,4 @@
-import { useRef, useState, useSyncExternalStore } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { Button, Tag } from '../components/ui/Controls';
 import AppliedChanges from './AppliedChanges';
 import ReviewConfirmation, { type ReviewConfirmationState } from './ReviewConfirmation';
@@ -16,9 +16,52 @@ export default function OrganizeReviewPage({ suppliedPort }: { suppliedPort?: Or
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const pending = useRef(false);
+  const page = useRef<HTMLElement>(null);
+  const focusAfterDecision = useRef<{ segmentId: string; origin: HTMLElement } | null>(null);
+  useEffect(() => {
+    const keepUserFocus = (event: FocusEvent) => {
+      const request = focusAfterDecision.current;
+      if (
+        request &&
+        event.target instanceof Element &&
+        event.target !== document.body &&
+        event.target !== request.origin
+      )
+        focusAfterDecision.current = null;
+    };
+    document.addEventListener('focusin', keepUserFocus);
+    return () => document.removeEventListener('focusin', keepUserFocus);
+  }, []);
+  useLayoutEffect(() => {
+    if (busy || !focusAfterDecision.current) return;
+    const { segmentId, origin } = focusAfterDecision.current;
+    focusAfterDecision.current = null;
+    const active = document.activeElement;
+    if (active?.isConnected && active !== document.body && (active !== origin || !origin.hasAttribute('disabled')))
+      return;
+    const article = Array.from(page.current?.querySelectorAll<HTMLElement>('[data-segment-id]') ?? []).find(
+      (element) => element.dataset.segmentId === segmentId,
+    );
+    const target =
+      origin.isConnected && !origin.hasAttribute('disabled')
+        ? origin
+        : article && !article.closest('details:not([open])')
+          ? article
+          : page.current?.querySelector<HTMLElement>('#review-title');
+    // A decision may remount its article in the other tree. Repair only the
+    // focus it removed; any intervening focus choice belongs to the user.
+    target?.focus();
+  });
   const summary = snapshot.summary;
   async function edit(intent: EditIntent) {
     if (pending.current) return false;
+    const origin = document.activeElement;
+    focusAfterDecision.current =
+      (intent.kind === 'accept' || intent.kind === 'reject') &&
+      origin instanceof HTMLElement &&
+      origin.closest('[data-segment-id]')?.getAttribute('data-segment-id') === intent.segment_id
+        ? { segmentId: intent.segment_id, origin }
+        : null;
     pending.current = true;
     setBusy(true);
     try {
@@ -49,6 +92,7 @@ export default function OrganizeReviewPage({ suppliedPort }: { suppliedPort?: Or
   }
   return (
     <section
+      ref={page}
       className="page stack review-page"
       data-runtime="organize-v2"
       data-revision={snapshot.revision}

@@ -47,7 +47,11 @@ function Segment({
     snapshot.document.messages[id] ? [snapshot.document.messages[id]] : [],
   );
   return (
-    <article className="review-segment" data-segment-id={segment.id} aria-label={`片段：${topic?.title ?? '待归类'}`}>
+    <article
+      className="review-segment"
+      data-segment-id={segment.id}
+      tabIndex={-1}
+      aria-label={`片段：${topic?.title ?? '待归类'}`}>
       <div className="review-segment-heading">
         <span className="meta">
           {timeLabel(segment.start)} · {segment.message_ids.length} 条原消息
