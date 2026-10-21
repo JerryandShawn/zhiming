@@ -28,6 +28,7 @@
 | 六类明确断言 | `skills.consistency.check_chart_consistency`；[chart_consistency](chart_consistency.md) | 日主/候选格局/分方法用神/大运/紫微主星/西占位置；有限语法、record_only |
 | U12明确条件断言 | `skills.consistency_u12.check_u12_rule_assertions`；[u12_rule_assertions](u12_rule_assertions.md) | 独立v1，主线显式另调；38登记ID/完整名、实际assessment.met；条件命中不升级完整成格或效力 |
 | 塔罗牌阵资产 | `knowledge/p8_tarot/spreads_v1.json`；[tarot_spreads](tarot_spreads.md) | 三个现有牌阵/九牌位，原创说明；只读交付，不自动成为运行注册源，不修改既有78牌义 |
+| 塔罗具名源码审阅 | `benchmarks.tarot_source_review.review_service_source`；[source_review](tarot_service_source_review.md) | v1历史603不改；只对真实742的三处Clock迁移另核全文/逆迁移/完整服务AST；未知改动拒绝，Clock依赖及实际服务执行未验 |
 | 方法差异 | [school_comparisons](school_comparisons.md) | 32项具名默认、可选、未实现与待核；不以项目权重冒充传统统一标准 |
 | E2 M2控制输入 | `benchmarks.night28_controls.no_chart_input`；[e2_m2_controls](e2_m2_controls.md) | 模型可见严格两键题目/选项；评分元数据留外侧，旧C0含出生的语义保持独立；仅离线演练 |
 
