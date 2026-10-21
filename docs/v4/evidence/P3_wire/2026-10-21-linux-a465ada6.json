@@ -1,0 +1,82 @@
+{
+  "schema": "ci-actual-checkout-evidence-v1",
+  "observed_beijing": "2026-10-21 11:15–11:26 +08:00",
+  "repository": "JerryandShawn/zhiming",
+  "pull_request": 13,
+  "associated_head": "c0892a40a8a91630f82a8a61bb7c989c02e2129c",
+  "actual_checkout": {
+    "ref": "refs/remotes/pull/13/merge",
+    "sha": "a465ada687f88423f1c2fdbadf0f8e8c9b5f39fb",
+    "tree": "d787c75e321662ea88b64ae543fd9d9a986488dc",
+    "parents": [
+      "6e47a058f389bd8b6bf82c0f55fca3b3c4e6aa68",
+      "c0892a40a8a91630f82a8a61bb7c989c02e2129c"
+    ]
+  },
+  "equivalent_native_merge": "6841237956bca05985fd90653bf1d13088b9f600",
+  "native_candidate_tree_equal": true,
+  "run_id": 39532650720,
+  "job_id": 119001943436,
+  "conclusion": "success",
+  "environment": {
+    "python": "3.11.17",
+    "node": "22.23.3",
+    "platform": "Linux",
+    "postgres_major": 15
+  },
+  "results": {
+    "core": {
+      "tests": 583,
+      "seconds": 750.805,
+      "result": "OK"
+    },
+    "v4": {
+      "passed": 2732,
+      "xfailed": 1,
+      "warnings": 2,
+      "seconds": 534.98,
+      "ordinary_skip_count": null
+    },
+    "framework_selftest": {
+      "passed": 48,
+      "warnings": 1,
+      "seconds": 10
+    },
+    "framework_fake": {
+      "passed": 80,
+      "total": 80,
+      "target": "fake"
+    },
+    "models": {
+      "passed": 903,
+      "warnings": 1,
+      "seconds": 72.57,
+      "coverage_percent": 96
+    },
+    "c21": {
+      "passed": 80,
+      "total": 80,
+      "mode": "scripted"
+    },
+    "legacy_frontend_steps": "success"
+  },
+  "log_copy": {
+    "path": "private/wire-ci-a465ada6-20261021.log",
+    "bytes": 217958,
+    "sha256": "8c84865c214cfd40b1707f56a79224b9f1e50afa2011c379501153cbd295f129",
+    "kind": "connector-decoded UTF-8 copy; original compressed HTTP archive not available"
+  },
+  "limitations": [
+    "No original Linux JUnit per-node artifact used",
+    "Fake 80/80 is framework validation, not P3 --target v4 acceptance",
+    "Original P3 v4 scripted X03 remains unresolved",
+    "Later commits do not inherit this exact tree",
+    "CI-local isolated PG is not B1 local Linux drill or server acceptance",
+    "P4/P6/new frontend not integrated here"
+  ],
+  "safety": {
+    "server_access": 0,
+    "real_provider_requests": 0,
+    "real_feishu_sends": 0
+  }
+}
