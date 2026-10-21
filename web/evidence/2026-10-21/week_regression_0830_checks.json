@@ -1,0 +1,1731 @@
+{
+  "schema": "frontend-week-regression-v1",
+  "source_head": "cb1213d656f77f17e337916d5cf8eb497125ad29",
+  "beijing_started": "2026-10-21T08:30:15.0709444+08:00",
+  "beijing_finished": "2026-10-21T08:40:52.8985291+08:00",
+  "scope": "Local frontend and core_test_fe:55481/8002 scripted fixture only; no real model, server, Feishu or merge",
+  "limits": {
+    "unit_workers": 4,
+    "playwright_workers": 2,
+    "suites_sequential": true
+  },
+  "unit": {
+    "total": 911,
+    "passed": 911,
+    "failed": 0,
+    "files": 80,
+    "report": "web/test-results/week-regression-0830/unit.json",
+    "sha256": "9aa181881e3b718104cba054ef2282086d7c00f0dd7ca2c6bb1022541587b8d8"
+  },
+  "browser": {
+    "total": 530,
+    "first_pass_failed": 0,
+    "flaky": 0,
+    "skipped": 0,
+    "suites": [
+      {
+        "suite": "static",
+        "startTime": "2026-10-21T00:30:44.264Z",
+        "duration": 48104.714,
+        "expected": 80,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/static.json",
+        "sha256": "8b67591ac8f19d9f8b766ee1aa6993ce3ede86d28a4953e8949eea89aeec4946"
+      },
+      {
+        "suite": "spaces",
+        "startTime": "2026-10-21T00:31:33.188Z",
+        "duration": 6239.418000000001,
+        "expected": 10,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/spaces.json",
+        "sha256": "d4d47ce15dde658bed39da22a7c1d08856668aae76d634305e8ce56d04be69ea"
+      },
+      {
+        "suite": "components",
+        "startTime": "2026-10-21T00:31:40.295Z",
+        "duration": 8677.881000000001,
+        "expected": 18,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/components.json",
+        "sha256": "394c4772991cbe168a1f939b3b9fdb6044e106939895265829ca650327f46119"
+      },
+      {
+        "suite": "components-visual",
+        "startTime": "2026-10-21T00:31:49.820Z",
+        "duration": 80625.18800000001,
+        "expected": 64,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/components-visual.json",
+        "sha256": "dcf8ce016524c42365ac1074cde165a63fc23ff729a72a3802b11c4fc9d30de0"
+      },
+      {
+        "suite": "night",
+        "startTime": "2026-10-21T00:33:11.262Z",
+        "duration": 225191.23200000002,
+        "expected": 178,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/night.json",
+        "sha256": "c54a28c32fdf391931d5c3d43f9726904f585db00a2b108f709a330b683e26e6"
+      },
+      {
+        "suite": "overnight",
+        "startTime": "2026-10-21T00:36:57.325Z",
+        "duration": 93800.884,
+        "expected": 88,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/overnight.json",
+        "sha256": "e48d19dc21579ad0d14df004b37d5c889a08a0a8bc4c7de051c35e8fe09debf0"
+      },
+      {
+        "suite": "contracts",
+        "startTime": "2026-10-21T00:38:31.985Z",
+        "duration": 21735.787,
+        "expected": 12,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/contracts.json",
+        "sha256": "eaab32c8f50143479a80bf9f806047c256bcfcff5d9f9868ab3e937622484e6f"
+      },
+      {
+        "suite": "live-visual",
+        "startTime": "2026-10-21T00:38:54.567Z",
+        "duration": 86480.07699999999,
+        "expected": 56,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/live-visual.json",
+        "sha256": "b79857ca8d28adda69f4308c60908afc6e955f60cae5dd9c3559daaaa47524b0"
+      },
+      {
+        "suite": "spaces-visual",
+        "startTime": "2026-10-21T00:40:21.869Z",
+        "duration": 30893.261,
+        "expected": 24,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0,
+        "report": "web/test-results/week-regression-0830/spaces-visual.json",
+        "sha256": "e51beea38990f5f77aea06e54ae60837cf89cc35828b981e015a2468a86b1c9b"
+      }
+    ]
+  },
+  "immutable": {
+    "file_count": 793,
+    "same_source_build_and_head": true,
+    "tracked_runtime_and_tests_clean": true,
+    "before_sha256": "675e32d4169566ea440e9fa16119d52db0811fb95e72af859bffef4d22816648",
+    "after_sha256": "cca707e3e4e53be9db09217761057216e8bc4e4e84c1228f11c8c6914a38f332"
+  },
+  "screenshots": {
+    "count": 318,
+    "scope": "Explicit batch screenshots plus the same-run live visual folder; Playwright transient attachments are not counted",
+    "files": [
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-dark-1440.png",
+        "sha256": "ecff0f58612b5e3caee17f06bd75dc878c088b14078da5878187eac1c149ae2b",
+        "bytes": 290437
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-dark-375.png",
+        "sha256": "db51863f9d9f46d346884cb7c9f9b487eaf86b91a0348309cae53aa93782e572",
+        "bytes": 190466
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-dark-390.png",
+        "sha256": "3746e52ec4cb7aa91655d3ed7721890dc12cc511c6a6bac8d5c089c93ee41f77",
+        "bytes": 199546
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-dark-768.png",
+        "sha256": "b6133a59e105cb6162b11d138a404b0570462828ee52c2c407ce9ebac323a8b0",
+        "bytes": 260823
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-light-1440.png",
+        "sha256": "9a10582fec75c430fbd2742499fd97bf61735fba84fc3bcb51005c256d9d4fd7",
+        "bytes": 210008
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-light-375.png",
+        "sha256": "49a069242b18f9371ecf636fb726e237ee4754092888d7ad3a21d9b00b4049d0",
+        "bytes": 132978
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-light-390.png",
+        "sha256": "d10e561572def2b82e98f3da855341b6bdaad58454ceaa90a8d75d1629ba12d9",
+        "bytes": 137866
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/cases-light-768.png",
+        "sha256": "4186ada3f203f9eb3eed70d90edadb2063063c629b8574b6a8371afa7e7531e2",
+        "bytes": 178503
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-dark-1440.png",
+        "sha256": "0e9f9139c5f997a7ed88a6af704a7e6914a2a580f321b7cf560604f200c58985",
+        "bytes": 444480
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-dark-375.png",
+        "sha256": "d146a00db18a18ed101ccc6bad9b08f0d9131def553b27277c8beb5bb02fb894",
+        "bytes": 291981
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-dark-390.png",
+        "sha256": "747337f574389731f1715c122d3462b67bd73be79a414ebfbaa147b62a022d70",
+        "bytes": 307850
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-dark-768.png",
+        "sha256": "73e86f2e2d5f981ebca01987a000dd5fde0009ee45228ab9644224b3e70afc6f",
+        "bytes": 384698
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-light-1440.png",
+        "sha256": "3b709050d186e2fcf38f24898144114186c254aa4b33ec1b537e5c72ce475f01",
+        "bytes": 358183
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-light-375.png",
+        "sha256": "c3ab4d7a397fb71cbcd6545dac002ae0ea481b7f13616ed3d98767c6ac1f1f9c",
+        "bytes": 237207
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-light-390.png",
+        "sha256": "3ff4ec39c65043a96216245b63c4aaaa6a316014c6e894ce3c0266c8917fa932",
+        "bytes": 247651
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chart-light-768.png",
+        "sha256": "a14a808b47e07e10ff22083580901c22db2f24fcbf417430dd09a07a29f77df4",
+        "bytes": 303279
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-dark-1440.png",
+        "sha256": "94169dd0ea29325e6d364248918df79d415ccb19daf1a5713110db6c45c90608",
+        "bytes": 352747
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-dark-375.png",
+        "sha256": "a8c43781fa8358f793a2e5ff9ffe78f70ac4550bd5d335bed2defb29320d2ca6",
+        "bytes": 181732
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-dark-390.png",
+        "sha256": "d340634b3177f75ee0d6341cad9cfbc6e92a6423a9587465711c9bd5848db0e3",
+        "bytes": 192864
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-dark-768.png",
+        "sha256": "b637d41ed10e12ebb29f622e1c49aed5dde99695e6f51bbf5d81e95d58f4bcd3",
+        "bytes": 282451
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-light-1440.png",
+        "sha256": "d1fa9d97745cfc80557000a8bbeb7d2bfdfb74b015deb18775b4c28f6d02f466",
+        "bytes": 266000
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-light-375.png",
+        "sha256": "f959b03597d10f7a586f998988145d073582bea6c742a42d7d27d6b71282c64a",
+        "bytes": 137893
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-light-390.png",
+        "sha256": "e8bd35632f3a0d493a181a8a4dd12e93fe489351d106b5723585af036504d1d7",
+        "bytes": 145293
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/chat-light-768.png",
+        "sha256": "4c490f77c92b6175a3d9aac79cae0a5effae0aa5f0c5ff3769f480dd7f310553",
+        "bytes": 203359
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-dark-1440.png",
+        "sha256": "8f50f6dcf1456e68fdada7a85a31a229112e43d70592cdcd3a16ecfbcb060210",
+        "bytes": 369687
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-dark-375.png",
+        "sha256": "05bd11c5f899c2639a0282912ddaba447c8c4ec3d9cc854a8c81edfdf84ee9e3",
+        "bytes": 236629
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-dark-390.png",
+        "sha256": "5903672e1780f48d38bf18eb51fb63e95edf7c923f7c3215de2cf55dc16e396d",
+        "bytes": 243027
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-dark-768.png",
+        "sha256": "57b2719b6207e203c09203243570811a535bf13dd038c429a5fc41078874ab2c",
+        "bytes": 299652
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-light-1440.png",
+        "sha256": "090543bb329199badf95d11506d8f3dbf71ffacc1ba0ff5d9b5e7f09a2400389",
+        "bytes": 286056
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-light-375.png",
+        "sha256": "289018982552b40ee92a4e6fa98167e07c67f4be4f35516769e4d08dbd1228b2",
+        "bytes": 187628
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-light-390.png",
+        "sha256": "452fa50a1ab59ac3086c022ee27b529d53684f4b360053b5b91b3a8735b120ed",
+        "bytes": 191896
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/me-light-768.png",
+        "sha256": "a0859e75f1b24b8a2392be0ffd7c93521be3bc6bb59337ce8b668280029fc518",
+        "bytes": 230470
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-dark-1440.png",
+        "sha256": "4419b7dd07628fee5a7e4f507e9bf301f9f7a5cedb46634954dbf92b783261fc",
+        "bytes": 528084
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-dark-375.png",
+        "sha256": "54241067a4936d4a4e817466a79e265934969ff926e7f3bba130ef202f5e7f31",
+        "bytes": 364962
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-dark-390.png",
+        "sha256": "7fb27cb2b157ddac7b750693965360ba03f33388c32c11ab9bbf90782188e735",
+        "bytes": 375312
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-dark-768.png",
+        "sha256": "b4fe6f5604bb042abd4eae9ccfd41e0e1342a84ab6fdd4e495083f84a341c9ec",
+        "bytes": 448055
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-light-1440.png",
+        "sha256": "479c337f2b33986aeba9202e23bb5a8daddef53a5bd3af5f6211ddff9a641542",
+        "bytes": 435162
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-light-375.png",
+        "sha256": "2ee56915f0867974d670936e5d260c8fbec2e917c8458af1421b7b88eee4faae",
+        "bytes": 307065
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-light-390.png",
+        "sha256": "91be44bcae238f7b18cd1bfafe6290db9982d35bf7011c1a423e8895e358fddc",
+        "bytes": 314124
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/settings-light-768.png",
+        "sha256": "57ca9607623a08374a08c8c69e3e0f98c41d5d481ac492b2cd88997757b88d5b",
+        "bytes": 368540
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-dark-1440.png",
+        "sha256": "02b9551eb375c0574969f35eaeaf5b76a3e66e57a2e0abe4194d68eb55653ac2",
+        "bytes": 405831
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-dark-375.png",
+        "sha256": "d03145a0b3bacf9b48a8a5a6484ea6bc7fd35ffad0e28d57dcc2a6d2839f7fa3",
+        "bytes": 232346
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-dark-390.png",
+        "sha256": "57ac67ae3516cb333cb00066fc017801fcbc83c72cae10bdc339c4da17c133a9",
+        "bytes": 246834
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-dark-768.png",
+        "sha256": "5832f5d271a0757a46a88ffb0ab6983040ce01635f9e79485726437bc5ef204e",
+        "bytes": 360653
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-light-1440.png",
+        "sha256": "a75c81dd49864786d7c3af71623d290213ebfa55b31df6b725be83101008c4ad",
+        "bytes": 314075
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-light-375.png",
+        "sha256": "133fcca686db5ca3056e2592b34e69bcabccacacb6e4549e1a3875a386cd9655",
+        "bytes": 183909
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-light-390.png",
+        "sha256": "6c68fa0fc391fab008767571267e25176269a435dffcf1d80dc50123ba84ee67",
+        "bytes": 194190
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/tarot-light-768.png",
+        "sha256": "e58c0149474ee5f879b042b384db89b952108db719d127a180cc97738df2af48",
+        "bytes": 272594
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-dark-1440.png",
+        "sha256": "d50ca9fe2890dffe4f54c4c7be48d87a5c40aa229227b987e41dbbf4f7062dcd",
+        "bytes": 413097
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-dark-375.png",
+        "sha256": "7f9c370813921297d4d30a3fb67d0ab0e5df73caaa9d2852876d8b244d720124",
+        "bytes": 249869
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-dark-390.png",
+        "sha256": "0dd17788e0f62b1bf6ebf1c4a3db73bebe1703297a6d3557b3d7d3a1b4f86e72",
+        "bytes": 259994
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-dark-768.png",
+        "sha256": "11e00fb8aa9ab22c1ffcfefb99ae8ccd5bd5cceea55751fb0de8e86020cff15d",
+        "bytes": 334871
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-light-1440.png",
+        "sha256": "aeb676fb60e4ea46a75678c01aa5af3cf2f83e8ab91faf41cc50041b6b2e426a",
+        "bytes": 319462
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-light-375.png",
+        "sha256": "693a7ff8fda4517c244b663bb07972b3220cb4de5e4b80ec72218317cb2b416a",
+        "bytes": 185812
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-light-390.png",
+        "sha256": "142024a7a58a72cb6fdb5871f28d178459eb5ed4486eb650c187cc7bdd399d29",
+        "bytes": 193519
+      },
+      {
+        "file": "web/test-results/live-evidence/Week-2026-10-21-0830/screenshots/today-light-768.png",
+        "sha256": "af7e5e9310844b1c549180a089fcebe30120bf6249a44318f92cafbd7182dece",
+        "bytes": 243716
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/calendar-five-markers-1440.png",
+        "sha256": "20306e2ba600f0a3cc0b2e574e1076069f731d853e01dab7fb03243870aacfc7",
+        "bytes": 330090
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/calendar-mobile-sheet-375.png",
+        "sha256": "3dafd47261fdafa0eeec40424683bccae330d1b545395b040bbb6bfb1e450c46",
+        "bytes": 83665
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/calendar-unpublished-375.png",
+        "sha256": "80c43abe5afaee844dc962aa361e34619e328ed1fd89d821296cff89b9ac5738",
+        "bytes": 81264
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/chart-astro-angles-390.png",
+        "sha256": "5d813aae2bac8ee86d8ff83f8cff8ca4658294ad22365f5e4ac8751caad15cec",
+        "bytes": 293785
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/chart-luck-explanation-390.png",
+        "sha256": "2a7e5786b878b49e14da2d0874767962ec15f55aca166a914c8694cfafdf0e16",
+        "bytes": 136094
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/chart-palace-explanation-1440.png",
+        "sha256": "30f3262b27c682c18a4ee7a9de3c03c833210e25368c83c3d3e63527a2c24ea8",
+        "bytes": 349191
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/chart-palace-grid-375.png",
+        "sha256": "6bc4b82377899b33da2843ef65386b3076e73767d08ed4570647977bdbf30fb2",
+        "bytes": 136875
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-browser-forward-panel-inert.png",
+        "sha256": "d7ae66c40407c9591bc2f4162362f51b31c12c4c7573ed304ba299400fb18e5e",
+        "bytes": 149762
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-browser-landscape-safe-area-844.png",
+        "sha256": "212d9c3b1abaa98c0c4f9b63078d30ee707f2687fab2a44b26b2404497341724",
+        "bytes": 64316
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-browser-more-pages-panel.png",
+        "sha256": "7c70332b97c4f4eb92692ddb518f65145f4ece14dc17f1c113cc83863d530348",
+        "bytes": 99997
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-browser-panel-route-to-settings.png",
+        "sha256": "ecacf02e0c1fe0154802ca98b8fb4f2a6cbc070d0161f227449eb104f9c97d0f",
+        "bytes": 156881
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-browser-safe-area-390.png",
+        "sha256": "7777b2bd19c599f8f1c9f4d0d43d7e4499e6ca4ddc2cf3a9dd0ee6ea6ce6617f",
+        "bytes": 123994
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-feishu-dark-calendar-panel.png",
+        "sha256": "ac6b7ccefa8cf8de9b72575d85b0821c139f30e15146db18b6e768f77e90a5ea",
+        "bytes": 90267
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-feishu-dark-keyboard420.png",
+        "sha256": "a6d5ac317c080422dfd2898f27a1670af0ff9ef3bc2c5f103ddc5acf7f5e65dc",
+        "bytes": 188748
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-feishu-dark-settings.png",
+        "sha256": "da1dc4905ea48fd781977a966a75a574f89292293369f49e530d81e589deb5ca",
+        "bytes": 218500
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-feishu-light-calendar-panel.png",
+        "sha256": "901b3c55ced37f093be0e11ccb52e668d2462f4e63903c5af0225f9a37133b20",
+        "bytes": 89483
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-feishu-light-keyboard420.png",
+        "sha256": "12153e67ac8a40f3ae96abb71d5dc130ab05eb41e766ff20cd86dbf7663be051",
+        "bytes": 131907
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-feishu-light-settings.png",
+        "sha256": "1471b4f378c6738917cd00b19cd6c6d0f56f26e24cdb0c3971b5fa1c12a4729e",
+        "bytes": 158690
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-keyboard-height420-offset0.png",
+        "sha256": "444f2a9378c2b8e4adb1ac443a3c8556c511191f478793fb46f4b287142ed010",
+        "bytes": 136612
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/embed-keyboard-height420-offset120.png",
+        "sha256": "999efe9d598048c1d462258494112677e98b884c77385dd3f7d6d0386ab79683",
+        "bytes": 136973
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/tarot-choice5-flipped-390.png",
+        "sha256": "5b60b588cb0e909523dccef9a9bbb5b073b95fa6026ce3225e535eac30965b48",
+        "bytes": 153501
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/tarot-picker-keyboard-1440.png",
+        "sha256": "5ede8ad048d41536f7e3d86b3cb342a5200dda2ea7a835813944aa78a81e1537",
+        "bytes": 269406
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/tarot-picker-selected-390.png",
+        "sha256": "b39fbb4a13ad94fdfae8802ccf998bbc90bc7a9dc4f5b0be91f17a82f9f8c05f",
+        "bytes": 111106
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/interactions/tarot-reduced-motion-390.png",
+        "sha256": "29d31902c1618e027786bc6a1500b3ce58a1f24793a43076a300f2035904749f",
+        "bytes": 140761
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-dark-1440.png",
+        "sha256": "a061d015a21fbd13e643b3f84ff8b0720d7eb5ce68989314658c60d7caf03308",
+        "bytes": 423720
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-dark-375.png",
+        "sha256": "264eb565cceb7ea8c5b7787834fd28da37574deaf41b30c005b70c04e8a8c7d7",
+        "bytes": 264108
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-dark-390.png",
+        "sha256": "923be4267a1f38925de4ed8795fc4e4fbec02523b669facc279efd5fcf2ef73e",
+        "bytes": 275248
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-dark-768.png",
+        "sha256": "8b2dc38532d9c99d301ce911a6a77407ccf2e7f7e4ec22dd0036757784e3322f",
+        "bytes": 372208
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-light-1440.png",
+        "sha256": "59a2f9f9f43c86c61bf17fe4d40a7d97ea7797132fe5ee510556eed0c23325d5",
+        "bytes": 350482
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-light-375.png",
+        "sha256": "59f4412816dcb721289c02e56f9668f0434e674e4264a95c7552debd0a2a88ef",
+        "bytes": 223099
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-light-390.png",
+        "sha256": "68ae516bbf63510ee941f499eba6829cc243a7ac046d4a561bebbcde68821473",
+        "bytes": 230912
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/astro-light-768.png",
+        "sha256": "436b4536d0a071991b27136b36e96e7353c7a7510e8effce33401954488e1d40",
+        "bytes": 304369
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-dark-1440.png",
+        "sha256": "7582935313bc8fdd76add7725c0e3e47c724fd9ee05c8dc0b1cb5c09baca6dcb",
+        "bytes": 405979
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-dark-375.png",
+        "sha256": "71f64464f55cf8288a363fe9ac9d69f935a443c39631688def6c85bbd38ffab7",
+        "bytes": 265461
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-dark-390.png",
+        "sha256": "b14d889ae1bf3398869172e6cf4144b8179ec1d254878b99f35e043418fb4ca9",
+        "bytes": 276554
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-dark-768.png",
+        "sha256": "9d55d8b45a6872e9b9ccbf130ba39587e58a6e37039337437d26a2084b4c7e27",
+        "bytes": 348890
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-light-1440.png",
+        "sha256": "3e976398d8da9682d5c53d5bd64e8d61f6db971555da4aabaca3c2da1b747ac4",
+        "bytes": 328365
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-light-375.png",
+        "sha256": "40fb03071397306e9330b5aef611a58f2b8104b14d98aa0578dbddfe2f0d2bd3",
+        "bytes": 223013
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-light-390.png",
+        "sha256": "60e77d181948a4883f2537e56363eb330f6efbb1d696b887dffbd97c62947e96",
+        "bytes": 229874
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/bazi-light-768.png",
+        "sha256": "7c1b4ee7f92c987e1b003908debeca96888f8bf6ca6da8ef40bbb3c866b93bd3",
+        "bytes": 278610
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-dark-1440.png",
+        "sha256": "eebf54aae705394d68cf432a91f2cad3ba6ea24809725b80f80d6652ba00121a",
+        "bytes": 346306
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-dark-375.png",
+        "sha256": "22629996c36af0da03bab3e2e252f61cbc63e39208c7a229a5c617a5ed26b242",
+        "bytes": 190515
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-dark-390.png",
+        "sha256": "14100fe7bdc87f16d8be721ee0243419fb71dd7bd45893d9761a87aecc8592c8",
+        "bytes": 196821
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-dark-768.png",
+        "sha256": "9a7f0f8197cefff7fb805969ac4079391165ce8a273a640e54b1b6963a3a5107",
+        "bytes": 284502
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-light-1440.png",
+        "sha256": "1c8d7c64369d6eedf4e67fc6d91eb9a919256bd2d1e21d71ff6b097f2b5af234",
+        "bytes": 267960
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-light-375.png",
+        "sha256": "55838544c64b0e5bd712a7c538718ea1cd64f6bdbaf452452a6eae2e65426555",
+        "bytes": 148919
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-light-390.png",
+        "sha256": "5b60b588cb0e909523dccef9a9bbb5b073b95fa6026ce3225e535eac30965b48",
+        "bytes": 153501
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-choice5-light-768.png",
+        "sha256": "9da820cd9e0558f85610be8b9e68195f01d4d3d61ddf89e06d2df07f43d9a4bc",
+        "bytes": 216413
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-dark-1440.png",
+        "sha256": "67e4ea4f2a1181aa94ec7625054d566144587079061ab0fb781c783e09d38ae9",
+        "bytes": 303914
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-dark-375.png",
+        "sha256": "78bbb553e817f985de607358bf95e94582b046481725d8b8ce10563d2aefb387",
+        "bytes": 177551
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-dark-390.png",
+        "sha256": "47d9578403647e8aa232a8b7665358d04ec0b855ea7fb533bbb6bfd031801cb2",
+        "bytes": 183689
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-dark-768.png",
+        "sha256": "dbb9aa8ad1b745a4d4b05ebb071e284462780ffd97c5cc04b862935a244e946c",
+        "bytes": 268590
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-light-1440.png",
+        "sha256": "6edda75606cfa66fa5ac1b15c9c11f057908c8e8718031e05b108bb486423f20",
+        "bytes": 229121
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-light-375.png",
+        "sha256": "3c4c91b7df7a3bbbf866283fd81ac3ca0e956a0dffc2bae9a4fb6568e547b9e6",
+        "bytes": 134598
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-light-390.png",
+        "sha256": "0a91492e4e9b86f062fb225aa4b9764f6afa795a25d33c8e2b46fe652175253e",
+        "bytes": 138192
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-focus1-light-768.png",
+        "sha256": "28643b190c3496d1bbdbdb87003b7b5091428e33101c85a5f35083503ae8e4aa",
+        "bytes": 195554
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-dark-1440.png",
+        "sha256": "ca75829164bfe414799fcffd48e2779cc9afa2fd6872ccd96782e3c9d50346dc",
+        "bytes": 378768
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-dark-375.png",
+        "sha256": "7c0a60b160cbb374463f617c63abe665f8c70add89fcf8bd9bb61d6c2bb370ec",
+        "bytes": 252545
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-dark-390.png",
+        "sha256": "76ed6beaf5a2a5959524d21ed8c00dab1ebde3a78931c738549731b5258ae974",
+        "bytes": 256370
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-dark-768.png",
+        "sha256": "9a4e97ebeae6d94054b5318908394daecf81060ccef8976b73efb6a00d33a9d7",
+        "bytes": 351329
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-light-1440.png",
+        "sha256": "5c7587be3d0dc54bfac00becd74c0c3f8b88c31b6462490d19c45159e11de0f3",
+        "bytes": 305177
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-light-375.png",
+        "sha256": "05b3c4adf5d344d192c0490b6a9fc87191367193e5844e20fa7c2080f591e301",
+        "bytes": 211539
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-light-390.png",
+        "sha256": "c0fe60f0d6ef76fd7cf277a0052c5758b646a9d1d58e2963ac8c76ae5139fc3c",
+        "bytes": 214691
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-picker-light-768.png",
+        "sha256": "7a01f1c82059f4148b6e1d217ba58a2ac38e68ef76ae1b2b7cefcc5c743113e2",
+        "bytes": 296696
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-dark-1440.png",
+        "sha256": "2e7d488f66250fb47925003c13339026e7a8a2828793df0f77606efa7ced729e",
+        "bytes": 325643
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-dark-375.png",
+        "sha256": "9b53903a0e8f1b68ad74e35a8deec61741ab84faf070342e05009afb5b434ffe",
+        "bytes": 173859
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-dark-390.png",
+        "sha256": "4527cf78bf8b11b4e196efa2916f08c989d09d56bd9b2eb49653aa80b3ada548",
+        "bytes": 184231
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-dark-768.png",
+        "sha256": "df0c924e6022ff1719d62120a8da93b75f5e8d83d978eb0bf84970532b173aa4",
+        "bytes": 282709
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-light-1440.png",
+        "sha256": "95d3a0874a89cc64a67eb67c1a44a5a73c6990038028b12666d55c2608a0084f",
+        "bytes": 249063
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-light-375.png",
+        "sha256": "2e9e7233e923dfc9928f7da044825fa4338156f6e5f00a2f33382e61740abd22",
+        "bytes": 137137
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-light-390.png",
+        "sha256": "6e36a33a750cd5cb8b01c21e3250b043be80336c46c52f2590aeadc35a8dbfda",
+        "bytes": 143751
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/tarot-reflect3-light-768.png",
+        "sha256": "858bad299c80e057c8022b2282cdc1db289a3fb1459b79d1336dd0c1fb7fe3d7",
+        "bytes": 211685
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-dark-1440.png",
+        "sha256": "bd882f1b0c44325fb917ab953dc2784101ff384c087b22fc259867627bd55729",
+        "bytes": 432720
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-dark-375.png",
+        "sha256": "a0505662f05fdbcb180768b9269d0eb1c59a10f3734651f93c939fdbc15b20dc",
+        "bytes": 95037
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-dark-390.png",
+        "sha256": "a0a525b40996f5446c2f8a30926f8eb1e274253c6f0a27b0e89f954e0e8a7c7c",
+        "bytes": 94479
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-dark-768.png",
+        "sha256": "0a66ee12774bba3c9b339905532394f83a90cbb01d528cc2b58cd383a5077564",
+        "bytes": 160307
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-light-1440.png",
+        "sha256": "65649952a56b1dbcdb37b52f87029afe0740a608574f3023eee04b5840a77f66",
+        "bytes": 347756
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-light-375.png",
+        "sha256": "620dfd4ae76a1d6f9bd2afa04be480dc8e51d422a4bc35b6c847d0733e132266",
+        "bytes": 95149
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-light-390.png",
+        "sha256": "519f624d664f704c8d652dfff379f008af8ab950d3124694adec07b323c9efdd",
+        "bytes": 94912
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/today-light-768.png",
+        "sha256": "061069ca05f1cdfe3dec35401389b5183fd5184794b0ef8b199ab612b5ea5cbf",
+        "bytes": 159070
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-dark-1440.png",
+        "sha256": "76e9312782daaaedf02498bfb5f7c4283f2547c4296da147373997695b8e3c32",
+        "bytes": 408737
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-dark-375.png",
+        "sha256": "25b935c0b9309c1c6e225d56324220b68fb276f30e7cdd4fdea25080e83a2a07",
+        "bytes": 247443
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-dark-390.png",
+        "sha256": "2d8f5d8216d07d34e0ac7392fd2d15b8d9b1f843cee018cdd73400f85f52ac90",
+        "bytes": 255480
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-dark-768.png",
+        "sha256": "f84b4deee72ff55e38d7bc5946a960905a7667a71ad605d8de8192a83b620ce8",
+        "bytes": 327777
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-light-1440.png",
+        "sha256": "f1e4f9dc42f0ed7b6758f82049149e0e2adfeaee3839dcb279d92240edb3d25d",
+        "bytes": 331650
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-light-375.png",
+        "sha256": "3c9c2bfcb27bec4581ec60634fe054547fbff94205f2433c59fbbc5d86ebb283",
+        "bytes": 205820
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-light-390.png",
+        "sha256": "3b7c624b68bd473c0f56eebca52cff689ff791c6abe965697cf6b56a69f61ce8",
+        "bytes": 211017
+      },
+      {
+        "file": "web/test-results/week-regression-0830/components/screenshots/ziwei-light-768.png",
+        "sha256": "d6eb8761669b50b67ee85aa974825d32ce54b251ac0ba3cb0802df37be63b7e6",
+        "bytes": 258829
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-dark-1440.png",
+        "sha256": "a86688601c847b677cd29063428c474ee8013d96991fb2acdd501e07bfd91577",
+        "bytes": 320588
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-dark-375.png",
+        "sha256": "97df5b786c840020885d565a241dbbefbc3cfaf3c02d264a54ea38358791380f",
+        "bytes": 164821
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-dark-390.png",
+        "sha256": "19873cd41d3e7f4ccfe79ea3dde46d387f33e47ac1312e30d07447658cfc72e4",
+        "bytes": 173348
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-dark-768.png",
+        "sha256": "df5c56d9eaa46a2d0d5273af231a2da09fa3f29dbe92443ff96fe880f125419f",
+        "bytes": 237276
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-light-1440.png",
+        "sha256": "7c29bc9fc9a6121d50088a08549aee385c2495a2f6052df374128abd8bccbe7e",
+        "bytes": 240020
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-light-375.png",
+        "sha256": "d83515fa58f56c4ab85ea1234ab1fb0e5c36985222c85dd8e4474088ea3b8736",
+        "bytes": 127076
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-light-390.png",
+        "sha256": "7bf8eac13123d685760e0665c03888ffeef6c82398db303accb3da7919611b7a",
+        "bytes": 132750
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/guide-light-768.png",
+        "sha256": "67daf02a3dc26703ac2f40b88c009959ca596012bde7e73ef0efbd06db245791",
+        "bytes": 176864
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-dark-1440.png",
+        "sha256": "7566afe0a5d58248cb679923c3b74291c6fd38bb16f61cd28ebf6ee1a6216709",
+        "bytes": 334037
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-dark-375.png",
+        "sha256": "64014d53ff126340735ba8d88cc899eef83dea30c42f0cd79bd217853a2803fb",
+        "bytes": 225282
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-dark-390.png",
+        "sha256": "c620311308d8358c2cbf02c6aa014dba5c8514eb4f45755b57edf2230d9ca9cd",
+        "bytes": 234709
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-dark-768.png",
+        "sha256": "6463826eef8dcd23ac20eaa936c2e1e7a8a0a64ce1276b673ae5eab8e2f46493",
+        "bytes": 302573
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-light-1440.png",
+        "sha256": "773ec16aba350770f561de08e8de2f19f31fc52d81157d882d4f53a5a95bd377",
+        "bytes": 254036
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-light-375.png",
+        "sha256": "f3b9d8a5f90d1c31e0b61f693d865fcb2fcdadfb06dd4057206c51ef8cc3e837",
+        "bytes": 168750
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-light-390.png",
+        "sha256": "51a1e5c3ab5cddf0bde61e3c4700c1e69737f5df643e1323785bdb386e86c62c",
+        "bytes": 175337
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-cases-light-768.png",
+        "sha256": "a8be74eafd65708baa52d8e32e0481238f48ee6b2dbaef6b77e3cce310182f47",
+        "bytes": 222176
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-dark-1440.png",
+        "sha256": "8b2005f469cccabc1c7d346e779af762631fb26657e08556a2035fafef2ab508",
+        "bytes": 474532
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-dark-375.png",
+        "sha256": "41aa7f474fdfe7d5e0f5f323ff58e36ed1926c382e857e9a300121e078d16a90",
+        "bytes": 319228
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-dark-390.png",
+        "sha256": "c96e65068fc48dad7f9fc296fc28fe2493a5eae7e4544f88de803b4bb48d2829",
+        "bytes": 332880
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-dark-768.png",
+        "sha256": "162f8f19131f6284e423ec1163230e3e35bb04a02c28944c3cd607a905785e5b",
+        "bytes": 423144
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-light-1440.png",
+        "sha256": "d0c8e4d027e05a56f5f64cacba0337ba53c9974e594e6a9dafd1b0a5230a4c8d",
+        "bytes": 388749
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-light-375.png",
+        "sha256": "7a63a87364e3da423c048a5deedfba3d04dca4225d2d33dc5066ad05ee5714bd",
+        "bytes": 264509
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-light-390.png",
+        "sha256": "13a18c231b242ea13a45ef9e73f7c6a657112b8c01af1ba8d60e3fc3067b0f37",
+        "bytes": 273945
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chart-light-768.png",
+        "sha256": "97cda10c2d6e82370aa574a04c87e73b79a481a0eb6ca9ef0b5597e09e14c1f4",
+        "bytes": 338708
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-dark-1440.png",
+        "sha256": "7733b3e1eb26161e6bb3d327755a01b068b85c488407bc764c502f5a5fdbc880",
+        "bytes": 425762
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-dark-375.png",
+        "sha256": "b9e4f82cb019e783c94c011d00930b9e2c7103ed96ab34c09874ca66845f65e8",
+        "bytes": 204173
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-dark-390.png",
+        "sha256": "0d5f2342aafdc983733b685d88711f2f39e96ac7b7b67a44fb74cdaba72190ac",
+        "bytes": 214999
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-dark-768.png",
+        "sha256": "feba2303edcb5601aa09f0d513b7ecbc7154eea0f04deeb289b09f6135c05a26",
+        "bytes": 286409
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-light-1440.png",
+        "sha256": "b10b186122be0c656d285a452503eed629349fd84260bb64bd1b6f9de3f317e6",
+        "bytes": 336140
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-light-375.png",
+        "sha256": "92b140376c139ccb1e248a4f5827ab016b7f22c41ab1117bdfe9a14c5a9eca80",
+        "bytes": 156193
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-light-390.png",
+        "sha256": "7e2fcf6cd1f4bc7c92f0646ad62d1efaf3cabf05186f43fcea713d426f62b1eb",
+        "bytes": 164285
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-chat-light-768.png",
+        "sha256": "1255cd87771c134141527e2922e7f489e0f45ef60787df0201591459a5f8630a",
+        "bytes": 222638
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-dark-1440.png",
+        "sha256": "7e928070833bd60a7de08a4cbc14cfc023763ac69e13fc60f4f8e49c64095376",
+        "bytes": 444224
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-dark-375.png",
+        "sha256": "9fb046a8750de822411cc08525795877916fbf3ff2e237871670c845fbe2aaaa",
+        "bytes": 311986
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-dark-390.png",
+        "sha256": "164f3d551c3ce05d08ab50be87457197f23684b6c878ae38a8312914d9d69e59",
+        "bytes": 322978
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-dark-768.png",
+        "sha256": "a50b98ba04352f8ce6254026cf110e33eb12970f0265c14689e7ff4483b652eb",
+        "bytes": 396328
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-light-1440.png",
+        "sha256": "243c7e10372fe62b4d73d3016801aeaaed19a92785a825a4c662a83270207fb8",
+        "bytes": 364687
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-light-375.png",
+        "sha256": "8dee88dee326d63810361bfab75b33aed5c0a5fee0690c5a6d70eabf7d8221a5",
+        "bytes": 259069
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-light-390.png",
+        "sha256": "a60dc99e12def29ece851f237fab0b640951bbe174526a8196003865e1158389",
+        "bytes": 266798
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-me-light-768.png",
+        "sha256": "94a52fc2a926f26d314d6c337ef040ec25d7d72a749eabf98265f781524b6257",
+        "bytes": 319443
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-dark-1440.png",
+        "sha256": "14a76e55664da6c3cc6fd10cdb774307c2e6fb03c25468426f70a34e4180218b",
+        "bytes": 552486
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-dark-375.png",
+        "sha256": "e219b139c06a46e54bba79e8487a6a4cf0bacaf653540de49c7399c5d6d85cb0",
+        "bytes": 383091
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-dark-390.png",
+        "sha256": "eda4422da5ce25b9e792df25b8983feada6fdeac482c951950deb602081480ad",
+        "bytes": 392096
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-dark-768.png",
+        "sha256": "ebef802c9ea1788744c596e0efcf37ab13b81e15b7e3e29a02fc69968fae94fb",
+        "bytes": 476547
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-light-1440.png",
+        "sha256": "b78a45391958235dc9cef3fd358d7e9c95e2a31f9e7e67c075128180941020ad",
+        "bytes": 462547
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-light-375.png",
+        "sha256": "e624131ef9d0f0c5b4cdce4a9d51174fa55f0edfe866d92a5e5c1826ffcff458",
+        "bytes": 332615
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-light-390.png",
+        "sha256": "4d8e12eaf2960e47cc0e72900d357ed86f8fde1dc3e4782f803cd9d832ed58a4",
+        "bytes": 337820
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-settings-light-768.png",
+        "sha256": "1361d5baf560d2d060a6bd062ea9bbe7e892ddc4a9b13ba8b68ceaffd30ec5fc",
+        "bytes": 399427
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-dark-1440.png",
+        "sha256": "644756306571e6732ca7b53afc90393cd3d9e017eb797976b7a41e78332b01e2",
+        "bytes": 387257
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-dark-375.png",
+        "sha256": "a438b6dde5bda557ecf28fba94653b3550848da714e6f13b1d83aa2ce1e1f9f9",
+        "bytes": 220365
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-dark-390.png",
+        "sha256": "74a2c6674f915429a1d4739909e903ec0fe3942e8dd499fb3e5db0201e5f3751",
+        "bytes": 230376
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-dark-768.png",
+        "sha256": "52fa8b1a38a69c3d16d5e52bbc575467de45ef438407bb94aa02e81208f8fb8d",
+        "bytes": 342693
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-light-1440.png",
+        "sha256": "675ec460a133fa62fbe129073a7b3c136c828c03556989e14cb512b5faa9ec68",
+        "bytes": 300482
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-light-375.png",
+        "sha256": "e612859325032a3df27118364847fd476384d476b5f419c16ef18b87d94914a3",
+        "bytes": 175408
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-light-390.png",
+        "sha256": "590abbdc1ae2b77ac9e8e3531f0625bd086f9e363ac9b2ed4bb0f57c487bc59e",
+        "bytes": 182538
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-tarot-light-768.png",
+        "sha256": "477eaf5e0da85bbae045b6aa60b5427666811e4847dc325f1a5a292b5d7783d5",
+        "bytes": 259549
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-dark-1440.png",
+        "sha256": "fabc7a1396a594bffe9cabefa919f421566e89e2bbfd9a1fa6353179f75a116b",
+        "bytes": 568465
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-dark-375.png",
+        "sha256": "91ec8d1730bde6575fa716917b684c4ca5fc158713bcdb678c7dadfad844e335",
+        "bytes": 375156
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-dark-390.png",
+        "sha256": "52c901a4c62de2e627f66027ef8b039fea590382e69df6e38c5fa39a1a9ae3b4",
+        "bytes": 389669
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-dark-768.png",
+        "sha256": "9ff1856cf484ea318071b8f6c4968506a1cf134a0f14ef076604c11f63d882ae",
+        "bytes": 474310
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-light-1440.png",
+        "sha256": "5bf0855ecdcbee5b53a54440094ff502bbc8f9981350b4837e15e04a8bbb7e05",
+        "bytes": 476987
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-light-375.png",
+        "sha256": "d639751e91f0619651808960e07e8f7df471feceb1998e7acc13037a3bb64c3f",
+        "bytes": 318080
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-light-390.png",
+        "sha256": "15859869b2785816d40758aa4ce97a856172a551d8e2879b7fd63de139eb38ba",
+        "bytes": 329193
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/night-today-light-768.png",
+        "sha256": "cae7bae2d44103e4a4efafa59bf7968d5132eadf834291b872be88cb40b14864",
+        "bytes": 388031
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-dark-1440.png",
+        "sha256": "d4c07bd8a57a453f4322f23a020792ada4c678bf88423e0c310725c20646b502",
+        "bytes": 382874
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-dark-375.png",
+        "sha256": "50c6c4dca8d048dd4d1c84f7280aaadd6328a9128c89b5fad9d462c2d026cd2c",
+        "bytes": 204401
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-dark-390.png",
+        "sha256": "0476a85faea1de68996be13bca47f6782cd556708dcf83c458cf2d779aa4347f",
+        "bytes": 213361
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-dark-768.png",
+        "sha256": "9407ccf8f42fb9cfdccb0b94afdb388938a57dc4231e0ec6b126b5c477c247e4",
+        "bytes": 309147
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-light-1440.png",
+        "sha256": "574e07e480f65e4a7b30a7e9cc98079cdbafbeb4dbba91ea79c73c93e7c443ad",
+        "bytes": 305873
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-light-375.png",
+        "sha256": "ceecdd1efe9ccde1aa63b1abab719dc37b4276ba8c534454500e2d8ef8921b9f",
+        "bytes": 168091
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-light-390.png",
+        "sha256": "a75ad5a4ca27d0cd31afcfcb69a89481df57793a8a689d16663d05419096a9d8",
+        "bytes": 173579
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-chat-light-768.png",
+        "sha256": "ad6723a8e30694423bf908b79147726c6a00188633dc85a0719536cc4103df79",
+        "bytes": 238946
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-dark-1440.png",
+        "sha256": "a02d181992e9e427da487149f2cc22ddfd7769a2c3be9ea9c0152374ce584097",
+        "bytes": 433656
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-dark-375.png",
+        "sha256": "5739aa3739076a4af93646094a91fcf2f2082d164bc795087ba6cf51dd23a13f",
+        "bytes": 344684
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-dark-390.png",
+        "sha256": "47f1d9e0308b23643b862d1fcf468e82c0b01221575acd7ba94bb1ac79ff1c24",
+        "bytes": 351922
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-dark-768.png",
+        "sha256": "2dc96f0057e4436a299c73dca9cbc25c82ad25c2ce180533a207cb9faeb43480",
+        "bytes": 442067
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-light-1440.png",
+        "sha256": "02194b545ded0378f07f11b9f3ec9074f05b8c62babc3d947ce4b6c77ec457ce",
+        "bytes": 356661
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-light-375.png",
+        "sha256": "1c9406dcd56d8d39c0e5a1f4a249221d075cc84157ee7e180b36057706dba7fc",
+        "bytes": 298926
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-light-390.png",
+        "sha256": "8ee482393872a57eac607e101db0420f7014d4a56b9363fb8f316e40da4c2ac2",
+        "bytes": 303303
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-me-light-768.png",
+        "sha256": "cbcdfca4c3b5c35206039870a4f16b2b47ac3b26ff35b8f42b5c8297ce302c7b",
+        "bytes": 366952
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-dark-1440.png",
+        "sha256": "f5bc68782a73ab373bdca2abb3eeefe5cc1ef3936bcd42968f79480b65bda491",
+        "bytes": 528769
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-dark-375.png",
+        "sha256": "8bd26991973bf38964206dac793605ebf71b73747f9dd1ef73cdf40fe0b19669",
+        "bytes": 341525
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-dark-390.png",
+        "sha256": "a7abfdaee5406abd074e716f4142036bfb31be16f25920cdf631dadbf94394cf",
+        "bytes": 351030
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-dark-768.png",
+        "sha256": "3a8307636962698ba77df69781646d0b1b2e37fce4b87bc868dacfee6dcb330d",
+        "bytes": 451901
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-light-1440.png",
+        "sha256": "9581d1f78630adc555c26726c75dfa0f7651ff8cf9b03ac88af018c204691012",
+        "bytes": 460106
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-light-375.png",
+        "sha256": "a92c0aa9c6ccc88491de9fc880bb84518123304d83ef39520705be713d15d095",
+        "bytes": 311400
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-light-390.png",
+        "sha256": "9f8a41cd5a609646a33b79b930a3bd6eb87e639d236786fad127a12c8ec29a15",
+        "bytes": 316859
+      },
+      {
+        "file": "web/test-results/week-regression-0830/matrix/screenshots/spaces-organize-light-768.png",
+        "sha256": "6bab909be48e9880cff99686ac087d4a1bebe1cbbf737c1a30f7fec4c4a9021d",
+        "bytes": 387871
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/history-recovered-draft-1440.png",
+        "sha256": "d7be22d5094aac7eaea5f01b55998cf3c73516fc955bfae5cd42cb8d927dc196",
+        "bytes": 233269
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/history-recovered-draft-390.png",
+        "sha256": "45eeee1f2267946e5d3de72328deedfac74405e19b4ebaec58e305d78a7a3d33",
+        "bytes": 192306
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/history-retrying-draft-1440.png",
+        "sha256": "41f6d2ed50e716fc805291a48e2c44f10a03a6c8d7eac4cc343b5e9cbe90d2ca",
+        "bytes": 238356
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/history-retrying-draft-390.png",
+        "sha256": "2ed232bc2b3d87835ff7c7767ecb8daa3d7a1564c514b5332dfef4d2507f43db",
+        "bytes": 191175
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/Q5-pwa-network-only-1440-light.png",
+        "sha256": "3cd66d40baa030c8b671bc606fc11957e4db01fc209de25cee756899a4f0e0e5",
+        "bytes": 359304
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/Q5-pwa-offline-1440-dark.png",
+        "sha256": "b90ace5a7e9c8cc3b8500e461516d55ae957e44331ab8aad93748ee18d053b41",
+        "bytes": 384200
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/Q5-pwa-offline-1440-light.png",
+        "sha256": "18c83da57895fcc91b12c97b855a6a842d9d1b4cb598974cd36a37daad18a28b",
+        "bytes": 294683
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/Q5-pwa-offline-390-dark.png",
+        "sha256": "e1e658a3a4cb7d6af50ea63459237bb6de58179855777d340f207f73f672af7e",
+        "bytes": 207427
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/Q5-pwa-offline-390-light.png",
+        "sha256": "4b492e2ac6a8741ab96a4744bbc11a0185ff6fd13c47b41e00a72af2c4536db0",
+        "bytes": 151055
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/Q5-pwa-private-cleared-390-dark.png",
+        "sha256": "46a66158d2ddf1bc73cf5b212ee6ffead1d3946b5b75c9e151ead5f59ea25d00",
+        "bytes": 210402
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/refresh-failed-preserved-1440.png",
+        "sha256": "5e82f9bc06b6adfc0b9d6e19f56b5b10628ff866c26dc703bb65ebb9aba46a21",
+        "bytes": 274841
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/refresh-failed-preserved-390.png",
+        "sha256": "e6436008452f3bb9a778003ac84aaa503290b26ce386cdab4d605bc69ea94c92",
+        "bytes": 253012
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/refresh-retried-current-1440.png",
+        "sha256": "78a3dd4bec0870fff823afaddee2a29477b271b6481ed10c00c03d6df63b8c17",
+        "bytes": 273884
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/refresh-retried-current-390.png",
+        "sha256": "a60ec899e8f3dba07ae428c54659ab28ccb934010a0e53f14567ccf83a719669",
+        "bytes": 252143
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-queue-stopped-canceled-1440-4a8d2c96.png",
+        "sha256": "b62e755bb0238e81de29bdf2e0931d48fd2b93ac8a191e631f3195c54583659c",
+        "bytes": 322935
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-queue-stopped-canceled-390-32439b02.png",
+        "sha256": "c6a16f16e2e73f111bf7d7a40fd095d32ee7bb4cd6b2c9a5d334c6d8294486fb",
+        "bytes": 195646
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-review-nested-select-1440-9cbd03f1.png",
+        "sha256": "00d50c2a60e3c4f183afea18efa99651ecd505154c8b953546e020bef4511a6c",
+        "bytes": 473180
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-review-nested-select-390-ce4e2a1d.png",
+        "sha256": "fdfb4d90b03ea1aabaa70754304cd6f6560425ec5a65ce44ff5fa96d86046b19",
+        "bytes": 366398
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-review-partial-revert-1440-24915182.png",
+        "sha256": "8e1490c1a9202171d8f43468781701472127e17c4c15d33b71278184064cdef0",
+        "bytes": 640573
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-review-partial-revert-390-0b9216d9.png",
+        "sha256": "5429d17b503b3283ec5236e28afeb740b0662c103e1c13a4d06fb0f3bf065251",
+        "bytes": 552174
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-today-evidence-1440-0767fe9f.png",
+        "sha256": "fc35c98751d6a77e489d0152d70079bf87578f2679ffeef41a10cd5424b5dcea",
+        "bytes": 520356
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/reserve-today-evidence-390-f57518c5.png",
+        "sha256": "62934e02cb66f5af42873f4d07e3f200c37b5dfb6cbc0e95db50261f0b6220dd",
+        "bytes": 274576
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-default-home-failed-1440.png",
+        "sha256": "35d4d48c6e87d6dd9f8ba4e9934a0aef23d7d0cb84c0b4bf34c8560be06d90db",
+        "bytes": 214523
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-default-home-reloaded-1440.png",
+        "sha256": "0b98cfac6b7180e43d9cc2de78a23e16f71c5772a0a3f657933f272069e764ce",
+        "bytes": 345426
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-night-child-failed-1440.png",
+        "sha256": "e0c5a9fae2f26be3ce23c094ac29c930e6f0f80325e05a14b972fe1c40c7abf4",
+        "bytes": 221663
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-night-draft-preserved-1440.png",
+        "sha256": "821b49cb0f49ef14045bb571bfdc33da15f6645aa51e5f930b8fce0db3a1d77d",
+        "bytes": 296792
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-night-entry-failed-390.png",
+        "sha256": "4276d8591c2962599ea7bc2127784e4c1e19fc58a503fe046288322187d8b926",
+        "bytes": 153887
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-night-entry-home-390.png",
+        "sha256": "e8e7665d69e91837b23bde0834e3aefde94002b533515815ee712b0a7fd5c446",
+        "bytes": 197313
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-static-failed-390.png",
+        "sha256": "8b6aa1c5f479522273cf81fcc55702613b446e354b28061a2ae60ea99950f3a7",
+        "bytes": 143519
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/route-static-reloaded-390.png",
+        "sha256": "f3f295f286c94587858573375694dcd8377ff22206ecfb598665e5b07cb7f31f",
+        "bytes": 203037
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-1440-dark.png",
+        "sha256": "7029e83da65934c1389fdc121e5ff6f3e6c8a500bf8fca130afa0635c1b32131",
+        "bytes": 818799
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-1440-light.png",
+        "sha256": "308fec196f464b2d1a57e349b306f5496bd031201d16e48eb50b410b1fefba01",
+        "bytes": 726992
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-375-dark.png",
+        "sha256": "d1fda68b19c11cff8ca607046af6a04ee2f0e7b155dad29af4e0e70fdcbd77fe",
+        "bytes": 597967
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-375-light.png",
+        "sha256": "31da1baed478b6e56c0a36ab112954302773cdbbaac750b9f9c6f6281fc6ac48",
+        "bytes": 545347
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-390-dark.png",
+        "sha256": "9eb8cc1d37661835a479b5e0fcd1fe667cbb38a4a8f4159d1fe68f2268581fe8",
+        "bytes": 612378
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-390-light.png",
+        "sha256": "3327305800a9f61bbe667f46629984c928585fa11f9c8eab94f0a68d93b14cf8",
+        "bytes": 559832
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-768-dark.png",
+        "sha256": "d79969eeeb208f4aa28f18af1ce1c72e33d06ab9f3e7d01875d8f64eefc1b3a3",
+        "bytes": 751711
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/synastry-768-light.png",
+        "sha256": "52a557c76e1888ba94cfe0d67e7622570c9674ef5ea8c01b795580fe64573a47",
+        "bytes": 675212
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/today-date-cleared-1440.png",
+        "sha256": "655f458d65ca7f4af8cea599121e51de81cc19311d64ae7ff91bb32f3da01b0a",
+        "bytes": 401602
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/today-date-cleared-390.png",
+        "sha256": "66070a4831ee8a305e76d1d0a5aa7d38183317861caa99da77033efc03a75274",
+        "bytes": 337790
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/today-date-restored-1440.png",
+        "sha256": "d7a3e7b7331877633c4297cecccdf8161b1bec76b07b58e623f79a05041ff787",
+        "bytes": 475610
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/today-date-restored-390.png",
+        "sha256": "69aef6c947c3a66c89ce6457eea300a145a837c90de89cb7e0311cb27552ba31",
+        "bytes": 406363
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/tools-invalid-manifest.png",
+        "sha256": "e1773a64f46fabcfd161d09d4997033c33dfdf12bf7d8e028b7d5a373fbbded6",
+        "bytes": 182873
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/tools-keyboard-evidence-1440.png",
+        "sha256": "fe872e95516d7e286ad0af67959f7a858065af5643559237ee43132a9b2e469d",
+        "bytes": 631132
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/tools-keyboard-evidence-390.png",
+        "sha256": "6fbe41d417dadda42b880416a84458c2c7cf3756ec435fd369144f630bb502b0",
+        "bytes": 406971
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/tools-retry-fresh-confirmation.png",
+        "sha256": "4978bfdc79f6d2c7ef5fea8c38da475abef58029aeedd20a00237c6a577d612a",
+        "bytes": 272689
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-1440-dark.png",
+        "sha256": "597f1e8b09a8da08266ea7b21abf3ed958ec18ffc538091c9e1b87a86c49fb67",
+        "bytes": 558733
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-1440-light.png",
+        "sha256": "9ca755fb65776390f54a501f560d30f57cff598068486e776625424c1347e6fc",
+        "bytes": 464930
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-375-dark.png",
+        "sha256": "79158b0a4eb4132f2a832b3bc3a666ec1d203e2935daa2a28828ce816cb013b5",
+        "bytes": 369926
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-375-light.png",
+        "sha256": "ef507bdd8d62f9818728eecfd0a6383afa4c314b19247f88e161a82649bfd270",
+        "bytes": 317155
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-390-dark.png",
+        "sha256": "4d44a49e8d6f82068bccbbb4660de83ace213ea7135808029892e411459489c2",
+        "bytes": 373792
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-390-light.png",
+        "sha256": "15f138d681beef0b0f1ca895388d24024266bf05498b0adb517035a9fdf52e9d",
+        "bytes": 319837
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-768-dark.png",
+        "sha256": "3f71598a388c74b9f1db948838c4c22f305c9d4076a4751c20dead7aeb6a96ee",
+        "bytes": 471720
+      },
+      {
+        "file": "web/test-results/week-regression-0830/night/window-768-light.png",
+        "sha256": "292c6f0d8eeb45a31501ee9eb826420782a3dd198ff36e286ba75c7e6a0d6fa9",
+        "bytes": 390209
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/apply-confirm-1440.png",
+        "sha256": "84bdda749fbe8c397ad1f1a442417c0bf87679abac04d3efddb153c9074bf752",
+        "bytes": 295673
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/desktop-sidebar-scrolled-1440.png",
+        "sha256": "70741e09cdd75ccbd6d5b4602f14ce64a4c5c492dc62a3e905c51f12fbb9aa60",
+        "bytes": 279990
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/desktop-sidebar-scrolled-dark-1440.png",
+        "sha256": "86d79d628096153bf742f7e968b234e9346dbd56037cb6721791fd443e170e71",
+        "bytes": 368434
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/mobile-more-390.png",
+        "sha256": "cc44e10fa2a5b2276957e5b93d0f0771d74fe3621787f6369c5d4f9e4b87ca07",
+        "bytes": 159438
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/mobile-more-dark-390.png",
+        "sha256": "9893aed6e6c9ef70aa934c49997fee07bef76de1975564470b603cf72b7adad8",
+        "bytes": 216978
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/revert-confirm-1440.png",
+        "sha256": "e6a8f33641e3ce88ab3e13caabd1f1a50bceba6be05ea0f87a4b8aa1cfa28116",
+        "bytes": 299090
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/route-new-topic-390.png",
+        "sha256": "814e9a3ee06405ed5e447955b03da01244a1349063f547df902136efc956e059",
+        "bytes": 112909
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces/split-editor-390.png",
+        "sha256": "b604549e2eae36074f72b0dfc36d3358b34a27d52c363ee0ae7943dddb9af509",
+        "bytes": 103790
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-dark-1440.png",
+        "sha256": "d4c07bd8a57a453f4322f23a020792ada4c678bf88423e0c310725c20646b502",
+        "bytes": 382874
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-dark-375.png",
+        "sha256": "50c6c4dca8d048dd4d1c84f7280aaadd6328a9128c89b5fad9d462c2d026cd2c",
+        "bytes": 204401
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-dark-390.png",
+        "sha256": "0476a85faea1de68996be13bca47f6782cd556708dcf83c458cf2d779aa4347f",
+        "bytes": 213361
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-dark-768.png",
+        "sha256": "9407ccf8f42fb9cfdccb0b94afdb388938a57dc4231e0ec6b126b5c477c247e4",
+        "bytes": 309147
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-light-1440.png",
+        "sha256": "574e07e480f65e4a7b30a7e9cc98079cdbafbeb4dbba91ea79c73c93e7c443ad",
+        "bytes": 305873
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-light-375.png",
+        "sha256": "ceecdd1efe9ccde1aa63b1abab719dc37b4276ba8c534454500e2d8ef8921b9f",
+        "bytes": 168091
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-light-390.png",
+        "sha256": "a75ad5a4ca27d0cd31afcfcb69a89481df57793a8a689d16663d05419096a9d8",
+        "bytes": 173579
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/chat-light-768.png",
+        "sha256": "ad6723a8e30694423bf908b79147726c6a00188633dc85a0719536cc4103df79",
+        "bytes": 238946
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-dark-1440.png",
+        "sha256": "a02d181992e9e427da487149f2cc22ddfd7769a2c3be9ea9c0152374ce584097",
+        "bytes": 433656
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-dark-375.png",
+        "sha256": "5739aa3739076a4af93646094a91fcf2f2082d164bc795087ba6cf51dd23a13f",
+        "bytes": 344684
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-dark-390.png",
+        "sha256": "47f1d9e0308b23643b862d1fcf468e82c0b01221575acd7ba94bb1ac79ff1c24",
+        "bytes": 351922
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-dark-768.png",
+        "sha256": "2dc96f0057e4436a299c73dca9cbc25c82ad25c2ce180533a207cb9faeb43480",
+        "bytes": 442067
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-light-1440.png",
+        "sha256": "02194b545ded0378f07f11b9f3ec9074f05b8c62babc3d947ce4b6c77ec457ce",
+        "bytes": 356661
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-light-375.png",
+        "sha256": "1c9406dcd56d8d39c0e5a1f4a249221d075cc84157ee7e180b36057706dba7fc",
+        "bytes": 298926
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-light-390.png",
+        "sha256": "8ee482393872a57eac607e101db0420f7014d4a56b9363fb8f316e40da4c2ac2",
+        "bytes": 303303
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/me-light-768.png",
+        "sha256": "cbcdfca4c3b5c35206039870a4f16b2b47ac3b26ff35b8f42b5c8297ce302c7b",
+        "bytes": 366952
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-dark-1440.png",
+        "sha256": "f5bc68782a73ab373bdca2abb3eeefe5cc1ef3936bcd42968f79480b65bda491",
+        "bytes": 528769
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-dark-375.png",
+        "sha256": "8bd26991973bf38964206dac793605ebf71b73747f9dd1ef73cdf40fe0b19669",
+        "bytes": 341525
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-dark-390.png",
+        "sha256": "a7abfdaee5406abd074e716f4142036bfb31be16f25920cdf631dadbf94394cf",
+        "bytes": 351030
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-dark-768.png",
+        "sha256": "3a8307636962698ba77df69781646d0b1b2e37fce4b87bc868dacfee6dcb330d",
+        "bytes": 451901
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-light-1440.png",
+        "sha256": "9581d1f78630adc555c26726c75dfa0f7651ff8cf9b03ac88af018c204691012",
+        "bytes": 460106
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-light-375.png",
+        "sha256": "a92c0aa9c6ccc88491de9fc880bb84518123304d83ef39520705be713d15d095",
+        "bytes": 311400
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-light-390.png",
+        "sha256": "9f8a41cd5a609646a33b79b930a3bd6eb87e639d236786fad127a12c8ec29a15",
+        "bytes": 316859
+      },
+      {
+        "file": "web/test-results/week-regression-0830/spaces-visual/screenshots/organize-light-768.png",
+        "sha256": "6bab909be48e9880cff99686ac087d4a1bebe1cbbf737c1a30f7fec4c4a9021d",
+        "bytes": 387871
+      }
+    ]
+  },
+  "boundary": "This is one complete local run at cb1213d, not three stable runs, remote CI, a new all-state acceptance matrix, real device or deployment evidence."
+}
