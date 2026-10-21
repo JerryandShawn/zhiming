@@ -1,0 +1,83 @@
+{
+  "schema": "mainline-pinned-regression-evidence-v1",
+  "recorded_bjt": "2026-10-21T10:23:24.035040+08:00",
+  "source": {
+    "local_sha": "4f042e7cc17749c3f37a8bf17c80e32ea8c0eeea",
+    "remote_sha": "6f8c44aa5c892af988a0310db10b2842561ed529",
+    "tree": "58c5381e648effd34d71c06008a3afe28a051c2f",
+    "tracked_blobs_verified": 1236,
+    "mismatches": 0,
+    "manifest_sha256": "8dd87e2299b7903bf46a9bcba3877068a0b456901f3bff24dc98e0e8e31ad498"
+  },
+  "suites": {
+    "v4": {
+      "console_summary": "2299 passed, 1 xfailed, 1 warning in 1301.22s (0:21:41)",
+      "metadata": {
+        "commit": "4f042e7cc17749c3f37a8bf17c80e32ea8c0eeea",
+        "export_started_at": "2026-10-21T10:00:00.595871+08:00",
+        "started_at": "2026-10-21T10:00:01.549327+08:00",
+        "timezone": "Asia/Shanghai",
+        "test_timezone": "Asia/Tokyo",
+        "finished_at": "2026-10-21T10:21:44.073460+08:00",
+        "exit_code": 0
+      },
+      "console_counts": {
+        "passed": 2299,
+        "xfailed": 1,
+        "warning": 1
+      },
+      "junit_observed": false,
+      "failures": [],
+      "xfails": [],
+      "ordinary_skips": [],
+      "node_lists_observed": false,
+      "junit_limitation": "No JUnit file was produced by this actual launch; summary counts only, no fabricated XML or per-node result"
+    },
+    "core": {
+      "tests": 582,
+      "seconds": 841.537,
+      "metadata": {
+        "commit": "4f042e7cc17749c3f37a8bf17c80e32ea8c0eeea",
+        "started_at": "2026-10-21T10:00:10.751546+08:00",
+        "test_timezone": "Asia/Tokyo",
+        "finished_at": "2026-10-21T10:14:15.803612+08:00",
+        "exit_code": 0
+      },
+      "error_or_failure_nodes": []
+    }
+  },
+  "private_artifacts": [
+    {
+      "name": "core.log",
+      "bytes": 6346,
+      "sha256": "9031e663ac171b9d1750929c92d14be860503eab3cf4189536fac50fcc39e84d"
+    },
+    {
+      "name": "core_metadata.json",
+      "bytes": 220,
+      "sha256": "4b85a003d1eb4f288c1f3edceb24893c32a107563791b87692125313bae14691"
+    },
+    {
+      "name": "metadata.json",
+      "bytes": 312,
+      "sha256": "f1d399699f6801d340c3cb67f6a762148572b5b8a686b1bb1d2bf25a35cded61"
+    },
+    {
+      "name": "v4.log",
+      "bytes": 3215,
+      "sha256": "5e6c1e1468211e52e63abe3128e5e6f49e9e64e1f681c94dee62e7ffc42fbc30"
+    }
+  ],
+  "safety": {
+    "real_provider_requests": 0,
+    "real_feishu_sends": 0,
+    "server_access": 0,
+    "private_exception_bodies_copied": false
+  },
+  "limitations": [
+    "Windows isolated PostgreSQL and synthetic providers; not Linux or deployment",
+    "Strict legacy receipt DOM xfail is incomplete, not a pass",
+    "A later commit does not inherit this exact-source result",
+    "Original M8 X03 remains unresolved; not rerun by these suites"
+  ]
+}
