@@ -4,17 +4,21 @@ from __future__ import annotations
 
 import hashlib
 import re
+import threading
 from typing import Any
 
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from mingjing_core.agent.journal import Journal, JournalStep
+from mingjing_core.application.agent_crisis_sources import turn_sources
+from mingjing_core.application.agent_current_sources import current_source_ids
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_thread_scope import assert_thread, thread_id
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.repositories.run_event_log import append_event
+from mingjing_core.repositories.streaming_transaction import streaming_transaction
 
 STATE_KEY = "p4_stream_candidate"
 STATE_FIELDS = {"schema", "epoch", "seq", "input_fp", "lease_sha256", "generation", "received", "emitted", "closed"}
@@ -74,6 +78,12 @@ class StreamState:
             raise EvidenceError("流式步骤与原模型请求不符")
         if prepared is None or prepared.role != "primary" or prepared.name != "":
             raise EvidenceError("私有模型步骤不能公开流式正文")
+        if not self.repo.verify_versions(run["owner"], prepared.versions):
+            raise LeaseConflict("流式正文的原依赖版本已经改变")
+        sources = turn_sources(self.repo, current, current_source_ids(self.repo, current))
+        primary = next(row for row in sources if row["id"] == current["request"]["source_message_id"])
+        if primary["content"] != current["request"]["message"]:
+            raise EvidenceError("流式正文的本轮原话已经改变")
         return current
 
     def _save(self, connection: Any, run: dict[str, Any], metadata: dict[str, Any]) -> None:
@@ -82,8 +92,8 @@ class StreamState:
             (Jsonb(dict(run["usage"], **{STATE_KEY: metadata})), run["owner"], run["id"]),
         )
 
-    def begin(self, step: JournalStep) -> dict[str, Any]:
-        with self.repo.transaction(self.run["owner"]) as connection:
+    def begin(self, step: JournalStep, *, stopped: threading.Event | None = None) -> dict[str, Any]:
+        with streaming_transaction(self.repo, self.run["owner"], stopped) as connection:
             current = self._proof(connection, step)
             previous = stream_metadata(current)
             if previous is not None and (
@@ -115,10 +125,11 @@ class StreamState:
         drafts: tuple[Any, ...],
         *,
         closed: bool = False,
+        stopped: threading.Event | None = None,
     ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
         if type(chunk) is not str or type(closed) is not bool:
             raise EvidenceError("流式正文或结束标记无效")
-        with self.repo.transaction(self.run["owner"]) as connection:
+        with streaming_transaction(self.repo, self.run["owner"], stopped) as connection:
             current = self._proof(connection, step)
             actual = stream_metadata(current)
             if actual != expected or actual is None or actual["closed"]:

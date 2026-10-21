@@ -115,7 +115,9 @@ class AgentRuntime:
             incognito=thread_id(run).startswith("incognito:"),
             ledger=self.ledger,
             emit=events.send,
-            text_stream=ModelDeltaStream(self.repo, run, self.ledger, events.callback)
+            text_stream=ModelDeltaStream(
+                self.repo, run, self.ledger, events.callback, cancel_event=control.cancel_event
+            )
             if self.streaming_candidate
             else None,
         )
