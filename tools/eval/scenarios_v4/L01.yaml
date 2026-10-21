@@ -1,0 +1,50 @@
+id: L01
+title: 四种模型工具循环协议一致
+category: portability
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  controls:
+    model_matrix:
+    - kimi-main
+    - deepseek-main
+    - qwen-main
+    - glm-main
+    required_loop:
+    - tool_call
+    - tool_result
+    - final_text
+turns:
+- user: 查询今天日期并记住不吃辣
+  expect:
+    tools_called:
+    - time_context
+    - memory_write
+    db:
+    - path: portability.protocol_models
+      equals:
+      - kimi-main
+      - deepseek-main
+      - qwen-main
+      - glm-main
+    - path: portability.protocol_errors
+      equals: []
+    events:
+    - portability.protocol_passed
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: time_context
+      arguments:
+        date: '2026-10-17'
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 不吃辣
+        summary: 不吃辣
+        kind: preference
+  - text: 今天是10月17日，星期六；不吃辣的偏好已保存。
+notes: P0 fake仅验证矩阵结果断言；四家真实协议循环需P1模型探测/P3实际运行，不能据此宣称兼容。

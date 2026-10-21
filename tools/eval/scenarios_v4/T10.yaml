@@ -1,0 +1,28 @@
+id: T10
+title: 跨日间隔不能称昨天
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  thread:
+  - id: last-user
+    role: user
+    content: 今天下班后有点累。
+    at: '2026-10-15T21:05:00+08:00'
+    channel: feishu
+  - id: last-assistant
+    role: assistant
+    content: 先歇一会儿，想聊时我在。
+    at: '2026-10-15T21:05:20+08:00'
+    channel: feishu
+turns:
+- user: 在吗
+  expect:
+    must_include_any:
+    - 在
+    - 阿远
+    must_not_include:
+    - 昨天
+scripted:
+- turn: 1
+  model:
+  - text: 在的，阿远。两天没聊了，你今天想说些什么？

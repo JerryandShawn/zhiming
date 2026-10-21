@@ -1,0 +1,81 @@
+id: T01
+title: UTC跨午夜按owner上海时区
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  profile_overrides: {}
+  facts: []
+  thread: []
+  entities: []
+  settings: {}
+  context: {}
+  controls: {}
+  thread_id: life-synthetic
+  incognito: false
+turns:
+- user: 现在几号
+  channel: web
+  kind: chat
+  at: '2026-10-17T15:55:00+00:00'
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called:
+    - time_context
+    tools_not_called: []
+    receipts: []
+    db:
+    - where: {}
+      path: observed_tools.0.output.data.solar
+      equals: '2026-10-17'
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.weekday
+      equals: 星期六
+      absent: false
+    events: []
+    chart_structure: false
+- user: 十分钟后呢
+  channel: web
+  kind: chat
+  at: '2026-10-17T16:05:00+00:00'
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called:
+    - time_context
+    tools_not_called: []
+    receipts: []
+    db:
+    - where: {}
+      path: observed_tools.0.output.data.solar
+      equals: '2026-10-18'
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.weekday
+      equals: 星期日
+      absent: false
+    events: []
+    chart_structure: false
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: time_context
+      arguments: {}
+  - text: 现在按上海时区是10月17日。
+- turn: 2
+  model:
+  - tool_call:
+      name: time_context
+      arguments: {}
+  - text: 已经是10月18日。
+notes: 独立v4扩充契约；实际工具结果/线程/信封断言，不替换冻结47项。

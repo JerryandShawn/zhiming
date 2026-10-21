@@ -1,0 +1,36 @@
+{
+  "schema": "p3-m7-dispatcher-evidence-v1",
+  "recorded_at": "2026-10-21T00:15:00+08:00",
+  "environment": "local Windows isolated PostgreSQL 15 and literal 127.0.0.1 HTTP/SSE server",
+  "provider_requests": 0,
+  "feishu_sends": 0,
+  "server_accesses": 0,
+  "local_scripted_physical_http_requests": 1,
+  "quiet_stream_cancel_elapsed_seconds": 0.04700000000048021,
+  "target_validation": [
+    {"suite": "dispatcher, HTTP, handoff, Loop, runtime, recovery, private runtime", "passed": 38, "seconds": 13.39},
+    {"suite": "dispatcher, HTTP, handoff, epoch and reminder component adaptation", "passed": 30, "seconds": 8.94}
+  ],
+  "lint": "Ruff E,F,I,B,UP,SIM and format120 passed; owned sources/tests under 400/60 limits",
+  "verified": [
+    "shared PG global capacity default3, interactive2/background1, independent worker instances",
+    "same owner/thread cannot claim simultaneous valid v4 leases, including direct claim_run",
+    "different owner same thread name independent",
+    "commit-bound scoped queue NOTIFY; rollback emits no wakeup",
+    "real LISTEN/NOTIFY cancellation; notifications alone cannot authorize cancellation",
+    "lease-expiry recovery and queue polling path",
+    "real silent HTTP/SSE blocked read closes within2s with partial stored interrupted and no final envelope",
+    "repeated cancellation finish is idempotent and later source withdrawal redacts the interrupted body",
+    "PG observes150s renewal after monotonic20s threshold",
+    "private service callback transfers exactly one clean epoch lease; forged handoff rejected",
+    "withdrawal then cancellation finalizes with new lease, no tokens in public events"
+  ],
+  "limitations": [
+    "FastAPI lifespan, web cancel route and Feishu ingress adapter installation belong to separate integration slices",
+    "partial message status=interrupted is excluded by existing active-only history projection; UI projection remains follow-up",
+    "all worker processes must share CORE_RUN_CONCURRENCY configuration; legacy default1 rejected by dispatcher",
+    "v3 claim behavior preserved; mixed legacy/v4 live entry selection must be wired by the trusted route",
+    "single local timing measurement, no server or supplier latency claim",
+    "no new dependencies or migrations; no real provider, Feishu, stage or production access"
+  ]
+}

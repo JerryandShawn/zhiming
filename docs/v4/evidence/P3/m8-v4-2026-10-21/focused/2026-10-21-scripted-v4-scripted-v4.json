@@ -1,0 +1,873 @@
+{
+  "metadata": {
+    "date": "2026-10-21",
+    "mode": "scripted",
+    "target": "v4",
+    "model": "scripted-v4",
+    "judge_model": "not called (scripted)",
+    "judge_provider": "configured-model-v3",
+    "judge_schema_sha256": "048dd7889e4c9c96c6500d6fbbf35b9cdc9e67f16c14607d1e292dc03ef884bc",
+    "rubric_version": "critic-eval-v1.0.0",
+    "rubric_sha256": "4647f8ac8cda20b056a9f14b088d809b425df60d15f4dfadc5378b36ca775c53",
+    "config_version": "eval-config-v1.0.0",
+    "config_sha256": "16295c8a4113462c3c42fcf7c4428055377e44456c1ae6a7358ca3114798278a",
+    "source_sha256": "ab0acb97776a55a86c7e29c06ecc10b5af17f4044eb90a5c3376d62b8c1279ef",
+    "provider_endpoint_sha256": null,
+    "synthetic_only": true,
+    "status": "complete",
+    "evaluation_scope": "real local PG + scripted ports/codec mocks; no live quality claim",
+    "external_provider_requests": 0,
+    "u4_parser": "declared substitute under Z6",
+    "planned_scenario_ids": [
+      "D01",
+      "L01",
+      "M01",
+      "TA01",
+      "TA02",
+      "TA03",
+      "X04",
+      "X05"
+    ],
+    "batch_size": 10,
+    "attempt": 1,
+    "execution_usage": {
+      "new_usage": {
+        "model_calls": 32,
+        "target_model_calls": 32,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 7.8216982999998494,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 7.822
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "historical_actual_usage": {
+        "model_calls": 32,
+        "target_model_calls": 32,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 7.8216982999998494,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 7.822
+      }
+    },
+    "scoring_contract_version": "deterministic-eval-v1.0.0",
+    "scoring_corpus_sha256": "a5089851a504869518d9c4aac786ddf1e8adfdcaa9d38b195eca698d9dccceda",
+    "pending_scenario_ids": []
+  },
+  "cases": [
+    {
+      "id": "D01",
+      "category": "decision",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "A收益是涨薪30%，代价是常出差；B较稳定但涨薪少。两边都有风险，出差频率和成长路径待确认，先问清再判断。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.3759,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.376,
+      "v4_evidence": {
+        "run_ids": [
+          "run_73c6dd0fffbd41a287dee0e7ac66429a"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [
+          {
+            "run_id": "run_73c6dd0fffbd41a287dee0e7ac66429a",
+            "epoch": 0,
+            "seq": 2,
+            "name": "present_options",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [
+          {
+            "id": "run_73c6dd0fffbd41a287dee0e7ac66429a:s2:0",
+            "source_store": "core_run_steps.output.data.options",
+            "source_seq": 2
+          },
+          {
+            "id": "run_73c6dd0fffbd41a287dee0e7ac66429a:s2:1",
+            "source_store": "core_run_steps.output.data.options",
+            "source_seq": 2
+          }
+        ],
+        "cancellation": {},
+        "portability": {}
+      },
+      "fingerprint": "7f0e113bca98091b3467e5be1f6f36c0aea977afe75447dce7b4a16f257fe8aa",
+      "scenario_contract_sha256": "73d5f7e5e4da8ade008ddbbea0ea37848112a7b1a9d65a75ff8354d0544e4f10"
+    },
+    {
+      "id": "L01",
+      "category": "portability",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "今天是10月17日，星期六；不吃辣的偏好已保存。"
+      ],
+      "model_calls": 15,
+      "target_model_calls": 15,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 3.905,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 3.905,
+      "v4_evidence": {
+        "run_ids": [
+          "run_c9dc18abfd7e45d1a841446ddef6c363"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [
+          {
+            "run_id": "run_c9dc18abfd7e45d1a841446ddef6c363",
+            "epoch": 0,
+            "seq": 2,
+            "name": "time_context",
+            "status": "completed"
+          },
+          {
+            "run_id": "run_c9dc18abfd7e45d1a841446ddef6c363",
+            "epoch": 0,
+            "seq": 4,
+            "name": "memory_write",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [
+          {
+            "name": "portability.protocol_passed",
+            "source_store": "four isolated PG runs + MockTransport wire proofs",
+            "proofs": [
+              {
+                "candidate": "kimi-main",
+                "protocol": "anthropic_messages",
+                "mock_requests": 3,
+                "tool_result_echoes": 3,
+                "request_sha256": [
+                  "2aa3691c48bbadaad0c3d7be9d1fb22ddf891af7db05d221a0ef159fa0759920",
+                  "5df597f9f4dd38b6c0fa5d77b3d72ee429b9623ff86e32a1b59bc18b1a18c845",
+                  "e05ef9378f18179d229a1e5602d58a08981d605515b771f9321c6cb7eab4280e"
+                ],
+                "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+                "run_id": "run_14f1ede35002433db85c5f22db0908f9",
+                "run_status": "succeeded"
+              },
+              {
+                "candidate": "deepseek-main",
+                "protocol": "openai_compat",
+                "mock_requests": 3,
+                "tool_result_echoes": 3,
+                "request_sha256": [
+                  "7fb5f6108fd18659d2bbc867ad9f7d802c06c4c7f156682d51f709495679db51",
+                  "682522e4b0c698cf2aada8958a8ae1c234dd1e5c453dbbf7982e58050a373473",
+                  "60c24146c4f85f1486fc43d1a82aba080f5a5863de9ad0e7d6503694681f58f9"
+                ],
+                "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+                "run_id": "run_407df1f7a8904ec3aaf3926327508cfd",
+                "run_status": "succeeded"
+              },
+              {
+                "candidate": "qwen-main",
+                "protocol": "openai_compat",
+                "mock_requests": 3,
+                "tool_result_echoes": 3,
+                "request_sha256": [
+                  "7ae5ae2707521d5859ee5871448925298400e440c9d12019d889c25db41e3f55",
+                  "8ebc48608f751a6c4ae5c7afc6f0a6ab11ecc26a0b1915b6a486ae5c605e9f92",
+                  "b849d443d4d7331763af625408274e2633b3eb83f6e60dd7214d2ffcca92952a"
+                ],
+                "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+                "run_id": "run_084e198f2308484e8d25abfe4b2b8d1f",
+                "run_status": "succeeded"
+              },
+              {
+                "candidate": "glm-main",
+                "protocol": "openai_compat",
+                "mock_requests": 3,
+                "tool_result_echoes": 3,
+                "request_sha256": [
+                  "37894e9fd252cbb20781a435d23dc1d162a82b2141cf1ca2d000ad0fe90b25c9",
+                  "f94fcfd8c6305999f6f47c3f61959abd97c0a5d8a5fc4f7fa050649421305d32",
+                  "37e6036c0ecd922ad695108d0a371557bf4ff94f3e312ed55c66d7401dcb9e44"
+                ],
+                "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+                "run_id": "run_1f99100bc3ff4acba7e223d81ca39f93",
+                "run_status": "succeeded"
+              }
+            ],
+            "rule": "all committed; encoded tool results roundtripped"
+          }
+        ],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {
+          "protocol_models": [
+            "kimi-main",
+            "deepseek-main",
+            "qwen-main",
+            "glm-main"
+          ],
+          "protocol_errors": [],
+          "model_calls": 12,
+          "proofs": [
+            {
+              "candidate": "kimi-main",
+              "protocol": "anthropic_messages",
+              "mock_requests": 3,
+              "tool_result_echoes": 3,
+              "request_sha256": [
+                "2aa3691c48bbadaad0c3d7be9d1fb22ddf891af7db05d221a0ef159fa0759920",
+                "5df597f9f4dd38b6c0fa5d77b3d72ee429b9623ff86e32a1b59bc18b1a18c845",
+                "e05ef9378f18179d229a1e5602d58a08981d605515b771f9321c6cb7eab4280e"
+              ],
+              "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+              "run_id": "run_14f1ede35002433db85c5f22db0908f9",
+              "run_status": "succeeded"
+            },
+            {
+              "candidate": "deepseek-main",
+              "protocol": "openai_compat",
+              "mock_requests": 3,
+              "tool_result_echoes": 3,
+              "request_sha256": [
+                "7fb5f6108fd18659d2bbc867ad9f7d802c06c4c7f156682d51f709495679db51",
+                "682522e4b0c698cf2aada8958a8ae1c234dd1e5c453dbbf7982e58050a373473",
+                "60c24146c4f85f1486fc43d1a82aba080f5a5863de9ad0e7d6503694681f58f9"
+              ],
+              "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+              "run_id": "run_407df1f7a8904ec3aaf3926327508cfd",
+              "run_status": "succeeded"
+            },
+            {
+              "candidate": "qwen-main",
+              "protocol": "openai_compat",
+              "mock_requests": 3,
+              "tool_result_echoes": 3,
+              "request_sha256": [
+                "7ae5ae2707521d5859ee5871448925298400e440c9d12019d889c25db41e3f55",
+                "8ebc48608f751a6c4ae5c7afc6f0a6ab11ecc26a0b1915b6a486ae5c605e9f92",
+                "b849d443d4d7331763af625408274e2633b3eb83f6e60dd7214d2ffcca92952a"
+              ],
+              "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+              "run_id": "run_084e198f2308484e8d25abfe4b2b8d1f",
+              "run_status": "succeeded"
+            },
+            {
+              "candidate": "glm-main",
+              "protocol": "openai_compat",
+              "mock_requests": 3,
+              "tool_result_echoes": 3,
+              "request_sha256": [
+                "37894e9fd252cbb20781a435d23dc1d162a82b2141cf1ca2d000ad0fe90b25c9",
+                "f94fcfd8c6305999f6f47c3f61959abd97c0a5d8a5fc4f7fa050649421305d32",
+                "37e6036c0ecd922ad695108d0a371557bf4ff94f3e312ed55c66d7401dcb9e44"
+              ],
+              "scope": "offline candidate caps + real codec + PG; no live model capability claim",
+              "run_id": "run_1f99100bc3ff4acba7e223d81ca39f93",
+              "run_status": "succeeded"
+            }
+          ]
+        }
+      },
+      "fingerprint": "8d44a5be91a6b598001235653cd7288036e5fdf2515ec17b951bfcf21aaf911b",
+      "scenario_contract_sha256": "f759c1119020585bb2d1e8718d7de5c3d87f06d4728e68653169d5d756b72215"
+    },
+    {
+      "id": "M01",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "记下了：10月21日面试。紧张很正常，我们先准备一两个你最想讲清的经历。"
+      ],
+      "model_calls": 3,
+      "target_model_calls": 3,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.5641,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.564,
+      "v4_evidence": {
+        "run_ids": [
+          "run_dbe11841da564aa3900b2a2446e2928f"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [
+          {
+            "run_id": "run_dbe11841da564aa3900b2a2446e2928f",
+            "epoch": 0,
+            "seq": 2,
+            "name": "memory_write",
+            "status": "completed"
+          },
+          {
+            "run_id": "run_dbe11841da564aa3900b2a2446e2928f",
+            "epoch": 0,
+            "seq": 4,
+            "name": "schedule_followup",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {}
+      },
+      "fingerprint": "fff8204ab6955fc6617a49009c5fd553a3fe48b8b78de3342b5186be82919ea5",
+      "scenario_contract_sha256": "5d53f641f2d56ccfe6c96f1c5837942020520bc97ec4e1720a3ffe6732499363"
+    },
+    {
+      "id": "TA01",
+      "category": "tarot",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_not_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "牌背已准备好，请点选一张。",
+        "这张力量牌可以提醒你：面试时稳住节奏，用具体经历表达底气。"
+      ],
+      "model_calls": 4,
+      "target_model_calls": 4,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.8445,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.845,
+      "v4_evidence": {
+        "run_ids": [
+          "run_890043728dbb495297be8ce105eb5a49",
+          "run_124539b93d1e4152aae226e2f7960caf"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [
+          {
+            "run_id": "run_124539b93d1e4152aae226e2f7960caf",
+            "epoch": 0,
+            "seq": 2,
+            "name": "tarot_read",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {}
+      },
+      "fingerprint": "8567704c4b8674ef40092326c2c5caa75fd5f4cf8ce9187ad710c040c34757a5",
+      "scenario_contract_sha256": "871a999a4e49221878976675ea390a14f02b037b552b78dcb85bc4e3bae140d7"
+    },
+    {
+      "id": "TA02",
+      "category": "tarot",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "仍是同一次抽牌的力量牌。面试时把注意力放回能准备的部分。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.4042,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.404,
+      "v4_evidence": {
+        "run_ids": [
+          "run_aa7fcd10c5964594af067dd9c9c7a016"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [
+          {
+            "run_id": "run_aa7fcd10c5964594af067dd9c9c7a016",
+            "epoch": 0,
+            "seq": 2,
+            "name": "tarot_read",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [
+          {
+            "name": "tarot.explanation_retried",
+            "source_store": "tarot_readings.payload",
+            "reading_id": "e50910036adf4390be4cabb3490101b9",
+            "rule": "persisted failed -> running -> success; evaluator-only"
+          }
+        ],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {}
+      },
+      "fingerprint": "19230ac4aac96f1a47609fed9d951dec8a661e0ea481162775602fd5f0ded9eb",
+      "scenario_contract_sha256": "8127ba31b19df9ecf0e3a596ea04fd122239afa6a9add32e523b00ec1602a988"
+    },
+    {
+      "id": "TA03",
+      "category": "tarot",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[3]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "这次牌面已经固定，旧牌会保留。你可以开始新的一次抽牌，我给你准备新的牌背。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.4774,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.477,
+      "v4_evidence": {
+        "run_ids": [
+          "run_2f16cfb6dfa94526b9ede84246e89b3e"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [
+          {
+            "run_id": "run_2f16cfb6dfa94526b9ede84246e89b3e",
+            "epoch": 0,
+            "seq": 2,
+            "name": "tarot_start",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {}
+      },
+      "fingerprint": "79e02bfe896a944a518bf8a4713681a506d905be05f1ead8125d5da0f764ce10",
+      "scenario_contract_sha256": "1c70514f95a6a62bcf6d2bdfae923876976e88b541f2f7ca2d6c4bc30da083c8"
+    },
+    {
+      "id": "X04",
+      "category": "robustness",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.6627982999998494,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.663,
+      "v4_evidence": {
+        "run_ids": [
+          "run_ac20ab38855940d78e27933b0d0ec9f7"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {
+          "run_id": "run_ac20ab38855940d78e27933b0d0ec9f7",
+          "stop_latency_ms": 15.000000000327418,
+          "scripted_http_requests": 1,
+          "partial_id": "msg_f9ac7dc0541046c3366b1bbb08328078",
+          "source_store": "core_runs.cancel_requested_at + core_run_events + core_entities",
+          "rule": "monotonic request -> PG cancelled; quiet loopback socket, no external provider"
+        },
+        "portability": {}
+      },
+      "fingerprint": "9024bf8f865fd4441c35c8b4df303699f0dfa2209bb7bca21efb7120feeb83b2",
+      "scenario_contract_sha256": "3e64cb57a56f2c59e8f0e26b4f17790edc2b2b568a3f125dbdf8b0bd223259ca"
+    },
+    {
+      "id": "X05",
+      "category": "robustness",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "这次还没整理出完整回答，请稍后继续。"
+      ],
+      "model_calls": 3,
+      "target_model_calls": 3,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.5878,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.588,
+      "v4_evidence": {
+        "run_ids": [
+          "run_d9faeeeef65f4683aa313ae8b1d76288"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "declared parser substitute; no natural language accuracy claim",
+        "tool_steps": [
+          {
+            "run_id": "run_d9faeeeef65f4683aa313ae8b1d76288",
+            "epoch": 0,
+            "seq": 2,
+            "name": "memory_search",
+            "status": "completed"
+          },
+          {
+            "run_id": "run_d9faeeeef65f4683aa313ae8b1d76288",
+            "epoch": 0,
+            "seq": 4,
+            "name": "memory_search",
+            "status": "completed"
+          },
+          {
+            "run_id": "run_d9faeeeef65f4683aa313ae8b1d76288",
+            "epoch": 0,
+            "seq": 6,
+            "name": "memory_search",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [
+          {
+            "name": "tool.repeat_circuit_open",
+            "source_store": "core_run_steps.output.data.code",
+            "run_id": "run_d9faeeeef65f4683aa313ae8b1d76288",
+            "epoch": 0,
+            "seq": 6,
+            "rule": "completed tool output code == repeated_tool; evaluator-only, not events_v1"
+          }
+        ],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {}
+      },
+      "fingerprint": "cf383dfe5bb4a1efddcde75d270df365acd177a2fdd716db67e5705a7137db38",
+      "scenario_contract_sha256": "a0dab03931ace276237cdf6ff144c8e57632bd71b0192f076d9e32c9470fad5f"
+    }
+  ],
+  "batches": [
+    {
+      "attempt": 1,
+      "batch": 1,
+      "scenario_ids": [
+        "D01",
+        "L01",
+        "M01",
+        "TA01",
+        "TA02",
+        "TA03",
+        "X04",
+        "X05"
+      ],
+      "executed_ids": [
+        "D01",
+        "L01",
+        "M01",
+        "TA01",
+        "TA02",
+        "TA03",
+        "X04",
+        "X05"
+      ],
+      "cached_ids": [],
+      "new_usage": {
+        "model_calls": 32,
+        "target_model_calls": 32,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 7.8216982999998494,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 7.822
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "status": "complete",
+      "wall_seconds": 10.671
+    }
+  ],
+  "summary": {
+    "count": 8,
+    "passed": 8,
+    "not_applicable": 0,
+    "points": 8.0,
+    "score": 1.0,
+    "categories": {
+      "decision": {
+        "count": 1,
+        "passed": 1,
+        "points": 1.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "portability": {
+        "count": 1,
+        "passed": 1,
+        "points": 1.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "memory_write": {
+        "count": 1,
+        "passed": 1,
+        "points": 1.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "tarot": {
+        "count": 3,
+        "passed": 3,
+        "points": 3.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "robustness": {
+        "count": 2,
+        "passed": 2,
+        "points": 2.0,
+        "not_applicable": 0,
+        "score": 1.0
+      }
+    },
+    "model_calls": 32,
+    "target_model_calls": 32,
+    "judge_model_calls": 0,
+    "elapsed_seconds": 7.822
+  },
+  "comparison": {
+    "baseline": "baseline-v3.json",
+    "comparable": false,
+    "reason": "current_not_live"
+  }
+}

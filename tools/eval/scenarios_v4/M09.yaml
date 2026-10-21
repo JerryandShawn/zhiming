@@ -1,0 +1,26 @@
+id: M09
+title: 疑问后陈述约束仍保存
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+seed: {}
+turns:
+- user: 你觉得呢？我不能上夜班
+  expect:
+    receipts:
+    - write_status: saved
+    db:
+    - kind: fact
+      where:
+        data.kind: constraint
+      count: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我不能上夜班
+        summary: 不能上夜班
+        kind: constraint
+  - text: 记下这个约束了，你不能上夜班；选岗位时先把这一条筛掉。

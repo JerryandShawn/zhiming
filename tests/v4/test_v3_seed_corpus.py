@@ -5,6 +5,8 @@ from datetime import datetime
 
 import pytest
 
+from mingjing_core.application.privacy_mode_policy import privacy_action
+from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.timekit import FrozenClock, get_clock, set_clock
 from tests.test_core_pg_channels import FixtureModel
 from tests.test_core_runtime import ProgrammableProvider
@@ -63,6 +65,19 @@ def test_v3_corpus_seed_and_first_turn_use_real_service(corpus_target, scenario)
     if turn.at:
         set_clock(FrozenClock(datetime.fromisoformat(turn.at)))
     payload = turn.model_dump(mode="json", exclude={"expect"}, exclude_none=True)
+    if privacy_action(turn.user) is not None:
+        # The current service refuses unsupported privacy before persisting.
+        # Historical baseline scoring still uses its independently pinned source.
+        before = instance.repo.list(instance.owner, "message")
+        revision = instance.repo.get_revision(instance.owner)
+        with pytest.raises(EvidenceError, match="无痕"):
+            instance.send({**payload, "_index": 1})
+        assert instance.repo.list(instance.owner, "message") == before
+        assert instance.repo.get_revision(instance.owner) == revision
+        assert instance.repo.queued_runs(instance.owner) == []
+        assert instance.model.calls == 0 and provider.requests == []
+        assert_original_seed_sources(instance, scenario)
+        return
     result = instance.send({**payload, "_index": 1})
     assert result.error is None, f"{scenario.id}: service error {result.error}"
     assert result.metadata["run_status"] == "succeeded", scenario.id

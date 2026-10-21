@@ -1,0 +1,81 @@
+{
+  "schema": "isolated-source-v1",
+  "status": "draft isolated P4 dependency; not module merge or deployment",
+  "source_ref": "origin/v4/mod-organize",
+  "source_commit": "ebfa22f8f7c59e486c6632035ae6bc8307f0f438",
+  "scope": "coalescer and text projection import closure preserving original package initializer",
+  "files": {
+    "__init__.py": {
+      "source_path": "mingjing_core/streaming/__init__.py",
+      "bytes": 445,
+      "sha256": "1e871da7c671c946162f9c0f1c2a3afdd445936cc21bc955b112443072c5d8b9",
+      "source_git_blob": "689d46b35fbc263a4712f24993b7c118bc71e6b8"
+    },
+    "coalescer.py": {
+      "source_path": "mingjing_core/streaming/coalescer.py",
+      "bytes": 4364,
+      "sha256": "6fe6d4cdb28f580ce9c483f16c20117e93915f9fb7ab6256cc8cd82485dfdc09",
+      "source_git_blob": "258111b949f17b30d37c27364cb9c4768641291b"
+    },
+    "stream_clock.py": {
+      "source_path": "mingjing_core/streaming/stream_clock.py",
+      "bytes": 748,
+      "sha256": "0ff56d38e8a1c22d01003e8fb03500b76d0b79d7d9ae1ba27478bbb152776971",
+      "source_git_blob": "a796706259b20410007cb37403ce9f99c3f052b7"
+    },
+    "text_projection.py": {
+      "source_path": "mingjing_core/streaming/text_projection.py",
+      "bytes": 2604,
+      "sha256": "961f794eb8e660f79a0a9f74359ea37ffe6365ca4382cd4af19f488e51f95200",
+      "source_git_blob": "829988a67be6f100af516aec93cc776fb4cded24"
+    },
+    "event_models.py": {
+      "source_path": "mingjing_core/streaming/event_models.py",
+      "bytes": 2763,
+      "sha256": "7ad964b2f5d8fc13ba6565ef3132a391e11f729d3969caf06b6b14535706382e",
+      "source_git_blob": "502347a3a92c786366722781ecf77a098060572c"
+    },
+    "event_payloads.py": {
+      "source_path": "mingjing_core/streaming/event_payloads.py",
+      "bytes": 2968,
+      "sha256": "54561e6cfef3ff8353abbac64c2f850bfda6b7820b9e831680040ae8b5716eff",
+      "source_git_blob": "36107203501615b309228e45b117f2024b92c86a"
+    },
+    "event_nested.py": {
+      "source_path": "mingjing_core/streaming/event_nested.py",
+      "bytes": 3176,
+      "sha256": "95658a4cb869ed25b15ae1717a659fe4facaa3626c465051a6f8cd1d3fa5c941",
+      "source_git_blob": "bd59b96740a786c61072dff9ab2592f36cf45dff"
+    },
+    "public_shapes.py": {
+      "source_path": "mingjing_core/streaming/public_shapes.py",
+      "bytes": 1955,
+      "sha256": "e9f2705c18acf8cff2654f757ce7485d1ad8e0a70ec294a6bfdc4cd206bd1ffb",
+      "source_git_blob": "3a812234e44ee91a84e3371817bff289e1813d7f"
+    },
+    "event_errors.py": {
+      "source_path": "mingjing_core/streaming/event_errors.py",
+      "bytes": 276,
+      "sha256": "7697b637fa19df6ac35c2abdfa50856ae20c09061f4b74f6b27077d8c1baec18",
+      "source_git_blob": "060eb17219ab8e1f8ab5b6a0b081d6d62fae7b8a"
+    },
+    "json_values.py": {
+      "source_path": "mingjing_core/streaming/json_values.py",
+      "bytes": 1618,
+      "sha256": "ae18a6b0288f0c5cc16498cbd7503d3177c1f0b31dbceb2735de32afdf06902e",
+      "source_git_blob": "0bd55a165c254cb2af2388ed62b44f57adb0a488"
+    },
+    "codec.py": {
+      "source_path": "mingjing_core/streaming/codec.py",
+      "bytes": 4315,
+      "sha256": "a58e8a0f995599fcaba61aba35801ff37a46a5f99bdd4a64a06d52603bce8992",
+      "source_git_blob": "72887bb826815fd5a976b33a90c634fbac81793f"
+    },
+    "envelope_reader.py": {
+      "source_path": "mingjing_core/streaming/envelope_reader.py",
+      "bytes": 2150,
+      "sha256": "c791c59983163f92100635b2afbe38e74e1051eeb8a47ea53713079f48f9c7a3",
+      "source_git_blob": "106ae4370a0d0e3c33991d657e4f8712f7a6a270"
+    }
+  }
+}

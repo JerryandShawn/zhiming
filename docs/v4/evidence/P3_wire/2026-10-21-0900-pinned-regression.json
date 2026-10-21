@@ -1,0 +1,280 @@
+{
+  "schema": "p3-wire-fixed-regression-evidence-v1",
+  "recorded_bjt": "2026-10-21T09:14:24.749706+08:00",
+  "source": {
+    "sha": "5b691475c41791b4df2166db96dd3db54cc78d2b",
+    "tree": "7c46d8239fba2ab28a3ba7ce3e7ba47ec624a275",
+    "tracked_files_checked": 1263,
+    "mismatches": 0,
+    "manifest_sha256": "9cbe4ffdfecca3c9361b0c6411e9a3db0835734d28374bb18ba425308cd1b0bb"
+  },
+  "v4": {
+    "metadata": {
+      "commit": "5b691475c41791b4df2166db96dd3db54cc78d2b",
+      "started_at": "2026-10-21T09:00:00.920615+08:00",
+      "timezone": "Asia/Shanghai",
+      "test_timezone": "Asia/Tokyo",
+      "finished_at": "2026-10-21T09:13:03.945574+08:00",
+      "exit_code": 0
+    },
+    "junit": {
+      "tests": 2733,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 1,
+      "passed": 2732,
+      "suite_seconds": 780.871,
+      "timestamp": "2026-10-21T02:00:02.673152+01:00",
+      "timestamp_bjt": "2026-10-21T09:00:02.673152+08:00",
+      "failure_cases": [],
+      "strict_expected_failure_nodes": [
+        "tests.v4.agent.test_legacy_dom_runtime_pg::test_legacy_dom_displays_actual_core4_memory_receipt"
+      ],
+      "ordinary_skip_nodes": []
+    },
+    "console": {
+      "passed": 2732,
+      "xfailed": 1,
+      "warning": 1,
+      "seconds": 780.9
+    }
+  },
+  "core": {
+    "commit": "5b691475c41791b4df2166db96dd3db54cc78d2b",
+    "started_at": "2026-10-21T09:00:17.047633+08:00",
+    "test_timezone": "Asia/Tokyo",
+    "finished_at": "2026-10-21T09:13:32.947477+08:00",
+    "exit_code": 1,
+    "tests": 581,
+    "seconds": 792.303,
+    "error_or_failure_nodes": [
+      "test_hermes_manifest_last_retarget_preserves_stub_original_and_load_order (test_core_incremental_native.NativeAdapterTests.test_hermes_manifest_last_retarget_preserves_stub_original_and_load_order)",
+      "test_native_quiesced_backup_and_hash_check_use_only_injected_ports (test_core_incremental_native.NativeAdapterTests.test_native_quiesced_backup_and_hash_check_use_only_injected_ports)",
+      "test_pinned_release_rejects_changed_source_and_extra_file (test_core_incremental_native.NativeAdapterTests.test_pinned_release_rejects_changed_source_and_extra_file)"
+    ]
+  },
+  "m8": {
+    "schema": "m8-fixed-snapshot-v1",
+    "local_sha": "5b691475c41791b4df2166db96dd3db54cc78d2b",
+    "started_bjt": "2026-10-21T09:00:17.038239+08:00",
+    "external_provider_requests": 0,
+    "real_feishu_sends": 0,
+    "server_access": 0,
+    "groups": [
+      {
+        "group": "full",
+        "started_bjt": "2026-10-21T09:00:17.048146+08:00",
+        "finished_bjt": "2026-10-21T09:00:59.957446+08:00",
+        "exit_code": 1,
+        "summary": {
+          "count": 47,
+          "passed": 46,
+          "not_applicable": 0,
+          "points": 46.0,
+          "score": 0.978723,
+          "categories": {
+            "decision": {
+              "count": 1,
+              "passed": 1,
+              "points": 1.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "portability": {
+              "count": 1,
+              "passed": 1,
+              "points": 1.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "memory_write": {
+              "count": 8,
+              "passed": 8,
+              "points": 8.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "question": {
+              "count": 7,
+              "passed": 7,
+              "points": 7.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "memory_recall": {
+              "count": 9,
+              "passed": 9,
+              "points": 9.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "safety": {
+              "count": 1,
+              "passed": 1,
+              "points": 1.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "time": {
+              "count": 14,
+              "passed": 14,
+              "points": 14.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "tarot": {
+              "count": 3,
+              "passed": 3,
+              "points": 3.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "robustness": {
+              "count": 3,
+              "passed": 2,
+              "points": 2.0,
+              "not_applicable": 0,
+              "score": 0.666667
+            }
+          },
+          "model_calls": 79,
+          "target_model_calls": 79,
+          "judge_model_calls": 0,
+          "elapsed_seconds": 20.677
+        },
+        "source_sha256": "b038217d5cdcc073f8cfabc030bd98db77bd964e16fd0a4ef67b17dfc79e380b"
+      },
+      {
+        "group": "extensions",
+        "started_bjt": "2026-10-21T09:00:59.957446+08:00",
+        "finished_bjt": "2026-10-21T09:01:15.257862+08:00",
+        "exit_code": 0,
+        "summary": {
+          "count": 13,
+          "passed": 13,
+          "not_applicable": 0,
+          "points": 13.0,
+          "score": 1.0,
+          "categories": {
+            "question": {
+              "count": 3,
+              "passed": 3,
+              "points": 3.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "memory_recall": {
+              "count": 3,
+              "passed": 3,
+              "points": 3.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "safety": {
+              "count": 3,
+              "passed": 3,
+              "points": 3.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "time": {
+              "count": 3,
+              "passed": 3,
+              "points": 3.0,
+              "not_applicable": 0,
+              "score": 1.0
+            },
+            "robustness": {
+              "count": 1,
+              "passed": 1,
+              "points": 1.0,
+              "not_applicable": 0,
+              "score": 1.0
+            }
+          },
+          "model_calls": 27,
+          "target_model_calls": 27,
+          "judge_model_calls": 0,
+          "elapsed_seconds": 5.412
+        },
+        "source_sha256": "b038217d5cdcc073f8cfabc030bd98db77bd964e16fd0a4ef67b17dfc79e380b"
+      }
+    ],
+    "finished_bjt": "2026-10-21T09:01:15.257862+08:00"
+  },
+  "private_original_artifacts": [
+    {
+      "path": "core.log",
+      "bytes": 11467,
+      "sha256": "e00dfa2c042b8d4c3fd5f55619c69c65c35341aa2f157a78db32a9f2602afbaa"
+    },
+    {
+      "path": "core_metadata.json",
+      "bytes": 220,
+      "sha256": "ffdd01deafeefd403ba85dd0a6031d7da41ce133e5a39c6475c01f1ab7d7df9d"
+    },
+    {
+      "path": "m8-scripted-metadata.json",
+      "bytes": 4011,
+      "sha256": "c0610f66872fcfb2556358cee0633b3b3921950b10f3ac2b9db496db98d3849e"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 252,
+      "sha256": "af7c3ae8c6daaad2edfe6713c1da3de0522510bcb81a1ba848deaaf6a484f37f"
+    },
+    {
+      "path": "scripted-extensions/2026-10-21-scripted-v4-scripted-v4.json",
+      "bytes": 33476,
+      "sha256": "7e19baa0a7004d1250f161ec9f65dfa3b7696bdb348b189a9a4ae7c5dcac53d6"
+    },
+    {
+      "path": "scripted-extensions/2026-10-21-scripted-v4-scripted-v4.md",
+      "bytes": 4102,
+      "sha256": "835b625d60b718add12ecc5e56984415385a707145d1951ca3ddcb28e459aa1c"
+    },
+    {
+      "path": "scripted-extensions.log",
+      "bytes": 752,
+      "sha256": "a18bf87cb9aa1949640676d08fc291124978a50a652e7681ce9e35b036f44d93"
+    },
+    {
+      "path": "scripted-full/2026-10-21-scripted-v4-scripted-v4.json",
+      "bytes": 97504,
+      "sha256": "050495f46c63971e25230190adcc24c67c1635da21f5285d808c643681d9b82c"
+    },
+    {
+      "path": "scripted-full/2026-10-21-scripted-v4-scripted-v4.md",
+      "bytes": 9071,
+      "sha256": "d52ab363003430617bf6b146bb1a1ce7d3a9f5073d2b62db6d7f1afbb30261ef"
+    },
+    {
+      "path": "scripted-full.log",
+      "bytes": 1525,
+      "sha256": "62629729d9b271c3111b2f364b43904dc762b53f0b5eb73882bb8b046ac540bb"
+    },
+    {
+      "path": "v4.log",
+      "bytes": 3700,
+      "sha256": "2225f06802653c9036766ffe7f088144f40f957086d103816d8f7cda2aac7368"
+    },
+    {
+      "path": "v4.xml",
+      "bytes": 607739,
+      "sha256": "3fa390b384249c52876c3be8c198ba47c66fd6352084792a55d7ed9499486c32"
+    }
+  ],
+  "safety": {
+    "real_model_requests": 0,
+    "feishu_sends": 0,
+    "server_access": 0,
+    "private_tracebacks_copied": false
+  },
+  "limitations": [
+    "Windows local, not Linux CI or deployment",
+    "X03 remains failed; original M8 is not 100%",
+    "Strict legacy DOM xfail is not a pass",
+    "B1 producer/consumer/application WIP was excluded from the fixed source",
+    "No results are inherited by later commits or other worktrees"
+  ]
+}
