@@ -11,7 +11,6 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from mingjing_core.timekit.clock import get_clock
-
 from tools.b1_linux_drill_sql import (
     DATABASES,
     apply_sql,
@@ -36,8 +35,9 @@ from tools.core_incremental_contracts import MIGRATIONS, TARGET
 MIGRATION8_SHA256 = "5eef5d65363baa0ab4dc8ec9763b85136f4ba249688330b9cd8448f0b39ccbcb"
 
 
-def plan() -> dict[str, Any]:
-    return {
+def plan(mode: str = "full-sql") -> dict[str, Any]:
+    require(mode in {"full-sql", "storage-preparation"}, "DRILL_MODE")
+    value = {
         "schema": "b1-linux-drill-plan-v1",
         "target": TARGET,
         "container": CONTAINER,
@@ -54,6 +54,15 @@ def plan() -> dict[str, Any]:
         "removes_existing_objects": False,
         "starts_business_services": False,
     }
+    if mode == "storage-preparation":
+        value.update(
+            mode=mode,
+            restores_database=False,
+            restore_target_reserved_empty=True,
+            formal_restore_proof=False,
+            application_runtime_required=True,
+        )
+    return value
 
 
 def create_databases(docker: LocalDocker) -> None:
@@ -68,11 +77,7 @@ def create_databases(docker: LocalDocker) -> None:
         "DRILL_DATABASE_ALREADY_EXISTS_NO_AUTOMATIC_REPLAY",
     )
     for database in DATABASES:
-        owner = (
-            database + "_owner"
-            if database.startswith("zhiming_core_")
-            else "b1_drill_admin"
-        )
+        owner = database + "_owner" if database.startswith("zhiming_core_") else "b1_drill_admin"
         if owner != "b1_drill_admin":
             writer = database + "_writer"
             docker.sql(
@@ -108,9 +113,7 @@ def restore(docker: LocalDocker, target: str, dump: str) -> None:
 
 
 def check_permissions(docker: LocalDocker, database: str) -> dict[str, Any]:
-    value = json.loads(
-        docker.sql(database, permission_sql(), role=database + "_writer")
-    )
+    value = json.loads(docker.sql(database, permission_sql(), role=database + "_writer"))
     for key in (
         "superuser",
         "createdb",
@@ -123,17 +126,13 @@ def check_permissions(docker: LocalDocker, database: str) -> dict[str, Any]:
     ):
         require(value.get(key) is False, "WRITER_ELEVATED_OR_LEDGER_WRITABLE")
     require(
-        value.get("ledger_select") is True
-        and value.get("tables")
-        and all(value["tables"].values()),
+        value.get("ledger_select") is True and value.get("tables") and all(value["tables"].values()),
         "WRITER_TABLE_GRANTS_MISSING",
     )
     return value
 
 
-def migrate_restore(
-    docker: LocalDocker, rows: list[dict[str, Any]], baseline: dict[str, Any]
-) -> dict[str, Any]:
+def migrate_restore(docker: LocalDocker, rows: list[dict[str, Any]], baseline: dict[str, Any]) -> dict[str, Any]:
     result = {}
     for database in ("zhiming_core_stage", "zhiming_core_b1_restore"):
         owner = database + "_owner"
@@ -144,15 +143,11 @@ def migrate_restore(
             ledger["version"] == 7 and ledger["checksums"] == MIGRATIONS,
             "MIGRATION_LEDGER_MISMATCH",
         )
-        unchanged = json.loads(
-            docker.sql(database, immutable_snapshot_sql(), role=owner)
-        )
+        unchanged = json.loads(docker.sql(database, immutable_snapshot_sql(), role=owner))
         require(unchanged == baseline, "IMMUTABLE_FIXTURE_CHANGED")
         ownership = json.loads(docker.sql(database, owner_sql(), role=owner))
         require(
-            ownership["schema"] == owner
-            and ownership["relations"]
-            and set(ownership["relations"].values()) == {owner},
+            ownership["schema"] == owner and ownership["relations"] and set(ownership["relations"].values()) == {owner},
             "MIGRATION_OWNER_MISMATCH",
         )
         result[database] = {
@@ -164,9 +159,7 @@ def migrate_restore(
     return result
 
 
-def ledger_compatibility(
-    docker: LocalDocker, migration8: Path | None
-) -> dict[str, Any]:
+def ledger_compatibility(docker: LocalDocker, migration8: Path | None) -> dict[str, Any]:
     if migration8 is None:
         return {
             "executed": False,
@@ -184,9 +177,7 @@ def ledger_compatibility(
     )
     docker.sql(
         "b1_drill_ledger",
-        "BEGIN; SET LOCAL search_path TO mingjing_core;\n"
-        + source.decode()
-        + "\nCOMMIT;",
+        "BEGIN; SET LOCAL search_path TO mingjing_core;\n" + source.decode() + "\nCOMMIT;",
     )
     count = int(
         docker.sql(
@@ -233,46 +224,47 @@ def check_rollback(docker: LocalDocker, dump: str, baseline: dict[str, Any]) -> 
     require(
         rollback == baseline
         and rollback_ledger["version"] == 4
-        and rollback_ledger["checksums"]
-        == {key: value for key, value in MIGRATIONS.items() if int(key) <= 4},
+        and rollback_ledger["checksums"] == {key: value for key, value in MIGRATIONS.items() if int(key) <= 4},
         "ROLLBACK_RESTORE_MISMATCH",
     )
 
 
 def metrics(docker: LocalDocker, directory: str, dump: str) -> dict[str, Any]:
     sizes = {
-        database: int(
-            docker.sql(database, "SELECT pg_database_size(current_database());")
-        )
-        for database in DATABASES
+        database: int(docker.sql(database, "SELECT pg_database_size(current_database());")) for database in DATABASES
     }
-    modes = (
-        docker.execute(["stat", "--format=%a", directory, dump]).decode().splitlines()
-    )
+    modes = docker.execute(["stat", "--format=%a", directory, dump]).decode().splitlines()
     require(modes == ["700", "600"], "LINUX_BACKUP_MODE")
     return {"database_sizes_bytes": sizes, "backup_modes": modes}
 
 
 def execute(
-    repo: Path, docker: LocalDocker, *, run_id: str, pull: bool, migration8: Path | None
+    repo: Path, docker: LocalDocker, *, run_id: str, pull: bool, migration8: Path | None, mode: str = "full-sql"
 ) -> dict[str, Any]:
     require(re.fullmatch(r"b1-[a-z0-9-]{8,60}", run_id), "DRILL_OPERATION_ID")
+    plan(mode)
     rows = migrations(repo)
     identity = docker.verify_local()
     image = docker.image(pull=pull)
     resources = docker.create_container(image)
     docker.wait_postgres()
-    version = int(
-        docker.sql("b1_drill_control", "SELECT current_setting('server_version_num');")
-    )
+    version = int(docker.sql("b1_drill_control", "SELECT current_setting('server_version_num');"))
     require(150000 <= version < 160000, "POSTGRES15_REQUIRED")
     create_databases(docker)
-    docker.sql(
-        "zhiming_core_stage", apply_sql(rows[:4]), role="zhiming_core_stage_owner"
-    )
+    docker.sql("zhiming_core_stage", apply_sql(rows[:4]), role="zhiming_core_stage_owner")
     docker.sql("zhiming_core_stage", fixture_sql(), role="zhiming_core_stage_owner")
     baseline = json.loads(docker.sql("zhiming_core_stage", immutable_snapshot_sql()))
     directory, dump, dump_hash = backup_stage(docker, run_id)
+    if mode == "storage-preparation":
+        from tools.b1_linux_application_drill_storage import preparation
+
+        return dict(
+            preparation(docker, run_id=run_id, directory=directory, dump=dump, dump_hash=dump_hash),
+            engine=identity,
+            image=image,
+            resources=resources,
+            server_version_num=version,
+        )
     restore(docker, "zhiming_core_b1_restore", dump)
     after = migrate_restore(docker, rows, baseline)
     check_rollback(docker, dump, baseline)
@@ -301,17 +293,16 @@ def execute(
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--mode", choices=("full-sql", "storage-preparation"), default="full-sql")
     parser.add_argument("--pull-postgres15", action="store_true")
     parser.add_argument("--run-id", default="b1-20261021-local")
-    parser.add_argument(
-        "--repo", type=Path, default=Path(__file__).resolve().parents[1]
-    )
+    parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--p1b-migration8", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     try:
         if not args.apply:
-            print(json.dumps(plan(), ensure_ascii=False))
+            print(json.dumps(plan(args.mode), ensure_ascii=False))
             return 0
         require(
             args.output is not None and not args.output.exists(),
@@ -323,6 +314,7 @@ def main() -> int:
             run_id=args.run_id,
             pull=args.pull_postgres15,
             migration8=args.p1b_migration8,
+            mode=args.mode,
         )
         with args.output.open("x", encoding="utf-8") as stream:
             json.dump(result, stream, ensure_ascii=False, sort_keys=True, indent=2)
