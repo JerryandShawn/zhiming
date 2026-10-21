@@ -5,6 +5,8 @@ from __future__ import annotations
 from functools import partial
 from typing import TYPE_CHECKING, Any
 
+from mingjing_core.application.agent_case_changes import case_update_payload
+from mingjing_core.application.agent_case_effect_records import update_with_evidence
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult, tool_input_fingerprint
 from mingjing_core.application.agent_tools_memory import checked_source, source_ref
 from mingjing_core.application.agent_tools_policy import refusal, sensitivity
@@ -56,32 +58,8 @@ def mutate_case(
         return refused
     ref = source_ref(source, start, end)
     if name == "case_update":
-        changes = {key: value for key, value in args["changes"].items() if value is not None}
-        if not changes:
-            raise EvidenceError("事项修改不能为空")
-        for key in ("title", "goal"):
-            if key in changes and changes[key] not in args["quote"]:
-                raise EvidenceError("事项标题和目标必须逐字来自用户原话")
-        payload = {key: value for key, value in changes.items() if key in {"title", "status"}}
-        if "goal" in changes:
-            payload["state"] = dict(row.get("state", {}), goal=changes["goal"])
-        payload["source_refs"] = list(row.get("source_refs", [])) + [ref]
-        field_refs = dict(row.get("field_source_refs", {}))
-        for field in ("title", "goal"):
-            field_refs.setdefault(field, list(row.get("source_refs", [])))
-            if field in changes:
-                offset = source["content"].index(changes[field], start, end)
-                field_refs[field] = [source_ref(source, offset, offset + len(changes[field]))]
-        payload["field_source_refs"] = field_refs
-        result = service.repo.update(
-            ctx.owner,
-            "case",
-            row["id"],
-            payload,
-            expected_revision=row["revision"],
-            operation_id=ctx.operation_id + ":case",
-        )
-        return {"write_status": "saved", "id": result["id"], "kind": "case", "revision": result["revision"]}
+        payload = case_update_payload(row, args, source, start, end)
+        return update_with_evidence(service, args, ctx, row, payload)
     ident = "event_" + fingerprint([ctx.owner, ctx.operation_id])[:32]
     result = service.repo.put(
         ctx.owner,

@@ -9,6 +9,7 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from mingjing_core.agent.prompts import PromptBundle
+from mingjing_core.application.agent_case_capability import pin_case_effect_capability
 from mingjing_core.application.agent_regeneration import lease_hash
 from mingjing_core.application.agent_thread_scope import assert_thread
 from mingjing_core.domain.contracts import LeaseConflict, ScopeError
@@ -46,6 +47,7 @@ class RuntimeState:
             )
 
     def pin(self, run: dict[str, Any], prompts: PromptBundle, system: str, *, crisis: bool) -> None:
+        pin_case_effect_capability(self.repo, run)
         provenance = {
             name: {key: row[key] for key in ("version", "sha256")} for name, row in prompts.manifest["files"].items()
         }

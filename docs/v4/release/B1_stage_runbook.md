@@ -1,6 +1,6 @@
 # B1 stage 执行单：已有 Core PG 的增量升级（B0–B8）
 
-版本：2026-10-20 23:07 +08:00。**当前 No-Go：真实 Linux PG15、systemd/fcntl/恢复和完整权限/停写证据未通过。** Docker Inference socket不可访问，独立WSL启动E_ACCESSDENIED，精确重命名仍拒绝后已停止修复；没有Reset或删卷。本单不是执行授权或已完成回执。root随实际工具/演练补全后交大脑审阅；不能只因为标题存在就进入服务器。
+版本：2026-10-21 08:49 +08:00。**当前 No-Go：30号08:16复核明确No-Go，真实 Linux PG15、systemd/fcntl/恢复和完整权限/停写证据未通过。** 指令板v2允许的两次非破坏环境恢复均已失败，详情见[真实记录](../evidence/B1/2026-10-21-linux-v2-recovery-blocked.md)；没有Reset、删卷或改ACL，不再重复尝试。B6完整资产已补静态证据，B3生成器正在本机验证，均不能代表Linux通过。本单不是执行授权或已完成回执，不能只因为标题或工具存在就进入服务器。
 
 ## 1. 固定输入、授权与禁止项
 
@@ -8,7 +8,7 @@
 
 本机额外0008实验仅验证P1b未来兼容，与本单真实服务器B1分开；**授权B只允许0005–0007**。模型保留k3/现有端点，新ModelPort不开，stage不配置模型凭据。
 
-唯一授权来源是用户10-20本聊天委托与29号第四节：北京时间10-21 08:30以后，完整读30号文件，结论明确Go且先完成其修改要求。30不存在/No-Go时不建立SSH。当前30/31未出现；每次续作重读，不把同名旧文件或正文提到Go当本次放行。指令板不能扩大这次授权。
+唯一授权来源是用户10-20本聊天委托与29号第四节：北京时间10-21 08:30以后，完整读30号文件，结论明确Go且先完成其修改要求。30不存在/No-Go时不建立SSH。08:30:07已完整读取本次30号，结论No-Go；31不存在。早期两文件未出现仅为历史，不作当前依据；每次续作重读，不把正文提到Go当本次放行。指令板不能扩大这次授权。生产Native恢复入口按v2排stage之后，31号复核前必须解除。
 
 允许目标仅服务器1.14.59.242的历史 `zhiming_core_stage`、新 `core_test_b1` / `zhiming_core_b1_web` / `zhiming_core_b1_restore`及各自独立owner/writer、新 `zhiming-core-b1-stage.service`（回环8788）。历史stage仅primary回填，另16 owner只计数。不碰live库/服务/文件，不改Hermes，不启动stage报告/飞书，不新增公网反代，不删除已有文件/目录/库，不发送消息或真实模型请求，不合并主干。
 
@@ -130,7 +130,19 @@ request.owners必须恰为primary；其余16只核计数。工具每owner再次d
     "$RELEASE_DIR/venv/core/bin/python" tools/eval/runner.py --mode scripted
     "$RELEASE_DIR/venv/charts/bin/python" tools/verify_core_calculators.py --output "$B1_OP/calculators.json"
 
-本段环境须由受审loader注入，不能把服务器private env上传到Git。新合成Web库、角色及checkpoint初始化/只读账本授权，独立unit的精确内容与出站阻断验证尚未交付时，B6为阻塞；不拼写未经测试的systemd/SQL模板当作已验收入口。只允许回环8788，不给stage配置真实模型key，不发送chat探针或真实飞书。
+本段环境须由受审loader注入，不能把服务器private env上传到Git。
+
+### B6：独立合成 Web 资产与实际隔离门
+
+2026-10-21 北京时间：已按指令板v2第5项补齐[完整B6资产](B1_B6_stage_assets.md)：新 `zhiming_core_b1_web` / 独立owner与writer的创建SQL、固定b9 schema1–7与PostgresSaver.setup、三个checkpoint表CRUD/两本迁移账本只读、writer无DDL/owner/继承的只读核验，及无模型凭据env、精确启动包装、`zhiming-core-b1-stage.service`。原 `core_test_b1` 与 `zhiming_core_b1_restore` 仍分库分角色；不借历史stage/live配置或数据。
+
+**当前仍为阻塞/No-Go：30号复核明确No-Go；以下只是未来Go后的执行顺序，未运行SQL、systemd或服务器连接。** 不修改第2节五个门，不将静态检查当Linux通过，B3恢复proof由独立任务生成，不能手填。
+
+未来先核B0–B5和最新30 Go，逐项照资产第2–6节准备：所有新对象先核不存在；root打开SQL stdin交本机PG15管理员创建新角色/新Web库；仅新owner初始化与checkpoint setup；仅新writer做只读有效权限/空队列核验。env只含新PGPASSFILE/合成token文件路径，token本机0600生成不回显。b9无key可以构造ConfiguredModel并提供health/state/history，但不能据此声称可回答真实问题；不发chat/readings/retry/resume生成请求。
+
+出站阻断按资产第7–9节执行：只在已核本机RFC1918 IPv4上临时绑定随机高端口、仅接受同机源、180秒自停的合成listener。unit外阳性→同unit cgroup ExecStartPre阴性→同cgroup loopback PG阳性→启动→unit外再次阳性必须同时成立；没有私有IPv4、BPF/安全选项不生效或对照缺失立即停止，不改防火墙、不用真实外网探针冒充失败证明。unit明确 `IPAddressDeny=any` / `IPAddressAllow=localhost`、仅AF_UNIX/AF_INET且实核IPv6不能创建；只监听127.0.0.1:8788，Restart=no，不enable，不启动其他stage/报告/飞书unit。
+
+通过只读GET验证登录/health/state/history空库，随后只在新Web库调用b9真实TarotService建立合成固定牌、幂等重放不变，再两次GET对比牌面hash；无模型、无sender。DOM/截图、实际Linux/systemd/PG权限结果另列证据，不能把模板或HTTP200写成验收。命令、继续/停止条件、配置工具hash、隐私与同机对照细节以资产页为准；准备10–15分、初始化/权限5–15分、隔离/HTTP10–20分均为估计。任何异常保持现状停审，仅可止损停止本次新unit，不删除新旧对象、不自动修复重试。
 
 ### B7：恢复与单调重放
 

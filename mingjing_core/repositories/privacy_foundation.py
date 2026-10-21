@@ -11,6 +11,7 @@ from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.projections import owner_spans, redact_ranges
 from mingjing_core.memory.tokenize import searchable_data
 
+from .privacy_case_effects import case_effect_rows
 from .privacy_cases import redact_case_fields
 from .privacy_closure import closure_rows, partial_sources, propagate
 
@@ -78,6 +79,7 @@ def invalidate_foundation(
     partial = partial_sources(repo, owner, facts, span_source_ids)
     sources.update(partial | {ident for _, ident in seed_entities})
     entities, run_rows = closure_rows(repo, owner, (*DERIVED_KINDS, "message", "episode", "interpretive_claim"))
+    entities.extend(case_effect_rows(repo, owner))
     propagate(
         repo,
         owner,
@@ -87,7 +89,7 @@ def invalidate_foundation(
         sources,
         runs,
         redact_assistant,
-        (*DERIVED_KINDS, "episode"),
+        (*DERIVED_KINDS, "episode", "runtime_step"),
         recomputable,
         seed_entities,
         include_legacy=bool(source_ids),
@@ -110,17 +112,20 @@ def invalidate_foundation(
                 ),
                 (owner, list(fact_ids)),
             )
-        if runs:
-            connection.execute(
-                sql.SQL(
-                    "UPDATE {} SET output=NULL,error_code='SOURCE_REVOKED' WHERE owner=%s AND run_id=ANY(%s)"
-                ).format(repo.table("core_run_steps")),
-                (owner, list(runs)),
-            )
-            connection.execute(
-                sql.SQL("UPDATE {} SET payload='{{}}' WHERE owner=%s AND run_id=ANY(%s)").format(
-                    repo.table("core_run_events")
-                ),
-                (owner, list(runs)),
-            )
+        clear_runtime_outputs(repo, connection, owner, runs)
     return list(sources), list(runs), partial
+
+
+def clear_runtime_outputs(repo: PostgresRepository, connection: Any, owner: str, runs: set[str]) -> None:
+    if not runs:
+        return
+    connection.execute(
+        sql.SQL("UPDATE {} SET output=NULL,error_code='SOURCE_REVOKED' WHERE owner=%s AND run_id=ANY(%s)").format(
+            repo.table("core_run_steps")
+        ),
+        (owner, list(runs)),
+    )
+    connection.execute(
+        sql.SQL("UPDATE {} SET payload='{{}}' WHERE owner=%s AND run_id=ANY(%s)").format(repo.table("core_run_events")),
+        (owner, list(runs)),
+    )
