@@ -14,6 +14,10 @@ Python 入口为 `mingjing_core.adapters.charts.almanac.almanac(day: str) -> dic
 {"day":"2026-10-21"}
 ```
 
+上例是 Charts 原生入口 `almanac(day="2026-10-21")` 的参数示意。
+Core 隔离入口调用 `P8ChartAdapter(current_owner).almanac(date="2026-10-21")`，
+由适配器把 `date` 传给 worker；不能将上例直接展开为 Core 方法的关键字参数。
+
 `day` 必须是十位 ASCII `YYYY-MM-DD` 公历日期，支持1901-01-01至2099-12-31。
 闰日按公历校验；不接收 datetime、时间戳、隐式今天、宽松日期或宿主时区。
 日期表示北京时间的民用日；固定取该日 `12:00:00+08:00` 构造库对象，

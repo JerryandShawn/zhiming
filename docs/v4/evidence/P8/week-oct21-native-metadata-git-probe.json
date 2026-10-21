@@ -1,0 +1,128 @@
+{
+  "version": "p8-native-metadata-git-observation-v1",
+  "started_at_beijing": "2026-10-21T11:07:04.655963+08:00",
+  "completed_at_beijing": "2026-10-21T11:07:04.748778+08:00",
+  "status": "metadata_reads_observed",
+  "head": "b9f07426cac3de993b0552c3a43eddcf75b2d06f",
+  "fixed_git_binary": "C:\\Program Files\\Git\\cmd\\git.exe",
+  "fixed_git_sha256": "c470d205517c7a53ceca321df16a6e4549fcd52b576ab4d09536d36f26fda5a9",
+  "configuration_file_count": 2,
+  "actual_metadata_git_calls": 3,
+  "observed_direct_processes": [
+    {
+      "popen_pid": 45072,
+      "retained_handle_pid": 45072,
+      "creation_filetime": 134370256246606553,
+      "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "image_sha256": "c470d205517c7a53ceca321df16a6e4549fcd52b576ab4d09536d36f26fda5a9",
+      "is_in_owned_job": true,
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "-C",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.hooksPath=nul",
+        "rev-parse",
+        "--git-dir"
+      ],
+      "creation_flags": 134217728,
+      "identity_environment_keys_absent": {
+        "__PYVENV_LAUNCHER__": true,
+        "PYTHONHOME": true,
+        "PYTHONEXECUTABLE": true,
+        "PYTHONPATH": true,
+        "VIRTUAL_ENV": true
+      }
+    },
+    {
+      "popen_pid": 29464,
+      "retained_handle_pid": 29464,
+      "creation_filetime": 134370256246913819,
+      "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "image_sha256": "c470d205517c7a53ceca321df16a6e4549fcd52b576ab4d09536d36f26fda5a9",
+      "is_in_owned_job": true,
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "-C",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.hooksPath=nul",
+        "rev-parse",
+        "--git-common-dir"
+      ],
+      "creation_flags": 134217728,
+      "identity_environment_keys_absent": {
+        "__PYVENV_LAUNCHER__": true,
+        "PYTHONHOME": true,
+        "PYTHONEXECUTABLE": true,
+        "PYTHONPATH": true,
+        "VIRTUAL_ENV": true
+      }
+    },
+    {
+      "popen_pid": 53900,
+      "retained_handle_pid": 53900,
+      "creation_filetime": 134370256247215383,
+      "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "image_sha256": "c470d205517c7a53ceca321df16a6e4549fcd52b576ab4d09536d36f26fda5a9",
+      "is_in_owned_job": true,
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "-C",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.hooksPath=nul",
+        "rev-parse",
+        "HEAD"
+      ],
+      "creation_flags": 134217728,
+      "identity_environment_keys_absent": {
+        "__PYVENV_LAUNCHER__": true,
+        "PYTHONHOME": true,
+        "PYTHONEXECUTABLE": true,
+        "PYTHONPATH": true,
+        "VIRTUAL_ENV": true
+      }
+    }
+  ],
+  "accounting": {
+    "before": {
+      "total": 5,
+      "active": 1,
+      "terminated": 0
+    },
+    "after_metadata_reads": {
+      "total": 14,
+      "active": 2,
+      "terminated": 0
+    },
+    "after_negative_guards": {
+      "total": 14,
+      "active": 2,
+      "terminated": 0
+    },
+    "total_process_delta": 9,
+    "retained_direct_process_count": 3,
+    "additional_members_not_identified_by_this_probe": 6
+  },
+  "failure": null,
+  "strict_transport_accepted": false,
+  "actual_supervisor_invocations": 0,
+  "actual_collector_invocations": 0,
+  "actual_trace_samples": 0,
+  "charts_coverage_samples": 0,
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "limits": [
+    "MetadataGit only, existing arguments/environment/CREATE_NO_WINDOW unchanged; this is not the detached collector process chain",
+    "Only retained direct Git handles are identified; additional accounting members remain unknown, no image-name allowlisting",
+    "Negative target-phase/argument guards issue no subprocess; does not prove whole supervisor lifecycle",
+    "Not an OS sandbox or >=90% line coverage result"
+  ]
+}

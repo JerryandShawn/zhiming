@@ -22,6 +22,13 @@
 
 错误码：`window_purpose_invalid`、`window_range_invalid`、`window_range_too_large`、`window_date_invalid`、`window_daily_scope_mismatch`、`window_daily_date_mismatch`、`window_daily_evidence_invalid`。归属、资料精度或引擎依赖错误沿用 daily_transit；不自动补出生地点或时刻，不把异常的日子默默丢掉后仍宣称完成全区间。
 
+本页 `window_*` 细分码属于 Charts 原生入口的 `ValueError`。
+Core 的 `P8ChartAdapter.window_search` 在启动 worker 前另做当前 owner 和有限 JSON 检查；
+owner 不匹配在本地报 `AUTH_SCOPE_ERROR`，有限 JSON 校验失败也在本地拒绝。
+worker 内的用途、日期和分页等失败，经现有进程封装统一为 `RuntimeError("chart_engine_failure")`；
+识别为缺少模块的失败归为 `missing_chart_dependency`，细分码未透传。
+主线需要面向用户的用途或分页提示时，应在调用前显式校验；不得解析原始 stderr 做业务控制或向外展示。
+
 内部daily聚合也逐scope字段核类型和值，revision的true/1.0不能替代整数1。
 已识别八字关系的complete须为真正布尔值，并与实际引用关系fact相同；缺少、0、字符串或互相矛盾均报
 window_daily_evidence_invalid。原生关系fact未提供complete时沿用其既有True约定；明确False仍计0分。
