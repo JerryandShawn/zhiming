@@ -1,0 +1,52 @@
+{
+  "schema": "mod-final-pipeline-performance-v1",
+  "generated_at": "2026-10-21T08:36:33.439561+08:00",
+  "samples": 120,
+  "zones": [
+    "Asia/Shanghai",
+    "Asia/Tokyo",
+    "UTC",
+    "America/New_York",
+    "Europe/Berlin",
+    "Pacific/Auckland"
+  ],
+  "areas": [
+    "daily",
+    "career",
+    "relationships",
+    "family",
+    "wellbeing",
+    "finance",
+    "metaphysics"
+  ],
+  "clock": "FrozenClock aware UTC; owner ZoneInfo explicit",
+  "phases": [
+    "source memory2 plan/apply",
+    "reflection pure work",
+    "eight-section current profile",
+    "period report",
+    "revoke source without epoch change",
+    "old work/current profile/cached report invalidation"
+  ],
+  "p50_ms": 9.59809999767458,
+  "p95_ms": 10.809899999003392,
+  "max_ms": 17.242400004761294,
+  "tracemalloc_current_bytes": 810396,
+  "tracemalloc_peak_bytes": 834546,
+  "source_count": 280,
+  "source_stable": true,
+  "source_tree_sha256": "dde3cf3cd1799ab6ff70870e92d4eede1293b2a80f94711797bf194fb7ee7d3c",
+  "fixture_sha256": "90074adfba23e5d2ba0d8f049743ecb52bbf9dad4fcd37587a6565d172dfe5f5",
+  "effects": {
+    "model_requests": 0,
+    "network_requests": 0,
+    "pg_requests": 0,
+    "notifications": 0,
+    "runtime_writes": 0
+  },
+  "limits": [
+    "Pure Python synthetic host projections, not actual PG or authenticated production state",
+    "Tracemalloc and acceptance assertions are included in timings; not a production latency claim",
+    "Not a full regression or a coverage run"
+  ]
+}

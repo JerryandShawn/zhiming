@@ -42,6 +42,7 @@ SUITES = (
     "export_dry_run_v3",
     "reports_v2",
     "reflection_v3",
+    "mod_final_pipeline",
 )
 
 
@@ -135,6 +136,8 @@ def material_paths() -> set[Path]:
                 "tests/v4/reflection_v3/fixtures/expected_calendar_mod.manifest.json",
             )
         )
+    if "mod_final_pipeline" in SUITES:
+        paths.add(ROOT / "tools/eval/fixtures/mod_20261021/final_pipeline_synthetic.json")
     return paths
 
 
