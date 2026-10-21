@@ -1,0 +1,19 @@
+.tool-pagination {
+  min-inline-size: 0;
+  padding: var(--s-4);
+  border-block: var(--border) solid var(--line);
+}
+.tool-pagination h2 {
+  font-size: var(--t-body);
+  line-height: var(--l-body);
+}
+.tool-pagination [role='status'] {
+  overflow-wrap: anywhere;
+}
+.tool-pagination [aria-disabled='true'] {
+  color: var(--ink-3);
+  cursor: default;
+}
+.tool-pagination [aria-disabled='true']:hover {
+  background: transparent;
+}

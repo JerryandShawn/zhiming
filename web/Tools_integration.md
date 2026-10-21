@@ -35,3 +35,11 @@
 160相关单测（新增135+旧25）、23浏览器（新4+旧19）首轮通过；人工复查后为两条相同日期错误补了可见字段名和逐链接回焦断言，最终160/23再次通过，1016项源/测试/构建前后一致。28最终图含16入口矩阵、键盘/失败和8新表单图；初轮28图及报告另存。Axe全规则0/朱砂≤3/API及外域0，类型/lint零警告/构建绿；见 `tools_input_checks.json` / `tools_input_receipt.md`。
 
 完整工具页仍需M2b请求分页及后续资料确认流程。当前三分页只有0/31、3/3、7/3，page2的next_offset实际为6；6/3、0/3尚无发布JSON，应真实请求后明确不可用，不能偷换为7/3空页。更广的本命输入、出生日期先后、准确物理瞬间、owner和服务端同意权威还未接入；不会用字段valid冒称这些已通过。09:30标准九套1006/548属于本轮表单改动之前的新研习/状态源码，不能当成本轮新表单完整回归。
+
+## 白天②·请求分页（M2b）
+
+已接入常驻分页导航与原字符串页大小。query按用途、日期、offset、limit核对成功响应；next只读响应的next_offset，上一页减limit但必须实际前进。3/3的next6/3、prev0/3以及空页7/3的prev4/3均真实走端口并显示unavailable，不替换为已发布附近页。用途/日期/每页编辑归offset0，preset保留精确页；合法页大小应用后立即请求，非法/待应用/加载时零翻页。
+
+常驻按钮用aria-disabled加事件guard，避免结果变化、末页或请求中丢焦；同一代际/owner和旧依据清理机制保持。190相关单测、27浏览器、40截图、1023项源/测试/构建前后一致，详见tools_pagination_checks/receipt。31/1/0仅纯metadata负例，不冒称新样例。M2c结果补全及真实资料适配仍后续。
+
+资料适配的具体依赖：v3只发布本人GET/POST `/api/subjects/self/profile[/confirm]`，确认有request_id/expected_revision/confirmed并写事实与授权；不能放入零业务请求预览。v3 solar_datetime+timezone_offset及exact/approximate/unknown不能直接当P8的IANA tz/clock_basis/reported/唯一物理瞬间；不能凭城市或偏移猜。未见他人出生确认/撤销权威或window_search/synastry HTTP。现有BirthPort.canComputeGift=false，完成初识不解锁计算。以上记录阻塞，继续可验证的合成结果展示，不等用户或假造端点。

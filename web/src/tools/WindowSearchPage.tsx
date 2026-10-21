@@ -4,21 +4,29 @@ import { Skeleton } from '../components/ui/Feedback';
 import { useToolRead, type ToolViewOwnership } from './useToolRead';
 import { validateWindowInput } from './inputValidation';
 import { ToolInputErrors, ToolQuerySummary, windowInputLabels, type InputTargets } from './ToolInputFeedback';
-import { WindowSearchForm } from './WindowSearchForm';
+import { WindowSearchForm, type WindowChangeSource } from './WindowSearchForm';
+import { WindowPagination } from './WindowPagination';
+import { matchesWindowQuery, parseWindowLimitDraft } from './pagination';
 import WindowResults from './WindowResults';
 import type { InputValidation, WindowField } from './inputValidationTypes';
 import type { ToolPort, WindowQuery, WindowSample } from './types';
 import './tool-input.css';
+import './pagination.css';
 export { windowChoiceLabel } from './WindowSearchForm';
 
 const initial: WindowQuery = { purpose: '签约', startDate: '2026-10-21', endDate: '2026-10-27', offset: 0, limit: 31 };
+type Selection = { owner: ToolPort; query: WindowQuery; limitDraft: string; limitPending: boolean };
 const noIssues = [] as const;
+const selectionFor = (owner: ToolPort, query: WindowQuery): Selection => ({
+  owner,
+  query,
+  limitDraft: String(query.limit),
+  limitPending: false,
+});
 export default function WindowSearchPage({ port }: { port: ToolPort }) {
-  const [selection, setSelection] = useState<{ owner: ToolPort; query: WindowQuery }>(() => ({
-    owner: port,
-    query: port.windows[0] ?? initial,
-  }));
-  const query = selection.owner === port ? selection.query : (port.windows[0] ?? initial);
+  const [selection, setSelection] = useState(() => selectionFor(port, port.windows[0] ?? initial));
+  const selected = selection.owner === port ? selection : selectionFor(port, port.windows[0] ?? initial);
+  const { query, limitDraft, limitPending } = selected;
   const { view, reset, run, ownership } = useToolRead<WindowSample>(port);
   const [snapshot, setSnapshot] = useState<{
     owner: ToolViewOwnership;
@@ -33,26 +41,49 @@ export default function WindowSearchPage({ port }: { port: ToolPort }) {
       startDate: `${prefix}-startDate`,
       endDate: `${prefix}-endDate`,
       offset: `${prefix}-pagination`,
-      limit: `${prefix}-pagination`,
+      limit: `${prefix}-limit`,
       query: `${prefix}-errors`,
     }),
     [prefix],
   );
   useEffect(reset, [port, reset]);
-  function change(next: WindowQuery) {
+  function change(next: WindowQuery, source: WindowChangeSource) {
     reset();
-    setSelection({ owner: port, query: next });
     setSnapshot(undefined);
+    setSelection(
+      source === 'preset'
+        ? selectionFor(port, next)
+        : {
+            owner: port,
+            query: { ...next, offset: 0 },
+            limitDraft,
+            limitPending,
+          },
+    );
   }
-  function read() {
+  function editLimit(raw: string) {
     reset();
-    const value = validateWindowInput(query);
+    setSnapshot(undefined);
+    setSelection({ owner: port, query: { ...query, offset: 0 }, limitDraft: raw, limitPending: true });
+  }
+  function read(next: WindowQuery, raw = String(next.limit)) {
+    reset();
+    const value = validateWindowInput(next);
     setSnapshot({ owner: ownership, value });
-    if (value.status === 'valid') void run((signal) => port.windowSearch(value.query, signal));
+    if (value.status !== 'valid') return;
+    setSelection({ owner: port, query: value.query, limitDraft: raw, limitPending: false });
+    void run((signal) => port.windowSearch(value.query, signal));
+  }
+  function submit(applyLimit = false) {
+    read(
+      { ...query, offset: applyLimit || limitPending ? 0 : query.offset, limit: parseWindowLimitDraft(limitDraft) },
+      limitDraft,
+    );
   }
   const compatible = port.windows.filter(
     (item) => item.purpose === query.purpose && item.startDate === query.startDate && item.endDate === query.endDate,
   );
+  const sample = view.status === 'ready' && matchesWindowQuery(query, view.sample) ? view.sample : undefined;
   return (
     <section
       className="stack tool-window"
@@ -67,7 +98,7 @@ export default function WindowSearchPage({ port }: { port: ToolPort }) {
         noValidate
         onSubmit={(event) => {
           event.preventDefault();
-          read();
+          submit();
         }}>
         <ToolInputErrors issues={issues} targets={targets} prefix={prefix} labels={windowInputLabels} />
         <WindowSearchForm
@@ -77,23 +108,37 @@ export default function WindowSearchPage({ port }: { port: ToolPort }) {
           prefix={prefix}
           targets={targets}
           change={change}
+          limitDraft={limitDraft}
+          limitPending={limitPending}
+          busy={view.status === 'loading'}
+          editLimit={editLimit}
+          applyLimit={() => submit(true)}
         />
         <div className="row wrap">
           <Button type="submit" variant="primary" loading={view.status === 'loading'}>
             查看当前样例条件
           </Button>
-          <Button variant="ghost" onClick={() => change(port.windows[0] ?? initial)}>
+          <Button variant="ghost" onClick={() => change(port.windows[0] ?? initial, 'preset')}>
             恢复已发布条件
           </Button>
         </div>
       </form>
       {checked?.status === 'valid' && <ToolQuerySummary summary={checked.summary} />}
+      <WindowPagination
+        query={query}
+        sample={sample}
+        busy={view.status === 'loading'}
+        dirty={limitPending}
+        invalid={checked?.status === 'invalid'}
+        unavailable={view.status === 'unavailable'}
+        onRead={read}
+      />
       {view.status === 'idle' && <p className="meta">先核对用途、区间和样例页，再查看结果。</p>}
       {view.status === 'loading' && <Skeleton label="正在载入择日样例" />}
       {view.status === 'error' && (
         <div role="alert">
           <p>{view.message}</p>
-          <Button onClick={read}>用当前条件重试</Button>
+          <Button onClick={() => submit()}>用当前条件重试</Button>
         </div>
       )}
       {view.status === 'unavailable' && (
@@ -101,7 +146,8 @@ export default function WindowSearchPage({ port }: { port: ToolPort }) {
           字段格式已核对；暂无对应已发布样例。{view.message}
         </p>
       )}
-      {view.status === 'ready' && <WindowResults key={view.sample.document_id} sample={view.sample} port={port} />}
+      {view.status === 'ready' && !sample && <p role="alert">当前分页归属尚未通过核对，请用当前条件重新查看。</p>}
+      {sample && <WindowResults key={sample.document_id} sample={sample} port={port} />}
     </section>
   );
 }
