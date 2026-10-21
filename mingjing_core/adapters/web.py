@@ -107,8 +107,10 @@ def effect_receipt(result,kind):
     return {k:v for k,v in dict(result,kind=kind).items() if k in ('id','fact_id','status','revision','write_status','kind','deleted','deleted_ids','affected_ids')}
 
 
-def create_app(service=None):
-    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None}
+def create_app(service=None, *, event_hints: bool = False):
+    if type(event_hints) is not bool:raise ValueError('事件提示候选开关必须是受信布尔配置')
+    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None,
+             'event_hints': None}
     def core(req=None):
         if state['service'] is None: state['service'] = ConsultationService.from_base()
         if req: state['service'].repo.ensure_owner(auth(req))
@@ -146,15 +148,25 @@ def create_app(service=None):
         svc=core(); assembly=getattr(svc,'runtime_assembly',None)
         state['maintenance']=PrivacyMaintenanceSchedule(svc.repo)
         if assembly:state['dispatcher']=assembly.dispatcher(svc)
-        if state['dispatcher']:state['dispatcher'].start()
-        state['task'] = asyncio.create_task(worker())
-        try:yield
+        try:
+            if event_hints:
+                from ..application.run_event_service import acquire_event_hints
+                state['event_hints']=acquire_event_hints(svc.repo)
+            if state['dispatcher']:state['dispatcher'].start()
+            state['task'] = asyncio.create_task(worker())
+            yield
         finally:
-            state['task'].cancel()
-            await asyncio.gather(state['task'], return_exceptions=True)
-            if state['dispatcher']:
-                from ..application.runtime_assembly import stop_dispatcher
-                await asyncio.to_thread(stop_dispatcher,state['dispatcher'])
+            if state['task']:
+                state['task'].cancel()
+                await asyncio.gather(state['task'], return_exceptions=True)
+            try:
+                if state['dispatcher']:
+                    from ..application.runtime_assembly import stop_dispatcher
+                    await asyncio.to_thread(stop_dispatcher,state['dispatcher'])
+            finally:
+                if state['event_hints']:
+                    await asyncio.to_thread(state['event_hints'].close)
+                    state['event_hints']=None
 
     app = FastAPI(title='知命明镜台 Core v3', lifespan=lifespan)
     app.state.core = state
