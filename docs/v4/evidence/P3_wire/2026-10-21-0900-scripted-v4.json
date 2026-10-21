@@ -1,0 +1,193 @@
+{
+  "schema": "m8-fixed-snapshot-v1",
+  "local_sha": "5b691475c41791b4df2166db96dd3db54cc78d2b",
+  "started_bjt": "2026-10-21T09:00:17.038239+08:00",
+  "external_provider_requests": 0,
+  "real_feishu_sends": 0,
+  "server_access": 0,
+  "groups": [
+    {
+      "group": "full",
+      "started_bjt": "2026-10-21T09:00:17.048146+08:00",
+      "finished_bjt": "2026-10-21T09:00:59.957446+08:00",
+      "exit_code": 1,
+      "summary": {
+        "count": 47,
+        "passed": 46,
+        "not_applicable": 0,
+        "points": 46.0,
+        "score": 0.978723,
+        "categories": {
+          "decision": {
+            "count": 1,
+            "passed": 1,
+            "points": 1.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "portability": {
+            "count": 1,
+            "passed": 1,
+            "points": 1.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "memory_write": {
+            "count": 8,
+            "passed": 8,
+            "points": 8.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "question": {
+            "count": 7,
+            "passed": 7,
+            "points": 7.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "memory_recall": {
+            "count": 9,
+            "passed": 9,
+            "points": 9.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "safety": {
+            "count": 1,
+            "passed": 1,
+            "points": 1.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "time": {
+            "count": 14,
+            "passed": 14,
+            "points": 14.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "tarot": {
+            "count": 3,
+            "passed": 3,
+            "points": 3.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "robustness": {
+            "count": 3,
+            "passed": 2,
+            "points": 2.0,
+            "not_applicable": 0,
+            "score": 0.666667
+          }
+        },
+        "model_calls": 79,
+        "target_model_calls": 79,
+        "judge_model_calls": 0,
+        "elapsed_seconds": 20.677
+      },
+      "source_sha256": "b038217d5cdcc073f8cfabc030bd98db77bd964e16fd0a4ef67b17dfc79e380b"
+    },
+    {
+      "group": "extensions",
+      "started_bjt": "2026-10-21T09:00:59.957446+08:00",
+      "finished_bjt": "2026-10-21T09:01:15.257862+08:00",
+      "exit_code": 0,
+      "summary": {
+        "count": 13,
+        "passed": 13,
+        "not_applicable": 0,
+        "points": 13.0,
+        "score": 1.0,
+        "categories": {
+          "question": {
+            "count": 3,
+            "passed": 3,
+            "points": 3.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "memory_recall": {
+            "count": 3,
+            "passed": 3,
+            "points": 3.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "safety": {
+            "count": 3,
+            "passed": 3,
+            "points": 3.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "time": {
+            "count": 3,
+            "passed": 3,
+            "points": 3.0,
+            "not_applicable": 0,
+            "score": 1.0
+          },
+          "robustness": {
+            "count": 1,
+            "passed": 1,
+            "points": 1.0,
+            "not_applicable": 0,
+            "score": 1.0
+          }
+        },
+        "model_calls": 27,
+        "target_model_calls": 27,
+        "judge_model_calls": 0,
+        "elapsed_seconds": 5.412
+      },
+      "source_sha256": "b038217d5cdcc073f8cfabc030bd98db77bd964e16fd0a4ef67b17dfc79e380b"
+    }
+  ],
+  "finished_bjt": "2026-10-21T09:01:15.257862+08:00",
+  "remote_sha": "5b691475c41791b4df2166db96dd3db54cc78d2b",
+  "tree": "7c46d8239fba2ab28a3ba7ce3e7ba47ec624a275",
+  "artifacts": [
+    {
+      "path": "docs/v4/evidence/P3_wire/m8-v4-2026-10-21/full-0900/2026-10-21-scripted-v4-scripted-v4.json",
+      "bytes": 94228,
+      "sha256": "a670eba361fcf4d3c6aff531e9e58c94e967e0f5bd0e5741240af744d33ff3a6",
+      "original_private_bytes": 97504,
+      "original_private_sha256": "050495f46c63971e25230190adcc24c67c1635da21f5285d808c643681d9b82c"
+    },
+    {
+      "path": "docs/v4/evidence/P3_wire/m8-v4-2026-10-21/full-0900/2026-10-21-scripted-v4-scripted-v4.md",
+      "bytes": 8936,
+      "sha256": "2e1520bb302a60c729a7b137c7a3842673defc6c68b7c06f8feefc43dc6485b9",
+      "original_private_bytes": 9071,
+      "original_private_sha256": "d52ab363003430617bf6b146bb1a1ce7d3a9f5073d2b62db6d7f1afbb30261ef"
+    },
+    {
+      "path": "docs/v4/evidence/P3_wire/m8-v4-2026-10-21/extensions-0900/2026-10-21-scripted-v4-scripted-v4.json",
+      "bytes": 32269,
+      "sha256": "b037af787e539460f37b7570ba233ab1f5efe9f30c90fff23cd68d3a2ba47f7e",
+      "original_private_bytes": 33476,
+      "original_private_sha256": "7e19baa0a7004d1250f161ec9f65dfa3b7696bdb348b189a9a4ae7c5dcac53d6"
+    },
+    {
+      "path": "docs/v4/evidence/P3_wire/m8-v4-2026-10-21/extensions-0900/2026-10-21-scripted-v4-scripted-v4.md",
+      "bytes": 4037,
+      "sha256": "95ce4a8f7e9423dd69a98c0dc3cff9008d24c80df1ef3761d2697714c6fbc431",
+      "original_private_bytes": 4102,
+      "original_private_sha256": "835b625d60b718add12ecc5e56984415385a707145d1951ca3ddcb28e459aa1c"
+    }
+  ],
+  "failures": [
+    {
+      "id": "X03",
+      "failed_assertions": [
+        "turn[1].db[2]",
+        "turn[2].db[2]",
+        "turn[2].db[3]",
+        "turn[2].events"
+      ]
+    }
+  ],
+  "recorded_bjt": "2026-10-21T09:03:24.430841+08:00"
+}

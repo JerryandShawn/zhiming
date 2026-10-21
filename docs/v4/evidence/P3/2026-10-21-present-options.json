@@ -1,0 +1,56 @@
+{
+  "recorded_at": "2026-10-21T01:12:49+08:00",
+  "local_base": "195f73415ec80c021238c27b18c2a3d8b9ec475c",
+  "tests_run_on_worktree": true,
+  "platform": "Windows",
+  "postgres": {
+    "major": 15,
+    "host": "127.0.0.1",
+    "port": 55480,
+    "isolated": true
+  },
+  "provider": "ScriptedPort only",
+  "real_model_requests": 0,
+  "real_feishu_sends": 0,
+  "server_connections": 0,
+  "migrations_added": 0,
+  "public_schema_changed": false,
+  "tests": [
+    {
+      "scope": "new real PG options chain",
+      "passed": 16,
+      "seconds": 7.53
+    },
+    {
+      "scope": "final related runtime, proof, finalization, event contract, core3 readers, U41 regression",
+      "passed": 139,
+      "seconds": 29.38,
+      "warnings": 1
+    }
+  ],
+  "static": {
+    "ruff": "E,F,I,B,UP,SIM",
+    "line_length": 120,
+    "format": "passed",
+    "file_and_function_limits": "400/60 passed"
+  },
+  "files": {
+    "mingjing_core/agent/options.py": "d1a54aa0a4be1b19b5f5699b30212de11c01590ad383e0e1844904f9d8a03bb6",
+    "mingjing_core/agent/envelope.py": "9b83aff4b087df6f4a2bbd7448894c4a4a925e7b462af84333f486fd5cfa6611",
+    "mingjing_core/application/agent_options.py": "8a6f121046dc0520bf610dd9792a96cfcd791881aebbf408820eed3cef356c8c",
+    "mingjing_core/application/agent_options_review.py": "c8f21b7a58b3aaf6e2dd48d79c3d23beaffa16af80cb6131a4245faa8179a56f",
+    "mingjing_core/application/agent_finalization.py": "916221c7e19bc5f9cc8d271b46f00d39825b7697c598911523a0513bb793c719",
+    "mingjing_core/application/agent_runtime.py": "3d07112ce9bb426da51d98ff4130258f76157e0930387e440c0f201bb43bbf05",
+    "mingjing_core/application/agent_runtime_events.py": "f76833c78bdbead7d36be32da9bdd1726ea60563019d76f881aaf4b1a1349579",
+    "mingjing_core/application/agent_review.py": "2dae27f71433d8131fa389a05157661e49d42a1751702eb88e214cd752ac5f64",
+    "mingjing_core/application/agent_review_proofs.py": "be58e3bf9ff3abde8a55ba3b276a20db30dd3f450259790d75d3c456d5fbd804",
+    "mingjing_core/application/run_event_read.py": "01b0015e17d2792b5ef8459c72ff5df4daa1f0707b8bd2d4c0743ed640bf5b56",
+    "tests/v4/agent/test_present_options_runtime_pg.py": "3c0fb5ce0210aee2f36030ed1fcc59c9a2a2f98b397267b269322d1b4ef86b8f"
+  },
+  "limitations": [
+    "no real model quality or deployment acceptance",
+    "unknowns tool input not extended; public values []",
+    "frontend rendering and full M8 evaluation not run here",
+    "new head CI remains parent follow-up"
+  ]
+}

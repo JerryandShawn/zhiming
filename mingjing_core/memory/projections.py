@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from psycopg import sql
 
+from .private import is_private
 from .tokenize import searchable_data, tokenize
 
 if TYPE_CHECKING:
@@ -68,6 +69,8 @@ def project_search(
     spans, deleted = owner_spans(repo, owner)
     result = []
     for row in rows:
+        if is_private(row):
+            continue
         if row.get("role") is not None:
             if row["id"] in deleted:
                 continue

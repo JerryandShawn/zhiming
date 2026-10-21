@@ -1,0 +1,714 @@
+{
+  "schema": "b1-readonly-authorized-inventory-v1",
+  "authorization": "A only",
+  "observed_utc_interval": [
+    "2026-10-18T10:12:40.050496+00:00",
+    "2026-10-18T10:29:17.408407+00:00"
+  ],
+  "ssh": {
+    "host": "1.14.59.242",
+    "port": 22,
+    "user": "root",
+    "key_filename": "gto_deploy_key",
+    "host_key_check": "existing known_hosts; StrictHostKeyChecking=yes; UpdateHostKeys=no",
+    "private_key_contents_returned": false,
+    "password_prompt_required": false
+  },
+  "host": {
+    "hostname": "VM-0-7-opencloudos",
+    "uname": [
+      "Linux",
+      "VM-0-7-opencloudos",
+      "6.6.117-45.oc9.x86_64",
+      "#1 SMP Thu Dec  4 10:26:39 CST 2025",
+      "x86_64"
+    ],
+    "uid": 0
+  },
+  "current_release": {
+    "path": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9",
+    "exists": true,
+    "manifest_commit": "7dbc951eaffebd3d812169865eaefcde16a00ed9",
+    "manifest_schema": "core3-release-v1",
+    "manifest_sha256": "22edb794d44ab45e2b234edd3f5ed886879fe88d23392977fee63e1085a3859c",
+    "main_sha256": "42978429290a8325cd9081439f4fe6dcd1028b6ea252127ff1a7596d9e54a0ac",
+    "main_imports": [
+      "mingjing_core.adapters.web"
+    ],
+    "references_legacy_chatagent": false,
+    "references_core_web": true
+  },
+  "services": [
+    {
+      "MainPID": "2800505",
+      "WorkingDirectory": "",
+      "User": "root",
+      "Id": "hermes.service",
+      "LoadState": "loaded",
+      "ActiveState": "active",
+      "SubState": "running",
+      "FragmentPath": "/etc/systemd/system/hermes.service",
+      "UnitFileState": "enabled",
+      "executable": "/usr/local/bin/hermes",
+      "python_module": "",
+      "listen_ports": [],
+      "env_file_paths": [
+        "/root/.hermes/.env"
+      ],
+      "allowed_environment": {
+        "TZ": "Asia/Shanghai"
+      }
+    },
+    {
+      "MainPID": "0",
+      "WorkingDirectory": "",
+      "User": "",
+      "Id": "mingjingtai-stage.service",
+      "LoadState": "not-found",
+      "ActiveState": "inactive",
+      "SubState": "dead",
+      "FragmentPath": "",
+      "UnitFileState": "",
+      "executable": "",
+      "python_module": "",
+      "listen_ports": [],
+      "env_file_paths": [],
+      "allowed_environment": {}
+    },
+    {
+      "MainPID": "2801085",
+      "WorkingDirectory": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9",
+      "User": "root",
+      "Id": "mingjingtai.service",
+      "LoadState": "loaded",
+      "ActiveState": "active",
+      "SubState": "running",
+      "FragmentPath": "/etc/systemd/system/mingjingtai.service",
+      "UnitFileState": "enabled",
+      "executable": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9/venv/core/bin/python",
+      "python_module": "uvicorn",
+      "listen_ports": [
+        "8787"
+      ],
+      "env_file_paths": [
+        "/root/zhiming-core-secrets/live-runtime.env"
+      ],
+      "allowed_environment": {
+        "TZ": "Asia/Shanghai",
+        "CORE_DB_POOL_SIZE": "4",
+        "CHART_PYTHON": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9/venv/charts/bin/python",
+        "KIMI_BASE_URL": "https://api.kimi.com/coding/v1",
+        "KIMI_MODEL": "k3",
+        "LANGSMITH_TRACING": "false",
+        "CORE_RUN_CONCURRENCY": "1"
+      }
+    },
+    {
+      "MainPID": "1101",
+      "WorkingDirectory": "",
+      "User": "postgres",
+      "Id": "postgresql.service",
+      "LoadState": "loaded",
+      "ActiveState": "active",
+      "SubState": "running",
+      "FragmentPath": "/usr/lib/systemd/system/postgresql.service",
+      "UnitFileState": "enabled",
+      "executable": "/usr/bin/postgres",
+      "python_module": "",
+      "listen_ports": [],
+      "env_file_paths": [],
+      "allowed_environment": {}
+    },
+    {
+      "MainPID": "2801431",
+      "WorkingDirectory": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9",
+      "User": "root",
+      "Id": "zhiming-core-feishu.service",
+      "LoadState": "loaded",
+      "ActiveState": "active",
+      "SubState": "running",
+      "FragmentPath": "/etc/systemd/system/zhiming-core-feishu.service",
+      "UnitFileState": "enabled",
+      "executable": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9/venv/core/bin/python",
+      "python_module": "mingjing_core.adapters.feishu_gateway",
+      "listen_ports": [],
+      "env_file_paths": [
+        "/root/zhiming-core-secrets/live-runtime.env"
+      ],
+      "allowed_environment": {
+        "TZ": "Asia/Shanghai",
+        "CORE_DB_POOL_SIZE": "4",
+        "CHART_PYTHON": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9/venv/charts/bin/python",
+        "CORE_FEISHU_ENABLED": "true",
+        "KIMI_BASE_URL": "https://api.kimi.com/coding/v1",
+        "KIMI_MODEL": "k3",
+        "LANGSMITH_TRACING": "false",
+        "CORE_RUN_CONCURRENCY": "1"
+      }
+    },
+    {
+      "MainPID": "0",
+      "WorkingDirectory": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9",
+      "User": "root",
+      "Id": "zhiming-core-reports.service",
+      "LoadState": "loaded",
+      "ActiveState": "inactive",
+      "SubState": "dead",
+      "FragmentPath": "/etc/systemd/system/zhiming-core-reports.service",
+      "UnitFileState": "static",
+      "executable": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9/venv/core/bin/python",
+      "python_module": "mingjing_core.adapters.core_report_worker",
+      "listen_ports": [],
+      "env_file_paths": [
+        "/root/zhiming-core-secrets/live-runtime.env"
+      ],
+      "allowed_environment": {}
+    },
+    {
+      "Id": "zhiming-core-reports.timer",
+      "LoadState": "loaded",
+      "ActiveState": "active",
+      "SubState": "waiting",
+      "FragmentPath": "/etc/systemd/system/zhiming-core-reports.timer",
+      "UnitFileState": "enabled",
+      "executable": "",
+      "python_module": "",
+      "listen_ports": [],
+      "env_file_paths": [],
+      "allowed_environment": {}
+    },
+    {
+      "MainPID": "0",
+      "WorkingDirectory": "",
+      "User": "",
+      "Id": "zhiming-core-stage.service",
+      "LoadState": "not-found",
+      "ActiveState": "inactive",
+      "SubState": "dead",
+      "FragmentPath": "",
+      "UnitFileState": "",
+      "executable": "",
+      "python_module": "",
+      "listen_ports": [],
+      "env_file_paths": [],
+      "allowed_environment": {}
+    }
+  ],
+  "process_database_identities": [
+    {
+      "unit": "mingjingtai.service",
+      "database_identity": {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "database": "zhiming_core_live",
+        "role": "zhiming_core_live_writer"
+      },
+      "ZHIMING_MEDIA_PATH": "/root/zhiming-core-media",
+      "new_model_port_env_present": false
+    },
+    {
+      "unit": "zhiming-core-feishu.service",
+      "database_identity": {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "database": "zhiming_core_live",
+        "role": "zhiming_core_live_writer"
+      },
+      "ZHIMING_MEDIA_PATH": "/root/zhiming-core-media",
+      "new_model_port_env_present": false
+    }
+  ],
+  "postgres": {
+    "version": "PostgreSQL 15.18 on x86_64-opencloudos-linux-gnu, compiled by gcc (Tencent Compiler 12.3.1.8) 12.3.1 20230912 (OpenCloudOS 12.3.1.8-1), 64-bit",
+    "server_version_num": "150018",
+    "port": "5432",
+    "read_only": "on"
+  },
+  "databases": [
+    {
+      "name": "zhiming_core_stage",
+      "port": 5432,
+      "bytes_at_catalog_observation": 25959783,
+      "owner_role": "zhiming_core_stage_owner",
+      "runtime_privileges": {
+        "role": "zhiming_core_stage_writer",
+        "database_create": false,
+        "schema_create": false,
+        "schema_usage": true,
+        "public_create": false,
+        "ledger_select": true,
+        "ledger_insert": false,
+        "ledger_update": false,
+        "ledger_delete": false
+      },
+      "migrations": [
+        {
+          "version": 1,
+          "checksum": "0015f6b2a9d655b5d47774a7fc44456a299953db1b0b05fcd13558206f855586",
+          "applied_at": "2026-10-11T19:12:43.622769+08:00"
+        },
+        {
+          "version": 2,
+          "checksum": "a7df7398ce522df386dbefcf464b7d0b550fabd558e47adec6fd991c15715f67",
+          "applied_at": "2026-10-11T19:12:43.622769+08:00"
+        },
+        {
+          "version": 3,
+          "checksum": "9905263b6a5bb7eabd133607b587efc055c475ea6017c497116be02df6d32ff5",
+          "applied_at": "2026-10-11T19:12:43.622769+08:00"
+        },
+        {
+          "version": 4,
+          "checksum": "eb6f19a7753168387388cff5d001694f90676dcbc60a72c5d7de8ccb76f27145",
+          "applied_at": "2026-10-11T19:12:43.622769+08:00"
+        }
+      ],
+      "candidate_prefix_matches": true,
+      "run_states": [
+        {
+          "status": "failed",
+          "count": 38
+        },
+        {
+          "status": "succeeded",
+          "count": 96
+        }
+      ],
+      "leases": {
+        "unexpired": 0,
+        "running": 0,
+        "queued": 0
+      },
+      "outbox_states": [
+        {
+          "status": "sent",
+          "count": 16
+        },
+        {
+          "status": "stale",
+          "count": 2
+        }
+      ],
+      "owner_counts": {
+        "count": 17,
+        "primary_present": true
+      },
+      "message_time_preflight": {
+        "active_messages": 409,
+        "missing_at_ms": 409,
+        "invalid_at_ms": 0
+      },
+      "schedules": [
+        {
+          "kind": "daily",
+          "enabled": true,
+          "time": "07:00",
+          "weekday": null,
+          "day": null
+        },
+        {
+          "kind": "weekly",
+          "enabled": true,
+          "time": "20:00",
+          "weekday": 7,
+          "day": null
+        },
+        {
+          "kind": "monthly",
+          "enabled": true,
+          "time": "09:00",
+          "weekday": null,
+          "day": 1
+        },
+        {
+          "kind": "quarterly",
+          "enabled": true,
+          "time": "10:00",
+          "weekday": null,
+          "day": 1
+        }
+      ],
+      "writer_owns_any_application_or_checkpoint_table": false,
+      "existing_nonledger_table_crud": true,
+      "checkpoint_migrations_read_only": true,
+      "checkpoint_rows": 1427,
+      "active_application_sessions": []
+    },
+    {
+      "name": "zhiming_core_live",
+      "port": 5432,
+      "bytes_at_catalog_observation": 12393831,
+      "owner_role": "zhiming_core_live_owner",
+      "runtime_privileges": {
+        "role": "zhiming_core_live_writer",
+        "database_create": false,
+        "schema_create": false,
+        "schema_usage": true,
+        "public_create": false,
+        "ledger_select": true,
+        "ledger_insert": false,
+        "ledger_update": false,
+        "ledger_delete": false
+      },
+      "migrations": [
+        {
+          "version": 1,
+          "checksum": "0015f6b2a9d655b5d47774a7fc44456a299953db1b0b05fcd13558206f855586",
+          "applied_at": "2026-10-16T00:21:31.215297+08:00"
+        },
+        {
+          "version": 2,
+          "checksum": "a7df7398ce522df386dbefcf464b7d0b550fabd558e47adec6fd991c15715f67",
+          "applied_at": "2026-10-16T00:21:31.215297+08:00"
+        },
+        {
+          "version": 3,
+          "checksum": "9905263b6a5bb7eabd133607b587efc055c475ea6017c497116be02df6d32ff5",
+          "applied_at": "2026-10-16T00:21:31.215297+08:00"
+        },
+        {
+          "version": 4,
+          "checksum": "eb6f19a7753168387388cff5d001694f90676dcbc60a72c5d7de8ccb76f27145",
+          "applied_at": "2026-10-16T00:21:31.215297+08:00"
+        }
+      ],
+      "candidate_prefix_matches": true,
+      "run_states": [
+        {
+          "status": "failed",
+          "count": 2
+        },
+        {
+          "status": "revoked",
+          "count": 2
+        },
+        {
+          "status": "succeeded",
+          "count": 9
+        }
+      ],
+      "leases": {
+        "unexpired": 0,
+        "running": 0,
+        "queued": 0
+      },
+      "outbox_states": [
+        {
+          "status": "expired",
+          "count": 3
+        },
+        {
+          "status": "sent",
+          "count": 21
+        }
+      ],
+      "owner_counts": {
+        "count": 2,
+        "primary_present": true
+      },
+      "message_time_preflight": {
+        "active_messages": 261,
+        "missing_at_ms": 261,
+        "invalid_at_ms": 0
+      },
+      "schedules": [
+        {
+          "kind": "daily",
+          "enabled": true,
+          "time": "07:00",
+          "weekday": null,
+          "day": null
+        },
+        {
+          "kind": "weekly",
+          "enabled": true,
+          "time": "20:00",
+          "weekday": 7,
+          "day": null
+        },
+        {
+          "kind": "monthly",
+          "enabled": true,
+          "time": "09:00",
+          "weekday": null,
+          "day": 1
+        },
+        {
+          "kind": "quarterly",
+          "enabled": true,
+          "time": "10:00",
+          "weekday": null,
+          "day": 1
+        }
+      ],
+      "writer_owns_any_application_or_checkpoint_table": false,
+      "existing_nonledger_table_crud": true,
+      "checkpoint_migrations_read_only": true,
+      "checkpoint_rows": 126,
+      "active_application_sessions": [
+        {
+          "role": "zhiming_core_live_writer",
+          "state": "idle",
+          "count": 4
+        }
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "rolname": "postgres",
+      "rolsuper": true,
+      "rolinherit": true,
+      "rolcreaterole": true,
+      "rolcreatedb": true,
+      "rolcanlogin": true,
+      "rolreplication": true,
+      "rolbypassrls": true
+    },
+    {
+      "rolname": "zhiming_core_live_owner",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": true,
+      "rolreplication": false,
+      "rolbypassrls": false
+    },
+    {
+      "rolname": "zhiming_core_live_writer",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": true,
+      "rolreplication": false,
+      "rolbypassrls": false
+    },
+    {
+      "rolname": "zhiming_core_stage_owner",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": true,
+      "rolreplication": false,
+      "rolbypassrls": false
+    },
+    {
+      "rolname": "zhiming_core_stage_writer",
+      "rolsuper": false,
+      "rolinherit": true,
+      "rolcreaterole": false,
+      "rolcreatedb": false,
+      "rolcanlogin": true,
+      "rolreplication": false,
+      "rolbypassrls": false
+    }
+  ],
+  "role_memberships": [],
+  "nginx": {
+    "exists": true,
+    "path": "/www/server/panel/vhost/nginx/p.jerrymeng.asia.conf",
+    "sha256": "9c1d00ffdc4c787d0024bbf5cd8c6ba9c2605fad509151b7f046f76fc8d4f017",
+    "server_names": [
+      "p.jerrymeng.asia",
+      "p.jerrymeng.asia"
+    ],
+    "proxy_targets": [
+      "http://127.0.0.1:8787"
+    ],
+    "maintenance_gate_configured": true,
+    "maintenance_flag_exists": false
+  },
+  "legacy_entrances": {
+    "legacy_feishu_enabled": false,
+    "matching_legacy_jobs": [
+      {
+        "id_hash": "b43820747fc021a4",
+        "enabled": false,
+        "schedule": "format-redacted"
+      },
+      {
+        "id_hash": "9a154a10a4c79d66",
+        "enabled": false,
+        "schedule": "format-redacted"
+      },
+      {
+        "id_hash": "1f4548934daa2a2b",
+        "enabled": false,
+        "schedule": "format-redacted"
+      },
+      {
+        "id_hash": "929e3892446606b0",
+        "enabled": false,
+        "schedule": "format-redacted"
+      }
+    ]
+  },
+  "report_timer": {
+    "query_exit": 0,
+    "properties": {
+      "Unit": "zhiming-core-reports.service",
+      "TimersCalendar": "{ OnCalendar=*-*-* *:*:00 Asia/Shanghai ; next_elapse=Sun 2026-10-18 18:18:00 CST }",
+      "NextElapseUSecRealtime": "Sun 2026-10-18 18:18:00 CST",
+      "LastTriggerUSec": "Sun 2026-10-18 18:17:00 CST",
+      "AccuracyUSec": "1s",
+      "Persistent": "yes",
+      "ActiveState": "active",
+      "SubState": "waiting"
+    }
+  },
+  "hermes_core_skill": {
+    "path": "/root/.hermes/skills/zhiming/__core_skill_manifest__.json",
+    "exists": true,
+    "schema": "core3-hermes-skill-v1",
+    "commit": "7dbc951eaffebd3d812169865eaefcde16a00ed9",
+    "release_dir": "/root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9",
+    "manifest_sha256": "e57e2c6ab55fbde8360e429c7cdb2cc7a64b0108e4ad78151746b01543061edd",
+    "env_files": [
+      "/root/.hermes/.env",
+      "/root/zhiming-core-secrets/live-runtime.env"
+    ],
+    "entrypoint_names": [
+      "SKILL.md",
+      "archive.py",
+      "archive_store.py",
+      "astro.py",
+      "bazi.py",
+      "chart_context.py",
+      "chat_agent.py",
+      "context_engine.py",
+      "context_query.py",
+      "conversation_store.py",
+      "core_consultation.py",
+      "domain_api.py",
+      "guidance.py",
+      "report_pipeline.py",
+      "report_store.py",
+      "semantic_index.py",
+      "state_store.py",
+      "tarot_deck.py",
+      "tarot_guidance.py",
+      "tarot_store.py",
+      "v6_agent.py",
+      "ziwei.py"
+    ]
+  },
+  "disk": {
+    "free_bytes": 791592960,
+    "total_bytes": 42881495040
+  },
+  "selected_directory_sizes": [
+    {
+      "path": "/root/zhiming-core-releases",
+      "query_exit": -1,
+      "allocated_kib": null
+    },
+    {
+      "path": "/root/zhiming-core-backups",
+      "query_exit": 0,
+      "allocated_kib": 369036
+    },
+    {
+      "path": "/root/.cache",
+      "query_exit": 0,
+      "allocated_kib": 1314504
+    },
+    {
+      "path": "/var/lib/pgsql",
+      "query_exit": 0,
+      "allocated_kib": 101296
+    },
+    {
+      "path": "/var/log",
+      "query_exit": 0,
+      "allocated_kib": 3793208
+    }
+  ],
+  "latest_backup_metadata": {
+    "directory": "20261016T132944Z-maintenance-0aa433af44a1-92574e6e",
+    "selected_metadata": [
+      {
+        "path": "/root/zhiming-core-backups/20261016T132944Z-maintenance-0aa433af44a1-92574e6e/freeze.json",
+        "exists": false
+      },
+      {
+        "path": "/root/zhiming-core-backups/20261016T132944Z-maintenance-0aa433af44a1-92574e6e/maintenance.json",
+        "exists": true,
+        "bytes": 407,
+        "mode": "0o600",
+        "modified_utc": "2026-10-16T13:29:45.482020+00:00"
+      },
+      {
+        "path": "/root/zhiming-core-backups/20261016T132944Z-maintenance-0aa433af44a1-92574e6e/core-live-latest.dump",
+        "exists": true,
+        "bytes": 563747,
+        "mode": "0o600",
+        "modified_utc": "2026-10-16T13:29:45.391020+00:00"
+      },
+      {
+        "path": "/root/zhiming-core-backups/20261016T132944Z-maintenance-0aa433af44a1-92574e6e/withdrawals-latest.json",
+        "exists": true,
+        "bytes": 15221,
+        "mode": "0o600",
+        "modified_utc": "2026-10-16T13:29:45.193020+00:00"
+      }
+    ]
+  },
+  "backup_entry_count": 12,
+  "backup_restorability_verified": false,
+  "candidate": {
+    "commit": "b9a89b6f84f7bebb640de080548010859aae630c",
+    "migration_manifest": {
+      "1": "0015f6b2a9d655b5d47774a7fc44456a299953db1b0b05fcd13558206f855586",
+      "2": "a7df7398ce522df386dbefcf464b7d0b550fabd558e47adec6fd991c15715f67",
+      "3": "9905263b6a5bb7eabd133607b587efc055c475ea6017c497116be02df6d32ff5",
+      "4": "eb6f19a7753168387388cff5d001694f90676dcbc60a72c5d7de8ccb76f27145",
+      "5": "19182ec61c19d9ff3472a867b9b2ce41fa60fe22579e83dd04b4a50308708e62",
+      "6": "c3469b6bad49358c11562ec16c70f840d5a0d50a8c9041c2f044a888aa644ee2",
+      "7": "6c6c544a9b3def93da445ff5a58338e242c096294627dd7414c139263e3083ce"
+    },
+    "includes_charts_tzdata_2026_5": false
+  },
+  "current_release_migration_files": [
+    {
+      "name": "0001_initial.sql",
+      "sha256": "0015f6b2a9d655b5d47774a7fc44456a299953db1b0b05fcd13558206f855586"
+    },
+    {
+      "name": "0002_retry_epoch.sql",
+      "sha256": "a7df7398ce522df386dbefcf464b7d0b550fabd558e47adec6fd991c15715f67"
+    },
+    {
+      "name": "0003_mutation_requests.sql",
+      "sha256": "9905263b6a5bb7eabd133607b587efc055c475ea6017c497116be02df6d32ff5"
+    },
+    {
+      "name": "0004_media_deletions.sql",
+      "sha256": "eb6f19a7753168387388cff5d001694f90676dcbc60a72c5d7de8ccb76f27145"
+    }
+  ],
+  "report_preparation_policy": {
+    "timezone": "Asia/Shanghai",
+    "prepare_minutes": 15,
+    "source": "AGENTS section 5 and existing report schedule policy; worker not executed"
+  },
+  "limits": [
+    "not an atomic cross-database snapshot",
+    "5433 socket identity unverified and unused",
+    "no backup contents, restore rehearsal, dependency installation or full disk traversal",
+    "no table bodies, provider requests, outbound messages or application imports"
+  ],
+  "intentional_remote_mutation_commands": 0,
+  "remote_model_requests": 0,
+  "remote_message_sends": 0,
+  "sql_mode": "BEGIN READ ONLY; SET LOCAL statement_timeout=5s",
+  "private_evidence_input_sha256": {
+    "host-inventory.json": "71c908ef7e5e55706bbf25f14db96d8b7e124acfef6f47039e2468a2e8cc8f24",
+    "pg-catalog.json": "28e7f123d179401cff5c61dbbcd330bf948e0542eadbbbfdb7acf5316f23782e",
+    "runtime-metadata.json": "a0f5a830ad3bcfd0195e8c1672342638f9968ab995ff8b71d89d7f53f70744e6",
+    "final-checks.json": "c759155af57fac7673a5594052014ae98b75a4980898ec23324a9bb85ed8b4a2",
+    "entrance-pins.json": "4b9047454a0709524fec2ceca7725087e46d5b65bd4c01f5639c534f8242ce56"
+  }
+}

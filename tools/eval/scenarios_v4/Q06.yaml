@@ -1,0 +1,28 @@
+id: Q06
+title: 工作地点冲突温和确认
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  facts:
+  - id: work-hangzhou
+    kind: background
+    summary: 我在杭州工作。
+    quote: 我在杭州工作。
+    source_message_id: source-synthetic
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 我在杭州工作。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+turns:
+- user: 我在上海上班
+  expect:
+    must_include_all:
+    - 上海
+    max_questions: 1
+    judge: 可温和确认，或识别搬迁并正确更新，不把旧新地点同时当当前事实。
+scripted:
+- turn: 1
+  model:
+  - text: 我之前记的是在杭州工作，现在你说在上海上班，是已经换到上海了吗？
