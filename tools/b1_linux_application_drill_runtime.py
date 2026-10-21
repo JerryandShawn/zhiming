@@ -15,6 +15,7 @@ from packaging.requirements import Requirement
 from packaging.utils import canonicalize_name
 
 from tools.b1_linux_application_drill_contracts import ApplicationBlocked, ApplicationRequest, require
+from tools.b1_linux_application_drill_origins import verify_third_party_origins
 
 CORE_LOCK_SHA256 = "d945dfdf75459bfff6d2903ff5b1e3fb1983619102d806f2c969eb339482e4b9"
 
@@ -63,6 +64,7 @@ def critical_imports(request: ApplicationRequest) -> list[str]:
         "mingjing_core.application.memory",
         "mingjing_core.runtime",
     ]
+    modules = {}
     for name in names:
         value = importlib.import_module(name)
         require(getattr(value, "__file__", None), "APPLICATION_IMPORT_ORIGIN_MISSING")
@@ -71,6 +73,8 @@ def critical_imports(request: ApplicationRequest) -> list[str]:
                 Path(value.__file__).resolve().is_relative_to(request.candidate_source.resolve()),
                 "APPLICATION_IMPORT_OUTSIDE_CANDIDATE",
             )
+        modules[name] = value
+    verify_third_party_origins(request, modules)
     return names
 
 
