@@ -1,0 +1,75 @@
+{
+  "schema": "k3.public_boundaries.frozen_matrix.v1",
+  "frozen_at": "2026-10-21T11:07:12.121486+08:00",
+  "case_count": 9,
+  "cases": [
+    {
+      "id": "R01",
+      "input": "SnapshotTokenStore.snapshot raises synthetic diagnostic",
+      "expected": "generic ActionTokenError;no diagnostic/token leak;original store unconsumed;no expiry refresh"
+    },
+    {
+      "id": "R02",
+      "input": "snapshot returns list of legal issued records",
+      "expected": "reject mutable snapshot shape;original store unconsumed;no execution permission"
+    },
+    {
+      "id": "R03",
+      "input": "snapshot tuple includes legal issued record and null member",
+      "expected": "reject whole projection;do not select legal member;unconsumed"
+    },
+    {
+      "id": "R04",
+      "input": "multiple legal owners;target non-first;revoke other digest",
+      "expected": "correct target may first-consume;revoked other remains rejected;old immutable snapshot not changed in place"
+    },
+    {
+      "id": "R05",
+      "input": "optional lookup guard entry raises synthetic diagnostic",
+      "expected": "generic error;lookup and consume not reached;unconsumed"
+    },
+    {
+      "id": "R06",
+      "input": "guard exit fails after local consume;later guard recovers",
+      "expected": "current call returns no execution permission;used_at stays;later only same-operation replay;no PG rollback/effect claim"
+    },
+    {
+      "id": "R07",
+      "input": "consume Clock raises synthetic diagnostic;later recovers",
+      "expected": "generic non-refresh failure;unconsumed;recovery permits first consume then replay;no internal call-count assumption"
+    },
+    {
+      "id": "R08",
+      "input": "consume Clock returns naive datetime;later recovers",
+      "expected": "same safe behaviour as R07;no internal call-count assumption"
+    },
+    {
+      "id": "R09",
+      "input": "legal record has other well-formed operation;correctly bound token expired",
+      "expected": "reject not refresh;unconsumed;expected identity comes only from public issue"
+    }
+  ],
+  "original_k3_source_and_test_sha256": {
+    "mingjing_core/adapters/channels/action_token_refresh_v2.py": "6b30fa69f915b6ffadb1ce9f197e6e854acb011226bbe36039282caf137e7537",
+    "mingjing_core/adapters/channels/action_token_policy_v2.py": "3e58dfbc19ef118cc7c68dde69d96037bcb5a8374fdbc337ec2c90a606260df0",
+    "mingjing_core/adapters/channels/action_token_contracts.py": "548fac211831304323679474c5c92dd338995d9b35c27e4b133742e45f666de0",
+    "mingjing_core/adapters/channels/action_token_store.py": "a10bada777ada85bfb9a1eb459e1afed4aa9c35b5b9842f1463d479d9efd0345",
+    "mingjing_core/adapters/channels/action_tokens.py": "12b912d4229025d96fdb4c089cfbc8e39e1316d124d926ddbf649c83a3d29dbf",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "tests/v4/p9_v2/test_token_policy_mod.py": "1fc19dbec0edb4fd2ea71a34ada4278d63062be72ebc502a9ecba4b4443a2969",
+    "tests/v4/p9_v2/test_acceptance_tokens_mod.py": "01960462bd28e05ce6d1bfbd4c36a7fe1c807d12532c79fc69b89a7e4dc67840",
+    "tests/v4/cards_mod/test_action_tokens_mod.py": "3ae84da2f35ad7cc6eaa7d6f1fcab713eca39b57c9c0892d17c1bcd7f73b84bb",
+    "tests/v4/p9_v2/fixtures/acceptance_expected_mod.json": "eb97be17d0e19d42757c37783ca2c3db58fdad1776e33eeb4e6e4f72e1159b83",
+    "tests/v4/p9_v2/conftest.py": "0dbfceae1d10a3eabc30da40d2e7736ef2791ca9cdc8cc452514cf3a0e075886",
+    "tests/v4/conftest.py": "6e39f9406362d4b3f619d712fbd233249bfb831cf5d94a9bc6b2f9d9595df3a8"
+  },
+  "synthetic_fixture_sha256": "e4e95c0c8cc139d620d58ad128dba4ea05b97ac45e6067a30b6154941ceb46ac",
+  "plan_at_freeze_sha256": "58ab85b7be6058e5dc8320a60e14e28f7c9c9d7a86c3662387e91f9a4b0d89e5",
+  "limits": [
+    "Nine independent public processes only;R10-R14 excluded",
+    "No private validators or typed-object forgery",
+    "No PG/model/network/platform/effect execution",
+    "Generated raw tokens stay only in process memory;logs redacted before disk",
+    "First target only;no product fix or compatibility expansion authorized"
+  ]
+}
