@@ -1,0 +1,31 @@
+{
+  "observed_at": "2026-10-21T09:08:43.145114+08:00",
+  "scope": "Only three unconnected reflection_projection_exp product files",
+  "target_result": {
+    "passed": 1238,
+    "coverage_instrumented_seconds": 3.63
+  },
+  "line": {
+    "covered": 79,
+    "total": 79
+  },
+  "branch": {
+    "covered": 26,
+    "total": 26
+  },
+  "combined_percent": 100.0,
+  "source_sha256": {
+    "mingjing_core/application/reflection_projection_exp/projector.py": "eac3e8316b367f7d9679afb77674cff30ab6db63510180ec5d09ee4a8dd6bcde",
+    "mingjing_core/application/reflection_projection_exp/types.py": "0b38e3d2aaa489b8bcccb8f86de3a280acdfd8200f0838413dd3042628152f18",
+    "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f"
+  },
+  "source_before_after_equal": true,
+  "coverage_json_sha256": "1cd9bab0693b4793461a3ff26cac75404adc823e4cbc294eff4b2adfb96ff696",
+  "raw_log": "private/mod-week/RPF01_coverage_final.log",
+  "raw_log_sha256": "ca2c0994773dd13c3a09c984db4ab5fb331ba828ee27e2a75db4be2cc19451b5",
+  "limitations": [
+    "Line/branch observation is not condition or exhaustive type-safety proof",
+    "No frozen product or fixture edited to increase coverage",
+    "No production/network/model/database validation"
+  ]
+}

@@ -43,6 +43,7 @@ SUITES = (
     "reports_v2",
     "reflection_v3",
     "mod_final_pipeline",
+    "reflection_projection_exp",
 )
 
 
@@ -138,6 +139,8 @@ def material_paths() -> set[Path]:
         )
     if "mod_final_pipeline" in SUITES:
         paths.add(ROOT / "tools/eval/fixtures/mod_20261021/final_pipeline_synthetic.json")
+    if "reflection_projection_exp" in SUITES:
+        paths.add(ROOT / "tools/eval/fixtures/mod_20261021/reflection_projection_vectors_synthetic.json")
     return paths
 
 
