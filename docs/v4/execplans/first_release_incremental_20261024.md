@@ -14,6 +14,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 04:00 +08:00) 新source_postcheck只读终态组件7个独立行为按首轮6通过/1夹具错误、仅该失败节点复验1通过完成实证。真实prefix4/7执行候选forward_core、当前K3环境实际PostgresSaver.setup及grant_new_runtime后分别核owner/writer；真实字段/列/权限/sequence/事务与PID故障拒绝且不修复。两正例同JUnit记录SDK版本10→10、新增0，setup实际已调用；未接同call源写编排。
+
 - [x] (2026-10-24 03:56 +08:00) Source guard只读基础的12个独立行为已有分轮实证（纯文件1、真实PG夹具11）：首8为2绿6红，失败6复验3绿3红，Windows同锁句柄修复后仅3红与受影响纯文件复验4绿，最后未执行4项独立4绿；不是一次12/12。实际4/7源双栅栏、维护材料与UTC完整状态核验已通过，未接源写入口。
 
 - [x] (2026-10-24 02:00 +08:00) 实现显式backup-local与真实双栅栏、候选prefix4/7原生导出、实际PG15 dump、完整状态不变及失败保留。
@@ -31,6 +33,8 @@
 
 ## Surprises & Discoveries
 
+source_postcheck首链为`private/safe-narrow-b249cd4b0fed424bb51981251918c464/metadata.json`，03:56:21–03:58:14 +08:00，6 passed/1 failed in112.07s。唯一失败是新测试试图把core_entities.status从text改成varchar(64)，PG原生FeatureNotSupported拒绝，因为既有core_embedding_retirement触发器依赖该列；尚未调用被测postcheck，独立nullability分支也未执行。根只批准将类型故障改为实际有行且无此触发依赖的core_subjects.label，先实读行数/最大长度作夹具前置断言，保留updated_at DROP/SET NOT NULL及全部拒绝/不修复断言。仅该失败节点复验为`private/safe-narrow-ce8b391fc7604fb0a290320aed84d74a/metadata.json`，04:00:10–04:00:29 +08:00，1 passed in18.42s；旧6绿未重跑。两轮均实际K3 host、Asia/Tokyo、清凭据/关追踪，真实模型/外发/服务器0。首链同JUnit的两个prefix正例均记录sdk_checkpoint_versions_before=10、after=10、new_migration_versions=0：真实setup已调用，不能把新增0版本写成setup未执行或零SQL。
+
 Source guard首链为`private/safe-narrow-6e1df593540c458bb46f205f00efc683/metadata.json`，03:35:54–03:39:11 +08:00，2 passed/6 failed in196.04s。纯文件existing-only及control漂移先通过；其余六项在whole BackupInputs比较即拒绝，未触达各自目标。旧测试repin手工构造的ReleasePin.locks沿LOCKS常量顺序，官方parse按键排序；只有新测试自有fixture在任何M1捕获之前通过官方BackupInputs.parse(source_document(...),workspace)规范化，生产whole-object比较没有放宽。
 
 仅失败六项复验为`private/safe-narrow-525e369381714451b8dcc8862856dc38/metadata.json`，03:40:38–03:43:32 +08:00，3 passed/3 failed in173.07s。真实缺fence、缺marker及backup-started额外字段三项已按预期拒绝且未补文件；4/7正例及同字节marker换inode共同在锁内复读fence时收到SOURCE_GUARD_MATERIAL_FAILED。获批真实纯文件诊断确认：Windows原LockFileEx独占锁内，空fence与9字节合成fence的新句柄read_bytes均抛PermissionError（winerror=None）。这是新guard的实际跨平台接缝，不能归为夹具或省略fence hash。
@@ -46,6 +50,8 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+source_postcheck仅新增`tools/first_release_source_postcheck.py`及专属PG测试，不修改旧ACL、RestoreContract、业务/迁移/SDK或源写入口。真实autocommit连接必须在RO/RR、pg_catalog事务中，当前源DB/role OID由checked_identity核，SID仍由未来scope的受审admin连接核，owner不提权。原字段按capture列集合、UTC与PG jsonb_agg/C排序摘要比较；仅对Core账本取原prefix、checkpoint账本取前态实际版本集合，完整新history与SDKhistory另核。只有新fixture的类型故障换列，未删/停retirement trigger、未降低旧字段或列元数据断言；测试中对夹具故障的恢复发生在拒绝后状态不变已实查之后，不是helper自动修复。根于复验期间从88f1d27切本地子分支`v4/p3-wire-source-forward-20261024`继续，父远端`v4/p3-wire-incremental-20261024`保留88的CI；未reset/stage本片，复验archive使用明确HEAD。新终态观察不是SourceUpgradeWitness，JSON不赋源写权，guard/runtime/proof组合及M3b继续待做。
 
 Source guard只新增`tools/first_release_incremental_guard.py`与专属PG测试，并获批窄改原writer_fence的existing_only/return_handle参数。默认锁行为不变；existing_only不建目录或重建缺失fence，return_handle仅供guard内部用实际持锁句柄读取，held_source始终yield None、不暴露连接/句柄或写权。每次fence读取前后完整核pathstat/fstat的dev、inode、size、mtime、字节长度与SHA，marker/start仍独立读取并核严格原形状、身份/hash；不跳过Windows真实锁。新guard三个实际控制SHA与原M1八控制、CaptureBinding四控制分别完整验证，实际SID/OID、合法4/7角色/关系权限、owner全集、真实活动PID与无busy源、完整UTC列/全部行字段/raw sequence均重核。持双锁后可在body内生成目标证明，但当前只读scope退出仍要求原capture不变，不能包装DDL或凭返回JSON获得源写权限。未来源编排须另消费sealed TargetProof与实际controller RuntimeWitness并在表锁后取fresh snapshot；现片不提供该能力，也不宣称全局静默、零一切FS动作或Linux通过。
 
@@ -191,7 +197,9 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 ## Outcomes & Retrospective
 
-Source guard只读基础已分轮覆盖12个行为，保留首轮whole-input夹具错误与第二轮真实Windows锁读故障，不合并为一次全绿。最终guard/fence/新测试分别233/134/268行，单函数最长60行；Ruff E/F/I/B/UP/SIM及120列format通过。原维护marker/backup-started均不删除或补造，实际源状态不被修改/自动修复，source_upgraded、正式native/Linux/central/publication仍关闭。此片没有实现SourceUpgradeWitness、fresh表锁后前向写、源隐私重放/回填，也未验证与完整目标证明/运行时门组合的源升级入口；新source_postcheck/helper测试仅静态，未接源编排或取得真实PG证据。
+source_postcheck组件的7个独立行为已有6+1分轮真实PG实证，保留原类型故障被PG触发器依赖拒绝的夹具失败，不称一次7/7。helper330行、专属测试256行，单函数最长44行；Ruff E/F/I/B/UP/SIM、120列format及AST通过。实际4/7原状态捕获→Core8→SDK setup→grant仅为测试夹具，分别验证只读owner/writer终态与拒绝后不修复；不是默认或既有源写命令，也未实证同call Proof/runtime/双栅栏写入组合。SDK新版本数为0，未覆盖发生待应用SDK迁移的旧版本升级。所有source_write_authorized、global_quiescence、正式runtime/Linux/publication位仍false，SID不由该helper声明已核。
+
+Source guard只读基础已分轮覆盖12个行为，保留首轮whole-input夹具错误与第二轮真实Windows锁读故障，不合并为一次全绿。最终guard/fence/新测试分别233/134/268行，单函数最长60行；Ruff E/F/I/B/UP/SIM及120列format通过。原维护marker/backup-started均不删除或补造，实际源状态不被修改/自动修复，source_upgraded、正式native/Linux/central/publication仍关闭。此片没有实现SourceUpgradeWitness、fresh表锁后前向写、源隐私重放/回填，也未验证与完整目标证明/运行时门组合的源升级入口；新source_postcheck独立组件已按上述范围取得真实PG证据，尚未接入源编排。
 
 controller运行时独立组件的四个实际进程/依赖/已加载模块行为已定向通过；其opaque凭据仍未接入后续源guard与迁移编排。TargetProof八个独立行为现按4+3+1分轮实证，另必要旧public prefix7兼容1；只证明仍持creator锁的新目标链及前后真实终态一致，controller_runtime_verified/source_write_authorized仍false。不能由独立运行时组件的摘要替代same-call目标恢复/原始内容/重放证明，也不能仅凭TargetProof写源。source_upgraded及正式native/Linux/central/publication继续关闭。
 
@@ -215,3 +223,4 @@ M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/2
 - 2026-10-24 03:35 +08:00：记录独立controller运行时组件唯一4/4实证与合成候选绑定边界；保持TargetProof组合、源编排与正式发布关闭，单独提交已完成小片。
 - 2026-10-24 03:47 +08:00：TargetProof首8为4绿4strict源夹具绑定失败；按根审仅捕获前官方parse规范化fixture后仅4红复验3绿1 M1握手session setup错误。保留两轮真实结果，未自动重试/放宽硬门，旧compat未跑，释放测试槽待根协调。
 - 2026-10-24 03:55 +08:00：按根审增加仅新ledger fixture的拒绝后PID/backend_type私有诊断，最终fence冻结后仅ledger1+旧public prefix7兼容1通过，2/2、147.93秒；不重复7绿，不重解释旧失败，冻结六路径交根审。
+- 2026-10-24 04:00 +08:00：新增只读source_postcheck组件与7节点测试，首轮6绿1夹具失败完整保留；仅按根审把类型故障换到无trigger依赖的core_subjects.label，保留独立nullability及全部拒绝/不修复断言后只复验该节点1/1。原helper与6绿均未改/重跑；同JUnit实际SDK10→10/new0且setup已调用。四活节更新当前证据和未覆盖范围，3路径冻结交根审；新分支v4/p3-wire-source-forward-20261024自88f1d27延续，无git写入。
