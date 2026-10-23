@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 
 from psycopg import sql
 from psycopg.types.json import Jsonb
@@ -128,6 +128,56 @@ class MemoryProposalService:
                 payload,
                 partial(self._reject, owner, subject, proposal_id, expected_revision, operation_id),
             )
+
+    def resolve_conflict(
+        self,
+        owner: str,
+        subject: str,
+        proposal_id: str,
+        *,
+        expected_revision: int,
+        message_id: str,
+        choice: Literal["old", "new"],
+        remember_category: bool = False,
+        operation_id: str,
+    ) -> dict[str, Any]:
+        from mingjing_core.application.memory2_conflict_resolution import (
+            MemoryConflictResolutionService,
+        )
+
+        return MemoryConflictResolutionService(self.memory).resolve(
+            owner,
+            subject,
+            proposal_id,
+            expected_revision=expected_revision,
+            message_id=message_id,
+            choice=choice,
+            remember_category=remember_category,
+            operation_id=operation_id,
+        )
+
+    def undo_conflict(
+        self,
+        owner: str,
+        subject: str,
+        proposal_id: str,
+        *,
+        expected_revision: int,
+        message_id: str,
+        operation_id: str,
+    ) -> dict[str, Any]:
+        from mingjing_core.application.memory2_conflict_resolution_undo import (
+            MemoryConflictUndoService,
+        )
+
+        return MemoryConflictUndoService(self.memory).undo(
+            owner,
+            subject,
+            proposal_id,
+            expected_revision=expected_revision,
+            message_id=message_id,
+            operation_id=operation_id,
+        )
 
     def _reject(self, owner: str, subject: str, ident: str, revision: int, operation_id: str) -> dict[str, Any]:
         proposal = self._pending(owner, subject, ident, revision, allow_conflict=True)
