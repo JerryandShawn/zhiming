@@ -1,0 +1,40 @@
+id: MS03
+title: 飞书历史在网页回忆中保持同一 owner
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  settings:
+    auto_save_categories:
+    - health
+  thread:
+  - id: feishu-sleep-source
+    role: user
+    content: 我最近睡眠不好
+    at: '2026-10-12T10:30:00+08:00'
+    channel: feishu
+  facts:
+  - id: sleep-fact
+    kind: concern
+    summary: 合成睡眠近况
+    quote: 我最近睡眠不好
+    source_message_id: feishu-sleep-source
+    sensitivity: health
+turns:
+- user: 最近该注意什么？
+  expect:
+    must_include_all:
+    - 睡眠
+    tools_not_called:
+    - memory_write
+    db:
+    - path: context.l2.text
+      contains: 睡眠不好
+scripted:
+- turn: 1
+  model:
+  - text: 你前些天提过睡眠不好，可以先留意作息与精力；如果持续不适，和医生聊聊。
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。 飞书仅为已绑定的合成历史源，无飞书投递；初始事实声明既有授权，不证明新健康保存。

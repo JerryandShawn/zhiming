@@ -1,0 +1,41 @@
+id: A03
+title: 只知考虑跳槽，不能编造公司名
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+turns:
+- user: 我在考虑跳槽
+  expect:
+    receipts:
+    - write_status: saved
+  at: '2026-10-03T10:30:00+08:00'
+- user: 我上次面的那家公司叫什么？
+  expect:
+    must_include_any:
+    - 没提公司
+    - 不知道
+    tools_not_called:
+    - memory_write
+    db:
+    - path: context.l2.text
+      contains: 考虑跳槽
+  at: '2026-10-17T10:30:00+08:00'
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我在考虑跳槽
+        summary: 我在考虑跳槽
+        kind: background
+  - text: 记下了，你正在考虑跳槽。
+- turn: 2
+  model:
+  - text: 你说过在考虑跳槽，但没提公司名，我不知道那家公司叫什么。
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。
