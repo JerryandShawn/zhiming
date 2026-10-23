@@ -14,6 +14,10 @@ Outcomes & Retrospective（2026-10-23 23:36 +08:00）：本片11个目标已验�
 
 2026-10-23 23:45 +08:00复核：仅加强并重跑既有`[revoke]`目标1/1通过（5.43秒，`private/safe-narrow-f94b090dbcd642c6bf2390973c19f9eb/metadata.json`）。原生撤销前确认新eval_lifecycle行包含私密seed/state，撤销后直接读取core_entities确认status=deleted且data={}，证明整份新私密状态本体已清空，没有生产补丁。没有重复11题，令牌已释放。本片装配只验证k3-256k；fallback k3后续可能需要已验证模型选择作用域，尚未验证，更不能声称quota/judge完整续作。
 
+下一片范围与实际阻塞（只读核对，尚未实现）：只考虑未过原deadline、明确记录为quota拒绝的primary同run恢复；保留原run/epoch，经合法新lease执行，不重新receive、queue或prepare_retry。RuntimeLimits已把每epoch绝对deadline与配置固定并校验hash，不能清除、延长或重置；还须持久化已消费的实际单调时钟预算并在恢复时扣除，不能因新RunControl把计时归零。业务FrozenClock与真实执行/授权时间必须分开。当前不声称长5小时等待后仍可继续。
+
+恢复前另有三个硬缺口：AgentRuntime._start会再次发started，ToolBatch对已完成步骤仍会发tool_call/tool_result，需要明确避免恢复遍历产生重复执行事件；中央物理attempt当前缺少与Journal seq的明确关联，不能以次数或不同时间基准猜测，成功POST但步骤未完成、未结束或unknown记录一律停止；primary进入succeeded而judge未完成时，需要另设校验真实结果的只读评审阶段，不能放开终态run执行。judge请求/结果日志、额度清停及CLI --resume仍保持关闭，以上约束未验收前不解除任何门。
+
 当前离线CLI首次30/30，真实调用为0。可信等价证明至core会话的接线已用真实隔离PG与替身HTTP验证；正式脚本门和真实20步等价证明仍未齐，生产core依然不放行，跨额度窗口的持久续作尚未接通。本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
 
 ## 固定范围与评分
