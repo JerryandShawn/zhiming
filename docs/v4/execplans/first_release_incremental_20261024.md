@@ -14,6 +14,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 03:56 +08:00) Source guard只读基础的12个独立行为已有分轮实证（纯文件1、真实PG夹具11）：首8为2绿6红，失败6复验3绿3红，Windows同锁句柄修复后仅3红与受影响纯文件复验4绿，最后未执行4项独立4绿；不是一次12/12。实际4/7源双栅栏、维护材料与UTC完整状态核验已通过，未接源写入口。
+
 - [x] (2026-10-24 02:00 +08:00) 实现显式backup-local与真实双栅栏、候选prefix4/7原生导出、实际PG15 dump、完整状态不变及失败保留。
 - [x] (2026-10-24 02:00 +08:00) 首链8/8真实PG/实际程序/跨进程目标通过，96.61秒；清凭据关追踪，仅1测试进程，无失败、无补跑，已释放测试令牌。
 - [x] (2026-10-24 02:02 +08:00) 根审新增1/1真实跨进程cooperative_writer目标通过，16.79秒：同child先实际写合成行，备份释放OS/PG锁后仍由持久marker阻止第二行；仅运行此目标，未重复8项。
@@ -21,10 +23,19 @@
 - [x] (2026-10-24 03:05 +08:00) M3a第一小片仅新增中性migration_steps与严格source_profile，静态冻结供根审；没有接入入口、修改旧tools或运行测试，typed证明与源升级尚未实现。
 - [x] (2026-10-24 03:10 +08:00) M3a第一小片8个新节点实证完成：首链6绿/2正例夹具比较错误，按根审仅修原prefix账本行投影后2正例复验2绿；原6绿未重跑。冻结两helper、新PG测试及本计划，释放测试令牌。
 - [x] (2026-10-24 03:09 +08:00) M1→M2→8→真实候选双重放的单链已由恢复片提交并推送7e2c870，详细分段前态/后态及两次fixture错误统一见原恢复ExecPlan。为保留该父分支CI，本计划后续在同目录子分支v4/p3-wire-incremental-20261024继续；没有重置或覆盖并行WIP。
-- [x] (2026-10-24 03:35 +08:00) 独立controller运行时门4/4通过，6.32秒：实际Python3.11 venv、活动Core依赖闭包及已加载PostgresSaver来源/SQL重核，返回不可序列化的进程内凭据；尚未与TargetProof组合或接入源升级。
-- [ ] 后续在用户已授权的本机开发范围内，实现同call实际证明、完整源guard与fr_upgrade前向入口，再落实源既有撤销重放与回填；尚无源升级命令。
+- [x] (2026-10-24 03:35 +08:00) 独立controller运行时门4/4通过，6.32秒：实际Python3.11 venv、活动Core依赖闭包及已加载PostgresSaver来源/SQL重核，返回不可由JSON重建的进程内凭据；尚未与TargetProof组合或接入源升级。
+- [x] (2026-10-24 03:40 +08:00) 记录TargetProof首8节点4通过/4源夹具严格绑定失败，实际正常mint及4个关闭行为已有证据；仅捕获前按官方parse规范化fixture，原strict比较保持，后续不重复4绿。
+- [x] (2026-10-24 03:47 +08:00) 记录仅4红复验3通过/1 M1握手精确session setup错误；生产strict控制未变，首4绿及复验3绿不重复，本轮唯一未触达ledger漂移目标保留真实失败记录。
+- [x] (2026-10-24 03:55 +08:00) 根批准最终fence冻结后仅补ledger1+旧public M2 prefix7兼容1，2通过/147.93秒；Proof八行为现按4+3+1分轮实证，另兼容1，不称一次8/8或9/9。只在ledger新fixture安装拒绝后body-free会话诊断，通过不造诊断；已释放测试令牌，冻结本片六路径供根审。
+- [ ] 后续在用户已授权的本机开发范围内，将同call目标证明与controller门组合到完整源guard及fr_upgrade前向入口，再落实源既有撤销重放与回填；尚无源升级命令。
 
 ## Surprises & Discoveries
+
+Source guard首链为`private/safe-narrow-6e1df593540c458bb46f205f00efc683/metadata.json`，03:35:54–03:39:11 +08:00，2 passed/6 failed in196.04s。纯文件existing-only及control漂移先通过；其余六项在whole BackupInputs比较即拒绝，未触达各自目标。旧测试repin手工构造的ReleasePin.locks沿LOCKS常量顺序，官方parse按键排序；只有新测试自有fixture在任何M1捕获之前通过官方BackupInputs.parse(source_document(...),workspace)规范化，生产whole-object比较没有放宽。
+
+仅失败六项复验为`private/safe-narrow-525e369381714451b8dcc8862856dc38/metadata.json`，03:40:38–03:43:32 +08:00，3 passed/3 failed in173.07s。真实缺fence、缺marker及backup-started额外字段三项已按预期拒绝且未补文件；4/7正例及同字节marker换inode共同在锁内复读fence时收到SOURCE_GUARD_MATERIAL_FAILED。获批真实纯文件诊断确认：Windows原LockFileEx独占锁内，空fence与9字节合成fence的新句柄read_bytes均抛PermissionError（winerror=None）。这是新guard的实际跨平台接缝，不能归为夹具或省略fence hash。
+
+最小修复后仅三红与受影响纯文件节点复验，`private/safe-narrow-70822d1398fc4da29a93b9704a307fa1/metadata.json`，03:51:05–03:53:40 +08:00，4 passed in154.09s。真实Windows锁内原句柄可读、新句柄拒绝，默认file_lock仍yield None；4/7源实际持文件/PG双独占锁、仅四个自身实际PID连接且都以只读启动，同字节marker换inode退出时拒绝。最后四个此前未执行节点单独为`private/safe-narrow-ce24164f06024dacb4695dd51eb2eb95/metadata.json`，03:54:05–03:56:20 +08:00，4 passed in133.93s：真实timestamp字段漂移、queued run、额外当前PID及额外view均拒绝且不修回/清理源。上述各轮与原始失败日志分别保留，未重复其余绿项；均清凭据关追踪、TZ Asia/Tokyo、真实模型/外发/服务器0。
 
 controller已加载业务模块，不具备fresh worker的-I/-B进程条件。因此新增独立运行时门，核当前解释器、venv内实际distribution与依赖边、PostgresSaver实际模块及MIGRATIONS；不借worker的旧回执宣称controller已验证。四个新目标使用合成候选/manifest绑定及真实审核锁副本，实际解释器/已加载模块参与核验；没有验证真实Git发布包或PG接线。
 
@@ -35,6 +46,8 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+Source guard只新增`tools/first_release_incremental_guard.py`与专属PG测试，并获批窄改原writer_fence的existing_only/return_handle参数。默认锁行为不变；existing_only不建目录或重建缺失fence，return_handle仅供guard内部用实际持锁句柄读取，held_source始终yield None、不暴露连接/句柄或写权。每次fence读取前后完整核pathstat/fstat的dev、inode、size、mtime、字节长度与SHA，marker/start仍独立读取并核严格原形状、身份/hash；不跳过Windows真实锁。新guard三个实际控制SHA与原M1八控制、CaptureBinding四控制分别完整验证，实际SID/OID、合法4/7角色/关系权限、owner全集、真实活动PID与无busy源、完整UTC列/全部行字段/raw sequence均重核。持双锁后可在body内生成目标证明，但当前只读scope退出仍要求原capture不变，不能包装DDL或凭返回JSON获得源写权限。未来源编排须另消费sealed TargetProof与实际controller RuntimeWitness并在表锁后取fresh snapshot；现片不提供该能力，也不宣称全局静默、零一切FS动作或Linux通过。
 
 controller运行时凭据只作为未来同call源升级的必要条件。私有registry登记RuntimeWitness，verified_saver消费时重新核全部活动输入并返回同一个已验Saver类；复制的JSON摘要不赋权。后续必须与单次TargetProof共同形成源升级许可，任一单独通过都不能迁移源库。运行时门不访问PG、模型或网络，不声称wheel/.pth供应链、Linux或正式发布通过。
 
@@ -130,11 +143,37 @@ local_pg.create_target在本次创建两roles的事务内立即读取并保留�
 
 静态实现为新target_proof及窄改local_pg/capture_binding/local_restore：M2现在比较创建时registry三OID；公共execute只抽共享context，旧参数/JSON未改；private proof路径没有success.json或旧receipt导入。新独立reviewed pin固定17个实际controller文件，继承M1八控制、capture四控制与candidateReplay的worker/effects/runtime/ledger绑定；旧B1仅generic checkpoint grant函数实际来源受pin，不使用其旧固定候选/restore importer或admission。后续R3只小改fence的existing_only读模式，该文件属原M1八控制，必须双方静态冻结后才生成本片新捕获，避免在途pin漂移。
 
+TargetProof首链`private/safe-narrow-e35fb5589e354bd0b3ff657c881803d6/metadata.json`，03:30:01–03:40:06 +08:00，4 passed/4 failed in604.01s，Asia/Tokyo测试、真实模型/外发/服务器0。正常实际capture/restore/upgrade/replay已抵达mint；4绿为context finally过期且库保留、实际replay后ACL污染拒绝、实际quota sequence使用拒绝，以及default/缺flag零目标副作用+未注册/关闭creator。4红为正常单次消费、同名DB重建OID、实际目标DML、实际ledger字节漂移，均先触发TARGET_PROOF_SOURCE_BINDING，后三预期错误尚未触达。
+
+根与R3已定位同类测试夹具格式差异：repin手建ReleasePin.locks tuple按LOCKS固定序，官方parse按名字排序，strict源对象摘要因此不同。仅在新proof_case捕获之前通过官方BackupInputs.parse(source_document(...),workspace)规范化测试自有源inputs；不修改已捕获dump/旁账/目标，不改生产strict source digest/whole equality或正确断言。根授1槽只复验这4红，原4绿不重复，旧prefix7兼容暂不运行，不能称一次8/8。
+
+仅4红复验为`private/safe-narrow-e721a757b1b44b60b4bf522efd8abec4/metadata.json`，03:42:13–03:47:42 +08:00，3 passed/1 setup error in328.86s。正常实际单次消费、真实同名DB重建出生OID拒绝、真实目标DML漂移/不修回/单次失效已通过；runtime/source/native/Linux等仍false。唯一ledger字节漂移节点在fixture生成M1捕获的候选worker握手阶段，尚未yield proof_case时，由精确sessions检查报INCREMENTAL_OTHER_SOURCE_SESSION（incremental_pg.py:300→117），未触达目标restore/proof/ledger改动。未自动重试、不放宽session硬门，失败日志保留，已向根报告并释放槽；当前为首4绿+后3绿+1setup阻塞，不能称8全绿，旧M2兼容仍未运行。此时本片代码继续冻结，后续fence必要Windows同句柄修复由根与R3另协调，不能在本轮在途改pin。
+
+03:52根批准仅新增ledger节点fixture诊断：先调用原精确sessions，仅同一固定拒绝后再读当前PID/backend_type及allowed PID，随机private目录保存`observation=after_rejection_current`；它是拒绝后的当前集合，不代表原瞬间集合。观测/写文件失败不替换原拒绝，不读取DSN/appname/query/正文，不放宽集合、改会话或自动重试；通过时不造诊断。R3最终fence已冻结SHA256 `0b9b018ef0c3cb24c9fd17472a72a3719f11a1de71830175f1c23b2e35764e91`，根授1槽仅ledger1及旧public M2 prefix7兼容1，已有7绿不重复，不能冒称一次Proof8/8。
+
+最终必要补链`private/safe-narrow-722820d2595b48e39901bd19fae6a3b4/metadata.json`，03:53:06–03:55:34 +08:00，2 passed in147.93s。先只读collect精确确认旧参数ID `[core-only-7]`；实际运行仅新ledger目标与该旧public M2目标。ledger实际在mint后改字节，consume重核文件拒绝、不再重放/修改目标，token也已耗尽；旧public默认管线按最终fence实际完成原始内容绑定→升级，保持兼容。此链没有触发sessions拒绝，不人为造PID诊断；之前setup错误真实原因尚无当时PID实证，不能把维护进程猜测当事实。Proof八节点为首轮4绿+fixture修正复验3绿+此次ledger1绿，另旧兼容1；不重跑7绿，不称单次8/8或9/9。令牌已释放，所有source/controller/native/runtime/Linux/central/publication正式门继续false。
+
 ## M3a controller运行时独立组件（03:35定向完成，接线未完成）
 
 新增`tools/first_release_controller_runtime.py`（308行）及专用测试`tests/v4/release/test_first_release_controller_runtime.py`（225行），单函数最长35行。ControllerRuntimePin固定候选/manifest/Core锁、helper与Python实际SHA、Saver distribution版本、init/base实际文件SHA及MIGRATIONS数量/摘要；核已安装活动包的版本、位置、platform marker与Requires-Dist extras闭包。实际模块必须来自当前venv，类/基类/SQL列表身份与setup代码来源匹配；调用verified_saver再次核验当前状态。没有修改旧工具或依赖锁，没有CLI或源写入口。
 
 唯一首链`private/safe-narrow-6820f8813b2a41afabf042644f36fed4/metadata.json`，03:31:39–03:31:46 +08:00，4 passed in6.32s。四个节点分别验证真实3.11 venv及活动依赖闭包正例、实际错误解释器/非venv和hash拒绝、实际已加载Saver替换或SQL变更拒绝、合成锁漏掉真实活动依赖拒绝。正例候选/manifest为显式合成绑定，Core锁为审核副本；不能据此宣称已验真实Git候选、PG、TargetProof或源升级。子进程禁网络/PG连接，清凭据、关追踪、时区Asia/Tokyo；无真实模型、服务器或外发。Ruff E/F/I/B/UP/SIM、format与AST检查通过，未运行全量或重复旧绿项。
+
+## 下一M3a：同call已有源库forward（实施前）
+
+新增仅本机合成fr_upgrade源的stage-aware编排，将实际TargetProof、controller RuntimeWitness及源双栅栏组合，完成Core8→checkpoint→grant；源隐私重放/回填仍单独待做，维护标记不解除。默认只校文件/pin，0连接/进程/写入；apply_source必须显式。既有只读held_source退出时要求旧baseline相同，保持它不变，不能用它包DDL或松锁后凭旧检查写。
+
+专属scope按原顺序取得existing-only文件EX锁与PG EX锁，核原marker、backup-started、全部capture材料、实际cluster/database/role OID、旧4/7精确profile、owner集合、会话和忙run。在同一scope内执行_proved_target，creator仍存活时直接消费真实TargetProof，只在此受控成功路径生成私有SourceUpgradeWitness；消费JSON只能记录。当前source/replay/runtime pin及实际PostgresSaver生成RuntimeWitness，checkpoint前再verified_saver。两个门须同call组合，任一孤立凭据、summary或人工true都不赋予源写权。
+
+Core阶段复用受pin MigrationBundle/forward_core，READ COMMITTED/READ WRITE中按稳定顺序NOWAIT锁原所有业务与检查点表；锁后再核身份、会话、busy、精确旧profile、全capture baseline与材料，才执行候选原SQL与历史追加的一段事务。提交后独立核完整history1–8，按capture原columns做PG UTC/jsonb_agg/C排序摘要，所有旧字段/旧行/时间戳保持；schema_migrations仅旧prefix投影，新增1–8账本另外精确核。checkpoint_migrations旧版本集合在已通过全baseline的前态内实读固定，SDK允许新增的版本另核，不掩盖旧行变化。新业务/中央表应空、usage sequence未使用。
+
+checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class执行真实setup并核MIGRATIONS完整历史；grant是后续独立事务，仅在旧writer本已精确合法时授予新增运行权限。完整源双锁和原材料跨阶段持有，但这不是一个原子事务。失败记录最后确定阶段；Core已提交后checkpoint/grant失败保留Core8及可能部分checkpoint，不能声称回4/7。提交结果未知标commit_outcome_unknown，失败关闭，不自动重入/清理/回滚或接管prefix8。
+
+新增fr_upgrade窄终态helper，不伪造RestoreContract、不改旧被pinACL入口：复用source_profile.checked_identity核原OID/角色限制，另核schema/关系owner；verify_relations/table_acl按QUOTA实际差异核writer权限，其余表DML/账本只读/序列仅SELECT与USAGE，无grant option/DDL/TEMP/owner/PUBLIC越权；routines(inputs,7)/triggers(7)核实际函数与挂载。单独核完整8历史、SDK历史、中央四表空/sequence未用、owner/session/busy以及允许的阶段变化。旧只收prefix4/7的source_scope不能作为8后验。
+
+首链至多8个必要新节点：合法4、合法7的实际Proof/runtime/source全链；默认0副作用；未注册/失效Proof在首写前拒绝；实际runtime不符首写前拒绝；capture后源真实漂移在锁后拒绝；Core已提交的checkpoint故障保留8/marker且阶段准确；未知提交结果受控失败关闭且不自动重入。已有0006原生事务回滚绿例不重复。先静态冻结接口再授测试槽，不因低层helper通过宣称整个source升级已完成。
+
+后续M3b必须独立受pin的fr_upgrade/OID/真实PID候选worker，按原生apply自身事务边界落实源既有撤销双重放与独立擦除后验，再候选backfill preview→apply→second=0；不得宽化fresh fr_restore worker或外套大事务。此片即使成功也只报source_forward_completed、privacy_replay_pending/backfill_pending；全局停写、正式runtime/Linux/central/publication仍false。
 
 ## Artifacts and Notes
 
@@ -152,13 +191,18 @@ local_pg.create_target在本次创建两roles的事务内立即读取并保留�
 
 ## Outcomes & Retrospective
 
-controller运行时独立组件的四个实际进程/依赖/已加载模块行为已定向通过；其opaque凭据仍未接入后续源guard与迁移编排。TargetProof与源guard此时在独立并行实现，不能由本组件的controller_runtime_verified摘要替代same-call目标恢复/原始内容/重放证明。source_upgraded及正式native/Linux/central/publication继续关闭。
+Source guard只读基础已分轮覆盖12个行为，保留首轮whole-input夹具错误与第二轮真实Windows锁读故障，不合并为一次全绿。最终guard/fence/新测试分别233/134/268行，单函数最长60行；Ruff E/F/I/B/UP/SIM及120列format通过。原维护marker/backup-started均不删除或补造，实际源状态不被修改/自动修复，source_upgraded、正式native/Linux/central/publication仍关闭。此片没有实现SourceUpgradeWitness、fresh表锁后前向写、源隐私重放/回填，也未验证与完整目标证明/运行时门组合的源升级入口；新source_postcheck/helper测试仅静态，未接源编排或取得真实PG证据。
+
+controller运行时独立组件的四个实际进程/依赖/已加载模块行为已定向通过；其opaque凭据仍未接入后续源guard与迁移编排。TargetProof八个独立行为现按4+3+1分轮实证，另必要旧public prefix7兼容1；只证明仍持creator锁的新目标链及前后真实终态一致，controller_runtime_verified/source_write_authorized仍false。不能由独立运行时组件的摘要替代same-call目标恢复/原始内容/重放证明，也不能仅凭TargetProof写源。source_upgraded及正式native/Linux/central/publication继续关闭。
 
 本机合成已有库M1备份入口已有旧版8/8及独立marker1/1证据；M2新增UTC/列集合/lineage捕获与同call新目标原始内容绑定，八个新行为按3+3+2实证。M2只证明本机原始内容匹配，仍未实现整个“源捕获→原始恢复→重放→前向源fr_upgrade库”的放行链。现应用未接栅栏，global_quiescence_verified=false；before_after不排除dump期间瞬时非合作连接。source_restore_content_verified/source_upgraded保持false；逻辑列map不认证默认值、约束、索引/触发器、类型定义或所有DDL。源prefix8/中央账本身份保全、正式恢复、Linux与发布均仍No-Go。测试自产审核pin不认证审核人或完整供应链。没有业务迁移、依赖、既有权限或原b9变更。
 
 M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/213行；新PG测试250行、最长函数55行以内。Ruff E/F/I/B/UP/SIM及120列format通过。真实PG定向6+2已验证上述基础行为；中性grant原语尚未被新入口调用，PostgresSaver checkpoint阶段、完整源状态/运行时门、typed单次证明、源编排及M3b源隐私重放/回填都仍未完成，所有正式门保持false，不给生产/既有prefix8或额外关系开口。
 
 ## 修订记录
+
+- 2026-10-24 03:44 +08:00：根已追加下一M3a同call source forward实施前设计；新source_postcheck/helper测试目前仅静态，未接源编排、未验证PG。本项记录已发生设计来源，不补造小时进度。
+- 2026-10-24 03:56 +08:00：记录source guard两轮真实红与最小夹具/Windows同句柄修复，再分别仅复验受影响4项及最后未执行4项；12行为按分轮证据成立，源升级与正式门继续关闭，冻结三代码路径供根统一审阅提交。
 
 - 2026-10-24 01:39 +08:00：创建独立增量M1计划，先于编码明确实际备份与合作性栅栏边界。
 - 2026-10-24 02:00 +08:00：记录唯一真实8目标链全通过与snapshot/序列实证；保留全局停写、原始恢复绑定及正式发布关闭，冻结六路径待根审阅。
@@ -169,3 +213,5 @@ M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/2
 - 2026-10-24 03:05 +08:00：获批M3a分片先静态实现两个独立helper，采纳READ COMMITTED、真实trigger挂载、PUBLIC授权、单次内存证明与后验顺序硬门；未改R3冻结的旧工具，未运行测试。
 - 2026-10-24 03:10 +08:00：根授1测试槽后新基础片首链6绿2夹具比较失败，保留真实证据；按根审只校正合法账本append的旧行范围，单独复验2正例通过，冻结四路径交审，不重跑其余六绿。
 - 2026-10-24 03:35 +08:00：记录独立controller运行时组件唯一4/4实证与合成候选绑定边界；保持TargetProof组合、源编排与正式发布关闭，单独提交已完成小片。
+- 2026-10-24 03:47 +08:00：TargetProof首8为4绿4strict源夹具绑定失败；按根审仅捕获前官方parse规范化fixture后仅4红复验3绿1 M1握手session setup错误。保留两轮真实结果，未自动重试/放宽硬门，旧compat未跑，释放测试槽待根协调。
+- 2026-10-24 03:55 +08:00：按根审增加仅新ledger fixture的拒绝后PID/backend_type私有诊断，最终fence冻结后仅ledger1+旧public prefix7兼容1通过，2/2、147.93秒；不重复7绿，不重解释旧失败，冻结六路径交根审。

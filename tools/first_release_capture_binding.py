@@ -210,6 +210,29 @@ class CaptureBinding:
         return source, receipt_binding(receipt, source, self.pin)
 
 
+def _original_identity(inputs: LocalInputs, creator: Any, connection: Any) -> dict[str, Any]:
+    from tools.first_release_local_pg import _birth_identity
+
+    birth = _birth_identity(inputs, creator)
+    actual = connection.execute(
+        "SELECT oid,datdba,(SELECT oid FROM pg_roles WHERE rolname=current_user) AS role_oid "
+        "FROM pg_database WHERE datname=current_database()"
+    ).fetchone()
+    known = creator.execute(
+        "SELECT oid,datdba,(SELECT oid FROM pg_roles WHERE rolname=%s) AS writer_oid FROM pg_database WHERE datname=%s",
+        (inputs.contract.database + "_writer", inputs.contract.database),
+    ).fetchone()
+    require(
+        actual
+        and known
+        and actual["oid"] == known["oid"] == birth.database_oid
+        and actual["datdba"] == actual["role_oid"] == known["datdba"] == birth.owner_oid
+        and known["writer_oid"] == birth.writer_oid,
+        "CAPTURE_FRESH_TARGET_IDENTITY",
+    )
+    return actual
+
+
 def target_state(inputs: LocalInputs, dsns: dict[str, str], creator: Any, source: BackupInputs) -> dict[str, Any]:
     from tools.first_release_incremental_pg import readonly, snapshot
     from tools.first_release_local_pg import server_identity
@@ -224,20 +247,7 @@ def target_state(inputs: LocalInputs, dsns: dict[str, str], creator: Any, source
     ):
         connection.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
         server_identity(connection, fields)
-        actual = connection.execute(
-            "SELECT oid,datdba,(SELECT oid FROM pg_roles WHERE rolname=current_user) AS role_oid "
-            "FROM pg_database WHERE datname=current_database()"
-        ).fetchone()
-        known = creator.execute(
-            "SELECT oid,datdba FROM pg_database WHERE datname=%s", (inputs.contract.database,)
-        ).fetchone()
-        require(
-            actual
-            and known
-            and actual["oid"] == known["oid"]
-            and actual["datdba"] == actual["role_oid"] == known["datdba"],
-            "CAPTURE_FRESH_TARGET_IDENTITY",
-        )
+        actual = _original_identity(inputs, creator, connection)
         owners = sorted(row["id"] for row in connection.execute("SELECT id FROM mingjing_core.core_owners"))
         require(owners == list(source.source.owners), "CAPTURE_RESTORED_OWNER_SET")
         rows = connection.execute("SELECT version,checksum FROM mingjing_core.schema_migrations").fetchall()
