@@ -11,6 +11,7 @@ from typing import Any
 from psycopg import sql
 
 from mingjing_core.application.consultation import ConsultationService
+from mingjing_core.application.thread_ingress import ThreadIngress
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.repositories.postgres import ENTITY_KINDS, PostgresRepository
 from tools.eval.providers.scripted import ScriptedProvider
@@ -38,6 +39,7 @@ from .v4_protocols import ScriptedWirePort, run_matrix
 from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
 from .v4_tarot import TarotDriver
+from .v4_withdrawal import configure_withdrawal, regeneration_state, withdrawal_observations
 
 
 class V4Target:
@@ -78,7 +80,7 @@ class V4Target:
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
         self.repo.ensure_owner(
             self.owner,
-            settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})},
+            settings={"auto_save_low_sensitivity": True, **seed.get("settings", {}), "runtime": "v4"},
         )
         self._ports()
         self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
@@ -147,28 +149,17 @@ class V4Target:
             conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
         )
         self.bindings[f"turn-{index}"] = source["id"]
-        run = self.repo.queue_run(
-            self.owner,
-            operation,
-            {
-                "message": turn["user"],
-                "source_message_id": source["id"],
-                "case_ids": cases,
-                "draw_id": draw_id,
-                "reading_id": self.tarot.failed_reading if draw_id else None,
-                "thread_id": self.thread["id"],
-                "incognito": self.seed.get("incognito", False),
-                "depth": "standard",
-            },
+        run = ThreadIngress(self.service).queue(
+            owner=self.owner,
+            thread_id=self.thread["id"],
+            source_ids=[source["id"]],
+            request_id=operation,
+            conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
             case_ids=cases,
+            draw_id=draw_id,
+            reading_id=self.tarot.failed_reading if draw_id else None,
+            depth="standard",
         )
-        with self.repo.transaction(self.owner) as connection:
-            connection.execute(
-                sql.SQL("UPDATE {} SET runtime='v4',thread_id=%s WHERE owner=%s AND id=%s").format(
-                    self.repo.table("core_runs")
-                ),
-                (self.thread["id"], self.owner, run["id"]),
-            )
         if draw_id:
             self.tarot.resume(run)
         return self.repo.claim_run(self.owner, run["id"], lease_seconds=150)
@@ -185,6 +176,7 @@ class V4Target:
         self.port.start(self.provider, turn["_index"], self.bindings)
         if isinstance(self.port, FaultScriptedPort):
             self.port.failure = self.seed.get("controls", {}).get("provider_failures", {}).get(str(turn["_index"]))
+            configure_withdrawal(self, run)
         if self.critic:
             self.critic.start(self.critic_provider, turn["_index"], self.bindings)
         return run, resumed
@@ -219,6 +211,7 @@ class V4Target:
             semantic.insert(0, resumed)
         if result and retry:
             semantic.insert(0, retry)
+        semantic.extend(withdrawal_observations(self, run_id))
         if result and self.seed.get("controls", {}).get("model_matrix") and not self.protocol:
             self.portability = run_matrix(self.seed, turn, self.dsn)
             if not self.portability["protocol_errors"]:
@@ -342,6 +335,7 @@ class V4Target:
                 "privacy_initial_layers": self.privacy_initial,
                 "repeated_call_count": repeat_count(steps),
                 "usage": run.get("usage", {}),
+                **regeneration_state(run),
                 **({"ingress": self.feishu.proof} if self.feishu else {}),
                 **self.cancellation,
             },

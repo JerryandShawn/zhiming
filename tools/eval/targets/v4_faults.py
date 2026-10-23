@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from typing import Any
 
 from psycopg import sql
@@ -18,8 +18,17 @@ class FaultScriptedPort(ScriptedModelPort):
     def __init__(self, *, crash_after_tool: bool = False) -> None:
         super().__init__()
         self.crash_after_tool, self.crashed, self.failure = crash_after_tool, False, None
+        self.before_first_model: Callable[[], None] | None = None
+        self.withdrawal_started = False
 
     def stream(self, messages: list[ChatMessage], **kwargs: Any) -> Iterator[StreamEvent]:
+        if self.before_first_model is not None and not self.withdrawal_started:
+            self.withdrawal_started = True
+            self.calls += 1
+            self.requests.append({"messages": list(messages)})
+            self.before_first_model()
+            yield StreamEvent("text", "这是一份不能发布的合成旧草稿。")
+            return
         if self.crash_after_tool and not self.crashed and any(message.role == "tool" for message in messages):
             self.crashed = True
             raise SystemExit("synthetic crash after durable tool, before next provider")
