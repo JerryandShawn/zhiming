@@ -50,6 +50,8 @@ cd "$FR_CONTROL_DIR"
 
 本机显式`--replay-withdrawals-local`另用独立replay pin与helper hash，只接受新目标原prefix4/7→8，真实候选原生撤销/收据双重放后严格比较完整状态，正常总连接9；完整可用命令与独立擦除未覆盖项同见stage草案。其成功不标记正式native、中央身份、Linux或publication；源prefix8、生产已有库接管及实际Linux切换仍未实现，不能把本机重放结果改称D3通过。
 
+本机另已实现已有合成库M1备份，命令及精确限制统一见[stage草案的本机备份入口](first_release_stage_runbook.md#本机已有合成库备份m1不能替代stage停写)。它只有显式`--backup-local`，不支持任何生产对象；现应用未接合作栅栏，原始恢复绑定、源库升级、Linux和中央身份门仍未解除，不能当作D1/D2已可执行。
+
 ## 3. 停写、备份、增量、切换、开门顺序
 
 获准后仍一次一阶段核验，不以shell循环串过审核门。以下修改动作当前均因缺失首发入口而阻塞；表中是实现和演练后的操作要求。

@@ -112,6 +112,17 @@ cd "$FR_CONTROL_DIR"
 
 **B7的新库恢复证明必须在B3修改已有stage库之前完成。** 表中缺失入口不是待猜命令，不能用旧B1 apply或手工SQL补过门。只要必要入口缺失，停在本地准备阶段。
 
+### 本机已有合成库备份（M1，不能替代stage停写）
+
+下列真实入口仅接受本机55480/55481、已存在的`fr_upgrade_<operation>`合成库与原prefix4或7。独立`first-release-local-incremental-backup-pin-v1`绑定实际系统/库/角色OID、owner全集、候选/manifest/三锁、Python、PG15 pg_dump及受审控制文件；`FIRST_INCREMENTAL_OWNER_DSN`、`FIRST_INCREMENTAL_WRITER_DSN`和同一服务器控制库的`FIRST_INCREMENTAL_ADMIN_DSN`只从受保护环境加载。
+
+```bash
+"$FR_CONTROL_PYTHON" -m tools.first_release_incremental --pin "$FR_LOCAL_INCREMENTAL_PIN"
+"$FR_CONTROL_PYTHON" -m tools.first_release_incremental --pin "$FR_LOCAL_INCREMENTAL_PIN" --backup-local
+```
+
+第一条默认0连接/0进程/0文件写；第二条才取得合作性文件/PG栅栏，保留维护标记，实际生成同一MVCC快照的custom dump、候选原生旁账与独立前后状态证据。错误OID、额外会话、活动run/lease、锁冲突、已有输出或源漂移均停止，保留已写产物，不自动清理重试；锁释放不解除维护。当前应用尚未接这个协议，前后会话检查也不证明dump期间全局停写，`global_quiescence_verified=false`。成功仅为`backup_captured`，不能据JSON回执采用既有恢复库、迁移源库或解除B2/B3/B7、Linux、中央身份和发布门。实际8/8与独立marker写阻断1/1见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档证据。
+
 | 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
 | --- | --- | --- | --- | --- |
 | B0 | 新授权后只读盘点主机、PG15/实际schema前缀、角色、服务/反代、队列、磁盘和备份；命令范围见下文 | 目标、旧包、schema/checksum、owner范围及容量与审核输入一致；所有目标名称明确 | 无新授权、环境漂移、低于受审容量预算、未知writer/旧任务 | 10–20分 |
