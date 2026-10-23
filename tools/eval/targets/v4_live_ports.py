@@ -13,11 +13,17 @@ import httpx
 from mingjing_core.models.errors import ModelUnavailable
 from mingjing_core.models.metering import request_meter
 from mingjing_core.models.port import ChatMessage, ModelPort, StreamEvent
+from mingjing_core.models.quota_attempt_observer import defer_send_counter
 from mingjing_core.models.quota_delegated_session import require_active
 from mingjing_core.models.quota_runtime import current_scope
 from mingjing_core.models.quota_types import GuardRejected
 from mingjing_core.models.registry import ModelHandle, RegistryPort
-from tools.eval.quota import STOP_REASONS, ProviderStopped, provider_http_status, provider_stop_reason
+from tools.eval.quota import (
+    STOP_REASONS,
+    ProviderStopped,
+    provider_http_status,
+    provider_stop_reason,
+)
 
 
 class LiveTrackingPort(ModelPort):
@@ -62,6 +68,10 @@ class LiveTrackingPort(ModelPort):
         # The callback runs after PG admission and immediately before client.send.
         if authorize := self._before_send.get():
             authorize()
+        if not defer_send_counter(self._count_request):
+            self._count_request()
+
+    def _count_request(self) -> None:
         self.calls += 1
         self.external_calls += int(not self._substituted)
 

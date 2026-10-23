@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 from argparse import Namespace
 from dataclasses import dataclass
 from datetime import timedelta
@@ -34,11 +35,18 @@ from tools.probe_equivalence_control import ProbeControl
 from .test_eval_v4_live_pg import scenario, wire
 
 ROOT = Path(__file__).resolve().parents[3]
-ARTIFACTS = ROOT.parent / "zhiming-v4/private/artifacts/kimi-k3-installer-20261023"
+CONFIGURED_ARTIFACTS = os.getenv("K3_TOKENIZER_ARTIFACT_DIR")
+ARTIFACTS = (
+    Path(CONFIGURED_ARTIFACTS)
+    if CONFIGURED_ARTIFACTS
+    else ROOT.parent / "zhiming-v4/private/artifacts/kimi-k3-installer-20261023"
+)
 
 
 @pytest.fixture
 def database(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch):
+    if CONFIGURED_ARTIFACTS:
+        assert ARTIFACTS.is_dir(), "CONFIGURED_OFFICIAL_K3_ARTIFACTS_REQUIRED"
     if not ARTIFACTS.is_dir():
         pytest.skip("requires installed local official K3 artifacts; never download")
     yield from fixture_setup.__wrapped__(p2_repo, monkeypatch)

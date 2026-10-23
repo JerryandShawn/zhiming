@@ -1,5 +1,15 @@
 # 首发核心30题计划（v2.2隔离子集）
 
+2026-10-24精确physical attempt锚点批准范围：仅受信sealed core评测显式启用，普通生产/离线/equivalence默认noop。新增模型层ContextVar观察协议与应用层原生step私密日志；primary、revision、AgentReviewer critic共用“逻辑intent→物理UUID intent→真实acquire同UUID→admitted关联→HTTP→guard.finish后精确UUID读回”。completed Journal只读验证，不新申请permit，不按次数/时间补锚点，任何歧义不自动POST；保留88acdc4收尾异常优先级。P6默认关闭，0008/0009、业务Clock/预算、额度清停及primary/CLI恢复不动。主线追加批准transport最终发送前复核、LiveTrackingPort延迟纯计数两处接缝；实际9实现路径、一个新PG测试、一个共享测试support及本计划。最多10组真实隔离PG+Mock目标，一个测试名额，清凭据/关闭追踪/TZ Tokyo，不全量，不提交推送。
+
+Progress / Decision Log（2026-10-24）：真实primary、工具后primary、AgentReviewer critic与revision共用明确UUID锚点；中央admission前后及最终发送前均核真实scope/source/run/lease。已有completed步骤在权威lease事务内重读PG Journal并比较owner/run/epoch/seq/name/operation_id/input_fp/status/output/usage，再核原私密行与同UUID中央终态；只有读回完成证据，不新增permit或POST。逻辑put、reserve、Journal.complete与usage.record的原始EvidenceError/RevisionConflict等在受信core观察作用域统一失败关闭，不能被普通outcome或review skipped吞掉；普通生产、scripted、equivalence默认语义保持。来源撤销、admitted revision改变、中央预留变化和计数回调失败均在client.send前停止；纯计数仅在最终授权通过后发生，不能把reserved或回调到达数冒充实际HTTP。
+
+Surprises & Discoveries / Outcomes（2026-10-24 01:19 +08:00）：首链24个参数目标为23通过/1断言失败，另有2个teardown错误（147.38秒，`private/safe-narrow-4ea2fda1e08348cc8fc00764835ccaed/metadata.json`）。正例已真实完成4次primary/critic/revision UUID关联，失败是新夹具把M01自带seed facts也计入“新增fact恰好1”；改为只数本次原生工具产生的精确summary。另两处故意保留unfinished中央预留，使关闭会话按契约拒绝in_flight_limit；夹具现在仅接受该安全拒绝并确认预留仍在，不修改生产policy、不清账本、不补写结果。加入权威completed重读及admitted revision/中央记录反例后，只复跑7个受影响目标，7/7通过（61.75秒，`private/safe-narrow-13305a9b8acb4feda40ec28fe1147b09/metadata.json`）。27个不同参数目标已有分段通过证据，未声称单链27/27；没有重跑宽套。
+
+CI限制（主线复核，2026-10-24）：既有CI的75个skip不能当作通过证据，其中live/proof两个夹具硬编码Windows兄弟目录、未采用CI已配置的官方K3 artifact目录，新observer测试也会继承skip。主线在`test_eval_v4_live_pg.py`和`test_eval_live_proof_pg.py`补为优先使用`K3_TOKENIZER_ARTIFACT_DIR`；配置存在但目录缺失硬失败，只有未配置时保留旧fallback/skip。将这两条根审改动一并交片，实际CI仍待验证；本机只定向验证配置路径，不据此冒充Linux/CI全量通过。
+
+最终审阅验证（2026-10-24 01:24 +08:00）：只跑4个发送前反例与1个既有合法proof[True]目标，5/5通过、0 skip（31.87秒，`private/safe-narrow-28e4faacdc1c4675a9776b6d939c3ae7/metadata.json`）。私有安全runner显式传入既有官方K3 artifact目录，证明配置分支实际运行；来源撤销、计数回调失败、admitted revision变化与中央记录变化时，真实Mock handler、实际adapter.request_count及tracker.calls/external_calls均为0。正常可信proof仍给Agent、本地计量与外部评审同一模型。13个Python路径的Ruff、120列格式、语法检查及diff检查通过；新文件均≤400行/函数≤60行，旧transport._request原66行，仅追加已批准最终发送前钩子为67行。测试令牌已释放，本片冻结交主线审阅；真实供应商/服务器/飞书均0。这里只补精确物理锚点与歧义拒绝，不能解除primary/CLI续作、累计预算或正式评测门，实际CI尚待运行。
+
 ## 生命周期续作基础（独立开发片，未开放执行）
 
 下一实现片计划：增加primary_complete只读阶段，从原生已提交信封/Journal/事件观察并持久TurnResult，不重新执行终态run；附着后send仍关闭。私密评分journal绑定同candidate/source/model/scenario/契约/turn与rubric/schema/请求hash，执行前先持久inflight，完成后仅核对真实中央critic物理记录并保存实际评分结果；completed可读取复用，unknown/inflight/不完整响应一律拒绝自动重POST。不推断primary Journal seq关联、不开放CLI resume、不清额度停，不改deadline/epoch或记忆服务。只增加至多3个tool模块与1个测试文件，加现有生命周期最小扩展；单条真实隔离PG+MockTransport目标链验证。
