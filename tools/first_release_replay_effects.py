@@ -13,6 +13,18 @@ from psycopg.conninfo import make_conninfo
 
 CHECKPOINTS = ("checkpoints", "checkpoint_blobs", "checkpoint_writes", "checkpoint_migrations")
 CENTRAL = ("core_model_accounts", "core_model_batches", "core_model_authorizations", "core_model_usage")
+LEGACY_DERIVED = (
+    "thread_summary",
+    "note",
+    "profile_doc",
+    "knowledge_gap",
+    "followup",
+    "reminder",
+    "proposal",
+    "episode",
+    "feedback",
+    "request",
+)
 
 
 def digest(value: Any) -> str:
@@ -66,11 +78,85 @@ def central(repo: Any, hashes: dict[str, str], require: Any) -> dict[str, str]:
     return {name: hashes[name] for name in names}
 
 
-def erased(repo: Any, document: dict[str, Any], require: Any) -> dict[str, int]:
+def legacy_observations(repo: Any, document: dict[str, Any], require: Any) -> list[dict[str, Any]]:
+    observed = []
+    with repo.transaction() as connection:
+        connection.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+        connection.execute("SET LOCAL search_path=pg_catalog")
+        for owner in document["owners"]:
+            for row in owner["revocations"]:
+                if row["kind"] == "legacy_memory":
+                    observed.append(legacy_identity(connection, owner["owner_user_id"], row["entity_id"], require))
+    return observed
+
+
+def legacy_identity(connection: Any, owner: str, legacy_id: str, require: Any) -> dict[str, Any]:
+    mapping = connection.execute(
+        "SELECT result_id,status FROM mingjing_core.core_legacy_map "
+        "WHERE owner=%s AND source='memories' AND legacy_id=%s AND kind='fact'",
+        (owner, legacy_id),
+    ).fetchone()
+    targets = (
+        []
+        if mapping is None or mapping["result_id"] is None
+        else connection.execute(
+            "SELECT kind,id FROM mingjing_core.core_entities WHERE owner=%s AND id=%s AND kind IN ('fact','legacy')",
+            (owner, mapping["result_id"]),
+        ).fetchall()
+    )
+    require(len(targets) <= 1, "REPLAY_ERASURE_FAILED")
+    derivatives = []
+    if targets:
+        target = targets[0]
+        derivatives = connection.execute(
+            "SELECT kind,id FROM mingjing_core.core_entities WHERE owner=%s AND kind=ANY(%s) AND ("
+            "coalesce(data->'source_ids','[]'::jsonb) ? %s OR coalesce(data->'fact_ids','[]'::jsonb) ? %s "
+            "OR coalesce(data->'used_fact_ids','[]'::jsonb) ? %s) ORDER BY kind,id",
+            (owner, list(LEGACY_DERIVED), target["id"], target["id"], target["id"]),
+        ).fetchall()
+    return {"owner": owner, "legacy_id": legacy_id, "mapping": mapping, "targets": targets, "derivatives": derivatives}
+
+
+def legacy_erased(connection: Any, observed: list[dict[str, Any]], require: Any) -> dict[str, int]:
+    targets, derivatives, embeddings = 0, 0, 0
+    for entry in observed:
+        current = legacy_identity(connection, entry["owner"], entry["legacy_id"], require)
+        require(
+            current["mapping"] == entry["mapping"]
+            and (not current["targets"] or current["targets"] == entry["targets"]),
+            "REPLAY_ERASURE_FAILED",
+        )
+        for row in entry["targets"] + entry["derivatives"]:
+            old = connection.execute(
+                "SELECT status,data FROM mingjing_core.core_entities WHERE owner=%s AND kind=%s AND id=%s",
+                (entry["owner"], row["kind"], row["id"]),
+            ).fetchone()
+            require(old is None or old == {"status": "deleted", "data": {}}, "REPLAY_ERASURE_FAILED")
+            require(
+                connection.execute(
+                    "SELECT 1 FROM mingjing_core.core_embeddings WHERE owner=%s AND kind=%s AND entity_id=%s LIMIT 1",
+                    (entry["owner"], row["kind"], row["id"]),
+                ).fetchone()
+                is None,
+                "REPLAY_ERASURE_FAILED",
+            )
+            embeddings += 1
+        targets += len(entry["targets"])
+        derivatives += len(entry["derivatives"])
+    return {
+        "legacy_markers_checked": len(observed),
+        "legacy_targets_checked": targets,
+        "legacy_derivatives_checked": derivatives,
+        "legacy_embedding_scopes_checked": embeddings,
+    }
+
+
+def erased(repo: Any, document: dict[str, Any], require: Any, legacy: list[dict[str, Any]]) -> dict[str, int]:
     whole, draws, ranges = 0, 0, 0
     with repo.transaction() as connection:
         connection.execute("SET TRANSACTION READ ONLY")
         connection.execute("SET LOCAL search_path=pg_catalog")
+        checked_legacy = legacy_erased(connection, legacy, require)
         for owner in document["owners"]:
             for row in owner["revocations"]:
                 if row["kind"] in {"source_span", "legacy_memory"}:
@@ -106,7 +192,12 @@ def erased(repo: Any, document: dict[str, Any], require: Any) -> dict[str, int]:
                     ).fetchone()
                     require(old is None, "REPLAY_CHECKPOINT_SURVIVED")
                     ranges += 1
-    return {"whole_revocations_checked": whole, "deleted_draws_checked": draws, "checkpoint_ranges_checked": ranges}
+    return {
+        "whole_revocations_checked": whole,
+        "deleted_draws_checked": draws,
+        "checkpoint_ranges_checked": ranges,
+        **checked_legacy,
+    }
 
 
 def native(function: Any, code: str, require: Any, *arguments: Any) -> Any:
@@ -130,12 +221,13 @@ def replay(
         native(monotone, "REPLAY_STALE_LEDGER", require, prior, document)
         before = snapshot(repo)
         quota = central(repo, before, require)
+        legacy = legacy_observations(repo, document, require)
         audit()
         first = native(deployment.apply_withdrawals, "REPLAY_FIRST_APPLY_FAILED", require, repo, document)
         audit()
         exported = native(deployment.export_withdrawals, "REPLAY_FIRST_EXPORT_FAILED", require, repo)
         native(monotone, "REPLAY_STALE_LEDGER", require, document, exported)
-        checked = erased(repo, document, require)
+        checked = erased(repo, document, require, legacy)
         first_state = snapshot(repo)
         require(central(repo, first_state, require) == quota, "REPLAY_CENTRAL_CHANGED")
         require(ledger(value, require) == document, "REPLAY_LEDGER_CHANGED")
@@ -143,7 +235,7 @@ def replay(
         second = native(deployment.apply_withdrawals, "REPLAY_SECOND_APPLY_FAILED", require, repo, document)
         audit()
         repeated = native(deployment.export_withdrawals, "REPLAY_SECOND_EXPORT_FAILED", require, repo)
-        erased(repo, document, require)
+        erased(repo, document, require, legacy)
         second_state = snapshot(repo)
         require(central(repo, second_state, require) == quota, "REPLAY_CENTRAL_CHANGED")
         require(first_state == second_state, "REPLAY_SECOND_STATE_CHANGED")
