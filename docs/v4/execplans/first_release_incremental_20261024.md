@@ -181,6 +181,16 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 后续M3b必须独立受pin的fr_upgrade/OID/真实PID候选worker，按原生apply自身事务边界落实源既有撤销双重放与独立擦除后验，再候选backfill preview→apply→second=0；不得宽化fresh fr_restore worker或外套大事务。此片即使成功也只报source_forward_completed、privacy_replay_pending/backfill_pending；全局停写、正式runtime/Linux/central/publication仍false。
 
+### M3b接缝细化（04:18只读设计，尚未编码）
+
+源进程仅在同一活SourceUpgradeWitness的Core/SDK/grant确定完成后启动，独立审核pin绑定原fr_upgrade库/角色OID、父PID、候选/manifest、最新旁账、实际Python/Core锁及全部控制文件。复用受审纯stdlib bootstrap、CandidateFinder、runtime及导入来源核验；不构造假RestoreContract、不放宽现fr_restore worker。子进程只用真实源owner连接，握手实际PID，父侧精确核会话集合再ACK；外部JSON与application_name不赋权。
+
+仅max_size=1不足以保证后续仍是同连接：实际ConnectionPool可能在断线后补新PID，native LangGraphRuntime.purge又直接借repo.pool。因此需先独立实现受pin物理checkout门，覆盖所有pool借用与提交后purge、核真实Connection身份/PID，拒绝替换而不自动重连/恢复。不能只包repo.transaction或改_local，也不能以一次握手替代后续连接核验。实现前仍须审阅实际pool的所有调用点与事务副作用。
+
+源effects可复用原观察器的snapshot、central、legacy/span/erased等只读函数，不能借用自行新建repo及新目标回执的replay总控。调用真实候选apply_withdrawals自身全owner事务，结束后才原生checkpoint purge；第一遍独立擦除检查、全状态与导出，第二遍必须全状态及导出严格相等，中央四表/sequence保持。失败保留阶段，不重放重试、不加外层大事务。
+
+随后只对独立pin明确允许owner调用候选backfill(MemoryService(repo),owner,apply=...)。preview不得改变全状态；repeat的message_metadata/search_tokens/assistant_created变化计数必须全0，其他只读计数不误当变化。原字段变化只允许既有backfill契约的四项metadata；助手新消息必须有原生稳定ID/有效来源，revision/operation新行精确对账，另一owner、撤销、收据、checkpoint及中央状态不变。源双重放与回填分片定向测试，未知提交结果/提交后purge故障均停，Linux、prefix8中央身份保全及正式发布不因此放行。
+
 ## Artifacts and Notes
 
 唯一窄链在`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep`运行：
