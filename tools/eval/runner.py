@@ -64,6 +64,7 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--mode", choices=["scripted", "live"], default="scripted")
     result.add_argument("--target", choices=["fake", "v3", "v4"], default=None)
+    result.add_argument("--suite", choices=["default", "core30"], default="default")
     result.add_argument("--model", default="kimi")
     result.add_argument("--models", help="Comma-separated primary model names; each gets its own report")
     result.add_argument("--config", type=Path, default=EVAL_ROOT / "config.yaml")
@@ -117,9 +118,13 @@ def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dic
     return metadata
 
 
-def _target(name: str, model: str, mode: str = "scripted") -> Target:
+def _target(name: str, model: str, mode: str = "scripted", suite: str = "default") -> Target:
     if name == "v4":
         if mode == "live":
+            if suite == "core30":
+                from tools.eval.targets.v4_core30 import Core30LiveTarget
+
+                return Core30LiveTarget(model=model)
             from tools.eval.targets.v4_live import V4LiveTarget
 
             return V4LiveTarget(model=model)
@@ -150,6 +155,7 @@ def _fingerprint(scenario: Scenario, metadata: dict[str, Any]) -> str:
         "source_sha256",
         "provider_endpoint_sha256",
         "candidate_commit",
+        "evaluation_suite",
     )
     fixed = {key: metadata.get(key) for key in keys}
     payload = {"scenario": scenario.model_dump(mode="json"), "metadata": fixed}
@@ -178,6 +184,7 @@ def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[s
             "source_sha256",
             "provider_endpoint_sha256",
             "candidate_commit",
+            "evaluation_suite",
         )
         if all(data["metadata"].get(key) == metadata.get(key) for key in keys):
             return data
@@ -231,6 +238,7 @@ def _run(
 ) -> int:
     metadata = _metadata(config, args.mode, args.target, model)
     metadata.update(getattr(args, "candidate_provenance", {}))
+    metadata["evaluation_suite"] = getattr(args, "suite", "default")
     prior_report = _resume_report(args, metadata)
     previous = _reusable_cases(prior_report)
     report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
@@ -243,7 +251,7 @@ def _run(
         judge = V4LiveJudge(model, EVAL_ROOT / config["judge"]["rubric"])
     elif args.mode == "live":
         judge = ModelJudge(config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"])
-    target = _target(args.target, model, args.mode)
+    target = _target(args.target, model, args.mode, getattr(args, "suite", "default"))
     for scenario in scenarios:
         cached = previous.get(scenario.id)
         if cached and cached.get("fingerprint") == _fingerprint(scenario, metadata):
@@ -289,6 +297,12 @@ def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[st
         and not metadata.get("stop_reason")
     )
     metadata["status"] = "complete" if complete else "incomplete"
+    core_accepted = True
+    if getattr(args, "suite", "default") == "core30":
+        from tools.eval.targets.v4_core30 import acceptance
+
+        metadata["core30_acceptance"] = acceptance(report["cases"])
+        core_accepted = metadata["core30_acceptance"]["accepted"]
     add_comparison(report, args.output / "baseline-v3.json")
     baseline = complete and args.mode == "live" and args.target == "v3" and not args.scenario and len(scenarios) == 80
     paths = write_report(report, args.output, baseline=baseline)
@@ -301,7 +315,7 @@ def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[st
     return (
         2
         if metadata.get("stop_reason")
-        else int(not complete or args.mode == "scripted" and summary["passed"] != summary["count"])
+        else int(not complete or not core_accepted or args.mode == "scripted" and summary["passed"] != summary["count"])
     )
 
 
@@ -310,12 +324,23 @@ def main(argv: list[str] | None = None) -> int:
     args.target = args.target or ("v3" if args.mode == "live" else "fake")
     if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3"), ("scripted", "v4"), ("live", "v4")}:
         raise SystemExit("Supported modes: scripted/fake, scripted/v4, live/v3 and gated live/v4")
-    if args.target == "v4" and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve():
-        args.scenarios = EVAL_ROOT / "scenarios_v4"
-    scenarios = load_scenarios(args.scenarios)
+    if args.suite == "core30":
+        from tools.eval.targets.v4_core30 import load_core30
+
+        if args.target != "v4" or args.scenario or args.scenarios.resolve() != (EVAL_ROOT / "scenarios").resolve():
+            raise SystemExit("core30 requires v4 and its exact isolated selection; no custom scenario subset")
+        scenarios = load_core30()
+    else:
+        if args.target == "v4" and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve():
+            args.scenarios = EVAL_ROOT / "scenarios_v4"
+        scenarios = load_scenarios(args.scenarios)
     if not scenarios:
         raise SystemExit("No scenarios found")
-    if args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve() and len(scenarios) != 80:
+    if (
+        args.suite != "core30"
+        and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve()
+        and len(scenarios) != 80
+    ):
         raise SystemExit(f"Expected 80 corpus scenarios, found {len(scenarios)}")
     print(f"Validated {len(scenarios)}/{len(scenarios)} scenarios")
     if args.validate_only:
