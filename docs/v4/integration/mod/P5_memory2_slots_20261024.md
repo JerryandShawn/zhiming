@@ -25,3 +25,10 @@ MemorySlotUndoService(memory).undo(
 撤销入口将实际认证用户操作存成 user/web-action 原话“撤销这次记忆更新”，并绑定所选变更。旧值逐字段恢复业务前态，新值 retired，依赖新值的派生内容按既有失效路径处理；前一更新链保留。修订与更新时间保持递增，缓存回执重放也重新检查来源和结果；后续手改/忘记/失效不允许复活。
 
 剩余接线与限制：memory_write 参数与 pending conflict 的统一提案消费、更新后的遗忘链两端修复、历史定向检索、认证入口与 updated 回执证明仍待完成。组合操作（例如敏感确认→更新→撤销更新→再撤销类别授权）的跨变更撤销也尚未验收；既有派生级联可能清除更早的 proposal 快照，不能宣称所有组合已可撤销。没有改 Agent 循环、提交门、渠道或调度器；无需结构迁移。
+
+
+## 01:13 更新：遗忘链两端已装入
+
+`MemoryService.retire_fact` 已在同一隐私事务、清理快照前调用 `detach_withdrawn_chain`；现有 memory_forget 不需额外接线。删除新值可恢复有当前合法依据的旧值；删旧值清前驱，删中间值连接存活端，source 批量删除不互相复活。来源/授权无效、快照修订失配或用户后来修改时不恢复历史有效期。旧更新撤销快照仍按隐私级联清除。
+
+中间链的存活端恢复依据沿用 proposal（kind=memory2_chain_repair, status=applied），只绑定存活 fact_ids 和来源；不是待确认提案，不展示为新的用户操作。整体 updated 工具/提交证明和组合授权撤销仍未验收。证据：`docs/v4/evidence/P5/20261024_forget_chain_slice.md`。

@@ -328,6 +328,8 @@ class MemoryService:
                     self.repo.update(owner,'fact',fact['id'],{'status':'stopped','consent':'revoked'},expected_revision=fact['revision'])
                     self.repo.revoke(c,owner,'fact',fact['id'],'stopped')
                 affected.append(fact['id'])
+            from mingjing_core.application.memory2_forget_chain import detach_withdrawn_chain
+            detach_withdrawn_chain(self,owner,facts)
             self.repo.invalidate_derived(owner,affected,sources if scope=='source' else [])
             if scope=='source':
                 for upload in self.repo.list(owner,'upload',include_deleted=True):
