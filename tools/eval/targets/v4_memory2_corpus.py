@@ -18,7 +18,7 @@ REQUIRED_MEMORY2_IDS = frozenset(
     + ["Q06", "A01", "A02", "A03", "MS01", "MS02", "MS03", "KU01", "KU02", "TM01", "TM02"]
 )
 SUPPORTED_MEMORY2_IDS = frozenset(
-    [f"M{i:02}" for i in range(1, 14) if i != 8] + [f"R{i:02}" for i in range(1, 10)] + ["Q06"]
+    [f"M{i:02}" for i in range(1, 14)] + [f"R{i:02}" for i in range(1, 10)] + ["Q06", "F01", "F03", "F04"]
 )
 
 
@@ -32,6 +32,7 @@ def write_memory2_corpus(source: Path, destination: Path) -> dict:
         "target": "v4",
         "mode": "scripted",
         "complete_acceptance": False,
+        "executable_does_not_imply_passed": True,
         "required_count": len(REQUIRED_MEMORY2_IDS),
         "executable_subset": sorted(SUPPORTED_MEMORY2_IDS),
         "missing_contract_files": sorted(REQUIRED_MEMORY2_IDS - originals.keys()),

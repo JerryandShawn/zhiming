@@ -23,7 +23,9 @@ from .v4_chart_observations import chart_observations
 from .v4_context_observations import context_observations
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
-from .v4_memory_actions import MemoryActionDriver
+from .v4_memory_privacy_seed import prepare_memory
+from .v4_memory_privacy_views import native_counts, privacy_rows
+from .v4_memory_revocation_fault import MemoryRevocationPort, queue_memory_revoke_turn, regeneration_observations
 from .v4_observations import (
     decision_rows,
     delivery_rows,
@@ -91,9 +93,7 @@ class V4Target:
         self.thread = ThreadService(self.repo).create(
             self.owner, request_id="eval-thread", incognito=seed.get("incognito", False)
         )
-        self.memory_actions = MemoryActionDriver(self)
-        self.memory_actions.seed()
-        self.bindings.update(self.memory_actions.ids)
+        prepare_memory(self)
 
     def _ports(self) -> None:
         controls = self.seed.get("controls", {})
@@ -102,6 +102,10 @@ class V4Target:
             if self.protocol
             else FaultScriptedPort(crash_after_tool=controls.get("crash_after") == "tool_commit")
         )
+        if controls.get("revoke_after_context"):
+            if self.protocol:
+                raise ValueError("Memory withdrawal fault cannot replace wire-protocol evaluation")
+            self.port = MemoryRevocationPort(self)
         self.critic = ScriptedModelPort() if controls.get("critic_scripted") else None
         self.critic_provider = ScriptedProvider(controls.get("critic_scripted", []))
         self.runtime = EvaluationRuntime(
@@ -128,6 +132,8 @@ class V4Target:
     def _request(self, turn: dict[str, Any]) -> dict[str, Any]:
         if self.repo is None:
             raise RuntimeError("Call reset before send")
+        if self.seed.get("controls", {}).get("revoke_after_context"):
+            return queue_memory_revoke_turn(self, turn)
         if turn.get("action", {}).get("type") == "ingest_batch" or turn.get("channel") == "feishu":
             self.feishu = FeishuBatchDriver(self)
             return self.feishu.prepare(None if turn.get("action", {}).get("type") == "ingest_batch" else turn)
@@ -234,6 +240,8 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
+        if turn.get("action", {}).get("type") in {"source_delete", "fact_revoke"}:
+            return self.memory_withdrawals.send(turn)
         if turn.get("action", {}).get("type") == "proposal_accept":
             return self.memory_actions.accept(turn)
         started, before = (
@@ -259,6 +267,7 @@ class V4Target:
         )
         semantic.extend(delivered)
         semantic.extend(structural_observations(current))
+        semantic.extend(regeneration_observations(self, current))
         names = [event["type"] for event in events]
         if semantic:
             names = [name for name in names if name != "final"] + [item["name"] for item in semantic]
@@ -332,12 +341,14 @@ class V4Target:
         rows += decision_rows(steps)
         rows += self.tarot.rows()
         rows += delivery_rows(self.repo, self.owner)
+        rows += privacy_rows(self.privacy_seed)
         return {
             "entities": rows,
             "settings": self.repo.assert_scope(self.owner)["settings"],
             "owner_settings": self.repo.assert_scope(self.owner)["settings"],
             "run_meta": {
                 "repeated_call_count": repeat_count(steps),
+                "regenerations": run.get("usage", {}).get("agent_runtime", {}).get("regenerations", 0),
                 "usage": run.get("usage", {}),
                 **({"ingress": self.feishu.proof} if self.feishu else {}),
                 **self.cancellation,
@@ -371,6 +382,9 @@ class V4Target:
         return {
             "run_ids": list(self.run_ids),
             "memory_setup_model_calls": self.memory_actions.setup_calls,
+            "privacy_setup_model_calls": self.privacy_seed.setup_calls,
+            "privacy_layers_before": self.privacy_seed.baseline,
+            "privacy_layers_after": native_counts(self.privacy_seed),
             "external_provider_requests": 0,
             "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
             "tool_steps": [{key: step[key] for key in ("run_id", "epoch", "seq", "name", "status")} for step in steps],
