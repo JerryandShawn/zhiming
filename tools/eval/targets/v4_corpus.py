@@ -65,6 +65,7 @@ def execution_overlay(scenario: Scenario) -> Scenario:
             if action:
                 actions.append(action)
         step["model"] = actions
+        migrate_forget_query(actions, step["turn"])
         if scenario.id == "C03" and not any(
             action.get("tool_call", {}).get("name") == "chart_compute" for action in actions
         ):
@@ -110,6 +111,30 @@ def execution_overlay(scenario: Scenario) -> Scenario:
     if scenario_contract_hash(result) != scenario_contract_hash(scenario):
         raise ValueError("Execution overlay changed the scoring contract")
     return result
+
+
+def migrate_forget_query(actions: list[dict[str, Any]], turn: int) -> None:
+    for action in list(actions):
+        call = action.get("tool_call", {})
+        arguments = call.get("arguments", {})
+        if call.get("name") != "memory_forget" or "query" not in arguments:
+            continue
+        query = arguments["query"]
+        index = actions.index(action)
+        call["arguments"] = {"fact_id": "$unique_memory_fact", "message_id": f"turn-{turn}"}
+        actions.insert(
+            index,
+            {
+                "tool_call": {
+                    "name": "memory_search",
+                    "arguments": {
+                        "query": query,
+                        "kinds": ["fact"],
+                        "limit": 20,
+                    },
+                }
+            },
+        )
 
 
 def write_corpus(source: Path, destination: Path) -> None:

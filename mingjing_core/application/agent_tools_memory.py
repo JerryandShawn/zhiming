@@ -17,6 +17,7 @@ from mingjing_core.application.agent_tools_policy import (
     source_span,
 )
 from mingjing_core.application.memory import SECRET
+from mingjing_core.application.v4_forget import retire_from_message
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import has_optout, hypothetical
 from mingjing_core.repositories.postgres import fingerprint
@@ -181,7 +182,7 @@ def forget_memory(service: AgentToolsService, args: dict[str, Any], ctx: ToolCon
     fact = service.repo.get(ctx.owner, "fact", args["fact_id"], include_deleted=True)
     if fact["subject_id"] != ctx.subject or fact.get("case_id") and fact["case_id"] not in ctx.case_ids:
         raise ScopeError("撤销目标不属于当前人物或事项")
-    row = service.memory.retire_from_message(ctx.owner, fact["id"], source["id"], ctx.operation_id)
+    row = retire_from_message(service.memory, ctx.owner, fact["id"], source["id"], ctx.operation_id)
     return {
         "write_status": row["write_status"],
         "fact_id": fact["id"],

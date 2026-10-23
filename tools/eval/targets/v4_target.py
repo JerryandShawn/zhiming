@@ -37,6 +37,7 @@ from .v4_privacy_observations import initial_layers, privacy_entities
 from .v4_privacy_seed import V4PrivacySeeder
 from .v4_protocols import ScriptedWirePort, run_matrix
 from .v4_runtime import EvaluationRuntime
+from .v4_run_observations import native_run_meta, native_run_rows
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
 from .v4_tarot import TarotDriver
 from .v4_withdrawal import configure_withdrawal, regeneration_state, withdrawal_observations
@@ -261,7 +262,9 @@ class V4Target:
         return TurnResult(
             text=result.get("text", ""),
             tools_called=[step["name"] for step in steps],
-            receipts=[step["output"]["receipt"] for step in steps if (step["output"] or {}).get("receipt")],
+            receipts=result.get("receipts", []) if current["status"] == "succeeded" else [
+                step["output"]["receipt"] for step in steps if (step["output"] or {}).get("receipt")
+            ],
             events=names,
             model_calls=self.port.calls
             + (self.critic.calls if self.critic else 0)
@@ -324,6 +327,7 @@ class V4Target:
         rows += decision_rows(steps)
         rows += self.tarot.rows()
         rows += delivery_rows(self.repo, self.owner)
+        rows += native_run_rows(self.repo, self.owner)
         if self.seed.get("_scenario_id") in {"F01", "F02", "F03"}:
             rows = privacy_entities(
                 self.repo, self.owner, self.seeder.privacy_layers, rows, self.seeder.privacy_aliases
@@ -332,6 +336,7 @@ class V4Target:
             "entities": rows,
             "settings": self.repo.assert_scope(self.owner)["settings"],
             "run_meta": {
+                **native_run_meta(self.repo, self.owner, run),
                 "privacy_initial_layers": self.privacy_initial,
                 "repeated_call_count": repeat_count(steps),
                 "usage": run.get("usage", {}),

@@ -15,8 +15,10 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
     if not run:
         return empty
     try:
-        record = repo.get(owner, "runtime_step", f"{run['id']}:e{run['retry_epoch']}:{STAGE}")
+        record = repo.get(owner, "runtime_step", f"{run['id']}:e{run['retry_epoch']}:{STAGE}", include_deleted=True)
     except ScopeError:
+        return empty
+    if record["status"] == "deleted":
         return empty
     if record.get("run_id") != run["id"] or record.get("epoch") != run["retry_epoch"]:
         raise ValueError("评测上下文不属于当前运行")
