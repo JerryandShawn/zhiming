@@ -350,10 +350,12 @@ class MemoryService:
             return dict(self.repo.get(owner,'fact',fact_id,include_deleted=True),write_status='deleted' if operation=='delete' else 'stopped',affected_fact_ids=affected)
 
     def facts(self,owner,subject='self',case_ids=None,*,include_inactive=False):
+        from mingjing_core.application.memory2_read_authority import fact_consents_live
         rows=self.repo.list(owner,'fact',subject=subject,case_ids=case_ids,include_deleted=include_inactive)
         when=get_clock().now()
         def effective(fact):
             if fact['status']!='active' or fact.get('consent')!='granted' or fact.get('assertion_status')=='legacy_unverified':return False
+            if not fact_consents_live(self,owner,subject,fact):return False
             for key in ('valid_from','valid_to'):
                 value=fact.get(key)
                 if value:
