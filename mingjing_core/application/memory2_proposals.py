@@ -26,6 +26,7 @@ if TYPE_CHECKING:
 
 SAVE_ONCE = "请保存这条记忆"
 SAVE_CATEGORY = "请保存这条记忆，以后这类都记"
+SAVE_CATEGORY_SHORT = "以后这类都记"
 META_FIELDS = frozenset({"summary", "requested_kind", "said_at", "owner_timezone", "event_at", "original_expression"})
 
 
@@ -69,6 +70,8 @@ class MemoryProposalService:
             action = self.memory.get_source(owner, message_id)
             verify_originals(self.memory, owner, subject, [approval_reference(action)])
             command = SAVE_CATEGORY if remember_category else SAVE_ONCE
+            if remember_category and action["content"] == SAVE_CATEGORY_SHORT:
+                command = SAVE_CATEGORY_SHORT
             require_current_action(action, command)
             payload = {
                 "subject": subject,

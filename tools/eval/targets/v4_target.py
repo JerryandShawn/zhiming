@@ -23,6 +23,7 @@ from .v4_chart_observations import chart_observations
 from .v4_context_observations import context_observations
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
+from .v4_memory_actions import MemoryActionDriver
 from .v4_observations import (
     decision_rows,
     delivery_rows,
@@ -90,6 +91,9 @@ class V4Target:
         self.thread = ThreadService(self.repo).create(
             self.owner, request_id="eval-thread", incognito=seed.get("incognito", False)
         )
+        self.memory_actions = MemoryActionDriver(self)
+        self.memory_actions.seed()
+        self.bindings.update(self.memory_actions.ids)
 
     def _ports(self) -> None:
         controls = self.seed.get("controls", {})
@@ -230,6 +234,8 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
+        if turn.get("action", {}).get("type") == "proposal_accept":
+            return self.memory_actions.accept(turn)
         started, before = (
             time.perf_counter(),
             self.port.calls + (self.critic.calls if self.critic else 0),
@@ -329,6 +335,7 @@ class V4Target:
         return {
             "entities": rows,
             "settings": self.repo.assert_scope(self.owner)["settings"],
+            "owner_settings": self.repo.assert_scope(self.owner)["settings"],
             "run_meta": {
                 "repeated_call_count": repeat_count(steps),
                 "usage": run.get("usage", {}),
@@ -363,6 +370,7 @@ class V4Target:
         steps = tool_steps(self.repo, self.owner, self.run_ids[-1])
         return {
             "run_ids": list(self.run_ids),
+            "memory_setup_model_calls": self.memory_actions.setup_calls,
             "external_provider_requests": 0,
             "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
             "tool_steps": [{key: step[key] for key in ("run_id", "epoch", "seq", "name", "status")} for step in steps],

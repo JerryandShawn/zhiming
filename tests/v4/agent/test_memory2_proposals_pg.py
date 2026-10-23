@@ -201,3 +201,27 @@ def test_reject_purges_proposal_body_and_replays_without_saving(tool_repo: Postg
     assert tool_repo.list("alice", "fact") == [] and tool_repo.list("alice", "consent") == []
     with pytest.raises(EvidenceError):
         confirm(tool_repo, ident)
+
+
+@pytest.mark.parametrize("remember,accepted", [(True, True), (False, False)])
+def test_short_category_action_is_literal_and_requires_category_intent(
+    tool_repo: PostgresRepository, remember: bool, accepted: bool
+) -> None:
+    _, ident = pending(tool_repo)
+    memory = MemoryService(tool_repo)
+    action = memory.receive(
+        "alice",
+        content="以后这类都记",
+        channel="web-action",
+        source_id="short-category",
+        at=SAID_AT + timedelta(minutes=1),
+    )
+    if accepted:
+        receipt = confirm(tool_repo, ident, action=action, remember=remember)
+        fact = tool_repo.get("alice", "fact", receipt["fact_id"])
+        assert fact["source_refs"][1]["quote"] == "以后这类都记"
+        assert tool_repo.assert_scope("alice")["settings"]["auto_save_categories"] == ["health"]
+    else:
+        with pytest.raises(EvidenceError):
+            confirm(tool_repo, ident, action=action, remember=remember)
+        assert tool_repo.list("alice", "fact") == []
