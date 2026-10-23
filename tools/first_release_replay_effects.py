@@ -151,12 +151,190 @@ def legacy_erased(connection: Any, observed: list[dict[str, Any]], require: Any)
     }
 
 
-def erased(repo: Any, document: dict[str, Any], require: Any, legacy: list[dict[str, Any]]) -> dict[str, int]:
+def span_observations(repo: Any, document: dict[str, Any], require: Any) -> list[dict[str, Any]]:
+    grouped = {}
+    for owner in document["owners"]:
+        deleted = {row["entity_id"] for row in owner["revocations"] if row["kind"] == "message"}
+        withdrawn = {row["entity_id"] for row in owner["revocations"] if row["kind"] == "fact"}
+        for row in owner["revocations"]:
+            if row["kind"] == "source_span" and row["metadata"].get("message_id") not in deleted:
+                metadata = row["metadata"]
+                group = grouped.setdefault(
+                    (owner["owner_user_id"], metadata.get("message_id")), {"ranges": [], "withdrawn": withdrawn}
+                )
+                group["ranges"].append(metadata)
+    with repo.transaction() as connection:
+        connection.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+        connection.execute("SET LOCAL search_path=pg_catalog")
+        return [
+            span_identity(connection, *key, group["ranges"], group["withdrawn"], require)
+            for key, group in grouped.items()
+        ]
+
+
+def span_identity(
+    connection: Any, owner: str, source: str, ranges: list[dict], withdrawn: set[str], require: Any
+) -> dict[str, Any]:
+    original = connection.execute(
+        "SELECT status,data FROM mingjing_core.core_entities WHERE owner=%s AND kind='message' AND id=%s",
+        (owner, source),
+    ).fetchone()
+    require(original is not None and original["status"] != "deleted", "REPLAY_ERASURE_FAILED")
+    text = original["data"].get("content", "")
+    require(
+        all(
+            type(row.get("start")) is type(row.get("end")) is int and 0 <= row["start"] < row["end"] <= len(text)
+            for row in ranges
+        ),
+        "REPLAY_ERASURE_FAILED",
+    )
+    facts = connection.execute(
+        "SELECT to_jsonb(e) AS row FROM mingjing_core.core_entities e WHERE owner=%s AND kind='fact'", (owner,)
+    ).fetchall()
+    overlap, preserved = [], []
+    for fact in facts:
+        row = fact["row"]
+        refs = [ref for ref in row["data"].get("source_refs", []) if ref.get("message_id") == source]
+        if any(max(ref["start"], span["start"]) < min(ref["end"], span["end"]) for ref in refs for span in ranges):
+            overlap.append({"kind": "fact", "id": row["id"]})
+        elif refs and row["id"] not in withdrawn:
+            preserved.append({"id": row["id"], "sha256": digest(row)})
+    return dict(
+        owner=owner,
+        source=source,
+        raw_sha256=digest(text),
+        ranges=ranges,
+        overlap=overlap,
+        preserved=preserved,
+        **span_dependents(connection, owner, source, overlap),
+    )
+
+
+def span_dependents(connection: Any, owner: str, source: str, overlap: list[dict]) -> dict[str, Any]:
+    facts = [row["id"] for row in overlap]
+    versions = ["message:" + source] + ["fact:" + ident for ident in facts]
+    runs = connection.execute(
+        "SELECT id FROM mingjing_core.core_runs WHERE owner=%s AND (request->>'source_message_id'=%s "
+        "OR request->>'message_id'=%s OR state_version ?| %s) ORDER BY id",
+        (owner, source, source, versions),
+    ).fetchall()
+    run_ids = [row["id"] for row in runs]
+    private = connection.execute(
+        "SELECT kind,id FROM mingjing_core.core_entities WHERE owner=%s AND ("
+        "kind=ANY(%s) AND (coalesce(data->'source_ids','[]'::jsonb) ? %s OR "
+        "coalesce(data->'fact_ids','[]'::jsonb) ?| %s) OR kind='runtime_step' AND data->>'run_id'=ANY(%s)) "
+        "ORDER BY kind,id",
+        (owner, list(LEGACY_DERIVED), source, facts, run_ids),
+    ).fetchall()
+    outbox = connection.execute(
+        "SELECT id,status FROM mingjing_core.delivery_outbox WHERE owner=%s AND run_id=ANY(%s) ORDER BY id",
+        (owner, run_ids),
+    ).fetchall()
+    return {"private": private, "runs": runs, "outbox": outbox}
+
+
+def span_erased(repo: Any, connection: Any, spans: list[dict[str, Any]], require: Any) -> dict[str, int]:
+    from mingjing_core.application.memory import MemoryService
+    from mingjing_core.memory.projections import redact_ranges
+    from mingjing_core.memory.tokenize import searchable_data
+
+    targets, preserved, private, runs, outbox = 0, 0, 0, 0, 0
+    for span in spans:
+        owner, source = span["owner"], span["source"]
+        raw = connection.execute(
+            "SELECT status,data FROM mingjing_core.core_entities WHERE owner=%s AND kind='message' AND id=%s",
+            (owner, source),
+        ).fetchone()
+        require(
+            raw is not None
+            and raw["status"] != "deleted"
+            and digest(raw["data"].get("content", "")) == span["raw_sha256"],
+            "REPLAY_ERASURE_FAILED",
+        )
+        expected = redact_ranges(raw["data"].get("content", ""), span["ranges"])
+        require(
+            MemoryService(repo).get_source(owner, source, for_context=True)["content"] == expected,
+            "REPLAY_ERASURE_FAILED",
+        )
+        require(
+            raw["data"].get("search_tokens")
+            == searchable_data("message", dict(raw["data"], content=expected))["search_tokens"],
+            "REPLAY_ERASURE_FAILED",
+        )
+        span_preserved(connection, span, require)
+        for row in span["overlap"] + span["private"]:
+            old = connection.execute(
+                "SELECT status,data FROM mingjing_core.core_entities WHERE owner=%s AND kind=%s AND id=%s",
+                (owner, row["kind"], row["id"]),
+            ).fetchone()
+            require(old is None or old == {"status": "deleted", "data": {}}, "REPLAY_ERASURE_FAILED")
+        for row in [{"kind": "message", "id": source}] + span["overlap"] + span["private"]:
+            require(
+                connection.execute(
+                    "SELECT 1 FROM mingjing_core.core_embeddings WHERE owner=%s AND kind=%s AND entity_id=%s LIMIT 1",
+                    (owner, row["kind"], row["id"]),
+                ).fetchone()
+                is None,
+                "REPLAY_ERASURE_FAILED",
+            )
+        span_runtime_erased(connection, span, require)
+        targets += len(span["overlap"])
+        preserved += len(span["preserved"])
+        private += len(span["private"])
+        runs += len(span["runs"])
+        outbox += len(span["outbox"])
+    return dict(
+        span_sources_checked=len(spans),
+        span_facts_checked=targets,
+        span_preserved_facts_checked=preserved,
+        span_private_scopes_checked=private,
+        span_runs_checked=runs,
+        span_outbox_checked=outbox,
+    )
+
+
+def span_preserved(connection: Any, span: dict[str, Any], require: Any) -> None:
+    for fact in span["preserved"]:
+        row = connection.execute(
+            "SELECT to_jsonb(e) AS row FROM mingjing_core.core_entities e WHERE owner=%s AND kind='fact' AND id=%s",
+            (span["owner"], fact["id"]),
+        ).fetchone()
+        require(row is not None and digest(row["row"]) == fact["sha256"], "REPLAY_ERASURE_FAILED")
+
+
+def span_runtime_erased(connection: Any, span: dict[str, Any], require: Any) -> None:
+    owner = span["owner"]
+    for row in span["runs"]:
+        old = connection.execute(
+            "SELECT status FROM mingjing_core.core_runs WHERE owner=%s AND id=%s", (owner, row["id"])
+        ).fetchone()
+        require(old is not None and old["status"] == "revoked", "REPLAY_ERASURE_FAILED")
+    for row in span["outbox"]:
+        old = connection.execute(
+            "SELECT status,payload,claim_token,lease_until FROM mingjing_core.delivery_outbox WHERE owner=%s AND id=%s",
+            (owner, row["id"]),
+        ).fetchone()
+        status = (
+            row["status"]
+            if row["status"] == "sent"
+            else "uncertain"
+            if row["status"] in {"sending", "uncertain"}
+            else "cancelled"
+        )
+        require(
+            old == {"status": status, "payload": {}, "claim_token": None, "lease_until": None}, "REPLAY_ERASURE_FAILED"
+        )
+
+
+def erased(
+    repo: Any, document: dict[str, Any], require: Any, legacy: list[dict[str, Any]], spans: list[dict]
+) -> dict[str, int]:
     whole, draws, ranges = 0, 0, 0
     with repo.transaction() as connection:
         connection.execute("SET TRANSACTION READ ONLY")
         connection.execute("SET LOCAL search_path=pg_catalog")
         checked_legacy = legacy_erased(connection, legacy, require)
+        checked_spans = span_erased(repo, connection, spans, require)
         for owner in document["owners"]:
             for row in owner["revocations"]:
                 if row["kind"] in {"source_span", "legacy_memory"}:
@@ -197,6 +375,7 @@ def erased(repo: Any, document: dict[str, Any], require: Any, legacy: list[dict[
         "deleted_draws_checked": draws,
         "checkpoint_ranges_checked": ranges,
         **checked_legacy,
+        **checked_spans,
     }
 
 
@@ -222,12 +401,13 @@ def replay(
         before = snapshot(repo)
         quota = central(repo, before, require)
         legacy = legacy_observations(repo, document, require)
+        spans = span_observations(repo, document, require)
         audit()
         first = native(deployment.apply_withdrawals, "REPLAY_FIRST_APPLY_FAILED", require, repo, document)
         audit()
         exported = native(deployment.export_withdrawals, "REPLAY_FIRST_EXPORT_FAILED", require, repo)
         native(monotone, "REPLAY_STALE_LEDGER", require, document, exported)
-        checked = erased(repo, document, require, legacy)
+        checked = erased(repo, document, require, legacy, spans)
         first_state = snapshot(repo)
         require(central(repo, first_state, require) == quota, "REPLAY_CENTRAL_CHANGED")
         require(ledger(value, require) == document, "REPLAY_LEDGER_CHANGED")
@@ -235,7 +415,7 @@ def replay(
         second = native(deployment.apply_withdrawals, "REPLAY_SECOND_APPLY_FAILED", require, repo, document)
         audit()
         repeated = native(deployment.export_withdrawals, "REPLAY_SECOND_EXPORT_FAILED", require, repo)
-        erased(repo, document, require, legacy)
+        erased(repo, document, require, legacy, spans)
         second_state = snapshot(repo)
         require(central(repo, second_state, require) == quota, "REPLAY_CENTRAL_CHANGED")
         require(first_state == second_state, "REPLAY_SECOND_STATE_CHANGED")
