@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 def same_fact(left: dict[str, Any], right: dict[str, Any]) -> bool:
-    fields = ("subject_id", "case_id", "kind", "requested_kind", "field", "value", "event_at", "event_end")
+    fields = ("subject_id", "case_id", "kind", "requested_kind", "field", "value", "event_at", "event_end", "slot")
     return (
         all(left.get(field) == right.get(field) for field in fields)
         and not left.get("valid_to")

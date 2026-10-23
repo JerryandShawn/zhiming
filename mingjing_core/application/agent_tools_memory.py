@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult
 from mingjing_core.application.agent_tools_dates import event_metadata
+from mingjing_core.application.agent_tools_memory_slots import prepare_slot_write
 from mingjing_core.application.agent_tools_policy import (
     CREDENTIAL,
     KIND_MAP,
@@ -132,6 +133,9 @@ def save_memory(
     categories = sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
     if level in SENSITIVITIES and not categories_granted(service.memory, ctx.owner, ctx.subject, categories):
         return proposal(service, args, ctx, source, start, end, level, metadata)
+    metadata, pending = prepare_slot_write(service, args, ctx, metadata)
+    if pending:
+        return pending
     row = service.memory.save_fact(
         ctx.owner,
         ctx.subject,
