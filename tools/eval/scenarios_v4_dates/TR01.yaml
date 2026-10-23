@@ -1,0 +1,42 @@
+id: TR01
+title: 国庆那几天我跟你说过什么烦心事？
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  thread:
+  - id: holiday
+    role: user
+    content: 国庆回老家，和表哥因为合伙开店的事闹得不愉快
+    at: '2026-10-03T10:00:00+08:00'
+    channel: feishu
+  - id: work
+    role: user
+    content: 工作上被临时加了一个项目，很烦
+    at: '2026-09-20T10:00:00+08:00'
+    channel: web
+  - id: gym
+    role: user
+    content: 办的健身卡，健身房跑路了
+    at: '2026-10-12T10:00:00+08:00'
+    channel: web
+turns:
+- user: 国庆那几天我跟你说过什么烦心事？
+  expect:
+    must_include_any:
+    - 表哥
+    - 合伙
+    - 开店
+    must_not_include:
+    - 健身
+    db:
+    - path: context.l4.time_filter
+      equals: 2026-10-01..2026-10-07
+    - path: context.l4.text
+      contains: 表哥
+scripted:
+- turn: 1
+  model:
+  - text: 国庆那几天，你提过回老家时和表哥因为合伙开店闹得不愉快。
+notes: 19号及模块线v2.3候选材料的七题子集；真实本机PG+实际U4+脚本模型，不向解析器传预期答案。

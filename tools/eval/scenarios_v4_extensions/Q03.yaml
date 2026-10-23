@@ -1,0 +1,78 @@
+id: Q03
+title: 下一轮回答自动填充澄清槽而不写事实
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  profile_overrides: {}
+  facts: []
+  thread: []
+  entities: []
+  settings: {}
+  context: {}
+  controls: {}
+  thread_id: life-synthetic
+  incognito: false
+turns:
+- user: 我该怎么选岗位
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called: []
+    tools_not_called: []
+    receipts: []
+    db: []
+    events:
+    - ask_user
+    - final
+    chart_structure: false
+- user: 我更看重成长空间
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called: []
+    tools_not_called:
+    - ask_user
+    receipts: []
+    db:
+    - kind: thread
+      where:
+        data.clarify_slots.0.status: filled
+      count: 1
+      absent: false
+    - kind: fact
+      where: {}
+      count: 0
+      absent: false
+    events: []
+    max_questions: 0
+    chart_structure: false
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: ask_user
+      arguments:
+        question: 你更看重成长还是稳定？
+        options:
+        - 选项甲
+        - 选项乙
+        allow_free_text: true
+        why: 答案改变建议范围
+        slot: 工作取舍偏好
+        changes_conclusion: 影响建议的取舍顺序
+- turn: 2
+  model:
+  - text: 按成长空间来比较项目和导师。
+notes: 独立v4扩充契约；实际工具结果/线程/信封断言，不替换冻结47项。

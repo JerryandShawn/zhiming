@@ -1,0 +1,775 @@
+{
+  "$defs": {
+    "AskOption": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "AskOption",
+      "type": "object"
+    },
+    "Asked": {
+      "additionalProperties": false,
+      "properties": {
+        "ask_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Ask Id",
+          "type": "string"
+        },
+        "question": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Question",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/AskOption"
+          },
+          "maxItems": 4,
+          "title": "Options",
+          "type": "array"
+        },
+        "allow_free_text": {
+          "title": "Allow Free Text",
+          "type": "boolean"
+        },
+        "multi": {
+          "title": "Multi",
+          "type": "boolean"
+        },
+        "why": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "ask_id",
+        "question",
+        "options",
+        "allow_free_text",
+        "multi",
+        "why"
+      ],
+      "title": "Asked",
+      "type": "object"
+    },
+    "CoreRun": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "operation_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Operation Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "operation_id"
+      ],
+      "title": "CoreRun",
+      "type": "object"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "benefit": {
+          "maxLength": 500,
+          "title": "Benefit",
+          "type": "string"
+        },
+        "cost": {
+          "maxLength": 500,
+          "title": "Cost",
+          "type": "string"
+        },
+        "risk": {
+          "maxLength": 500,
+          "title": "Risk",
+          "type": "string"
+        },
+        "reversibility": {
+          "enum": [
+            "easy",
+            "partial",
+            "hard",
+            "unknown"
+          ],
+          "title": "Reversibility",
+          "type": "string"
+        },
+        "first_step": {
+          "maxLength": 500,
+          "title": "First Step",
+          "type": "string"
+        },
+        "unknowns": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Unknowns",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "benefit",
+        "cost",
+        "risk",
+        "reversibility",
+        "first_step",
+        "unknowns"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "Options": {
+      "additionalProperties": false,
+      "properties": {
+        "options_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Options Id",
+          "type": "string"
+        },
+        "prompt": {
+          "anyOf": [
+            {
+              "maxLength": 500,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Prompt"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Decision"
+          },
+          "maxItems": 4,
+          "minItems": 2,
+          "title": "Options",
+          "type": "array"
+        }
+      },
+      "required": [
+        "options_id",
+        "options"
+      ],
+      "title": "Options",
+      "type": "object"
+    },
+    "PublicMeta": {
+      "additionalProperties": false,
+      "properties": {
+        "core_run": {
+          "$ref": "#/$defs/CoreRun"
+        },
+        "subject_id": {
+          "maxLength": 200,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+          "title": "Subject Id",
+          "type": "string"
+        },
+        "case_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "title": "Case Ids",
+          "type": "array"
+        },
+        "structural_warnings": {
+          "items": {
+            "$ref": "#/$defs/StructuralWarning"
+          },
+          "title": "Structural Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "core_run",
+        "subject_id",
+        "case_ids",
+        "structural_warnings"
+      ],
+      "title": "PublicMeta",
+      "type": "object"
+    },
+    "PublicReceipt": {
+      "additionalProperties": false,
+      "properties": {
+        "write_status": {
+          "title": "Write Status",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "fact_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fact Id"
+        },
+        "proposal_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Proposal Id"
+        },
+        "draw_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Draw Id"
+        },
+        "kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Kind"
+        },
+        "revision": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status"
+        },
+        "code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Code"
+        },
+        "affected_ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "title": "Affected Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "write_status"
+      ],
+      "title": "PublicReceipt",
+      "type": "object"
+    },
+    "PublicUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "model_steps": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Steps"
+        },
+        "model_streams_this_execution": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Model Streams This Execution"
+        },
+        "replayed_model_steps": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Replayed Model Steps"
+        },
+        "reported_tokens": {
+          "$ref": "#/$defs/TokenUsage"
+        },
+        "usage_known": {
+          "default": false,
+          "title": "Usage Known",
+          "type": "boolean"
+        },
+        "offline": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Offline"
+        }
+      },
+      "title": "PublicUsage",
+      "type": "object"
+    },
+    "Review": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "enum": [
+            "pending",
+            "passed",
+            "revised",
+            "skipped"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "reasons": {
+          "items": {
+            "$ref": "#/$defs/ReviewReason"
+          },
+          "title": "Reasons",
+          "type": "array"
+        },
+        "revision_id": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Revision Id"
+        }
+      },
+      "required": [
+        "state",
+        "reasons"
+      ],
+      "title": "Review",
+      "type": "object"
+    },
+    "ReviewReason": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "off_topic",
+            "time_error",
+            "memory_error",
+            "false_receipt",
+            "unsupported_chart",
+            "fatalism",
+            "unsafe_advice",
+            "crisis_missed",
+            "over_asking",
+            "overpromise",
+            "tone",
+            "fabrication",
+            "generic_barnum",
+            "sycophancy",
+            "chart_inconsistency"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "severity": {
+          "maximum": 5,
+          "minimum": 1,
+          "title": "Severity",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "code",
+        "severity"
+      ],
+      "title": "ReviewReason",
+      "type": "object"
+    },
+    "StructuralWarning": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "count": {
+          "minimum": 1,
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "code",
+        "count"
+      ],
+      "title": "StructuralWarning",
+      "type": "object"
+    },
+    "TokenUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Output Tokens"
+        },
+        "cache_creation_input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Creation Input Tokens"
+        },
+        "cache_read_input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cache Read Input Tokens"
+        }
+      },
+      "title": "TokenUsage",
+      "type": "object"
+    },
+    "Validation": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "const": "validated",
+          "title": "Status",
+          "type": "string"
+        },
+        "valid": {
+          "const": true,
+          "title": "Valid",
+          "type": "boolean"
+        },
+        "schema": {
+          "const": "core4.0",
+          "title": "Schema",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "valid",
+        "schema"
+      ],
+      "title": "Validation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "core4.0",
+      "title": "Schema",
+      "type": "string"
+    },
+    "message_id": {
+      "maxLength": 200,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+      "title": "Message Id",
+      "type": "string"
+    },
+    "text": {
+      "maxLength": 200000,
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    },
+    "receipts": {
+      "items": {
+        "$ref": "#/$defs/PublicReceipt"
+      },
+      "title": "Receipts",
+      "type": "array"
+    },
+    "used_fact_ids": {
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Used Fact Ids",
+      "type": "array"
+    },
+    "used_claim_ids": {
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+        "type": "string"
+      },
+      "title": "Used Claim Ids",
+      "type": "array"
+    },
+    "asked": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Asked"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "options": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Options"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "review": {
+      "$ref": "#/$defs/Review"
+    },
+    "usage": {
+      "$ref": "#/$defs/PublicUsage"
+    },
+    "schema_version": {
+      "anyOf": [
+        {
+          "const": "core4.0",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Schema Version"
+    },
+    "answer": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Answer"
+    },
+    "validation": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Validation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "meta": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/PublicMeta"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "schema",
+    "message_id",
+    "text",
+    "receipts",
+    "used_fact_ids",
+    "used_claim_ids",
+    "asked",
+    "options",
+    "review",
+    "usage"
+  ],
+  "title": "EnvelopeV1",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mingjing:core4:v1"
+}

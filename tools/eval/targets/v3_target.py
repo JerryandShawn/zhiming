@@ -74,7 +74,7 @@ class V3Target:
         self.schema = "eval_p0_" + uuid.uuid4().hex
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
         self.repo.ensure_owner(self.owner, settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})})
-        self.model = TrackingModel(self.provider or ConfiguredModel(model=self.model_name))
+        self.model = TrackingModel(self.provider or ConfiguredModel(model=self.model_name, role="evaluation"))
         self.service = ConsultationService(self.repo, model=self.model)
         self.seeder = V3Seeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
         self.seeder.seed(seed)
@@ -126,6 +126,12 @@ class V3Target:
         )
 
     def submit_turn(self, turn: dict[str, Any]) -> dict[str, Any]:
+        # Seed the current original and admit its run atomically. A refused
+        # privacy request must not leave an orphaned life-thread original.
+        with self.repo.transaction(self.owner):
+            return self._submit_turn(turn)
+
+    def _submit_turn(self, turn: dict[str, Any]) -> dict[str, Any]:
         index = turn.get("_index", len(self.run_ids) + 1)
         operation = f"eval:{self.seed_data.get('_scenario_id', 'scenario')}:{index}"
         kind = turn.get("kind", "turn")

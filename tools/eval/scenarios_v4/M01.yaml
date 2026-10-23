@@ -1,0 +1,46 @@
+id: M01
+title: 面试事件自动保存与跟进
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed: {}
+turns:
+- user: 我下周三有个面试，挺紧张的
+  expect:
+    tools_called:
+    - memory_write
+    - schedule_followup
+    receipts:
+    - write_status: saved
+    db:
+    - kind: fact
+      where:
+        data.kind: event
+        data.event_at: '2026-10-21'
+      count: 1
+    - kind: followup
+      where:
+        data.due_at: '2026-10-21T20:00:00+08:00'
+      count: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我下周三有个面试
+        summary: 10月21日有面试
+        kind: event
+        event_at: '2026-10-21'
+  - tool_call:
+      name: schedule_followup
+      arguments:
+        topic: 面试
+        due_at: '2026-10-21T20:00:00+08:00'
+        reason: 面试结束后关心结果
+        source_fact_id: $last_receipt.id
+        message_id: turn-1
+        quote: 我下周三有个面试
+  - text: 记下了：10月21日面试。紧张很正常，我们先准备一两个你最想讲清的经历。

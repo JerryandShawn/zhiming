@@ -273,10 +273,10 @@ class MemoryPostgresTests(unittest.TestCase):
         with self.repo.transaction() as c:
             c.execute('SET TRANSACTION READ ONLY')
             verified=self.repo.verify_schema()
-            self.assertEqual(verified['version'],7)
+            self.assertEqual(verified['version'],8)
         with self.repo.connection() as c:
             versions=c.execute(sql.SQL('SELECT version,checksum FROM {} ORDER BY version').format(self.repo.table('schema_migrations'))).fetchall()
-            self.assertEqual([row['version'] for row in versions],[1,2,3,4,5,6,7])
+            self.assertEqual([row['version'] for row in versions],[1,2,3,4,5,6,7,8])
             self.assertTrue(all(len(row['checksum'])==64 for row in versions))
             c.execute(sql.SQL('UPDATE {} SET checksum=%s WHERE version=1').format(self.repo.table('schema_migrations')),('synthetic-wrong-checksum',))
         with self.assertRaises(EvidenceError):self.repo.initialize()

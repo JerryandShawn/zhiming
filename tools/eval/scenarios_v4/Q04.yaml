@@ -1,0 +1,30 @@
+id: Q04
+title: 已有成长偏好不重复询问
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  facts:
+  - id: growth
+    kind: preference
+    summary: 我最在乎成长空间。
+    quote: 我最在乎成长空间。
+    source_message_id: source-synthetic
+  thread:
+  - id: source-synthetic
+    role: user
+    content: 我最在乎成长空间。
+    at: '2026-10-16T15:00:00+08:00'
+    channel: web
+turns:
+- user: 我该选A还是B？
+  expect:
+    must_include_all:
+    - 成长空间
+    must_not_include:
+    - 你最在乎什么
+    - 你更看重什么
+    max_questions: 1
+scripted:
+- turn: 1
+  model:
+  - text: 你最在乎成长空间〔f1〕，就先对照两家的导师、项目难度与晋升路径，再看工资差距。

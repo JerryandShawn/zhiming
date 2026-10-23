@@ -1,0 +1,123 @@
+{
+  "recorded_at": "2026-10-21T00:56:38+08:00",
+  "local_base": "a662c6360fb5ff01cf1dc51f014478cfd8873cb5",
+  "original_source_commit": "03514f7209bac5feba53c64d139bd2d7f06e2da7",
+  "ci": {
+    "head": "dedce10956d05c5dc4fc847e5ae12d6525cee4d4",
+    "merge": "1b03c1b929d6cf15ef943db9f1facc3aafd676f5",
+    "run_id": 39455553086,
+    "job_id": 118741355281,
+    "tests": 553,
+    "failures": 1
+  },
+  "root_cause": "Two frozen fake client classes received offline marker assignments in 5ed56de; not CRLF or Linux checkout conversion.",
+  "manifest_sha256": "a434e7b09cf3fcedbf55aee0f65dbddb5d3ac608762bf679197285aa95eea46f",
+  "legacy_ids": 102,
+  "sources": [
+    {
+      "file": "tests/legacy/test_channel_evidence_v6.py",
+      "sha256": "d675056763749415d53e9f61e10947d56a7c2d7bcb23759ebda45ecec28854bd",
+      "original_git_blob": "5c2650dfa2b35c4e1c9f1cb9a096a9ff137c160d",
+      "candidate_git_blob": "5c2650dfa2b35c4e1c9f1cb9a096a9ff137c160d",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_channels_v6.py",
+      "sha256": "d99e8e4b2bcc27635ddb853531834f3e8b0248cb9cb8c436e6338833eb2348e4",
+      "original_git_blob": "8d14b047cda45aa3143b61cf7ec370d402823351",
+      "candidate_git_blob": "8d14b047cda45aa3143b61cf7ec370d402823351",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_feishu_v6.py",
+      "sha256": "0b21f7e096936d62ca17656f2a9b5d925e6cf8e5869594c9f406f4045e95e499",
+      "original_git_blob": "5a8a11043ba6908d9aa55a2210764cc7b28073ee",
+      "candidate_git_blob": "5a8a11043ba6908d9aa55a2210764cc7b28073ee",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_guidance_v6.py",
+      "sha256": "d17f474463392eaebd277f7cb26240bc362f031058d5bdd261cf18fcb9c3437f",
+      "original_git_blob": "40f249be503b64c73e5cce6ca95e94f8aaa2b915",
+      "candidate_git_blob": "40f249be503b64c73e5cce6ca95e94f8aaa2b915",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_multicase_v6.py",
+      "sha256": "686926c21755e2bc6e670a350fbdb5e09945a471f2ca4974a852cae9cea7ec68",
+      "original_git_blob": "7cf371a9e08b4cd519d9fafd913979417610ed29",
+      "candidate_git_blob": "7cf371a9e08b4cd519d9fafd913979417610ed29",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_privacy_v6.py",
+      "sha256": "f6343a85e6fc43da654d1c69d80c7cffffd1e4bda92e17a3019e293c4af214b2",
+      "original_git_blob": "0baca4814ddc6d8d7b699d44630ab134cce222ae",
+      "candidate_git_blob": "0baca4814ddc6d8d7b699d44630ab134cce222ae",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_quality_v6.py",
+      "sha256": "8c8479981e05ddf6ca46bbbbf6298bdbe06636ceba5f129a38e0db35d10fa6ac",
+      "original_git_blob": "075e2c62f9a4814f8cfd586cfc5ee549c2bd7cfe",
+      "candidate_git_blob": "075e2c62f9a4814f8cfd586cfc5ee549c2bd7cfe",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_review_v6.py",
+      "sha256": "2d615351b6c11fbeb055b1dcac6e1c0e6ecccbab5c9965332ee639ff102b83d5",
+      "original_git_blob": "07c6e4e6ba3048271059d7ef95f00c34759f6dc8",
+      "candidate_git_blob": "07c6e4e6ba3048271059d7ef95f00c34759f6dc8",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_state_v6.py",
+      "sha256": "08e9213680243b48a290c4b6ec34e77a991f61cbd9d800031d1c16e905402f8f",
+      "original_git_blob": "813da5b199b165538aa81a0f47fc493177b446d4",
+      "candidate_git_blob": "813da5b199b165538aa81a0f47fc493177b446d4",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_tarot_v6.py",
+      "sha256": "6ee97c43ad675649e4af17957b10c413646635f07aedf5e4ae3531d25c99d810",
+      "original_git_blob": "26983e9ce47787dbaab4f4c21ad9242e84861fb1",
+      "candidate_git_blob": "26983e9ce47787dbaab4f4c21ad9242e84861fb1",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    },
+    {
+      "file": "tests/legacy/test_vertical_v6.py",
+      "sha256": "c75477626859a973a03ac1a2b25dfa3543cdc40f384c45f02f6d1fe39a6530b2",
+      "original_git_blob": "3330b4f02ba48884ce0c1fd429c45ace826d3abb",
+      "candidate_git_blob": "3330b4f02ba48884ce0c1fd429c45ace826d3abb",
+      "exact_original_bytes": true,
+      "crlf_count": 0
+    }
+  ],
+  "validation": {
+    "architecture_tests": 6,
+    "seconds": 0.693,
+    "result": "passed",
+    "manifest_changed": false,
+    "architecture_assertion_changed": false,
+    "new_dependencies": false
+  },
+  "external_actions": {
+    "real_model_requests": 0,
+    "feishu_sends": 0,
+    "server_connections": 0
+  },
+  "limitations": [
+    "Final PR CI has not been rerun; parent publishes candidate.",
+    "No new all-Core or v4 full regression was run for this restoration."
+  ]
+}

@@ -1,0 +1,61 @@
+id: X03a
+title: web发起的崩溃恢复不重复写入或跨渠道回复
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  controls:
+    crash_after: tool_commit
+    operation_id: crash-replay-synthetic
+turns:
+- user: 请记住我下周三面试，结束后提醒我复盘
+  expect:
+    db:
+    - kind: fact
+      count: 1
+    - kind: outbox
+      count: 0
+    - kind: message
+      where:
+        data.channel: web
+        data.role: assistant
+      count: 0
+    events:
+    - run.step_committed
+    - run.crashed
+- user: 恢复该轮运行
+  kind: action
+  action:
+    type: resume_run
+    operation_id: crash-replay-synthetic
+  expect:
+    db:
+    - kind: fact
+      count: 1
+    - kind: outbox
+      count: 0
+    - kind: message
+      where:
+        data.channel: web
+        data.role: assistant
+      count: 1
+    events:
+    - run.resumed
+    - run.completed
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我下周三面试
+        summary: 10月21日面试
+        kind: event
+        event_at: '2026-10-21'
+  - text: 已完成的步骤已持久保存。
+- turn: 2
+  model:
+  - text: 已从记录恢复，没有重复保存或重复发送。
+notes: 35号R3批准的渠道拆分；替换原X03混合契约，不与旧47题分数直接比较。

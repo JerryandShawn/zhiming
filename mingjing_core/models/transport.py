@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import json
-import random
+import socket
 import threading
 import time
 from collections.abc import Callable, Iterator
-from contextlib import contextmanager
+from contextlib import closing, contextmanager, suppress
 from typing import Any, Protocol
 from urllib.parse import urlsplit
 
@@ -15,18 +15,26 @@ import httpx
 
 from mingjing_core.domain.json_values import ensure_finite_json
 
+from .config_policy import ConfigError, validate_model_settings
+from .error_classification import classify_error
 from .errors import (
     ModelBadRequest,
     ModelCancelled,
-    ModelPermissionDenied,
     ModelProtocolError,
     ModelQuotaExhausted,
-    ModelRateLimited,
     ModelUnavailable,
 )
 from .metering import before_provider_request
 from .port import ModelPort, StreamEvent
-from .provider_diagnostics import error_fields, parse_error_sample, permission_quota
+from .provider_diagnostics import delegated_stop_hint, parse_error_sample
+from .provider_reset import attach_reset, reset_errors
+from .quota_attempt_observer import before_observed_send
+from .quota_guard import QuotaGuard
+from .quota_http import membership_endpoint, observe_usage, provider_attempt
+from .quota_mode import delegated_active
+from .request_policy import check_request_size, sampling_body
+from .retry_policy import retry_delay, wait_for_retry
+from .turn_coercion import turn_policy
 
 
 def safe_usage(data: Any) -> dict[str, int]:
@@ -40,12 +48,18 @@ def safe_usage(data: Any) -> dict[str, int]:
         "total_tokens",
         "cache_creation_input_tokens",
         "cache_read_input_tokens",
+        "cache_read_tokens",
+        "cache_write_tokens",
     }
-    return {
+    result = {
         key: value
         for key, value in (data or {}).items()
         if key in names and type(value) is int and 0 <= value <= 2**63 - 1
     }
+    details = data.get("prompt_tokens_details")
+    if isinstance(details, dict) and type(value := details.get("cached_tokens")) is int and 0 <= value <= 2**63 - 1:
+        result["cache_read_tokens"] = value
+    return result
 
 
 def check_cancel(event: threading.Event | None) -> None:
@@ -54,31 +68,21 @@ def check_cancel(event: threading.Event | None) -> None:
 
 
 def http_error(response: httpx.Response, *, membership: bool) -> ModelUnavailable:
-    status = response.status_code
-    if membership and status == 429:
-        return ModelQuotaExhausted(status=status)
-    # Only audited public quota sentences may leave this local classification boundary.
+    # Classification inspects one bounded error sample; no raw text crosses this boundary.
     try:
         sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore")
     except httpx.HTTPError:
         sample = ""
-    parsed = parse_error_sample(sample)
-    if status == 403 and (match := permission_quota(parsed)):
-        subtype, public = match
-        return ModelQuotaExhausted(
-            status=status,
-            subtype=subtype,
-            error_type="permission_error",
-            provider_message=public,
-        )
-    if status == 403:
-        return ModelPermissionDenied(status=status, error_type=error_fields(parsed)[0])
-    quota = any(word in sample.casefold() for word in ("usage limit", "quota", "额度", "usage_limit"))
-    if quota or membership and status == 429:
-        return ModelQuotaExhausted(status=status)
-    if status == 429:
-        return ModelRateLimited(status=status)
-    return ModelUnavailable(status=status) if status >= 500 else ModelBadRequest(status=status)
+    observed = delegated_stop_hint(sample) if membership and delegated_active() else None
+    return attach_reset(
+        classify_error(
+            response.status_code,
+            parse_error_sample(sample),
+            membership=membership,
+            observed_stop=observed,
+        ),
+        response.headers,
+    )
 
 
 def sse(response: httpx.Response, cancel: threading.Event | None) -> Iterator[dict[str, Any]]:
@@ -122,19 +126,41 @@ def strict_json(value: str) -> Any:
 
 
 def stream_error(data: Any, *, membership: bool) -> ModelUnavailable:
-    if match := permission_quota({"error": data}):
-        subtype, public = match
-        return ModelQuotaExhausted(subtype=subtype, error_type="permission_error", provider_message=public)
-    classification = str(data).casefold()
-    rate = any(word in classification for word in ("rate_limit", "rate limit", "429"))
-    quota = any(word in classification for word in ("quota", "usage_limit", "usage limit", "额度"))
-    if quota or membership and rate:
-        return ModelQuotaExhausted(status=429 if rate else None)
-    return ModelRateLimited(status=429) if rate else ModelUnavailable()
+    return classify_error(None, {"error": data}, membership=membership, surface="sse")
+
+
+def shutdown_response(response: Closable | None) -> None:
+    """Closing an fd alone need not wake another thread blocked in Linux recv."""
+    if not isinstance(response, httpx.Response):
+        return
+    stream = response.extensions.get("network_stream")
+    extra = getattr(stream, "get_extra_info", None)
+    if callable(extra):
+        with suppress(OSError, RuntimeError, AttributeError, TypeError, httpx.HTTPError):
+            connection = extra("socket")
+            if connection is not None:
+                connection.shutdown(socket.SHUT_RDWR)
 
 
 @contextmanager
-def close_on_cancel(response: Closable, cancel: threading.Event | None, deadline: float) -> Iterator[threading.Event]:
+def cancellation_errors(cancel: threading.Event | None) -> Iterator[None]:
+    try:
+        yield
+    except (httpx.HTTPError, RuntimeError):
+        # Socket shutdown wakes a blocked read as an I/O error. Classify the
+        # cancellation before the enclosing central permit records its result.
+        check_cancel(cancel)
+        raise
+
+
+@contextmanager
+def close_on_cancel(
+    response: Closable,
+    cancel: threading.Event | None,
+    deadline: float,
+    *,
+    active: Callable[[], Closable | None] | None = None,
+) -> Iterator[threading.Event]:
     done = threading.Event()
     expired = threading.Event()
 
@@ -142,7 +168,12 @@ def close_on_cancel(response: Closable, cancel: threading.Event | None, deadline
         while not done.wait(0.02):
             if time.monotonic() >= deadline or cancel is not None and cancel.is_set():
                 expired.set()
-                response.close()
+                # The outer client watcher must also shutdown its active response
+                # before close, otherwise it can win the race and only close its fd.
+                shutdown_response(active() if active is not None else None)
+                shutdown_response(response)
+                with suppress(OSError, RuntimeError, httpx.HTTPError):
+                    response.close()
                 return
 
     watcher = threading.Thread(target=monitor, name="model-stream-cancel", daemon=True)
@@ -170,6 +201,7 @@ class StreamingHTTP(ModelPort):
         transport: httpx.BaseTransport | None = None,
         sleep: Callable[[float], None] = time.sleep,
         max_retries: int = 3,
+        guard: QuotaGuard | None = None,
     ) -> None:
         parsed = urlsplit(base_url)
         if (
@@ -183,11 +215,26 @@ class StreamingHTTP(ModelPort):
             raise ValueError("Model base URL must be an HTTP origin/path without credentials or query")
         self.base_url = base_url.rstrip("/")
         self.api_key, self.model, self.provider = api_key, model, provider
-        self.caps, self.settings = caps or {}, settings or {}
+        self.caps, self.settings = caps or {}, dict(settings or {})
+        if membership_endpoint(self.base_url, self.provider):
+            self.settings["membership"] = True
+        validate_model_settings(model, self.settings)
         self.transport, self.sleep, self.max_retries = transport, sleep, max_retries
         self.membership = bool(self.settings.get("membership", False))
+        self.guard, self._guard_role = (
+            guard,
+            self.settings.get("role_binding", "primary"),
+        )
         self.request_count = 0
         self.quota_errors = 0
+
+    def assert_role(self, role: str) -> None:
+        if self.membership and role != self._guard_role:
+            raise ConfigError("会员端口角色已在可信构造时绑定")
+
+    def execution_metadata(self, role: str) -> dict[str, Any]:
+        self.assert_role(role)
+        return turn_policy(self.model, self.settings, role)
 
     def _events(
         self,
@@ -208,11 +255,19 @@ class StreamingHTTP(ModelPort):
                 return
             try:
                 for event in self._request(path, body, headers, parser, cancel, deadline):
-                    visible = visible or event.type in {"text", "tool_call", "reasoning"}
+                    visible = visible or event.type in {
+                        "text",
+                        "tool_call",
+                        "reasoning",
+                    }
                     yield event
                 yield StreamEvent(
                     "done",
-                    {"model": self.model, "provider": self.provider, "latency_ms": (time.monotonic() - started) * 1000},
+                    {
+                        "model": self.model,
+                        "provider": self.provider,
+                        "latency_ms": (time.monotonic() - started) * 1000,
+                    },
                 )
                 return
             except ModelQuotaExhausted:
@@ -231,14 +286,13 @@ class StreamingHTTP(ModelPort):
                 failure = ModelProtocolError()
                 parse_retries += 1
             check_cancel(cancel)
-            if visible or attempt >= self.max_retries or parse_retries > 1 or time.monotonic() >= deadline:
+            # Retain the mainline cumulative parse budget without bypassing the
+            # central action policy or issuing an unguarded physical retry.
+            delay = None if parse_retries > 1 else retry_delay(failure, attempt, self.max_retries, visible=visible)
+            if delay is None or not wait_for_retry(delay, deadline, cancel, self.sleep):
+                check_cancel(cancel)
                 yield StreamEvent("error", failure)
                 return
-            delay = min((1, 3, 9)[min(attempt, 2)] + random.uniform(0, 0.2), max(0, deadline - time.monotonic()))
-            if cancel is not None and self.sleep is time.sleep:
-                cancel.wait(delay)
-            else:
-                self.sleep(delay)
 
     def _request(
         self,
@@ -252,30 +306,58 @@ class StreamingHTTP(ModelPort):
         if time.monotonic() >= deadline:
             raise ModelUnavailable()
         timeout = httpx.Timeout(
-            float(self.settings.get("first_byte_timeout", 60)), connect=float(self.settings.get("connect_timeout", 10))
+            float(self.settings.get("first_byte_timeout", 60)),
+            connect=float(self.settings.get("connect_timeout", 10)),
         )
+        active: list[httpx.Response | None] = [None]
         with (
             httpx.Client(transport=self.transport, timeout=timeout, follow_redirects=False) as client,
-            close_on_cancel(client, cancel, deadline) as client_expired,
+            close_on_cancel(client, cancel, deadline, active=lambda: active[0]) as client_expired,
         ):
+            check_cancel(cancel)
+            request = client.build_request(
+                "POST",
+                self.base_url + path,
+                headers=headers,
+                json=sampling_body(body, self.caps),
+            )
+            check_request_size(request, model=self.model, settings=self.settings)
             check_cancel(cancel)
             if time.monotonic() >= deadline:
                 raise ModelUnavailable()
-            before_provider_request()
-            self.request_count += 1
             with (
-                client.stream("POST", self.base_url + path, headers=headers, json=body) as response,
-                close_on_cancel(response, cancel, deadline) as expired,
+                provider_attempt(
+                    membership=self.membership,
+                    role=self._guard_role,
+                    provider=self.provider,
+                    model=self.model,
+                    transport=self.transport,
+                    guard=self.guard,
+                    cancel_event=cancel,
+                    timeout=max(0, min(10, deadline - time.monotonic())),
+                ) as attempt,
+                cancellation_errors(cancel),
             ):
-                if response.status_code != 200:
-                    failure = http_error(response, membership=self.membership)
-                    check_cancel(cancel)
-                    raise failure
-                for event in parser(sse(response, cancel)):
-                    check_cancel(cancel)
-                    if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
-                        raise ModelUnavailable()
-                    yield event
-                check_cancel(cancel)
-                if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
-                    raise ModelUnavailable()
+                before_provider_request()
+                before_observed_send()
+                self.request_count += 1
+                with closing(client.send(request, stream=True)) as response:
+                    active[0] = response
+                    with (
+                        close_on_cancel(response, cancel, deadline) as expired,
+                        reset_errors(response.headers),
+                    ):
+                        if response.status_code != 200:
+                            failure = http_error(response, membership=self.membership)
+                            check_cancel(cancel)
+                            raise failure
+                        for event in parser(sse(response, cancel)):
+                            check_cancel(cancel)
+                            if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
+                                raise ModelUnavailable()
+                            if event.type == "usage":
+                                observe_usage(attempt, event.data)
+                            yield event
+                        check_cancel(cancel)
+                        if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
+                            raise ModelUnavailable()

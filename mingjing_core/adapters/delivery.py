@@ -10,6 +10,7 @@ from psycopg.types.json import Jsonb
 from mingjing_core.timekit.clock import get_clock
 from mingjing_core.domain.contracts import ScopeError, RevisionConflict, LeaseConflict, EvidenceError
 from .channels.hermes import validated_payload
+from .delivery_origin import assert_delivery_origin
 from .tarot import fingerprint, IdempotencyConflict
 
 
@@ -48,12 +49,16 @@ class OutboxService:
         self.repo.assert_scope(owner,subject)
         if run.get('owner_user_id',run.get('owner'))!=owner:raise ScopeError('执行记录归属不符')
         if run.get('status') not in ('succeeded','complete','completed','validated','success'):raise RevisionConflict('报告执行已过时或尚未成功')
+        result=validated_payload(run.get('result'))
+        if result['meta']['core_run']['run_id']!=run['id']:
+            raise EvidenceError('结果与权威执行不一致')
+        if result['meta'].get('subject_id',subject)!=subject:
+            raise ScopeError('结果人物与执行不一致')
         dependencies=run.get('dependencies',run.get('state_version',{}))
         request=run.get('request',{})
-        cases=request.get('case_ids') or run.get('result',{}).get('meta',{}).get('case_ids') or []
+        cases=request.get('case_ids') or result.get('meta',{}).get('case_ids') or []
         self.repo.versions(owner,subject,cases)
         if not dependencies or not self.repo.verify_versions(owner,dependencies):raise RevisionConflict('资料依赖已更新，旧报告不能投递')
-        result=validated_payload(run.get('result'))
         return subject,dependencies,result
 
     def prepare_delivery(self,*,owner,run_id,business_id,channel,target,due=None,replace_stale=False):
@@ -65,6 +70,7 @@ class OutboxService:
         with self.repo.transaction(owner) as conn:
             run=self.repo.fetch_run(owner,run_id)
             subject,dependencies,result=self._fresh(owner,run)
+            assert_delivery_origin(self.repo,owner,run,business_id=business_id,channel=channel,target=target)
             self._target(owner,subject,channel,target)
             ambiguous=conn.execute(sql.SQL("SELECT id FROM {} WHERE owner=%s AND run_id=%s AND status IN ('sending','uncertain') FOR UPDATE").format(self.repo.table('delivery_outbox')), (owner,run_id)).fetchone()
             if ambiguous:raise DeliveryUncertain('同一执行送达不明，不能更换业务编号或目标重发')
@@ -106,6 +112,8 @@ class OutboxService:
                 try:
                     run=self.repo.fetch_run(owner,row['run_id'])
                     subject,dependencies,result=self._fresh(owner,run)
+                    assert_delivery_origin(self.repo,owner,run,business_id=row['business_id'],
+                                           channel=row['channel'],target=row['target'])
                     self._target(owner,subject,row['channel'],row['target'])
                     if row['dependencies']!=dependencies or fingerprint(row['payload'])!=fingerprint(result):raise RevisionConflict('已归档正文或依赖不一致')
                 except (RevisionConflict,ScopeError,EvidenceError) as exc:

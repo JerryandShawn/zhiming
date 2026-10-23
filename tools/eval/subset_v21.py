@@ -121,7 +121,9 @@ def prepare(budget: MemberBudget, parent: dict[str, Any]) -> tuple[EvidenceJudge
     provider = PortBackedModel(registry, role="evaluation", stop_on_quota=True)
     observed = EvidenceModel(provider)
     target = EvidenceTarget(observed=observed, model="k3", budget=budget, dsn=dsn)
-    judge = EvidenceJudge(ConfiguredModel(model="k3-256k"), Path(__file__).with_name("rubric_v21.md"), observed)
+    judge = EvidenceJudge(
+        ConfiguredModel(model="k3-256k", role="critic"), Path(__file__).with_name("rubric_v21.md"), observed
+    )
     judge.provider.budget = budget
     judge.run_id = parent["metadata"]["run_id"] + ":port-subset"
     return judge, target

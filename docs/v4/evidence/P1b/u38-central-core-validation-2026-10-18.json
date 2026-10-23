@@ -1,0 +1,186 @@
+{
+  "all_http_entrypoints_wired": false,
+  "automatic_resume": false,
+  "central_deployment_verified": false,
+  "execplan_sha256": "98adcde9877d453218f5b7c338422aec999526a3e8f2b592b75ee91fdfef005e",
+  "files": {
+    "mingjing_core/models/quota_batches.py": {
+      "git_blob_sha1": "54acfb839d7b138adfcc17c78199dd51b2b1cb89",
+      "lines": 220,
+      "max_function_lines": 50,
+      "max_line_columns": 118,
+      "sha256": "f168043ba5ad13ba12731fc09616fcc7afc3bb5f02d319ed9e867b6b14790d01"
+    },
+    "mingjing_core/models/quota_guard.py": {
+      "git_blob_sha1": "5d3bcc81ccd9590ab8c90a1a44f005c56ad67b99",
+      "lines": 277,
+      "max_function_lines": 32,
+      "max_line_columns": 120,
+      "sha256": "4bf79e25de2e9e1ea35d62ee07036ed69de82d7efb0d89dec9301e1315bc7824"
+    },
+    "mingjing_core/models/quota_store.py": {
+      "git_blob_sha1": "bf50108b8b3a49a589f13094da81c3bd7b5c2f58",
+      "lines": 291,
+      "max_function_lines": 34,
+      "max_line_columns": 117,
+      "sha256": "c87b3bc5bc2101bab1fff41ae214f5cf11e695305225e939cf483b3cdc9ae787"
+    },
+    "mingjing_core/models/quota_types.py": {
+      "git_blob_sha1": "2798fee552a3326c9121a54a580c365fc05f1362",
+      "lines": 144,
+      "max_function_lines": 16,
+      "max_line_columns": 110,
+      "sha256": "eb0a2cf153b5ba72fe528d5ed1f3c281d92953c7debfcddc8e3b97361cc2caa4"
+    },
+    "mingjing_core/repositories/migrations/0008_model_usage.sql": {
+      "git_blob_sha1": "ca9f7d3ce2972b555d337bc31fa4fa21135692ff",
+      "sha256": "5eef5d65363baa0ab4dc8ec9763b85136f4ba249688330b9cd8448f0b39ccbcb"
+    },
+    "mingjing_core/repositories/permissions.py": {
+      "git_blob_sha1": "45596eba512afbc6d6d6316d05c45c791dd4a038",
+      "lines": 60,
+      "max_function_lines": 22,
+      "max_line_columns": 118,
+      "sha256": "5e5567727b8a59ed2c34afb712d52eac02de7311e32959a537a1ebfb2e35b1af"
+    },
+    "tests/v4/models/test_quota_guard_batches_pg.py": {
+      "git_blob_sha1": "6d7a8d3dade9dc9fb6daad02ee4899b009d6f9a3",
+      "lines": 207,
+      "max_function_lines": 24,
+      "max_line_columns": 116,
+      "sha256": "ccdc26f5cf95d01239296cbb2371596dcd859cf71cd9df0929479743b5e00018"
+    },
+    "tests/v4/models/test_quota_guard_contract.py": {
+      "git_blob_sha1": "4afd58cbe59a0c2c481223cee4543cc63e48935b",
+      "lines": 73,
+      "max_function_lines": 6,
+      "max_line_columns": 120,
+      "sha256": "94ef2bad7709556289bef0d84fb88ba6363318b628cb34b8d93f64b13a706979"
+    },
+    "tests/v4/models/test_quota_guard_migration_pg.py": {
+      "git_blob_sha1": "76470d99084b4e33966fbe86d5daf5dfceeecbe9",
+      "lines": 140,
+      "max_function_lines": 24,
+      "max_line_columns": 119,
+      "sha256": "fda4dd033a2ea74ae692f29521e75306abea65ce6c823266ecd8fa19f6e433ab"
+    },
+    "tests/v4/models/test_quota_guard_pg.py": {
+      "git_blob_sha1": "aa755c39032c2391e43c7bb2a0fe069877bb89fa",
+      "lines": 290,
+      "max_function_lines": 34,
+      "max_line_columns": 118,
+      "sha256": "cde3839efe645c82c4d944fed6bef0d68461b7bccbbda5ad5006b86c5a5c9269"
+    },
+    "tests/v4/models/test_quota_guard_process_pg.py": {
+      "git_blob_sha1": "c24564841c4bad7776cced5e0befbf9a70e015c5",
+      "lines": 171,
+      "max_function_lines": 32,
+      "max_line_columns": 115,
+      "sha256": "f0d05f13801e9dc9d04897748fa4a011c4e23d084f74bda9f4f93235222e9953"
+    },
+    "tests/v4/models/test_quota_guard_recovery_pg.py": {
+      "git_blob_sha1": "415484d90e09166d2494e616db917948c90c8c93",
+      "lines": 98,
+      "max_function_lines": 31,
+      "max_line_columns": 117,
+      "sha256": "038b3258c888e13e456b409a884001349988ce8465cbe7d886e07ac220744f74"
+    },
+    "tests/v4/test_p2_foundation.py": {
+      "git_blob_sha1": "063b469c3456bb592bbd9cd80160b8fa26b89a62",
+      "lines": 159,
+      "max_function_lines": 36,
+      "max_line_columns": 120,
+      "sha256": "2fca23a89ae4f37767a75c26d25ad0b23eb4dfb30725bb7c1b97698e14bb6710"
+    }
+  },
+  "historical_migrations": {
+    "mingjing_core/repositories/migrations/0001_initial.sql": {
+      "git_blob_sha1": "5a5d253ffa52e2e0c6ff02b5567c11f46b9515c0",
+      "normalized_sha256": "0015f6b2a9d655b5d47774a7fc44456a299953db1b0b05fcd13558206f855586",
+      "unchanged": true
+    },
+    "mingjing_core/repositories/migrations/0002_retry_epoch.sql": {
+      "git_blob_sha1": "6a9bb6cf84782e042c0fc84a02bafb1ef31d2987",
+      "normalized_sha256": "a7df7398ce522df386dbefcf464b7d0b550fabd558e47adec6fd991c15715f67",
+      "unchanged": true
+    },
+    "mingjing_core/repositories/migrations/0003_mutation_requests.sql": {
+      "git_blob_sha1": "b0a8e7c10b58840da11af01733b17d607be057c0",
+      "normalized_sha256": "9905263b6a5bb7eabd133607b587efc055c475ea6017c497116be02df6d32ff5",
+      "unchanged": true
+    },
+    "mingjing_core/repositories/migrations/0004_media_deletions.sql": {
+      "git_blob_sha1": "a52013edb53b8d84e4590ac120285e77e40cda14",
+      "normalized_sha256": "eb6f19a7753168387388cff5d001694f90676dcbc60a72c5d7de8ccb76f27145",
+      "unchanged": true
+    },
+    "mingjing_core/repositories/migrations/0005_agent_runtime.sql": {
+      "git_blob_sha1": "a42645f14b54c0f68ab669c952d7b61d8fac6301",
+      "normalized_sha256": "19182ec61c19d9ff3472a867b9b2ce41fa60fe22579e83dd04b4a50308708e62",
+      "unchanged": true
+    },
+    "mingjing_core/repositories/migrations/0006_threads.sql": {
+      "git_blob_sha1": "52a6ad719a5b39b045d545b57a604f51e27f1812",
+      "normalized_sha256": "c3469b6bad49358c11562ec16c70f840d5a0d50a8c9041c2f044a888aa644ee2",
+      "unchanged": true
+    },
+    "mingjing_core/repositories/migrations/0007_search.sql": {
+      "git_blob_sha1": "8d3e6bc0547d8699d2f5348556738186a9c3160f",
+      "normalized_sha256": "6c6c544a9b3def93da445ff5a58338e242c096294627dd7414c139263e3083ce",
+      "unchanged": true
+    }
+  },
+  "human_online_entrypoint_verified": false,
+  "real_feishu_messages": 0,
+  "real_model_requests": 0,
+  "real_model_switch_performed": false,
+  "receipt_sha256": "15bec2a1bd060d8994deb607f8d85fa147ea72f17c88b812cdc3735d8df382d6",
+  "same_name_parallel_guard_present": false,
+  "schema": "p1b-u38-core-evidence-v1",
+  "scope": "offline-central-core-only",
+  "source_commit_base": "43a119b69241c1d4b4def8877b6526bd826514c3",
+  "static": {
+    "ast_bounds": true,
+    "file_limit": 400,
+    "format_check": true,
+    "function_limit": 60,
+    "git_diff_check": true,
+    "line_limit": 120,
+    "ruff_check": true,
+    "ruff_rules": [
+      "E",
+      "F",
+      "I",
+      "B",
+      "UP",
+      "SIM"
+    ],
+    "utf8_lf_no_bom": true
+  },
+  "uncommitted_candidate": true,
+  "validation": {
+    "command": "python -m pytest tests/v4/models tests/v4/test_p2_foundation.py -q --tb=short -o faulthandler_timeout=60",
+    "cwd": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p1b",
+    "db": "loopback 55480/core_test_main; independent disposable schemas",
+    "duration_seconds": 74.13,
+    "log": {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\2026-10-17\\v4-ai-claude-c-users-administrator-4\\work\\night\\u38\\models-frozen.log",
+      "sha256": "e89047972b45c9e2ae1fedc627d2ab6589fd9eb25f9ede2e76116894252a3283"
+    },
+    "new_http": "httpx.MockTransport only",
+    "new_pure_contract_tests": 31,
+    "new_real_pg_tests": 48,
+    "new_tests_by_module": {
+      "tests/v4/models/test_quota_guard_batches_pg.py": 17,
+      "tests/v4/models/test_quota_guard_contract.py": 31,
+      "tests/v4/models/test_quota_guard_migration_pg.py": 3,
+      "tests/v4/models/test_quota_guard_pg.py": 18,
+      "tests/v4/models/test_quota_guard_process_pg.py": 7,
+      "tests/v4/models/test_quota_guard_recovery_pg.py": 3
+    },
+    "new_tests_total": 79,
+    "passed": 736,
+    "python": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+    "skipped": 0
+  }
+}

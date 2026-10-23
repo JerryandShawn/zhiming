@@ -10,6 +10,7 @@ from tools.eval.judges import ModelJudge, check_assertions
 from tools.eval.quota import ProviderStopped, guard_judge
 from tools.eval.schema import Scenario
 from tools.eval.targets.base import Target, TurnResult
+from tools.manual_grant import scoped_scenario
 
 
 def _case(identity: str, category: str, status: str) -> dict[str, Any]:
@@ -30,6 +31,7 @@ def _case(identity: str, category: str, status: str) -> dict[str, Any]:
     }
 
 
+@scoped_scenario
 def evaluate_scenario(
     scenario: Scenario,
     target: Target,
@@ -40,6 +42,7 @@ def evaluate_scenario(
     if target_name == "v3" and "v3" not in scenario.targets:
         return _case(scenario.id, scenario.category, "n/a on v3")
     case = _case(scenario.id, scenario.category, "failed")
+    case["business_clock"] = scenario.clock
     previous_clock = get_clock()
     try:
         set_clock(FrozenClock(datetime.fromisoformat(scenario.clock)))
@@ -55,7 +58,7 @@ def evaluate_scenario(
         case["score"] = round((sum(grades) / len(grades)) * passed, 6)
         case["status"] = "passed" if passed and case["score"] == 1 else "failed"
     except ProviderStopped as exc:
-        _record_stop(case, exc.reason, exc.role, exc.provider_http_status)
+        _record_stop(case, exc.reason, exc.role, exc.provider_http_status, exc.resume_at)
         case["model_calls"] += exc.model_calls
         case[exc.role + "_model_calls"] += exc.model_calls
         case["elapsed_seconds"] += exc.elapsed_seconds
@@ -91,7 +94,13 @@ def _evaluate_turns(scenario: Scenario, target: Target, judge: ModelJudge | None
             category = result.metadata.get("error_category", "unclassified")
             case["error_category"] = category if category in {"provider", "business"} else "unclassified"
         if result.metadata.get("stop_reason"):
-            _record_stop(case, result.metadata["stop_reason"], "target", result.metadata.get("provider_http_status"))
+            _record_stop(
+                case,
+                result.metadata["stop_reason"],
+                "target",
+                result.metadata.get("provider_http_status"),
+                result.metadata.get("resume_at"),
+            )
         if scenario.seed.synthetic and result.text:
             case["previews"].append(result.text[:200])
         grades.append(_grade(scenario, index, result, judge, case))
@@ -128,15 +137,16 @@ def _grade(
     try:
         reviewed = judge.evaluate(payload)
     except ProviderStopped as exc:
-        _record_stop(case, exc.reason, "judge", exc.provider_http_status)
+        _record_stop(case, exc.reason, "judge", exc.provider_http_status, exc.resume_at)
         reviewed = {
             "score": 0.0,
             "model_calls": guard.calls - calls_before if guard else exc.model_calls,
             "elapsed_seconds": guard.elapsed_seconds - elapsed_before if guard else exc.elapsed_seconds,
             "error": "ProviderStopped",
         }
-    case["model_calls"] += reviewed["model_calls"]
-    case["judge_model_calls"] += reviewed["model_calls"]
+    physical_calls = guard.calls - calls_before if guard else reviewed["model_calls"]
+    case["model_calls"] += physical_calls
+    case["judge_model_calls"] += physical_calls
     case["judge_model_elapsed_seconds"] += (
         guard.elapsed_seconds - elapsed_before if guard else reviewed["elapsed_seconds"]
     )
@@ -149,9 +159,19 @@ def _grade(
     return reviewed["score"]
 
 
-def _record_stop(case: dict[str, Any], reason: str, role: str, provider_http_status: int | None = None) -> None:
-    case["stop_reason"] = reason if reason in {"quota", "provider_http_error"} else "provider_http_error"
-    case["stop_role"] = role
-    case["requires_user_decision"] = True
+def _record_stop(
+    case: dict[str, Any], reason: str, role: str, provider_http_status: int | None = None, resume_at: str | None = None
+) -> None:
+    safe = ProviderStopped(reason, role, provider_http_status=provider_http_status, resume_at=resume_at)
+    eligible = safe.reason == "quota_5h" and safe.resume_at is not None
+    case.update(
+        stop_reason=safe.reason,
+        stop_role=safe.role,
+        requires_user_decision=not eligible,
+        automatic_resume_eligible=eligible,
+        permanent_stop=safe.reason == "access_terminated",
+    )
+    if safe.resume_at is not None:
+        case["resume_at"] = safe.resume_at
     if type(provider_http_status) is int and 100 <= provider_http_status <= 599:
         case["provider_http_status"] = provider_http_status

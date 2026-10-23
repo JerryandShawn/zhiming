@@ -1,0 +1,2620 @@
+{
+  "schema_version": "u37-classification-fixture-v1",
+  "provenance": "Synthetic offline contract fixtures; format assumptions are labelled. No real provider capture or model calls.",
+  "source_design_sha256": "92396c24196e22de4dc5694ac57bbf457f63aac35c147ef5735aa41f74569547",
+  "adjustments": [
+    "Only HTTP/SSE pure-classification cases retained; transport/local preflight/visible-output retry execution belongs to root integration tests.",
+    "Diagnostics assert exact allowlisted public sentences or null, never arbitrary response prefixes.",
+    "PermissionError is the same-class compatibility alias of PermissionDenied.",
+    "Remote payload errors use PayloadTooLarge subclass of BadRequest.",
+    "Membership quota fallback is none; all D1 stop signals are persistent global stops."
+  ],
+  "deferred_execution_cases": [
+    "transport_connect_error",
+    "transport_read_timeout",
+    "transport_connection_reset",
+    "transport_cancelled_after_post",
+    "local_cancelled_before_post",
+    "local_payload_over_1_8mb"
+  ],
+  "case_count": 78,
+  "cases": [
+    {
+      "id": "http_403_5h_en",
+      "provenance": {
+        "message_format": "仓库已审计公开句+合成嵌套外壳",
+        "envelope_format": "既有仓库夹具",
+        "source": "audited_repository_fixture",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "You've reached your 5-hour usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_5h",
+        "provider_error_type": "permission_error",
+        "public_message": "You've reached your 5-hour usage limit.",
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_5h_case_insensitive",
+      "provenance": {
+        "message_format": "仓库公开句大小写边界（格式推定）",
+        "envelope_format": "格式推定",
+        "source": "audited_repository_fixture",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "YOU'VE REACHED YOUR 5-HOUR USAGE LIMIT."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_5h",
+        "provider_error_type": "permission_error",
+        "public_message": "YOU'VE REACHED YOUR 5-HOUR USAGE LIMIT.",
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_5h_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中文匹配词属于格式推定，不标为供应商实测。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "合成错误：已达到5小时使用额度上限。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_5h",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_weekly_en",
+      "provenance": {
+        "message_format": "仓库已审计公开句+合成嵌套外壳",
+        "envelope_format": "既有仓库夹具",
+        "source": "audited_repository_fixture",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "You've reached your weekly (7-day) usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_weekly",
+        "provider_error_type": "permission_error",
+        "public_message": "You've reached your weekly (7-day) usage limit.",
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_weekly_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "合成错误：已达到每周（7天）使用额度上限。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_weekly",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_monthly_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "仅用官方月额关键词构造合成文案；完整message不是官方原文。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic provider classification: monthly usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_monthly",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_monthly_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "合成错误：本计费周期的会员月额度已用完。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_monthly",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_concurrency_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic provider classification: concurrent request limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelConcurrencyLimited",
+        "kind": "concurrency_limited",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_concurrency_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "合成错误：已达到并发请求限制。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelConcurrencyLimited",
+        "kind": "concurrency_limited",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_access_terminated_exact",
+      "provenance": {
+        "message_format": "用户指定停止信号",
+        "envelope_format": "格式推定",
+        "source": "user_override",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "Access terminated"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "access_terminated",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_access_terminated_case_insensitive",
+      "provenance": {
+        "message_format": "用户指定停止信号",
+        "envelope_format": "格式推定",
+        "source": "user_override",
+        "note": "大小写鲁棒性是项目测试口径。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "access TERMINATED"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "access_terminated",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_permission_unknown_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic permission denied."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_permission_unknown_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "合成错误：没有权限访问此模型。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_wrong_error_type_even_known_sentence",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "保留P1严格403保护：未知type不能仅凭message变额度。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "other_error",
+            "message": "You've reached your 5-hour usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_missing_error_type",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "缺少type的普通403不得当quota。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "message": "You've reached your weekly (7-day) usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_nonstring_error_type",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": {
+              "unexpected": "object"
+            },
+            "message": "You've reached your 5-hour usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_nonstring_message",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": [
+              "quota"
+            ]
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_flat_body_not_nested",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "HTTP403须保留嵌套error来源边界；不能将任意flat字典解释为受审计quota。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "type": "permission_error",
+          "message": "You've reached your 5-hour usage limit."
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_empty_json",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {}
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_invalid_json",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": "{invalid"
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_plain_usage_words",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": "synthetic quota usage limit 额度"
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_403_echo_top_level",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "echo": "SYNTHETIC_REQUEST_ECHO_403 quota usage limit"
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_REQUEST_ECHO_403"
+        ]
+      }
+    },
+    {
+      "id": "http_403_echo_nested_no_public_sentence",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "泛称quota/usage limit不能把请求回显当供应商额度公告。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "SYNTHETIC_PRIVATE_REQUEST_ECHO asks about quota and usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_PRIVATE_REQUEST_ECHO"
+        ]
+      }
+    },
+    {
+      "id": "http_403_public_sentence_surrounded_by_echo",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "仍可识别公开额度句，但diagnostic只能取受审计公开句，不可保留前后回显。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "SYNTHETIC_ECHO_BEFORE You've reached your 5-hour usage limit. SYNTHETIC_ECHO_AFTER"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_5h",
+        "provider_error_type": "permission_error",
+        "public_message": "You've reached your 5-hour usage limit.",
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_ECHO_AFTER",
+          "SYNTHETIC_ECHO_BEFORE"
+        ]
+      }
+    },
+    {
+      "id": "http_403_echo_access_signal_outside_error",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "用户指定信号只看供应商错误字段，不能扫描request echo。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic ordinary permission failure."
+          },
+          "request_echo": "Access terminated SYNTHETIC_ACCESS_ECHO"
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_ACCESS_ECHO"
+        ]
+      }
+    },
+    {
+      "id": "http_402_membership_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 402,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "billing_error",
+            "message": "Synthetic: unable to verify your membership benefits."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelMembershipUnverified",
+        "kind": "membership_unverified",
+        "provider_error_type": "billing_error",
+        "public_message": null,
+        "max_attempts": 2,
+        "delays_seconds": [
+          60
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_402_membership_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 402,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "billing_error",
+            "message": "合成错误：暂时无法验证会员权益。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelMembershipUnverified",
+        "kind": "membership_unverified",
+        "provider_error_type": "billing_error",
+        "public_message": null,
+        "max_attempts": 2,
+        "delays_seconds": [
+          60
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_402_body_unreadable",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "已知402状态保留验证失败动作，不能因正文读取失败改成quota。"
+      },
+      "input": {
+        "status": 402,
+        "surface": "http",
+        "membership": true,
+        "body": null
+      },
+      "expected": {
+        "exception": "ModelMembershipUnverified",
+        "kind": "membership_unverified",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 2,
+        "delays_seconds": [
+          60
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_rate_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "rate_limit_error",
+            "message": "Synthetic: receiving too many requests."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": "rate_limit_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_rate_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "rate_limit_error",
+            "message": "合成错误：请求过多，请稍后重试。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": "rate_limit_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_overload_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "overloaded_error",
+            "message": "Synthetic inference engine overloaded."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "engine_overloaded",
+        "provider_error_type": "overloaded_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_overload_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "overloaded_error",
+            "message": "合成错误：推理引擎过载，请稍后再试。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "engine_overloaded",
+        "provider_error_type": "overloaded_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_unreadable_still_rate_not_quota",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": true,
+        "body": null
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_visible_output_no_retry",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "动作层边界夹具：模拟已展示片段之后向Registry抛出带HTTP状态的错误；不是声称单次HTTP错误响应能先产生正文。"
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "rate_limit_error",
+            "message": "Synthetic rate limit after visible output."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": "rate_limit_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_quota_word_does_not_override_status",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "状态码优先；会员429不再因body含quota词转额度。"
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "You've reached your 5-hour usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_429_nonmembership_rate",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 429,
+        "surface": "http",
+        "membership": false,
+        "body": {
+          "error": {
+            "type": "rate_limit_error",
+            "message": "Synthetic rate limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": "rate_limit_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_reasoning_missing_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic: reasoning_content is missing in assistant tool call message."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "reasoning_missing",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_reasoning_missing_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "合成错误：开启思考时，助手工具消息缺少 reasoning_content。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "reasoning_missing",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_payload_too_large_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "message为格式推定；正式分类器需从官方原文fixture再补公开关键词。"
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic: total message size 2190000 exceeds limit 2097152."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPayloadTooLarge",
+        "kind": "payload_too_large",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_payload_too_large_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "合成错误：消息总大小超过2MB限制。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPayloadTooLarge",
+        "kind": "payload_too_large",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_token_limit_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic request exceeded model token limit: 262144."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "token_limit",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_token_limit_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "合成错误：请求超过模型262144 token上限。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "token_limit",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_content_filtered_en",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic content safety rejection: high risk."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelContentFiltered",
+        "kind": "content_filtered",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_content_filtered_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "合成错误：内容安全审核拒绝请求。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelContentFiltered",
+        "kind": "content_filtered",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_duplicate_tool",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic: function name synthetic_tool is duplicated."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "bad_request",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_unknown",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic malformed parameter."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "bad_request",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_400_quota_word_never_quota",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 400,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "SYNTHETIC_BAD_PARAMETER_QUOTA_WORD parameter named quota is malformed."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "bad_request",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_BAD_PARAMETER_QUOTA_WORD"
+        ]
+      }
+    },
+    {
+      "id": "http_500_unavailable",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 500,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "api_error",
+            "message": "Synthetic provider transient failure."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": "api_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_502_unavailable",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 502,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "api_error",
+            "message": "Synthetic provider transient failure."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": "api_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_503_unavailable",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 503,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "api_error",
+            "message": "Synthetic provider transient failure."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": "api_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_504_unavailable",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": 504,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "api_error",
+            "message": "Synthetic provider transient failure."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": "api_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "http_503_echo_quota_word_still_unavailable",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "5xx只按不可用；不能被泛quota关键词诱导成额度。"
+      },
+      "input": {
+        "status": 503,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "api_error",
+            "message": "SYNTHETIC_ECHO_5XX quota usage limit"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": "api_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": [
+          "SYNTHETIC_ECHO_5XX"
+        ]
+      }
+    },
+    {
+      "id": "http_503_visible_no_retry",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "动作层边界夹具：模拟已展示片段之后向Registry抛出带HTTP状态的错误；不是声称单次HTTP错误响应能先产生正文。"
+      },
+      "input": {
+        "status": 503,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "api_error",
+            "message": "Synthetic unavailable after visible output."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": "api_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_5h",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "You've reached your 5-hour usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_5h",
+        "provider_error_type": "permission_error",
+        "public_message": "You've reached your 5-hour usage limit.",
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_weekly",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "You've reached your weekly (7-day) usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_weekly",
+        "provider_error_type": "permission_error",
+        "public_message": "You've reached your weekly (7-day) usage limit.",
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_monthly",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic monthly usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_monthly",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_monthly_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "合成错误：会员月额度已用完。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_monthly",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_concurrency",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic concurrent request limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelConcurrencyLimited",
+        "kind": "concurrency_limited",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_concurrency_zh",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "合成错误：并发请求受限。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelConcurrencyLimited",
+        "kind": "concurrency_limited",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_access_terminated",
+      "provenance": {
+        "message_format": "用户指定停止信号",
+        "envelope_format": "格式推定",
+        "source": "user_override",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "Access terminated"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "access_terminated",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_membership",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "billing_error",
+            "message": "Synthetic: unable to verify your membership benefits."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelMembershipUnverified",
+        "kind": "membership_unverified",
+        "provider_error_type": "billing_error",
+        "public_message": null,
+        "max_attempts": 2,
+        "delays_seconds": [
+          60
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_rate",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "rate_limit_error",
+            "message": "Synthetic request rate is too high."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": "rate_limit_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_overload",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "overloaded_error",
+            "message": "Synthetic engine overloaded."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "engine_overloaded",
+        "provider_error_type": "overloaded_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_reasoning_missing",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic: reasoning_content is missing in assistant tool call message."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "reasoning_missing",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_payload",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "invalid_request_error",
+            "message": "合成错误：消息大小超过2MB限制。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPayloadTooLarge",
+        "kind": "payload_too_large",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_token",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic model token limit exceeded."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "token_limit",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_filtered",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "invalid_request_error",
+            "message": "合成错误：内容安全拒绝。"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelContentFiltered",
+        "kind": "content_filtered",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_bad_request",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Synthetic: function name synthetic_tool is duplicated."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelBadRequest",
+        "kind": "bad_request",
+        "provider_error_type": "invalid_request_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_permission",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic permission failure."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_unavailable",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "中途SSE错误外壳合成；HTTP握手200不作为错误状态码，未提供真实error状态就记null。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "api_error",
+            "message": "Synthetic transient provider failure."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": "api_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_rate_after_visible_no_retry",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "rate_limit_error",
+            "message": "Synthetic too many requests."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelRateLimited",
+        "kind": "rate_limited",
+        "provider_error_type": "rate_limit_error",
+        "public_message": null,
+        "max_attempts": 4,
+        "delays_seconds": [
+          1,
+          3,
+          9
+        ],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "configured_nonmembership",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_monthly_after_visible_all_stop",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic monthly usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_monthly",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_unknown_type_quota_word_not_quota",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "未知SSE错误不靠str(dict)扫关键词判quota；评测保守停止未完成而不是重试。"
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "other_error",
+            "message": "SYNTHETIC_UNKNOWN_SSE_ECHO quota usage limit"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_UNKNOWN_SSE_ECHO"
+        ]
+      }
+    },
+    {
+      "id": "sse_missing_error_object",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "message": "SYNTHETIC_FLAT_SSE_ECHO quota"
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_FLAT_SSE_ECHO"
+        ]
+      }
+    },
+    {
+      "id": "sse_nonstring_type",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": [
+              "permission_error"
+            ],
+            "message": "You've reached your 5-hour usage limit."
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelUnavailable",
+        "kind": "unavailable",
+        "provider_error_type": null,
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_nonstring_message",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": {
+              "echo": "quota"
+            }
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": []
+      }
+    },
+    {
+      "id": "sse_access_signal_echo_only",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": ""
+      },
+      "input": {
+        "status": null,
+        "surface": "sse",
+        "membership": true,
+        "body": {
+          "type": "error",
+          "error": {
+            "type": "permission_error",
+            "message": "Synthetic ordinary permission failure."
+          },
+          "echo": "Access terminated SYNTHETIC_SSE_ACCESS_ECHO"
+        }
+      },
+      "expected": {
+        "exception": "ModelPermissionError",
+        "kind": "permission_error",
+        "provider_error_type": "permission_error",
+        "public_message": null,
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": false,
+        "persistent_stop": false,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_SSE_ACCESS_ECHO"
+        ]
+      }
+    },
+    {
+      "id": "http_403_public_sentence_after_long_private_prefix",
+      "provenance": {
+        "message_format": "格式推定",
+        "envelope_format": "格式推定",
+        "source": "official_errors",
+        "note": "公开句出现在前240字之外；前240字包含合成私人回显。诊断应只留受审计公开句，绝不直接截prefix。"
+      },
+      "input": {
+        "status": 403,
+        "surface": "http",
+        "membership": true,
+        "body": {
+          "error": {
+            "type": "permission_error",
+            "message": "SYNTHETIC_LONG_PRIVATE_PREFIX ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ You've reached your 5-hour usage limit. SYNTHETIC_LONG_PRIVATE_SUFFIX"
+          }
+        }
+      },
+      "expected": {
+        "exception": "ModelQuotaExhausted",
+        "kind": "quota_5h",
+        "provider_error_type": "permission_error",
+        "public_message": "You've reached your 5-hour usage limit.",
+        "max_attempts": 1,
+        "delays_seconds": [],
+        "global_stop": true,
+        "persistent_stop": true,
+        "fallback": "none",
+        "never_include": [
+          "SYNTHETIC_ECHO_BEFORE",
+          "SYNTHETIC_LONG_PRIVATE_PREFIX",
+          "SYNTHETIC_LONG_PRIVATE_SUFFIX"
+        ]
+      }
+    }
+  ]
+}

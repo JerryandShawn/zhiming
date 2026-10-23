@@ -1,0 +1,21 @@
+id: Q03
+title: 未知取舍先问一个偏好
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  profile_overrides:
+    preferences: []
+turns:
+- user: 我该选A公司还是B公司？
+  expect:
+    must_include_any:
+    - 最在乎
+    - 更看重
+    - 优先
+    min_questions: 1
+    max_questions: 1
+    judge: 选项为2至4个，或先给框架再问一个具体问题。
+scripted:
+- turn: 1
+  model:
+  - text: 可以先看成长、收入和生活节奏。你目前最在乎哪一项？

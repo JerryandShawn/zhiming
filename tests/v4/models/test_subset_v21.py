@@ -149,6 +149,13 @@ def test_prepare_binds_single_evaluation_port_and_same_member_budget(context: di
         subset.prepare(context["budget"], context["parent"])
     verify.assert_not_called()
     monkeypatch.setenv("CORE_TEST_DSN", "postgresql://core_test@127.0.0.1:55480/core_test_e1")
+    with pytest.raises(SystemExit, match="same membership k3"):
+        subset.prepare(context["budget"], context["parent"])
+    # A historical k3 comparison fixture must opt in explicitly; D2's active default stays 256k.
+    historical = subset.ModelRegistry()
+    historical.data["models"]["kimi-code-main"].update(model="k3")
+    historical.data["models"]["kimi-code-main"]["settings"]["model_lock"] = "k3"
+    monkeypatch.setattr(subset, "ModelRegistry", lambda: historical)
     judge, target = subset.prepare(context["budget"], context["parent"])
     provider = target.observed.provider
     assert isinstance(provider, PortBackedModel)
