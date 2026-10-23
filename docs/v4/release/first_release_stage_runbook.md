@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 00:01，北京时间；00:36补充本机同次升级基础。**No-Go / 草案：尚不能照本单完成部署。** 工具观察基线为`3ee8def`，最终首发候选尚未冻结；该提交号不是已验收的发布包。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；新增本机恢复及可选升级仅用于隔离演练。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 00:01，北京时间；01:16补充本机候选独立进程预检。**No-Go / 草案：尚不能照本单完成部署。** 工具观察基线为`3ee8def`，后续本机工具进度见原恢复ExecPlan；最终首发候选尚未冻结，这些工具提交号均不是已验收的发布包。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；新增本机恢复、升级与只读候选预检仅用于隔离演练。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -83,6 +83,19 @@ cd "$FR_CONTROL_DIR"
 新public初始化仅在本次新库/新owner匹配、public为空且原owner为pg_database_owner时进行，不放宽NOINHERIT或writer权限。角色DDL只提交客户端生成的SCRAM verifier，口令和verifier均不进回执。实际pg_restore由新owner执行no-owner/no-acl/exit-on-error/single-transaction/no-password；默认随后只核原prefix和owner。
 
 同一命令显式增加`--apply-local --upgrade-local`，才在该调用持锁新建且恢复的目标继续：再次核候选SQL和历史、一个事务前向至8、独立autocommit阶段checkpoint setup、复用最小授权、两角色精确只读ACL。正常总连接7，默认路径仍4；没有采用现成库的单独入口。0008四表必须实际为空，非空立即停止并保留，不清表或provision；空表不代表中央账本合法保全/重绑定。任一阶段失败保留其已提交现场，不修权限重试；不重放撤销/收据。成功仍保持正式native_restore_completed、linux_attestation、publication为false。本机新升级窄链11/11及原恢复证据见原ExecPlan，不新增证据副本。B3/B7所需正式全链仍缺失。
+
+本机同次新库还可显式增加以下候选只读预检；这是已有参数的完整组合，不能去掉apply/upgrade后用于采用现成库：
+
+```bash
+"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
+  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
+  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
+  --apply-local --upgrade-local --replay-preflight-local \
+  --preflight-pin "$FR_LOCAL_PREFLIGHT_PIN" \
+  --preflight-ledger "$FR_LOCAL_LATEST_WITHDRAWALS" --candidate-python "$FR_CANDIDATE_PYTHON"
+```
+
+外部预检pin使用`first-release-local-preflight-pin-v1`，绑定同一候选/manifest/dump、最新旁账、实际Python可执行文件和受审控制worker的hash。候选Python必须是实际Python3.11 venv，并满足Core锁在该平台激活的版本及依赖闭包；只有锁文件相同不够。该新子进程拒绝预载控制树业务包，实际导入并核候选业务来源，只以新owner进行额外1次只读连接，正常总连接8。预检通过仅表示源码/已装依赖元数据/目标迁移和owner全集/空运行队列与中央空表核验；不调用apply_withdrawals，`latest_withdrawals_replayed`、`runtime_verified`、`native_restore_completed`、`linux_attestation`、`publication`仍为false。失败保留新目标，不自动重试或清理。证据只登记在原恢复ExecPlan；此命令不解除B3/B7或实际Linux门。
 
 **B7的新库恢复证明必须在B3修改已有stage库之前完成。** 表中缺失入口不是待猜命令，不能用旧B1 apply或手工SQL补过门。只要必要入口缺失，停在本地准备阶段。
 

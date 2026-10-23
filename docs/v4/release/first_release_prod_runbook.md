@@ -1,6 +1,6 @@
 # 核心首发生产切换草案
 
-2026-10-24 00:01，北京时间；00:20补充本机恢复基础。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 工具观察基线`3ee8def`不是最终候选SHA，也不是已上线版本。正式目标仍只有文件契约校验与可选只读恢复库ACL；本机新增原始prefix恢复不解除生产、Linux或上线门。无服务器、模型请求或飞书动作。
+2026-10-24 00:01，北京时间；01:16补充本机候选预检边界。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 工具观察基线`3ee8def`及原恢复ExecPlan里的后续本机工具提交均不是最终候选SHA，也不是已上线版本。正式目标仍只有文件契约校验与可选只读恢复库ACL；本机新增恢复、升级和只读候选预检不解除生产、Linux或上线门。无服务器、模型请求或飞书动作。
 
 旧B1不再单独上线，旧B/D授权失效。**只有用户对本次最终候选、生产对象、维护窗口、修改、渠道恢复及止损范围重新授权，才可进入生产步骤。** 大脑审核stage及本单是必要输入，不替代用户授权。旧30/31文件、旧工作日窗口或旧一次模型冒烟不能自动成为本次许可。
 
@@ -45,6 +45,8 @@ cd "$FR_CONTROL_DIR"
 **禁止套用旧入口：** `core_incremental`、B1 restore proof/replay、`b1_publication`均保留其原b9/scope契约；不改常量来接受最终候选，不用手填proof解除Native拒绝。`deploy_core freeze/install/publish`包含既有全量迁移、旧入口或真实渠道副作用，不能用于已有Core PG增量。`restore-withdrawals`硬live目标也不用于本次新库恢复。本单不提供尚不存在的首发apply命令。
 
 新增`tools.first_release_local_restore`只接受local_drill=true、本机55480/55481及本次随机新库/角色，默认仅校验，显式--apply-local才实际恢复原prefix1–7；创建前拒绝任一既有对象及含中央额度表的archive。同次再显式--upgrade-local可从原持锁新目标前向至8、checkpoint setup、最小授权与精确ACL，0008仅验空表，不构成合法账本保全/重绑定；失败保留阶段，不接管旧库或修复重试。它没有formal/stage/production入口，不支持0008账本恢复、最新撤销/收据重放、重绑定、unit或开门，不能代替D3。实际Windows PG15定向证据见原ExecPlan；Linux容器NAT身份不匹配仍硬拒，未把Windows结果改称Linux通过。
+
+该本机入口另有显式`--replay-preflight-local --preflight-pin --preflight-ledger --candidate-python`组合，完整本机命令及受审pin字段见[stage草案的本机入口](first_release_stage_runbook.md#本机新入口不能替代b3b7)。它必须仍在同call新库恢复/升级的creator锁内，额外启动实际候选Python3.11 venv进程核源码来源、活动依赖与只读目标状态；正常总连接8。名称含replay的预检参数不执行撤销/收据重放，所有正式恢复、运行时、Linux与发布完成位保持false。不能将这一预检移到生产已有库，或拿其回执解除D3；源prefix8的中央身份和历史保全仍未实现。
 
 ## 3. 停写、备份、增量、切换、开门顺序
 

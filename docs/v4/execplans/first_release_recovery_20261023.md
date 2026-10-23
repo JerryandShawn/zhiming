@@ -8,6 +8,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 01:11 +08:00) 同call持锁新目标可选候选fresh-process只读预检9/9：完整Git候选包、实际Python3.11 venv与活动Core锁闭包、真实PG15迁移/owner/运行状态/中央空表；预载控制包、源码漂移及四种目标异常均拒绝并保留新目标，完整状态未变。未调用撤销重放，正式完成位仍false。
+- [x] (2026-10-24 01:16 +08:00) 交叉审阅修正owner排序的locale边界：实际PG owner行以Python sorted归一化，与输入保持精确集合相等；仅正常预检和owner缺额两个受影响目标2/2，未复跑其余7项。
 - [x] (2026-10-24 00:48 +08:00) 非空消息/事实撤销双重放实证发现并最小修复run/Outbox重复updated_at：完整Core、sequence、checkpoint及原始关联行新回归1/1，必要既有纠错/重新生成2/2；不清state_version、不跳过revoked，不改native提交后purge。
 - [x] (2026-10-24 00:36 +08:00) 显式同次新库restore→upgrade阶段以真实PG15验证prefix4/7→8、原文/checkpoint保持、四张空额度表及精确ACL；10个新行为和1个默认兼容节点单链11/11通过。失败保持实际阶段，不提供既有库采用入口。
 - [x] (2026-10-24 00:20 +08:00) 新增显式local-only原生恢复基础：真实PG15 pg_dump/pg_restore保持prefix4/7，新库/两角色、不可接管及失败保留边界共18个不同定向行为有通过证据；无前向迁移、重放或正式发布放行。
@@ -24,6 +26,10 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+活动锁解析必须先按子进程真实PEP508环境筛选，再以canonical name去重并传播extras。Core锁的两个numpy版本分别用于Python<3.12与>=3.12；Windows实际platform_machine=AMD64时hf-xet的纯小写marker不激活，不能用最后一条覆盖或忽略marker误报依赖缺失。新预检在实际venv内核已安装版本、活动Requires-Dist闭包及关键模块site来源，不将锁文本本身当成已安装证明。
+
+交叉审阅发现PG的ORDER BY id使用数据库locale，父进程Python sorted使用Unicode顺序；大小写或中文owner合法时两种顺序可能不同。预检改为对实际读到的owner ID用同一Python sorted，不放宽缺额、额外owner或重复owner契约。
 
 新增真实PG回归先以原生MemoryService保存消息/事实和关联run，带sent/uncertain Outbox及两个epoch的非空checkpoint，实际prefix7备份→新目标升级8，再导入最新非空撤销。新摘要夹具首跑因PG15 sequence不能整行to_jsonb而失败，改为显式last_value/log_cnt/is_called摘要；随后真实业务反例仅core_runs及delivery_outbox全状态变化，关联run和两条Outbox唯一变列均为updated_at。撤销、不可复活/重发、checkpoint清空、第二export稳定、另一owner及四张空额度表/sequence均已在该失败前验证。
 
@@ -71,6 +77,12 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 ## Concrete Steps / Plan of Work
 
+2026-10-24下一基础片只做显式local replay preflight，必须同call apply+upgrade且原新目标creator锁仍在；不调用apply_withdrawals，不宣称双重放已接。新增不可变输入绑定candidate/manifest/dump/latest ledger/实际Python及受审控制worker。纯stdlib bootstrap在任何业务导入前固定候选tools namespace与mingjing_core包，拒绝预载控制树业务；前后校验全部候选模块真实路径与manifest字节，控制worker自身不进入tools命名空间。
+
+子进程核实际Python3.11、venv与活动Core锁闭包，须以真实PEP508 marker环境筛选后canonical去重并传播extras，不能覆盖条件重复pin。既有.venv-k3实际Python3.11/AMD64的68活动pin及113活动依赖边已只读盘点满足，可用于本机正例；此盘点不是预检/PG测试，更不是wheel/.pth/Linux供应链认证。目标只读核迁移1–8、完整owner集合、无active run/lease、四张中央空表；任何异常保留新目标，正式完成位仍false。两新tool与一份完整候选/真实Python/PG目标测试，加既有入口最小接线；默认零连接行为不变，不提供现成库adoption。真实重放worker与备份8/中央身份保全继续下一片。
+
+主线自有CI接线将原Core+test锁安装移入RUNNER_TEMP下的真实专用venv（--copies、--require-hashes），导出其bin与FIRST_RELEASE_CANDIDATE_TEST_PYTHON，Charts环境照旧，没有另装第二套Core闭包。这只是待实际CI验证的运行时路径调整；YAML/Bash解析不构成Linux、运行时供应链或正式发布门通过。
+
 2026-10-24重放幂等实证后的最小共享路径修复：仅调整mingjing_core/repositories/postgres.py中invalidate_derived的core_runs及delivery_outbox两条UPDATE，目标字段含NULL以IS DISTINCT FROM比较，仅实际需要清理/改变时更新updated_at。不跳过已revoked记录，不清空state_version，不改变closure、retry/stale语义或native apply事务提交后checkpoint purge边界。原因是实际非空消息/事实撤销双重放已证明第二遍仅重复改动run和Outbox的updated_at；共享repo路径须由主线在P5集成时说明此边界。先复跑唯一新PG回归，再仅两个必要既有纠错/重新生成节点，不宽测、不改旧b9。
 
 2026-10-24下一小片增加显式--upgrade-local，必须同时--apply-local，仅在同一次调用已创建新目标、仍持有原操作锁且真实restore/原prefix核验后执行。默认保留原prefix恢复；不新增采用既有库的命令。只执行同一外部审核候选的迁移SQL，复用validate_history校验历史，保持全部前向迁移和版本记录在一个owner事务内。PostgresRepository.initialize固定扫描其包目录，不能冒充外部候选SQL执行器，故本片只复用其历史契约而不调用其自动迁移路径。
@@ -97,6 +109,10 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 ## Artifacts and Notes
 
+`private/safe-narrow-645cf96374aa41ca876ec8c6c25e00e0/metadata.json`记录本片唯一链9/9（170.50秒，2026-10-24 01:08–01:11 +08:00）。夹具仅一次打包当前真实Git候选完整源码，各目标独立受pin副本；actual Python为本机既有`.venv-k3`的Python3.11，真实Windows PG15与实际dump/restore。正常只读预检、两个控制树namespace预载、升级后源码漂移、缺同call gate及owner/active/lease/central四个目标拒绝全部通过；Core全部字段、checkpoint及sequence独立摘要均不变。安全runner清凭据/关追踪、测试时区Tokyo，模型/外发/服务器0；没有重跑旧幂等业务、全量或Linux证明。
+
+`private/safe-narrow-d39d12338be94844967a4df709ac6387/metadata.json`为owner排序修正后的仅2目标复测2/2（44.33秒，01:15–01:16 +08:00）；保留原9目标链记录，没有重复其余7项或扩大为全量。
+
 本次复现与修复证据依次为`private/safe-narrow-c866375ca5154a3f9223fca318ddabfd/metadata.json`（1个新摘要夹具失败）、`private/safe-narrow-4c7135726460421aa6181feafda1b03a/metadata.json`（真实第二遍updated_at回归失败，2.66秒）、`private/safe-narrow-f90c8f6a23ea415689ef1374e6ee009b/metadata.json`（同一目标修复后1/1，2.80秒）、`private/safe-narrow-83409a83e1534dc3a70ad77181938112/metadata.json`（仅两个必要既有纠错/干净epoch节点2/2，1.94秒）。新目标没有给native apply包外层事务；实际Windows PG15/真实备份恢复、有限测试环境、Tokyo测试时区，真实模型/外发/服务器0。没有全量、候选child或Linux证明。
 
 `private/safe-narrow-b8fce224277a4a02bf3e302eb5468163/metadata.json`为本片唯一窄链11/11（16.27秒）：10个新行为加1个受影响默认prefix4兼容节点。两个正常节点实际pg_dump/restore后由4或7升级至8，三张checkpoint数据表及其ledger和原文不变；其余覆盖无apply/无原锁、候选SQL或历史漂移、Core事务与checkpoint故障、额外额度DELETE、非空额度表停止保留。清凭据/关闭追踪，测试时区Tokyo；真实Windows PG15，模型/外部发送/服务器0。无额外全量或旧19项复跑。
@@ -115,6 +131,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 ## Interfaces and Dependencies
 
+新增两个tools：first_release_candidate_process绑定不可变候选/manifest/dump/latest ledger/实际Python/受审worker，first_release_replay_worker为纯stdlib bootstrap之后的独立候选只读核验器。现有local_restore显式`--apply-local --upgrade-local --replay-preflight-local`并提供`--preflight-pin --preflight-ledger --candidate-python`，才在原creator锁内新建/恢复/升级后的目标加1个owner只读连接，正常总连接8；默认原始/升级路径仍4/7。子进程不继承用户PG或模型环境，不输出原stderr/DSN。真实候选tools namespace与mingjing_core导入前后核路径及manifest字节；这里只确认候选导入与已安装活动依赖元数据，不认证wheel、.pth、审核人或解释器完整供应链。
+
 新增三个tool：first_release_local_inputs（同源审核dump/program/prefix绑定、严格本机输入）、first_release_local_pg（目标缺席检查、创建/持锁/新public初始化/原prefix及owner后验）、first_release_local_restore（默认校验及显式本机原生restore）。`FIRST_RELEASE_ADMIN_DSN`只允许同一实际loopback 55480/55481的postgres或core_test_main控制库；owner/writer继续使用原显式变量。实际进程与显式环境PG*均拒绝，子进程不继承用户PG配置；仅允许显式内存密码注入子PGPASSWORD，固定空passfile，不进argv/输出/文件。外部审核pin及实际可执行/DLL运行环境仍是受信前提，不声称认证审核人或完整解释器供应链。
 
 可选本机升级新增一个内部tool first_release_local_upgrade；只从同次新库上下文调用_upgrade_new_target(inputs,dsns,creator)。正常路径沿用原4连接，增加1个owner升级连接及2个只读ACL连接，共7；PostgresSaver在该owner连接复用，不另开pool。成功回执区分original_prefix与upgraded_migrations，并保持central_binding_verified、central_provisioned、runtime_verified、native_restore_completed、linux_attestation、publication为false；runtime_acl_verified仅表示当前两角色精确权限已核，不代表运行时或发布已验证。
@@ -122,6 +140,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
+
+已完成真实候选fresh-process、Python3.11 venv活动依赖及新目标只读预检基础。外部审核pin仍是受信输入，测试自产pin不构成独立审核；latest ledger仅绑定hash和owner全集，尚不执行撤销/收据双重放。回执明确read_only=true、mutations=0，latest_withdrawals_replayed、runtime_verified、native_restore_completed、linux_attestation、publication全部false。源prefix8/中央账本身份保全、真实候选重放、Linux和正式首发仍No-Go，不能据本片8个连接或9项通过宣称生产恢复就绪。
 
 当前控制树原生业务的非空隐私/回执重放已通过完整数据库及checkpoint严格幂等定向回归；仍未实现外部审核候选Python导入隔离的同call双重放worker，不能将这份本机回归视为已pin候选应用、Linux正式恢复或中央身份保全证明。正式首发仍No-Go。
 
@@ -139,6 +159,7 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## 修订记录
 
+- 2026-10-24 01:11 +08:00：新增显式同call候选fresh-process只读预检与9/9真实窄验；记录活动marker、候选namespace/来源、依赖元数据及CI路径边界，未接撤销重放或正式恢复。
 - 2026-10-24 00:48 +08:00：记录非空双重放真实失败及共享repo两SQL最小幂等修复，保留全部字段断言和1+2窄验，说明候选worker与正式恢复仍未完成。
 - 2026-10-24 00:36 +08:00：新增同次本机新库显式升级阶段和11/11窄验；保留默认原prefix路径、阶段失败现场与中央身份/正式发布硬门。
 - 2026-10-24 00:26 +08:00：修复DDL日志中的原口令路径，记录2/2窄验与实际认证证据边界；明确Linux PG15客户端及独立测试库要求。

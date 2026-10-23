@@ -8,7 +8,7 @@ import re
 import subprocess
 from collections.abc import Mapping
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import psycopg
 from psycopg.conninfo import conninfo_to_dict
@@ -17,6 +17,9 @@ from tools.first_release_contracts import ReleasePin, RestoreContract, RestoreRe
 from tools.first_release_local_inputs import DumpPin, LocalInputs, file_hash
 from tools.first_release_local_pg import new_target, verify_original
 from tools.first_release_restore import SafeParser
+
+if TYPE_CHECKING:
+    from tools.first_release_candidate_process import CandidatePreflight
 
 
 def process_environment(owner_dsn: str) -> dict[str, str]:
@@ -84,10 +87,14 @@ def execute(
     *,
     apply_local: bool = False,
     upgrade_local: bool = False,
+    replay_preflight: CandidatePreflight | None = None,
     environment: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
     receipt = inputs.validate()
     require(type(upgrade_local) is bool and (not upgrade_local or apply_local), "LOCAL_UPGRADE_REQUIRES_APPLY")
+    if replay_preflight is not None:
+        require(apply_local and upgrade_local, "PREFLIGHT_REQUIRES_SAME_CALL_APPLY_UPGRADE")
+        replay_preflight.validate(inputs)
     if not apply_local:
         return receipt
     dsns = inputs.connections(environment)
@@ -104,6 +111,11 @@ def execute(
             from tools.first_release_local_upgrade import _upgrade_new_target
 
             upgraded = _upgrade_new_target(inputs, dsns, creator)
+        if replay_preflight is not None:
+            from tools.first_release_candidate_process import candidate_preflight
+
+            upgraded["replay_preflight"] = candidate_preflight(replay_preflight, inputs, dsns, creator)
+            upgraded["database_connections"] = 8
     receipt.pop("mutations", None)
     return {
         **receipt,
@@ -131,6 +143,9 @@ def main(argv: list[str] | None = None) -> int:
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--apply-local", action="store_true")
     parser.add_argument("--upgrade-local", action="store_true")
+    parser.add_argument("--replay-preflight-local", action="store_true")
+    for name in ("preflight-pin", "preflight-ledger", "candidate-python"):
+        parser.add_argument("--" + name, type=Path)
     try:
         args = parser.parse_args(argv)
         inputs = LocalInputs(
@@ -141,7 +156,18 @@ def main(argv: list[str] | None = None) -> int:
             args.pg_restore,
             Path.cwd(),
         )
-        receipt = execute(inputs, apply_local=args.apply_local, upgrade_local=args.upgrade_local)
+        replay_preflight = None
+        fields = (args.candidate_python, args.preflight_ledger, args.preflight_pin)
+        if args.replay_preflight_local:
+            from tools.first_release_candidate_process import CandidatePreflight
+
+            require(all(fields), "PREFLIGHT_ARGUMENTS_REQUIRED")
+            replay_preflight = CandidatePreflight.parse(*fields[:2], read_json(fields[2]))
+        else:
+            require(not any(fields), "PREFLIGHT_ARGUMENTS_WITHOUT_FLAG")
+        receipt = execute(
+            inputs, apply_local=args.apply_local, upgrade_local=args.upgrade_local, replay_preflight=replay_preflight
+        )
     except RestoreRejected as error:
         print(json.dumps({"status": "blocked", "code": str(error), "automatic_cleanup": False}))
         return 2
