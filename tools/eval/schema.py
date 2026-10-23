@@ -29,10 +29,12 @@ Category = Literal[
     "portability",
 ]
 SCENARIO_ID = (
-    r"^(?:T(?:0[1-9]|1[0-4])|M(?:0[1-9]|1[0-3])|R0[1-9]|F0[1-4]|Q0[1-7]|P0[1-7]|"
+    r"^(?:DC0[1-4]|TR0[1-3]|T(?:0[1-9]|1[0-4])|M(?:0[1-9]|1[0-3])|R0[1-9]|F0[1-4]|Q0[1-7]|P0[1-7]|"
     r"C0[1-7]|TA0[1-3]|D0[1-2]|S0[1-4]|X(?:0[1-8]|03[ab])|L0[1-2])$"
 )
 ID_CATEGORIES = {
+    "DC": "time",
+    "TR": "memory_recall",
     "T": "time",
     "M": "memory_write",
     "R": "memory_recall",

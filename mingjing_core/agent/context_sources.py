@@ -9,16 +9,26 @@ from psycopg import sql
 
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.domain.contracts import ScopeError
+from mingjing_core.domain.time_ranges import TimeRangeParser
 from mingjing_core.memory.projections import redact_ranges
-from mingjing_core.memory.tokenize import tokenize
 from mingjing_core.repositories.dependencies import entity_dependency
 
 from .context_entities import read_entities
+from .context_time_retrieval import retrieve
 from .context_types import BudgetPolicy, ContextInputError, SourceSnapshot
 
 
 class BoundedSources:
-    def __init__(self, memory: MemoryService, policy: BudgetPolicy, *, run_context: dict | None = None) -> None:
+    def __init__(
+        self,
+        memory: MemoryService,
+        policy: BudgetPolicy,
+        *,
+        run_context: dict | None = None,
+        time_parser: TimeRangeParser | None = None,
+    ) -> None:
+        from mingjing_core.application.time_range_parser import ModuleTimeRangeParser
+
         self.memory, self.repo, self.policy = memory, memory.repo, policy
         self.cache: dict[str, dict[str, Any]] = {}
         self.spans: dict[str, list[dict[str, Any]]] = {}
@@ -26,6 +36,7 @@ class BoundedSources:
         self.boundary: tuple[int, str, str] | None = None
         self.history_counts: dict[str, int] = {}
         self.run_context = run_context
+        self.time_parser = time_parser or ModuleTimeRangeParser()
 
     @staticmethod
     def _key(source: dict[str, Any]) -> tuple[int, str, str]:
@@ -221,13 +232,10 @@ class BoundedSources:
         query: str,
         facts: list[dict[str, Any]],
         cases: tuple[str, ...],
-    ) -> tuple[list[dict[str, Any]], int]:
-        tokens = tokenize(query[:2000])[:32]
-        if not tokens:
-            return [], 0
-        rows = self.repo.search(owner, subject, tokens, ["message"], self.policy.search_limit)
-        projected = [self._project(owner, subject, row, facts, cases) for row in rows]
-        return [row for row in projected if row is not None], len(rows)
+        current: dict[str, Any],
+        zone: str,
+    ) -> tuple[list[dict[str, Any]], int, str | None]:
+        return retrieve(self, owner, subject, query, facts, cases, current, zone)
 
     def read(
         self,
@@ -254,7 +262,15 @@ class BoundedSources:
             rows = self._history(owner, subject, case_ids)
             history = [self._project(owner, subject, row, facts, case_ids) for row in rows]
             history = [row for row in history if row is not None and row["id"] != source_message_id]
-            retrieved, search_count = self._retrieved(owner, subject, query or current["content"], facts, case_ids)
+            retrieved, search_count, time_filter = self._retrieved(
+                owner,
+                subject,
+                query or current["content"],
+                facts,
+                case_ids,
+                current,
+                scope["settings"].get("timezone", "Asia/Shanghai"),
+            )
             retrieved = [row for row in retrieved if row["id"] != source_message_id]
             entities = read_entities(self, owner, subject, case_ids, facts)
             versions = {"message:" + row["id"]: row["revision"] for row in self.cache.values()}
@@ -284,5 +300,6 @@ class BoundedSources:
                     versions,
                     counts,
                     entities,
+                    time_filter,
                 )
             )

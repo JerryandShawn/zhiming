@@ -1,0 +1,30 @@
+id: DC02
+title: 我今年多大了？周岁和虚岁都说一下
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed: {}
+turns:
+- user: 我今年多大了？周岁和虚岁都说一下
+  expect:
+    tools_called:
+    - date_calc
+    must_include_all:
+    - '32'
+    - '33'
+    db:
+    - path: observed_tools.0.output.data.result.周岁
+      equals: 32
+    - path: observed_tools.0.output.data.result.虚岁
+      equals: 33
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: date_calc
+      arguments:
+        op: age
+        a: '1994-03-12'
+  - text: 你现在32周岁，虚岁33；这里虚岁按出生一岁、农历春节加一岁这一传统口径。
+notes: 19号及模块线v2.3候选材料的七题子集；真实本机PG+实际U4+脚本模型，不向解析器传预期答案。

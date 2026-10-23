@@ -6,7 +6,9 @@ from collections.abc import Mapping
 
 from mingjing_core.application.context_epochs import ContextEpochService
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.time_range_parser import ModuleTimeRangeParser
 from mingjing_core.domain.contracts import ScopeError
+from mingjing_core.domain.time_ranges import TimeRangeParser
 from mingjing_core.models.port import ChatMessage, ToolSpec
 from mingjing_core.timekit.clock import Clock, get_clock
 
@@ -34,12 +36,14 @@ class ContextEngine:
         clock: Clock | None = None,
         policy: BudgetPolicy | None = None,
         token_meter: TokenMeter | None = None,
+        time_parser: TimeRangeParser | None = None,
     ) -> None:
         if not isinstance(system_text, str) or not system_text.strip():
             raise ContextInputError("context_system_required")
         self.memory, self.system_text = memory, system_text
         self.clock, self.policy = clock or get_clock(), policy or BudgetPolicy()
         self.token_meter = token_meter
+        self.time_parser = time_parser or ModuleTimeRangeParser()
 
     def _layers(self, snapshot: SourceSnapshot) -> tuple[list[ContextLayer], dict[str, dict[str, str | int]]]:
         return build_layers(snapshot, self.system_text, self.clock, self.policy)
@@ -85,7 +89,7 @@ class ContextEngine:
         return self._assemble(snapshot, tools, current_epoch_messages, tool_summaries or {}, tool_choice, case_ids)
 
     def _sources(self, owner, subject, source_message_id, thread_id, case_ids, query, run_context) -> SourceSnapshot:
-        return BoundedSources(self.memory, self.policy, run_context=run_context).read(
+        return BoundedSources(self.memory, self.policy, run_context=run_context, time_parser=self.time_parser).read(
             owner,
             subject,
             source_message_id,

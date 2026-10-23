@@ -19,6 +19,7 @@ from .base import TurnResult
 from .local_db import local_dsn, verify_local_postgres
 from .v3_seed import V3Seeder
 from .v4_cancellation import cancel_stream
+from .v4_context_observations import context_observations
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
 from .v4_observations import (
@@ -30,7 +31,7 @@ from .v4_observations import (
     tool_steps,
 )
 from .v4_protocols import ScriptedWirePort, run_matrix
-from .v4_runtime import DeclaredDateParser, EvaluationRuntime
+from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
 from .v4_tarot import TarotDriver
 
@@ -101,7 +102,6 @@ class V4Target:
             self.repo,
             self.port,
             None if controls.get("meter_missing") else ScriptedMeter(),
-            parser=DeclaredDateParser(self.seed.get("_scripted", [])),
             offline=True,
             critic=self.critic,
             critic_meter=ScriptedMeter(),
@@ -335,6 +335,7 @@ class V4Target:
             "evaluator_observations": semantic_observations(steps),
             "portability": self.portability,
             "observed_tools": steps,
+            "context": context_observations(self.repo, self.owner, run),
             "run_result": run.get("result") or {},
             **kinds,
         }
@@ -359,7 +360,7 @@ class V4Target:
         return {
             "run_ids": list(self.run_ids),
             "external_provider_requests": 0,
-            "u4_scope": "declared parser substitute; no natural language accuracy claim",
+            "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
             "tool_steps": [{key: step[key] for key in ("run_id", "epoch", "seq", "name", "status")} for step in steps],
             "semantic_observations": self.semantic_history,
             "decision_rows": [

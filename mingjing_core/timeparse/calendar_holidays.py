@@ -23,7 +23,7 @@ NAMES = {
 }
 HOLIDAY_PATTERN = re.compile(
     YEAR_PATTERN + r"(?P<name>清明节|端午节|中秋节|国庆节|劳动节|元旦|春节|清明|五一|端午|中秋|国庆)"
-    r"(?:的)?(?P<suffix>之?后(?:的)?第一个工作日|期间|前后|之前|之后|前|后|那天|当天)?"
+    r"(?:的)?(?P<suffix>之?后(?:的)?第一个工作日|期间|前后|之前|之后|前|后|那几天|那天|当天)?"
 )
 
 
@@ -41,10 +41,15 @@ def parse_holiday(text: str, ctx: ParseContext, calendar: CalendarPort) -> TimeR
         return None
     raw, suffix = match.group(), match["suffix"] or ""
     try:
-        day = _festival_day(match["name"], specified_year(match["year"], ctx), ctx, calendar)
+        year = specified_year(match["year"], ctx)
+        # Retrospective "那几天" asks about this year's actual holiday, not the
+        # next future occurrence. Published leave remains a separate authority.
+        if suffix == "那几天" and year is None:
+            year = ctx.local_date.year
+        day = _festival_day(match["name"], year, ctx, calendar)
         if suffix in {"前", "后", "前后", "之前", "之后"}:
             return vague_around(ctx, raw, day, suffix)
-        if suffix == "期间" or "工作日" in suffix:
+        if suffix in {"期间", "那几天"} or "工作日" in suffix:
             return _published_window(raw, suffix, day, ctx, calendar)
         return make_result(ctx, start=day, end=day + timedelta(days=1), matched_text=raw)
     except (ValueError, LookupError, AttributeError, TypeError, StopIteration):

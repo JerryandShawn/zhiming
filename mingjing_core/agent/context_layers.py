@@ -150,7 +150,13 @@ def history_layer(snapshot: SourceSnapshot, aliases: AliasBook, policy: BudgetPo
 
 def retrieval_layer(snapshot: SourceSnapshot, aliases: AliasBook, policy: BudgetPolicy) -> ContextLayer:
     items = []
-    candidates = [("message", row) for row in snapshot.retrieved]
+    if snapshot.retrieval_time_filter:
+        header = f'<相关记忆 time_filter="{snapshot.retrieval_time_filter}">\n'
+        header += "时间命中的条目优先；time_match=false只是补充资料，不能当成该时段发生的事。"
+        items.append(
+            ContextItem("time-filter", (ChatMessage("system", header),), True, source_ids=(snapshot.current["id"],))
+        )
+    candidates = [(row.get("_retrieval_kind", "message"), row) for row in snapshot.retrieved]
     query = set(tokenize(snapshot.current["content"][:2000])[:32])
     derived = [(kind, row) for kind in ("note", "episode") for row in snapshot.extra_entities.get(kind, ())]
     ranked = sorted(
@@ -166,7 +172,7 @@ def retrieval_layer(snapshot: SourceSnapshot, aliases: AliasBook, policy: Budget
         if query.intersection(tokenize(row.get("content") or row.get("summary", "")))
     )
     for kind, row in candidates[: policy.search_limit]:
-        prefix = {"message": "m", "note": "n", "episode": "e"}[kind]
+        prefix = {"message": "m", "fact": "f", "note": "n", "episode": "e"}[kind]
         alias = aliases.add(prefix, kind, row)
         value = {
             "alias": alias,
@@ -178,6 +184,8 @@ def retrieval_layer(snapshot: SourceSnapshot, aliases: AliasBook, policy: Budget
             "valid": True,
             "text": row.get("content") or row.get("summary", ""),
         }
+        if snapshot.retrieval_time_filter:
+            value["time_match"] = row.get("_time_match", False)
         items.append(json_item(row["id"], "相关记忆", value))
     return ContextLayer("L4", tuple(items))
 

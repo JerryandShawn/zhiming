@@ -75,6 +75,18 @@ def _vague(text: str, ctx: ParseContext) -> TimeRangeResult | None:
 
 
 def parse_duration(text: str, ctx: ParseContext) -> TimeRangeResult | None:
+    recent = re.search(rf"最近({NUMBER})[天日]", text)
+    if recent:
+        days = parse_number(recent.group(1))
+        if 1 <= days <= 366:
+            return make_result(
+                ctx,
+                start=ctx.local_date - timedelta(days=days - 1),
+                end=ctx.local_date + timedelta(days=1),
+                matched_text=recent.group(),
+                kind="range",
+                normalized_text=f"最近{days}个当地日（含当天）",
+            )
     vague = _vague(text, ctx)
     if vague:
         return vague

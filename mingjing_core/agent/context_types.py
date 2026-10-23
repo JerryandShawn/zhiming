@@ -110,6 +110,7 @@ class SourceSnapshot:
     versions: dict[str, int]
     read_counts: dict[str, int]
     extra_entities: dict[str, tuple[dict[str, Any], ...]] = field(default_factory=dict)
+    retrieval_time_filter: str | None = None
 
 
 @dataclass(frozen=True)

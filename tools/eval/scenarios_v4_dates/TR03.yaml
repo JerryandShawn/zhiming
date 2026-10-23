@@ -1,0 +1,22 @@
+id: TR03
+title: 去年冬天我跟你说过想去哪旅游？
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed: {}
+turns:
+- user: 去年冬天我跟你说过想去哪旅游？
+  expect:
+    must_include_any:
+    - 没有提过|不记得你说过|没听你提过|没有听你提过
+    db:
+    - path: context.l4.time_filter
+      absent: true
+    - path: context.l4.item_ids
+      equals: []
+scripted:
+- turn: 1
+  model:
+  - text: 我没有听你提过去年冬天想去哪旅游；目前没有找到这条记忆。
+notes: 19号及模块线v2.3候选材料的七题子集；真实本机PG+实际U4+脚本模型，不向解析器传预期答案。

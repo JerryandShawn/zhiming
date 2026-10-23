@@ -203,6 +203,17 @@ def parse_year(text: str, ctx: ParseContext) -> TimeRangeResult | None:
     match = re.search(r"今年|明年|去年|后年|前年|\d{4}年", text)
     if not match:
         return None
+    season = re.match(r"(?:的)?[春夏秋冬](?:天|季)?", text[match.end() :])
+    if season:
+        return make_result(
+            ctx,
+            start=None,
+            end=None,
+            matched_text=match.group() + season.group(),
+            confidence=0,
+            needs_clarification=True,
+            reason="season_boundary_unconfirmed",
+        )
     year = _year(match.group(), ctx)
     return make_result(
         ctx,
