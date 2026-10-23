@@ -9,6 +9,7 @@ from typing import Any
 from mingjing_core.application.production_agent import configured_agent
 from mingjing_core.models.port import ModelPort
 from mingjing_core.models.registry import ModelHandle, RegistryPort
+from tools.eval.model_selection import ProofSelectedRegistry
 
 from .base import TurnResult
 from .v4_live_ports import LiveTrackingPort
@@ -38,7 +39,7 @@ class V4LiveTarget(V4Target):
     def _ports(self) -> None:
         # The disposable evaluation repository deliberately reserves all three lanes.
         self.repo.max_running = 3
-        runtime = configured_agent(self.repo, environment=self.environment)
+        runtime = configured_agent(self.repo, environment=self.environment, registry_factory=ProofSelectedRegistry)
         if runtime is None or not isinstance(runtime.port, RegistryPort):
             raise ValueError("Live v4 requires explicitly enabled production Agent assembly")
         handles = runtime.port.registry.resolve("primary")

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import os
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
 
@@ -16,7 +16,12 @@ ENABLED_ENV = "MINGJING_AGENT_ENABLED"
 ARTIFACT_ENV = "K3_TOKENIZER_DIR"
 
 
-def configured_agent(repo: Any, *, environment: Mapping[str, str] | None = None) -> AgentRuntime | None:
+def configured_agent(
+    repo: Any,
+    *,
+    environment: Mapping[str, str] | None = None,
+    registry_factory: Callable[..., ModelRegistry] = ModelRegistry,
+) -> AgentRuntime | None:
     source = os.environ if environment is None else environment
     enabled = source.get(ENABLED_ENV, "false")
     if enabled == "false":
@@ -28,17 +33,19 @@ def configured_agent(repo: Any, *, environment: Mapping[str, str] | None = None)
     directory = source.get(ARTIFACT_ENV, "")
     if not directory or not Path(directory).is_absolute():
         raise EvidenceError("Agent 启动缺少固定的本地分词器目录")
-    return _build(repo, source, Path(directory))
+    return _build(repo, source, Path(directory), registry_factory)
 
 
-def _build(repo: Any, source: Mapping[str, str], directory: Path) -> AgentRuntime:
+def _build(
+    repo: Any, source: Mapping[str, str], directory: Path, registry_factory: Callable[..., ModelRegistry]
+) -> AgentRuntime:
     from mingjing_core.agent.k3_loader import load_k3_counter
     from mingjing_core.models.quota_runtime import CentralLocation
 
     # Constructor verification checks the deployed account, UUID and actual PG
     # location. It neither provisions an account nor reserves a physical attempt.
     CentralLocation.from_environment(source).guard()
-    registry = ModelRegistry(environment=source)
+    registry = registry_factory(environment=source)
     handles = registry.resolve("primary")
     if not handles or any(
         handle.model != handles[0].model

@@ -51,6 +51,8 @@ class ScriptedModelPort(ModelPort):
             return value
         if value in self.bindings:
             return self.bindings[value]
+        if value == "$unique_memory_fact":
+            return unique_memory_fact(messages)
         if value.startswith("$last_receipt."):
             key = value.removeprefix("$last_receipt.")
             for message in reversed(messages):
@@ -91,3 +93,24 @@ class ScriptedModelPort(ModelPort):
 class ForbiddenLegacyModel:
     def generate(self, **kwargs: Any) -> dict[str, Any]:
         raise AssertionError("v4 evaluation cannot invoke a legacy or physical provider")
+
+
+def unique_memory_fact(messages: list[ChatMessage]) -> str:
+    for message in reversed(messages):
+        if message.role != "tool":
+            continue
+        calls = [
+            call
+            for prior in messages
+            if prior.role == "assistant"
+            for call in prior.tool_calls
+            if call.id == message.tool_call_id and call.name == "memory_search"
+        ]
+        if not calls:
+            continue
+        result = json.loads(message.content)
+        items = result.get("data", {}).get("items", [])
+        if not result.get("ok") or len(items) != 1 or items[0].get("entity_kind") != "fact" or not items[0].get("id"):
+            raise ModelProtocolError()
+        return items[0]["id"]
+    raise ModelProtocolError()

@@ -21,6 +21,7 @@ from mingjing_core.application.agent_options import load_options
 from mingjing_core.application.agent_options_review import card_veto
 from mingjing_core.application.agent_review_proofs import ReviewProofStore
 from mingjing_core.application.agent_thread_scope import assert_thread, thread_id
+from mingjing_core.application.agent_withdrawal_ack import withdrawal_acknowledgements
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
@@ -127,7 +128,7 @@ class AgentFinalizer:
             receipts = tuple(
                 {key: value for key, value in item.items() if key != "_operation"}
                 for item in persisted_receipts(self.repo, current)
-            )
+            ) + withdrawal_acknowledgements(self.repo, current, effective)
             self._asked(connection, current, asked)
             if asked and asked["question"] not in text:
                 text = (text.strip() + "\n\n" + asked["question"]).strip()

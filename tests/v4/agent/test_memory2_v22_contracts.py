@@ -47,3 +47,10 @@ def test_relative_date_memory_contract_does_not_feed_the_parser_an_expected_date
     assert len(writes) == 1 and writes[0].name == "memory_write"
     assert "event_at" not in writes[0].arguments and "date_expression" not in writes[0].arguments
     assert cases["TM01"].turns[0].at.startswith("2026-10-15")
+
+
+def test_mainline_time_contract_and_isolated_memory_time_contract_both_validate() -> None:
+    mainline = {case.id: case for case in load_scenarios(ROOT / "tools/eval/scenarios_v4_core30")}
+    appendix = {case.id: case for case in load_scenarios(ROOT / "tools/eval/scenarios_v4_memory22")}
+    assert mainline["TM01"].category == "time"
+    assert appendix["TM01"].category == "memory_recall"

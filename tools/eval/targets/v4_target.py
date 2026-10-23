@@ -11,13 +11,13 @@ from typing import Any
 from psycopg import sql
 
 from mingjing_core.application.consultation import ConsultationService
+from mingjing_core.application.thread_ingress import ThreadIngress
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.repositories.postgres import ENTITY_KINDS, PostgresRepository
 from tools.eval.providers.scripted import ScriptedProvider
 
 from .base import TurnResult
 from .local_db import local_dsn, verify_local_postgres
-from .v3_seed import V3Seeder
 from .v4_cancellation import cancel_stream
 from .v4_chart_observations import chart_observations
 from .v4_context_observations import context_observations
@@ -26,7 +26,7 @@ from .v4_feishu import FeishuBatchDriver
 from .v4_memory_history_seed import memory_ingress_needed, seed_memory_sources
 from .v4_memory_privacy_seed import prepare_memory
 from .v4_memory_privacy_views import native_counts, privacy_rows
-from .v4_memory_revocation_fault import MemoryRevocationPort, queue_memory_revoke_turn, regeneration_observations
+from .v4_memory_revocation_fault import queue_memory_revoke_turn
 from .v4_observations import (
     decision_rows,
     delivery_rows,
@@ -36,10 +36,14 @@ from .v4_observations import (
     structural_observations,
     tool_steps,
 )
+from .v4_privacy_observations import initial_layers, privacy_entities
+from .v4_privacy_seed import V4PrivacySeeder
 from .v4_protocols import ScriptedWirePort, run_matrix
+from .v4_run_observations import native_run_meta, native_run_rows
 from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
 from .v4_tarot import TarotDriver
+from .v4_withdrawal import configure_withdrawal, regeneration_state, withdrawal_observations
 
 
 class V4Target:
@@ -80,12 +84,12 @@ class V4Target:
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
         self.repo.ensure_owner(
             self.owner,
-            settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})},
+            settings={"auto_save_low_sensitivity": True, **seed.get("settings", {}), "runtime": "v4"},
         )
         self._ports()
         self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
         self.provider = ScriptedProvider(seed.get("_scripted", []))
-        self.seeder = V3Seeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
+        self.seeder = V4PrivacySeeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
         seed_memory_sources(self)
         self.tarot = TarotDriver(self.service, self.seeder)
         self.tarot.seed(seed)
@@ -95,6 +99,7 @@ class V4Target:
             self.owner, request_id="eval-thread", incognito=seed.get("incognito", False)
         )
         prepare_memory(self)
+        self.privacy_initial = initial_layers(self.repo, self.owner, self.seeder.privacy_layers)
 
     def _ports(self) -> None:
         controls = self.seed.get("controls", {})
@@ -103,10 +108,6 @@ class V4Target:
             if self.protocol
             else FaultScriptedPort(crash_after_tool=controls.get("crash_after") == "tool_commit")
         )
-        if controls.get("revoke_after_context"):
-            if self.protocol:
-                raise ValueError("Memory withdrawal fault cannot replace wire-protocol evaluation")
-            self.port = MemoryRevocationPort(self)
         self.critic = ScriptedModelPort() if controls.get("critic_scripted") else None
         self.critic_provider = ScriptedProvider(controls.get("critic_scripted", []))
         self.runtime = EvaluationRuntime(
@@ -155,28 +156,17 @@ class V4Target:
             conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
         )
         self.bindings[f"turn-{index}"] = source["id"]
-        run = self.repo.queue_run(
-            self.owner,
-            operation,
-            {
-                "message": turn["user"],
-                "source_message_id": source["id"],
-                "case_ids": cases,
-                "draw_id": draw_id,
-                "reading_id": self.tarot.failed_reading if draw_id else None,
-                "thread_id": self.thread["id"],
-                "incognito": self.seed.get("incognito", False),
-                "depth": "standard",
-            },
+        run = ThreadIngress(self.service).queue(
+            owner=self.owner,
+            thread_id=self.thread["id"],
+            source_ids=[source["id"]],
+            request_id=operation,
+            conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
             case_ids=cases,
+            draw_id=draw_id,
+            reading_id=self.tarot.failed_reading if draw_id else None,
+            depth="standard",
         )
-        with self.repo.transaction(self.owner) as connection:
-            connection.execute(
-                sql.SQL("UPDATE {} SET runtime='v4',thread_id=%s WHERE owner=%s AND id=%s").format(
-                    self.repo.table("core_runs")
-                ),
-                (self.thread["id"], self.owner, run["id"]),
-            )
         if draw_id:
             self.tarot.resume(run)
         return self.repo.claim_run(self.owner, run["id"], lease_seconds=150)
@@ -193,6 +183,7 @@ class V4Target:
         self.port.start(self.provider, turn["_index"], self.bindings)
         if isinstance(self.port, FaultScriptedPort):
             self.port.failure = self.seed.get("controls", {}).get("provider_failures", {}).get(str(turn["_index"]))
+            configure_withdrawal(self, run)
         if self.critic:
             self.critic.start(self.critic_provider, turn["_index"], self.bindings)
         return run, resumed
@@ -227,6 +218,7 @@ class V4Target:
             semantic.insert(0, resumed)
         if result and retry:
             semantic.insert(0, retry)
+        semantic.extend(withdrawal_observations(self, run_id))
         if result and self.seed.get("controls", {}).get("model_matrix") and not self.protocol:
             self.portability = run_matrix(self.seed, turn, self.dsn)
             if not self.portability["protocol_errors"]:
@@ -268,7 +260,6 @@ class V4Target:
         )
         semantic.extend(delivered)
         semantic.extend(structural_observations(current))
-        semantic.extend(regeneration_observations(self, current))
         names = [event["type"] for event in events]
         if semantic:
             names = [name for name in names if name != "final"] + [item["name"] for item in semantic]
@@ -279,7 +270,9 @@ class V4Target:
         return TurnResult(
             text=result.get("text", ""),
             tools_called=[step["name"] for step in steps],
-            receipts=[step["output"]["receipt"] for step in steps if (step["output"] or {}).get("receipt")],
+            receipts=result.get("receipts", [])
+            if current["status"] == "succeeded"
+            else [step["output"]["receipt"] for step in steps if (step["output"] or {}).get("receipt")],
             events=names,
             model_calls=self.port.calls
             + (self.critic.calls if self.critic else 0)
@@ -342,15 +335,24 @@ class V4Target:
         rows += decision_rows(steps)
         rows += self.tarot.rows()
         rows += delivery_rows(self.repo, self.owner)
-        rows += privacy_rows(self.privacy_seed)
+        rows += native_run_rows(self.repo, self.owner)
+        if self.seed.get("_scenario_id") in {"F01", "F02", "F03"}:
+            rows = privacy_entities(
+                self.repo, self.owner, self.seeder.privacy_layers, rows, self.seeder.privacy_aliases
+            )
+        else:
+            rows += privacy_rows(self.privacy_seed)
         return {
             "entities": rows,
             "settings": self.repo.assert_scope(self.owner)["settings"],
             "owner_settings": self.repo.assert_scope(self.owner)["settings"],
             "run_meta": {
+                **native_run_meta(self.repo, self.owner, run),
+                "privacy_initial_layers": self.privacy_initial,
                 "repeated_call_count": repeat_count(steps),
                 "regenerations": run.get("usage", {}).get("agent_runtime", {}).get("regenerations", 0),
                 "usage": run.get("usage", {}),
+                **regeneration_state(run),
                 **({"ingress": self.feishu.proof} if self.feishu else {}),
                 **self.cancellation,
             },
@@ -377,9 +379,9 @@ class V4Target:
             self.run_ids, self.bindings = [], {}
 
     def case_evidence(self) -> dict[str, Any]:
-        if self.repo is None or not self.run_ids:
+        if self.repo is None:
             return {"observed_runs": 0, "external_provider_requests": 0}
-        steps = tool_steps(self.repo, self.owner, self.run_ids[-1])
+        steps = tool_steps(self.repo, self.owner, self.run_ids[-1]) if self.run_ids else []
         return {
             "run_ids": list(self.run_ids),
             "memory_setup_model_calls": self.memory_actions.setup_calls,

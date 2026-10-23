@@ -51,6 +51,19 @@ class MemoryPrivacySeeder:
         if any(self.baseline.get(kind, 0) < 1 for kind in required):
             raise ValueError("Declared privacy layer was not actually present before withdrawal")
 
+    def observe_native_layers(self) -> None:
+        """Reuse canonical native fixtures without creating a second copy."""
+        from .v4_memory_privacy_views import native_counts
+
+        layers = self.target.seeder.privacy_layers
+        self.source_ids = {ident for layer in layers for ident in layer["sources"]}
+        self.ids = {layer["id"]: layer["native_id"] for layer in layers if layer.get("native_id")}
+        self.runtime_ids = list(dict.fromkeys(layer["native_run"] for layer in layers if layer.get("native_run")))
+        sources = [self.target.repo.get(self.target.owner, "message", ident) for ident in self.source_ids]
+        self.query_tokens = tuple(dict.fromkeys(token for row in sources for token in tokenize(row.get("content", ""))))
+        self.query_ids = self.source_ids | set(self.ids.values()) | set(self.target.seeder.ids.values())
+        self.baseline = native_counts(self)
+
     def _fact(self, fixture: dict[str, Any]) -> None:
         target = self.target
         sources = fixture["data"].get("source_ids", [])
@@ -162,7 +175,10 @@ def prepare_memory(target: Any) -> None:
     target.memory_actions.seed()
     target.bindings.update(target.memory_actions.ids)
     target.privacy_seed = MemoryPrivacySeeder(target)
-    target.privacy_seed.seed()
+    if target.seed.get("_scenario_id") in {"F01", "F02", "F03"}:
+        target.privacy_seed.observe_native_layers()
+    else:
+        target.privacy_seed.seed()
     target.bindings.update(target.seeder.ids)
     target.bindings.update(target.privacy_seed.ids)
     target.memory_withdrawals = MemoryWithdrawDriver(target)

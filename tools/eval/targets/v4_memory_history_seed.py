@@ -51,6 +51,8 @@ def seed_memory_sources(target: Any) -> None:
     ]
     labels = {r["id"] for r in deferred}
     seed["thread"] = [row for row in seed.get("thread", []) if row.get("id") not in labels]
+    if deferred:
+        seed["entities"] = [f for f in seed.get("entities", []) if pending_source_label(seed, f) is None]
     previous = get_clock()
     try:
         if deferred:

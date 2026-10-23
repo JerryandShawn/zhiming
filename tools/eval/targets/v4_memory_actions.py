@@ -65,6 +65,28 @@ class MemoryActionDriver:
             self.ids[fixture["id"]] = proposals[0]
             self.revisions[fixture["id"]] = target.repo.get(target.owner, "proposal", proposals[0])["revision"]
             target.run_ids.append(run["id"])
+            self._register_native_layer(fixture, source_id, proposals[0], reply, result)
+
+    def _register_native_layer(
+        self, fixture: dict, source_id: str, proposal_id: str, reply: dict | None, result: dict
+    ) -> None:
+        target = self.target
+        if target.seed.get("_scenario_id") not in {"F01", "F02", "F03"}:
+            return
+        target.seeder.privacy_layers.append(
+            {
+                "kind": "proposal",
+                "id": fixture["id"],
+                "sources": [source_id],
+                "fact_id": None,
+                "native_kind": "proposal",
+                "actual_p3_pending": True,
+                "native_id": proposal_id,
+            }
+        )
+        target.seeder.ids[fixture["id"]] = proposal_id
+        if reply is not None:
+            target.seeder.privacy_aliases[result["message_id"]] = reply["id"]
 
     def _queue(self, source: dict[str, Any], label: str) -> dict[str, Any]:
         target = self.target

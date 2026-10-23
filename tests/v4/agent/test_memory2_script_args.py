@@ -20,7 +20,10 @@ def test_argument_adapter_changes_only_model_script_and_keeps_actual_selected_so
     case = next(c for c in load_scenarios(Path("tools/eval/scenarios")) if c.id == "F02")
     executable = execution_overlay(case)
     assert scenario_contract_hash(case) == scenario_contract_hash(executable)
-    assert executable.scripted[0].model[0].tool_call.arguments == {"message_id": "turn-1", "fact_id": "anxiety"}
+    calls = [action.tool_call for action in executable.scripted[0].model if action.tool_call]
+    assert [call.name for call in calls[:2]] == ["memory_search", "memory_forget"]
+    assert calls[0].arguments == {"query": "焦虑症", "kinds": ["fact"], "limit": 20}
+    assert calls[1].arguments == {"message_id": "turn-1", "fact_id": "$unique_memory_fact"}
     assert executable.turns == case.turns and executable.seed == case.seed
 
 

@@ -2,8 +2,11 @@
 
 from pathlib import Path
 
+import httpx
 import pytest
 
+from mingjing_core.models.quota_types import GuardRejected
+from tools.eval import live, runner
 from tools.eval.contracts import scenario_contract_hash
 from tools.eval.runner import main, parser
 from tools.eval.schema import load_scenarios
@@ -58,8 +61,20 @@ def test_r3_split_changes_only_authorized_channel_delivery_expectations(
         split_recovery_contract(web)
 
 
-def test_v4_cli_is_offline_only_and_default_fake_is_unchanged() -> None:
+def test_v4_cli_requires_trusted_authorization_and_default_fake_is_unchanged(monkeypatch: pytest.MonkeyPatch) -> None:
+    def forbidden(*args, **kwargs):
+        pytest.fail("Ungated live v4 must not access central PG, construct a target or send HTTP")
+
     assert parser().parse_args([]).target is None
-    with pytest.raises(SystemExit, match="Supported modes"):
+    monkeypatch.setattr(runner, "_target", forbidden)
+    monkeypatch.setattr(live.CentralLocation, "from_environment", forbidden)
+    monkeypatch.setattr(httpx.HTTPTransport, "handle_request", forbidden)
+    monkeypatch.delenv("KIMI_API_KEY", raising=False)
+    monkeypatch.delenv("MOONSHOT_API_KEY", raising=False)
+    with pytest.raises(SystemExit, match="Live preflight failed"):
         main(["--target", "v4", "--mode", "live"])
+    monkeypatch.setenv("KIMI_API_KEY", "synthetic-cli-preflight-only")
+    with pytest.raises(GuardRejected) as rejected:
+        main(["--target", "v4", "--mode", "live"])
+    assert rejected.value.kind == "manual_start_required"
     assert main(["--target", "v4", "--validate-only"]) == 0

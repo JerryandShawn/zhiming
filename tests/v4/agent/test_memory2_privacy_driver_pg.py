@@ -73,4 +73,5 @@ def test_late_withdrawal_rebuilds_one_actual_epoch_without_revoked_context(targe
         if row.get("role") == "assistant" and row.get("run_id") == run["id"]
     ]
     assert len(replies) == 1 and withdrawn not in replies[0].get("used_fact_ids", [])
-    assert target.port.fired and observed["model_calls"] == 1
+    assert target.port.withdrawal_fault.applied
+    assert observed["model_calls"] == len(target.port.requests) == 2

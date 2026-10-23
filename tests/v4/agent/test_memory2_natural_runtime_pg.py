@@ -58,13 +58,13 @@ def test_natural_forget_clears_actual_old_reply_and_pending_proposal(target: V4T
         assert run["status"] == "succeeded" and run["retry_epoch"] == 1
         with target.repo.transaction(target.owner) as connection:
             rows = connection.execute(
-                sql.SQL("SELECT receipt FROM {} WHERE owner=%s AND operation='memory2_natural_forget'").format(
+                sql.SQL("SELECT receipt FROM {} WHERE owner=%s AND operation='agent_memory_forget'").format(
                     target.repo.table("core_mutation_requests")
                 ),
                 (target.owner,),
             ).fetchall()
         assert len(rows) == 1 and rows[0]["receipt"]["write_status"] == "deleted"
-        assert rows[0]["receipt"]["id"] == "anxiety" and "content" not in rows[0]["receipt"]
+        assert rows[0]["receipt"]["fact_id"] == "anxiety" and "content" not in rows[0]["receipt"]
         snapshot = target.repo.get(target.owner, "runtime_step", f"{run['id']}:e1:agent_initial_context")
         assert "anxiety" not in {v["id"] for v in snapshot["output"]["alias_map"].values()}
     finally:
