@@ -19,6 +19,8 @@
 
 ## Surprises & Discoveries
 
+2026-10-23 23:53 +08:00：本机Docker PG15仍已启动，但Linux Python依赖镜像准备失败。仅尝试拉取官方`python:3.11-slim-bookworm`一次，Docker Hub解析到本机网络的198.18地址后连接超时；未更改Docker代理、ACL、WSL或任何既有服务，未重试/换源。记录`private/linux-runtime-preparation-41f56c4646f14f88bbd5e60e552a65ba/metadata.json`及同目录日志位于主线集成工作树。本片未因此执行迁移、restore或应用服务，Linux应用轨继续阻塞；不将已就绪的Linux PG存储升级成完整演练证明。
+
 旧恢复只删除draw，没有留下下一次export可见的原生删除旁账，故原verify_monotone会拒绝STALE_WITHDRAWALS。最终代码新增`tools/deploy_core_withdrawals.py`，保留原export格式及校验，不删除旧断言。已有draw和既有异owner tombstone均阻止换owner重绑定；所有标记冲突导致全体事务回滚。外部checkpoint清除仍是既有提交后边界，须纳入后续Linux全链失败演练。
 
 首链8通过/2失败/1清理错误：新测试的pg_restore缺少显式dbname模式参数；既有兼容节点先缺PG15 PATH，后因安全runner未传USERPROFILE而在Path.home失败。只修新夹具；私有runner为原旧节点补PG15 PATH与指向新临时目录的USERPROFILE，其余凭据清理不变，不修改旧测试、用户环境或公共runner，不提交重复wrapper。
