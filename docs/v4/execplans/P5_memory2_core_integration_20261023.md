@@ -13,6 +13,7 @@
 - [ ] 里程碑一：记忆检索相关测试通过；首轮全量和补证已完成，仍有一项未改动的评测 CLI 契约断言待主线协调，不能标全量绿。
 - [ ] 里程碑二：已接保守去重、合并撤销、敏感提案确认/拒绝/撤销应用服务；单值槽更新、矛盾提案与认证渠道接线仍待完成。
 - [ ] 里程碑三：事件过期归档、八节画像反思提案、精确撤销与派生引用传播。
+- [x] (2026-10-24 00:07 +08:00) 到期归档/撤销本地应用服务及隔离 PG 检查；自动后台/认证入口与产品场景仍待主线接线，未把里程碑三整体勾选。
 - [ ] 里程碑四：`--target v4` 全部指定 scripted 场景、里程碑全量回归、草稿 PR 与接线回执。
 - [ ] 后续里程碑：记忆就绪后再做 P5b B 的实体、迁移、API、topic_route 和分区上下文；P5b A/C 分别留模块原任务与前端线。
 
@@ -35,6 +36,8 @@
 仅作相关补证，没有重跑完整套件：复用现存 `.venv-k3`、Node22、前端线 jsdom 和现存 PG 工具（只读依赖，不下载、不改共享环境），并修复 `tools/eval/targets/v4_context_observations.py` 对已删除 runtime_step 返回空上下文。失败涉及的文件及 PG 备份恢复检查共 64 passed / 56.98s，包括模型/飞书的 MockTransport 和回环 DOM 测试，无真实外部请求。剩 `test_eval_v4_contracts.py::test_v4_cli_is_offline_only_and_default_fake_is_unchanged` 的旧 Supported modes 断言，实际走 Live preflight failed；该 CLI 和测试均非本线修改，交主线协调，不擅改非记忆评测入口。
 
 ## Decision Log
+
+2026-10-24 00:07 +08:00 / Codex：到期不等于隐私撤销；归档保留历史原话、回答及用户编辑，依靠事实修订使旧依赖失效，当前事实及其派生检索按现有投影过滤。归档前态沿用 proposal 的隐私级联，忘记后不能从撤销快照恢复。日期事件到 owner 当地日末，时刻事件到明确时刻；有歧义不归档，单值槽历史前驱保持 active。后台触发归主线，服务不在查询路径隐式写入。
 
 2026-10-23 / Codex：以用户新授权及指令板 v3 为准，允许修改记忆服务、memory_* 工具及上下文记忆检索已有文件。主线 Agent 循环、提交门、通道、调度器与模型层不改；所需配合写入日报。
 
@@ -93,6 +96,8 @@
 敏感提案：`MemoryProposalService(memory).accept(owner, subject, proposal_id, expected_revision=..., message_id=..., remember_category=..., operation_id=...)`；`reject` 参数相同但没有 remember_category。撤销确认：`MemoryProposalUndoService(memory).undo(...)`。认证入口须把实际点击转成绑定同一 owner 的 user/web-action 原始消息，分别为“请保存这条记忆”“请保存这条记忆，以后这类都记”“不要保存这条记忆”“撤销这次记忆确认”；message_id 不是模型传来的授权旗标。严格校验角色、人物、原话修订/区间、状态、撤销账本和无痕。记忆设置的撤销只恢复两项 memory key，保留 runtime 等无关设置；记忆授权本身已再修改则拒绝覆盖。
 
 ## 修订记录
+
+2026-10-24 00:07 +08:00：新增到期归档/撤销服务，相关组合 55 passed，新增守卫后的受影响文件 32 passed；记录历史保留与主线后台接线边界。无重复全量，下一步继续单值槽独立服务。
 
 2026-10-23 22:43 +08:00：恢复后的首份独立接入计划，采用指令板 v3 并明确当前无验收结论。
 
