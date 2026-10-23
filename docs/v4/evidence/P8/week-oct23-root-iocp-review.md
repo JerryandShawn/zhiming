@@ -21,7 +21,7 @@ Job累计 total5→14，即新增9成员；阶段结束 active2，等待收束�
 ## 文件与校验
 
 - [实际观察报告](week-oct21-root-iocp-metadata-probe.json)
-- [首轮脚本](week-oct23-root-iocp-first-driver-source.txt)、[首轮错误日志](week-oct23-root-iocp-first-run.txt)
+- [首轮脚本](week-oct23-root-iocp-first-driver-source.txt)、[首轮外层工具异常摘录](week-oct23-root-iocp-first-tool-error.md)、[首轮内部输出（空文件）](week-oct23-root-iocp-first-run.txt)
 - [成功轮脚本](week-oct23-root-iocp-driver-source.txt)、[观察线程](week-oct23-root-iocp-observer-source.txt)、[外层约束](week-oct23-root-iocp-harness-source.txt)
 - [两轮进程摘要与独立一致性检查](week-oct23-root-iocp-validation.json)
 
