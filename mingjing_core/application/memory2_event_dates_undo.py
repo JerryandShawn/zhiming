@@ -101,8 +101,11 @@ class MemoryEventTimeUndoService:
         )
         verify_originals(self.memory, owner, subject, record["source_refs"])
         at = history_instant(action.get("at"))
+        prepared = history_instant(record.get("prepared_at") or record.get("updated_at"))
         if (
             at is None
+            or prepared is None
+            or at < prepared
             or not statement_instant(self.memory, owner, fact) <= at <= self.repairs.clock.now()
             or action["created_at"] < record["updated_at"]
         ):
