@@ -22,6 +22,8 @@
 
 Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不能当作当前故障；PG15镜像下载尚在进行，不代表Linux恢复或应用演练成功。
 
+23:20 +08:00镜像下载完成并在明确label/固定volume/回环55481的新本机容器中实际启动PG15.19，观察记录在`private/local-linux-pg15-20261023.json`。仅准备存储，未迁移或恢复任何库；现有Windows PG55480及其它服务未动。
+
 ## Decision Log
 
 恢复标记仅含owner、draw_id和固定版本的指纹，以及deleted/deleted_ids/kind回执；不保存牌面/问题/正文，不造原HTTP幂等键。复用已有core_mutation_requests，无新表或迁移。0009保留P5，不改变历史1–8。旧b9继续保留独立反例，当前修复只随最终候选发布；首发开门前可以回退，开门后只按另审止损与前向修复方案。
@@ -29,6 +31,10 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 ## Concrete Steps / Plan of Work
 
 相关验证使用清凭据的私有安全runner和本机隔离PG15。代码审阅、定向验证、提交推送之后才进入Linux演练；最终候选增量入口不得复用freeze/install/publish去覆盖既有Core库。Native入口须恢复到全新明确allowlist数据库，验证备份、最新撤销/发送收据、同源解释器、角色权限与重复无变化；旧Native入口仍主动拒绝缺失的生产恢复证明，不能用JSON布尔值解除。
+
+下一片先新增最终候选契约与“新库恢复”入口，不接开门：绑定候选SHA、完整manifest、控制器、迁移1–8及Core/Charts/K3锁；默认只校验，显式apply/quiesced才对空allowlist新库restore、迁移、精确ACL及两次实际重放，禁止改原库DSN、启动unit或去维护门。旧B1的ProofRequest/verify_candidate/runtime lock均固定b9，不泛化这些历史门。新入口需要逐表ACL矩阵：旧writer_permissions/_runtime_safe统一要求所有表完整DML，与0008的permissions._grant_quota_tables最小权限相冲突，不能补DELETE来凑绿；checkpoint三表DML、迁移账本只读、禁止DDL/TEMP/角色继承保留。中央账户/ledger/location另行核对，备份恢复不得回退额度账本或自动provision。
+
+后续Linux应用轨须固定最终包、实际Python3.11、独立Charts与官方K3文件，执行真实迁移/回填/重放和权限负例；旧b1_linux_drill的SQL轨及分离0008轨不能作为首发证明。切换入口最后单独接：Web/飞书/报告及timer停写、Hermes writer锁、无未知客户端、受审env/unit及wrapper固定SHA。Web dispatcher在进程内，不增加虚构worker unit。旧publication的开门后60分钟rollback规则不适用R1，禁止直接解除Native硬门；开门前可恢复，开门后关门止损并保留现场。
 
 ## Validation and Acceptance
 
@@ -52,4 +58,5 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## 修订记录
 
+- 2026-10-23 23:46 +08:00：补实际Linux PG15存储已就绪、最终候选契约/精确ACL与开门前恢复路线，保留应用轨及Native未验边界。
 - 2026-10-23 23:10 +08:00：记录最终候选删除血缘修复、实际PG定向证据及仍未解除的发布门。

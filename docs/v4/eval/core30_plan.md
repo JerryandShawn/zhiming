@@ -49,6 +49,8 @@ live/v4入口现在要求`--scripted-gate`、`--candidate`、`--equivalence-proo
 5. 原80中M08的P5分类确认、P类的P7跟进、X08的P4真SSE等首发适用范围待大脑裁定。未裁定前完整81门保持保守关闭，不能擅自N/A、改金标或整条并入暂停模块凑绿。
 6. 指令板v8恢复模块线记忆2.0；主线最多两条测试进程，与模块线各两条、全队≤4。正式脚本门全绿后仍由主线核对模块日报第一段“记忆2.0就绪”，再决定是否普通合并，不在本片改记忆服务/工具或上下文检索。
 
+后续可信续作里程碑先限已知quota_5h和明确reset的同候选core30：在独立本机PG控制schema持久绑定候选/source/题目契约/配置/rubric/model/计量与中央身份，正文及真实TurnResult只存场景私有PG。保留场景schema，以attach/detach重开原run/epoch、重新claim旧lease；禁止reset/seed/receive/queue制造新run，执行预算扣除前次已耗时间。每turn分别持久target_done/judge_done，主生成及工具复用原Journal，外部评审新增请求/实际attempt关联和结果日志；报告仅为PG投影。已发送但未持久结果属未知，不能自动重发；取消/来源撤销/时限/未知reset/Access均不恢复。额度侧须先完整验证原证明与会话，才清到点的同一quota_5h，再重新核验core授权；不可先清停、从JSON还原私有seal或重跑等价证明。实现与真实PG中断测试之前，当前live/v4的--resume硬拒绝保持有效。
+
 ## 验证记录
 
 2026-10-23 23:03 +08:00：首次完整`--suite core30 --mode scripted --target v4` CLI 30/30，安全组6/6；与原生飞书X07及错误来源断言负例共3个pytest包装通过（27.37秒）。实际隔离PG、真实工具及唯一锁定的本机Charts worker，外部HTTP/其他子进程被拒；日志`private/safe-narrow-73f14e90c3b84040b77df364caefa1c6/metadata.json`。报告是pytest临时目录中的原生CLI产物，不是同clean候选的正式三组门，不提交/手改旧报告冒充放行。测试时区Asia/Tokyo，真实模型/服务器/飞书均0。
