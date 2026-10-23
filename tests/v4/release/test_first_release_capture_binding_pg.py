@@ -83,25 +83,10 @@ def capture_with_session_diagnostic(source):
         try:
             return original(connection, allowed)
         except RestoreRejected as error:
-            if str(error) == "INCREMENTAL_OTHER_SOURCE_SESSION":
+            diagnostic = getattr(error, "session_diagnostic", None)
+            if str(error) == "INCREMENTAL_OTHER_SOURCE_SESSION" and diagnostic is not None:
                 try:
-                    connection.execute("SELECT pg_stat_clear_snapshot()")
-                    rows = connection.execute(
-                        "SELECT pid,backend_type FROM pg_stat_activity WHERE datname=current_database() ORDER BY pid"
-                    ).fetchall()
-                    # This fresh observation is later than the failed gate, not its original PID set.
-                    print(
-                        json.dumps(
-                            {
-                                "schema": "capture-session-diagnostic-v1",
-                                "observation": "after_rejection_current",
-                                "allowed_pids": sorted(allowed),
-                                "current_backends": rows,
-                            },
-                            sort_keys=True,
-                        ),
-                        flush=True,
-                    )
+                    print(json.dumps(diagnostic, sort_keys=True), flush=True)
                 except Exception:
                     raise error from None
             raise
