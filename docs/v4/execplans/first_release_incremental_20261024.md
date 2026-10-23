@@ -21,9 +21,12 @@
 - [x] (2026-10-24 03:05 +08:00) M3a第一小片仅新增中性migration_steps与严格source_profile，静态冻结供根审；没有接入入口、修改旧tools或运行测试，typed证明与源升级尚未实现。
 - [x] (2026-10-24 03:10 +08:00) M3a第一小片8个新节点实证完成：首链6绿/2正例夹具比较错误，按根审仅修原prefix账本行投影后2正例复验2绿；原6绿未重跑。冻结两helper、新PG测试及本计划，释放测试令牌。
 - [x] (2026-10-24 03:09 +08:00) M1→M2→8→真实候选双重放的单链已由恢复片提交并推送7e2c870，详细分段前态/后态及两次fixture错误统一见原恢复ExecPlan。为保留该父分支CI，本计划后续在同目录子分支v4/p3-wire-incremental-20261024继续；没有重置或覆盖并行WIP。
+- [x] (2026-10-24 03:35 +08:00) 独立controller运行时门4/4通过，6.32秒：实际Python3.11 venv、活动Core依赖闭包及已加载PostgresSaver来源/SQL重核，返回不可序列化的进程内凭据；尚未与TargetProof组合或接入源升级。
 - [ ] 后续在用户已授权的本机开发范围内，实现同call实际证明、完整源guard与fr_upgrade前向入口，再落实源既有撤销重放与回填；尚无源升级命令。
 
 ## Surprises & Discoveries
+
+controller已加载业务模块，不具备fresh worker的-I/-B进程条件。因此新增独立运行时门，核当前解释器、venv内实际distribution与依赖边、PostgresSaver实际模块及MIGRATIONS；不借worker的旧回执宣称controller已验证。四个新目标使用合成候选/manifest绑定及真实审核锁副本，实际解释器/已加载模块参与核验；没有验证真实Git发布包或PG接线。
 
 当前候选export_withdrawals所读owners/revocations/tarot_requests/mutation_requests/outbox及列均存在于prefix4。导出阶段只能先核连续历史后直接调用真实候选导出，不调用要求完整8的repo.verify_schema或initialize。恢复144回执还不是“备份时源库全状态==恢复后升级前原始状态”的证明，这一接缝后续由恢复owner实现，不能用任意JSON放行源库升级。
 
@@ -32,6 +35,8 @@
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+controller运行时凭据只作为未来同call源升级的必要条件。私有registry登记RuntimeWitness，verified_saver消费时重新核全部活动输入并返回同一个已验Saver类；复制的JSON摘要不赋权。后续必须与单次TargetProof共同形成源升级许可，任一单独通过都不能迁移源库。运行时门不访问PG、模型或网络，不声称wheel/.pth供应链、Linux或正式发布通过。
 
 主线裁定M1只证明阶段前/后精确无额外会话，不做脆弱OS/TCP PID追踪，不按application_name放行，也不声称dump期间全局排除连接。回执global_quiescence_verified=false、session_checks=before_after。父owner只读REPEATABLE READ事务导出snapshot并保持存活，实际pg_dump --snapshot和候选worker在业务读前IMPORT同一snapshot；阶段后另开新快照比较当前源数据，漂移则失败保留。sequence不受MVCC保护，单独前后核last_value/log_cnt/is_called；未来跨恢复对照只按last_value/is_called作语义比较，log_cnt原证据保留用于同库漂移，不能删除或伪造一致。
 
@@ -107,6 +112,30 @@ M3b再新增`tools/first_release_incremental_backfill.py`、`tools/first_release
 
 根已裁定M3b必需范围：backfill_entities仍遍历active fact，只在新目标重放不能证明源回填隐私安全。源8上必须先按同一实际候选落实既有撤销/收据双重放及独立擦除后验，再开始backfill，保持native apply自身事务和提交后checkpoint purge边界，绝不外套大事务。它是用户已授权开发内落实既有撤销，不发起新删除；可独立成片。M3a若只做到DDL/ACL，必须明确backfill/源隐私闭环未完成、保持closed，不能跳过此点宣称首发就绪。
 
+## M3a same-call TargetProof（03:18获批实现前计划）
+
+本片只新增`tools/first_release_target_proof.py`与一份专用PG测试，窄改`first_release_local_pg.py`及`first_release_local_restore.py`，不接source driver/guard/backfill。公共execute默认仍返回既有JSON，默认校验零连接/进程/文件写；旧_require_creator签名与fresh-target门不改。local_restore内部抽`_applied_target` contextmanager复用真实restore/M2/upgrade/replay过程，public execute在context内取JSON；私有`_proved_target(inputs, apply_local=True, upgrade_local=True, capture_binding=..., withdrawals_replay=..., target_proof_pin=..., environment=...)`必须全显式，不能拿旧execute回执追认。
+
+local_pg.create_target在本次创建两roles的事务内立即读取并保留两个实际OID，CREATE DATABASE成功后立即读取数据库OID/datdba，在public初始化之前建立私有生命周期记录。registry用id(creator)键且record强持creator实例，并核record.creator is creator，绑定operation/database、三OID及backend PID；new_target的finally总撤销进程记录，不删除任何PG对象。仍yield原Connection；私有`_birth_identity(inputs,creator)`只读取此活registry，不从JSON或当前同名库重新认定出生身份。proof producer与consume必须把当前实际OID逐项与出生记录比对；未注册、已关闭/离开context、同名库/角色替换均拒绝。
+
+新TargetProofPin是独立外部审核可信输入，固定canonical输入绑定SHA与实际producer/helper控制路径SHA；绑定LocalInputs（候选/manifest/三锁、原prefix/dump/pg_restore及路径）、CaptureBinding/M1源身份与实际捕获/旁账字节、CandidateReplay候选解释器/worker/effects/ledger。依赖旧generic grant函数时也绑定实际被调用的控制代码，不借其旧B1 admission/固定候选；candidate apply/export仍在已验fresh process执行。它不认证审核人、文件保护模式或完整wheel/.pth供应链，不把输入JSON里的true作为放行依据。
+
+本片目标证明只说明该次本机恢复/候选重放/最终数据库核验，controller运行时仍不标已核。现worker.runtime同时要求-I/-B等fresh-process条件，不能直接移植到已加载业务模块的controller并冒称通过；后续source升级入口须在实际受审候选解释器启动的控制进程里，独立核controller sys.executable/venv/活动Core锁依赖及已导入PostgresSaver模块实际来源与distribution版本，再允许其MIGRATIONS决定checkpoint阶段。未实现该门前source入口继续关闭，TargetProof消费摘要显式controller_runtime_verified=false，不能默认为true。
+
+只有同次creator仍持锁的新目标依次真实完成M2原始比较→1–8升级→实际candidate撤销/收据双重放→重放后的最终owner/writer精确ACL与实际PG检查，才可yield不透明TargetProof。最后实查目标身份/owner集合/history8、实际retirement trigger、无其他目标会话/active run/live lease、中央四表空且usage sequence未使用；不依赖之前upgrade的旧ACL回执。proof不是可构造dataclass，私有seal/registry登记本实例且不支持序列化；`consume_target_proof(proof, *, source=原BackupInputs)`原子单次取走，重核creator锁/出生OID、全部实际输入与控制SHA及源绑定，失败也不允许再次消费，context finally总撤销未消费proof。消费的body-free摘要只供记录，不能作为后续入口授权输入。
+
+根另批准mint末次owner事务内取得完整UTC Core/checkpoint/sequence摘要，消费时再次实际ACL与完整snapshot对照mint私有终态hash，防止仅合作creator锁内的外部DML/ACL改变后消费旧证明。正常proof链目标连接16（旧pipeline10+mint实查3+consume实查3），旧public execute未启proof仍原计数。仅证明核验点前后精确状态相等，不证明全程全局停写或原子性；原sequence log_cnt证据保留，不排时间戳或字段来凑一致。snapshot逻辑列与row/sequence摘要不认证所有约束、默认值、索引DDL或完整供应链，正式门继续false。
+
+测试先静态设计、等根审接口授槽：真实完整候选的capture→restore→upgrade→native replay→最终检查→同call单次消费；普通对象/JSON或不完整参数不能生成证明；finally过期、未注册/关闭creator、同名新库OID替换拒绝；实际ledger/控制绑定漂移拒绝；真实replay后ACL或sequence污染拒绝，失败保留目标。另仅必要旧default/公共JSON兼容节点，不重复已有M1/M2/隐私重放绿项。现无新测试运行，native/runtime/Linux/central/publication正式位与源升级入口继续关闭。
+
+静态实现为新target_proof及窄改local_pg/capture_binding/local_restore：M2现在比较创建时registry三OID；公共execute只抽共享context，旧参数/JSON未改；private proof路径没有success.json或旧receipt导入。新独立reviewed pin固定17个实际controller文件，继承M1八控制、capture四控制与candidateReplay的worker/effects/runtime/ledger绑定；旧B1仅generic checkpoint grant函数实际来源受pin，不使用其旧固定候选/restore importer或admission。后续R3只小改fence的existing_only读模式，该文件属原M1八控制，必须双方静态冻结后才生成本片新捕获，避免在途pin漂移。
+
+## M3a controller运行时独立组件（03:35定向完成，接线未完成）
+
+新增`tools/first_release_controller_runtime.py`（308行）及专用测试`tests/v4/release/test_first_release_controller_runtime.py`（225行），单函数最长35行。ControllerRuntimePin固定候选/manifest/Core锁、helper与Python实际SHA、Saver distribution版本、init/base实际文件SHA及MIGRATIONS数量/摘要；核已安装活动包的版本、位置、platform marker与Requires-Dist extras闭包。实际模块必须来自当前venv，类/基类/SQL列表身份与setup代码来源匹配；调用verified_saver再次核验当前状态。没有修改旧工具或依赖锁，没有CLI或源写入口。
+
+唯一首链`private/safe-narrow-6820f8813b2a41afabf042644f36fed4/metadata.json`，03:31:39–03:31:46 +08:00，4 passed in6.32s。四个节点分别验证真实3.11 venv及活动依赖闭包正例、实际错误解释器/非venv和hash拒绝、实际已加载Saver替换或SQL变更拒绝、合成锁漏掉真实活动依赖拒绝。正例候选/manifest为显式合成绑定，Core锁为审核副本；不能据此宣称已验真实Git候选、PG、TargetProof或源升级。子进程禁网络/PG连接，清凭据、关追踪、时区Asia/Tokyo；无真实模型、服务器或外发。Ruff E/F/I/B/UP/SIM、format与AST检查通过，未运行全量或重复旧绿项。
+
 ## Artifacts and Notes
 
 唯一窄链在`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep`运行：
@@ -123,6 +152,8 @@ M3b再新增`tools/first_release_incremental_backfill.py`、`tools/first_release
 
 ## Outcomes & Retrospective
 
+controller运行时独立组件的四个实际进程/依赖/已加载模块行为已定向通过；其opaque凭据仍未接入后续源guard与迁移编排。TargetProof与源guard此时在独立并行实现，不能由本组件的controller_runtime_verified摘要替代same-call目标恢复/原始内容/重放证明。source_upgraded及正式native/Linux/central/publication继续关闭。
+
 本机合成已有库M1备份入口已有旧版8/8及独立marker1/1证据；M2新增UTC/列集合/lineage捕获与同call新目标原始内容绑定，八个新行为按3+3+2实证。M2只证明本机原始内容匹配，仍未实现整个“源捕获→原始恢复→重放→前向源fr_upgrade库”的放行链。现应用未接栅栏，global_quiescence_verified=false；before_after不排除dump期间瞬时非合作连接。source_restore_content_verified/source_upgraded保持false；逻辑列map不认证默认值、约束、索引/触发器、类型定义或所有DDL。源prefix8/中央账本身份保全、正式恢复、Linux与发布均仍No-Go。测试自产审核pin不认证审核人或完整供应链。没有业务迁移、依赖、既有权限或原b9变更。
 
 M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/213行；新PG测试250行、最长函数55行以内。Ruff E/F/I/B/UP/SIM及120列format通过。真实PG定向6+2已验证上述基础行为；中性grant原语尚未被新入口调用，PostgresSaver checkpoint阶段、完整源状态/运行时门、typed单次证明、源编排及M3b源隐私重放/回填都仍未完成，所有正式门保持false，不给生产/既有prefix8或额外关系开口。
@@ -137,3 +168,4 @@ M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/2
 - 2026-10-24 02:49 +08:00：M2推送后只读核对现迁移/ACL/backfill调用，记录M3a/b最小接缝、非原子阶段和源隐私重放边界；未编码、未运行测试。
 - 2026-10-24 03:05 +08:00：获批M3a分片先静态实现两个独立helper，采纳READ COMMITTED、真实trigger挂载、PUBLIC授权、单次内存证明与后验顺序硬门；未改R3冻结的旧工具，未运行测试。
 - 2026-10-24 03:10 +08:00：根授1测试槽后新基础片首链6绿2夹具比较失败，保留真实证据；按根审只校正合法账本append的旧行范围，单独复验2正例通过，冻结四路径交审，不重跑其余六绿。
+- 2026-10-24 03:35 +08:00：记录独立controller运行时组件唯一4/4实证与合成候选绑定边界；保持TargetProof组合、源编排与正式发布关闭，单独提交已完成小片。
