@@ -89,13 +89,19 @@ class ConsultationService:
             raise RuntimeError('Core v3 PostgreSQL 尚未配置')
         repo = PostgresRepository(dsn, initialize=False, max_size=int(os.getenv('CORE_DB_POOL_SIZE', '4')),
                                   max_running=int(os.getenv('CORE_RUN_CONCURRENCY', '1')))
-        repo.verify_schema()
-        model = None
-        if os.getenv('MODELS_CONFIG') or os.getenv('MINGJING_MODEL_PORT') == 'v2':
-            from ..models.legacy import PortBackedModel
-            from ..models.registry import ModelRegistry
-            model = PortBackedModel(ModelRegistry(), role='primary')
-        return cls(repo, model=model, runtime=LangGraphRuntime(repo, initialize=False))
+        try:
+            repo.verify_schema()
+            model = None
+            if os.getenv('MODELS_CONFIG') or os.getenv('MINGJING_MODEL_PORT') == 'v2':
+                from ..models.legacy import PortBackedModel
+                from ..models.registry import ModelRegistry
+                model = PortBackedModel(ModelRegistry(), role='primary')
+            from .production_agent import configured_agent
+            agent = configured_agent(repo)
+            return cls(repo, model=model, runtime=LangGraphRuntime(repo, initialize=False), agent_runtime=agent)
+        except Exception:
+            repo.close()
+            raise
 
     def submit(self, *, owner, subject='self', message, conversation_id='shared', request_id,
                case_ids=None, mode='chat', depth='standard', selection=None, draw_id=None,
