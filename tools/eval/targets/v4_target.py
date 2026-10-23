@@ -17,7 +17,6 @@ from tools.eval.providers.scripted import ScriptedProvider
 
 from .base import TurnResult
 from .local_db import local_dsn, verify_local_postgres
-from .v3_seed import V3Seeder
 from .v4_cancellation import cancel_stream
 from .v4_chart_observations import chart_observations
 from .v4_context_observations import context_observations
@@ -32,6 +31,9 @@ from .v4_observations import (
     structural_observations,
     tool_steps,
 )
+from .v4_privacy import NativePrivacyDriver
+from .v4_privacy_observations import initial_layers, privacy_entities
+from .v4_privacy_seed import V4PrivacySeeder
 from .v4_protocols import ScriptedWirePort, run_matrix
 from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
@@ -81,8 +83,9 @@ class V4Target:
         self._ports()
         self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
         self.provider = ScriptedProvider(seed.get("_scripted", []))
-        self.seeder = V3Seeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
+        self.seeder = V4PrivacySeeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
         self.seeder.seed(seed)
+        self.privacy_initial = initial_layers(self.repo, self.owner, self.seeder.privacy_layers)
         self.tarot = TarotDriver(self.service, self.seeder)
         self.tarot.seed(seed)
         self.bindings = dict(self.seeder.ids)
@@ -230,6 +233,8 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
+        if turn.get("action", {}).get("type") in {"fact_revoke", "source_delete"}:
+            return NativePrivacyDriver(self).execute(turn)
         started, before = (
             time.perf_counter(),
             self.port.calls + (self.critic.calls if self.critic else 0),
@@ -326,10 +331,15 @@ class V4Target:
         rows += decision_rows(steps)
         rows += self.tarot.rows()
         rows += delivery_rows(self.repo, self.owner)
+        if self.seed.get("_scenario_id") in {"F01", "F02", "F03"}:
+            rows = privacy_entities(
+                self.repo, self.owner, self.seeder.privacy_layers, rows, self.seeder.privacy_aliases
+            )
         return {
             "entities": rows,
             "settings": self.repo.assert_scope(self.owner)["settings"],
             "run_meta": {
+                "privacy_initial_layers": self.privacy_initial,
                 "repeated_call_count": repeat_count(steps),
                 "usage": run.get("usage", {}),
                 **({"ingress": self.feishu.proof} if self.feishu else {}),
