@@ -26,6 +26,33 @@ Outcomes & Retrospective（2026-10-23 23:36 +08:00）：本片11个目标已验�
 
 primary恢复仍有硬缺口：AgentRuntime._start会再次发started，ToolBatch对已完成步骤仍会发tool_call/tool_result，需要明确避免恢复遍历产生重复执行事件；中央物理attempt当前缺少与Journal seq的明确关联，不能以次数或不同时间基准猜测，成功POST但步骤未完成、未结束或unknown记录一律停止。10-24已实现成功primary的只读结果/评分journal基础及发送前撤销复查，没有放开终态run执行；engine/runner接线、额度清停和CLI --resume仍关闭。
 
+2026-10-24 00:38 +08:00只读核对：当前计时不是单一墙钟，上一段的“固定绝对deadline”只指持久数值不被延长，不能据此宣称真实累计预算已经解决。
+
+| 权威/检查 | 实际取时接缝 | 跨进程含义 |
+| --- | --- | --- |
+| claim、lease、renew | PostgresRepository中的PG `now()` | 真实数据库时间；恢复须重新合法取租约，冻结业务时间不会延长租约 |
+| 中央额度、授权及reset | QuotaGuard的独立Clock，默认SystemClock | 不沿用场景FrozenClock；身份、期限、停止状态仍须当下核验 |
+| runtime deadline的生成/校验 | RuntimeLimits、RuntimeState.authority、Journal._leased、RunControl读取注入Clock或get_clock | engine会按场景/turn设FrozenClock；评测中的deadline可处于历史业务时间域 |
+| 本次执行/HTTP超时 | RunControl与transport的monotonic | 新建RunControl会重新记started，当前没有持久累计已消费秒数 |
+
+RuntimeLimits把每epoch配置/hash/deadline固定，并以LEAST写回，确实禁止扩大已存deadline；但恢复时重新冻结到同一业务时刻，并不会自然反映已过去5小时，反而可能重给一段monotonic预算。普通生产默认SystemClock，480/1200秒原deadline通常早于5小时额度恢复；评测若不恢复业务Clock，历史deadline又会立即过期。不能通过切换Clock、清pin、改epoch或重新计算deadline消除这些差异。业务参考时间、真实授权时间、执行累计预算须分开设计；长5小时primary等待继续保持关闭。
+
+精确physical attempt接缝方案（尚未实现）：在LoopCycle._model的未完成分支、RequestLedger.reserve之后，为实际ObservedPort.complete设置受信ContextVar观察器，捕获原生owner/run/epoch/seq/input_fp及请求快照hash；completed Journal重放分支不进入观察器。现调用链同步迭代RegistryPort/StreamingHTTP，监控线程只做控制检查，不执行HTTP；ContextVar须按token恢复，嵌套不得串到其他step/评审，未来若增加执行线程必须显式传递上下文。
+
+模型层可选观察器不依赖application：quota_http._admitted_attempt在active.acquire已经完成中央reserve并yield真实Attempt后、任何client.send之前，交出真实attempt_id、实际admitted scope、provider/model/role及已核验中央身份。应用侧用既有runtime_step另记agent_model_attempt，绑定相同run/source/fact与原请求hash；中央表不新增列，0008不改、不建0009，不把模型参数自报的seq或次数/时间邻近当关联。每个允许的物理重试均各有一个精确UUID，同一逻辑step可绑定多个UUID，仍遵守既有重试/额度策略。出作用域后仅按这些UUID读真实中央终态并记录摘要，HTTP结束不等于Journal.complete成功。
+
+歧义窗口一律停机：reserve成功而私密关联未提交、关联后client.send结果未知、中央finish未确认、HTTP已ok但解析/身份检查或Journal.complete未提交，以及来源撤销/epoch改变/租约失效，都不能推断“未发”或自动重POST。私密dispatch intent与中央reserve之间无跨库原子性，缺UUID关联的旧started步骤不做回填猜测；即使已知无实际发送，也保留保守中央预留。只有原生completed步骤及请求/来源/结果hash一致时才只读重放；本片不启用任何primary执行或CLI恢复。
+
+异常收尾核对：QuotaGuard._attempt现把store.finish放在无保护finally，finish的PG/校验异常会覆盖正在传播的已规范化quota、权限、Access或取消异常。下一实现先单独修这个缺口，不同时做observer。规范化须留在原guard边界：保留已确定global stop、ModelCancelled与原KeyboardInterrupt；普通失败若finish也失败，不得变成可重试；HTTP成功但finish失败也须安全失败关闭。观察器将来收尾只能在guard.finish之后读取精确终态，且其清理失败不能覆盖原终止信号；不得在外层重抛未经委托策略规范化的原始异常，不输出底层PG异常正文，不清unknown、不清停、不重试。
+
+剩余产品决定：额度等待是否计入真实墙钟deadline，或另有明确暂停预算；真实执行Clock与业务Clock的装配和旧pin兼容；恢复遍历中started/tool_call/tool_result事件如何保留原事件身份避免重复。下一片只解决finish异常优先级，随后才可验证精确attempt锚点；真正primary继续、累计预算与长窗口恢复均未获实现验收。
+
+2026-10-24 00:42 +08:00批准范围：下一窄片只修改quota_guard.py、新增一个真实隔离PG目标模块和本计划。先在guard原边界完成既有委托异常规范化，再单独尝试finish，保留原global stop、取消及进程控制异常；普通模型错误如finish也失败则强制NEVER，成功或普通非模型失败如finish未确认则仅返回安全ledger_unavailable。中央预留不清、不补偿、不重试，连接关闭仍释放slot。先编码/静态检查；两个主线测试名额占用，未经主线释放不启动pytest。暂不做observer、primary/CLI恢复、累计预算或时钟改造，不提交推送。
+
+2026-10-24 00:50 +08:00结果：finish优先级窄片实现，新增8组21个参数目标及既有2个正常目标均已有通过证据，并非单次23/23。首链18通过/5失败（7.27秒，`private/safe-narrow-36697375fc894eb7b8455eb95af0e1b5/metadata.json`）；5项均为新夹具：permission漏用真实MEMBER_PERMISSION_STOP，及错误要求contextmanager的__context__绝对为空。改为无cause、context为空或已suppress，同时保留格式化异常不能含PG marker的保护；仅复跑5/5通过（1.63秒，`private/safe-narrow-9af7d4596f2c4bd7afcf12b19ed28163/metadata.json`）。随后按主线审阅增加safe_diagnostic及私密原异常marker断言，仅复跑同5项4通过/1失败（1.72秒，`private/safe-narrow-8fe19a5bc58f4e3fa188bccb5299cba0/metadata.json`）；失败是fixture在被打印的调用源码行内直接写了marker，改为先存变量，不降断言，仅该项1/1通过（0.40秒，`private/safe-narrow-613a54ad2d9b47a0850e08c988b6fb10/metadata.json`）。首链失败证据均保留，没有重复稳定性或宽回归。
+
+真实PG15.19中实际finish事务制造SQL错误并回滚，中央记录保持reserved/finished_at=NULL、总请求计数不退、slot已释放；普通interactive剩余79，委托记录不计普通预算而剩余80，保留两者原策略。原global stop对象/kind/reset/actions、取消、KeyboardInterrupt等不被finish覆盖；普通模型错误保持安全kind但NEVER，原本成功HTTP或普通非模型错误遇finish失败仅安全关闭；原始falsey异常也不能被吞。实际Mock HTTP计数确认成功/503后finish失败均只发1次，无retry/fallback。Ruff、120列格式、语法及文件/函数尺寸通过；只改三个授权路径，测试令牌释放，真实模型/服务器/飞书均0。没有实现observer、primary/CLI恢复、累计预算或额度清停。
+
 当前离线CLI首次30/30，真实调用为0。可信等价证明至core会话的接线已用真实隔离PG与替身HTTP验证；正式脚本门和真实20步等价证明仍未齐，生产core依然不放行，跨额度窗口的持久续作尚未接通。本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
 
 ## 固定范围与评分
