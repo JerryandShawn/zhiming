@@ -10,6 +10,7 @@ from typing import Any
 
 from psycopg import sql
 from psycopg.conninfo import make_conninfo
+from pydantic import TypeAdapter
 
 CHECKPOINTS = ("checkpoints", "checkpoint_blobs", "checkpoint_writes", "checkpoint_migrations")
 CENTRAL = ("core_model_accounts", "core_model_batches", "core_model_authorizations", "core_model_usage")
@@ -160,26 +161,40 @@ def span_observations(repo: Any, document: dict[str, Any], require: Any) -> list
             if row["kind"] == "source_span" and row["metadata"].get("message_id") not in deleted:
                 metadata = row["metadata"]
                 group = grouped.setdefault(
-                    (owner["owner_user_id"], metadata.get("message_id")), {"ranges": [], "withdrawn": withdrawn}
+                    (owner["owner_user_id"], metadata.get("message_id")),
+                    {"ranges": [], "withdrawn": withdrawn, "markers": []},
                 )
                 group["ranges"].append(metadata)
+                group["markers"].append(row)
     with repo.transaction() as connection:
         connection.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
         connection.execute("SET LOCAL search_path=pg_catalog")
         return [
-            span_identity(connection, *key, group["ranges"], group["withdrawn"], require)
+            span_identity(connection, *key, group["ranges"], group["withdrawn"], group["markers"], require)
             for key, group in grouped.items()
         ]
 
 
 def span_identity(
-    connection: Any, owner: str, source: str, ranges: list[dict], withdrawn: set[str], require: Any
+    connection: Any, owner: str, source: str, ranges: list[dict], withdrawn: set[str], markers: list[dict], require: Any
 ) -> dict[str, Any]:
+    require(all(isinstance(value, str) and value.strip() for value in (owner, source)), "REPLAY_ERASURE_FAILED")
+    require(
+        all(
+            type(row.get("start")) is type(row.get("end")) is int and 0 <= row["start"] < row["end"] <= 200_000
+            for row in ranges
+        ),
+        "REPLAY_ERASURE_FAILED",
+    )
     original = connection.execute(
         "SELECT status,data FROM mingjing_core.core_entities WHERE owner=%s AND kind='message' AND id=%s",
         (owner, source),
     ).fetchone()
-    require(original is not None and original["status"] != "deleted", "REPLAY_ERASURE_FAILED")
+    if original is None:
+        span = dict(owner=owner, source=source, ranges=ranges, markers=markers, marker_only=True)
+        missing_span_empty(connection, span, require)
+        return span
+    require(original["status"] != "deleted", "REPLAY_ERASURE_FAILED")
     text = original["data"].get("content", "")
     require(
         all(
@@ -234,33 +249,15 @@ def span_dependents(connection: Any, owner: str, source: str, overlap: list[dict
 
 
 def span_erased(repo: Any, connection: Any, spans: list[dict[str, Any]], require: Any) -> dict[str, int]:
-    from mingjing_core.application.memory import MemoryService
-    from mingjing_core.memory.projections import redact_ranges
-    from mingjing_core.memory.tokenize import searchable_data
-
-    targets, preserved, private, runs, outbox = 0, 0, 0, 0, 0
+    targets, preserved, private, runs, outbox, marker_only = 0, 0, 0, 0, 0, 0
     for span in spans:
+        if span.get("marker_only"):
+            missing_span_empty(connection, span, require)
+            missing_span_markers(connection, span, require)
+            marker_only += 1
+            continue
         owner, source = span["owner"], span["source"]
-        raw = connection.execute(
-            "SELECT status,data FROM mingjing_core.core_entities WHERE owner=%s AND kind='message' AND id=%s",
-            (owner, source),
-        ).fetchone()
-        require(
-            raw is not None
-            and raw["status"] != "deleted"
-            and digest(raw["data"].get("content", "")) == span["raw_sha256"],
-            "REPLAY_ERASURE_FAILED",
-        )
-        expected = redact_ranges(raw["data"].get("content", ""), span["ranges"])
-        require(
-            MemoryService(repo).get_source(owner, source, for_context=True)["content"] == expected,
-            "REPLAY_ERASURE_FAILED",
-        )
-        require(
-            raw["data"].get("search_tokens")
-            == searchable_data("message", dict(raw["data"], content=expected))["search_tokens"],
-            "REPLAY_ERASURE_FAILED",
-        )
+        span_projected(repo, connection, span, require)
         span_preserved(connection, span, require)
         for row in span["overlap"] + span["private"]:
             old = connection.execute(
@@ -284,13 +281,151 @@ def span_erased(repo: Any, connection: Any, spans: list[dict[str, Any]], require
         runs += len(span["runs"])
         outbox += len(span["outbox"])
     return dict(
-        span_sources_checked=len(spans),
+        span_sources_checked=len(spans) - marker_only,
+        span_marker_only_checked=marker_only,
         span_facts_checked=targets,
         span_preserved_facts_checked=preserved,
         span_private_scopes_checked=private,
         span_runs_checked=runs,
         span_outbox_checked=outbox,
     )
+
+
+def span_projected(repo: Any, connection: Any, span: dict[str, Any], require: Any) -> None:
+    from mingjing_core.application.memory import MemoryService
+    from mingjing_core.memory.projections import redact_ranges
+    from mingjing_core.memory.tokenize import searchable_data
+
+    raw = connection.execute(
+        "SELECT status,data FROM mingjing_core.core_entities WHERE owner=%s AND kind='message' AND id=%s",
+        (span["owner"], span["source"]),
+    ).fetchone()
+    require(
+        raw is not None and raw["status"] != "deleted" and digest(raw["data"].get("content", "")) == span["raw_sha256"],
+        "REPLAY_ERASURE_FAILED",
+    )
+    expected = redact_ranges(raw["data"].get("content", ""), span["ranges"])
+    require(
+        MemoryService(repo).get_source(span["owner"], span["source"], for_context=True)["content"] == expected,
+        "REPLAY_ERASURE_FAILED",
+    )
+    require(
+        raw["data"].get("search_tokens")
+        == searchable_data("message", dict(raw["data"], content=expected))["search_tokens"],
+        "REPLAY_ERASURE_FAILED",
+    )
+
+
+def missing_span_spec(span: dict[str, Any], require: Any) -> tuple[set[str], set[str]]:
+    from mingjing_core.repositories.postgres import fingerprint
+
+    identifiers = {span["source"]}
+    for marker in span["markers"]:
+        metadata = marker["metadata"]
+        facts = metadata.get("fact_ids", [])
+        require(
+            set(metadata) <= {"message_id", "start", "end", "fact_ids"}
+            and isinstance(facts, list)
+            and all(isinstance(ident, str) and ident.strip() for ident in facts)
+            and marker["operation"] in {"superseded", "deleted", "stopped"}
+            and marker["entity_id"] == fingerprint([span["source"], metadata["start"], metadata["end"]]),
+            "REPLAY_ERASURE_FAILED",
+        )
+        identifiers.update(facts)
+    keys = {
+        prefix + ident for ident in identifiers for prefix in ("message:", "fact:", "entity:message:", "entity:fact:")
+    }
+    return identifiers, keys
+
+
+def span_references(value: Any, identifiers: set[str], keys: set[str], reference: bool = False) -> bool:
+    from mingjing_core.domain.contracts import SourceRef
+
+    fields = {
+        "id",
+        "source",
+        "source_id",
+        "message_id",
+        "source_message_id",
+        "entity_id",
+        "fact_id",
+        "source_ids",
+        "fact_ids",
+        "used_fact_ids",
+        "used_claim_ids",
+        "message_ids",
+    }
+    arrays = {"source_refs", "source_ids", "fact_ids", "used_fact_ids", "used_claim_ids", "message_ids"}
+    if isinstance(value, dict):
+        try:
+            for name, shape in (("source_refs", list[SourceRef]), ("field_source_refs", dict[str, list[SourceRef]])):
+                if name in value:
+                    refs = TypeAdapter(shape).validate_python(value[name], strict=True)
+                    groups = refs.values() if name == "field_source_refs" else [refs]
+                    if any(not ref.message_id.strip() or ref.start >= ref.end for group in groups for ref in group):
+                        return True
+        except (TypeError, ValueError):
+            return True
+        return any(
+            name in keys
+            or (name in arrays and not isinstance(item, list))
+            or (
+                name in arrays - {"source_refs"}
+                and isinstance(item, list)
+                and any(not isinstance(ident, str) or not ident.strip() for ident in item)
+            )
+            or (
+                name in {"state_version", "dependencies", "versions", "used_versions", "field_source_refs"}
+                and not isinstance(item, dict)
+            )
+            or span_references(item, identifiers, keys, name in fields)
+            for name, item in value.items()
+        )
+    if isinstance(value, list):
+        return any(span_references(item, identifiers, keys, reference) for item in value)
+    return reference and isinstance(value, str) and value in identifiers
+
+
+def missing_span_empty(connection: Any, span: dict[str, Any], require: Any) -> None:
+    identifiers, keys = missing_span_spec(span, require)
+    owner = span["owner"]
+    require(
+        connection.execute("SELECT 1 FROM mingjing_core.core_owners WHERE id=%s", (owner,)).fetchone() is not None,
+        "REPLAY_ERASURE_FAILED",
+    )
+    runs = connection.execute("SELECT id FROM mingjing_core.core_runs WHERE owner=%s", (owner,)).fetchall()
+    run_ids = {row["id"] for row in runs}
+    private = {"runtime_step", "artifact", "model_call", "report", "interpretive_claim"}
+    for table in (
+        "core_entities",
+        "core_runs",
+        "core_run_steps",
+        "core_run_events",
+        "delivery_outbox",
+        "core_embeddings",
+        "tarot_draws",
+        "tarot_readings",
+    ):
+        rows = connection.execute(
+            sql.SQL("SELECT to_jsonb(t) AS row FROM mingjing_core.{} t WHERE owner=%s").format(sql.Identifier(table)),
+            (owner,),
+        ).fetchall()
+        for item in rows:
+            row = item["row"]
+            require(not span_references(row, identifiers, keys), "REPLAY_ERASURE_FAILED")
+            if table == "delivery_outbox" or table == "core_entities" and row["kind"] in private and row["data"]:
+                run_id = row.get("run_id") if table == "delivery_outbox" else row["data"].get("run_id")
+                require(run_id in run_ids, "REPLAY_ERASURE_FAILED")
+
+
+def missing_span_markers(connection: Any, span: dict[str, Any], require: Any) -> None:
+    for marker in span["markers"]:
+        actual = connection.execute(
+            "SELECT operation,metadata FROM mingjing_core.core_revocations "
+            "WHERE owner=%s AND kind='source_span' AND entity_id=%s",
+            (span["owner"], marker["entity_id"]),
+        ).fetchone()
+        require(actual == {"operation": marker["operation"], "metadata": marker["metadata"]}, "REPLAY_ERASURE_FAILED")
 
 
 def span_preserved(connection: Any, span: dict[str, Any], require: Any) -> None:

@@ -17,6 +17,9 @@ from test_first_release_legacy_tombstone_pg import source_fixture as source_fixt
 
 from tools import first_release_candidate_process as process
 from tools import first_release_local_restore as restore
+from tools.first_release_contracts import RestoreRejected
+from tools.first_release_replay_effects import snapshot
+from mingjing_core.repositories.postgres import PostgresRepository
 
 NATIVE = """import hashlib,importlib,json,os,pathlib,runpy,sys
 value=json.load(sys.stdin)
@@ -138,13 +141,32 @@ def observation(repo,state):
         del result['walk_unchanged'],result['preserved_embedding_only']
     return result
 
+def missing_observation(repo,state):
+    with repo.transaction('alice') as connection:
+        entities=connection.execute("SELECT count(*) AS n FROM mingjing_core.core_entities WHERE owner='alice' "
+                                     "AND id=ANY(%s)",([state[name] for name in ('source','night','walk','corrected','note','private')],)).fetchone()['n']
+        counts={table:connection.execute('SELECT count(*) AS n FROM mingjing_core.'+table+" WHERE owner='alice'")
+                .fetchone()['n'] for table in ('core_runs','delivery_outbox','core_embeddings')}
+        orphan=connection.execute("SELECT 1 FROM mingjing_core.core_entities WHERE owner='alice' "
+                                  "AND kind='note' AND id='synthetic-span-orphan'").fetchone()
+    return {'original_entities_absent':entities==0,'runtime_scopes_empty':all(n==0 for n in counts.values()),
+            'orphan_present':orphan is not None}
+
 repo=repository.PostgresRepository(os.environ['NATIVE_LOCAL_DSN'],initialize=False,max_size=1)
 try:
     state=seed(repo) if value['action']=='seed' else value['state']
+    if value['action']=='owners':
+        for owner in ('alice','bob'):repo.ensure_owner(owner)
+        state={}
     if value['action']=='correct':state=correct(repo,state)
     if value['action']=='combine':state=combine(repo,state)
+    if value['action'] in ('orphan','malformed'):
+        links=({'field_source_refs':{'field':state['source']}} if value['action']=='malformed'
+               else {'source_ids':[state['source']]})
+        repo.put('alice','note','synthetic-span-orphan',dict(content='SYNTHETIC_ORPHAN_BODY',**links))
     result={'state':state,'document':deployment.export_withdrawals(repo),'candidate':manifest['commit']}
     if value['action']=='observe':result['observed']=observation(repo,state)
+    if value['action']=='missing_observe':result['observed']=missing_observation(repo,state)
     worker['third_party_origins'](sites)
     result['candidate_modules_checked']=worker['business_origins'](root,manifest['files'])
 finally:repo.close()
@@ -189,6 +211,24 @@ def save_evidence(folder, *, state, observed=None, proof=None, failure=None, oth
             servers=0,
         ),
     )
+
+
+def orphan_before_replay(candidate, state, monkeypatch, snapshots, *, malformed=False):
+    original = process.candidate_replay
+
+    def injected(request, inputs, dsns, creator):
+        native(candidate, dsns["owner"], "malformed" if malformed else "orphan", state)
+        repo = PostgresRepository(dsns["owner"], initialize=False, max_size=1)
+        try:
+            snapshots.append(snapshot(repo))
+            try:
+                return original(request, inputs, dsns, creator)
+            finally:
+                snapshots.append(snapshot(repo))
+        finally:
+            repo.close()
+
+    monkeypatch.setattr(process, "candidate_replay", injected)
 
 
 @pytest.mark.parametrize("sample", [7], indirect=True)
@@ -287,4 +327,73 @@ def test_native_whole_fact_and_source_span_combination_keeps_original_projection
         value is True
         for name, value in observed.items()
         if name not in {"raw_status", "fts_night", "corrected_present"}
+    )
+
+
+@pytest.mark.parametrize("sample", [7], indirect=True)
+@pytest.mark.parametrize("canonical_source", [FIXED], indirect=True)
+@pytest.mark.parametrize(
+    "residual",
+    [False, True, "bad-field-source-refs"],
+    ids=["marker-only", "actual-orphan-note", "bad-field-source-refs"],
+)
+def test_missing_original_after_backup_requires_marker_only_zero_residual(candidate, monkeypatch, residual):
+    sample, _ = candidate
+    native(candidate, sample.source, "owners")
+    sample.dump()
+    initial = native(candidate, sample.source, "seed")
+    latest = native(candidate, sample.source, "correct", initial["state"])
+    state = latest["state"]
+    assert state["old_status"] == "superseded"
+    markers = next(row["revocations"] for row in latest["document"]["owners"] if row["owner_user_id"] == "alice")
+    assert {row["kind"] for row in markers} == {"source_span", "note"}
+    request = pinned(candidate, latest["document"])
+    snapshots = []
+    if residual:
+        orphan_before_replay(candidate, state, monkeypatch, snapshots, malformed=residual == "bad-field-source-refs")
+    else:
+        observe(monkeypatch, snapshots, {"id": state["bob_run"]})
+    evidence = ROOT / "private" / ("source-span-missing-" + uuid.uuid4().hex)
+    evidence.mkdir(parents=True)
+    proof = None
+    if residual:
+        with pytest.raises(RestoreRejected, match="^REPLAY_ERASURE_FAILED$"):
+            restore.execute(
+                sample.inputs,
+                apply_local=True,
+                upgrade_local=True,
+                withdrawals_replay=request,
+                environment=sample.environment,
+            )
+        assert snapshots[0] == snapshots[1]
+    else:
+        result = restore.execute(
+            sample.inputs,
+            apply_local=True,
+            upgrade_local=True,
+            withdrawals_replay=request,
+            environment=sample.environment,
+        )
+        proof = result["withdrawals_replay"]
+        assert snapshots[0] == snapshots[1] and proof["state_first_sha256"] == proof["state_second_sha256"]
+        assert proof["export_first_sha256"] == proof["export_second_sha256"]
+        checks = proof["checks"]
+        assert checks["span_marker_only_checked"] == 1
+        assert checks["span_sources_checked"] == checks["span_facts_checked"] == checks["span_runs_checked"] == 0
+    current = native(candidate, sample.environment["FIRST_RELEASE_OWNER_DSN"], "missing_observe", state)
+    actual = next(row["revocations"] for row in current["document"]["owners"] if row["owner_user_id"] == "alice")
+    if not residual:
+        assert actual == markers
+    assert current["observed"] == {
+        "original_entities_absent": True,
+        "runtime_scopes_empty": True,
+        "orphan_present": bool(residual),
+    }
+    save_evidence(
+        evidence,
+        state=state,
+        observed=current["observed"],
+        proof=proof,
+        failure="REPLAY_ERASURE_FAILED" if residual else None,
+        other_owner_unchanged=snapshots[0] == snapshots[1],
     )

@@ -8,6 +8,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 02:38 +08:00) 根审发现的嵌套field_source_refs字符串漏检已修；只复用已验证候选SourceRef严格校验source_refs与field_source_refs，并核source_ids/fact_ids等列表的非空字符串元素。新增真实坏结构残留节点首次1/1通过（35.61秒），first apply前受控拒绝、note保留、完整状态未改；原3路径、业务不变、旧2项未复跑。
+- [x] (2026-10-24 02:19 +08:00) 合法缺源span的marker-only观察分支首次新链2/2通过（68.05秒）：真实备份后receive/save/correct正例只保marker且零擦除计数；固定候选原生孤立note反例在first apply前拒绝、完整状态不变。pure/组合未复跑。
 - [x] (2026-10-24 02:06 +08:00) 根审组合误拒修正后只跑新whole fact+span目标首次1/1通过（33.42秒）：同owner whole删除目标不列非重叠preserved，仍保raw/context/FTS与whole删空断言；原pure1/1未复跑、不混为pure证据。
 - [x] (2026-10-24 02:01 +08:00) pure source_span真实固定938链首次1/1通过（31.44秒）：原生correct_fact只生成superseded span及真实note墓碑，无fact/message/legacy墓碑；raw、context、实际FTS、非重叠fact/另一owner、run/Outbox/全epoch checkpoint及第二遍全状态均独立验证。
 - [x] (2026-10-24 01:52 +08:00) legacy独立只读擦除后验与真实不可变候选链首次2/2通过（58.70秒）：固定938正确删空目标/直接派生/embedding并保持第二遍全状态相等；固定144实际残留被REPLAY_ERASURE_FAILED拒绝，不借控制树业务，不改旧失败metadata。
@@ -33,6 +35,14 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24 02:36 +08:00根审发现真实拒绝接缝：旧递归只确认field_source_refs顶层为dict，其值若是缺源message ID字符串，会因未知field键被当作普通正文而忽略；原生closure同样不处理此损坏形状，不能据此认定零血缘。原生agent_case_changes/privacy_cases的正常值为dict[str,list[SourceRef]]，source_refs为list[SourceRef]；仅校验顶层dict/list不够，source_ids/fact_ids等也不能接受非字符串或空标识元素。
+
+2026-10-24 02:38 +08:00新增实际反例已拒绝：固定938候选在恢复目标原生repo.put写入note，field_source_refs={'field': 实际缺源message ID字符串}；原生旁账未改。observer在first apply之前以REPLAY_ERASURE_FAILED停止，原note仍在、source/fact/run仍缺席，全部Core/checkpoint/sequence前后摘要不变。该节点证明损坏引用结构不能冒充零血缘，没有把拒绝当作擦除成功或修改其他owner行。
+
+缺源span只读确认：原生apply_privacy会保存source_span旁账，即使旧库没有该message；没有匹配fact/run时闭包为空，refresh_source_indexes捕获缺源ScopeError并跳过，原生export仍保留该marker。当前误拒来自effects.span_identity要求message必存在，不是业务apply缺口。合法例子是owner已在备份中，但receive/save/correct全部发生在备份之后；旧备份原本没有原话或两条fact，不能要求重建原文、FTS或新更正正文。owner本身若不在备份，现有完整owner集合门仍拒绝，不能借本分支扩张owner集合。
+
+2026-10-24 02:19 +08:00marker-only实证：first apply前没有同owner source及其已知fact/private/run/Outbox/embedding残留时，原生apply只保存旁账，第二遍全状态相等；raw/source/fact/run检查计数保持0，单列marker-only=1。反例由固定938候选原生repo.put写实际孤立note，source_ids指向备份后真实新source ID；只读扫描在first apply前发现并拒绝，note保留、全部PG表/checkpoint/sequence摘要不变，不能用“message缺席”跳过可归属正文。所有SQL只用当前owner，不查询或借用Bob的同ID行；不按正文相似性/时间/次数猜溯源。
 
 2026-10-24主线批准的单一复现范围：`tests/v4/release/test_first_release_legacy_tombstone_pg.py::test_native_legacy_tombstone_erases_mapped_body_after_candidate_replay`。只新增测试并维护本计划，不修改业务、effects、记忆服务/工具/上下文。当前`legacy_memory`不是实体kind；无原话旧memory经原生migration_core迁移后，`core_legacy_map.kind='fact'`且status为legacy_unverified，但result_id实际指向kind=legacy。原生apply_privacy仅登记legacy_memory，未解析该map；这是待真实PG确认的业务缺口，不能让擦除观察器代删或把旁账存在当作正文已擦除。复现固定真实已提交候选archive/manifest/pin和独立venv/process：原生迁移active→旧PG备份→原SQLite改inactive后原生迁移/export→候选原生恢复/双重放，最后按正确隐私期望直接读取PG status/data。允许测试真实失败留证，只留本机private的映射kind、实际实体kind/status、正文存在布尔值；不回传DSN/正文，不重复宽测。source_span保留raw原话而mask上下文/FTS是既有契约，本复现不改变该语义。
 
@@ -77,6 +87,18 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 02:36 +08:00根批准本轮只修observer：不手写重复五字段契约，使用已验证候选domain.SourceRef及第三方TypeAdapter(strict=True)校验两种嵌套引用，补message_id非空及start<end，source_ids/fact_ids/used_*等标识列表元素必须非空str；任何未知形状统一REPLAY_ERASURE_FAILED，不按全文字符串猜来源。预演新helper方案603行，按根裁定弃用，最终正常Ruff排版599行、所有函数≤60，沿既有软例外且未触600硬限；没有新增动态支持文件/worker或pin字段。原两参数节点保持原断言与真实候选路径，只新增bad-field-source-refs参数节点；该反例用固定938原生repo.put制造实际坏结构note，并保完整拒绝前后状态相等，预期仍为受控拒绝而非擦除。
+
+缺源span下一片最小安全方案（根审已批准限定实现）：沿用实际候选/pin/whole事务与双重放，不改repository、MemoryService或缺源时原生apply。仅当同owner message实际缺席时考虑marker-only；message已deleted但仍有行或身份不明均不进入该分支。根审纠正：Bob拥有相同ID是合法owner隔离，不为Alice marker查询、借用或删除Bob行，也不当全局冲突。先校验明确owner、非空message_id、int且非bool的0<=start<end、SourceMessage长度硬界；源已缺席无法重算原长度，不能声称验证了引文内容，仍以受信完整原生export为前提。marker-only要求原生span_id与候选fingerprint([message_id,start,end])一致、operation为已知native操作、metadata只含已知标识/范围字段；未知形状继续拒绝，不因目标缺席跳校验。
+
+marker-only必须在first apply前和两遍apply后独立只读核零残留：同owner没有原message、metadata.fact_ids目标或任何实际fact source_refs/field_source_refs/source_ids引用；request/state_version（含entity:message等规范化键）、私密runtime/entity/effect/run-step/event字段、Outbox dependencies/payload/run血缘均没有该source或已知fact ID引用，相关embedding作用域为空。使用精确标识/结构关系，不按正文相似性或时间/次数猜身份；遇损坏/未知血缘结构、没有同owner权威run可归属的私密/Outbox等无法解释残留时保守拒绝，不把查询不到一条message当作“全无正文”。checkpoint无owner，只能按同owner权威run/epoch核其实际thread_id，不借用或扫描Bob线程来替Alice证明，不将全局未知线程声称为Alice已擦除。本分支只观察，不补源、不擦残留、不清额度；若现有只读扫描无法在600行内清楚表达，先报告受pin拆分方案，不引入未pin支持模块。
+
+marker-only后验还须逐条直接读取owner+source_span实体ID的operation/metadata，与原生最新旁账精确一致；两次native export仍经过原单调校验并严格相等，全部Core/checkpoint字段与sequence第二遍严格比较保持。回执单列span_marker_only_checked，不把marker-only算作raw/context/FTS已检查，不虚构被擦除数量。正式发布、中央身份及Linux等完成位仍false。其信任边界仍是原已审候选与完整旁账pin；仅凭body-free旁账无法密码学证明缺席原话的原始长度或作者，不能新增自填“身份已证”清单替代既有门。
+
+2026-10-24 02:19 +08:00实际实现仍只effects/既有source_span测试/本计划：owner/source与范围先严格校验，missing分支再核native marker指纹、有限操作及标识字段，前后只读检查同owner core_entities/core_runs/steps/events/Outbox/embedding/Tarot等已知结构化标识和依赖键；没有权威同owner run的私密行/Outbox继续保守拒绝。schema损坏或未知引用结构不作为空，既有raw/context/FTS观察抽为同文件函数保持原语义。effects583行、所有函数≤60；保受审单文件hash、无新增未pin导入，仍在已准软例外及600硬限内，新测试393行。没有修改业务、候选、owner集合门或root R7增量文件。
+
+拟定仅两个真实固定938目标：正例先native ensure_owner并备份，再native receive/save/correct生成真实span旁账，旧备份同call恢复后source/old fact/new fact都缺席、marker存在、两次export及第二遍全状态相等；不生成假span、不重建新fact。反例沿同一真实时间顺序，在测试专用candidate_replay seam、first apply前，由固定候选native repo.put一个明确合成note引用真实新source ID，形成实际孤立私密残留；观察器应first apply前受控拒绝且完整状态不变，不删除该note、不改旁账。故障注入是显式测试种子，不能冒称原业务天然产生该孤立行。拟仍仅effects、独立source_span测试和本计划三路径；本轮未编码/测试，不占令牌。
 
 2026-10-24主线组合审阅裁定：同消息非重叠fact若同时有明确同owner whole fact墓碑，就应由whole后验核删空，不能又被span观察器要求完整行保留。只在span capture的非重叠preserved分支排除同owner明确fact撤销ID；overlap后验和逐条whole擦除均不跳过，不按operation推断或过滤旁账。新增独立combined目标，由固定938候选原生repo.delete徒步fact后export真实source_span+fact+note组合，raw/context/FTS仍保徒步原话可见，因为fact级删除不等于撤销原话范围。只跑新combined一个目标，原pure无fact/message/legacy断言及1/1证据保持，不复跑、不改业务；仍只effects/独立span测试/本计划三路径。
 
@@ -185,6 +207,12 @@ Native apply严格不外套事务，第一遍成功后原生提交后checkpoint 
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
+
+2026-10-24 02:38 +08:00审阅修正的唯一新节点首次1/1通过（35.61秒，`private/safe-narrow-deb14c0902014f8ab032bcef11807a6a/metadata.json`），安全布尔证据`private/source-span-missing-0387e0df665246399f45c9586a138e5d/metadata.json`记录REPLAY_ERASURE_FAILED、orphan_present=true、original_entities_absent=true、runtime_scopes_empty=true及完整状态未改。沿用实际Windows PG15、固定938候选native入口、安全runner清凭据/关追踪/Tokyo测试时区；真实模型/服务器/消息0，测试令牌已释放。effects正常Ruff排版599行、新测试399行，全函数≤60，Ruff/格式/AST/diff检查通过；没有新增helper、worker或pin面，没有复跑旧marker-only/孤立note两项、pure/组合或宽验。此前2/2证据保留，未虚称当前一次全链3/3或正式发布已放行。
+
+2026-10-24 02:19 +08:00marker-only限定片首次2/2通过（68.05秒，`private/safe-narrow-e188bcaa51bc4348a494d5cd45aedaf2/metadata.json`）。固定938真实owner先备份、其后原生receive/save/correct，旧备份恢复后原话、旧两fact、新更正fact、note/runtime/run/Outbox/embedding都缺席；marker精确读回、两export及第二遍全状态严格相等，marker-only=1而raw/source/fact/run擦除计数0，安全证据`private/source-span-missing-5fe8c479177348fe812f4390a2d225eb/metadata.json`。实际孤立note反例在first apply前REPLAY_ERASURE_FAILED拒绝，note仍存在、全状态不变，安全证据`private/source-span-missing-ca12e180a1384dbca33619ed6c2460ea/metadata.json`。没有把受控反例称为已擦除，没有查询/借用/删除Bob同ID行，另一owner保持。Ruff/120列格式/语法/尺寸/diff通过，effects583行软例外、新测试393行、全函数≤60；测试令牌已释放，真实模型/服务器/飞书0。没有复跑pure/组合，源长度/作者仍依受信原生旁账pin，其他缺源/损坏形态与Linux/正式发布未因此放行。
+
+此前只读设计确认原生业务允许缺源marker、观察器存在误拒；随后仅按根审限定门实现并取得上述两项证据。更多未知血缘和无法验证原长度的保守边界未被自动放宽；未修改R7增量路径或任何业务。
 
 2026-10-24 02:06 +08:00组合兼容独立目标首次1/1通过（33.42秒，`private/safe-narrow-fb8cf5172950430c818841bd902b5139/metadata.json`），安全观察`private/source-span-combined-80caf0a207aa48c8a6eda5c989b104c7/metadata.json`。真实固定938旁账含source_span(superseded)+whole fact+whole note，检查span overlap=1/preserved=0、whole=2、private=2/run=1/Outbox=1/checkpoint=3；两fact及embedding均清空，raw仍active/hash不变，context徒步可见，实际PG FTS夜班false/徒步true，另一owner和第二遍全状态严格相等。原pure无fact/message/legacy断言及已过1/1保持、未复跑；本目标只证明whole+span观察器组合兼容，不冒称pure。effects现464行（根审软例外、低于600硬限）、新测试290行，全函数≤60，静态通过；令牌释放、真实模型/服务器/飞书0，同三路径冻结供根审。
 

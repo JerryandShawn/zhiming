@@ -108,7 +108,7 @@ cd "$FR_CONTROL_DIR"
   --replay-ledger "$FR_LOCAL_LATEST_WITHDRAWALS" --candidate-python "$FR_CANDIDATE_PYTHON"
 ```
 
-仍只操作同call新建且持锁的本机目标，正常总连接9。子进程先只读核目标，再调用实际候选的原生apply/export；每次apply保留其原事务与提交后checkpoint清理边界。旁账不能比已恢复状态旧，第二次apply后的全部Core/checkpoint字段、sequence及导出必须与第一次相同，中央四表及sequence保持原空状态。实际测试含当前已提交候选的非空撤销/收据/墓碑，以及真实旧候选因状态变化或正文残留被拒的负例，没有向旧包注入修复。独立后验已覆盖whole撤销、draw、revoked-run checkpoint、真实legacy映射目标及受支持直接派生，另有原生更正source_span和whole fact组合的独立样本，验证保留原话、上下文/实际FTS遮挡、非重叠事实及运行私密清理。缺失原话的span目前保守拒绝，其他片段形态和全部间接血缘仍未验证；证据统一见原恢复ExecPlan。失败保留并停止，不自动再试。成功只标记本机候选重放，中央身份保全、运行时、正式native恢复、Linux和publication仍为false；不能据此解除B7整链。
+仍只操作同call新建且持锁的本机目标，正常总连接9。子进程先只读核目标，再调用实际候选的原生apply/export；每次apply保留其原事务与提交后checkpoint清理边界。旁账不能比已恢复状态旧，第二次apply后的全部Core/checkpoint字段、sequence及导出必须与第一次相同，中央四表及sequence保持原空状态。实际测试含当前已提交候选的非空撤销/收据/墓碑，以及真实旧候选因状态变化或正文残留被拒的负例，没有向旧包注入修复。独立后验已覆盖whole撤销、draw、revoked-run checkpoint、真实legacy映射目标及受支持直接派生，另有原生更正source_span和whole fact组合的独立样本，验证保留原话、上下文/实际FTS遮挡、非重叠事实及运行私密清理。备份后才新增再更正的原话可在实际零同owner血缘时保留marker-only，单列计数，不冒称已擦除原文；孤立残留、损坏引用和无法归属形态仍保守拒绝，不借另一owner证明身份。其他片段形态和全部间接血缘仍未验证；证据统一见原恢复ExecPlan。失败保留并停止，不自动再试。成功只标记本机候选重放，中央身份保全、运行时、正式native恢复、Linux和publication仍为false；不能据此解除B7整链。
 
 **B7的新库恢复证明必须在B3修改已有stage库之前完成。** 表中缺失入口不是待猜命令，不能用旧B1 apply或手工SQL补过门。只要必要入口缺失，停在本地准备阶段。
 
