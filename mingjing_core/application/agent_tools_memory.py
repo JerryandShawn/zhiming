@@ -14,9 +14,11 @@ from mingjing_core.application.agent_tools_policy import (
     SENSITIVITIES,
     refusal,
     sensitivity,
+    sensitivity_categories,
     source_span,
 )
 from mingjing_core.application.memory import SECRET
+from mingjing_core.application.memory2_consent import categories_granted, category_authority_refs
 from mingjing_core.application.memory2_merge import merge_written_fact
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import has_optout, hypothetical
@@ -58,6 +60,7 @@ def proposal(
     start: int,
     end: int,
     level: str,
+    metadata: dict[str, Any],
 ) -> dict[str, Any]:
     ident = "proposal_" + fingerprint([ctx.owner, ctx.operation_id])[:32]
     row = service.repo.put(
@@ -68,6 +71,10 @@ def proposal(
             "status": "pending",
             "kind": args["kind"],
             "sensitivity": level,
+            "categories": list(
+                sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
+            ),
+            "fact_metadata": dict(metadata, summary=args["summary"], requested_kind=args["kind"]),
             "health": bool(RULES["health"].search(source["content"][start:end])),
             "summary": args["summary"],
             "source_ids": [source["id"]],
@@ -108,14 +115,12 @@ def save_memory(
         return {"write_status": "rejected", "code": "credential"}
     if level == "profile":
         return {"write_status": "needs_confirmation", "code": "profile_update_required"}
-    settings = service.repo.assert_scope(ctx.owner, ctx.subject)["settings"]
-    categories = settings.get("auto_save_categories", [])
-    category_granted = isinstance(categories, list) and level in categories
-    if level in SENSITIVITIES and not category_granted:
-        return proposal(service, args, ctx, source, start, end, level)
     metadata, pending = event_metadata(service, args, ctx, source)
     if pending:
         return pending
+    categories = sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
+    if level in SENSITIVITIES and not categories_granted(service.memory, ctx.owner, ctx.subject, categories):
+        return proposal(service, args, ctx, source, start, end, level, metadata)
     row = service.memory.save_fact(
         ctx.owner,
         ctx.subject,
@@ -127,6 +132,13 @@ def save_memory(
     if row["write_status"] != "saved":
         return {"write_status": row["write_status"], "code": "memory_policy"}
     metadata.update(summary=args["summary"], requested_kind=args["kind"])
+    if categories:
+        refs, proofs = category_authority_refs(service.memory, ctx.owner, ctx.subject, categories)
+        if proofs:
+            metadata.update(
+                source_refs=[*row["source_refs"], *(ref for ref in refs if ref not in row["source_refs"])],
+                category_consent_ids=proofs,
+            )
     if any(row.get(key) != value for key, value in metadata.items()):
         row = service.repo.update(
             ctx.owner,

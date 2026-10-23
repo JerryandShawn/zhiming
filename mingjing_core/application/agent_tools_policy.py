@@ -6,8 +6,10 @@ import re
 from typing import Any
 
 from mingjing_core.application.memory import SECRET, MemoryService
+from mingjing_core.application.memory2_consent import categories_granted, consent_live
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import clause, has_optout, mask_quoted, third_party
+from mingjing_core.repositories.postgres import fingerprint
 
 SENSITIVITIES = ("health", "third_party", "money", "identity", "legal")
 RULES = {
@@ -39,6 +41,15 @@ def sensitivity(quote: str, source: str, start: int, end: int, reported: str = "
     return found if found != "normal" else reported
 
 
+def sensitivity_categories(quote: str, source: str, start: int, end: int, reported: str = "normal") -> tuple[str, ...]:
+    local = clause(source, start, end, comma=False)
+    level = sensitivity(quote, source, start, end, reported)
+    found = [name for name, pattern in RULES.items() if pattern.search(local)]
+    if level in SENSITIVITIES:
+        found.append(level)
+    return tuple(dict.fromkeys(found))
+
+
 def source_span(source: dict[str, Any], quote: str, start: int | None, end: int | None) -> tuple[int, int]:
     text = source.get("content", "")
     if not isinstance(quote, str) or not quote or quote not in text:
@@ -65,6 +76,44 @@ def source_policy(source: dict[str, Any], subject: str, thread_id: str) -> None:
 
 
 class V4FactMemory(MemoryService):
+    def _fact_id(
+        self,
+        owner: str,
+        message_id: str,
+        start: int,
+        end: int,
+        kind: str,
+        case_id: str | None,
+        field: str | None,
+        value: Any,
+        authorization_id: str | None,
+    ) -> str:
+        original = super()._fact_id(owner, message_id, start, end, kind, case_id, field, value, authorization_id)
+        if authorization_id:
+            proof = self.repo.get(owner, "consent", authorization_id)
+            if proof.get("authority") == "p5_proposal":
+                return "fact_" + fingerprint([original, authorization_id])[:32]
+        return original
+
+    def _third_party_authorized(
+        self,
+        owner: str,
+        subject: str,
+        source: dict[str, Any],
+        kind: str,
+        authorization_id: str | None,
+        case_id: str | None,
+        quote: str,
+    ) -> bool:
+        policy = source.get("policy", {})
+        if policy.get("origin") != "current_user" or policy.get("run_context") is not True:
+            return False
+        if authorization_id:
+            return self._authorized(owner, subject, source, kind, authorization_id, case_id, quote)
+        start = source["content"].find(quote)
+        categories = sensitivity_categories(quote, source["content"], start, start + len(quote))
+        return "third_party" in categories and categories_granted(self, owner, subject, categories)
+
     def _authorized(
         self,
         owner: str,
@@ -76,17 +125,22 @@ class V4FactMemory(MemoryService):
         quote: str,
     ) -> bool:
         if super()._authorized(owner, subject, source, kind, authorization_id, case_id, quote):
+            if authorization_id:
+                proof = self.repo.get(owner, "consent", authorization_id)
+                if proof.get("authority") == "p5_proposal" and not consent_live(self, owner, subject, proof):
+                    raise EvidenceError("记忆提案授权已失效")
             return True
         policy = source.get("policy", {})
         if subject != "self" or policy.get("origin") != "current_user" or policy.get("run_context") is not True:
             return False
         start = source["content"].find(quote)
         level = sensitivity(quote, source["content"], start, start + len(quote))
-        settings = self.repo.assert_scope(owner, subject)["settings"]
         if level in SENSITIVITIES:
-            return level in settings.get("auto_save_categories", [])
+            categories = sensitivity_categories(quote, source["content"], start, start + len(quote))
+            return categories_granted(self, owner, subject, categories)
         # The v4 design changes ordinary events/goals to default-save; source,
         # span, opt-out, revoked ranges and secret checks still run in save_fact.
+        settings = self.repo.assert_scope(owner, subject)["settings"]
         return level == "normal" and settings.get("auto_save_low_sensitivity", True)
 
 
