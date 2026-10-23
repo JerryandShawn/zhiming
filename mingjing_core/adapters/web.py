@@ -26,6 +26,7 @@ from ..domain.contracts import ScopeError, RevisionConflict, EvidenceError, Leas
 from ..memory.history import history_window
 from ..memory.private import is_private
 from .tarot import IdempotencyConflict
+from .legacy_web_result import legacy_web_history, legacy_web_result
 
 ROOT = Path(__file__).resolve().parents[2]
 HISTORY_LEGACY_ZONE = ZoneInfo('Asia/Shanghai')
@@ -463,7 +464,7 @@ def create_app(service=None):
     @app.get('/api/chat/{ident}')
     async def get_chat(ident:str,req:Request):
         owner=auth(req);core(req);run=lookup(owner,ident)
-        final=read_result(run['result']) if run['status']=='succeeded' else {}
+        final=legacy_web_result(run['result']) if run['status']=='succeeded' else {}
         return {'id':ident,'run_id':run['id'],'status':{'succeeded':'complete','queued':'running'}.get(run['status'],run['status']),
                 'answer':final.get('answer',''),'meta':final if final else {'error':run['error']}}
 
@@ -510,7 +511,7 @@ def create_app(service=None):
     async def history(req:Request,session:str='shared',limit:int=60,before:str='',q:str='',subject_id:str='self'):
         svc=core(req);owner=auth(req)
         boundary=history_before_key(before) if before else None
-        return history_window(svc.repo,owner,subject_id,session,limit,boundary,q)
+        return legacy_web_history(history_window(svc.repo,owner,subject_id,session,limit,boundary,q))
 
     @app.get('/api/feishu_history')
     async def feishu_history(req:Request):

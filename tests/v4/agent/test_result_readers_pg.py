@@ -152,10 +152,14 @@ def test_web_result_run_and_history_read_core4_without_invoking_a_model(
     client = TestClient(create_app(service))
     chat = client.get("/api/chat/" + run["id"], headers=headers)
     assert chat.status_code == 200 and chat.json()["answer"] == result["text"]
-    assert chat.json()["meta"] == result
+    chat_meta = chat.json()["meta"]
+    assert chat_meta.pop("memory_receipts") == []
+    assert chat_meta == result
     assert client.get("/api/runs/" + run["id"], headers=headers).json()["result"] == result
     rows = client.get("/api/history", headers=headers).json()
-    assert [row["meta"] for row in rows if row["role"] == "assistant"] == [result]
+    history_meta = [row["meta"] for row in rows if row["role"] == "assistant"]
+    assert len(history_meta) == 1 and history_meta[0].pop("memory_receipts") == []
+    assert history_meta == [result]
     assert client.get("/api/chat/" + run["id"]).status_code == 401
 
 
