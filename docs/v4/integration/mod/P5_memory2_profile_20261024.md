@@ -31,3 +31,6 @@ ops 沿用 profile_doc_patch 的 add/update、item_id、section、text、source_
 context_entities 已读取已确认、来源与事实版本仍有效的 profile_doc；context_profiles 生成 p 别名和确认/推断标记进入 L2。画像未覆盖的事实继续保留，硬约束即便已被画像引用也保留原文；避免尚未整理完就丢限制。注入版本包含 profile、底层事实及确认/原话。过期、未来、越界、修订变动、撤销资料不能借画像进入上下文。当前 L2 改变稳定/前缀哈希；L5 epoch 的既有压缩语义不变，发送时仍执行原租约/修订守卫。
 
 证据：`docs/v4/evidence/P5/20261024_profile_slice.md`。Scripted 的一条真实对话引用 p1 并成功最终提交，不代表全部指定产品场景完成或线上已接入。
+
+
+2026-10-24T06:24:41.045662+08:00 更新：新画像建议记录注入Clock的prepared_at；确认/忽略原话at不得早于该准备时刻，撤销重开刷新边界。相同建议跨operation复用原提案ID与原准备时刻，外层仍复核pending、事实版本和当前原话授权；已忽略建议不复活。正常accept/undo回执重放不额外写入。旧无prepared_at记录不伪造历史准备时间，沿用既有来源/创建顺序检查。相关34项通过（含7新例）；认证渠道/后台接线仍未完成。

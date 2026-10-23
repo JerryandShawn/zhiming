@@ -191,6 +191,14 @@ class ProfileReflectionService:
         target: dict | None,
     ) -> str:
         ident = "profile_proposal_" + fingerprint([owner, subject, suggestion.model_dump(), versions, target])[0:32]
+        try:
+            self.repo.get(owner, "proposal", ident, include_deleted=True)
+        except ScopeError:
+            pass
+        else:
+            # A repeated model suggestion must not refresh the user's action boundary.
+            # The caller rechecks current pending state and all original references.
+            return ident
         refs = [ref for row in rows for ref in row["source_refs"]]
         if target:
             refs.extend(target["source_refs"])
@@ -214,6 +222,7 @@ class ProfileReflectionService:
                 "source_ids": list(dict.fromkeys(ref["message_id"] for ref in refs)),
                 "item_id": target["id"] if target else None,
                 "target_revision": target["revision"] if target else 0,
+                "prepared_at": get_clock().now().isoformat(),
             },
             subject=subject,
             case_id=rows[0].get("case_id"),

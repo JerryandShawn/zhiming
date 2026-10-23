@@ -76,6 +76,10 @@ class ProfileProposalService:
         at = history_instant(original.get("at"))
         if at is None or at > get_clock().now() or original["created_at"] < proposal["created_at"]:
             raise EvidenceError("画像操作时间无效")
+        if command != UNDO_PROFILE and proposal["status"] == "pending" and "prepared_at" in proposal:
+            prepared = history_instant(proposal["prepared_at"])
+            if prepared is None or at < prepared:
+                raise EvidenceError("画像操作必须晚于本次建议准备")
         for ref in proposal.get("source_refs", []):
             source = self.memory.get_source(owner, ref["message_id"])
             before = history_instant(source.get("at"))
@@ -192,6 +196,7 @@ class ProfileProposalService:
                 operation_id=operation + ":remove-profile",
             )
         pending = dict(proposal["proposal_before"])
+        pending["prepared_at"] = get_clock().now().isoformat()
         if before:
             pending["target_revision"] = restored["revision"]
         row = self.repo.put(
