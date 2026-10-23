@@ -39,9 +39,12 @@ from .v4_observations import (
 from .v4_privacy_observations import initial_layers, privacy_entities
 from .v4_privacy_seed import V4PrivacySeeder
 from .v4_protocols import ScriptedWirePort, run_matrix
+from .v4_review_harness import critic_script, harness_evidence
+from .v4_review_observations import review_observations
 from .v4_run_observations import native_run_meta, native_run_rows
 from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
+from .v4_sse_reconnect import reconnect
 from .v4_tarot import TarotDriver
 from .v4_withdrawal import configure_withdrawal, regeneration_state, withdrawal_observations
 
@@ -67,6 +70,7 @@ class V4Target:
         self.semantic_history: list[dict[str, Any]] = []
         self.crashed_run: str | None = None
         self.feishu: FeishuBatchDriver | None = None
+        self.stream: dict[str, Any] = {}
 
     def reset(self, seed: dict[str, Any]) -> None:
         self.close()
@@ -80,6 +84,7 @@ class V4Target:
         self.semantic_history = []
         self.crashed_run = None
         self.feishu = None
+        self.stream = {}
         self.schema = "eval_v4_" + uuid.uuid4().hex
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
         self.repo.ensure_owner(
@@ -108,8 +113,9 @@ class V4Target:
             if self.protocol
             else FaultScriptedPort(crash_after_tool=controls.get("crash_after") == "tool_commit")
         )
-        self.critic = ScriptedModelPort() if controls.get("critic_scripted") else None
-        self.critic_provider = ScriptedProvider(controls.get("critic_scripted", []))
+        review_script = critic_script(self.seed)
+        self.critic = ScriptedModelPort() if review_script else None
+        self.critic_provider = ScriptedProvider(review_script)
         self.runtime = EvaluationRuntime(
             self.repo,
             self.port,
@@ -233,6 +239,8 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
+        if turn.get("action", {}).get("type") == "sse_reconnect":
+            return reconnect(self, turn)
         if turn.get("action", {}).get("type") in {"source_delete", "fact_revoke"}:
             return self.memory_withdrawals.send(turn)
         if turn.get("action", {}).get("type") == "proposal_accept":
@@ -260,6 +268,8 @@ class V4Target:
         )
         semantic.extend(delivered)
         semantic.extend(structural_observations(current))
+        if self.seed.get("_scenario_id") == "X01":
+            semantic.extend(review_observations(self.repo, self.owner, current))
         names = [event["type"] for event in events]
         if semantic:
             names = [name for name in names if name != "final"] + [item["name"] for item in semantic]
@@ -363,6 +373,7 @@ class V4Target:
             "run_result": run.get("result") or {},
             **kinds,
             "chart": chart_observations(kinds.get("artifact", []), self.owner, run),
+            **({"stream": self.stream} if self.stream else {}),
         }
 
     def close(self) -> None:
@@ -398,4 +409,6 @@ class V4Target:
             "cancellation": self.cancellation,
             "portability": self.portability,
             "ingress": self.feishu.proof if self.feishu else {},
+            **harness_evidence(self),
+            **({"stream": self.stream} if self.stream else {}),
         }

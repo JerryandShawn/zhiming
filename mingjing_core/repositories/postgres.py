@@ -21,6 +21,7 @@ from mingjing_core.domain.contracts import BudgetExceeded, EvidenceError, LeaseC
 from mingjing_core.memory.projections import tokenized_payload
 from .foundation import list_entities, migration_manifest, search as search_entities, validate_history
 from .privacy_foundation import DERIVED_KINDS, invalidate_foundation
+from .privacy_legacy import legacy_memory_target
 from .dispatch_hooks import admit_v4, notify_run
 
 ENTITY_KINDS = frozenset({'message','fact','case','episode','draw','reading','report','report_schedule','chart','delivery','upload','session','consent','legacy','feedback','request','interpretive_claim','runtime_step','artifact','model_call'})
@@ -300,9 +301,26 @@ class PostgresRepository:
                 if run['id'] in closure_runs or contaminated.intersection(run['state_version']) or run['request'].get('message_id') in source_ids or run['request'].get('source_message_id') in source_ids:
                     ids.append(run['id'])
             if ids:
-                c.execute(sql.SQL("UPDATE {} SET request=CASE WHEN %s THEN request ELSE '{{}}'::jsonb END,result=NULL,checkpoint='{{}}',status=%s,error=%s,lease_token=NULL,lease_until=NULL,updated_at=now() WHERE owner=%s AND id=ANY(%s)").format(self.table('core_runs')), (retry,'stale' if retry else 'revoked','STALE_INPUT' if retry else 'SOURCE_REVOKED',owner,ids))
+                c.execute(sql.SQL(
+                    "UPDATE {} SET request=CASE WHEN %s THEN request ELSE '{{}}'::jsonb END,result=NULL,"
+                    "checkpoint='{{}}',status=%s,error=%s,lease_token=NULL,lease_until=NULL,updated_at=now() "
+                    "WHERE owner=%s AND id=ANY(%s) AND ("
+                    "request IS DISTINCT FROM CASE WHEN %s THEN request ELSE '{{}}'::jsonb END OR result IS NOT NULL "
+                    "OR checkpoint IS DISTINCT FROM '{{}}'::jsonb OR status IS DISTINCT FROM %s "
+                    "OR error IS DISTINCT FROM %s OR lease_token IS NOT NULL OR lease_until IS NOT NULL)"
+                ).format(self.table('core_runs')), (retry,'stale' if retry else 'revoked',
+                    'STALE_INPUT' if retry else 'SOURCE_REVOKED',owner,ids,retry,
+                    'stale' if retry else 'revoked','STALE_INPUT' if retry else 'SOURCE_REVOKED'))
                 c.execute(sql.SQL("UPDATE {} SET data='{{}}',status='deleted',revision=revision+1,updated_at=now() WHERE owner=%s AND kind IN ('runtime_step','interpretive_claim','artifact','model_call','report') AND data->>'run_id'=ANY(%s) AND NOT (%s AND kind='runtime_step' AND data->>'stage' IN ('intake','memory'))").format(self.table('core_entities')), (owner,ids,retry))
-                c.execute(sql.SQL("UPDATE {} SET payload='{{}}',status=CASE WHEN status IN ('sending','uncertain') THEN 'uncertain' WHEN status='sent' THEN 'sent' WHEN %s THEN 'stale' ELSE 'cancelled' END,error=%s,updated_at=now() WHERE owner=%s AND run_id=ANY(%s)").format(self.table('delivery_outbox')), (retry,'STALE_INPUT' if retry else 'SOURCE_REVOKED',owner,ids))
+                c.execute(sql.SQL(
+                    "UPDATE {} SET payload='{{}}',status=CASE WHEN status IN ('sending','uncertain') THEN 'uncertain' "
+                    "WHEN status='sent' THEN 'sent' WHEN %s THEN 'stale' ELSE 'cancelled' END,error=%s,updated_at=now() "
+                    "WHERE owner=%s AND run_id=ANY(%s) AND (payload IS DISTINCT FROM '{{}}'::jsonb "
+                    "OR status IS DISTINCT FROM CASE WHEN status IN ('sending','uncertain') THEN 'uncertain' "
+                    "WHEN status='sent' THEN 'sent' WHEN %s THEN 'stale' ELSE 'cancelled' END "
+                    "OR error IS DISTINCT FROM %s)"
+                ).format(self.table('delivery_outbox')), (retry,'STALE_INPUT' if retry else 'SOURCE_REVOKED',
+                    owner,ids,retry,'STALE_INPUT' if retry else 'SOURCE_REVOKED'))
             for episode in self.list(owner,'episode',include_deleted=True):
                 if set(fact_ids)&set(episode.get('fact_ids',[])) or set(source_ids)&set(episode.get('source_ids',[])):
                     self.delete(owner,'episode',episode['id'],expected_revision=episode['revision'])
@@ -615,6 +633,11 @@ class PostgresRepository:
                 if not isinstance(ident,str) or kind not in ('fact','message','source_span','episode','legacy_memory','legacy','upload','case','request','feedback',*DERIVED_KINDS):raise ValueError('Invalid revocation target')
                 if kind=='fact':fact_ids.append(ident)
                 if kind=='message':source_ids.append(ident)
+                if kind=='legacy_memory':
+                    target=legacy_memory_target(self,c,owner,ident)
+                    if target:
+                        if target[0]=='fact':fact_ids.append(target[1])
+                        else:other_targets.setdefault(target[0],[]).append(target[1])
                 if kind in ('episode','legacy','upload','case','request','feedback',*DERIVED_KINDS):other_targets.setdefault(kind,[]).append(ident)
                 if kind=='source_span':
                     if metadata.get('message_id'):span_sources.append(metadata['message_id'])

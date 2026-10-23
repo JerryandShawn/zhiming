@@ -10,6 +10,7 @@ import yaml
 
 from tools.eval.contracts import scenario_contract_hash
 from tools.eval.schema import Scenario, load_scenarios
+from tools.eval.targets.v4_review_harness import prepare_review_model
 
 from .v4_memory_script_args import adapt_memory_script_args
 
@@ -67,6 +68,7 @@ def execution_overlay(scenario: Scenario) -> Scenario:
             if action:
                 actions.append(action)
         step["model"] = actions
+        prepare_review_model(scenario.id, step["turn"], actions, data["seed"].get("controls", {}))
         migrate_forget_query(actions, step["turn"])
         if scenario.id == "C03" and not any(
             action.get("tool_call", {}).get("name") == "chart_compute" for action in actions

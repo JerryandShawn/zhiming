@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 from typing import Any
 
@@ -79,6 +80,47 @@ def acceptance(cases: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 class Core30LiveTarget(V4LiveTarget):
+    def _attempt(self, run: dict[str, Any], events: list[dict]) -> tuple[dict, dict | None, str | None, bool]:
+        from dataclasses import asdict
+
+        from mingjing_core.application.agent_model_attempts import core_observation
+        from mingjing_core.models.errors import ModelUnavailable
+        from mingjing_core.models.quota_delegated_session import require_active
+        from tools.eval.lifecycle_identity import LifecycleBinding
+        from tools.eval.quota import ProviderStopped
+
+        started, before = time.perf_counter(), self.port.calls
+        try:
+            session = require_active()
+            scenario = next(case for case in load_core30() if case.id == self.seed["_scenario_id"])
+            binding = LifecycleBinding.capture(session.guard, session.approval.candidate, scenario, self.model)
+            with core_observation(
+                self.repo, self.owner, session.guard, asdict(binding), lambda: binding.verify(session.guard)
+            ):
+                try:
+                    result = self.runtime.execute(
+                        self.service, self.owner, run["id"], run["lease_token"], events.append
+                    )
+                    return result, self.tarot.finish(result), None, False
+                except SystemExit:
+                    raise
+                except ModelUnavailable:
+                    raise
+                except Exception as error:
+                    return {}, None, type(error).__name__, False
+        except ModelUnavailable as error:
+            diagnostic = error.safe_diagnostic()
+            raise ProviderStopped(
+                error.kind,
+                "target",
+                model_calls=self.port.calls - before,
+                elapsed_seconds=time.perf_counter() - started,
+                provider_http_status=error.provider_http_status,
+                resume_at=diagnostic.get("resume_at"),
+            ) from None
+        except (OSError, ValueError, StopIteration):
+            raise ProviderStopped("ledger_unavailable", "target") from None
+
     def send(self, turn: dict[str, Any]) -> TurnResult:
         if turn.get("action", {}).get("type") in {"fact_revoke", "source_delete"}:
             # The shared native driver reads actual withdrawal receipts; no
