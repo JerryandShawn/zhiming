@@ -42,9 +42,9 @@ def test_registry_order_visibility_and_flattened_schemas() -> None:
     assert [item.name for item in specs] == [
         name
         for name in (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS)
-        if name in registered and name not in {"tarot_read", "memory_update", "profile_update_request"}
+        if name in registered and name not in {"tarot_read", "memory_update", "profile_update_request", "date_calc"}
     ][:15]
-    assert len(DEFINITIONS) == 19 and len(specs) == 15
+    assert len(DEFINITIONS) == 20 and len(specs) == 15
     for item in specs:
         text = str(item.parameters)
         assert "$ref" not in text and "$defs" not in text and "anyOf" not in text
@@ -57,7 +57,7 @@ def test_registry_order_visibility_and_flattened_schemas() -> None:
     )
     assert not registry.read_only("ask_user")
     private_names = {item.name for item in registry.specs(context(thread_id="incognito:one"))}
-    assert len(private_names) == 8 and "set_reminder" in private_names
+    assert len(private_names) == 8 and "set_reminder" in private_names and "date_calc" not in private_names
     assert not private_names.intersection({"memory_write", "note_write", "memory_forget", "schedule_followup"})
 
 

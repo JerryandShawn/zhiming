@@ -113,16 +113,17 @@ def test_chart_not_disclosed_without_confirmed_profile_or_in_private_mode(
     assert "date_calc" not in {item.name for item in h.registry.specs(replace(ctx, incognito=True))}
 
 
-def test_date_calc_is_server_only_and_never_a_thirteenth_resident(tool_repo: PostgresRepository) -> None:
+def test_date_calc_is_a_registered_read_without_write_receipt(tool_repo: PostgresRepository) -> None:
     h = setup(tool_repo, "计算日期差")
     args = DateCalc(operation="add_days", start_date="2026-10-17", days=4).model_dump()
     step = h.journal.next_or_replay(
         h.run, kind="tool", name="date_calc", input_fp=tool_input_fingerprint("date_calc", args)
     )
     ctx = ToolContext.from_step(step, thread_id="life:self", source_ids=(h.source["id"],))
-    result = h.service.execute("date_calc", args, ctx)
+    result = h.registry.execute("date_calc", args, ctx)
     assert result.ok and result.data["end_date"] == "2026-10-21"
-    assert "date_calc" not in {item.name for item in h.registry.specs(ctx)}
+    assert result.receipt is None and result.summary == "算了一下日期"
+    assert "date_calc" in {item.name for item in h.registry.specs(ctx)}
 
 
 def test_registered_memory_update_and_profile_request_use_real_mutation_receipts(tool_repo: PostgresRepository) -> None:

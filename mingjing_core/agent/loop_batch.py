@@ -98,7 +98,9 @@ class ToolBatch:
                     "call_id": call.id,
                     "name": call.name,
                     "ok": result.ok,
-                    "summary": "已完成" if result.ok else "这一步尚未完成",
+                    "summary": "算了一下日期"
+                    if call.name == "date_calc" and result.ok
+                    else ("已完成" if result.ok else "这一步尚未完成"),
                 },
             )
         if call.name == "set_reminder" and result.data.get("privacy_confirmation"):

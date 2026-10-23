@@ -42,6 +42,7 @@ from mingjing_core.application.agent_tools_private import consume_private_answer
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.read_result import read_result
 from mingjing_core.application.runtime_limits import RuntimeLimits
+from mingjing_core.application.time_range_parser import ModuleTimeRangeParser
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
 from mingjing_core.models.port import ModelPort
 from mingjing_core.repositories.postgres import PostgresRepository
@@ -97,7 +98,7 @@ class AgentRuntime:
         control = self.control_factory(self.repo, run, policy, no_text_seconds=20 if crisis else None)
         return LoopCycle(
             self.port,
-            ToolRegistry(AgentToolsService(self.repo)),
+            ToolRegistry(AgentToolsService(self.repo, relative_parser=ModuleTimeRangeParser())),
             Journal(self.repo, run["owner"]),
             run,
             frozen,

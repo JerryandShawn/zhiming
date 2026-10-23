@@ -61,7 +61,7 @@ def test_life_runtime_commits_once_and_persists_each_original_meter(runtime_repo
     assert current["status"] == "succeeded" and len(repo.list("alice", "fact")) == 1
     assert len(current["usage"]["context_sends"]) == 2
     assert len(current["usage"]["context_steps"]) == 2
-    assert current["usage"]["agent_runtime"]["prompt_versions"]["system"]["version"] == "1.1.0"
+    assert current["usage"]["agent_runtime"]["prompt_versions"]["system"]["version"] == "1.1.1"
     assert [row["data"]["seq"] for row in events] == list(range(1, len(events) + 1))
     assert events[-1]["type"] == "final"
     for event in events:

@@ -50,11 +50,13 @@ def names(
 def test_exact_twelve_residents_and_no_unrelated_conditional_tools() -> None:
     assert names(VisibilityState()) == RESIDENT_TOOLS
     assert len(RESIDENT_TOOLS) == 12 and len(set(RESIDENT_TOOLS)) == 12
+    assert "date_calc" not in names(VisibilityState())
 
 
 @pytest.mark.parametrize(
     "state,visible",
     [
+        (VisibilityState(date_context=True), ("date_calc",)),
         (VisibilityState(memory_search_has_results=True), ("memory_update",)),
         (VisibilityState(memory_correcting=True), ("memory_update",)),
         (VisibilityState(first_meeting=True), ("profile_update_request",)),
@@ -193,3 +195,18 @@ def test_unimplemented_tools_are_not_fabricated_and_unknown_tools_are_not_disclo
 
 def test_required_does_not_override_an_inactive_condition() -> None:
     assert "tarot_read" not in names(VisibilityState(), required=("tarot_read",))
+
+
+def test_date_context_or_trusted_required_opens_date_tool_without_replacing_residents() -> (
+    None
+):
+    for state, required in (
+        (crowded(date_context=True), ()),
+        (crowded(), ("date_calc",)),
+    ):
+        selected = names(state, required=required)
+        assert selected[:12] == RESIDENT_TOOLS and len(selected) == 15
+        assert "date_calc" in selected and "tarot_start" not in selected
+    assert "date_calc" not in names(
+        VisibilityState(), crisis=True, required=("date_calc",)
+    )
