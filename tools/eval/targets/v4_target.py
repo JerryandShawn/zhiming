@@ -41,6 +41,7 @@ from .v4_review_observations import review_observations
 from .v4_run_observations import native_run_meta, native_run_rows
 from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
+from .v4_sse_reconnect import reconnect
 from .v4_tarot import TarotDriver
 from .v4_withdrawal import configure_withdrawal, regeneration_state, withdrawal_observations
 
@@ -66,6 +67,7 @@ class V4Target:
         self.semantic_history: list[dict[str, Any]] = []
         self.crashed_run: str | None = None
         self.feishu: FeishuBatchDriver | None = None
+        self.stream: dict[str, Any] = {}
 
     def reset(self, seed: dict[str, Any]) -> None:
         self.close()
@@ -79,6 +81,7 @@ class V4Target:
         self.semantic_history = []
         self.crashed_run = None
         self.feishu = None
+        self.stream = {}
         self.schema = "eval_v4_" + uuid.uuid4().hex
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
         self.repo.ensure_owner(
@@ -230,6 +233,8 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
+        if turn.get("action", {}).get("type") == "sse_reconnect":
+            return reconnect(self, turn)
         if turn.get("action", {}).get("type") in {"fact_revoke", "source_delete"}:
             return NativePrivacyDriver(self).execute(turn)
         started, before = (
@@ -356,6 +361,7 @@ class V4Target:
             "run_result": run.get("result") or {},
             **kinds,
             "chart": chart_observations(kinds.get("artifact", []), self.owner, run),
+            **({"stream": self.stream} if self.stream else {}),
         }
 
     def close(self) -> None:
@@ -388,4 +394,5 @@ class V4Target:
             "portability": self.portability,
             "ingress": self.feishu.proof if self.feishu else {},
             **harness_evidence(self),
+            **({"stream": self.stream} if self.stream else {}),
         }
