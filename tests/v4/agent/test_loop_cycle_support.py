@@ -22,6 +22,7 @@ from mingjing_core.agent.toolkit import ToolContext, ToolRegistry
 from mingjing_core.application.agent_snapshots import AgentSnapshotStore
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.threads import ThreadService
 from mingjing_core.models.port import AssistantMessage, ChatMessage, ModelPort, StreamEvent, ToolCall
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.timekit.clock import FrozenClock, get_clock, set_clock
@@ -101,12 +102,28 @@ def answer(
 
 
 def prepare(
-    repo: PostgresRepository, text: str = "我喜欢合成夜班", **context_options: Any
+    repo: PostgresRepository,
+    text: str = "我喜欢合成夜班",
+    *,
+    channel: str = "web",
+    external_id: str | None = None,
+    mode: str | None = None,
+    **context_options: Any,
 ) -> tuple[dict, ToolRegistry, ContextBuild]:
-    source = MemoryService(repo).receive("alice", content=text, source_id=uuid.uuid4().hex, at=get_clock().now())
-    run = repo.queue_run(
-        "alice", uuid.uuid4().hex, {"message": text, "source_message_id": source["id"], "case_ids": []}
+    if channel == "feishu":
+        ThreadService(repo).create("alice", request_id="synthetic-channel-life")
+    source = MemoryService(repo).receive(
+        "alice",
+        content=text,
+        source_id=uuid.uuid4().hex,
+        at=get_clock().now(),
+        channel=channel,
+        external_id=external_id,
     )
+    request = {"message": text, "source_message_id": source["id"], "case_ids": []}
+    if mode is not None:
+        request["mode"] = mode
+    run = repo.queue_run("alice", uuid.uuid4().hex, request)
     modify(repo, run, "runtime='v4',thread_id='life:self'")
     run = repo.claim_run("alice", run["id"], lease_seconds=3600)
     registry = ToolRegistry(AgentToolsService(repo))

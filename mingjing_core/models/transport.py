@@ -231,7 +231,7 @@ class StreamingHTTP(ModelPort):
     ) -> Iterator[StreamEvent]:
         check_cancel(cancel)
         deadline = time.monotonic() + float(self.settings.get("total_timeout", 600))
-        started = time.monotonic()
+        started, parse_retries = time.monotonic(), 0
         for attempt in range(self.max_retries + 1):
             visible, failure = False, None
             check_cancel(cancel)
@@ -254,14 +254,18 @@ class StreamingHTTP(ModelPort):
                 raise
             except ModelProtocolError as exc:
                 failure = exc
+                parse_retries += 1
             except ModelUnavailable as exc:
                 failure = exc
             except (httpx.HTTPError, RuntimeError):
                 failure = ModelUnavailable()
             except (KeyError, TypeError, AttributeError, ValueError):
                 failure = ModelProtocolError()
+                parse_retries += 1
             check_cancel(cancel)
-            delay = retry_delay(failure, attempt, self.max_retries, visible=visible)
+            # Retain the mainline cumulative parse budget without bypassing the
+            # central action policy or issuing an unguarded physical retry.
+            delay = None if parse_retries > 1 else retry_delay(failure, attempt, self.max_retries, visible=visible)
             if delay is None or not wait_for_retry(delay, deadline, cancel, self.sleep):
                 check_cancel(cancel)
                 yield StreamEvent("error", failure)

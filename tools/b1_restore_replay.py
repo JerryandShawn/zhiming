@@ -21,6 +21,8 @@ from tools.b1_restore_replay_contracts import (
     require,
     verify_candidate,
 )
+from tools.b1_runtime_trust import inspect_core_venv
+from tools.core_incremental_contracts import RELEASE_ROOT, TARGET
 
 
 def worker_code() -> str:
@@ -84,13 +86,26 @@ def safe_worker_failure(stderr: str) -> ReplayRejected:
 
 def run_candidate(request: RestoreRequest, document: dict[str, Any]) -> dict[str, Any]:
     request.validate()
+    if not request.local_drill:
+        root = Path(RELEASE_ROOT) / TARGET
+        require(request.candidate_source == root, "FORMAL_FIXED_RELEASE_REQUIRED")
+        require(request.candidate_python == root / "venv/core/bin/python", "FORMAL_FIXED_VENV_REQUIRED")
+        inspect_core_venv()
     verify_candidate(request.candidate_source)
     require(document == load_document(request), "LEDGER_DOCUMENT_CHANGED")
     regular(request.candidate_python.resolve())
     fields = asdict(request)
     fields.update({name: str(fields[name]) for name in ("candidate_source", "candidate_python", "ledger")})
     result = subprocess.run(
-        [str(request.candidate_python), "-I", "-B", "-c", worker_code()],
+        [
+            str(request.candidate_python),
+            "-I",
+            "-B",
+            "-X",
+            "pycache_prefix=" + os.path.abspath(os.devnull),
+            "-c",
+            worker_code(),
+        ],
         input=json.dumps({"request": fields, "document": document}),
         env=worker_environment(request),
         capture_output=True,

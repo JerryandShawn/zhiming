@@ -18,6 +18,7 @@ from mingjing_core.agent.toolkit import ToolContext, ToolRegistry, ToolResult
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.application.agent_tools_contracts import DateResolution
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.timekit.clock import FrozenClock
@@ -84,10 +85,27 @@ class Harness:
 
 
 def setup(
-    repo: PostgresRepository, text: str, *, role: str = "user", parser: Any = None, claim: bool = True
+    repo: PostgresRepository,
+    text: str,
+    *,
+    role: str = "user",
+    parser: Any = None,
+    claim: bool = True,
+    channel: str = "web",
+    external_id: str | None = None,
 ) -> Harness:
     memory = MemoryService(repo)
-    source = memory.receive("alice", content=text, source_id=uuid.uuid4().hex, role=role, at=SAID_AT)
+    if channel == "feishu":
+        ThreadService(repo).create("alice", request_id="synthetic-tool-channel-life")
+    source = memory.receive(
+        "alice",
+        content=text,
+        source_id=uuid.uuid4().hex,
+        role=role,
+        at=SAID_AT,
+        channel=channel,
+        external_id=external_id,
+    )
     run = repo.queue_run("alice", uuid.uuid4().hex, {"message": text, "source_message_id": source["id"]})
     with repo.transaction("alice") as connection:
         connection.execute(

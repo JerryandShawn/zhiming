@@ -2,7 +2,9 @@
 
 本 ExecPlan 是活文档。Progress、Surprises & Discoveries、Decision Log、Outcomes & Retrospective 四节必须随工作更新。格式依据仓库 `.agent/PLANS.md`。本文件记录正式分支的当前候选与历史实施过程，不能作为整个P3完成证明。
 
-**当前口径（2026-10-21 08:49 +08:00）**：08点固定9a6f882d/428649b6的Core581通过，v4为1934通过/1直接幂等重放失败/旧DOM严格xfail/1警告，M8原46/47及独立扩展13/13，结果保留。之后case效果全链与撤销闭包修复c7d760ad→e72afc09已推，236项组合及额外90项Runtime分别通过，尚无此头完整回归。P1b独立integration固定2ca1378的本机14条功能检查通过、同头Node22配置push CI39518064447全部success；后续仅文档f756731不继承精确头证据。P1b/P3另在普通merge子分支908fe2b6、Draft PR #13接合，有262唯一目标绿及1个旧直接幂等失败，尚未合integration，也尚未带入c7修复。P6独立wire已推3ad3030d/Draft #11；新Linux CI待验。X03/旧DOM/K3依赖许可等门仍在，整个P3未验收。指令板v2将B1补齐排首，30明确No-Go、两次Linux恢复失败后停止重试；0服务器/真实模型/飞书。下文较早时间记录均为历史结果，不外推为当前头绿。
+**历史口径（2026-10-21 10:56 +08:00）**：10点固定主树4f042e7→6f8c44aa的v4为2299通过/1严格xfail/1告警，Core582通过；固定wire ff4b4f6的Core583通过，09点夹具3错误原档保留。P4固定95df的v4为2751通过/1严格xfail/1告警、原M8为46/47及独立扩展13/13；后续timer、监听、游标切片已推a1270174，各有目标证据但未继承95df宽验。联合3例最新通过，历史跨进程超时原因未证，暂不纳入下一固定候选。P6成功CI实际测试GitHub合并预览c79b9e6a，不是337e单独头；19个B1 PG跳过不计通过。integration仍仅P1b，P3/P4/P6尚为独立草稿。B1新增schema4撤销和非空deleted_draws往返阻塞，Linux两次恢复额度已用尽、30仍No-Go；元数据/正式启动/导入来源加固只属本机组件证据。X03原四断言、旧DOM、真实encoder依赖许可等门不解除；不部署、不合v4/main或main，真实模型/飞书/服务器0。完整队列与旧checkbox差额见`../evidence/P3/2026-10-21-main-queue-audit.md`，历史失败与各次固定源结果保持独立。
+
+**当前口径（2026-10-21 11:29:25 +08:00）**：11点主树固定1fe5149c→d8d92bb6/tree d5505507完整v4为2414 passed/1严格xfail/1warning，1207.70s；P4固定a1270174/tree a1bc4137为2876 passed/1严格xfail/1warning，831.66s，同源Core583 OK/779.840s。当次均真实生成JUnit，分别1255/1336 tracked blobs逐一原字节核对0差异；首次私有启动器失败另档，不覆盖。P4同源原M8仍46/47、扩13/13，X03原四断言不变。M4a JSON回执9b4aa474已推，80项目标/1既有warning，短读锁修复ad8ac548和联合探针844daac0分别已推；后续M4b/M4c/保留仍WIP，不回签本次宽验。wire源c089的Linux CI成功，但实际checkout a465ada6/tree d787c75e（base6e47+headc089），Core583、v4 2732/1xfail/2warning；fake80不是P3原47题。native普通merge子候选68412379同tree，后续回执a4bbe2ad已推自己的v4/p3-wire-integration-20261021，正式integration仍6e47仅P1b。B1仍No-Go，环境两次额度及schema4撤销/非空deleted_draws往返门不解除，服务器/真实模型/飞书/主干合并0。
 
 ## Context and Orientation（背景、源码定位与边界）
 
@@ -71,6 +73,13 @@ D4不开2小时使用提醒、不登记紧急联系人；上下文连续3次60k�
 
 ## Progress（进度）
 
+- [x] (2026-10-21 11:29:25 +08:00) 回收/归档11点主树v4、P4 v4/Core及脚本；JUnit与全部源blob实际可核，原失败另存。
+
+- [x] (2026-10-21 11:01:04 +08:00) 对齐当前固定源回执与队列库存；11点宽验已实际开始，结果另记。
+
+- [x] (2026-10-21 09:41:34 +08:00) 原子发布B1生成器+consumer、App/cache/路由/TEMP与portable/B6各独立片，未改固定b9。09点wire终态与原3errors留档；fixture窄修ff70146及P4计划ff4b4f6已推。P6双父337e66fb只交窄组，新Linux待验。
+
+- [x] (2026-10-21 09:00:26 +08:00) 独立wire普通更新P3 a83ca8b7到5b691475/tree7c46d823，member scope和新case证明自动合并后人工复核、68目标通过。09:00:00.920从精确git archive启动完整v4/Core/M8三链；结果在途，B1新工具WIP不入快照。未合integration/v4/main/main。
 - [x] (2026-10-21 08:49 +08:00) c7d760ad→e72afc09提交case事务before/input/after全链、fresh Runtime能力钉与撤销闭包；22文件236目标/123.57s及额外90 Runtime/19.75s分别通过，独立审计两类负例先红后绿。固定08点旧失败保留，下一固定完整门未运行。
 - [x] (2026-10-21 08:49 +08:00) 独立P1b/P3 wire普通merge908fe2b6推送，Draft PR #13；中央物理HTTP守卫/可信PG角色scope/取消/socket保留，262唯一目标绿，旧直接幂等1失败明确保留。未合integration/v4/main/main；修复c7尚未带入该子树。
 - [x] (2026-10-21 08:49 +08:00) B1 v2优先执行，30 No-Go、两次非破坏Linux恢复失败后不再试；B6文本13资产hash/9 Python/11 Bash静态复核通过，B3与Linux应用差额另有独占计划，不将Windows或模板当Linux证据。
@@ -140,6 +149,12 @@ D4不开2小时使用提醒、不登记紧急联系人；上下文连续3次60k�
 
 ## Surprises & Discoveries（意外发现）
 
+2026-10-21 11:29:25 +08:00：wire CI实际预览a465ada6与本机普通merge68412379同tree，必须以该树认领Linux证据；P3原47题X03仍失败，不把fake80冒充v4验收。
+
+2026-10-21 11:01:04 +08:00：P4 actor的立即try-owner门可能与正常读锁竞争；机制可证，旧跨进程两次超时尚未归因。原红保留，独立有界重试片不混入本次固定源。
+
+2026-10-21 09:41:34 +08:00：09点Core的PACKAGE_MIGRATIONS来自测试输入构造漂移而非产品门错误，修夹具不扩b9迁移集合。TEMP实际反例证明只拒CREATE不等于无DDL；独立增加只读判定，不自动改正式权限。B3/B7哈希范围不同，完整总链需显式绑定，不能机械拼Windows回执。
+
 2026-10-21 08:49 +08:00：case source_fact_id/used_fact_ids遗漏和单写proof三件同时丢失降级legacy两类负例已先红后绿。fresh Runtime初始可信能力钉独立于tool journal，不能给旧运行补签能力；直接AgentLoop/旧组件没有该新能力时的兼容边界明确记录。详细证据见`evidence/P3/2026-10-21-case-effect-audit-followup.md`。Windows窄组合仍不能替代精确新头Linux或完整M8。
 
 2026-10-21 08:16 +08:00：08点完整回归证明TA02及新切片多数路径已过，但pending_case_receipts对零上下文的受信direct工具幂等回放无条件索取Runtime初始模型证明，唯一原回归因此失败。不能删旧断言或让真实Runtime缺证明时降级direct路径；须独立分类并保留缺initial/model/epoch/撤销负例。连续两次case写链另需真实before/update-input/after私有事务证据，其隐私闭包不可扩大为全部runtime_step派生类型。
@@ -193,6 +208,12 @@ P2 `save_fact`仍把preference/constraint以外种类视为敏感，需要确认
 C21/E1冻结逻辑主动拒绝P2源码。P3基于P2，不能调用其旧v3冻结入口来评测v4，不能修改该拒绝来迁就新代码。新v4 target与报告必须独立；旧P1 k3快照仅保留历史、未运行；后续E1需要pre-P2旧业务加经过审查的P1b兼容桥，另建k3-256k身份/manifest后仍等用户逐批开始。
 
 ## Decision Log（决策记录）
+
+2026-10-21 11:29:25 +08:00：正式integration不移动；只推integration子分支候选和已验P4小片。30天已清理运行的retry暂取零变化拒绝，不自动新epoch或再开模型，产品取舍记待大脑。
+
+2026-10-21 11:01:04 +08:00：按33的依赖阻塞规则继续P4后端JSON握手与保留策略；不以新窄绿回签旧宽验，不在CI在途时宣称P3进入integration。
+
+2026-10-21 09:41:34 +08:00 / root：固定旧失败原件，下一00–15窗口只验新精确源；B1 No-Go五门不因代码存在解除。P4在独立子分支按契约推进最小真实PG事件notify，P3依赖仍明确未验收。跨线只读，不改排盘/模块/前端独占源。
 
 2026-10-21 08:49 +08:00 / root：B1按v2优先，环境达到两次即停止，继续B3/B6和可离线开发；No-Go五门不因工具存在解除。P1b/P3先在独立wire解决实际冲突并测，不让integration继承子树未经完整验证的绿。主P3下一完整回归固定git archive，排除并行B1在途文件。
 
@@ -256,6 +277,12 @@ C21/E1冻结逻辑主动拒绝P2源码。P3基于P2，不能调用其旧v3冻结
 2026-10-18 / 范围决定：chart_skill在P8；consult_specialist可留P8，正式回执写清未实现与理由，不静默把独立专家分析假装普通工具。P3只做未知别名移除/告警与空回答兜底；不调用v3 `_validate`、不提前启用P6 critic/legacy lint。撤销触发的一次重新生成属于提交安全，不是任意风格评审。
 
 ## Outcomes & Retrospective（结果与复盘）
+
+2026-10-21 11:29:25 +08:00：11点固定新源结果已归档，P3/M8尚未验收。后续P4内存回执/保留/legacy桥独占并行，不能继承本次完整结果。
+
+2026-10-21 11:01:04 +08:00：10点已完成结果见顶部及库存；11点主树/P4新源完整回归在途。X03/旧DOM/encoder与B1门不解除，真实调用和部署均未进行。
+
+2026-10-21 09:41:34 +08:00：本机B1组件和09点wire结果已交小提交/推送，P3仍未完成；完整Core修复后、新P6 Linux和M8 X03、旧DOM/实际encoder各自待验。B1真实Linux及生产Native restore继续No-Go。所有旧分数保留固定来源，不拿新窄组回签旧全量。
 
 **08:49更新**：case全链/撤销修复e72afc09及独立wire PR #13已交目标证据；08点完整原失败不改，下一固定新头未验。P1b固定2ca的本机功能及同头Node22配置push CI全部通过，integration当前仅文档续作；不合主干、不部署。B1仍明确No-Go，B6仅静态交付，B3/应用演练离线推进，环境不再重复修复。
 
@@ -533,3 +560,31 @@ Journal恢复需有效当前lease，旧worker即使仍有内存结果也不能�
 - 2026-10-18 本轮：维护四个活文档段落，记录Journal39项子范围及未接线边界、用户授权A只读盘点和B1具体操作单、23号B1模型决定与Charts锁例外；不把M1/P3或stage标完成。
 
 - 2026-10-21 07:34:45 +08:00：更新四活节、02点固定头真实结果和08点四线汇总；保留额度空档、失败/xfail与WIP，未改历史证据。
+
+- 2026-10-21 09:41:34 +08:00 更新四活节：B1已发布组件/实际PG TEMP缺口、09点wire完整失败与fixture窄修、P6新双父候选及P4最小接线边界。
+
+## 2026-10-21 10:07:54 +08:00 续作增补
+
+Progress：非空deleted_draws反例49e22dd→8a77a355已推；10点四链固定source全量在途，未混WIP。P4 M1另树Draft14已交目标测试，M2/M3按独占文件继续，未宣P4完成。
+
+Surprises & Discoveries：固定b9真实恢复虽清除实体/牌/checkpoint，目标export丢失tarot-delete receipt，verify_monotone报STALE_WITHDRAWALS；schema4源retire缺表是另一独立问题。
+
+Decision Log：保留首红1failed和明确阻塞探针1passed各10.07秒；不伪造receipt/proof、不删字段、不改固定b9、不松单调门。独立delta仅计划，不能解除账本问题，写汇总待大脑而立即继续P4。
+
+Outcomes & Retrospective：Windows窄验非Linux整链，B1五门与30NoGo保持；生产restore按v2排stage之后。本周零服务器/真实模型/飞书/主干合并。
+
+## 2026-10-21 10:33:10 +08:00 固定回归与后续接线
+
+Progress：10点主固定4f042e7的v4 2299passed/1严格xfail/1warning、Core582 OK归档；wire固定ff4Core583 OK。P4 M2a0af15de（新15/相关41）、M3 31c4967（28纯/实际PG/HTTP）分别已推，开关默认关，非全P4。B1元数据43与formal接线38/旧189+7分别已推。
+
+Surprises & Discoveries：当次v4未输出JUnit，仅保留console和完整源blob，不虚构XML；P6 CI实际测试GitHub合并预览c79b9e6a而非head337e单独tree，已纠正证据/PR；19 skip归属B1缺显式管理DSN的8+11，未执行仍是缺口。
+
+Decision Log：保留原失败与旧DOM严格xfail，46/47 X03四断言仍待裁定，不放宽设计。B1新venv门仅formally apply前，default/local不扫描/root、不假签Linux；新增controller/generator hash须重审绑定。P4 timer失败收口由原domain错误拒final，仍在独占候选片验证。
+
+Outcomes & Retrospective：本机宽绿不是Linux/真实模型/部署或盲评验收。B1删除收据往返+schema4源+Linux环境等门仍NoGo，两个执行单保留阻塞；下一固定新源宽验仅在允许窗口，不能让后来WIP继承10点结果。
+
+
+- 2026-10-21 11:01:04 +08:00：核对当前候选、原始失败与队列库存，记录实际11点固定源开始；未预填测试结论。
+
+
+- 2026-10-21 11:29:25 +08:00：回收11点真实完整结果、CI实际checkout与普通merge子候选；保留全部未完成门。

@@ -10,6 +10,7 @@ from psycopg.types.json import Jsonb
 from mingjing_core.timekit.clock import get_clock
 from mingjing_core.domain.contracts import ScopeError, RevisionConflict, LeaseConflict, EvidenceError
 from .channels.hermes import validated_payload
+from .delivery_origin import assert_delivery_origin
 from .tarot import fingerprint, IdempotencyConflict
 
 
@@ -69,6 +70,7 @@ class OutboxService:
         with self.repo.transaction(owner) as conn:
             run=self.repo.fetch_run(owner,run_id)
             subject,dependencies,result=self._fresh(owner,run)
+            assert_delivery_origin(self.repo,owner,run,business_id=business_id,channel=channel,target=target)
             self._target(owner,subject,channel,target)
             ambiguous=conn.execute(sql.SQL("SELECT id FROM {} WHERE owner=%s AND run_id=%s AND status IN ('sending','uncertain') FOR UPDATE").format(self.repo.table('delivery_outbox')), (owner,run_id)).fetchone()
             if ambiguous:raise DeliveryUncertain('同一执行送达不明，不能更换业务编号或目标重发')
@@ -110,6 +112,8 @@ class OutboxService:
                 try:
                     run=self.repo.fetch_run(owner,row['run_id'])
                     subject,dependencies,result=self._fresh(owner,run)
+                    assert_delivery_origin(self.repo,owner,run,business_id=row['business_id'],
+                                           channel=row['channel'],target=row['target'])
                     self._target(owner,subject,row['channel'],row['target'])
                     if row['dependencies']!=dependencies or fingerprint(row['payload'])!=fingerprint(result):raise RevisionConflict('已归档正文或依赖不一致')
                 except (RevisionConflict,ScopeError,EvidenceError) as exc:

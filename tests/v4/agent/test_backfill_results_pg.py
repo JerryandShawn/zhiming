@@ -129,7 +129,7 @@ def test_private_metadata_stays_in_private_thread_and_has_no_long_term_reply(rep
 @pytest.mark.parametrize("status", ["sent", "uncertain"])
 def test_reply_backfill_does_not_reopen_or_mutate_terminal_outbox(repo: PostgresRepository, status: str) -> None:
     repo.bind_channel("alice", "feishu", "ou_syntheticBackfill")
-    run, result = core4(repo)
+    run, result = core4(repo, delivery_target="ou_syntheticBackfill")
     outbox = OutboxService(repo)
     item = outbox.prepare_delivery(
         owner="alice", run_id=run["id"], business_id="backfill-test", channel="feishu", target="ou_syntheticBackfill"

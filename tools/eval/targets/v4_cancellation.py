@@ -114,8 +114,11 @@ def cancel_stream(repo: PostgresRepository, owner: str, *, partial: str, after_m
         )
         runtime = AgentRuntime(repo, port, ScriptedMeter(), offline=True, control_factory=signals.controls)
         dispatcher = AgentDispatcher(SimpleNamespace(repo=repo, runtime=runtime), signals=signals)
-        dispatcher.tick()
         try:
+            # A scenario's eval scope may use one bounded tick, never a permanent
+            # dispatcher that would retain its temporary membership authority.
+            if dispatcher.tick() != 1:
+                raise ValueError("Synthetic cancellation must claim exactly its isolated run")
             until(lambda: fragment_saved(repo, owner, run["id"]), 5)
             time.sleep(after_ms / 1000)
             stamp = time.monotonic()

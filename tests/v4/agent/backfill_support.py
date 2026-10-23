@@ -41,10 +41,11 @@ def food_fact(repo: PostgresRepository, owner: str = "alice") -> dict:
     return memory.save_fact(owner, "self", source["id"], "我不吃辣", "preference")
 
 
-def core4(repo: PostgresRepository) -> tuple[dict[str, Any], dict[str, Any]]:
+def core4(repo: PostgresRepository, *, delivery_target: str | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     profile(repo)
     fact = food_fact(repo)
-    run, registry, frozen = prepare(repo, "请核对合成现实安排")
+    route = {"channel": "feishu", "external_id": delivery_target} if delivery_target else {}
+    run, registry, frozen = prepare(repo, "请核对合成现实安排", **route)
     registry.service.charts = engine(repo)
     alias = next(key for key, row in frozen.alias_map.items() if row["kind"] == "fact" and row["id"] == fact["id"])
     port = ScriptedPort(

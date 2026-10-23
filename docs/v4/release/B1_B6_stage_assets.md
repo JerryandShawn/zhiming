@@ -1,6 +1,6 @@
 # B1 B6：独立合成 Web 库、权限、服务与隔离验证资产
 
-2026-10-21 08:44，北京时间 UTC+08。**仅交可审文本与静态证据；30 号结论仍 No-Go，以下服务器命令全部未执行。** 不能因为本文件存在就去掉 B1 执行单的 No-Go 或五个阻塞门。真实 Linux、systemd/eBPF、PG 权限和浏览器验收仍待实测。B3 restore-proof 不在本片。
+2026-10-21 09:34，北京时间 UTC+08。**仅交可审文本与静态证据；30 号结论仍 No-Go，以下服务器命令全部未执行。** 不能因为本文件存在就去掉 B1 执行单的 No-Go 或五个阻塞门。真实 Linux、systemd/eBPF、PG 权限和浏览器验收仍待实测。B3 restore-proof 不在本片。
 
 ## 1. 固定目标与三库分工
 
@@ -105,7 +105,7 @@ print('B6_PRIVATE_FILES_CREATED; values withheld')
 ```
 
 ```bash
-"$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/02-private-secrets.py"
+"$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/02-private-secrets.py"
 "$RUNUSER" -u postgres -- "$PG15_PSQL" -X --no-password --host="$PG15_SOCKET" --port=5432 --dbname=postgres < "$B6_ROOT/secrets/role-passwords.sql"
 ```
 
@@ -152,7 +152,7 @@ print('B6_SCHEMA7_AND_CHECKPOINT_CREATED; synthetic only')
 
 ```bash
 cd "$RELEASE_DIR"
-env -i PATH=/usr/bin:/bin LANG=C.UTF-8 TZ=Asia/Shanghai PYTHONDONTWRITEBYTECODE=1 PGPASSFILE="$B6_ROOT/secrets/owner.pgpass" "$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/03-initialize.py"
+env -i PATH=/usr/bin:/bin LANG=C.UTF-8 TZ=Asia/Shanghai PYTHONDONTWRITEBYTECODE=1 PGPASSFILE="$B6_ROOT/secrets/owner.pgpass" "$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/03-initialize.py"
 ```
 
 授权 SQL 只在新 Web 库，以独立 owner 执行。新库的 PUBLIC 权限撤销不影响其他库；不授 writer owner 成员身份或 CREATE/TEMP。三个 checkpoint 表 CRUD；两本迁移账本 SELECT-only。完整权限语义以 [PostgreSQL15 GRANT](https://www.postgresql.org/docs/15/sql-grant.html) 为准，PUBLIC/成员继承同样影响有效权限，必须核实而非只看 GRANT 成功。
@@ -196,6 +196,7 @@ PATH=/usr/bin:/bin
 LANG=C.UTF-8
 TZ=Asia/Shanghai
 PYTHONDONTWRITEBYTECODE=1
+PYTHONPYCACHEPREFIX=/dev/null
 PYTHONUNBUFFERED=1
 ZHIMING_DATABASE_URL="host=127.0.0.1 port=5432 dbname=zhiming_core_b1_web user=zhiming_core_b1_web_writer connect_timeout=5 application_name=b1-stage-web"
 PGPASSFILE=/root/zhiming-core-b1-stage/secrets/writer.pgpass
@@ -213,8 +214,12 @@ KIMI_MODEL=k3
 
 包装器拒绝真实 token/供应商凭据等继承项，并用明确 allowlist 构建 exec 环境。只读取刚生成的合成 token；不读 live env、Hermes 或管理员进程环境中的业务配置。检查/启动日志仅返回固定状态，不能回显环境或异常参数。
 
+每个候选 Python 调用显式加 `-I -B -X pycache_prefix=/dev/null`；只加 `-B` 仍会读取包内已存在的 pyc，不能作为来源保护。launcher 在二次 exec 前核固定词法发布目录、原 manifest 字节 SHA 和其中636个源码成员，再用已锁 uvicorn 0.34.3 的 `--app-dir <固定RELEASE>` 加载 `main:app`，不依赖隔离模式移除的 cwd。无 `-I` 的固定 b9 ChartsAdapter 子调用不改解释器路径，继承明确 allowlist 中、且被 launcher 精确核为 `/dev/null` 的 PYTHONPYCACHEPREFIX；这只是已读代码所得的传递事实，尚未运行 Charts/Linux 对照。
+
 <!-- b6-file: 05-launch.py -->
 ```python
+import hashlib
+import json
 import os
 import re
 import stat
@@ -224,10 +229,37 @@ from psycopg.conninfo import conninfo_to_dict
 
 ROOT = Path('/root/zhiming-core-b1-stage')
 RELEASE = Path('/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c')
-ALLOWED = {'PATH','LANG','TZ','PYTHONDONTWRITEBYTECODE','PYTHONUNBUFFERED','ZHIMING_DATABASE_URL',
+ALLOWED = {'PATH','LANG','TZ','PYTHONDONTWRITEBYTECODE','PYTHONPYCACHEPREFIX','PYTHONUNBUFFERED','ZHIMING_DATABASE_URL',
            'PGPASSFILE','MINGJING_TOKEN_FILE','MINGJING_OWNER_ID','ZHIMING_MEDIA_PATH','CHART_PYTHON',
            'CORE_DB_POOL_SIZE','CORE_RUN_CONCURRENCY','CORE_FEISHU_ENABLED','LANGSMITH_TRACING',
            'LANGCHAIN_TRACING_V2','KIMI_MODEL'}
+
+def candidate():
+    manifest = RELEASE/'__release_manifest__.json'
+    for path in (RELEASE, *RELEASE.parents, manifest):
+        info = path.lstat()
+        if stat.S_ISLNK(info.st_mode) or info.st_uid != 0 or info.st_mode & 0o022:
+            raise ValueError('candidate path')
+    raw = manifest.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != '49038f8c0dc6bb293ba688af91018cbe6339b319c388d290fd000a256e36b33c':
+        raise ValueError('candidate manifest')
+    document = json.loads(raw)
+    if document.get('schema') != 'core3-release-v1' or document.get('commit') != RELEASE.name:
+        raise ValueError('candidate source')
+    rows = document.get('files', {})
+    if len(rows) != 636 or 'main.py' not in rows:
+        raise ValueError('candidate members')
+    for name, row in rows.items():
+        relative = Path(name)
+        if relative.is_absolute() or '..' in relative.parts or '\\' in name:
+            raise ValueError('candidate member name')
+        item = RELEASE/relative
+        for path in (item, *item.parents):
+            info = path.lstat()
+            if stat.S_ISLNK(info.st_mode) or info.st_uid != 0 or info.st_mode & 0o022:
+                raise ValueError('candidate member path')
+        if not item.is_file() or hashlib.sha256(item.read_bytes()).hexdigest() != row.get('sha256'):
+            raise ValueError('candidate member changed')
 
 def private(path):
     info = path.lstat()
@@ -240,6 +272,8 @@ def environment():
         if value and key not in ALLOWED and (re.search(r'KEY|TOKEN|SECRET|PASSWORD|DSN|PROXY', key) or key in {'MODELS_CONFIG','MINGJING_MODEL_PORT'}):
             raise ValueError('inherited credential/config')
     env = {key:os.environ[key] for key in ALLOWED if key in os.environ}
+    if env.get('PYTHONPYCACHEPREFIX') != '/dev/null':
+        raise ValueError('candidate cache boundary')
     fields = conninfo_to_dict(env['ZHIMING_DATABASE_URL'])
     expected = {'host':'127.0.0.1','port':'5432','dbname':'zhiming_core_b1_web','user':'zhiming_core_b1_web_writer',
                 'connect_timeout':'5','application_name':'b1-stage-web'}
@@ -261,6 +295,7 @@ def environment():
     return dict(env, MINGJING_TOKEN=token)
 
 try:
+    candidate()
     env = environment()
     if sys.argv[1:] == ['--check']:
         print('B6_ENVIRONMENT_OK; values withheld')
@@ -269,7 +304,7 @@ try:
     else:
         os.chdir(RELEASE)
         python = str(RELEASE/'venv/core/bin/python')
-        os.execve(python, [python,'-m','uvicorn','main:app','--host','127.0.0.1','--port','8788','--workers','1','--timeout-keep-alive','30','--no-access-log'], env)
+        os.execve(python, [python,'-I','-B','-X','pycache_prefix=/dev/null','-m','uvicorn','main:app','--app-dir',str(RELEASE),'--host','127.0.0.1','--port','8788','--workers','1','--timeout-keep-alive','30','--no-access-log'], env)
 except Exception:
     raise SystemExit('B6_LAUNCH_REJECTED; no credentials printed') from None
 ```
@@ -430,10 +465,10 @@ UMask=0077
 WorkingDirectory=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c
 EnvironmentFile=/root/zhiming-core-b1-stage/assets/stage-b1-runtime.env
 UnsetEnvironment=KIMI_API_KEY MOONSHOT_API_KEY OPENAI_API_KEY ANTHROPIC_API_KEY AZURE_OPENAI_API_KEY MODELS_CONFIG MINGJING_MODEL_PORT MINGJING_TOKEN ZHIMING_TOKEN_OWNERS FEISHU_APP_ID FEISHU_APP_SECRET FEISHU_VERIFICATION_TOKEN FEISHU_ENCRYPT_KEY LANGSMITH_API_KEY LANGCHAIN_API_KEY HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy PYTHONPATH PYTHONHOME PGSERVICE PGSERVICEFILE PGPASSWORD
-ExecStartPre=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python /root/zhiming-core-b1-stage/assets/05-launch.py --check
-ExecStartPre=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python /root/zhiming-core-b1-stage/assets/08-network-check.py deny
-ExecStartPre=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python /root/zhiming-core-b1-stage/assets/06-preflight.py
-ExecStart=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python /root/zhiming-core-b1-stage/assets/05-launch.py
+ExecStartPre=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python -I -B -X pycache_prefix=/dev/null /root/zhiming-core-b1-stage/assets/05-launch.py --check
+ExecStartPre=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python -I -B -X pycache_prefix=/dev/null /root/zhiming-core-b1-stage/assets/08-network-check.py deny
+ExecStartPre=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python -I -B -X pycache_prefix=/dev/null /root/zhiming-core-b1-stage/assets/06-preflight.py
+ExecStart=/root/zhiming-core-releases/b9a89b6f84f7bebb640de080548010859aae630c/venv/core/bin/python -I -B -X pycache_prefix=/dev/null /root/zhiming-core-b1-stage/assets/05-launch.py
 Restart=no
 TimeoutStartSec=20
 TimeoutStopSec=15
@@ -466,22 +501,22 @@ test -n "${B6_PRIVATE_IPV4:?select a reviewed local RFC1918 interface address}"
 test -n "${NOHUP:?B0 must pin nohup absolute path}"
 export B6_ROOT B6_PRIVATE_IPV4
 "$IP_BIN" -j -4 address show up > "$B6_ROOT/evidence/interfaces.json"
-"$RELEASE_DIR/venv/core/bin/python" -c 'import json,os; rows=json.load(open(os.environ["B6_ROOT"]+"/evidence/interfaces.json")); ip=os.environ["B6_PRIVATE_IPV4"]; import sys; sys.exit(0 if any(a.get("local")==ip for r in rows for a in r.get("addr_info",[])) else 1)'
-"$NOHUP" env -i PATH=/usr/bin:/bin PYTHONDONTWRITEBYTECODE=1 "$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/07-network-fixture.py" "$B6_PRIVATE_IPV4" < /dev/null > "$B6_ROOT/evidence/network-listener.log" 2>&1 &
+"$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null -c 'import json,os; rows=json.load(open(os.environ["B6_ROOT"]+"/evidence/interfaces.json")); ip=os.environ["B6_PRIVATE_IPV4"]; import sys; sys.exit(0 if any(a.get("local")==ip for r in rows for a in r.get("addr_info",[])) else 1)'
+"$NOHUP" env -i PATH=/usr/bin:/bin PYTHONDONTWRITEBYTECODE=1 "$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/07-network-fixture.py" "$B6_PRIVATE_IPV4" < /dev/null > "$B6_ROOT/evidence/network-listener.log" 2>&1 &
 ```
 
 固定 listener 自行180秒退出；用新 evidence 目录重复一轮，不能覆盖旧 network-control.json。观察控制文件就绪后，分步运行，任一步非0即停；不自动循环重试：
 
 ```bash
 test -s "$B6_ROOT/evidence/network-control.json"
-"$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/08-network-check.py" positive
+"$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/08-network-check.py" positive
 test ! -e /etc/systemd/system/zhiming-core-b1-stage.service
 install -m 0600 "$B6_ROOT/assets/zhiming-core-b1-stage.service" /etc/systemd/system/zhiming-core-b1-stage.service
 systemd-analyze verify /etc/systemd/system/zhiming-core-b1-stage.service
 "$SYSTEMCTL" daemon-reload
 "$SYSTEMCTL" show zhiming-core-b1-stage.service --property=FragmentPath,DropInPaths,IPAddressAllow,IPAddressDeny,RestrictAddressFamilies,Restart
 "$SYSTEMCTL" start zhiming-core-b1-stage.service
-"$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/08-network-check.py" positive
+"$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/08-network-check.py" positive
 "$SYSTEMCTL" show zhiming-core-b1-stage.service --property=ActiveState,SubState,MainPID,ControlGroup,IPIngressBytes,IPEgressBytes
 ```
 
@@ -519,7 +554,7 @@ print('B6_AUTHENTICATED_READONLY_GETS_OK; values withheld')
 运行该片段只用 GET，先证明空库与登录；b9 的 history_window 明确返回 list，保持精确空列表断言，不兼容猜测出来的结构。
 
 ```bash
-"$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/09-http-readonly.py"
+"$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/09-http-readonly.py"
 ```
 
 随后直接在独立 Web 库通过 b9 原业务服务生成一套纯合成固定牌，不经 chat/reading、无模型、无 sender，不复制 B5 测试库资料。第一次抽牌是真随机，重放必须固定原牌，不能手工伪造 deck 或篡改数据库。
@@ -562,7 +597,7 @@ print('B6_REAL_SYNTHETIC_DRAW_AND_REPLAY_FIXED; no model')
 ```
 
 ```bash
-env -i PATH=/usr/bin:/bin LANG=C.UTF-8 TZ=Asia/Shanghai PYTHONDONTWRITEBYTECODE=1 PGPASSFILE="$B6_ROOT/secrets/writer.pgpass" "$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/10-fixed-draw.py"
+env -i PATH=/usr/bin:/bin LANG=C.UTF-8 TZ=Asia/Shanghai PYTHONDONTWRITEBYTECODE=1 PGPASSFILE="$B6_ROOT/secrets/writer.pgpass" "$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/10-fixed-draw.py"
 ```
 
 固定牌公开 GET 再读取两次并只输出 hash 校验状态。令牌仍不放 argv/stdout；不输出牌面、背景或原始正文。
@@ -589,7 +624,7 @@ print('B6_FIXED_DRAW_HTTP_TWICE_OK; values withheld')
 ```
 
 ```bash
-"$RELEASE_DIR/venv/core/bin/python" "$B6_ROOT/assets/11-fixed-draw-http.py"
+"$RELEASE_DIR/venv/core/bin/python" -I -B -X pycache_prefix=/dev/null "$B6_ROOT/assets/11-fixed-draw-http.py"
 ```
 
 以上不是 DOM/截图验收。B5 先跑真实业务/ScriptedPort 的撤销与脚本测试；B6 浏览器仅在新合成owner下用新口令查看旧原生静态页和此固定牌，不触发 chat/readings/retry/resume 生成端点，不打开生产域名或公网资源。DOM/截图仍单列证据，不能把这几个 GET 或固定牌服务证明写成已完成浏览器验收。
@@ -613,6 +648,12 @@ env/unit/SQL的结构核对通过：env无API key/token/口令正文；unit固�
 
 08:44补明确新Web库public schema的独立owner，避免依赖NOINHERIT下模板隐含权限；随后重新核13项hash、9段AST/Ruff E9/F、11段Bash -n与SQL/env/unit结构，全部通过。这里只修改新库模板，未执行任何SQL。
 
+09:34独立第三片补缓存隔离：所有B6外层候选Python命令、4条unit ExecStart/ExecStartPre和launcher二次exec均显式`-I -B -X pycache_prefix=/dev/null`。launcher增加原manifest字节/hash、固定词法路径/root不可组他写及636成员校验；B0的额外文件扫描、解释器/锁依赖检查仍必须先通过，不能用此模板取代。此修改没有新资产，只有env、05-launch.py、unit三个内嵌文件的hash变化；13段均重新计算。
+
+本机已存在的原manifest为121517 bytes、SHA256 `49038f8c0dc6bb293ba688af91018cbe6339b319c388d290fd000a256e36b33c`、636成员，main.py条目SHA256为`42978429290a8325cd9081439f4fe6dcd1028b6ea252127ff1a7596d9e54a0ac`。b9锁定uvicorn0.34.3；本机同版本公开包源码`uvicorn/main.py`为17234 bytes、SHA256 `e53173b9bd946d29382ce43f51e4373d92e24d11b9d4a210d2c498f5265430df`，已静态核`--app-dir`及其`sys.path.insert(0, app_dir)`实现，未运行uvicorn。b9 `mingjing_core/adapters/charts/adapter.py:65–69` 的实际subprocess调用是解释器`-X utf8 worker.py`，没有`-I`或`env=`，因此会继承launcher显式清理后的环境；没有据此声称实际子进程已验证。
+
+09:33:50 +08:00静态检查结果：13资产、9段AST/Ruff E9/F、11段Git Bash -n、4条unit受保护前缀、env精确nullprefix及launcher二次exec/app-dir结构全部通过，最大函数26行。原始安全记录`private/b1-restore-proof-20261021/b6-cache-static-1.json`为2643 bytes、SHA256 `c6ce3dbf65aa91fa7cdc0fa28322d2a634856d5fd190b9ce00c4c58a3ee7c31d`。记录只是本机静态产物，不是Linux/PG/systemd/cgroup证明；0pytest、0资产执行、0网络。hash索引见下表，提取后须重新逐字核验。
+
 下列hash按代码块正文UTF8、LF换行且结尾一个LF计算；未来提取文件必须逐个一致。新生成secrets不在索引中，也不能向公共日志打印其内容或SQL。
 
 | 资产 | 字节 | SHA256 |
@@ -621,12 +662,12 @@ env/unit/SQL的结构核对通过：env无API key/token/口令正文；unit固�
 | `02-private-secrets.py` | 946 | `881bcabe3e8d7b8cc0041115e6bf40498471a7eda8fbb64f5f6a836fa95a8b22` |
 | `03-initialize.py` | 1805 | `d8e346d15ab120cee4e786aed981553d60badb322d2be422af2d69fe7c5d8f9f` |
 | `04-grants.sql` | 1322 | `6c79df2d83200983bab18b5d5634a0740b6f217a355e5a5695edd106506daf50` |
-| `stage-b1-runtime.env` | 699 | `e4e1ad6f29b934ab1fa583e2169c6ce75d14937dc5985de18c5f4099ccb93620` |
-| `05-launch.py` | 2937 | `2b4834d4ac6906d4cf7ae795e72f807238682c68fd22ac6e230f54f9283196f9` |
+| `stage-b1-runtime.env` | 729 | `7b4e09363fdc06358d5286acfcb044a293cd73b1be90945458d896671b2d6354` |
+| `05-launch.py` | 4557 | `bd8c0472acd49eba43fd1378a8d9f4217c8a2219b78894e19be1898726ce9522` |
 | `06-preflight.py` | 3444 | `27f7a1aa362a140c66e4ff76f5e597abe5bfbc8fad59959b5d3e46377e000b06` |
 | `07-network-fixture.py` | 1260 | `c0b4560e7426237284b72723a751b1f1cdb936ae0cbe17e2f31fd42753550b97` |
 | `08-network-check.py` | 1383 | `3526d681c1c9ae12e932fc617b769571ef893859e8a6b560fadad1369d75afe0` |
-| `zhiming-core-b1-stage.service` | 1933 | `0a1384418e6c1cb44d33431db200f5469713a92a2cb9ea407821dda61f43cde3` |
+| `zhiming-core-b1-stage.service` | 2069 | `31f4fbc2dd1ed25741a9c08a72b291eb2230444fa741fffaecf65a5f2b950bb6` |
 | `09-http-readonly.py` | 1056 | `2a46099d2a8bf334b2ae832547ecdf9c37d97ea7cb8e94e9a2b870e4460c5525` |
 | `10-fixed-draw.py` | 1818 | `9e02959fad8adc7b6257a979dfee2717661b44ca9f77aedb715ef3de3069d0fc` |
 | `11-fixed-draw-http.py` | 836 | `3f4c1f3fc5a29b3e0d8775f684a2601ed9ed9bc23cb2b150d3f07adaab29fc80` |

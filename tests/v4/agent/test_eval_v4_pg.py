@@ -9,6 +9,8 @@ from pathlib import Path
 import httpx
 import pytest
 
+from mingjing_core.application.dispatcher import AgentDispatcher
+from mingjing_core.models.quota_runtime import current_scope
 from tools.eval.engine import evaluate_scenario
 from tools.eval.schema import Scenario, load_scenarios
 from tools.eval.targets.v4_target import V4Target
@@ -79,13 +81,29 @@ def test_wrong_expect_cannot_change_the_observed_model_text(target: V4Target) ->
     assert first["previews"] == failed["previews"] and "must_include_all[1]" in str(failed["failed_assertions"])
 
 
-def test_x04_measures_quiet_loopback_http_and_persists_interrupted_partial(target: V4Target) -> None:
+def test_x04_measures_quiet_loopback_http_and_persists_interrupted_partial(
+    target: V4Target, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    previous, scopes = current_scope(), []
+    tick = AgentDispatcher.tick
+
+    def bounded_tick(dispatcher: AgentDispatcher) -> int:
+        scopes.append(current_scope())
+        return tick(dispatcher)
+
+    def no_permanent_worker(*args, **kwargs):
+        raise AssertionError("Synthetic eval must not start a permanent dispatcher")
+
+    monkeypatch.setattr(AgentDispatcher, "tick", bounded_tick)
+    monkeypatch.setattr(AgentDispatcher, "start", no_permanent_worker)
     observed = evaluate_scenario(case("X04"), target, target_name="v4")
     assert observed["status"] == "passed", observed
     measured = target.inspect_db()["run_meta"]
     assert 0 <= measured["stop_latency_ms"] < 2000 and measured["scripted_http_requests"] == 1
     assert measured["partial_id"] and measured["rule"].startswith("monotonic")
     assert target.repo.fetch_run(target.owner, measured["run_id"])["status"] == "cancelled"
+    assert len(scopes) == 1 and scopes[0].lane == "eval" and scopes[0].scenario_id == "X04"
+    assert current_scope() == previous
 
 
 def test_l01_four_candidate_codecs_roundtrip_real_tools_with_mock_transport(target: V4Target) -> None:

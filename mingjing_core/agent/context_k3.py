@@ -86,8 +86,10 @@ class K3EstimatedMeter:
     version = "public_k3_estimate_v1"
     model = "k3-256k"
 
-    def __init__(self, counter: PublicK3Counter | None, *, factor: str = "1.15") -> None:
+    def __init__(self, counter: PublicK3Counter | None, *, factor: str = "1.15", model: str = "k3-256k") -> None:
         if counter is None:
+            raise InputMeterUnverified()
+        if not isinstance(model, str) or not model.strip():
             raise InputMeterUnverified()
         identities = (counter.version, counter.encoder_version)
         hashes = (counter.artifact_sha256, counter.encoder_sha256)
@@ -96,6 +98,7 @@ class K3EstimatedMeter:
         ):
             raise InputMeterUnverified()
         self.counter, self.factor = counter, factor_value(factor)
+        self.model = model
         self.live_admissible = counter.live_admissible is True
         self.provider = "kimi" if self.live_admissible else "scripted"
         self.tokenizer_version, self.tokenizer_sha256 = identities[0], hashes[0]

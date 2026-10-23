@@ -46,8 +46,15 @@ def reader_repo(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch) ->
         set_clock(old)
 
 
-def completed(repo: PostgresRepository, *, tarot: tuple[str, str] | None = None) -> tuple[dict, dict]:
-    run, registry, frozen = prepare(repo, "请核对合成安排")
+def completed(
+    repo: PostgresRepository,
+    *,
+    tarot: tuple[str, str] | None = None,
+    delivery_target: str | None = None,
+    mode: str | None = None,
+) -> tuple[dict, dict]:
+    route = {"channel": "feishu", "external_id": delivery_target} if delivery_target else {}
+    run, registry, frozen = prepare(repo, "请核对合成安排", mode=mode, **route)
     if tarot:
         request = dict(run["request"], draw_id=tarot[0], reading_id=tarot[1])
         with repo.transaction("alice") as connection:
@@ -71,7 +78,7 @@ def completed(repo: PostgresRepository, *, tarot: tuple[str, str] | None = None)
 def test_core4_outbox_uses_run_dependencies_and_rechecks_them(reader_repo: PostgresRepository) -> None:
     repo = reader_repo
     repo.bind_channel("alice", "feishu", "ou_synthetic")
-    run, result = completed(repo)
+    run, result = completed(repo, delivery_target="ou_synthetic")
     assert "dependencies" not in result["meta"]["core_run"]
     outbox = OutboxService(repo)
     item = outbox.prepare_delivery(
@@ -152,10 +159,14 @@ def test_web_result_run_and_history_read_core4_without_invoking_a_model(
     client = TestClient(create_app(service))
     chat = client.get("/api/chat/" + run["id"], headers=headers)
     assert chat.status_code == 200 and chat.json()["answer"] == result["text"]
-    assert chat.json()["meta"] == result
+    chat_meta = chat.json()["meta"]
+    assert chat_meta.pop("memory_receipts") == []
+    assert chat_meta == result
     assert client.get("/api/runs/" + run["id"], headers=headers).json()["result"] == result
     rows = client.get("/api/history", headers=headers).json()
-    assert [row["meta"] for row in rows if row["role"] == "assistant"] == [result]
+    history_meta = [row["meta"] for row in rows if row["role"] == "assistant"]
+    assert len(history_meta) == 1 and history_meta[0].pop("memory_receipts") == []
+    assert history_meta == [result]
     assert client.get("/api/chat/" + run["id"]).status_code == 401
 
 
@@ -194,7 +205,7 @@ def test_report_core4_manifest_and_delivery_do_not_read_legacy_meta_dependencies
     repo = reader_repo
     repo.bind_channel("alice", "report", "synthetic-report", binding_kind="task")
     repo.bind_channel("alice", "feishu", "ou_synthetic")
-    run, result = completed(repo)
+    run, result = completed(repo, mode="scheduled_report")
 
     async def consult(**kwargs):
         return result

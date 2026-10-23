@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[3] / "tools/eval"
 def test_extension_contracts_are_separate_and_observe_real_db_outputs() -> None:
     required = load_scenarios(ROOT / "scenarios_v4")
     extra = load_scenarios(ROOT / "scenarios_v4_extensions")
-    assert {case.id for case in required} == REQUIRED_IDS and len(required) == 47
+    assert {case.id for case in required} == REQUIRED_IDS and len(required) == 48
     assert {case.id for case in extra} == {
         "T01",
         "T02",

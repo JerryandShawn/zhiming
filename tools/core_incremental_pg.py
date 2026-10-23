@@ -8,11 +8,61 @@ from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any, Protocol
 
+from psycopg import Error as PsycopgError
 from psycopg import connect, sql
-from psycopg.conninfo import conninfo_to_dict
+from psycopg.conninfo import conninfo_to_dict, make_conninfo
 from psycopg.rows import dict_row
 
-from tools.core_incremental_contracts import Request, digest, require
+from tools.core_incremental_contracts import Request, UpgradeRejected, digest, require
+from tools.core_incremental_files import regular
+
+IMPLICIT_PG_ENV = (
+    "PGHOST",
+    "PGHOSTADDR",
+    "PGPORT",
+    "PGDATABASE",
+    "PGUSER",
+    "PGSERVICE",
+    "PGSERVICEFILE",
+    "PGSYSCONFDIR",
+    "PGOPTIONS",
+    "PGPASSFILE",
+    "PGPASSWORD",
+)
+DSN_FIELDS = {"host", "hostaddr", "port", "dbname", "user", "password", "passfile", "options", "connect_timeout"}
+
+
+def _reject_implicit_pg() -> None:
+    require(not any(os.environ.get(key) for key in IMPLICIT_PG_ENV), "IMPLICIT_PG_ENVIRONMENT")
+
+
+def _controlled_dsn(request: Request, role: str, value: str) -> str:
+    try:
+        fields = conninfo_to_dict(value) if value else {}
+    except (PsycopgError, ValueError):
+        raise UpgradeRejected("PG_DSN_INVALID") from None
+    require(set(fields) <= DSN_FIELDS, "PG_DSN_FIELDS")
+    host = fields.get("host", "")
+    require(host in {"127.0.0.1", "::1"} and fields.get("hostaddr", host) == host, "LOOPBACK_ONLY")
+    require(fields.get("port", "5432") == "5432" and fields.get("dbname") == request.database, "DATABASE_IDENTITY")
+    require(fields.get("user") == request.database + "_" + role, "SEPARATE_DATABASE_ROLES")
+    require(fields.get("options", "") == "" and fields.get("connect_timeout", "5") == "5", "PG_DSN_OPTIONS")
+    passfile = fields.get("passfile", os.path.abspath(os.devnull))
+    if passfile not in {os.devnull, os.path.abspath(os.devnull)}:
+        require(Path(passfile).is_absolute(), "PASSFILE_ABSOLUTE")
+        regular(Path(passfile), private=True)
+    fields.update(hostaddr=host, port="5432", options="", connect_timeout="5", passfile=os.path.abspath(passfile))
+    return make_conninfo(**fields)
+
+
+def _controlled_dsns(request: Request, values: dict[str, str]) -> dict[str, str]:
+    _reject_implicit_pg()
+    result = {role: _controlled_dsn(request, role, value) for role, value in values.items()}
+    identities = {
+        tuple(conninfo_to_dict(value)[key] for key in ("hostaddr", "port", "dbname")) for value in result.values()
+    }
+    require(len(identities) == 1, "PG_SERVER_MISMATCH")
+    return result
 
 
 class CommandRunner(Protocol):
@@ -39,17 +89,12 @@ class PostgresPort:
             runner,
             connector or connect,
         )
-        self.dsns = {role: os.environ.get(f"CORE_INCREMENTAL_{role.upper()}_DSN", "") for role in ("owner", "writer")}
-        for role, value in self.dsns.items():
-            fields = conninfo_to_dict(value) if value else {}
-            require(fields.get("host") in {"127.0.0.1", "::1"}, "LOOPBACK_ONLY")
-            require(
-                fields.get("port", "5432") == "5432" and fields.get("dbname") == request.database,
-                "DATABASE_IDENTITY",
-            )
-            require(fields.get("user") == request.database + "_" + role, "SEPARATE_DATABASE_ROLES")
+        self.dsns = _controlled_dsns(
+            request, {role: os.environ.get(f"CORE_INCREMENTAL_{role.upper()}_DSN", "") for role in ("owner", "writer")}
+        )
 
     def _connection(self, role: str) -> Any:
+        self.dsns = _controlled_dsns(self.request, self.dsns)
         return self.connector(self.dsns[role], row_factory=dict_row, connect_timeout=5)
 
     def _identity(self, connection: Any, role: str) -> dict[str, Any]:
@@ -66,16 +111,26 @@ class PostgresPort:
         return row
 
     def _runtime_safe(self, connection: Any) -> bool:
+        usage = connection.execute(
+            "SELECT has_schema_privilege(current_user,'mingjing_core','USAGE') AND "
+            "has_schema_privilege(current_user,'public','USAGE') AS safe"
+        ).fetchone()
+        if usage is None or not usage["safe"]:
+            return False
         row = connection.execute(
             "SELECT rolsuper OR rolcreatedb OR rolcreaterole OR rolreplication OR rolbypassrls "
             "OR has_database_privilege(current_user,current_database(),'CREATE') "
+            "OR has_database_privilege(current_user,current_database(),'TEMP') "
             "OR has_schema_privilege(current_user,'mingjing_core','CREATE') "
             "OR has_schema_privilege(current_user,'public','CREATE') "
             "OR EXISTS(SELECT 1 FROM pg_auth_members "
             "WHERE member=(SELECT oid FROM pg_roles WHERE rolname=current_user)) "
             "OR EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace "
             "WHERE n.nspname IN ('mingjing_core','public') "
-            "AND pg_has_role(current_user,c.relowner,'USAGE')) AS elevated "
+            "AND pg_has_role(current_user,c.relowner,'USAGE')) "
+            "OR EXISTS(SELECT 1 FROM pg_tables t WHERE t.schemaname IN ('mingjing_core','public') "
+            "AND has_table_privilege(current_user,quote_ident(t.schemaname)||'.'||quote_ident(t.tablename),"
+            "'TRUNCATE,REFERENCES,TRIGGER')) AS elevated "
             "FROM pg_roles WHERE rolname=current_user"
         ).fetchone()
         require(row is not None, "RUNTIME_ROLE_MISSING")
@@ -173,6 +228,7 @@ class PostgresPort:
         }
 
     def environment(self) -> dict[str, str]:
+        self.dsns = _controlled_dsns(self.request, self.dsns)
         env = {key: os.environ[key] for key in ("PATH", "LANG", "SYSTEMROOT") if key in os.environ}
         env.update(
             CORE_INCREMENTAL_OWNER_DSN=self.dsns["owner"],
@@ -188,7 +244,15 @@ class PostgresPort:
         prefix = "import sys,json,os\nsys.path.insert(0," + repr(self.request.release) + ")\n"
         prefix += "from mingjing_core.repositories.postgres import PostgresRepository\n"
         raw = self.runner.run(
-            [self.request.release + "/venv/core/bin/python", "-c", prefix + body],
+            [
+                self.request.release + "/venv/core/bin/python",
+                "-I",
+                "-B",
+                "-X",
+                "pycache_prefix=" + os.path.abspath(os.devnull),
+                "-c",
+                prefix + body,
+            ],
             env=self.environment(),
             stdin=json.dumps(payload or {}),
         )
@@ -243,10 +307,13 @@ print(json.dumps(result))
         env = self.environment()
         for key, name in (
             ("host", "PGHOST"),
+            ("hostaddr", "PGHOSTADDR"),
             ("port", "PGPORT"),
             ("user", "PGUSER"),
             ("password", "PGPASSWORD"),
             ("dbname", "PGDATABASE"),
+            ("passfile", "PGPASSFILE"),
+            ("options", "PGOPTIONS"),
         ):
             value = conninfo_to_dict(self.dsns["owner"]).get(key)
             if value is not None:

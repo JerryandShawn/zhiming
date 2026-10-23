@@ -233,9 +233,20 @@ def validate_backup(request: Request, backup: dict[str, Any], snapshot: dict[str
 
 
 def validate_restore(request: Request, backup: dict[str, Any], proof: dict[str, Any]) -> None:
+    require(isinstance(proof, dict), "RESTORE_OBSERVATION_MISSING")
     require(proof.get("schema") == "b1-isolated-restore-proof-v1", "RESTORE_PROOF_SCHEMA")
+    # These are provenance assertions, not signatures; the approval still binds the whole reviewed receipt.
+    require(
+        proof.get("platform") == "linux"
+        and proof.get("admissible") is True
+        and proof.get("posix_permissions_verified") is True,
+        "RESTORE_PROOF_ORIGIN",
+    )
     require(proof.get("backup_sha256") == digest(backup), "RESTORE_BACKUP_BINDING")
-    require(proof.get("target") == TARGET and proof.get("manifest_sha256") == request.manifest_sha256, "RESTORE_SOURCE")
+    require(
+        proof.get("target") == TARGET and proof.get("manifest_sha256") == request.manifest_sha256,
+        "RESTORE_SOURCE",
+    )
     require(proof.get("database") == request.restore_database, "SEPARATE_RESTORE_TARGET")
     require(proof.get("checksums") == MIGRATIONS, "RESTORE_FORWARD_SCHEMA")
     for name in (
@@ -248,4 +259,122 @@ def validate_restore(request: Request, backup: dict[str, Any], proof: dict[str, 
     require(
         all(type(proof.get(key)) is int and proof[key] == 0 for key in ("model_calls", "external_sends")),
         "RESTORE_EXTERNAL_EFFECT",
+    )
+    _restore_observations(request, backup, proof)
+
+
+def _restore_object(value: object) -> dict[str, Any]:
+    require(isinstance(value, dict), "RESTORE_OBSERVATION_MISSING")
+    return value
+
+
+def _restore_hash(value: object) -> None:
+    require(isinstance(value, str) and SHA.fullmatch(value), "RESTORE_OBSERVATION_HASH")
+
+
+def _restore_identity(request: Request, value: object, role: str) -> dict[str, Any]:
+    row = _restore_object(value)
+    require(
+        row.get("database") == request.restore_database and row.get("role") == request.restore_database + "_" + role,
+        "RESTORE_OBSERVATION_IDENTITY",
+    )
+    require(
+        isinstance(row.get("host"), str)
+        and row["host"] in {"127.0.0.1", "::1"}
+        and type(row.get("port")) is int
+        and row["port"] == 5432
+        and type(row.get("version_num")) is int
+        and 150000 <= row["version_num"] < 160000,
+        "RESTORE_OBSERVATION_SERVER",
+    )
+    return row
+
+
+def _restore_replay(value: object) -> dict[str, Any]:
+    row = _restore_object(value)
+    for key in ("state_before_sha256", "state_after_sha256"):
+        _restore_hash(row.get(key))
+    require(
+        type(row.get("changed")) is bool
+        and row["changed"] == (row["state_before_sha256"] != row["state_after_sha256"]),
+        "RESTORE_REPLAY_CHANGED",
+    )
+    counts = _restore_object(row.get("counts"))
+    require(
+        all(type(counts.get(key)) is int and counts[key] == 0 for key in ("model_calls", "external_sends")),
+        "RESTORE_EXTERNAL_EFFECT",
+    )
+    for source, names in (
+        (counts, ("owners", "deleted_draws", "tarot_tombstones", "protected_receipts")),
+        (
+            row,
+            (
+                "whole_revocations_checked",
+                "deleted_draws_checked",
+                "checkpoint_ranges_checked",
+            ),
+        ),
+    ):
+        require(
+            all(type(source.get(key)) is int and source[key] >= 0 for key in names),
+            "RESTORE_REPLAY_COUNTS",
+        )
+    require(counts["owners"] > 0, "RESTORE_REPLAY_OWNERS")
+    return row
+
+
+def _restore_observations(request: Request, backup: dict[str, Any], proof: dict[str, Any]) -> None:
+    require(
+        proof.get("operation_id") == request.operation_id,
+        "RESTORE_OBSERVATION_OPERATION",
+    )
+    require(proof.get("dump_sha256") == backup.get("dump_sha256"), "RESTORE_DUMP_BINDING")
+    for key in (
+        "generator_sha256",
+        "candidate_python_sha256",
+        "dump_sha256",
+        "latest_ledger_sha256",
+    ):
+        _restore_hash(proof.get(key))
+    owner = _restore_identity(request, proof.get("empty_target_observed"), "owner")
+    restored = _restore_object(proof.get("restored_schema4"))
+    require(
+        restored.get("state_sha256") == backup.get("source_state_sha256")
+        and restored.get("checksums") == {key: MIGRATIONS[key] for key in ("1", "2", "3", "4")},
+        "RESTORE_SCHEMA4_BINDING",
+    )
+    _restore_hash(restored.get("state_sha256"))
+    archive = _restore_object(proof.get("pg_restore"))
+    require(
+        archive.get("executed") is True and type(archive.get("exit_code")) is int and archive["exit_code"] == 0,
+        "RESTORE_ARCHIVE_NOT_EXECUTED",
+    )
+    _restore_hash(archive.get("executable_sha256"))
+    migration = _restore_object(proof.get("migration"))
+    require(
+        migration.get("checksums") == MIGRATIONS and migration.get("forward_migrations") == [5, 6, 7],
+        "RESTORE_MIGRATION_OBSERVATION",
+    )
+    first, second = (_restore_replay(proof.get(key)) for key in ("replay_first", "replay_second"))
+    require(
+        second["changed"] is False
+        and first["state_after_sha256"] == second["state_before_sha256"] == second["state_after_sha256"],
+        "RESTORE_REPLAY_NOT_IDEMPOTENT",
+    )
+    require(
+        first["counts"]["owners"] == second["counts"]["owners"] >= len(request.owners),
+        "RESTORE_REPLAY_OWNERS",
+    )
+    permissions = _restore_object(proof.get("writer_permissions"))
+    writer = _restore_identity(request, permissions.get("identity"), "writer")
+    require(
+        all(writer[key] == owner[key] for key in ("host", "port", "version_num")),
+        "RESTORE_OBSERVATION_SERVER",
+    )
+    require(
+        type(permissions.get("tables_checked")) is int
+        and permissions["tables_checked"] >= 5
+        and type(permissions.get("forbidden_probes_denied")) is int
+        and permissions["forbidden_probes_denied"] >= 5,
+        "RESTORE_PERMISSION_OBSERVATION",
     )

@@ -1,5 +1,5 @@
-id: X03
-title: 崩溃恢复不重复写记忆不重复投递
+id: X03a
+title: web发起的崩溃恢复不重复写入或跨渠道回复
 category: robustness
 clock: '2026-10-17T10:30:00+08:00'
 targets:
@@ -15,8 +15,12 @@ turns:
     - kind: fact
       count: 1
     - kind: outbox
-      count: 1
-      status: queued
+      count: 0
+    - kind: message
+      where:
+        data.channel: web
+        data.role: assistant
+      count: 0
     events:
     - run.step_committed
     - run.crashed
@@ -30,15 +34,14 @@ turns:
     - kind: fact
       count: 1
     - kind: outbox
-      count: 1
-      status: sent
+      count: 0
     - kind: message
       where:
-        data.channel: feishu
+        data.channel: web
+        data.role: assistant
       count: 1
     events:
     - run.resumed
-    - delivery.sent
     - run.completed
 scripted:
 - turn: 1
@@ -55,3 +58,4 @@ scripted:
 - turn: 2
   model:
   - text: 已从记录恢复，没有重复保存或重复发送。
+notes: 35号R3批准的渠道拆分；替换原X03混合契约，不与旧47题分数直接比较。
