@@ -1,0 +1,56 @@
+name: v4 frontend M1 M2
+
+on:
+  push:
+    branches: [v4/p10-frontend]
+  pull_request:
+    branches: [v4/main]
+    paths:
+      - 'web/**'
+      - '.github/workflows/frontend-v4.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-v4-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install locked frontend dependencies
+        working-directory: web
+        run: npm ci
+      - name: Check types, lint, unit contracts, and build
+        working-directory: web
+        run: |
+          npm run typecheck
+          npm run lint
+          npm test
+          npm run build
+      - name: Install isolated browser
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+      - name: Check static pages, accessibility, and local-only network
+        working-directory: web
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: p10-static-browser-evidence
+          path: |
+            docs/v4/evidence/P10/screenshots
+            docs/v4/evidence/P10/components
+            docs/v4/evidence/P10/audits
+            docs/v4/evidence/P10/review-2026-10-18
+            web/playwright-report
+          retention-days: 7

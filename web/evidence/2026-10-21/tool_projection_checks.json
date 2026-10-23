@@ -1,0 +1,135 @@
+{
+  "schema": "frontend-tool-projection-preparation-v1",
+  "recorded_at_beijing": "2026-10-21T07:46:17.765085+08:00",
+  "status": "exporter_validated_ui_not_connected",
+  "unit": {
+    "command": "python -B -m unittest web.tests.test_tool_sample_projection -v",
+    "passed": 18,
+    "failed": 0,
+    "fixtures_commit": "6292199d8fdb167d03fe54b07f74060cec59e101"
+  },
+  "lint": "ruff E,F,I,B,UP,SIM passed; ruff format applied",
+  "files": [
+    {
+      "path": "web/scripts/export-tool-samples.py",
+      "bytes": 2826,
+      "sha256": "b796ef8c8e402d9698dc9ebae7298a1bbaf7179f478d72d37dc2af42bdaa37e8"
+    },
+    {
+      "path": "web/scripts/tool_samples/__init__.py",
+      "bytes": 72,
+      "sha256": "2c71b485a00afb499a19471f98555d7f77db44d00f5643372d64587ab3167042"
+    },
+    {
+      "path": "web/scripts/tool_samples/bazi.py",
+      "bytes": 4976,
+      "sha256": "75a4c4fd232e1e2a5d819b2ac63ab07d5ecd40f04613295b5c851309153ba6d4"
+    },
+    {
+      "path": "web/scripts/tool_samples/common.py",
+      "bytes": 7204,
+      "sha256": "f2aaaf2b621fc40e91b430b14fe7eee986a1ea0da3d0104961ced7b9648d5951"
+    },
+    {
+      "path": "web/scripts/tool_samples/export_io.py",
+      "bytes": 2903,
+      "sha256": "cdadcf6a291b3f746d98d8cea0d5e8cc809cf7feb2d6ad2d8157f9dc1992633a"
+    },
+    {
+      "path": "web/scripts/tool_samples/source_catalog.py",
+      "bytes": 4077,
+      "sha256": "22f7cf5405769e8d01dbe23168e2255a99af560e805ada217fdcdb46a7bcd821"
+    },
+    {
+      "path": "web/scripts/tool_samples/summaries.py",
+      "bytes": 2597,
+      "sha256": "7dba0091d20b8d0b74ad031c4f8977dfa1e1693d124aa61dd2949c98babd3b48"
+    },
+    {
+      "path": "web/scripts/tool_samples/synastry.py",
+      "bytes": 7535,
+      "sha256": "ad43ac68f0deb3d2ecc6c696de7fd104a8c15f41044783eff57ac106daa2fcfd"
+    },
+    {
+      "path": "web/scripts/tool_samples/window.py",
+      "bytes": 9780,
+      "sha256": "8d46abc291207d6d3ef5eae4fb8ac243dcbdc1ae0fa78abb2d889811e3775037"
+    },
+    {
+      "path": "web/tests/test_tool_sample_projection.py",
+      "bytes": 19392,
+      "sha256": "2d4c52b181d4cd0e29d78253a6342429c422f9959c6c02045df7fd5596d18467"
+    }
+  ],
+  "export": {
+    "manifest": {
+      "schema": "frontend-tools-export-v1",
+      "source_ref": "origin/v4/p8-calc",
+      "source_commit": "e56fcd6c4de96803fc5f6fc1135defd9ac34b1ff",
+      "synthetic_only": true,
+      "model_calls": 0,
+      "entries": [
+        {
+          "file": "window-search-ayuan-contract-20261021-27.json",
+          "tool": "window_search",
+          "document_id": "tool-8d8d4037020dcde8e112d5628895b0d96682d514c3372524ba916ce6bfe4d403",
+          "sha256": "abca437d50b27b537cd94f0d5ae954006ed0c05a5a44afd965a9d04a6ff8d083"
+        },
+        {
+          "file": "window-search-ayuan-page2.json",
+          "tool": "window_search",
+          "document_id": "tool-64ff3a30f0ead1e82c7f4425c3b67c5f168e520b00e90803148dc2a0c88abe5c",
+          "sha256": "2bf92668caf05073cdc1c1e3d768672e2473a3f91f1c128765887779d76a0696"
+        },
+        {
+          "file": "window-search-ayuan-empty.json",
+          "tool": "window_search",
+          "document_id": "tool-6daad2ece131e4e62d8619ca5a8a3aca5a9ede42567c914197a0ea119a40c4c3",
+          "sha256": "a8317d5434c438a818be6522954c491ff4c405f61a2a750860ba673d000aed44"
+        },
+        {
+          "file": "synastry-ayuan-xiaohe.json",
+          "tool": "synastry",
+          "document_id": "tool-469316cf15ee75cfd4f7f6ad9f61fc38a84e758372cc045ba5a3cf8a8b5cc2d2",
+          "sha256": "0e5bca193ab59d929e94084cd3e7104f9e2430f04cb49884144c1022b682376e"
+        }
+      ]
+    },
+    "manifest_file": {
+      "path": "web/test-results/tools-projection-20261021-0745/manifest.json",
+      "bytes": 1290,
+      "sha256": "f9f52462c709b86ff044658b8596849565f3c4c7b62dad93d2761e799022350c"
+    },
+    "outputs": [
+      {
+        "path": "web/test-results/tools-projection-20261021-0745/window-search-ayuan-contract-20261021-27.json",
+        "bytes": 669795,
+        "sha256": "abca437d50b27b537cd94f0d5ae954006ed0c05a5a44afd965a9d04a6ff8d083"
+      },
+      {
+        "path": "web/test-results/tools-projection-20261021-0745/window-search-ayuan-page2.json",
+        "bytes": 290842,
+        "sha256": "2bf92668caf05073cdc1c1e3d768672e2473a3f91f1c128765887779d76a0696"
+      },
+      {
+        "path": "web/test-results/tools-projection-20261021-0745/window-search-ayuan-empty.json",
+        "bytes": 8661,
+        "sha256": "a8317d5434c438a818be6522954c491ff4c405f61a2a750860ba673d000aed44"
+      },
+      {
+        "path": "web/test-results/tools-projection-20261021-0745/synastry-ayuan-xiaohe.json",
+        "bytes": 107213,
+        "sha256": "0e5bca193ab59d929e94084cd3e7104f9e2430f04cb49884144c1022b682376e"
+      }
+    ],
+    "source_commit": "e56fcd6c4de96803fc5f6fc1135defd9ac34b1ff"
+  },
+  "limits": [
+    "Only published synthetic Git samples; no HTTP, database, model or browser",
+    "Output is a new web descendant; existing directory refused",
+    "CLI --output is relative to web, independent of shell cwd",
+    "Source root/alias/claim digests and closed public projection checked; not real-person consent or calculation accuracy",
+    "UI drafts, browser integration and screenshots not yet validated"
+  ],
+  "real_model_calls": 0
+}

@@ -1,0 +1,676 @@
+{
+  "run_id": "2026-10-18T10:30:46.344Z",
+  "stage": "chart",
+  "captured_at": "2026-10-18T10:31:18.021Z",
+  "node": "v22.23.3",
+  "synthetic_only": true,
+  "model_calls": 0,
+  "expected_combinations": 24,
+  "captured_combinations": 24,
+  "source_hashes": {
+    "web/src/api/AuthGate.tsx": "7bb01819e64a631c388ae0abac10ebe8db325749eef72514001c6ef50cedc300",
+    "web/src/api/client.ts": "3d8dab3341b5e46ef5517678f217dc66f47b7add20a9925a5877b4b15150224b",
+    "web/src/api/operations.ts": "b1cfd97313f2aa5154166995e4687519b068871895c7284e727ee99d107c38e7",
+    "web/src/api/useResource.ts": "8097e2e45b57fc0eaa7e20a9fb063f78ff6cb5d7097f2d7341b60102521b07a3",
+    "web/src/App.tsx": "17c26316b57db3591caef55b9ee7ecf167aced7fa4c95946ab9f6cff589c80af",
+    "web/src/charts/AstroDiagram.tsx": "7f30f4570cab0ae5f4de8401e85ed455cf45bd75dfa9b8e24edcb85f3a4a5567",
+    "web/src/charts/ChartBasis.tsx": "65a98019d6846ff231c71b9487fd73e5932b32059d05b376274dd19a22efa9bf",
+    "web/src/charts/ChartDemo.tsx": "4a5c44cab0f6a120081e6439962e31f5d91ff5bc1471f2f6f2ac077498a38437",
+    "web/src/charts/charts.css": "e5069dd7f8d0cef2d6e77b6dd0854ef80fd25cbbd2a9979dce16dbfac0df4772",
+    "web/src/charts/data.ts": "346cca6c4a23dd0f168deeaceb2e95d533137356cd670f9396f4206eb3aa06fc",
+    "web/src/charts/demo.ts": "d17ef4df8001b6f02ee4825e64a9fece9ca606057f9c9cc23c1154d426bdda1d",
+    "web/src/charts/LuckPeriods.tsx": "1bbdb27c78c97b1c6463f31730eac094373674933ba010a72229aa7a3fc8fc23",
+    "web/src/charts/TimeBasis.tsx": "af284a64f8ee063b08b0369ca6f3f18684759de740b1502be990eaa47830e174",
+    "web/src/charts/ZiweiPalaces.tsx": "14adeb43e6fe6b9a3a74490d0054a2187f8a54c6af2aeda8f538dbb6f7829cfe",
+    "web/src/chat/Answers.tsx": "5d5781cb98aed39a13d54ccbde993bf7beda6ace920e1c837bcca5a2bfe07140",
+    "web/src/chat/Composer.tsx": "1847d45a4c9993f563cf77e5e907d1a8db24cf001ec7cbabe4accfa2b3208712",
+    "web/src/chat/events.ts": "410df9da5cf2971068e2a5ce3317dc24d93753284e68699a60de312ee1662e02",
+    "web/src/chat/publicProjection.ts": "b403c2f145163c234b9473ff1aff0111581fd3898f9e1f7d4f918aae96a7fde6",
+    "web/src/chat/reducer.ts": "68b2d1eb4b66638771c41720ace23b872cf9328064e487c6156eebab0ba8eb5c",
+    "web/src/chat/sse.ts": "414354498f52185fbf6360b7c43d93003257dfe5c6c1e4a59cf83119e2e5bd1c",
+    "web/src/chat/storage.ts": "07383479398282f730a7f5409fb999e5aab4f23908f394dd1ea8059cfb5752e2",
+    "web/src/chat/transport.ts": "5849931d665aec4343b6d05390a996a52d82ce9fede38dd2bd199337b40c6a9b",
+    "web/src/chat/types.ts": "d2678eb5eafb63340db787857745f4ffe4ef420a52aed09b683d525436d112de",
+    "web/src/chat/useChat.ts": "90fa1fdb8977dabadf287ab9af32d74ecc9d8981eb1c4b88e88aee4c6ee20a72",
+    "web/src/chat/v2.ts": "6423a13754b893ae7695c21f974c69a243425223aaef1020d5f7f01147eda6db",
+    "web/src/components/Calendar.tsx": "3ad76a542dd67428ca5d9064942f4491aba0ff8b679d69f012ca6a7ee5f5e4d5",
+    "web/src/components/Charts.tsx": "3e9010a7c870c29b1b7e34b8886897ecda0dc8ef79dc116ef30f892fb92e6d7c",
+    "web/src/components/Composer.tsx": "801b7d7ca77b00b6fe03e1320f65a6a31a68b069e6e4e5f77b361a0f0d1d7ef2",
+    "web/src/components/DatePicker.tsx": "3964ac7b5388765471070fa1c65a2f86812cd0872782ba758e1dd44e337b984f",
+    "web/src/components/Markdown.tsx": "d3dc26cf3da70d183fd8c00de9b159704f4bff298838765f6e580960a2884b12",
+    "web/src/components/Messages.tsx": "583dda5dcf1c9411f6410d537e5d7a54b50336a1280b4817a1b1c92f5d05cbd6",
+    "web/src/components/ReportOptions.tsx": "c5f5e3eaa085cfe96e35d68267e291f1fae7b1b3435805a8c4d9732acf2c4bd0",
+    "web/src/components/TarotCards.tsx": "9e6f9e3d14c50c2be6a9a48007a66a456c531550e3fe7921be516dc9503e5883",
+    "web/src/components/TarotDraft.ts": "183bb05cb1ddb0659dcf698bc05cc129f69ccbd7b5844d614838a5bb3cde2008",
+    "web/src/components/ui/Controls.tsx": "5f548d9993df9498a153c910401b375f19e9dcb02d2f79001e9e99164b1e21bb",
+    "web/src/components/ui/Overlays.tsx": "d8e1aea939a8c47f15e222688b90fb50e780e22b482640e765a298788b15105b",
+    "web/src/components/ui/Selection.tsx": "7256e0eec4485151166f4dcea5467c03ca9dcd64aea453750afe02eefc3309c1",
+    "web/src/demos/ComponentNotice.tsx": "a04451965eabc581bfc76c401544a5befa0d63eb3f9a344e74a27548475f06ca",
+    "web/src/demos/components-demo.css": "24c304014c2f6922d341d1fae1ec91abb9807f516b9e8509285840ebd18535da",
+    "web/src/Layout.tsx": "f174f8dd4f567ae8d6a2edbd674d9916932f2b9fb56ee79fe12fa0136414ae14",
+    "web/src/live/CaseFeedback.tsx": "6fe517e8b2048b0850da42b0e44c5d212dc3e8854a8d8b81b12b0d700839b43d",
+    "web/src/live/Cases.tsx": "ff69e8e4a65e4fba24b96440d062ad9dc7277354c23738e7eebc54bd3b869b6f",
+    "web/src/live/Chart.tsx": "788ee9ce410bcf023e7ad938ca268b4d2a37f5a62da33245edb157454011f810",
+    "web/src/live/ChartData.tsx": "f08ea3ba0bb0355dca5e4f56713acd35a176b1b99dd273b96aceb6ef4534590c",
+    "web/src/live/Chat.tsx": "b1f6c8a9c0773d2b9344d76d2c39517a6b942d288ab40e4c4fb392a75b9da479",
+    "web/src/live/common.tsx": "0e1289f085fba909e1b98bbf7d5d10e128f2de04f7dccde44f30a4d6ba3a63ce",
+    "web/src/live/DateField.tsx": "4c56a86650c01ced9b7b6d9268455efda619e266826ad4fee389cb2e08221a9b",
+    "web/src/live/LegacyPreview.tsx": "82b702beb74dff8c046e80fc2f09af99c6bc2f15e88117ceb6c870edf16f5460",
+    "web/src/live/Me.tsx": "329164fc9e2292031dfe1196b57e6af212bb5dad5706da581b41fb3531cd1399",
+    "web/src/live/MemoryCard.tsx": "39b3f15778b61a2802120bdebd9f520b0a588a8d4503e8ae00997ffc21907742",
+    "web/src/live/ProfileForm.tsx": "887d622b855b0056e30dd8b4196d01ae482ad615473a5046f8565ef146a548e4",
+    "web/src/live/Reports.tsx": "1f17c1dcc2423147feeafdae7d9c9d151f1fae5365410571eaea9b138f3b5701",
+    "web/src/live/ReportSchedule.tsx": "3a682beb07f1db077940b8e576816145a432397853d9410c9258fcf3ca7c1e0d",
+    "web/src/live/Settings.tsx": "1e7cf378b23b20a1f6df7f34c63c7977369c77ec9692ba550fd83e13a52cae73",
+    "web/src/live/Tarot.tsx": "e865c8134568373bb5157bdb3c2b480da928480c9d77f179a26cbfe703e12fbe",
+    "web/src/live/TimeField.tsx": "039ac413b3c81ab364551d865b1502eee2657d2eb07c26d63bef8ef7354ccf31",
+    "web/src/live/Today.tsx": "38518e4ef5636130c91977bbdedd0739f0404c17b7462060573645a68b7f4026",
+    "web/src/live/types.ts": "aecdc2c807cd8f977f82d367387fb590d66f0bdada46ad1b75ac36b502f9595d",
+    "web/src/main.tsx": "a689c6e16d661c9557cd8716b2c1d56d1e3deb2d8fa8b21930bb2e22722f039c",
+    "web/src/pages/Cases.tsx": "2994248a5f1fc54035a626d93e77484dedd6ab634045c6354def55f6cb773580",
+    "web/src/pages/Chart.tsx": "ecd68fadffd478a02ee865dc8c447ee1caab52877a072c4931c552d81f109cf7",
+    "web/src/pages/Chat.tsx": "e2bbb8c133bbd8dbbd70971ab6d7c54ff402baf32033064d9c3244e76f4450a9",
+    "web/src/pages/Design.tsx": "443ca32827f7f2bdf7574e6aba6c54b79ec9777d8e4f0ab771877a00115b0bf0",
+    "web/src/pages/Me.tsx": "a9aef5e38127786d3c7926221439abe2a5faac48cb73dfc305916a86cbe8fc91",
+    "web/src/pages/Settings.tsx": "0e73d11646c0d4a389fda37e5629956f05e78a78c408a323c99bbf0eaa8c6cad",
+    "web/src/pages/Tarot.tsx": "40415b8988191b52e1fc5d75a2621c72230a90433de6a01a8a5915e06a36ca2d",
+    "web/src/pages/Today.tsx": "f0a9ad901a817f0a3994128675dfa84c5be9f79e2a1868e7eb06f96230269988",
+    "web/src/spaces/chat.css": "a68bf6b961c82e9bc8a5d6a4c83acaea0719abb1730d99b45af8f35705641ecc",
+    "web/src/spaces/ChatPreview.tsx": "54ee3e7d01a932a1e7555648f534434ebd0054751b4ae2ff88f060a801f59149",
+    "web/src/spaces/common.css": "b6cdc52003f1bd86a4097dd57f0e736c4edb79e5265af050061d2cfa32aedcf2",
+    "web/src/spaces/EditDialog.tsx": "3689f225e164c24d3729521f90c154aa2ea695ce00c549ed275a6449f261b19a",
+    "web/src/spaces/fixtures.ts": "779c59b03199aa96847ecb2750eddcc91f86c1dbe3b1c2e53b5856c76eec2fff",
+    "web/src/spaces/MemoryPreview.tsx": "21fda7bc94b0971bd77e71a69f8a3c27ae0a05e4f3730ca67c02e3fa7d08afb4",
+    "web/src/spaces/organize.css": "39add31265c660ecdb5a31bcbb45a344e419cfb21ffad417c1654cfca988feb2",
+    "web/src/spaces/OrganizePage.tsx": "7fc4700531f8267247fb9089ceef8c8a961d0aab1453e6b0a61dc68d3a816f71",
+    "web/src/spaces/PreviewNotice.tsx": "123c217e915ffcac93f69f95d6c9e7af963c2aa222508e9ce465295595bb46c0",
+    "web/src/spaces/proposal.ts": "91a6862b14ae5f7838683717223a1ee10765ae5087490e0bb893a21f426a3eae",
+    "web/src/spaces/ProposalTree.tsx": "1bb1a61e7163b9d1906bb2f98815269b2080e6d2ab3d7cab2127b8f29b0aa5b7",
+    "web/src/spaces/RouteBadge.tsx": "695caa468bce12195e295721d2bdc1e45d00d335cacf0220bada2336c1fdb9c6",
+    "web/src/spaces/SpaceNavigation.tsx": "e6d760e2f0755c72c76c39cfa8d04f9aeff27c46b647195f0f9a6392f8e72d97",
+    "web/src/spaces/store.ts": "91c965f05a036f91c0b56b526413c188621dd0ad90c20b25b7ddf65b5d91448a",
+    "web/src/spaces/TopicActions.tsx": "fff77efff8ba7310f2b0cfde7c0f543c2bba6572158563d389b7208086f08e0a",
+    "web/src/spaces/types.ts": "587846190550e5a52196f12faca514c9a90a22955fb95c70b30befeb96d3e6ff",
+    "web/src/state.ts": "23a0f719cfb315182dcf871b5b7b6295112114aa67d6f4f0b60ccc9253dd7bd1",
+    "web/src/styles/accessibility.css": "2a4d335c322d925b7ad5f7327e1b4f41585938fde02cb388a7a16ccc6542ea09",
+    "web/src/styles/base.css": "3840743d56721871bec574a51a828c8744c056b972ba1286a6f32fb5b3dffb14",
+    "web/src/styles/charts.css": "1298a31ec2b0413b8643c5e3a8d55e6927488ddf48d4e98469ced25ed0bdf494",
+    "web/src/styles/controls.css": "c3ba07064f5a63fc0c279f9d49f792a2a426744809203f504bbf65f9ff3df55e",
+    "web/src/styles/design.css": "67a6cf567e666e8bf48b555199117ed593c58601cfbb83ad53b3441a9a09499a",
+    "web/src/styles/live.css": "1cbfb0d8648f8e88dfe0e916d37df5aa3db0ed91eda908151d742b159ca87bef",
+    "web/src/styles/messages.css": "3d4f88c47348ca8695b6f64bddb924945f922160d3ddf99fc60d0fd214941615",
+    "web/src/styles/pages.css": "883ccebd8f27b8ec26a3ab32d3eb0cf440586d6d7d8705ca85fe7bce242e9a50",
+    "web/src/styles/selection.css": "fdb8ce0e9a7319ef27bf5f16db88c657ee0db1e106c4b98278c136780905b848",
+    "web/src/styles/tokens.css": "fa49e318b972f696495662e7c85fc900ff33536726cbbe95611ede229fed62cb",
+    "web/src/tarot/DrawPanel.tsx": "e42ee56b5b266645d07b2457f43ab509dde8396087efebdfc7d0d50f05cb3f16",
+    "web/src/tarot/draws.ts": "f6aa12ddbe096f0292ef365d1f093334fafe04c592172fb8825bc8f561577c00",
+    "web/src/tarot/ManualCards.tsx": "497f3dd7cbf88a93af929f0ecda4e56f4147085c588bfb9bfe1f4206bfa00a82",
+    "web/src/tarot/public.ts": "3151fb5aee2deeb17536470d369be7de8f1b7ee0e951b82b289d8ebf1bdf2fd9",
+    "web/src/tarot/QuestionForm.tsx": "35f1da6ea39577f6bb799a80c1035585ba940796f94bfb751952ecbed0bbae9e",
+    "web/src/tarot/ReadingPanel.tsx": "3ee948a742e357aad73b39866cebe02820d14aacb3e22189215828454c4b2cad",
+    "web/src/tarot/readings.ts": "9e3856be89693da54698e1e28f77c3ca8930892cf911067e11207a32d8327195",
+    "web/src/tarot/ServerSpread.tsx": "37e6a713930768c5d5fcda784cbedabf8f5a5a808620dc3550d92e87d0144422",
+    "web/src/useKeyboardViewport.ts": "372cf27293e74aaab805d278628d766157da4dceb242ad2c956723fd4427087c",
+    "web/tests/e2e/components-visual.spec.ts": "cabbe00d276b01e881043f2949294e21da08a06b956b0cb7429ae7d4930f6514"
+  },
+  "build_hashes": {
+    "static/dist/assets/Calendar-F4T_lfEW.js": "09e2dfbcdb6178772a67d8471571272f82bd49d20772c63d2f778525826c0e4e",
+    "static/dist/assets/Cases-D2cXAuIA.js": "fc8da8760e17b587027a079d1bd1a52fdc67ad72a97d5f9bb2ed6bb786a05e96",
+    "static/dist/assets/Cases-Ffw6ms36.js": "fb5c6877f8b65956c2769ee22fefb51592b778896b0dbffd881f8650992b71bd",
+    "static/dist/assets/Chart-DzniwE0n.js": "8d86465e7f977731348c044643e89cb1d9790811adc970a20277ab8c1c58c71a",
+    "static/dist/assets/Chart-QzCrYJVz.js": "73e209f8daf2ec9ab02c8a41cac7acdb91a95588eaa22cf645f388099954109f",
+    "static/dist/assets/ChartDemo-D7cU-jG3.js": "8cbc5a7fefe4c6b51ee2db50c7ec70f19a9b1093e409f898bf97c4631b4b6ac0",
+    "static/dist/assets/Charts-Ng6OOc4Z.js": "7650d6c39ee26fe86d9ed25cac3336d522e0a1225c8de15cec0a153d61906fda",
+    "static/dist/assets/Chat-Bzd-p8wz.js": "40bb61fd552a43d612198d77ecad79b32fc05c207cf0be15e6af35a2246e15a5",
+    "static/dist/assets/Chat-DOPH19fJ.js": "292fcdae562f9acc042c08a821c5d55805b59e0cd7a5d5e30a246ab88b33e7d9",
+    "static/dist/assets/ChatPreview-DO7heEt8.js": "61e293cb74a9f6fa3f577a2fe1e9c1916852c9e34193b23c40322bc18db0ecac",
+    "static/dist/assets/chevron-down-CXJ_ydEq.js": "6ac987296386a6165a5d8ed48ed04f2cf5977df706e0f5c7b1efbb7673fa248a",
+    "static/dist/assets/common-Cmd9HAar.css": "cb82c6da3859e24ff4b64ab8107434e98af8bf11c2667f8b92a72cfe08d4aad2",
+    "static/dist/assets/common-Dd5BqGWL.js": "3ba7046f5ccb1553285b4a3051f5563df501f70004a98ff8e4da1731e6911c8a",
+    "static/dist/assets/ComponentNotice-BIoJSqjK.css": "110d8be426ba4a2d5063ad0a7b31d999fc0babf1be9be7fe7b5538650db493fa",
+    "static/dist/assets/ComponentNotice-Dvt-iul8.js": "f82872b10bfe3b0f570ad6febab4cfb59cdc673d8e76e8ee2c930790b7a50006",
+    "static/dist/assets/Composer-C4Muwsi1.js": "0c06957a998010e125d6350d8e1db5069b8e42e4c406ac47f6826f76d895b2ee",
+    "static/dist/assets/DateField-DMPrTYM4.js": "a490fdd257e81ba1d13b34d315719a0758dd9ed95837e6fbd4d0ff00bc344e9e",
+    "static/dist/assets/Design-D-FZcTIB.js": "ae4df373496efef386817b4b249692f8eebd38e4b3357e05a0675e24bc6cdb28",
+    "static/dist/assets/index-BG9PLj3p.js": "19a1005b25ae662e4046fdc0d4757e9de5e6e42d48ae7a6cf5f9e4d67fbf1ec0",
+    "static/dist/assets/index-DbEM4j6u.css": "0eaa9a4df26f039e46d729408815f7024d723ba755b48e715d89fb9c0d680a12",
+    "static/dist/assets/index-yIiax2-q.js": "2f3f1cbaf602376f93cccb0cc4d99e924cc43e54915e0c878a6cf29fd8852e8a",
+    "static/dist/assets/lock-keyhole-CQskPOzy.js": "33df667a9b5b0c23943ead9b5d301f01c1daa4bfae4e5e809895b582d2a840a6",
+    "static/dist/assets/Markdown-DwdiS9Jf.js": "052f37516d21477ed03a319bd39c7bb0f367228cef7396ad9eebb237fcf7a975",
+    "static/dist/assets/Me-C2QR0R60.js": "3e3cb005ae484fe2d92ba931cea6a7e452524df4dec3dbad6426d786b9ca0dee",
+    "static/dist/assets/Me-D6JeXTRr.js": "6f8437c3ae0840e25f260e44609cd00b766f8c7de739d4247d33279b6d14542b",
+    "static/dist/assets/MemoryPreview-C_z2M7-W.js": "e50536856bb2d5c00c364d1eefcfc1259a08b5d7c52e174dfc756d5c2fa6e25a",
+    "static/dist/assets/Messages-D4j05Qkj.js": "a8b6ee750253d282580f0ca9be86e7de2d711b08065970625fece844373c9a43",
+    "static/dist/assets/operations-BVJoalfF.js": "634146dd46b9dca0b60b54258f566dc5a66d2b65f8573bd6ad9a474cd8a5f179",
+    "static/dist/assets/OrganizePage-BtmVq2pI.js": "a5336d868986eba3bb035ed049885c28a2a77a893a4b8aaf795fb2b13ddc0a4c",
+    "static/dist/assets/OrganizePage-Xf4G6qj_.css": "9432693f29a1cc6f8d6fd75e8998de199c8bf73997cbd7d0cb6cc8b7fc5d282b",
+    "static/dist/assets/PreviewNotice-DYxCXX78.js": "e8dc260af8374ed3aa33aaa95930f925f4edd2244e6a2a0e47fe9c08c1b63ad6",
+    "static/dist/assets/react-DnxA9v5e.js": "753bd94c54c1746ba790ce3be16209c47ecd154709b319251a98c86b24408187",
+    "static/dist/assets/Selection-tuQBf7T9.js": "d89803b3895c439bb6bb65d9f9277da5277390d5f50d730c9808cded71a647d1",
+    "static/dist/assets/Settings-CJzA3ofk.js": "5937a399c6fbbe0dc36fdaaa600b92f1c0bf6b2cbe5e97faa88662c1b9ae83cc",
+    "static/dist/assets/Settings-DC8pajB3.js": "d702bbbfded71e9d78f107150e02d649f8b5cdfcabe64c58ea38a246d778ed7e",
+    "static/dist/assets/SpaceNavigation-BeIuXPkO.js": "8f7b2b518d97cc1a4f500dcfda0522c96d7b1f88ec4342c6ca88e3a80dc210fa",
+    "static/dist/assets/SpaceNavigation-p_7PkAVI.css": "49493df00aa7f9de9a1ec95a1cb1ed987c24760804177ee5810fdcbf623879e1",
+    "static/dist/assets/square-DlmM4kZ4.js": "5629d06d9d205cadddba697aec4a3f0be6ff4b78d629b155a39dd7de5416bacf",
+    "static/dist/assets/sse-MLsGSJ6H.js": "c34e1c507e173c5672c70dbc01a1f7af63ea22e02e7235744b71d1a6bb3ab313",
+    "static/dist/assets/store-t2He9Fy8.js": "2024da86c2b2664e49aa53dfb41b7d2e3af23a8e7356607d337ed422585eaf3b",
+    "static/dist/assets/Tarot-CrV8Q8TO.js": "1a71c1a39108f9790a14e095b497747488dd49157c66de309abbc0049049e42b",
+    "static/dist/assets/Tarot-D8ZkDcY_.js": "4a384ed8aa1edabf128aa8b53038c05a22bd86eea963f0ecc79aa2dd24fa7cb0",
+    "static/dist/assets/TarotCards-BdXx2jiR.js": "16f525fcc6d69e79294bb990545e76bbe92e1062381884b644621ade831b0feb",
+    "static/dist/assets/TimeBasis-By4BmxC_.js": "aae1f97b0324cecb8213f8a80cab20cbbe475a62fae5cb8c9e4a5aaf3198f985",
+    "static/dist/assets/TimeBasis-DFAJCxas.css": "828231e7a74fcb1e7a6c9bec4ad49ce8d0ceebe6cfce07f99bc18c2abb7d8a6a",
+    "static/dist/assets/TimeField-D08q6KKs.js": "09094d0da8a0981bde33dade88681174ecae3f91bbf2f6c09069f3f71e17844c",
+    "static/dist/assets/Today-B3LLj5lV.js": "91dd1d800180ccc6ffd86e0054cd998822b1bd81e81e61cfb27eb4453efb4a62",
+    "static/dist/assets/Today-DTLboneL.js": "00c6923cff1e281975d7fb66e2894c659a892acf60feed3926ee2407066586eb",
+    "static/dist/assets/use-reduced-motion-DceRSTBj.js": "f45ff8e86d116b6fb0a8d82d0e73c1bf1ccdbe1bedd81bde66e15087a9379913",
+    "static/dist/assets/useResource-ByurVfWl.js": "15c87c62961ef89ec68cceef7372a5683112d12f948ca7d6f918cefa9bb85be6",
+    "static/dist/index.html": "b299249269a3b3adf37ff2a40cd40079113dc1854b0c5757dc587d3755642327",
+    "static/dist/.vite/manifest.json": "30937fe9b9c57efb066a8e9927f7b691a6b6ba47cc130ecae11c07fa14d143b0"
+  },
+  "captures": [
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-dark-1440.png",
+      "screenshot_sha256": "e6ebc20c4874b9b026230d26463050c45ff7314b091aa28e84564ba438ccf808",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-dark-375.png",
+      "screenshot_sha256": "caf1d236c5a11b781a13f461c237c948e3076f4d4884cc99c67d295303017b96",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-dark-390.png",
+      "screenshot_sha256": "326506452ded2a001b6cb9fd223eb92d741b1d6eff125c9234ec6a4d3ef0538b",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-dark-768.png",
+      "screenshot_sha256": "2ada4d78eb215fdeacd49964143134f72cac8c1604c0cac48ecb18ebb40c3f81",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-light-1440.png",
+      "screenshot_sha256": "971fee977ebda484495643a45a43e1df9d75a384cff6665ca0f490f0e47d21eb",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-light-375.png",
+      "screenshot_sha256": "b909c31e4e58d4ae06d9b6221d0650b789c316145445dec08a425f3e70a2e65a",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-light-390.png",
+      "screenshot_sha256": "90c775cfa3e11547a0a3ed408c7668236b090121f8e5146b6d45159e47af9b7f",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "astro",
+      "route": "chart?tab=astro",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/astro-light-768.png",
+      "screenshot_sha256": "acd003be9046a9b81bd2f2de6eb227f8000f288a667d6331677e39e208cd3e2e",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-dark-1440.png",
+      "screenshot_sha256": "30cb6b1350b6c7a0eea08a86ddbee81c9e7f0149e30ff2ed3a162211bc871f16",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-dark-375.png",
+      "screenshot_sha256": "1c70b92533d054a78edaf343755cef89ad31ef15f748536a1610de86cf3bf820",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-dark-390.png",
+      "screenshot_sha256": "3db32182fdf6fdd8843dd0590af8ea6bb52048d1dc89baa8ba61b88904677587",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-dark-768.png",
+      "screenshot_sha256": "cde4e8bbdf3ccade208d23a00fec0a57d0f473b024463333fe0c0e5e67e139e5",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-light-1440.png",
+      "screenshot_sha256": "e8efac468e1512e523788cc43d27154137eaf7482947981d4ebc745f3209a322",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-light-375.png",
+      "screenshot_sha256": "60968565ec044caaac2214855a6af88e5eb33e8453dd6647485dcd72cc949e3a",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-light-390.png",
+      "screenshot_sha256": "2393298681d36816150732f5eda63e844b44d18069406b736926a10ec2c1b6cd",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "bazi",
+      "route": "chart?tab=bazi",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/bazi-light-768.png",
+      "screenshot_sha256": "d27abfd5be5fd16c6e19e8d9258b7ecae3995499ac9ed6819ea92e0d850f0217",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-dark-1440.png",
+      "screenshot_sha256": "b1618fbddf507b181fa6ecdfbf8ab939066e87767db861ec182951789bceb47d",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-dark-375.png",
+      "screenshot_sha256": "ab485cf927eceebf6f338cf9e075773d81e56ca1c056b0536339962d554a244f",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-dark-390.png",
+      "screenshot_sha256": "bb507b6594fc45b512c3d0c113db17b48854f6b590908c7a2413a8cc8c96e415",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-dark-768.png",
+      "screenshot_sha256": "287803dc05572ab54a2f0f71df0611c76e019d05eb6db2143d030b8bd241b382",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-light-1440.png",
+      "screenshot_sha256": "331407362a5da34996d6a6650ab71d5ceb61419d25600c242807a1e2320d87c4",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-light-375.png",
+      "screenshot_sha256": "cd20923ed14d97610a998f70519c493e45cd1c3d484c78973d2ce52ccfa9988b",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-light-390.png",
+      "screenshot_sha256": "09a4870ceddf1ea11e7fdd54fd97afafb8f5daf5f14a7fbb9971948b912957a1",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:30:46.344Z",
+      "state": "ziwei",
+      "route": "chart?tab=ziwei",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/ziwei-light-768.png",
+      "screenshot_sha256": "6cb38f5fc7c486cd69554f60d30002afe4c902295075b737d46c4a6263e05474",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    }
+  ]
+}

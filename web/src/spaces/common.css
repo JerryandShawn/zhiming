@@ -1,0 +1,42 @@
+.spaces-preview-note {
+  padding: var(--s-4) var(--s-5);
+  border-bottom: var(--border) solid var(--line);
+  background: var(--paper-2);
+}
+.spaces-preview-note > p {
+  margin-block: var(--s-2);
+}
+.spaces-preview-note nav {
+  gap: var(--s-1);
+}
+.spaces-preview-note nav a[aria-current='page'] {
+  background: var(--surface);
+  color: var(--ink);
+}
+.spaces-memory-group h3 {
+  margin-block: var(--s-4) var(--s-2);
+}
+.spaces-memory-group ul {
+  padding-left: var(--s-5);
+}
+.spaces-memory-group > a:last-child {
+  display: inline-flex;
+  margin-top: var(--s-4);
+}
+.spaces-memory-group {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.shell[data-spaces='demo'] .rail {
+  overflow-y: auto;
+}
+:root[data-theme='dark'] .shell[data-spaces='demo'] .tag.accent {
+  color: var(--cinnabar-hover);
+}
+@media (min-width: 1024px) {
+  .spaces-memory-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-7);
+  }
+}

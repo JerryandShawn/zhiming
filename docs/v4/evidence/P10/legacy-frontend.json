@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-18",
+  "node": "22.23.3",
+  "read_only_dependencies": "main worktree existing node_modules",
+  "checks": [
+    {
+      "command": "node tests/frontend.test.cjs",
+      "exit_code": 0
+    },
+    {
+      "command": "node tests/dom.test.cjs",
+      "exit_code": 0
+    },
+    {
+      "command": "node tests/report-settings.dom.test.cjs",
+      "exit_code": 0
+    },
+    {
+      "command": "node tests/method-limits.dom.test.cjs",
+      "exit_code": 0
+    },
+    {
+      "command": "node --check static/app.js",
+      "exit_code": 0
+    },
+    {
+      "command": "node main-worktree/node_modules/tailwindcss/lib/cli.js -i static/tailwind.input.css -o static/vendor/utilities.css --minify",
+      "exit_code": 0
+    }
+  ],
+  "note": "Actual rerun after 14 I visual fixes; generated legacy utilities unchanged. Existing Browserslist database age warning remains."
+}

@@ -1,0 +1,3139 @@
+{
+  "captured_at": "2026-10-18T11:01:35.459Z",
+  "label": "final",
+  "commit_at_measurement": "7fcfb8cc2ff891b8b8402104c69836d06e09c153",
+  "browser": "155.0.8059.82",
+  "node": "v22.23.3",
+  "route": "/#/today",
+  "mode": "built-live-page-synthetic-PG-data",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 2,
+    "mobile": true,
+    "touch": true
+  },
+  "network": {
+    "offline": false,
+    "latency": 150,
+    "downloadThroughput": 200000,
+    "uploadThroughput": 93750,
+    "connectionType": "cellular4g"
+  },
+  "cpu_slowdown": 4,
+  "cache_disabled": true,
+  "fresh_context_each_run": true,
+  "service_workers": "blocked",
+  "normal_motion": true,
+  "target_ms": 2500,
+  "p75_ms": 2452,
+  "all_runs_below_target": true,
+  "final_acceptance_sample": true,
+  "fixture": {
+    "database": "core_test_fe",
+    "model": "scripted-only",
+    "real_model_calls": 0
+  },
+  "build_hashes": {
+    "static/dist/assets/Calendar-CeKhg1NJ.js": "f0eb531e319ee69fae94c362aecd38e46479e68dec3a0319ee41931a918116b5",
+    "static/dist/assets/Cases-BTCy1lg1.js": "5dfb36f353ba0a8155cb59ca4c98c2f7b06099c08e89daa3f1d15cf45d48afe2",
+    "static/dist/assets/Cases-Cl3jSEXq.js": "d028d25c94526521f51ef589d92d443554a18839a82cd2ab8f31e139af762d2c",
+    "static/dist/assets/Chart-BLIVwXai.js": "9f17a83fe61b73a0c3cfdca0f13440905f07f0ccb76dc4de461bcbc08981b5b0",
+    "static/dist/assets/Chart-wtUgs2Y5.js": "53140594d37a4b841c9c877a80f4547fe8a74b0201951b859421b6c851ca62ac",
+    "static/dist/assets/ChartDemo-DTEzEJww.js": "560d1b0f915ed78b74d903bbcebea848067b26d6ce4ae111cda616e55a98a3ac",
+    "static/dist/assets/Charts-CIQ3DArw.js": "a4baeb7196a4c061e0db62da23d608a33d9f204e6094adb0d13a88dbc0640a63",
+    "static/dist/assets/Chat-B7Sbw8M1.js": "622da53249b29b8ce01570aa7c65fa938f0e5b5402cb52f53c915d7b4f8094c2",
+    "static/dist/assets/Chat-CcG3f-8T.js": "0db1ae95675fa8dbfd42a4cf77df60818a1ff10cad4efdd12519db145b765586",
+    "static/dist/assets/ChatPreview-BTSJM1ff.js": "a1d5e6181652d6b7bdddbe0c6c02f33532f8ea71b7b8e68c35a0b3ce5205a898",
+    "static/dist/assets/chevron-down-XyyZYnqI.js": "0cb66dee86154e71e1dd8f823a8b7d490c3820ca6fba104027ad15e27affc87c",
+    "static/dist/assets/common-Cmd9HAar.css": "cb82c6da3859e24ff4b64ab8107434e98af8bf11c2667f8b92a72cfe08d4aad2",
+    "static/dist/assets/ComponentNotice-BIoJSqjK.css": "110d8be426ba4a2d5063ad0a7b31d999fc0babf1be9be7fe7b5538650db493fa",
+    "static/dist/assets/ComponentNotice-Bmts4O1G.js": "37f68a14d2a9be7baf44eaac726b01e8fdabe74bc1be8a028c9b4989b00c4b16",
+    "static/dist/assets/Composer-CnxyQQ_I.js": "e15b453c9420655946f9d21a0d186e62189beabbdc2f73420519c7be4de3d789",
+    "static/dist/assets/DateField-Dx08CGgD.js": "3650729c74d434e25438855febb691b0307525213552166fed22eaf7c8be67e9",
+    "static/dist/assets/Design-BfSbxAY-.js": "486c3dc85521c1c3020d36c15d5fecc36d5ba1d01ac4b9dece7a3690a76a2534",
+    "static/dist/assets/FlipFace-DffGUU7f.js": "8bfa1abf5918634c47ccfc21e212191d1bf18a472f70249c4ce1388a051a0c35",
+    "static/dist/assets/index-BHztdyFW.css": "c0945f9e588cab4ddadaca9f8a601f33963502cfe0dd0a87dac76952a73ee80f",
+    "static/dist/assets/index-CFp0Lw_x.js": "8adcba5f0b371d15e2cc3e48103ca6036bad57b5e62f4805d83d67af3199d08a",
+    "static/dist/assets/index-_EAD2idb.js": "8838bfbd3f90d354e5c820964f14cbae45da906116c7b03eeac5cccbf44821e6",
+    "static/dist/assets/lock-keyhole-jnF49sbB.js": "62baad41e799445c53d5586d4ace68df388f8abca145d3c66fc4eda793983901",
+    "static/dist/assets/Markdown-kCoBp7rF.js": "5352285e5e4790aed1da1cf9d6d72ce771ba9c9f54a5f24fed5245e655dd005c",
+    "static/dist/assets/Me-FmQa6FQk.js": "9bc6399677ed7c72fdea0282937697c7791465eed656c3c7a432bb573e98fcee",
+    "static/dist/assets/Me-fUyL1dAX.js": "be60067839ae88198a8957888acd50ddc2803a0ce9272188fe46fd1e9b244ffc",
+    "static/dist/assets/MemoryPreview-BKtlJaA3.js": "7ab47dadceb69ae4f2908aca0673b4cfa24f0842e03e2ca6c91e33af68469928",
+    "static/dist/assets/Messages-BAqaqpZb.js": "28d5f86ddf5f41699002f7951a6c49784a4d23d2a69eae882c26aea878b56ff1",
+    "static/dist/assets/OrganizePage-D3p4SzzC.js": "c6c00567a6a008c4408649a6ee7782e0482b749dd33b2817e3fc6924272a53b7",
+    "static/dist/assets/OrganizePage-Xf4G6qj_.css": "9432693f29a1cc6f8d6fd75e8998de199c8bf73997cbd7d0cb6cc8b7fc5d282b",
+    "static/dist/assets/PreviewNotice-Dwp1w8HB.js": "2a6cf20562ef37dec45313073ae58ae0eca106aca40e2ae6906e6e6b027df6c8",
+    "static/dist/assets/react-DnxA9v5e.js": "753bd94c54c1746ba790ce3be16209c47ecd154709b319251a98c86b24408187",
+    "static/dist/assets/Selection-DC7-44Gf.js": "31309fc7db9d14182653c43eaa032937c0f1ef232c8211fc3827c44af37bec72",
+    "static/dist/assets/Settings-BEdeV8ME.js": "3566267e377a2dec25f5e1583a0b62ea6f2e0667e732fb34b8cd1974023359b2",
+    "static/dist/assets/Settings-BY0_9Fb5.js": "ee70bfa0520abef03a39ce2cffa9fe60074f011bc28f9ea954044584de83dc37",
+    "static/dist/assets/SpaceNavigation-DDCTDuSb.js": "a2ecd3c3b63203ab0b81a9b3727d085cd4506261c99d67d68729b450af97a19f",
+    "static/dist/assets/SpaceNavigation-p_7PkAVI.css": "49493df00aa7f9de9a1ec95a1cb1ed987c24760804177ee5810fdcbf623879e1",
+    "static/dist/assets/square-DkwzmR52.js": "efd476411c8d173f3874ffd126d4c5090355ff8d2785751c69877ce7e0a04dd3",
+    "static/dist/assets/sse-MLsGSJ6H.js": "c34e1c507e173c5672c70dbc01a1f7af63ea22e02e7235744b71d1a6bb3ab313",
+    "static/dist/assets/store-B4BHugmT.js": "0c7bbacdc69482274eb7468c13fee309615691aed1b404382f17dcbcee4ba666",
+    "static/dist/assets/Tarot-B2Inf9vF.js": "0bf5d69c21ae1d70237db48a813af6b4925914c53e7d01b2c136f5e802b86664",
+    "static/dist/assets/Tarot-CW45ocBg.js": "9542aabfb381b40d5df748a79bec638f71c764d999315faba346d72d1c3bfe53",
+    "static/dist/assets/TarotCards-Bob_eg4T.js": "acf8b60a05ae3c84821c87b796e2a85c70b4042f84a4ed73aaa89e3ed4ce0ef1",
+    "static/dist/assets/TimeBasis-BMyLUONv.js": "383c9967ea5a575f574cf98c0a403d09fac293fa87dd5ee6ce4732aeabd6aa2e",
+    "static/dist/assets/TimeBasis-DFAJCxas.css": "828231e7a74fcb1e7a6c9bec4ad49ce8d0ceebe6cfce07f99bc18c2abb7d8a6a",
+    "static/dist/assets/TimeField-DNhoRUKl.js": "9ac99e6c87fdf7850e90dcf54d99782fac0c8481552d3853d039bf3a8d221089",
+    "static/dist/assets/Today-k6CDsHYz.js": "39e78016158492c56799d3bafc392f0c8ddbb51a31b61fc78e41824905710742",
+    "static/dist/index.html": "79f407d790c032d1a285c275aa721d64dd6e9897651a2ebf0832ac2cc9bb2ba3",
+    "static/dist/.vite/manifest.json": "5d097773d6fa032592f15eda1db21da01fbc1eb35362fc8cc9cce0aa4dffe0c4",
+    "static/dist/fonts/fonts.css": "9e680ec06e518f6f16a5a96cbf7ea4cecc9e890bca51585491ba58c4b281abd1",
+    "static/dist/fonts/manifest.json": "9ea67a4034118346b82cc54e5e653db2db2603f571a49b5ac5d40375d753e2cf",
+    "static/dist/fonts/noto-sans-sc-119-wght-normal.woff2": "09b9fa5a9521fbeccb8267a5abe7443c83cbe25b32eb15b00de316d913235525",
+    "static/dist/fonts/noto-sans-sc-latin-wght-normal.woff2": "cf5346b0747cd71123c8f74da0ad41fc0f63eda07b9d8e0382e00882ae743733",
+    "static/dist/fonts/noto-serif-sc-latin-wght-normal.woff2": "be8c3c315592fbeda0f6acbe9914a0b4c1da1b7e30889ddab5e145d346ae4928",
+    "static/dist/fonts/noto-serif-sc-119-wght-normal.woff2": "25412edffa19ad8baf75508052ec4b5c8ecfcf75384f98b67cea291886f8d0c4",
+    "static/dist/fonts/noto-serif-sc-116-wght-normal.woff2": "06ad3ccc929aa35ffb271c64ba4b1a8a14c8a2076b583eb2b32c7169f74c33c3",
+    "static/dist/fonts/noto-serif-sc-117-wght-normal.woff2": "fd992a95c6a01de7bfb520c01ca4ad20c60cb5a91f0fb21cf46fe1e13e78fd2b",
+    "static/dist/fonts/noto-sans-sc-118-wght-normal.woff2": "f26330ce4056382832c0f2a0d7f411e0b4140fc87937e8865d91664410cfb98c",
+    "static/dist/fonts/noto-sans-sc-117-wght-normal.woff2": "3d7ced7101c03dfa9bf0e60460a1b91fc6f1166fb33f718506e8110bb12e74a7",
+    "static/dist/fonts/noto-sans-sc-116-wght-normal.woff2": "002e502515bee8b9efa1b17abf7e52b51d4cfa20538ae2b2bd82ac52e1153f5e",
+    "static/dist/fonts/noto-serif-sc-118-wght-normal.woff2": "b75a2da2189e8db96e83563b650fb04466ca9284d28a1e27ff4d4aaaee5d13b6",
+    "static/dist/fonts/noto-sans-sc-115-wght-normal.woff2": "6c0cda055b31066fb60058ac30ede37f6f9ca02265c2e1a84aee81175f567fa8",
+    "static/dist/fonts/noto-sans-sc-114-wght-normal.woff2": "c49b2eb658a0c2d76de9a279945de30bf32acd8fdd6d56cf84aea9c6b14aacae",
+    "static/dist/fonts/noto-sans-sc-112-wght-normal.woff2": "34e76675ceffd89824fb130d7649dc92df9e57843a73b9996d405baa2ff9ecff",
+    "static/dist/fonts/noto-serif-sc-114-wght-normal.woff2": "f402c381cb2eb5c6d1e65a8bae7629b5cb97faaa42759af6874f6d33fcc98273",
+    "static/dist/fonts/noto-sans-sc-113-wght-normal.woff2": "40290d98d5c121bdbb1909e39c9c0242eae3a5a88f1bbe302857e525b90056df",
+    "static/dist/fonts/noto-sans-sc-109-wght-normal.woff2": "85ebc9985c665dd55346ebc78b93f8d8ef6ff972d78afc288b75d697a242d780",
+    "static/dist/fonts/noto-sans-sc-107-wght-normal.woff2": "d8d9b5fd2b266fdf3f6855444e7769e54f39806e48994e7fe5e0c4ace9553c81"
+  },
+  "source_hashes": {
+    "web/src/api/AuthGate.tsx": "7bb01819e64a631c388ae0abac10ebe8db325749eef72514001c6ef50cedc300",
+    "web/src/api/client.ts": "165fb104f5e7d20de4c9055be346afad8ebf1830c1dfcd4eaa0916533b920ff4",
+    "web/src/api/operations.ts": "b1cfd97313f2aa5154166995e4687519b068871895c7284e727ee99d107c38e7",
+    "web/src/api/useResource.ts": "8097e2e45b57fc0eaa7e20a9fb063f78ff6cb5d7097f2d7341b60102521b07a3",
+    "web/src/App.tsx": "c30b1f55564bb7ace4ddd033bc3febbd1f3c6710b27bc78a8bf8ab49e4d5bcdb",
+    "web/src/calendar/data.ts": "88ae3b35bb7c1460617053655fefd20e3290fee908b8309408dc1b4d56c6df9f",
+    "web/src/calendar/examples.ts": "0e60ee56319c5b1e2a68197f4b79369c8e4d1c8c33fb3b3872e03ce0f56e22d1",
+    "web/src/calendar/MonthCalendar.tsx": "a625f668717ac9ac2b326237cc89f32856cdbf1d14f084ccdac6fef52b774caf",
+    "web/src/calendar/TodayCalendar.tsx": "0d5775fa143a97b8df8a39fbf75a91620a8daeb2f0b843ceb405ddfac436761f",
+    "web/src/charts/AstroDiagram.tsx": "7f30f4570cab0ae5f4de8401e85ed455cf45bd75dfa9b8e24edcb85f3a4a5567",
+    "web/src/charts/ChartBasis.tsx": "65a98019d6846ff231c71b9487fd73e5932b32059d05b376274dd19a22efa9bf",
+    "web/src/charts/ChartDemo.tsx": "4a5c44cab0f6a120081e6439962e31f5d91ff5bc1471f2f6f2ac077498a38437",
+    "web/src/charts/charts.css": "e5069dd7f8d0cef2d6e77b6dd0854ef80fd25cbbd2a9979dce16dbfac0df4772",
+    "web/src/charts/data.ts": "346cca6c4a23dd0f168deeaceb2e95d533137356cd670f9396f4206eb3aa06fc",
+    "web/src/charts/demo.ts": "d17ef4df8001b6f02ee4825e64a9fece9ca606057f9c9cc23c1154d426bdda1d",
+    "web/src/charts/LuckPeriods.tsx": "1bbdb27c78c97b1c6463f31730eac094373674933ba010a72229aa7a3fc8fc23",
+    "web/src/charts/TimeBasis.tsx": "af284a64f8ee063b08b0369ca6f3f18684759de740b1502be990eaa47830e174",
+    "web/src/charts/ZiweiPalaces.tsx": "14adeb43e6fe6b9a3a74490d0054a2187f8a54c6af2aeda8f538dbb6f7829cfe",
+    "web/src/chat/Answers.tsx": "5d5781cb98aed39a13d54ccbde993bf7beda6ace920e1c837bcca5a2bfe07140",
+    "web/src/chat/Composer.tsx": "1847d45a4c9993f563cf77e5e907d1a8db24cf001ec7cbabe4accfa2b3208712",
+    "web/src/chat/events.ts": "410df9da5cf2971068e2a5ce3317dc24d93753284e68699a60de312ee1662e02",
+    "web/src/chat/publicProjection.ts": "b403c2f145163c234b9473ff1aff0111581fd3898f9e1f7d4f918aae96a7fde6",
+    "web/src/chat/reducer.ts": "68b2d1eb4b66638771c41720ace23b872cf9328064e487c6156eebab0ba8eb5c",
+    "web/src/chat/sse.ts": "414354498f52185fbf6360b7c43d93003257dfe5c6c1e4a59cf83119e2e5bd1c",
+    "web/src/chat/storage.ts": "07383479398282f730a7f5409fb999e5aab4f23908f394dd1ea8059cfb5752e2",
+    "web/src/chat/transport.ts": "5849931d665aec4343b6d05390a996a52d82ce9fede38dd2bd199337b40c6a9b",
+    "web/src/chat/types.ts": "d2678eb5eafb63340db787857745f4ffe4ef420a52aed09b683d525436d112de",
+    "web/src/chat/useChat.ts": "90fa1fdb8977dabadf287ab9af32d74ecc9d8981eb1c4b88e88aee4c6ee20a72",
+    "web/src/chat/v2.ts": "6423a13754b893ae7695c21f974c69a243425223aaef1020d5f7f01147eda6db",
+    "web/src/components/Calendar.tsx": "2e209023ae78a3ae25cbee696e51b9930558825cc10e418bad51c534a000f447",
+    "web/src/components/Charts.tsx": "3e9010a7c870c29b1b7e34b8886897ecda0dc8ef79dc116ef30f892fb92e6d7c",
+    "web/src/components/Composer.tsx": "801b7d7ca77b00b6fe03e1320f65a6a31a68b069e6e4e5f77b361a0f0d1d7ef2",
+    "web/src/components/DatePicker.tsx": "3964ac7b5388765471070fa1c65a2f86812cd0872782ba758e1dd44e337b984f",
+    "web/src/components/Markdown.tsx": "d3dc26cf3da70d183fd8c00de9b159704f4bff298838765f6e580960a2884b12",
+    "web/src/components/Messages.tsx": "583dda5dcf1c9411f6410d537e5d7a54b50336a1280b4817a1b1c92f5d05cbd6",
+    "web/src/components/ReportOptions.tsx": "c5f5e3eaa085cfe96e35d68267e291f1fae7b1b3435805a8c4d9732acf2c4bd0",
+    "web/src/components/TarotCards.tsx": "aea0b51cbacc527a9afe4d25303f209259632c8525a114d11af1213e00c5866e",
+    "web/src/components/TarotDraft.ts": "183bb05cb1ddb0659dcf698bc05cc129f69ccbd7b5844d614838a5bb3cde2008",
+    "web/src/components/ui/Controls.tsx": "5f548d9993df9498a153c910401b375f19e9dcb02d2f79001e9e99164b1e21bb",
+    "web/src/components/ui/Overlays.tsx": "7e15c10a7d490496cf0c3525b3304c9702918f2737f9988083260eb16ba413ff",
+    "web/src/components/ui/Selection.tsx": "7256e0eec4485151166f4dcea5467c03ca9dcd64aea453750afe02eefc3309c1",
+    "web/src/demos/ComponentNotice.tsx": "a04451965eabc581bfc76c401544a5befa0d63eb3f9a344e74a27548475f06ca",
+    "web/src/demos/components-demo.css": "24c304014c2f6922d341d1fae1ec91abb9807f516b9e8509285840ebd18535da",
+    "web/src/Layout.tsx": "4d8885088fbd45d43aacc14b2e52959d4598921ef47f6308037185b56c7b0cc2",
+    "web/src/live/CaseFeedback.tsx": "6fe517e8b2048b0850da42b0e44c5d212dc3e8854a8d8b81b12b0d700839b43d",
+    "web/src/live/Cases.tsx": "ff69e8e4a65e4fba24b96440d062ad9dc7277354c23738e7eebc54bd3b869b6f",
+    "web/src/live/Chart.tsx": "788ee9ce410bcf023e7ad938ca268b4d2a37f5a62da33245edb157454011f810",
+    "web/src/live/ChartData.tsx": "f08ea3ba0bb0355dca5e4f56713acd35a176b1b99dd273b96aceb6ef4534590c",
+    "web/src/live/Chat.tsx": "b1f6c8a9c0773d2b9344d76d2c39517a6b942d288ab40e4c4fb392a75b9da479",
+    "web/src/live/common.tsx": "0e1289f085fba909e1b98bbf7d5d10e128f2de04f7dccde44f30a4d6ba3a63ce",
+    "web/src/live/DateField.tsx": "4c56a86650c01ced9b7b6d9268455efda619e266826ad4fee389cb2e08221a9b",
+    "web/src/live/LegacyPreview.tsx": "82b702beb74dff8c046e80fc2f09af99c6bc2f15e88117ceb6c870edf16f5460",
+    "web/src/live/Me.tsx": "35b63c096ef6a6b7e7a094f0638c78a4612270a18437bb5a9b063ea6c35dabc4",
+    "web/src/live/MemoryCard.tsx": "39b3f15778b61a2802120bdebd9f520b0a588a8d4503e8ae00997ffc21907742",
+    "web/src/live/ProfileForm.tsx": "887d622b855b0056e30dd8b4196d01ae482ad615473a5046f8565ef146a548e4",
+    "web/src/live/Reports.tsx": "1f17c1dcc2423147feeafdae7d9c9d151f1fae5365410571eaea9b138f3b5701",
+    "web/src/live/ReportSchedule.tsx": "3a682beb07f1db077940b8e576816145a432397853d9410c9258fcf3ca7c1e0d",
+    "web/src/live/Settings.tsx": "1e7cf378b23b20a1f6df7f34c63c7977369c77ec9692ba550fd83e13a52cae73",
+    "web/src/live/Tarot.tsx": "1dcfce07babf8f21138e4895195474b406439ef1ba5d4338b8cc33dfa218c26f",
+    "web/src/live/TimeField.tsx": "039ac413b3c81ab364551d865b1502eee2657d2eb07c26d63bef8ef7354ccf31",
+    "web/src/live/Today.tsx": "35653ab242aa4afac18089fac41866c1d8ba05e92b45457e2bca5789ea7ad102",
+    "web/src/live/types.ts": "aecdc2c807cd8f977f82d367387fb590d66f0bdada46ad1b75ac36b502f9595d",
+    "web/src/main.tsx": "a689c6e16d661c9557cd8716b2c1d56d1e3deb2d8fa8b21930bb2e22722f039c",
+    "web/src/pages/Cases.tsx": "2994248a5f1fc54035a626d93e77484dedd6ab634045c6354def55f6cb773580",
+    "web/src/pages/Chart.tsx": "ecd68fadffd478a02ee865dc8c447ee1caab52877a072c4931c552d81f109cf7",
+    "web/src/pages/Chat.tsx": "e2bbb8c133bbd8dbbd70971ab6d7c54ff402baf32033064d9c3244e76f4450a9",
+    "web/src/pages/Design.tsx": "443ca32827f7f2bdf7574e6aba6c54b79ec9777d8e4f0ab771877a00115b0bf0",
+    "web/src/pages/Me.tsx": "a9aef5e38127786d3c7926221439abe2a5faac48cb73dfc305916a86cbe8fc91",
+    "web/src/pages/Settings.tsx": "0e73d11646c0d4a389fda37e5629956f05e78a78c408a323c99bbf0eaa8c6cad",
+    "web/src/pages/Tarot.tsx": "5901dc3c15ce7c2f9a29aad2c5e185216cb8c1a26cf249a7651e0ede3782eee6",
+    "web/src/pages/Today.tsx": "3533a114df8168b4fe75404a7ab5a52b26061a03cfc6789ecdf2407fa5e33955",
+    "web/src/spaces/chat.css": "a68bf6b961c82e9bc8a5d6a4c83acaea0719abb1730d99b45af8f35705641ecc",
+    "web/src/spaces/ChatPreview.tsx": "54ee3e7d01a932a1e7555648f534434ebd0054751b4ae2ff88f060a801f59149",
+    "web/src/spaces/common.css": "b6cdc52003f1bd86a4097dd57f0e736c4edb79e5265af050061d2cfa32aedcf2",
+    "web/src/spaces/EditDialog.tsx": "3689f225e164c24d3729521f90c154aa2ea695ce00c549ed275a6449f261b19a",
+    "web/src/spaces/fixtures.ts": "779c59b03199aa96847ecb2750eddcc91f86c1dbe3b1c2e53b5856c76eec2fff",
+    "web/src/spaces/MemoryPreview.tsx": "21fda7bc94b0971bd77e71a69f8a3c27ae0a05e4f3730ca67c02e3fa7d08afb4",
+    "web/src/spaces/organize.css": "39add31265c660ecdb5a31bcbb45a344e419cfb21ffad417c1654cfca988feb2",
+    "web/src/spaces/OrganizePage.tsx": "7fc4700531f8267247fb9089ceef8c8a961d0aab1453e6b0a61dc68d3a816f71",
+    "web/src/spaces/PreviewNotice.tsx": "123c217e915ffcac93f69f95d6c9e7af963c2aa222508e9ce465295595bb46c0",
+    "web/src/spaces/proposal.ts": "91a6862b14ae5f7838683717223a1ee10765ae5087490e0bb893a21f426a3eae",
+    "web/src/spaces/ProposalTree.tsx": "1bb1a61e7163b9d1906bb2f98815269b2080e6d2ab3d7cab2127b8f29b0aa5b7",
+    "web/src/spaces/RouteBadge.tsx": "695caa468bce12195e295721d2bdc1e45d00d335cacf0220bada2336c1fdb9c6",
+    "web/src/spaces/SpaceNavigation.tsx": "e6d760e2f0755c72c76c39cfa8d04f9aeff27c46b647195f0f9a6392f8e72d97",
+    "web/src/spaces/store.ts": "91c965f05a036f91c0b56b526413c188621dd0ad90c20b25b7ddf65b5d91448a",
+    "web/src/spaces/TopicActions.tsx": "fff77efff8ba7310f2b0cfde7c0f543c2bba6572158563d389b7208086f08e0a",
+    "web/src/spaces/types.ts": "587846190550e5a52196f12faca514c9a90a22955fb95c70b30befeb96d3e6ff",
+    "web/src/state.ts": "23a0f719cfb315182dcf871b5b7b6295112114aa67d6f4f0b60ccc9253dd7bd1",
+    "web/src/styles/accessibility.css": "2a4d335c322d925b7ad5f7327e1b4f41585938fde02cb388a7a16ccc6542ea09",
+    "web/src/styles/base.css": "3840743d56721871bec574a51a828c8744c056b972ba1286a6f32fb5b3dffb14",
+    "web/src/styles/charts.css": "ded3b15bdd568762d22f9cbed50641067407fcd4806cd713ad849579ac01f11f",
+    "web/src/styles/controls.css": "c3ba07064f5a63fc0c279f9d49f792a2a426744809203f504bbf65f9ff3df55e",
+    "web/src/styles/design.css": "67a6cf567e666e8bf48b555199117ed593c58601cfbb83ad53b3441a9a09499a",
+    "web/src/styles/live.css": "2bf1da189a49f7d548f4550bbd829ad481e4f8245036066cb44fdf9e34261233",
+    "web/src/styles/messages.css": "96ead24a190fa99f06fee8983fb0940e4e49d56cf7ebe85a6ed55f970f36da34",
+    "web/src/styles/pages.css": "ee387cb7bcf4470a93f89237293c2ead956299f2baf88b93aca1a864d0063538",
+    "web/src/styles/paper.svg": "3237e27a15366235402b232fa7bafbb9da2f2e514c8398d3be1570dd58278c8a",
+    "web/src/styles/selection.css": "fdb8ce0e9a7319ef27bf5f16db88c657ee0db1e106c4b98278c136780905b848",
+    "web/src/styles/tokens.css": "fa49e318b972f696495662e7c85fc900ff33536726cbbe95611ede229fed62cb",
+    "web/src/tarot/CardBackGrid.tsx": "f38b99614321cbf32c9fc0d9dcfeb5673fcd2629948b49e23f1290dc1613bdff",
+    "web/src/tarot/DrawPanel.tsx": "e42ee56b5b266645d07b2457f43ab509dde8396087efebdfc7d0d50f05cb3f16",
+    "web/src/tarot/draws.ts": "f6aa12ddbe096f0292ef365d1f093334fafe04c592172fb8825bc8f561577c00",
+    "web/src/tarot/FlipFace.tsx": "a38bd19cb916aa93b79ed2b7fe00f2d7d119105d80e42c796af6992e06d62ac4",
+    "web/src/tarot/keyboard.ts": "c9d6084ef3cd0cdbae341dfc3a852cf32d7e14bcacef6cd5a80b69269765691c",
+    "web/src/tarot/ManualCards.tsx": "497f3dd7cbf88a93af929f0ecda4e56f4147085c588bfb9bfe1f4206bfa00a82",
+    "web/src/tarot/public.ts": "3151fb5aee2deeb17536470d369be7de8f1b7ee0e951b82b289d8ebf1bdf2fd9",
+    "web/src/tarot/QuestionForm.tsx": "35f1da6ea39577f6bb799a80c1035585ba940796f94bfb751952ecbed0bbae9e",
+    "web/src/tarot/ReadingPanel.tsx": "3ee948a742e357aad73b39866cebe02820d14aacb3e22189215828454c4b2cad",
+    "web/src/tarot/readings.ts": "9e3856be89693da54698e1e28f77c3ca8930892cf911067e11207a32d8327195",
+    "web/src/tarot/ServerSpread.tsx": "cb6553cc203d2877c0bb482625b3efeea3f26f93ed517a19ab8431f39d164fc7",
+    "web/src/tarot/useTarotMotion.ts": "d654f2abbbb7914cbb2f3cabedff9888600a713919fcb9cd36de93a838618825",
+    "web/src/useKeyboardViewport.ts": "c7b4b7140a8da83a37c5a6f96ca964fb11322e09552f7899c28bb7be5f172cfe",
+    "web/src/usePanelHistory.ts": "fbec50bb3b5958e8e284958e15262dbabd3213f3f5c5ec216fb408f50e927014",
+    "web/src/useViewportPortalStyles.ts": "8535793dfe611ed12aefee24278867eba92d86d23982f787258c2773092b0d4e",
+    "web/scripts/measure-mobile-lcp.mjs": "f5b6c53091afda3ef89bb7aea9b612c2c7023acfba6c3b4210a47b57e71949a1",
+    "web/scripts/prepare-fonts.mjs": "760f265e811d64544bffe326847ea7c9bf8aff3eb40b1ea9acba783425350fc0",
+    "web/index.html": "d0bfde3dd5470dd17828a8b165f380610f4f7a6fdfdbce6c27a322e5d3b6ea21",
+    "web/vite.config.ts": "776fbf33edacfd8439f9af645ce6679bb562807968611119368aaf0a86d80874"
+  },
+  "manifest": {
+    "_Calendar-CeKhg1NJ.js": {
+      "file": "assets/Calendar-CeKhg1NJ.js",
+      "name": "Calendar",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_Charts-CIQ3DArw.js": {
+      "file": "assets/Charts-CIQ3DArw.js",
+      "name": "Charts",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_Composer-CnxyQQ_I.js": {
+      "file": "assets/Composer-CnxyQQ_I.js",
+      "name": "Composer",
+      "imports": [
+        "index.html",
+        "_square-DkwzmR52.js"
+      ]
+    },
+    "_DateField-Dx08CGgD.js": {
+      "file": "assets/DateField-Dx08CGgD.js",
+      "name": "DateField",
+      "imports": [
+        "index.html",
+        "_index-_EAD2idb.js"
+      ]
+    },
+    "_FlipFace-DffGUU7f.js": {
+      "file": "assets/FlipFace-DffGUU7f.js",
+      "name": "FlipFace",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_Markdown-kCoBp7rF.js": {
+      "file": "assets/Markdown-kCoBp7rF.js",
+      "name": "Markdown",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_Messages-BAqaqpZb.js": {
+      "file": "assets/Messages-BAqaqpZb.js",
+      "name": "Messages",
+      "imports": [
+        "index.html",
+        "_index-_EAD2idb.js",
+        "_Markdown-kCoBp7rF.js"
+      ]
+    },
+    "_Selection-DC7-44Gf.js": {
+      "file": "assets/Selection-DC7-44Gf.js",
+      "name": "Selection",
+      "imports": [
+        "index.html",
+        "_index-_EAD2idb.js",
+        "_chevron-down-XyyZYnqI.js"
+      ]
+    },
+    "_SpaceNavigation-DDCTDuSb.js": {
+      "file": "assets/SpaceNavigation-DDCTDuSb.js",
+      "name": "SpaceNavigation",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_store-B4BHugmT.js"
+      ],
+      "css": [
+        "assets/SpaceNavigation-p_7PkAVI.css"
+      ]
+    },
+    "_SpaceNavigation-p_7PkAVI.css": {
+      "file": "assets/SpaceNavigation-p_7PkAVI.css",
+      "src": "_SpaceNavigation-p_7PkAVI.css"
+    },
+    "_TarotCards-Bob_eg4T.js": {
+      "file": "assets/TarotCards-Bob_eg4T.js",
+      "name": "TarotCards",
+      "imports": [
+        "index.html",
+        "_FlipFace-DffGUU7f.js"
+      ]
+    },
+    "_TimeBasis-BMyLUONv.js": {
+      "file": "assets/TimeBasis-BMyLUONv.js",
+      "name": "TimeBasis",
+      "imports": [
+        "index.html"
+      ],
+      "css": [
+        "assets/TimeBasis-DFAJCxas.css"
+      ]
+    },
+    "_TimeBasis-DFAJCxas.css": {
+      "file": "assets/TimeBasis-DFAJCxas.css",
+      "src": "_TimeBasis-DFAJCxas.css"
+    },
+    "_TimeField-DNhoRUKl.js": {
+      "file": "assets/TimeField-DNhoRUKl.js",
+      "name": "TimeField",
+      "imports": [
+        "index.html",
+        "_Selection-DC7-44Gf.js"
+      ]
+    },
+    "_chevron-down-XyyZYnqI.js": {
+      "file": "assets/chevron-down-XyyZYnqI.js",
+      "name": "chevron-down",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_common-Cmd9HAar.css": {
+      "file": "assets/common-Cmd9HAar.css",
+      "src": "_common-Cmd9HAar.css"
+    },
+    "_index-_EAD2idb.js": {
+      "file": "assets/index-_EAD2idb.js",
+      "name": "index",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_lock-keyhole-jnF49sbB.js": {
+      "file": "assets/lock-keyhole-jnF49sbB.js",
+      "name": "lock-keyhole",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_react-DnxA9v5e.js": {
+      "file": "assets/react-DnxA9v5e.js",
+      "name": "react"
+    },
+    "_square-DkwzmR52.js": {
+      "file": "assets/square-DkwzmR52.js",
+      "name": "square",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "_sse-MLsGSJ6H.js": {
+      "file": "assets/sse-MLsGSJ6H.js",
+      "name": "sse"
+    },
+    "_store-B4BHugmT.js": {
+      "file": "assets/store-B4BHugmT.js",
+      "name": "store",
+      "imports": [
+        "index.html"
+      ]
+    },
+    "index.html": {
+      "file": "assets/index-CFp0Lw_x.js",
+      "name": "index",
+      "src": "index.html",
+      "isEntry": true,
+      "imports": [
+        "_react-DnxA9v5e.js"
+      ],
+      "dynamicImports": [
+        "_SpaceNavigation-DDCTDuSb.js",
+        "src/pages/Today.tsx",
+        "src/pages/Chat.tsx",
+        "src/pages/Chart.tsx",
+        "src/pages/Tarot.tsx",
+        "src/pages/Cases.tsx",
+        "src/pages/Me.tsx",
+        "src/pages/Settings.tsx",
+        "src/pages/Design.tsx",
+        "src/live/Chat.tsx",
+        "src/live/Chart.tsx",
+        "src/live/Tarot.tsx",
+        "src/live/Cases.tsx",
+        "src/live/Me.tsx",
+        "src/live/Settings.tsx",
+        "src/spaces/ChatPreview.tsx",
+        "src/spaces/MemoryPreview.tsx",
+        "src/spaces/OrganizePage.tsx",
+        "src/spaces/PreviewNotice.tsx",
+        "src/demos/ComponentNotice.tsx",
+        "src/charts/ChartDemo.tsx"
+      ],
+      "css": [
+        "assets/index-BHztdyFW.css"
+      ]
+    },
+    "src/charts/ChartDemo.tsx": {
+      "file": "assets/ChartDemo-DTEzEJww.js",
+      "name": "ChartDemo",
+      "src": "src/charts/ChartDemo.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Charts-CIQ3DArw.js",
+        "_DateField-Dx08CGgD.js",
+        "_TimeBasis-BMyLUONv.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js"
+      ]
+    },
+    "src/demos/ComponentNotice.tsx": {
+      "file": "assets/ComponentNotice-Bmts4O1G.js",
+      "name": "ComponentNotice",
+      "src": "src/demos/ComponentNotice.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_react-DnxA9v5e.js"
+      ],
+      "css": [
+        "assets/ComponentNotice-BIoJSqjK.css"
+      ]
+    },
+    "src/live/Cases.tsx": {
+      "file": "assets/Cases-Cl3jSEXq.js",
+      "name": "Cases",
+      "src": "src/live/Cases.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Selection-DC7-44Gf.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_chevron-down-XyyZYnqI.js"
+      ]
+    },
+    "src/live/Chart.tsx": {
+      "file": "assets/Chart-wtUgs2Y5.js",
+      "name": "Chart",
+      "src": "src/live/Chart.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_TimeBasis-BMyLUONv.js",
+        "_DateField-Dx08CGgD.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js"
+      ]
+    },
+    "src/live/Chat.tsx": {
+      "file": "assets/Chat-CcG3f-8T.js",
+      "name": "Chat",
+      "src": "src/live/Chat.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Messages-BAqaqpZb.js",
+        "_Markdown-kCoBp7rF.js",
+        "_square-DkwzmR52.js",
+        "_sse-MLsGSJ6H.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js"
+      ]
+    },
+    "src/live/Me.tsx": {
+      "file": "assets/Me-FmQa6FQk.js",
+      "name": "Me",
+      "src": "src/live/Me.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Selection-DC7-44Gf.js",
+        "_DateField-Dx08CGgD.js",
+        "_TimeField-DNhoRUKl.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_chevron-down-XyyZYnqI.js"
+      ]
+    },
+    "src/live/Settings.tsx": {
+      "file": "assets/Settings-BY0_9Fb5.js",
+      "name": "Settings",
+      "src": "src/live/Settings.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Selection-DC7-44Gf.js",
+        "_TimeField-DNhoRUKl.js",
+        "_Markdown-kCoBp7rF.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_chevron-down-XyyZYnqI.js"
+      ]
+    },
+    "src/live/Tarot.tsx": {
+      "file": "assets/Tarot-B2Inf9vF.js",
+      "name": "Tarot",
+      "src": "src/live/Tarot.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_sse-MLsGSJ6H.js",
+        "_Selection-DC7-44Gf.js",
+        "_FlipFace-DffGUU7f.js",
+        "_Markdown-kCoBp7rF.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_chevron-down-XyyZYnqI.js"
+      ]
+    },
+    "src/pages/Cases.tsx": {
+      "file": "assets/Cases-BTCy1lg1.js",
+      "name": "Cases",
+      "src": "src/pages/Cases.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_react-DnxA9v5e.js"
+      ]
+    },
+    "src/pages/Chart.tsx": {
+      "file": "assets/Chart-BLIVwXai.js",
+      "name": "Chart",
+      "src": "src/pages/Chart.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Charts-CIQ3DArw.js",
+        "_index-_EAD2idb.js",
+        "_Calendar-CeKhg1NJ.js",
+        "_chevron-down-XyyZYnqI.js",
+        "_react-DnxA9v5e.js"
+      ]
+    },
+    "src/pages/Chat.tsx": {
+      "file": "assets/Chat-B7Sbw8M1.js",
+      "name": "Chat",
+      "src": "src/pages/Chat.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Calendar-CeKhg1NJ.js",
+        "_Messages-BAqaqpZb.js",
+        "_Composer-CnxyQQ_I.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_Markdown-kCoBp7rF.js",
+        "_square-DkwzmR52.js"
+      ]
+    },
+    "src/pages/Design.tsx": {
+      "file": "assets/Design-BfSbxAY-.js",
+      "name": "Design",
+      "src": "src/pages/Design.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Messages-BAqaqpZb.js",
+        "_Charts-CIQ3DArw.js",
+        "_Calendar-CeKhg1NJ.js",
+        "_TarotCards-Bob_eg4T.js",
+        "_square-DkwzmR52.js",
+        "_Composer-CnxyQQ_I.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_Markdown-kCoBp7rF.js",
+        "_FlipFace-DffGUU7f.js"
+      ]
+    },
+    "src/pages/Me.tsx": {
+      "file": "assets/Me-fUyL1dAX.js",
+      "name": "Me",
+      "src": "src/pages/Me.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Messages-BAqaqpZb.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_Markdown-kCoBp7rF.js"
+      ]
+    },
+    "src/pages/Settings.tsx": {
+      "file": "assets/Settings-BEdeV8ME.js",
+      "name": "Settings",
+      "src": "src/pages/Settings.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Selection-DC7-44Gf.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_chevron-down-XyyZYnqI.js"
+      ]
+    },
+    "src/pages/Tarot.tsx": {
+      "file": "assets/Tarot-CW45ocBg.js",
+      "name": "Tarot",
+      "src": "src/pages/Tarot.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Messages-BAqaqpZb.js",
+        "_TarotCards-Bob_eg4T.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_Markdown-kCoBp7rF.js",
+        "_FlipFace-DffGUU7f.js"
+      ]
+    },
+    "src/pages/Today.tsx": {
+      "file": "assets/Today-k6CDsHYz.js",
+      "name": "Today",
+      "src": "src/pages/Today.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Calendar-CeKhg1NJ.js",
+        "_react-DnxA9v5e.js"
+      ]
+    },
+    "src/spaces/ChatPreview.tsx": {
+      "file": "assets/ChatPreview-BTSJM1ff.js",
+      "name": "ChatPreview",
+      "src": "src/spaces/ChatPreview.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Messages-BAqaqpZb.js",
+        "_Selection-DC7-44Gf.js",
+        "_store-B4BHugmT.js",
+        "_SpaceNavigation-DDCTDuSb.js",
+        "_chevron-down-XyyZYnqI.js",
+        "_react-DnxA9v5e.js",
+        "_index-_EAD2idb.js",
+        "_Markdown-kCoBp7rF.js"
+      ]
+    },
+    "src/spaces/MemoryPreview.tsx": {
+      "file": "assets/MemoryPreview-BKtlJaA3.js",
+      "name": "MemoryPreview",
+      "src": "src/spaces/MemoryPreview.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_store-B4BHugmT.js",
+        "_lock-keyhole-jnF49sbB.js",
+        "_react-DnxA9v5e.js"
+      ],
+      "css": [
+        "assets/common-Cmd9HAar.css"
+      ]
+    },
+    "src/spaces/OrganizePage.tsx": {
+      "file": "assets/OrganizePage-D3p4SzzC.js",
+      "name": "OrganizePage",
+      "src": "src/spaces/OrganizePage.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_Selection-DC7-44Gf.js",
+        "_store-B4BHugmT.js",
+        "_index-_EAD2idb.js",
+        "_chevron-down-XyyZYnqI.js",
+        "_lock-keyhole-jnF49sbB.js",
+        "_react-DnxA9v5e.js"
+      ],
+      "css": [
+        "assets/OrganizePage-Xf4G6qj_.css"
+      ]
+    },
+    "src/spaces/PreviewNotice.tsx": {
+      "file": "assets/PreviewNotice-Dwp1w8HB.js",
+      "name": "PreviewNotice",
+      "src": "src/spaces/PreviewNotice.tsx",
+      "isDynamicEntry": true,
+      "imports": [
+        "index.html",
+        "_store-B4BHugmT.js",
+        "_react-DnxA9v5e.js"
+      ],
+      "css": [
+        "assets/common-Cmd9HAar.css"
+      ]
+    }
+  },
+  "results": [
+    {
+      "run": 1,
+      "lcp_ms": 2456,
+      "lcp_entries": [
+        {
+          "startTime": 1892,
+          "renderTime": 1892,
+          "loadTime": 0,
+          "size": 4992,
+          "element": {
+            "tag": "H1",
+            "id": "",
+            "class": "today-date",
+            "text": "10月18日星期日"
+          }
+        },
+        {
+          "startTime": 1952,
+          "renderTime": 1952,
+          "loadTime": 0,
+          "size": 5808,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "",
+            "text": "最近有 3 条对话记录可继续查看。"
+          }
+        },
+        {
+          "startTime": 2456,
+          "renderTime": 2456,
+          "loadTime": 0,
+          "size": 15570,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "small-text secondary-text",
+            "text": "所选日期 UTC+8 正午快照；交节日年/月柱在节气时刻前后可能不同"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "path": "/fonts/fonts.css",
+          "start": 191.19999999552965,
+          "responseEnd": 1614.2999999970198,
+          "duration": 1423.1000000014901,
+          "transferSize": 64174,
+          "encodedBodySize": 63874,
+          "decodedBodySize": 200744,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "start": 192,
+          "responseEnd": 1676.5999999940395,
+          "duration": 1484.5999999940395,
+          "transferSize": 76624,
+          "encodedBodySize": 76324,
+          "decodedBodySize": 76324,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "start": 192.29999999701977,
+          "responseEnd": 1026.2999999970198,
+          "duration": 834,
+          "transferSize": 25180,
+          "encodedBodySize": 24880,
+          "decodedBodySize": 24880,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "start": 192.59999999403954,
+          "responseEnd": 1319.7999999970198,
+          "duration": 1127.2000000029802,
+          "transferSize": 39390,
+          "encodedBodySize": 39090,
+          "decodedBodySize": 117074,
+          "initiatorType": "script"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "start": 193.09999999403954,
+          "responseEnd": 1413.0999999940395,
+          "duration": 1220,
+          "transferSize": 45607,
+          "encodedBodySize": 45307,
+          "decodedBodySize": 140911,
+          "initiatorType": "other"
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "start": 193.39999999850988,
+          "responseEnd": 640.6999999955297,
+          "duration": 447.29999999701977,
+          "transferSize": 10186,
+          "encodedBodySize": 9886,
+          "decodedBodySize": 42967,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/api/cases",
+          "start": 1739.3999999985099,
+          "responseEnd": 1909.3999999985099,
+          "duration": 170,
+          "transferSize": 302,
+          "encodedBodySize": 2,
+          "decodedBodySize": 2,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/history",
+          "start": 1740.3999999985099,
+          "responseEnd": 1924.3999999985099,
+          "duration": 184,
+          "transferSize": 2908,
+          "encodedBodySize": 2608,
+          "decodedBodySize": 2608,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/chart",
+          "start": 1741.5,
+          "responseEnd": 2423.5999999940395,
+          "duration": 682.0999999940395,
+          "transferSize": 14104,
+          "encodedBodySize": 13804,
+          "decodedBodySize": 13804,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "start": 1755.6999999955297,
+          "responseEnd": 2719.0999999940395,
+          "duration": 963.3999999985099,
+          "transferSize": 33264,
+          "encodedBodySize": 32964,
+          "decodedBodySize": 32964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "start": 1766.5999999940395,
+          "responseEnd": 4796,
+          "duration": 3029.4000000059605,
+          "transferSize": 105264,
+          "encodedBodySize": 104964,
+          "decodedBodySize": 104964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "start": 1766.7999999970198,
+          "responseEnd": 3800.5999999940395,
+          "duration": 2033.7999999970198,
+          "transferSize": 67604,
+          "encodedBodySize": 67304,
+          "decodedBodySize": 67304,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "start": 1771.5999999940395,
+          "responseEnd": 3956.5999999940395,
+          "duration": 2185,
+          "transferSize": 66956,
+          "encodedBodySize": 66656,
+          "decodedBodySize": 66656,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "start": 1776.8999999985099,
+          "responseEnd": 3400.1999999955297,
+          "duration": 1623.2999999970198,
+          "transferSize": 46292,
+          "encodedBodySize": 45992,
+          "decodedBodySize": 45992,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "start": 1777.0999999940395,
+          "responseEnd": 4080.0999999940395,
+          "duration": 2303,
+          "transferSize": 52528,
+          "encodedBodySize": 52228,
+          "decodedBodySize": 52228,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "start": 1798.8999999985099,
+          "responseEnd": 4373.19999999553,
+          "duration": 2574.2999999970198,
+          "transferSize": 53096,
+          "encodedBodySize": 52796,
+          "decodedBodySize": 52796,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "start": 1815.8999999985099,
+          "responseEnd": 5187,
+          "duration": 3371.10000000149,
+          "transferSize": 58524,
+          "encodedBodySize": 58224,
+          "decodedBodySize": 58224,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "start": 1821.3999999985099,
+          "responseEnd": 5513.0999999940395,
+          "duration": 3691.6999999955297,
+          "transferSize": 56564,
+          "encodedBodySize": 56264,
+          "decodedBodySize": 56264,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "start": 1821.5999999940395,
+          "responseEnd": 5714.5999999940395,
+          "duration": 3893,
+          "transferSize": 58040,
+          "encodedBodySize": 57740,
+          "decodedBodySize": 57740,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "start": 1821.8999999985099,
+          "responseEnd": 5841.29999999702,
+          "duration": 4019.39999999851,
+          "transferSize": 57760,
+          "encodedBodySize": 57460,
+          "decodedBodySize": 57460,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "start": 1844.5999999940395,
+          "responseEnd": 6417.79999999702,
+          "duration": 4573.20000000298,
+          "transferSize": 75044,
+          "encodedBodySize": 74744,
+          "decodedBodySize": 74744,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "start": 1849.8999999985099,
+          "responseEnd": 6387.0999999940395,
+          "duration": 4537.19999999553,
+          "transferSize": 58728,
+          "encodedBodySize": 58428,
+          "decodedBodySize": 58428,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "start": 2432.7999999970198,
+          "responseEnd": 6558.19999999553,
+          "duration": 4125.39999999851,
+          "transferSize": 60508,
+          "encodedBodySize": 60208,
+          "decodedBodySize": 60208,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "start": 2433.0999999940395,
+          "responseEnd": 6620.39999999851,
+          "duration": 4187.30000000447,
+          "transferSize": 61128,
+          "encodedBodySize": 60828,
+          "decodedBodySize": 60828,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/favicon.svg",
+          "start": 6668.0999999940395,
+          "responseEnd": 6838.29999999702,
+          "duration": 170.20000000298023,
+          "transferSize": 589,
+          "encodedBodySize": 289,
+          "decodedBodySize": 289,
+          "initiatorType": "other"
+        }
+      ],
+      "navigation": [
+        {
+          "name": "http://127.0.0.1:4173/#/today",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 6625.0999999940395,
+          "navigationId": 1544,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "http/1.1",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.29999999701976776,
+          "domainLookupStart": 0.29999999701976776,
+          "domainLookupEnd": 0.29999999701976776,
+          "connectStart": 0.29999999701976776,
+          "secureConnectionStart": 0,
+          "connectEnd": 0.29999999701976776,
+          "requestStart": 0.8999999985098839,
+          "responseStart": 1.7999999970197678,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 1.7999999970197678,
+          "responseEnd": 175.79999999701977,
+          "transferSize": 1219,
+          "encodedBodySize": 919,
+          "decodedBodySize": 919,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 198.59999999403954,
+          "domContentLoadedEventStart": 1661,
+          "domContentLoadedEventEnd": 1661.0999999940395,
+          "domComplete": 6624.5,
+          "loadEventStart": 6625.0999999940395,
+          "loadEventEnd": 6625.0999999940395,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "login_dialogs": 0,
+      "day_heading": "乙丑",
+      "response_headers": [
+        {
+          "path": "/",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/cases",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/history",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/chart",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "encoding": null
+        }
+      ],
+      "errors": [],
+      "external": [],
+      "screenshot": "web/evidence/2026-10-18/components-m5/performance/final/run-1.png"
+    },
+    {
+      "run": 2,
+      "lcp_ms": 2452,
+      "lcp_entries": [
+        {
+          "startTime": 1888,
+          "renderTime": 1888,
+          "loadTime": 0,
+          "size": 4992,
+          "element": {
+            "tag": "H1",
+            "id": "",
+            "class": "today-date",
+            "text": "10月18日星期日"
+          }
+        },
+        {
+          "startTime": 1944,
+          "renderTime": 1944,
+          "loadTime": 0,
+          "size": 5808,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "",
+            "text": "最近有 3 条对话记录可继续查看。"
+          }
+        },
+        {
+          "startTime": 2452,
+          "renderTime": 2452,
+          "loadTime": 0,
+          "size": 15570,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "small-text secondary-text",
+            "text": "所选日期 UTC+8 正午快照；交节日年/月柱在节气时刻前后可能不同"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "path": "/fonts/fonts.css",
+          "start": 196.20000000298023,
+          "responseEnd": 1610.8000000044703,
+          "duration": 1414.6000000014901,
+          "transferSize": 64174,
+          "encodedBodySize": 63874,
+          "decodedBodySize": 200744,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "start": 196.89999999850988,
+          "responseEnd": 1688.8999999985099,
+          "duration": 1492,
+          "transferSize": 76624,
+          "encodedBodySize": 76324,
+          "decodedBodySize": 76324,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "start": 197.39999999850988,
+          "responseEnd": 1016.8000000044703,
+          "duration": 819.4000000059605,
+          "transferSize": 25180,
+          "encodedBodySize": 24880,
+          "decodedBodySize": 24880,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "start": 197.5,
+          "responseEnd": 1342.7000000029802,
+          "duration": 1145.2000000029802,
+          "transferSize": 39390,
+          "encodedBodySize": 39090,
+          "decodedBodySize": 117074,
+          "initiatorType": "script"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "start": 197.70000000298023,
+          "responseEnd": 1437.1000000014901,
+          "duration": 1239.3999999985099,
+          "transferSize": 45607,
+          "encodedBodySize": 45307,
+          "decodedBodySize": 140911,
+          "initiatorType": "other"
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "start": 198,
+          "responseEnd": 648,
+          "duration": 450,
+          "transferSize": 10186,
+          "encodedBodySize": 9886,
+          "decodedBodySize": 42967,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/api/cases",
+          "start": 1733.8000000044703,
+          "responseEnd": 1907.6000000014901,
+          "duration": 173.79999999701977,
+          "transferSize": 302,
+          "encodedBodySize": 2,
+          "decodedBodySize": 2,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/history",
+          "start": 1735.1000000014901,
+          "responseEnd": 1922.5,
+          "duration": 187.39999999850988,
+          "transferSize": 2908,
+          "encodedBodySize": 2608,
+          "decodedBodySize": 2608,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/chart",
+          "start": 1736.3999999985099,
+          "responseEnd": 2419.10000000149,
+          "duration": 682.7000000029802,
+          "transferSize": 14104,
+          "encodedBodySize": 13804,
+          "decodedBodySize": 13804,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "start": 1751.1000000014901,
+          "responseEnd": 2745.5,
+          "duration": 994.3999999985099,
+          "transferSize": 33264,
+          "encodedBodySize": 32964,
+          "decodedBodySize": 32964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "start": 1761.5,
+          "responseEnd": 4758.20000000298,
+          "duration": 2996.7000000029802,
+          "transferSize": 105264,
+          "encodedBodySize": 104964,
+          "decodedBodySize": 104964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "start": 1761.7000000029802,
+          "responseEnd": 3786.39999999851,
+          "duration": 2024.6999999955297,
+          "transferSize": 67604,
+          "encodedBodySize": 67304,
+          "decodedBodySize": 67304,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "start": 1766.3000000044703,
+          "responseEnd": 3953.7000000029802,
+          "duration": 2187.39999999851,
+          "transferSize": 66956,
+          "encodedBodySize": 66656,
+          "decodedBodySize": 66656,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "start": 1772,
+          "responseEnd": 3394.39999999851,
+          "duration": 1622.3999999985099,
+          "transferSize": 46292,
+          "encodedBodySize": 45992,
+          "decodedBodySize": 45992,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "start": 1772.2000000029802,
+          "responseEnd": 4078.89999999851,
+          "duration": 2306.6999999955297,
+          "transferSize": 52528,
+          "encodedBodySize": 52228,
+          "decodedBodySize": 52228,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "start": 1792.8000000044703,
+          "responseEnd": 4389.20000000298,
+          "duration": 2596.39999999851,
+          "transferSize": 53096,
+          "encodedBodySize": 52796,
+          "decodedBodySize": 52796,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "start": 1810.5,
+          "responseEnd": 5190.60000000149,
+          "duration": 3380.10000000149,
+          "transferSize": 58524,
+          "encodedBodySize": 58224,
+          "decodedBodySize": 58224,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "start": 1815.3000000044703,
+          "responseEnd": 5487.5,
+          "duration": 3672.1999999955297,
+          "transferSize": 56564,
+          "encodedBodySize": 56264,
+          "decodedBodySize": 56264,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "start": 1815.6000000014901,
+          "responseEnd": 5703.30000000447,
+          "duration": 3887.7000000029802,
+          "transferSize": 58040,
+          "encodedBodySize": 57740,
+          "decodedBodySize": 57740,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "start": 1815.8000000044703,
+          "responseEnd": 5843.60000000149,
+          "duration": 4027.7999999970198,
+          "transferSize": 57760,
+          "encodedBodySize": 57460,
+          "decodedBodySize": 57460,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "start": 1840.2000000029802,
+          "responseEnd": 6414.30000000447,
+          "duration": 4574.10000000149,
+          "transferSize": 75044,
+          "encodedBodySize": 74744,
+          "decodedBodySize": 74744,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "start": 1846,
+          "responseEnd": 6367.80000000447,
+          "duration": 4521.80000000447,
+          "transferSize": 58728,
+          "encodedBodySize": 58428,
+          "decodedBodySize": 58428,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "start": 2427.5,
+          "responseEnd": 6569.30000000447,
+          "duration": 4141.80000000447,
+          "transferSize": 60508,
+          "encodedBodySize": 60208,
+          "decodedBodySize": 60208,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "start": 2427.7000000029802,
+          "responseEnd": 6615.30000000447,
+          "duration": 4187.60000000149,
+          "transferSize": 61128,
+          "encodedBodySize": 60828,
+          "decodedBodySize": 60828,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/favicon.svg",
+          "start": 6652.20000000298,
+          "responseEnd": 6833.10000000149,
+          "duration": 180.89999999850988,
+          "transferSize": 589,
+          "encodedBodySize": 289,
+          "decodedBodySize": 289,
+          "initiatorType": "other"
+        }
+      ],
+      "navigation": [
+        {
+          "name": "http://127.0.0.1:4173/#/today",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 6619.70000000298,
+          "navigationId": 8372,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "http/1.1",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.20000000298023224,
+          "domainLookupStart": 0.20000000298023224,
+          "domainLookupEnd": 0.20000000298023224,
+          "connectStart": 0.20000000298023224,
+          "secureConnectionStart": 0,
+          "connectEnd": 0.20000000298023224,
+          "requestStart": 0.5,
+          "responseStart": 1.3000000044703484,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 1.3000000044703484,
+          "responseEnd": 180.5,
+          "transferSize": 1219,
+          "encodedBodySize": 919,
+          "decodedBodySize": 919,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 203.20000000298023,
+          "domContentLoadedEventStart": 1658.5,
+          "domContentLoadedEventEnd": 1658.8000000044703,
+          "domComplete": 6619.10000000149,
+          "loadEventStart": 6619.70000000298,
+          "loadEventEnd": 6619.70000000298,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "login_dialogs": 0,
+      "day_heading": "乙丑",
+      "response_headers": [
+        {
+          "path": "/",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/cases",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/history",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/chart",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "encoding": null
+        }
+      ],
+      "errors": [],
+      "external": [],
+      "screenshot": "web/evidence/2026-10-18/components-m5/performance/final/run-2.png"
+    },
+    {
+      "run": 3,
+      "lcp_ms": 2444,
+      "lcp_entries": [
+        {
+          "startTime": 1892,
+          "renderTime": 1892,
+          "loadTime": 0,
+          "size": 4992,
+          "element": {
+            "tag": "H1",
+            "id": "",
+            "class": "today-date",
+            "text": "10月18日星期日"
+          }
+        },
+        {
+          "startTime": 1952,
+          "renderTime": 1952,
+          "loadTime": 0,
+          "size": 5808,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "",
+            "text": "最近有 3 条对话记录可继续查看。"
+          }
+        },
+        {
+          "startTime": 2444,
+          "renderTime": 2444,
+          "loadTime": 0,
+          "size": 15570,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "small-text secondary-text",
+            "text": "所选日期 UTC+8 正午快照；交节日年/月柱在节气时刻前后可能不同"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "path": "/fonts/fonts.css",
+          "start": 188.29999999701977,
+          "responseEnd": 1611.7999999970198,
+          "duration": 1423.5,
+          "transferSize": 64174,
+          "encodedBodySize": 63874,
+          "decodedBodySize": 200744,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "start": 189.10000000149012,
+          "responseEnd": 1674,
+          "duration": 1484.8999999985099,
+          "transferSize": 76624,
+          "encodedBodySize": 76324,
+          "decodedBodySize": 76324,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "start": 189.5,
+          "responseEnd": 1008.5,
+          "duration": 819,
+          "transferSize": 25180,
+          "encodedBodySize": 24880,
+          "decodedBodySize": 24880,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "start": 189.89999999850988,
+          "responseEnd": 1334.6000000014901,
+          "duration": 1144.7000000029802,
+          "transferSize": 39390,
+          "encodedBodySize": 39090,
+          "decodedBodySize": 117074,
+          "initiatorType": "script"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "start": 190.10000000149012,
+          "responseEnd": 1426.8999999985099,
+          "duration": 1236.7999999970198,
+          "transferSize": 45607,
+          "encodedBodySize": 45307,
+          "decodedBodySize": 140911,
+          "initiatorType": "other"
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "start": 190.29999999701977,
+          "responseEnd": 634.5,
+          "duration": 444.20000000298023,
+          "transferSize": 10186,
+          "encodedBodySize": 9886,
+          "decodedBodySize": 42967,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/api/cases",
+          "start": 1736.3999999985099,
+          "responseEnd": 1909.1999999955297,
+          "duration": 172.79999999701977,
+          "transferSize": 302,
+          "encodedBodySize": 2,
+          "decodedBodySize": 2,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/history",
+          "start": 1737.6000000014901,
+          "responseEnd": 1925,
+          "duration": 187.39999999850988,
+          "transferSize": 2908,
+          "encodedBodySize": 2608,
+          "decodedBodySize": 2608,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/chart",
+          "start": 1738.3999999985099,
+          "responseEnd": 2420.5,
+          "duration": 682.1000000014901,
+          "transferSize": 14104,
+          "encodedBodySize": 13804,
+          "decodedBodySize": 13804,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "start": 1752.7999999970198,
+          "responseEnd": 2775.5,
+          "duration": 1022.7000000029802,
+          "transferSize": 33264,
+          "encodedBodySize": 32964,
+          "decodedBodySize": 32964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "start": 1763.5,
+          "responseEnd": 4760.89999999851,
+          "duration": 2997.39999999851,
+          "transferSize": 105264,
+          "encodedBodySize": 104964,
+          "decodedBodySize": 104964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "start": 1763.6999999955297,
+          "responseEnd": 3783.2999999970198,
+          "duration": 2019.6000000014901,
+          "transferSize": 67604,
+          "encodedBodySize": 67304,
+          "decodedBodySize": 67304,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "start": 1768.2999999970198,
+          "responseEnd": 3940.1999999955297,
+          "duration": 2171.89999999851,
+          "transferSize": 66956,
+          "encodedBodySize": 66656,
+          "decodedBodySize": 66656,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "start": 1774,
+          "responseEnd": 3411.60000000149,
+          "duration": 1637.6000000014901,
+          "transferSize": 46292,
+          "encodedBodySize": 45992,
+          "decodedBodySize": 45992,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "start": 1774.1999999955297,
+          "responseEnd": 4079.89999999851,
+          "duration": 2305.7000000029802,
+          "transferSize": 52528,
+          "encodedBodySize": 52228,
+          "decodedBodySize": 52228,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "start": 1795.8999999985099,
+          "responseEnd": 4435.69999999553,
+          "duration": 2639.7999999970198,
+          "transferSize": 53096,
+          "encodedBodySize": 52796,
+          "decodedBodySize": 52796,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "start": 1814.2999999970198,
+          "responseEnd": 5197.69999999553,
+          "duration": 3383.39999999851,
+          "transferSize": 58524,
+          "encodedBodySize": 58224,
+          "decodedBodySize": 58224,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "start": 1819.6999999955297,
+          "responseEnd": 5507.10000000149,
+          "duration": 3687.4000000059605,
+          "transferSize": 56564,
+          "encodedBodySize": 56264,
+          "decodedBodySize": 56264,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "start": 1820.1000000014901,
+          "responseEnd": 5692.29999999702,
+          "duration": 3872.1999999955297,
+          "transferSize": 58040,
+          "encodedBodySize": 57740,
+          "decodedBodySize": 57740,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "start": 1820.2999999970198,
+          "responseEnd": 5833.5,
+          "duration": 4013.2000000029802,
+          "transferSize": 57760,
+          "encodedBodySize": 57460,
+          "decodedBodySize": 57460,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "start": 1843.6000000014901,
+          "responseEnd": 6440.39999999851,
+          "duration": 4596.79999999702,
+          "transferSize": 75044,
+          "encodedBodySize": 74744,
+          "decodedBodySize": 74744,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "start": 1849.1000000014901,
+          "responseEnd": 6361.69999999553,
+          "duration": 4512.5999999940395,
+          "transferSize": 58728,
+          "encodedBodySize": 58428,
+          "decodedBodySize": 58428,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "start": 2430.1999999955297,
+          "responseEnd": 6565.29999999702,
+          "duration": 4135.10000000149,
+          "transferSize": 60508,
+          "encodedBodySize": 60208,
+          "decodedBodySize": 60208,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "start": 2430.1999999955297,
+          "responseEnd": 6627.10000000149,
+          "duration": 4196.9000000059605,
+          "transferSize": 61128,
+          "encodedBodySize": 60828,
+          "decodedBodySize": 60828,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/favicon.svg",
+          "start": 6664,
+          "responseEnd": 6845.19999999553,
+          "duration": 181.19999999552965,
+          "transferSize": 589,
+          "encodedBodySize": 289,
+          "decodedBodySize": 289,
+          "initiatorType": "other"
+        }
+      ],
+      "navigation": [
+        {
+          "name": "http://127.0.0.1:4173/#/today",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 6631.79999999702,
+          "navigationId": 8107,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "http/1.1",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.19999999552965164,
+          "domainLookupStart": 0.19999999552965164,
+          "domainLookupEnd": 0.19999999552965164,
+          "connectStart": 0.19999999552965164,
+          "secureConnectionStart": 0,
+          "connectEnd": 0.19999999552965164,
+          "requestStart": 0.6999999955296516,
+          "responseStart": 3.100000001490116,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 3.100000001490116,
+          "responseEnd": 171.5,
+          "transferSize": 1219,
+          "encodedBodySize": 919,
+          "decodedBodySize": 919,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 195.60000000149012,
+          "domContentLoadedEventStart": 1658.1999999955297,
+          "domContentLoadedEventEnd": 1658.3999999985099,
+          "domComplete": 6631.19999999553,
+          "loadEventStart": 6631.79999999702,
+          "loadEventEnd": 6631.79999999702,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "high"
+          }
+        }
+      ],
+      "login_dialogs": 0,
+      "day_heading": "乙丑",
+      "response_headers": [
+        {
+          "path": "/",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/history",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/cases",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/chart",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "encoding": null
+        }
+      ],
+      "errors": [],
+      "external": [],
+      "screenshot": "web/evidence/2026-10-18/components-m5/performance/final/run-3.png"
+    },
+    {
+      "run": 4,
+      "lcp_ms": 2452,
+      "lcp_entries": [
+        {
+          "startTime": 1904,
+          "renderTime": 1904,
+          "loadTime": 0,
+          "size": 4992,
+          "element": {
+            "tag": "H1",
+            "id": "",
+            "class": "today-date",
+            "text": "10月18日星期日"
+          }
+        },
+        {
+          "startTime": 1964,
+          "renderTime": 1964,
+          "loadTime": 0,
+          "size": 5808,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "",
+            "text": "最近有 3 条对话记录可继续查看。"
+          }
+        },
+        {
+          "startTime": 2452,
+          "renderTime": 2452,
+          "loadTime": 0,
+          "size": 15570,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "small-text secondary-text",
+            "text": "所选日期 UTC+8 正午快照；交节日年/月柱在节气时刻前后可能不同"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "path": "/fonts/fonts.css",
+          "start": 197.20000000298023,
+          "responseEnd": 1628.3999999985099,
+          "duration": 1431.1999999955297,
+          "transferSize": 64174,
+          "encodedBodySize": 63874,
+          "decodedBodySize": 200744,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "start": 198,
+          "responseEnd": 1689.7999999970198,
+          "duration": 1491.7999999970198,
+          "transferSize": 76624,
+          "encodedBodySize": 76324,
+          "decodedBodySize": 76324,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "start": 198.39999999850988,
+          "responseEnd": 1035,
+          "duration": 836.6000000014901,
+          "transferSize": 25180,
+          "encodedBodySize": 24880,
+          "decodedBodySize": 24880,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "start": 198.60000000149012,
+          "responseEnd": 1347.8999999985099,
+          "duration": 1149.2999999970198,
+          "transferSize": 39390,
+          "encodedBodySize": 39090,
+          "decodedBodySize": 117074,
+          "initiatorType": "script"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "start": 199,
+          "responseEnd": 1440.5,
+          "duration": 1241.5,
+          "transferSize": 45607,
+          "encodedBodySize": 45307,
+          "decodedBodySize": 140911,
+          "initiatorType": "other"
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "start": 199.20000000298023,
+          "responseEnd": 647.1000000014901,
+          "duration": 447.8999999985099,
+          "transferSize": 10186,
+          "encodedBodySize": 9886,
+          "decodedBodySize": 42967,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/api/cases",
+          "start": 1749.7000000029802,
+          "responseEnd": 1920,
+          "duration": 170.29999999701977,
+          "transferSize": 302,
+          "encodedBodySize": 2,
+          "decodedBodySize": 2,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/history",
+          "start": 1751.1000000014901,
+          "responseEnd": 1934.7999999970198,
+          "duration": 183.69999999552965,
+          "transferSize": 2908,
+          "encodedBodySize": 2608,
+          "decodedBodySize": 2608,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/chart",
+          "start": 1752.2999999970198,
+          "responseEnd": 2427.2000000029802,
+          "duration": 674.9000000059605,
+          "transferSize": 14104,
+          "encodedBodySize": 13804,
+          "decodedBodySize": 13804,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "start": 1766,
+          "responseEnd": 2738.7000000029802,
+          "duration": 972.7000000029802,
+          "transferSize": 33264,
+          "encodedBodySize": 32964,
+          "decodedBodySize": 32964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "start": 1776.2000000029802,
+          "responseEnd": 4774.20000000298,
+          "duration": 2998,
+          "transferSize": 105264,
+          "encodedBodySize": 104964,
+          "decodedBodySize": 104964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "start": 1776.7000000029802,
+          "responseEnd": 3796.2000000029802,
+          "duration": 2019.5,
+          "transferSize": 67604,
+          "encodedBodySize": 67304,
+          "decodedBodySize": 67304,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "start": 1781.2999999970198,
+          "responseEnd": 3983.39999999851,
+          "duration": 2202.10000000149,
+          "transferSize": 66956,
+          "encodedBodySize": 66656,
+          "decodedBodySize": 66656,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "start": 1786.3999999985099,
+          "responseEnd": 3406.89999999851,
+          "duration": 1620.5,
+          "transferSize": 46292,
+          "encodedBodySize": 45992,
+          "decodedBodySize": 45992,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "start": 1786.8999999985099,
+          "responseEnd": 4090.10000000149,
+          "duration": 2303.2000000029802,
+          "transferSize": 52528,
+          "encodedBodySize": 52228,
+          "decodedBodySize": 52228,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "start": 1808.1000000014901,
+          "responseEnd": 4384.70000000298,
+          "duration": 2576.60000000149,
+          "transferSize": 53096,
+          "encodedBodySize": 52796,
+          "decodedBodySize": 52796,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "start": 1826.1000000014901,
+          "responseEnd": 5194.79999999702,
+          "duration": 3368.6999999955297,
+          "transferSize": 58524,
+          "encodedBodySize": 58224,
+          "decodedBodySize": 58224,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "start": 1831.3999999985099,
+          "responseEnd": 5491.89999999851,
+          "duration": 3660.5,
+          "transferSize": 56564,
+          "encodedBodySize": 56264,
+          "decodedBodySize": 56264,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "start": 1831.7000000029802,
+          "responseEnd": 5739.20000000298,
+          "duration": 3907.5,
+          "transferSize": 58040,
+          "encodedBodySize": 57740,
+          "decodedBodySize": 57740,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "start": 1831.8999999985099,
+          "responseEnd": 5864.10000000149,
+          "duration": 4032.2000000029802,
+          "transferSize": 57760,
+          "encodedBodySize": 57460,
+          "decodedBodySize": 57460,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "start": 1854.2000000029802,
+          "responseEnd": 6422.39999999851,
+          "duration": 4568.19999999553,
+          "transferSize": 75044,
+          "encodedBodySize": 74744,
+          "decodedBodySize": 74744,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "start": 1859.2999999970198,
+          "responseEnd": 6376.20000000298,
+          "duration": 4516.9000000059605,
+          "transferSize": 58728,
+          "encodedBodySize": 58428,
+          "decodedBodySize": 58428,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "start": 2435.7000000029802,
+          "responseEnd": 6577.20000000298,
+          "duration": 4141.5,
+          "transferSize": 60508,
+          "encodedBodySize": 60208,
+          "decodedBodySize": 60208,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "start": 2435.7000000029802,
+          "responseEnd": 6623.29999999702,
+          "duration": 4187.5999999940395,
+          "transferSize": 61128,
+          "encodedBodySize": 60828,
+          "decodedBodySize": 60828,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/favicon.svg",
+          "start": 6660.60000000149,
+          "responseEnd": 6841.20000000298,
+          "duration": 180.60000000149012,
+          "transferSize": 589,
+          "encodedBodySize": 289,
+          "decodedBodySize": 289,
+          "initiatorType": "other"
+        }
+      ],
+      "navigation": [
+        {
+          "name": "http://127.0.0.1:4173/#/today",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 6627.89999999851,
+          "navigationId": 1969,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "http/1.1",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.29999999701976776,
+          "domainLookupStart": 0.29999999701976776,
+          "domainLookupEnd": 0.29999999701976776,
+          "connectStart": 0.29999999701976776,
+          "secureConnectionStart": 0,
+          "connectEnd": 0.29999999701976776,
+          "requestStart": 1,
+          "responseStart": 1.7999999970197678,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 1.7999999970197678,
+          "responseEnd": 180.29999999701977,
+          "transferSize": 1219,
+          "encodedBodySize": 919,
+          "decodedBodySize": 919,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 204.29999999701977,
+          "domContentLoadedEventStart": 1675.1000000014901,
+          "domContentLoadedEventEnd": 1675.2999999970198,
+          "domComplete": 6627.29999999702,
+          "loadEventStart": 6627.89999999851,
+          "loadEventEnd": 6627.89999999851,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "high"
+          }
+        }
+      ],
+      "login_dialogs": 0,
+      "day_heading": "乙丑",
+      "response_headers": [
+        {
+          "path": "/",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/cases",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/history",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/chart",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "encoding": null
+        }
+      ],
+      "errors": [],
+      "external": [],
+      "screenshot": "web/evidence/2026-10-18/components-m5/performance/final/run-4.png"
+    },
+    {
+      "run": 5,
+      "lcp_ms": 2432,
+      "lcp_entries": [
+        {
+          "startTime": 1892,
+          "renderTime": 1892,
+          "loadTime": 0,
+          "size": 4992,
+          "element": {
+            "tag": "H1",
+            "id": "",
+            "class": "today-date",
+            "text": "10月18日星期日"
+          }
+        },
+        {
+          "startTime": 1976,
+          "renderTime": 1976,
+          "loadTime": 0,
+          "size": 5808,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "",
+            "text": "最近有 3 条对话记录可继续查看。"
+          }
+        },
+        {
+          "startTime": 2432,
+          "renderTime": 2432,
+          "loadTime": 0,
+          "size": 15570,
+          "element": {
+            "tag": "P",
+            "id": "",
+            "class": "small-text secondary-text",
+            "text": "所选日期 UTC+8 正午快照；交节日年/月柱在节气时刻前后可能不同"
+          }
+        }
+      ],
+      "resources": [
+        {
+          "path": "/fonts/fonts.css",
+          "start": 191.60000000149012,
+          "responseEnd": 1609.1000000014901,
+          "duration": 1417.5,
+          "transferSize": 64174,
+          "encodedBodySize": 63874,
+          "decodedBodySize": 200744,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "start": 192.39999999850988,
+          "responseEnd": 1670.7000000029802,
+          "duration": 1478.3000000044703,
+          "transferSize": 76624,
+          "encodedBodySize": 76324,
+          "decodedBodySize": 76324,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "start": 192.60000000149012,
+          "responseEnd": 1017.2000000029802,
+          "duration": 824.6000000014901,
+          "transferSize": 25180,
+          "encodedBodySize": 24880,
+          "decodedBodySize": 24880,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "start": 192.79999999701977,
+          "responseEnd": 1330.6000000014901,
+          "duration": 1137.8000000044703,
+          "transferSize": 39390,
+          "encodedBodySize": 39090,
+          "decodedBodySize": 117074,
+          "initiatorType": "script"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "start": 193.20000000298023,
+          "responseEnd": 1423.7000000029802,
+          "duration": 1230.5,
+          "transferSize": 45607,
+          "encodedBodySize": 45307,
+          "decodedBodySize": 140911,
+          "initiatorType": "other"
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "start": 193.39999999850988,
+          "responseEnd": 657,
+          "duration": 463.6000000014901,
+          "transferSize": 10186,
+          "encodedBodySize": 9886,
+          "decodedBodySize": 42967,
+          "initiatorType": "link"
+        },
+        {
+          "path": "/api/cases",
+          "start": 1737.3999999985099,
+          "responseEnd": 1904.2999999970198,
+          "duration": 166.89999999850988,
+          "transferSize": 302,
+          "encodedBodySize": 2,
+          "decodedBodySize": 2,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/history",
+          "start": 1738.6000000014901,
+          "responseEnd": 1950.2000000029802,
+          "duration": 211.60000000149012,
+          "transferSize": 2908,
+          "encodedBodySize": 2608,
+          "decodedBodySize": 2608,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/api/chart",
+          "start": 1739.6000000014901,
+          "responseEnd": 2403.89999999851,
+          "duration": 664.2999999970198,
+          "transferSize": 14104,
+          "encodedBodySize": 13804,
+          "decodedBodySize": 13804,
+          "initiatorType": "fetch"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "start": 1752.7999999970198,
+          "responseEnd": 2761.7999999970198,
+          "duration": 1009,
+          "transferSize": 33264,
+          "encodedBodySize": 32964,
+          "decodedBodySize": 32964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "start": 1763.2999999970198,
+          "responseEnd": 4770,
+          "duration": 3006.7000000029802,
+          "transferSize": 105264,
+          "encodedBodySize": 104964,
+          "decodedBodySize": 104964,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "start": 1763.5,
+          "responseEnd": 3787.89999999851,
+          "duration": 2024.3999999985099,
+          "transferSize": 67604,
+          "encodedBodySize": 67304,
+          "decodedBodySize": 67304,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "start": 1768.2000000029802,
+          "responseEnd": 3944,
+          "duration": 2175.7999999970198,
+          "transferSize": 66956,
+          "encodedBodySize": 66656,
+          "decodedBodySize": 66656,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "start": 1774,
+          "responseEnd": 3431.5,
+          "duration": 1657.5,
+          "transferSize": 46292,
+          "encodedBodySize": 45992,
+          "decodedBodySize": 45992,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "start": 1774.2999999970198,
+          "responseEnd": 4053.60000000149,
+          "duration": 2279.3000000044703,
+          "transferSize": 52528,
+          "encodedBodySize": 52228,
+          "decodedBodySize": 52228,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "start": 1796,
+          "responseEnd": 4412.70000000298,
+          "duration": 2616.7000000029802,
+          "transferSize": 53096,
+          "encodedBodySize": 52796,
+          "decodedBodySize": 52796,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "start": 1814.2000000029802,
+          "responseEnd": 5214.20000000298,
+          "duration": 3400,
+          "transferSize": 58524,
+          "encodedBodySize": 58224,
+          "decodedBodySize": 58224,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "start": 1819.2999999970198,
+          "responseEnd": 5480.89999999851,
+          "duration": 3661.60000000149,
+          "transferSize": 56564,
+          "encodedBodySize": 56264,
+          "decodedBodySize": 56264,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "start": 1819.3999999985099,
+          "responseEnd": 5728.70000000298,
+          "duration": 3909.3000000044703,
+          "transferSize": 58040,
+          "encodedBodySize": 57740,
+          "decodedBodySize": 57740,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "start": 1819.6000000014901,
+          "responseEnd": 5822,
+          "duration": 4002.39999999851,
+          "transferSize": 57760,
+          "encodedBodySize": 57460,
+          "decodedBodySize": 57460,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "start": 1843.3999999985099,
+          "responseEnd": 6429.5,
+          "duration": 4586.10000000149,
+          "transferSize": 75044,
+          "encodedBodySize": 74744,
+          "decodedBodySize": 74744,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "start": 1848.7000000029802,
+          "responseEnd": 6366.39999999851,
+          "duration": 4517.69999999553,
+          "transferSize": 58728,
+          "encodedBodySize": 58428,
+          "decodedBodySize": 58428,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "start": 2413.10000000149,
+          "responseEnd": 6584.70000000298,
+          "duration": 4171.60000000149,
+          "transferSize": 60508,
+          "encodedBodySize": 60208,
+          "decodedBodySize": 60208,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "start": 2413.2999999970198,
+          "responseEnd": 6631.89999999851,
+          "duration": 4218.60000000149,
+          "transferSize": 61128,
+          "encodedBodySize": 60828,
+          "decodedBodySize": 60828,
+          "initiatorType": "css"
+        },
+        {
+          "path": "/favicon.svg",
+          "start": 6668.79999999702,
+          "responseEnd": 6850.70000000298,
+          "duration": 181.90000000596046,
+          "transferSize": 589,
+          "encodedBodySize": 289,
+          "decodedBodySize": 289,
+          "initiatorType": "other"
+        }
+      ],
+      "navigation": [
+        {
+          "name": "http://127.0.0.1:4173/#/today",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 6636.89999999851,
+          "navigationId": 6337,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "http/1.1",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0,
+          "redirectEnd": 0,
+          "fetchStart": 0.3999999985098839,
+          "domainLookupStart": 0.3999999985098839,
+          "domainLookupEnd": 0.3999999985098839,
+          "connectStart": 0.3999999985098839,
+          "secureConnectionStart": 0,
+          "connectEnd": 0.3999999985098839,
+          "requestStart": 1,
+          "responseStart": 2.100000001490116,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 2.100000001490116,
+          "responseEnd": 175.10000000149012,
+          "transferSize": 1219,
+          "encodedBodySize": 919,
+          "decodedBodySize": 919,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 198.5,
+          "domContentLoadedEventStart": 1659.2999999970198,
+          "domContentLoadedEventEnd": 1659.5,
+          "domComplete": 6636.10000000149,
+          "loadEventStart": 6636.89999999851,
+          "loadEventEnd": 6636.89999999851,
+          "type": "navigate",
+          "redirectCount": 0,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ],
+      "login_dialogs": 0,
+      "day_heading": "乙丑",
+      "response_headers": [
+        {
+          "path": "/",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/fonts.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/assets/index-BHztdyFW.css",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/assets/index-CFp0Lw_x.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/assets/react-DnxA9v5e.js",
+          "status": 200,
+          "encoding": "gzip"
+        },
+        {
+          "path": "/fonts/noto-sans-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/cases",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/history",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/api/chart",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-latin-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-117-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-116-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-119-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-118-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-115-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-112-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-113-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-serif-sc-114-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-109-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/fonts/noto-sans-sc-107-wght-normal.woff2",
+          "status": 200,
+          "encoding": null
+        },
+        {
+          "path": "/favicon.svg",
+          "status": 200,
+          "encoding": null
+        }
+      ],
+      "errors": [],
+      "external": [],
+      "screenshot": "web/evidence/2026-10-18/components-m5/performance/final/run-5.png"
+    }
+  ]
+}

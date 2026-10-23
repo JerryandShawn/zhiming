@@ -1,0 +1,61 @@
+.review-page {
+  min-width: 0;
+}
+.review-note {
+  padding: var(--s-4);
+  background: var(--paper-2);
+  border-inline-start: var(--border) solid var(--line-strong);
+}
+.review-summary {
+  padding-block: var(--s-4);
+  border-block: var(--border) solid var(--line);
+}
+.review-counts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin: 0;
+}
+.review-counts dt {
+  color: var(--ink-2);
+  font-size: var(--t-body-sm);
+}
+.review-counts dd {
+  margin: var(--s-1) 0 0;
+  font-weight: 600;
+}
+.review-fields {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.review-fields legend {
+  font-weight: 600;
+  padding-block-end: var(--s-3);
+}
+.review-field {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-height: var(--control-height);
+  cursor: pointer;
+}
+.review-confirmation {
+  max-height: calc(100dvh - var(--s-8));
+  overflow-y: auto;
+}
+@media (min-width: 1024px) {
+  .review-tree {
+    grid-template-columns: minmax(0, 1fr) var(--aside-width);
+    align-items: start;
+  }
+  .review-uncertain {
+    position: sticky;
+    top: var(--s-4);
+    border-top: 0;
+    padding-top: 0;
+  }
+  .review-counts {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}

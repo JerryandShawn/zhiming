@@ -1,0 +1,189 @@
+{
+  "milestone": "Q1 frozen events v1",
+  "time_beijing": "2026-10-20T23:09:42.8673337+08:00",
+  "base_commit": "0359d352af10db150bedf1d35db7024d3b8e5ccd",
+  "schema": {
+    "source": "28 third section",
+    "remote_ref": "dc574aaf6001250d0fb736d5eca0129102e5fc35",
+    "remote_schema_available": false,
+    "sha256": "be350ed5004ef6874761f2db4928ed7dbc6884a200f8111c495d4c5e52875cfd",
+    "next_check": "later milestone; no wait"
+  },
+  "unit": {
+    "passed": 111,
+    "max_workers": 4,
+    "files": 9,
+    "failed": 0
+  },
+  "browser": {
+    "passed": 6,
+    "cinnabar_budget": 3,
+    "max_workers": 2,
+    "failed": 0,
+    "external_requests": 0,
+    "api_requests": 0,
+    "axe_violations": 0
+  },
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "full_regression": "not run yet; first scheduled at Beijing 23:30-23:45",
+  "source_sha256": [
+    {
+      "sha256": "133039d7fa288430a08fcfcb2dd3f8211c15468ea56b44c735d3b6668cce4599",
+      "path": "web/playwright.night.config.ts"
+    },
+    {
+      "sha256": "92a483ce3716ccfeddf9f4aa7beb8836c861e77ac7bec3f496d53a3ccd1b142e",
+      "path": "web/src/chat/Answers.tsx"
+    },
+    {
+      "sha256": "f0d956ab007b565a7ff91d3f4148a7820992a289d092609f960ea757f352457e",
+      "path": "web/src/chat/envelopes.ts"
+    },
+    {
+      "sha256": "367f15c2bfff83416e2ed0abff974eb4f6f53709e7d4d57409d9523a520b2ce6",
+      "path": "web/src/chat/events.ts"
+    },
+    {
+      "sha256": "e25389ceacdec6fc378d4900077ddd62af83a17ed9c07ea0ae460f9d4aa6bf78",
+      "path": "web/src/chat/interactions/AskCard.tsx"
+    },
+    {
+      "sha256": "0744990a5faf14a94c5f53cca60a9b3c1a71c4a71f4545275b41985d8f6872d4",
+      "path": "web/src/chat/interactions/contracts.ts"
+    },
+    {
+      "sha256": "771578a5e095fb20c3edaa6721dd91ce2ea8e4edde53ccc1136ec0e31de2b343",
+      "path": "web/src/chat/interactions/DecisionCards.tsx"
+    },
+    {
+      "sha256": "686b059302b16f1cf194b366c14f22d56f880ca082587a1996bca28de2b4b36b",
+      "path": "web/src/chat/interactions/MemoryCard.tsx"
+    },
+    {
+      "sha256": "0ca9ad68f439717da4605a91a4ec0ad2d40c9bcdcd48a7be86b382c7b7fa809c",
+      "path": "web/src/chat/interactions/memoryProjection.ts"
+    },
+    {
+      "sha256": "c8819111b88ed8f878673f0f6559ead199411fca4cd19ebb10563596498811a7",
+      "path": "web/src/chat/reducer.ts"
+    },
+    {
+      "sha256": "aee7ff15df105674f24c0a278919355e6766410306095542f562b0a6888bb005",
+      "path": "web/src/chat/sse.ts"
+    },
+    {
+      "sha256": "e2f63e216555beb732095542244a28876e8de7dd2725effb3cf28cd0de54fbec",
+      "path": "web/src/chat/types.ts"
+    },
+    {
+      "sha256": "434fcba5fc499cc75f022f4442207c972c026b3fb11c090a026aa3f55ad93f4a",
+      "path": "web/src/chat/wireV1.ts"
+    },
+    {
+      "sha256": "43079c6d18e98178aaf03cb4031e3c004377d496febe25eb35950d633d603a71",
+      "path": "web/src/night/ChatPreview.tsx"
+    },
+    {
+      "sha256": "9310de0753ed974d0528de448f3dbcad0c62ad796ba9a1d27c94e12647e06426",
+      "path": "web/src/night/events.ts"
+    },
+    {
+      "sha256": "3dc3bf46493afb921bf8e71269f47e8e1f8847243ccbb981cd82366868ff25eb",
+      "path": "web/src/night/port.ts"
+    },
+    {
+      "sha256": "0617762ed0ef9c6d1c9635c7dc8e30c2fdba729534a6c23e2c7d713c4fb14926",
+      "path": "web/src/night/useNormalConversation.ts"
+    },
+    {
+      "sha256": "09fa75a1e91e352efa64072a7fbdf9c0b7a3a290107ef01e2693bdfc88c52d49",
+      "path": "web/src/time/beijing.ts"
+    },
+    {
+      "sha256": "8b9c5e9580a089adbc6cbcc4f4523f21d8a0f1ec7fc4cbc9f3a4cf68b26e12c1",
+      "path": "web/tests/e2e/night-events-v1.spec.ts"
+    },
+    {
+      "sha256": "e809e82b7daed9d6ab0d68cb9236490239f7562adb60bf3c0944785ed2996c4b",
+      "path": "web/tests/e2e/night-helpers.ts"
+    },
+    {
+      "sha256": "aacd909020a4d02ac3b2e5821018abf0466a9d29cb2dd349abd99a0b3a9fac7f",
+      "path": "web/tests/events-v1-integration.test.ts"
+    },
+    {
+      "sha256": "431f2f61c4a2eae2da072f241da3b62ed4d26d80ee75a0435a535e0799a1ffdd",
+      "path": "web/tests/events-v1-reducer.test.ts"
+    },
+    {
+      "sha256": "cacebd928501a9ea26517472aa9c4f96b59fbcff1d948114aee13f8668899a91",
+      "path": "web/tests/events-v1-wire.test.ts"
+    },
+    {
+      "sha256": "369802f41ce2f8c76ea26d583f4ad76ecad0e0fe8acff324b575c9e07ef8f3dd",
+      "path": "web/tests/night-demo.test.ts"
+    },
+    {
+      "sha256": "f382c077c7708b964eef163f9ea6fb2ca57c6b8924a5ce67c3938692e0cc8392",
+      "path": "web/tests/night-v1-conversation.test.tsx"
+    },
+    {
+      "sha256": "393718dca7c230db3f7db7adf2f3071ac83bcfe3c4e1ce8329cd4a0fff56f22c",
+      "path": "web/tests/v1-interactions.test.tsx"
+    },
+    {
+      "sha256": "7ab33e625656a4c1aa30aa74a7fe06275211a62a7238cf0c11b36efa92fb6a21",
+      "path": "web/vitest.config.ts"
+    }
+  ],
+  "screenshots": [
+    {
+      "sha256": "70c315ede17c7e307dabb41a7d8367e5d4a44b065e7bc93c7fc1f754129e01b0",
+      "path": "Q1-v1-cards-1440-dark.png"
+    },
+    {
+      "sha256": "5f4a50ae7336c9d56768aaa860158c8b559790d93ae8cadc83711af8f28f828d",
+      "path": "Q1-v1-cards-1440-light.png"
+    },
+    {
+      "sha256": "d712bec8c0b8391a5de407c72c364def0c8bd1314eca02222fe7469c5b39a8dd",
+      "path": "Q1-v1-cards-390-dark.png"
+    },
+    {
+      "sha256": "9d85fd4047b5bf7f6d81be48293d9d74636bba2105877899626967e9373b7c45",
+      "path": "Q1-v1-cards-390-light.png"
+    },
+    {
+      "sha256": "93a5835b7c738205f9d46b165223b47d5a43591fc9c8725bb88710b68dd9ac46",
+      "path": "Q1-v1-confirmed-1440-dark.png"
+    },
+    {
+      "sha256": "8805935e1ece112ca4c59bae30e81018522ff7b8852e192dd05977a51d24c6da",
+      "path": "Q1-v1-confirmed-1440-light.png"
+    },
+    {
+      "sha256": "9a78f93adad6b5ccc2c42affea6a14e13ec0aa3e27af6068af179989f572c66c",
+      "path": "Q1-v1-confirmed-390-dark.png"
+    },
+    {
+      "sha256": "163c04332e8dfa8b80c08e634199403aa3c2c8539b9b8a5d817b3c73a135a3b0",
+      "path": "Q1-v1-confirmed-390-light.png"
+    },
+    {
+      "sha256": "843ff8e1102e7be60733e5b3c419aadcfaa4344a8e9e9ffe98be793548362aba",
+      "path": "Q1-v1-resumed-390-dark.png"
+    },
+    {
+      "sha256": "89e7c89cc3871b694db07794147508e21bd2c8ba288c654dd0dbe033df4f3d59",
+      "path": "Q1-v1-review-pending-1440.png"
+    },
+    {
+      "sha256": "bc1c456e613f28aa2acbec1a54debf66e09a7f0e27b946ea32ce28135a9bd384",
+      "path": "Q1-v1-review-revised-1440.png"
+    }
+  ],
+  "build_manifest_sha256": "6108d78acd2e002e7b4e25ae354918eb264c8e02b29d649383ce9c0f1feb9566",
+  "real_model_calls": 0
+}

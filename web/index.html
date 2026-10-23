@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#F6F1E7" />
+    <title>明镜 · 知命明镜台</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/pwa/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/pwa/icon-192.png" />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <!-- Keep the common Sans slice warm without competing with CSS and application data. -->
+    <link
+      rel="preload"
+      href="/fonts/noto-sans-sc-119-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="low" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

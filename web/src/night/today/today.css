@@ -1,0 +1,62 @@
+.night-today {
+  min-width: 0;
+}
+.night-today .today-main,
+.night-today-aside {
+  min-width: 0;
+}
+.night-today .today-plan-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.night-today .today-plans {
+  list-style: none;
+  padding: 0;
+  margin: var(--s-3) 0 0;
+  display: grid;
+  gap: var(--s-4);
+}
+.night-today .today-plans > li + li {
+  padding-top: var(--s-4);
+  border-top: var(--border) solid var(--line);
+}
+.night-today .today-plans h3 {
+  font-size: var(--t-body);
+  line-height: var(--l-body);
+}
+.night-today .today-clock {
+  padding: var(--s-4);
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-2);
+  background: var(--surface);
+}
+.night-today .today-clock h2 {
+  font-family: var(--font-serif);
+  font-size: var(--t-display);
+  line-height: var(--l-display);
+}
+.night-today .today-date-field {
+  margin-block: var(--s-3);
+  max-width: var(--aside-width);
+}
+.night-today .today-transit {
+  margin-top: var(--s-4);
+}
+.night-today .today-highlight {
+  border-top: var(--border) solid var(--line);
+  padding-top: var(--s-4);
+  overflow-wrap: anywhere;
+}
+.night-today .today-highlight .button {
+  margin-top: var(--s-2);
+}
+.today-evidence {
+  overflow-wrap: anywhere;
+}
+.today-evidence > section + section {
+  border-top: var(--border) solid var(--line);
+  padding-top: var(--s-4);
+}

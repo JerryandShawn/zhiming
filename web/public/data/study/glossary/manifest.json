@@ -1,0 +1,56 @@
+{
+  "schema": "frontend-study-glossary-export-v1",
+  "source_ref": "origin/v4/p8-calc",
+  "source_commit": "0f1d6e676259b961819de4da5ea3f343d58dbe98",
+  "mode": "static-educational-only",
+  "selection": "frozen-audited-commit",
+  "model_calls": 0,
+  "business_writes": 0,
+  "inputs": [
+    {
+      "path": "mingjing_core/knowledge/p8_glossary/terms_v1.json",
+      "sha256": "b1005b6e1748c7cb0dc680ff0b43ea93c4e54819b3a23da49f8e5b3a0cd197b3",
+      "bytes": 264011
+    },
+    {
+      "path": "mingjing_core/knowledge/p8_glossary/sources_v1.json",
+      "sha256": "a781219cbf9f364ca6fbe89e82ce5e4640a99851a29bc65988b7ddcfcf67f1f1",
+      "bytes": 19696
+    },
+    {
+      "path": "docs/v4/contracts/glossary.schema.json",
+      "sha256": "42555c9db476bcce4f14c5e310b6bcae376c50e25c94abf01dade72cb40d5cc4",
+      "bytes": 9317
+    },
+    {
+      "path": "docs/v4/contracts/glossary_sources.schema.json",
+      "sha256": "cc7a23f9fecceb51918a01b6e6145342eff63a625611634ca2cc5e93084fd084",
+      "bytes": 5329
+    }
+  ],
+  "entries": [
+    {
+      "file": "terms_v1.json",
+      "sha256": "b1005b6e1748c7cb0dc680ff0b43ea93c4e54819b3a23da49f8e5b3a0cd197b3",
+      "bytes": 264011
+    },
+    {
+      "file": "sources_v1.json",
+      "sha256": "a781219cbf9f364ca6fbe89e82ce5e4640a99851a29bc65988b7ddcfcf67f1f1",
+      "bytes": 19696
+    }
+  ],
+  "entry_count": 212,
+  "system_counts": {
+    "bazi": 72,
+    "ziwei": 55,
+    "astro": 50,
+    "tarot": 35
+  },
+  "source_count": 39,
+  "stage": "draft_complete_200_for_review",
+  "review_tag": "v1_ready_editorial_reviewed",
+  "source_urls_fetched": 0,
+  "source_paths_checked_in_git_tree": true,
+  "rendering": "plain_text_only_no_html_execution_no_current_user_evidence"
+}

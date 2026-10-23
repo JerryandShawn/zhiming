@@ -1,0 +1,71 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "today",
+  "mode": "static",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "dark",
+  "url": "/?preview=1#/today",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/static-today-dark-1440.png",
+  "sha256": "d76c67886fe74af1dda1d3c4e23a82f116a22034355bf5e65378f47e8a23d7f4",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "dark",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "text-link",
+            "text": "看依据"
+          },
+          {
+            "className": "calendar-day today  selected",
+            "text": "17"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 210,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "text-link",
+            "text": "看依据"
+          },
+          {
+            "className": "calendar-day today  selected",
+            "text": "17"
+          },
+          {
+            "className": "button primary block",
+            "text": "和明镜聊聊"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

@@ -1,0 +1,20 @@
+.recovery-preview {
+  min-width: 0;
+}
+.recovery-connection {
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-2);
+  background: var(--paper-2);
+  padding: var(--s-4);
+}
+.recovery-answer {
+  max-width: var(--message-width);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.recovery-answer .assistant-message {
+  margin: 0;
+}
+.recovery-actions .button {
+  min-height: var(--control-height);
+}
