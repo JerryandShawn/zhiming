@@ -17,6 +17,7 @@ from mingjing_core.application.agent_tools_policy import (
     source_span,
 )
 from mingjing_core.application.memory import SECRET
+from mingjing_core.application.memory2_merge import merge_written_fact
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import has_optout, hypothetical
 from mingjing_core.repositories.postgres import fingerprint
@@ -135,12 +136,14 @@ def save_memory(
             expected_revision=row["revision"],
             operation_id=ctx.operation_id + ":metadata",
         )
+    row, change_id = merge_written_fact(service, ctx, row)
     return {
         "write_status": "saved",
         "id": row["id"],
         "fact_id": row["id"],
         "kind": "fact",
         "revision": row["revision"],
+        **({"ids": [change_id], "code": "memory2_merged"} if change_id else {}),
     }
 
 
@@ -215,6 +218,10 @@ def execute_write(
     else:
         raise EvidenceError("未注册的写入工具")
     receipt = service.repo.mutation_request(ctx.owner, "agent_" + name, ctx.operation_id, args, effect)
+    if receipt.get("code") == "memory2_merged":
+        change = service.repo.get(ctx.owner, "proposal", receipt["ids"][0], include_deleted=True)
+        if change["status"] != "applied":
+            raise EvidenceError("原记忆合并已撤销或失效")
     if receipt.get("id") and receipt.get("kind") in {"fact", "note", "proposal"}:
         row = service.repo.get(ctx.owner, receipt["kind"], receipt["id"], include_deleted=True)
         if row["status"] in {"deleted", "stopped"}:
