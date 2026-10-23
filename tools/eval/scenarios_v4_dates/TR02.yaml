@@ -1,0 +1,35 @@
+id: TR02
+title: 上个月我说想买什么来着？
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  thread:
+  - id: camera
+    role: user
+    content: 想买一台微单相机
+    at: '2026-09-14T10:00:00+08:00'
+    channel: web
+  - id: headphone
+    role: user
+    content: 想换个降噪耳机
+    at: '2026-10-05T10:00:00+08:00'
+    channel: web
+turns:
+- user: 上个月我说想买什么来着？
+  expect:
+    must_include_all:
+    - 相机
+    must_not_include:
+    - 耳机
+    db:
+    - path: context.l4.time_filter
+      equals: 2026-09-01..2026-09-30
+    - path: context.l4.text
+      contains: 相机
+scripted:
+- turn: 1
+  model:
+  - text: 上个月你说想买一台微单相机。
+notes: 19号及模块线v2.3候选材料的七题子集；真实本机PG+实际U4+脚本模型，不向解析器传预期答案。

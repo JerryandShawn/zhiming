@@ -1,0 +1,83 @@
+name: Timezone package data parity
+
+on:
+  push:
+    paths:
+      - requirements-core.lock
+      - requirements-charts.lock
+      - tools/timezone/tzdata.lock
+      - tools/verify_timezone_data.py
+      - tests/test_timezone_data.py
+      - .github/workflows/timezone-data.yml
+  pull_request:
+    paths:
+      - requirements-core.lock
+      - requirements-charts.lock
+      - tools/timezone/tzdata.lock
+      - tools/verify_timezone_data.py
+      - tests/test_timezone_data.py
+      - .github/workflows/timezone-data.yml
+  workflow_dispatch:
+
+concurrency:
+  group: >-
+    ${{ github.workflow }}-${{ github.event_name }}-${{
+      (
+        (github.head_ref == '' || github.event.pull_request.head.repo.full_name == github.repository) &&
+        (github.head_ref != '' || github.ref_type == 'branch') &&
+        (
+          (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
+          (github.head_ref || github.ref_name) == 'v4/integration'
+        )
+      ) && (github.head_ref || github.ref_name) || github.run_id
+    }}
+  cancel-in-progress: >-
+    ${{
+      (github.head_ref == '' || github.event.pull_request.head.repo.full_name == github.repository) &&
+      (github.head_ref != '' || github.ref_type == 'branch') &&
+      (
+        (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
+        (github.head_ref || github.ref_name) == 'v4/integration'
+      )
+    }}
+
+permissions:
+  contents: read
+
+jobs:
+  timezone-data:
+    name: Packaged tzdata on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    env:
+      PYTHONTZPATH: ""
+      PYTHONDONTWRITEBYTECODE: "1"
+      KIMI_API_KEY: ""
+      MOONSHOT_API_KEY: ""
+      LANGSMITH_TRACING: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install timezone-only hashed pin
+        run: >-
+          python -m pip install --disable-pip-version-check --require-hashes --no-deps
+          --only-binary=:all: --index-url https://pypi.org/simple -r tools/timezone/tzdata.lock
+      - name: Check offline boundary regressions
+        run: python -m unittest discover -s tests -p test_timezone_data.py -v
+      - name: Verify packaged ZoneInfo in a fresh process
+        run: python tools/verify_timezone_data.py --output timezone-${{ runner.os }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: timezone-data-${{ runner.os }}
+          path: timezone-${{ runner.os }}.json
+          if-no-files-found: error

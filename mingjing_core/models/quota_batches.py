@@ -29,13 +29,30 @@ def begin_batch(
     authorization_id: str,
     expires_at: datetime,
 ) -> None:
+    from .quota_delegated import PREFIX
+
+    if isinstance(authorization_id, str) and authorization_id.startswith(PREFIX):
+        raise GuardRejected("manual_start_required")
     digest, expires_at = _batch_digest(batch_id, scenario_ids, authorization_id, expires_at, now)
     with store.connect() as connection, connection.transaction():
-        _begin_locked(connection, store, now, batch_id, scenario_ids, authorization_id, expires_at, digest)
+        _begin_locked(
+            connection,
+            store,
+            now,
+            batch_id,
+            scenario_ids,
+            authorization_id,
+            expires_at,
+            digest,
+        )
 
 
 def _batch_digest(
-    batch_id: str, scenario_ids: list[str], authorization_id: str, expires_at: datetime, now: datetime
+    batch_id: str,
+    scenario_ids: list[str],
+    authorization_id: str,
+    expires_at: datetime,
+    now: datetime,
 ) -> tuple[str, datetime]:
     identifier(batch_id)
     identifier(authorization_id)
@@ -63,6 +80,8 @@ def _begin_locked(
     authorization_id: str,
     expires_at: datetime,
     digest: str,
+    *,
+    delegated: bool = False,
 ) -> None:
     account = store.locked(connection, now)
     active = connection.execute(
@@ -75,6 +94,14 @@ def _begin_locked(
         sql.SQL("SELECT * FROM {} WHERE account_id=%s AND batch_id=%s").format(store.table("core_model_batches")),
         (store.account_id, batch_id),
     ).fetchone()
+    from .quota_delegated import delegated_row, token_parts
+
+    if old and (
+        delegated_row(old) != delegated
+        or delegated
+        and token_parts(old["authorization_id"]) != token_parts(authorization_id)
+    ):
+        raise GuardRejected("batch_conflict")
     if old and (old["fingerprint"] != digest or old["status"] != "active"):
         raise GuardRejected("batch_conflict")
     grant = connection.execute(
@@ -92,7 +119,7 @@ def _begin_locked(
         ):
             raise GuardRejected("manual_start_required")
         return
-    if not old and account["next_batch_not_before"] and now < account["next_batch_not_before"]:
+    if not delegated and not old and account["next_batch_not_before"] and now < account["next_batch_not_before"]:
         raise GuardRejected("batch_cooldown", account["next_batch_not_before"])
     _write_grant(
         connection,
@@ -175,7 +202,12 @@ def finish_batch(
 
 
 def close_abandoned_batch(
-    connection: Any, store: QuotaStore, policy: QuotaPolicy, now: datetime, batch_id: str, recovery: str
+    connection: Any,
+    store: QuotaStore,
+    policy: QuotaPolicy,
+    now: datetime,
+    batch_id: str,
+    recovery: str,
 ) -> None:
     """Caller holds both session slots; never refund or replay unknown sends."""
     identifier(batch_id)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
 from mingjing_core.domain.consultation import ModelUnavailable as LegacyUnavailable
@@ -36,6 +37,7 @@ class ModelUnavailable(LegacyUnavailable):
         self.provider_message = public_quota_message(provider_message)
         self.kind = kind if isinstance(kind, str) and kind in self.allowed_kinds else self.default_kind
         self.retry_actions = retry_actions if isinstance(retry_actions, ErrorActions) else actions_for_kind(self.kind)
+        self.provider_reset_at: datetime | None = None
 
     @property
     def global_stop(self) -> bool:
@@ -50,6 +52,8 @@ class ModelUnavailable(LegacyUnavailable):
                 result[name] = value
         if self.provider_http_status is not None:
             result["http_status"] = self.provider_http_status
+        if self.provider_reset_at is not None:
+            result["resume_at"] = self.provider_reset_at.isoformat()
         return result
 
 

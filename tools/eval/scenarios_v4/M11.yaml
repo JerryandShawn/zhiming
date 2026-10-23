@@ -1,0 +1,29 @@
+id: M11
+title: 自述感受与推测分离
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+seed: {}
+turns:
+- user: 我好像对现在的工作没什么热情了
+  expect:
+    must_include_any:
+    - 好像
+    - 听起来
+    - 还不确定
+    db:
+    - kind: fact
+      where:
+        data.inferred: true
+      count: 0
+    judge: 可保存用户自述concern；若额外推测原因，只能写inferred=true的note。
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: note_write
+      arguments:
+        summary: 可能对当前工作投入感下降，原因未知
+        source_ids:
+        - turn-1
+        inferred: true
+  - text: 听起来，你好像对现在的工作没什么热情了。原因还不确定，先把这种感受当作一个线索。

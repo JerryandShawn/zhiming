@@ -9,8 +9,11 @@ import httpx
 from .error_classification import classify_error
 from .legacy_request_policy import member_body
 from .metering import before_provider_request
+from .provider_diagnostics import delegated_stop_hint
+from .provider_reset import attach_reset
 from .quota_guard import QuotaGuard
 from .quota_http import membership_endpoint, observe_usage, provider_attempt
+from .quota_mode import delegated_active
 from .request_policy import check_request_size
 
 
@@ -48,7 +51,16 @@ def post_legacy(
         except ValueError:
             parsed = None
         if response.status_code != 200:
-            raise classify_error(response.status_code, parsed, membership=True)
+            observed = delegated_stop_hint(response.text[:4096]) if delegated_active() else None
+            raise attach_reset(
+                classify_error(
+                    response.status_code,
+                    parsed,
+                    membership=True,
+                    observed_stop=observed,
+                ),
+                response.headers,
+            )
         if isinstance(parsed, dict):
             usage = parsed.get("usage")
             if isinstance(usage, dict):

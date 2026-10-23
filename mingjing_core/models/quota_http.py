@@ -5,7 +5,7 @@ from __future__ import annotations
 import threading
 import uuid
 from collections.abc import Iterator, Mapping
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from typing import Any
 from urllib.parse import urlsplit
 
@@ -13,6 +13,7 @@ import httpx
 
 from .errors import ModelUnavailable
 from .quota_guard import Attempt, QuotaGuard
+from .quota_mode import current_delegated_session
 from .quota_runtime import CentralLocation, current_scope
 from .quota_types import ROLES, GuardRejected, bucket
 
@@ -43,13 +44,33 @@ def provider_attempt(
     if not membership:
         yield None
         return
-    if guard is None and isinstance(transport, httpx.MockTransport):
+    session = current_delegated_session()
+    if guard is None and session is None and isinstance(transport, httpx.MockTransport):
         # A MockTransport cannot issue a physical provider request. PG integration
         # tests pass a real guard explicitly; this is not a runtime HTTP exemption.
         yield None
         return
-    active = guard or CentralLocation.from_environment().guard()
+    active = session.guard if session is not None else guard or CentralLocation.from_environment().guard()
+    if session is not None and guard is not None and guard is not session.guard:
+        raise GuardRejected("ledger_unavailable")
     scope = current_scope()
+    with (
+        session.permit_scope(scope) if session is not None else nullcontext(scope) as admitted,
+        _admitted_attempt(active, admitted, role, provider, model, cancel_event, timeout) as attempt,
+    ):
+        yield attempt
+
+
+@contextmanager
+def _admitted_attempt(
+    active: QuotaGuard,
+    scope: Any,
+    role: str,
+    provider: str,
+    model: str,
+    cancel_event: threading.Event | None,
+    timeout: float | None,
+) -> Iterator[Attempt]:
     lane = scope.lane or lane_for(role)
     bucket(role, lane)
     with active.acquire(

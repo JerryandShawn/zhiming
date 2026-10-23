@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Literal
 
-from .error_actions import NEVER, PROVIDER_QUOTA
+from .error_actions import MEMBER_PERMISSION_STOP, NEVER, PROVIDER_QUOTA
 from .errors import (
     ModelBadRequest,
     ModelConcurrencyLimited,
@@ -17,10 +17,17 @@ from .errors import (
     ModelRateLimited,
     ModelUnavailable,
 )
-from .provider_diagnostics import nested_error_fields, permission_quota
+from .provider_diagnostics import (
+    delegated_stop_hint,
+    nested_error_fields,
+    permission_quota,
+    quota_subtype,
+)
+from .quota_mode import delegated_active
 
 _CONCURRENT = re.compile(
-    r"\bconcurrent\b|\bconcurrency(?:_limited)?\b|并发(?:请求)?(?:受限|限制)|达到.{0,12}并发", re.I
+    r"\bconcurrent\b|\bconcurrency(?:_limited)?\b|并发(?:请求)?(?:受限|限制)|达到.{0,12}并发",
+    re.I,
 )
 _ACCESS = re.compile(r"^\s*access\s+terminated\b", re.I)
 _MEMBERSHIP = re.compile(
@@ -48,14 +55,21 @@ def _permission(status: int | None, payload: object, membership: bool) -> ModelU
         error_type == "concurrency_limited" or error_type == "permission_error" and _CONCURRENT.search(message)
     ):
         return ModelConcurrencyLimited(status=status, error_type=error_type)
-    return ModelPermissionError(status=status, error_type=error_type)
+    return ModelPermissionError(
+        status=status,
+        error_type=error_type,
+        retry_actions=MEMBER_PERMISSION_STOP if membership and delegated_active() else NEVER,
+    )
 
 
 def _bad_request(status: int | None, error_type: str | None, message: str) -> ModelUnavailable:
     lowered = message.casefold()
     if "reasoning_content" in lowered and re.search(r"missing|absent|缺失|缺少", lowered):
         return ModelBadRequest(status=status, error_type=error_type, kind="reasoning_missing")
-    if re.search(r"(?:total message size|消息.{0,4}(?:大小|体积)).{0,40}(?:exceed|超过|超出)", lowered):
+    if re.search(
+        r"(?:total message size|消息.{0,4}(?:大小|体积)).{0,40}(?:exceed|超过|超出)",
+        lowered,
+    ):
         return ModelPayloadTooLarge(status=status, error_type=error_type)
     if "token" in lowered and re.search(r"limit|上限", lowered) and re.search(r"exceed|超过|超出", lowered):
         return ModelBadRequest(status=status, error_type=error_type, kind="token_limit")
@@ -67,7 +81,9 @@ def _bad_request(status: int | None, error_type: str | None, message: str) -> Mo
 def _rate_limit(status: int | None, error_type: str | None, message: str) -> ModelRateLimited:
     overloaded = error_type == "overloaded_error" or re.search(r"overload|过载", message, re.I)
     return ModelRateLimited(
-        status=status, error_type=error_type, kind="engine_overloaded" if overloaded else "rate_limited"
+        status=status,
+        error_type=error_type,
+        kind="engine_overloaded" if overloaded else "rate_limited",
     )
 
 
@@ -100,7 +116,10 @@ def _stream_error(payload: object, membership: bool) -> ModelUnavailable:
         return _rate_limit(None, error_type, message)
     if error_type == "invalid_request_error":
         return _bad_request(None, error_type, message)
-    return ModelUnavailable(error_type=error_type, retry_actions=None if error_type == "api_error" else NEVER)
+    return ModelUnavailable(
+        error_type=error_type,
+        retry_actions=None if error_type == "api_error" else NEVER,
+    )
 
 
 def classify_error(
@@ -109,14 +128,24 @@ def classify_error(
     *,
     membership: bool,
     surface: Literal["http", "sse"] = "http",
+    observed_stop: str | None = None,
 ) -> ModelUnavailable:
     error_type, message = nested_error_fields(payload)
     status = _valid_status(status)
+    delegated = membership and delegated_active()
+    if delegated and observed_stop is None:
+        observed_stop = delegated_stop_hint(message)
+    if delegated and observed_stop in {"access_terminated", "concurrency_limited"}:
+        if observed_stop == "access_terminated":
+            return ModelPermissionError(status=status, error_type=error_type, kind="access_terminated")
+        return ModelConcurrencyLimited(status=status, error_type=error_type)
     # D1 takes precedence even when the provider uses a different error status.
     if membership and error_type and (error_type == "access_terminated" or _ACCESS.search(message)):
         return ModelPermissionError(status=status, error_type=error_type, kind="access_terminated")
     if membership and error_type == "concurrency_limited":
         return ModelConcurrencyLimited(status=status, error_type=error_type)
+    if delegated and status != 403 and (observed_stop == "quota" or re.search(r"usage[\s_-]+limit", message, re.I)):
+        return ModelQuotaExhausted(status=status, subtype=quota_subtype(message), error_type=error_type)
     if not membership and error_type == "insufficient_quota" and (status == 429 or surface == "sse" and status is None):
         return ModelQuotaExhausted(status=status, error_type=error_type, retry_actions=PROVIDER_QUOTA)
     if surface == "http" or status is not None:

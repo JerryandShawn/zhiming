@@ -1,0 +1,33 @@
+id: R03
+title: 飞书与网页连续话题
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  facts:
+  - id: career-concern
+    kind: concern
+    summary: 考虑跳槽且担心出差
+    quote: 我想跳槽，但怕新岗位经常出差。
+    source_message_id: feishu-career
+  thread:
+  - id: feishu-career
+    role: user
+    content: 我想跳槽，但怕新岗位经常出差。
+    at: '2026-10-16T20:00:00+08:00'
+    channel: feishu
+  - id: feishu-reply
+    role: assistant
+    content: 可以先问清每月出差天数。
+    at: '2026-10-16T20:01:00+08:00'
+    channel: feishu
+turns:
+- user: 继续昨天那个话题
+  expect:
+    must_include_all:
+    - 跳槽
+    - 出差
+    - 飞书
+scripted:
+- turn: 1
+  model:
+  - text: 昨天你在飞书说想跳槽，主要担心新岗位出差多。我们接着核对出差频率和你的接受范围〔f1〕。

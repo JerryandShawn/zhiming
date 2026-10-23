@@ -201,13 +201,23 @@ def run(*, live: bool = False, grant_path: Path | None = None) -> dict[str, Any]
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("mock", "live"), default="mock")
+    parser.add_argument("--mode", choices=("mock", "live", "delegated", "init-control"), default="mock")
     parser.add_argument("--grant", type=Path)
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--candidate")
+    parser.add_argument("--scripted-gate", type=Path)
+    parser.add_argument("--control-schema")
+    parser.add_argument("--control-dsn-env", default="CORE_TEST_DSN")
+    parser.add_argument("--init-control-schema", action="store_true")
+    parser.add_argument("--resume", action="store_true")
     args = parser.parse_args(argv)
     result = None
     try:
-        if args.output.exists() or not args.output.parent.is_dir():
+        if args.mode in {"delegated", "init-control"}:
+            from tools.probe_equivalence_delegated import delegated_cli
+
+            return delegated_cli(args)
+        if args.output is None or args.output.exists() or not args.output.parent.is_dir():
             raise ProbeRejected("输出须为已有目录里的新文件")
         result = run(live=args.mode == "live", grant_path=args.grant)
         with args.output.open("x", encoding="utf-8") as stream:
@@ -222,7 +232,11 @@ def main(argv: list[str] | None = None) -> int:
                 {
                     "ok": False,
                     "code": getattr(error, "code", "PROBE_CONFIGURATION_ERROR"),
-                    "model_calls": result["model_calls"] if result is not None else 0,
+                    "model_calls": result["model_calls"]
+                    if result is not None
+                    else None
+                    if args.mode == "delegated"
+                    else 0,
                 }
             )
         )

@@ -18,10 +18,12 @@ from typing import Any
 
 from psycopg import sql
 
-from mingjing_core.timekit.clock import Clock, get_clock
+from mingjing_core.timekit.clock import Clock, SystemClock
 
-from .errors import ModelCancelled
+from .error_actions import NEVER
+from .errors import ModelCancelled, ModelUnavailable
 from .quota_batches import begin_batch, close_abandoned_batch, finish_batch
+from .quota_mode import verified_delegated_attempt
 from .quota_store import QuotaStore
 from .quota_types import (
     RESULT_KINDS,
@@ -52,6 +54,7 @@ class Attempt:
     attempt_id: str
     kind: str = "ok"
     usage: dict[str, int | None] = field(default_factory=dict)
+    resume_at: datetime | None = None
 
     def result(self, *, kind: str = "ok", usage: Mapping[str, Any] | None = None) -> None:
         if kind not in RESULT_KINDS:
@@ -71,7 +74,8 @@ class QuotaGuard:
         policy: QuotaPolicy | None = None,
     ) -> None:
         self.store = QuotaStore(central_dsn, central_schema, account_id, ledger_identity)
-        self.clock, self.policy = clock or get_clock(), policy or QuotaPolicy()
+        # Scenario clocks must never backdate financial admission or authorization.
+        self.clock, self.policy = clock or SystemClock(), policy or QuotaPolicy()
         with self.store.connect() as connection:
             self.store.verify(connection)
 
@@ -143,18 +147,36 @@ class QuotaGuard:
 
     @contextmanager
     def _attempt(
-        self, data: dict[str, Any], timeout: float | None, cancel_event: threading.Event | None
+        self,
+        data: dict[str, Any],
+        timeout: float | None,
+        cancel_event: threading.Event | None,
     ) -> Iterator[Attempt]:
         # Dedicated session closure releases its advisory slot even when finish fails.
         with self.store.connect() as connection:
             self._slot(connection, data["bucket"], timeout, cancel_event)
             self.store.reserve(connection, data, instant(self.clock.now()), self.policy)
+            from .quota_delegated import token_parts
+
+            delegated = token_parts(data.get("authorization_id")) is not None
             attempt, started = Attempt(data["attempt_id"]), time.monotonic()
             try:
-                yield attempt
+                with verified_delegated_attempt(delegated, self.clock):
+                    yield attempt
             except BaseException as error:
-                kind = getattr(error, "kind", "cancelled" if isinstance(error, KeyboardInterrupt) else "unknown")
+                kind = getattr(
+                    error,
+                    "kind",
+                    "cancelled" if isinstance(error, KeyboardInterrupt) else "unknown",
+                )
                 attempt.kind = kind if kind in RESULT_KINDS else "unknown"
+                attempt.resume_at = getattr(error, "provider_reset_at", None)
+                if delegated and isinstance(error, Exception):
+                    if isinstance(error, ModelUnavailable):
+                        if not error.global_stop:
+                            error.retry_actions = NEVER
+                    else:
+                        raise ModelUnavailable(retry_actions=NEVER) from None
                 raise
             finally:
                 self.store.finish(
@@ -164,6 +186,7 @@ class QuotaGuard:
                     attempt.usage,
                     instant(self.clock.now()),
                     (time.monotonic() - started) * 1000,
+                    resume_at=attempt.resume_at,
                 )
 
     def begin_batch(
@@ -202,13 +225,18 @@ class QuotaGuard:
                 ]:
                     raise GuardRejected("in_flight_limit")
             close_abandoned_batch(
-                connection, self.store, self.policy, instant(self.clock.now()), batch_id, recovery_authorization_id
+                connection,
+                self.store,
+                self.policy,
+                instant(self.clock.now()),
+                batch_id,
+                recovery_authorization_id,
             )
 
-    def record_stop(self, kind: str) -> None:
+    def record_stop(self, kind: str, *, resume_at: datetime | None = None) -> None:
         with self.store.connect() as connection, connection.transaction():
             now = self.store.finalizing(connection, instant(self.clock.now()))
-            self.store.stop(connection, kind, now)
+            self.store.stop(connection, kind, now, resume_at=resume_at)
 
     def clear_stop(self, *, authorization_id: str) -> None:
         """Only a trusted manual control may invoke this; it never grants a batch."""
@@ -220,7 +248,9 @@ class QuotaGuard:
                 return
             if not account["stop_kind"]:
                 return
-            if account["stop_kind"] in {"quota_5h", "member_window_limit"} and now < account["resume_at"]:
+            if account["stop_kind"] in {"quota_5h", "member_window_limit"} and (
+                account["resume_at"] is None or now < account["resume_at"]
+            ):
                 raise GuardRejected(account["stop_kind"], account["resume_at"])
             connection.execute(
                 sql.SQL(
@@ -243,6 +273,7 @@ class QuotaGuard:
             if account["last_clock_at"] is not None and now < account["last_clock_at"]:
                 raise GuardRejected("clock_rollback")
             counts = self.store.counts(connection, now, self.policy)
+            governed = self.store.counts(connection, now, self.policy, governed=True)
             in_flight = 0
             for slot in (0, 1):
                 held = connection.execute("SELECT pg_try_advisory_lock(%s) AS held", (self._key(slot),)).fetchone()[
@@ -256,9 +287,10 @@ class QuotaGuard:
             "ledger_identity": self.store.identity,
             "account_id": self.store.account_id,
             "window": counts,
-            "remaining_total": max(0, self.policy.max_calls - counts["total"]),
+            "remaining_total": max(0, self.policy.max_calls - governed["total"]),
             "remaining": {
-                name: max(0, self.policy.limit(name) - counts[name]) for name in ("interactive", "critic", "background")
+                name: max(0, self.policy.limit(name) - governed[name])
+                for name in ("interactive", "critic", "background")
             },
             "in_flight": in_flight,
             "stop_kind": account["stop_kind"],

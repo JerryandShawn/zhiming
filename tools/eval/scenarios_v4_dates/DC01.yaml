@@ -1,0 +1,45 @@
+id: DC01
+title: 下周三面试还有几天？
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  thread:
+  - id: interview
+    role: user
+    content: 2026-10-21（周三）面试
+    at: '2026-10-16T10:00:00+08:00'
+    channel: web
+  facts:
+  - id: interview-fact
+    kind: event
+    summary: 合成面试
+    quote: 2026-10-21（周三）面试
+    source_message_id: interview
+    event_at: '2026-10-21'
+turns:
+- user: 下周三面试还有几天？
+  expect:
+    tools_called:
+    - date_calc
+    must_include_all:
+    - 4 天|四天
+    - 10月21日|10/21|21号
+    must_not_include:
+    - 3 天
+    - 5 天
+    db:
+    - path: observed_tools.0.output.data.result.days
+      equals: 4
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: date_calc
+      arguments:
+        op: diff
+        a: '2026-10-17'
+        b: '2026-10-21'
+  - text: 还有 4 天，下周三（10/21 周三）。
+notes: 19号及模块线v2.3候选材料的七题子集；真实本机PG+实际U4+脚本模型，不向解析器传预期答案。

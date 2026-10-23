@@ -23,7 +23,12 @@ SYSTEM_POLICY_VERSION = "core3-policy-p2.1"
 def crisis_policy() -> str:
     path = Path(__file__).resolve().parents[2] / "config" / "crisis.yaml"
     value = yaml.safe_load(path.read_text(encoding="utf-8"))
-    if value != {"hotline": "12356", "emergency": ["120", "110"]}:
+    from mingjing_core.agent.crisis import FALLBACK_TEXT
+
+    if value not in (
+        {"hotline": "12356", "emergency": ["120", "110"]},
+        {"hotline": "12356", "emergency": ["120", "110"], "fallback_text": FALLBACK_TEXT},
+    ):
         raise ValueError("危机联系方式配置需要经过审核")
     return (
         f"用户流露自伤、轻生或危险时，先关心并确认是否安全，提供全国心理援助热线 {value['hotline']}，"

@@ -1,0 +1,32 @@
+id: DC03
+title: 我妈农历九月十二生日，今年是公历哪天？星期几？
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed: {}
+turns:
+- user: 我妈农历九月十二生日，今年是公历哪天？星期几？
+  expect:
+    tools_called:
+    - date_calc
+    must_include_all:
+    - 10月21日|10/21|21号
+    - 周三|星期三
+    db:
+    - kind: fact
+      count: 0
+    - path: observed_tools.0.output.data.result.date
+      equals: '2026-10-21'
+    - path: observed_tools.0.output.data.result.weekday
+      equals: 3
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: date_calc
+      arguments:
+        op: lunar_to_solar
+        a: 农历2026-09-12
+  - text: 今年是10月21日（周三）。这里只核对日期，没有替你保存母亲的生日。
+notes: 19号及模块线v2.3候选材料的七题子集；真实本机PG+实际U4+脚本模型，不向解析器传预期答案。

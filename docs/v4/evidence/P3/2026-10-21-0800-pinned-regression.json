@@ -1,0 +1,350 @@
+{
+  "schema": "p3-fixed-regression-evidence-v1",
+  "publication_status": "reviewed_local_evidence",
+  "recorded_bjt": "2026-10-21T08:16:55.859836+08:00",
+  "fixed_source": {
+    "local_sha": "9a6f882d5454b86df4371e35f318b93502559a59",
+    "remote_sha": "428649b624d739b247f6a8f429f4a9f11775902d",
+    "tree": "d6a4f0d93ea5fe504d0995a0ebed063100cdc780",
+    "remote_mapping_basis": "root instruction and existing archive_0800_scripted.py; no GitHub status queried",
+    "export": {
+      "git_tree_verified": "d6a4f0d93ea5fe504d0995a0ebed063100cdc780",
+      "tracked_files": 1146,
+      "matched_files": 1146,
+      "mismatches": 0,
+      "git_ls_tree_manifest_sha256": "7faa1b1299c1a14832988e1cc7ddcde12827f2f87545be6881ebd0a26f3d6d21"
+    }
+  },
+  "v4": {
+    "status": "failed",
+    "metadata": {
+      "commit": "9a6f882d5454b86df4371e35f318b93502559a59",
+      "started_at": "2026-10-21T08:00:15.945671+08:00",
+      "timezone": "Asia/Shanghai",
+      "test_timezone": "Asia/Tokyo",
+      "finished_at": "2026-10-21T08:10:34.479533+08:00",
+      "exit_code": 1
+    },
+    "junit": {
+      "tests": 1936,
+      "errors": 0,
+      "failures": 1,
+      "skipped": 1,
+      "passed": 1934,
+      "xfailed": 1,
+      "ordinary_skips": 0,
+      "suite_seconds": 616.474,
+      "junit_timestamp": "2026-10-21T01:00:17.636276+01:00",
+      "junit_timestamp_bjt": "2026-10-21T08:00:17.636276+08:00",
+      "failure_cases": [
+        {
+          "node": "tests.v4.agent.test_tool_interactions_pg::test_case_updates_and_events_preserve_originals_replay_and_revision",
+          "error_type": "EvidenceError",
+          "private_traceback_copied": false
+        }
+      ],
+      "expected_failures": [
+        {
+          "node": "tests.v4.agent.test_legacy_dom_runtime_pg::test_legacy_dom_displays_actual_core4_memory_receipt",
+          "reason": "legacy UI still reads memory_receipts, not receipts",
+          "type": "pytest.xfail"
+        }
+      ]
+    },
+    "pytest_log": {
+      "failed": 1,
+      "passed": 1934,
+      "xfailed": 1,
+      "warnings": 1,
+      "seconds": 616.49
+    },
+    "strict_xfail_contract": {
+      "strict": true,
+      "raises": "LegacyReceiptMissing",
+      "reason": "legacy UI still reads memory_receipts, not receipts"
+    },
+    "warning": {
+      "type": "DeprecationWarning",
+      "origin": "starlette.testclient",
+      "reason": "anyio.abc.BlockingPortal alias is deprecated; use anyio.from_thread.BlockingPortal"
+    },
+    "failure_classification": "Direct idempotent case_update replay rejected during pending own-effect proof validation; retained as a failure"
+  },
+  "core": {
+    "commit": "9a6f882d5454b86df4371e35f318b93502559a59",
+    "started_at": "2026-10-21T08:00:36.168722+08:00",
+    "test_timezone": "Asia/Tokyo",
+    "finished_at": "2026-10-21T08:13:26.141364+08:00",
+    "exit_code": 0,
+    "status": "passed",
+    "tests": 581,
+    "seconds": 766.53
+  },
+  "scripted": {
+    "full": {
+      "count": 47,
+      "passed": 46,
+      "scripted_model_steps": 79,
+      "judge_model_steps": 0,
+      "framework_seconds": 21.21,
+      "source_sha256": "b60cf6cc36bf7cf4e76a994ac4dba5b15ae70ad2d5403b8adb10a122957a7407",
+      "failures": [
+        {
+          "id": "X03",
+          "failed_assertions": [
+            "turn[1].db[2]",
+            "turn[2].db[2]",
+            "turn[2].db[3]",
+            "turn[2].events"
+          ]
+        }
+      ]
+    },
+    "extensions": {
+      "count": 13,
+      "passed": 13,
+      "scripted_model_steps": 27,
+      "judge_model_steps": 0,
+      "framework_seconds": 4.954,
+      "source_sha256": "b60cf6cc36bf7cf4e76a994ac4dba5b15ae70ad2d5403b8adb10a122957a7407",
+      "failures": []
+    },
+    "metadata_finished_bjt": "2026-10-21T08:01:33.470085+08:00"
+  },
+  "original_artifacts": [
+    {
+      "path": "core.log",
+      "bytes": 6273,
+      "sha256": "66c049633d5e495eec00038ade4abb4e40e06cbc4d7a7b5776851ae23a8f7260"
+    },
+    {
+      "path": "core_metadata.json",
+      "bytes": 220,
+      "sha256": "be6fc3dd0b80c65cb0dfcc9d221c9a774dc35b36857500e533bef05f4daa395e"
+    },
+    {
+      "path": "m8-scripted-metadata.json",
+      "bytes": 4010,
+      "sha256": "3da576df04bb382025ed2afa4a2bc3152b285c70cd20d08430a32de5343979f5"
+    },
+    {
+      "path": "metadata.json",
+      "bytes": 252,
+      "sha256": "0ba386798cf99bef7f9ab48dda5eba8f09c6c487cbfbc5e83f14e195000f7771"
+    },
+    {
+      "path": "scripted-extensions/2026-10-21-scripted-v4-scripted-v4.json",
+      "bytes": 33546,
+      "sha256": "53d2aa130b447128c2e517833808d46c15f9d55e9d70b0210c7c42e0a3b14ef6"
+    },
+    {
+      "path": "scripted-extensions/2026-10-21-scripted-v4-scripted-v4.md",
+      "bytes": 4102,
+      "sha256": "b60c0db005627284a31ca0610ea4076857e54767c3a7a95b2e1f46f3f99244b4"
+    },
+    {
+      "path": "scripted-extensions.log",
+      "bytes": 740,
+      "sha256": "2391d1290a901c91e2dec8268b3d99d06d057fb1613c4c08efeb1e46af519a4c"
+    },
+    {
+      "path": "scripted-full/2026-10-21-scripted-v4-scripted-v4.json",
+      "bytes": 97462,
+      "sha256": "e1bcf29b257de685327f35e69b98a4b95e9505ad14950e808608e6df7fbc1e2b"
+    },
+    {
+      "path": "scripted-full/2026-10-21-scripted-v4-scripted-v4.md",
+      "bytes": 9071,
+      "sha256": "889292c48276254b3d5e4501d826a6a09fa6facf8a1babc2477933d3aca0a3b9"
+    },
+    {
+      "path": "scripted-full.log",
+      "bytes": 1513,
+      "sha256": "6dfd5fdf20d5a7c87dcbfa96ce4104daf9c35b121490663a061cf8ce4bb8aff8"
+    },
+    {
+      "path": "v4.log",
+      "bytes": 7389,
+      "sha256": "e79703a8563907ff8bb8ee93489eb6b77d15b78f52176f612b5b4c760d83daeb"
+    },
+    {
+      "path": "v4.xml",
+      "bytes": 437207,
+      "sha256": "62281fc5629fa8573b365c05e3da08153e9ec4683c62bf65324a278536e92ea8"
+    }
+  ],
+  "history_0200_unchanged": {
+    "local_sha": "2b25175884af6fc8d6756c9f8c7f20922fd73fc7",
+    "remote_sha": "54308ab45ec0cb1a88cf35688fa36861f37f3a5b",
+    "tree": "b85ae557d7e9a3e2a34d10a2d48342abdced1609",
+    "v4_metadata": {
+      "commit": "2b25175884af6fc8d6756c9f8c7f20922fd73fc7",
+      "started_at": "2026-10-21T02:00:23.669481+08:00",
+      "timezone": "Asia/Shanghai",
+      "test_timezone": "Asia/Tokyo",
+      "finished_at": "2026-10-21T02:08:59.280730+08:00",
+      "exit_code": 1
+    },
+    "v4_log_summary": {
+      "failed": 1,
+      "passed": 1768,
+      "xfailed": 1,
+      "warnings": 6,
+      "seconds": 513.42
+    },
+    "v4_junit": {
+      "tests": 1770,
+      "errors": 0,
+      "failures": 1,
+      "skipped": 1,
+      "passed": 1768,
+      "xfailed": 1,
+      "ordinary_skips": 0,
+      "suite_seconds": 513.401,
+      "junit_timestamp": "2026-10-20T19:00:25.532284+01:00",
+      "junit_timestamp_bjt": "2026-10-21T02:00:25.532284+08:00",
+      "failure_cases": [
+        {
+          "node": "tests.v4.agent.test_eval_v4_pg::test_scripted_provider_drives_real_runtime[TA02]",
+          "error_type": "pytest_assertion_failure",
+          "private_traceback_copied": false
+        }
+      ],
+      "expected_failures": [
+        {
+          "node": "tests.v4.agent.test_legacy_dom_runtime_pg::test_legacy_dom_displays_actual_core4_memory_receipt",
+          "reason": "legacy UI still reads memory_receipts, not receipts",
+          "type": "pytest.xfail"
+        }
+      ]
+    },
+    "core": {
+      "commit": "2b25175884af6fc8d6756c9f8c7f20922fd73fc7",
+      "started_at": "2026-10-21T02:00:33.829060+08:00",
+      "test_timezone": "Asia/Tokyo",
+      "finished_at": "2026-10-21T02:12:28.679030+08:00",
+      "exit_code": 0,
+      "status": "passed",
+      "tests": 581,
+      "seconds": 711.278
+    },
+    "scripted": {
+      "full": {
+        "count": 47,
+        "passed": 45,
+        "scripted_model_steps": 78,
+        "judge_model_steps": 0,
+        "framework_seconds": 21.423,
+        "source_sha256": "602b0acde2b4dcfc8964892c8c41a645e5762b9eb82204e67f04c8c235ee5182",
+        "failures": [
+          {
+            "id": "TA02",
+            "failed_assertions": [
+              "turn[1].events",
+              "turn[1].target_error"
+            ]
+          },
+          {
+            "id": "X03",
+            "failed_assertions": [
+              "turn[1].db[2]",
+              "turn[2].db[2]",
+              "turn[2].db[3]",
+              "turn[2].events"
+            ]
+          }
+        ]
+      },
+      "extensions": {
+        "count": 13,
+        "passed": 13,
+        "scripted_model_steps": 27,
+        "judge_model_steps": 0,
+        "framework_seconds": 5.651,
+        "source_sha256": "602b0acde2b4dcfc8964892c8c41a645e5762b9eb82204e67f04c8c235ee5182",
+        "failures": []
+      }
+    },
+    "original_artifacts": [
+      {
+        "path": "core.log",
+        "bytes": 6273,
+        "sha256": "883525c7d6f3894eae169fe34ddb63d4917d1b6884bef1b44f53fd53e6abca12"
+      },
+      {
+        "path": "core_metadata.json",
+        "bytes": 220,
+        "sha256": "a4849ce8bbf7d499529a1938dac42ec03cae36132b2bbcc5ea7aba7190ed148f"
+      },
+      {
+        "path": "m8-scripted-metadata.json",
+        "bytes": 459,
+        "sha256": "d1a9cef1b7ca05f7b00cebbfaeb62d33f587d64883ee0f278aedfeb3529f6b1b"
+      },
+      {
+        "path": "metadata.json",
+        "bytes": 252,
+        "sha256": "cc40f89354b9cbb12369814fc8698194f2c2691304f4350660737347e2b8d070"
+      },
+      {
+        "path": "scripted-extensions/2026-10-21-scripted-v4-scripted-v4.json",
+        "bytes": 33497,
+        "sha256": "a999b864c78f9091a7d135a6c6da600d7c4977ac0a0598196de598edbd9bacc5"
+      },
+      {
+        "path": "scripted-extensions/2026-10-21-scripted-v4-scripted-v4.md",
+        "bytes": 4102,
+        "sha256": "58dad3f5b360535da389a69ed447db63bd0731b7111d9b485fa7365bba774316"
+      },
+      {
+        "path": "scripted-extensions.log",
+        "bytes": 740,
+        "sha256": "e26d6d68de6982943d413f5ce522fc48e2a8011ee2b8df6bcb2d52c534007ad0"
+      },
+      {
+        "path": "scripted-full/2026-10-21-scripted-v4-scripted-v4.json",
+        "bytes": 97355,
+        "sha256": "e07b564b36a5b6a15d59a9311806897310e57af3d4c6af8cfbe45472e47562a5"
+      },
+      {
+        "path": "scripted-full/2026-10-21-scripted-v4-scripted-v4.md",
+        "bytes": 9006,
+        "sha256": "1ec85f21e0aeb7d20008af16f9a8250e7b2175f181b6781783d2e0cade1bda61"
+      },
+      {
+        "path": "scripted-full.log",
+        "bytes": 1513,
+        "sha256": "b5ce86909ad281012fc6310a7b397100a5aa0f55eaa9e0ce2b3a811eedd0427d"
+      },
+      {
+        "path": "v4.log",
+        "bytes": 5095,
+        "sha256": "1e6d5bed1b221a86739c5a92a276ec594418f76c0ee3c490ddb666261484a28a"
+      },
+      {
+        "path": "v4.xml",
+        "bytes": 293683,
+        "sha256": "6066158c14ecb66460edad1579b0b703802d327a45af5a1a4b0a54c35f2a2791"
+      }
+    ]
+  },
+  "safety": {
+    "external_provider_requests": 0,
+    "real_feishu_sends": 0,
+    "server_access": 0,
+    "new_pytest_processes_in_audit": 0,
+    "github_writes": 0,
+    "publication_actions": 0,
+    "private_bodies_or_tracebacks_copied": false,
+    "runner_environment": "credential suffixes removed; tracing disabled; local isolated PG; ScriptedProvider/MockTransport/loopback HTTP"
+  },
+  "limits": [
+    "Windows local evidence, not Linux CI or deployment",
+    "One real v4 regression and X03 remain; not all green or M8 100%",
+    "Strict legacy DOM expected failure is excluded from success",
+    "Scripted model steps are not real provider calls or live quality evidence",
+    "Raw output hashes are byte hashes before normalization; private output bodies remain private",
+    "02:00 evidence is retained and never overwritten; test counts differ between snapshots"
+  ],
+  "publication_note": "Root reviewed completed sessions; raw hashes describe private originals, not normalized public blobs."
+}

@@ -71,7 +71,10 @@ class CoreReportAdapter:
             request_id=operation, mode="scheduled_report", depth=depth, emit=emit,
             selection={'report_schedule_kind':kind,'report_schedule_revision':policy['revision'],'date':day,'period':period},
         )
-        validated_payload(result)
+        result=validated_payload(result)
+        run=repo.fetch_run(binding['owner'],result['meta']['core_run']['run_id'])
+        if run['status']!='succeeded' or run['result']!=result or run['subject']!=binding['subject']:
+            raise EvidenceError('报告必须来自当前人物的持久成功执行')
         manifest={"kind":kind,"date":day,"period":period,"business_id":business,"run_id":result['meta']['core_run']['run_id'],
                   "prepare_at":schedule['prepare_at'].isoformat(),"deliver_at":schedule['deliver_at'].isoformat(),"timezone":schedule['timezone']}
         repo=self.service.repo
@@ -80,14 +83,15 @@ class CoreReportAdapter:
             except ScopeError:existing=None
             if not existing or existing.get('run_id')!=manifest['run_id']:
                 repo.put(binding['owner'],'report',business,dict(manifest,type=KINDS[kind],content=result['answer'],
-                         schema_version='core3.0',validation=result['validation'],guidance=result,
-                         dependencies=result['meta']['core_run']['dependencies']),subject=binding['subject'],
+                         schema_version=result['schema_version'],validation=result['validation'],guidance=result,
+                         dependencies=run['dependencies']),subject=binding['subject'],
                          expected_revision=existing['revision'] if existing else 0,operation_id='report-manifest:'+manifest['run_id'])
         return dict(result,report=manifest)
 
     async def prepare_delivery(self, *, external_id: str, result: dict, channel: str, target: str):
         binding = self.identity(external_id)
-        validated_payload(result)
+        if not isinstance(result,dict):raise EvidenceError('报告结果格式无效')
+        validated_payload({key:value for key,value in result.items() if key!='report'})
         report = result.get("report", {})
         if not report.get("business_id"):
             raise ValueError("报告缺少稳定业务标识")

@@ -1,0 +1,128 @@
+{
+  "verified_at": "2026-10-19T07:15:35+08:00",
+  "scope": "M4 interaction/tarot offline application slice, not full P3",
+  "tests": {
+    "command": "pytest tests/v4/agent -q --tb=short -k tool",
+    "passed": 220,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 35.55,
+    "database": "isolated loopback PostgreSQL, each fixture unique schema"
+  },
+  "static": {
+    "ruff": "E,F,I,B,UP,SIM line-length 120 passed",
+    "format": "21 files passed",
+    "max_function_lines": 59,
+    "max_file_lines": 331
+  },
+  "real_model_requests": 0,
+  "server_connections": 0,
+  "feishu_sends": 0,
+  "files": [
+    {
+      "path": "mingjing_core/agent/toolkit.py",
+      "sha256": "8fe6726924d755d7cdd5ea6a30f4bf3605052238c432f7ae9ea3cbb4bddd8357",
+      "lines": 152
+    },
+    {
+      "path": "mingjing_core/agent/tools/interaction_definitions.py",
+      "sha256": "c1a40fe522964427cfe2aafad5c16cd4169f4f5ab578042896a9e2019e1c0d9a",
+      "lines": 72
+    },
+    {
+      "path": "mingjing_core/agent/tools/interaction_parameters.py",
+      "sha256": "3e43ff141cb0f9ec39bf6e43dbdd34595cea8f3e81ade15da76a11aa1993faf7",
+      "lines": 79
+    },
+    {
+      "path": "mingjing_core/agent/tools/tarot_definitions.py",
+      "sha256": "65804cb8eef98ae5f2736d38cb1618ffa5be7bd43accbf1dbb4206ac5a60284b",
+      "lines": 30
+    },
+    {
+      "path": "mingjing_core/agent/tools/tarot_parameters.py",
+      "sha256": "abfa458617bbe60230ae1cec2499d93c8762d1fd81052bfe3365ae58cf1d5b8e",
+      "lines": 24
+    },
+    {
+      "path": "mingjing_core/application/agent_tools.py",
+      "sha256": "04a7d0c613dd44a6eac78db42165fe1d8b890c0b4a1da9671127b503d44f83a4",
+      "lines": 140
+    },
+    {
+      "path": "mingjing_core/application/agent_tools_cases.py",
+      "sha256": "4076b1a0905a49892ec12797488050a42178cfb0c31c402d9c8ba6a98f7c12ab",
+      "lines": 144
+    },
+    {
+      "path": "mingjing_core/application/agent_tools_clarification.py",
+      "sha256": "21192926995255c8ecdbc4587c81200589dba5983edbf19d619bf14f177a700d",
+      "lines": 259
+    },
+    {
+      "path": "mingjing_core/application/agent_tools_followups.py",
+      "sha256": "64ad1d75e0f5fb77dd0e69fe025758c966d4617c313ea1e0d3411b1fde629a0a",
+      "lines": 246
+    },
+    {
+      "path": "mingjing_core/application/agent_tools_interactions.py",
+      "sha256": "87874eedbc6f896e81d3c185c7c1b2c9f619380ce1d6c4b83aacddb0f651e68c",
+      "lines": 41
+    },
+    {
+      "path": "mingjing_core/application/agent_tools_tarot.py",
+      "sha256": "e87dc21f7adcf13f5ff8dd1421f036ca5604768e83d1bb65f8fedb314fa64bab",
+      "lines": 145
+    },
+    {
+      "path": "mingjing_core/application/agent_tools_tarot_guard.py",
+      "sha256": "570f945e8ea65c51226693e7948f8623082ebfe3dc4cfb77322779c1ca0260e5",
+      "lines": 127
+    },
+    {
+      "path": "tests/v4/agent/test_toolkit_contracts.py",
+      "sha256": "4b97a509b9b9f8b17106078f6ee4383cb11745b46633532da9ede6d3dc2e4214",
+      "lines": 76
+    },
+    {
+      "path": "tests/v4/agent/test_tool_clarification.py",
+      "sha256": "2024528bb655feb8be85c778507146ac1dfce6ddb95fe5a0a0cc94f4b8f8597e",
+      "lines": 87
+    },
+    {
+      "path": "tests/v4/agent/test_tool_interactions_pg.py",
+      "sha256": "8df4f0976027f8272ed9adc7e0598b4c5df61e558af90e94e260d1a602c32a90",
+      "lines": 331
+    },
+    {
+      "path": "tests/v4/agent/test_tool_registered_pg.py",
+      "sha256": "e8a0b7115a7a290d34589a8bde1289d1a51d047714db829b8a12dc66e7ac055a",
+      "lines": 87
+    },
+    {
+      "path": "tests/v4/agent/test_tool_reminder_intent.py",
+      "sha256": "8c82fb01ddeb75dfbc8d9b332497b6792e3cfeb84ad0c61e84eb63853110e8e8",
+      "lines": 43
+    },
+    {
+      "path": "tests/v4/agent/test_tool_reminder_intent_pg.py",
+      "sha256": "7ae1ef454fb7242ffb046bac39453faba9ef2889d3e45bde70000bf14bb0909b",
+      "lines": 143
+    },
+    {
+      "path": "tests/v4/agent/test_tool_tarot_bounds_pg.py",
+      "sha256": "01bd0842fca8079813332eb9488282b365150d6421abc5260f4f5378c7713aa4",
+      "lines": 143
+    },
+    {
+      "path": "tests/v4/agent/test_tool_tarot_guard.py",
+      "sha256": "634bf9ba7e12eca16d1628aaa54b7fbf5e7b35d2c2410898fb79ca7189c2e39b",
+      "lines": 69
+    },
+    {
+      "path": "tests/v4/agent/test_tool_tarot_pg.py",
+      "sha256": "46fa4cb5734d050ae70a6a2b81c66e32358ef6e1bfae21e472057a9d086382e5",
+      "lines": 240
+    }
+  ]
+}

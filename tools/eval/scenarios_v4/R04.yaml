@@ -1,0 +1,29 @@
+id: R04
+title: 三周前的老板别名
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+seed:
+  facts:
+  - id: boss-zhou
+    kind: relationship
+    summary: 老板姓周，不太好沟通。
+    quote: 老板姓周，不太好沟通。
+    source_message_id: boss-source
+  thread:
+  - id: boss-source
+    role: user
+    content: 老板姓周，不太好沟通。
+    at: '2026-09-26T18:00:00+08:00'
+    channel: web
+turns:
+- user: 周总今天又给我甩锅
+  expect:
+    must_include_all:
+    - 老板
+    - 周
+    - 沟通
+    judge: 识别周总是旧信息中的老板，不凭空造关系。
+scripted:
+- turn: 1
+  model:
+  - text: 你之前说过老板姓周、沟通不太顺〔f1〕。这次可以先留好工作分工和交付记录，再把责任边界写清楚。

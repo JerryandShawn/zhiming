@@ -1,0 +1,53 @@
+id: TA01
+title: 用户点选后读取固定牌
+category: tarot
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed: {}
+turns:
+- user: 帮我抽一张关于这次面试的牌
+  expect:
+    tools_called:
+    - tarot_start
+    tools_not_called:
+    - tarot_read
+    db:
+    - kind: tarot_draw
+      count: 1
+      status: pending
+- user: 点选第一张并揭牌
+  channel: tarot
+  kind: action
+  action:
+    type: tarot_reveal
+    draw_id: draw-interview
+    positions:
+    - 0
+  expect:
+    must_include_all:
+    - 面试
+    tools_called:
+    - tarot_read
+    db:
+    - kind: tarot_draw
+      id: draw-interview
+      status: revealed
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: tarot_start
+      arguments:
+        question: 关于这次面试
+        spread_id: focus1
+        draw_source: pick
+        message_id: turn-1
+  - text: 牌背已准备好，请点选一张。
+- turn: 2
+  model:
+  - tool_call:
+      name: tarot_read
+      arguments:
+        draw_id: draw-interview
+  - text: 这张力量牌可以提醒你：面试时稳住节奏，用具体经历表达底气。

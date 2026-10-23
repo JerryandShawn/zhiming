@@ -1,0 +1,55 @@
+{
+  "schema": "mainline-pinned-regression-evidence-v1",
+  "recorded_bjt": "2026-10-21T10:20:01.248421+08:00",
+  "source": {
+    "local_sha": "ff4b4f65d762c8eef33a6e557b003050a3a808fd",
+    "remote_sha": "ff4b4f65d762c8eef33a6e557b003050a3a808fd",
+    "tree": "b88d8f9a3f6cf7d5005214ee74a552bb6415c961",
+    "tracked_blobs_verified": 1275,
+    "mismatches": 0,
+    "manifest_sha256": "711a53b0bf72e308a957e3b6ba06749840bd97f2c4a342cd2f74a3d704682328"
+  },
+  "suites": {
+    "core": {
+      "tests": 583,
+      "seconds": 863.736,
+      "metadata": {
+        "commit": "ff4b4f65d762c8eef33a6e557b003050a3a808fd",
+        "started_at": "2026-10-21T10:00:00.601535+08:00",
+        "test_timezone": "Asia/Tokyo",
+        "finished_at": "2026-10-21T10:14:27.306019+08:00",
+        "exit_code": 0
+      },
+      "error_or_failure_nodes": []
+    }
+  },
+  "private_artifacts": [
+    {
+      "name": "core.log",
+      "bytes": 6347,
+      "sha256": "594e72e7d77d3c5477b5840e23b3412d667a90e32166df8f46fe8bfd90bcd92c"
+    },
+    {
+      "name": "core_metadata.json",
+      "bytes": 220,
+      "sha256": "31ea5563d05e6a0ac62aa87d302d47cdce623aee935c6eeb10bb2ee5644a32e8"
+    },
+    {
+      "name": "metadata.json",
+      "bytes": 378,
+      "sha256": "8f70b9b52dae270f71637f4dfe76f3eef24cae4a50d388178459a3bd8e736751"
+    }
+  ],
+  "safety": {
+    "real_provider_requests": 0,
+    "real_feishu_sends": 0,
+    "server_access": 0,
+    "private_exception_bodies_copied": false
+  },
+  "limitations": [
+    "Windows isolated PostgreSQL and synthetic providers; not Linux or deployment",
+    "Strict legacy receipt DOM xfail is incomplete, not a pass",
+    "A later commit does not inherit this exact-source result",
+    "Original M8 X03 remains unresolved; not rerun by these suites"
+  ]
+}

@@ -11,22 +11,26 @@ from typing import TYPE_CHECKING, Any
 from mingjing_core.models.errors import ModelUnavailable as TypedModelUnavailable
 from mingjing_core.models.metering import request_meter
 from mingjing_core.models.quota_runtime import call_scope, current_scope
+from mingjing_core.models.quota_types import GuardRejected
 
 if TYPE_CHECKING:
     from tools.eval.member_budget import MemberBudget
 
-STOP_REASONS = frozenset(
-    {
-        "quota",
-        "quota_5h",
-        "quota_weekly",
-        "quota_monthly",
-        "concurrency_limited",
-        "access_terminated",
-        "provider_http_error",
-        "member_window_limit",
-        "batch_cooldown",
-    }
+STOP_REASONS = (
+    frozenset(
+        {
+            "quota",
+            "quota_5h",
+            "quota_weekly",
+            "quota_monthly",
+            "concurrency_limited",
+            "access_terminated",
+            "provider_http_error",
+            "member_window_limit",
+            "batch_cooldown",
+        }
+    )
+    | GuardRejected.allowed_kinds
 )
 
 
@@ -87,6 +91,8 @@ def provider_http_status(exc: Exception) -> int | None:
 
 
 def provider_stop_reason(exc: Exception) -> str | None:
+    if isinstance(exc, GuardRejected):
+        return exc.kind
     if isinstance(exc, TypedModelUnavailable):
         if exc.kind in {
             "quota",
