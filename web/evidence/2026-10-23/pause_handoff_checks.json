@@ -1,0 +1,33 @@
+{
+  "beijing_checked": "2026-10-23T21:20:46.152806+08:00",
+  "instruction_board_version": 2,
+  "state": "paused_after_handoff",
+  "branch": "v4/p10-frontend",
+  "preceding_pushed_evidence_commit": "2cb1d4395b84ace9e97a775dc0ebfdeb81aede68",
+  "successful_full_stability_runs": 2,
+  "third_run_started": false,
+  "source_tests_build_files_unchanged": 1031,
+  "entry_config_files_unchanged": 21,
+  "local_service_shutdown": {
+    "beijing_stopped": "2026-10-23T21:18:52.0013912+08:00",
+    "stopped_own_pids": [
+      10572,
+      14368,
+      29880,
+      28112,
+      39452
+    ],
+    "owned_ports_no_longer_listening": [
+      4173,
+      4174,
+      8002,
+      55481
+    ],
+    "other_cluster_55480_untouched": true,
+    "data_deleted": false,
+    "third_stability_started": false
+  },
+  "ci": "Last inspected before handoff: both workflows in_progress at 2cb1d43, not confirmed green.",
+  "continuation": "While board remains v2: read that file only and stop. Explicit v3+ resume required.",
+  "limits": "No new product tests or live requests; source/build comparison and own-service stop verification only."
+}

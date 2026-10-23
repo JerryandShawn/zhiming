@@ -1,0 +1,63 @@
+{
+  "beijing_checked": "2026-10-23T21:10:52.907121+08:00",
+  "origin": "http://127.0.0.1:8002",
+  "records": [
+    {
+      "method": "GET",
+      "path": "/__test__/metrics",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/__test__/owner",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/state",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/subjects/self/profile/confirm",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/chart?date=2026-10-21",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/__test__/metrics",
+      "status": 200
+    }
+  ],
+  "database": "core_test_fe",
+  "database_port": 55481,
+  "chart_interpreter": "existing work/chart311-venv; Python -B imports checked locally",
+  "source_tests_build_verified": 1031,
+  "entry_configs_verified": 21,
+  "metrics_before": {
+    "database": "core_test_fe",
+    "schema_prefix": "test_frontend_",
+    "model": "scripted-only",
+    "provider_calls": 0,
+    "real_model_calls": 0,
+    "v2_connections": 0,
+    "v2_cursors": []
+  },
+  "metrics_after": {
+    "database": "core_test_fe",
+    "schema_prefix": "test_frontend_",
+    "model": "scripted-only",
+    "provider_calls": 0,
+    "real_model_calls": 0,
+    "v2_connections": 0,
+    "v2_cursors": []
+  },
+  "synthetic_owner_only": true,
+  "response_bodies_or_tokens_logged": false,
+  "no_model_or_delivery_request": true,
+  "limits": "Local environment preflight only; not a third full stability run or a new product acceptance."
+}
