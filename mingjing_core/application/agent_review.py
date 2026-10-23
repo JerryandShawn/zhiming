@@ -11,17 +11,28 @@ from pydantic import ValidationError
 from mingjing_core.agent.context_tokens import apply_token_budget
 from mingjing_core.agent.context_types import BudgetResult, ContextItem, ContextLayer
 from mingjing_core.agent.journal import JournalStep, input_fingerprint
-from mingjing_core.agent.loop_codec import ObservedPort, assistant_from, assistant_output
+from mingjing_core.agent.loop_codec import (
+    ObservedPort,
+    assistant_from,
+    assistant_output,
+)
 from mingjing_core.agent.loop_cycle import LoopCycle, LoopOutcome
 from mingjing_core.agent.options import review_material
 from mingjing_core.agent.prompts import PromptBundle
 from mingjing_core.agent.review import CriticVerdict, TrustedReviewReceipt
+from mingjing_core.application.agent_model_attempts import confirmed, observing_core
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_options import load_options
 from mingjing_core.application.agent_review_proofs import ReviewProofStore
-from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, RevisionConflict, ScopeError
+from mingjing_core.domain.contracts import (
+    EvidenceError,
+    LeaseConflict,
+    RevisionConflict,
+    ScopeError,
+)
 from mingjing_core.models.errors import ModelUnavailable
 from mingjing_core.models.port import ChatMessage, ModelPort
+from mingjing_core.models.quota_attempt_observer import ModelAttemptUnconfirmed
 from mingjing_core.validation.structural import check_structure
 
 
@@ -56,6 +67,10 @@ class AgentReviewer:
         return apply_token_budget(layers, (), meter=self.ledger.meter(cycle.run), policy=cycle.budget_policy)
 
     def _call(self, cycle: LoopCycle, outcome: LoopOutcome) -> tuple[str, JournalStep, bool]:
+        with confirmed(only_core=True):
+            return self._call_step(cycle, outcome)
+
+    def _call_step(self, cycle: LoopCycle, outcome: LoopOutcome) -> tuple[str, JournalStep, bool]:
         if self.port is None or self.offline and getattr(self.port, "offline", False) is not True:
             raise EvidenceError("独立评审端口未配置")
         cached = self.ledger.restore_next(cycle.journal, cycle.run, role="critic", name="critic")
@@ -75,7 +90,7 @@ class AgentReviewer:
             response = assistant_from(step.output or {})
         else:
             self.ledger.reserve(step, cycle.frozen, budget, "auto", versions, role="critic")
-            with cycle.control.monitor():
+            with self.ledger.physical(step), cycle.control.monitor():
                 response = ObservedPort(self.port, cycle.control, lambda text: None).complete(
                     list(budget.messages),
                     tools=[],
@@ -130,7 +145,15 @@ class AgentReviewer:
             return outcome, receipt
         except (LeaseConflict, RevisionConflict, ScopeError):
             raise
-        except (ModelUnavailable, ValidationError, ValueError, EvidenceError):
+        except ModelAttemptUnconfirmed:
+            raise
+        except ModelUnavailable as error:
+            if observing_core() and error.global_stop:
+                raise
+            if cycle.emit:
+                cycle.emit("review", {"state": "skipped", "reasons": []})
+            return replace(outcome, usage=self._usage(outcome.usage, critic, replayed)) if critic else outcome, None
+        except (ValidationError, ValueError, EvidenceError):
             if cycle.emit:
                 cycle.emit("review", {"state": "skipped", "reasons": []})
             return replace(outcome, usage=self._usage(outcome.usage, critic, replayed)) if critic else outcome, None

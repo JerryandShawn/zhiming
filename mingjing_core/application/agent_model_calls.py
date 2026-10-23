@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass, field, replace
 from typing import Any
 
@@ -164,7 +166,18 @@ class RequestLedger:
         )
 
     def completed(self, step: JournalStep) -> dict[str, Any]:
-        call = self._load(step.owner, step.run_id, step.epoch, step.seq)
-        if call is None:
-            raise EvidenceError("完成模型步骤缺少原始计量")
-        return self.usage.record(step, call.budget.meter)
+        from .agent_model_attempts import confirmed, verify_completed
+
+        with confirmed(only_core=True):
+            verify_completed(self.repo, step, offline=self.offline)
+            call = self._load(step.owner, step.run_id, step.epoch, step.seq)
+            if call is None:
+                raise EvidenceError("完成模型步骤缺少原始计量")
+            return self.usage.record(step, call.budget.meter)
+
+    @contextmanager
+    def physical(self, step: JournalStep) -> Iterator[None]:
+        from .agent_model_attempts import physical_step
+
+        with physical_step(self.repo, step, offline=self.offline):
+            yield

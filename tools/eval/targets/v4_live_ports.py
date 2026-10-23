@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import time
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from typing import Any
 
 import httpx
@@ -11,11 +13,17 @@ import httpx
 from mingjing_core.models.errors import ModelUnavailable
 from mingjing_core.models.metering import request_meter
 from mingjing_core.models.port import ChatMessage, ModelPort, StreamEvent
+from mingjing_core.models.quota_attempt_observer import defer_send_counter
 from mingjing_core.models.quota_delegated_session import require_active
 from mingjing_core.models.quota_runtime import current_scope
 from mingjing_core.models.quota_types import GuardRejected
 from mingjing_core.models.registry import ModelHandle, RegistryPort
-from tools.eval.quota import STOP_REASONS, ProviderStopped, provider_http_status, provider_stop_reason
+from tools.eval.quota import (
+    STOP_REASONS,
+    ProviderStopped,
+    provider_http_status,
+    provider_stop_reason,
+)
 
 
 class LiveTrackingPort(ModelPort):
@@ -26,6 +34,9 @@ class LiveTrackingPort(ModelPort):
         self.requests: list[dict[str, Any]] = []
         self._substituted = False
         self._turn_calls, self._turn_started = 0, time.perf_counter()
+        self._before_send: ContextVar[Callable[[], None] | None] = ContextVar(
+            "eval_send_authorization_" + str(id(self)), default=None
+        )
         factory = port.factory
 
         def observe_factory(handle: ModelHandle) -> ModelPort:
@@ -38,8 +49,29 @@ class LiveTrackingPort(ModelPort):
     def begin_turn(self) -> None:
         self._turn_calls, self._turn_started = self.calls, time.perf_counter()
 
+    @contextmanager
+    def authorize_before_send(self, authorize: Callable[[], None]) -> Iterator[None]:
+        previous = self._before_send.get()
+
+        def combined() -> None:
+            if previous is not None:
+                previous()
+            authorize()
+
+        token = self._before_send.set(combined)
+        try:
+            yield
+        finally:
+            self._before_send.reset(token)
+
     def _before_request(self) -> None:
         # The callback runs after PG admission and immediately before client.send.
+        if authorize := self._before_send.get():
+            authorize()
+        if not defer_send_counter(self._count_request):
+            self._count_request()
+
+    def _count_request(self) -> None:
         self.calls += 1
         self.external_calls += int(not self._substituted)
 

@@ -8,12 +8,14 @@ from dataclasses import asdict, dataclass, field, replace
 from typing import Any
 
 from mingjing_core.application.agent_commit_versions import reconcile_versions
+from mingjing_core.application.agent_model_attempts import confirmed
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_thread_scope import thread_id
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult
 from mingjing_core.domain.contracts import CoreError, EvidenceError, RevisionConflict
 from mingjing_core.models.errors import ModelProtocolError, ModelUnavailable
 from mingjing_core.models.port import ChatMessage, ModelPort, ToolCall
+from mingjing_core.models.quota_attempt_observer import ModelAttemptUnconfirmed
 
 from .context_budget import assert_live_allowed
 from .context_tokens import TokenMeter, apply_token_budget
@@ -28,7 +30,13 @@ from .context_types import (
 from .inbox_cycle import InboxCycle
 from .journal import Journal, JournalStep, input_fingerprint
 from .loop_batch import ToolBatch
-from .loop_codec import ObservedPort, assistant_from, assistant_output, extend_aliases, verified_versions
+from .loop_codec import (
+    ObservedPort,
+    assistant_from,
+    assistant_output,
+    extend_aliases,
+    verified_versions,
+)
 from .loop_policy import LoopPolicy, LoopStopped, RunControl
 from .toolkit import ToolRegistry
 
@@ -174,6 +182,10 @@ class LoopCycle:
             self.emit("text_delta", {"text": text})
 
     def _model(self) -> Any:
+        with confirmed(only_core=True):
+            return self._model_step()
+
+    def _model_step(self) -> Any:
         self.control.poll()
         name = "revision" if self.revising else ""
         restored = self.ledger.restore_next(self.journal, self.run, role="primary", name=name) if self.ledger else None
@@ -200,7 +212,9 @@ class LoopCycle:
             self.usage["model_streams_this_execution"] += 1
             if self.ledger:
                 self.ledger.reserve(step, self.frozen, budget, choice, versions)
-            with self.control.monitor():
+            from contextlib import nullcontext
+
+            with self.ledger.physical(step) if self.ledger else nullcontext(), self.control.monitor():
                 response = ObservedPort(self.port, self.control, self._text_delta).complete(
                     list(budget.messages),
                     tools=list(budget.tools),
@@ -285,6 +299,8 @@ class LoopCycle:
             return self._outcome("iteration_limit")
         except LoopStopped as error:
             return self._outcome(error.reason)
+        except ModelAttemptUnconfirmed:
+            raise
         except ModelUnavailable as error:
             return self._outcome(error.code.lower())
         except CoreError:

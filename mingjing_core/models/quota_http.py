@@ -12,7 +12,8 @@ from urllib.parse import urlsplit
 import httpx
 
 from .errors import ModelUnavailable
-from .quota_guard import Attempt, QuotaGuard
+from .quota_attempt_observer import current_observer, per_physical_send
+from .quota_guard import Attempt, QuotaGuard, _propagated_error
 from .quota_mode import current_delegated_session
 from .quota_runtime import CentralLocation, current_scope
 from .quota_types import ROLES, GuardRejected, bucket
@@ -73,10 +74,40 @@ def _admitted_attempt(
 ) -> Iterator[Attempt]:
     lane = scope.lane or lane_for(role)
     bucket(role, lane)
+    attempt_id, observer = "http-" + uuid.uuid4().hex, current_observer()
+    if observer is not None:
+        observer.prepare(active, scope, attempt_id, role, provider, model)
+    error = finish_error = None
+    try:
+        with _guarded_attempt(active, scope, role, provider, model, cancel_event, timeout, attempt_id) as attempt:
+            yield attempt
+    except BaseException as caught:
+        error = caught
+    if observer is not None:
+        try:
+            observer.finished(active, scope, attempt_id)
+        except BaseException as caught:
+            finish_error = caught
+    failure = _propagated_error(error, finish_error)
+    if failure is not None:
+        raise failure from None
+
+
+@contextmanager
+def _guarded_attempt(
+    active: QuotaGuard,
+    scope: Any,
+    role: str,
+    provider: str,
+    model: str,
+    cancel_event: threading.Event | None,
+    timeout: float | None,
+    attempt_id: str,
+) -> Iterator[Attempt]:
     with active.acquire(
         role,
-        lane,
-        attempt_id="http-" + uuid.uuid4().hex,
+        scope.lane or lane_for(role),
+        attempt_id=attempt_id,
         provider=provider,
         model=model,
         run_id=scope.run_id,
@@ -86,8 +117,11 @@ def _admitted_attempt(
         cancel_event=cancel_event,
         timeout=timeout,
     ) as attempt:
+        if observer := current_observer():
+            observer.admitted(active, scope, attempt.attempt_id)
         try:
-            yield attempt
+            with per_physical_send():
+                yield attempt
         except httpx.HTTPError:
             raise ModelUnavailable() from None
 

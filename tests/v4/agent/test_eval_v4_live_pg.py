@@ -106,7 +106,12 @@ class Harness:
 
 @pytest.fixture
 def live(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch) -> Iterator[Harness]:
-    directory = ROOT.parent / "zhiming-v4/private/artifacts/kimi-k3-installer-20261023"
+    configured = os.getenv("K3_TOKENIZER_ARTIFACT_DIR")
+    directory = (
+        Path(configured) if configured else ROOT.parent / "zhiming-v4/private/artifacts/kimi-k3-installer-20261023"
+    )
+    if configured:
+        assert directory.is_dir(), "CONFIGURED_OFFICIAL_K3_ARTIFACTS_REQUIRED"
     if not directory.is_dir():
         pytest.skip("requires previously installed official public K3 files; tests never download")
     central = configure_central(p2_repo, monkeypatch)

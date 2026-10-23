@@ -28,6 +28,7 @@ from .metering import before_provider_request
 from .port import ModelPort, StreamEvent
 from .provider_diagnostics import delegated_stop_hint, parse_error_sample
 from .provider_reset import attach_reset, reset_errors
+from .quota_attempt_observer import before_observed_send
 from .quota_guard import QuotaGuard
 from .quota_http import membership_endpoint, observe_usage, provider_attempt
 from .quota_mode import delegated_active
@@ -338,6 +339,7 @@ class StreamingHTTP(ModelPort):
                 cancellation_errors(cancel),
             ):
                 before_provider_request()
+                before_observed_send()
                 self.request_count += 1
                 with closing(client.send(request, stream=True)) as response:
                     active[0] = response

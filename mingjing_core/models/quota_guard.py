@@ -62,6 +62,32 @@ class Attempt:
         self.kind, self.usage = kind, _usage(usage or {})
 
 
+def _normalized_error(error: BaseException, delegated: bool) -> BaseException:
+    if delegated and isinstance(error, Exception):
+        if not isinstance(error, ModelUnavailable):
+            return ModelUnavailable(retry_actions=NEVER)
+        if not error.global_stop:
+            error.retry_actions = NEVER
+    return error
+
+
+def _propagated_error(error: BaseException | None, finish_error: BaseException | None) -> BaseException | None:
+    protected = error is not None and (
+        not isinstance(error, Exception)
+        or isinstance(error, ModelCancelled)
+        or isinstance(error, ModelUnavailable)
+        and error.global_stop
+    )
+    if finish_error is None or protected:
+        return error
+    if not isinstance(finish_error, Exception):
+        return finish_error
+    if isinstance(error, ModelUnavailable):
+        error.retry_actions = NEVER
+        return error
+    return GuardRejected("ledger_unavailable")
+
+
 class QuotaGuard:
     def __init__(
         self,
@@ -160,25 +186,20 @@ class QuotaGuard:
 
             delegated = token_parts(data.get("authorization_id")) is not None
             attempt, started = Attempt(data["attempt_id"]), time.monotonic()
+            error = finish_error = None
             try:
                 with verified_delegated_attempt(delegated, self.clock):
                     yield attempt
-            except BaseException as error:
+            except BaseException as caught:
                 kind = getattr(
-                    error,
+                    caught,
                     "kind",
-                    "cancelled" if isinstance(error, KeyboardInterrupt) else "unknown",
+                    "cancelled" if isinstance(caught, KeyboardInterrupt) else "unknown",
                 )
                 attempt.kind = kind if kind in RESULT_KINDS else "unknown"
-                attempt.resume_at = getattr(error, "provider_reset_at", None)
-                if delegated and isinstance(error, Exception):
-                    if isinstance(error, ModelUnavailable):
-                        if not error.global_stop:
-                            error.retry_actions = NEVER
-                    else:
-                        raise ModelUnavailable(retry_actions=NEVER) from None
-                raise
-            finally:
+                attempt.resume_at = getattr(caught, "provider_reset_at", None)
+                error = _normalized_error(caught, delegated)
+            try:
                 self.store.finish(
                     connection,
                     data["attempt_id"],
@@ -188,6 +209,12 @@ class QuotaGuard:
                     (time.monotonic() - started) * 1000,
                     resume_at=attempt.resume_at,
                 )
+            except BaseException as caught:
+                finish_error = caught
+            # Finalization cannot replace a known stop or make an uncertain POST retryable.
+            failure = _propagated_error(error, finish_error)
+            if failure is not None:
+                raise failure from None
 
     def begin_batch(
         self,
