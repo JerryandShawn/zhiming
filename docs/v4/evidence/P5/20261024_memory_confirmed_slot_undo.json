@@ -1,0 +1,54 @@
+{
+  "recorded_beijing": "2026-10-24T03:29:36.231765+08:00",
+  "scope": "internal memory application services, synthetic isolated PG",
+  "external_provider_requests": 0,
+  "implemented": [
+    "atomic actual P3 confirmation and single-slot replacement",
+    "combined undo restores exact old business fields and original pending proposal",
+    "category grants and later dependent facts retire together; derived claims invalidate",
+    "withdrawn originals/approvals/facts cannot be restored; replay revalidates current authority"
+  ],
+  "checks": [
+    {
+      "scope": "combined/slots/consent undo/conflict category related",
+      "passed": 54
+    },
+    {
+      "scope": "new combined guards and rollback file",
+      "passed": 22
+    },
+    {
+      "scope": "added future confirmation plus once/category accepted undo affected paths",
+      "passed": 3
+    }
+  ],
+  "counts_overlap": true,
+  "initial_attempts": [
+    {
+      "failed": 11,
+      "passed": 1,
+      "reason": "new wrapper used receipt keys outside strict ledger allowlist; two test overrides duplicated kwargs"
+    },
+    {
+      "failed": 2,
+      "passed": 10,
+      "reason": "new tests referenced nonexistent delete_source; replaced by actual SourceWithdrawalService"
+    }
+  ],
+  "lint": "Ruff E/F/I/B/UP/SIM and format passed; final verification recorded in commit workflow",
+  "not_product_acceptance": true,
+  "required_memory_scenarios_latest_prior_run": {
+    "passed": 34,
+    "total": 37,
+    "failed": [
+      "M08",
+      "KU01",
+      "KU02"
+    ]
+  },
+  "limits": [
+    "not wired into channels, Agent loop, runtime tool contract or commit gate",
+    "no new run of required scenarios or full repository regression for this isolated service slice",
+    "exact undo command requires authenticated current user action; never infer confirmation from model text"
+  ]
+}
