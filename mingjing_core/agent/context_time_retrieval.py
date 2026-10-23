@@ -9,7 +9,9 @@ from zoneinfo import ZoneInfo
 
 from mingjing_core.domain.time_ranges import TimeRangeParser
 from mingjing_core.memory.tokenize import tokenize
+from mingjing_core.memory2.ranking import rank_key, ranked_projection
 from mingjing_core.repositories.context_retrieval import time_query_candidates
+from mingjing_core.timekit.clock import get_clock
 from mingjing_core.timekit.timestamps import history_instant
 
 from .context_types import ContextInputError
@@ -103,7 +105,11 @@ def retrieve(
         return [], 0, None
     window = time_window(sources.time_parser, query, current, zone)
     if window is None:
-        rows = sources.repo.search(owner, subject, tokens, ["message"], sources.policy.search_limit)
+        rows = [
+            dict(row, _retrieval_kind=kind)
+            for kind in ("message", "fact")
+            for row in sources.repo.search(owner, subject, tokens, [kind], 50)
+        ]
     else:
         rows = time_query_candidates(sources.repo, owner, subject, tokens)
     available, seen = [], set()
@@ -114,7 +120,14 @@ def retrieve(
         projected = _project(sources, owner, subject, row, known, cases)
         if projected is not None:
             seen.add(row["id"])
-            available.append(projected)
+            available.append(
+                ranked_projection(
+                    projected,
+                    dict(projected, entity_kind=projected["_retrieval_kind"]),
+                    clock=get_clock(),
+                )
+            )
+    available.sort(key=rank_key)
     if window is not None:
         available = [dict(row, _time_match=window.matches(row)) for row in available]
         available.sort(key=lambda row: not row["_time_match"])

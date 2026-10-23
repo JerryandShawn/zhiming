@@ -107,7 +107,10 @@ def save_memory(
         return {"write_status": "rejected", "code": "credential"}
     if level == "profile":
         return {"write_status": "needs_confirmation", "code": "profile_update_required"}
-    if level in SENSITIVITIES:
+    settings = service.repo.assert_scope(ctx.owner, ctx.subject)["settings"]
+    categories = settings.get("auto_save_categories", [])
+    category_granted = isinstance(categories, list) and level in categories
+    if level in SENSITIVITIES and not category_granted:
         return proposal(service, args, ctx, source, start, end, level)
     metadata, pending = event_metadata(service, args, ctx, source)
     if pending:
