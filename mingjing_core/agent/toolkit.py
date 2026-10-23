@@ -83,7 +83,7 @@ DEFINITIONS = (
     )
     + interaction_definitions()
     + tarot_definitions()
-    + tuple(item for item in computation_definitions() if item.name != "date_calc")
+    + computation_definitions()
 )
 
 

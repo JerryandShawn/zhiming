@@ -11,6 +11,7 @@ from mingjing_core.agent.tool_visibility import VisibilityState
 from mingjing_core.application.agent_tools_contracts import ToolContext
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
 from mingjing_core.memory.policy import mask_quoted
+from mingjing_core.timeparse import parse_time_range
 
 if TYPE_CHECKING:
     from mingjing_core.application.agent_tools import AgentToolsService
@@ -25,6 +26,9 @@ PROFILE = re.compile(
     r"|(?:资料|生日|出生|姓名|名字|时区).{0,12}(?:改为|改成|不对|有误|记错)"
 )
 PROGRESS = re.compile(r"那件事.{0,8}(?:进展|后续|怎么样)|事情.{0,8}进展")
+DATE_CALC = re.compile(
+    r"日期|几天|多少天|相隔|天数|间隔|年龄|周岁|虚岁|多大|农历|公历|阴历|阳历|星期"
+)
 
 
 def step_state(rows: list[dict[str, Any]]) -> tuple[bool, bool]:
@@ -79,12 +83,18 @@ def visibility_state(service: AgentToolsService, ctx: ToolContext) -> Visibility
         ).fetchone()
     searched, computed = step_state(rows)
     text = mask_quoted(source["content"])
+    parsed = parse_time_range(
+        text, ctx.at or service.clock.now(), service.timezone(ctx)
+    )
     tarot_pending = (
         False
         if ctx.crisis or ctx.private
         else service.tarot_visibility(ctx) == "tarot_read"
     )
     return VisibilityState(
+        date_context=bool(DATE_CALC.search(text))
+        or parsed.start is not None
+        or parsed.needs_clarification,
         memory_search_has_results=searched,
         memory_correcting=CORRECTION.search(text) is not None,
         first_meeting=not prior["exists"],

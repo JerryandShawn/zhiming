@@ -41,5 +41,5 @@ def calculate_read(service: AgentToolsService, name: str, args: dict[str, Any], 
     if name == "case_list":
         return execute_case(service, name, args, ctx)
     if name == "date_calc":
-        return date_calc(args)
+        return date_calc(args, ref_time=ctx.at or service.clock.now(), timezone=service.timezone(ctx))
     return execute_read(service, name, args, ctx)

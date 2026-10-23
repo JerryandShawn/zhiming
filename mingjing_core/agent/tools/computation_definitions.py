@@ -28,8 +28,9 @@ def computation_definitions() -> tuple[ToolDefinition, ...]:
         ToolDefinition(
             "date_calc",
             DateCalc,
-            "当需核对两个绝对日期相差天数或绝对日期加减天数时使用；不解析下周等相对语言。"
-            "返回公历日期、星期与不含端点加一的日差，只读无副作用。",
+            "当你需要算天数、间隔、年龄、星期或农历公历互换时使用，不要心算。"
+            "公历输入用绝对日期或带时区ISO；农历用农历YYYY-MM-DD，闰月在月份前写闰。"
+            "相对日期先按本轮此刻换算；返回结果与计算口径，只读无副作用，无写入回执。",
         ),
         ToolDefinition(
             "memory_update",

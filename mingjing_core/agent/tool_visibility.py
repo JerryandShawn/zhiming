@@ -24,6 +24,7 @@ RESIDENT_TOOLS = (
     "set_reminder",
 )
 CONDITIONAL_TOOLS = (
+    "date_calc",
     "memory_update",
     "profile_update_request",
     "tarot_start",
@@ -61,9 +62,11 @@ class VisibilityState:
     case_bound: bool = False
     case_progress: bool = False
     chart_computed: bool = False
+    date_context: bool = False
 
     def conditional(self) -> dict[str, bool]:
         return {
+            "date_calc": self.date_context,
             "memory_update": self.memory_search_has_results or self.memory_correcting,
             "profile_update_request": self.first_meeting or self.profile_editing,
             "tarot_start": self.tarot_topic,
@@ -78,6 +81,7 @@ class VisibilityState:
         return {
             name
             for name, active in (
+                ("date_calc", self.date_context),
                 ("memory_update", self.memory_correcting),
                 ("profile_update_request", self.profile_editing),
                 ("tarot_read", self.tarot_pending),
@@ -109,12 +113,21 @@ def select_visible(
     required: Iterable[str] = (),
 ) -> tuple[T, ...]:
     by_name = {item.name: item for item in definitions}
+    requested = set(required)
+    if requested.difference(by_name):
+        raise EvidenceError("本步要求的工具尚未注册")
     conditions = state.conditional()
     order = (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS)
     eligible = [
         name
         for name in order
-        if name in by_name and (name in RESIDENT_TOOLS or conditions[name])
+        if name in by_name
+        and (
+            name in RESIDENT_TOOLS
+            or conditions[name]
+            or name == "date_calc"
+            and name in requested
+        )
     ]
     if ctx.crisis:
         eligible = [name for name in eligible if name in CRISIS_TOOLS]
@@ -125,9 +138,6 @@ def select_visible(
             if name not in PRIVATE_WRITES
             and (by_name[name].read_only or by_name[name].private_allowed)
         ]
-    requested = set(required)
-    if requested.difference(by_name):
-        raise EvidenceError("本步要求的工具尚未注册")
     necessary = (state.necessary() | requested).intersection(eligible)
     resident = [name for name in eligible if name in RESIDENT_TOOLS]
     reserved = set(resident) | necessary
