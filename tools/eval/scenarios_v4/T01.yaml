@@ -1,0 +1,21 @@
+id: T01
+title: 问今天几号星期几
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+seed: {}
+turns:
+- user: 今天几号？星期几？
+  expect:
+    must_include_any:
+    - 10月17日
+    - 17号
+    must_include_all:
+    - 星期六|周六
+    must_not_include:
+    - 星期五
+    - 周日
+    judge: 准确自然地给出冻结日期与星期。
+scripted:
+- turn: 1
+  model:
+  - text: 今天是2026年10月17日，星期六。

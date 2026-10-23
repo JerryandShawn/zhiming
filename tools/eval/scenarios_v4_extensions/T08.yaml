@@ -1,0 +1,56 @@
+id: T08
+title: 调休与周末按实际区间结果区分
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  profile_overrides: {}
+  facts: []
+  thread: []
+  entities: []
+  settings: {}
+  context: {}
+  controls: {}
+  thread_id: life-synthetic
+  incognito: false
+turns:
+- user: 查10月10日至11日是否休息
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called:
+    - calendar_lookup
+    tools_not_called: []
+    receipts: []
+    db:
+    - where: {}
+      path: observed_tools.0.output.data.days.0.day_status.kind
+      equals: adjusted_workday
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.days.0.day_status.is_off
+      equals: false
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.days.1.day_status.is_off
+      equals: true
+      absent: false
+    events: []
+    chart_structure: false
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: calendar_lookup
+      arguments:
+        start_date: '2026-10-10'
+        end_date: '2026-10-11'
+  - text: 10月10日调休上班，11日休息。
+notes: 独立v4扩充契约；实际工具结果/线程/信封断言，不替换冻结47项。

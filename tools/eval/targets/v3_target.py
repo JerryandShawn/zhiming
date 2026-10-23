@@ -126,6 +126,12 @@ class V3Target:
         )
 
     def submit_turn(self, turn: dict[str, Any]) -> dict[str, Any]:
+        # Seed the current original and admit its run atomically. A refused
+        # privacy request must not leave an orphaned life-thread original.
+        with self.repo.transaction(self.owner):
+            return self._submit_turn(turn)
+
+    def _submit_turn(self, turn: dict[str, Any]) -> dict[str, Any]:
         index = turn.get("_index", len(self.run_ids) + 1)
         operation = f"eval:{self.seed_data.get('_scenario_id', 'scenario')}:{index}"
         kind = turn.get("kind", "turn")

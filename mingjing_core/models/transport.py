@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 import json
+import socket
 import threading
 import time
 from collections.abc import Callable, Iterator
-from contextlib import closing, contextmanager
+from contextlib import closing, contextmanager, suppress
 from typing import Any, Protocol
 from urllib.parse import urlsplit
 
@@ -116,8 +117,38 @@ def stream_error(data: Any, *, membership: bool) -> ModelUnavailable:
     return classify_error(None, {"error": data}, membership=membership, surface="sse")
 
 
+def shutdown_response(response: Closable | None) -> None:
+    """Closing an fd alone need not wake another thread blocked in Linux recv."""
+    if not isinstance(response, httpx.Response):
+        return
+    stream = response.extensions.get("network_stream")
+    extra = getattr(stream, "get_extra_info", None)
+    if callable(extra):
+        with suppress(OSError, RuntimeError, AttributeError, TypeError, httpx.HTTPError):
+            connection = extra("socket")
+            if connection is not None:
+                connection.shutdown(socket.SHUT_RDWR)
+
+
 @contextmanager
-def close_on_cancel(response: Closable, cancel: threading.Event | None, deadline: float) -> Iterator[threading.Event]:
+def cancellation_errors(cancel: threading.Event | None) -> Iterator[None]:
+    try:
+        yield
+    except (httpx.HTTPError, RuntimeError):
+        # Socket shutdown wakes a blocked read as an I/O error. Classify the
+        # cancellation before the enclosing central permit records its result.
+        check_cancel(cancel)
+        raise
+
+
+@contextmanager
+def close_on_cancel(
+    response: Closable,
+    cancel: threading.Event | None,
+    deadline: float,
+    *,
+    active: Callable[[], Closable | None] | None = None,
+) -> Iterator[threading.Event]:
     done = threading.Event()
     expired = threading.Event()
 
@@ -125,7 +156,12 @@ def close_on_cancel(response: Closable, cancel: threading.Event | None, deadline
         while not done.wait(0.02):
             if time.monotonic() >= deadline or cancel is not None and cancel.is_set():
                 expired.set()
-                response.close()
+                # The outer client watcher must also shutdown its active response
+                # before close, otherwise it can win the race and only close its fd.
+                shutdown_response(active() if active is not None else None)
+                shutdown_response(response)
+                with suppress(OSError, RuntimeError, httpx.HTTPError):
+                    response.close()
                 return
 
     watcher = threading.Thread(target=monitor, name="model-stream-cancel", daemon=True)
@@ -245,9 +281,10 @@ class StreamingHTTP(ModelPort):
         timeout = httpx.Timeout(
             float(self.settings.get("first_byte_timeout", 60)), connect=float(self.settings.get("connect_timeout", 10))
         )
+        active: list[httpx.Response | None] = [None]
         with (
             httpx.Client(transport=self.transport, timeout=timeout, follow_redirects=False) as client,
-            close_on_cancel(client, cancel, deadline) as client_expired,
+            close_on_cancel(client, cancel, deadline, active=lambda: active[0]) as client_expired,
         ):
             check_cancel(cancel)
             request = client.build_request(
@@ -257,28 +294,35 @@ class StreamingHTTP(ModelPort):
             check_cancel(cancel)
             if time.monotonic() >= deadline:
                 raise ModelUnavailable()
-            with provider_attempt(
-                membership=self.membership, role=self._guard_role, provider=self.provider, model=self.model,
-                transport=self.transport, guard=self.guard, cancel_event=cancel,
-                timeout=max(0, min(10, deadline - time.monotonic())),
-            ) as attempt:
+            with (
+                provider_attempt(
+                    membership=self.membership,
+                    role=self._guard_role,
+                    provider=self.provider,
+                    model=self.model,
+                    transport=self.transport,
+                    guard=self.guard,
+                    cancel_event=cancel,
+                    timeout=max(0, min(10, deadline - time.monotonic())),
+                ) as attempt,
+                cancellation_errors(cancel),
+            ):
                 before_provider_request()
                 self.request_count += 1
-                with (
-                    closing(client.send(request, stream=True)) as response,
-                    close_on_cancel(response, cancel, deadline) as expired,
-                ):
-                    if response.status_code != 200:
-                        failure = http_error(response, membership=self.membership)
-                        check_cancel(cancel)
-                        raise failure
-                    for event in parser(sse(response, cancel)):
+                with closing(client.send(request, stream=True)) as response:
+                    active[0] = response
+                    with close_on_cancel(response, cancel, deadline) as expired:
+                        if response.status_code != 200:
+                            failure = http_error(response, membership=self.membership)
+                            check_cancel(cancel)
+                            raise failure
+                        for event in parser(sse(response, cancel)):
+                            check_cancel(cancel)
+                            if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
+                                raise ModelUnavailable()
+                            if event.type == "usage":
+                                observe_usage(attempt, event.data)
+                            yield event
                         check_cancel(cancel)
                         if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
                             raise ModelUnavailable()
-                        if event.type == "usage":
-                            observe_usage(attempt, event.data)
-                        yield event
-                    check_cancel(cancel)
-                    if expired.is_set() or client_expired.is_set() or time.monotonic() >= deadline:
-                        raise ModelUnavailable()

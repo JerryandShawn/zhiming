@@ -1,4 +1,4 @@
-"""Direct Feishu DM entry: verified author -> Core -> validated outbox.
+"""Feishu DM entry: verified author -> durable merged queue -> validated outbox.
 
 No Hermes agent, model tool wrapper or second interpretation is imported.
 The SDK callback commits the original and queue before acknowledging it.
@@ -15,8 +15,9 @@ import re
 import threading
 
 from psycopg import sql
+from mingjing_core.application.feishu_ingress import FeishuIngress
+from mingjing_core.application.thread_inbox import ThreadInbox
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
-from mingjing_core.repositories.postgres import fingerprint
 from .channels.delivery import CoreDeliveryWorker
 from .channels.feishu import FeishuTransport
 
@@ -28,10 +29,11 @@ def _field(value, key, default=None):
 
 
 class FeishuGateway:
-    def __init__(self, service, transport=None, *, max_concurrency=1):
+    def __init__(self, service, transport=None, *, max_concurrency=1, clock=None):
         self.service = service
         self.repo = service.repo
         self.delivery = CoreDeliveryWorker(service, transport or FeishuTransport())
+        self.ingress = FeishuIngress(service, clock=clock)
         self._locks = {}
         self._capacity=asyncio.Semaphore(max(1,min(int(max_concurrency),8)))
 
@@ -67,31 +69,19 @@ class FeishuGateway:
         if binding.get('binding_kind') != 'user':
             raise ScopeError('飞书原始作者必须有明确 user 绑定')
         owner, subject = binding['owner'], binding['subject']
-        conversation = 'feishu:p2p:' + chat_id
-        operation = 'feishu:message:' + source_id
-        ident = 'feishu-inbound:' + fingerprint([owner, source_id])[:32]
         stamp = _field(message, 'create_time')
         try:
             at = datetime.fromtimestamp(int(stamp) / 1000, timezone.utc) if stamp is not None else None
         except (ValueError, TypeError, OverflowError) as exc:
             raise EvidenceError('飞书原始时间格式不可用') from exc
-        with self.repo.transaction(owner):
-            original = self.service.memory.receive(owner, subject, text, channel='feishu',
-                       source_id=source_id, external_id=author, conversation_id=conversation, at=at, origin='current_user')
-            run = self.service.submit(owner=owner, subject=subject, message=text,
-                      conversation_id=conversation, request_id=operation,
-                      source_message_id=original['id'], mode='chat', depth='standard')
-            self.repo.put(owner, 'request', ident, {'gateway': 'feishu', 'run_id': run['id'],
-                          'source_id': original['id'], 'target': author,
-                          'business_id': operation, 'chat_id': chat_id}, subject=subject,
-                          operation_id='feishu-accept:' + source_id)
-        return {'status': 'accepted', 'owner': owner, 'inbound_id': ident, 'run_id': run['id']}
+        return self.ingress.receive(owner=owner, subject=subject, author=author, chat_id=chat_id,
+                                    message_id=source_id, text=text, at=at)
 
     async def handle(self, data):
         accepted = self.accept(data)
         if accepted['status'] != 'accepted':
             return accepted
-        return await self.process(accepted['owner'], accepted['inbound_id'])
+        return dict(accepted, **await self.process(accepted['owner'], accepted['inbound_id']))
 
     async def process(self, owner, inbound_id):
         async with self._capacity:
@@ -103,17 +93,15 @@ class FeishuGateway:
             item = self.repo.get(owner, 'request', inbound_id)
             if item.get('gateway') != 'feishu':
                 raise ScopeError('入口记录不是飞书原始事件')
+            ThreadInbox(self.repo).recover(owner)
+            if not item.get('run_id'):
+                result = self.ingress.flush(owner, inbound_id)
+                if not result['run_id']:
+                    return result
+                item = self.repo.get(owner, 'request', inbound_id)
             run = self.repo.fetch_run(owner, item['run_id'])
             if run['subject'] != item['subject_id']:
                 raise ScopeError('入口执行人物与绑定不符')
-            if run['status'] == 'queued':
-                try:
-                    await self.service.consult(owner=owner, subject=run['subject'],
-                           request_id=run['operation_id'], **run['request'])
-                except LeaseConflict:
-                    # A web recovery worker can legitimately own this run.
-                    pass
-                run = self.repo.fetch_run(owner, item['run_id'])
             if run['status'] != 'succeeded':
                 return {'status': run['status'], 'run_id': run['id']}
             with self.repo.connection() as connection:
@@ -139,10 +127,13 @@ class FeishuGateway:
 
     async def tick(self):
         """Recover persisted incoming events; an uncertain send is never replayed."""
+        self.ingress.flush_due()
         with self.repo.connection() as connection:
             rows = connection.execute(sql.SQL("SELECT owner,id FROM {} WHERE kind='request' AND status='active' AND data->>'gateway'='feishu' AND COALESCE(data->>'delivery_status','pending') IN ('pending','rejected','sending') ORDER BY created_at LIMIT 10000").format(self.repo.table('core_entities'))).fetchall()
         for owner in {row['owner'] for row in rows}:
-            self.repo.recover_runs(owner)
+            from mingjing_core.application.runtime_assembly import legacy_queue
+            legacy_queue(self.repo, owner=owner, limit=0)
+            ThreadInbox(self.repo).recover(owner)
             self.service.outbox.recover_claims(owner)
         counts = {'processed': 0, 'failed': 0}
         for row in rows:
@@ -168,9 +159,9 @@ def build_sdk_client(callback, *, app_id, app_secret, sdk=None):
 
 class FeishuGatewayRunner:
     """SDK main loop plus a separate async Core worker loop."""
-    def __init__(self, gateway, *, poll_seconds=5):
+    def __init__(self, gateway, *, poll_seconds=0.5):
         self.gateway = gateway
-        self.poll_seconds = max(1, int(poll_seconds))
+        self.poll_seconds = max(0.1, min(float(poll_seconds), 0.5))
         self.loop = asyncio.new_event_loop()
         self.thread = threading.Thread(target=self.loop.run_forever, name='core-feishu-worker', daemon=True)
 
