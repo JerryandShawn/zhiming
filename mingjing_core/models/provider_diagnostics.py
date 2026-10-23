@@ -26,7 +26,10 @@ ERROR_TYPES = frozenset(
 )
 QUOTA_SUBTYPES = frozenset({"quota", "quota_5h", "quota_weekly", "quota_monthly"})
 _QUOTA_PATTERNS = (
-    ("quota_monthly", r"monthly\s+(?:usage\s+)?limit|月(?:度)?额度(?:已)?(?:用完|用尽|耗尽)"),
+    (
+        "quota_monthly",
+        r"monthly\s+(?:usage\s+)?limit|月(?:度)?额度(?:已)?(?:用完|用尽|耗尽)",
+    ),
     (
         "quota_weekly",
         r"(?:weekly(?:\s*\(7-day\))?|7[- ]day)\s+(?:usage\s+)?limit|(?:每周|7\s*天).{0,24}(?:额度|用量|上限)",
@@ -66,7 +69,10 @@ def parse_error_sample(sample: str) -> Any:
 
 
 def quota_subtype(message: str) -> str:
-    return next((kind for kind, pattern in _QUOTA_PATTERNS if re.search(pattern, message, re.IGNORECASE)), "quota")
+    return next(
+        (kind for kind, pattern in _QUOTA_PATTERNS if re.search(pattern, message, re.IGNORECASE)),
+        "quota",
+    )
 
 
 def permission_quota(data: object) -> tuple[str, str] | None:
@@ -78,3 +84,14 @@ def permission_quota(data: object) -> tuple[str, str] | None:
     ):
         return None
     return quota_subtype(message), public_quota_message(message) or ""
+
+
+def delegated_stop_hint(sample: str) -> str | None:
+    for kind, pattern in (
+        ("access_terminated", r"access\s+terminated"),
+        ("concurrency_limited", r"concurrency_limited|并发受限|too many concurrent"),
+        ("quota", r"usage[\s_-]+limit"),
+    ):
+        if re.search(pattern, sample[:4096], re.I):
+            return kind
+    return None

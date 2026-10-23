@@ -22,6 +22,7 @@ STOP_KINDS = frozenset(
         "quota_monthly",
         "concurrency_limited",
         "access_terminated",
+        "permission_error",
     }
 )
 RESULT_KINDS = STOP_KINDS | frozenset(
@@ -63,6 +64,8 @@ class GuardRejected(ModelBadRequest):
             "attempt_replayed",
             "clock_rollback",
             "ledger_unavailable",
+            "batch_request_limit",
+            "delegation_request_limit",
         }
     )
 

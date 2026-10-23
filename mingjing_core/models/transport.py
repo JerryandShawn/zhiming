@@ -26,9 +26,11 @@ from .errors import (
 )
 from .metering import before_provider_request
 from .port import ModelPort, StreamEvent
-from .provider_diagnostics import parse_error_sample
+from .provider_diagnostics import delegated_stop_hint, parse_error_sample
+from .provider_reset import attach_reset, reset_errors
 from .quota_guard import QuotaGuard
 from .quota_http import membership_endpoint, observe_usage, provider_attempt
+from .quota_mode import delegated_active
 from .request_policy import check_request_size, sampling_body
 from .retry_policy import retry_delay, wait_for_retry
 from .turn_coercion import turn_policy
@@ -70,7 +72,16 @@ def http_error(response: httpx.Response, *, membership: bool) -> ModelUnavailabl
         sample = next(response.iter_bytes(chunk_size=4096), b"").decode("utf-8", errors="ignore")
     except httpx.HTTPError:
         sample = ""
-    return classify_error(response.status_code, parse_error_sample(sample), membership=membership)
+    observed = delegated_stop_hint(sample) if membership and delegated_active() else None
+    return attach_reset(
+        classify_error(
+            response.status_code,
+            parse_error_sample(sample),
+            membership=membership,
+            observed_stop=observed,
+        ),
+        response.headers,
+    )
 
 
 def sse(response: httpx.Response, cancel: threading.Event | None) -> Iterator[dict[str, Any]]:
@@ -209,7 +220,10 @@ class StreamingHTTP(ModelPort):
         validate_model_settings(model, self.settings)
         self.transport, self.sleep, self.max_retries = transport, sleep, max_retries
         self.membership = bool(self.settings.get("membership", False))
-        self.guard, self._guard_role = guard, self.settings.get("role_binding", "primary")
+        self.guard, self._guard_role = (
+            guard,
+            self.settings.get("role_binding", "primary"),
+        )
         self.request_count = 0
         self.quota_errors = 0
 
@@ -240,11 +254,19 @@ class StreamingHTTP(ModelPort):
                 return
             try:
                 for event in self._request(path, body, headers, parser, cancel, deadline):
-                    visible = visible or event.type in {"text", "tool_call", "reasoning"}
+                    visible = visible or event.type in {
+                        "text",
+                        "tool_call",
+                        "reasoning",
+                    }
                     yield event
                 yield StreamEvent(
                     "done",
-                    {"model": self.model, "provider": self.provider, "latency_ms": (time.monotonic() - started) * 1000},
+                    {
+                        "model": self.model,
+                        "provider": self.provider,
+                        "latency_ms": (time.monotonic() - started) * 1000,
+                    },
                 )
                 return
             except ModelQuotaExhausted:
@@ -283,7 +305,8 @@ class StreamingHTTP(ModelPort):
         if time.monotonic() >= deadline:
             raise ModelUnavailable()
         timeout = httpx.Timeout(
-            float(self.settings.get("first_byte_timeout", 60)), connect=float(self.settings.get("connect_timeout", 10))
+            float(self.settings.get("first_byte_timeout", 60)),
+            connect=float(self.settings.get("connect_timeout", 10)),
         )
         active: list[httpx.Response | None] = [None]
         with (
@@ -292,7 +315,10 @@ class StreamingHTTP(ModelPort):
         ):
             check_cancel(cancel)
             request = client.build_request(
-                "POST", self.base_url + path, headers=headers, json=sampling_body(body, self.caps)
+                "POST",
+                self.base_url + path,
+                headers=headers,
+                json=sampling_body(body, self.caps),
             )
             check_request_size(request, model=self.model, settings=self.settings)
             check_cancel(cancel)
@@ -315,7 +341,10 @@ class StreamingHTTP(ModelPort):
                 self.request_count += 1
                 with closing(client.send(request, stream=True)) as response:
                     active[0] = response
-                    with close_on_cancel(response, cancel, deadline) as expired:
+                    with (
+                        close_on_cancel(response, cancel, deadline) as expired,
+                        reset_errors(response.headers),
+                    ):
                         if response.status_code != 200:
                             failure = http_error(response, membership=self.membership)
                             check_cancel(cancel)

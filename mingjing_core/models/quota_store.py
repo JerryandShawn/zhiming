@@ -18,6 +18,7 @@ from .quota_types import (
     GuardRejected,
     QuotaPolicy,
     identifier,
+    instant,
 )
 
 
@@ -102,19 +103,33 @@ class QuotaStore:
         )
         return row
 
-    def counts(self, connection: psycopg.Connection[Any], now: datetime, policy: QuotaPolicy) -> dict[str, Any]:
-        return connection.execute(
-            sql.SQL(
-                "SELECT count(*) AS total,min(at) AS oldest,"
-                "count(*) FILTER(WHERE bucket='interactive') AS interactive,"
-                "count(*) FILTER(WHERE bucket='critic') AS critic,"
-                "count(*) FILTER(WHERE bucket='background') AS background,"
-                "count(*) FILTER(WHERE lane IN ('eval','probe')) AS evaluation,"
-                "count(*) FILTER(WHERE finished_at IS NULL) AS unfinished "
-                "FROM {} WHERE account_id=%s AND at>%s AND at<=%s"
-            ).format(self.table("core_model_usage")),
-            (self.account_id, now - policy.window, now),
-        ).fetchone()
+    def counts(
+        self,
+        connection: psycopg.Connection[Any],
+        now: datetime,
+        policy: QuotaPolicy,
+        *,
+        governed: bool = False,
+    ) -> dict[str, Any]:
+        query = sql.SQL(
+            "SELECT count(*) AS total,min(at) AS oldest,"
+            "count(*) FILTER(WHERE bucket='interactive') AS interactive,"
+            "count(*) FILTER(WHERE bucket='critic') AS critic,"
+            "count(*) FILTER(WHERE bucket='background') AS background,"
+            "count(*) FILTER(WHERE lane IN ('eval','probe')) AS evaluation,"
+            "count(*) FILTER(WHERE finished_at IS NULL) AS unfinished "
+            "FROM {} u WHERE account_id=%s AND at>%s AND at<=%s"
+        ).format(self.table("core_model_usage"))
+        args = [self.account_id, now - policy.window, now]
+        if governed:
+            from .quota_delegated import TOKEN
+
+            query += sql.SQL(
+                " AND NOT EXISTS(SELECT 1 FROM {} b WHERE b.account_id=u.account_id AND b.batch_id=u.batch_id "
+                "AND b.authorization_id ~ %s)"
+            ).format(self.table("core_model_batches"))
+            args.append("^" + TOKEN.pattern + "$")
+        return connection.execute(query, args).fetchone()
 
     def finalizing(self, connection: psycopg.Connection[Any], now: datetime) -> datetime:
         # A local clock adjustment must not discard an already observed terminal stop.
@@ -127,7 +142,12 @@ class QuotaStore:
         return now
 
     def control_action(
-        self, connection: psycopg.Connection[Any], authorization: str, kind: str, batch: str | None, now: datetime
+        self,
+        connection: psycopg.Connection[Any],
+        authorization: str,
+        kind: str,
+        batch: str | None,
+        now: datetime,
     ) -> bool:
         """Append-only operation identity prevents a stale human action affecting new work."""
         old = connection.execute(
@@ -149,11 +169,13 @@ class QuotaStore:
         )
         return True
 
-    def check_batch(self, connection: psycopg.Connection[Any], data: dict[str, Any], now: datetime) -> None:
+    def check_batch(
+        self, connection: psycopg.Connection[Any], data: dict[str, Any], now: datetime
+    ) -> dict[str, Any] | None:
         if data["lane"] not in {"eval", "probe"}:
             if any(data.get(key) is not None for key in ("batch_id", "authorization_id", "scenario_id")):
                 raise GuardConfigurationError("交互或后台调用不能伪装评测批次")
-            return
+            return None
         row = connection.execute(
             sql.SQL("SELECT * FROM {} WHERE account_id=%s AND batch_id=%s").format(self.table("core_model_batches")),
             (self.account_id, data.get("batch_id")),
@@ -164,6 +186,15 @@ class QuotaStore:
             raise GuardRejected("authorization_expired")
         if data.get("scenario_id") not in row["scenario_ids"]:
             raise GuardRejected("batch_conflict")
+        count = connection.execute(
+            sql.SQL("SELECT count(*) AS n FROM {} WHERE account_id=%s AND batch_id=%s").format(
+                self.table("core_model_usage")
+            ),
+            (self.account_id, row["batch_id"]),
+        ).fetchone()["n"]
+        if count >= 10:
+            raise GuardRejected("batch_request_limit")
+        return row
 
     def reserve(
         self,
@@ -183,18 +214,27 @@ class QuotaStore:
             ).fetchone()
             if old:
                 raise GuardRejected("attempt_replayed")
-            counts = self.counts(connection, now, policy)
-            if counts["total"] >= policy.max_calls:
+            from .quota_delegated import check_delegated_attempt, delegated_row
+
+            batch = self.check_batch(connection, data, now)
+            delegated = delegated_row(batch)
+            if delegated:
+                check_delegated_attempt(connection, self, batch, data)
+            counts = self.counts(connection, now, policy, governed=True)
+            if not delegated and counts["total"] >= policy.max_calls:
                 resume = counts["oldest"] + policy.window
                 self.stop(connection, "member_window_limit", now, resume_at=resume)
                 rejected = GuardRejected("member_window_limit", resume)
-            elif data["bucket"] != "interactive" and counts[data["bucket"]] >= policy.limit(data["bucket"]):
+            elif (
+                not delegated
+                and data["bucket"] != "interactive"
+                and counts[data["bucket"]] >= policy.limit(data["bucket"])
+            ):
                 raise GuardRejected("share_limit")
-            elif data["lane"] in {"eval", "probe"} and counts["evaluation"] >= policy.eval_max_calls:
+            elif not delegated and data["lane"] in {"eval", "probe"} and counts["evaluation"] >= policy.eval_max_calls:
                 self.stop(connection, "member_window_limit", now)
                 rejected = GuardRejected("member_window_limit", now + policy.window)
             if rejected is None:
-                self.check_batch(connection, data, now)
                 self._insert_reservation(connection, data, now)
         if rejected is not None:
             raise rejected
@@ -239,10 +279,23 @@ class QuotaStore:
             "quota_monthly": 3,
             "concurrency_limited": 4,
             "access_terminated": 5,
+            "permission_error": 3,
         }
-        old = self.verify(connection, lock=True)["stop_kind"]
-        if old is None or priority[kind] > priority[old]:
-            resume = resume_at or (now + timedelta(hours=5) if kind in {"quota_5h", "member_window_limit"} else None)
+        account = self.verify(connection, lock=True)
+        old = account["stop_kind"]
+        resume = instant(resume_at) if resume_at is not None else None
+        if resume is not None and resume <= now:
+            resume = None
+        update_reset = (
+            old == kind == "quota_5h"
+            and resume is not None
+            and (account["resume_at"] is None or resume > account["resume_at"])
+        )
+        if old is None or priority[kind] > priority[old] or update_reset:
+            if kind == "member_window_limit" and resume is None:
+                resume = now + timedelta(hours=5)
+            if kind not in {"quota_5h", "member_window_limit"}:
+                resume = None
             connection.execute(
                 sql.SQL("UPDATE {} SET stop_kind=%s,stopped_at=%s,resume_at=%s WHERE account_id=%s").format(
                     self.table("core_model_accounts")
@@ -264,6 +317,8 @@ class QuotaStore:
         usage: dict[str, Any],
         now: datetime,
         latency_ms: float,
+        *,
+        resume_at: datetime | None = None,
     ) -> None:
         with connection.transaction():
             now = self.finalizing(connection, now)
@@ -288,4 +343,4 @@ class QuotaStore:
             if row is None:
                 raise GuardRejected("attempt_replayed")
             if kind in STOP_KINDS:
-                self.stop(connection, kind, now)
+                self.stop(connection, kind, now, resume_at=resume_at)

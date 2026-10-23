@@ -153,7 +153,7 @@ def test_stop_is_persistent_for_new_connections_and_never_automatically_resumes(
 ) -> None:
     clock = FrozenClock(get_clock().now())
     guard = QuotaGuard(**central, clock=clock)
-    guard.record_stop(kind)
+    guard.record_stop(kind, resume_at=clock.now() + timedelta(hours=5) if kind == "quota_5h" else None)
     clock.advance(timedelta(days=8))
     restarted = QuotaGuard(**central, clock=clock)
     with pytest.raises(GuardRejected) as caught:
@@ -195,7 +195,7 @@ def test_stop_can_escalate_and_five_hour_clear_is_never_early(
 ) -> None:
     clock = FrozenClock(get_clock().now())
     guard = QuotaGuard(**central, clock=clock)
-    guard.record_stop("quota_5h")
+    guard.record_stop("quota_5h", resume_at=clock.now() + timedelta(hours=5))
     with pytest.raises(GuardRejected):
         guard.clear_stop(authorization_id="too-early")
     guard.record_stop("access_terminated")
