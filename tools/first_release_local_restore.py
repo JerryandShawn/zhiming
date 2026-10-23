@@ -19,7 +19,7 @@ from tools.first_release_local_pg import new_target, verify_original
 from tools.first_release_restore import SafeParser
 
 if TYPE_CHECKING:
-    from tools.first_release_candidate_process import CandidatePreflight
+    from tools.first_release_candidate_process import CandidatePreflight, CandidateReplay
 
 
 def process_environment(owner_dsn: str) -> dict[str, str]:
@@ -82,19 +82,30 @@ def restore_command(inputs: LocalInputs, owner_dsn: str) -> list[str]:
     ]
 
 
+def _validate_modes(inputs: LocalInputs, apply: bool, upgrade: bool, preflight: Any, replay: Any) -> None:
+    require(type(upgrade) is bool and (not upgrade or apply), "LOCAL_UPGRADE_REQUIRES_APPLY")
+    if preflight is not None:
+        require(apply and upgrade, "PREFLIGHT_REQUIRES_SAME_CALL_APPLY_UPGRADE")
+        preflight.validate(inputs)
+    if replay is not None:
+        from tools.first_release_candidate_process import CandidateReplay
+
+        require(type(replay) is CandidateReplay and preflight is None, "EXPLICIT_REPLAY_PIN_REQUIRED")
+        require(apply and upgrade, "REPLAY_REQUIRES_SAME_CALL_APPLY_UPGRADE")
+        replay.validate(inputs)
+
+
 def execute(
     inputs: LocalInputs,
     *,
     apply_local: bool = False,
     upgrade_local: bool = False,
     replay_preflight: CandidatePreflight | None = None,
+    withdrawals_replay: CandidateReplay | None = None,
     environment: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
     receipt = inputs.validate()
-    require(type(upgrade_local) is bool and (not upgrade_local or apply_local), "LOCAL_UPGRADE_REQUIRES_APPLY")
-    if replay_preflight is not None:
-        require(apply_local and upgrade_local, "PREFLIGHT_REQUIRES_SAME_CALL_APPLY_UPGRADE")
-        replay_preflight.validate(inputs)
+    _validate_modes(inputs, apply_local, upgrade_local, replay_preflight, withdrawals_replay)
     if not apply_local:
         return receipt
     dsns = inputs.connections(environment)
@@ -116,6 +127,12 @@ def execute(
 
             upgraded["replay_preflight"] = candidate_preflight(replay_preflight, inputs, dsns, creator)
             upgraded["database_connections"] = 8
+        if withdrawals_replay is not None:
+            from tools.first_release_candidate_process import candidate_replay
+
+            upgraded["withdrawals_replay"] = candidate_replay(withdrawals_replay, inputs, dsns, creator)
+            upgraded["latest_withdrawals_replayed"] = True
+            upgraded["database_connections"] = 9
     receipt.pop("mutations", None)
     return {
         **receipt,
@@ -137,17 +154,24 @@ def execute(
     }
 
 
-def main(argv: list[str] | None = None) -> int:
+def _parser() -> SafeParser:
     parser = SafeParser(description=__doc__)
     for name in ("pin", "contract", "dump-pin", "dump", "pg-restore"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--apply-local", action="store_true")
     parser.add_argument("--upgrade-local", action="store_true")
     parser.add_argument("--replay-preflight-local", action="store_true")
+    parser.add_argument("--replay-withdrawals-local", action="store_true")
     for name in ("preflight-pin", "preflight-ledger", "candidate-python"):
         parser.add_argument("--" + name, type=Path)
+    for name in ("replay-pin", "replay-ledger"):
+        parser.add_argument("--" + name, type=Path)
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
     try:
-        args = parser.parse_args(argv)
+        args = _parser().parse_args(argv)
         inputs = LocalInputs(
             ReleasePin.parse(read_json(args.pin)),
             RestoreContract.parse(read_json(args.contract)),
@@ -156,17 +180,36 @@ def main(argv: list[str] | None = None) -> int:
             args.pg_restore,
             Path.cwd(),
         )
-        replay_preflight = None
+        replay_preflight = withdrawals_replay = None
         fields = (args.candidate_python, args.preflight_ledger, args.preflight_pin)
-        if args.replay_preflight_local:
+        if args.replay_withdrawals_local:
+            from tools.first_release_candidate_process import CandidateReplay
+
+            require(
+                not args.replay_preflight_local and not args.preflight_pin and not args.preflight_ledger,
+                "MUTUALLY_EXCLUSIVE_REPLAY_MODE",
+            )
+            require(args.candidate_python and args.replay_pin and args.replay_ledger, "REPLAY_ARGUMENTS_REQUIRED")
+            withdrawals_replay = CandidateReplay.parse(
+                args.candidate_python, args.replay_ledger, read_json(args.replay_pin)
+            )
+        elif args.replay_preflight_local:
             from tools.first_release_candidate_process import CandidatePreflight
 
             require(all(fields), "PREFLIGHT_ARGUMENTS_REQUIRED")
             replay_preflight = CandidatePreflight.parse(*fields[:2], read_json(fields[2]))
         else:
             require(not any(fields), "PREFLIGHT_ARGUMENTS_WITHOUT_FLAG")
+        require(
+            args.replay_withdrawals_local or not (args.replay_pin or args.replay_ledger),
+            "REPLAY_ARGUMENTS_WITHOUT_FLAG",
+        )
         receipt = execute(
-            inputs, apply_local=args.apply_local, upgrade_local=args.upgrade_local, replay_preflight=replay_preflight
+            inputs,
+            apply_local=args.apply_local,
+            upgrade_local=args.upgrade_local,
+            replay_preflight=replay_preflight,
+            withdrawals_replay=withdrawals_replay,
         )
     except RestoreRejected as error:
         print(json.dumps({"status": "blocked", "code": str(error), "automatic_cleanup": False}))

@@ -97,6 +97,19 @@ cd "$FR_CONTROL_DIR"
 
 外部预检pin使用`first-release-local-preflight-pin-v1`，绑定同一候选/manifest/dump、最新旁账、实际Python可执行文件和受审控制worker的hash。候选Python必须是实际Python3.11 venv，并满足Core锁在该平台激活的版本及依赖闭包；只有锁文件相同不够。该新子进程拒绝预载控制树业务包，实际导入并核候选业务来源，只以新owner进行额外1次只读连接，正常总连接8。预检通过仅表示源码/已装依赖元数据/目标迁移和owner全集/空运行队列与中央空表核验；不调用apply_withdrawals，`latest_withdrawals_replayed`、`runtime_verified`、`native_restore_completed`、`linux_attestation`、`publication`仍为false。失败保留新目标，不自动重试或清理。证据只登记在原恢复ExecPlan；此命令不解除B3/B7或实际Linux门。
 
+另有经过隔离PG验证的显式本机双重放入口，只接受原备份prefix4或7。它与上述只读预检模式互斥，使用独立`first-release-local-replay-pin-v1`并额外绑定受审effects helper的hash：
+
+```bash
+"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
+  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
+  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
+  --apply-local --upgrade-local --replay-withdrawals-local \
+  --replay-pin "$FR_LOCAL_REPLAY_PIN" \
+  --replay-ledger "$FR_LOCAL_LATEST_WITHDRAWALS" --candidate-python "$FR_CANDIDATE_PYTHON"
+```
+
+仍只操作同call新建且持锁的本机目标，正常总连接9。子进程先只读核目标，再调用实际候选的原生apply/export；每次apply保留其原事务与提交后checkpoint清理边界。旁账不能比已恢复状态旧，第二次apply后的全部Core/checkpoint字段、sequence及导出必须与第一次相同，中央四表及sequence保持原空状态。实际测试含当前已提交候选的非空撤销/收据/墓碑，以及真实旧候选因第二遍状态变化被拒的负例，没有向旧包注入修复。whole撤销、draw和revoked-run checkpoint有独立后验；source_span/legacy_memory仍缺独立擦除实证。失败保留并停止，不自动再试。成功只标记本机候选重放，中央身份保全、运行时、正式native恢复、Linux和publication仍为false；不能据此解除B7整链。
+
 **B7的新库恢复证明必须在B3修改已有stage库之前完成。** 表中缺失入口不是待猜命令，不能用旧B1 apply或手工SQL补过门。只要必要入口缺失，停在本地准备阶段。
 
 | 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
@@ -121,7 +134,7 @@ B0获准后的现有只读命令可包括`hostname`、`date --iso-8601=seconds`�
 
 Agent启动还要求明确的`MINGJING_AGENT_ENABLED=true`、至少三条运行容量、同源模型registry、已有中央account/ledger identity/location及已验`K3_TOKENIZER_DIR`。当前生产装配并非一个现成stage ScriptedProvider启动器；必须补受审离线装配，不能塞假API key或发真实请求来证明启动。P6独立评审不随此profile开启。
 
-恢复证明须观察实际pg_restore及空目标、备份源前缀、全部owner、最新撤销/墓碑/delivery收据、checkpoint及两次状态摘要，不接受手填字段。源前缀4/7/8如何安全读取旁账、旧包/旧schema回退兼容、中央账本保全与重绑定、提交后checkpoint或回执写入失败的停留状态，均要先实现并本机Linux演练。
+恢复证明须观察实际pg_restore及空目标、备份源前缀、全部owner、最新撤销/墓碑/delivery收据、checkpoint及两次状态摘要，不接受手填字段。源prefix4/7的本机原生恢复及候选双重放已有定向证据；源prefix8、旧包/旧schema回退兼容、中央账本保全与重绑定、提交后checkpoint或回执写入失败的停留状态仍须补齐，整体还需本机Linux演练。
 
 当前精确ACL仅支持已审24张Core表、4张checkpoint表、0008单sequence和0007受审invoker触发函数；额外关系/规则/例程拒绝。新组件有真实需要时先变更审核profile与测试，不能临场宽授权。
 

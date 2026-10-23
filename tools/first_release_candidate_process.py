@@ -1,4 +1,4 @@
-"""Local, opt-in candidate preflight; its reviewed worker never replays business effects."""
+"""Explicit local candidate preflight and separately pinned native replay."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from tools.first_release_local_inputs import LocalInputs, file_hash
 from tools.first_release_local_upgrade import _require_creator
 
 WORKER = Path(__file__).with_name("first_release_replay_worker.py")
+EFFECTS = Path(__file__).with_name("first_release_replay_effects.py")
 PIN_FIELDS = {"candidate", "manifest_sha256", "dump_sha256", "ledger_sha256", "python_sha256", "worker_sha256"}
 BOOTSTRAP = """import hashlib,json,pathlib,runpy,sys
 value=json.load(sys.stdin)
@@ -98,6 +99,31 @@ class CandidatePreflight:
         return document
 
 
+@dataclass(frozen=True)
+class CandidateReplay:
+    preflight: CandidatePreflight
+    effects_sha256: str
+
+    @classmethod
+    def parse(cls, python: Path, ledger: Path, pin: dict[str, Any]) -> CandidateReplay:
+        require(set(pin) == PIN_FIELDS | {"schema", "effects_sha256"}, "CANDIDATE_REPLAY_PIN_FIELDS")
+        require(pin["schema"] == "first-release-local-replay-pin-v1", "CANDIDATE_REPLAY_PIN_SCHEMA")
+        base = {key: pin[key] for key in PIN_FIELDS}
+        base["schema"] = "first-release-local-preflight-pin-v1"
+        return cls(CandidatePreflight.parse(python, ledger, base), pin["effects_sha256"])
+
+    def validate(self, inputs: LocalInputs) -> dict[str, Any]:
+        require(type(self.preflight) is CandidatePreflight, "IMMUTABLE_REPLAY_PREFLIGHT_REQUIRED")
+        require(len(inputs.dump_pin.source_migrations) in {4, 7}, "REPLAY_SOURCE_PREFIX_4_7_ONLY")
+        require(digest(self.effects_sha256), "REPLAY_HELPER_PIN_REQUIRED")
+        ordinary(EFFECTS)
+        require(file_hash(EFFECTS) == self.effects_sha256, "REPLAY_HELPER_CHANGED")
+        document = self.preflight.validate(inputs)
+        manifest = read_json(inputs.contract.candidate_source / "__release_manifest__.json")
+        require("tools/b1_restore_proof_contracts.py" in manifest["files"], "CANDIDATE_MONOTONE_REQUIRED")
+        return document
+
+
 def _environment(owner_dsn: str) -> dict[str, str]:
     result = {key: os.environ[key] for key in ("PATH", "SystemRoot", "WINDIR", "TEMP", "TMP") if key in os.environ}
     result.update(
@@ -170,12 +196,8 @@ def _receipt(raw: str, request: CandidatePreflight, inputs: LocalInputs) -> dict
     return receipt
 
 
-def candidate_preflight(
-    request: CandidatePreflight, inputs: LocalInputs, dsns: dict[str, str], creator: Any
-) -> dict[str, Any]:
-    _require_creator(inputs, dsns, creator)
-    document = request.validate(inputs)
-    payload = {
+def _payload(request: CandidatePreflight, inputs: LocalInputs, document: dict[str, Any]) -> dict[str, Any]:
+    return {
         "worker": str(WORKER),
         "python": str(request.python),
         "root": str(inputs.contract.candidate_source),
@@ -185,11 +207,14 @@ def candidate_preflight(
         "core_lock_sha256": dict(inputs.release.locks)["requirements-core.lock"],
         "owners": sorted(row["owner_user_id"] for row in document["owners"]),
     }
+
+
+def _process(payload: dict[str, Any], python: Path, owner_dsn: str) -> str:
     try:
         result = subprocess.run(
-            [str(request.python), "-I", "-B", "-X", "pycache_prefix=" + os.path.abspath(os.devnull), "-c", BOOTSTRAP],
+            [str(python), "-I", "-B", "-X", "pycache_prefix=" + os.path.abspath(os.devnull), "-c", BOOTSTRAP],
             input=json.dumps(payload),
-            env=_environment(dsns["owner"]),
+            env=_environment(owner_dsn),
             capture_output=True,
             encoding="utf-8",
             timeout=120,
@@ -217,8 +242,117 @@ def candidate_preflight(
             "PREFLIGHT_OWNER_SET",
             "PREFLIGHT_ACTIVE_RUN",
             "PREFLIGHT_CENTRAL_NOT_EMPTY",
+            "REPLAY_HELPER_CHANGED",
+            "REPLAY_LEDGER_CHANGED",
+            "REPLAY_STALE_LEDGER",
+            "REPLAY_FIRST_APPLY_FAILED",
+            "REPLAY_FIRST_EXPORT_FAILED",
+            "REPLAY_SECOND_APPLY_FAILED",
+            "REPLAY_SECOND_EXPORT_FAILED",
+            "REPLAY_SECOND_STATE_CHANGED",
+            "REPLAY_SECOND_EXPORT_CHANGED",
+            "REPLAY_ERASURE_FAILED",
+            "REPLAY_CHECKPOINT_SURVIVED",
+            "REPLAY_CENTRAL_CHANGED",
         }
         raise RestoreRejected(value.get("code") if value.get("code") in safe else "LOCAL_CANDIDATE_PREFLIGHT_FAILED")
-    receipt = _receipt(result.stdout, request, inputs)
+    return result.stdout
+
+
+def candidate_preflight(
+    request: CandidatePreflight, inputs: LocalInputs, dsns: dict[str, str], creator: Any
+) -> dict[str, Any]:
+    _require_creator(inputs, dsns, creator)
+    document = request.validate(inputs)
+    receipt = _receipt(_process(_payload(request, inputs, document), request.python, dsns["owner"]), request, inputs)
     require(request.validate(inputs) == document, "PREFLIGHT_INPUT_CHANGED_AFTER_PROCESS")
+    return receipt
+
+
+REPLAY_FIELDS = frozenset(
+    [
+        "schema",
+        "effects_sha256",
+        "state_before_sha256",
+        "state_first_sha256",
+        "state_second_sha256",
+        "export_first_sha256",
+        "export_second_sha256",
+        "first_counts",
+        "second_counts",
+        "checks",
+        "local_candidate_replay_completed",
+        "latest_withdrawals_replayed",
+        "second_apply_unchanged",
+        "central_unchanged",
+        "database_connections",
+        "central_binding_verified",
+        "runtime_verified",
+        "native_restore_completed",
+        "linux_attestation",
+        "publication",
+        "model_calls",
+        "external_sends",
+    ]
+)
+
+
+def _replay_receipt(raw: str, request: CandidateReplay, inputs: LocalInputs) -> dict[str, Any]:
+    try:
+        receipt = json.loads(raw)
+        require(isinstance(receipt, dict), "REPLAY_RECEIPT_INVALID")
+        preflight = receipt.pop("preflight")
+        _receipt(json.dumps(preflight), request.preflight, inputs)
+        require(
+            set(receipt) == REPLAY_FIELDS and receipt["schema"] == "first-release-local-candidate-replay-v1",
+            "REPLAY_RECEIPT_INVALID",
+        )
+        require(receipt["effects_sha256"] == request.effects_sha256, "REPLAY_RECEIPT_BINDING")
+        for key in (
+            "local_candidate_replay_completed",
+            "latest_withdrawals_replayed",
+            "second_apply_unchanged",
+            "central_unchanged",
+        ):
+            require(receipt[key] is True, "REPLAY_RECEIPT_INVALID")
+        for key in (
+            "central_binding_verified",
+            "runtime_verified",
+            "native_restore_completed",
+            "linux_attestation",
+            "publication",
+        ):
+            require(receipt[key] is False, "REPLAY_RECEIPT_AUTHORITY")
+        for key in (
+            "state_before_sha256",
+            "state_first_sha256",
+            "state_second_sha256",
+            "export_first_sha256",
+            "export_second_sha256",
+        ):
+            require(digest(receipt[key]), "REPLAY_RECEIPT_INVALID")
+        require(
+            receipt["state_first_sha256"] == receipt["state_second_sha256"]
+            and receipt["export_first_sha256"] == receipt["export_second_sha256"],
+            "REPLAY_RECEIPT_INVALID",
+        )
+        require(
+            receipt["database_connections"] == 2 and receipt["model_calls"] == receipt["external_sends"] == 0,
+            "REPLAY_RECEIPT_EFFECTS",
+        )
+    except (ValueError, TypeError, KeyError):
+        raise RestoreRejected("REPLAY_RECEIPT_INVALID") from None
+    return dict(receipt, preflight=preflight)
+
+
+def candidate_replay(
+    request: CandidateReplay, inputs: LocalInputs, dsns: dict[str, str], creator: Any
+) -> dict[str, Any]:
+    _require_creator(inputs, dsns, creator)
+    require(type(request) is CandidateReplay, "EXPLICIT_REPLAY_PIN_REQUIRED")
+    document = request.validate(inputs)
+    payload = _payload(request.preflight, inputs, document)
+    payload["replay"] = {"effects_sha256": request.effects_sha256, "ledger": str(request.preflight.ledger)}
+    receipt = _replay_receipt(_process(payload, request.preflight.python, dsns["owner"]), request, inputs)
+    require(request.validate(inputs) == document, "REPLAY_INPUT_CHANGED_AFTER_PROCESS")
     return receipt

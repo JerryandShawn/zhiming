@@ -8,6 +8,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 01:26 +08:00) 显式同call本机新目标候选双重放首链7/7：真实90a27fb非空及prefix4空正例、真实7e3d098旧候选第二遍状态变化拒绝、类型/同call、helper hash、stale ledger及跨owner整批回滚。独立摘要覆盖全部字段/checkpoint/sequence，正常总9连接；仍非正式恢复证明。
+- [x] (2026-10-24 01:28 +08:00) 仅追加共享_process默认路由的原正常预检兼容节点1/1，仍只读且不执行撤销。新增replay限制原始prefix4/7，不扩大既有默认恢复1–7；未宽测。
 - [x] (2026-10-24 01:11 +08:00) 同call持锁新目标可选候选fresh-process只读预检9/9：完整Git候选包、实际Python3.11 venv与活动Core锁闭包、真实PG15迁移/owner/运行状态/中央空表；预载控制包、源码漂移及四种目标异常均拒绝并保留新目标，完整状态未变。未调用撤销重放，正式完成位仍false。
 - [x] (2026-10-24 01:16 +08:00) 交叉审阅修正owner排序的locale边界：实际PG owner行以Python sorted归一化，与输入保持精确集合相等；仅正常预检和owner缺额两个受影响目标2/2，未复跑其余7项。
 - [x] (2026-10-24 00:48 +08:00) 非空消息/事实撤销双重放实证发现并最小修复run/Outbox重复updated_at：完整Core、sequence、checkpoint及原始关联行新回归1/1，必要既有纠错/重新生成2/2；不清state_version、不跳过revoked，不改native提交后purge。
@@ -61,6 +63,12 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 ## Decision Log
 
+双重放新增独立CandidateReplay及first-release-local-replay-pin-v1，绑定受审effects helper实际hash，不能拿旧预检pin或bool启用写阶段；只接受原始prefix4/7。旧preflight pin/schema、只读回执和默认路由保留。fresh worker以固定绝对路径runpy加载hash已审辅助编排，不把该支持代码放进候选tools namespace；实际apply/export、纯verify_monotone与receipt_key均导入自受pin候选，核真实co_filename及前后所有业务模块来源。只复用候选B1模块的纯单调函数，绝不构造旧ProofRequest或使用其固定SHA/迁移/importer。
+
+Native apply严格不外套事务，第一遍成功后原生提交后checkpoint purge已经执行，才核擦除、导出和独立摘要；任一步失败即结束，不自动第二遍或重试。若native第一遍在提交后purge失败，错误码REPLAY_FIRST_APPLY_FAILED不表示整批未提交，现场必须保留；本片没有恢复/采用既有失败目标的入口。第二遍原生counts中的owners/tarot_tombstones/protected_receipts是处理计数，不能当作变化数归零，实际零变化由完整状态和导出相等证明。
+
+独立erased核验只明确覆盖whole revocation、draw、revoked run正文/租约以及其全部epoch checkpoint；source_span和legacy_memory仍交候选原生apply处理，当前未单独实证其特定擦除语义，不宣称全部隐私形态已覆盖。完整状态摘要不删除时间戳或sequence字段，中央四张表必须始终空且中央sequence不变，不清表来满足门。
+
 经主线明确批准，本片触及共享路径mingjing_core/repositories/postgres.py的invalidate_derived两条SQL，是首发恢复完整幂等硬门的必要修复；P5集成时应保留此差异条件。没有改变历史b9或迁移、撤销范围、closure计算、原生apply全owner事务及提交后checkpoint清理，也没有用全表摘要排除时间戳来放宽断言。新回归严格比较全部字段，另核关联原始行逐列相等。
 
 本机原生恢复是独立`tools.first_release_local_restore`入口；旧`first_release_restore`仍只有validate/可选只读ACL。新入口默认零连接/零进程，只有显式--apply-local且local_drill=true才能操作随机新目标；formal及现有对象始终硬拒。源prefix只允许1–7，实际--list预检在任何DDL前拒绝中央额度表/sequence等归档项，故不复制0008账户或usage。任何失败保留角色/库；再次调用拒绝接管，工具无DROP/覆盖/自动恢复重试。测试夹具结束后仅清理其自行创建的精确随机对象，不是工具的失败清理行为。
@@ -76,6 +84,10 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 目录路径固定只作用于本次两个核验事务，不永久改变运行角色search_path，也不放宽关系、routine或0008最小权限门。
 
 ## Concrete Steps / Plan of Work
+
+2026-10-24下一片显式本机双重放：新增独立不可变replay pin绑定受审effects helper实际hash，默认preflight pin与只读路径保持不变。仅同call显式apply+upgrade、原creator锁仍在的新prefix4/7→8目标可进入；以当前已提交90a27fb完整真候选及真实Python执行候选原生apply/export和已核来源的纯monotone函数，绝不注入控制树业务修复。先核既有导出不比latest更新；再第一遍原生apply（无外套事务）→导出/擦除与checkpoint核验→完整Core/checkpoint/sequence摘要→第二遍原生apply→导出及完整摘要严格相等。四张中央空表及sequence始终只读核不变；任一异常即停止保留，不自动补第二遍、重试或清理新目标。
+
+范围仅新增first_release_replay_effects、一份新PG测试，加candidate_process/replay_worker/local_restore小接线与本计划；若新增共享测试helper须先报路径。首链≤8必要组，实际完整90a27fb正例及7e3d098旧候选幂等失败负例，不伪造包。回执仍明确local-only，native_restore_completed/runtime_verified/linux_attestation/central_binding_verified/publication为false。源prefix8与中央身份保全、既有库采用、Linux/formal/stage/prod仍未实现；源码/依赖元数据核验不构成供应链认证。
 
 2026-10-24下一基础片只做显式local replay preflight，必须同call apply+upgrade且原新目标creator锁仍在；不调用apply_withdrawals，不宣称双重放已接。新增不可变输入绑定candidate/manifest/dump/latest ledger/实际Python及受审控制worker。纯stdlib bootstrap在任何业务导入前固定候选tools namespace与mingjing_core包，拒绝预载控制树业务；前后校验全部候选模块真实路径与manifest字节，控制worker自身不进入tools命名空间。
 
@@ -109,6 +121,10 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 ## Artifacts and Notes
 
+`private/safe-narrow-d0bd8d2a6c774c838bf5c6921470fab4/metadata.json`为本片首链7/7（132.58秒，2026-10-24 01:24–01:26 +08:00）。完整真实90a27fb候选非空恢复→升级8→原生撤销/收据双重放、删除墓碑可再导出、sent/uncertain不可重发、checkpoint清除、另一owner全状态保持及第二遍全部Core/checkpoint/sequence不变均通过；prefix4空路径亦通过。完整真实7e3d098旧包按预期因第二遍状态变化拒绝，证实没有借控制树e8修复代替候选业务。类型/同call、helper hash、stale最新旁账及owner碰撞整批回滚均通过，异常新目标保持存在。使用实际Windows PG15、真实pg_dump/restore、实际Python3.11 venv及清凭据/关追踪安全runner，测试时区Tokyo，模型/外发/服务器0；无全量或Linux证明。
+
+`private/safe-narrow-0a345fdb97814566b24e3a66014ddfe7/metadata.json`为唯一必要旧预检兼容节点1/1（23.44秒，01:27–01:28 +08:00），确认共享_process和worker新增路由后，默认preflight仍保持只读、零重放和原schema。没有重跑其余7个新增目标。
+
 `private/safe-narrow-645cf96374aa41ca876ec8c6c25e00e0/metadata.json`记录本片唯一链9/9（170.50秒，2026-10-24 01:08–01:11 +08:00）。夹具仅一次打包当前真实Git候选完整源码，各目标独立受pin副本；actual Python为本机既有`.venv-k3`的Python3.11，真实Windows PG15与实际dump/restore。正常只读预检、两个控制树namespace预载、升级后源码漂移、缺同call gate及owner/active/lease/central四个目标拒绝全部通过；Core全部字段、checkpoint及sequence独立摘要均不变。安全runner清凭据/关追踪、测试时区Tokyo，模型/外发/服务器0；没有重跑旧幂等业务、全量或Linux证明。
 
 `private/safe-narrow-d39d12338be94844967a4df709ac6387/metadata.json`为owner排序修正后的仅2目标复测2/2（44.33秒，01:15–01:16 +08:00）；保留原9目标链记录，没有重复其余7项或扩大为全量。
@@ -131,6 +147,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 ## Interfaces and Dependencies
 
+新增受独立hash审核的first_release_replay_effects，只编排实际候选业务并以只读SQL核状态。显式`--apply-local --upgrade-local --replay-withdrawals-local --replay-pin <审核pin> --replay-ledger <本operation目录latest-withdrawals.json> --candidate-python <真实venv解释器>`才进入；与原--replay-preflight-local参数互斥，不提供单独目标DSN采用命令。正常总连接9（原升级7、候选预检只读1、候选原生pool最大1），不是把native apply包在第十个外层事务。local_candidate_replay_completed和latest_withdrawals_replayed只表示本机新目标实测，central_binding_verified/runtime_verified/native_restore_completed/linux_attestation/publication始终false，中央不provision。
+
 新增两个tools：first_release_candidate_process绑定不可变候选/manifest/dump/latest ledger/实际Python/受审worker，first_release_replay_worker为纯stdlib bootstrap之后的独立候选只读核验器。现有local_restore显式`--apply-local --upgrade-local --replay-preflight-local`并提供`--preflight-pin --preflight-ledger --candidate-python`，才在原creator锁内新建/恢复/升级后的目标加1个owner只读连接，正常总连接8；默认原始/升级路径仍4/7。子进程不继承用户PG或模型环境，不输出原stderr/DSN。真实候选tools namespace与mingjing_core导入前后核路径及manifest字节；这里只确认候选导入与已安装活动依赖元数据，不认证wheel、.pth、审核人或解释器完整供应链。
 
 新增三个tool：first_release_local_inputs（同源审核dump/program/prefix绑定、严格本机输入）、first_release_local_pg（目标缺席检查、创建/持锁/新public初始化/原prefix及owner后验）、first_release_local_restore（默认校验及显式本机原生restore）。`FIRST_RELEASE_ADMIN_DSN`只允许同一实际loopback 55480/55481的postgres或core_test_main控制库；owner/writer继续使用原显式变量。实际进程与显式环境PG*均拒绝，子进程不继承用户PG配置；仅允许显式内存密码注入子PGPASSWORD，固定空passfile，不进argv/输出/文件。外部审核pin及实际可执行/DLL运行环境仍是受信前提，不声称认证审核人或完整解释器供应链。
@@ -141,17 +159,19 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## Outcomes & Retrospective
 
-已完成真实候选fresh-process、Python3.11 venv活动依赖及新目标只读预检基础。外部审核pin仍是受信输入，测试自产pin不构成独立审核；latest ledger仅绑定hash和owner全集，尚不执行撤销/收据双重放。回执明确read_only=true、mutations=0，latest_withdrawals_replayed、runtime_verified、native_restore_completed、linux_attestation、publication全部false。源prefix8/中央账本身份保全、真实候选重放、Linux和正式首发仍No-Go，不能据本片8个连接或9项通过宣称生产恢复就绪。
+当前已完成实际受pin候选在同call新本机目标上的原生双重放及第二遍完整幂等基础；真实旧候选负例会停止，不能换用控制树修复将其放行。仍未涵盖源prefix8备份/中央身份保全、source_span或legacy_memory专门擦除证明、Linux运行时、供应链认证、既有库增量apply、正式stage/生产或开门。外部审核pin仍是受信前提，测试自产pin和真实Git包不认证审核人；正式首发继续No-Go。
 
-当前控制树原生业务的非空隐私/回执重放已通过完整数据库及checkpoint严格幂等定向回归；仍未实现外部审核候选Python导入隔离的同call双重放worker，不能将这份本机回归视为已pin候选应用、Linux正式恢复或中央身份保全证明。正式首发仍No-Go。
+独立只读预检模式已验证真实候选fresh-process、Python3.11 venv活动依赖及新目标状态；该模式仍不执行撤销/收据双重放，回执read_only=true、mutations=0及各正式完成位不变。新增的显式双重放使用另一个pin/schema与9连接，不把只读预检的8连接回执升级成重放证明。外部审核pin仍是受信输入，测试自产pin不构成独立审核；两个模式均不能宣称生产恢复就绪。
 
-本机原始prefix恢复及可选同次新目标前向到8、checkpoint显式setup、最小授权和精确ACL均已有定向证据，仍不代表首发恢复全链：没有回填、最新撤销/收据重放、中央账本保全/重绑定、正式Linux/容器端口映射、stage/生产、unit或开门。现有formal硬门不变，Linux容器NAT实际端口与严格身份不匹配时继续拒绝，不能放宽为Linux通过。开门前回退和开门后止损规则不变。
+早先控制树原生业务的非空隐私/回执幂等回归已延伸到受pin实际候选的独立进程；真实旧候选第二遍仍变化时会失败，不能拼接控制树修复。Windows本机逻辑证据不等同Linux正式恢复或中央身份保全，正式首发仍No-Go。
+
+本机原始prefix恢复、同次新目标前向到8、checkpoint显式setup、最小授权/精确ACL和可选最新旁账双重放均已有定向证据。回填、源prefix8中央账本保全/重绑定、正式Linux/容器端口映射、stage/生产、unit及开门仍未实现或验证，首发全链尚未完成。现有formal硬门不变，Linux容器NAT实际端口与严格身份不匹配时继续拒绝，不能放宽为Linux通过。开门前回退和开门后止损规则不变。
 
 新凭据边界与正常恢复均有定向证据；跨平台CI实际运行和SCRAM认证端点验证由主线CI结果判定，当前不声称已绿。角色verifier也不进入回执，服务端审计日志可能记录verifier，须继续按敏感运行日志保护。
 
 已修最终代码的非空撤销往返，并完成相关Windows PG15实际备份恢复验证。未完成Docker/Linux整链、生产原生恢复入口或可执行的新发布单，首发保持No-Go；不沿用b9的空样本或旧授权放行。
 
-本片补齐了最终候选只校验契约与精确ACL基础，静态检查通过，45个不同定向行为已有通过证据。尚无最终冻结candidate、实际新入口恢复、正式Linux运行时证明、中央账本改址核验或unit切换；JSON输入及本地Windows检查不具有部署授权。
+只校验契约与精确ACL基础的45个早期定向行为证据仍保留；此后本机新库恢复、升级、真实候选预检和双重放的证据分别登记，不相加冒称一次全链通过。最终冻结candidate、正式恢复入口、实际Linux运行时、中央账本改址及unit切换仍缺失；JSON输入及本地Windows检查不具有部署授权。
 
 审阅追加5个不同安全反例及1个受影响合法节点通过，合计50个不同定向行为有通过记录；没有把外部审核pin、Windows证据或关系/函数元数据校验升级为可信发布证明。
 
@@ -159,6 +179,7 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## 修订记录
 
+- 2026-10-24 01:26 +08:00：新增独立replay pin、受审编排helper与7/7真实候选双重放窄验；记录旧包真实失败、原生提交后purge边界、9连接及隐私形态覆盖限制，正式门不变。
 - 2026-10-24 01:11 +08:00：新增显式同call候选fresh-process只读预检与9/9真实窄验；记录活动marker、候选namespace/来源、依赖元数据及CI路径边界，未接撤销重放或正式恢复。
 - 2026-10-24 00:48 +08:00：记录非空双重放真实失败及共享repo两SQL最小幂等修复，保留全部字段断言和1+2窄验，说明候选worker与正式恢复仍未完成。
 - 2026-10-24 00:36 +08:00：新增同次本机新库显式升级阶段和11/11窄验；保留默认原prefix路径、阶段失败现场与中央身份/正式发布硬门。

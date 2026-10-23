@@ -1,4 +1,4 @@
-"""Standalone read-only local worker: standard-library bootstrap, then reviewed candidate imports."""
+"""Standalone local worker: verified candidate imports and independently pinned optional replay."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import importlib.machinery
 import importlib.metadata
 import json
 import os
+import runpy
 import sys
 import sysconfig
 from pathlib import Path
@@ -256,6 +257,31 @@ def target(value, repository):
         repo.close()
 
 
+def replay(value, root, files, sites, repository, deployment, preflight):
+    path = Path(value["worker"]).with_name("first_release_replay_effects.py")
+    require(path.is_file() and not any(item.is_symlink() for item in (path, *path.parents)), "REPLAY_HELPER_CHANGED")
+    require(hashlib.sha256(path.read_bytes()).hexdigest() == value["replay"]["effects_sha256"], "REPLAY_HELPER_CHANGED")
+    contracts = importlib.import_module("tools.b1_restore_proof_contracts")
+    for function in (
+        contracts.verify_monotone,
+        contracts.receipt_key,
+        deployment.apply_withdrawals,
+        deployment.export_withdrawals,
+    ):
+        verified(function.__code__.co_filename, root, files)
+
+    def audit():
+        third_party_origins(sites)
+        business_origins(root, files)
+        require(
+            hashlib.sha256(path.read_bytes()).hexdigest() == value["replay"]["effects_sha256"], "REPLAY_HELPER_CHANGED"
+        )
+
+    helper = runpy.run_path(str(path))
+    result = helper["replay"](value, repository, deployment, contracts.verify_monotone, audit, require)
+    return dict(result, preflight=preflight)
+
+
 def run(value):
     require(
         not any(name.split(".")[0] in {"tools", "mingjing_core"} for name in sys.modules),
@@ -286,7 +312,7 @@ def run(value):
     observed = target(value, repository)
     third_party_origins(sites)
     modules = business_origins(root, files)
-    return {
+    preflight = {
         "schema": "first-release-local-candidate-preflight-v1",
         "candidate": value["pin"]["candidate"],
         "database": value["database"],
@@ -310,6 +336,9 @@ def run(value):
         "model_calls": 0,
         "external_sends": 0,
     }
+    if "replay" in value:
+        return replay(value, root, files, sites, repository, deployment, preflight)
+    return preflight
 
 
 if __name__ == "__main__":
