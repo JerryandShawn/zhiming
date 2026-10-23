@@ -8,6 +8,7 @@
 
 ## Progress
 
+- [x] (2026-10-24 03:04 +08:00) 单个prefix7组合目标在两次新fixture错误修正后第三次1/1通过（53.69秒）：固定已提交206f43f实际候选，原生receive/save/correct且满足owner全集/零active和lease，M1真实捕获→另一新目标同call M2原始全状态比较→7至8→原生双重放。只新增capture_replay_chain测试与本计划，工具/effects599/旧测试/R7计划未改；令牌释放，无宽验。
 - [x] (2026-10-24 02:38 +08:00) 根审发现的嵌套field_source_refs字符串漏检已修；只复用已验证候选SourceRef严格校验source_refs与field_source_refs，并核source_ids/fact_ids等列表的非空字符串元素。新增真实坏结构残留节点首次1/1通过（35.61秒），first apply前受控拒绝、note保留、完整状态未改；原3路径、业务不变、旧2项未复跑。
 - [x] (2026-10-24 02:19 +08:00) 合法缺源span的marker-only观察分支首次新链2/2通过（68.05秒）：真实备份后receive/save/correct正例只保marker且零擦除计数；固定候选原生孤立note反例在first apply前拒绝、完整状态不变。pure/组合未复跑。
 - [x] (2026-10-24 02:06 +08:00) 根审组合误拒修正后只跑新whole fact+span目标首次1/1通过（33.42秒）：同owner whole删除目标不列非重叠preserved，仍保raw/context/FTS与whole删空断言；原pure1/1未复跑、不混为pure证据。
@@ -35,6 +36,14 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+本轮组合链时序经根澄清：真实correct_fact在M1捕获之前，故备份内旧fact仍为superseded且保正文，新更正fact已经存在。裸MemoryService(repo)没有on_revoke回调，recomputable=True将run/Outbox置stale，保留原run.request、清result/JSON checkpoint/lease与Outbox payload，但不物理purge public checkpoint。M2必须先完整恢复这些实际行，再让原生旁账把旧重叠fact删空、run转revoked/清request、Outbox转cancelled并在native提交后物理purge三张checkpoint表；新更正fact保持完整原行。不能混称旧pure链“备份后纠错、新fact不在dump也不重建”的不同情境。
+
+首跑`private/safe-narrow-2d83926f9d5344e8b10f8509f25748c2/metadata.json`在新fixture组合断言失败，1 error/0目标通过，16.36秒；尚未到M1。断言把纠错后的状态误写成revoked/request空/public checkpoint已空，与源码recomputable契约不符。根复核后批准只修新fixture，保留正确的分阶段保护：记录并核stale/STALE_INPUT、原request精确匹配及hash、Outbox stale/空payload、三物理表实际[1,1,1]；native重放后仍严格要求revoked/request空/cancelled/[0,0,0]。没有改候选业务或把红结果隐藏为完整通过。
+
+第二次`private/safe-narrow-932aa60788824876be577648a9384852/metadata.json`仍在M1前出现1个fixture error（13.93秒）；安全诊断`private/capture-replay-chain-b07213d772434405a21880958e527707/metadata.json`实测stale/STALE_INPUT、request保留且精确匹配、结果/lease和Outbox payload清空均正确，三物理表却是[1,0,1]。已安装PostgresSaver.put源码明确primitive str内联于checkpoint，非primitive才进入blob；此前“种子自动每表1”假设错误，不是产品实现故障。保留两轮红，未把缺blob当作通过。根批准只在新测试用真实已安装Saver将同run:e0、同checkpoint的channel换为明确合成dict对象并推进该channel version，实际写blob且在同目标内先核精确[1,1,1]；candidate的receive/save/correct仍原生，旧NATIVE字符串/旧测试/工具/候选均不改。
+
+第三次实际观察确认：显式合成SDK checkpoint扩充在原生correct之前，M1捕获前core run/Outbox均stale、JSON输出/lease已清，三物理表精确[1,1,1]且raw/旧superseded fact正文仍在；M2在升级前核24张表完整原始列和字段，实际7至8再原生replay后run变revoked/原request为空、Outbox变cancelled、三物理表为[0,0,0]。新更正fact整行hash、非重叠fact整行hash与embedding、raw/hash、context常量/实际PG FTS、Bob及真实源全状态均保持，完整第二遍状态/export严格相等。没有声称纠错本身产生复杂blob或已经物理purge，也没有把未知sequence覆盖升级为证明（本合法profile无sequence）。
 
 2026-10-24 02:36 +08:00根审发现真实拒绝接缝：旧递归只确认field_source_refs顶层为dict，其值若是缺源message ID字符串，会因未知field键被当作普通正文而忽略；原生closure同样不处理此损坏形状，不能据此认定零血缘。原生agent_case_changes/privacy_cases的正常值为dict[str,list[SourceRef]]，source_refs为list[SourceRef]；仅校验顶层dict/list不够，source_ids/fact_ids等也不能接受非字符串或空标识元素。
 
@@ -87,6 +96,16 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+根批准只新增`tests/v4/release/test_first_release_capture_replay_chain_pg.py`与维护本恢复计划。候选显式固定已提交206f43f0dd05b1c2c87f12b0bf7d27fce703208e实际Git archive，不把并行R7控制树WIP打包。复用现有真实源/捕获fixture和source_span测试的native脚本（脚本本身按payload实际candidate核来源），新包装不沿用其外层938常量断言；不改工具或旧测试。源fixture的额外合成sequence仅在捕获前删除以形成真实合法迁移profile，实际alice/bob/synthetic owner全集锁进SourcePin，零active/lease、原生source_scope与原完整ACL门照常执行；无patch伪造任一门。只读Bob前后观察可复用，native业务执行不替换。
+
+根批准首链fixture契约修正后只重跑该唯一失败链一次，旧工具/ACL/pin依赖在链期间冻结，R7只新增其M3模块/计划。新增私有body-free诊断在阶段断言前写实际状态布尔、规范状态码、原request hash及checkpoint计数，防止后续fixture失败只剩含糊组合断言；不输出原request正文。保留首16.36秒失败证据，不调整whole/span擦除、新fact/原文/另一owner/源不变及第二遍完整状态标准。
+
+第二轮fixture错误后根另准一次同目标复测，修复仅为新文件的显式合成SDK checkpoint种子，先读实际Saver签名/typedump源码；不通过替换旧脚本字符串或注入pipeline伪业务结果来制造blob，也不把此合成对象称作真实Agent输出。新文件306行/函数≤51，静态通过；仍只有一个真实PG测试进程，无额外probe。
+
+组合链通过后只交新测试与本计划供根审，不继续重复稳定性或宽验。主线runbook的同call参数由根另行维护，只引用本恢复计划及唯一证据，不复制新证据文档。此片不改原始候选、M1/M2工具与严格门、任何业务/记忆服务；源库实际升级、回填、Linux及正式发布由各自后续授权/证据决定。
+
+唯一恢复调用同时传capture_binding、upgrade_local和withdrawals_replay，使M1实际dump/ledger/UTC列与全字段状态绑定先在同次新目标核对，随后实际7至8及独立候选原生双重放。断言source全快照保持、新更正fact完整行hash不变、raw/context/实际PG FTS与非重叠fact保持、Bob完整状态不变，以及重放第二遍全Core/checkpoint/sequence与export严格相等；回执连接预算为原9加M2只读1，共10。原有正式门仍false，不将局部组合验证作为源库升级、Linux或正式发布证明。
 
 2026-10-24 02:36 +08:00根批准本轮只修observer：不手写重复五字段契约，使用已验证候选domain.SourceRef及第三方TypeAdapter(strict=True)校验两种嵌套引用，补message_id非空及start<end，source_ids/fact_ids/used_*等标识列表元素必须非空str；任何未知形状统一REPLAY_ERASURE_FAILED，不按全文字符串猜来源。预演新helper方案603行，按根裁定弃用，最终正常Ruff排版599行、所有函数≤60，沿既有软例外且未触600硬限；没有新增动态支持文件/worker或pin字段。原两参数节点保持原断言与真实候选路径，只新增bad-field-source-refs参数节点；该反例用固定938原生repo.put制造实际坏结构note，并保完整拒绝前后状态相等，预期仍为受控拒绝而非擦除。
 
@@ -207,6 +226,8 @@ Native apply严格不外套事务，第一遍成功后原生提交后checkpoint 
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
+
+2026-10-24 03:04 +08:00组合链第三次1/1通过（53.69秒，`private/safe-narrow-69ff1a619b7a41fdaa2d14d3992c0837/metadata.json`）；安全组合观察`private/capture-replay-chain-c2df0da3fb6a469da5161fdb70a4e715/metadata.json`。实际固定206f43f原生receive/save/correct、M1捕获及不同新目标同call M2→8→原生双replay完成；M2核24表、sequence=0，连接10，span source/overlap/preserved/run/Outbox各1、checkpoint范围3。源old fact superseded且有正文、run/Outbox stale、public checkpoint[1,1,1]；目标重放后old fact deleted/data={}、run revoked/空request、Outbox cancelled、checkpoint[0,0,0]。新更正fact完整行hash、另一owner、源全部原始状态、raw/context/FTS/非重叠fact均保持，第二遍完整状态与export一致。保留首次16.36秒和第二次13.93秒fixture错误，不能称首次或一次三项全绿；复杂blob是捕获前明确合成SDK seed，非correct_fact或真实Agent输出。新文件306行/最大函数51，Ruff/格式/AST/diff通过，测试令牌已释放，真实模型/服务器/消息0。没有改工具/effects/旧tests，Linux、正式恢复、全局停写、中央身份与发布门仍未放行。
 
 2026-10-24 02:38 +08:00审阅修正的唯一新节点首次1/1通过（35.61秒，`private/safe-narrow-deb14c0902014f8ab032bcef11807a6a/metadata.json`），安全布尔证据`private/source-span-missing-0387e0df665246399f45c9586a138e5d/metadata.json`记录REPLAY_ERASURE_FAILED、orphan_present=true、original_entities_absent=true、runtime_scopes_empty=true及完整状态未改。沿用实际Windows PG15、固定938候选native入口、安全runner清凭据/关追踪/Tokyo测试时区；真实模型/服务器/消息0，测试令牌已释放。effects正常Ruff排版599行、新测试399行，全函数≤60，Ruff/格式/AST/diff检查通过；没有新增helper、worker或pin面，没有复跑旧marker-only/孤立note两项、pure/组合或宽验。此前2/2证据保留，未虚称当前一次全链3/3或正式发布已放行。
 

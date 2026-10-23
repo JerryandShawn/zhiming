@@ -135,7 +135,21 @@ cd "$FR_CONTROL_DIR"
   --capture-inputs "$FR_LOCAL_CAPTURE_INPUTS" --capture-pin "$FR_LOCAL_CAPTURE_BINDING_PIN"
 ```
 
-比较在同call新目标creator锁内、实际原始恢复后且任何升级之前执行：实际owner/原prefix/关系、逻辑列和全部原字段行hash精确相等，sequence集合及last_value/is_called相等；保留源log_cnt证据，不伪造跨恢复日志计数相等。任一异常保留原目标且不升级；默认不加绑定参数仍0连接。成功只增加嵌套`local_original_content_verified`，不执行latest撤销/收据重放，也不证明源库捕获后未再变化；源库升级、全局停写、正式恢复、Linux、中央身份和发布仍未放行。真实证据为首链3项通过、必要失败复验3项通过、合法profile两正例2项通过，不冒称一次8/8；两轮失败与修正均在原增量ExecPlan保留。
+比较在同call新目标creator锁内、实际原始恢复后且任何升级之前执行：实际owner/原prefix/关系、逻辑列和全部原字段行hash精确相等，sequence集合及last_value/is_called相等；保留源log_cnt证据，不伪造跨恢复日志计数相等。任一异常保留原目标且不升级；默认不加绑定参数仍0连接。上面的命令只增加嵌套`local_original_content_verified`，不执行latest撤销/收据重放，也不证明源库捕获后未再变化；源库升级、全局停写、正式恢复、Linux、中央身份和发布仍未放行。真实证据为首链3项通过、必要失败复验3项通过、合法profile两正例2项通过，不冒称一次8/8；两轮失败与修正均在原增量ExecPlan保留。
+
+同次原始恢复比较和候选原生双重放还可明确组合，两个独立pin都必须完整提供：
+
+```bash
+"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
+  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
+  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
+  --apply-local --upgrade-local --capture-bind-local \
+  --capture-inputs "$FR_LOCAL_CAPTURE_INPUTS" --capture-pin "$FR_LOCAL_CAPTURE_BINDING_PIN" \
+  --replay-withdrawals-local --replay-pin "$FR_LOCAL_REPLAY_PIN" \
+  --replay-ledger "$FR_LOCAL_LATEST_WITHDRAWALS" --candidate-python "$FR_CANDIDATE_PYTHON"
+```
+
+这条组合已在真实本机PG15的prefix7样本完成1/1定向验证：先真实更正，再M1捕获含新更正事实和三类物理checkpoint的原始状态；另一新目标先M2比较，再升级至8和实际候选双重放，最后才核擦除及完整第二遍不变。新更正事实、原话、非重叠事实、另一owner和源库完整状态保持，三类checkpoint从各1行清至0。复杂blob由明确合成SDK种子生成，未向重放注入结果。前两次新fixture阶段语义错误及最后通过均见[原恢复ExecPlan](../execplans/first_release_recovery_20261023.md)，不称首次全绿、全部样本或Linux通过；源库升级和正式各门仍关闭。
 
 | 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
 | --- | --- | --- | --- | --- |
