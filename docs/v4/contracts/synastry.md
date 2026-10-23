@@ -154,6 +154,10 @@ as_of_date只用于资料核对与计算准备，不把“今天的行运”混�
 | `daily_transit_natal_invalid` | 任一方日期/时刻、归属修订、经纬度或时钟依据形状非法；两侧全部预检后才准备任何本命 |
 | `daily_transit_unconfirmed_physical_instant` | 出生物理瞬间未唯一确认，不能默选 |
 
+`CONSENT_REQUIRED` 指原生调用显式传入 `consent=None` / 其他未确认值，或 Core 请求对象缺少该字段时的运行时拒绝。
+直接 Python 调用若省略 `consent` 或 `as_of_date` 必需关键字，会先发生参数绑定 `TypeError`，尚未进入校验或出生处理；
+即使显式 `consent=None`，省略 `as_of_date` 仍先发生 `TypeError`。调用方应传完整关键字，输入 Schema 继续要求 `consent=user_confirmed`。
+
 出生资料格式、经纬度、时区、修订版本和出生晚于as_of_date还会由复用校验器拒绝。
 orb非法由有限数值校验器拒绝，超大整数也转换为固定ValueError，不泄漏OverflowError；不能把NaN写入JSON。
 这些是纯入口异常前缀，主线应转换为面向用户的结构化错误，不能直接泄露参数或stderr。

@@ -1,0 +1,147 @@
+"""Original MetadataGit launches, independently observed in the existing root Job."""
+import ctypes
+import hashlib
+import importlib.util
+import json
+import os
+import shutil
+import subprocess
+from ctypes import wintypes as w
+from datetime import timedelta, timezone
+from pathlib import Path
+from time import monotonic, sleep
+from unittest.mock import patch
+
+from mingjing_core.adapters.charts.benchmarks.line_coverage_core_git import MetadataGit
+from mingjing_core.timekit.clock import get_clock
+
+ROOT = Path.cwd().resolve()
+OUT = ROOT / "docs/v4/evidence/P8/week-oct21-root-iocp-metadata-probe.json"
+assert not OUT.exists()
+job, api = parent_job, parent_job.api
+module_path = Path(__file__).with_name("core_root_job_observer.py")
+spec = importlib.util.spec_from_file_location("p8_private_root_observer", module_path)
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+module.base._bind(api)
+api.DuplicateHandle.argtypes = (w.HANDLE, w.HANDLE, w.HANDLE, ctypes.POINTER(w.HANDLE), w.DWORD, w.BOOL, w.DWORD)
+api.DuplicateHandle.restype = w.BOOL
+binary = Path(shutil.which("git")).resolve()
+binary_sha = hashlib.sha256(binary.read_bytes()).hexdigest()
+protected_paths = [Path(__file__).resolve(), module_path.resolve(), module_path.with_name("core_direct_job_observer.py").resolve(), ROOT / "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py"]
+fingerprints = lambda: {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in protected_paths}
+before_sources = fingerprints()
+started = get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat()
+observer, metadata = None, None
+active = False
+direct, duplicate_handles, failures = [], [], []
+original_popen = subprocess.Popen
+report = {"version": "p8-root-iocp-original-metadata-git-diagnostic-v1", "started_at_beijing": started, "status": "running", "strict_transport_accepted": False, "actual_supervisor_invocations": 0, "actual_collector_invocations": 0, "actual_trace_samples": 0, "charts_coverage_samples": 0, "real_model_requests": 0, "project_server_access": False}
+
+def write_report():
+    OUT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf8", newline="\n")
+
+write_report()
+
+class CapturedGitPopen(original_popen):
+    def __init__(self, command, *args, **kwargs):
+        if observer.thread_failure is not None:
+            raise ValueError("root_iocp_observer_failed_before_next_child")
+        assert isinstance(command, list) and Path(command[0]).resolve() == binary
+        assert kwargs["creationflags"] == subprocess.CREATE_NO_WINDOW
+        absent = {name: not any(key.upper() == name for key in kwargs["env"]) for name in ("__PYVENV_LAUNCHER__", "PYTHONHOME", "PYTHONEXECUTABLE", "PYTHONPATH", "VIRTUAL_ENV")}
+        assert all(absent.values())
+        super().__init__(command, *args, **kwargs)
+        retained = w.HANDLE()
+        job._check(api.DuplicateHandle(w.HANDLE(-1), w.HANDLE(int(self._handle)), w.HANDLE(-1), ctypes.byref(retained), 0, False, 2), "root_probe_direct_handle_duplicate_failed")
+        duplicate_handles.append(retained)
+        assert api.GetProcessId(retained) == self.pid
+        member = w.BOOL()
+        job._check(api.IsProcessInJob(retained, job.handle, ctypes.byref(member)), "root_probe_direct_membership_query_failed")
+        assert member.value
+        buffer, length = ctypes.create_unicode_buffer(32768), w.DWORD(32768)
+        job._check(api.QueryFullProcessImageNameW(retained, 0, buffer, ctypes.byref(length)), "root_probe_direct_image_query_failed")
+        image = Path(buffer.value).resolve()
+        assert image == binary and hashlib.sha256(image.read_bytes()).hexdigest() == binary_sha
+        times = [w.FILETIME() for _ in range(4)]
+        job._check(api.GetProcessTimes(retained, *(ctypes.byref(value) for value in times)), "root_probe_direct_times_query_failed")
+        direct.append({"pid": self.pid, "retained_handle_pid": api.GetProcessId(retained), "creation_filetime": times[0].dwLowDateTime + (times[0].dwHighDateTime << 32), "image": str(image), "on_disk_image_sha256": binary_sha, "is_in_owned_job": bool(member.value), "argv": command, "creation_flags": kwargs["creationflags"], "identity_environment_keys_absent": absent, "identity_source": "duplicate_of_actual_popen_process_handle"})
+
+try:
+    observer = module.RootJobObserver(job)
+    observer.start()
+    report["phase_before"] = observer.accounting()
+    with patch.object(subprocess, "Popen", CapturedGitPopen):
+        metadata = MetadataGit(ROOT, lambda: active)
+        head = metadata.read(ROOT, "rev-parse", "HEAD").decode().strip()
+        assert head == "c471d4ac89444bcb004e102a8ab026c738c2788c"
+        report["head"] = head
+        report["phase_after_reads"] = observer.accounting()
+        direct_count = len(direct)
+        active = True
+        try:
+            metadata.read(ROOT, "rev-parse", "HEAD")
+        except ValueError as error:
+            assert str(error) == "b1_git_target_phase_or_repository_refused"
+        else:
+            raise AssertionError("target-phase native read accepted")
+        active = False
+        try:
+            metadata.read(ROOT, "status", "--porcelain")
+        except ValueError as error:
+            assert str(error) == "b1_git_arguments_not_allowlisted"
+        else:
+            raise AssertionError("non-allowlisted native read accepted")
+        assert len(direct) == direct_count == metadata.calls == 3
+        report["phase_after_negative_guards"] = observer.accounting()
+        metadata.assert_configuration()
+        assert hashlib.sha256(binary.read_bytes()).hexdigest() == binary_sha
+    settle_deadline = monotonic() + 0.5
+    while job.active() != 1 and monotonic() < settle_deadline:
+        sleep(0.005)
+    report["observer"] = observer.finish()
+    if observer.thread_failure is not None:
+        raise ValueError("root_iocp_observer_thread_failed")
+    assert report["observer"]["accounting"]["active"] == 1
+except BaseException as error:
+    failures.append({"phase": "native_observation", "type": type(error).__name__, "code": getattr(error, "code", str(error) if isinstance(error, (ValueError, AssertionError)) else "diagnostic_failed"), "winerror": getattr(error, "winerror", None)})
+finally:
+    if observer is not None:
+        observer.stop_event.set()
+        if observer.thread is not None:
+            observer.thread.join(timeout=1.0)
+        if observer.thread is not None and observer.thread.is_alive():
+            report.update(status="refused_live_observer_thread", failures=failures, observed_direct_processes=direct, observer_snapshot_scope="cannot safely copy mutable live observer state")
+            write_report()
+            job.terminate(0.5)
+        if "observer" not in report:
+            report["observer"] = observer.record()
+            report["observer"]["thread_failure"] = observer.thread_failure
+        try:
+            observer.close()
+        except BaseException as error:
+            failures.append({"phase": "observer_cleanup", "type": type(error).__name__, "code": getattr(error, "code", "observer_cleanup_failed"), "details": getattr(error, "failures", [])})
+    for retained in duplicate_handles:
+        if not api.CloseHandle(retained):
+            failures.append({"phase": "direct_handle_close", "winerror": ctypes.get_last_error()})
+    after_sources = fingerprints()
+    if after_sources != before_sources:
+        failures.append({"phase": "source_fingerprints", "code": "diagnostic_source_changed"})
+    report.update(completed_at_beijing=get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(), status="observed_limited_not_accepted" if not failures else "refused_or_incomplete", failures=failures, observed_direct_processes=direct, actual_metadata_git_calls=metadata.calls if metadata is not None else None, source_sha256_before=before_sources, source_sha256_after=after_sources, sources_unchanged=before_sources == after_sources, original_git_creation_flags_unchanged=True, original_git_communicate_unchanged=True, observer_threads_added=1)
+    if observer is not None:
+        final_accounting = observer.accounting()
+        delta = final_accounting["total"] - observer.baseline["total"]
+        report["phase_after_observer_cleanup"] = final_accounting
+        report["total_new_job_members"] = delta
+        identities = {(row["pid"], row["creation_filetime"]) for row in direct}
+        observed_rows = report["observer"].get("processes", [])
+        for row in observed_rows:
+            if row["pid"] != os.getpid() and row.get("membership_confirmed") and row.get("first_identity_observed_live") and not row.get("possible_pid_reuse"):
+                identities.add((row["pid"], row["creation_filetime"]))
+        report["live_instance_identity_snapshot_count_including_direct"] = len(identities)
+        report["unidentified_or_unbound_member_count_lower_bound"] = max(0, delta - len(identities))
+    report["limits"] = ["Independent root-nonempty observer; old empty-inner observer and its guards are unchanged", "Live instance snapshots do not bind late IOCP events to an instance generation; event_instance_binding_verified=false", "Parent PID is a snapshot; names, paths and count equality are not process authorization", "One observer thread, ready before original three Git reads; joined before closing handles", "No production collector/supervisor or coverage sampling; do not retroactively identify previous unknown6", "Stage total delta is cumulative, cap4 is an upper bound and final active1 is not a measured peak or full lifecycle acceptance"]
+    write_report()
+print(json.dumps({"status": report["status"], "metadata_calls": report.get("actual_metadata_git_calls"), "total_new_members": report.get("total_new_job_members"), "live_identity_snapshots": report.get("live_instance_identity_snapshot_count_including_direct"), "unknown_lower_bound": report.get("unidentified_or_unbound_member_count_lower_bound"), "accepted": False, "failures": len(failures)}))
+if failures:
+    raise SystemExit(1)

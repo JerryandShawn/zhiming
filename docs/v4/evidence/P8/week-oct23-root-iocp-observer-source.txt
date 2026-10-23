@@ -1,0 +1,145 @@
+"""Diagnostic root-nonempty observer; never an approval or a collector guard."""
+from __future__ import annotations
+
+import ctypes
+import importlib.util
+import os
+import threading
+from ctypes import wintypes as w
+from pathlib import Path
+from time import monotonic, sleep
+
+from mingjing_core.adapters.charts.benchmarks.line_coverage_core_job import Extended
+
+path = Path(__file__).with_name("core_direct_job_observer.py")
+spec = importlib.util.spec_from_file_location("p8_private_empty_job_observer", path)
+base = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(base)
+
+
+class RootJobObserver(base.JobObserver):
+    """Keep the empty-inner observer unchanged; this protocol permits root only."""
+    def __init__(self, job):
+        self.job, self.api = job, job.api
+        self.port, self.attached = None, False
+        self.handles, self.rows, self.allowed = {}, {}, {}
+        self.confirmed = set()
+        self.events, self.notes = [], []
+        self.started, self.last_elapsed = monotonic(), 0.0
+        self.last_accounting = None
+        self.stop_event = threading.Event()
+        self.ready_event = threading.Event()
+        self.thread = None
+        self.thread_failure = None
+        self.final_sample = None
+        self.repeated_new_process_pids = []
+        self.new_pids_seen = set()
+        self.active_sample_pids = set()
+        self.initial_live_identity_pids = set()
+        base._bind(self.api)
+        limits, returned = Extended(), w.DWORD()
+        self._check(self.api.QueryInformationJobObject(job.handle, 9, ctypes.byref(limits), ctypes.sizeof(limits), ctypes.byref(returned)), "root_observer_limits_query_failed")
+        if returned.value != ctypes.sizeof(limits) or limits.basic.flags != 8 or limits.basic.active != 4:
+            raise base.ObserverFailure("root_observer_cap4_without_breakaway_required")
+        settle = monotonic() + 0.5
+        while self.accounting()["active"] != 1 and monotonic() < settle:
+            sleep(0.005)
+        self.baseline = self.accounting()
+        if self.baseline["active"] != 1 or self.pids() != [os.getpid()]:
+            raise base.ObserverFailure("root_observer_only_coordinator_baseline_required")
+        try:
+            self.port = self.api.CreateIoCompletionPort(ctypes.c_void_p(-1), None, 0, 1)
+            self._check(self.port, "root_observer_port_create_failed")
+            association = base.Association(base.KEY, self.port)
+            self._check(self.api.SetInformationJobObject(job.handle, 7, ctypes.byref(association), ctypes.sizeof(association)), "root_observer_port_associate_failed")
+            self.attached = True
+            self.sample()
+        except BaseException:
+            self.close()
+            raise
+
+    def pids(self):
+        value, returned = base.PidList(), w.DWORD()
+        self._check(self.api.QueryInformationJobObject(self.job.handle, 3, ctypes.byref(value), ctypes.sizeof(value), ctypes.byref(returned)), "root_observer_pid_list_failed")
+        offset, stride = base.PidList.ids.offset, ctypes.sizeof(ctypes.c_size_t)
+        minimum = offset + int(value.listed) * stride
+        if value.assigned != value.listed or not 1 <= value.listed <= 4 or not minimum <= returned.value <= ctypes.sizeof(value) or (returned.value - offset) % stride:
+            raise base.ObserverFailure("root_observer_pid_list_incomplete")
+        result = [int(pid) for pid in value.ids[:value.listed]]
+        if len(set(result)) != len(result) or os.getpid() not in result:
+            raise base.ObserverFailure("root_observer_pid_list_baseline_lost")
+        for pid in result:
+            self._allow(pid, "root_job_pid_list")
+        return result
+
+    def drain(self):
+        events = super().drain()
+        for row in events:
+            if row["message"] == 6:
+                pid = row["pid"]
+                if pid in self.new_pids_seen:
+                    self.repeated_new_process_pids.append(pid)
+                    self.notes.append("duplicate_new_process_pid_possible_reuse_no_identity_merge")
+                self.new_pids_seen.add(pid)
+        return events
+
+    def _run(self):
+        deadline = monotonic() + 33.0
+        try:
+            self.sample()
+            self.ready_event.set()
+            while not self.stop_event.is_set():
+                if monotonic() >= deadline:
+                    raise base.ObserverFailure("root_observer_thread_deadline_reached")
+                self.sample()
+                self.stop_event.wait(0.001)
+        except BaseException as error:
+            self.thread_failure = {"type": type(error).__name__, "code": getattr(error, "code", "observer_thread_failed"), "winerror": getattr(error, "winerror", None)}
+            self.ready_event.set()
+
+    def sample(self):
+        if self.port is None:
+            raise base.ObserverFailure("root_observer_not_open")
+        self.last_elapsed = monotonic() - self.started
+        if self.last_elapsed > 35.0:
+            raise base.ObserverFailure("root_observer_total_deadline_reached")
+        self.drain()
+        self.active_sample_pids = set(self.pids())
+        for pid in sorted(self.allowed):
+            if pid not in self.handles and pid not in self.active_sample_pids:
+                self.rows[pid] = {"pid": pid, "state": "not_currently_listed_late_message_identity_unknown", "incomplete": True, "event_instance_binding_verified": False}
+                continue
+            first = pid not in self.handles
+            row = self.observe(pid)
+            if first and row.get("state") == "observed_live" and row.get("membership_confirmed"):
+                self.initial_live_identity_pids.add(pid)
+            row.update(sources=sorted(self.allowed[pid]), first_identity_observed_live=pid in self.initial_live_identity_pids, event_instance_binding_verified=False)
+            if pid in self.repeated_new_process_pids or pid not in self.initial_live_identity_pids:
+                row.update(incomplete=True, possible_pid_reuse=True)
+            self.rows[pid] = row
+        self.last_accounting = self.accounting()
+        return self.record()
+
+    def start(self):
+        if self.thread is not None:
+            raise base.ObserverFailure("root_observer_thread_already_started")
+        self.thread = threading.Thread(target=self._run, name="p8-native-metadata-job-observer", daemon=False)
+        self.thread.start()
+        if not self.ready_event.wait(timeout=1.0) or self.thread_failure is not None:
+            raise base.ObserverFailure("root_observer_thread_not_ready")
+
+    def finish(self):
+        self.stop_event.set()
+        if self.thread is not None:
+            self.thread.join(timeout=1.0)
+            if self.thread.is_alive():
+                raise base.ObserverFailure("root_observer_join_deadline_failed_do_not_close_live_handles")
+        self.sample()
+        self.final_sample = self.record()
+        self.final_sample.update(protocol="root-nonempty-cap4-iocp-thread-diagnostic-v1", baseline=self.baseline, coordinator_pid=os.getpid(), repeated_new_process_pids=self.repeated_new_process_pids, thread_failure=self.thread_failure, thread_joined=self.thread is None or not self.thread.is_alive(), complete=False, strict_transport_accepted=False)
+        return self.final_sample
+
+    def close(self):
+        if self.thread is not None and self.thread.is_alive():
+            raise base.ObserverFailure("root_observer_live_thread_prevents_handle_close")
+        super().close()
