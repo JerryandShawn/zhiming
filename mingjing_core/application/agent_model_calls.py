@@ -56,7 +56,7 @@ class RequestLedger:
             estimate_multiplier=base.estimate_multiplier,
         )
         factor = self.usage.factor(run["owner"], run["subject"], thread_id(run), identity)
-        return K3EstimatedMeter(base.counter, factor=factor)
+        return K3EstimatedMeter(base.counter, factor=factor, model=base.model)
 
     @staticmethod
     def _id(run_id: str, epoch: int, seq: int) -> str:
