@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 00:01，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 工具观察基线为`3ee8def`，最终首发候选尚未冻结；该提交号不是已验收的发布包。当前没有首发增量apply、原生新库恢复、回填、切换或开门入口。本次仅编写文档，未连接服务器、运行测试、发模型请求或飞书消息。
+2026-10-24 00:01，北京时间；00:20补充本机恢复基础。**No-Go / 草案：尚不能照本单完成部署。** 工具观察基线为`3ee8def`，最终首发候选尚未冻结；该提交号不是已验收的发布包。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；新增本机原始prefix恢复仅用于隔离演练。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -66,6 +66,21 @@ cd "$FR_CONTROL_DIR"
 构建要求checkout HEAD与SHA一致、工作树干净。不得将测试库、凭据、备份、真实正文或未跟踪运行目录打进发布包。
 
 ## 4. B0–B8：动作、继续与停止条件
+
+### 本机新入口（不能替代B3/B7）
+
+`tools.first_release_local_restore`已提供本机原始prefix恢复基础。外部同源审核dump-pin为`first-release-local-dump-pin-v1`，绑定候选/manifest、custom dump及PG15 pg_restore原始hash、源迁移前缀；只接受1–7，实际验证4或7。示例为已存在接口，不表示现在授权服务器执行：
+
+```bash
+cd "$FR_CONTROL_DIR"
+"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
+  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
+  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE"
+```
+
+默认只读文件、0PG/0子进程；显式`--apply-local`才创建本次随机新库/新owner和writer并实际恢复。必须local_drill=true，dump固定在本次operation目录的backup.dump，管理DSN仅同一loopback 55480/55481的postgres/core_test_main控制库。任何既有目标库或任一角色均拒绝；失败保留新对象，再调用拒绝接管，不清理重跑。应用前实际TOC检查拒绝中央额度表，即使dump-pin谎称prefix7也不复制0008。
+
+新public初始化仅在本次新库/新owner匹配、public为空且原owner为pg_database_owner时进行，不放宽NOINHERIT或writer权限。角色DDL只提交客户端生成的SCRAM verifier，口令和verifier均不进回执。实际pg_restore由新owner执行no-owner/no-acl/exit-on-error/single-transaction/no-password；随后只核原prefix和owner，不迁移、不重放、不保全或provision中央账本。成功也保持正式native_restore_completed、linux_attestation、publication为false；Windows19个不同定向节点见原ExecPlan，不新增证据副本。B3/B7所需正式全链仍缺失。
 
 **B7的新库恢复证明必须在B3修改已有stage库之前完成。** 表中缺失入口不是待猜命令，不能用旧B1 apply或手工SQL补过门。只要必要入口缺失，停在本地准备阶段。
 

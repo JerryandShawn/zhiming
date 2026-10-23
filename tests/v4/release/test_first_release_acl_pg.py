@@ -94,7 +94,7 @@ def initialize(owner: str, writer: str) -> None:
 
 @pytest.fixture(scope="module")
 def database(tmp_path_factory):
-    admin_dsn = os.environ.get("CORE_TEST_DSN", "")
+    admin_dsn = os.environ.get("FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN") or os.environ.get("CORE_TEST_DSN", "")
     assert admin_dsn, "explicit disposable local PG15 admin DSN required"
     fields = conninfo_to_dict(admin_dsn)
     assert fields.get("host") in {"127.0.0.1", "::1"} and fields.get("port") in {"55480", "55481"}
