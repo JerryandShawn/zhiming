@@ -1,0 +1,42 @@
+{
+  "schema": "mod.rpf01.measurement_mode_guard.v1",
+  "observed_at": "2026-10-21T09:41:28.004054+08:00",
+  "scope": "Read-only public boundary audit followed by explicitly authorized new-tool optimization-mode rejection",
+  "public_input_probe": {
+    "file": "RPF01_public_input_readonly_probe_20261021.json",
+    "cases": 31,
+    "counterexamples": 0
+  },
+  "original_guard_counterexample": {
+    "normal": "RPF01_assert_mode_normal_readonly_probe_20261021.json",
+    "optimized": "RPF01_assert_mode_optimized_readonly_probe_20261021.json",
+    "finding": "Original assert_parity rejected injected semantic mismatch normally but accepted it under -O; no real workload or performance run"
+  },
+  "fix": "Explicit sys.flags.optimize rejection before any Core imports at new benchmark module entry",
+  "old_tool_sha256": "3ea3b1fa6b51899a04a056f2164efb92cc6fc659b67b83e1151ffc82a2348089",
+  "old_tool_backup": "private/mod-week/evidence-originals/benchmark_reflection_projection_RPF01.pre_opt_guard.py",
+  "new_tool_sha256": "3878721ba37c645cd48924973c756931ac65232f4036351b77b81fcb71393e2d",
+  "target_tests": {
+    "path": "tests/v4/reflection_projection_exp/test_measurement_mode_core_mod.py",
+    "sha256": "654fa0b3282099019f0edc3a59954d3a99f13eaa7ff0d9737a4168feb0246f91",
+    "passed": 3,
+    "seconds": 1.61,
+    "modes": [
+      "default",
+      "-O",
+      "-OO"
+    ],
+    "raw": "private/mod-week/RPF01_measurement_mode_guard_final.log",
+    "raw_sha256": "355b1fa54c4ddf8c21ff678a7156732690b633923c3359253116ea0d1e6c6d0e"
+  },
+  "historical_measurement": "2026-10-21 09:07 observation remains bound to old 3ea3 tool; not rerun, not invalidated by optimized-mode counterexample, not claimed as new-tool performance",
+  "no_new_performance_measurement": true,
+  "product_sources_unchanged": true,
+  "old_baseline_tools_unchanged": true,
+  "core_product_aggregate_sha256": "707ed17655c261b35407ef26e9826bacd96befd82afb1f4b755b662de49c8005",
+  "limits": [
+    "Finite probe set is not exhaustive proof",
+    "Concurrent input mutation outside public contract",
+    "No full regression or production/network/model/database validation in this task"
+  ]
+}

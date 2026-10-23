@@ -1,0 +1,56 @@
+{
+  "observed_at": "2026-10-20T23:51:04.202648+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "p7_120_mixed_next_triggers",
+      "units_per_run": 120,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.5936030000002575,
+        0.5900525999995807,
+        0.5955966999999873,
+        0.6047148999996352,
+        0.595090199999504
+      ],
+      "median_seconds": 0.595090199999504,
+      "max_seconds": 0.6047148999996352,
+      "separate_tracemalloc_peak_bytes": 38206
+    },
+    {
+      "name": "p7_1000_delivery_plans",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.022340299999996205,
+        0.022228099999665574,
+        0.023035600000184786,
+        0.0227868000001763,
+        0.023481599999286118
+      ],
+      "median_seconds": 0.0227868000001763,
+      "max_seconds": 0.023481599999286118,
+      "separate_tracemalloc_peak_bytes": 5999
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/scheduling/__init__.py": "8d567b2932bcd76c6d569856f6eb9bf990ccc3e2a7c27451df6fa0fdcfca1a79",
+    "mingjing_core/scheduling/brief_schedule.py": "3e3e33d13f44ff46a8b2fd82d3ed3bf239022a90fee2fda1f9399695269882db",
+    "mingjing_core/scheduling/delivery_contracts.py": "eb696cf0d964ed71885c8d94bd33ab0b0335714254116abfbab2333506a4d3c1",
+    "mingjing_core/scheduling/delivery_rules.py": "4620ebb73c2eb7674b2c8257df0461ecd60797c0d854bb6a485ce6735c350080",
+    "mingjing_core/scheduling/recurrence.py": "5c7acf3eb5527dfc108349e4c05d3b433063622abe0fbe7559dae9aa8c5d0046",
+    "mingjing_core/scheduling/recurrence_calendar.py": "57173b352496bb513fef47714a80ff5f59ab5ef0c904df5f1d2708c95085a622",
+    "mingjing_core/scheduling/recurrence_civil.py": "a7260919264f427f5a1e65ca04338da9b177ff8a71549d249c66251b1fe4f174",
+    "mingjing_core/scheduling/recurrence_contracts.py": "061cb1756e30e27f6e23795d7cbec0d9a28646b51111cd440d4ad7fc07d9a47d",
+    "mingjing_core/scheduling/recurrence_machine.py": "78ae5ca6ed066faae295477ca19cbd2fad81c833f441ba37a1709ed58b2e397e",
+    "mingjing_core/scheduling/recurrence_wall.py": "7947c130234e5b0b6f246ccc546be1bf46eed6b4ba2b260503be1503b4302b1c",
+    "tools/mod_week/benchmark_scheduling.py": "d14e699a480a01c6226fd27c687ec7d13e7d3805ac0890ce3dbeaab09b261a63"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "observed_at": "2026-10-20T23:25:21.417092+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "memory2_authorized_fts_10_queries",
+      "units_per_run": 10000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.3184092999999848,
+        0.31747380000069825,
+        0.31553710000025603,
+        0.3176411000004009,
+        0.31434680000074877
+      ],
+      "median_seconds": 0.31747380000069825,
+      "max_seconds": 0.3184092999999848,
+      "separate_tracemalloc_peak_bytes": 107616
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/memory/retrieval.py": "ad3b9f4ae39208932c57e51f363ad2cc48d7d97a47e4ef2943018a77cf0e680b",
+    "mingjing_core/memory/retrieval_rounds.py": "d17be4f0f00f2656c626806e984c7285e3ac52b84d74ec19d7cbd08b9f3bfd50",
+    "mingjing_core/memory/retrieval_types.py": "608774368bab2be9a7368ae75ac22d689b8c4e60045241f02018a2f8f1c3dbaf",
+    "tools/mod_week/benchmark_memory2.py": "77e3b35ca2cc9ab581baea5af27dc6b0816c904e5c4353e589fc266df2e5d6ea"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

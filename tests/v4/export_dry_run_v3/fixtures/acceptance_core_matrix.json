@@ -1,0 +1,33 @@
+{
+  "version": "independent-export-acceptance-core-v1",
+  "synthetic_only": true,
+  "authority": "33 section 4 item 6; P5b E and A5; public contracts from module owner",
+  "case_groups": [
+    {"id": "EX001", "expect": "Only explicit synthetic intermediate schema accepted; unknown actual v3 shape is unsupported"},
+    {"id": "EX002", "expect": "Unknown or missing root and row fields rejected; strict booleans and integers"},
+    {"id": "EX003", "expect": "Foreign owner or subject in request, payload, current row or source is controlled without private text leakage"},
+    {"id": "EX004", "expect": "Payload revision and source epoch must equal current host snapshot"},
+    {"id": "EX005", "expect": "Raw content, role, source identity, original timestamp, thread and row revision cannot drift from current immutable row"},
+    {"id": "EX006", "expect": "Current source original quote and revision must still match; source flags and time are rechecked"},
+    {"id": "EX007", "expect": "Revoked, inactive, incognito, optout, secret and sensitive sources create no operations or readable samples"},
+    {"id": "EX008", "expect": "Raw original text, answers and timestamps remain unchanged and no fact is created"},
+    {"id": "EX009", "expect": "Assistant can inherit only an earlier same-thread valid user within six hours; no assistant-as-user assertion"},
+    {"id": "EX010", "expect": "Manual current labels are not overwritten; uncertainty remains waiting rather than daily"},
+    {"id": "EX011", "expect": "Plans and review previews have no apply capability, all batches require review, samples and titles at most 80 characters"},
+    {"id": "EX012", "expect": "Absent versus explicit null before values survive inverse operations field by field"},
+    {"id": "EX013", "expect": "Identical input and operation produce stable plan; changed operation input or plan ledger is rejected"},
+    {"id": "EX014", "expect": "Unknown, planned or mismatched applied ledger cannot authorize undo"},
+    {"id": "EX015", "expect": "Applied ledger, global revision and per-target revisions bind undo to exact host state"},
+    {"id": "EX016", "expect": "Undo never revives source revoked after planning, including when source epoch was not advanced"},
+    {"id": "EX017", "expect": "Undo cannot overwrite concurrent label changes, immutable source edits or later topic references"},
+    {"id": "EX018", "expect": "Undone operation replay yields no inverse operation and cannot be planned again"},
+    {"id": "EX019", "expect": "Tampered plan fingerprint or original payload cannot pass preview or undo checks"},
+    {"id": "EX020", "expect": "Repeated pure runs do not mutate raw export, host snapshot or original source text"}
+  ],
+  "limitations": [
+    "No actual v3 exporter format has been verified",
+    "Host projections and operation ledgers are trusted inputs, not authentication proofs",
+    "No database, stage, real model, title-generation request or actual application/revert is exercised",
+    "This independent matrix does not assert classifier blind quality or inspect blind B"
+  ]
+}

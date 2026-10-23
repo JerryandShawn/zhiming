@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zhiming:human-review-submission:v3.1",
+  "title": "Unsigned complete blind batch submission; never proves human provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "submission_id",
+    "owner_id",
+    "reviewer_id",
+    "plan_sha256",
+    "dataset_sha256",
+    "rubric_sha256",
+    "payload_sha256",
+    "batch_id",
+    "submitted_at",
+    "answers"
+  ],
+  "properties": {
+    "schema": {
+      "const": "human-review-submission-v3.1"
+    },
+    "submission_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^(?!.*[\\u0000-\\u001f])(?=.*\\S).*$"
+    },
+    "owner_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^(?!.*[\\u0000-\\u001f])(?=.*\\S).*$"
+    },
+    "reviewer_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^(?!.*[\\u0000-\\u001f])(?=.*\\S).*$"
+    },
+    "plan_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "dataset_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "rubric_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "payload_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "batch_id": {
+      "type": "string",
+      "pattern": "^batch_[a-f0-9]{32}$"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "answers": {
+      "type": "array",
+      "minItems": 15,
+      "maxItems": 15,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blind_id",
+          "items"
+        ],
+        "properties": {
+          "blind_id": {
+            "type": "string",
+            "pattern": "^b_[a-f0-9]{32}$"
+          },
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "E1",
+              "E2",
+              "E3",
+              "E4",
+              "E5",
+              "E6",
+              "J1",
+              "J2",
+              "J3",
+              "J4",
+              "J5",
+              "J6",
+              "J7",
+              "J8",
+              "J9"
+            ],
+            "properties": {
+              "E1": {
+                "$ref": "#/$defs/annotation"
+              },
+              "E2": {
+                "$ref": "#/$defs/annotation"
+              },
+              "E3": {
+                "$ref": "#/$defs/annotation"
+              },
+              "E4": {
+                "$ref": "#/$defs/annotation"
+              },
+              "E5": {
+                "$ref": "#/$defs/annotation"
+              },
+              "E6": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J1": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J2": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J3": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J4": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J5": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J6": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J7": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J8": {
+                "$ref": "#/$defs/annotation"
+              },
+              "J9": {
+                "$ref": "#/$defs/annotation"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$comment": "Semantic validator additionally binds actual displayed payload, opening ledger, exact unique blind IDs, scope, versions and aware Clock; no default labels.",
+  "$defs": {
+    "annotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "violation",
+        "severity",
+        "uncertain"
+      ],
+      "properties": {
+        "violation": {
+          "type": "boolean"
+        },
+        "severity": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 5
+        },
+        "uncertain": {
+          "type": "boolean"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "violation": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "severity": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "severity": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

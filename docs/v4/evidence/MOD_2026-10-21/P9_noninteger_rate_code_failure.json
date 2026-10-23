@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-10-21T08:23:57.5514283+08:00",
+  "scope": "synthetic response classifier malformed body code before type-guard fix",
+  "source_sha256": "d3bee15f7867c1f583b03646cf403cc8ccda9a82f642a2a1e1d1f152b9d16080",
+  "test_sha256": "778fe22afe47febbb162791c9f966fbf86eb59699f11435f51d1fd1a3d535825",
+  "command": "python -m pytest tests/v4/p9_official_v3/test_response_retry_coverage_mod.py -k noninteger_body_code -q -p no:cacheprovider",
+  "exit_code": 1,
+  "stdout": "F.....                                                                   [100%]\n================================== FAILURES ===================================\n_ test_noninteger_body_code_cannot_assert_a_known_not_executed_rate_refusal[99991400.0] _\n\ncode = 99991400.0\n\n    @pytest.mark.parametrize(\"code\", [99991400.0, \"99991400\", True, None, float(\"nan\"), float(\"inf\")])\n    def test_noninteger_body_code_cannot_assert_a_known_not_executed_rate_refusal(code: object) -> None:\n        result = classify_response(400, code)\n>       assert result.status == \"uncertain\"\nE       AssertionError: assert 'retryable' == 'uncertain'\nE         \nE         - uncertain\nE         + retryable\n\ntests\\v4\\p9_official_v3\\test_response_retry_coverage_mod.py:13: AssertionError\n=========================== short test summary info ===========================\nFAILED tests/v4/p9_official_v3/test_response_retry_coverage_mod.py::test_noninteger_body_code_cannot_assert_a_known_not_executed_rate_refusal[99991400.0]\n1 failed, 5 passed, 19 deselected in 0.19s",
+  "real_model_calls": 0,
+  "external_effects": 0
+}

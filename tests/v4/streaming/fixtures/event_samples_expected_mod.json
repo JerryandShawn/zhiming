@@ -1,0 +1,23 @@
+{
+  "schema": "streaming.independent_samples.v1",
+  "synthetic_only": true,
+  "oracle": "Frozen from brain document 28 section 3 and blueprint 02 section 9 before product validators",
+  "scope": {"owner": "synthetic-owner", "run_id": "synthetic-run"},
+  "timestamp": "2026-10-21T07:00:00+08:00",
+  "samples": [
+    {"type": "started", "payload": {"thread_id": "life:self", "message_id": "assistant-msg", "area_id": "career", "topic_id": "synthetic-topic", "incognito": false}},
+    {"type": "status", "payload": {"text": "正在整理合成资料。", "phase": "thinking"}},
+    {"type": "tool_call", "payload": {"call_id": "synthetic-call", "name": "calendar_lookup", "summary": "查看合成日期安排"}},
+    {"type": "tool_result", "payload": {"call_id": "synthetic-call", "name": "calendar_lookup", "ok": true, "summary": "日期已查明", "receipt": {"synthetic": true}}},
+    {"type": "text_delta", "payload": {"text": "第一行\n第二行：你好，世界🌙。"}},
+    {"type": "text_reset", "payload": {"text": "合成修订全文。", "reason": "revised", "revision_id": "revision-2"}},
+    {"type": "memory_receipt", "payload": {"fact_id": "synthetic-fact", "write_status": "saved", "summary": "已记下合成偏好", "undo_token": "synthetic-undo", "sensitive": false}},
+    {"type": "memory_receipt", "payload": {"proposal_id": "synthetic-proposal", "write_status": "pending_confirm", "summary": "等待确认合成提案", "sensitive": true}},
+    {"type": "ask_user", "payload": {"ask_id": "synthetic-ask", "question": "你更喜欢哪种合成安排？", "options": [{"id": "a", "label": "先整理"}, {"id": "b", "label": "先练习"}], "allow_free_text": true, "multi": false, "why": "确认你的偏好"}},
+    {"type": "present_options", "payload": {"options_id": "synthetic-options", "prompt": "比较合成方案", "options": [{"id": "plan-a", "title": "先做样稿", "benefit": "更快获得反馈", "cost": "一小时", "risk": "返工", "reversibility": "easy", "first_step": "列出目录", "unknowns": []}, {"id": "plan-b", "title": "先收集资料", "benefit": "降低遗漏", "cost": "待确认", "risk": "进度较慢", "reversibility": "partial", "first_step": "确定资料清单", "unknowns": ["cost"]}]}},
+    {"type": "review", "payload": {"state": "pending", "reasons": []}},
+    {"type": "review", "payload": {"state": "skipped", "reasons": []}},
+    {"type": "final", "payload": {"message_id": "assistant-msg", "envelope": {"schema": "core4.0", "message_id": "assistant-msg", "text": "合成最终答复。", "receipts": [], "used_fact_ids": [], "used_claim_ids": [], "asked": null, "options": null, "review": {"state": "passed", "reasons": []}, "usage": {}}}},
+    {"type": "error", "payload": {"code": "synthetic_unavailable", "message": "暂时没有可用结果，请稍后再试。", "retryable": true}}
+  ]
+}

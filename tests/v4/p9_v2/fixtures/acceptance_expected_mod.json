@@ -1,0 +1,47 @@
+{
+  "schema": "p9_v2.independent_acceptance_truth.v1",
+  "synthetic_only": true,
+  "oracle": "Frozen before Q6 implementation from K3, legacy OutboxService._fresh and no-unknown-resend invariants",
+  "token_semantics": [
+    {"semantic": "question", "ttl_seconds": 86400},
+    {"semantic": "decision", "ttl_seconds": 86400},
+    {"semantic": "memory_receipt", "ttl_seconds": 86400},
+    {"semantic": "brief", "ttl_seconds": 86400},
+    {"semantic": "delete_memory", "ttl_seconds": 900},
+    {"semantic": "delete_source", "ttl_seconds": 900},
+    {"semantic": "apply_organization", "ttl_seconds": 900}
+  ],
+  "token_boundaries": [
+    {"offset_from_expiry_microseconds": -1, "may_execute": true, "refresh_needed": false},
+    {"offset_from_expiry_microseconds": 0, "may_execute": false, "refresh_needed": true},
+    {"offset_from_expiry_microseconds": 1, "may_execute": false, "refresh_needed": true}
+  ],
+  "token_expired_message": "这张卡已过期，我重新发一张",
+  "forbidden_token_mismatches": ["owner_id", "subject_id", "open_id", "kind", "entity_id", "payload_fingerprint"],
+  "freshness_failures": ["run_not_succeeded", "invalid_complete_payload", "owner_mismatch", "subject_mismatch", "empty_dependencies", "dependency_revision_changed", "outbox_payload_changed", "outbox_dependencies_changed"],
+  "lease_invariants": [
+    "claim and dispatch each obtain new authoritative freshness evidence",
+    "claim before dispatch may be recovered only while no physical request has started",
+    "a dispatch-started unknown outcome cannot be blindly claimed or resent",
+    "renew and ack require current scope fence token payload and unexpired lease",
+    "an old fence cannot settle or renew a replacement claim",
+    "all updates and recovery retain the first card_id and monotonic reserved sequence",
+    "only explicit close rejection may create fallback, timeout or unknown close cannot"
+  ],
+  "evidence_bindings": ["owner", "subject", "run", "business", "target", "payload", "operation", "fence", "card_id", "sequence"],
+  "reconciliation_seed": {
+    "delivered": false,
+    "evidence_ref": "synthetic-legacy-unsent-proof",
+    "message_id": null,
+    "verified_at": "2026-10-21T07:00:00+08:00",
+    "unknown_sibling": {"future_version": 17, "items": ["synthetic-a", {"nested": true}]},
+    "cardkit": {"unknown_inside": {"preserve": [1, 2, 3]}}
+  },
+  "reconciliation_invariants": [
+    "new cardkit namespace never overwrites legacy top-level delivery proof",
+    "unknown siblings at every preserved level retain their original values",
+    "plan and returned projections deep-copy and freeze nested source mappings",
+    "compare-and-swap compares the complete old mapping including unknown siblings",
+    "mutation after planning is rejected instead of overwriting concurrent evidence"
+  ]
+}

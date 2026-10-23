@@ -1,0 +1,319 @@
+{
+  "observed_at": "2026-10-21T09:38:13.877518+08:00",
+  "scope": "Read-only additional public input checks; no performance/test-suite/product modifications",
+  "python": "3.11.16",
+  "int_max_str_digits": 4300,
+  "rows": [
+    {
+      "id": "float_max",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "c2784e1abd6317452708f3fbf9641c16b959561bc621a1d408c23a20aa2cb585"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "c2784e1abd6317452708f3fbf9641c16b959561bc621a1d408c23a20aa2cb585"
+      }
+    },
+    {
+      "id": "float_min_subnormal",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "c46e7ca1be4c8734f373a56530787288fa2058d73d07855e9247e949f811a42a"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "c46e7ca1be4c8734f373a56530787288fa2058d73d07855e9247e949f811a42a"
+      }
+    },
+    {
+      "id": "negative_zero",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "c26617c7ccbcaa6631b45d851b8cf56e21d2ca624bdb1193afdbd4b560702cec"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "c26617c7ccbcaa6631b45d851b8cf56e21d2ca624bdb1193afdbd4b560702cec"
+      }
+    },
+    {
+      "id": "positive_huge_int",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "14707ad3c1bcdcf52cead362b8a21447ed7df70701f625660629699eb36221ae"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "14707ad3c1bcdcf52cead362b8a21447ed7df70701f625660629699eb36221ae"
+      }
+    },
+    {
+      "id": "negative_huge_int",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "abc9a4c84ae9be25424956ea5c475c45c6c0a4cf692fcbd08488c63e9b6d8632"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "abc9a4c84ae9be25424956ea5c475c45c6c0a4cf692fcbd08488c63e9b6d8632"
+      }
+    },
+    {
+      "id": "nan",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "positive_inf",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "negative_inf",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "naive_fold0",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "naive_fold1",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "year1_underflow",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "year9999_overflow",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "date_min",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "e4923acd50942784dc8fc3c8c1a2834bf13b3946c73d2660667cf7e7623434aa"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "e4923acd50942784dc8fc3c8c1a2834bf13b3946c73d2660667cf7e7623434aa"
+      }
+    },
+    {
+      "id": "date_max",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "08870c236e3b3534dbe23d959d0d17f317e9b1cfd87daf5e722adf655559ee85"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "08870c236e3b3534dbe23d959d0d17f317e9b1cfd87daf5e722adf655559ee85"
+      }
+    },
+    {
+      "id": "integer_over_decimal_digit_limit",
+      "oracle": {
+        "accepted": false,
+        "error_type": "ReflectionError"
+      },
+      "candidate": {
+        "accepted": false,
+        "error_type": "ProjectionError"
+      }
+    },
+    {
+      "id": "aware_fold_UTC_0",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "4f00604825cfc9afd99a53b60d689c557a4a5ec81cf2cf14dd1d89794f3aa4b2"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "4f00604825cfc9afd99a53b60d689c557a4a5ec81cf2cf14dd1d89794f3aa4b2"
+      }
+    },
+    {
+      "id": "aware_fold_UTC_1",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "4f00604825cfc9afd99a53b60d689c557a4a5ec81cf2cf14dd1d89794f3aa4b2"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "4f00604825cfc9afd99a53b60d689c557a4a5ec81cf2cf14dd1d89794f3aa4b2"
+      }
+    },
+    {
+      "id": "aware_fold_Asia/Shanghai_0",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "e838405826a835ead6cccb91a74e301306be32bb9be69455194ba05380e7efdd"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "e838405826a835ead6cccb91a74e301306be32bb9be69455194ba05380e7efdd"
+      }
+    },
+    {
+      "id": "aware_fold_Asia/Shanghai_1",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "e838405826a835ead6cccb91a74e301306be32bb9be69455194ba05380e7efdd"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "e838405826a835ead6cccb91a74e301306be32bb9be69455194ba05380e7efdd"
+      }
+    },
+    {
+      "id": "aware_fold_Europe/Berlin_0",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "a6af2e348f98a4a15426222a9ba852570112573fdfcf5867e1991a9f7122045c"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "a6af2e348f98a4a15426222a9ba852570112573fdfcf5867e1991a9f7122045c"
+      }
+    },
+    {
+      "id": "aware_fold_Europe/Berlin_1",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "a6af2e348f98a4a15426222a9ba852570112573fdfcf5867e1991a9f7122045c"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "a6af2e348f98a4a15426222a9ba852570112573fdfcf5867e1991a9f7122045c"
+      }
+    },
+    {
+      "id": "aware_fold_America/New_York_0",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "59344e81a021eefc4ea6efb265e14ee4178ba594bb88e084e2704f554c28d270"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "59344e81a021eefc4ea6efb265e14ee4178ba594bb88e084e2704f554c28d270"
+      }
+    },
+    {
+      "id": "aware_fold_America/New_York_1",
+      "oracle": {
+        "accepted": true,
+        "fingerprint": "682ba4bc27beb71260a5c550c1ea2cd5fb7c706c98bf344c574edd08f0f1bea8"
+      },
+      "candidate": {
+        "accepted": true,
+        "fingerprint": "682ba4bc27beb71260a5c550c1ea2cd5fb7c706c98bf344c574edd08f0f1bea8"
+      }
+    },
+    {
+      "id": "depth_0",
+      "oracle_accepted": true,
+      "candidate_accepted": true,
+      "documented_narrowing": false
+    },
+    {
+      "id": "depth_1",
+      "oracle_accepted": true,
+      "candidate_accepted": true,
+      "documented_narrowing": false
+    },
+    {
+      "id": "depth_63",
+      "oracle_accepted": true,
+      "candidate_accepted": true,
+      "documented_narrowing": false
+    },
+    {
+      "id": "depth_64",
+      "oracle_accepted": true,
+      "candidate_accepted": true,
+      "documented_narrowing": false
+    },
+    {
+      "id": "depth_65",
+      "oracle_accepted": true,
+      "candidate_accepted": false,
+      "documented_narrowing": true
+    },
+    {
+      "id": "depth_66",
+      "oracle_accepted": true,
+      "candidate_accepted": false,
+      "documented_narrowing": true
+    },
+    {
+      "id": "mixed_tuple_list_alias_mutation",
+      "passed": true
+    },
+    {
+      "id": "overdepth_error_has_no_original_marker",
+      "passed": true,
+      "reason_code": "experimental_projection_input_invalid"
+    }
+  ],
+  "source_sha256_before_after": {
+    "mingjing_core/application/reflection_projection_exp/projector.py": "eac3e8316b367f7d9679afb77674cff30ab6db63510180ec5d09ee4a8dd6bcde",
+    "mingjing_core/application/reflection_projection_exp/types.py": "0b38e3d2aaa489b8bcccb8f86de3a280acdfd8200f0838413dd3042628152f18",
+    "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f",
+    "tools/mod_week/benchmark_reflection_projection_RPF01.py": "3ea3b1fa6b51899a04a056f2164efb92cc6fc659b67b83e1151ffc82a2348089"
+  },
+  "source_unchanged": true,
+  "counterexamples_found": 0,
+  "limitations": [
+    "Finite set, not exhaustive proof",
+    "Concurrent input mutation excluded by public contract",
+    "Depth limits are not width/node/byte quotas"
+  ]
+}

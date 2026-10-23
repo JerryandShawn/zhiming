@@ -1,0 +1,15 @@
+{
+  "schema": "organize.blind_b.label_namespace.v1",
+  "purpose": "Evaluation namespace normalization only; no message or semantic annotation changes",
+  "fixture_sha256": "db998b7d960af7276c87d45d25ee024a0d3913e72d74e0bd938dfc6f60cd8682",
+  "normalization": {
+    "daily": "daily",
+    "career": "career",
+    "relationships": "relationships",
+    "family": "family",
+    "wellbeing": "wellbeing",
+    "finance": "finance",
+    "study": "metaphysics"
+  },
+  "reason": "The independently authored semantic label study names the documented 命理研习 area; the existing public DEFAULT_SPACES contract uses metaphysics. Only IDs were inspected after freezing, no keyword lists or classifier behavior. Apply this fixed map before scoring, never retune it from errors."
+}

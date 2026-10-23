@@ -1,0 +1,37 @@
+{
+  "schema": "calibration-import-summary-v3",
+  "source_sha256": "356a1695b12548acd3d8782dc5a45c0003633e76d52b827ca55aa215ad25f791",
+  "dataset_sha256": "d42f97d5e50036f975e62daeca2cee89dd83c085ca5f87b078ef2429ad230771",
+  "plan_sha256": "a246a79c3236b6c6c4c19e3988e90e348599322cf5f0b68817865056abdd5f77",
+  "sample_count": 75,
+  "batch_count": 5,
+  "batch_size": 15,
+  "labels_origin": "brain_ai",
+  "human_verified_count": 0,
+  "critic_observation_count": 0,
+  "mode": "record_only",
+  "runtime_revision_enabled": false,
+  "limitations": [
+    "No human review or critic call occurred",
+    "Full text, labels and mapping stay private",
+    "Daily plan is pure and not yet persisted under an authenticated host lock",
+    "The 75 hard cases alone cannot enable critic revision"
+  ],
+  "private_output": "private/calibration/v2/brain25_356a1695b12548ac_blind_v31",
+  "critic_source_sha256": "30044ebacaddd367a867fc993f9ac5a2e6ec84a34032b1f3eafbbe379925f651",
+  "policy_sha256": "9745a05f8b7c029889168b3ae527dd001bfd713835bf55bb29b39cfb51f6f39d",
+  "authenticated_scope": false,
+  "stage": "M1_blind_corrected_v31",
+  "blind_payload_schema": "blind-review-batch-v3.1",
+  "generated_at": "2026-10-21T07:55:50.384334+08:00",
+  "supersedes": "CALIB_V3_M1_import_summary.json",
+  "previous_blind_batches_valid_for_human_review": false,
+  "correction": "Old candidate.item exposed the target rubric; original private export retained only as invalid-blinding history",
+  "payload_sha256": {
+    "1": "7c6f45e6aa0115551ec6d76f8e5c6a17e0b1421a7cff708b2e0d3196bc945038",
+    "2": "cd395bd79ebe34292bb22fed682e443fc022f0c5516473b7046e140c30d97373",
+    "3": "8072253ec9cb0f388aef3c57a409281536aaab01170a4d2b99612f1470519488",
+    "4": "87d3f7e48aff9d596cb9fce634f06efa1d68bda9ee2f2474ea9b3565e06dd3d3",
+    "5": "65deca2e63f977703f6b2d210bc51b1a1ad56f36d80dfe31b4046a800aab0861"
+  }
+}

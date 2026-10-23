@@ -1,0 +1,100 @@
+{
+  "observed_at": "2026-10-21T07:59:50.957844+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "synthetic_120_messages_export_preview_replay_inverse_plan",
+      "units_per_run": 120,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.28286759999900823,
+        0.2812296000047354,
+        0.2831185999966692,
+        0.2888578000056441,
+        0.28636240000196267
+      ],
+      "median_seconds": 0.2831185999966692,
+      "max_seconds": 0.2888578000056441,
+      "separate_tracemalloc_peak_bytes": 3608755
+    },
+    {
+      "name": "synthetic_500_messages_export_preview_replay_inverse_plan",
+      "units_per_run": 500,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        1.2444535000031465,
+        1.2522016000002623,
+        1.2482368999990285,
+        1.263586100001703,
+        1.2442861000017729
+      ],
+      "median_seconds": 1.2482368999990285,
+      "max_seconds": 1.263586100001703,
+      "separate_tracemalloc_peak_bytes": 12481694
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/export_dry_run_v3/__init__.py": "e1f9a4d396f8c828d45d27b7f75dbed1e9d6a11a8ee95cea26c002a9a83d8859",
+    "mingjing_core/organize/export_dry_run_v3/classification.py": "cd84ab65bad193845811573b8b22b5cdcfd669cbb92efe186e81da9290df3568",
+    "mingjing_core/organize/export_dry_run_v3/codec.py": "d0bf6e7f402e5f092dfaffb645fa93cdb3bdb7256dd2a09efdbb294501963cff",
+    "mingjing_core/organize/export_dry_run_v3/contracts.py": "16f1d28883c4dac4c1b0510e8fc06da883c554455a4d00f04ed5013355de57f9",
+    "mingjing_core/organize/export_dry_run_v3/guards.py": "0aa01cbe997e349a4e87f1ccaaead4218dc90399e17bbd2169ddccc23125f450",
+    "mingjing_core/organize/export_dry_run_v3/plan_values.py": "78a8963e94269aeb7f4ab9b940a97ce0b5ae74a32399077f8e45ba5ec3180195",
+    "mingjing_core/organize/export_dry_run_v3/planner.py": "7db16b4e640c09647a7c5a4b45322bc9046ab97eb79f209458793f4fc7330b80",
+    "mingjing_core/organize/export_dry_run_v3/preview.py": "b3a44ce3c9b56fd8b2027bc482b0432e82b96f2312660bc3be439f08b26fedc7",
+    "mingjing_core/organize/export_dry_run_v3/undo.py": "25a1fe61908ac4734da5c1d83e2dcce40fea0a56cdd1d02a5e62d734a151acb2",
+    "mingjing_core/organize/v2/__init__.py": "dad7a2691060fa1249d8c6ee5b647892b160eac0434dd2dfc346887c4ce34747",
+    "mingjing_core/organize/v2/classifier.py": "7067a35699626689f6631e600ffb76a7ea1b959aca4a56c4e54bfbb7c75991a9",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/organize/v2/lexicons.py": "3c984cadb0b1f72e459a902c1bc7d86936e1171fa8a9f514f6b7103a49515cc4",
+    "mingjing_core/organize/v2/metrics.py": "dd2824762588d6042dc939b2dfc70aaff7a18c5721dc714820d0fd2f6c69f6df",
+    "mingjing_core/organize/v2/ngrams.py": "35ee8fda5df9b9cd59320d51572a19df5ff054d9df615e6844cccdadd219a334",
+    "mingjing_core/organize/v2/onnx_port.py": "8f1805a3786c7565e04885202429e33bec40873fd77b93226e471359e4faead7",
+    "mingjing_core/organize/v2/scoped.py": "0558ea1d93b741f80c1ade495a95780b75618758bf35cee9c4b13bbf4428506b",
+    "mingjing_core/organize/v2/topics.py": "75253d96e0067b55efc8714bec054ef2b9b7f6dbc5c23684b1852e92f4ef4240",
+    "tools/eval/fixtures/mod_20261021/v3_export_synthetic.json": "bef7bf8775384bf98eab4698297b535fa9f09c571d82160e1d17c0c229fba496",
+    "tools/mod_week/benchmark_export_dry_run_v3.py": "89cd40706bfdb63570266ba34cdec0ea1500dcefa8e837b3115d68507629d581"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ],
+  "source_stable_during_measurement": true,
+  "source_sha256_before": {
+    "mingjing_core/organize/export_dry_run_v3/__init__.py": "e1f9a4d396f8c828d45d27b7f75dbed1e9d6a11a8ee95cea26c002a9a83d8859",
+    "mingjing_core/organize/export_dry_run_v3/classification.py": "cd84ab65bad193845811573b8b22b5cdcfd669cbb92efe186e81da9290df3568",
+    "mingjing_core/organize/export_dry_run_v3/codec.py": "d0bf6e7f402e5f092dfaffb645fa93cdb3bdb7256dd2a09efdbb294501963cff",
+    "mingjing_core/organize/export_dry_run_v3/contracts.py": "16f1d28883c4dac4c1b0510e8fc06da883c554455a4d00f04ed5013355de57f9",
+    "mingjing_core/organize/export_dry_run_v3/guards.py": "0aa01cbe997e349a4e87f1ccaaead4218dc90399e17bbd2169ddccc23125f450",
+    "mingjing_core/organize/export_dry_run_v3/plan_values.py": "78a8963e94269aeb7f4ab9b940a97ce0b5ae74a32399077f8e45ba5ec3180195",
+    "mingjing_core/organize/export_dry_run_v3/planner.py": "7db16b4e640c09647a7c5a4b45322bc9046ab97eb79f209458793f4fc7330b80",
+    "mingjing_core/organize/export_dry_run_v3/preview.py": "b3a44ce3c9b56fd8b2027bc482b0432e82b96f2312660bc3be439f08b26fedc7",
+    "mingjing_core/organize/export_dry_run_v3/undo.py": "25a1fe61908ac4734da5c1d83e2dcce40fea0a56cdd1d02a5e62d734a151acb2",
+    "mingjing_core/organize/v2/__init__.py": "dad7a2691060fa1249d8c6ee5b647892b160eac0434dd2dfc346887c4ce34747",
+    "mingjing_core/organize/v2/classifier.py": "7067a35699626689f6631e600ffb76a7ea1b959aca4a56c4e54bfbb7c75991a9",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/organize/v2/lexicons.py": "3c984cadb0b1f72e459a902c1bc7d86936e1171fa8a9f514f6b7103a49515cc4",
+    "mingjing_core/organize/v2/metrics.py": "dd2824762588d6042dc939b2dfc70aaff7a18c5721dc714820d0fd2f6c69f6df",
+    "mingjing_core/organize/v2/ngrams.py": "35ee8fda5df9b9cd59320d51572a19df5ff054d9df615e6844cccdadd219a334",
+    "mingjing_core/organize/v2/onnx_port.py": "8f1805a3786c7565e04885202429e33bec40873fd77b93226e471359e4faead7",
+    "mingjing_core/organize/v2/scoped.py": "0558ea1d93b741f80c1ade495a95780b75618758bf35cee9c4b13bbf4428506b",
+    "mingjing_core/organize/v2/topics.py": "75253d96e0067b55efc8714bec054ef2b9b7f6dbc5c23684b1852e92f4ef4240",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "tools/eval/fixtures/mod_20261021/v3_export_synthetic.json": "bef7bf8775384bf98eab4698297b535fa9f09c571d82160e1d17c0c229fba496",
+    "tools/mod_week/benchmark_export_dry_run_v3.py": "89cd40706bfdb63570266ba34cdec0ea1500dcefa8e837b3115d68507629d581"
+  },
+  "workload_notes": [
+    "Each chain includes fixture construction, conversion, authorized preview, planned-ledger replay and inverse planning.",
+    "Alternating user/assistant rows preserve separate full original anchors; missing/null labels alternate.",
+    "The post-state is a synthetic private copy, not a database apply or actual undo.",
+    "No real export, classification-quality claim, model, network, database or business operation is measured."
+  ]
+}

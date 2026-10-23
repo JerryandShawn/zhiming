@@ -1,0 +1,55 @@
+{
+  "observed_at": "2026-10-21T00:19:36.062714+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "organize_v2_classify_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.13274420000016107,
+        0.13248119999934715,
+        0.14597169999979087,
+        0.13604709999981424,
+        0.1320784999998068
+      ],
+      "median_seconds": 0.13274420000016107,
+      "max_seconds": 0.14597169999979087,
+      "separate_tracemalloc_peak_bytes": 182426
+    },
+    {
+      "name": "organize_v2_topics_100",
+      "units_per_run": 100,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.017487399999481568,
+        0.01706800000010844,
+        0.016972200000054727,
+        0.017298400000072434,
+        0.01698500000020431
+      ],
+      "median_seconds": 0.01706800000010844,
+      "max_seconds": 0.017487399999481568,
+      "separate_tracemalloc_peak_bytes": 390196
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/organize/v2/__init__.py": "dad7a2691060fa1249d8c6ee5b647892b160eac0434dd2dfc346887c4ce34747",
+    "mingjing_core/organize/v2/classifier.py": "7067a35699626689f6631e600ffb76a7ea1b959aca4a56c4e54bfbb7c75991a9",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/organize/v2/lexicons.py": "3c984cadb0b1f72e459a902c1bc7d86936e1171fa8a9f514f6b7103a49515cc4",
+    "mingjing_core/organize/v2/metrics.py": "dd2824762588d6042dc939b2dfc70aaff7a18c5721dc714820d0fd2f6c69f6df",
+    "mingjing_core/organize/v2/ngrams.py": "35ee8fda5df9b9cd59320d51572a19df5ff054d9df615e6844cccdadd219a334",
+    "mingjing_core/organize/v2/onnx_port.py": "8f1805a3786c7565e04885202429e33bec40873fd77b93226e471359e4faead7",
+    "mingjing_core/organize/v2/scoped.py": "0558ea1d93b741f80c1ade495a95780b75618758bf35cee9c4b13bbf4428506b",
+    "mingjing_core/organize/v2/topics.py": "75253d96e0067b55efc8714bec054ef2b9b7f6dbc5c23684b1852e92f4ef4240",
+    "tools/mod_week/benchmark_organize_v2.py": "c7ff4e2c8c3155694bab8b2db80b6afc7bb791f91af75afdba630821d7c4da0f"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

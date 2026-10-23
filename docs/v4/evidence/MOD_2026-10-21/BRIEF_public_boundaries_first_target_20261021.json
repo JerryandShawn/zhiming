@@ -1,0 +1,45 @@
+{
+  "schema": "briefing.public_boundary.first_target.v1",
+  "started_at": "2026-10-21T10:03:24.011804+08:00",
+  "finished_at": "2026-10-21T10:03:25.655318+08:00",
+  "exit_code": 1,
+  "matrix_sha256": "1f77c413625f6f24c059cd9c7fd372c388b613459fb032632dd2bd1719cdaf9e",
+  "product_source_sha256": {
+    "mingjing_core/application/briefing_v2/__init__.py": "e4d45e0c7cae782968458e01ee9633163a52d8c148399cb3f86944884a99eb18",
+    "mingjing_core/application/briefing_v2/authorization.py": "dfc208bc9c5b45b00cf256a36d27a448af250c12db89558404712eb79193a742",
+    "mingjing_core/application/briefing_v2/calendar.py": "2537cb122b1a7547efb8cfef3e8fecc510c5731245215aab1f446ab2c6c0a0af",
+    "mingjing_core/application/briefing_v2/compose.py": "debab87c3dbd32a2ba659f2adbf7e3b985809b3cfab6c1736d17b9a4dfeeb48f",
+    "mingjing_core/application/briefing_v2/contracts.py": "ba352ffde101783ca8dce41e07d132539c36f67da9cc585566e4731b71f6b53b",
+    "mingjing_core/application/briefing_v2/evidence.py": "fe0fd74df3ac39502b0a192e76413e3cae58d9250a7fb048b9834130c2c3e7d6",
+    "mingjing_core/application/briefing_v2/items.py": "1dd15b22cf025280e1c5bef07ee32ea2c95114af47ca22337724c2db39d39a9a",
+    "mingjing_core/application/briefing_v2/transit.py": "0b16d8537dcac16626b8c20215fbe2d77b86eb5d40e8f211549b896aeed4231e"
+  },
+  "product_before_after_equal": true,
+  "existing_tests_fixture_sha256": {
+    "tests/v4/briefing_v2/brief_acceptance_support_mod.py": "16abc8c56bc8a20cb0b3d49ecd0fb4390332e2c3c0ad2f6922de253b4a82e3b7",
+    "tests/v4/briefing_v2/test_acceptance_briefing_delivery_mod.py": "e6ac50e28bed7f94ea8429658d8f825172bc9b683d1fedbe3399c17bc8feff80",
+    "tests/v4/briefing_v2/test_acceptance_briefing_properties_mod.py": "b49aa35e75dc9ad70a9f2af55a2f3377351719c0c146a71ffbf4b075facfa2b1",
+    "tests/v4/briefing_v2/test_acceptance_briefing_transit_mod.py": "37ebd6dca56be59ea4eb3e05507467ae50deba9b3d40a2e22abe64f5b362a3f9",
+    "tests/v4/briefing_v2/test_briefing_mod.py": "1942278142131648ad8e5e5a2093f0a38d77e2641b3c3c66846e1a6c3f2dff74",
+    "tests/v4/briefing_v2/fixtures/acceptance_expected_mod.json": "8835190dfbfc55b27cea027eb6dedd55fef1b3e60e24c021bf0fb466c8ea763c",
+    "tests/v4/briefing_v2/fixtures/ACCEPTANCE_manifest_mod.md": "e3eb3fb6414d8f2bac050aa43071d19a999ac7d3f29c067ebf46c71182a3aff5",
+    "tests/v4/briefing_v2/fixtures/daily_transit_synthetic_20261021.json": "0b0984e1a6cf9c48f060071e861da1438d9ee2122a7635095d7f71933a589205",
+    "tests/v4/day_pipeline/test_day_pipeline_mod.py": "1716702c9a9f6643a80056271a980c9268ac83ba03bf8f2ef9fea9e9f79bc577"
+  },
+  "existing_tests_fixture_unchanged": true,
+  "new_test_sha256": "2e8082d4f579c5af0132162949617545f37f294e50580582d5f3ea433a594e90",
+  "new_support_sha256": "e2a327201a026c6dcee056a9ccce72343ee155e2a39c07ae175c93f9ebbad45a",
+  "raw_log": "private/mod-week/BRIEF_public_boundaries_first.log",
+  "raw_sha256": "d241a0a02e6df77cbde09f23b0f5bcc61efd2489f5b2d0ebff5e19bef7144295",
+  "raw_lf_only": true,
+  "failures": [
+    "tests/v4/briefing_v2/test_public_boundaries_core_mod.py::test_public_calendar_malformed_snapshot_has_a_fixed_domain_error[BC09]",
+    "tests/v4/briefing_v2/test_public_boundaries_core_mod.py::test_public_calendar_malformed_snapshot_has_a_fixed_domain_error[BC11]",
+    "tests/v4/briefing_v2/test_public_boundaries_core_mod.py::test_bad_or_unsupported_rule_never_renders_a_claim_or_raises_an_uncontrolled_error[BT01]",
+    "tests/v4/briefing_v2/test_public_boundaries_core_mod.py::test_one_batch_cannot_use_contradictory_current_states_for_one_source[BS01]",
+    "tests/v4/briefing_v2/test_public_boundaries_core_mod.py::test_one_batch_cannot_use_contradictory_current_states_for_one_source[BS02]"
+  ],
+  "summary": "5 failed, 25 passed in 1.32s",
+  "isolation": "Keys blank, tracing false, socket outbound and DNS blocked; only new target",
+  "product_modified": false
+}

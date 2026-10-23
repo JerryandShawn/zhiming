@@ -1,0 +1,127 @@
+{
+  "observed_at_beijing": "2026-10-21T08:53:52.159424+08:00",
+  "scope": "only reports_v2 and reflection_v3; not whole PR",
+  "target_suite_result": {
+    "passed": 543,
+    "seconds": 3.42,
+    "baseline_tests_unchanged": 480,
+    "new_behavior_tests": 63
+  },
+  "baseline_raw": {
+    "path": "docs/v4/evidence/MOD_2026-10-21/REPORTS_REFLECTION_coverage_20261021-082526.json",
+    "sha256": "f5c8d2c4d0b4e262055ceeef8fa37b4691acd945c57db8406d36f163e3b86103"
+  },
+  "final_raw": {
+    "path": "docs/v4/evidence/MOD_2026-10-21/REPORTS_REFLECTION_coverage_calendar_20261021-085210.json",
+    "sha256": "01b89d6ba5755a07da0ccf82b5945d362f21ca3f2865544c8a02779e0a8a567c"
+  },
+  "combined_definition": "(covered_lines+covered_branches)/(num_statements+num_branches)*100",
+  "source_aggregate_method": "sorted repository path UTF8 + NUL + exact file bytes",
+  "groups": [
+    {
+      "module": "reports_v2",
+      "baseline": {
+        "source_files": 8,
+        "covered_lines": 433,
+        "num_statements": 479,
+        "covered_branches": 139,
+        "num_branches": 188,
+        "line_percent": 90.39665970772442,
+        "branch_percent": 73.93617021276596,
+        "combined_percent": 85.75712143928035
+      },
+      "final": {
+        "source_files": 8,
+        "covered_lines": 455,
+        "num_statements": 479,
+        "covered_branches": 160,
+        "num_branches": 188,
+        "line_percent": 94.98956158663883,
+        "branch_percent": 85.1063829787234,
+        "combined_percent": 92.20389805097452
+      },
+      "source_hashes": {
+        "mingjing_core/application/reports_v2/__init__.py": "2967b8c5afbc8af6fae5213a6eacf2b09f974df3e88d8aca99b73c840cb712ca",
+        "mingjing_core/application/reports_v2/citations.py": "bada0986065bc57295fa9268f08a3e828c3770b9f78ced7d2e46acc206a07d66",
+        "mingjing_core/application/reports_v2/compose.py": "2ec1975737d16fff87f76778b1300c2a77884ab7552e6b6fd91f0314d73648b7",
+        "mingjing_core/application/reports_v2/contracts.py": "3603cebb3fbb3af2d95d51aef76808885af8a7c4c85fd111499526a87ee26b6a",
+        "mingjing_core/application/reports_v2/manifest.py": "d2a3070492a4491e11338d16282c2e7e94a32abb3689ac8f6b8c2ee897daf208",
+        "mingjing_core/application/reports_v2/periods.py": "c6bcd452eb8fdc4a0650af1039e915d3895e4da8abdb6b7d216ba35b23e6ef47",
+        "mingjing_core/application/reports_v2/records.py": "000740e80c73d4904e5514f3edbab819265a0eeffdc695152e8698541108aff3",
+        "mingjing_core/application/reports_v2/symbolic.py": "ca6fec8b8ea8aca04ecbcb97e8de814a9c465cd2b1b9ac09ae10a66e671f1173"
+      },
+      "aggregate_source_sha256": "6713661136b4e563b9687d37fcbd3657d7b8b93c90013aaaca2331a49f91a4d2",
+      "matches_previously_frozen_source_hash": true,
+      "combined_target_90_met": true
+    },
+    {
+      "module": "reflection_v3",
+      "baseline": {
+        "source_files": 18,
+        "covered_lines": 930,
+        "num_statements": 1017,
+        "covered_branches": 250,
+        "num_branches": 322,
+        "line_percent": 91.44542772861357,
+        "branch_percent": 77.63975155279503,
+        "combined_percent": 88.12546676624346
+      },
+      "final": {
+        "source_files": 18,
+        "covered_lines": 964,
+        "num_statements": 1017,
+        "covered_branches": 273,
+        "num_branches": 322,
+        "line_percent": 94.78859390363814,
+        "branch_percent": 84.78260869565217,
+        "combined_percent": 92.38237490664675
+      },
+      "source_hashes": {
+        "mingjing_core/application/reflection_v3/__init__.py": "d10780cce4e2d71ad7381f1fe825117025c092affb871abd7102e9e696a9d1b6",
+        "mingjing_core/application/reflection_v3/effects.py": "be9fa046c5f7cf9fd115630b350c0864105bfeefed05057dadbf740017def6f1",
+        "mingjing_core/application/reflection_v3/fact_analysis.py": "28b9ba3a18dd5e7eb5fc1fd716b5c70725ce3eeec51185058ab39a131194d3a4",
+        "mingjing_core/application/reflection_v3/fact_candidates.py": "88174c1cc809da0e91ad5c73470b7bd6e0b5c521512f525598c378031911ea82",
+        "mingjing_core/application/reflection_v3/fact_policy.py": "1c67c2b25e0acd5d3c8f02b35ec3759ed6dda01ebf9b492cc393637a9e6d2da7",
+        "mingjing_core/application/reflection_v3/gaps.py": "a0158228f39e752da037231a32f9ed466e8f521b3d986d1c578d1f8113eeb350",
+        "mingjing_core/application/reflection_v3/intent_guard.py": "39006be2ba087afe345fc0c19f02c7b7caf2e44a9a80259f2756779e177dccb8",
+        "mingjing_core/application/reflection_v3/lifecycle.py": "ea0276606f9402d05e37b0d21fcc33271b4c9fa390d160dcf6e7a9597fe8cf87",
+        "mingjing_core/application/reflection_v3/profile_contracts.py": "0ef8d19a181c65ccb5880165c8c4b2cc7bd180beba40b56df06ebe7e4b0642d3",
+        "mingjing_core/application/reflection_v3/profile_guard.py": "848657a6cd729a1dae0c9af7e82f1f4f421c2539efe97e99f4f8d06c2b8d8027",
+        "mingjing_core/application/reflection_v3/profile_renderer.py": "86cdc459407ffe47db150cf05898b4970aae2788fab0cc33bdfe7f53cbb29ec0",
+        "mingjing_core/application/reflection_v3/schedule.py": "deeec138c799c143f9558e1cdf446e0b3b6384282ee9f38a963691e0fbe0872e",
+        "mingjing_core/application/reflection_v3/schedule_contracts.py": "b48c13a4f4c29d3c78e87ac6cbd702743b0aeebed5890b5c8da439d2b1ed4ffc",
+        "mingjing_core/application/reflection_v3/source_policy.py": "a371c4c89b2b00bbd734160cc75280f35e9ad704acc4745efc15556ba8df64c2",
+        "mingjing_core/application/reflection_v3/summaries.py": "3f5a916c49208d3c41871527c11bf410c8eafae28c76a431315f105195d20374",
+        "mingjing_core/application/reflection_v3/validation.py": "bed7fe6df1e949eaf76b446e43063718bdf6bdb3afa1648036855c3a89efc06c",
+        "mingjing_core/application/reflection_v3/work.py": "c7a4a9d69b3484b708f9763e876b91e0565b488967deb1278a9fe56e497cc613",
+        "mingjing_core/application/reflection_v3/work_contracts.py": "59d3a5c2a424e36fae79a84f9f3db549de0be32fa9a20500ac9907e75c9e6ec5"
+      },
+      "aggregate_source_sha256": "2eee084f643e38d0e32d918e52ecc93c7ce1564558332419a94ffa3321ef390d",
+      "matches_previously_frozen_source_hash": true,
+      "combined_target_90_met": true
+    }
+  ],
+  "new_test_hashes": {
+    "tests/v4/reports_v2/test_reports_coverage_calendar_mod.py": "55f0f75d43404e68798144f9ff830ed2a07365e678a170a7e51dde2498d665fb",
+    "tests/v4/reflection_v3/test_reflection_coverage_calendar_mod.py": "a93a9f97184d1dd1ccb20310304af025d6d6b4422f84d0d1c089daa845ec17ab"
+  },
+  "unchanged_gold_hashes": {
+    "tests/v4/reports_v2/fixtures/expected_calendar_mod.json": "380252aa72c237eeb6ded44dc6b73cc590b1b030806a3ae4420ee78fbf08db76",
+    "tests/v4/reflection_v3/fixtures/expected_calendar_mod.json": "c69f9956b75c891b2ca18e7a9df0cecf920f76db11b9a497ed4962f37c06464e"
+  },
+  "effects": {
+    "model_calls": 0,
+    "server_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0,
+    "notifications": 0,
+    "git_operations": 0
+  },
+  "limits": [
+    "only the two declared source directories measured",
+    "branch coverage separately below 90; combined target passed",
+    "no products, frozen matrices, existing tests or coverage exclusion rules changed",
+    "remaining lines and branches preserved in raw; no forced unreachable output objects",
+    "no performance or full-PR coverage claim"
+  ]
+}

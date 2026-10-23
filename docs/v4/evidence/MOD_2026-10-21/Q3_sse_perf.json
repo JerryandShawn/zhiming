@@ -1,0 +1,66 @@
+{
+  "observed_at": "2026-10-20T23:43:43.024908+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "sse_append_codec_replay_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.038181999999324034,
+        0.038558300000659074,
+        0.03859059999922465,
+        0.03838610000002518,
+        0.03773949999958859
+      ],
+      "median_seconds": 0.03838610000002518,
+      "max_seconds": 0.03859059999922465,
+      "separate_tracemalloc_peak_bytes": 624352
+    },
+    {
+      "name": "sse_batch_5000_chunks",
+      "units_per_run": 5000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.03748470000027737,
+        0.03830530000050203,
+        0.038672600000609236,
+        0.03889249999974709,
+        0.0378670999998576
+      ],
+      "median_seconds": 0.03830530000050203,
+      "max_seconds": 0.03889249999974709,
+      "separate_tracemalloc_peak_bytes": 3915
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/streaming/__init__.py": "1e871da7c671c946162f9c0f1c2a3afdd445936cc21bc955b112443072c5d8b9",
+    "mingjing_core/streaming/cleanup.py": "5b2a833e63b253bc6b4530a1b4b7d657e1ed93becf9a66a1c2990d39a3950a9b",
+    "mingjing_core/streaming/coalescer.py": "6fe6d4cdb28f580ce9c483f16c20117e93915f9fb7ab6256cc8cd82485dfdc09",
+    "mingjing_core/streaming/codec.py": "a58e8a0f995599fcaba61aba35801ff37a46a5f99bdd4a64a06d52603bce8992",
+    "mingjing_core/streaming/envelope_reader.py": "c791c59983163f92100635b2afbe38e74e1051eeb8a47ea53713079f48f9c7a3",
+    "mingjing_core/streaming/event_errors.py": "7697b637fa19df6ac35c2abdfa50856ae20c09061f4b74f6b27077d8c1baec18",
+    "mingjing_core/streaming/event_models.py": "7ad964b2f5d8fc13ba6565ef3132a391e11f729d3969caf06b6b14535706382e",
+    "mingjing_core/streaming/event_nested.py": "95658a4cb869ed25b15ae1717a659fe4facaa3626c465051a6f8cd1d3fa5c941",
+    "mingjing_core/streaming/event_payloads.py": "54561e6cfef3ff8353abbac64c2f850bfda6b7820b9e831680040ae8b5716eff",
+    "mingjing_core/streaming/event_store.py": "7ab20963120d7cef942855c7eb9c43cae5a3f3ce79a0739ca60af8b06421ff6b",
+    "mingjing_core/streaming/heartbeat.py": "732379a7debaab0c253e5d9db92817dca2e4988d8f46d38b2ec862278bcf0af6",
+    "mingjing_core/streaming/json_values.py": "ae18a6b0288f0c5cc16498cbd7503d3177c1f0b31dbceb2735de32afdf06902e",
+    "mingjing_core/streaming/memory_event_store.py": "e699e126f1199000015de4cddea44415fb8f99455e08197e9f0beebfa7dd79dd",
+    "mingjing_core/streaming/pg_event_store.py": "e28df8b9b618fff83263edc5214a616fd7057d64c8b743c287c66dfa3ebad479",
+    "mingjing_core/streaming/public_shapes.py": "e9f2705c18acf8cff2654f757ce7485d1ad8e0a70ec294a6bfdc4cd206bd1ffb",
+    "mingjing_core/streaming/resume.py": "03973f9dd79e29064447b09a76bc6124f8d0e3b086273bd653fe609a52a8b100",
+    "mingjing_core/streaming/store_contracts.py": "c04e5f2b41cd249cce662b7de742d7038a1eb68791326725649c387afea97a83",
+    "mingjing_core/streaming/store_serialization.py": "b63e561388976136bd5951af0764d3da0119fb03f61e973748807135cc45f68f",
+    "mingjing_core/streaming/stream_clock.py": "0ff56d38e8a1c22d01003e8fb03500b76d0b79d7d9ae1ba27478bbb152776971",
+    "mingjing_core/streaming/text_projection.py": "961f794eb8e660f79a0a9f74359ea37ffe6365ca4382cd4af19f488e51f95200",
+    "tools/mod_week/benchmark_streaming.py": "3d243453b0110578b538466cc8df140a9c43284ab34af7460f214cab60d811e0"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

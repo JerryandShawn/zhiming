@@ -1,0 +1,87 @@
+{
+  "observed_at": "2026-10-21T00:54:09.361604+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "full_stream_lifecycle_100",
+      "units_per_run": 100,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.2453239999995276,
+        0.24557890000141924,
+        0.24098070000036387,
+        0.2403461999983847,
+        0.24258550000013201
+      ],
+      "median_seconds": 0.24258550000013201,
+      "max_seconds": 0.24557890000141924,
+      "separate_tracemalloc_peak_bytes": 22111,
+      "unit": "one full lifecycle",
+      "fixture_setup_included": true,
+      "correctness_assertions_included": true,
+      "freshness_checks_per_unit": 8,
+      "source_entries_per_check": 2,
+      "dependency_entries_per_check": 3,
+      "simulated_transport_calls": 0,
+      "unit_prepare_clock": "FrozenClock 2026-10-21 UTC",
+      "timing_clock": "perf_counter wall seconds; CPU-bound pure Python, not process_time CPU seconds",
+      "expected_acked_cards": 100,
+      "expected_operations": 400,
+      "expected_final_sequence": 2,
+      "preparations_included": "scope, envelope, manifest, card fingerprints, lease"
+    },
+    {
+      "name": "dispatched_crash_restore_deny_reclaim_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.8528554000004078,
+        0.8658140000006824,
+        0.8498113000005105,
+        0.8655600000001868,
+        0.8466692000001785
+      ],
+      "median_seconds": 0.8528554000004078,
+      "max_seconds": 0.8658140000006824,
+      "separate_tracemalloc_peak_bytes": 21552,
+      "unit": "one actual dispatch/crash path",
+      "fixture_setup_included": true,
+      "correctness_assertions_included": true,
+      "freshness_checks_per_unit": 2,
+      "source_entries_per_check": 2,
+      "dependency_entries_per_check": 3,
+      "simulated_transport_calls": 0,
+      "unit_prepare_clock": "FrozenClock 2026-10-21 UTC",
+      "timing_clock": "perf_counter wall seconds; CPU-bound pure Python, not process_time CPU seconds",
+      "expected_reclaim_refusals": 1000,
+      "expected_unknown_states": 1000,
+      "preparations_included": "scope, envelope, manifest, lease, metadata serialization and restore"
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/adapters/channels/cardkit_contracts.py": "bd6965ba3a3828e52f0327c01adfa1fd39781a70b88bdd027a6e98133a3fc379",
+    "mingjing_core/adapters/channels/hermes.py": "7dd7e0ae952cc401e6bdf9c3780071855d5f78938eb47ec290b24a66ddf2225e",
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "55a45bf1baa99b4126f7de7b0fd562b0d1704af0b9a91c6c4847b21bfe3c54b5",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182",
+    "mingjing_core/domain/consultation.py": "4970bc5fd4bebd5b11f8d536140f0b26665df6bd94540871c8bbd204f190917d",
+    "mingjing_core/streaming/event_nested.py": "95658a4cb869ed25b15ae1717a659fe4facaa3626c465051a6f8cd1d3fa5c941",
+    "mingjing_core/streaming/event_payloads.py": "54561e6cfef3ff8353abbac64c2f850bfda6b7820b9e831680040ae8b5716eff",
+    "mingjing_core/streaming/json_values.py": "ae18a6b0288f0c5cc16498cbd7503d3177c1f0b31dbceb2735de32afdf06902e",
+    "mingjing_core/streaming/public_shapes.py": "e9f2705c18acf8cff2654f757ce7485d1ad8e0a70ec294a6bfdc4cd206bd1ffb",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "tools/mod_week/benchmark_stream_lease_v2.py": "176b82655e947c91540188e1657aa7b1ee872d5eb5c180e42af02a3d8c8145b5",
+    "tools/mod_week/performance.py": "9e6feed2c4631f3685d46406c4ed0b7c2649578d41d926d6629a3f2e80e8c846"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "case_id",
+    "mode",
+    "scope",
+    "observed_at",
+    "evidence"
+  ],
+  "properties": {
+    "schema": {
+      "const": "offline-observation-v1"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{1,2}[0-9]{2}$"
+    },
+    "mode": {
+      "const": "supplied_offline"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_id",
+        "subject_id",
+        "thread_id",
+        "run_id"
+      ],
+      "properties": {
+        "owner_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "thread_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "run_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        }
+      }
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "kind",
+          "value",
+          "artifact_id",
+          "artifact_sha256",
+          "producer"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.]*$"
+          },
+          "kind": {
+            "enum": [
+              "text",
+              "tools",
+              "db",
+              "context",
+              "events",
+              "meta",
+              "offline_report",
+              "manual_review"
+            ]
+          },
+          "value": {},
+          "artifact_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160
+          },
+          "artifact_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "producer": {
+            "enum": [
+              "synthetic_test",
+              "offline_product_trace",
+              "manual_annotation"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "manual_review"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "producer": {
+                  "const": "manual_annotation"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

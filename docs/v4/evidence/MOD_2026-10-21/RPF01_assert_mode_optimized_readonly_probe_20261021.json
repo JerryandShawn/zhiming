@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-10-21T09:38:52.275887+08:00",
+  "mode": "optimized",
+  "python_optimize": 1,
+  "__debug__": false,
+  "expected": "reject_intentional_semantic_mismatch",
+  "actual": "accepted_intentional_mismatch",
+  "expectation_satisfied": false,
+  "injection_scope": "New experiment benchmark semantic_capture only, in this independent process; no frozen product/Q2/U4 patch",
+  "capture_function_and_four_aliases_restored": true,
+  "source_sha256_before_after": {
+    "mingjing_core/application/reflection_projection_exp/projector.py": "eac3e8316b367f7d9679afb77674cff30ab6db63510180ec5d09ee4a8dd6bcde",
+    "mingjing_core/application/reflection_projection_exp/types.py": "0b38e3d2aaa489b8bcccb8f86de3a280acdfd8200f0838413dd3042628152f18",
+    "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f",
+    "C:/Users/Administrator/Documents/Codex/zhiming-v4-mod/tools/mod_week/benchmark_reflection_projection_RPF01.py": "3ea3b1fa6b51899a04a056f2164efb92cc6fc659b67b83e1151ffc82a2348089"
+  },
+  "source_unchanged": true,
+  "real_workload_or_performance_run": false,
+  "interpretation": "Tests the assertion precondition only; does not invalidate the previously observed normal-mode workload or prove a production authorization defect"
+}

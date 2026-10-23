@@ -1,0 +1,174 @@
+{
+  "schema": "briefing.public_boundary.matrix.v1",
+  "frozen_at": "2026-10-21T09:59:22.620837+08:00",
+  "plan": "docs/v4/execplans/MOD_briefing_public_boundaries_20261021.md",
+  "plan_sha256_at_expectation_freeze": "4dc9e0e2ff6b8471acbd50686a2fad6bb7c950a811173e18f514b09562c19ced",
+  "case_count": 30,
+  "cases": [
+    {
+      "id": "BP00",
+      "public_input": "当前P2、当前订阅和独立重签的bazi/ziwei/astro三条有效日规则",
+      "expected": "历法与3条正午结构、完整依据，效果0，输入不变"
+    },
+    {
+      "id": "BC01",
+      "public_input": "CalendarSnapshot.day传datetime而非date",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC02",
+      "public_input": "observed_at的owner日期与snapshot.day不同",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC03",
+      "public_input": "almanac.weekday与公历日不符",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC04",
+      "public_input": "workday配is_off=True",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC05",
+      "public_input": "DayStatus.kind为未知枚举",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC06",
+      "public_input": "festivals含整数项",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC07",
+      "public_input": "lunar缺少is_leap键",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC08",
+      "public_input": "lunar.is_leap为字符串",
+      "expected": "受控拒绝"
+    },
+    {
+      "id": "BC09",
+      "public_input": "days_to_next是合法非负int但比实际owner日差多1",
+      "expected": "不接受矛盾P2快照"
+    },
+    {
+      "id": "BC10",
+      "public_input": "calendar_snapshot注入Clock.now返回naive时间",
+      "expected": "受控拒绝，不依赖Tokyo主机"
+    },
+    {
+      "id": "BC11",
+      "public_input": "calendar_snapshot传不存在的timezone key",
+      "expected": "受控领域拒绝，错误不回显key"
+    },
+    {
+      "id": "BE01",
+      "public_input": "sources只有2项",
+      "expected": "P8整文档省略，不影响有效历法，效果0"
+    },
+    {
+      "id": "BE02",
+      "public_input": "limits为空列表",
+      "expected": "同上"
+    },
+    {
+      "id": "BE03",
+      "public_input": "rule_hits是mapping而非list",
+      "expected": "同上"
+    },
+    {
+      "id": "BE04",
+      "public_input": "rule_hit带未定义的额外字段",
+      "expected": "同上"
+    },
+    {
+      "id": "BE05",
+      "public_input": "rule_hit.source为空mapping",
+      "expected": "同上"
+    },
+    {
+      "id": "BE06",
+      "public_input": "context.system非三系之一",
+      "expected": "同上"
+    },
+    {
+      "id": "BE07",
+      "public_input": "evidence_paths重复同一路径",
+      "expected": "同上"
+    },
+    {
+      "id": "BE08",
+      "public_input": "evidence_paths指向有效/scope路径而非/data",
+      "expected": "同上，不能因hash正确承认错域依据"
+    },
+    {
+      "id": "BT01",
+      "public_input": "ten_god日证据对象变为JSON标量，全部hash一致",
+      "expected": "不抛未捕获异常；坏规则不形成输出依据/断言"
+    },
+    {
+      "id": "BT02",
+      "public_input": "relation.complete为字符串，数据与context一致重签",
+      "expected": "坏规则省略，不把字符串当布尔条件成立"
+    },
+    {
+      "id": "BT03",
+      "public_input": "仅有natal而非daily的ten_god规则",
+      "expected": "无流日断言，返回不支持/资料不足说明"
+    },
+    {
+      "id": "BT04",
+      "public_input": "ziwei日link仍未resolved",
+      "expected": "不声称确定宫位，不附该坏规则依据"
+    },
+    {
+      "id": "BT05",
+      "public_input": "ziwei context宫位index与当前link不符",
+      "expected": "坏规则省略，不挑一边当事实"
+    },
+    {
+      "id": "BT06",
+      "public_input": "astro orb为bool，数据与context一致重签",
+      "expected": "不当作0/1度数渲染"
+    },
+    {
+      "id": "BT07",
+      "public_input": "astro angle不等于具名相位标准角",
+      "expected": "坏规则省略"
+    },
+    {
+      "id": "BT08",
+      "public_input": "astro总orb_limit与context不同",
+      "expected": "坏规则省略"
+    },
+    {
+      "id": "BS01",
+      "public_input": "同批两item对同source_id各称不同revision/hash当前有效",
+      "expected": "整批受控拒绝或两项全省略，不能挑首/尾或同时显示"
+    },
+    {
+      "id": "BS02",
+      "public_input": "同source_id同revision/hash却有active与revoked矛盾投影",
+      "expected": "同上，不以一个局部有效证明覆盖撤回"
+    }
+  ],
+  "product_source_sha256": {
+    "mingjing_core/application/briefing_v2/__init__.py": "e4d45e0c7cae782968458e01ee9633163a52d8c148399cb3f86944884a99eb18",
+    "mingjing_core/application/briefing_v2/authorization.py": "dfc208bc9c5b45b00cf256a36d27a448af250c12db89558404712eb79193a742",
+    "mingjing_core/application/briefing_v2/calendar.py": "2537cb122b1a7547efb8cfef3e8fecc510c5731245215aab1f446ab2c6c0a0af",
+    "mingjing_core/application/briefing_v2/compose.py": "debab87c3dbd32a2ba659f2adbf7e3b985809b3cfab6c1736d17b9a4dfeeb48f",
+    "mingjing_core/application/briefing_v2/contracts.py": "ba352ffde101783ca8dce41e07d132539c36f67da9cc585566e4731b71f6b53b",
+    "mingjing_core/application/briefing_v2/evidence.py": "fe0fd74df3ac39502b0a192e76413e3cae58d9250a7fb048b9834130c2c3e7d6",
+    "mingjing_core/application/briefing_v2/items.py": "1dd15b22cf025280e1c5bef07ee32ea2c95114af47ca22337724c2db39d39a9a",
+    "mingjing_core/application/briefing_v2/transit.py": "0b16d8537dcac16626b8c20215fbe2d77b86eb5d40e8f211549b896aeed4231e"
+  },
+  "existing_synthetic_fixture": "tests/v4/briefing_v2/fixtures/daily_transit_synthetic_20261021.json",
+  "fixture_sha256": "0b0984e1a6cf9c48f060071e861da1438d9ee2122a7635095d7f71933a589205",
+  "existing_tests_modified": false,
+  "product_modified": false,
+  "baseline_coverage_sha256": "7e77d6c25625361fa37eb61cc0266d79725ff9bac4619a20994bff11ec86359a"
+}

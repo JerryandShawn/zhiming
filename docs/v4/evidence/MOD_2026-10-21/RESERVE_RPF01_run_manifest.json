@@ -1,0 +1,105 @@
+{
+  "schema": "mod.rpf01.evidence_manifest.v1",
+  "synthetic_only": true,
+  "checkpoint_status": "final_limited_scope_unconnected_experiment",
+  "public_failure_evidence": [
+    "RPF01_metaclass_identity_initial_failure_20261021.json",
+    "RPF01_timezone_initial_failure_20261021.json"
+  ],
+  "root_source_review_at": "2026-10-21T09:11:30+08:00",
+  "primary_report": "RESERVE_RPF01_projection_performance_final_identity_timezone.json",
+  "primary_sha256": "4d2e89e15144dbe557a6eb07b06fc2d167fca5d65a10e8902ec73c77225d4011",
+  "primary_observed_at": "2026-10-21T09:07:20.791356+08:00",
+  "process_id": 48708,
+  "exec_session_id": 2627,
+  "team_coordination": "Root confirmed no other team pytest/perf processes before final isolated run; OS-wide activity not measured or controlled",
+  "source_verification": "Historical Windows-byte snapshot checked during 09:07 measurement and root_source_review_at 2026-10-21T09:11:30+08:00; later unrelated development may change HEAD; original source_sha256 fields are preserved",
+  "candidate_aggregate_sha256": "707ed17655c261b35407ef26e9826bacd96befd82afb1f4b755b662de49c8005",
+  "frozen_reflection_18_aggregate_sha256": "2eee084f643e38d0e32d918e52ecc93c7ce1564558332419a94ffa3321ef390d",
+  "benchmark_sha256": "3ea3b1fa6b51899a04a056f2164efb92cc6fc659b67b83e1151ffc82a2348089",
+  "test_result": {
+    "passed": 1238,
+    "seconds": 1.93,
+    "seeded_equivalent_vectors": 1200,
+    "peer_independent_boundaries": 9
+  },
+  "coverage": {
+    "line_covered": 79,
+    "line_total": 79,
+    "branch_covered": 26,
+    "branch_total": 26,
+    "combined_percent": 100.0,
+    "scope": "Only three experiment products",
+    "scope_evidence": "RESERVE_RPF01_coverage_scope_final.json",
+    "scope_original_observed_sha256": "3096692669ff118fe963c28244db8b9f38d8d2fb63aa882181b3e4d8f1843759",
+    "scope_public_lf_sha256": "9a2b64f8e0e2727c0aec3c79ca5954456cade39af6bfb6fa2916e28739dcc22d"
+  },
+  "compatibility": "22 exact class identities; plain string-key dict/list/tuple; depth<=64; datetime uses exact timezone or reducible exact ZoneInfo; unknown subclasses/custom tz/from_file rejected; narrower than generic oracle, not drop-in",
+  "defect_history": [
+    {
+      "kind": "metaclass_identity",
+      "first_result": "5 failed, 1 passed",
+      "raw": "private/mod-week/RPF01_metaclass_calendar_first.log",
+      "raw_sha256": "e0eea9325e25fe2bcffb06077aca75f246a1254df4fdbb6dd5fb333c722a484b",
+      "fix": "is comparisons plus integer identity keys and strong class references"
+    },
+    {
+      "kind": "timezone_copy_boundary",
+      "first_result": "3 failed",
+      "raw": "private/mod-week/RPF01_timezone_core_first.log",
+      "raw_sha256": "eca50bb2121d606eeb8c252eeb909ffb3ed5b0a5abfb8c8fd50bd923d043b3a5",
+      "source_before": "private/mod-week/RPF01_timezone_core_before.json",
+      "source_before_sha256": "2a9b898b459073d993c3df0124a7f3194258c24f2e657921519f5e3f60243f6c",
+      "fix": "Conservative standard timezone identities and reducible ZoneInfo; standalone custom datetime old acceptance explicitly distinguished"
+    }
+  ],
+  "earlier_reports": [
+    {
+      "name": "RESERVE_RPF01_projection_performance.json",
+      "sha256": "a15b67c06cfa2907ef075ace1477a5734462758f965ef221ce1089ffd9b13a70",
+      "status": "pre_hardening_possible_short_pytest_overlap_not_final",
+      "original_observed_sha256": "fb60fd22ef6f9cef9f86038c64dfdb6623db03ad604c43d01ed8ede5a0a01140",
+      "representation": "normalized_public_lf"
+    },
+    {
+      "name": "RESERVE_RPF01_projection_performance_final.json",
+      "sha256": "34df7d04c5c48f534c3df45f586248c4912fb7571d9a1fd57b7f1cf219548fb4",
+      "status": "pre_hardening_and_identity_timezone_fix_despite_filename_not_final",
+      "original_observed_sha256": "fb64215cbae395dd82b93d1ba9c5e41f7c18ac6e0752a52d0c9d7fa5fd8dec3a",
+      "representation": "normalized_public_lf"
+    },
+    {
+      "name": "RESERVE_RPF01_projection_performance_final_hardened.json",
+      "sha256": "a2647c5a03149e566b3d0899442a6742ed1ea3c12d91c3fdf9a67e1981727e10",
+      "status": "pre_identity_timezone_fix_67a77_product_not_final",
+      "original_observed_sha256": "fa6862015db0c4540ff963ad2341aa6b2f7a4bba2a7cb01cd6ac246648681e11",
+      "representation": "normalized_public_lf"
+    }
+  ],
+  "not_connected": true,
+  "external_effects": {
+    "network": 0,
+    "model": 0,
+    "database": 0,
+    "notifications": 0,
+    "git": 0
+  },
+  "limits": [
+    "Single-machine synthetic observations",
+    "No randomized pair order or confidence interval",
+    "tracemalloc is not RSS",
+    "Equivalent serialization is not authorization or semantic validation"
+  ],
+  "original_observed_sha256": "0049f42c0b79fff1f1579c0f888a30237ed7768ab305be6c2ff8d45b17e76913",
+  "primary_representation": "Public UTF-8 LF bytes after strictly verified EOL normalization; not original observed CRLF bytes",
+  "source_snapshot_valid_until_review_at": "2026-10-21T09:11:30+08:00",
+  "eol_lineage": {
+    "audit": "RPF01_eol_normalization_audit_20261021.json",
+    "audit_sha256": "4ca8a821b576232c2800101daf8617c5858db8cdf80ec025e08aeff4ebdd722a",
+    "normalized_at": "2026-10-21T09:17:40.561920+08:00",
+    "original_private_backup": "private/mod-week/evidence-originals/RESERVE_RPF01_projection_performance_final_identity_timezone.json",
+    "algorithm": "Only CRLF byte pairs replaced with LF; JSON objects and all observation fields equal; originals saved first",
+    "no_performance_rerun": true,
+    "publication_note": "Root verified HEAD 5a1a5e8 already stored LF report blobs; normalized working copies match them. This fixes published hash references, not Git report content or observed measurements."
+  }
+}

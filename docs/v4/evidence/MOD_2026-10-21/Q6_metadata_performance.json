@@ -1,0 +1,72 @@
+{
+  "observed_at": "2026-10-21T00:36:00.346883+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "k3_ttl_allowlist_8000",
+      "units_per_run": 8000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.0008894000002328539,
+        0.0008462000005238224,
+        0.0008289999987027841,
+        0.0008325999988301191,
+        0.0008063000004767673
+      ],
+      "median_seconds": 0.0008325999988301191,
+      "max_seconds": 0.0008894000002328539,
+      "separate_tracemalloc_peak_bytes": 176
+    },
+    {
+      "name": "namespace_cas_500",
+      "units_per_run": 500,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.24078280000139785,
+        0.2659401999990223,
+        0.2378515000000334,
+        0.2319696999984444,
+        0.23269149999941874
+      ],
+      "median_seconds": 0.2378515000000334,
+      "max_seconds": 0.2659401999990223,
+      "separate_tracemalloc_peak_bytes": 19568
+    },
+    {
+      "name": "stream_metadata_roundtrip_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.03918789999988803,
+        0.03619859999889741,
+        0.03608890000032261,
+        0.037626600000294275,
+        0.037980199998855824
+      ],
+      "median_seconds": 0.037626600000294275,
+      "max_seconds": 0.03918789999988803,
+      "separate_tracemalloc_peak_bytes": 3649
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/adapters/channels/action_token_policy_v2.py": "3e58dfbc19ef118cc7c68dde69d96037bcb5a8374fdbc337ec2c90a606260df0",
+    "mingjing_core/adapters/channels/action_token_refresh_v2.py": "6b30fa69f915b6ffadb1ce9f197e6e854acb011226bbe36039282caf137e7537",
+    "mingjing_core/adapters/channels/cardkit_reconciliation_v2.py": "ac0246acdff883b8c10c4ac788d834077ee9bb489cbcacad388abbc88a4988a8",
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "55a45bf1baa99b4126f7de7b0fd562b0d1704af0b9a91c6c4847b21bfe3c54b5",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182",
+    "tools/mod_week/benchmark_p9_v2.py": "1c4b6289688562f609b00f959d10261f1e2567d748ef8cf13a57e9e102b2104e"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

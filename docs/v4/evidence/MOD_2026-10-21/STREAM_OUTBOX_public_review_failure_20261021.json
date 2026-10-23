@@ -1,0 +1,44 @@
+{
+  "schema": "stream-outbox-public-input-failure-v1",
+  "observed_at": "2026-10-21T09:38:07.669896+08:00",
+  "kind": "synthetic_local_only",
+  "command": "python -m pytest tests/v4/p9_v2/test_public_inputs_review_acceptance_mod.py -q --tb=short",
+  "returncode": 1,
+  "pytest_summary": "2 failed, 10 passed in 0.22s",
+  "failed_cases": [
+    "test_core3_complete_payload_must_match_current_subject_and_run[foreign_subject-claim]",
+    "test_core3_complete_payload_must_match_current_subject_and_run[foreign_subject-dispatch]"
+  ],
+  "failure": "DID NOT RAISE StreamError",
+  "truth": "Complete core3 payload with an explicit foreign meta.subject_id cannot authorize claim or dispatch in current subject scope",
+  "controls": "Correct core3 claim/dispatch, wrong run, empty dependencies, naive clock and equivalent Tokyo instant behave as expected",
+  "source_sha256": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "ade48456779b131d3eff32873c12cecac1961ed801f3a8ab05d42c95b1fae624",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182"
+  },
+  "dependency_sha256": {
+    "mingjing_core\\adapters\\channels\\hermes.py": "7dd7e0ae952cc401e6bdf9c3780071855d5f78938eb47ec290b24a66ddf2225e",
+    "mingjing_core\\domain\\consultation.py": "4970bc5fd4bebd5b11f8d536140f0b26665df6bd94540871c8bbd204f190917d",
+    "tests\\v4\\p9_v2\\coverage_support_acceptance_mod.py": "04f7f6529992f218b5fb1127add08938fde591cd1cebdcedf851bfc1fba75db7"
+  },
+  "test_sha256": "84cc5fa2739d6bb8808c99d244ca6903e58202c6b5ae7ad6b5a2fd80fa123709",
+  "products_modified": false,
+  "effects": {
+    "network": 0,
+    "models": 0,
+    "pg": 0,
+    "notifications": 0,
+    "runtime_writes": 0
+  },
+  "freeze_gate": "09:44 no source/test/fixture modifications until root broadcasts full regression ended",
+  "limits": [
+    "Synthetic current-host evidence only; not a demonstrated live cross-subject disclosure",
+    "Failed file must not be silently included in the completed/green regression list",
+    "Any repair must retain positive core3 compatibility and both freshness checks"
+  ]
+}

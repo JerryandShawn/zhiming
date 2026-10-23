@@ -1,0 +1,50 @@
+{
+  "observed_at": "2026-10-21T01:41:44.403796+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "partition_projection_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.003755499999897438,
+        0.003849800001262338,
+        0.0037158999984967522,
+        0.003939300000638468,
+        0.003864899999825866
+      ],
+      "median_seconds": 0.003849800001262338,
+      "max_seconds": 0.003939300000638468,
+      "separate_tracemalloc_peak_bytes": 1250563
+    },
+    {
+      "name": "summary_invalidation_scan_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.002748200000496581,
+        0.0027489000003697583,
+        0.002695799999855808,
+        0.002770899998722598,
+        0.002873799998269533
+      ],
+      "median_seconds": 0.0027489000003697583,
+      "max_seconds": 0.002873799998269533,
+      "separate_tracemalloc_peak_bytes": 250222
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/memory/retrieval_types.py": "608774368bab2be9a7368ae75ac22d689b8c4e60045241f02018a2f8f1c3dbaf",
+    "mingjing_core/organize/partition_context_v2.py": "b3ea9c73bdb440692117949c74697aefe9e48bdffa1049385f37e080faa80280",
+    "mingjing_core/organize/partition_context_v2_contracts.py": "da8fbabc6938c2d8ccc56597e21d708f823d929c4f0e835523cdcb69aa58c77f",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "tools/mod_week/benchmark_partition_context_v2.py": "c6e5a9438bdcfab3319d7305c5fcbb8148fdd6439b500d7732407002496ca5d5"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

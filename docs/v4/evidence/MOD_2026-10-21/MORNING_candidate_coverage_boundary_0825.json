@@ -1,0 +1,101 @@
+{
+  "observed_at": "2026-10-21T08:28:24.672222+08:00",
+  "groups": {
+    "p9_official": {
+      "totals": {
+        "covered_lines": 904,
+        "num_statements": 969,
+        "covered_branches": 375,
+        "num_branches": 442
+      },
+      "line_percent": 93.2920536635707,
+      "branch_percent": 84.84162895927602,
+      "combined_percent": 90.64493267186393,
+      "coverage_path": "docs/v4/evidence/MOD_2026-10-21/P9_official_coverage_20261021-082506.json",
+      "coverage_sha256": "e7c287d3fa09b4a1253502ffe8cf0a14b905485d932385606d54d12b8a0e6a64",
+      "source_sha256": {
+        "mingjing_core/adapters/channels/card_limits_official_v3.py": "dfe82426a6345405b7e53eeb247c8d29acae47fd3e5ec8606bb15ec5f4b45a5d",
+        "mingjing_core/adapters/channels/cardkit_official_v3/__init__.py": "b00bac2c0bfa336dfb3830d83b4a883b9fed613fa87a3e8de994af190689fb0f",
+        "mingjing_core/adapters/channels/cardkit_official_v3/artifacts.py": "0417aee061015d7ae6635b415d585834789d3bae66db45eea90bd36b46dc3372",
+        "mingjing_core/adapters/channels/cardkit_official_v3/codec.py": "bdacdd0be4483597ae33c31c067f16690061c3efc4ce520e5e6272147991d2fd",
+        "mingjing_core/adapters/channels/cardkit_official_v3/contracts.py": "07d1ca3a88b37844fd4067fadcdea18f1894a7bb5863e056cec85574f0270fc5",
+        "mingjing_core/adapters/channels/cardkit_official_v3/errors.py": "9434384e2d663c67ed3d7c95959011daac59b9df347ed6071fa7ad6ebe4fbc26",
+        "mingjing_core/adapters/channels/cardkit_official_v3/namespace.py": "68f28805704512d8ba70167aefa995ab6fd1e346972c5d219e9ced085ca419fa",
+        "mingjing_core/adapters/channels/cardkit_official_v3/operations.py": "4b825270a57d5e4c09f150fa519fb442e022252981fe360daaa49ad4a12d2eec",
+        "mingjing_core/adapters/channels/cardkit_official_v3/transitions.py": "b2f145d6aa35289169fffe8471af04efebc3d2249365ecbc530135bd940e778a",
+        "mingjing_core/adapters/channels/cardkit_official_v3/validation.py": "125ee94067c51b3524cc160348d0e7e90878e0b2a63d9fd74337c11c5c07c180",
+        "mingjing_core/adapters/channels/cardkit_official_v3/wire.py": "a72a0e0693d7d79f373488f182f89637d42ce11ac36b6c25841db22f0259da31",
+        "mingjing_core/adapters/channels/cards_official_v3/__init__.py": "ae8e4d74f1333d8f221855a98b81727679c630c7bd10fc9bd6fe93362fbd9cfe",
+        "mingjing_core/adapters/channels/cards_official_v3/answers.py": "72865589fdce3d7b3e29a7673a295619ea307ce0ad086e584dec41bd9047676f",
+        "mingjing_core/adapters/channels/cards_official_v3/budget.py": "1ca6504d477729d669972ec2e3fc098428d8615ba2977c68fd86b1fba53cb767",
+        "mingjing_core/adapters/channels/cards_official_v3/elements.py": "a4af13b6c371291f5058993934e9270a206005fb4a2c698327c8583611e80f6b",
+        "mingjing_core/adapters/channels/cards_official_v3/notices.py": "1e1e6f08ebb653ff936b208b61e139f480cf8b4c3baa79525c42ce1d49ecbe33",
+        "mingjing_core/adapters/channels/cards_official_v3/validation.py": "726502f888e2be3f15f5d11516ff172a866a62dd67523d3688614de02339856f"
+      }
+    },
+    "reports_v2": {
+      "totals": {
+        "covered_lines": 433,
+        "num_statements": 479,
+        "covered_branches": 139,
+        "num_branches": 188
+      },
+      "line_percent": 90.39665970772442,
+      "branch_percent": 73.93617021276596,
+      "combined_percent": 85.75712143928035,
+      "coverage_path": "docs/v4/evidence/MOD_2026-10-21/REPORTS_REFLECTION_coverage_20261021-082526.json",
+      "coverage_sha256": "f5c8d2c4d0b4e262055ceeef8fa37b4691acd945c57db8406d36f163e3b86103",
+      "source_sha256": {
+        "mingjing_core/application/reports_v2/__init__.py": "2967b8c5afbc8af6fae5213a6eacf2b09f974df3e88d8aca99b73c840cb712ca",
+        "mingjing_core/application/reports_v2/citations.py": "bada0986065bc57295fa9268f08a3e828c3770b9f78ced7d2e46acc206a07d66",
+        "mingjing_core/application/reports_v2/compose.py": "2ec1975737d16fff87f76778b1300c2a77884ab7552e6b6fd91f0314d73648b7",
+        "mingjing_core/application/reports_v2/contracts.py": "3603cebb3fbb3af2d95d51aef76808885af8a7c4c85fd111499526a87ee26b6a",
+        "mingjing_core/application/reports_v2/manifest.py": "d2a3070492a4491e11338d16282c2e7e94a32abb3689ac8f6b8c2ee897daf208",
+        "mingjing_core/application/reports_v2/periods.py": "c6bcd452eb8fdc4a0650af1039e915d3895e4da8abdb6b7d216ba35b23e6ef47",
+        "mingjing_core/application/reports_v2/records.py": "000740e80c73d4904e5514f3edbab819265a0eeffdc695152e8698541108aff3",
+        "mingjing_core/application/reports_v2/symbolic.py": "ca6fec8b8ea8aca04ecbcb97e8de814a9c465cd2b1b9ac09ae10a66e671f1173"
+      }
+    },
+    "reflection_v3": {
+      "totals": {
+        "covered_lines": 930,
+        "num_statements": 1017,
+        "covered_branches": 250,
+        "num_branches": 322
+      },
+      "line_percent": 91.44542772861357,
+      "branch_percent": 77.63975155279503,
+      "combined_percent": 88.12546676624346,
+      "coverage_path": "docs/v4/evidence/MOD_2026-10-21/REPORTS_REFLECTION_coverage_20261021-082526.json",
+      "coverage_sha256": "f5c8d2c4d0b4e262055ceeef8fa37b4691acd945c57db8406d36f163e3b86103",
+      "source_sha256": {
+        "mingjing_core/application/reflection_v3/__init__.py": "d10780cce4e2d71ad7381f1fe825117025c092affb871abd7102e9e696a9d1b6",
+        "mingjing_core/application/reflection_v3/effects.py": "be9fa046c5f7cf9fd115630b350c0864105bfeefed05057dadbf740017def6f1",
+        "mingjing_core/application/reflection_v3/fact_analysis.py": "28b9ba3a18dd5e7eb5fc1fd716b5c70725ce3eeec51185058ab39a131194d3a4",
+        "mingjing_core/application/reflection_v3/fact_candidates.py": "88174c1cc809da0e91ad5c73470b7bd6e0b5c521512f525598c378031911ea82",
+        "mingjing_core/application/reflection_v3/fact_policy.py": "1c67c2b25e0acd5d3c8f02b35ec3759ed6dda01ebf9b492cc393637a9e6d2da7",
+        "mingjing_core/application/reflection_v3/gaps.py": "a0158228f39e752da037231a32f9ed466e8f521b3d986d1c578d1f8113eeb350",
+        "mingjing_core/application/reflection_v3/intent_guard.py": "39006be2ba087afe345fc0c19f02c7b7caf2e44a9a80259f2756779e177dccb8",
+        "mingjing_core/application/reflection_v3/lifecycle.py": "ea0276606f9402d05e37b0d21fcc33271b4c9fa390d160dcf6e7a9597fe8cf87",
+        "mingjing_core/application/reflection_v3/profile_contracts.py": "0ef8d19a181c65ccb5880165c8c4b2cc7bd180beba40b56df06ebe7e4b0642d3",
+        "mingjing_core/application/reflection_v3/profile_guard.py": "848657a6cd729a1dae0c9af7e82f1f4f421c2539efe97e99f4f8d06c2b8d8027",
+        "mingjing_core/application/reflection_v3/profile_renderer.py": "86cdc459407ffe47db150cf05898b4970aae2788fab0cc33bdfe7f53cbb29ec0",
+        "mingjing_core/application/reflection_v3/schedule.py": "deeec138c799c143f9558e1cdf446e0b3b6384282ee9f38a963691e0fbe0872e",
+        "mingjing_core/application/reflection_v3/schedule_contracts.py": "b48c13a4f4c29d3c78e87ac6cbd702743b0aeebed5890b5c8da439d2b1ed4ffc",
+        "mingjing_core/application/reflection_v3/source_policy.py": "a371c4c89b2b00bbd734160cc75280f35e9ad704acc4745efc15556ba8df64c2",
+        "mingjing_core/application/reflection_v3/summaries.py": "3f5a916c49208d3c41871527c11bf410c8eafae28c76a431315f105195d20374",
+        "mingjing_core/application/reflection_v3/validation.py": "bed7fe6df1e949eaf76b446e43063718bdf6bdb3afa1648036855c3a89efc06c",
+        "mingjing_core/application/reflection_v3/work.py": "c7a4a9d69b3484b708f9763e876b91e0565b488967deb1278a9fe56e497cc613",
+        "mingjing_core/application/reflection_v3/work_contracts.py": "59d3a5c2a424e36fae79a84f9f3db549de0be32fa9a20500ac9907e75c9e6ec5"
+      }
+    }
+  },
+  "limits": [
+    "Scopes measured separately, not whole PR coverage",
+    "Hashes observed after measurement; cohort product source frozen during measurement",
+    "All cases synthetic and local; no platform/human/model/PG evidence",
+    "No blind B or private 75-sample payload was read"
+  ],
+  "baseline": "8c554bd4af6788b3a4d98b9dd0d7618c591f7cfd",
+  "changed_preexisting_files": []
+}

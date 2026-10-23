@@ -1,0 +1,28 @@
+{
+  "schema": "mod.outbox.history.eol_lineage.v1",
+  "observed_at": "2026-10-21T09:26:50.339785+08:00",
+  "files": [
+    {
+      "path": "P9_history_calendar_initial_failure_20261021.json",
+      "original_backup": "private/mod-week/evidence-originals/P9_history_calendar_initial_failure_20261021.json",
+      "original_observed_sha256": "f323b74b83e520f48f7bda57b2eb10415aaa914fb7994a8621d212af8b01611e",
+      "public_lf_sha256": "e0b4e491c7038e402b032389953ff62ab327d37751a88e6587a140fd7868e261",
+      "previous_git_blob_sha256": "e0b4e491c7038e402b032389953ff62ab327d37751a88e6587a140fd7868e261",
+      "crlf_removed": 45
+    },
+    {
+      "path": "P9_history_calendar_post_verification_20261021.json",
+      "original_backup": "private/mod-week/evidence-originals/P9_history_calendar_post_verification_20261021.json",
+      "original_observed_sha256": "29a3d853c4a9aa7e73648caf5699f768aa010d3157899496da50311eb1439dfc",
+      "public_lf_sha256": "34daad59494e51dc7a5e891c61379dc888ce89ec88db15af1ff0528fece8bd03",
+      "previous_git_blob_sha256": "bb485b81034b0c3230a36b3e608b2a9d049916b5af23d4ae86ba56f300e98440",
+      "crlf_removed": 81
+    }
+  ],
+  "initial_change": "CRLF to LF only; JSON object identical",
+  "post_change": "CRLF to LF plus only initial_failure_evidence_sha256 changed to the LF publication hash",
+  "post_semantics_other_than_publication_reference_identical": true,
+  "source_values_timestamps_test_truth_stdout_and_measurements_changed": false,
+  "originals_preserved_before_write": true,
+  "no_test_or_performance_rerun": true
+}

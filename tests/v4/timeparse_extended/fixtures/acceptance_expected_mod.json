@@ -1,0 +1,1032 @@
+{
+  "schema": "mod-timeparse-extended-acceptance-v1",
+  "provenance": "Synthetic semantic truth frozen independently before reading English/profile parser implementation; no private data",
+  "policies": {
+    "ranges": "Half-open local days; precise clocks point start=end; UTC storage",
+    "ambiguity": "No automatic absolutization; multiple unrelated dates never choose silently",
+    "span": "Preserve original_text and surrounding content; replace only a confirmed exact span",
+    "host_zone": "Never infer from host timezone",
+    "profile": "Only scoped current confirmed active non-incognito unrevoked sources; missing date policy clarifies"
+  },
+  "cases": [
+    {
+      "id": "EXT001",
+      "text": "today",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-17"
+    },
+    {
+      "id": "EXT002",
+      "text": "Tomorrow",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-18"
+    },
+    {
+      "id": "EXT003",
+      "text": "day after tomorrow",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-19"
+    },
+    {
+      "id": "EXT004",
+      "text": "yesterday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-16"
+    },
+    {
+      "id": "EXT005",
+      "text": "day before yesterday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-15"
+    },
+    {
+      "id": "EXT006",
+      "text": "Monday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-19"
+    },
+    {
+      "id": "EXT007",
+      "text": "Tuesday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-20"
+    },
+    {
+      "id": "EXT008",
+      "text": "Wednesday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-21"
+    },
+    {
+      "id": "EXT009",
+      "text": "Thursday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-22"
+    },
+    {
+      "id": "EXT010",
+      "text": "Friday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-23"
+    },
+    {
+      "id": "EXT011",
+      "text": "Sunday",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-18"
+    },
+    {
+      "id": "EXT012",
+      "text": "October 28, 2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT013",
+      "text": "28 October 2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT014",
+      "text": "Oct 28, 2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT015",
+      "text": "28 Oct 2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT016",
+      "text": "2026-10-28",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT017",
+      "text": "2026/10/28",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT018",
+      "text": "04/13/2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-04-13"
+    },
+    {
+      "id": "EXT019",
+      "text": "13/04/2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-04-13"
+    },
+    {
+      "id": "EXT020",
+      "text": "2028-02-29",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2028-02-29"
+    },
+    {
+      "id": "EXT021",
+      "text": "December 31, 2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-12-31"
+    },
+    {
+      "id": "EXT022",
+      "text": "January 1, 2027",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2027-01-01"
+    },
+    {
+      "id": "EXT023",
+      "text": "2026年10月28日 interview",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT024",
+      "text": "明天 interview",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-18"
+    },
+    {
+      "id": "EXT025",
+      "text": "Interview on October 28, 2026",
+      "category": "clear_day",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "date": "2026-10-28"
+    },
+    {
+      "id": "EXT026",
+      "text": "tomorrow at 3pm",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-18T15:00:00+08:00"
+    },
+    {
+      "id": "EXT027",
+      "text": "tomorrow at 3:30 PM",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-18T15:30:00+08:00"
+    },
+    {
+      "id": "EXT028",
+      "text": "tomorrow 15:30",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-18T15:30:00+08:00"
+    },
+    {
+      "id": "EXT029",
+      "text": "today at noon",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-17T12:00:00+08:00"
+    },
+    {
+      "id": "EXT030",
+      "text": "tomorrow at midnight",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-18T00:00:00+08:00"
+    },
+    {
+      "id": "EXT031",
+      "text": "October 28, 2026 at 8 AM",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-28T08:00:00+08:00"
+    },
+    {
+      "id": "EXT032",
+      "text": "明天 at 3pm 面试",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-18T15:00:00+08:00"
+    },
+    {
+      "id": "EXT033",
+      "text": "tomorrow 下午三点开会",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-18T15:00:00+08:00"
+    },
+    {
+      "id": "EXT034",
+      "text": "2026年10月28日 8pm interview",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-28T20:00:00+08:00"
+    },
+    {
+      "id": "EXT035",
+      "text": "October 28, 2026 下午八点开会",
+      "category": "clear_instant",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "instant": "2026-10-28T20:00:00+08:00"
+    },
+    {
+      "id": "EXT036",
+      "text": "Saturday",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "same_day_weekday"
+    },
+    {
+      "id": "EXT037",
+      "text": "next Friday",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "next_weekday"
+    },
+    {
+      "id": "EXT038",
+      "text": "04/05/2026",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "numeric_locale"
+    },
+    {
+      "id": "EXT039",
+      "text": "05/04/2026",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "numeric_locale"
+    },
+    {
+      "id": "EXT040",
+      "text": "January 5",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "yearless_cross_year"
+    },
+    {
+      "id": "EXT041",
+      "text": "tomorrow or Wednesday",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "EXT042",
+      "text": "tomorrow and Friday",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "EXT043",
+      "text": "明天 or next Friday",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "EXT044",
+      "text": "October 28, 2026 and October 29, 2026",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "EXT045",
+      "text": "tomorrow 3pm and 5pm",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_clocks"
+    },
+    {
+      "id": "EXT046",
+      "text": "明天 3pm，后天 8pm",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "multiple_dates"
+    },
+    {
+      "id": "EXT047",
+      "text": "2026-02-29",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "invalid_date"
+    },
+    {
+      "id": "EXT048",
+      "text": "February 30, 2026",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "invalid_date"
+    },
+    {
+      "id": "EXT049",
+      "text": "2026-13-01",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "invalid_date"
+    },
+    {
+      "id": "EXT050",
+      "text": "tomorrow at 25:00",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "invalid_clock"
+    },
+    {
+      "id": "EXT051",
+      "text": "tomorrow at 13pm",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "invalid_clock"
+    },
+    {
+      "id": "EXT052",
+      "text": "tomorrow at 12:99pm",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "invalid_clock"
+    },
+    {
+      "id": "EXT053",
+      "text": "今晚凌晨两点",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "civil_day_ambiguity"
+    },
+    {
+      "id": "EXT054",
+      "text": "Sunday",
+      "category": "clarify",
+      "ref": "2026-10-18T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "same_day_weekday"
+    },
+    {
+      "id": "EXT055",
+      "text": "next Friday",
+      "category": "clarify",
+      "ref": "2026-10-19T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "reason": "next_weekday"
+    },
+    {
+      "id": "EXT056",
+      "text": "March 8, 2026 at 2:30 AM",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "America/New_York",
+      "reason": "gap"
+    },
+    {
+      "id": "EXT057",
+      "text": "November 1, 2026 at 1:30 AM",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "America/New_York",
+      "reason": "fold"
+    },
+    {
+      "id": "EXT058",
+      "text": "March 29, 2026 at 2:30 AM",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Europe/Berlin",
+      "reason": "gap"
+    },
+    {
+      "id": "EXT059",
+      "text": "October 25, 2026 at 2:30 AM",
+      "category": "clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Europe/Berlin",
+      "reason": "fold"
+    },
+    {
+      "id": "EXT060",
+      "text": "someday",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT061",
+      "text": "mayonnaise",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT062",
+      "text": "Mayflower",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT063",
+      "text": "marching band",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT064",
+      "text": "yesterdaysong",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT065",
+      "text": "tomorrowland",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT066",
+      "text": "todayish",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT067",
+      "text": "Fridayland",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT068",
+      "text": "Mondayness",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT069",
+      "text": "JanuarySalesman",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT070",
+      "text": "2026-10-280",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT071",
+      "text": "v2026.10.28beta",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT072",
+      "text": "2026/10/280",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT073",
+      "text": "feature_2026_10_28",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT074",
+      "text": "Please clarify the requirement",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT075",
+      "text": "I prefer afternoon tea",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT076",
+      "text": "a quarter of a cake",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT077",
+      "text": "I have 3pm-style notes",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT078",
+      "text": "中英 normal conversation",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT079",
+      "text": "No date supplied",
+      "category": "negative",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai"
+    },
+    {
+      "id": "EXT080",
+      "text": "我的生日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "date": "2026-12-03"
+    },
+    {
+      "id": "EXT081",
+      "text": "下次生日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 3,
+        "day": 5
+      },
+      "date": "2027-03-05"
+    },
+    {
+      "id": "EXT082",
+      "text": "生日那天",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 10,
+        "day": 17
+      },
+      "date": "2026-10-17"
+    },
+    {
+      "id": "EXT083",
+      "text": "下个生日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 10,
+        "day": 17
+      },
+      "date": "2027-10-17"
+    },
+    {
+      "id": "EXT084",
+      "text": "今年生日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 3,
+        "day": 5
+      },
+      "date": "2026-03-05"
+    },
+    {
+      "id": "EXT085",
+      "text": "明年生日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 3,
+        "day": 5
+      },
+      "date": "2027-03-05"
+    },
+    {
+      "id": "EXT086",
+      "text": "去年生日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "date": "2025-12-03"
+    },
+    {
+      "id": "EXT087",
+      "text": "my birthday",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "date": "2026-12-03"
+    },
+    {
+      "id": "EXT088",
+      "text": "结婚纪念日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "wedding_anniversary",
+      "profile": {
+        "month": 12,
+        "day": 12
+      },
+      "date": "2026-12-12"
+    },
+    {
+      "id": "EXT089",
+      "text": "下次结婚纪念日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "wedding_anniversary",
+      "profile": {
+        "month": 6,
+        "day": 15
+      },
+      "date": "2027-06-15"
+    },
+    {
+      "id": "EXT090",
+      "text": "入职纪念日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "employment_anniversary",
+      "profile": {
+        "month": 11,
+        "day": 1
+      },
+      "date": "2026-11-01"
+    },
+    {
+      "id": "EXT091",
+      "text": "今年入职纪念日",
+      "category": "profile_clear",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "employment_anniversary",
+      "profile": {
+        "month": 6,
+        "day": 15
+      },
+      "date": "2026-06-15"
+    },
+    {
+      "id": "EXT092",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "missing_port"
+    },
+    {
+      "id": "EXT093",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "empty"
+    },
+    {
+      "id": "EXT094",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "wrong_owner"
+    },
+    {
+      "id": "EXT095",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "wrong_subject"
+    },
+    {
+      "id": "EXT096",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "inactive"
+    },
+    {
+      "id": "EXT097",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "revoked"
+    },
+    {
+      "id": "EXT098",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "unconfirmed"
+    },
+    {
+      "id": "EXT099",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "not_current"
+    },
+    {
+      "id": "EXT100",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "incognito"
+    },
+    {
+      "id": "EXT101",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "revision_changed"
+    },
+    {
+      "id": "EXT102",
+      "text": "我的生日",
+      "category": "profile_guard",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "guard": "conflicting_records"
+    },
+    {
+      "id": "EXT103",
+      "text": "生日那天",
+      "category": "profile_clear",
+      "ref": "2028-01-01T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 2,
+        "day": 29
+      },
+      "date": "2028-02-29"
+    },
+    {
+      "id": "EXT104",
+      "text": "生日那天",
+      "category": "profile_clear",
+      "ref": "2025-07-20T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 6,
+        "day": 1,
+        "calendar_kind": "lunar",
+        "leap_month": true
+      },
+      "date": "2025-07-25"
+    },
+    {
+      "id": "EXT105",
+      "text": "生日那天",
+      "category": "profile_clarify",
+      "ref": "2026-01-01T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 2,
+        "day": 29
+      },
+      "reason": "leap_day_policy"
+    },
+    {
+      "id": "EXT106",
+      "text": "生日那天",
+      "category": "profile_clarify",
+      "ref": "2026-01-01T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 6,
+        "day": 1,
+        "calendar_kind": "lunar",
+        "leap_month": true
+      },
+      "reason": "leap_month_policy"
+    },
+    {
+      "id": "EXT107",
+      "text": "明天生日",
+      "category": "profile_clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "reason": "independent_dates"
+    },
+    {
+      "id": "EXT108",
+      "text": "my birthday or tomorrow",
+      "category": "profile_clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "reason": "independent_dates"
+    },
+    {
+      "id": "EXT109",
+      "text": "我的生日和结婚纪念日",
+      "category": "profile_clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "reason": "independent_dates"
+    },
+    {
+      "id": "EXT110",
+      "text": "今年生日还是明年生日",
+      "category": "profile_clarify",
+      "ref": "2026-10-17T12:00:00+08:00",
+      "tz": "Asia/Shanghai",
+      "key": "birthday",
+      "profile": {
+        "month": 12,
+        "day": 3
+      },
+      "reason": "independent_dates"
+    }
+  ]
+}

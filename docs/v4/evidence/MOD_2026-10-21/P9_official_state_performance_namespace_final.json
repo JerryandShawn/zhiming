@@ -1,0 +1,67 @@
+{
+  "observed_at": "2026-10-21T08:20:36.122328+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "100 complete five-request acknowledged lifecycles with three restores",
+      "units_per_run": 100,
+      "warmup": 1,
+      "observations": 3,
+      "seconds": [
+        0.6630098000023281,
+        0.6596523000043817,
+        0.675472400005674
+      ],
+      "median_seconds": 0.6630098000023281,
+      "max_seconds": 0.675472400005674,
+      "separate_tracemalloc_peak_bytes": 76996
+    },
+    {
+      "name": "200 complete create/send/update crash or lease-expiry restores, all deny resend",
+      "units_per_run": 200,
+      "warmup": 1,
+      "observations": 3,
+      "seconds": [
+        0.7781098999985261,
+        0.7741774000023725,
+        0.7853705000015907
+      ],
+      "median_seconds": 0.7781098999985261,
+      "max_seconds": 0.7853705000015907,
+      "separate_tracemalloc_peak_bytes": 48050
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/adapters/channels/card_limits_official_v3.py": "dfe82426a6345405b7e53eeb247c8d29acae47fd3e5ec8606bb15ec5f4b45a5d",
+    "mingjing_core/adapters/channels/cardkit_official_v3/__init__.py": "b00bac2c0bfa336dfb3830d83b4a883b9fed613fa87a3e8de994af190689fb0f",
+    "mingjing_core/adapters/channels/cardkit_official_v3/artifacts.py": "0417aee061015d7ae6635b415d585834789d3bae66db45eea90bd36b46dc3372",
+    "mingjing_core/adapters/channels/cardkit_official_v3/codec.py": "bdacdd0be4483597ae33c31c067f16690061c3efc4ce520e5e6272147991d2fd",
+    "mingjing_core/adapters/channels/cardkit_official_v3/contracts.py": "07d1ca3a88b37844fd4067fadcdea18f1894a7bb5863e056cec85574f0270fc5",
+    "mingjing_core/adapters/channels/cardkit_official_v3/errors.py": "d3bee15f7867c1f583b03646cf403cc8ccda9a82f642a2a1e1d1f152b9d16080",
+    "mingjing_core/adapters/channels/cardkit_official_v3/namespace.py": "68f28805704512d8ba70167aefa995ab6fd1e346972c5d219e9ced085ca419fa",
+    "mingjing_core/adapters/channels/cardkit_official_v3/operations.py": "4b825270a57d5e4c09f150fa519fb442e022252981fe360daaa49ad4a12d2eec",
+    "mingjing_core/adapters/channels/cardkit_official_v3/transitions.py": "b2f145d6aa35289169fffe8471af04efebc3d2249365ecbc530135bd940e778a",
+    "mingjing_core/adapters/channels/cardkit_official_v3/validation.py": "125ee94067c51b3524cc160348d0e7e90878e0b2a63d9fd74337c11c5c07c180",
+    "mingjing_core/adapters/channels/cardkit_official_v3/wire.py": "a72a0e0693d7d79f373488f182f89637d42ce11ac36b6c25841db22f0259da31",
+    "mingjing_core/adapters/channels/cards_official_v3/__init__.py": "ae8e4d74f1333d8f221855a98b81727679c630c7bd10fc9bd6fe93362fbd9cfe",
+    "mingjing_core/adapters/channels/cards_official_v3/answers.py": "72865589fdce3d7b3e29a7673a295619ea307ce0ad086e584dec41bd9047676f",
+    "mingjing_core/adapters/channels/cards_official_v3/budget.py": "1ca6504d477729d669972ec2e3fc098428d8615ba2977c68fd86b1fba53cb767",
+    "mingjing_core/adapters/channels/cards_official_v3/elements.py": "a4af13b6c371291f5058993934e9270a206005fb4a2c698327c8583611e80f6b",
+    "mingjing_core/adapters/channels/cards_official_v3/notices.py": "1e1e6f08ebb653ff936b208b61e139f480cf8b4c3baa79525c42ce1d49ecbe33",
+    "mingjing_core/adapters/channels/cards_official_v3/validation.py": "726502f888e2be3f15f5d11516ff172a866a62dd67523d3688614de02339856f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "55a45bf1baa99b4126f7de7b0fd562b0d1704af0b9a91c6c4847b21bfe3c54b5",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "293abe5f26875f3f9ab553055156da1bb26ee9807bae7e1cd8c68783438fbdd1",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182",
+    "tools/mod_week/benchmark_cardkit_official_v3.py": "9c9fe154c24df6a1798f736eafb13fe946bbcab91880c3cabacbc6570b8cfe5d",
+    "tools/mod_week/official_synthetic_fixture.py": "9b658e6da0ea9e39b10d861f748379b7994fe2a64d56865c266060c29f00d098"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

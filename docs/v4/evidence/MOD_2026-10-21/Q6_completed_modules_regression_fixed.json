@@ -1,0 +1,32 @@
+{
+  "scope": "completed offline module suites Q1-Q6 only; no PG/live model/HTTP",
+  "rounds": [
+    {
+      "round": 1,
+      "started_at": "2026-10-21T00:45:47.500112+08:00",
+      "finished_at": "2026-10-21T00:45:50.275431+08:00",
+      "command": [
+        "-m",
+        "pytest",
+        "tests/v4/organize",
+        "tests/v4/validation",
+        "tests/v4/followups_mod",
+        "tests/v4/cards_mod",
+        "tests/v4/mod_tools",
+        "tests/v4/mod_week",
+        "tests/v4/timeparse",
+        "tests/v4/memory2",
+        "tests/v4/streaming",
+        "tests/v4/scheduling",
+        "tests/v4/organize_v2",
+        "tests/v4/p9_v2",
+        "--import-mode=importlib",
+        "-q",
+        "--basetemp=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\private\\mod-week\\tmp\\completed-20261021-004547-1"
+      ],
+      "exit_code": 2,
+      "stdout": "\n=================================== ERRORS ====================================\n______ ERROR collecting tests/v4/p9_v2/test_acceptance_lifecycle_mod.py _______\nImportError while importing test module 'C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\tests\\v4\\p9_v2\\test_acceptance_lifecycle_mod.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\ntests\\v4\\p9_v2\\test_acceptance_lifecycle_mod.py:8: in <module>\n    from test_acceptance_stream_mod import AT, SCOPE, TTL, complete, dispatched, leased, prepared, proof, receipt\nE   ModuleNotFoundError: No module named 'test_acceptance_stream_mod'\n_____ ERROR collecting tests/v4/p9_v2/test_acceptance_merge_stream_mod.py _____\nImportError while importing test module 'C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\tests\\v4\\p9_v2\\test_acceptance_merge_stream_mod.py'.\nHint: make sure your test modules/packages have valid Python names.\nTraceback:\ntests\\v4\\p9_v2\\test_acceptance_merge_stream_mod.py:7: in <module>\n    from test_acceptance_lifecycle_mod import streaming\nE   ModuleNotFoundError: No module named 'test_acceptance_lifecycle_mod'\n=========================== short test summary info ===========================\nERROR tests/v4/p9_v2/test_acceptance_lifecycle_mod.py\nERROR tests/v4/p9_v2/test_acceptance_merge_stream_mod.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!\n2 errors in 1.71s\n",
+      "stderr": ""
+    }
+  ]
+}

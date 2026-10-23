@@ -1,0 +1,282 @@
+{
+  "schema": "mod-partition-independent-acceptance-v1",
+  "provenance": "Independent truth from design22 and root explicit boundary agreement before reading selection implementation",
+  "boundaries": {
+    "window": "UTC 7*24h inclusive lower boundary; exclude future said_at",
+    "rounds": "Latest30 complete ordered user/assistant pairs, same life_thread/area/topic",
+    "summary": "At most2 per other area, selected by recency then displayed chronologically",
+    "authority": "Projection key and invalidation plans grant no DB or token authority"
+  },
+  "cases": [
+    {
+      "id": "PART001",
+      "group": "source",
+      "case": "wrong_owner",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART002",
+      "group": "source",
+      "case": "wrong_subject",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART003",
+      "group": "source",
+      "case": "missing_source",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART004",
+      "group": "source",
+      "case": "stale_revision",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART005",
+      "group": "source",
+      "case": "inactive",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART006",
+      "group": "source",
+      "case": "redacted",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART007",
+      "group": "source",
+      "case": "incognito",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART008",
+      "group": "source",
+      "case": "assistant_source_for_fact",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART009",
+      "group": "source",
+      "case": "noncurrent_user_origin",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART010",
+      "group": "source",
+      "case": "duplicate_source_identity",
+      "expected": "No protected record text or source reference in selected context"
+    },
+    {
+      "id": "PART011",
+      "group": "round",
+      "case": "latest_30_complete_pairs",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART012",
+      "group": "round",
+      "case": "different_topic",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART013",
+      "group": "round",
+      "case": "different_area",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART014",
+      "group": "round",
+      "case": "different_life_thread",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART015",
+      "group": "round",
+      "case": "one_source_only",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART016",
+      "group": "round",
+      "case": "reversed_role_order",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART017",
+      "group": "round",
+      "case": "future_round",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART018",
+      "group": "round",
+      "case": "revoked_pair_member",
+      "expected": "Only authorized complete user/assistant pairs of the current life/area/topic; newest 30 in chronology"
+    },
+    {
+      "id": "PART019",
+      "group": "constraint",
+      "case": "cross_area_global_constraint",
+      "expected": "Only genuine user constraints are global; current retrieval score multiplied exactly 1.5"
+    },
+    {
+      "id": "PART020",
+      "group": "constraint",
+      "case": "assistant_claim_constraint",
+      "expected": "Only genuine user constraints are global; current retrieval score multiplied exactly 1.5"
+    },
+    {
+      "id": "PART021",
+      "group": "constraint",
+      "case": "summary_constraint",
+      "expected": "Only genuine user constraints are global; current retrieval score multiplied exactly 1.5"
+    },
+    {
+      "id": "PART022",
+      "group": "constraint",
+      "case": "constraint_before_other_retrieval",
+      "expected": "Only genuine user constraints are global; current retrieval score multiplied exactly 1.5"
+    },
+    {
+      "id": "PART023",
+      "group": "constraint",
+      "case": "current_area_multiplier",
+      "expected": "Only genuine user constraints are global; current retrieval score multiplied exactly 1.5"
+    },
+    {
+      "id": "PART024",
+      "group": "constraint",
+      "case": "other_area_not_multiplied",
+      "expected": "Only genuine user constraints are global; current retrieval score multiplied exactly 1.5"
+    },
+    {
+      "id": "PART025",
+      "group": "profile",
+      "case": "current_profile_complete",
+      "expected": "Current profile keeps detail, other area is abbreviated; derived material never becomes user fact"
+    },
+    {
+      "id": "PART026",
+      "group": "profile",
+      "case": "other_profile_one_sentence",
+      "expected": "Current profile keeps detail, other area is abbreviated; derived material never becomes user fact"
+    },
+    {
+      "id": "PART027",
+      "group": "profile",
+      "case": "current_profile_first",
+      "expected": "Current profile keeps detail, other area is abbreviated; derived material never becomes user fact"
+    },
+    {
+      "id": "PART028",
+      "group": "profile",
+      "case": "summary_not_user_profile",
+      "expected": "Current profile keeps detail, other area is abbreviated; derived material never becomes user fact"
+    },
+    {
+      "id": "PART029",
+      "group": "topic",
+      "case": "current_topic_detail",
+      "expected": "Other areas expose only titles, never private full body as an open-topic line"
+    },
+    {
+      "id": "PART030",
+      "group": "topic",
+      "case": "other_topic_title_only",
+      "expected": "Other areas expose only titles, never private full body as an open-topic line"
+    },
+    {
+      "id": "PART031",
+      "group": "topic",
+      "case": "empty_title_rejected",
+      "expected": "Other areas expose only titles, never private full body as an open-topic line"
+    },
+    {
+      "id": "PART032",
+      "group": "summary",
+      "case": "exact_seven_days_included",
+      "expected": "Other areas use UTC rolling seven days inclusive, latest two each then chronological order, visibly derived"
+    },
+    {
+      "id": "PART033",
+      "group": "summary",
+      "case": "seven_days_plus_microsecond_excluded",
+      "expected": "Other areas use UTC rolling seven days inclusive, latest two each then chronological order, visibly derived"
+    },
+    {
+      "id": "PART034",
+      "group": "summary",
+      "case": "future_summary_excluded",
+      "expected": "Other areas use UTC rolling seven days inclusive, latest two each then chronological order, visibly derived"
+    },
+    {
+      "id": "PART035",
+      "group": "summary",
+      "case": "at_most_two_per_area",
+      "expected": "Other areas use UTC rolling seven days inclusive, latest two each then chronological order, visibly derived"
+    },
+    {
+      "id": "PART036",
+      "group": "summary",
+      "case": "chronological_display",
+      "expected": "Other areas use UTC rolling seven days inclusive, latest two each then chronological order, visibly derived"
+    },
+    {
+      "id": "PART037",
+      "group": "summary",
+      "case": "withdrawn_source_removed",
+      "expected": "Other areas use UTC rolling seven days inclusive, latest two each then chronological order, visibly derived"
+    },
+    {
+      "id": "PART038",
+      "group": "summary",
+      "case": "derived_attribution_retained",
+      "expected": "Other areas use UTC rolling seven days inclusive, latest two each then chronological order, visibly derived"
+    },
+    {
+      "id": "PART039",
+      "group": "invalidation",
+      "case": "operation_replay_stable",
+      "expected": "Invalidation is an immutable revision-bound intent, never a source mutation"
+    },
+    {
+      "id": "PART040",
+      "group": "invalidation",
+      "case": "expected_revision_preserved",
+      "expected": "Invalidation is an immutable revision-bound intent, never a source mutation"
+    },
+    {
+      "id": "PART041",
+      "group": "invalidation",
+      "case": "no_input_mutation_or_deletion",
+      "expected": "Invalidation is an immutable revision-bound intent, never a source mutation"
+    },
+    {
+      "id": "PART042",
+      "group": "invalidation",
+      "case": "other_owner_untouched",
+      "expected": "Invalidation is an immutable revision-bound intent, never a source mutation"
+    },
+    {
+      "id": "PART043",
+      "group": "purity",
+      "case": "same_instant_other_zone",
+      "expected": "No host timezone or side effects; consistency fingerprint is not authorization"
+    },
+    {
+      "id": "PART044",
+      "group": "purity",
+      "case": "source_epoch_changes_key",
+      "expected": "No host timezone or side effects; consistency fingerprint is not authorization"
+    },
+    {
+      "id": "PART045",
+      "group": "purity",
+      "case": "immutable_inputs",
+      "expected": "No host timezone or side effects; consistency fingerprint is not authorization"
+    }
+  ]
+}

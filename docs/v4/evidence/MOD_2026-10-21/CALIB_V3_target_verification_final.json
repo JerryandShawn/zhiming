@@ -1,0 +1,79 @@
+{
+  "schema": "calibration-v3-target-verification",
+  "recorded_at": "2026-10-21T08:10:01.064278+08:00",
+  "commands": [
+    "C:/Users/Administrator/Documents/Codex/zhiming-v4-p2/.venv-core/Scripts/python.exe -m pytest -q tests/v4/calibration_v3",
+    "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe -m ruff check --select E,F,I,B,UP,SIM --line-length 120 tools/calibration_v3 tests/v4/calibration_v3",
+    "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe -m ruff format --check --line-length 120 tools/calibration_v3 tests/v4/calibration_v3"
+  ],
+  "pytest": {
+    "passed": 190,
+    "failed": 0,
+    "duration_seconds": 3.27,
+    "scope": "target_directory_only"
+  },
+  "ruff": "passed",
+  "ast": {
+    "passed": true,
+    "max_file_lines": 400,
+    "max_function_lines": 60,
+    "max_line_chars": 120,
+    "complete_annotations": true
+  },
+  "source_files": {
+    "tools/calibration_v3/__init__.py": "deb0f7ee1db9144f1744bea9640ed7ffc950587dcef535831d73e6afa4bc1942",
+    "tools/calibration_v3/batches.py": "e6a47e5e63266223eadd2633fb3d9f41b7e6298e785a4cacfae844580e5d4de1",
+    "tools/calibration_v3/blind_payload_contract.py": "f7a4c90b7a5b22db06901290f63a392a41a614851352bfcf92e00656c1dd0ab7",
+    "tools/calibration_v3/critic_records.py": "92d7ab381ec266acffee078ff173ca59d24c0aba3a5254f25593ab37f27297c6",
+    "tools/calibration_v3/daily.py": "9b5ef6ccc812a329d70db9c77391af0b0c03ab72ce53a6a89eb3414841e4d480",
+    "tools/calibration_v3/human_provenance.py": "c36a4189ef201632b7da848da9acc90844eedeedac3d1e7e55703fe13a4eb4f9",
+    "tools/calibration_v3/human_submission.schema.json": "eef1ae546c2c94b3b240a4fc7aab89c2acff92c862793effdbaa4911ac971186",
+    "tools/calibration_v3/import_brain.py": "3cf4c6e6a9636f1d1e5fd954add740592f465a856086f08543bc07921f5412b0",
+    "tools/calibration_v3/models.py": "06bfb12b39e9e2349c687b572fc897d97fb8312dfc423180a5fe1aa6f2d41a84",
+    "tools/calibration_v3/policy.json": "9745a05f8b7c029889168b3ae527dd001bfd713835bf55bb29b39cfb51f6f39d",
+    "tools/calibration_v3/private_export.py": "964deb0319673d791356dd9e75ed2061222a21f2472104cfabbe0e687f5c9cdc",
+    "tools/calibration_v3/reporting.py": "530a5e017572bb54a731b6cbff62e2e445ee7400ea08d7208d302f58d15b8700",
+    "tools/calibration_v3/statistics.py": "ec5816756f123712023b521a871527fd3badfa0e5e39a6f4d227bbe929f5f0cf",
+    "tools/calibration_v3/submission.py": "4f62cb4db21aa75381a9a6354756dd6eaac59d505a9a429919d150d24d3c9975"
+  },
+  "source_tree_sha256": "c8ebf8f04f521ab65c9aab5e7471ffa2935ee313fa5d1a1a96314c546d451ead",
+  "test_files": {
+    "tests/v4/calibration_v3/__init__.py": "31935a3537cdc37b50d7b0fbe53be36c4ed49b6e13979ca533639194814f08f6",
+    "tests/v4/calibration_v3/calibration_toy_support_mod.py": "79619f60a59365fc53b873c499e038e03cba942c798714b897284001eb23d827",
+    "tests/v4/calibration_v3/conftest.py": "6db3bf54f89b76686e2d7fbd6e7df7de45e5f68c24c4e663b8c7eb0cedd5d1d5",
+    "tests/v4/calibration_v3/test_acceptance_root_statistics_mod.py": "d1ee8efc1c804cc25b1da560da3da1b56a0794c70bcbaded40f39f8b6e7722ca",
+    "tests/v4/calibration_v3/test_blind_payload_guards_mod.py": "f7e583835d7201aa15b48fbad58a32b9e689946d32eedbede709d3e4fff9318e",
+    "tests/v4/calibration_v3/test_blind_plan_mod.py": "cb274eba5824792d99220472087492f68461db42068491380bc3f1b7c47df9f9",
+    "tests/v4/calibration_v3/test_brain_parser_mod.py": "08fe73f80220219278eb85fb52aa5565246f5903c78ba109b71574f0a0792f11",
+    "tests/v4/calibration_v3/test_human_provenance_mod.py": "da9262a4962756fcf372ccfe68de2c6cf75c4c9d5569d170b4f9c78440657d33",
+    "tests/v4/calibration_v3/test_reporting_guards_mod.py": "2ad83979ca70acd1bd157bb6c469cf6d710f2e074646d9daa3c9a420b7d47602",
+    "tests/v4/calibration_v3/test_reporting_mod.py": "0c9ea27dc59271328aa9ca016eb758ac1a648c1ad868f1c38becaef87b3d47d0",
+    "tests/v4/calibration_v3/test_statistics_mod.py": "e9bbf7b8806de2ba9c4bc499d525a10eda63a158d73b1cb763d12c589121226a",
+    "tests/v4/calibration_v3/test_submission_identity_mod.py": "c948d408db6e06142983be23a6b52e9b4267674e3e00ef2516b4467770f0d01c",
+    "tests/v4/calibration_v3/test_submission_mod.py": "6a168725f705a389c039332168eccebffa21d08be0038e974866a3cf9b9ecf48"
+  },
+  "independent_statistics": {
+    "confusion_tables_exhaustive": 6561,
+    "wilson_trials": 5150,
+    "origin": "root independent synthetic mathematical tests"
+  },
+  "effects": {
+    "real_model_requests": 0,
+    "server_requests": 0,
+    "business_requests": 0,
+    "human_reviews": 0,
+    "feishu_messages": 0,
+    "runtime_configuration_writes": 0
+  },
+  "limits": [
+    "Target tests are synthetic protocol/math evidence, not actual critic calibration",
+    "Not included in root 07:45 completed-suite full regression; no full regression or coverage was run here",
+    "No Git mutation performed by child agent; root owns final review and commit"
+  ],
+  "supersedes": "CALIB_V3_target_verification.json",
+  "corrections": [
+    "Wilson exact zero/all-success endpoints prevent floating point exclusion of point estimate",
+    "Frontend identity regex excludes every U+0000..U+001F even at nonspace position; JSONSchema and semantic boundary tests agree"
+  ],
+  "prior_report_scope": "112 tests and pre-identity-fix source snapshot are historical; use this final report"
+}

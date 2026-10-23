@@ -1,0 +1,59 @@
+{
+  "schema": "memory-mutation-boundary-initial-v1",
+  "started_at": "2026-10-21T09:59:39.477310+08:00",
+  "finished_at": "2026-10-21T09:59:40.510186+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/v4/memory2/test_mutation_boundary_coverage_acceptance_mod.py",
+    "-q",
+    "--tb=short"
+  ],
+  "returncode": 0,
+  "stdout": "........................                                                 [100%]\n24 passed in 0.11s\n",
+  "stderr": "",
+  "matrix_sha256": "04f34c69a7300d898c130c72e59c0c287463f18378e920b98dca82ee3ee299c0",
+  "source_sha256": {
+    "mingjing_core/memory2/__init__.py": "310af2f5d4051717ed2e2be301d3d45585163ca3afcc2eba4bba13a3e893669e",
+    "mingjing_core/memory2/archive.py": "fd4c51c1c06f849c887b8049845112f4a6a1ad6064f1105e9f6934a6061ea364",
+    "mingjing_core/memory2/conflicts.py": "80f9e4b935e06596ee6fb5cbf0188365672990accf97f1d18b67599aef60650f",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/current_guard.py": "9adbd022141fee245f1c4678f38cdfe7349c135e4813c589b9e4fbeb60a280a8",
+    "mingjing_core/memory2/dedup.py": "971143372b412e47d634b0fb1d975d5958fe686541856bad46015945eb64c6de",
+    "mingjing_core/memory2/event_time.py": "836eca5323b6ffb825374c64e53a3f48848d0793828c470df694b7988128d6da",
+    "mingjing_core/memory2/event_time_extended_v2.py": "1302faf40d85144fef3cace7beb712456607f4e5684aa5bc38739e335e01d3d2",
+    "mingjing_core/memory2/forget.py": "7d339ff4807b4fde1b82d06fe6c9630f4c41444ea0d0c354ac6f45a701cd1bf6",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "mingjing_core/memory2/mutation_contracts.py": "08f4b8e521a863718ff2d37ec1fbf1a4336154dd464fe29138b60c6fb3b61d0c",
+    "mingjing_core/memory2/mutations.py": "82bb1b6aad7fe6b62ca327a38823f4ba614ba3d0aa1c23ff14949aae04c993d4",
+    "mingjing_core/memory2/plan_builder.py": "20e65408ffcf3aa60f366745e5ab8f5c2d42fd92e03958e90007abc6b1b5cf16",
+    "mingjing_core/memory2/reflection.py": "df3688910259150265194b1b8b381c837dd307d06f34df1f274d026c4346cc49",
+    "mingjing_core/memory2/retrieval_projection.py": "fe6cc38b3a9a8566e5d5a2e9585fa29845228b9a2c79d7b2711db9c53e2284dd",
+    "mingjing_core/memory2/scoring.py": "92e0035d4e42a28b6ebe40af038e96c0b4a54c3f7b0b16cde266725f964117e1",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/undo.py": "cb91edcec6f9d9e65e011936250154166a251136fd633e3b774d2784174f7aca",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "mingjing_core/memory/slots.py": "971def850e9f882647bd28a1e3c3fcd6367d4708c118cd560ebd6ab4737450ad"
+  },
+  "source_stable": true,
+  "test_sha256": {
+    "tests/v4/memory2/mutation_boundary_support_acceptance_mod.py": "3e84b30e29c7839a0f936d753b2cab447da24c85eae9e194ac5364e4ce546703",
+    "tests/v4/memory2/test_mutation_boundary_coverage_acceptance_mod.py": "038a21f610ec877a407a17afc688b5bd061f431fad33c40c105b18cd64cc26a4"
+  },
+  "kind": "synthetic_local_only",
+  "products_modified": false,
+  "effects": {
+    "models": 0,
+    "network": 0,
+    "pg": 0,
+    "runtime_writes": 0,
+    "notifications": 0
+  },
+  "limits": [
+    "24 fixed public-input tests only; not the 09:45 completed regression or PG acceptance",
+    "No private object bypass or old truth changes",
+    "Metadata revision/status static concerns excluded from frozen matrix"
+  ]
+}

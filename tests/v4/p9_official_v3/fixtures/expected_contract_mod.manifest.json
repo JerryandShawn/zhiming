@@ -1,0 +1,67 @@
+{
+  "schema_version": "p9-official-independent-v3.0.0",
+  "status": "frozen_normative_fixture_not_test_results",
+  "frozen_at_beijing": "2026-10-21T02:05:13.802+08:00",
+  "fixture": "tests/v4/p9_official_v3/fixtures/expected_contract_mod.json",
+  "fixture_sha256": "2fca0ce9b79c45a80106544e85de49c5d95f8a19a9f2317797578b61deec10bb",
+  "case_count": 184,
+  "case_counts_by_evidence_class": {
+    "official": 45,
+    "official_with_project_policy": 48,
+    "project_policy": 35,
+    "regression_invariant": 43,
+    "unverified_stage": 13
+  },
+  "checklist_8_case_counts": {
+    "1": 24,
+    "2": 9,
+    "3": 8,
+    "4": 17,
+    "5": 15,
+    "6": 30,
+    "7": 18,
+    "8": 7,
+    "9": 6,
+    "10": 67,
+    "11": 15
+  },
+  "section_7_exact_ten_stage_ids": [
+    "UNVERIFIED_U01",
+    "UNVERIFIED_U02",
+    "UNVERIFIED_U03",
+    "UNVERIFIED_U04",
+    "UNVERIFIED_U05",
+    "UNVERIFIED_U06",
+    "UNVERIFIED_U07",
+    "UNVERIFIED_U08",
+    "UNVERIFIED_U09",
+    "UNVERIFIED_U10"
+  ],
+  "additional_stage_or_console_ids": [
+    "UNVERIFIED_U11",
+    "UNVERIFIED_U12",
+    "UNVERIFIED_U13"
+  ],
+  "source": {
+    "name": "26_飞书官方接口核实.md",
+    "absolute_path": "C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/26_飞书官方接口核实.md",
+    "sha256": "70883c7517e7796039e5481c8d41fa5ca7d499da3b210a65a40ed3657f2318bb",
+    "bytes": 57048,
+    "lines": 317,
+    "document_date": "2026-10-20",
+    "fully_read_before_matrix": true,
+    "evidence_boundary": "26号官方核实文档快照；本线未重新联网核验，也未访问任何业务接口"
+  },
+  "structural_validation_only": {
+    "valid_json": true,
+    "unique_case_ids": true,
+    "all_checklist_8_items_nonempty": true,
+    "source_hash_unchanged": true
+  },
+  "pytest_executed": false,
+  "products_imported": false,
+  "git_operations": false,
+  "business_or_network_requests": 0,
+  "golden_labels_must_not_be_relaxed_to_match_implementation": true,
+  "fixture_bytes": 110233
+}
