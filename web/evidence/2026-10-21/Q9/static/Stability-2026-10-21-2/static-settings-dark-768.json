@@ -1,0 +1,62 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "id": "settings",
+  "mode": "static",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "dark",
+  "url": "/?preview=1#/settings",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-2/static-settings-dark-768.png",
+  "sha256": "4186093308ee9472291a9867e4c21b10ac183ac7b7ecece04ea9801834685c1a",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "dark",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "switch",
+            "text": ""
+          },
+          {
+            "className": "switch",
+            "text": ""
+          },
+          {
+            "className": "switch",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 666,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

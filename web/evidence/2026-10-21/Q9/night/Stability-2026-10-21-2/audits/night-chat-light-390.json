@@ -1,0 +1,138 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "captured_time_bjt": "2026-10-21T11:45:37.236+08:00",
+  "id": "night-chat",
+  "case_key": "night-chat-light-390",
+  "state": "night-chat",
+  "route": "/?night=demo#/chat",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "theme": "light",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-light-390.png",
+  "screenshot_sha256": "7e2fcf6cd1f4bc7c92f0646ad62d1efaf3cabf05186f43fcea713d426f62b1eb",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-light-390-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-light-390.png",
+      "sha256": "7e2fcf6cd1f4bc7c92f0646ad62d1efaf3cabf05186f43fcea713d426f62b1eb",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-light-390-full.png",
+      "sha256": "7e2fcf6cd1f4bc7c92f0646ad62d1efaf3cabf05186f43fcea713d426f62b1eb",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "light",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 190,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 380,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "ask-card",
+          "text": "你更想先理清哪一部分？为什么问：先从你最在意的地方开始，不替你做决定。先做个小试验先把信息"
+        }
+      ]
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 570,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "ask-card",
+          "text": "你更想先理清哪一部分？为什么问：先从你最在意的地方开始，不替你做决定。先做个小试验先把信息"
+        }
+      ]
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 760,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "ask-card",
+          "text": "你更想先理清哪一部分？为什么问：先从你最在意的地方开始，不替你做决定。先做个小试验先把信息"
+        }
+      ]
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 943,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "记住"
+        }
+      ]
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}

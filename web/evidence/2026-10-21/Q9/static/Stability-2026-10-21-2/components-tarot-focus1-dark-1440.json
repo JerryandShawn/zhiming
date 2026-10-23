@@ -1,0 +1,49 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "id": "tarot-focus1",
+  "mode": "components",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "dark",
+  "url": "/?components=demo#/tarot?spread=focus1&step=reveal",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-2/components-tarot-focus1-dark-1440.png",
+  "sha256": "67e4ea4f2a1181aa94ec7625054d566144587079061ab0fb781c783e09d38ae9",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "dark",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "",
+            "text": "揭牌"
+          },
+          {
+            "className": "button primary  ",
+            "text": "全部揭开"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

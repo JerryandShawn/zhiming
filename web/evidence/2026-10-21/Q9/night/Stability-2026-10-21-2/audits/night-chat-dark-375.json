@@ -1,0 +1,161 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "captured_time_bjt": "2026-10-21T11:45:26.593+08:00",
+  "id": "night-chat",
+  "case_key": "night-chat-dark-375",
+  "state": "night-chat",
+  "route": "/?night=demo#/chat",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "theme": "dark",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-dark-375.png",
+  "screenshot_sha256": "b9e4f82cb019e783c94c011d00930b9e2c7103ed96ab34c09874ca66845f65e8",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-dark-375-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-dark-375.png",
+      "sha256": "b9e4f82cb019e783c94c011d00930b9e2c7103ed96ab34c09874ca66845f65e8",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-chat-dark-375-full.png",
+      "sha256": "b9e4f82cb019e783c94c011d00930b9e2c7103ed96ab34c09874ca66845f65e8",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "dark",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 158,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 316,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 474,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "ask-card",
+          "text": "你更想先理清哪一部分？为什么问：先从你最在意的地方开始，不替你做决定。先做个小试验先把信息"
+        }
+      ]
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 632,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "ask-card",
+          "text": "你更想先理清哪一部分？为什么问：先从你最在意的地方开始，不替你做决定。先做个小试验先把信息"
+        }
+      ]
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 790,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "ask-card",
+          "text": "你更想先理清哪一部分？为什么问：先从你最在意的地方开始，不替你做决定。先做个小试验先把信息"
+        }
+      ]
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 948,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "记住"
+        }
+      ]
+    },
+    {
+      "kind": "internal",
+      "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 999,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "记住"
+        }
+      ]
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}
