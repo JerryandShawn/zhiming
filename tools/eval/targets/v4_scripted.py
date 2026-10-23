@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 import json
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from typing import Any
 
 from mingjing_core.agent.context_budget import count_request
@@ -35,11 +35,25 @@ class ScriptedModelPort(ModelPort):
         self.requests: list[dict[str, Any]] = []
         self.actions: list[dict[str, Any]] = []
         self.bindings: dict[str, str] = {}
+        self.text_chunk_hook: Callable[[int], None] | None = None
 
     def start(self, provider: ScriptedProvider, turn: int, bindings: dict[str, str]) -> None:
         actions = provider.replay(turn)
-        if any(not action or set(action) - {"text", "tool_call"} for action in actions):
+        if any(not action or set(action) - {"text", "tool_call", "text_chunks"} for action in actions):
             raise ValueError("v4 scripts may contain model text/tool calls only")
+        for action in actions:
+            if "text_chunks" in action:
+                chunks = action["text_chunks"]
+                if (
+                    set(action) != {"text", "text_chunks"}
+                    or not isinstance(chunks, list)
+                    or not 2 <= len(chunks) <= 64
+                    or any(not isinstance(chunk, str) or not chunk for chunk in chunks)
+                    or not isinstance(action["text"], str)
+                    or len(action["text"]) > 200_000
+                    or "".join(chunks) != action["text"]
+                ):
+                    raise ValueError("offline text chunks must exactly partition the same model text")
         self.actions, self.bindings = actions, dict(bindings)
 
     def _value(self, value: Any, messages: list[ChatMessage]) -> Any:
@@ -85,7 +99,10 @@ class ScriptedModelPort(ModelPort):
             args = self._value(call.get("arguments", {}), messages)
             yield StreamEvent("tool_call", ToolCall(f"scripted-call-{self.calls}", call["name"], args))
         if "text" in action:
-            yield StreamEvent("text", action["text"])
+            for index, chunk in enumerate(action.get("text_chunks", [action["text"]]), 1):
+                yield StreamEvent("text", chunk)
+                if self.text_chunk_hook is not None:
+                    self.text_chunk_hook(index)
         yield StreamEvent("usage", {})
         yield StreamEvent("done", {"model": "scripted-v4", "provider": "scripted"})
 
