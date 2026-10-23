@@ -123,6 +123,20 @@ cd "$FR_CONTROL_DIR"
 
 第一条默认0连接/0进程/0文件写；第二条才取得合作性文件/PG栅栏，保留维护标记，实际生成同一MVCC快照的custom dump、候选原生旁账与独立前后状态证据。错误OID、额外会话、活动run/lease、锁冲突、已有输出或源漂移均停止，保留已写产物，不自动清理重试；锁释放不解除维护。当前应用尚未接这个协议，前后会话检查也不证明dump期间全局停写，`global_quiescence_verified=false`。成功仅为`backup_captured`，不能据JSON回执采用既有恢复库、迁移源库或解除B2/B3/B7、Linux、中央身份和发布门。实际8/8与独立marker写阻断1/1见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档证据。
 
+### 本机捕获与原始恢复绑定（M2）
+
+新捕获显式使用UTC行投影，包含逻辑列集合及同次实际核验输入的`capture_lineage`。只接受`source_projection=postgres-jsonb-utc-v1`的新真实产物；旧无UTC/列/血缘的回执不能补字段或改hash后冒充。本次M1输入的逐字节副本固定为其operation目录的`capture-inputs.json`，独立`first-release-local-capture-binding-pin-v1`绑定它、receipt、dump、旁账、完整状态、候选/manifest、另一新恢复operation与消费控制文件。
+
+```bash
+"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
+  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
+  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
+  --apply-local --upgrade-local --capture-bind-local \
+  --capture-inputs "$FR_LOCAL_CAPTURE_INPUTS" --capture-pin "$FR_LOCAL_CAPTURE_BINDING_PIN"
+```
+
+比较在同call新目标creator锁内、实际原始恢复后且任何升级之前执行：实际owner/原prefix/关系、逻辑列和全部原字段行hash精确相等，sequence集合及last_value/is_called相等；保留源log_cnt证据，不伪造跨恢复日志计数相等。任一异常保留原目标且不升级；默认不加绑定参数仍0连接。成功只增加嵌套`local_original_content_verified`，不执行latest撤销/收据重放，也不证明源库捕获后未再变化；源库升级、全局停写、正式恢复、Linux、中央身份和发布仍未放行。真实证据为首链3项通过、必要失败复验3项通过、合法profile两正例2项通过，不冒称一次8/8；两轮失败与修正均在原增量ExecPlan保留。
+
 | 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
 | --- | --- | --- | --- | --- |
 | B0 | 新授权后只读盘点主机、PG15/实际schema前缀、角色、服务/反代、队列、磁盘和备份；命令范围见下文 | 目标、旧包、schema/checksum、owner范围及容量与审核输入一致；所有目标名称明确 | 无新授权、环境漂移、低于受审容量预算、未知writer/旧任务 | 10–20分 |

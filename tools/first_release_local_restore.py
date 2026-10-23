@@ -20,6 +20,7 @@ from tools.first_release_restore import SafeParser
 
 if TYPE_CHECKING:
     from tools.first_release_candidate_process import CandidatePreflight, CandidateReplay
+    from tools.first_release_capture_binding import CaptureBinding
 
 
 def process_environment(owner_dsn: str) -> dict[str, str]:
@@ -82,7 +83,7 @@ def restore_command(inputs: LocalInputs, owner_dsn: str) -> list[str]:
     ]
 
 
-def _validate_modes(inputs: LocalInputs, apply: bool, upgrade: bool, preflight: Any, replay: Any) -> None:
+def _validate_modes(inputs: LocalInputs, apply: bool, upgrade: bool, preflight: Any, replay: Any, capture: Any) -> None:
     require(type(upgrade) is bool and (not upgrade or apply), "LOCAL_UPGRADE_REQUIRES_APPLY")
     if preflight is not None:
         require(apply and upgrade, "PREFLIGHT_REQUIRES_SAME_CALL_APPLY_UPGRADE")
@@ -93,6 +94,20 @@ def _validate_modes(inputs: LocalInputs, apply: bool, upgrade: bool, preflight: 
         require(type(replay) is CandidateReplay and preflight is None, "EXPLICIT_REPLAY_PIN_REQUIRED")
         require(apply and upgrade, "REPLAY_REQUIRES_SAME_CALL_APPLY_UPGRADE")
         replay.validate(inputs)
+    if capture is not None:
+        from tools.first_release_capture_binding import CaptureBinding
+
+        require(type(capture) is CaptureBinding and apply is True, "CAPTURE_BINDING_REQUIRES_SAME_CALL_APPLY")
+        capture.validate(inputs)
+
+
+def _verified_original(inputs: LocalInputs, dsns: dict[str, str], creator: Any, capture: Any) -> dict[str, Any]:
+    original = verify_original(inputs, dsns["owner"])
+    if capture is not None:
+        from tools.first_release_capture_binding import verify_capture_binding
+
+        original["capture_binding"] = verify_capture_binding(capture, inputs, dsns, creator)
+    return original
 
 
 def execute(
@@ -102,10 +117,11 @@ def execute(
     upgrade_local: bool = False,
     replay_preflight: CandidatePreflight | None = None,
     withdrawals_replay: CandidateReplay | None = None,
+    capture_binding: CaptureBinding | None = None,
     environment: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
     receipt = inputs.validate()
-    _validate_modes(inputs, apply_local, upgrade_local, replay_preflight, withdrawals_replay)
+    _validate_modes(inputs, apply_local, upgrade_local, replay_preflight, withdrawals_replay, capture_binding)
     if not apply_local:
         return receipt
     dsns = inputs.connections(environment)
@@ -116,7 +132,7 @@ def execute(
         require(file_hash(inputs.dump) == inputs.dump_pin.dump_sha256, "REVIEWED_DUMP_CHANGED")
         run_program(inputs, restore_command(inputs, dsns["owner"]), child_environment)
         require(file_hash(inputs.dump) == inputs.dump_pin.dump_sha256, "REVIEWED_DUMP_CHANGED")
-        original = verify_original(inputs, dsns["owner"])
+        original = _verified_original(inputs, dsns, creator, capture_binding)
         upgraded = {}
         if upgrade_local:
             from tools.first_release_local_upgrade import _upgrade_new_target
@@ -133,6 +149,7 @@ def execute(
             upgraded["withdrawals_replay"] = candidate_replay(withdrawals_replay, inputs, dsns, creator)
             upgraded["latest_withdrawals_replayed"] = True
             upgraded["database_connections"] = 9
+        upgraded["database_connections"] = upgraded.get("database_connections", 4) + int(capture_binding is not None)
     receipt.pop("mutations", None)
     return {
         **receipt,
@@ -144,6 +161,7 @@ def execute(
         "latest_withdrawals_replayed": False,
         "runtime_acl_verified": False,
         "native_restore_completed": False,
+        "source_restore_content_verified": False,
         "linux_attestation": False,
         "publication": False,
         "database_connections": 4,
@@ -162,6 +180,9 @@ def _parser() -> SafeParser:
     parser.add_argument("--upgrade-local", action="store_true")
     parser.add_argument("--replay-preflight-local", action="store_true")
     parser.add_argument("--replay-withdrawals-local", action="store_true")
+    parser.add_argument("--capture-bind-local", action="store_true")
+    for name in ("capture-inputs", "capture-pin"):
+        parser.add_argument("--" + name, type=Path)
     for name in ("preflight-pin", "preflight-ledger", "candidate-python"):
         parser.add_argument("--" + name, type=Path)
     for name in ("replay-pin", "replay-ledger"):
@@ -204,12 +225,14 @@ def main(argv: list[str] | None = None) -> int:
             args.replay_withdrawals_local or not (args.replay_pin or args.replay_ledger),
             "REPLAY_ARGUMENTS_WITHOUT_FLAG",
         )
+        capture = _capture_request(args)
         receipt = execute(
             inputs,
             apply_local=args.apply_local,
             upgrade_local=args.upgrade_local,
             replay_preflight=replay_preflight,
             withdrawals_replay=withdrawals_replay,
+            capture_binding=capture,
         )
     except RestoreRejected as error:
         print(json.dumps({"status": "blocked", "code": str(error), "automatic_cleanup": False}))
@@ -219,6 +242,16 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     print(json.dumps(receipt, sort_keys=True))
     return 0
+
+
+def _capture_request(args: Any) -> Any:
+    from tools.first_release_capture_binding import CaptureBinding
+
+    if args.capture_bind_local:
+        require(args.capture_inputs and args.capture_pin, "CAPTURE_ARGUMENTS_REQUIRED")
+        return CaptureBinding.parse(args.capture_inputs, read_json(args.capture_pin))
+    require(not args.capture_inputs and not args.capture_pin, "CAPTURE_ARGUMENTS_WITHOUT_FLAG")
+    return None
 
 
 if __name__ == "__main__":

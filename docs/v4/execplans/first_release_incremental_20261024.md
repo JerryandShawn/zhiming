@@ -17,7 +17,8 @@
 - [x] (2026-10-24 02:00 +08:00) 实现显式backup-local与真实双栅栏、候选prefix4/7原生导出、实际PG15 dump、完整状态不变及失败保留。
 - [x] (2026-10-24 02:00 +08:00) 首链8/8真实PG/实际程序/跨进程目标通过，96.61秒；清凭据关追踪，仅1测试进程，无失败、无补跑，已释放测试令牌。
 - [x] (2026-10-24 02:02 +08:00) 根审新增1/1真实跨进程cooperative_writer目标通过，16.79秒：同child先实际写合成行，备份释放OS/PG锁后仍由持久marker阻止第二行；仅运行此目标，未重复8项。
-- [ ] 后续在用户已授权的本机开发范围内另做新fr_restore目标源摘要对照、真实候选双重放门，再前向源库与回填；不属于本M1已验范围。
+- [x] (2026-10-24 02:32 +08:00) M2本机原始恢复绑定验证完毕：新受审UTC捕获→同call新fr_restore→升级前实际完整列/原字段/sequence核验；首链3绿、失败5项复测3绿、最终仅2正例复测2绿，未重复已有绿项。默认不放宽，失败保留不升级，已释放测试令牌。
+- [ ] 后续在用户已授权的本机开发范围内，把M2新目标原始内容门与真实候选双重放组合，再前向源fr_upgrade库与回填；本片不执行源库升级。
 
 ## Surprises & Discoveries
 
@@ -51,6 +52,28 @@ first_release_incremental负责不可变输入与CLI；first_release_incremental
 
 失败保留维护标记、已写输出和实际阶段，不删除、自动重试或清理。OS/PG锁随进程退出释放，不等于解除维护；参与协议的writer仍须检查标记。本片没有清除维护或恢复旧目标的命令，没有源库迁移/回退动作。
 
+## M2 seam（本机定向实测完成）
+
+M1已由根审提交8be4920effcdd1bb3aac52fda7d6dcdab766dfb7。本片新增`tools/first_release_capture_binding.py`与`tests/v4/release/test_first_release_capture_binding_pg.py`，仅小接`tools/first_release_local_restore.py`的显式模式/参数及verify_original之后、_upgrade_new_target之前调用；本计划继续独占，恢复effects及原恢复计划不改。默认无binding仍保持既有行为；没有接受任意既有库或单DSN的入口。
+
+独立不可变CaptureBindingPin绑定M1原输入、backup-receipt、源完整状态、dump、ledger的实际SHA，以及candidate/manifest、目标operation和受审新helper/接线控制代码SHA，不设置admissible布尔。原M1输入继续精确绑定cluster系统号、数据库/角色OID、owner集合、prefix4或7、实际Python/pg_dump、三锁与全部8个控制hash。所有材料限制同workspace下各自固定operation目录，新fr_restore必须与源fr_upgrade身份不同。审核pin为外部信任输入，不认证审核者；不能把某JSON中backup_captured=true当事实证明。
+
+调用前只读核所有不可变文件与完整M1 before=after、canonical state哈希，source/dump/ledger/candidate/manifest/prefix逐一绑定。实际比较函数只能在同call仍持creator锁的新目标内执行：先_require_creator，再只读RR/pg_catalog确认实际新库身份、owner全集、原prefix及关系集合；表全部原字段摘要必须精确相同，包括时间戳和checkpoint，sequence集合与last_value/is_called相同。源last_value/log_cnt/is_called原证据完整保留；log_cnt不拿来要求跨pg_restore相同，也不重写成相同。任何缺表、额外关系、字段/sequence漂移或pin不符均失败保留且不进入升级。
+
+通过仅给嵌套local_capture_binding_verified/local_original_content_verified；source_restore_content_verified、native/runtime/Linux/central/publication等正式位仍false。随后才调用现有新目标升级函数，本片不前向fr_upgrade源库。已用真实M1完整候选捕获和实际pg_restore核prefix4/7，另以真实目标字段/sequence漂移、hash/身份错配、缺same-call负例证明失败仍停原prefix；逐轮实际结果如下。
+
+根批准M2实施并额外最小修改`first_release_incremental_pg.py`：新增显式`postgres-jsonb-utc-v1`投影，实际事务内SET LOCAL TimeZone=UTC并确认事务生效；完整表行字段（包括时间戳）不排除。snapshot新增columns map，按实际非dropped用户列attnum顺序记录字段名、format_type、attnotnull，不绑定物理attnum/OID。此map纳入新before/after与源state SHA，M2逐表精确比较；旧无投影/columns证据硬拒，旧8/8+1/1捕获hash不重解释。默认值/约束/所有DDL与供应链认证不是这个列集合核验的范围。M1 pg可局部超过400软目标，硬<600、函数≤60，不拆未pin helper。首链≤8新行为，实际新捕获验证源/目标不同时区、空表列漂移，不重跑M1旧9项。
+
+新UTC捕获另含body-free capture_lineage，来自本次已实际核验的inputs：operation、manifest/三锁、SourcePin实际系统/库/角色OID与owner/prefix、runtime两程序SHA、8个controller SHA。M2将其与原M1输入逐字段比较，再校受审receipt哈希；不接受receipt自报替代外部pin。首链使用当前已提交416d884的完整候选包，所有M1捕获均新生成，不补造8be之前的旧证据。代码已静态冻结：新capture_binding、local_restore显式接线、新UTC的M1_pg、新真实PG测试及本计划；R3恢复effects和旧Plan不在本片。
+
+首链实际3通过/5失败：`private/safe-narrow-439dd6fb00e846c18c7476f2b5aae7b1`（02:21:39–02:25:44 +08:00，243.97秒）。五个PG比较目标共同在新代码读取creator.info.dsn时失败：psycopg该属性会解析隐式默认passfile并调用Path.home，稀疏测试环境无USERPROFILE。实现改为原调用链显式传入已经严格验证的dsns给_require_creator和owner只读连接，不重建隐式DSN、不加环境或改测试断言；仅允许重跑这五个失败目标，原三绿不重复。
+
+五个失败目标重跑为3通过/2正例失败，`private/safe-narrow-8ee83a0682d04e91b96b566fd8ca4186`（02:26:49–02:29:36 +08:00，166.50秒）。三个实际字段/空表列/sequence漂移负例都按预期在升级前受控拒绝；两个正例已过内容绑定，后续既有升级ACL因M1复用夹具额外的synthetic_backup_seq而拒绝（合法profile只收0008 quota seq）。保留该ACL行为，不删恢复后的seq、不迁就实现放宽断言。仅将这两个正例显式参数化core-only源，在本次新捕获之前去除纯测试附加seq，使实际prefix4/7源符合升级profile；带seq的漂移负例保持原样。随后只重跑两个失败正例，已有六个绿目标不重复。
+
+两个合法profile正例单独复验2/2通过，`private/safe-narrow-7ff0903d655c47da88c8b38a1977d406`（02:31:28–02:32:42 +08:00，72.26秒）。源owner实际默认Asia/Tokyo，新目标owner实际默认America/New_York，源与目标不同DB/角色；新UTC原始内容/逻辑列集合匹配后，同call前向4/7→8及既有精确ACL通过，恢复阶段连接8。原3+后3+最后2组成八个行为的证据，不冒称一次8/8；旧M1九项未重跑。只读比较失败的三个真实PG反例确认目标仍原prefix、没有0008中央关系，且没有自动重试/清理。
+
+最终本片五路径为`tools/first_release_capture_binding.py`、`tools/first_release_local_restore.py`、`tools/first_release_incremental_pg.py`、`tests/v4/release/test_first_release_capture_binding_pg.py`与本计划。三个tool及新测试分别301/258/421/279行，函数最长60行，Ruff E/F/I/B/UP/SIM及120列format通过；M1_pg为获批局部软目标例外，硬<600。capture pin绑定四个consumer控制hash及M1八控制/runtime/source lineage；所有字节hash在实际比较前后重核，未认证审核人、文件模式或完整运行时供应链。
+
 ## Artifacts and Notes
 
 唯一窄链在`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep`运行：
@@ -67,10 +90,12 @@ first_release_incremental负责不可变输入与CLI；first_release_incremental
 
 ## Outcomes & Retrospective
 
-本机合成已有库M1备份入口已获8/8实际证据；只证明合作性栅栏、共用MVCC导出点和阶段前后状态检查。现应用未接栅栏，global_quiescence_verified=false；before_after不排除dump期间瞬时非合作连接。工具尚未实现“源备份完整摘要→新目标原始恢复对照→重放→升级源库”的放行链，source_restore_content_verified/source_upgraded=false；源prefix8/中央账本身份保全、正式恢复、Linux与发布均仍No-Go。测试自产审核pin不认证审核人或完整供应链。没有业务迁移、依赖、既有权限或原b9变更。
+本机合成已有库M1备份入口已有旧版8/8及独立marker1/1证据；M2新增UTC/列集合/lineage捕获与同call新目标原始内容绑定，八个新行为按3+3+2实证。M2只证明本机原始内容匹配，仍未实现整个“源捕获→原始恢复→重放→前向源fr_upgrade库”的放行链。现应用未接栅栏，global_quiescence_verified=false；before_after不排除dump期间瞬时非合作连接。source_restore_content_verified/source_upgraded保持false；逻辑列map不认证默认值、约束、索引/触发器、类型定义或所有DDL。源prefix8/中央账本身份保全、正式恢复、Linux与发布均仍No-Go。测试自产审核pin不认证审核人或完整供应链。没有业务迁移、依赖、既有权限或原b9变更。
 
 ## 修订记录
 
 - 2026-10-24 01:39 +08:00：创建独立增量M1计划，先于编码明确实际备份与合作性栅栏边界。
 - 2026-10-24 02:00 +08:00：记录唯一真实8目标链全通过与snapshot/序列实证；保留全局停写、原始恢复绑定及正式发布关闭，冻结六路径待根审阅。
 - 2026-10-24 02:02 +08:00：单独补根审要求的marker持续防实际写入1/1证明，不重跑旧8项；业务实现不变，再次冻结六路径。
+- 2026-10-24 02:07 +08:00：按根指令仅记录M2原始恢复绑定的最小接缝与信任边界，等待确认后才实施。
+- 2026-10-24 02:32 +08:00：完成获批新UTC/columns/lineage捕获与M2同call实际原始恢复绑定；保留两轮真实失败，分别修显式DSN及捕获前合法fixture范围，只复验失败目标，冻结五路径交根审阅。

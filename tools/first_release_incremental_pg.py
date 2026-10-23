@@ -155,9 +155,13 @@ def source_scope(connection: Any, inputs: BackupInputs) -> None:
 
 
 def snapshot(connection: Any) -> dict[str, dict[str, Any]]:
-    result = {"tables": {}, "sequences": {}}
+    connection.execute("SET LOCAL TimeZone='UTC'")
+    require(
+        connection.info.transaction_status == psycopg.pq.TransactionStatus.INTRANS, "INCREMENTAL_SNAPSHOT_TX_REQUIRED"
+    )
+    result = {"tables": {}, "sequences": {}, "columns": {}}
     rows = connection.execute(
-        "SELECT n.nspname,c.relname,c.relkind FROM pg_class c JOIN pg_namespace n "
+        "SELECT n.nspname,c.relname,c.relkind,c.oid FROM pg_class c JOIN pg_namespace n "
         "ON n.oid=c.relnamespace WHERE (n.nspname='mingjing_core' OR n.nspname='public' AND c.relname=ANY(%s)) "
         "AND c.relkind IN ('r','S') ORDER BY n.nspname,c.relname",
         (list(CHECKPOINTS),),
@@ -169,6 +173,11 @@ def snapshot(connection: Any) -> dict[str, dict[str, Any]]:
                 connection.execute(query.format(sql.Identifier(row["nspname"], row["relname"]))).fetchone()
             )
             continue
+        result["columns"][row["nspname"] + "." + row["relname"]] = connection.execute(
+            "SELECT attname AS name,format_type(atttypid,atttypmod) AS type,attnotnull AS not_null "
+            "FROM pg_attribute WHERE attrelid=%s AND attnum>0 AND NOT attisdropped ORDER BY attnum",
+            (row["oid"],),
+        ).fetchall()
         query = sql.SQL(
             "SELECT encode(sha256(convert_to(coalesce(jsonb_agg(to_jsonb(t) "
             "ORDER BY to_jsonb(t)::text COLLATE \"C\"),'[]'::jsonb)::text,'UTF8')),'hex') AS value FROM {} t"
@@ -314,6 +323,18 @@ def write_private(path: Path, document: dict[str, Any]) -> None:
         os.fsync(stream.fileno())
 
 
+def capture_lineage(inputs: BackupInputs) -> dict[str, Any]:
+    return {
+        "operation_id": inputs.operation_id,
+        "manifest_sha256": inputs.release.manifest_sha256,
+        "locks": dict(inputs.release.locks),
+        "source": json.loads(json.dumps(asdict(inputs.source))),
+        "python_sha256": inputs.python_sha256,
+        "pg_dump_sha256": inputs.pg_dump_sha256,
+        "controls": dict(inputs.controls),
+    }
+
+
 def capture(inputs: BackupInputs, dsns: dict[str, str], connection: Any) -> dict[str, Any]:
     pid = connection.info.backend_pid
     sessions(connection, {pid})
@@ -336,6 +357,8 @@ def capture(inputs: BackupInputs, dsns: dict[str, str], connection: Any) -> dict
     return {
         "schema": "first-release-local-incremental-backup-v1",
         "candidate": inputs.release.candidate,
+        "capture_lineage": capture_lineage(inputs),
+        "source_projection": "postgres-jsonb-utc-v1",
         "dump_sha256": file_hash(inputs.operation_dir / "backup.dump"),
         "ledger_sha256": file_hash(inputs.operation_dir / "latest-withdrawals.json"),
         "source_state_sha256": hashlib.sha256(json.dumps(before, sort_keys=True).encode()).hexdigest(),
