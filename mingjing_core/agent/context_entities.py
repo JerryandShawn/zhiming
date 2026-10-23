@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from mingjing_core.domain.contracts import EvidenceError, ScopeError
+from mingjing_core.application.memory2_profile_reflection import checked_profile
+from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
 
 from .context_types import ContextInputError
 
@@ -21,6 +22,7 @@ KINDS = (
     "knowledge_gap",
     "followup",
     "reminder",
+    "profile_doc",
 )
 
 
@@ -116,6 +118,11 @@ def read_entities(
             row = dict(value, entity_kind=kind)
             if row["status"] not in {"active", "open", "pending"}:
                 continue
+            if kind == "profile_doc":
+                try:
+                    checked_profile(sources.memory, owner, subject, row["id"])
+                except (EvidenceError, RevisionConflict, ScopeError):
+                    continue
             if kind == "case" and row["id"] not in cases or kind == "feedback" and row.get("case_id") not in cases:
                 continue
             _, linked = _linked(row)
