@@ -15,7 +15,7 @@ from psycopg import sql
 from mingjing_core.models.quota_delegated_session import DelegatedSession
 from mingjing_core.models.quota_guard import QuotaGuard
 from mingjing_core.repositories.postgres import PostgresRepository
-from tools.eval import runner
+from tools.eval import lifecycle_identity, runner
 from tools.eval.contracts import scenario_contract_hash
 from tools.eval.engine import evaluate_scenario
 from tools.eval.report import summarize
@@ -38,6 +38,13 @@ def target(monkeypatch: pytest.MonkeyPatch):
 @pytest.fixture
 def live(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch):
     yield from live_fixture.__wrapped__(p2_repo, monkeypatch)
+
+
+@pytest.fixture
+def synthetic_core_source(monkeypatch: pytest.MonkeyPatch) -> None:
+    # These transport fixtures issue a fixed synthetic candidate, not a real Git approval.
+    # Keep source/contract/central identity native; checkout enforcement has its own tests.
+    monkeypatch.setattr(lifecycle_identity, "candidate_provenance", lambda *args: {"worktree_clean": True})
 
 
 def test_exact_selection_preserves_all_twenty_eight_original_scoring_contracts() -> None:
@@ -153,6 +160,7 @@ def test_core30_cli_cannot_silently_select_a_different_or_partial_suite(extra: l
         runner.main(["--suite", "core30", "--validate", *extra])
 
 
+@pytest.mark.usefixtures("synthetic_core_source")
 def test_core30_native_withdrawal_uses_zero_model_calls_before_next_turn(live: Harness) -> None:
     target = Core30LiveTarget(
         model="k3-256k",
@@ -211,6 +219,7 @@ def date_step(index: int) -> httpx.Response:
     )
 
 
+@pytest.mark.usefixtures("synthetic_core_source")
 def test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_models(live: Harness) -> None:
     target = Core30LiveTarget(
         model="k3-256k",
@@ -219,6 +228,7 @@ def test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_model
         adapter_factory=live.factory,
     )
     live.targets.append(target)
+    case = next(case for case in load_core30() if case.id == "T05")
     calls = 0
 
     def reply(request: httpx.Request) -> httpx.Response:
@@ -236,11 +246,15 @@ def test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_model
             )
             == 11
         )
-        return wire({"type": "text", "text": "合成已核对"})
+        return wire({"type": "text", "text": "10月10日是调休上班日。合成已核对。"})
 
     live.primary = reply
-    with live.session.activate():
-        observed = evaluate_scenario(scenario(), target, target_name="v4")
+    session = DelegatedSession(live.guard, live.session.approval, phase="core", scenario_ids=[case.id])
+    try:
+        with session.activate():
+            observed = evaluate_scenario(case, target, target_name="v4")
+    finally:
+        session.close()
     assert observed["status"] == "passed" and observed["target_model_calls"] == calls == 12
     assert len(target.run_ids) == 1
     run_id = target.run_ids[0]
@@ -261,3 +275,19 @@ def test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_model
         ).fetchall()
     assert [row["n"] for row in rows] == [10, 2] and all(row["run_id"] == run_id for row in rows)
     assert isinstance(live.guard, QuotaGuard) and live.guard.status()["in_flight"] == 0
+
+
+@pytest.mark.usefixtures("synthetic_core_source")
+def test_core30_rejects_non_core_fixture_scenario_before_any_physical_attempt(live: Harness) -> None:
+    target = Core30LiveTarget(
+        model="k3-256k",
+        dsn=os.environ["CORE_TEST_DSN"],
+        environment=live.environment,
+        adapter_factory=live.factory,
+    )
+    live.targets.append(target)
+    with live.session.activate():
+        observed = evaluate_scenario(scenario(), target, target_name="v4")
+    assert observed["stop_reason"] == "ledger_unavailable"
+    assert observed["target_model_calls"] == 0 and not live.sent
+    assert live.guard.status()["in_flight"] == 0
