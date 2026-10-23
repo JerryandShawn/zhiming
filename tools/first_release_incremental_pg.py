@@ -113,8 +113,24 @@ def admin_identity(connection: Any, inputs: BackupInputs, fields: dict[str, str]
 
 def sessions(connection: Any, allowed: set[int]) -> None:
     connection.execute("SELECT pg_stat_clear_snapshot()")
-    actual = connection.execute("SELECT pid FROM pg_stat_activity WHERE datname=current_database()").fetchall()
-    require({row["pid"] for row in actual} == allowed, "INCREMENTAL_OTHER_SOURCE_SESSION")
+    actual = connection.execute(
+        "SELECT pid,backend_type FROM pg_stat_activity WHERE datname=current_database() ORDER BY pid"
+    ).fetchall()
+    if {row["pid"] for row in actual} != allowed:
+        error = RestoreRejected("INCREMENTAL_OTHER_SOURCE_SESSION")
+        # These are the rows which failed the gate, not a later observation. Never include query/appname/DSNs.
+        error.session_diagnostic = {
+            "schema": "source-session-set-v1",
+            "observation": "at_failed_gate",
+            "allowed_pids": sorted(allowed)[:32],
+            "allowed_count": len(allowed),
+            "actual_backends": [
+                {"pid": row["pid"], "backend_type": str(row["backend_type"])[:64]} for row in actual[:32]
+            ],
+            "actual_count": len(actual),
+            "truncated": len(allowed) > 32 or len(actual) > 32,
+        }
+        raise error
 
 
 def source_scope(connection: Any, inputs: BackupInputs) -> None:

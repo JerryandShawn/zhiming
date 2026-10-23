@@ -8,6 +8,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 04:14 +08:00) 根只读核实冻结工具提交7e2c870的Core CI成功（584旧Core、v4 4133通过/75跳过）；正式集成1891975的独立Core CI也成功（584旧Core、v4 4107通过/56跳过）。两者不是同一源码，未合计测试数或当作本机Linux恢复放行；不重复宽验。
+
 - [x] (2026-10-24 03:04 +08:00) 单个prefix7组合目标在两次新fixture错误修正后第三次1/1通过（53.69秒）：固定已提交206f43f实际候选，原生receive/save/correct且满足owner全集/零active和lease，M1真实捕获→另一新目标同call M2原始全状态比较→7至8→原生双重放。只新增capture_replay_chain测试与本计划，工具/effects599/旧测试/R7计划未改；令牌释放，无宽验。
 - [x] (2026-10-24 02:38 +08:00) 根审发现的嵌套field_source_refs字符串漏检已修；只复用已验证候选SourceRef严格校验source_refs与field_source_refs，并核source_ids/fact_ids等列表的非空字符串元素。新增真实坏结构残留节点首次1/1通过（35.61秒），first apply前受控拒绝、note保留、完整状态未改；原3路径、业务不变、旧2项未复跑。
 - [x] (2026-10-24 02:19 +08:00) 合法缺源span的marker-only观察分支首次新链2/2通过（68.05秒）：真实备份后receive/save/correct正例只保marker且零擦除计数；固定候选原生孤立note反例在first apply前拒绝、完整状态不变。pure/组合未复跑。
@@ -36,6 +38,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+上述两个GitHub CI job均成功，但测试集合不同。7e2工具树包含新恢复测试，正式集成1891975包含评测生命周期接线；不能用其中一个job替代另一个源码的验证，也不能把CI里的48题替身子集当作原81题首发门。
 
 本轮组合链时序经根澄清：真实correct_fact在M1捕获之前，故备份内旧fact仍为superseded且保正文，新更正fact已经存在。裸MemoryService(repo)没有on_revoke回调，recomputable=True将run/Outbox置stale，保留原run.request、清result/JSON checkpoint/lease与Outbox payload，但不物理purge public checkpoint。M2必须先完整恢复这些实际行，再让原生旁账把旧重叠fact删空、run转revoked/清request、Outbox转cancelled并在native提交后物理purge三张checkpoint表；新更正fact保持完整原行。不能混称旧pure链“备份后纠错、新fact不在dump也不重建”的不同情境。
 
@@ -98,6 +102,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 04:14 +08:00：按指令板v8以现有绿色CI作为对应源码的回归证据，不在本机重跑同一全量。新增SourceForward尚未测试，88f1d27/5b8397d的CI仍在运行；本次只更新原计划，不追加第二套CI日志。实际Docker应用运行时、正式恢复/切换和新的服务器授权继续关闭。
 
 根批准只新增`tests/v4/release/test_first_release_capture_replay_chain_pg.py`与维护本恢复计划。候选显式固定已提交206f43f0dd05b1c2c87f12b0bf7d27fce703208e实际Git archive，不把并行R7控制树WIP打包。复用现有真实源/捕获fixture和source_span测试的native脚本（脚本本身按payload实际candidate核来源），新包装不沿用其外层938常量断言；不改工具或旧测试。源fixture的额外合成sequence仅在捕获前删除以形成真实合法迁移profile，实际alice/bob/synthetic owner全集锁进SourcePin，零active/lease、原生source_scope与原完整ACL门照常执行；无patch伪造任一门。只读Bob前后观察可复用，native业务执行不替换。
 
@@ -233,6 +239,8 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## Outcomes & Retrospective
 
+冻结工具[7e2c870 CI](https://github.com/JerryandShawn/zhiming/actions/runs/40009060893)于03:53 +08:00完成：Core584、v4 4133 passed/75 skipped/2 warnings，独立ModelPort949通过（与v4有重叠，不相加）。正式集成[1891975 CI](https://github.com/JerryandShawn/zhiming/actions/runs/40012851772)于04:07 +08:00完成：Core584、v4 4107 passed/56 skipped/2 warnings，ModelPort970通过（同样不相加）。保留跳过与警告，未重跑绿色集合；以上是GitHub Linux CI，未验证本机Docker首发应用恢复或解除全81题脚本/中央身份/正式上线门。
+
 2026-10-24 03:04 +08:00组合链第三次1/1通过（53.69秒，`private/safe-narrow-69ff1a619b7a41fdaa2d14d3992c0837/metadata.json`）；安全组合观察`private/capture-replay-chain-c2df0da3fb6a469da5161fdb70a4e715/metadata.json`。实际固定206f43f原生receive/save/correct、M1捕获及不同新目标同call M2→8→原生双replay完成；M2核24表、sequence=0，连接10，span source/overlap/preserved/run/Outbox各1、checkpoint范围3。源old fact superseded且有正文、run/Outbox stale、public checkpoint[1,1,1]；目标重放后old fact deleted/data={}、run revoked/空request、Outbox cancelled、checkpoint[0,0,0]。新更正fact完整行hash、另一owner、源全部原始状态、raw/context/FTS/非重叠fact均保持，第二遍完整状态与export一致。保留首次16.36秒和第二次13.93秒fixture错误，不能称首次或一次三项全绿；复杂blob是捕获前明确合成SDK seed，非correct_fact或真实Agent输出。新文件306行/最大函数51，Ruff/格式/AST/diff通过，测试令牌已释放，真实模型/服务器/消息0。没有改工具/effects/旧tests，Linux、正式恢复、全局停写、中央身份与发布门仍未放行。
 
 2026-10-24 02:38 +08:00审阅修正的唯一新节点首次1/1通过（35.61秒，`private/safe-narrow-deb14c0902014f8ab032bcef11807a6a/metadata.json`），安全布尔证据`private/source-span-missing-0387e0df665246399f45c9586a138e5d/metadata.json`记录REPLAY_ERASURE_FAILED、orphan_present=true、original_entities_absent=true、runtime_scopes_empty=true及完整状态未改。沿用实际Windows PG15、固定938候选native入口、安全runner清凭据/关追踪/Tokyo测试时区；真实模型/服务器/消息0，测试令牌已释放。effects正常Ruff排版599行、新测试399行，全函数≤60，Ruff/格式/AST/diff检查通过；没有新增helper、worker或pin面，没有复跑旧marker-only/孤立note两项、pure/组合或宽验。此前2/2证据保留，未虚称当前一次全链3/3或正式发布已放行。
@@ -270,6 +278,8 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 目录路径补正又有两个不同定向行为通过，累计52个不同通过行为；仍为validate-only，无apply或原生恢复执行。
 
 ## 修订记录
+
+- 2026-10-24 04:14 +08:00：根核对应冻结工具与正式集成两个确切SHA的绿色CI，分别记录范围、跳过项与不能放行的门；没有重新测试或复制原始日志。
 
 - 2026-10-23 23:46 +08:00：补实际Linux PG15存储已就绪、最终候选契约/精确ACL与开门前恢复路线，保留应用轨及Native未验边界。
 

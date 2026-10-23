@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 00:01，北京时间；01:16补充本机候选独立进程预检。**No-Go / 草案：尚不能照本单完成部署。** 工具观察基线为`3ee8def`，后续本机工具进度见原恢复ExecPlan；最终首发候选尚未冻结，这些工具提交号均不是已验收的发布包。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；新增本机恢复、升级与只读候选预检仅用于隔离演练。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 05:27，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 已核工具基线为`5a34b2c`，本次新增Forward、源重放及回填组件的分轮进度统一见原增量ExecPlan；最终首发候选尚未冻结，工具提交号不是已验收的发布包，也不代表CI或Linux通过。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；本机组件仅用于隔离演练，源重放与回填尚未接成完整同call链。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -22,7 +22,7 @@
 | --- | --- | --- |
 | 候选身份 | 最终候选、manifest、artifact及外部审核pin待冻结 | 同一候选的明确审核、来源与必要评测；不能手填admissible |
 | 实际Linux运行时 | 现有Windows PG定向证据只证明相应逻辑；Linux Core/Charts/K3未整体验证 | Python3.11双环境、锁依赖/导入来源、真实文件权限、官方K3本地小文件及网络隔离 |
-| 增量与恢复 | 正式首发入口目前仅validate/可选只读ACL；本机可恢复并显式升级，尚无正式恢复实现 | 新库真实备份恢复→精确1–8→最新撤销/送达收据双重放→重复零变化→checkpoint与权限证据 |
+| 增量与恢复 | 正式入口仍仅validate/可选只读ACL；本机Forward已验证4/7同call组合，源重放及回填各有独立组件实证，完整源隐私/回填接线与正式恢复仍缺失 | 同源证明、源状态/运行时/停写门与原生重放/回填接成实际增量链，再补Linux及中央身份保全 |
 | 停写与切换 | 最终Web/飞书/报告+timer、Hermes wrapper及维护/锁尚未联合演练 | 实际Linux跨exec writer栅栏、部分失败保持关门、所有入口同源 |
 | 当前环境及授权 | 未做新的服务器盘点；容量、旧schema/服务状态不能沿用历史值 | 用户新的stage授权，明确新对象/窗口；获准后只读B0复核一致 |
 
@@ -151,16 +151,31 @@ cd "$FR_CONTROL_DIR"
 
 这条组合已在真实本机PG15的prefix7样本完成1/1定向验证：先真实更正，再M1捕获含新更正事实和三类物理checkpoint的原始状态；另一新目标先M2比较，再升级至8和实际候选双重放，最后才核擦除及完整第二遍不变。新更正事实、原话、非重叠事实、另一owner和源库完整状态保持，三类checkpoint从各1行清至0。复杂blob由明确合成SDK种子生成，未向重放注入结果。前两次新fixture阶段语义错误及最后通过均见[原恢复ExecPlan](../execplans/first_release_recovery_20261023.md)，不称首次全绿、全部样本或Linux通过；源库升级和正式各门仍关闭。
 
+### 本机目标证明与源升级组件（无源写CLI）
+
+以下为基线后逐片实现/验证的开发组件，不是可照做的源升级命令。每轮实际候选archive、控制代码与原始失败/修正统一见[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不另归档日志或合并不同轮次为一次全绿；不能把它们拼成同一最终发布包通过证据。
+
+| 组件 | 本机已验证范围 | 仍关闭的门 |
+| --- | --- | --- |
+| same-call TargetProof | 八个独立行为按4+3+1分轮通过，另旧public M2 prefix7兼容1；同次新目标真实原始内容绑定→8→候选双重放后，核创建时OID、最终ACL/完整状态，creator锁内mint并单次消费，消费失败也耗尽token | 不透明对象不能由JSON重建；正常目标链16连接。仅可在下述实际Forward组合内消费，不单独赋予源写权；正式恢复仍未完成，先前session setup拒绝来源仍未知 |
+| Source guard | 12个独立行为分轮验证（纯文件1、真实PG夹具11）；真实Windows独占锁内改用同一持锁句柄读fence，保持默认锁行为及精确文件身份/hash、实际源OID/权限/会话/完整UTC状态核验 | 只读scope仍要求源capture不变，不返回写连接或升级许可；现应用未接合作栅栏，不能证明全局停写或Linux跨exec行为 |
+| Source postcheck | 七个独立行为按6+1分轮通过，验证真实4/7测试夹具前向8后的原字段/列、完整迁移账本及owner/writer精确终态；两个正例均实际调用SDK setup，版本10→10、新增0 | 不是源升级入口，尚未覆盖存在待应用SDK迁移的升级；不因新增版本0声称setup未执行或零SQL，不自动修复异常状态 |
+| SourceForward内部API | 真实4/7同call目标证明、controller核验、源双栅栏与Core/SDK/grant组合已有实证；保维护标记，未知提交停止不重入，额外故障的分轮结果见原计划 | 无源写CLI；原生源重放/回填尚未接成同call整体，应用全局停写与正式门仍未证明 |
+| 源重放worker组件 | 真实候选非空双重放、独立擦除/第二遍全态不变、同一活物理lease及父实际终态ACK已有实证；无ACK不写、前后持久漂移均拒绝 | 组件测试未构造或伪造SourceWitness，不代表已与Forward接线；初始连接失败/控制故障注入与Linux未覆盖 |
+| 回填effects组件 | 真实core3旧轮的preview无写、四metadata/generated search及新助手/operation/owner增量逐项对账，second无写和实际后半异常全事务回滚已有实证 | 尚未接候选fresh worker/源许可；core4、legacy及撤销后回填仍待验证，成功dict不赋权 |
+
+当前CLI仍没有既有源库forward、源库原生撤销/收据重放或回填入口；上文只针对同call新`fr_restore`目标的双重放接口保持原范围。Forward内部组合与两个后续effects组件分别有本机实证，尚未组成完整源隐私/回填链。源隐私重放须先于回填，不能跳过。`source_write_authorized`、全局停写、正式native/runtime/Linux、中央身份保全和publication继续关闭；typed凭据、Windows PG结果及组件测试均不构成stage或生产授权。
+
 | 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
 | --- | --- | --- | --- | --- |
 | B0 | 新授权后只读盘点主机、PG15/实际schema前缀、角色、服务/反代、队列、磁盘和备份；命令范围见下文 | 目标、旧包、schema/checksum、owner范围及容量与审核输入一致；所有目标名称明确 | 无新授权、环境漂移、低于受审容量预算、未知writer/旧任务 | 10–20分 |
 | B1 | 本机冻结最终候选并规范打包；§3 validate；受审渠道传包/准备双环境的首发入口待补 | manifest/三锁/1–8一致；实际Linux Core、Charts、K3来源与权限均验过 | 依赖/额外文件/解释器不符；最终包未定；只有Windows或元数据证据 | 30–60分，下载另计 |
 | B2 | 保持stage停写，取得stage专属writer栅栏，精确备份与导出最新无正文旁账；首发控制器缺失 | 队列/lease/其他写会话为0；dump、原schema、状态摘要、撤销/收据及配置可绑定 | 无停写证据、来源读取依赖源库尚无的表、备份或导出失败 | 15–30分 |
 | B3 | B7已通过后才允许已有库前向迁至8、checkpoint setup及最小授权；首发apply入口缺失 | 原checksum合法连续前缀，目标八项精确一致；新恢复证据同源 | 任何迁移/身份/ACL异常；禁止改历史迁移或补多余DELETE | 10–20分 |
-| B4 | 对明确获准owner dry-run→审核→apply→repeat；首发回填控制器缺失 | 重复新增全部0；原文/来源/牌面/撤销/收据不变；未获准owner只核计数 | repeat变化、丢正文或固定牌、owner越界、收据回退 | 10–40分 |
+| B4 | 对明确获准owner dry-run→审核→apply→repeat；首发回填控制器缺失 | repeat的message_metadata/search_tokens/assistant_created均0，其他只读计数可非0；原文/来源/牌面/撤销/收据不变；未获准owner只核计数 | repeat写变化、丢正文或固定牌、owner越界、收据回退 | 10–40分 |
 | B5 | 最终候选同源的必要脚本与定向回归；只用可丢弃验收库、替身传输；不在实际stage历史库跑测试 | 首发脚本/集成证据已满足当前门，无未解释失败/跳过；来源一致 | 假目标代替v4、旧报告凑绿、测试连业务库、触发真实供应商/消息 | 30–60分，按规模修正 |
 | B6 | 独立合成Web库/owner/writer/目录/端口/unit与实际出站封锁；首发装配/启动资产待补 | Agent实际启用且替身装配受审；loopback PG阳性/同cgroup出站阴性有对照；历史与记忆回执等行为通过 | 借live env/目录/中央身份，关闭Agent只验旧health，网络封锁未实证或有待恢复真实任务 | 20–45分 |
-| B7 | B2精确dump恢复到新allowlist库→核原前缀→前向1–8→最新撤销/收据重放两次→§3只读ACL；实际恢复/replay入口缺失 | 非空deleted_draws墓碑可再导出、owner隔离；sent/uncertain不重发；checkpoint清除；第二遍无变化；中央账本不回退 | 复用旧b9恢复、覆盖stage/live、过期旁账、中央账户重建、任一状态/权限/提交后checkpoint异常 | 30–60分起 |
+| B7 | B2精确dump恢复到新allowlist库→核原前缀→前向1–8→最新撤销/收据重放两次→§3只读ACL；正式stage恢复/replay控制器缺失 | 非空deleted_draws墓碑可再导出、owner隔离；sent/uncertain不重发；checkpoint清除；第二遍无变化；中央账本不回退 | 复用旧b9恢复、覆盖stage/live、过期旁账、中央账户重建、任一状态/权限/提交后checkpoint异常 | 30–60分起 |
 | B8 | 一份stage回执，绑定候选/工具/配置与每步证据和实际耗时，交大脑审核 | 所有必要门真实完成，停止状态和未验证项明确 | 输入或步骤缺失仍写stage accepted；自动进入生产 | 10–20分 |
 
 B0获准后的现有只读命令可包括`hostname`、`date --iso-8601=seconds`、`df -B1 --output=avail /`、`ss -lnt`及对**授权所列精确stage units**的`systemctl show`（Id/ActiveState/UnitFileState/FragmentPath/DropInPaths/NeedDaemonReload）。不打印Environment、完整DSN、私钥、正文；PG安全投影工具/当前参数未核准时停止，不临时拼接含口令命令。
