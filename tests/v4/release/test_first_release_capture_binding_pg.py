@@ -17,6 +17,7 @@ from test_first_release_incremental_backup_pg import archive as archive
 from test_first_release_incremental_backup_pg import existing as existing
 from test_first_release_local_restore_pg import pg_program
 
+from tools import first_release_incremental_pg as incremental_pg
 from tools import first_release_local_restore as restore
 from tools.first_release_capture_binding import CONTROLS, CaptureBinding, CaptureBindingPin
 from tools.first_release_contracts import RestoreContract, RestoreRejected
@@ -75,8 +76,43 @@ def binding_pin(source, inputs):
     )
 
 
+def capture_with_session_diagnostic(source):
+    original = incremental_pg.sessions
+
+    def checked(connection, allowed):
+        try:
+            return original(connection, allowed)
+        except RestoreRejected as error:
+            if str(error) == "INCREMENTAL_OTHER_SOURCE_SESSION":
+                try:
+                    connection.execute("SELECT pg_stat_clear_snapshot()")
+                    rows = connection.execute(
+                        "SELECT pid,backend_type FROM pg_stat_activity WHERE datname=current_database() ORDER BY pid"
+                    ).fetchall()
+                    # This fresh observation is later than the failed gate, not its original PID set.
+                    print(
+                        json.dumps(
+                            {
+                                "schema": "capture-session-diagnostic-v1",
+                                "observation": "after_rejection_current",
+                                "allowed_pids": sorted(allowed),
+                                "current_backends": rows,
+                            },
+                            sort_keys=True,
+                        ),
+                        flush=True,
+                    )
+                except Exception:
+                    raise error from None
+            raise
+
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(incremental_pg, "sessions", checked)
+        return capture(source.inputs, backup_local=True, environment=source.environment)
+
+
 @pytest.fixture
-def captured(existing, request):
+def captured(existing, request):  # noqa: F811 - pytest resolves the imported fixture by this parameter name.
     source = existing
     if getattr(request, "param", None) == "core-only":
         # The migration ACL deliberately excludes M1's extra sequence fixture; change the source before capture.
@@ -92,7 +128,7 @@ def captured(existing, request):
         )
     with psycopg.connect(source.environment["FIRST_INCREMENTAL_OWNER_DSN"]) as owner:
         assert owner.execute("SHOW TimeZone").fetchone() == ("Asia/Tokyo",)
-    receipt = capture(source.inputs, backup_local=True, environment=source.environment)
+    receipt = capture_with_session_diagnostic(source)
     assert receipt["source_projection"] == "postgres-jsonb-utc-v1"
     ident = uuid.uuid4().hex
     release = source.inputs.release

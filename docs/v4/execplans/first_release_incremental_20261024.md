@@ -14,6 +14,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 04:49 +08:00) 88f1d27的Linux CI实际为v4 4163通过/75跳过/1失败/1setup错误。仅修新解释器反例的符号链接路径，并给原始捕获拒绝增加不含正文的事后会话诊断；只复验两个失败节点，本机2/2通过、33.51秒。未知额外PG会话根因仍未确认，新头Linux CI待跑，未放宽任何生产门。
+
 - [x] (2026-10-24 04:35 +08:00) M3b物理pool lease独立基础首4节点首次4/4通过，31.93秒：真实repo嵌套与SDK直接借用同一物理Connection，closed/foreign/额外session均拒绝并永久poison。仅新helper与PG测试，未接source worker或源重放/回填，测试槽2已释放。
 
 - [ ] (2026-10-24 04:29 +08:00) 同call SourceForward首8定向当前在途，控件冻结；等待完整真实结果，不把在途进度称为通过。独立静态审阅另发现清理阶段控制异常优先级及SDK setup后runtime/SQL重核两项缺口，首轮结束后再窄修并只补必要新目标。
@@ -37,6 +39,8 @@
 
 ## Surprises & Discoveries
 
+04:38的Linux CI run40015687408/job120627227120显示：解释器反例先被LINKED_PATH_REJECTED拦住，未触达其预期的CONTROLLER_ACTUAL_INTERPRETER；另一个capture_binding ledger节点在真实pg_dump后被INCREMENTAL_OTHER_SOURCE_SESSION拒绝，没有当时PID/backend_type证据。不能推断维护进程或竞态为已确认原因。本机两个失败节点04:48复验通过只证明此环境路径，不能据此消除Linux会话问题。
+
 原ConnectionPool.connection和Saver均通过实例getconn/putconn取还连接；长期保留唯一物理lease可约束两条原生路径，不必替换pool/Connection类或修改业务事务。首轮前静态审阅发现两处清理优先级及prime timeout还原接缝，已窄修后才开始唯一四节点链；并无失败测试被重解释。初次连接失败、真实进程控制故障注入及非法跨thread/嵌套logical借用尚未实证，不把正常嵌套仓库事务通过等同这些负例已覆盖。
 
 04:29 +08:00独立静态审阅：新forward/scope普通首错保留逻辑可能在清理阶段吞掉后来的KeyboardInterrupt/SystemExit/GeneratorExit；SDK setup后也应再次核实际Saver/SQL再允许grant。两项尚未修复，首8原样在途不得改变绑定代码；追加两个独立真实PG故障节点先写静态，原SDK/PG结果及业务门不替身。初始代码的源码集合、候选与失败记录以后分别保留，不靠重跑全部绿项掩盖修正。
@@ -58,6 +62,8 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+2026-10-24 04:49 +08:00：只将测试自有sys._base_executable反例路径.resolve，保留生产符号链接拒绝与精确解释器不符断言。capture fixture仍先执行原sessions精确门，只有固定拒绝后才读当前pid/backend_type/allowed集合；标记after_rejection_current，不记录query/appname/DSN/正文，不重试、等待、关闭会话或放宽允许集合，诊断普通失败仍保留原拒绝。SourceForward在途三控件未改，首8结果不能挪用此新头。
 
 2026-10-24 04:36 +08:00：只新增first_release_source_pool.py及专属PG测试，原计划统一记证据；不改业务、已有tools或SourceForward首8冻结控件。有限gate异常用BaseException以逃过候选普通Exception兜底，真实进程控制保持原对象且优先，已有gate poison随后，普通业务首错优先于普通清理错。初次原getconn前只临时设该全新min0/max1池reconnect_timeout=0，退出关闭后还原；初次失败没有实证，回执明确initial_connect_failure_tested=false。没有source worker/父子ACK协议或源写权限，SID与实际审核pin须由后续协议提供。
 
@@ -201,6 +207,8 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 物理连接门首片限定新增source_pool helper及专属真实PG测试，不接source worker/forward或改业务。使用原真实repo.pool和Connection，只从保存的原getconn借一次并长期持有物理lease；临时包该实例getconn/putconn，原pool.connection和Saver类型判断不变。每次逻辑借/正常还，在业务事务外核autocommit/dict_row/IDLE、相同对象/PID/backend_start、PG15实际DB/角色OID/位置、父PG独占栅栏和精确会话集合；禁止并发、嵌套逻辑借用和跨线程，仓库原生嵌套事务仍用_local复用。失败永久poison，不commit/rollback或补连接；退出先close pool再原putconn一次，保留业务首错并优先进程控制异常，恢复实例方法但pool不重开。期待身份是未来受pin父子协议的受信输入，本helper不核SID、不独自授予源写权。先静态审阅，最多四个独立PG行为再授槽，现尚未测试。
 
+04:43下一片实施前：新增source_process/source_worker/source_effects，不修改仍在途的Forward/scope或旧fresh-target worker。source_replay(witness,pin)仅接活source_forward_completed凭据；独立pin绑定ForwardInputs及完整forward pin、candidate/manifest/三锁、原最新旁账、Python和所有实际控制SHA。新worker纯stdlib启动、核来源/实际K3运行时后创建真实候选repo(initialize=False,max1)，经已验pool lease保留一条只读物理连接；ready_ro只发nonce/request hash/实际PID与OID。父持原file/PG锁、核活凭据和准确实际会话后ACK；ACK之前不得启写。实际native双重放遵循原全owner事务及提交后purge，不外套事务，独立擦除/中央状态与第二遍全状态/导出相等。最终receipt须在child连接仍活时等待父done ACK，父以真实PG完整终态对照后才放child退出，避免已关连接后凭旧PID放行。只有固定body-free JSONL阶段/结果，未知提交/超时立即保留现场，不重试/清理；初始组件测试不得冒称完整controller admission通过。主入口接线与回填仍另待，先静态审阅新实现再授槽。
+
 随后只对独立pin明确允许owner调用候选backfill(MemoryService(repo),owner,apply=...)。preview不得改变全状态；repeat的message_metadata/search_tokens/assistant_created变化计数必须全0，其他只读计数不误当变化。原字段变化只允许既有backfill契约的四项metadata；助手新消息必须有原生稳定ID/有效来源，revision/operation新行精确对账，另一owner、撤销、收据、checkpoint及中央状态不变。源双重放与回填分片定向测试，未知提交结果/提交后purge故障均停，Linux、prefix8中央身份保全及正式发布不因此放行。
 
 ## Artifacts and Notes
@@ -219,6 +227,8 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 ## Outcomes & Retrospective
 
+CI失败的两个目标唯一窄复验为`private/safe-narrow-cda463c8c84c4a91bdef89b825cde12a/metadata.json`，2026-10-24 04:48:08–04:48:42 +08:00，2 passed in33.51s。实际K3 host、隔离PG15、TZ Asia/Tokyo、清凭据关追踪，真实模型/服务器/外发0；原4163绿项不重复。此次未触发会话拒绝，未生成原拒绝瞬间实证，根因保持未知。解释器夹具的Linux验证及更正后分支CI仍待完成；已有Linux CI失败记录不覆盖。
+
 M3b物理连接基础唯一首链为`private/safe-narrow-a5d9a0e458454a89ab909c4cf563f72e/metadata.json`，04:35:10–04:35:43 +08:00，4 passed in31.93s。实际K3 host、真实隔离PG15、TZ Asia/Tokyo、清凭据关追踪、真实模型/服务器/外发0。正常节点保持原repo嵌套RR连接与快照、原SDK三表实际各1→0、业务普通异常同对象；三负例证明真实closed/foreign/额外session固定拒绝、无第二次物理get或替换连接、foreign仍可用及registry失效。helper383行/最长48，测试183行/最长45，Ruff E/F/I/B/UP/SIM、120列格式、AST及diff通过。只证明本机已pin后的连接约束，不证明初次失败无重试、控制故障注入、SID/父子握手或源双重放/回填；正式恢复/runtime/Linux/central/publication继续关闭。SourceForward首8仍在另一进程原样运行，未与本4节点合计。
 
 source_postcheck组件的7个独立行为已有6+1分轮真实PG实证，保留原类型故障被PG触发器依赖拒绝的夹具失败，不称一次7/7。helper330行、专属测试256行，单函数最长44行；Ruff E/F/I/B/UP/SIM、120列format及AST通过。实际4/7原状态捕获→Core8→SDK setup→grant仅为测试夹具，分别验证只读owner/writer终态与拒绝后不修复；不是默认或既有源写命令，也未实证同call Proof/runtime/双栅栏写入组合。SDK新版本数为0，未覆盖发生待应用SDK迁移的旧版本升级。所有source_write_authorized、global_quiescence、正式runtime/Linux/publication位仍false，SID不由该helper声明已核。
@@ -232,6 +242,8 @@ controller运行时独立组件的四个实际进程/依赖/已加载模块行�
 M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/213行；新PG测试250行、最长函数55行以内。Ruff E/F/I/B/UP/SIM及120列format通过。真实PG定向6+2已验证上述基础行为；中性grant原语尚未被新入口调用，PostgresSaver checkpoint阶段、完整源状态/运行时门、typed单次证明、源编排及M3b源隐私重放/回填都仍未完成，所有正式门保持false，不给生产/既有prefix8或额外关系开口。
 
 ## 修订记录
+
+- 2026-10-24 04:49 +08:00：保留88f1d27真实CI一失败一setup错误，窄修解释器测试路径及失败侧会话诊断，两个失败节点仅本机2/2复验通过；另记录04:43 M3b进程接缝实施前约束。源在途控件、生产strict会话门和所有正式发布位未变。
 
 - 2026-10-24 04:36 +08:00：记录M3b物理pool lease实施前接口、静态清理修正及唯一真实4/4首链，明确未接source worker和未覆盖故障；SourceForward首8在途，不动其控件或重跑绿项。
 

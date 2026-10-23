@@ -74,7 +74,8 @@ if mode == 'success':
     reject(lambda: verified_saver(json.loads(json.dumps(result))), 'CONTROLLER_RUNTIME_WITNESS_REQUIRED')
     reject(lambda: verified_saver(object.__new__(RuntimeWitness)), 'CONTROLLER_RUNTIME_WITNESS_REQUIRED')
 elif mode == 'interpreter':
-    other = dataclasses.replace(preflight, python=pathlib.Path(sys._base_executable))
+    # Exercise the interpreter mismatch rather than a platform-specific base-executable symlink.
+    other = dataclasses.replace(preflight, python=pathlib.Path(sys._base_executable).resolve())
     reject(lambda: verify(r=dataclasses.replace(replay, preflight=other)), 'CONTROLLER_ACTUAL_INTERPRETER')
     wrong = '0' * 64
     changed_pin = dataclasses.replace(pin, python_sha256=wrong)
