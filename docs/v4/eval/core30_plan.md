@@ -1,5 +1,7 @@
 # 首发核心30题计划（v2.2隔离子集）
 
+2026-10-24 07:34 +08:00当前态：精确physical UUID/Journal锚点已在c5e实现；专用Durable目标的真实累计执行预算现已提交2e86ef5，三个必要行为组取得分轮实证（首2通过/1新夹具失败、仅原红复验1通过），唯一证据见[P3累计预算ExecPlan](../execplans/P3_eval_execution_budget_20261024.md)。每次execute以真实monotonic封一段，checkpoint/detach/只读attach保持累计与原pin，未知open或已有Journal而缺预算拒绝；耗尽组实际1.562秒，下一真实预算入口明确拒绝、0POST。普通Core30默认不启用此专用预算；附着后的send、同run跨进程执行、CLI resume、长5小时等待和真实评测门仍关闭。原完整f18脚本报告保持69/81，不因本片或局部故障驱动补绿。
+
 2026-10-24 02:35 +08:00 CI修订：C5的真实GitHub job120556263496为4088通过、56跳过、2失败，ModelPort后续步骤未执行；正式integration的3d43cae两次Core CI另已成功，不混称C5通过。CI已按官方K3目录运行此前被跳过的旧Core30两例，固定synthetic_approval的候选为a×40，新增观察器按真实Git HEAD验证时理应拒绝。两例保护的是原生撤销零模型调用和同run十二次物理请求10+2及唯一Journal，不能降低这些断言；现仅在这两例显式采用与既有model_attempt_support相同的合成checkout边界，实际source hash、场景契约、中央身份和物理发送仍走原生路径，生产校验及真实candidate_provenance测试不改。
 
 本机复现记录：最初误用未装K3依赖的Core解释器为2失败（InputMeterUnverified，private/safe-narrow-803d4b77de8e47f1a8b292dc411b423b）；换既有正确K3环境后同两目标仍2失败、症状与CI一致（4.67秒，private/safe-narrow-8ad9041740a04b7681968608b2647783）。仅修合成checkout夹具后，F01及既有checkout契约通过，十二次物理请求例仍失败（2通过/1失败，10.02秒，private/safe-narrow-41998a9b29eb4175903cf9a0b7c860ed）：该旧例用了不属于core30的合成T01，新增精确场景门理应拒绝。现替换为未改契约的真实T05、显式T05 sealed会话与Mock回答，十二次请求/十一次工具结果/唯一Journal/10+2全部断言保留；另新增T01非core案例零物理调用拒绝。只复验剩余目标与新反例，2/2通过（61.64秒，private/safe-narrow-f337a52d60e74586b6a85ded22eaaf3f），未复跑已绿F01/checkout或宽套。四个不同目标有分段通过证据，不声称一次4/4；生产代码、源码/契约校验与真实调用门未改，新的CI仍待。
