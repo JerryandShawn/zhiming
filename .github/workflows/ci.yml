@@ -9,6 +9,9 @@ concurrency:
         (
           (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
           startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p3-core-') ||
+          startsWith(github.head_ref || github.ref_name, 'v4/p3-u4-') ||
+          startsWith(github.head_ref || github.ref_name, 'v4/first-release-') ||
           startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
           (github.head_ref || github.ref_name) == 'v4/integration'
         )
@@ -21,6 +24,9 @@ concurrency:
       (
         (github.head_ref || github.ref_name) == 'v4/p3-agent-runtime' ||
         startsWith(github.head_ref || github.ref_name, 'v4/p3-wire-') ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p3-core-') ||
+        startsWith(github.head_ref || github.ref_name, 'v4/p3-u4-') ||
+        startsWith(github.head_ref || github.ref_name, 'v4/first-release-') ||
         startsWith(github.head_ref || github.ref_name, 'v4/p1b-') ||
         (github.head_ref || github.ref_name) == 'v4/integration'
       )
@@ -39,6 +45,9 @@ jobs:
       KIMI_API_KEY: ""
       MOONSHOT_API_KEY: ""
       LANGSMITH_TRACING: "false"
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      HF_HUB_DISABLE_TELEMETRY: "1"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -73,6 +82,11 @@ jobs:
           .chart-venv/bin/python -m pip install -r requirements-charts.lock
           echo "CHART_PYTHON=$PWD/.chart-venv/bin/python" >> "$GITHUB_ENV"
           npm ci
+      - name: Install and verify the pinned public K3 tokenizer (no model weights)
+        run: |
+          python -m tools.install_k3_tokenizer --destination "$RUNNER_TEMP/kimi-k3-tokenizer"
+          python -m tools.install_k3_tokenizer --destination "$RUNNER_TEMP/kimi-k3-tokenizer" --verify-only
+          echo "K3_TOKENIZER_ARTIFACT_DIR=$RUNNER_TEMP/kimi-k3-tokenizer" >> "$GITHUB_ENV"
       - name: Verify loopback PostgreSQL 15
         run: |
           python - <<'PY'
