@@ -29,6 +29,7 @@ from tools.first_release_source_postcheck import owner_state, writer_state
 from tools.first_release_target_proof import TargetProofPin
 
 if TYPE_CHECKING:
+    from tools.first_release_source_backfill_pin import SourceBackfillPin
     from tools.first_release_source_process import SourceReplayPin
 
 ROOT = Path(__file__).parent.parent
@@ -229,7 +230,12 @@ def _grant(scope: Any) -> None:
     scope.phase = "grant_committed"
 
 
-def _apply(scope: Any, *, source_replay_pin: SourceReplayPin | None = None) -> dict[str, Any]:
+def _apply(
+    scope: Any,
+    *,
+    source_replay_pin: SourceReplayPin | None = None,
+    source_backfill_pin: SourceBackfillPin | None = None,
+) -> dict[str, Any]:
     from langgraph.checkpoint.postgres import PostgresSaver
 
     request = scope.request
@@ -258,6 +264,11 @@ def _apply(scope: Any, *, source_replay_pin: SourceReplayPin | None = None) -> d
 
                         result["source_replay"] = source_replay(witness, source_replay_pin)
                         result["privacy_replay_pending"] = False
+                        if source_backfill_pin is not None:
+                            from tools.first_release_source_backfill_process import source_backfill
+
+                            result["source_backfill"] = source_backfill(witness, source_backfill_pin, source_replay_pin)
+                            result["backfill_pending"] = False
             except BaseException as error:
                 failure = scope_tools._prefer_failure(failure, error)
     except BaseException as error:
@@ -295,7 +306,11 @@ def _receipt(request: ForwardInputs) -> dict[str, Any]:
 
 
 def execute(
-    request: ForwardInputs, *, apply_source: bool = False, source_replay_pin: SourceReplayPin | None = None
+    request: ForwardInputs,
+    *,
+    apply_source: bool = False,
+    source_replay_pin: SourceReplayPin | None = None,
+    source_backfill_pin: SourceBackfillPin | None = None,
 ) -> dict[str, Any]:
     require(type(request) is ForwardInputs and type(apply_source) is bool, "SOURCE_FORWARD_TYPED_REQUEST")
     baseline = request.validate()
@@ -304,6 +319,12 @@ def execute(
 
         require(type(source_replay_pin) is SourceReplayPin, "SOURCE_REPLAY_TYPED_PIN")
         source_replay_pin.validate(request)
+    if source_backfill_pin is not None:
+        from tools.first_release_source_backfill_pin import SourceBackfillPin
+
+        require(type(source_backfill_pin) is SourceBackfillPin, "SOURCE_BACKFILL_TYPED_PIN")
+        require(source_replay_pin is not None, "SOURCE_BACKFILL_REPLAY_PIN_REQUIRED")
+        source_backfill_pin.validate(request, source_replay_pin)
     receipt = _receipt(request)
     if not apply_source:
         return receipt
@@ -313,7 +334,7 @@ def execute(
     try:
         with scope_tools._held_forward(request, baseline) as scope:
             try:
-                result = _apply(scope, source_replay_pin=source_replay_pin)
+                result = _apply(scope, source_replay_pin=source_replay_pin, source_backfill_pin=source_backfill_pin)
             except BaseException as error:
                 failure = scope_tools._prefer_failure(failure, error)
     except BaseException as error:

@@ -10,9 +10,25 @@
 
 ## Purpose / Big Picture
 
-本计划已从M1显式本机备份扩展到M2同call新库原始内容绑定、M3a目标证明/运行时/源双栅栏组合与前向升级，以及M3b源原生重放/回填接缝，逐片实现范围见Progress。默认只读文件校验，零PG连接、零子进程、零文件写。backup入口自身不迁移源；另显式Forward内部API的原首8已真实验证合成源4/7→8，尚无源写CLI。源worker重放组件及同call组合已有分轮真实实证，源回填接线仍静态待验；Linux、中央身份、正式恢复与发布继续关闭。
+本计划已从M1显式本机备份扩展到M2同call新库原始内容绑定、M3a目标证明/运行时/源双栅栏组合与前向升级，以及M3b源原生重放/回填接缝，逐片实现范围见Progress。默认只读文件校验，零PG连接、零子进程、零文件写。backup入口自身不迁移源；另显式Forward内部API的原首8已真实验证合成源4/7→8，尚无源写CLI。源worker重放组件及同call组合已有分轮真实实证；源回填在新pin同次重复上游验证去重后，受影响正反两目标于07:07首次共同2/2通过，包括closed收尾与独立完整后验。此前首1红1绿、仅原红诊断复验1红分别保留，不据后续通过倒推唯一根因。Linux、中央身份、正式恢复与发布继续关闭。
 
 ## Progress
+
+- [x] (2026-10-24 07:10 +08:00) 窄修后受影响源回填正反两目标2/2通过、1103.49秒；实际archive09173ac，原同call M1/TargetProof/Runtime/Forward/replay/backfill与四次活peer观察、closed收尾及独立后验均通过。首遍回填2条真实历史，第二遍三个写计数0、完整状态不变；正式门全部保持false。负例因精确pin校验路径实际变化而必要复验，未重复无关绿项；五个Python文件Ruff/120列format通过，等待本片提交。原两轮失败不覆盖，详见Outcomes唯一证据。
+
+- [ ] (2026-10-24 06:47 +08:00) 仅原源回填红节点复验仍红、897.18秒；新XML实证09173ac、source_backfill_3_owner_verified、session_restored=True，replay及backfill的ready/final四事件均已实际观察。不能称组合完成或独立末段后验通过；负例未复跑。先审并仅去除新BackfillPin.validate内部紧邻重复上游验证，不缓存、不改120秒或各阶段重核；随后只验证受影响原红。
+
+- [x] (2026-10-24 06:35 +08:00) 来源9be44b9 push CI run40027420077及正式9f关联PR检查run40027607612均06:30成功；正式v4/integration普通合入9be已验源组件，保留双方两份文档追加块后推f6fb9f1，新merge自身CI待核。本树回填未验片未合，feed仍9f待新merge通过后再同步。独立X02离线故障观察片首次1/1（真实503/503/200、单逻辑步骤、原题仍红）已在另一树推83679f1，不取消其CI；未改金标/生产模型锁。
+
+- [ ] (2026-10-24 06:35 +08:00) 新fixture安全失败侧诊断静态后仅原回填红节点复验在private/safe-narrow-f554e55fa7e945438d3606a3e747cab7运行，实际归档仍HEAD091；负例不复跑，原控件及120秒时限冻结。尚无新结论，不把本机源回填与正式门写绿。
+
+- [ ] (2026-10-24 06:28 +08:00) 新源backfill两节点首链1失败/1通过，1175.78秒；正例在Forward抛SOURCE_REPLAY_PROTOCOL_TIMEOUT_OR_INVALID，短trace与XML无phase/peer属性，源replay或backfill具体阶段均未知。默认与错type/候选/缺replay零副作用负例已过，不重复。仅准给新fixture加失败时有限phase/peer事件及调用前candidate属性，根审后仅复验原红；生产/协议时限/成功断言不变。
+
+- [x] (2026-10-24 06:14 +08:00) 正式集成9f2506f的push CI run40027600812已成功（06:08完成），PR #12合成检查仍在途，未混用。核feed旧5af为9f祖先后，仅正常fast-forward远端v4/first-release-integration-20261023到已集成的9f，供模块按v8读取；未新建merge、未改main/v4main、未向其他聊天发消息。本机旧feed树5af及私有报告保持，PR #16原Draft状态保留、新头检查待完成，未读取或宣称记忆2.0就绪。
+
+- [ ] (2026-10-24 06:08 +08:00) 新源backfill两节点唯一真实整链已启动于private/safe-narrow-65c64c87ab0a411ca1f7b478a518530f，候选archive固定09173ac，控制代码与夹具冻结；尚无最终结果，不把静态或已返回阶段当验收，不另启动重复诊断/重跑。
+
+- [ ] (2026-10-24 06:08 +08:00) 09173ac已推，后续另开v4/p3-wire-source-backfill-20261024保来源CI。独立source_backfill_pin三控件及318行新测试均已根完整审阅，Forward已按05:35设计增加首IO前精确可选pin和同活witness内replay之后回填接线；静态Ruff/format通过，真实两目标未开始，不放正式门。
 
 - [x] (2026-10-24 06:05 +08:00) UTC新夹具规范化后仅原源replay红节点复验1/1通过、642.87秒。实测seed UTC、13项固定观察bool全true；此前未触达的fresh export/full state/中央空表与sequence、材料及正式关闭位均通过。两行为分轮成立：首1红1绿、仅红复验1绿，未重跑默认绿、不合称一次2/2；原红的具体False项仍未记录，不能补造唯一根因。
 
@@ -63,6 +79,14 @@
 
 ## Surprises & Discoveries
 
+07:07窄修后完整两目标通过，确认本次控制链可在原120秒协议内完成closed收尾；不能据此认定同次重复验证是此前失败的唯一原因。每阶段完整上游验证、控制文件hash、实际会话代际与双栅栏均保留，没有缓存、超时扩容或放宽成功断言。实际archive091与本轮尚待提交控制代码分开，不把当前工具提交提升为最终候选脚本证据。
+
+2026-10-24 06:56 +08:00补一次有限本机能力核对：既有Docker PG15容器的只读exec成功，但当前PATH的command -v python3.11/python3均无结果，不能报告已有可用Core Python；这不证明整个容器所有路径不存在Python。没有SQL、安装、拉取、网络、环境恢复或重试，不扩大到WSL/代理/ACL。实际Linux应用门仍缺运行时，与已有PG15存储就绪分开。
+
+新失败侧诊断已将未知范围缩到源backfill收尾：按当前_protocol控制流，final_live已实际观察而固定read错误仍抛出，尚余closed读取，故推断失败在该收尾读取；没有实际耗时分段记录，不能把静态重复直接认定唯一超时根因。BackfillPin.validate先完整ReplayPin.validate，随后controls又执行同一完整校验；静态展开每次ForwardInputs.validate涉及四次目标和四次源的完整候选目录核验，父ready/final均重复了这条链。
+
+源回填首链的通用协议错误未携带可见阶段：Forward包装from None，原新fixture只在成功末段record_property，失败时未写phase或实际peer事件。首链XML无candidate属性，不能把批准起点091或fixture使用Git HEAD的设计冒称XML已实证。下一仅新fixture提前记录实际candidate，并在捕获同一SourceForwardStopped后记录有限安全phase、session_restored和至多四个实际(stage,event)；不输出PID、PG定位、原话或异常内层消息，不改变错误对象/协议/断言。未确诊，不先延长120秒或以复验绿反推根因。
+
 05:52只读事实：隔离PG15控制库127.0.0.1:55480/core_test_main的SHOW TimeZone为Asia/Taipei，pg_settings来源configuration file、reset值相同，无相关控制角色/DB/template0覆盖。create_source新LOGIN/NOINHERIT角色及template0库不设TZ，原native_seed直用无options DSN；故其seed域继承Taipei，新观察强制UTC确有比较域不一致。此前红未记录False键，仍不能认作唯一根因。只读核实1连接/0写、不建源、不读取或输出口令/DSN。
 
 源组合新测试的native观察强制UTC，但共用seed脚本的walk_sha256是种子会话to_jsonb整行hash，种子会话没有固定TimeZone，且角色Tokyo设置发生其后。若PG默认时区非UTC，时间戳串可能不同；目前仅为源码定位的待核假设，尚未测定默认值，不能把综合布尔红预先归因时区。需安全固定键布尔诊断和必要失败节点验证；旧9be源码及原红保留。
@@ -106,6 +130,16 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+2026-10-24 06:48 +08:00：根完整审阅115行BackfillPin去重实现，公开controls仍全核、validate保一次完整上游及当前全部自身文件/ledger/SHA/绑定核验，函数最长45。因实际改动了validate的控制集合计算路径，除原红整链外，需再验证同文件既有默认/坏pin零副作用节点作为受影响安全边界；这是新代码的必要验证，不是稳定性重复，原其余绿项不重跑。仍保持091实际候选归档、成功断言及120秒，首链和诊断红分别保留，原重复是否为唯一原因仍未知。
+
+2026-10-24 06:47 +08:00：只在新first_release_source_backfill_pin.py拆出私有controls组装helper；公开controls仍先完整replay.validate，validate自身仍先完整replay.validate，再用私有helper核当前DIRECT hash/继承冲突并核全部controls、ledger、binding。没有validated布尔或持久cache，不跨协议边界复用结果；ready、final、进程结束后仍逐次完整pin.validate及_active真实PG/锁/维护材料。原候选091、协议120秒和全部成功断言不变；这是去同次冗余的最小修正，不先宣称收尾已修，根审静态后仅跑原红。
+
+2026-10-24 06:29 +08:00：首链红记录完整保留，原负例不复跑。唯一下一步是新fixture失败侧安全可观察性，收集原异常已有phase和实际已观察peer事件后原样raise；不再读本机PG/进程找稳定性，不改候选/生产/超时。若唯一红复验仍红，再按实际阶段切换可做项，不能连续盲重试。
+
+2026-10-24 06:24 +08:00：独立只读审阅确认正式CLI、应用停写与中央保全是三个独立剩余项：当前incremental CLI只备份，Forward仍local_drill内部API；repo.transaction未取writer_fence合作共享锁，工具独占锁不能证明全部应用已停写；现中央后验仅新四表空/sequence未用，没有历史prefix8账本保全。暂不增加一个只有validate的重复CLI来冒进度，先辨明全部写入口与受信配置接点；实施前另写最小方案及真实验证，不触动在途回填控件。
+
+2026-10-24 06:08 +08:00：source_backfill_pin默认None不改变已有路径；显式提供必须同时有已验证SourceReplayPin，缺任何绑定首I/O前拒绝。真实source_backfill只在原creator/双锁/活witness且privacy replay完成之后调用，成功后仅解除backfill_pending；原生源升级、正式恢复/runtime/Linux、中央身份、全局停写和publication位继续false。新两目标不重跑旧源replay或组件绿项。
 
 2026-10-24 06:05 +08:00：原红复验绿后冻结源replay接线与292行专属测试待提交；不把UTC输入规范化后的13项全true写成原红唯一False已知。新backfill三模块与318行整链测试仍未接线/测试，本次不与已验片一同提交；后续必须另接并跑真实组合。
 
@@ -317,6 +351,12 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 ## Outcomes & Retrospective
 
+源回填窄修后唯一两目标证据为`private/safe-narrow-9c3f5320aa34482db560b8b5773bc14d/metadata.json`与同目录pytest.xml，2026-10-24 06:49:06–07:07:31 +08:00，2 passed/1既有AnyIO warning in1103.49s（正862.120秒、负240.801秒）。实际候选09173ac46b47dd29cd7298bb253a8c5d326b8c42、两个候选helper来源、M1/TargetProof/Runtime/Forward/source_replay/source_backfill实际六阶段与四次活peer观察通过，closed已完成。两个历史助手完整稳定ID/血缘/policy、四项源metadata和生成搜索、首遍精确变化及二遍三个写计数0/全态相等均通过；旧fact/run/Outbox/SDK擦除，SDK1/1/1→0/0/0，纠正完整fact及Bob全owner行保留。fresh原生13项bool、真实native export/full source state、中央四空表及sequence、维护材料后验全部通过；source_upgraded/source_write_authorized/native/runtime/Linux/central/global_quiescence/publication正式位仍全false。清凭据/关追踪/TZ Tokyo、真实模型/外发/服务器0。前两轮失败如下原样保留，未合并为历史一次全绿；正式CLI、既有中央身份保全、实际应用writer及Linux门仍缺失。
+
+源回填唯一原红诊断复验为`private/safe-narrow-f554e55fa7e945438d3606a3e747cab7/metadata.json`及同目录pytest.xml，2026-10-24 06:31:00–06:45:58 +08:00，1 failed/1既有warning in897.18s。XML实际候选09173ac46b47dd29cd7298bb253a8c5d326b8c42、阶段source_backfill_3_owner_verified、会话恢复True，有限peer事件恰为replay ready/final和backfill ready/final四项。仍为SOURCE_REPLAY_PROTOCOL_TIMEOUT_OR_INVALID，未完成closed确认及新测试独立history/privacy/全态末段，不将这些事件等同整链通过；原首链与本红分别保留，原负例不重跑，正式门仍关闭。
+
+源回填首链唯一证据为`private/safe-narrow-65c64c87ab0a411ca1f7b478a518530f/metadata.json`及同目录pytest.xml，2026-10-24 06:08:59–06:28:35 +08:00，1 failed/1 passed、1既有warning in1175.78s。正例896.632秒仅记录Forward固定通用协议错误，无阶段/peer或完成组合证据；负例278.416秒确认默认及非法独立pin零副作用。调用前历史seed及候选/helper hash验证到达，但未在XML保留candidate值，不将批准的archive起点当实测属性。实际三阶段是否提交、独立后验与正式关闭位末段未触达，均不得称通过；真实模型/服务器/外发0。控件与原始证据保留，源回填及正式门继续未放行。
+
 原源replay失败节点的唯一复验为`private/safe-narrow-753e531394c541199b423beeac76e2e7/metadata.json`及同目录pytest.xml，2026-10-24 05:54:51–06:05:35 +08:00，1 passed in642.87s；同9be44b9实际候选、原20行生产接线不变。JUnit实测fixture_seed_timezone=UTC、13项固定观察bool全true，含保留fact完整行hash、原话/上下文/FTS/embedding；末段真实同候选原生export、完整源state、中央四空表/sequence、维护材料及正式关闭位全部通过，SDK三表1/1/1→0/0/0。新fixture292行/最长42，原NATIVE/旧测试/生产/超时未改；清凭据/关追踪/TZ Tokyo、真实模型/stage生产/外发0。原e2首1红1绿与本1绿分轮保留；只证明本机prefix7非空源组合和原默认拒绝行为，源回填、Linux、正式CLI/中央身份/切换仍未完成。
 
 新组合首链唯一证据为`private/safe-narrow-e2a970f563034375bddded36fe0a934a/metadata.json`及同目录pytest.xml，2026-10-24 05:34:13–05:48:42 +08:00，1 failed/1 passed in868.26s，实际候选9be44b9376004e27d42e048fad8d2af73e9f5dd8。失败节点719.355秒，在真实scope/proof/runtime/Forward/replay返回并核过ready/final实际同PID代际、独立旧fact擦除、run/Outbox/SDK、纠正事实完整行及Bob全owner表后，fresh观察all布尔红；尚无具体False项证据，后续原生export/全态/中央独立断言未到达。默认有效pin零IO及错type/候选前置拒148.281秒通过。清凭据/关追踪/TZ Tokyo、真实模型/stage生产/外发0；不称完整组合通过，原生结果摘要不是可重用权限。
@@ -354,6 +394,24 @@ controller运行时独立组件的四个实际进程/依赖/已加载模块行�
 M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/213行；新PG测试250行、最长函数55行以内。Ruff E/F/I/B/UP/SIM及120列format通过。真实PG定向6+2已验证上述基础行为；中性grant原语尚未被新入口调用，PostgresSaver checkpoint阶段、完整源状态/运行时门、typed单次证明、源编排及M3b源隐私重放/回填都仍未完成，所有正式门保持false，不给生产/既有prefix8或额外关系开口。
 
 ## 修订记录
+
+- 2026-10-24 07:10 +08:00：记录窄修后受影响两目标真实2/2、closed与独立后验完整通过；保留此前两轮失败和唯一根因未知，区分091 archive与新控制代码，所有正式门保持关闭。
+
+- 2026-10-24 06:56 +08:00：只记一次既有PG容器Python入口只读核对的准确范围，不假称Linux应用可运行或继续环境修复。
+
+- 2026-10-24 06:48 +08:00：记录单新文件去重根审完成，说明为何新增一次受影响validate负例与原红共同验证；不放宽硬门，不追加宽回归。
+
+- 2026-10-24 06:47 +08:00：记录仅原红的阶段/四事件实证及明确未完成的收尾，先写无缓存去重方案；不猜唯一根因、不延长协议、不反复跑绿项。
+
+- 2026-10-24 06:35 +08:00：记录来源CI绿后实际普通集成/推f6fb及X02独立已验片836，不把关联PR绿当原失败根因；补仅回填原红的唯一复验在途，保全候选与测试边界。
+
+- 2026-10-24 06:29 +08:00：保留回填首链1红1绿与可知/未知边界，先写唯一红的有限失败侧诊断计划；不猜阶段、不延时、不重跑绿项。
+
+- 2026-10-24 06:24 +08:00：保留当前源回填唯一链在途，记录三项独立真实剩余项及下一实现先核写入口的决定；未加重复预检或扩大正式位。
+
+- 2026-10-24 06:17 +08:00：记录实际06:14正式push CI成功后的普通远端feed快进；分清PR合成/新feed检查与旧本机树，补唯一新回填链在途，不增加测试或现场诊断。
+
+- 2026-10-24 06:08 +08:00：091片推送后实施独立回填可选pin的最小接线并静态审阅，新增全链测试未开始；保父CI与全部正式No-Go。
 
 - 2026-10-24 06:05 +08:00：记录唯一原红复验1绿与13固定bool、最终独立观察完整通过，更新当前源replay组合状态；保留原红/不同轮次与正式No-Go，静态回填WIP不冒已验功能。
 
