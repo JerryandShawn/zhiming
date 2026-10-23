@@ -8,6 +8,7 @@
 
 ## Progress
 
+- [x] (2026-10-24 00:36 +08:00) 显式同次新库restore→upgrade阶段以真实PG15验证prefix4/7→8、原文/checkpoint保持、四张空额度表及精确ACL；10个新行为和1个默认兼容节点单链11/11通过。失败保持实际阶段，不提供既有库采用入口。
 - [x] (2026-10-24 00:20 +08:00) 新增显式local-only原生恢复基础：真实PG15 pg_dump/pg_restore保持prefix4/7，新库/两角色、不可接管及失败保留边界共18个不同定向行为有通过证据；无前向迁移、重放或正式发布放行。
 - [x] (2026-10-24 00:26 +08:00) 两角色密码在客户端生成SCRAM verifier后才进入DDL；实际会话DDL日志边界及受影响prefix4恢复2/2通过。补齐PG15客户端/独立测试库的跨平台发现，未重复18项绿节点。
 
@@ -22,6 +23,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+现有Core迁移器从自身模块目录扫描SQL，与外部已审candidate_source不是同一边界；新升级阶段不调用其自动扫描路径，复用validate_history并执行再次校验hash后的候选SQL，所有前向SQL与ledger记录共用一个owner事务。真实PostgresSaver.setup包含CREATE INDEX CONCURRENTLY，故在Core提交后用同一owner连接的独立autocommit阶段显式执行。Core SQL失败回到原prefix；checkpoint失败时Core8已经提交；最终ACL失败时保留已提交授权，三者均固定阶段错误码停止，不自动修正或重试。
 
 审阅指出服务端password_encryption不能防止log_statement=ddl/all记录CREATE ROLE中的原口令。实际安装psycopg3.3.6的PGconn.encrypt_password(passwd,user,algorithm=None)返回bytes；现显式使用客户端scram-sha-256，只把verifier交给SQL。新反例在发送前核DDL没有原口令，再将实际admin会话log_statement设为ddl；pg_authid双key与随机密码相符，两个角色实际密码连接成功，回执不含原密码或verifier。未改本机pg_hba，不把现有认证下的成功连接宣称为已实证SCRAM协商。
 
@@ -49,6 +52,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 本机原生恢复是独立`tools.first_release_local_restore`入口；旧`first_release_restore`仍只有validate/可选只读ACL。新入口默认零连接/零进程，只有显式--apply-local且local_drill=true才能操作随机新目标；formal及现有对象始终硬拒。源prefix只允许1–7，实际--list预检在任何DDL前拒绝中央额度表/sequence等归档项，故不复制0008账户或usage。任何失败保留角色/库；再次调用拒绝接管，工具无DROP/覆盖/自动恢复重试。测试夹具结束后仅清理其自行创建的精确随机对象，不是工具的失败清理行为。
 
+新增可选--upgrade-local必须与--apply-local同用；内部函数要求同次创建者连接仍持有按本次新库绑定的实际64位advisory锁，且restore及原prefix核验已经在该调用内完成。不能只传现成DSN或普通admin会话来采用目标。现权限服务负责Core最小权，现checkpoint授权函数负责公共表和只读迁移账本，最后两角色只读精确ACL；不增加DELETE来满足旧B1证明。四张0008表实际查询全空，遇非空保留原行并拒绝，不清表、不provision，不形成中央身份迁移或重绑定证明。
+
 凭据边界同时覆盖子进程和SQL：PGPASSWORD仅为显式内存子环境，角色DDL仅含libpq客户端生成的SCRAM verifier，不保留服务端明文加密路径。原CLI负例的参数清单等价压缩为字段映射，保护的PGOPTIONS先拒绝、秘密不回显断言不变，用于保持新测试文件≤400行。
 
 恢复标记仅含owner、draw_id和固定版本的指纹，以及deleted/deleted_ids/kind回执；不保存牌面/问题/正文，不造原HTTP幂等键。复用已有core_mutation_requests，无新表或迁移。0009保留P5，不改变历史1–8。旧b9继续保留独立反例，当前修复只随最终候选发布；首发开门前可以回退，开门后只按另审止损与前向修复方案。
@@ -58,6 +63,10 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 目录路径固定只作用于本次两个核验事务，不永久改变运行角色search_path，也不放宽关系、routine或0008最小权限门。
 
 ## Concrete Steps / Plan of Work
+
+2026-10-24下一小片增加显式--upgrade-local，必须同时--apply-local，仅在同一次调用已创建新目标、仍持有原操作锁且真实restore/原prefix核验后执行。默认保留原prefix恢复；不新增采用既有库的命令。只执行同一外部审核候选的迁移SQL，复用validate_history校验历史，保持全部前向迁移和版本记录在一个owner事务内。PostgresRepository.initialize固定扫描其包目录，不能冒充外部候选SQL执行器，故本片只复用其历史契约而不调用其自动迁移路径。
+
+升级后复用真实PostgresSaver.setup的显式checkpoint迁移（包含CONCURRENTLY索引，不能嵌入Core迁移事务），随后复用权限服务和checkpoint授权，再以两角色只读精确ACL核验。0008仅建空的四张表和sequence，不provision/复制/清理账户，不把空表当作中央身份保全或重绑定证明。任何失败保留新库/角色及已提交阶段，不修权限重试、不删除或回退；最新撤销/送达收据双重放另片，formal/native/Linux证明始终false。本片最多两个新tool/一个新PG测试文件，加现有入口小接线；定向验证prefix4/7→8、原文/checkpoint保持、精确权限及阶段失败，不全量。
 
 2026-10-24下一片限定为本机新库原生恢复基础：仅显式local_drill=true、严格operation随机库/角色、loopback 55480/55481；同一外部审核输入绑定候选/manifest、custom dump和PG15 pg_restore原始hash及源迁移前缀。默认零连接校验，显式本机apply才创建本次非特权角色与全新库并由新owner恢复；发现任一既有库/角色即拒绝，失败保留新对象且不自动删除或重跑。最多新增三个tool与一个定向PG测试文件，不改旧B1或正式目标边界。
 
@@ -79,6 +88,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 ## Artifacts and Notes
 
+`private/safe-narrow-b8fce224277a4a02bf3e302eb5468163/metadata.json`为本片唯一窄链11/11（16.27秒）：10个新行为加1个受影响默认prefix4兼容节点。两个正常节点实际pg_dump/restore后由4或7升级至8，三张checkpoint数据表及其ledger和原文不变；其余覆盖无apply/无原锁、候选SQL或历史漂移、Core事务与checkpoint故障、额外额度DELETE、非空额度表停止保留。清凭据/关闭追踪，测试时区Tokyo；真实Windows PG15，模型/外部发送/服务器0。无额外全量或旧19项复跑。
+
 本片首链`private/safe-narrow-1fd4430d834d44dda2f2ca74a5547ec2/metadata.json`为13通过/3失败（13.68秒）；私有分类诊断`private/safe-narrow-83d2cbf6f31b484c85c0c33bfe216e6b/metadata.json`为单节点仍失败，确认schema CREATE权限断点。最小新public初始化后，仅3个失败目标复测`private/safe-narrow-d648e09347d44f9f8fd43ad8f0523ae5/metadata.json`为3/3（4.50秒）。必要的public占用/归属漂移负例2项及受影响真实restore失败保留节点1项，在`private/safe-narrow-c6438c08376542d2bdbc361d150a5bdd/metadata.json`为3/3（4.66秒）；合计18个不同节点有通过证据，非一次完整全绿。清凭据/关闭追踪、安全runner测试时区Tokyo，真实模型/消息/服务器均0；测试用实际Windows PG15与实际dump/restore，不作Linux证明。
 
 `private/safe-narrow-dcae469240fa4641b6902ea918d2c263/metadata.json`记录客户端SCRAM/实际DDL日志边界新节点与跨平台发现后的必要prefix4节点2/2（3.58秒）。新增行为合计19个不同节点有通过记录，未声称一次19项全链绿；有限环境、实际Windows PG15及真实dump/restore，不改既有认证/角色权限。
@@ -95,11 +106,13 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 
 新增三个tool：first_release_local_inputs（同源审核dump/program/prefix绑定、严格本机输入）、first_release_local_pg（目标缺席检查、创建/持锁/新public初始化/原prefix及owner后验）、first_release_local_restore（默认校验及显式本机原生restore）。`FIRST_RELEASE_ADMIN_DSN`只允许同一实际loopback 55480/55481的postgres或core_test_main控制库；owner/writer继续使用原显式变量。实际进程与显式环境PG*均拒绝，子进程不继承用户PG配置；仅允许显式内存密码注入子PGPASSWORD，固定空passfile，不进argv/输出/文件。外部审核pin及实际可执行/DLL运行环境仍是受信前提，不声称认证审核人或完整解释器供应链。
 
+可选本机升级新增一个内部tool first_release_local_upgrade；只从同次新库上下文调用_upgrade_new_target(inputs,dsns,creator)。正常路径沿用原4连接，增加1个owner升级连接及2个只读ACL连接，共7；PostgresSaver在该owner连接复用，不另开pool。成功回执区分original_prefix与upgraded_migrations，并保持central_binding_verified、central_provisioned、runtime_verified、native_restore_completed、linux_attestation、publication为false；runtime_acl_verified仅表示当前两角色精确权限已核，不代表运行时或发布已验证。
+
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
 
-本片已实现并定向验证本机原始prefix恢复，不代表首发恢复全链：没有前向到8、回填、最新撤销/收据重放、中央账本保全/重绑定、runtime ACL重授、正式Linux/容器端口映射、stage/生产、unit或开门。现有formal硬门不变，Linux容器NAT实际端口与严格身份不匹配时继续拒绝，不能放宽为Linux通过。开门前回退和开门后止损规则不变。
+本机原始prefix恢复及可选同次新目标前向到8、checkpoint显式setup、最小授权和精确ACL均已有定向证据，仍不代表首发恢复全链：没有回填、最新撤销/收据重放、中央账本保全/重绑定、正式Linux/容器端口映射、stage/生产、unit或开门。现有formal硬门不变，Linux容器NAT实际端口与严格身份不匹配时继续拒绝，不能放宽为Linux通过。开门前回退和开门后止损规则不变。
 
 新凭据边界与正常恢复均有定向证据；跨平台CI实际运行和SCRAM认证端点验证由主线CI结果判定，当前不声称已绿。角色verifier也不进入回执，服务端审计日志可能记录verifier，须继续按敏感运行日志保护。
 
@@ -113,6 +126,7 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## 修订记录
 
+- 2026-10-24 00:36 +08:00：新增同次本机新库显式升级阶段和11/11窄验；保留默认原prefix路径、阶段失败现场与中央身份/正式发布硬门。
 - 2026-10-24 00:26 +08:00：修复DDL日志中的原口令路径，记录2/2窄验与实际认证证据边界；明确Linux PG15客户端及独立测试库要求。
 - 2026-10-24 00:20 +08:00：新增本机local-only原始prefix真实恢复基础与18项定向证据；记录NOINHERIT/public初始化失败及最小修正、失败保留和正式恢复仍阻塞。
 

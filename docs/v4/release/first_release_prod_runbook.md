@@ -44,7 +44,7 @@ cd "$FR_CONTROL_DIR"
 
 **禁止套用旧入口：** `core_incremental`、B1 restore proof/replay、`b1_publication`均保留其原b9/scope契约；不改常量来接受最终候选，不用手填proof解除Native拒绝。`deploy_core freeze/install/publish`包含既有全量迁移、旧入口或真实渠道副作用，不能用于已有Core PG增量。`restore-withdrawals`硬live目标也不用于本次新库恢复。本单不提供尚不存在的首发apply命令。
 
-新增`tools.first_release_local_restore`只接受local_drill=true、本机55480/55481及本次随机新库/角色，默认仅校验，显式--apply-local才实际恢复原prefix1–7；创建前拒绝任一既有对象及含中央额度表的archive。它没有formal/stage/production入口，不支持0008账本恢复、前向迁移、最新撤销/收据重放、重绑定、unit或开门，不能代替D3。实际Windows PG15定向证据见原ExecPlan；Linux容器NAT身份不匹配仍硬拒，未把Windows结果改称Linux通过。
+新增`tools.first_release_local_restore`只接受local_drill=true、本机55480/55481及本次随机新库/角色，默认仅校验，显式--apply-local才实际恢复原prefix1–7；创建前拒绝任一既有对象及含中央额度表的archive。同次再显式--upgrade-local可从原持锁新目标前向至8、checkpoint setup、最小授权与精确ACL，0008仅验空表，不构成合法账本保全/重绑定；失败保留阶段，不接管旧库或修复重试。它没有formal/stage/production入口，不支持0008账本恢复、最新撤销/收据重放、重绑定、unit或开门，不能代替D3。实际Windows PG15定向证据见原ExecPlan；Linux容器NAT身份不匹配仍硬拒，未把Windows结果改称Linux通过。
 
 ## 3. 停写、备份、增量、切换、开门顺序
 

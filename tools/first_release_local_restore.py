@@ -80,20 +80,30 @@ def restore_command(inputs: LocalInputs, owner_dsn: str) -> list[str]:
 
 
 def execute(
-    inputs: LocalInputs, *, apply_local: bool = False, environment: Mapping[str, str] | None = None
+    inputs: LocalInputs,
+    *,
+    apply_local: bool = False,
+    upgrade_local: bool = False,
+    environment: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
     receipt = inputs.validate()
+    require(type(upgrade_local) is bool and (not upgrade_local or apply_local), "LOCAL_UPGRADE_REQUIRES_APPLY")
     if not apply_local:
         return receipt
     dsns = inputs.connections(environment)
     child_environment = process_environment(dsns["owner"])
     preflight_program(inputs, child_environment)
-    with new_target(inputs, dsns):
+    with new_target(inputs, dsns) as creator:
         # Recheck immutable bytes immediately before the only restore; failure never retries or removes its target.
         require(file_hash(inputs.dump) == inputs.dump_pin.dump_sha256, "REVIEWED_DUMP_CHANGED")
         run_program(inputs, restore_command(inputs, dsns["owner"]), child_environment)
         require(file_hash(inputs.dump) == inputs.dump_pin.dump_sha256, "REVIEWED_DUMP_CHANGED")
         original = verify_original(inputs, dsns["owner"])
+        upgraded = {}
+        if upgrade_local:
+            from tools.first_release_local_upgrade import _upgrade_new_target
+
+            upgraded = _upgrade_new_target(inputs, dsns, creator)
     receipt.pop("mutations", None)
     return {
         **receipt,
@@ -111,6 +121,7 @@ def execute(
         "created_roles": 2,
         "created_databases": 1,
         "mutation_scope": "new-local-database-only",
+        **upgraded,
     }
 
 
@@ -119,6 +130,7 @@ def main(argv: list[str] | None = None) -> int:
     for name in ("pin", "contract", "dump-pin", "dump", "pg-restore"):
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--apply-local", action="store_true")
+    parser.add_argument("--upgrade-local", action="store_true")
     try:
         args = parser.parse_args(argv)
         inputs = LocalInputs(
@@ -129,7 +141,7 @@ def main(argv: list[str] | None = None) -> int:
             args.pg_restore,
             Path.cwd(),
         )
-        receipt = execute(inputs, apply_local=args.apply_local)
+        receipt = execute(inputs, apply_local=args.apply_local, upgrade_local=args.upgrade_local)
     except RestoreRejected as error:
         print(json.dumps({"status": "blocked", "code": str(error), "automatic_cleanup": False}))
         return 2

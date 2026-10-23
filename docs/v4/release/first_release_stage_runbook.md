@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 00:01，北京时间；00:20补充本机恢复基础。**No-Go / 草案：尚不能照本单完成部署。** 工具观察基线为`3ee8def`，最终首发候选尚未冻结；该提交号不是已验收的发布包。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；新增本机原始prefix恢复仅用于隔离演练。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 00:01，北京时间；00:36补充本机同次升级基础。**No-Go / 草案：尚不能照本单完成部署。** 工具观察基线为`3ee8def`，最终首发候选尚未冻结；该提交号不是已验收的发布包。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；新增本机恢复及可选升级仅用于隔离演练。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -22,7 +22,7 @@
 | --- | --- | --- |
 | 候选身份 | 最终候选、manifest、artifact及外部审核pin待冻结 | 同一候选的明确审核、来源与必要评测；不能手填admissible |
 | 实际Linux运行时 | 现有Windows PG定向证据只证明相应逻辑；Linux Core/Charts/K3未整体验证 | Python3.11双环境、锁依赖/导入来源、真实文件权限、官方K3本地小文件及网络隔离 |
-| 增量与恢复 | 首发工具目前仅validate/可选只读ACL，没有apply、pg_restore或生产恢复实现 | 新库真实备份恢复→精确1–8→最新撤销/送达收据双重放→重复零变化→checkpoint与权限证据 |
+| 增量与恢复 | 正式首发入口目前仅validate/可选只读ACL；本机可恢复并显式升级，尚无正式恢复实现 | 新库真实备份恢复→精确1–8→最新撤销/送达收据双重放→重复零变化→checkpoint与权限证据 |
 | 停写与切换 | 最终Web/飞书/报告+timer、Hermes wrapper及维护/锁尚未联合演练 | 实际Linux跨exec writer栅栏、部分失败保持关门、所有入口同源 |
 | 当前环境及授权 | 未做新的服务器盘点；容量、旧schema/服务状态不能沿用历史值 | 用户新的stage授权，明确新对象/窗口；获准后只读B0复核一致 |
 
@@ -80,7 +80,9 @@ cd "$FR_CONTROL_DIR"
 
 默认只读文件、0PG/0子进程；显式`--apply-local`才创建本次随机新库/新owner和writer并实际恢复。必须local_drill=true，dump固定在本次operation目录的backup.dump，管理DSN仅同一loopback 55480/55481的postgres/core_test_main控制库。任何既有目标库或任一角色均拒绝；失败保留新对象，再调用拒绝接管，不清理重跑。应用前实际TOC检查拒绝中央额度表，即使dump-pin谎称prefix7也不复制0008。
 
-新public初始化仅在本次新库/新owner匹配、public为空且原owner为pg_database_owner时进行，不放宽NOINHERIT或writer权限。角色DDL只提交客户端生成的SCRAM verifier，口令和verifier均不进回执。实际pg_restore由新owner执行no-owner/no-acl/exit-on-error/single-transaction/no-password；随后只核原prefix和owner，不迁移、不重放、不保全或provision中央账本。成功也保持正式native_restore_completed、linux_attestation、publication为false；Windows19个不同定向节点见原ExecPlan，不新增证据副本。B3/B7所需正式全链仍缺失。
+新public初始化仅在本次新库/新owner匹配、public为空且原owner为pg_database_owner时进行，不放宽NOINHERIT或writer权限。角色DDL只提交客户端生成的SCRAM verifier，口令和verifier均不进回执。实际pg_restore由新owner执行no-owner/no-acl/exit-on-error/single-transaction/no-password；默认随后只核原prefix和owner。
+
+同一命令显式增加`--apply-local --upgrade-local`，才在该调用持锁新建且恢复的目标继续：再次核候选SQL和历史、一个事务前向至8、独立autocommit阶段checkpoint setup、复用最小授权、两角色精确只读ACL。正常总连接7，默认路径仍4；没有采用现成库的单独入口。0008四表必须实际为空，非空立即停止并保留，不清表或provision；空表不代表中央账本合法保全/重绑定。任一阶段失败保留其已提交现场，不修权限重试；不重放撤销/收据。成功仍保持正式native_restore_completed、linux_attestation、publication为false。本机新升级窄链11/11及原恢复证据见原ExecPlan，不新增证据副本。B3/B7所需正式全链仍缺失。
 
 **B7的新库恢复证明必须在B3修改已有stage库之前完成。** 表中缺失入口不是待猜命令，不能用旧B1 apply或手工SQL补过门。只要必要入口缺失，停在本地准备阶段。
 

@@ -30,7 +30,7 @@ def server_identity(connection: Any, fields: dict[str, str]) -> None:
 
 
 @contextmanager
-def new_target(inputs: LocalInputs, dsns: dict[str, str]) -> Iterator[None]:
+def new_target(inputs: LocalInputs, dsns: dict[str, str]) -> Iterator[Any]:
     fields = conninfo_to_dict(dsns["admin"])
     with psycopg.connect(dsns["admin"], autocommit=True, row_factory=dict_row) as admin:
         admin.execute("SET search_path=pg_catalog")
@@ -43,7 +43,7 @@ def new_target(inputs: LocalInputs, dsns: dict[str, str]) -> Iterator[None]:
         create_target(admin, inputs, dsns)
         initialize_public(inputs, dsns)
         # Closing this session releases the lock; no cleanup/retry removes a partial restore.
-        yield
+        yield admin
 
 
 def create_target(admin: Any, inputs: LocalInputs, dsns: dict[str, str]) -> None:
