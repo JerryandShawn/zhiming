@@ -7,6 +7,7 @@ from typing import Any
 from psycopg import sql
 
 from mingjing_core.repositories.postgres import PostgresRepository
+from tools.eval.targets.v4_review_observations import review_counts
 
 
 def native_run_rows(repo: PostgresRepository, owner: str) -> list[dict[str, Any]]:
@@ -39,4 +40,5 @@ def native_run_meta(repo: PostgresRepository, owner: str, run: dict[str, Any]) -
         "native_status": run["status"],
         "input_message_ids": [row["source_id"] for row in sources],
         "source_store": "core_runs + native source messages",
+        **review_counts(repo, owner, run),
     }
