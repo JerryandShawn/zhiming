@@ -41,6 +41,40 @@ def semantic_observations(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return result
 
 
+def structural_observations(run: dict[str, Any]) -> list[dict[str, Any]]:
+    """Bridge a persisted current-epoch structural warning, never script events."""
+    result = run.get("result") or {}
+    meta = result.get("meta") or {}
+    identity = meta.get("core_run") or {}
+    if (
+        run.get("status") != "succeeded"
+        or result.get("schema") != "core4.0"
+        or result.get("schema_version") != "core4.0"
+        or identity.get("run_id") != run.get("id")
+        or identity.get("operation_id") != run.get("operation_id")
+        or type(run.get("retry_epoch")) is not int
+    ):
+        return []
+    warnings = meta.get("structural_warnings", [])
+    if not any(
+        isinstance(warning, dict)
+        and warning.get("code") == "unsupported_save_claim"
+        and type(warning.get("count")) is int
+        and warning["count"] > 0
+        for warning in warnings
+    ):
+        return []
+    return [
+        {
+            "name": "warning.unsupported_memory_claim",
+            "source_store": "core_runs.result.meta.structural_warnings",
+            "run_id": run["id"],
+            "epoch": run["retry_epoch"],
+            "rule": "current succeeded core4 envelope records unsupported_save_claim; evaluator-only, not events_v1",
+        }
+    ]
+
+
 def decision_rows(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
     result = []
     for step in steps:

@@ -18,6 +18,10 @@ RULES = {
 }
 CREDENTIAL = re.compile(r"卡号|身份证号|访问令牌|sk-[A-Za-z0-9_-]{20,}", re.I)
 BIRTH = re.compile(r"出生|生辰|生日.{0,8}\d")
+RELATED_PERSON = re.compile(
+    r"(?:^|[，,。！？；;\n\s])\s*(?:我的?)?(?:妈妈|爸爸|母亲|父亲|妈|爸|家人|朋友|同事)"
+    r"(?=今年|去年|最近|目前|一直|血压|患|确诊|用药|的|是|出生|生日)"
+)
 KIND_MAP = {"relationship": "background", "habit": "preference"}
 
 
@@ -25,7 +29,7 @@ def sensitivity(quote: str, source: str, start: int, end: int, reported: str = "
     local = clause(source, start, end, comma=False)
     if SECRET.search(quote) or CREDENTIAL.search(quote):
         return "secret"
-    if third_party(local):
+    if third_party(local) or RELATED_PERSON.search(local):
         return "third_party"
     if BIRTH.search(quote):
         return "profile"

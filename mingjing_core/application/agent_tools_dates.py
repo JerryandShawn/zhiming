@@ -36,6 +36,11 @@ def event_metadata(
     ZoneInfo(zone)
     metadata = {"said_at": said_at.astimezone(UTC).isoformat(), "owner_timezone": zone}
     claimed = args.get("date_expression") or args.get("event_at") or args["kind"] == "event"
+    if not claimed:
+        # A goal or preference can contain a vague word such as 最近 without
+        # claiming a calendar event. Preserve the source instant, not an
+        # invented event_at, and leave date confirmation to actual event writes.
+        return metadata, None
     if service.relative_parser is None:
         if claimed:
             return metadata, {

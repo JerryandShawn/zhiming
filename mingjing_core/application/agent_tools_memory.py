@@ -10,6 +10,7 @@ from mingjing_core.application.agent_tools_dates import event_metadata
 from mingjing_core.application.agent_tools_policy import (
     CREDENTIAL,
     KIND_MAP,
+    RULES,
     SENSITIVITIES,
     refusal,
     sensitivity,
@@ -66,6 +67,7 @@ def proposal(
             "status": "pending",
             "kind": args["kind"],
             "sensitivity": level,
+            "health": bool(RULES["health"].search(source["content"][start:end])),
             "summary": args["summary"],
             "source_ids": [source["id"]],
             "source_refs": [source_ref(source, start, end)],

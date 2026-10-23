@@ -65,6 +65,24 @@ def execution_overlay(scenario: Scenario) -> Scenario:
             if action:
                 actions.append(action)
         step["model"] = actions
+        if scenario.id == "C03" and not any(
+            action.get("tool_call", {}).get("name") == "chart_compute" for action in actions
+        ):
+            # The old script supplied an unbound c1. Obtain a real scoped
+            # artifact before its prose; the original scoring contract stays.
+            actions.insert(
+                0,
+                {
+                    "tool_call": {
+                        "name": "chart_compute",
+                        "arguments": {
+                            "system": "bazi",
+                            "target": data["clock"][:10],
+                            "scale": "natal",
+                        },
+                    }
+                },
+            )
         for action in actions:
             call = action.get("tool_call", {})
             args: dict[str, Any] = call.get("arguments", {})

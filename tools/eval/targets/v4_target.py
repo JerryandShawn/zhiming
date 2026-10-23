@@ -19,6 +19,7 @@ from .base import TurnResult
 from .local_db import local_dsn, verify_local_postgres
 from .v3_seed import V3Seeder
 from .v4_cancellation import cancel_stream
+from .v4_chart_observations import chart_observations
 from .v4_context_observations import context_observations
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
@@ -28,6 +29,7 @@ from .v4_observations import (
     local_entity,
     repeat_count,
     semantic_observations,
+    structural_observations,
     tool_steps,
 )
 from .v4_protocols import ScriptedWirePort, run_matrix
@@ -250,6 +252,7 @@ class V4Target:
             run_id=run["id"],
         )
         semantic.extend(delivered)
+        semantic.extend(structural_observations(current))
         names = [event["type"] for event in events]
         if semantic:
             names = [name for name in names if name != "final"] + [item["name"] for item in semantic]
@@ -338,6 +341,7 @@ class V4Target:
             "context": context_observations(self.repo, self.owner, run),
             "run_result": run.get("result") or {},
             **kinds,
+            "chart": chart_observations(kinds.get("artifact", []), self.owner, run),
         }
 
     def close(self) -> None:
