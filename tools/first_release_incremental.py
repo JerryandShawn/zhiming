@@ -28,6 +28,7 @@ CONTROL_NAMES = frozenset(
     {
         "first_release_incremental.py",
         "first_release_incremental_pg.py",
+        "first_release_session_observer.py",
         "first_release_incremental_worker.py",
         "first_release_writer_fence.py",
         "first_release_replay_worker.py",

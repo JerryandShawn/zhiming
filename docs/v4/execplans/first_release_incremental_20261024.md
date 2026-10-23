@@ -14,6 +14,16 @@
 
 ## Progress
 
+- [x] (2026-10-24 07:49 +08:00) M1限定统计observer三代码路径与新负例静态冻结后，唯一两节点07:47:43–07:48:30首次2/2通过、45.86秒：实际异角色客户端在owner视角type=NULL、在原检查admin行集中type=client backend，恰owner+foreign两PID且仍严格拒绝，源全态/维护marker/输出不变；随后原f6 capture_binding目标通过，原零I/O及血缘正文断言未改。根已复核metadata/XML及控件/调用边界；不重跑绿或扩大测试，等待小提交和新CI。
+
+- [ ] (2026-10-24 07:44 +08:00) f6关联PR #12合成checkout dcecec3673818bd76a6934df13883c2369395a96的run40034388584/job120690168739也失败，不能与f6 push混用：v4 4301通过/56跳过/1失败/1 setup错误、2791.29秒。target_proof重建同名库目标的setup在M1握手允许2379/2381，实际额外2380/None；源漂移目标预期保留产物拒绝却提前命中会话拒绝，允许859、实际另863/None。两者尚未知身份；ModelPort/runner_v2未执行。07db与fa23新CI仍在途；X02的836 CI已cancelled（v4步成功、ModelPort步取消），不能称全CI通过，主线未取消或重跑。
+
+- [ ] (2026-10-24 07:42 +08:00) 原正式f6fb9f1 push CI run40034381931/job120690145880亦在M1拒绝：capture_binding夹具的candidate_export握手后、ACK前允许682/684，实际多683、backend_type为None；尚未dump。584旧Core及Frontend通过，v4 4302通过/56跳过/1 setup错误，2175.91秒；fake self-test、ModelPort、runner_v2未执行。下一片只改善同次会话观察的统计可见性，保原精确PID门；实施前设计见Decision Log。两项必要真实PG测试待运行，不宣称额外PID身份或首发就绪。
+
+- [ ] (2026-10-24 07:14 +08:00) 09173ac push CI run40031494831/job120680561852实际失败：584旧Core通过、Frontend整步通过；v4 4195通过/75跳过/1 setup错误，1206.04秒，后续fake self-test/ModelPort/runner_v2未执行。唯一错误为incremental_guard的missing-marker夹具在删除marker之前，M1 dump后精确会话门拒绝：允许1183，实际另有1186、backend_type字符串None。未知该PID来源，不猜autovacuum；07dbf97未改这一路径，尚未覆盖本次CI失败。保硬门/原日志，不自动重试CI或重复本机绿例，先切离线累计预算。
+
+- [x] (2026-10-24 07:11 +08:00) 源回填已验片已提交并推07dbf97，工作树清洁，新push CI run40038236229仍在途。原091 archive与新工具Git身份分开；不得以本机2/2或父来源CI替代07自身检查，更不解除完整脚本与正式发布门。
+
 - [x] (2026-10-24 07:10 +08:00) 窄修后受影响源回填正反两目标2/2通过、1103.49秒；实际archive09173ac，原同call M1/TargetProof/Runtime/Forward/replay/backfill与四次活peer观察、closed收尾及独立后验均通过。首遍回填2条真实历史，第二遍三个写计数0、完整状态不变；正式门全部保持false。负例因精确pin校验路径实际变化而必要复验，未重复无关绿项；五个Python文件Ruff/120列format通过，等待本片提交。原两轮失败不覆盖，详见Outcomes唯一证据。
 
 - [ ] (2026-10-24 06:47 +08:00) 仅原源回填红节点复验仍红、897.18秒；新XML实证09173ac、source_backfill_3_owner_verified、session_restored=True，replay及backfill的ready/final四事件均已实际观察。不能称组合完成或独立末段后验通过；负例未复跑。先审并仅去除新BackfillPin.validate内部紧邻重复上游验证，不缓存、不改120秒或各阶段重核；随后只验证受影响原红。
@@ -79,6 +89,12 @@
 
 ## Surprises & Discoveries
 
+新负例首次以真实PG角色差异复现type不可见，并在M1原门获得可见类型且拒绝，证明统计观察改动有效；没有复现原CI的1186/683/2380/863，不把这项成功当成这些PID身份或根因证据。负例拒绝后的同进程原capture_binding节点通过，也覆盖动态scope在异常退出后未污染下一次正常捕获；M1外的其他guard仍用原严格观察路径。
+
+PG15对普通角色隐藏其他角色会话的部分统计字段，超级用户或pg_read_all_stats可见全部统计，见[官方监控文档](https://www.postgresql.org/docs/15/monitoring-stats.html)。这解释为何owner观察可能拿到NULL，但不确定091的1186或f6的683来源。原五个M1门已经清统计快照，不能把缺刷新当根因；需要由已核控制库admin连接在原门同次按源OID读取并原样拒绝，不能在失败后另查再冒充原瞬间证据。
+
+091的失败集合首次保留了原瞬间PID及backend_type：额外1186为字符串None，不能仅凭PID接近或M1位于dump后，就认定是自有pg_dump、维护进程或autovacuum。原sessions已先pg_stat_clear_snapshot，不能声称缺刷新是根因；不凭后续成功洗掉该次事实，也不以睡眠、重试、backend白名单或伪装appname规避精确拒绝。
+
 07:07窄修后完整两目标通过，确认本次控制链可在原120秒协议内完成closed收尾；不能据此认定同次重复验证是此前失败的唯一原因。每阶段完整上游验证、控制文件hash、实际会话代际与双栅栏均保留，没有缓存、超时扩容或放宽成功断言。实际archive091与本轮尚待提交控制代码分开，不把当前工具提交提升为最终候选脚本证据。
 
 2026-10-24 06:56 +08:00补一次有限本机能力核对：既有Docker PG15容器的只读exec成功，但当前PATH的command -v python3.11/python3均无结果，不能报告已有可用Core Python；这不证明整个容器所有路径不存在Python。没有SQL、安装、拉取、网络、环境恢复或重试，不扩大到WSL/代理/ACL。实际Linux应用门仍缺运行时，与已有PG15存储就绪分开。
@@ -130,6 +146,12 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+2026-10-24 07:49 +08:00：根审要求observer每次重核owner当前只读、admin只读/autocommit及真实全统计可见权限，新增查询显式限定pg_catalog；绑定对象仅保控制库身份四字段，不再持有password。新负例收紧到精确两个client backend，防另一未知会话替代所要证明的拒绝原因；原成功与失败正文不删改。控制helper120行、最长函数33；新测试59行、最长44，既有incremental_pg449行只窄改、最长56，维持旧文件软目标例外。Ruff E/F/I/B/UP/SIM、120列format及AST/diff均通过。
+
+2026-10-24 07:42 +08:00：在独立v4/p3-wire-session-visibility-20261024（07dbf97子分支）实施M1限定typed observer。保sessions二参与candidate_export四参；backup原已核admin只读/autocommit控制库连接存活至capture结束，绑定实际owner连接对象/PID、源database_oid和admin身份，同次按datid读实际行集供原精确集合比较及七字段有限诊断。离开M1动态作用域后其他guard保持原行为。连接/身份/统计权限/NULL类型异常失败关闭，不grant、不按类型放行、不睡眠重试。新helper只懒加载，防不可变旧候选runpy snapshot时借用新依赖；加入CONTROL_NAMES哈希闭包（8→9），旧8控pin继续拒绝而不补写。只新增真实异角色会话仍拒且类型可见的必要负例，并复验原f6失败capture_binding目标；先静态冻结根审，再授单测试槽。主线承担本片控制路径，未触碰模块记忆或暂停线。
+
+2026-10-24 07:14 +08:00：保留091本次setup错误及未执行检查，07新CI运行时不重复触发、不改M1控制文件。不掌握1186身份便不放宽会话门，按用户“阻塞写后切可做项”转向既有累计预算方案；无需新的用户决定才能继续离线开发。
 
 2026-10-24 06:48 +08:00：根完整审阅115行BackfillPin去重实现，公开controls仍全核、validate保一次完整上游及当前全部自身文件/ledger/SHA/绑定核验，函数最长45。因实际改动了validate的控制集合计算路径，除原红整链外，需再验证同文件既有默认/坏pin零副作用节点作为受影响安全边界；这是新代码的必要验证，不是稳定性重复，原其余绿项不重跑。仍保持091实际候选归档、成功断言及120秒，首链和诊断红分别保留，原重复是否为唯一原因仍未知。
 
@@ -351,6 +373,10 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 ## Outcomes & Retrospective
 
+M1统计observer本机必要两目标首次2/2通过，唯一原证据为`private/safe-narrow-bbbcd541aa36476f9f1306035f965f1e/metadata.json`及同目录pytest.xml/log，07:47:43.682–07:48:30.416 +08:00、45.86秒，真实PG15.19、清凭据/关追踪/TZ Tokyo、真实模型/服务器/外发0。原七字段有限诊断、五个原精确PID门、旧候选runpy snapshot导入与独立pin闭包保留；旧8控输入不再适用，必须新capture/新9控pin。原CI额外PID均保留未知，新观察不能保证CI转绿；原脚本69/81、Linux应用/正式CLI/中央身份/全局writer和发布门仍关闭。
+
+07dbf97已推送，源码与新增组合测试/两份草案随小片提交。新push CI待核；091 push旧CI的精确失败和执行边界见Progress及唯一GitHub run40031494831/job120680561852，未另抄日志。当前首发仍No-Go，任何后续CI绿不说明旧额外PID的身份或根因。
+
 源回填窄修后唯一两目标证据为`private/safe-narrow-9c3f5320aa34482db560b8b5773bc14d/metadata.json`与同目录pytest.xml，2026-10-24 06:49:06–07:07:31 +08:00，2 passed/1既有AnyIO warning in1103.49s（正862.120秒、负240.801秒）。实际候选09173ac46b47dd29cd7298bb253a8c5d326b8c42、两个候选helper来源、M1/TargetProof/Runtime/Forward/source_replay/source_backfill实际六阶段与四次活peer观察通过，closed已完成。两个历史助手完整稳定ID/血缘/policy、四项源metadata和生成搜索、首遍精确变化及二遍三个写计数0/全态相等均通过；旧fact/run/Outbox/SDK擦除，SDK1/1/1→0/0/0，纠正完整fact及Bob全owner行保留。fresh原生13项bool、真实native export/full source state、中央四空表及sequence、维护材料后验全部通过；source_upgraded/source_write_authorized/native/runtime/Linux/central/global_quiescence/publication正式位仍全false。清凭据/关追踪/TZ Tokyo、真实模型/外发/服务器0。前两轮失败如下原样保留，未合并为历史一次全绿；正式CLI、既有中央身份保全、实际应用writer及Linux门仍缺失。
 
 源回填唯一原红诊断复验为`private/safe-narrow-f554e55fa7e945438d3606a3e747cab7/metadata.json`及同目录pytest.xml，2026-10-24 06:31:00–06:45:58 +08:00，1 failed/1既有warning in897.18s。XML实际候选09173ac46b47dd29cd7298bb253a8c5d326b8c42、阶段source_backfill_3_owner_verified、会话恢复True，有限peer事件恰为replay ready/final和backfill ready/final四项。仍为SOURCE_REPLAY_PROTOCOL_TIMEOUT_OR_INVALID，未完成closed确认及新测试独立history/privacy/全态末段，不将这些事件等同整链通过；原首链与本红分别保留，原负例不重跑，正式门仍关闭。
@@ -394,6 +420,14 @@ controller运行时独立组件的四个实际进程/依赖/已加载模块行�
 M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/213行；新PG测试250行、最长函数55行以内。Ruff E/F/I/B/UP/SIM及120列format通过。真实PG定向6+2已验证上述基础行为；中性grant原语尚未被新入口调用，PostgresSaver checkpoint阶段、完整源状态/运行时门、typed单次证明、源编排及M3b源隐私重放/回填都仍未完成，所有正式门保持false，不给生产/既有prefix8或额外关系开口。
 
 ## 修订记录
+
+- 2026-10-24 07:49 +08:00：记录M1同次统计观察真实两目标首次2/2及根审的实际边界，唯一证据只在本计划登记，旧CI失败与正式No-Go保留。
+
+- 2026-10-24 07:44 +08:00：只读核对f6 PR合成检查的新两处会话拒绝与X02取消状态，分清push/PR实际checkout及未执行步骤，不复制完整日志或自动重跑。
+
+- 2026-10-24 07:42 +08:00：保f6握手前ACK失败的实际集合与未执行步骤，先写M1限定同次有权限统计观察设计；不改变严格拒绝或推断额外PID根因。
+
+- 2026-10-24 07:14 +08:00：登记07已推及091实际CI setup失败、原瞬间会话集合与后续未执行检查，保精确硬门/未知根因；不自动重试，切累计预算。
 
 - 2026-10-24 07:10 +08:00：记录窄修后受影响两目标真实2/2、closed与独立后验完整通过；保留此前两轮失败和唯一根因未知，区分091 archive与新控制代码，所有正式门保持关闭。
 

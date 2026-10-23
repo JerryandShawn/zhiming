@@ -112,10 +112,14 @@ def admin_identity(connection: Any, inputs: BackupInputs, fields: dict[str, str]
 
 
 def sessions(connection: Any, allowed: set[int]) -> None:
-    connection.execute("SELECT pg_stat_clear_snapshot()")
-    actual = connection.execute(
-        "SELECT pid,backend_type FROM pg_stat_activity WHERE datname=current_database() ORDER BY pid"
-    ).fetchall()
+    from tools.first_release_session_observer import observed_rows
+
+    actual = observed_rows(connection)
+    if actual is None:
+        connection.execute("SELECT pg_stat_clear_snapshot()")
+        actual = connection.execute(
+            "SELECT pid,backend_type FROM pg_stat_activity WHERE datname=current_database() ORDER BY pid"
+        ).fetchall()
     if {row["pid"] for row in actual} != allowed:
         error = RestoreRejected("INCREMENTAL_OTHER_SOURCE_SESSION")
         # These are the rows which failed the gate, not a later observation. Never include query/appname/DSNs.
@@ -399,16 +403,24 @@ def capture(inputs: BackupInputs, dsns: dict[str, str], connection: Any) -> dict
 
 
 def backup(inputs: BackupInputs, dsns: dict[str, str]) -> dict[str, Any]:
+    from tools.first_release_session_observer import observe_source_sessions
+
     inputs.fence_path.parent.mkdir(parents=True, exist_ok=True)
     ordinary(inputs.fence_path.parent, directory=True)
-    with file_lock(inputs.fence_path, exclusive=True):
-        with psycopg.connect(readonly(dsns["admin"]), row_factory=dict_row) as admin:
-            admin_identity(admin, inputs, conninfo_to_dict(dsns["admin"]))
+    with (
+        file_lock(inputs.fence_path, exclusive=True),
+        psycopg.connect(readonly(dsns["admin"]), autocommit=True, row_factory=dict_row) as admin,
+    ):
+        fields = conninfo_to_dict(dsns["admin"])
+        admin_identity(admin, inputs, fields)
         with psycopg.connect(readonly(dsns["writer"]), row_factory=dict_row) as writer:
             identity(writer, inputs, "writer")
         with psycopg.connect(readonly(dsns["owner"]), autocommit=True, row_factory=dict_row) as owner:
             identity(owner, inputs, "owner")
-            with pg_lock(owner, inputs.fence_key, exclusive=True):
+            with (
+                pg_lock(owner, inputs.fence_key, exclusive=True),
+                observe_source_sessions(owner, admin, inputs, fields),
+            ):
                 sessions(owner, {owner.info.backend_pid})
                 source_scope(owner, inputs)
                 require(not inputs.maintenance.exists(), "INCREMENTAL_MAINTENANCE_ALREADY_PRESENT")
