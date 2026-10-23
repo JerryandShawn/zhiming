@@ -1,5 +1,19 @@
 # 首发核心30题计划（v2.2隔离子集）
 
+## 生命周期续作基础（独立开发片，未开放执行）
+
+Progress：2026-10-23 北京时间，主线批准在独立`v4/p3-wire-eval-resume-20261023`树实现生命周期基础。先显式初始化独立本机PG控制schema，控制记录只存候选/source/model/契约/中央真实身份与场景定位hash；seed、绑定和运行私密状态留在原场景PG。只实现保存、detach与只读attach；不开放CLI resume、评审续作或额度清停。
+
+Decision Log：普通V4Target的reset/close继续删除可丢弃schema。新增专用DurableCore30Target采用显式detach保留数据，attach不seed、不receive、不queue、不申请permit；附着后的send保持关闭，避免生命周期接口被当作完整同run恢复。
+
+Surprises & Discoveries：现有场景生命周期全部由内存持有且close会DROP；主模型Journal可保留真实工具回执，但只有生命周期基础不能解决已发送未知结果、评审持久化、跨额度窗口或运行时间预算。
+
+Outcomes & Retrospective（2026-10-23 23:36 +08:00）：本片11个目标已验证：首链10通过/1失败（51.65秒），失败仅因测试把保存摘要当作fact.content读取；事实正文按契约保留原话，修正测试读取summary后只重跑该正例1/1通过（7.05秒）。首链证据`private/safe-narrow-32ab3433e9c4474ca2302e98d6d6ff58/metadata.json`，正例证据`private/safe-narrow-aedb144c78584d3c8532abab9ef5c729/metadata.json`。真实PG中memory_write完成后下一Mock POST遇额度停止，随后checkpoint、detach和attach保留原schema/owner/thread/绑定/seed/run/epoch及实际工具回执和fact revision；没有重新seed/receive/queue/claim/写业务效果，没有新增permit或POST。候选执行来源、模型、契约、真实中央身份变化，以及取消、终态、原话更改、原生来源撤销、epoch改变均拒绝；缺控制库不隐式建表。普通close仍删除schema，attach后的send明确关闭。Ruff/语法/文件与函数尺寸检查通过，令牌已释放。
+
+本片测试只模拟未提交工作树的clean-checkout边界；source hash、固定core30契约及中央账户/ledger/location均由实际代码与PG重算，不自填中央身份。模型传输全部MockTransport，测试时区Asia/Tokyo；真实模型、服务器、飞书均0。控制表没有seed或正文，私密状态保存在原场景runtime_step并带真实source_ids/run_id以随撤销失效。保存私密状态与更新独立控制记录之间没有跨库原子提交，若中途失败只能因hash不一致拒绝，不能猜测恢复。评审日志、未知POST结果、剩余运行预算、额度清停和完整同run执行仍未实现；不据此解除live/v4 --resume门。
+
+2026-10-23 23:45 +08:00复核：仅加强并重跑既有`[revoke]`目标1/1通过（5.43秒，`private/safe-narrow-f94b090dbcd642c6bf2390973c19f9eb/metadata.json`）。原生撤销前确认新eval_lifecycle行包含私密seed/state，撤销后直接读取core_entities确认status=deleted且data={}，证明整份新私密状态本体已清空，没有生产补丁。没有重复11题，令牌已释放。本片装配只验证k3-256k；fallback k3后续可能需要已验证模型选择作用域，尚未验证，更不能声称quota/judge完整续作。
+
 当前离线CLI首次30/30，真实调用为0。可信等价证明至core会话的接线已用真实隔离PG与替身HTTP验证；正式脚本门和真实20步等价证明仍未齐，生产core依然不放行，跨额度窗口的持久续作尚未接通。本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
 
 ## 固定范围与评分
