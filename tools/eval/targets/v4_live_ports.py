@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import time
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from typing import Any
 
 import httpx
@@ -26,6 +28,9 @@ class LiveTrackingPort(ModelPort):
         self.requests: list[dict[str, Any]] = []
         self._substituted = False
         self._turn_calls, self._turn_started = 0, time.perf_counter()
+        self._before_send: ContextVar[Callable[[], None] | None] = ContextVar(
+            "eval_send_authorization_" + str(id(self)), default=None
+        )
         factory = port.factory
 
         def observe_factory(handle: ModelHandle) -> ModelPort:
@@ -38,8 +43,25 @@ class LiveTrackingPort(ModelPort):
     def begin_turn(self) -> None:
         self._turn_calls, self._turn_started = self.calls, time.perf_counter()
 
+    @contextmanager
+    def authorize_before_send(self, authorize: Callable[[], None]) -> Iterator[None]:
+        previous = self._before_send.get()
+
+        def combined() -> None:
+            if previous is not None:
+                previous()
+            authorize()
+
+        token = self._before_send.set(combined)
+        try:
+            yield
+        finally:
+            self._before_send.reset(token)
+
     def _before_request(self) -> None:
         # The callback runs after PG admission and immediately before client.send.
+        if authorize := self._before_send.get():
+            authorize()
         self.calls += 1
         self.external_calls += int(not self._substituted)
 

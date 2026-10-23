@@ -2,7 +2,15 @@
 
 ## 生命周期续作基础（独立开发片，未开放执行）
 
-Progress：2026-10-23 北京时间，主线批准在独立`v4/p3-wire-eval-resume-20261023`树实现生命周期基础。先显式初始化独立本机PG控制schema，控制记录只存候选/source/model/契约/中央真实身份与场景定位hash；seed、绑定和运行私密状态留在原场景PG。只实现保存、detach与只读attach；不开放CLI resume、评审续作或额度清停。
+下一实现片计划：增加primary_complete只读阶段，从原生已提交信封/Journal/事件观察并持久TurnResult，不重新执行终态run；附着后send仍关闭。私密评分journal绑定同candidate/source/model/scenario/契约/turn与rubric/schema/请求hash，执行前先持久inflight，完成后仅核对真实中央critic物理记录并保存实际评分结果；completed可读取复用，unknown/inflight/不完整响应一律拒绝自动重POST。不推断primary Journal seq关联、不开放CLI resume、不清额度停，不改deadline/epoch或记忆服务。只增加至多3个tool模块与1个测试文件，加现有生命周期最小扩展；单条真实隔离PG+MockTransport目标链验证。
+
+2026-10-24 00:16 +08:00结果：只读完成观察与评分journal基础已通过新目标9/9（首次，103.63秒），证据`private/safe-narrow-e868876bbd2447c2845ced78f59b0c95/metadata.json`，一个测试令牌已释放。原生Agent成功提交后只读校验唯一final、当前core4信封及真实工具/事件，保存实际TurnResult和PG视图；重附着不执行终态run，已完成评分零新增POST复用，原epoch/deadline/usage逐字段保持不变。评分请求绑定candidate/source/model/固定契约/轮次/rubric/schema与正文hash，独立记录prepared/inflight/completed/unknown；只接受同run/scenario/critic/model的真实中央已结束ok记录，没有建立或伪造primary Journal seq关联。负例覆盖伪造TurnResult、无响应inflight、实际Mock响应不完整、rubric/schema/source变化和中央物理证据改变，均拒绝自动重POST；原生来源撤销后直接PG读证实完成状态与评分两份runtime_step均deleted且data={}。控制记录仍不含正文。
+
+本片新增两个tool模块、一个测试文件，只最小扩展既有生命周期。Ruff、语法及尺寸检查通过；真实供应商/飞书/服务器请求均0，测试时区Asia/Tokyo。没有把评分journal接入engine/runner，没有开放CLI resume或清额度停；跨窗口primary恢复、计时预算、恢复事件去重及物理attempt与primary Journal seq关联仍阻塞。这里只验证k3-256k的原生完成/评分路径，不代表core30全题实测、fallback或整个live无人值守流程可用。评分发出后丢失本地完成确认的inflight仍保守停住，不能仅凭本片开放真实流程。
+
+2026-10-24 00:21 +08:00审阅修正：主线发现_begin落盘后到HTTP前的撤销会让局部旧payload继续发送，不能仅列后片。已给原生LiveTrackingPort增加ContextVar作用域内发送前授权回调，复用transport现有before_provider_request，在实际client.send前、发送计数增量前重新核验原control/binding/private/run及评分inflight同revision；嵌套回调保留旧授权并在结束后恢复。仍经过原中央PG守卫，不改账本/重试。仅跑新增真实PG撤销竞态与受影响正常评分/缓存正例，首次2/2通过（33.67秒，`private/safe-narrow-33d40ac3917c4af3bca7bf7cbe3312bf/metadata.json`）。_begin之后原生撤销使Mock传输0新增、tracker两类发送计数0、两私密行deleted且data={}，不能重POST；正常发送与缓存、嵌套回调恢复也通过。没有重复9题，令牌已释放。该检查位于中央admission之后；如已有保守预留，拒绝发送不代表没有中央记录，更不会清除unknown或伪造已发HTTP。
+
+首片Progress（2026-10-23）：主线批准在独立`v4/p3-wire-eval-resume-20261023`树实现生命周期基础。先显式初始化独立本机PG控制schema，控制记录只存候选/source/model/契约/中央真实身份与场景定位hash；seed、绑定和运行私密状态留在原场景PG。首片只实现保存、detach与只读attach；10-24追加的只读完成结果与评分journal见上文，CLI resume及额度清停仍关闭。
 
 Decision Log：普通V4Target的reset/close继续删除可丢弃schema。新增专用DurableCore30Target采用显式detach保留数据，attach不seed、不receive、不queue、不申请permit；附着后的send保持关闭，避免生命周期接口被当作完整同run恢复。
 
@@ -16,7 +24,7 @@ Outcomes & Retrospective（2026-10-23 23:36 +08:00）：本片11个目标已验�
 
 下一片范围与实际阻塞（只读核对，尚未实现）：只考虑未过原deadline、明确记录为quota拒绝的primary同run恢复；保留原run/epoch，经合法新lease执行，不重新receive、queue或prepare_retry。RuntimeLimits已把每epoch绝对deadline与配置固定并校验hash，不能清除、延长或重置；还须持久化已消费的实际单调时钟预算并在恢复时扣除，不能因新RunControl把计时归零。业务FrozenClock与真实执行/授权时间必须分开。当前不声称长5小时等待后仍可继续。
 
-恢复前另有三个硬缺口：AgentRuntime._start会再次发started，ToolBatch对已完成步骤仍会发tool_call/tool_result，需要明确避免恢复遍历产生重复执行事件；中央物理attempt当前缺少与Journal seq的明确关联，不能以次数或不同时间基准猜测，成功POST但步骤未完成、未结束或unknown记录一律停止；primary进入succeeded而judge未完成时，需要另设校验真实结果的只读评审阶段，不能放开终态run执行。judge请求/结果日志、额度清停及CLI --resume仍保持关闭，以上约束未验收前不解除任何门。
+primary恢复仍有硬缺口：AgentRuntime._start会再次发started，ToolBatch对已完成步骤仍会发tool_call/tool_result，需要明确避免恢复遍历产生重复执行事件；中央物理attempt当前缺少与Journal seq的明确关联，不能以次数或不同时间基准猜测，成功POST但步骤未完成、未结束或unknown记录一律停止。10-24已实现成功primary的只读结果/评分journal基础及发送前撤销复查，没有放开终态run执行；engine/runner接线、额度清停和CLI --resume仍关闭。
 
 当前离线CLI首次30/30，真实调用为0。可信等价证明至core会话的接线已用真实隔离PG与替身HTTP验证；正式脚本门和真实20步等价证明仍未齐，生产core依然不放行，跨额度窗口的持久续作尚未接通。本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
 

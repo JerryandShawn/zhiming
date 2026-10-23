@@ -95,7 +95,7 @@ def validate_seed(seed: dict[str, Any], binding: LifecycleBinding) -> None:
         raise LifecycleError("私密场景种子与固定契约不符")
 
 
-def snapshot(target: Any, binding: LifecycleBinding, turn: int) -> dict[str, Any]:
+def snapshot(target: Any, binding: LifecycleBinding, turn: int, completed: dict | None = None) -> dict[str, Any]:
     validate_seed(target.seed, binding)
     if (
         target.repo is None
@@ -107,7 +107,7 @@ def snapshot(target: Any, binding: LifecycleBinding, turn: int) -> dict[str, Any
     ):
         raise LifecycleError("本片仅保存已绑定原话的本机core30运行")
     records = [
-        run_identity(target.repo, target.owner, ident, current=index == len(target.run_ids) - 1)
+        run_identity(target.repo, target.owner, ident, current=completed is None and index == len(target.run_ids) - 1)
         for index, ident in enumerate(target.run_ids)
     ]
     if records[-1]["thread"] != target.thread["id"]:
@@ -117,6 +117,8 @@ def snapshot(target: Any, binding: LifecycleBinding, turn: int) -> dict[str, Any
         "owner": target.owner,
         "model": target.model,
         "turn": turn,
+        "phase": "primary_complete" if completed is not None else "primary_pending",
+        "completed_turn": completed,
         "business_clock": get_clock().now().isoformat(),
         "thread_id": target.thread["id"],
         "targets": {key: deepcopy(getattr(target, key)) for key in TARGET_FIELDS},
@@ -130,8 +132,10 @@ def snapshot(target: Any, binding: LifecycleBinding, turn: int) -> dict[str, Any
     }
 
 
-def save_private(target: Any, session: str, binding: LifecycleBinding, turn: int) -> tuple[str, str]:
-    state = snapshot(target, binding, turn)
+def save_private(
+    target: Any, session: str, binding: LifecycleBinding, turn: int, completed: dict | None = None
+) -> tuple[str, str]:
+    state = snapshot(target, binding, turn, completed)
     ident = "eval-lifecycle:" + session
     with target.repo.transaction(target.owner):
         old = target.repo.list(target.owner, "runtime_step", include_deleted=True)
@@ -172,12 +176,22 @@ def read_private(repo: PostgresRepository, owner: str, record: dict, binding: Li
     ):
         raise LifecycleError("私密生命周期状态已变化或失效")
     validate_seed(state["targets"]["seed"], binding)
+    phase = state.get("phase", "primary_pending")
+    if phase not in {"primary_pending", "primary_complete"}:
+        raise LifecycleError("未知生命周期阶段")
     records = [
-        run_identity(repo, owner, run["id"], current=index == len(state["runs"]) - 1)
+        run_identity(repo, owner, run["id"], current=phase == "primary_pending" and index == len(state["runs"]) - 1)
         for index, run in enumerate(state["runs"])
     ]
     if not records or records != state["runs"] or records[-1]["thread"] != state["thread_id"]:
         raise LifecycleError("原生运行、批次或来源与保存状态不符")
+    if phase == "primary_complete":
+        from .v4_completed_turn import verify_completed
+
+        completed = state.get("completed_turn") or {}
+        if completed.get("turn") != state["turn"] or completed.get("native", {}).get("run_id") != records[-1]["id"]:
+            raise LifecycleError("完成观察不属于当前原生运行及轮次")
+        verify_completed(repo, owner, state.get("completed_turn"))
     return state
 
 

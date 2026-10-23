@@ -23,12 +23,23 @@ class DurableCore30Target(Core30LiveTarget):
         self.lifecycle_session: str | None = None
         self._attached = False
 
-    def checkpoint(self, control: LifecycleControl, binding: LifecycleBinding, guard: QuotaGuard, *, turn: int) -> str:
+    def checkpoint(
+        self,
+        control: LifecycleControl,
+        binding: LifecycleBinding,
+        guard: QuotaGuard,
+        *,
+        turn: int,
+        completed: TurnResult | None = None,
+    ) -> str:
         binding.verify(guard)
         if self.model != binding.model or self.repo is None or control.schema in {self.schema, guard.store.schema}:
             raise LifecycleError("评测对象与独立控制身份不符")
         self.lifecycle_session = self.lifecycle_session or "eval-" + uuid.uuid4().hex
-        ident, digest = save_private(self, self.lifecycle_session, binding, turn)
+        from .v4_completed_turn import freeze_completed
+
+        frozen = freeze_completed(self, turn, completed) if completed is not None else None
+        ident, digest = save_private(self, self.lifecycle_session, binding, turn, frozen)
         with self.repo.transaction() as connection:
             location = control.location(connection, self.schema)
         control.save(
@@ -49,6 +60,17 @@ class DurableCore30Target(Core30LiveTarget):
         repo.close()
         # Retain identifiers for diagnostics only; a fresh attach must re-read PG.
         self._attached = True
+
+    def completed_result(self, control: LifecycleControl, binding: LifecycleBinding, guard: QuotaGuard) -> TurnResult:
+        from .v4_completed_turn import verify_completed
+
+        if self.repo is None or self.lifecycle_session is None:
+            raise LifecycleError("请先附着原场景")
+        record = control.load(self.lifecycle_session, binding, guard)
+        state = read_private(self.repo, self.owner, record, binding)
+        if state.get("phase") != "primary_complete":
+            raise LifecycleError("原运行尚未完成，不能只读评分")
+        return verify_completed(self.repo, self.owner, state["completed_turn"])
 
     def attach(self, control: LifecycleControl, session: str, binding: LifecycleBinding, guard: QuotaGuard) -> None:
         if self.repo is not None or self.model != binding.model:
