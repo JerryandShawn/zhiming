@@ -40,7 +40,8 @@ def checked_profile_facts(memory: MemoryService, owner: str, subject: str, versi
             raise RevisionConflict("反思依据事实已经变化")
         if ident not in current or statement_instant(memory, owner, row) > now:
             raise EvidenceError("反思依据不是当前有效事实")
-        expiry = archive_deadline(dict(row, owner_timezone=settings.get("timezone", "Asia/Shanghai")))
+        zone = row.get("owner_timezone", settings.get("timezone", "Asia/Shanghai"))
+        expiry = archive_deadline(dict(row, owner_timezone=zone))
         if expiry is not None and expiry <= now:
             raise EvidenceError("过期事件不能成为当前画像")
         rows.append(row)
