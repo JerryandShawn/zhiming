@@ -21,7 +21,14 @@ from .v3_seed import V3Seeder
 from .v4_cancellation import cancel_stream
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
-from .v4_observations import decision_rows, delivery_rows, local_entity, repeat_count, semantic_observations, tool_steps
+from .v4_observations import (
+    decision_rows,
+    delivery_rows,
+    local_entity,
+    repeat_count,
+    semantic_observations,
+    tool_steps,
+)
 from .v4_protocols import ScriptedWirePort, run_matrix
 from .v4_runtime import DeclaredDateParser, EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
@@ -29,7 +36,13 @@ from .v4_tarot import TarotDriver
 
 
 class V4Target:
-    def __init__(self, *, dsn: str | None = None, protocol: str | None = None, candidate: str = "scripted-v4") -> None:
+    def __init__(
+        self,
+        *,
+        dsn: str | None = None,
+        protocol: str | None = None,
+        candidate: str = "scripted-v4",
+    ) -> None:
         self.dsn = local_dsn(dsn or os.getenv("CORE_TEST_DSN", ""))
         self.owner = "synthetic-eval-owner"
         self.repo: PostgresRepository | None = None
@@ -58,7 +71,10 @@ class V4Target:
         self.feishu = None
         self.schema = "eval_v4_" + uuid.uuid4().hex
         self.repo = PostgresRepository(self.dsn, schema=self.schema, max_size=4)
-        self.repo.ensure_owner(self.owner, settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})})
+        self.repo.ensure_owner(
+            self.owner,
+            settings={"auto_save_low_sensitivity": True, **seed.get("settings", {})},
+        )
         self._ports()
         self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
         self.provider = ScriptedProvider(seed.get("_scripted", []))
@@ -106,9 +122,9 @@ class V4Target:
     def _request(self, turn: dict[str, Any]) -> dict[str, Any]:
         if self.repo is None:
             raise RuntimeError("Call reset before send")
-        if turn.get("action", {}).get("type") == "ingest_batch":
+        if turn.get("action", {}).get("type") == "ingest_batch" or turn.get("channel") == "feishu":
             self.feishu = FeishuBatchDriver(self)
-            return self.feishu.prepare()
+            return self.feishu.prepare(None if turn.get("action", {}).get("type") == "ingest_batch" else turn)
         index = turn["_index"]
         operation = f"v4-eval:{self.seed['_scenario_id']}:{index}"
         draw_id, cases = self._draw_selection(turn)
@@ -212,19 +228,28 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
-        started, before = time.perf_counter(), self.port.calls + (self.critic.calls if self.critic else 0)
+        started, before = (
+            time.perf_counter(),
+            self.port.calls + (self.critic.calls if self.critic else 0),
+        )
         if turn.get("action", {}).get("type") == "cancel_run":
             return self._cancel(turn, started)
         run, resumed = self._start_turn(turn)
         events: list[dict[str, Any]] = []
         result, retry, error, crashed = self._attempt(run, events)
-        if result and self.feishu:
-            self.feishu.finish(run["id"])
+        delivered = self.feishu.finish(run["id"]) if result and self.feishu else []
         current = self.repo.fetch_run(self.owner, run["id"])
         steps = tool_steps(self.repo, self.owner, run["id"])
         semantic = self._semantics(
-            steps, turn, result=result, retry=retry, resumed=resumed, crashed=crashed, run_id=run["id"]
+            steps,
+            turn,
+            result=result,
+            retry=retry,
+            resumed=resumed,
+            crashed=crashed,
+            run_id=run["id"],
         )
+        semantic.extend(delivered)
         names = [event["type"] for event in events]
         if semantic:
             names = [name for name in names if name != "final"] + [item["name"] for item in semantic]
@@ -256,14 +281,21 @@ class V4Target:
 
     def _cancel(self, turn: dict[str, Any], started: float) -> TurnResult:
         self.cancellation = cancel_stream(
-            self.repo, self.owner, partial=self.seed["controls"]["partial_text"], after_ms=turn["action"]["after_ms"]
+            self.repo,
+            self.owner,
+            partial=self.seed["controls"]["partial_text"],
+            after_ms=turn["action"]["after_ms"],
         )
         self.run_ids.append(self.cancellation["run_id"])
         return TurnResult(
             events=["run.cancel_requested", "stream.stopped"],
             model_calls=self.cancellation["scripted_http_requests"],
             elapsed_seconds=time.perf_counter() - started,
-            metadata={"offline": True, "physical_model_requests": 0, "evaluator_observations": [self.cancellation]},
+            metadata={
+                "offline": True,
+                "physical_model_requests": 0,
+                "evaluator_observations": [self.cancellation],
+            },
         )
 
     def inspect_db(self) -> dict[str, Any]:
@@ -276,7 +308,12 @@ class V4Target:
         }
         zone = self.repo.assert_scope(self.owner)["settings"].get("timezone", "Asia/Shanghai")
         rows = [
-            {"id": row["id"], "kind": kind, "status": row["status"], "data": local_entity(row, zone)}
+            {
+                "id": row["id"],
+                "kind": kind,
+                "status": row["status"],
+                "data": local_entity(row, zone),
+            }
             for kind, values in kinds.items()
             for row in values
             if kind != "fact" or row["id"] not in self.seeder.profile_fact_ids

@@ -31,6 +31,7 @@ from .test_loop_cycle_support import cycle_repo as source_repo_fixture
 from .test_tarot_snapshot_lineage_pg import ready_read, step_result
 from .test_thread_inbox_pg import ingress, set_runtime, submit
 from .test_tool_tarot_pg import QUESTION, harness, select_request
+from .test_toolkit_pg import setup
 
 
 @pytest.fixture(name="tarot_env")
@@ -43,14 +44,19 @@ def register(h: Any, step: Any, result: Any) -> tuple[dict, list]:
     return verified_versions(h.service, h.run, step.name, result)
 
 
-def runtime_run(env: Any) -> tuple[Any, str]:
+def runtime_run(env: Any, *, delivery_target: str | None = None) -> tuple[Any, str]:
     original = harness(env)
     step, _, result = step_result(original)
     original.journal.complete(step, result.model_dump())
     draw_id = result.data["draw"]["id"]
     TarotService(original.repo).reveal("alice", draw_id)
     original.finish()
-    current = harness(env, "请用塔罗沿用已揭示的固定牌反思。我喜欢合成早班")
+    text = "请用塔罗沿用已揭示的固定牌反思。我喜欢合成早班"
+    if delivery_target:
+        current = setup(env[0], text, channel="feishu", external_id=delivery_target)
+        current.service.clock = env[1]
+    else:
+        current = harness(env, text)
     select_request(current, draw_id)
     return current, draw_id
 
@@ -249,8 +255,8 @@ def test_actual_core4_claims_publish_and_strict_backfill_restores_real_lineage(t
 
 
 def test_delete_clears_derived_reply_steps_and_mirrors_but_preserves_independent_user_fact(tarot_env: Any) -> None:
-    h, draw = runtime_run(tarot_env)
-    h.repo.bind_channel("alice", "hermes", "synthetic-local-tarot")
+    tarot_env[0].bind_channel("alice", "feishu", "ou_syntheticTarot")
+    h, draw = runtime_run(tarot_env, delivery_target="ou_syntheticTarot")
     port = ScriptedPort(
         [
             answer(
@@ -279,8 +285,8 @@ def test_delete_clears_derived_reply_steps_and_mirrors_but_preserves_independent
         owner="alice",
         run_id=h.run["id"],
         business_id="synthetic-tarot-delete",
-        channel="hermes",
-        target="synthetic-local-tarot",
+        channel="feishu",
+        target="ou_syntheticTarot",
     )
     original_ids = {row["id"] for row in h.repo.list("alice", "message") if row.get("role") == "user"}
     with h.repo.transaction("alice"):
