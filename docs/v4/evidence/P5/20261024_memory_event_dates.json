@@ -1,0 +1,71 @@
+{
+  "recorded_at": "2026-10-24T04:28:59.557393+08:00",
+  "timezone": "Asia/Shanghai",
+  "board_version": 3,
+  "branch": "v4/p5-memory2",
+  "scope": "P5 C2 source-backed legacy event date repair, knowledge gap and explicit undo; current context retrieval guard",
+  "validation": [
+    {
+      "suite": "event dates + existing archive + archive undo",
+      "passed": 47,
+      "seconds": 14.26,
+      "log": "private/p5-offline-tests/event_dates_related_20261024.log"
+    },
+    {
+      "suite": "new real L3 gap + context layers + memory context",
+      "passed": 12,
+      "seconds": 5.71,
+      "log": "private/p5-offline-tests/event_dates_context_20261024.log"
+    },
+    {
+      "suite": "new rollback/action binding guard + affected explicit undo checks",
+      "passed": 9,
+      "seconds": 4.44,
+      "log": "private/p5-offline-tests/event_dates_final_guards_20261024.log"
+    },
+    {
+      "suite": "final new file after explicit receive/retrieval frozen clock fixture change",
+      "passed": 29,
+      "seconds": 12.21,
+      "log": "private/p5-offline-tests/event_dates_clock_final_20261024.log"
+    }
+  ],
+  "counts_overlap": true,
+  "new_cases": 29,
+  "initial_attempts": [
+    {
+      "passed": 9,
+      "failed": 12,
+      "reason": "new test helper duplicate keyword overrides"
+    },
+    {
+      "passed": 15,
+      "failed": 6,
+      "reason": "new test helper created unused message before rollback measurement"
+    }
+  ],
+  "ruff": "E F I B UP SIM check and format passed; new files <=400 lines; functions <=60 lines",
+  "full_regression_rerun": false,
+  "required_37_rerun": false,
+  "latest_complete_required_37": {
+    "passed": 34,
+    "failed": 3,
+    "failed_ids": [
+      "M08",
+      "KU01",
+      "KU02"
+    ]
+  },
+  "external_provider_requests": 0,
+  "model_downloads": 0,
+  "application_server_access": false,
+  "ready": false,
+  "not_verified": [
+    "background scheduler trigger",
+    "authenticated transport wiring",
+    "human answer consumer",
+    "production integration",
+    "CI"
+  ],
+  "privacy": "Original snapshots stay in repository-native proposal cascade; mutation receipts contain only identifiers/revisions/status. Public evidence aggregate-only."
+}
