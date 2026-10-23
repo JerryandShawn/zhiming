@@ -39,6 +39,7 @@ def _source_digest() -> str:
     runtime_config = ROOT / "config/runtime.yaml"
     if runtime_config.is_file():
         candidates.append(runtime_config)
+    candidates += [path for path in (ROOT / "config/models.yaml", ROOT / "k3-tokenizer.lock.json") if path.is_file()]
     candidates += [
         path for path in (ROOT / "mingjing_core").rglob("*") if path.suffix in {".py", ".md", ".json", ".sql"}
     ]
@@ -68,6 +69,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--config", type=Path, default=EVAL_ROOT / "config.yaml")
     result.add_argument("--scenarios", type=Path, default=EVAL_ROOT / "scenarios")
     result.add_argument("--scenario", help="Comma-separated scenario IDs")
+    result.add_argument("--scripted-gate", type=Path, help="Same-candidate completed scripted gate for live/v4")
+    result.add_argument("--candidate", help="Exact clean candidate commit to record and verify")
     result.add_argument("--output", type=Path, default=ROOT / "docs/v4/eval")
     result.add_argument("--batch-size", type=int, choices=range(1, 11), default=10)
     result.add_argument("--validate", "--validate-only", action="store_true", dest="validate_only")
@@ -103,13 +106,23 @@ def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dic
         metadata.update(
             evaluation_scope="real local PG + scripted ports/codec mocks; no live quality claim",
             external_provider_requests=0,
-            u4_parser="declared substitute under Z6",
+            u4_parser="actual shared U4 parser; original message time and owner timezone",
         )
+        if mode == "live":
+            metadata.update(
+                evaluation_scope="production AgentRuntime + actual U4 + pinned local official K3 meter; synthetic PG",
+                judge_model=model,
+                judge_provider="locked ModelRegistry critic",
+            )
     return metadata
 
 
-def _target(name: str, model: str) -> Target:
+def _target(name: str, model: str, mode: str = "scripted") -> Target:
     if name == "v4":
+        if mode == "live":
+            from tools.eval.targets.v4_live import V4LiveTarget
+
+            return V4LiveTarget(model=model)
         from tools.eval.targets.v4_target import V4Target
 
         return V4Target()
@@ -136,6 +149,7 @@ def _fingerprint(scenario: Scenario, metadata: dict[str, Any]) -> str:
         "config_sha256",
         "source_sha256",
         "provider_endpoint_sha256",
+        "candidate_commit",
     )
     fixed = {key: metadata.get(key) for key in keys}
     payload = {"scenario": scenario.model_dump(mode="json"), "metadata": fixed}
@@ -163,6 +177,7 @@ def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[s
             "config_sha256",
             "source_sha256",
             "provider_endpoint_sha256",
+            "candidate_commit",
         )
         if all(data["metadata"].get(key) == metadata.get(key) for key in keys):
             return data
@@ -189,11 +204,16 @@ def _observe_case(
     fingerprint = _fingerprint(scenario, metadata)
     cached = previous.get(scenario.id)
     reused = bool(cached and cached.get("fingerprint") == fingerprint)
+    tracker = getattr(getattr(judge, "provider", None), "tracker", None)
+    judge_before = tracker.external_calls if tracker is not None else 0
     case = (
         deepcopy(cached) if reused else evaluate_scenario(scenario, target, target_name=metadata["target"], judge=judge)
     )
     if not reused and metadata["target"] == "v4":
         case["v4_evidence"] = target.case_evidence()
+        case["v4_evidence"]["judge_external_provider_requests"] = (
+            tracker.external_calls - judge_before if tracker is not None else 0
+        )
     case["fingerprint"] = fingerprint
     return case, reused
 
@@ -210,13 +230,20 @@ def _run(
     model: str,
 ) -> int:
     metadata = _metadata(config, args.mode, args.target, model)
+    metadata.update(getattr(args, "candidate_provenance", {}))
     prior_report = _resume_report(args, metadata)
     previous = _reusable_cases(prior_report)
     report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
     metadata["planned_scenario_ids"] = [scenario.id for scenario in scenarios]
     scenario_map = {scenario.id: scenario for scenario in scenarios}
-    judge = ModelJudge(config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"]) if args.mode == "live" else None
-    target = _target(args.target, model)
+    judge = None
+    if args.mode == "live" and args.target == "v4":
+        from tools.eval.targets.v4_live_judge import V4LiveJudge
+
+        judge = V4LiveJudge(model, EVAL_ROOT / config["judge"]["rubric"])
+    elif args.mode == "live":
+        judge = ModelJudge(config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"])
+    target = _target(args.target, model, args.mode)
     for scenario in scenarios:
         cached = previous.get(scenario.id)
         if cached and cached.get("fingerprint") == _fingerprint(scenario, metadata):
@@ -238,6 +265,18 @@ def _run(
 
 
 def _publish_contract_report(report: dict[str, Any], output: Path, scenarios: dict[str, Scenario]) -> None:
+    if report["metadata"].get("mode") == "live" and report["metadata"].get("target") == "v4":
+        from tools.eval.live import update_live_metadata
+
+        update_live_metadata(report["metadata"])
+        report["metadata"].update(
+            physical_requests=sum(case.get("model_calls", 0) for case in report["cases"]),
+            external_provider_requests=sum(
+                case.get("v4_evidence", {}).get("external_provider_requests", 0)
+                + case.get("v4_evidence", {}).get("judge_external_provider_requests", 0)
+                for case in report["cases"]
+            ),
+        )
     stamp_contracts(report, scenarios)
     _publish(report, output)
 
@@ -269,8 +308,8 @@ def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[st
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     args.target = args.target or ("v3" if args.mode == "live" else "fake")
-    if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3"), ("scripted", "v4")}:
-        raise SystemExit("Supported modes: scripted/fake, scripted/v4 and live/v3")
+    if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3"), ("scripted", "v4"), ("live", "v4")}:
+        raise SystemExit("Supported modes: scripted/fake, scripted/v4, live/v3 and gated live/v4")
     if args.target == "v4" and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve():
         args.scenarios = EVAL_ROOT / "scenarios_v4"
     scenarios = load_scenarios(args.scenarios)
@@ -281,6 +320,13 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Validated {len(scenarios)}/{len(scenarios)} scenarios")
     if args.validate_only:
         return 0
+    if args.candidate:
+        from tools.eval.live import candidate_provenance
+
+        private_output = (ROOT / "private/candidate-eval" / args.candidate).resolve()
+        if not args.output.resolve().is_relative_to(private_output):
+            raise SystemExit("Candidate reports require private/candidate-eval/<candidate> output")
+        args.candidate_provenance = candidate_provenance(ROOT, args.candidate)
     if args.scenario:
         requested = set(args.scenario.split(","))
         scenarios = [scenario for scenario in scenarios if scenario.id in requested]
@@ -312,7 +358,13 @@ def _run_models(args: argparse.Namespace, scenarios: list[Scenario], config: dic
         model = config["models"].get(name, name)
         if name in {"kimi", "kimi-main"}:
             model = os.getenv("KIMI_MODEL", model)
-        result = _run(args, scenarios, config, model)
+        if getattr(args, "mode", None) == "live" and getattr(args, "target", None) == "v4":
+            from tools.eval.live import live_session
+
+            with live_session(args, [scenario.id for scenario in scenarios]):
+                result = _run(args, scenarios, config, model)
+        else:
+            result = _run(args, scenarios, config, model)
         status = max(status, result)
         if result == 2:
             break
