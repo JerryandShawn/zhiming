@@ -10,9 +10,23 @@
 
 ## Purpose / Big Picture
 
-本计划已从M1显式本机备份扩展到M2同call新库原始内容绑定、M3a目标证明/运行时/源双栅栏组合与前向升级，以及M3b源原生重放/回填接缝，逐片实现范围见Progress。默认只读文件校验，零PG连接、零子进程、零文件写。backup入口自身不迁移源；另显式Forward内部API的原首8已真实验证合成源4/7→8，尚无源写CLI。源worker重放组件有独立实证，同call接线和回填未完成；Linux、中央身份、正式恢复与发布继续关闭。
+本计划已从M1显式本机备份扩展到M2同call新库原始内容绑定、M3a目标证明/运行时/源双栅栏组合与前向升级，以及M3b源原生重放/回填接缝，逐片实现范围见Progress。默认只读文件校验，零PG连接、零子进程、零文件写。backup入口自身不迁移源；另显式Forward内部API的原首8已真实验证合成源4/7→8，尚无源写CLI。源worker重放组件及同call组合已有分轮真实实证，源回填接线仍静态待验；Linux、中央身份、正式恢复与发布继续关闭。
 
 ## Progress
+
+- [x] (2026-10-24 06:05 +08:00) UTC新夹具规范化后仅原源replay红节点复验1/1通过、642.87秒。实测seed UTC、13项固定观察bool全true；此前未触达的fresh export/full state/中央空表与sequence、材料及正式关闭位均通过。两行为分轮成立：首1红1绿、仅红复验1绿，未重跑默认绿、不合称一次2/2；原红的具体False项仍未记录，不能补造唯一根因。
+
+- [x] (2026-10-24 05:55 +08:00) 来源5a34b2c的push CI run40022517297已成功；9be44b9的run40027420077仍在途，未移用父结果。正式集成保持9f2506f，本轮源组合fixture规范化后仅原红复验在途，新backfill三模块/整链测试仅静态WIP，未合入正式分支。
+
+- [ ] (2026-10-24 05:48 +08:00) 新同call源replay两节点首链1失败/1通过、868.26秒。真实组合已返回source_replay_completed并通过活PID/状态与旧fact/run/Outbox/SDK/Bob前序独立断言；随后fresh业务观察的all布尔断言失败，原异常未指出具体键，export/最后全态/中央后置断言尚未执行，不能认定组合验收。默认及错pin零副作用节点通过，不重复它；只做新夹具的时区/有限布尔诊断，不改生产或弱化断言。
+
+- [ ] (2026-10-24 05:46 +08:00) 独立回填pin/process/worker三新文件已静态冻结（110/249/290行，函数≤60、120列，Ruff/format/AST过），根完整审阅其候选来源/逐owner事务/终态活连接接缝。尚未接Forward、未运行组件或整链，不提交成已验功能；两条新必要整链测试先静态准备，原源replay在途控件不改。
+
+- [x] (2026-10-24 05:38 +08:00) 回填剩余两个必要core4/撤销后组件首次2/2通过、5.23秒：真实AgentRuntime产core4缺助手历史回填，及原生撤销/提交后SDK purge后再回填均有实证；只新增200行测试，未改业务/effects。fresh-process/活witness整链与legacy映射回填仍待完成。
+
+- [x] (2026-10-24 05:33 +08:00) 已验证组件按四个小提交推送9be44b9，后续接线另开v4/p3-wire-source-chain-20261024。正式d40的push CI run40018141727/job120635838635已成功：v4 4238通过/56跳过，ModelPort970通过；此前PR合成a1e1bba的额外会话失败仍保留，非同一checkout，不据后续绿倒推根因。X08来源7996c0b的独立CI成功后普通合入正式v4/integration并推9f2506f，新merge检查待跑；未合main/v4main。
+
+- [x] (2026-10-24 06:05 +08:00) 按05:09设计完成Forward最小可选source_replay_pin接线及分轮新组合验证；首I/O前独立pin、原活witness内真实worker重放成立，回填及正式门不扩大。
 
 - [x] (2026-10-24 05:26 +08:00) M1会话拒绝改附同次有界PID/type诊断后，只复验CI失败prefix4目标与真实额外会话负例，2/2通过、28.60秒；负例实证伪装pg_dump的真实客户端在原失败集合。Linux失败根因仍未知，新CI未验证，不放宽门或自动重试。
 
@@ -49,6 +63,14 @@
 
 ## Surprises & Discoveries
 
+05:52只读事实：隔离PG15控制库127.0.0.1:55480/core_test_main的SHOW TimeZone为Asia/Taipei，pg_settings来源configuration file、reset值相同，无相关控制角色/DB/template0覆盖。create_source新LOGIN/NOINHERIT角色及template0库不设TZ，原native_seed直用无options DSN；故其seed域继承Taipei，新观察强制UTC确有比较域不一致。此前红未记录False键，仍不能认作唯一根因。只读核实1连接/0写、不建源、不读取或输出口令/DSN。
+
+源组合新测试的native观察强制UTC，但共用seed脚本的walk_sha256是种子会话to_jsonb整行hash，种子会话没有固定TimeZone，且角色Tokyo设置发生其后。若PG默认时区非UTC，时间戳串可能不同；目前仅为源码定位的待核假设，尚未测定默认值，不能把综合布尔红预先归因时区。需安全固定键布尔诊断和必要失败节点验证；旧9be源码及原红保留。
+
+新core4组件的SDK必须随测试repo全部连接显式定位同一随机schema/public，否则手工造在另一个schema的checkpoint不能证明原生purge。此处不patch Saver或LangGraphRuntime，用真实DSN search_path一致；旧2/2组件不重复。
+
+正式同一d40的push检查与PR合成checkout结果不同：push为4238/56绿，PR合成a1e1bba为4237/56加1会话拒绝。必须分别按实际checkout保留，不能把后来成功当作此前额外会话的原因或删除新诊断。
+
 原错误码不足以区分已退出的自有客户端、维护backend或其他连接；故诊断取原实际SELECT pid/backend_type的结果，最多32项并保实际总数/截断标记，绝不把事后集合当原集合。新增字段不改变拒绝条件，也不把任一backend类型列为允许。capture-binding的新fixture改用该原集合，不再额外事后查询；原历史after_rejection_current记录保留历史含义。
 
 源补链控制异常目标的实际同对象传播已通过，失败在新观察器只捕获InterfaceError而漏记SDK错误。根直接读取实际K3 psycopg/_connection_base.py:534–542：closed/BAD明确抛OperationalError，其他非OK状态才InterfaceError。故只修新fixture三处类型，不改生产/SDK、不把类型放宽成任意异常；原2绿不重复。回填observer的原始私有行亦按完整JSON/C顺序读取，消除未声明heap顺序依赖而不排字段。
@@ -84,6 +106,18 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+2026-10-24 06:05 +08:00：原红复验绿后冻结源replay接线与292行专属测试待提交；不把UTC输入规范化后的13项全true写成原红唯一False已知。新backfill三模块与318行整链测试仍未接线/测试，本次不与已验片一同提交；后续必须另接并跑真实组合。
+
+2026-10-24 05:53 +08:00：仅批准新chain fixture的实际原生seed/correct/blob使用明确UTC DSN proxy，原source环境不改、之后captured的Tokyo角色变化保留；先以同DSN真实SHOW核UTC。原完整walk hash、隐私与保留不变量不降，原NATIVE及旧测试不改。新综合观察仅加固定bool诊断，随后只复验原红；默认已绿不重复，不改生产/时限。新backfill整链复用这一唯一规范化新fixture而不再复制无TZ旧种子；尚未接线/测试。
+
+2026-10-24 05:51 +08:00：组合首链红后先只读核实际合成PG默认TimeZone及seed/观察域，不重跑绿节点、不动生产。允许后续新测试加入固定键bool诊断/JUnit，不能记录原话/ID/DSN或删掉walk完整行不变等断言；具体修正须待事实依据，未授权盲重试。
+
+2026-10-24 05:46 +08:00：回填新worker仅用当前owner外层repo.transaction，effects同owner嵌套复用该原连接/事务；COMMIT返回后才owner_verified，失败保owner_started和前序已提交状态。effects/expected必须同candidate manifest且SHA等于审核控制pin，缺候选helper拒绝；不从控制树补业务。三文件仅静态，不以审阅代替真实PG/进程验证。
+
+2026-10-24 05:38 +08:00：回填core4/撤销后仅新增两行为专属测试，原生结构结果来自ThreadIngress/AgentRuntime/ScriptedPort，缺助手历史只精确删除其实际native消息作合成gap。撤销先实际retire_fact再原export/apply，privacy提交后purge不外套事务，随后才回填；全部业务结果及原SDK保持真实，不为新测试改生产。
+
+2026-10-24 05:34 +08:00：已验证9be44b9推送后另开接线子分支，保父CI运行；Forward仅增加精确可选pin的首I/O前校验和活witness作用域内调用。旧None默认不导入新进程模块，回填及正式发布位仍false。两个新组合行为由独立新测试承载，旧8/4/2绿不重复。
 
 2026-10-24 05:26 +08:00：M1原函数只扩实际同一次查询列并附error.session_diagnostic，不含query/appname/DSN/正文，str固定码及精确PID集合保持。两个测试模块仅在拒绝时打印该有限字段；打印普通失败仍抛原拒绝，进程控制不吞。M1pg437行、原共享测试472行局部延续既有400软目标例外（均<600，函数56/47），不为少量诊断另拆会影响旧pin/import的helper；capture测试300行/函数60。CI YAML已解析且仅timeout改90，无测试步骤移除。
 
@@ -251,6 +285,16 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 ## Artifacts and Notes
 
+### M3b回填进程接线下一片（2026-10-24 05:35 +08:00，实施前设计）
+
+源replay组合链在途时，其全部既有控件冻结。后续回填不把成功dict当作写权：增加独立SourceBackfillPin，完整绑定原ForwardInputs、原SourceReplayPin摘要、候选/manifest/三锁/最新旁账/Python及新旧实际控制文件。仅显式传该pin且同时有有效replay pin时，execute才可在首I/O前校验；默认None保持旧行为。真正调用必须仍在原creator、源file/PG锁与同一活SourceWitness内，且真实phase已source_replay_completed。源privacy与提交后purge不包进回填事务，不允许另一次调用接管prefix8。
+
+新source_backfill_process/worker作为独立小片复用已冻结的源协议纯读写/清理、实际peer代际/state查询、受pin source_worker的候选导入/运行时/物理lease基础；不改在途旧worker。新worker严格独立形状/本机身份及控制hash，纯stdlib启动后才导入真实候选MemoryService、mingjing_core.memory.backfill.backfill、tokenized_payload/fingerprint及effects组件。所有被调用函数和已加载业务模块均从同一不可变候选manifest核验；不能拿控制树MemoryService或成功dict替代实际业务调用。若候选自身尚无effects helper则明确拒绝，不借未绑定文件补齐。
+
+父子ready_ro→write_ack前核同一实际PID/generation/单物理连接、完整初态和活栅栏；回填首写前再次核ready初态。对原source owners全集按确定顺序逐owner调用已验证verify_backfill_effects，每个owner用原生owner事务、preview不写、首遍逐值/operation/revision/generated search精确核、second三个写计数0且全态不变；前一个owner已提交而后续失败时保留现场，不能声称全库回滚。只传固定phase、有限计数和摘要，owner/样本ID仅hash。最终父在child仍活时核完整状态，再ACK关闭；清理和控制异常保持原优先级。
+
+源码拆分以400行/函数60为目标，不引入通用外部callback赋权或新CLI。先审两个core4/撤销后回填组件行为，再审完整候选worker和同call接线；只跑新增必要目标，原组件/源组合已绿项不反复跑。此段仅后续实施前设计，新pin/worker/接线均未实施或验证，所有正式位与Linux、中央身份、切换门仍关闭。
+
 ### M3b同call接线下一步（2026-10-24 05:09 +08:00，设计待实施）
 
 两条在途链全部停止并由根审阅后，才允许窄改Forward接线。拟execute(request,*,apply_source=False,source_replay_pin=None)：非None时必须精确SourceReplayPin并在任何连接/进程之前完成其独立绑定校验；默认不传保持原接口/回执和零副作用，传pin而未apply仍只校文件。不要引入任意callback或允许外部构造SourceWitness。
@@ -272,6 +316,12 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 显式FIRST_INCREMENTAL_OWNER_DSN/WRITER_DSN只允许本机55480/55481和本次fr_upgrade库、精确角色；FIRST_INCREMENTAL_ADMIN_DSN限同一服务器的postgres/core_test_main控制库；所有PG隐式环境拒绝。子进程有限环境，密码只在内存，不进入argv/回执/日志；只调用已pin真实PG15 pg_dump与Python3.11 venv。源状态摘要不是原始恢复内容核验，backup_captured也不构成升级/恢复/native/Linux/供应链/发布授权。
 
 ## Outcomes & Retrospective
+
+原源replay失败节点的唯一复验为`private/safe-narrow-753e531394c541199b423beeac76e2e7/metadata.json`及同目录pytest.xml，2026-10-24 05:54:51–06:05:35 +08:00，1 passed in642.87s；同9be44b9实际候选、原20行生产接线不变。JUnit实测fixture_seed_timezone=UTC、13项固定观察bool全true，含保留fact完整行hash、原话/上下文/FTS/embedding；末段真实同候选原生export、完整源state、中央四空表/sequence、维护材料及正式关闭位全部通过，SDK三表1/1/1→0/0/0。新fixture292行/最长42，原NATIVE/旧测试/生产/超时未改；清凭据/关追踪/TZ Tokyo、真实模型/stage生产/外发0。原e2首1红1绿与本1绿分轮保留；只证明本机prefix7非空源组合和原默认拒绝行为，源回填、Linux、正式CLI/中央身份/切换仍未完成。
+
+新组合首链唯一证据为`private/safe-narrow-e2a970f563034375bddded36fe0a934a/metadata.json`及同目录pytest.xml，2026-10-24 05:34:13–05:48:42 +08:00，1 failed/1 passed in868.26s，实际候选9be44b9376004e27d42e048fad8d2af73e9f5dd8。失败节点719.355秒，在真实scope/proof/runtime/Forward/replay返回并核过ready/final实际同PID代际、独立旧fact擦除、run/Outbox/SDK、纠正事实完整行及Bob全owner表后，fresh观察all布尔红；尚无具体False项证据，后续原生export/全态/中央独立断言未到达。默认有效pin零IO及错type/候选前置拒148.281秒通过。清凭据/关追踪/TZ Tokyo、真实模型/stage生产/外发0；不称完整组合通过，原生结果摘要不是可重用权限。
+
+回填core4与撤销后组件唯一首链为`private/safe-narrow-cc6b12e50a91424dbe9da16c3ffa4abd/metadata.json`及同目录pytest.xml，2026-10-24 05:37:57–05:38:03 +08:00，2 passed/1既有AnyIO弃用warning in5.23s。真实core4采用唯一实际fact，精确缺助手gap经首遍完整payload/稳定ID/血缘/operation/owner增量核验重建1条，run未改、second三个写计数0。另一节点实际run:e0三SDK表1/1/1在retire后仍保留、原生apply提交后purge归0/0/0，正文/FTS/助手/运行输出清空；第二apply全态不变，再backfill创建0且全态/旁账不变。测试200行/最长33、静态通过，清凭据/关追踪/TZ Tokyo，真实模型/stage生产/外发0；仅当前业务组件，fresh candidate/source admission/legacy映射回填与Linux仍未覆盖。
 
 会话诊断唯一窄复验为`private/safe-narrow-7eee62eabceb437babf3b069e98a1c52/metadata.json`，2026-10-24 05:22:55–05:23:24 +08:00，2 passed in28.60s。原CI失败prefix4实际capture/restore比较通过；另真实额外连接负例确认原gate PID/type集合包含它、仍拒绝、源全态不变且无维护标记。TZ Tokyo、稀疏凭据/关追踪、真实模型/stage生产/外发0，未重跑大套件。它证明新诊断和本机必要路径，不揭示此前CI那次额外PID，也不证明新Linux CI通过；旧失败仍保留，No-Go不变。
 
@@ -304,6 +354,22 @@ controller运行时独立组件的四个实际进程/依赖/已加载模块行�
 M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/213行；新PG测试250行、最长函数55行以内。Ruff E/F/I/B/UP/SIM及120列format通过。真实PG定向6+2已验证上述基础行为；中性grant原语尚未被新入口调用，PostgresSaver checkpoint阶段、完整源状态/运行时门、typed单次证明、源编排及M3b源隐私重放/回填都仍未完成，所有正式门保持false，不给生产/既有prefix8或额外关系开口。
 
 ## 修订记录
+
+- 2026-10-24 06:05 +08:00：记录唯一原红复验1绿与13固定bool、最终独立观察完整通过，更新当前源replay组合状态；保留原红/不同轮次与正式No-Go，静态回填WIP不冒已验功能。
+
+- 2026-10-24 05:55 +08:00：记录父来源5a CI成功与新9be仍在途的各自身份，不把父绿或真实阶段已返回充当尚未通过的新组合/发布门。
+
+- 2026-10-24 05:53 +08:00：补实际PG默认Taipei的只读证据与仅新fixture规范UTC授权，禁止把待复验假设写成已修根因；下一仅原红，不重跑绿项。
+
+- 2026-10-24 05:51 +08:00：保留源组合首链1红/1绿、已触达与未执行断言边界，记录时区假设仅待核及允许的有限测试诊断；禁止拿部分成功充组合验收。
+
+- 2026-10-24 05:46 +08:00：记回填三新文件静态及根审范围、逐owner实际commit口径和测试未开始；原Forward/source worker在途绑定不变。
+
+- 2026-10-24 05:38 +08:00：记录新增两节点真实core4/撤销后回填首次2/2，明确SDK实际schema定位、无原生替身和未覆盖范围；不与旧两组件合成同次4/4。
+
+- 2026-10-24 05:35 +08:00：先写独立回填pin/fresh worker与同call后续接线设计，保当前两节点源组合控件冻结；明确多owner非原子提交、候选代码来源和父活连接终态，尚未实施。
+
+- 2026-10-24 05:34 +08:00：记录9be分片推送、d40 push与PR合成CI真实差异、799源绿后普通集成9f2506f，以及下一可选pin接线的实际未验证状态。
 
 - 2026-10-24 05:30 +08:00：记录唯一原红复验1/1及真实SDK/中断断言，冻结当前已验证组件供小提交；更正当前态的旧待实施文字，历史失败与未来组合/Linux门保留。
 

@@ -1,4 +1,4 @@
-"""Explicit synthetic-source forward stages; source privacy replay/backfill and release remain closed."""
+"""Explicit synthetic-source forward stages, with separately pinned replay; release remains closed."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import re
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import psycopg
 from psycopg.rows import dict_row
@@ -27,6 +27,9 @@ from tools.first_release_local_restore import _proved_target
 from tools.first_release_migration_steps import forward_core, grant_new_runtime, load_bundle
 from tools.first_release_source_postcheck import owner_state, writer_state
 from tools.first_release_target_proof import TargetProofPin
+
+if TYPE_CHECKING:
+    from tools.first_release_source_process import SourceReplayPin
 
 ROOT = Path(__file__).parent.parent
 CONTROLS = frozenset(
@@ -226,7 +229,7 @@ def _grant(scope: Any) -> None:
     scope.phase = "grant_committed"
 
 
-def _apply(scope: Any) -> dict[str, Any]:
+def _apply(scope: Any, *, source_replay_pin: SourceReplayPin | None = None) -> dict[str, Any]:
     from langgraph.checkpoint.postgres import PostgresSaver
 
     request = scope.request
@@ -250,6 +253,11 @@ def _apply(scope: Any) -> dict[str, Any]:
                         scope_tools._active(witness, "source_forward_completed").target_summary
                     )
                     result["controller_runtime"] = runtime_summary(runtime)
+                    if source_replay_pin is not None:
+                        from tools.first_release_source_process import source_replay
+
+                        result["source_replay"] = source_replay(witness, source_replay_pin)
+                        result["privacy_replay_pending"] = False
             except BaseException as error:
                 failure = scope_tools._prefer_failure(failure, error)
     except BaseException as error:
@@ -286,9 +294,16 @@ def _receipt(request: ForwardInputs) -> dict[str, Any]:
     }
 
 
-def execute(request: ForwardInputs, *, apply_source: bool = False) -> dict[str, Any]:
+def execute(
+    request: ForwardInputs, *, apply_source: bool = False, source_replay_pin: SourceReplayPin | None = None
+) -> dict[str, Any]:
     require(type(request) is ForwardInputs and type(apply_source) is bool, "SOURCE_FORWARD_TYPED_REQUEST")
     baseline = request.validate()
+    if source_replay_pin is not None:
+        from tools.first_release_source_process import SourceReplayPin
+
+        require(type(source_replay_pin) is SourceReplayPin, "SOURCE_REPLAY_TYPED_PIN")
+        source_replay_pin.validate(request)
     receipt = _receipt(request)
     if not apply_source:
         return receipt
@@ -298,7 +313,7 @@ def execute(request: ForwardInputs, *, apply_source: bool = False) -> dict[str, 
     try:
         with scope_tools._held_forward(request, baseline) as scope:
             try:
-                result = _apply(scope)
+                result = _apply(scope, source_replay_pin=source_replay_pin)
             except BaseException as error:
                 failure = scope_tools._prefer_failure(failure, error)
     except BaseException as error:

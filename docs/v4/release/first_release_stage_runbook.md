@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 05:27，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 已核工具基线为`5a34b2c`，本次新增Forward、源重放及回填组件的分轮进度统一见原增量ExecPlan；最终首发候选尚未冻结，工具提交号不是已验收的发布包，也不代表CI或Linux通过。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；本机组件仅用于隔离演练，源重放与回填尚未接成完整同call链。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 06:05，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 已推工具基线为`9be44b9`；后续可选源replay接线的首链1红/1绿、仅原红的规范时区复验，以及新增core4/撤销后回填2/2均统一见原增量ExecPlan，不在此复制报告。最终首发候选尚未冻结，工具提交号不是已验收的发布包，也不代表CI或Linux通过。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；新源回填pin/worker及整链测试仅静态WIP，未接成完整源闭环。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -22,7 +22,7 @@
 | --- | --- | --- |
 | 候选身份 | 最终候选、manifest、artifact及外部审核pin待冻结 | 同一候选的明确审核、来源与必要评测；不能手填admissible |
 | 实际Linux运行时 | 现有Windows PG定向证据只证明相应逻辑；Linux Core/Charts/K3未整体验证 | Python3.11双环境、锁依赖/导入来源、真实文件权限、官方K3本地小文件及网络隔离 |
-| 增量与恢复 | 正式入口仍仅validate/可选只读ACL；本机Forward已验证4/7同call组合，源重放及回填各有独立组件实证，完整源隐私/回填接线与正式恢复仍缺失 | 同源证明、源状态/运行时/停写门与原生重放/回填接成实际增量链，再补Linux及中央身份保全 |
+| 增量与恢复 | 正式入口仍仅validate/可选只读ACL；本机Forward4/7和prefix7同call源隐私重放已分轮验证，回填组件有独立实证，源回填接线与正式恢复仍缺失 | 同源证明、源状态/运行时/停写门与原生重放/回填接成实际增量链，再补Linux及中央身份保全 |
 | 停写与切换 | 最终Web/飞书/报告+timer、Hermes wrapper及维护/锁尚未联合演练 | 实际Linux跨exec writer栅栏、部分失败保持关门、所有入口同源 |
 | 当前环境及授权 | 未做新的服务器盘点；容量、旧schema/服务状态不能沿用历史值 | 用户新的stage授权，明确新对象/窗口；获准后只读B0复核一致 |
 
@@ -160,11 +160,11 @@ cd "$FR_CONTROL_DIR"
 | same-call TargetProof | 八个独立行为按4+3+1分轮通过，另旧public M2 prefix7兼容1；同次新目标真实原始内容绑定→8→候选双重放后，核创建时OID、最终ACL/完整状态，creator锁内mint并单次消费，消费失败也耗尽token | 不透明对象不能由JSON重建；正常目标链16连接。仅可在下述实际Forward组合内消费，不单独赋予源写权；正式恢复仍未完成，先前session setup拒绝来源仍未知 |
 | Source guard | 12个独立行为分轮验证（纯文件1、真实PG夹具11）；真实Windows独占锁内改用同一持锁句柄读fence，保持默认锁行为及精确文件身份/hash、实际源OID/权限/会话/完整UTC状态核验 | 只读scope仍要求源capture不变，不返回写连接或升级许可；现应用未接合作栅栏，不能证明全局停写或Linux跨exec行为 |
 | Source postcheck | 七个独立行为按6+1分轮通过，验证真实4/7测试夹具前向8后的原字段/列、完整迁移账本及owner/writer精确终态；两个正例均实际调用SDK setup，版本10→10、新增0 | 不是源升级入口，尚未覆盖存在待应用SDK迁移的升级；不因新增版本0声称setup未执行或零SQL，不自动修复异常状态 |
-| SourceForward内部API | 真实4/7同call目标证明、controller核验、源双栅栏与Core/SDK/grant组合已有实证；保维护标记，未知提交停止不重入，额外故障的分轮结果见原计划 | 无源写CLI；原生源重放/回填尚未接成同call整体，应用全局停写与正式门仍未证明 |
-| 源重放worker组件 | 真实候选非空双重放、独立擦除/第二遍全态不变、同一活物理lease及父实际终态ACK已有实证；无ACK不写、前后持久漂移均拒绝 | 组件测试未构造或伪造SourceWitness，不代表已与Forward接线；初始连接失败/控制故障注入与Linux未覆盖 |
-| 回填effects组件 | 真实core3旧轮的preview无写、四metadata/generated search及新助手/operation/owner增量逐项对账，second无写和实际后半异常全事务回滚已有实证 | 尚未接候选fresh worker/源许可；core4、legacy及撤销后回填仍待验证，成功dict不赋权 |
+| SourceForward内部API | 真实4/7同call目标证明、controller核验、源双栅栏与Core/SDK/grant组合已有实证；另可选独立pin已接prefix7实际源隐私双重放，保维护标记，未知提交停止不重入 | 无源写CLI；源回填尚未接成整体，应用全局停写与正式门仍未证明 |
+| 源重放worker及接线 | 独立组件4/4；新同call组合保留首1红1绿及规范UTC后仅原红1绿，真实SourceWitness内完成双重放、活lease/父终态ACK和末段独立业务/状态/导出核验 | 分轮证据见原计划，不称一次2/2；初始连接失败/控制故障注入与Linux未覆盖 |
+| 回填effects组件 | core3精确逐值/第二遍无写与异常整事务回滚2/2；core4历史缺口及原生撤销重放后不复活另2/2，均为真实PG组件 | 新候选fresh worker/源许可接线仅静态WIP，未测试；legacy映射回填待验，成功dict不赋权 |
 
-当前CLI仍没有既有源库forward、源库原生撤销/收据重放或回填入口；上文只针对同call新`fr_restore`目标的双重放接口保持原范围。Forward内部组合与两个后续effects组件分别有本机实证，尚未组成完整源隐私/回填链。源隐私重放须先于回填，不能跳过。`source_write_authorized`、全局停写、正式native/runtime/Linux、中央身份保全和publication继续关闭；typed凭据、Windows PG结果及组件测试均不构成stage或生产授权。
+当前CLI仍没有既有源库forward、源库原生撤销/收据重放或回填入口；上文针对同call新`fr_restore`目标的双重放接口保持原范围。Forward内部已有prefix7源隐私组合实证，源回填仍待接线/验证，尚未组成完整源闭环。源隐私重放须先于回填，不能跳过。`source_write_authorized`、全局停写、正式native/runtime/Linux、中央身份保全和publication继续关闭；typed凭据、Windows PG结果及组件测试均不构成stage或生产授权。
 
 | 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
 | --- | --- | --- | --- | --- |
