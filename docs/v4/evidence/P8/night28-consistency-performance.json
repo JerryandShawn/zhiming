@@ -1,0 +1,105 @@
+{
+  "version": "p8-consistency-performance-v1",
+  "observed_at_beijing": "2026-10-21T00:13:24+08:00",
+  "method": "public API, in-process Core only; 1 warmup then 10 sequential perf_counter observations per system, full verified_input included; answer is synthetic mixed affirmed/contradictory/needs-review, no text logs",
+  "model_calls": 0,
+  "server_calls": 0,
+  "limitations": [
+    "warm process only; no interpreter startup, API transport, auth/revocation database or mainline review included",
+    "not a production SLA or natural-language recall/accuracy evaluation"
+  ],
+  "source_sha256": {
+    "mingjing_core/skills/consistency.py": "aff8bf1d192fa10b6b0a020a64096d950a6092f105f0754e5fe774e95ff193e0",
+    "mingjing_core/skills/consistency_eval.py": "c57a07dec126be15d0ea2a8377731f6e8ab019b3f6a7f54a76e400befbb4d5af",
+    "mingjing_core/skills/consistency_facts.py": "41f2ea620e45ecea81cd3c1716939f08b16d206128e7c8a7aea2c4715db9d2af",
+    "mingjing_core/skills/consistency_text.py": "4d9c18df6b2c16b35c81896686f8880420550f9e9436dc53a53f89d35b516b1f",
+    "mingjing_core/skills/learning_input.py": "e8bd303ba8d0663584f2c3884b14af174d11f208bf209b5ff50d862529ac3a00",
+    "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe"
+  },
+  "systems": {
+    "bazi": {
+      "input_sample": "docs/v4/contracts/samples/ayuan_bazi.json",
+      "input_lf_sha256": "8f8e8dafb6ee9ad4cfd9fc6042b10def0f1ed660a7c91f6b440964c020bbb28a",
+      "answer_length": 32,
+      "warmup": 1,
+      "observations": 10,
+      "milliseconds": [
+        20.45520000046963,
+        20.550299999740673,
+        19.797800000560528,
+        19.94479999939358,
+        20.067999999810127,
+        19.941900000048918,
+        20.015899999634712,
+        20.293699999456294,
+        21.137200000339362,
+        19.944399999985762
+      ],
+      "median_ms": 20.04194999972242,
+      "min_ms": 19.797800000560528,
+      "max_ms": 21.137200000339362,
+      "status": "inconsistent",
+      "coverage": {
+        "checked": 3,
+        "deferred": 1,
+        "not_checked": 0
+      }
+    },
+    "ziwei": {
+      "input_sample": "docs/v4/contracts/samples/ayuan_ziwei.json",
+      "input_lf_sha256": "125de08efaa75586ded08ef0feb8f25dc9f8a7c09653af5d9658154cdcaa3bc2",
+      "answer_length": 37,
+      "warmup": 1,
+      "observations": 10,
+      "milliseconds": [
+        15.52200000060111,
+        15.310100000533566,
+        15.450699999746575,
+        15.446399999746063,
+        15.769399999953748,
+        15.382699999463512,
+        15.293899999960558,
+        15.516399999796704,
+        15.424999999595457,
+        15.531399999417772
+      ],
+      "median_ms": 15.44854999974632,
+      "min_ms": 15.293899999960558,
+      "max_ms": 15.769399999953748,
+      "status": "inconsistent",
+      "coverage": {
+        "checked": 3,
+        "deferred": 1,
+        "not_checked": 0
+      }
+    },
+    "astro": {
+      "input_sample": "docs/v4/contracts/samples/ayuan_astro.json",
+      "input_lf_sha256": "fc8f39223f0a1532921c97666bfc4eb81550f732afac7b61d8fce7143c2cabf7",
+      "answer_length": 31,
+      "warmup": 1,
+      "observations": 10,
+      "milliseconds": [
+        15.553899999758869,
+        15.413600000101724,
+        15.499500000260014,
+        15.38440000058472,
+        15.216899999359157,
+        15.820499999790627,
+        15.777999999954773,
+        15.8449999998993,
+        15.508500000578351,
+        16.399999999521242
+      ],
+      "median_ms": 15.53120000016861,
+      "min_ms": 15.216899999359157,
+      "max_ms": 16.399999999521242,
+      "status": "inconsistent",
+      "coverage": {
+        "checked": 2,
+        "deferred": 1,
+        "not_checked": 0
+      }
+    }
+  }
+}

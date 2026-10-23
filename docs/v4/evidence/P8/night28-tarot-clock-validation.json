@@ -1,0 +1,29 @@
+{
+  "version": "p8-tarot-clock-review-validation-v1",
+  "recorded_at_beijing": "2026-10-21T07:50:08.795114+08:00",
+  "tests": {
+    "tests": 143,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "elapsed_seconds": 0.34,
+  "command": "Core python private/p8-validation/run_tarot_clock_review.py",
+  "source_lf_sha256": {
+    "mingjing_core/adapters/charts/benchmarks/tarot_source_review.py": "6678a4fd04bc7dc3d939ac7ae665d8f35e1c8810fc3b44aea045936a76ec150a",
+    "tests/v4/test_p8_tarot_source_review.py": "db429db4691f18f3250ad1b672334a5be1677943043e8e37b9e2cf1b0ce694bb",
+    "tests/v4/test_p8_tarot_spreads_asset.py": "f4f5e427ba368cc3d9a5b267d0c7e80f916a679c623b3d7242d1217044df034e",
+    "mingjing_core/knowledge/p8_tarot/service_clock_review_v1.json": "9b3bc2a136ca145095f0122191e3bd4df2801d7cd3b342fe19a74ecb2f310aad",
+    "docs/v4/contracts/tarot_service_source_review.md": "5fc7dc263283a6742b2c6811e9bcf3eab392c66167a1ea4ec25f5aff00c564f4",
+    "docs/v4/contracts/tarot_spreads.md": "8d057e38c3a40fd3e09cd0119ea94a0b5b2443b09b24b94d1654ca600b53695a"
+  },
+  "last_whole_source_test": "ef3947b:2939, not current increment full",
+  "real_model_requests": 0,
+  "database_access": false,
+  "network_and_subprocess_disabled": true,
+  "limits": [
+    "Pure AST/source/schema tests, no whole TarotService execution",
+    "Current Clock dependency identity and mainline integration unverified",
+    "Actual e56 CI remains in progress; new commit CI must be observed independently"
+  ]
+}

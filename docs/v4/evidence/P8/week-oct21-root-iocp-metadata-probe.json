@@ -1,0 +1,375 @@
+{
+  "version": "p8-root-iocp-original-metadata-git-diagnostic-v1",
+  "started_at_beijing": "2026-10-23T20:57:27.536315+08:00",
+  "status": "observed_limited_not_accepted",
+  "strict_transport_accepted": false,
+  "actual_supervisor_invocations": 0,
+  "actual_collector_invocations": 0,
+  "actual_trace_samples": 0,
+  "charts_coverage_samples": 0,
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "phase_before": {
+    "total": 5,
+    "active": 1,
+    "terminated": 0
+  },
+  "head": "c471d4ac89444bcb004e102a8ab026c738c2788c",
+  "phase_after_reads": {
+    "total": 14,
+    "active": 2,
+    "terminated": 0
+  },
+  "phase_after_negative_guards": {
+    "total": 14,
+    "active": 2,
+    "terminated": 0
+  },
+  "observer": {
+    "accounting": {
+      "total": 14,
+      "active": 1,
+      "terminated": 0
+    },
+    "elapsed_at_last_sample": 0.125,
+    "events": [
+      {
+        "message": 6,
+        "pid": 36156
+      },
+      {
+        "message": 6,
+        "pid": 37116
+      },
+      {
+        "message": 6,
+        "pid": 34456
+      },
+      {
+        "message": 6,
+        "pid": 31556
+      },
+      {
+        "message": 7,
+        "pid": 31556
+      },
+      {
+        "message": 7,
+        "pid": 37116
+      },
+      {
+        "message": 7,
+        "pid": 34456
+      },
+      {
+        "message": 6,
+        "pid": 21620
+      },
+      {
+        "message": 6,
+        "pid": 37156
+      },
+      {
+        "message": 6,
+        "pid": 21524
+      },
+      {
+        "message": 7,
+        "pid": 21524
+      },
+      {
+        "message": 7,
+        "pid": 21620
+      },
+      {
+        "message": 7,
+        "pid": 37156
+      },
+      {
+        "message": 6,
+        "pid": 10336
+      },
+      {
+        "message": 6,
+        "pid": 36944
+      },
+      {
+        "message": 6,
+        "pid": 30024
+      }
+    ],
+    "processes": [
+      {
+        "pid": 10336,
+        "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+        "creation_filetime": 134372338476177125,
+        "parent_pid": 36156,
+        "state": "observed_exited",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 21524,
+        "state": "not_currently_listed_late_message_identity_unknown",
+        "incomplete": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 21620,
+        "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+        "creation_filetime": 134372338475784224,
+        "parent_pid": 36156,
+        "state": "observed_exited",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 30024,
+        "image": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+        "creation_filetime": 134372338476322563,
+        "parent_pid": 10336,
+        "state": "observed_exited",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 31556,
+        "state": "not_currently_listed_late_message_identity_unknown",
+        "incomplete": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 34456,
+        "image": "C:\\Windows\\System32\\conhost.exe",
+        "creation_filetime": 134372338475518191,
+        "parent_pid": 37116,
+        "state": "observed_exited",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 36156,
+        "image": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+        "creation_filetime": 134372338455849017,
+        "parent_pid": 37640,
+        "state": "observed_live",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 36944,
+        "image": "C:\\Windows\\System32\\conhost.exe",
+        "creation_filetime": 134372338476206999,
+        "parent_pid": 10336,
+        "state": "observed_exited",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 37116,
+        "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+        "creation_filetime": 134372338475478522,
+        "parent_pid": 36156,
+        "state": "observed_exited",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      },
+      {
+        "pid": 37156,
+        "image": "C:\\Windows\\System32\\conhost.exe",
+        "creation_filetime": 134372338475817115,
+        "parent_pid": 21620,
+        "state": "observed_exited",
+        "membership_confirmed": true,
+        "incomplete": false,
+        "sources": [
+          "job_iocp_message",
+          "root_job_pid_list"
+        ],
+        "first_identity_observed_live": true,
+        "event_instance_binding_verified": false
+      }
+    ],
+    "notes": [],
+    "complete": false,
+    "limits": [
+      "IOCP messages are not guaranteed; no identity is inferred.",
+      "Parent PID is a snapshot, not a retained parent identity.",
+      "No Job limit, total==1 gate, or sampling permission changes."
+    ],
+    "protocol": "root-nonempty-cap4-iocp-thread-diagnostic-v1",
+    "baseline": {
+      "total": 5,
+      "active": 1,
+      "terminated": 0
+    },
+    "coordinator_pid": 36156,
+    "repeated_new_process_pids": [],
+    "thread_failure": null,
+    "thread_joined": true,
+    "strict_transport_accepted": false
+  },
+  "completed_at_beijing": "2026-10-23T20:57:27.650606+08:00",
+  "failures": [],
+  "observed_direct_processes": [
+    {
+      "pid": 37116,
+      "retained_handle_pid": 37116,
+      "creation_filetime": 134372338475478522,
+      "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "on_disk_image_sha256": "c470d205517c7a53ceca321df16a6e4549fcd52b576ab4d09536d36f26fda5a9",
+      "is_in_owned_job": true,
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "-C",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.hooksPath=nul",
+        "rev-parse",
+        "--git-dir"
+      ],
+      "creation_flags": 134217728,
+      "identity_environment_keys_absent": {
+        "__PYVENV_LAUNCHER__": true,
+        "PYTHONHOME": true,
+        "PYTHONEXECUTABLE": true,
+        "PYTHONPATH": true,
+        "VIRTUAL_ENV": true
+      },
+      "identity_source": "duplicate_of_actual_popen_process_handle"
+    },
+    {
+      "pid": 21620,
+      "retained_handle_pid": 21620,
+      "creation_filetime": 134372338475784224,
+      "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "on_disk_image_sha256": "c470d205517c7a53ceca321df16a6e4549fcd52b576ab4d09536d36f26fda5a9",
+      "is_in_owned_job": true,
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "-C",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.hooksPath=nul",
+        "rev-parse",
+        "--git-common-dir"
+      ],
+      "creation_flags": 134217728,
+      "identity_environment_keys_absent": {
+        "__PYVENV_LAUNCHER__": true,
+        "PYTHONHOME": true,
+        "PYTHONEXECUTABLE": true,
+        "PYTHONPATH": true,
+        "VIRTUAL_ENV": true
+      },
+      "identity_source": "duplicate_of_actual_popen_process_handle"
+    },
+    {
+      "pid": 10336,
+      "retained_handle_pid": 10336,
+      "creation_filetime": 134372338476177125,
+      "image": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "on_disk_image_sha256": "c470d205517c7a53ceca321df16a6e4549fcd52b576ab4d09536d36f26fda5a9",
+      "is_in_owned_job": true,
+      "argv": [
+        "C:\\Program Files\\Git\\cmd\\git.exe",
+        "-C",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8",
+        "-c",
+        "core.fsmonitor=false",
+        "-c",
+        "core.hooksPath=nul",
+        "rev-parse",
+        "HEAD"
+      ],
+      "creation_flags": 134217728,
+      "identity_environment_keys_absent": {
+        "__PYVENV_LAUNCHER__": true,
+        "PYTHONHOME": true,
+        "PYTHONEXECUTABLE": true,
+        "PYTHONPATH": true,
+        "VIRTUAL_ENV": true
+      },
+      "identity_source": "duplicate_of_actual_popen_process_handle"
+    }
+  ],
+  "actual_metadata_git_calls": 3,
+  "source_sha256_before": {
+    "private\\p8-validation\\core_metadata_git_root_iocp_probe.py": "7e42e17896ce1071f9b713f07b8ffec6a7f0f5d204e994db0b808242a57df555",
+    "private\\p8-validation\\core_root_job_observer.py": "359f6bdaff9b06ddfdace20e3ef9b4c4892c227e80824968695446baad01e52b",
+    "private\\p8-validation\\core_direct_job_observer.py": "151108f00edf98de5b108971869cc7b7f9024ffcac7619d2f53f24d796d432c1",
+    "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_git.py": "3a3614316d664f4f3ad71c717655f3fcbc046923cd17ff42f234b88dd82fcad1"
+  },
+  "source_sha256_after": {
+    "private\\p8-validation\\core_metadata_git_root_iocp_probe.py": "7e42e17896ce1071f9b713f07b8ffec6a7f0f5d204e994db0b808242a57df555",
+    "private\\p8-validation\\core_root_job_observer.py": "359f6bdaff9b06ddfdace20e3ef9b4c4892c227e80824968695446baad01e52b",
+    "private\\p8-validation\\core_direct_job_observer.py": "151108f00edf98de5b108971869cc7b7f9024ffcac7619d2f53f24d796d432c1",
+    "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_git.py": "3a3614316d664f4f3ad71c717655f3fcbc046923cd17ff42f234b88dd82fcad1"
+  },
+  "sources_unchanged": true,
+  "original_git_creation_flags_unchanged": true,
+  "original_git_communicate_unchanged": true,
+  "observer_threads_added": 1,
+  "phase_after_observer_cleanup": {
+    "total": 14,
+    "active": 1,
+    "terminated": 0
+  },
+  "total_new_job_members": 9,
+  "live_instance_identity_snapshot_count_including_direct": 7,
+  "unidentified_or_unbound_member_count_lower_bound": 2,
+  "limits": [
+    "Independent root-nonempty observer; old empty-inner observer and its guards are unchanged",
+    "Live instance snapshots do not bind late IOCP events to an instance generation; event_instance_binding_verified=false",
+    "Parent PID is a snapshot; names, paths and count equality are not process authorization",
+    "One observer thread, ready before original three Git reads; joined before closing handles",
+    "No production collector/supervisor or coverage sampling; do not retroactively identify previous unknown6",
+    "Stage total delta is cumulative, cap4 is an upper bound and final active1 is not a measured peak or full lifecycle acceptance"
+  ]
+}

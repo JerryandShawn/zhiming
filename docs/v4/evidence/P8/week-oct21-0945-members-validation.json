@@ -1,0 +1,49 @@
+{
+  "version": "p8-daily-window-independent-members-v1",
+  "status": "targeted_passed",
+  "coordinator_exit_code": 0,
+  "bridge": {
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 2.45
+  },
+  "native_result_asserted_by_bridge": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "successful": true
+  },
+  "model_requests": 0,
+  "server_access": false,
+  "current_full_regression_repeated": false,
+  "prior_full_source_commit": "4ddab247a830f504363d2d1d6304ddeb5a4ba34f",
+  "prior_full": {
+    "tests": 3072,
+    "skipped": 0,
+    "only_prior_source": true
+  },
+  "first_attempt": {
+    "overall_exit_code": 1,
+    "bridge_tests_passed": 1,
+    "format_check_failed": "native file",
+    "process_record_exit_code_field_means": "pytest return code only; ValueError from delivery made shell exit 1",
+    "artifact": "week-oct21-0944-members-first-process.json"
+  },
+  "format": {
+    "files_reformatted": 1,
+    "files_unchanged": 1,
+    "ast_unchanged": true,
+    "intentional_source_mutation": true
+  },
+  "process": "week-oct21-0945-members-process.json",
+  "style": "week-oct21-0945-members-style.json",
+  "limits": [
+    "Three native unittest nodes include many subTests; do not count assertions or subTests as separate cases.",
+    "A fixed synthetic natal and seven dates establish internal member/weight consistency, not professional efficacy or all input coverage.",
+    "New tests do not change production charts code, weights, knowledge, skills, samples, contracts, or v3.",
+    "No new full regression or scripted run was performed in this targeted milestone."
+  ]
+}

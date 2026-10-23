@@ -1,0 +1,92 @@
+"""One-shot publication checks; no model, worker, engine or service invocation."""
+import hashlib
+import json
+import runpy
+import shutil
+import sys
+from datetime import timedelta, timezone
+from pathlib import Path
+from unittest.mock import patch
+
+from mingjing_core.adapters.charts import daily_transit_natal
+from mingjing_core.adapters.charts.p8_adapter import P8ChartAdapter
+from mingjing_core.adapters.charts.synastry import synastry
+from mingjing_core.timekit.clock import get_clock
+
+root = Path.cwd()
+private = root / "private/p8-validation"
+evidence = root / "docs/v4/evidence/P8"
+target = evidence / "week-oct23-root-iocp-validation.json"
+assert not target.exists()
+read = lambda path: json.loads(path.read_text("utf8"))
+digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+baseline = read(private / "v4-week-oct21-1115-full.start.json")
+receipts = []
+for label, expected in (("week-oct23-recovery", 1), ("week-oct23-recovery-v2", 0)):
+    path = private / ("root_iocp_probe-" + label + ".start.json")
+    record = read(path)
+    assert record["exit_code"] == expected and record["sources_unchanged"]
+    assert record["source_snapshot_before"] == record["source_snapshot_after"] == baseline["source_snapshot_before"]
+    assert record["process_budget"]["configured_limit"] == 4
+    assert record["process_budget"]["active_before"] == record["process_budget"]["active_after"] == 1
+    compact = {key: value for key, value in record.items() if not key.startswith("source_snapshot_")}
+    compact.update(raw_receipt_sha256=digest(path), project_source_count=len(record["source_snapshot_before"]),
+                   project_sources_match_449682b_full=True,
+                   canonical_source_map="week-oct21-1115-full-validation.json")
+    receipts.append(compact)
+
+report = read(evidence / "week-oct21-root-iocp-metadata-probe.json")
+assert report["status"] == "observed_limited_not_accepted" and not report["failures"]
+assert report["actual_metadata_git_calls"] == 3 and report["sources_unchanged"]
+assert report["total_new_job_members"] == 9
+assert report["live_instance_identity_snapshot_count_including_direct"] == 7
+assert report["unidentified_or_unbound_member_count_lower_bound"] == 2
+assert report["strict_transport_accepted"] is False
+assert all(row["event_instance_binding_verified"] is False for row in report["observer"]["processes"])
+assert report["observer"]["thread_joined"] and report["observer"]["thread_failure"] is None
+assert report["phase_after_observer_cleanup"]["active"] == 1
+for relative, expected in report["source_sha256_before"].items():
+    assert digest(root / relative) == expected
+for source, dest in (
+    ("core_metadata_git_root_iocp_probe.py", "week-oct23-root-iocp-driver-source.txt"),
+    ("core_root_job_observer.py", "week-oct23-root-iocp-observer-source.txt"),
+    ("core_direct_job_observer.py", "week-oct23-root-iocp-empty-observer-source.txt"),
+    ("guarded_oct23_publication.py", "week-oct23-publication-harness-source.txt"),
+    ("finish_oct23_recovery.py", "week-oct23-publication-check-source.txt"),
+):
+    assert not (evidence / dest).exists()
+    shutil.copyfile(private / source, evidence / dest)
+
+adapter = P8ChartAdapter("synthetic-owner", python=sys.executable)
+cases = [
+    ("native_omitted_consent", lambda: synastry(None, None, "romantic", as_of_date="bad"), TypeError, None),
+    ("native_omitted_date", lambda: synastry(None, None, "romantic", consent=None), TypeError, None),
+    ("native_explicit_none", lambda: synastry(None, None, "romantic", consent=None, as_of_date="bad"), ValueError, "CONSENT_REQUIRED"),
+    ("native_unconfirmed", lambda: synastry(None, None, "romantic", consent="granted", as_of_date="bad"), ValueError, "CONSENT_REQUIRED"),
+    ("core_missing_consent", lambda: adapter.synastry({}), ValueError, "CONSENT_REQUIRED"),
+    ("core_current_owner", lambda: adapter.synastry({"chart_a": {"owner_user_id": "other"}, "chart_b": {"owner_user_id": "other"}, "kind": "romantic", "consent": "user_confirmed"}), ValueError, "AUTH_SCOPE_ERROR"),
+]
+observed = []
+with patch.object(daily_transit_natal, "prepare_natal", side_effect=AssertionError("unexpected preparation")) as prepare, patch.object(adapter, "_request", side_effect=AssertionError("unexpected worker")) as worker:
+    for name, call, error_type, prefix in cases:
+        try:
+            call()
+        except error_type as error:
+            if prefix:
+                assert str(error).startswith(prefix)
+            observed.append({"case": name, "exception": error_type.__name__, "fixed_prefix": prefix, "passed": True})
+        else:
+            raise AssertionError(name + " was accepted")
+    assert prepare.call_count == worker.call_count == 0
+
+sys.argv = [str(private / "check_delivery_oct23.py")]
+runpy.run_path(sys.argv[0], run_name="__main__")
+result = {"version": "p8-oct23-recovery-check-v1", "checked_at_beijing": get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(),
+          "source_head": "c471d4ac89444bcb004e102a8ab026c738c2788c", "process_receipts": receipts,
+          "synastry_argument_boundary_checks": observed, "actual_natal_preparations": 0, "actual_worker_calls": 0,
+          "metadata_observation_complete": False, "strict_transport_accepted": False,
+          "real_model_requests": 0, "project_server_access": False,
+          "production_code_changed": False, "contract_only_change": "synastry.md Python argument binding clarification",
+          "full_3202_rerun_today": False, "full_3202_source": "449682bdcc8a309c482081d5722c0b66ce666903"}
+target.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf8", newline="\n")
+print(json.dumps({"probe_receipts": len(receipts), "argument_boundaries_passed": len(observed), "natal_or_worker_calls": 0, "strict_accepted": False}))

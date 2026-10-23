@@ -1,0 +1,88 @@
+{
+  "source_commit": "16933cb2af7cff04f9ab328ed8dd22a846db1e7a",
+  "local_equivalent_source_commit": "540c7feb6545e6fe57c815396d60d7374800a1e1",
+  "source_tree": "535dae36ed1876ef410805ff702f2c6e934a9de3",
+  "v4": {
+    "passed": 601,
+    "skipped": 0,
+    "seconds": 116.64,
+    "command": "<Core Python> -m pytest tests/v4 -q (after strict calibration scope fix)",
+    "database": "127.0.0.1:55480/core_test_meta"
+  },
+  "scripted": {
+    "passed": 80,
+    "total": 80,
+    "real_model_calls": 0
+  },
+  "legacy_core": {
+    "passed": 553,
+    "skipped": 0,
+    "seconds": 1443.409,
+    "timing": "earlier in same phase; before addenda replacement; protected legacy files unchanged afterward"
+  },
+  "legacy_calculations": {
+    "passed": 60,
+    "total": 60
+  },
+  "ruff": {
+    "python_files": 71,
+    "status": "passed"
+  },
+  "protected_files_unchanged": 141,
+  "real_model_calls": 0,
+  "stage_or_production_access": false,
+  "merged_prs": [],
+  "server": "not started; reserved 8003",
+  "full_P8_acceptance": false,
+  "formal_rectification_ER1_gate": false,
+  "professional_corpus_scores": null,
+  "private_logs": [
+    {
+      "name": "core-regression.log",
+      "bytes": 4069,
+      "sha256": "19e0ea49813698e725bccac54bac41bb3378dd608e380fdd6582d30f8508fcec"
+    },
+    {
+      "name": "v4-scope-final.log",
+      "bytes": 762,
+      "sha256": "b92f31b8e0432b177d497de972d5dfe01abab097a5827cc8fa17a74e8489ee23"
+    },
+    {
+      "name": "actual-scope-final.log",
+      "bytes": 60,
+      "sha256": "d86eaa08b5b8ad4267c07de4784c8f9a34d922cc68f11114ab00c9fc4453e174"
+    },
+    {
+      "name": "matrix-scope-final.log",
+      "bytes": 359,
+      "sha256": "a6d98e8339276b75f0982d35646c5f4c4360b273abeb9872224b3c59d0d8b164"
+    },
+    {
+      "name": "e2-scope-final.log",
+      "bytes": 182,
+      "sha256": "d66e8f04757e97d65355ffcd5c3ea991d259dc0278bac2702b7b04c15d5a6317"
+    },
+    {
+      "name": "scripted-scope-final.log",
+      "bytes": 2184,
+      "sha256": "157d479e1b9764abe3fb31d15142aef8c5c5a5a359ea6236a60d352644c42fcf"
+    },
+    {
+      "name": "delivery-scope-final.log",
+      "bytes": 108,
+      "sha256": "7586d0d7bac961f47aa2849e098289b88145a3890526267d3cb7e6d833b687b3"
+    }
+  ],
+  "public_actual_charts_rerun": {
+    "command": "<Charts Python> -m mingjing_core.adapters.charts.rectification_workbench.evaluation_charts --output <report.json>",
+    "people": 10,
+    "ER1_gate": false
+  },
+  "calibration_scope_fix": {
+    "single_round_alpha": true,
+    "single_shape": true,
+    "round2_full_bindings": true,
+    "unit_tests_passed": 71,
+    "R2_independent_calibration": "not_run; no transfer from R1"
+  }
+}

@@ -1,0 +1,42 @@
+"""Bind the final tested source map to real objects of one explicit commit."""
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import timedelta, timezone
+from pathlib import Path
+
+from mingjing_core.timekit.clock import get_clock
+
+ROOT = Path.cwd()
+commit = sys.argv[1]
+assert len(commit) == 40 and set(commit) <= set("0123456789abcdef")
+test = json.loads((ROOT / "docs/v4/evidence/P8/week-oct21-almanac-387-process.json").read_bytes())
+assert test["exit_code"] == 0 and test["sources_unchanged"] is True
+expected = test["source_snapshot_before"]
+assert len(expected) == 387
+assert test["source_snapshot_after"] == expected
+rows = []
+for path, digest in sorted(expected.items()):
+    content = subprocess.check_output(["git", "show", commit + ":" + path])
+    normalized = content.replace(b"\r\n", b"\n")
+    assert hashlib.sha256(normalized).hexdigest() == digest, path
+    assert hashlib.sha256((ROOT / path).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == digest, path
+    rows.append({"path": path, "lf_sha256": digest, "git_blob_sha1": hashlib.sha1(b"blob " + str(len(content)).encode("ascii") + b"\0" + content).hexdigest()})
+target = ROOT / "docs/v4/evidence/P8/week-oct21-almanac-committed-source-binding.json"
+report = {
+    "version": "p8-almanac-committed-source-binding-v1",
+    "recorded_at_beijing": get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(),
+    "commit": commit,
+    "tested_source_files": len(rows),
+    "matched_real_git_blobs": len(rows),
+    "test_evidence": "docs/v4/evidence/P8/week-oct21-almanac-387-process.json",
+    "harness_lf_sha256": test["validation_harness_lf_sha256"],
+    "files": rows,
+    "current_full_regression_complete": False,
+    "limits": ["Source binding is not package authentication, server deployment or professional predictive acceptance", "Historical3114 and80/48 belong to6508; current387 targeted only"],
+    "real_model_requests": 0, "project_server_access": False
+}
+with target.open("x", encoding="utf8", newline="\n") as stream:
+    stream.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+print(json.dumps({"commit": commit, "matched_real_git_blobs": len(rows), "targeted": 387, "full_pending": True}))

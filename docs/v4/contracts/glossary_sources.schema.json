@@ -1,0 +1,242 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 glossary named source registry v1",
+  "$defs": {
+    "Source": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "project_implementation",
+            "official_scientific_documentation",
+            "official_implementation_documentation",
+            "project_editorial",
+            "public_domain_transcription",
+            "primary_bibliographic_scan"
+          ]
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edition_page_status": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_id",
+        "title",
+        "kind",
+        "url",
+        "path",
+        "locator",
+        "verification_status",
+        "edition_page_status"
+      ],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "SourceReference": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "support_scope": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "source_id",
+        "locator",
+        "support_scope"
+      ],
+      "additionalProperties": false
+    },
+    "SchoolDifference": {
+      "type": "object",
+      "properties": {
+        "school": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string",
+          "minLength": 12
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "school",
+        "note",
+        "source_ids"
+      ],
+      "additionalProperties": false
+    },
+    "Term": {
+      "type": "object",
+      "properties": {
+        "term_id": {
+          "type": "string",
+          "pattern": "^(bazi|ziwei|astro|tarot)-[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "system": {
+          "enum": [
+            "bazi",
+            "ziwei",
+            "astro",
+            "tarot"
+          ]
+        },
+        "term": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "definition_kind": {
+          "enum": [
+            "traditional_concept",
+            "astronomical_time_coordinate",
+            "geometric_parameter",
+            "symbolic_timing_technique",
+            "editorial_symbol",
+            "editorial_method",
+            "project_convention"
+          ]
+        },
+        "plain_explanation": {
+          "type": "string",
+          "minLength": 20
+        },
+        "example": {
+          "type": "string",
+          "minLength": 15
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "minItems": 1
+        },
+        "school_differences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SchoolDifference"
+          },
+          "minItems": 1
+        },
+        "pending_review": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "term_id",
+        "system",
+        "term",
+        "aliases",
+        "definition_kind",
+        "plain_explanation",
+        "example",
+        "sources",
+        "school_differences",
+        "pending_review"
+      ],
+      "additionalProperties": false
+    },
+    "SourceRegistry": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "p8-glossary-sources-v1"
+        },
+        "stage": {
+          "const": "draft_source_registry"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "version",
+        "stage",
+        "sources"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$ref": "#/$defs/SourceRegistry"
+}

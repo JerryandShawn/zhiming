@@ -1,0 +1,75 @@
+...................F......................................F.             [100%]
+================================== FAILURES ===================================
+_____ test_worked_example_citations_match_the_exact_case_and_evidence[20] _____
+
+study = {'lessons': {1: {'schema_version': 'p8-learning-lesson-v1', 'lesson_id': 'lesson-01', 'order': 1, 'title': '四柱先按位置读', ...eview-v1.1', 'status': 'draft_integration_contract', 'mode': 'scripted_synthetic_preview', 'display_name': '阿远', ...}}}
+order = 20
+
+    @pytest.mark.parametrize("order", range(1, 21))
+    def test_worked_example_citations_match_the_exact_case_and_evidence(
+        study, order
+    ) -> None:
+        examples = study["lessons"][order]["worked_examples"]
+        assert examples
+        for example in examples:
+>           assert_displayed_citations(
+                study, example["text"], example["case_id"], example["evidence_ids"]
+            )
+
+tests\v4\test_p8_learning_citations.py:111: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+study = {'lessons': {1: {'schema_version': 'p8-learning-lesson-v1', 'lesson_id': 'lesson-01', 'order': 1, 'title': '四柱先按位置读', ...eview-v1.1', 'status': 'draft_integration_contract', 'mode': 'scripted_synthetic_preview', 'display_name': '阿远', ...}}}
+text = '实际太阳落座显示双鱼，读取的是当前样例天体字段。〔c2〕', case_id = 'ayuan-astro'
+evidence_ids = ['astro_sun_sign']
+
+    def assert_displayed_citations(
+        study: dict, text: str, case_id: str, evidence_ids: list[str]
+    ) -> None:
+        displayed = citations(text)
+        allowed = allowed_citations(study, case_id, evidence_ids)
+>       assert displayed <= allowed
+E       AssertionError: assert {'c2'} <= {'c7'}
+E         
+E         Extra items in the left set:
+E         'c2'
+
+tests\v4\test_p8_learning_citations.py:98: AssertionError
+____ test_quiz_citations_are_evidence_scoped_or_absent_for_concepts[20-1] _____
+
+study = {'lessons': {1: {'schema_version': 'p8-learning-lesson-v1', 'lesson_id': 'lesson-01', 'order': 1, 'title': '四柱先按位置读', ...eview-v1.1', 'status': 'draft_integration_contract', 'mode': 'scripted_synthetic_preview', 'display_name': '阿远', ...}}}
+order = 20, number = 1
+
+    @pytest.mark.parametrize("order,number", [(a, b) for a in range(1, 21) for b in (1, 2)])
+    def test_quiz_citations_are_evidence_scoped_or_absent_for_concepts(
+        study, order: int, number: int
+    ) -> None:
+        quizzes = study["lessons"][order]["quiz"]
+        assert len(quizzes) == 2
+        quiz = quizzes[number - 1]
+        visible = "\n".join(
+            [
+                quiz["question"],
+                *(row["text"] for row in quiz["options"]),
+                quiz["explanation"],
+            ]
+        )
+        basis = quiz["basis"]
+        if basis["kind"] == "concept":
+            assert citations(visible) == set()
+            return
+        assert basis["kind"] in ("chart_observation", "matched_rule")
+        identity = basis["evidence_id"]
+        evidence = study["evidence"][identity]
+        allowed = allowed_citations(study, evidence["case_id"], [identity])
+>       assert citations(visible) <= allowed
+E       AssertionError: assert {'c2'} <= {'c7'}
+E         
+E         Extra items in the left set:
+E         'c2'
+
+tests\v4\test_p8_learning_citations.py:138: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/v4/test_p8_learning_citations.py::test_worked_example_citations_match_the_exact_case_and_evidence[20]
+FAILED tests/v4/test_p8_learning_citations.py::test_quiz_citations_are_evidence_scoped_or_absent_for_concepts[20-1]
+2 failed, 58 passed in 0.21s

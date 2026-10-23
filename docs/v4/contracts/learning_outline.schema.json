@@ -1,0 +1,343 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 pure-rule learning outline; references resolve in caller's original chart handoff",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "p8-learning-outline-v1"
+    },
+    "status": {
+      "enum": [
+        "learning_only",
+        "insufficient_evidence"
+      ]
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "points": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "properties": {
+          "point_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "kind": {
+            "enum": [
+              "orientation",
+              "matched_condition",
+              "boundary"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observed": {},
+          "school": {
+            "type": [
+              "string",
+              "object"
+            ]
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "object"
+              ]
+            },
+            "minItems": 1
+          },
+          "source_ref": {
+            "$ref": "#/$defs/Ref"
+          },
+          "c_aliases": {
+            "type": "array",
+            "items": {
+              "pattern": "^c[1-9][0-9]*$"
+            },
+            "minItems": 1
+          },
+          "r_aliases": {
+            "type": "array",
+            "items": {
+              "pattern": "^r[1-9][0-9]*$"
+            }
+          },
+          "citations": {
+            "type": "string",
+            "minLength": 1
+          },
+          "limits": {
+            "type": "array",
+            "items": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "required": [
+          "point_id",
+          "kind",
+          "title",
+          "text",
+          "observed",
+          "school",
+          "source_refs",
+          "source_ref",
+          "c_aliases",
+          "r_aliases",
+          "citations"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChartAlias"
+          }
+        },
+        "r": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuleAlias"
+          }
+        }
+      },
+      "required": [
+        "c",
+        "r"
+      ],
+      "additionalProperties": false
+    },
+    "rule_hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "met",
+          "school",
+          "source"
+        ],
+        "properties": {
+          "met": {
+            "const": true
+          }
+        }
+      }
+    },
+    "source_document_ids": {
+      "type": "array",
+      "items": {
+        "pattern": "^doc-[a-f0-9]{64}$"
+      }
+    },
+    "effects": {
+      "const": {
+        "model_calls": 0,
+        "writes": 0,
+        "alias_registry": "reuse_input_projection_no_registration"
+      }
+    },
+    "limits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "version",
+    "status",
+    "scope",
+    "points",
+    "aliases",
+    "rule_hits",
+    "source_document_ids",
+    "effects",
+    "limits"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Scope": {
+      "type": "object",
+      "properties": {
+        "owner_user_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "owner_user_id",
+        "subject_id",
+        "revision",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "Ref": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "pattern": "^doc-[a-f0-9]{64}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?:/.*)?$",
+          "format": "json-pointer"
+        }
+      },
+      "required": [
+        "document_id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "ChartAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^c[1-9][0-9]*$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^demo-claim-[a-f0-9]{64}$"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "branch_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "enum": [
+            "true_solar",
+            "standard",
+            "beijing_standard",
+            "actual_UTC"
+          ]
+        }
+      },
+      "required": [
+        "alias",
+        "claim_id",
+        "scope",
+        "ref",
+        "value_sha256",
+        "branch_id",
+        "basis"
+      ],
+      "additionalProperties": false
+    },
+    "RuleAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^r[1-9][0-9]*$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^demo-claim-[a-f0-9]{64}$"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "branch_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "enum": [
+            "true_solar",
+            "standard",
+            "beijing_standard",
+            "actual_UTC"
+          ]
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "rules_version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^c[1-9][0-9]*$"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "alias",
+        "claim_id",
+        "scope",
+        "ref",
+        "value_sha256",
+        "branch_id",
+        "basis",
+        "rule_id",
+        "rules_version",
+        "evidence_aliases"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

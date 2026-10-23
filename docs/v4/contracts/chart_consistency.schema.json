@@ -1,0 +1,677 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 explicit chart-text consistency preview; separate ephemeral and input namespaces",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "p8-chart-consistency-preview-v1"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "document_id": {
+      "type": "string",
+      "pattern": "^tool-[a-f0-9]{64}$"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "inconsistent",
+            "needs_review",
+            "no_contradiction_found",
+            "not_checked"
+          ]
+        },
+        "review_key": {
+          "const": "chart_inconsistency"
+        },
+        "policy": {
+          "const": "record_only"
+        },
+        "text_length": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32000
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Check"
+          }
+        },
+        "coverage": {
+          "type": "object",
+          "properties": {
+            "checked": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "deferred": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "not_checked": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "checked",
+            "deferred",
+            "not_checked"
+          ],
+          "additionalProperties": false
+        },
+        "input_aliases": {
+          "type": "object",
+          "properties": {
+            "c": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ChartAlias"
+              }
+            },
+            "r": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/RuleAlias"
+              }
+            }
+          },
+          "required": [
+            "c",
+            "r"
+          ],
+          "additionalProperties": false
+        },
+        "input_document_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^doc-[a-f0-9]{64}$"
+          },
+          "uniqueItems": true
+        },
+        "input_scope": {
+          "$ref": "#/$defs/Scope"
+        }
+      },
+      "required": [
+        "status",
+        "review_key",
+        "policy",
+        "text_length",
+        "checks",
+        "coverage",
+        "input_aliases",
+        "input_document_ids",
+        "input_scope"
+      ],
+      "additionalProperties": false
+    },
+    "rule_hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "pattern": "^p8.consistency\\."
+          },
+          "met": {
+            "const": true
+          },
+          "school": {
+            "const": "project-explicit-text-grammar-v1"
+          },
+          "source": {
+            "$ref": "#/$defs/CheckerSource"
+          },
+          "evidence_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^/data/checks/(0|[1-9][0-9]*)$"
+            },
+            "minItems": 1
+          },
+          "meaning": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "rule_id",
+          "met",
+          "school",
+          "source",
+          "evidence_paths",
+          "meaning"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "alias": {
+                "type": "string",
+                "pattern": "^c[1-9][0-9]*$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/"
+              },
+              "value_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "claim_id": {
+                "type": "string",
+                "pattern": "^claim-[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "alias",
+              "path",
+              "value_sha256",
+              "claim_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "r": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "alias": {
+                "type": "string",
+                "pattern": "^r[1-9][0-9]*$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/"
+              },
+              "value_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "claim_id": {
+                "type": "string",
+                "pattern": "^claim-[a-f0-9]{64}$"
+              },
+              "rule_id": {
+                "type": "string",
+                "pattern": "^p8.consistency\\."
+              },
+              "evidence_aliases": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^c[1-9][0-9]*$"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "alias",
+              "path",
+              "value_sha256",
+              "claim_id",
+              "rule_id",
+              "evidence_aliases"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "c",
+        "r"
+      ],
+      "additionalProperties": false
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/CheckerSource"
+      },
+      "minItems": 1
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "model_calls": {
+          "const": 0
+        },
+        "writes": {
+          "const": 0
+        },
+        "alias_registry": {
+          "const": "ephemeral_only"
+        }
+      },
+      "required": [
+        "model_calls",
+        "writes",
+        "alias_registry"
+      ],
+      "additionalProperties": false
+    },
+    "limits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "document_id",
+    "data",
+    "rule_hits",
+    "aliases",
+    "sources",
+    "effects",
+    "limits"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Scope": {
+      "type": "object",
+      "properties": {
+        "owner_user_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "owner_user_id",
+        "subject_id",
+        "revision",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "Ref": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "pattern": "^doc-[a-f0-9]{64}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?:/.*)?$",
+          "format": "json-pointer"
+        }
+      },
+      "required": [
+        "document_id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "ChartAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^c[1-9][0-9]*$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^demo-claim-[a-f0-9]{64}$"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "branch_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "enum": [
+            "true_solar",
+            "standard",
+            "beijing_standard",
+            "actual_UTC"
+          ]
+        }
+      },
+      "required": [
+        "alias",
+        "claim_id",
+        "scope",
+        "ref",
+        "value_sha256",
+        "branch_id",
+        "basis"
+      ],
+      "additionalProperties": false
+    },
+    "RuleAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^r[1-9][0-9]*$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^demo-claim-[a-f0-9]{64}$"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "branch_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "enum": [
+            "true_solar",
+            "standard",
+            "beijing_standard",
+            "actual_UTC"
+          ]
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "rules_version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^c[1-9][0-9]*$"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "alias",
+        "claim_id",
+        "scope",
+        "ref",
+        "value_sha256",
+        "branch_id",
+        "basis",
+        "rule_id",
+        "rules_version",
+        "evidence_aliases"
+      ],
+      "additionalProperties": false
+    },
+    "CheckerSource": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "const": "project_implementation"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locators": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "support_scope": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_id",
+        "title",
+        "kind",
+        "path",
+        "locators",
+        "support_scope"
+      ],
+      "additionalProperties": false
+    },
+    "Check": {
+      "type": "object",
+      "properties": {
+        "check_id": {
+          "type": "string",
+          "pattern": "^check-[1-9][0-9]*$"
+        },
+        "span": {
+          "type": "object",
+          "properties": {
+            "start": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "start",
+            "end"
+          ],
+          "additionalProperties": false
+        },
+        "field": {
+          "enum": [
+            "day_master",
+            "pattern_screen",
+            "useful",
+            "decade",
+            "ziwei_stars",
+            "planet",
+            null
+          ]
+        },
+        "outcome": {
+          "enum": [
+            "matched",
+            "contradiction",
+            "needs_review",
+            "not_checked"
+          ]
+        },
+        "reason_code": {
+          "enum": [
+            "quoted_or_reported",
+            "hypothetical",
+            "question",
+            "complex_negation",
+            "uncertain",
+            "comparison_basis",
+            "other_subject",
+            "other_layer",
+            "citation_syntax_invalid",
+            "unsupported_grammar",
+            "unsupported_or_nonfinal_assertion",
+            "invalid_stem_element",
+            "invalid_ganzhi",
+            "invalid_degree",
+            "invalid_house",
+            "citation_missing",
+            "citation_not_supporting_field",
+            "field_unavailable",
+            "date_outside_or_boundary",
+            "field_evidence_missing",
+            "field_incomplete",
+            "multiple_methods_or_branches",
+            "value_matches",
+            "value_differs"
+          ]
+        },
+        "assertion": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "field": {
+                  "enum": [
+                    "day_master",
+                    "pattern_screen",
+                    "useful",
+                    "decade",
+                    "ziwei_stars",
+                    "planet",
+                    null
+                  ]
+                },
+                "key": {
+                  "type": "string"
+                },
+                "value": {},
+                "negative": {
+                  "type": "boolean"
+                },
+                "component": {
+                  "enum": [
+                    "position",
+                    "house",
+                    "retrograde"
+                  ]
+                },
+                "date": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "field",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "expected_values": {
+          "type": "array",
+          "items": {}
+        },
+        "source_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          }
+        },
+        "input_c_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^c[1-9][0-9]*$"
+          },
+          "uniqueItems": true
+        },
+        "input_r_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^r[1-9][0-9]*$"
+          },
+          "uniqueItems": true
+        },
+        "input_citations": {
+          "type": "string"
+        },
+        "fact_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "school": {},
+              "source": {}
+            },
+            "required": [
+              "school",
+              "source"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "check_id",
+        "span",
+        "field",
+        "outcome",
+        "reason_code",
+        "assertion",
+        "expected_values",
+        "source_refs",
+        "input_c_aliases",
+        "input_r_aliases",
+        "input_citations",
+        "fact_sources"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

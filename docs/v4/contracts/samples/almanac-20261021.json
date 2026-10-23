@@ -1,0 +1,352 @@
+{
+  "version": "p8-almanac-v1",
+  "scope": null,
+  "data": {
+    "date": "2026-10-21",
+    "calendar": "gregorian",
+    "timezone": "Asia/Shanghai",
+    "sample_at": "2026-10-21T12:00:00+08:00",
+    "lunar": {
+      "year": 2026,
+      "month": 9,
+      "day": 12,
+      "is_leap_month": false,
+      "display": "二〇二六年九月十二"
+    },
+    "ganzhi": {
+      "year": "丙午",
+      "month": "戊戌",
+      "day": "戊辰"
+    },
+    "yi": [
+      "祭祀",
+      "沐浴",
+      "破屋",
+      "坏垣",
+      "馀事勿取"
+    ],
+    "ji": [
+      "嫁娶",
+      "入宅",
+      "上梁",
+      "出行",
+      "安葬"
+    ],
+    "chong_sha": {
+      "branch": "戌",
+      "stem": "壬",
+      "zodiac": "狗",
+      "display": "(壬戌)狗",
+      "sha_direction": "南"
+    },
+    "duty": {
+      "deity": "青龙",
+      "category": "黄道",
+      "luck": "吉",
+      "officer": "破"
+    },
+    "mansion": {
+      "name": "箕",
+      "luminary": "水",
+      "animal": "豹",
+      "luck": "吉"
+    },
+    "pengzu": {
+      "stem": "戊不受田田主不祥",
+      "branch": "辰不哭泣必主重丧"
+    },
+    "method": {
+      "library": "lunar-python",
+      "library_version": "1.4.8",
+      "library_source_sha256": "37088e397f4c14f5312daf2ec2f3581474d1a89b8a6f133c0ef5b1ebe34c9d85",
+      "source_files_sha256": {
+        "__init__.py": "fddc55f6b0bd5cc424f4d861d910fa938f94bd5c5761517672a279f32854f5c7",
+        "eightchar/__init__.py": "b2ea776642cb827d79ec1110cdfdcf8ad98eec63bc8f90a83ece496bb378cfbb",
+        "eightchar/DaYun.py": "039749b92900097bcfa40e8b67b44eca7b7b48ecb3af0ce1b8c554a762c82ce7",
+        "eightchar/LiuNian.py": "a069ceca115f0ddeba0b720bf3edf20c882aec88c25140478d4742218b26678b",
+        "eightchar/LiuYue.py": "4aa59e23263a1b3ac6979ff57a0abf4f15f3cb10976e6e1305308d0d3f8f0a46",
+        "eightchar/XiaoYun.py": "a1ea1352db91f967ca6b77ebf2827f789aeeb715cfdbe4664dfc8a1ee5009ffd",
+        "eightchar/Yun.py": "b532004acb38a3caa7f399e3a3d5269c586538f9acf95e526be8bbd2d31bf696",
+        "EightChar.py": "d38241e75b693f25fc8c2a3e1587fd028a0a52cc504f9d5c7b47326eef051c0c",
+        "Foto.py": "94e3e72fb625f0e60a474d420f7ceb24bca8ee647243d7f1b20140b9238b2cf8",
+        "FotoFestival.py": "44d2d1853e47b5155b1090b832ecb60a446f64e4654b419f46f2be908ef03798",
+        "Fu.py": "ef61ccbfa86e7d2481dda0e0e3d413dc3ede1d3045518a45b71a00c4de518a54",
+        "Holiday.py": "109a40074b0dd53d50353157fb808e30565f9b8fde198eb79153e2110105a3f2",
+        "JieQi.py": "c4d760d317d09053b228dd851616ba68a5455482f206e08ac750ca6148daf459",
+        "Lunar.py": "489a1725a2ba443f9e8acf0534f05a0ee28c24f8904adb129c8a30daa3ed7079",
+        "LunarMonth.py": "4559d617666bb00ad8db1633bd59332242795b81bd049643a64cfe6aff47ab28",
+        "LunarTime.py": "63f073d30c524cc25abf8c58adcc02d6fe836eba1f450254c7f231fd8103f91a",
+        "LunarYear.py": "84308cf06c2e7666401676b58fdbc1a9a81491584b710cd9927fd5d2d579bbb5",
+        "NineStar.py": "b52c00d12d5c8080a27d9f34afba3a8e4e3c6e7941033fb55fb5a507ab5cd1ec",
+        "ShuJiu.py": "af852d2db583d0b08757ebdf39d1064a0e6101506e976f6d02ba32e4bdb5952a",
+        "Solar.py": "8fa3df760f59ea937dae7125d49406985df90d92178a0741d6d4c2ff85b26d5e",
+        "SolarHalfYear.py": "569c98ab78e137aebf431ca85512a2e2610c637d2d747ed9ffde707aeebfd3c3",
+        "SolarMonth.py": "f3957598018c35114099cd48030fa287c1767f69b63dd84c51dd999c5997827b",
+        "SolarSeason.py": "4fdaca631c3f28112e4d557f8ce88037b31c85fd257db5872f10aa5a68e38192",
+        "SolarWeek.py": "f90bc349f31d52bc25646957b443b8c9e41d68874b714d947915d1535588291b",
+        "SolarYear.py": "66e87edb42688fc805bcfe39bce4958fe810a76fed294aaa514402d6f6304a10",
+        "Tao.py": "bed11b1de9d83a4381029d3c7b57325eff7943a74fe52abf69255ba351044f37",
+        "TaoFestival.py": "d3fc8f576c74dc5e83b7233d20873f094b23e0f3e2a0680b54d4d54450e0f9ea",
+        "util/__init__.py": "8beb7a058bcf5862b53441beb41855140e8ef4c914f59eef22cfb81f1f4ad8f2",
+        "util/FotoUtil.py": "e07a7f395082e46c691bf6579a096b9b71755aee7152d98b3a89b7ca74323e74",
+        "util/HolidayUtil.py": "e62b6e8d796ac8df6a058788133f336f47cf320196f45ed03cc7e99ef86b6ae6",
+        "util/LunarUtil.py": "87a84818a3ddd10925cbb28ec04a048b27e1ac46f291ff4d9a861f15fb59aa00",
+        "util/ShouXingUtil.py": "5247110bf663bce23e9185cc9d4022950a9f7be5664a619286c1b657476ad9d6",
+        "util/SolarUtil.py": "bba034d893ef74e4f219452ed143302082532990b2aafc852f74c90bfb25a7a3",
+        "util/TaoUtil.py": "20ea01c41caa09affbaac0da793b88efb7e1cc4bb363aeb6d1edef2114493dee"
+      },
+      "fingerprint_method": "sha256-canonical-sorted-relative-file-map-lf",
+      "school": "lunar-python-day-almanac-sect1",
+      "yi_ji_sect": 1,
+      "month_boundary": "library-date-level-jie-month-for-almanac-sect1",
+      "day_boundary": "civil-midnight",
+      "date_timezone": "Asia/Shanghai",
+      "solar_time_applied": false,
+      "source_status": "library_output_original_edition_collation_pending"
+    }
+  },
+  "rule_hits": [
+    {
+      "rule_id": "p8-almanac-yi",
+      "met": true,
+      "name": "库内宜事项",
+      "school": "lunar-python-day-almanac-sect1",
+      "source": {
+        "title": "lunar-python每日黄历接口",
+        "url": "https://6tail.cn/calendar/api.html",
+        "locator": "Lunar.getDayYi(sect=1)",
+        "status": "named_library_fields_not_event_prediction"
+      },
+      "evidence_paths": [
+        "/data/yi",
+        "/data/method"
+      ],
+      "claim_kind": "traditional_calendar_label"
+    },
+    {
+      "rule_id": "p8-almanac-ji",
+      "met": true,
+      "name": "库内忌事项",
+      "school": "lunar-python-day-almanac-sect1",
+      "source": {
+        "title": "lunar-python每日黄历接口",
+        "url": "https://6tail.cn/calendar/api.html",
+        "locator": "Lunar.getDayJi(sect=1)",
+        "status": "named_library_fields_not_event_prediction"
+      },
+      "evidence_paths": [
+        "/data/ji",
+        "/data/method"
+      ],
+      "claim_kind": "traditional_calendar_label"
+    },
+    {
+      "rule_id": "p8-almanac-duty",
+      "met": true,
+      "name": "值神与建除值星",
+      "school": "lunar-python-day-almanac-sect1",
+      "source": {
+        "title": "lunar-python每日黄历接口",
+        "url": "https://6tail.cn/calendar/api.html",
+        "locator": "Lunar.getDayTianShen/getZhiXing",
+        "status": "named_library_fields_not_event_prediction"
+      },
+      "evidence_paths": [
+        "/data/duty",
+        "/data/method"
+      ],
+      "claim_kind": "traditional_calendar_label"
+    },
+    {
+      "rule_id": "p8-almanac-mansion",
+      "met": true,
+      "name": "二十八宿",
+      "school": "lunar-python-day-almanac-sect1",
+      "source": {
+        "title": "lunar-python每日黄历接口",
+        "url": "https://6tail.cn/calendar/api.html",
+        "locator": "Lunar.getXiu",
+        "status": "named_library_fields_not_event_prediction"
+      },
+      "evidence_paths": [
+        "/data/mansion",
+        "/data/method"
+      ],
+      "claim_kind": "traditional_calendar_label"
+    },
+    {
+      "rule_id": "p8-almanac-pengzu",
+      "met": true,
+      "name": "彭祖百忌",
+      "school": "lunar-python-day-almanac-sect1",
+      "source": {
+        "title": "lunar-python每日黄历接口",
+        "url": "https://6tail.cn/calendar/api.html",
+        "locator": "Lunar.getPengZuGan/getPengZuZhi",
+        "status": "named_library_fields_not_event_prediction"
+      },
+      "evidence_paths": [
+        "/data/pengzu",
+        "/data/method"
+      ],
+      "claim_kind": "traditional_calendar_label"
+    },
+    {
+      "rule_id": "p8-almanac-chong-sha",
+      "met": true,
+      "name": "日支冲煞结构",
+      "school": "lunar-python-day-almanac-sect1",
+      "source": {
+        "title": "lunar-python每日黄历接口",
+        "url": "https://6tail.cn/calendar/api.html",
+        "locator": "Lunar.getDayChong/getDaySha",
+        "status": "named_library_fields_not_event_prediction"
+      },
+      "evidence_paths": [
+        "/data/chong_sha",
+        "/data/method"
+      ],
+      "claim_kind": "traditional_calendar_label"
+    }
+  ],
+  "sources": [
+    {
+      "title": "lunar官方API文档",
+      "url": "https://6tail.cn/calendar/api.html"
+    },
+    {
+      "title": "lunar-python实际安装包源码",
+      "url": "https://github.com/6tail/lunar-python",
+      "version": "1.4.8",
+      "sha256": "37088e397f4c14f5312daf2ec2f3581474d1a89b8a6f133c0ef5b1ebe34c9d85",
+      "status": "original_edition_collation_pending"
+    }
+  ],
+  "document_id": "tool-c9d7a9efd74af22aa0456e7f5e1bede937f714524c1cc6b6435b4b89dcf9ee13",
+  "aliases": {
+    "c": [
+      {
+        "alias": "c1",
+        "path": "/data/chong_sha",
+        "value_sha256": "968610b7ae38be63bf4519c735219863513feb19bcbfa726ffc01687e623799c",
+        "claim_id": "claim-5a88b45f150607497216bf7229707a84634b90ff0a2d7333d297f4cd63a82647"
+      },
+      {
+        "alias": "c2",
+        "path": "/data/duty",
+        "value_sha256": "c1392f0f957325b10d6d310d76be6953bb37dcba9f20d208c7c44073fa6f21ac",
+        "claim_id": "claim-3ef256f5ee5585694466c6b32efca17092dba758cd1856d5343224d10361c46a"
+      },
+      {
+        "alias": "c3",
+        "path": "/data/ji",
+        "value_sha256": "e135deefb06b1222524a6bbdacafcc8608f6f53073042c8a5302955a1eabb8bd",
+        "claim_id": "claim-342aeb7d55616ddd36ba9b82d04f4ba7e302d83b7ab3b36e7d1d7b6e67449a20"
+      },
+      {
+        "alias": "c4",
+        "path": "/data/mansion",
+        "value_sha256": "6a0889bbdf85c73377541db3916ca2c6b1480792640658a2a31f9d5a37232fef",
+        "claim_id": "claim-50e8b5a9f292c32f12575a403d3d4dcee51a8ba48e0c3cb0a36e5a064a494026"
+      },
+      {
+        "alias": "c5",
+        "path": "/data/method",
+        "value_sha256": "727ded67e000e8847d215a911d890de3b51cd1e8704414505f811b81fc40839a",
+        "claim_id": "claim-ff5937f1fdb2eb7198d0067fae55a4bdcd8ac914dbd15cc3e556b1c4132c0ac9"
+      },
+      {
+        "alias": "c6",
+        "path": "/data/pengzu",
+        "value_sha256": "fef23df8467a1394afb37603c7a4be385a5f4ece644a6332b7c940e6daa4c8d1",
+        "claim_id": "claim-59dacbb51d2a8a68ea35f5fe9f46d245e855bfc485565d13bfd6355205f9882b"
+      },
+      {
+        "alias": "c7",
+        "path": "/data/yi",
+        "value_sha256": "8a009158be9a048cf0ca34928635e69e0224eeefad79300be477d7ee291664fc",
+        "claim_id": "claim-315cd6d984cee2e67bbd5e5f8d813c13b73639c998a72675ae040fea2b37fa48"
+      }
+    ],
+    "r": [
+      {
+        "alias": "r1",
+        "path": "/rule_hits/0",
+        "rule_id": "p8-almanac-yi",
+        "value_sha256": "ad1059e7c865e53744fcc4dc7ec846ac7cf49fa7532331ea2345b8e51efb5d27",
+        "claim_id": "claim-9b8ef00875c261348e8a027a2eba65ae0b911770bb2b2fa2632ceffe6e42700d",
+        "evidence_aliases": [
+          "c7",
+          "c5"
+        ]
+      },
+      {
+        "alias": "r2",
+        "path": "/rule_hits/1",
+        "rule_id": "p8-almanac-ji",
+        "value_sha256": "eb7b5f6341d08baf5e089d774ebb211e26926644e6ce0ed6518ae7b4b711e8a1",
+        "claim_id": "claim-5f607430a493d0729206a2ee545806121a5eaeaf06d9cab8b293d8fa42e9effd",
+        "evidence_aliases": [
+          "c3",
+          "c5"
+        ]
+      },
+      {
+        "alias": "r3",
+        "path": "/rule_hits/2",
+        "rule_id": "p8-almanac-duty",
+        "value_sha256": "fd376cedde9d47fd3dc083c5932d00646e3994fcc84cc1c6a13eb9955864af2e",
+        "claim_id": "claim-ed4435cf8ec7b135a315368b23968ffcf35eab4f1506aca4a182bc9a901a5c84",
+        "evidence_aliases": [
+          "c2",
+          "c5"
+        ]
+      },
+      {
+        "alias": "r4",
+        "path": "/rule_hits/3",
+        "rule_id": "p8-almanac-mansion",
+        "value_sha256": "bd144bf7f3bedd2722c8afb8dd982ae29e26f87254668c7d38f091d4ba0d51e5",
+        "claim_id": "claim-056f2b83c0baf4db71177c8b76c4b1860068496f35734f95721477e0a5853c8b",
+        "evidence_aliases": [
+          "c4",
+          "c5"
+        ]
+      },
+      {
+        "alias": "r5",
+        "path": "/rule_hits/4",
+        "rule_id": "p8-almanac-pengzu",
+        "value_sha256": "795a2b3845cc1e079d955060a0ded1360f4a1dd3284245c4cfd9ce5daa43da7f",
+        "claim_id": "claim-9e6846a1b78719e1f3209f5d5d697502fbef1511a7da1b7f005c0b2ddd4ff216",
+        "evidence_aliases": [
+          "c6",
+          "c5"
+        ]
+      },
+      {
+        "alias": "r6",
+        "path": "/rule_hits/5",
+        "rule_id": "p8-almanac-chong-sha",
+        "value_sha256": "68b205cfd4503a72e390d223daa91bdb725b12ce5e76c2e4d51cadd034522385",
+        "claim_id": "claim-09ff7b18032a5fec799328a99b75a43f37bb212e94874eb7c3edd0c7d758389d",
+        "evidence_aliases": [
+          "c1",
+          "c5"
+        ]
+      }
+    ]
+  },
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "alias_registry": "ephemeral_only"
+  },
+  "limits": [
+    "短别名仅此结果有效，主线接入时须登记到当前上下文，不是持久化依据账本。",
+    "传统条件及数值计算不证明现实预测有效；没有确认或写入出生资料。",
+    "宜忌、值神和宿等是具名历法库的传统标签，不是现实结果的承诺。",
+    "库内古籍表的具体刻本与页码尚未校勘，不冒称已经核对某一版通书。",
+    "黄历日期采用北京时间民用日，不对普通日期进行出生真太阳时换算。"
+  ]
+}

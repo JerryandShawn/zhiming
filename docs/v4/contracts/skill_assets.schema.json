@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 local skill catalog profile; not a complete Agent Skills specification",
+  "type": "object",
+  "required": ["version", "status", "systems"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"type": "string", "pattern": "^p8-skills-draft-[0-9]{4}-[0-9]{2}-[0-9]{2}-v[0-9]+\\.[0-9]+$"},
+    "status": {"const": "draft_requires_owner_review"},
+    "systems": {
+      "type": "object",
+      "required": ["bazi", "ziwei", "astro", "tarot", "calendar-tools"],
+      "additionalProperties": false,
+      "properties": {
+        "bazi": {"$ref": "#/$defs/System"},
+        "ziwei": {"$ref": "#/$defs/System"},
+        "astro": {"$ref": "#/$defs/System"},
+        "tarot": {"$ref": "#/$defs/System"},
+        "calendar-tools": {"$ref": "#/$defs/System"}
+      }
+    }
+  },
+  "$defs": {
+    "Text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "Id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+    "Texts": {"type": "array", "items": {"$ref": "#/$defs/Text"}, "uniqueItems": true},
+    "Paths": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^(?:/(?:[^~/]|~[01])*)+$"}
+    },
+    "Source": {
+      "type": "object", "required": ["title", "locator", "url"], "additionalProperties": false,
+      "properties": {
+        "title": {"$ref": "#/$defs/Text"}, "locator": {"$ref": "#/$defs/Text"},
+        "url": {"type": "string", "pattern": "^https://[^\\s]+$"}
+      }
+    },
+    "Conditional": {
+      "type": "object", "required": ["capability", "when", "artifact_root", "paths"],
+      "additionalProperties": false,
+      "properties": {
+        "capability": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "when": {"$ref": "#/$defs/Text"}, "artifact_root": {"$ref": "#/$defs/Text"},
+        "paths": {"$ref": "#/$defs/Paths"}
+      }
+    },
+    "Additional": {
+      "type": "object", "required": ["name", "root", "paths"], "additionalProperties": false,
+      "properties": {
+        "name": {"$ref": "#/$defs/Text"}, "root": {"$ref": "#/$defs/Text"},
+        "paths": {"$ref": "#/$defs/Paths"}
+      }
+    },
+    "Chapter": {
+      "type": "object", "additionalProperties": false,
+      "required": ["topic", "title", "file", "question_types", "artifact_root", "required_fields", "pending_fields", "sources", "status", "rule_ids"],
+      "properties": {
+        "topic": {"$ref": "#/$defs/Id"}, "title": {"$ref": "#/$defs/Text"},
+        "file": {"type": "string", "pattern": "^[0-9]{2}_[a-z0-9-]+\\.md$"},
+        "question_types": {"allOf": [{"$ref": "#/$defs/Texts"}], "minItems": 1},
+        "artifact_root": {"$ref": "#/$defs/Text"}, "required_fields": {"$ref": "#/$defs/Paths"},
+        "pending_fields": {"$ref": "#/$defs/Texts"},
+        "sources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/Source"}},
+        "status": {"const": "draft_requires_owner_review"},
+        "rule_ids": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/Id"}},
+        "conditional_fields": {"type": "array", "items": {"$ref": "#/$defs/Conditional"}},
+        "additional_interfaces": {"type": "array", "items": {"$ref": "#/$defs/Additional"}},
+        "feature_state": {"enum": ["accurate_record_time_basis_check", "experimental_frozen"]},
+        "visible_by_default": {"type": "boolean"}
+      }
+    },
+    "System": {
+      "type": "object", "required": ["name", "description", "chapters"], "additionalProperties": false,
+      "properties": {
+        "name": {"$ref": "#/$defs/Id"}, "description": {"$ref": "#/$defs/Text"},
+        "chapters": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/Chapter"}}
+      }
+    }
+  }
+}

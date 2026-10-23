@@ -1,0 +1,54 @@
+import hashlib
+import json
+import re
+import subprocess
+import sys
+from datetime import timedelta, timezone
+from pathlib import Path
+
+from mingjing_core.timekit.clock import get_clock
+
+root = Path.cwd().resolve()
+commit = sys.argv[1]
+assert re.fullmatch(r"[a-f0-9]{40}", commit) and root.name == "zhiming-v4-p8"
+evidence = root / "docs/v4/evidence/P8"
+report = json.loads((evidence / "week-oct21-0945-members-process.json").read_bytes())
+assert report["exit_code"] == 0 and report["sources_unchanged"]
+assert report["source_snapshot_before"] == report["source_snapshot_after"]
+expected = report["source_snapshot_before"]
+paths = sorted(expected)
+assert len(paths) == 383 and all("\n" not in path for path in paths)
+queries = "".join(commit + ":" + path + "\n" for path in paths).encode("utf8")
+result = subprocess.run(
+    ["git", "cat-file", "--batch"], input=queries, capture_output=True, check=True, timeout=25
+)
+cursor, rows = 0, []
+for path in paths:
+    end = result.stdout.index(b"\n", cursor)
+    header = result.stdout[cursor:end].decode("ascii").split()
+    assert len(header) == 3 and header[1] == "blob", path
+    size = int(header[2])
+    body = result.stdout[end + 1 : end + 1 + size]
+    assert len(body) == size and result.stdout[end + 1 + size] == 10
+    cursor = end + 2 + size
+    digest = hashlib.sha256(body.replace(b"\r\n", b"\n")).hexdigest()
+    current = hashlib.sha256((root / path).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    assert digest == current == expected[path], path
+    rows.append({"path": path, "git_blob": header[0], "lf_sha256": digest})
+assert cursor == len(result.stdout)
+value = {
+    "version": "p8-0945-targeted-project-git-blob-binding-v1",
+    "recorded_at_beijing": get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(),
+    "source_commit": commit,
+    "targeted_validation": "week-oct21-0945-members-process.json",
+    "verified_files": len(rows),
+    "all_lf_hashes_match_targeted_style_snapshot": True,
+    "rows": rows,
+    "real_model_requests": 0,
+    "project_server_access": False,
+    "limits": ["Project source binding only; not a runtime/dependency signature, current CI or execution coverage."],
+}
+with (evidence / "week-oct21-0945-committed-source-binding.json").open("x", encoding="utf8", newline="\n") as stream:
+    json.dump(value, stream, ensure_ascii=False, indent=2)
+    stream.write("\n")
+print(json.dumps({"source_commit": commit, "verified_files": len(rows), "all_match": True}))

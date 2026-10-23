@@ -1,0 +1,122 @@
+"""Native metadata-only observation, not a collector or transport approval."""
+import ctypes
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+from ctypes import wintypes as w
+from datetime import timedelta, timezone
+from pathlib import Path
+from unittest.mock import patch
+
+from mingjing_core.adapters.charts.benchmarks.line_coverage_core_git import MetadataGit
+from mingjing_core.adapters.charts.benchmarks.line_coverage_core_job import Accounting
+from mingjing_core.timekit.clock import get_clock
+
+ROOT = Path.cwd().resolve()
+OUT = ROOT / "docs/v4/evidence/P8/week-oct21-native-metadata-git-probe.json"
+assert not OUT.exists()
+job = parent_job
+api = job.api
+api.IsProcessInJob.argtypes = (w.HANDLE, w.HANDLE, ctypes.POINTER(w.BOOL))
+api.IsProcessInJob.restype = w.BOOL
+api.QueryFullProcessImageNameW.argtypes = (w.HANDLE, w.DWORD, w.LPWSTR, ctypes.POINTER(w.DWORD))
+api.QueryFullProcessImageNameW.restype = w.BOOL
+api.GetProcessTimes.argtypes = (w.HANDLE, ctypes.POINTER(w.FILETIME), ctypes.POINTER(w.FILETIME), ctypes.POINTER(w.FILETIME), ctypes.POINTER(w.FILETIME))
+api.GetProcessTimes.restype = w.BOOL
+binary = Path(shutil.which("git")).resolve()
+binary_sha = hashlib.sha256(binary.read_bytes()).hexdigest()
+started = get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat()
+observed = []
+original_popen = subprocess.Popen
+
+def accounting():
+    result = Accounting()
+    job._check(api.QueryInformationJobObject(job.handle, 1, ctypes.byref(result), ctypes.sizeof(result), None), "metadata_probe_accounting_failed")
+    return {"total": result.total, "active": result.active, "terminated": result.terminated}
+
+class CapturedGitPopen(original_popen):
+    def __init__(self, command, *args, **kwargs):
+        assert isinstance(command, list) and Path(command[0]).resolve() == binary
+        assert kwargs.get("creationflags") == subprocess.CREATE_NO_WINDOW
+        assert kwargs.get("stdin") is not None or kwargs.get("stdout") == subprocess.PIPE
+        environment = kwargs["env"]
+        cleared = {name: not any(key.upper() == name for key in environment) for name in ("__PYVENV_LAUNCHER__", "PYTHONHOME", "PYTHONEXECUTABLE", "PYTHONPATH", "VIRTUAL_ENV")}
+        assert all(cleared.values())
+        assert environment["GIT_TERMINAL_PROMPT"] == "0" and environment["GIT_OPTIONAL_LOCKS"] == "0"
+        super().__init__(command, *args, **kwargs)
+        handle = w.HANDLE(int(self._handle))
+        actual_pid = api.GetProcessId(handle)
+        assert actual_pid == self.pid
+        owned = w.BOOL()
+        job._check(api.IsProcessInJob(handle, job.handle, ctypes.byref(owned)), "metadata_probe_membership_query_failed")
+        assert owned.value
+        buffer, size = ctypes.create_unicode_buffer(32768), w.DWORD(32768)
+        job._check(api.QueryFullProcessImageNameW(handle, 0, buffer, ctypes.byref(size)), "metadata_probe_image_query_failed")
+        image = Path(buffer.value).resolve()
+        assert image == binary and hashlib.sha256(image.read_bytes()).hexdigest() == binary_sha
+        times = [w.FILETIME() for _ in range(4)]
+        job._check(api.GetProcessTimes(handle, *(ctypes.byref(value) for value in times)), "metadata_probe_creation_query_failed")
+        created = times[0].dwLowDateTime + (times[0].dwHighDateTime << 32)
+        observed.append({"popen_pid": self.pid, "retained_handle_pid": actual_pid, "creation_filetime": created, "image": str(image), "image_sha256": binary_sha, "is_in_owned_job": bool(owned.value), "argv": command, "creation_flags": kwargs["creationflags"], "identity_environment_keys_absent": cleared})
+
+active = False
+before = accounting()
+failure = None
+metadata = None
+try:
+    with patch.object(subprocess, "Popen", CapturedGitPopen):
+        metadata = MetadataGit(ROOT, lambda: active)
+        head = metadata.read(ROOT, "rev-parse", "HEAD").decode().strip()
+        assert head == "b9f07426cac3de993b0552c3a43eddcf75b2d06f"
+        after_reads = accounting()
+        count = len(observed)
+        active = True
+        try:
+            metadata.read(ROOT, "rev-parse", "HEAD")
+        except ValueError as error:
+            assert str(error) == "b1_git_target_phase_or_repository_refused"
+        else:
+            raise AssertionError("target-phase metadata subprocess was allowed")
+        active = False
+        try:
+            metadata.read(ROOT, "status", "--porcelain")
+        except ValueError as error:
+            assert str(error) == "b1_git_arguments_not_allowlisted"
+        else:
+            raise AssertionError("non-allowlisted metadata subprocess was allowed")
+        assert len(observed) == count
+        metadata.assert_configuration()
+        assert hashlib.sha256(binary.read_bytes()).hexdigest() == binary_sha
+        assert metadata.calls == count == 3
+except Exception as error:
+    failure = {"type": type(error).__name__, "message": str(error) if isinstance(error, (AssertionError, ValueError)) else "native_metadata_probe_failed"}
+    head = None
+    after_reads = accounting()
+after = accounting()
+delta = after["total"] - before["total"]
+assert delta >= len(observed)
+report = {
+    "version": "p8-native-metadata-git-observation-v1",
+    "started_at_beijing": started,
+    "completed_at_beijing": get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(),
+    "status": "metadata_reads_observed" if failure is None else "refused_or_incomplete",
+    "head": head,
+    "fixed_git_binary": str(binary), "fixed_git_sha256": binary_sha,
+    "configuration_file_count": len(metadata.config_files) if metadata is not None else None,
+    "actual_metadata_git_calls": metadata.calls if metadata is not None else None,
+    "observed_direct_processes": observed,
+    "accounting": {"before": before, "after_metadata_reads": after_reads, "after_negative_guards": after, "total_process_delta": delta, "retained_direct_process_count": len(observed), "additional_members_not_identified_by_this_probe": delta - len(observed)},
+    "failure": failure,
+    "strict_transport_accepted": False,
+    "actual_supervisor_invocations": 0, "actual_collector_invocations": 0,
+    "actual_trace_samples": 0, "charts_coverage_samples": 0,
+    "real_model_requests": 0, "project_server_access": False,
+    "limits": ["MetadataGit only, existing arguments/environment/CREATE_NO_WINDOW unchanged; this is not the detached collector process chain", "Only retained direct Git handles are identified; additional accounting members remain unknown, no image-name allowlisting", "Negative target-phase/argument guards issue no subprocess; does not prove whole supervisor lifecycle", "Not an OS sandbox or >=90% line coverage result"]
+}
+with OUT.open("x", encoding="utf8", newline="\n") as stream:
+    stream.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+print(json.dumps({"status": report["status"], "native_metadata_calls": report["actual_metadata_git_calls"], "total_process_delta": delta, "retained_direct_processes": len(observed), "unknown_additional_members": delta - len(observed), "collector_invocations": 0}))
+if failure is not None:
+    raise SystemExit(1)

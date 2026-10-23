@@ -1,0 +1,76 @@
+{
+  "version": "p8-core-supervisor-author-mocks-v1",
+  "recorded_at_beijing": "2026-10-21T08:04:00.208283+08:00",
+  "scope": "two candidate modules and dedicated tests only",
+  "test_runs": [
+    {
+      "passed": 41,
+      "failed": 1,
+      "seconds": 0.3,
+      "note": "synthetic Thread32First incorrectly delegated to Next; fixture corrected without changing native source"
+    },
+    {
+      "passed": 42,
+      "failed": 0,
+      "seconds": 0.23
+    },
+    {
+      "passed": 55,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 0.29
+    }
+  ],
+  "author_test_processes": {
+    "max_concurrent_Core": 1,
+    "Charts": 0,
+    "Git": 0,
+    "real_children": 0,
+    "actual_supervisor_invocations": 0,
+    "collector": 0,
+    "trace": 0
+  },
+  "sources": [
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_job.py",
+      "raw_sha256": "50c5daf0f6c1fa67b678d7c905a7566a75257f3b120e0cf1bf0b357cd0ced345",
+      "lf_sha256": "50c5daf0f6c1fa67b678d7c905a7566a75257f3b120e0cf1bf0b357cd0ced345",
+      "lines": 205,
+      "max_function_lines": 29
+    },
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_supervisor.py",
+      "raw_sha256": "7e94e3c4fbe41103ee0e813ec7eb3008b6c707e714106d9ab78dcbb5d8131c9d",
+      "lf_sha256": "7e94e3c4fbe41103ee0e813ec7eb3008b6c707e714106d9ab78dcbb5d8131c9d",
+      "lines": 322,
+      "max_function_lines": 55
+    },
+    {
+      "path": "tests/v4/test_p8_core_coverage_job.py",
+      "raw_sha256": "62611855860835f29ba155b0ac6e1d500f8058af503dae9f76d643b6f5cd3e19",
+      "lf_sha256": "62611855860835f29ba155b0ac6e1d500f8058af503dae9f76d643b6f5cd3e19",
+      "lines": 241,
+      "max_function_lines": 10
+    },
+    {
+      "path": "tests/v4/test_p8_core_coverage_supervisor.py",
+      "raw_sha256": "f5d4a56f65986991290d4d6f0ad87e8ada8f1637288b8c28e93657e3f4c0e768",
+      "lf_sha256": "f5d4a56f65986991290d4d6f0ad87e8ada8f1637288b8c28e93657e3f4c0e768",
+      "lines": 370,
+      "max_function_lines": 37
+    }
+  ],
+  "static_checks": {
+    "ruff_E_F_except_E501": "passed",
+    "format_default88": "passed",
+    "file_lines_max400": "passed",
+    "function_lines_max60": "passed"
+  },
+  "limits": [
+    "All author WinAPI/Popen/termination checks use synthetic handles and clocks, not OS proof.",
+    "Root primitive OS probes are separate evidence, never counted as these 55 tests.",
+    "Actual launcher chain/process budget still requires proof before real collector execution.",
+    "ResumeThread unexpected non-error count currently preserves possibly stale GetLastError; domain diagnostic follow-up noted to root.",
+    "Supervisor receipt never proves coverage success; acceptance stays false and collector receipt must be checked separately."
+  ]
+}

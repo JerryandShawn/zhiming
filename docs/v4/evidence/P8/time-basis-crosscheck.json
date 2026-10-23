@@ -1,0 +1,681 @@
+{
+  "status": "passed",
+  "scope": "18 P8 addendum C L1 pure calculation; no old score/top-three rerun",
+  "method": "noaa-meeus-julian-century-equation-of-time-v1",
+  "reference": {
+    "version": "noaa-cached-equation-of-time-reference-v1",
+    "source_url": "https://gml.noaa.gov/grad/solcalc/NOAA_Solar_Calculations_year.ods",
+    "source_sha256": "28b4c196700e2a57e0ff32c4c88729d5506e3b8f425700ece71397e801a0b0a6",
+    "source_bytes": 390343,
+    "source_sheet": "Calculations",
+    "source_settings": {
+      "year": 2010,
+      "local_hour": 12,
+      "timezone_hours": -7,
+      "longitude": -105
+    },
+    "reference_kind": "official_published_cached_numeric_cells_not_recomputed_in_test",
+    "independence": "NOAA spreadsheet and implementation share Meeus mathematics; external published numeric crosscheck, not independent astronomical observation",
+    "tolerance_minutes": 0.5,
+    "rows": [
+      {
+        "utc": "2010-01-15T19:00:00Z",
+        "cell": "V16",
+        "eot_minutes": -9.50469392310526
+      },
+      {
+        "utc": "2010-02-15T19:00:00Z",
+        "cell": "V47",
+        "eot_minutes": -14.1379287302671
+      },
+      {
+        "utc": "2010-04-15T19:00:00Z",
+        "cell": "V106",
+        "eot_minutes": 0.0208955169080454
+      },
+      {
+        "utc": "2010-06-15T19:00:00Z",
+        "cell": "V167",
+        "eot_minutes": -0.522779190331529
+      },
+      {
+        "utc": "2010-09-15T19:00:00Z",
+        "cell": "V259",
+        "eot_minutes": 4.84100803902021
+      },
+      {
+        "utc": "2010-11-03T19:00:00Z",
+        "cell": "V308",
+        "eot_minutes": 16.4768579211255
+      }
+    ]
+  },
+  "noaa_numeric_crosscheck": [
+    {
+      "utc": "2010-01-15T19:00:00Z",
+      "cell": "V16",
+      "eot_minutes": -9.50469392310526,
+      "official_cached_value": -9.50469392310526,
+      "computed_minutes": -9.504693923105261,
+      "absolute_error_minutes": 1.7763568394002505e-15,
+      "pass_within_0_5_minute": true
+    },
+    {
+      "utc": "2010-02-15T19:00:00Z",
+      "cell": "V47",
+      "eot_minutes": -14.1379287302671,
+      "official_cached_value": -14.1379287302671,
+      "computed_minutes": -14.13792873026707,
+      "absolute_error_minutes": 3.019806626980426e-14,
+      "pass_within_0_5_minute": true
+    },
+    {
+      "utc": "2010-04-15T19:00:00Z",
+      "cell": "V106",
+      "eot_minutes": 0.0208955169080454,
+      "official_cached_value": 0.0208955169080454,
+      "computed_minutes": 0.02089551690804535,
+      "absolute_error_minutes": 4.85722573273506e-17,
+      "pass_within_0_5_minute": true
+    },
+    {
+      "utc": "2010-06-15T19:00:00Z",
+      "cell": "V167",
+      "eot_minutes": -0.522779190331529,
+      "official_cached_value": -0.522779190331529,
+      "computed_minutes": -0.522779190331529,
+      "absolute_error_minutes": 0.0,
+      "pass_within_0_5_minute": true
+    },
+    {
+      "utc": "2010-09-15T19:00:00Z",
+      "cell": "V259",
+      "eot_minutes": 4.84100803902021,
+      "official_cached_value": 4.84100803902021,
+      "computed_minutes": 4.84100803902021,
+      "absolute_error_minutes": 0.0,
+      "pass_within_0_5_minute": true
+    },
+    {
+      "utc": "2010-11-03T19:00:00Z",
+      "cell": "V308",
+      "eot_minutes": 16.4768579211255,
+      "official_cached_value": 16.4768579211255,
+      "computed_minutes": 16.476857921125507,
+      "absolute_error_minutes": 7.105427357601002e-15,
+      "pass_within_0_5_minute": true
+    }
+  ],
+  "max_absolute_error_minutes": 3.019806626980426e-14,
+  "independence": "Official downloaded cached numbers are external published numeric references. Same Meeus mathematical family; not independent astronomical observations. No formula recomputation used for reference values.",
+  "timezone_data": {
+    "core_tzdata_version": "2026.5",
+    "charts_tzdata_installed": false,
+    "charts_test_data": "read-only Core tzdata zoneinfo via explicit child PYTHONTZPATH; no environment installation or lock edits",
+    "linux_CI": "not_run_this_scope",
+    "selection_policy": "current explicit absolute PYTHONTZPATH files; otherwise package before OS; empty override forbids OS fallback",
+    "unpinned_system_fallback": "only without explicit override and unavailable package; source and cross-platform limitation recorded",
+    "regressions_added": 9
+  },
+  "historical_cases": [
+    {
+      "zone": "Asia/Shanghai",
+      "reported_date": "1986-05-04",
+      "reported_clock": "02:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "nonexistent",
+          "utc": null,
+          "reported": "1986-05-04T02:30:00",
+          "timezone": "Asia/Shanghai",
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [
+            "该钟表时刻在时区跳时中不存在，需要核对记录，不能自动平移一小时。"
+          ],
+          "requires_confirmation": true,
+          "id": "instant-4fdd55ec69016e69a9363674"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Shanghai",
+      "reported_date": "1986-09-14",
+      "reported_clock": "01:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "valid",
+          "utc": "1986-09-13T16:30:00Z",
+          "clock": "1986-09-14T01:30:00+09:00",
+          "standard": "1986-09-14T00:30:00",
+          "reported": "1986-09-14T01:30:00",
+          "timezone": "Asia/Shanghai",
+          "offset_minutes": 540.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 60.0,
+          "fold": 0,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": true,
+          "id": "instant-caaf88070f742885e64cd6e2"
+        },
+        {
+          "status": "valid",
+          "utc": "1986-09-13T17:30:00Z",
+          "clock": "1986-09-14T01:30:00+08:00",
+          "standard": "1986-09-14T01:30:00",
+          "reported": "1986-09-14T01:30:00",
+          "timezone": "Asia/Shanghai",
+          "offset_minutes": 480.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 0.0,
+          "fold": 1,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": true,
+          "id": "instant-629e1fc691a97e1e55256612"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Shanghai",
+      "reported_date": "1988-04-17",
+      "reported_clock": "02:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "nonexistent",
+          "utc": null,
+          "reported": "1988-04-17T02:30:00",
+          "timezone": "Asia/Shanghai",
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [
+            "该钟表时刻在时区跳时中不存在，需要核对记录，不能自动平移一小时。"
+          ],
+          "requires_confirmation": true,
+          "id": "instant-3e83416cee42b463ce0a0651"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Shanghai",
+      "reported_date": "1988-09-11",
+      "reported_clock": "01:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "valid",
+          "utc": "1988-09-10T16:30:00Z",
+          "clock": "1988-09-11T01:30:00+09:00",
+          "standard": "1988-09-11T00:30:00",
+          "reported": "1988-09-11T01:30:00",
+          "timezone": "Asia/Shanghai",
+          "offset_minutes": 540.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 60.0,
+          "fold": 0,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": true,
+          "id": "instant-9b4fd0de93a2fae06948e45f"
+        },
+        {
+          "status": "valid",
+          "utc": "1988-09-10T17:30:00Z",
+          "clock": "1988-09-11T01:30:00+08:00",
+          "standard": "1988-09-11T01:30:00",
+          "reported": "1988-09-11T01:30:00",
+          "timezone": "Asia/Shanghai",
+          "offset_minutes": 480.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 0.0,
+          "fold": 1,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": true,
+          "id": "instant-e1d739aa5bc8076932ca442d"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Shanghai",
+      "reported_date": "1991-04-14",
+      "reported_clock": "02:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "nonexistent",
+          "utc": null,
+          "reported": "1991-04-14T02:30:00",
+          "timezone": "Asia/Shanghai",
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [
+            "该钟表时刻在时区跳时中不存在，需要核对记录，不能自动平移一小时。"
+          ],
+          "requires_confirmation": true,
+          "id": "instant-958eeaede7e5941699c377e8"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Shanghai",
+      "reported_date": "1991-09-15",
+      "reported_clock": "01:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "valid",
+          "utc": "1991-09-14T16:30:00Z",
+          "clock": "1991-09-15T01:30:00+09:00",
+          "standard": "1991-09-15T00:30:00",
+          "reported": "1991-09-15T01:30:00",
+          "timezone": "Asia/Shanghai",
+          "offset_minutes": 540.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 60.0,
+          "fold": 0,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": true,
+          "id": "instant-49867204c33b8062a9c8e9fd"
+        },
+        {
+          "status": "valid",
+          "utc": "1991-09-14T17:30:00Z",
+          "clock": "1991-09-15T01:30:00+08:00",
+          "standard": "1991-09-15T01:30:00",
+          "reported": "1991-09-15T01:30:00",
+          "timezone": "Asia/Shanghai",
+          "offset_minutes": 480.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 0.0,
+          "fold": 1,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": true,
+          "id": "instant-f75c3bd89f96f755ee46fecf"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Shanghai",
+      "reported_date": "1940-07-15",
+      "reported_clock": "09:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "valid",
+          "utc": "1940-07-15T00:30:00Z",
+          "clock": "1940-07-15T09:30:00+09:00",
+          "standard": "1940-07-15T08:30:00",
+          "reported": "1940-07-15T09:30:00",
+          "timezone": "Asia/Shanghai",
+          "offset_minutes": 540.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 60.0,
+          "fold": 0,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Shanghai",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [
+            "历史时区数据可能有误差，不能代替出生记录。"
+          ],
+          "requires_confirmation": false,
+          "id": "instant-7e6cdf2bfbdbc8cb901b427b"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Hong_Kong",
+      "reported_date": "1979-07-15",
+      "reported_clock": "09:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "valid",
+          "utc": "1979-07-15T00:30:00Z",
+          "clock": "1979-07-15T09:30:00+09:00",
+          "standard": "1979-07-15T08:30:00",
+          "reported": "1979-07-15T09:30:00",
+          "timezone": "Asia/Hong_Kong",
+          "offset_minutes": 540.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 60.0,
+          "fold": 0,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Hong_Kong",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "f4068f73246db97417f73467453564c57d6646ce4909b9fa2536923efcd7eb4f",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": false,
+          "id": "instant-5ee391509c39ac0a479165bd"
+        }
+      ]
+    },
+    {
+      "zone": "Asia/Taipei",
+      "reported_date": "1979-07-15",
+      "reported_clock": "09:30",
+      "basis": "clock",
+      "instants": [
+        {
+          "status": "valid",
+          "utc": "1979-07-15T00:30:00Z",
+          "clock": "1979-07-15T09:30:00+09:00",
+          "standard": "1979-07-15T08:30:00",
+          "reported": "1979-07-15T09:30:00",
+          "timezone": "Asia/Taipei",
+          "offset_minutes": 540.0,
+          "standard_offset_minutes": 480.0,
+          "dst_minutes": 60.0,
+          "fold": 0,
+          "assumptions": [
+            "clock"
+          ],
+          "timezone_source": {
+            "zone": "Asia/Taipei",
+            "source": "tzdata_package",
+            "iana_version": "2026e",
+            "tzdata_package_version": "2026.5",
+            "zone_sha256": "a04c2c72f4f76a83178d036dd97d157ee1f32e478e44dda7a5c10923687ee6cf",
+            "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+            "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+            "source_limits": "package_version_recorded; deployment_lock_match_not_checked_here"
+          },
+          "warnings": [],
+          "requires_confirmation": false,
+          "id": "instant-06d0b1604be96c3c02ae62b1"
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "tests",
+      "command": [
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/v4/test_p8_time_basis.py",
+        "tests/v4/test_p8_time_basis_process.py",
+        "-q"
+      ],
+      "returncode": 0,
+      "seconds": 2.749,
+      "stdout": "....................................                                     [100%]\n36 passed in 1.92s\n",
+      "stderr": ""
+    },
+    {
+      "name": "native",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-charts/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "tests/test_p8_time_basis_native.py"
+      ],
+      "returncode": 0,
+      "seconds": 1.378,
+      "stdout": "{\"tests\": 8, \"successful\": true, \"skipped\": 0}\n",
+      "stderr": "test_jie_marker_and_year_month_use_actual_utc_not_shifted_solar_clock (__main__.TimeBasisNative.test_jie_marker_and_year_month_use_actual_utc_not_shifted_solar_clock) ... ok\ntest_late_zi_day_advances_at_23_in_both_time_coordinates (__main__.TimeBasisNative.test_late_zi_day_advances_at_23_in_both_time_coordinates) ... ok\ntest_nonexistent_clock_never_becomes_a_guessed_pillar (__main__.TimeBasisNative.test_nonexistent_clock_never_becomes_a_guessed_pillar) ... ok\ntest_same_pillars_deduplicate_bases_but_preserve_all_coordinates (__main__.TimeBasisNative.test_same_pillars_deduplicate_bases_but_preserve_all_coordinates) ... ok\ntest_standard_clock_engine_coordinates_preserve_the_utc_instant (__main__.TimeBasisNative.test_standard_clock_engine_coordinates_preserve_the_utc_instant) ... ok\ntest_true_solar_previous_date_is_retained_without_changing_physical_instant (__main__.TimeBasisNative.test_true_solar_previous_date_is_retained_without_changing_physical_instant) ... ok\ntest_unknown_time_samples_centers_and_sides_without_fabricating_known_time (__main__.TimeBasisNative.test_unknown_time_samples_centers_and_sides_without_fabricating_known_time) ... ok\ntest_urumqi_standard_and_apparent_solar_have_distinct_declared_hours (__main__.TimeBasisNative.test_urumqi_standard_and_apparent_solar_have_distinct_declared_hours) ... ok\n\n----------------------------------------------------------------------\nRan 8 tests in 1.121s\n\nOK\n"
+    },
+    {
+      "name": "ruff",
+      "command": [
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "mingjing_core/adapters/charts/time_basis.py",
+        "mingjing_core/adapters/charts/time_basis_candidates.py",
+        "mingjing_core/adapters/charts/time_basis_solar.py",
+        "mingjing_core/adapters/charts/time_basis_zones.py",
+        "tests/v4/test_p8_time_basis.py",
+        "tests/v4/test_p8_time_basis_process.py",
+        "tests/test_p8_time_basis_native.py",
+        "--select",
+        "E,F,I,B,UP,SIM",
+        "--line-length",
+        "120"
+      ],
+      "returncode": 0,
+      "seconds": 0.09,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "name": "format",
+      "command": [
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "mingjing_core/adapters/charts/time_basis.py",
+        "mingjing_core/adapters/charts/time_basis_candidates.py",
+        "mingjing_core/adapters/charts/time_basis_solar.py",
+        "mingjing_core/adapters/charts/time_basis_zones.py",
+        "tests/v4/test_p8_time_basis.py",
+        "tests/v4/test_p8_time_basis_process.py",
+        "tests/test_p8_time_basis_native.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.097,
+      "stdout": "7 files already formatted\n",
+      "stderr": ""
+    }
+  ],
+  "source_manifest": {
+    "mingjing_core/adapters/charts/time_basis.py": "c9706c5c30e4300219c97748415b687a2f248881b61303b375d815d63bcc2370",
+    "mingjing_core/adapters/charts/time_basis_candidates.py": "c11be6489ababe72b261da014864ed25708305d905b8f5afedf8cfddc26a8acb",
+    "mingjing_core/adapters/charts/time_basis_solar.py": "64d1acc5df79d9f1c84f6ed41bc03e979634294b29096b4fd3109fd7cff3dc8a",
+    "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+    "tests/v4/test_p8_time_basis.py": "34ba0fa373df5a24561a37b4a442d8c7a1c753ff2710d199a9c6343ca5ed6164",
+    "tests/v4/test_p8_time_basis_process.py": "eca423e6c47f11d5ed6c142e4cb494124771bbb24dabe130f2387c8aa3c3e2d6",
+    "tests/test_p8_time_basis_native.py": "abf66250680016805be4e684265649676f135f7d8a9199c6499019161945e044",
+    "mingjing_core/knowledge/time_basis_noaa_reference.json": "adaceba143c8244229b0a0afe7ce4bcaebe71f5c230320aadb0c5315e674054e"
+  },
+  "source_digest": "37decbe7ace645ed42e98fd11f76482cad1bea5170f5ab25e3beddd1b65ba237",
+  "source_unchanged_during_run": true,
+  "style": [
+    {
+      "path": "mingjing_core/adapters/charts/time_basis.py",
+      "lines": 157,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "mingjing_core/adapters/charts/time_basis_candidates.py",
+      "lines": 161,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "mingjing_core/adapters/charts/time_basis_solar.py",
+      "lines": 73,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "mingjing_core/adapters/charts/time_basis_zones.py",
+      "lines": 95,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/v4/test_p8_time_basis.py",
+      "lines": 241,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/v4/test_p8_time_basis_process.py",
+      "lines": 89,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/test_p8_time_basis_native.py",
+      "lines": 171,
+      "over_60_functions": [],
+      "over_120_lines": []
+    }
+  ],
+  "protected_v3_files": [
+    {
+      "path": "hermes/bazi.py",
+      "unchanged_vs_HEAD_normalized": true
+    },
+    {
+      "path": "hermes/ziwei.py",
+      "unchanged_vs_HEAD_normalized": true
+    },
+    {
+      "path": "hermes/astro.py",
+      "unchanged_vs_HEAD_normalized": true
+    },
+    {
+      "path": "mingjing_core/adapters/charts/adapter.py",
+      "unchanged_vs_HEAD_normalized": true
+    },
+    {
+      "path": "mingjing_core/adapters/charts/worker.py",
+      "unchanged_vs_HEAD_normalized": true
+    }
+  ],
+  "model_calls": 0,
+  "database_calls": 0,
+  "writes_to_birth_profiles": 0,
+  "previous_verification": {
+    "source_digest": "d6021c49dd9836b0eef21720a735cca63b5ddc1b7cbb8feff7fedfdd78534a11",
+    "tests": "27 passed; superseded by timezone-source priority fix regressions"
+  },
+  "source_digest_method": "SHA256 canonical sorted compact JSON of per-file LF-normalized SHA256 manifest"
+}

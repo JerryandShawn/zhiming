@@ -1,0 +1,115 @@
+{
+  "preview_contract": "p8-chart-compute-preview-v1",
+  "verified_at": "2026-10-18T23:08:25+08:00",
+  "base_head": "0b744aee9ac1942fe89fb5c1bdcc37d58bd60580",
+  "v4": {
+    "passed": 816,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 110.72,
+    "log_tail": "........................................................................ [  8%]\n........................................................................ [ 17%]\n........................................................................ [ 26%]\n........................................................................ [ 35%]\n........................................................................ [ 44%]\n........................................................................ [ 52%]\n........................................................................ [ 61%]\n........................................................................ [ 70%]\n........................................................................ [ 79%]\n........................................................................ [ 88%]\n........................................................................ [ 97%]\n........................                                                 [100%]\n816 passed in 110.72s (0:01:50)\n"
+  },
+  "new_preview_tests": {
+    "passed": 47,
+    "skipped": 0,
+    "seconds": 1.25
+  },
+  "frontend_readme_javascript": {
+    "engine": "local Node",
+    "actual_json_files": 3,
+    "reference_resolution_checks": 68,
+    "result": "passed",
+    "web_files_changed": 0
+  },
+  "samples": [
+    {
+      "path": "docs/v4/contracts/samples/ayuan_astro.json",
+      "bytes": 1368767,
+      "sha256": "afa13cb8adc2671e0051cc887dd2025dc5c274ea6a60962e76e7faa89e08858a",
+      "scope_operation": "synthetic-ayuan-astro-20261019",
+      "documents": 4,
+      "view_counts": {
+        "time_basis": 1,
+        "primary": 1,
+        "comparisons": 0,
+        "diagnostics": 0,
+        "rules": 0,
+        "assessments": 0,
+        "interactions": 0,
+        "flying": 0,
+        "transits": 1,
+        "timings": 2
+      },
+      "c_aliases": 5,
+      "r_aliases": 0,
+      "physical_birth_at_utc": "1994-03-12T00:20:00Z"
+    },
+    {
+      "path": "docs/v4/contracts/samples/ayuan_bazi.json",
+      "bytes": 1214454,
+      "sha256": "70d6508e652f7985354107b66f60b62de03fe4e187c8ba6bd408d6d3c385d80b",
+      "scope_operation": "synthetic-ayuan-bazi-20261019",
+      "documents": 1,
+      "view_counts": {
+        "time_basis": 1,
+        "primary": 1,
+        "comparisons": 0,
+        "diagnostics": 2,
+        "rules": 9,
+        "assessments": 1,
+        "interactions": 1,
+        "flying": 0,
+        "transits": 0,
+        "timings": 0
+      },
+      "c_aliases": 24,
+      "r_aliases": 9,
+      "physical_birth_at_utc": "1994-03-12T00:20:00Z"
+    },
+    {
+      "path": "docs/v4/contracts/samples/ayuan_ziwei.json",
+      "bytes": 1191296,
+      "sha256": "209ede466c103c1fef18149956699cf0e53e240eddd6645c5dafe3e8f5839dc7",
+      "scope_operation": "synthetic-ayuan-ziwei-20261019",
+      "documents": 1,
+      "view_counts": {
+        "time_basis": 1,
+        "primary": 1,
+        "comparisons": 0,
+        "diagnostics": 2,
+        "rules": 0,
+        "assessments": 0,
+        "interactions": 0,
+        "flying": 1,
+        "transits": 0,
+        "timings": 0
+      },
+      "c_aliases": 5,
+      "r_aliases": 0,
+      "physical_birth_at_utc": "1994-03-12T00:20:00Z"
+    }
+  ],
+  "source_binding_checked": true,
+  "single_cli_observation_seconds": {
+    "bazi": 1.121649,
+    "ziwei": 1.114054,
+    "astro": 2.765735,
+    "n_per_system": 1,
+    "includes": "chart worker launches + validation + pretty JSON output",
+    "not_sla": true
+  },
+  "python_style_files": 103,
+  "protected_files_unchanged": 141,
+  "real_model_requests": 0,
+  "server_access": false,
+  "database_writes": 0,
+  "runtime_api_implemented": false,
+  "persistent_alias_registry_implemented": false,
+  "new_head_ci": "pending_until_publish",
+  "m1_ci": {
+    "head": "0b744aee9ac1942fe89fb5c1bdcc37d58bd60580",
+    "run": 39137065040,
+    "conclusion": "success"
+  },
+  "schema": "p8-night24-m2-validation-v1"
+}

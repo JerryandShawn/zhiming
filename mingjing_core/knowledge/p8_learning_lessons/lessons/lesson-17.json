@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-17",
+  "order": 17,
+  "title": "冲合刑害破只先认结构",
+  "level": "进阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-16"
+  ],
+  "objectives": [
+    "识别关系连接的实际成员。",
+    "不从结构跳到事件或合化。"
+  ],
+  "paragraphs": [
+    "六合、六冲、三合、刑害破先描述符号成员和所在层。合并不自动化成某五行，冲也不是事故预告；同一对成员可在具名表中出现不同关系。",
+    "样例目标月戊戌与本命时柱甲辰列出地支六冲。我们能复核戌与辰这两个成员，不能据此认定阿远这个月发生搬家、争执或灾祸。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本例月层对本命时柱的关系字段列地支六冲，不等于现实冲突。〔c3〕",
+      "evidence_ids": [
+        "month_hour_clash"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-17-q1",
+      "question": "该目标月与本命时柱实际列出的关系是什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "地支六冲",
+          "value": "地支六冲"
+        },
+        {
+          "option_id": "b",
+          "text": "已经合化",
+          "value": "合化成功"
+        },
+        {
+          "option_id": "c",
+          "text": "医学诊断",
+          "value": "诊断"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "原字段为地支六冲；这里只认成员，未输出事件或合化结论。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "month_hour_clash",
+        "expected": "地支六冲"
+      }
+    },
+    {
+      "quiz_id": "lesson-17-q2",
+      "question": "三合组只出现两支，应怎样记？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "补上缺支让结构完整",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "保留未齐成员与缺项",
+          "value": "preserve_missing_member"
+        },
+        {
+          "option_id": "c",
+          "text": "直接算完整三合加分",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "输入没有的支不能由解释补出，也不把两支偷偷重命名为完整三合。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-interaction-table"
+        ],
+        "expected": "preserve_missing_member"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-interaction-table"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "当前只按具名成员表，六破保留项目表与原典待核状态。",
+      "source_ids": [
+        "p8-interaction-table"
+      ]
+    }
+  ],
+  "pending_review": [
+    "结构强弱、合化条件及事件效度未由成员出现证明。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

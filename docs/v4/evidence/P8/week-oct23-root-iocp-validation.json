@@ -1,0 +1,119 @@
+{
+  "version": "p8-oct23-recovery-check-v1",
+  "checked_at_beijing": "2026-10-23T21:02:59.417163+08:00",
+  "source_head": "c471d4ac89444bcb004e102a8ab026c738c2788c",
+  "process_receipts": [
+    {
+      "started_at_beijing": "2026-10-23T20:57:05.259845+08:00",
+      "effective_core_executable": "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+      "actual_base_executable": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+      "core_prefix": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core",
+      "command": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+        "-I",
+        "-B",
+        "private/p8-validation/guarded_root_iocp_probe.py",
+        "root_iocp_probe",
+        "--label",
+        "week-oct23-recovery"
+      ],
+      "process_budget": {
+        "mechanism": "Windows Job ACTIVE_PROCESS_LIMIT=4 including this inline coordinator and all descendants; no BREAKAWAY flags",
+        "configured_limit": 4,
+        "active_before": 1,
+        "active_after": 1
+      },
+      "real_model_requests": 0,
+      "project_server_access": false,
+      "validation_harness_lf_sha256": "bb6ef7e1ef64fd996f97264488283f0ec08ed738920248bfaab311f4bc568ea5",
+      "chart_launch_transport": "original configured Charts venv wrapper",
+      "completed_at_beijing": "2026-10-23T20:57:07.266224+08:00",
+      "exit_code": 1,
+      "sources_unchanged": true,
+      "raw_receipt_sha256": "c329c96b0d08ec9e7466e6af145fafbaa54c0efebab56c60b1dc98bfb9566b68",
+      "project_source_count": 387,
+      "project_sources_match_449682b_full": true,
+      "canonical_source_map": "week-oct21-1115-full-validation.json"
+    },
+    {
+      "started_at_beijing": "2026-10-23T20:57:25.953878+08:00",
+      "effective_core_executable": "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+      "actual_base_executable": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+      "core_prefix": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core",
+      "command": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+        "-I",
+        "-B",
+        "private/p8-validation/guarded_root_iocp_probe.py",
+        "root_iocp_probe",
+        "--label",
+        "week-oct23-recovery-v2"
+      ],
+      "process_budget": {
+        "mechanism": "Windows Job ACTIVE_PROCESS_LIMIT=4 including this inline coordinator and all descendants; no BREAKAWAY flags",
+        "configured_limit": 4,
+        "active_before": 1,
+        "active_after": 1
+      },
+      "real_model_requests": 0,
+      "project_server_access": false,
+      "validation_harness_lf_sha256": "bb6ef7e1ef64fd996f97264488283f0ec08ed738920248bfaab311f4bc568ea5",
+      "chart_launch_transport": "original configured Charts venv wrapper",
+      "completed_at_beijing": "2026-10-23T20:57:27.651610+08:00",
+      "exit_code": 0,
+      "sources_unchanged": true,
+      "raw_receipt_sha256": "f5aa4bec129336f86abd629d21953b9c99c46ab6c83a4ee4b3bccea55cc14029",
+      "project_source_count": 387,
+      "project_sources_match_449682b_full": true,
+      "canonical_source_map": "week-oct21-1115-full-validation.json"
+    }
+  ],
+  "synastry_argument_boundary_checks": [
+    {
+      "case": "native_omitted_consent",
+      "exception": "TypeError",
+      "fixed_prefix": null,
+      "passed": true
+    },
+    {
+      "case": "native_omitted_date",
+      "exception": "TypeError",
+      "fixed_prefix": null,
+      "passed": true
+    },
+    {
+      "case": "native_explicit_none",
+      "exception": "ValueError",
+      "fixed_prefix": "CONSENT_REQUIRED",
+      "passed": true
+    },
+    {
+      "case": "native_unconfirmed",
+      "exception": "ValueError",
+      "fixed_prefix": "CONSENT_REQUIRED",
+      "passed": true
+    },
+    {
+      "case": "core_missing_consent",
+      "exception": "ValueError",
+      "fixed_prefix": "CONSENT_REQUIRED",
+      "passed": true
+    },
+    {
+      "case": "core_current_owner",
+      "exception": "ValueError",
+      "fixed_prefix": "AUTH_SCOPE_ERROR",
+      "passed": true
+    }
+  ],
+  "actual_natal_preparations": 0,
+  "actual_worker_calls": 0,
+  "metadata_observation_complete": false,
+  "strict_transport_accepted": false,
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "production_code_changed": false,
+  "contract_only_change": "synastry.md Python argument binding clarification",
+  "full_3202_rerun_today": false,
+  "full_3202_source": "449682bdcc8a309c482081d5722c0b66ce666903"
+}

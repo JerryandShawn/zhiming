@@ -1,0 +1,637 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 chart_compute synthetic preview integration contract",
+  "description": "Structure only. Ownership, content hashes, reference resolution, rule truth and finite JSON require the accompanying semantic validator.",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "enum": [
+        "p8-chart-compute-preview-v1",
+        "p8-chart-compute-preview-v1.1"
+      ]
+    },
+    "status": {
+      "const": "draft_integration_contract"
+    },
+    "mode": {
+      "const": "scripted_synthetic_preview"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "request": {
+      "$ref": "#/$defs/Request"
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Document"
+      },
+      "minItems": 1
+    },
+    "view": {
+      "type": "object",
+      "properties": {
+        "time_basis": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "primary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "diagnostics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "interactions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "flying": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "transits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "timings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        },
+        "boundary_alerts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Ref"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "time_basis",
+        "primary",
+        "comparisons",
+        "diagnostics",
+        "rules",
+        "assessments",
+        "interactions",
+        "flying",
+        "transits",
+        "timings"
+      ],
+      "additionalProperties": false
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChartAlias"
+          },
+          "minItems": 0
+        },
+        "r": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuleAlias"
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "c",
+        "r"
+      ],
+      "additionalProperties": false
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "model_calls": {
+          "const": 0
+        },
+        "writes": {
+          "const": 0
+        },
+        "alias_registry": {
+          "const": "ephemeral_demo_only"
+        }
+      },
+      "required": [
+        "model_calls",
+        "writes",
+        "alias_registry"
+      ],
+      "additionalProperties": false
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 1
+    },
+    "boundary_alerts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Ref"
+      },
+      "minItems": 0
+    }
+  },
+  "required": [
+    "contract_version",
+    "status",
+    "mode",
+    "display_name",
+    "scope",
+    "request",
+    "documents",
+    "view",
+    "aliases",
+    "effects",
+    "warnings"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "contract_version": {
+            "const": "p8-chart-compute-preview-v1.1"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "boundary_alerts"
+        ],
+        "properties": {
+          "view": {
+            "required": [
+              "boundary_alerts"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Scope": {
+      "type": "object",
+      "properties": {
+        "owner_user_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "owner_user_id",
+        "subject_id",
+        "revision",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "Birth": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reported_time": {
+          "type": "string",
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d)?$"
+        },
+        "gender": {
+          "enum": [
+            "男",
+            "女"
+          ]
+        },
+        "place": {
+          "type": "object",
+          "properties": {
+            "tz": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "lon": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            "lat": {
+              "type": "number",
+              "exclusiveMinimum": -90,
+              "exclusiveMaximum": 90
+            }
+          },
+          "required": [
+            "tz",
+            "lon",
+            "lat"
+          ],
+          "additionalProperties": false
+        },
+        "clock_basis": {
+          "enum": [
+            "clock",
+            "standard",
+            "unknown"
+          ]
+        },
+        "precision": {
+          "const": "reported"
+        }
+      },
+      "required": [
+        "date",
+        "reported_time",
+        "gender",
+        "place",
+        "clock_basis",
+        "precision"
+      ],
+      "additionalProperties": false
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "enum": [
+            "bazi",
+            "ziwei",
+            "astro"
+          ]
+        },
+        "target_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "time_scale": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "birth": {
+          "$ref": "#/$defs/Birth"
+        },
+        "physical_birth_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "system",
+        "target_date",
+        "time_scale",
+        "birth",
+        "physical_birth_at_utc"
+      ],
+      "additionalProperties": false
+    },
+    "Document": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "pattern": "^doc-[a-f0-9]{64}$"
+        },
+        "kind": {
+          "enum": [
+            "time_basis",
+            "calculation_bundle",
+            "western_timing"
+          ]
+        },
+        "source_sha256": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "document_id",
+        "kind",
+        "source_sha256",
+        "payload"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "time_basis"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": "p8-time-basis-readonly-v2-review23"
+                  }
+                },
+                "required": [
+                  "version"
+                ],
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "western_timing"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": "p8-western-timing-readonly-v1"
+                  }
+                },
+                "required": [
+                  "version"
+                ],
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "calculation_bundle"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "payload": {
+                "type": "object",
+                "properties": {
+                  "artifacts": {
+                    "type": "object"
+                  },
+                  "features": {
+                    "type": "object"
+                  },
+                  "profiles": {
+                    "type": "object"
+                  },
+                  "branches": {
+                    "type": "array"
+                  },
+                  "errors": {
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "artifacts",
+                  "features",
+                  "profiles",
+                  "branches",
+                  "errors"
+                ],
+                "additionalProperties": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Ref": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "pattern": "^doc-[a-f0-9]{64}$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^(?:/.*)?$",
+          "format": "json-pointer"
+        }
+      },
+      "required": [
+        "document_id",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "ChartAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^c[1-9][0-9]*$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^demo-claim-[a-f0-9]{64}$"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "branch_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "enum": [
+            "true_solar",
+            "standard",
+            "beijing_standard",
+            "actual_UTC"
+          ]
+        }
+      },
+      "required": [
+        "alias",
+        "claim_id",
+        "scope",
+        "ref",
+        "value_sha256",
+        "branch_id",
+        "basis"
+      ],
+      "additionalProperties": false
+    },
+    "RuleAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^r[1-9][0-9]*$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^demo-claim-[a-f0-9]{64}$"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "ref": {
+          "$ref": "#/$defs/Ref"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "branch_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "basis": {
+          "enum": [
+            "true_solar",
+            "standard",
+            "beijing_standard",
+            "actual_UTC"
+          ]
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "rules_version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "evidence_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^c[1-9][0-9]*$"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "alias",
+        "claim_id",
+        "scope",
+        "ref",
+        "value_sha256",
+        "branch_id",
+        "basis",
+        "rule_id",
+        "rules_version",
+        "evidence_aliases"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "version": "p8-u12-assertions-performance-v1",
+  "observed_at_beijing": "2026-10-21T01:07:21.413391+08:00",
+  "method": "Core public API, local static metadata only, 1 warmup + 10 sequential perf_counter observations; verified_input and registry validation included; mixed synthetic affirmative/contradictory/deferred answer not logged",
+  "warmup": 1,
+  "observations": 10,
+  "milliseconds": [
+    23.276199999600067,
+    22.46509999895352,
+    22.96530000057828,
+    22.626100000707083,
+    22.664400001303875,
+    22.081799999796203,
+    22.219999998924322,
+    22.34859999953187,
+    22.593899999264977,
+    22.74279999983264
+  ],
+  "median_ms": 22.60999999998603,
+  "min_ms": 22.081799999796203,
+  "max_ms": 23.276199999600067,
+  "input_lf_sha256": "fe11a98184a296417f927d16cc57ee3ba664d77865393b9f20b2f867b0ea313b",
+  "input_sample": "docs/v4/contracts/samples/ayuan_bazi.json",
+  "source_lf_sha256": {
+    "mingjing_core/skills/consistency.py": "aff8bf1d192fa10b6b0a020a64096d950a6092f105f0754e5fe774e95ff193e0",
+    "mingjing_core/skills/consistency_eval.py": "c57a07dec126be15d0ea2a8377731f6e8ab019b3f6a7f54a76e400befbb4d5af",
+    "mingjing_core/skills/consistency_facts.py": "41f2ea620e45ecea81cd3c1716939f08b16d206128e7c8a7aea2c4715db9d2af",
+    "mingjing_core/skills/consistency_text.py": "83363f47dc7bf9fe1187f4b72362a11b140d495f3928863c7182574ea961b984",
+    "mingjing_core/skills/consistency_u12.py": "7d8bf1942539f7b9b678e19f8a279ea0b8c4e46ec3b265fb6a5a48c6941fb1c3",
+    "mingjing_core/skills/consistency_u12_eval.py": "054d1306d7a892fe9513bb96fe68dc907cbc74db3deb55e36f22ee6c5becea43",
+    "mingjing_core/skills/consistency_u12_input.py": "d17934c721f146195b1ad84f85c3d780902370cb933398d74354f5e641bd6d64",
+    "mingjing_core/skills/learning_input.py": "e8bd303ba8d0663584f2c3884b14af174d11f208bf209b5ff50d862529ac3a00",
+    "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
+    "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+    "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448"
+  },
+  "model_calls": 0,
+  "database_calls": 0,
+  "network_calls": 0,
+  "status": "inconsistent",
+  "coverage": {
+    "checked": 3,
+    "deferred": 1,
+    "not_checked": 0
+  },
+  "rebind_reason": "Root rebuilt chart inputs after strict window scope and daily IANA/birth-date preflight; new file keeps previous performance evidence intact.",
+  "previous_sample_lf_sha256": "e24f823f3017160302d0b138a02d4a929e49f1d964a58a30c37a150dec5fe7f1",
+  "sample_result_changed": true,
+  "limits": [
+    "warm process only, not startup or production SLA",
+    "met/text consistency only, not authentication or traditional rule effectiveness",
+    "same finite-JSON source object; no native engine or real model benchmark"
+  ]
+}

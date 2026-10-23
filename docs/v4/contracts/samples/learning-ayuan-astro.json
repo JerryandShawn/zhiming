@@ -1,0 +1,418 @@
+{
+  "version": "p8-learning-outline-v1",
+  "status": "learning_only",
+  "scope": {
+    "owner_user_id": "synthetic-owner-ayuan",
+    "subject_id": "synthetic-subject-ayuan",
+    "revision": 1,
+    "operation_id": "synthetic-ayuan-astro-20261019"
+  },
+  "points": [
+    {
+      "kind": "orientation",
+      "title": "先读计算位置",
+      "text": "先从实际行星位置读起，再核相位角距；所用历表、时标和宫制须连同方法栏看。",
+      "observed": {
+        "太阳": {
+          "sign": "双鱼",
+          "deg": 21.2,
+          "longitude": 351.19654,
+          "house": 12,
+          "retrograde": false,
+          "speed": 0.99852,
+          "returned_flags": 260
+        },
+        "月亮": {
+          "sign": "双鱼",
+          "deg": 18.06,
+          "longitude": 348.05536,
+          "house": 12,
+          "retrograde": false,
+          "speed": 12.19923,
+          "returned_flags": 260
+        },
+        "水星": {
+          "sign": "水瓶",
+          "deg": 24.8,
+          "longitude": 324.80355,
+          "house": 11,
+          "retrograde": false,
+          "speed": 0.60126,
+          "returned_flags": 260
+        },
+        "金星": {
+          "sign": "白羊",
+          "deg": 4.25,
+          "longitude": 4.24523,
+          "house": 12,
+          "retrograde": false,
+          "speed": 1.24374,
+          "returned_flags": 260
+        },
+        "火星": {
+          "sign": "双鱼",
+          "deg": 3.58,
+          "longitude": 333.58264,
+          "house": 12,
+          "retrograde": false,
+          "speed": 0.7865,
+          "returned_flags": 260
+        },
+        "木星": {
+          "sign": "天蝎",
+          "deg": 14.45,
+          "longitude": 224.45109,
+          "house": 7,
+          "retrograde": true,
+          "speed": -0.0358,
+          "returned_flags": 260
+        },
+        "土星": {
+          "sign": "双鱼",
+          "deg": 5.05,
+          "longitude": 335.04953,
+          "house": 12,
+          "retrograde": false,
+          "speed": 0.11853,
+          "returned_flags": 260
+        },
+        "天王": {
+          "sign": "摩羯",
+          "deg": 25.33,
+          "longitude": 295.32776,
+          "house": 10,
+          "retrograde": false,
+          "speed": 0.03915,
+          "returned_flags": 260
+        },
+        "海王": {
+          "sign": "摩羯",
+          "deg": 22.82,
+          "longitude": 292.81645,
+          "house": 10,
+          "retrograde": false,
+          "speed": 0.0233,
+          "returned_flags": 260
+        },
+        "冥王": {
+          "sign": "天蝎",
+          "deg": 28.04,
+          "longitude": 238.04063,
+          "house": 8,
+          "retrograde": true,
+          "speed": -0.00615,
+          "returned_flags": 260
+        }
+      },
+      "c_aliases": [
+        "c7"
+      ],
+      "r_aliases": [],
+      "source_refs": [
+        "https://www.astro.com/swisseph/swephprg.htm"
+      ],
+      "school": {
+        "zodiac": "tropical",
+        "coordinates": "geocentric ecliptic longitude",
+        "aspects": "0/60/90/120/180 度，本命统一容许度 6 度，行运 2 度",
+        "houses": "Placidus",
+        "birth_timezone": "显式固定 UTC 偏移；不自动推断历史夏令时",
+        "time_scale": "民用 UTC 近似作为 UT 输入 swe.calc_ut/houses_ex",
+        "ephemeris": [
+          "Moshier"
+        ],
+        "returned_flags": {
+          "natal": {
+            "太阳": 260,
+            "月亮": 260,
+            "水星": 260,
+            "金星": 260,
+            "火星": 260,
+            "木星": 260,
+            "土星": 260,
+            "天王": 260,
+            "海王": 260,
+            "冥王": 260
+          },
+          "transit_snapshot": {
+            "太阳": 260,
+            "月亮": 260,
+            "水星": 260,
+            "金星": 260,
+            "火星": 260,
+            "木星": 260,
+            "土星": 260,
+            "天王": 260,
+            "海王": 260,
+            "冥王": 260
+          }
+        },
+        "requested_flags": 260,
+        "input_time": "civil_minus_explicit_offset_to_UTC",
+        "delta_t": "calc_ut converts UT internally; civil UTC used as UT approximation",
+        "transit_target": "requested_date_12:00_UTC+8_snapshot",
+        "ephemeris_files": "Moshier requested explicitly; no Swiss data-file fallback presumed"
+      },
+      "source_ref": {
+        "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+        "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data"
+      },
+      "point_id": "learning-1",
+      "citations": "〔c7〕"
+    },
+    {
+      "kind": "boundary",
+      "title": "核对临界候选",
+      "text": "这个时刻靠近口径交界。把实际候选并列核对，保留记录和默认主盘，不据此倒推出生时辰。",
+      "observed": {
+        "current_pillars": {
+          "year": "甲戌",
+          "month": "丁卯",
+          "day": "丁酉",
+          "hour": "甲辰"
+        },
+        "alternatives": [
+          {
+            "label": "before",
+            "is_birth_fact": false,
+            "physical_utc": "1994-03-12T00:13:38.533817Z",
+            "coordinate_datetime": "1994-03-12T06:59:59",
+            "coordinate_basis": "true_solar",
+            "pillars": {
+              "year": "甲戌",
+              "month": "丁卯",
+              "day": "丁酉",
+              "hour": "癸卯"
+            },
+            "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+            "day_boundary": "23:00_advances_day",
+            "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+            "subsecond_handling": "floor_to_engine_second"
+          },
+          {
+            "label": "after",
+            "is_birth_fact": false,
+            "physical_utc": "1994-03-12T00:13:40.533447Z",
+            "coordinate_datetime": "1994-03-12T07:00:01",
+            "coordinate_basis": "true_solar",
+            "pillars": {
+              "year": "甲戌",
+              "month": "丁卯",
+              "day": "丁酉",
+              "hour": "甲辰"
+            },
+            "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+            "day_boundary": "23:00_advances_day",
+            "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+            "subsecond_handling": "floor_to_engine_second"
+          }
+        ],
+        "distance_seconds": 380.536889
+      },
+      "c_aliases": [
+        "c3",
+        "c4",
+        "c5"
+      ],
+      "r_aliases": [
+        "r1"
+      ],
+      "source_ref": {
+        "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+        "path": "/boundary_alerts/0"
+      },
+      "source_refs": [
+        "docs/v4/evidence/P8/night28-boundary-policy.md"
+      ],
+      "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+      "limits": [
+        "条件与实际效度分开核对"
+      ],
+      "point_id": "learning-2",
+      "citations": "〔c3〕〔c4〕〔c5〕〔r1〕"
+    }
+  ],
+  "aliases": {
+    "c": [
+      {
+        "alias": "c3",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-astro-20261019"
+        },
+        "ref": {
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+          "path": "/time_basis/items/0/source_variants/1/coordinate_datetime"
+        },
+        "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-4be0a8599ad9dba5a76336786126a1797cb2bd01f8e88eb96b1c81c1289033f3"
+      },
+      {
+        "alias": "c4",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-astro-20261019"
+        },
+        "ref": {
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+          "path": "/time_basis/items/0/source_variants/1/pillars"
+        },
+        "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-5ef298d08f4157b58dc637d7b6eb7297192810482b73032f83de74b7ca0dad1f"
+      },
+      {
+        "alias": "c5",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-astro-20261019"
+        },
+        "ref": {
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+          "path": "/time_basis/items/0/source_variants/1/solar_time"
+        },
+        "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+        "branch_id": "instant-d84ee400f41ac0430bcc690c",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-8b71e2b0632f3e9d6b491217b8e2d9426521f72ae0579b9eb2ff4ecff5dbadd4"
+      },
+      {
+        "alias": "c7",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-astro-20261019"
+        },
+        "ref": {
+          "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+          "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data"
+        },
+        "value_sha256": "fb3a95f855c9562c48863c5597f671b16c3a2e4190aa49809bd1ea315b5459a4",
+        "branch_id": "time-ce23fbc4a4c6c3e51da04e0a",
+        "basis": "actual_UTC",
+        "claim_id": "demo-claim-fe925eb88bf4d787187a583b21abeef48945924f671428b02e83a601f16a07ca"
+      }
+    ],
+    "r": [
+      {
+        "alias": "r1",
+        "scope": {
+          "owner_user_id": "synthetic-owner-ayuan",
+          "subject_id": "synthetic-subject-ayuan",
+          "revision": 1,
+          "operation_id": "synthetic-ayuan-astro-20261019"
+        },
+        "ref": {
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+          "path": "/boundary_alerts/0"
+        },
+        "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+        "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+        "basis": "true_solar",
+        "rule_id": "time_boundary.hour_branch",
+        "rules_version": "p8-boundary-alerts-v1",
+        "evidence_aliases": [
+          "c3",
+          "c4",
+          "c5"
+        ],
+        "claim_id": "demo-claim-b1ed236fba16eb54c8c47dbc11d6960b478914bf05c3b2388c5779fcf3e56bd1"
+      }
+    ]
+  },
+  "rule_hits": [
+    {
+      "rule_id": "time_boundary.hour_branch",
+      "rules_version": "p8-boundary-alerts-v1",
+      "matched": true,
+      "met": true,
+      "critical": true,
+      "boundary_kind": "hour_branch",
+      "boundary_at": "1994-03-12T07:00:00",
+      "boundary_basis": "true_solar_coordinate",
+      "distance_seconds": 380.536889,
+      "threshold_seconds": 900,
+      "source_instant_id": "instant-d84ee400f41ac0430bcc690c",
+      "instant_id": "instant-d84ee400f41ac0430bcc690c",
+      "source_utc": "1994-03-12T00:20:00Z",
+      "current_pillars": {
+        "year": "甲戌",
+        "month": "丁卯",
+        "day": "丁酉",
+        "hour": "甲辰"
+      },
+      "alternatives": [
+        {
+          "label": "before",
+          "is_birth_fact": false,
+          "physical_utc": "1994-03-12T00:13:38.533817Z",
+          "coordinate_datetime": "1994-03-12T06:59:59",
+          "coordinate_basis": "true_solar",
+          "pillars": {
+            "year": "甲戌",
+            "month": "丁卯",
+            "day": "丁酉",
+            "hour": "癸卯"
+          },
+          "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+          "day_boundary": "23:00_advances_day",
+          "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+          "subsecond_handling": "floor_to_engine_second"
+        },
+        {
+          "label": "after",
+          "is_birth_fact": false,
+          "physical_utc": "1994-03-12T00:13:40.533447Z",
+          "coordinate_datetime": "1994-03-12T07:00:01",
+          "coordinate_basis": "true_solar",
+          "pillars": {
+            "year": "甲戌",
+            "month": "丁卯",
+            "day": "丁酉",
+            "hour": "甲辰"
+          },
+          "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+          "day_boundary": "23:00_advances_day",
+          "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+          "subsecond_handling": "floor_to_engine_second"
+        }
+      ],
+      "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+      "source": "docs/v4/evidence/P8/night28-boundary-policy.md",
+      "evidence_paths": [
+        "/time_basis/items/0/source_variants/1/coordinate_datetime",
+        "/time_basis/items/0/source_variants/1/pillars",
+        "/time_basis/items/0/source_variants/1/solar_time"
+      ],
+      "text": "临界：请把下列候选并列核对；敏感性采样不是新的出生事实，不据此改档或倒推时辰。",
+      "default_formula_changed": false,
+      "id": "boundary-06a2d8696a4c2b553c2d8179"
+    }
+  ],
+  "source_document_ids": [
+    "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+    "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+    "doc-482ebeed6aab889875b154c8e79dda7dc7c1eb6c209b5bb24d663bdb64345c34",
+    "doc-ce0de687d4f35f8fe3a3be2fe325b64b93fad71965367db03e551c9d43f3ac31"
+  ],
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "alias_registry": "reuse_input_projection_no_registration"
+  },
+  "limits": [
+    "复用传入信封本轮别名，不重编号；某c可能覆盖整个主盘，source_ref给出实际读取位置。",
+    "hash只核内容，不核来源签名/真实授权；调用方须先验证来源、owner和资料未撤销。",
+    "纯规则学习要点，不生成新命理结论、性格标签或现实结果承诺。"
+  ]
+}

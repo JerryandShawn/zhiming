@@ -1,0 +1,371 @@
+{
+  "fixture_kind": "synthetic_assertion_preview",
+  "input_sample": "ayuan_ziwei.json",
+  "answer_text": "命宫主星包括天相。夫妻宫主星包括天府。田宅宫是空宫。假设夫妻宫主星有天府。",
+  "result": {
+    "version": "p8-chart-consistency-preview-v1",
+    "scope": {
+      "owner_user_id": "synthetic-owner-ayuan",
+      "subject_id": "synthetic-subject-ayuan",
+      "revision": 1,
+      "operation_id": "synthetic-ayuan-ziwei-20261019"
+    },
+    "data": {
+      "status": "inconsistent",
+      "review_key": "chart_inconsistency",
+      "policy": "record_only",
+      "text_length": 37,
+      "checks": [
+        {
+          "field": "ziwei_stars",
+          "outcome": "matched",
+          "reason_code": "value_matches",
+          "assertion": {
+            "field": "ziwei_stars",
+            "key": "命宫",
+            "value": "天相",
+            "negative": false
+          },
+          "expected_values": [
+            [
+              "天相"
+            ]
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+              "path": "/charts/1/ziwei_column/palaces/9/major"
+            }
+          ],
+          "input_c_aliases": [
+            "c3"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c3〕",
+          "fact_sources": [
+            {
+              "school": "installed-py-iztro-default",
+              "source": "https://docs.iztro.com/posts/palace"
+            }
+          ],
+          "check_id": "check-1",
+          "span": {
+            "start": 0,
+            "end": 8
+          }
+        },
+        {
+          "field": "ziwei_stars",
+          "outcome": "contradiction",
+          "reason_code": "value_differs",
+          "assertion": {
+            "field": "ziwei_stars",
+            "key": "夫妻宫",
+            "value": "天府",
+            "negative": false
+          },
+          "expected_values": [
+            [
+              "紫微",
+              "贪狼"
+            ]
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+              "path": "/charts/1/ziwei_column/palaces/7/major"
+            }
+          ],
+          "input_c_aliases": [
+            "c3"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c3〕",
+          "fact_sources": [
+            {
+              "school": "installed-py-iztro-default",
+              "source": "https://docs.iztro.com/posts/palace"
+            }
+          ],
+          "check_id": "check-2",
+          "span": {
+            "start": 9,
+            "end": 18
+          }
+        },
+        {
+          "field": "ziwei_stars",
+          "outcome": "matched",
+          "reason_code": "value_matches",
+          "assertion": {
+            "field": "ziwei_stars",
+            "key": "田宅宫",
+            "value": "空宫",
+            "negative": false
+          },
+          "expected_values": [
+            []
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+              "path": "/charts/1/ziwei_column/palaces/0/major"
+            }
+          ],
+          "input_c_aliases": [
+            "c3"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c3〕",
+          "fact_sources": [
+            {
+              "school": "installed-py-iztro-default",
+              "source": "https://docs.iztro.com/posts/palace"
+            }
+          ],
+          "check_id": "check-3",
+          "span": {
+            "start": 19,
+            "end": 25
+          }
+        },
+        {
+          "field": null,
+          "outcome": "needs_review",
+          "reason_code": "hypothetical",
+          "assertion": null,
+          "expected_values": [],
+          "source_refs": [],
+          "input_c_aliases": [],
+          "input_r_aliases": [],
+          "input_citations": "",
+          "fact_sources": [],
+          "check_id": "check-4",
+          "span": {
+            "start": 26,
+            "end": 36
+          }
+        }
+      ],
+      "coverage": {
+        "checked": 3,
+        "deferred": 1,
+        "not_checked": 0
+      },
+      "input_aliases": {
+        "c": [
+          {
+            "alias": "c3",
+            "scope": {
+              "owner_user_id": "synthetic-owner-ayuan",
+              "subject_id": "synthetic-subject-ayuan",
+              "revision": 1,
+              "operation_id": "synthetic-ayuan-ziwei-20261019"
+            },
+            "ref": {
+              "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+              "path": "/charts/1/ziwei_column"
+            },
+            "value_sha256": "35e07289fb047655ad898043fc7e2f437387338c881f085e8413c4ff9e3e518c",
+            "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+            "basis": "true_solar",
+            "claim_id": "demo-claim-3c264070a92bdb05f6408d1ef6f63c1ca02a8352bb6d880e3aaa54674aaea6e1"
+          }
+        ],
+        "r": []
+      },
+      "input_document_ids": [
+        "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83"
+      ],
+      "input_scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-ziwei-20261019"
+      }
+    },
+    "rule_hits": [
+      {
+        "rule_id": "p8.consistency.ziwei_stars.matched",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/0"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.ziwei_stars.contradiction",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/1"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.ziwei_stars.matched",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/2"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.context_guard.needs_review",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/3"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "p8-explicit-text-consistency-v1",
+        "title": "P8明确文本断言一致性项目规则",
+        "kind": "project_implementation",
+        "path": "mingjing_core/skills/consistency.py",
+        "locators": [
+          "consistency_text.parse_clause",
+          "consistency_eval.evaluate",
+          "learning_input.verified_input"
+        ],
+        "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+      }
+    ],
+    "document_id": "tool-b1a8f0569fdab0491aba6744f28b4eaf505b3c5c224c037d65c3457c930b325f",
+    "aliases": {
+      "c": [
+        {
+          "alias": "c1",
+          "path": "/data/checks/0",
+          "value_sha256": "8ad392073865cebc6e11d5c8ab4e723d0975762e98148b03f4cac5628f30a7c9",
+          "claim_id": "claim-26ff95d92b4a2e266491f8767e86f2e53940ad5fd6f8fa10a54d5d6566605fe7"
+        },
+        {
+          "alias": "c2",
+          "path": "/data/checks/1",
+          "value_sha256": "4b4a9340057d72e0c745b2384dfd9ab228c32af3572b4ada66aac8534d4e17e0",
+          "claim_id": "claim-43b42eebfff88f356119ff32dbafb86ce7f81bb4092e12588714b52378005b56"
+        },
+        {
+          "alias": "c3",
+          "path": "/data/checks/2",
+          "value_sha256": "8aa06aee89bcb2df42e34837556385943c88023268afa2c4f672123eecb9c84d",
+          "claim_id": "claim-d26c9e29e887ba2f906f4ba08978070617d3d3cf901bb42fbc660b829c9e3ac7"
+        },
+        {
+          "alias": "c4",
+          "path": "/data/checks/3",
+          "value_sha256": "934934601148ce492642dce44d951299a69ac102608eacc1c2b9075043b9a1e4",
+          "claim_id": "claim-5562565591149c63b1919634f5f1832263085870461e88990dd1147b2170acec"
+        }
+      ],
+      "r": [
+        {
+          "alias": "r1",
+          "path": "/rule_hits/0",
+          "rule_id": "p8.consistency.ziwei_stars.matched",
+          "value_sha256": "1689ecfbca5a6685e0add6e65edfd581508d7d460dfd5fb65c3512bc855f09af",
+          "claim_id": "claim-458c797094a301de4724ae79331fbeeda0824277ff94988d846f12de3f401d3f",
+          "evidence_aliases": [
+            "c1"
+          ]
+        },
+        {
+          "alias": "r2",
+          "path": "/rule_hits/1",
+          "rule_id": "p8.consistency.ziwei_stars.contradiction",
+          "value_sha256": "5799b21294de7fc46d1cf6ae3eeb40cb7bdcd7fc9d7ad9cc033ecdc18d62b5fe",
+          "claim_id": "claim-7365b25d4a0ff4bd1f1ad44eaa23ec68f3e59898f34a83322c193ec0103e178b",
+          "evidence_aliases": [
+            "c2"
+          ]
+        },
+        {
+          "alias": "r3",
+          "path": "/rule_hits/2",
+          "rule_id": "p8.consistency.ziwei_stars.matched",
+          "value_sha256": "daec7c148b4d08b4c95f01bef6bf30e8435d823b02d63f56f5352a0a6e0741c8",
+          "claim_id": "claim-b6b3a8f6659475c2e98dcb3bda585f0a8c460f7dca6c6a699d74fc5751678d26",
+          "evidence_aliases": [
+            "c3"
+          ]
+        },
+        {
+          "alias": "r4",
+          "path": "/rule_hits/3",
+          "rule_id": "p8.consistency.context_guard.needs_review",
+          "value_sha256": "4995df5b2065eb03752a95a1acb83156cdfc676b4a48b41d4849b86e9c78807d",
+          "claim_id": "claim-5976877fd6f7f4e9b1bcafe1a3d8dacb80402a700b1b5c1fbd1272abbf1f6d85",
+          "evidence_aliases": [
+            "c4"
+          ]
+        }
+      ]
+    },
+    "effects": {
+      "model_calls": 0,
+      "writes": 0,
+      "alias_registry": "ephemeral_only"
+    },
+    "limits": [
+      "有限中文白名单语法，精度优先、召回有限；no_contradiction_found不等于全文已核或正确。",
+      "格局筛选/三法用神都保留候选属性；已成格/用神已定、引用、假设、疑问、比较口径须人工复核。",
+      "输入hash只校验内容不是签名，主线须验证provider、owner、修订与撤销；expected_scope只是可选上下文比较。",
+      "顶层c/r仅本结果比较规则命名空间；data.input_aliases/input_citations是原盘命名空间，不能混用短名。",
+      "不回显正文、不发模型、不自动阻断/改写；主线review #15仍须独立授权与集成验收。"
+    ]
+  }
+}

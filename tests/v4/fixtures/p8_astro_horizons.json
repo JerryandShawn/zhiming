@@ -1,0 +1,130 @@
+{
+  "fixture_type": "synthetic_epochs_no_personal_data",
+  "retrieved_date": "2026-10-18",
+  "source": "NASA/JPL Horizons DE441; Earth geocentric observer quantity31 apparent IAU76/80 ecliptic of date",
+  "manual": "https://ssd.jpl.nasa.gov/horizons/manual.html",
+  "requests": [
+    {
+      "body": "太阳",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%2710%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&START_TIME=%272000-01-01+12%3A00%27&STOP_TIME=%272000-01-03+12%3A00%27&STEP_SIZE=%271+d%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&EXTRA_PREC=%27YES%27"
+    },
+    {
+      "body": "月亮",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27301%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&START_TIME=%272000-01-01+12%3A00%27&STOP_TIME=%272000-01-03+12%3A00%27&STEP_SIZE=%271+d%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&EXTRA_PREC=%27YES%27"
+    },
+    {
+      "body": "月亮",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27301%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&START_TIME=%272024-12-31+13%3A32%27&STOP_TIME=%272024-12-31+13%3A33%27&STEP_SIZE=%271+m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&EXTRA_PREC=%27YES%27"
+    },
+    {
+      "body": "水星",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27199%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&START_TIME=%272000-01-01+12%3A00%27&STOP_TIME=%272000-01-03+12%3A00%27&STEP_SIZE=%271+d%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&EXTRA_PREC=%27YES%27"
+    },
+    {
+      "body": "水星",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%27199%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&START_TIME=%272024-12-31+13%3A32%27&STOP_TIME=%272024-12-31+13%3A33%27&STEP_SIZE=%271+m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&EXTRA_PREC=%27YES%27"
+    },
+    {
+      "body": "太阳",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&COMMAND=%2710%27&CENTER=%27500%40399%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27OBSERVER%27&START_TIME=%272024-12-31+13%3A31%27&STOP_TIME=%272024-12-31+13%3A33%27&STEP_SIZE=%271+m%27&QUANTITIES=%2731%27&CSV_FORMAT=%27YES%27&EXTRA_PREC=%27YES%27"
+    }
+  ],
+  "positions": [
+    {
+      "body": "太阳",
+      "at_UTC": "2000-Jan-01 12:00",
+      "longitude": 280.3689092,
+      "latitude": 0.0002381
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2000-Jan-02 12:00",
+      "longitude": 281.3883885,
+      "latitude": 0.0002277
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2000-Jan-03 12:00",
+      "longitude": 282.407945,
+      "latitude": 0.0002099
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2000-Jan-01 12:00",
+      "longitude": 223.323786,
+      "latitude": 5.1707422
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2000-Jan-02 12:00",
+      "longitude": 235.2809284,
+      "latitude": 4.8826573
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2000-Jan-03 12:00",
+      "longitude": 247.1464353,
+      "latitude": 4.3865348
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2024-Dec-31 13:32",
+      "longitude": 288.0712205,
+      "latitude": -4.784255
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2024-Dec-31 13:33",
+      "longitude": 288.0804897,
+      "latitude": -4.7840179
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2000-Jan-01 12:00",
+      "longitude": 271.8892699,
+      "latitude": -0.994819
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2000-Jan-02 12:00",
+      "longitude": 273.448193,
+      "latitude": -1.0907202
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2000-Jan-03 12:00",
+      "longitude": 275.0125632,
+      "latitude": -1.1833317
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2024-Dec-31 13:32",
+      "longitude": 259.3114484,
+      "latitude": 1.174838
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2024-Dec-31 13:33",
+      "longitude": 259.3123337,
+      "latitude": 1.1747403
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2024-Dec-31 13:31",
+      "longitude": 280.3682119,
+      "latitude": -0.0001714
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2024-Dec-31 13:32",
+      "longitude": 280.36892,
+      "latitude": -0.0001714
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2024-Dec-31 13:33",
+      "longitude": 280.3696281,
+      "latitude": -0.0001714
+    }
+  ]
+}

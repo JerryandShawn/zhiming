@@ -1,0 +1,51 @@
+{
+  "version": "p8-u12-assertions-performance-v1",
+  "observed_at_beijing": "2026-10-21T00:45:22.690436+08:00",
+  "method": "Core public API, local static metadata only, 1 warmup + 10 sequential perf_counter observations; verified_input and registry validation included; mixed synthetic affirmative/contradictory/deferred answer not logged",
+  "warmup": 1,
+  "observations": 10,
+  "milliseconds": [
+    22.7260000010574,
+    22.86660000027041,
+    22.51810000052501,
+    23.01379999880737,
+    24.697099999684724,
+    22.874899999806075,
+    22.729500000423286,
+    22.50089999870397,
+    22.705899998982204,
+    23.225999999340274
+  ],
+  "median_ms": 22.798050000346848,
+  "min_ms": 22.50089999870397,
+  "max_ms": 24.697099999684724,
+  "input_lf_sha256": "8f8e8dafb6ee9ad4cfd9fc6042b10def0f1ed660a7c91f6b440964c020bbb28a",
+  "input_sample": "docs/v4/contracts/samples/ayuan_bazi.json",
+  "source_lf_sha256": {
+    "mingjing_core/skills/consistency.py": "aff8bf1d192fa10b6b0a020a64096d950a6092f105f0754e5fe774e95ff193e0",
+    "mingjing_core/skills/consistency_eval.py": "c57a07dec126be15d0ea2a8377731f6e8ab019b3f6a7f54a76e400befbb4d5af",
+    "mingjing_core/skills/consistency_facts.py": "41f2ea620e45ecea81cd3c1716939f08b16d206128e7c8a7aea2c4715db9d2af",
+    "mingjing_core/skills/consistency_text.py": "83363f47dc7bf9fe1187f4b72362a11b140d495f3928863c7182574ea961b984",
+    "mingjing_core/skills/consistency_u12.py": "7d8bf1942539f7b9b678e19f8a279ea0b8c4e46ec3b265fb6a5a48c6941fb1c3",
+    "mingjing_core/skills/consistency_u12_eval.py": "054d1306d7a892fe9513bb96fe68dc907cbc74db3deb55e36f22ee6c5becea43",
+    "mingjing_core/skills/consistency_u12_input.py": "d17934c721f146195b1ad84f85c3d780902370cb933398d74354f5e641bd6d64",
+    "mingjing_core/skills/learning_input.py": "e8bd303ba8d0663584f2c3884b14af174d11f208bf209b5ff50d862529ac3a00",
+    "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
+    "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+    "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448"
+  },
+  "model_calls": 0,
+  "database_calls": 0,
+  "network_calls": 0,
+  "status": "inconsistent",
+  "coverage": {
+    "checked": 3,
+    "deferred": 1,
+    "not_checked": 0
+  },
+  "limits": [
+    "warm process only, not startup or production SLA",
+    "met/text consistency only, not authentication or traditional rule effectiveness",
+    "same finite-JSON source object; no native engine or real model benchmark"
+  ]
+}

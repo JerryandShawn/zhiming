@@ -1,0 +1,1842 @@
+{
+  "contract": "e2-protocol-v2",
+  "disclaimer": "本评测衡量的是与命理比赛标准答案的一致性，不是现实预测的效度；2025 年比赛题可能已进入 2026 年发布模型的训练数据；40 题量级的子集，95% 置信区间约为 ±15 个百分点。",
+  "mode": "scripted_synthetic_only",
+  "real_model_requests": 0,
+  "professional_corpus_scores": null,
+  "actual_v4_runtime": false,
+  "questions": 3,
+  "option_shuffle": true,
+  "repeats": 1,
+  "results": {
+    "C0": {
+      "contract": "e2-protocol-v2",
+      "configuration": "C0",
+      "control": "original",
+      "repeats": 1,
+      "scoring": "single_trial_exact_match",
+      "option_shuffle_seed": 20261018,
+      "protocol_stage_calls": 3,
+      "actual_v4_runtime": false,
+      "model_requests": "unmeasured_use_authorized_transport_ledger",
+      "question_eligibility": {
+        "policy": "brain23_question_year_v1",
+        "source_questions": 3,
+        "included_questions": 3,
+        "excluded_questions": 0,
+        "excluded_reasons": {},
+        "year_basis": "question_explicit_target_year",
+        "metadata_year_fallback": false,
+        "question_audit": [
+          {
+            "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      "chart_year_binding": "no_chart_c0",
+      "outcomes": [
+        {
+          "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+          "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+          "correct": false,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+              "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+              "correct": false,
+              "invalid": false,
+              "canonical_selection": "D",
+              "displayed_selection": "A",
+              "option_mapping": {
+                "A": "D",
+                "B": "A",
+                "C": "C",
+                "D": "B"
+              },
+              "chart_fingerprint": null,
+              "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+          "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+          "correct": false,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+              "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+              "correct": false,
+              "invalid": false,
+              "canonical_selection": "C",
+              "displayed_selection": "A",
+              "option_mapping": {
+                "A": "C",
+                "B": "B",
+                "C": "A",
+                "D": "D"
+              },
+              "chart_fingerprint": null,
+              "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+          "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+          "correct": false,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+              "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+              "correct": false,
+              "invalid": false,
+              "canonical_selection": "A",
+              "displayed_selection": "A",
+              "option_mapping": {
+                "A": "A",
+                "B": "B",
+                "C": "C",
+                "D": "D"
+              },
+              "chart_fingerprint": null,
+              "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "questions": 3,
+        "correct": 0,
+        "accuracy": 0.0,
+        "wilson_95": [
+          5.551115123125783e-17,
+          0.5614970317550454
+        ],
+        "case_count": 3,
+        "trimmed_case_mean": 0.0,
+        "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+        "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+        "leaderboard_shape_8_cases_5_questions": false
+      }
+    },
+    "C1": {
+      "contract": "e2-protocol-v2",
+      "configuration": "C1",
+      "control": "original",
+      "repeats": 1,
+      "scoring": "single_trial_exact_match",
+      "option_shuffle_seed": 20261018,
+      "protocol_stage_calls": 3,
+      "actual_v4_runtime": false,
+      "model_requests": "unmeasured_use_authorized_transport_ledger",
+      "question_eligibility": {
+        "policy": "brain23_question_year_v1",
+        "source_questions": 3,
+        "included_questions": 3,
+        "excluded_questions": 0,
+        "excluded_reasons": {},
+        "year_basis": "question_explicit_target_year",
+        "metadata_year_fallback": false,
+        "question_audit": [
+          {
+            "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      "chart_year_binding": "question_aware_annual_view",
+      "outcomes": [
+        {
+          "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+          "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+              "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "A",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "D",
+                "B": "A",
+                "C": "C",
+                "D": "B"
+              },
+              "chart_fingerprint": "e4d7533d709524f24b61550c65c654c10b6677e3613b05e088513e82c03d6529",
+              "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+          "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+              "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "B",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "C",
+                "B": "B",
+                "C": "A",
+                "D": "D"
+              },
+              "chart_fingerprint": "681284fc45048af620c4457660326146c6afba88dffc63c13de3d185b7ca40b2",
+              "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+          "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+              "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "C",
+              "displayed_selection": "C",
+              "option_mapping": {
+                "A": "A",
+                "B": "B",
+                "C": "C",
+                "D": "D"
+              },
+              "chart_fingerprint": "0412dd280c10e88d17cfd4441e0b0942c715121cf4a96b6f500d6c8f9c0a992e",
+              "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "questions": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "wilson_95": [
+          0.4385029682449546,
+          1
+        ],
+        "case_count": 3,
+        "trimmed_case_mean": 1.0,
+        "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+        "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+        "leaderboard_shape_8_cases_5_questions": false
+      }
+    },
+    "C2": {
+      "contract": "e2-protocol-v2",
+      "configuration": "C2",
+      "control": "original",
+      "repeats": 1,
+      "scoring": "single_trial_exact_match",
+      "option_shuffle_seed": 20261018,
+      "protocol_stage_calls": 3,
+      "actual_v4_runtime": false,
+      "model_requests": "unmeasured_use_authorized_transport_ledger",
+      "question_eligibility": {
+        "policy": "brain23_question_year_v1",
+        "source_questions": 3,
+        "included_questions": 3,
+        "excluded_questions": 0,
+        "excluded_reasons": {},
+        "year_basis": "question_explicit_target_year",
+        "metadata_year_fallback": false,
+        "question_audit": [
+          {
+            "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      "chart_year_binding": "question_aware_annual_view",
+      "outcomes": [
+        {
+          "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+          "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+              "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "A",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "D",
+                "B": "A",
+                "C": "C",
+                "D": "B"
+              },
+              "chart_fingerprint": "e4d7533d709524f24b61550c65c654c10b6677e3613b05e088513e82c03d6529",
+              "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+          "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+              "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "B",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "C",
+                "B": "B",
+                "C": "A",
+                "D": "D"
+              },
+              "chart_fingerprint": "681284fc45048af620c4457660326146c6afba88dffc63c13de3d185b7ca40b2",
+              "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+          "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+              "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "C",
+              "displayed_selection": "C",
+              "option_mapping": {
+                "A": "A",
+                "B": "B",
+                "C": "C",
+                "D": "D"
+              },
+              "chart_fingerprint": "0412dd280c10e88d17cfd4441e0b0942c715121cf4a96b6f500d6c8f9c0a992e",
+              "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "questions": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "wilson_95": [
+          0.4385029682449546,
+          1
+        ],
+        "case_count": 3,
+        "trimmed_case_mean": 1.0,
+        "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+        "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+        "leaderboard_shape_8_cases_5_questions": false
+      }
+    },
+    "C3": {
+      "contract": "e2-protocol-v2",
+      "configuration": "C3",
+      "control": "original",
+      "repeats": 1,
+      "scoring": "single_trial_exact_match",
+      "option_shuffle_seed": 20261018,
+      "protocol_stage_calls": 3,
+      "actual_v4_runtime": false,
+      "model_requests": "unmeasured_use_authorized_transport_ledger",
+      "question_eligibility": {
+        "policy": "brain23_question_year_v1",
+        "source_questions": 3,
+        "included_questions": 3,
+        "excluded_questions": 0,
+        "excluded_reasons": {},
+        "year_basis": "question_explicit_target_year",
+        "metadata_year_fallback": false,
+        "question_audit": [
+          {
+            "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      "chart_year_binding": "question_aware_annual_view",
+      "outcomes": [
+        {
+          "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+          "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+              "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "A",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "D",
+                "B": "A",
+                "C": "C",
+                "D": "B"
+              },
+              "chart_fingerprint": "e4d7533d709524f24b61550c65c654c10b6677e3613b05e088513e82c03d6529",
+              "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+          "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+              "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "B",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "C",
+                "B": "B",
+                "C": "A",
+                "D": "D"
+              },
+              "chart_fingerprint": "681284fc45048af620c4457660326146c6afba88dffc63c13de3d185b7ca40b2",
+              "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+          "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+              "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "C",
+              "displayed_selection": "C",
+              "option_mapping": {
+                "A": "A",
+                "B": "B",
+                "C": "C",
+                "D": "D"
+              },
+              "chart_fingerprint": "0412dd280c10e88d17cfd4441e0b0942c715121cf4a96b6f500d6c8f9c0a992e",
+              "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "questions": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "wilson_95": [
+          0.4385029682449546,
+          1
+        ],
+        "case_count": 3,
+        "trimmed_case_mean": 1.0,
+        "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+        "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+        "leaderboard_shape_8_cases_5_questions": false
+      }
+    },
+    "C4a": {
+      "contract": "e2-protocol-v2",
+      "configuration": "C4a",
+      "control": "original",
+      "repeats": 1,
+      "scoring": "single_trial_exact_match",
+      "option_shuffle_seed": 20261018,
+      "protocol_stage_calls": 6,
+      "actual_v4_runtime": false,
+      "model_requests": "unmeasured_use_authorized_transport_ledger",
+      "question_eligibility": {
+        "policy": "brain23_question_year_v1",
+        "source_questions": 3,
+        "included_questions": 3,
+        "excluded_questions": 0,
+        "excluded_reasons": {},
+        "year_basis": "question_explicit_target_year",
+        "metadata_year_fallback": false,
+        "question_audit": [
+          {
+            "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      "chart_year_binding": "question_aware_annual_view",
+      "outcomes": [
+        {
+          "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+          "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+              "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "A",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "D",
+                "B": "A",
+                "C": "C",
+                "D": "B"
+              },
+              "chart_fingerprint": "e4d7533d709524f24b61550c65c654c10b6677e3613b05e088513e82c03d6529",
+              "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+          "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+              "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "B",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "C",
+                "B": "B",
+                "C": "A",
+                "D": "D"
+              },
+              "chart_fingerprint": "681284fc45048af620c4457660326146c6afba88dffc63c13de3d185b7ca40b2",
+              "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+          "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+              "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "C",
+              "displayed_selection": "C",
+              "option_mapping": {
+                "A": "A",
+                "B": "B",
+                "C": "C",
+                "D": "D"
+              },
+              "chart_fingerprint": "0412dd280c10e88d17cfd4441e0b0942c715121cf4a96b6f500d6c8f9c0a992e",
+              "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "questions": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "wilson_95": [
+          0.4385029682449546,
+          1
+        ],
+        "case_count": 3,
+        "trimmed_case_mean": 1.0,
+        "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+        "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+        "leaderboard_shape_8_cases_5_questions": false
+      }
+    },
+    "C4b": {
+      "contract": "e2-protocol-v2",
+      "configuration": "C4b",
+      "control": "original",
+      "repeats": 1,
+      "scoring": "single_trial_exact_match",
+      "option_shuffle_seed": 20261018,
+      "protocol_stage_calls": 6,
+      "actual_v4_runtime": false,
+      "model_requests": "unmeasured_use_authorized_transport_ledger",
+      "question_eligibility": {
+        "policy": "brain23_question_year_v1",
+        "source_questions": 3,
+        "included_questions": 3,
+        "excluded_questions": 0,
+        "excluded_reasons": {},
+        "year_basis": "question_explicit_target_year",
+        "metadata_year_fallback": false,
+        "question_audit": [
+          {
+            "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+            "included": true,
+            "reason": "explicit_target_clause",
+            "year_basis": "question_explicit_target_year",
+            "evidence_spans": [
+              [
+                0,
+                5
+              ]
+            ]
+          }
+        ]
+      },
+      "chart_year_binding": "question_aware_annual_view",
+      "outcomes": [
+        {
+          "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+          "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+              "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "A",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "D",
+                "B": "A",
+                "C": "C",
+                "D": "B"
+              },
+              "chart_fingerprint": "e4d7533d709524f24b61550c65c654c10b6677e3613b05e088513e82c03d6529",
+              "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+          "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+              "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "B",
+              "displayed_selection": "B",
+              "option_mapping": {
+                "A": "C",
+                "B": "B",
+                "C": "A",
+                "D": "D"
+              },
+              "chart_fingerprint": "681284fc45048af620c4457660326146c6afba88dffc63c13de3d185b7ca40b2",
+              "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+            }
+          ]
+        },
+        {
+          "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+          "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+          "correct": true,
+          "invalid_trials": 0,
+          "trials": [
+            {
+              "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+              "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+              "correct": true,
+              "invalid": false,
+              "canonical_selection": "C",
+              "displayed_selection": "C",
+              "option_mapping": {
+                "A": "A",
+                "B": "B",
+                "C": "C",
+                "D": "D"
+              },
+              "chart_fingerprint": "0412dd280c10e88d17cfd4441e0b0942c715121cf4a96b6f500d6c8f9c0a992e",
+              "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+            }
+          ]
+        }
+      ],
+      "summary": {
+        "questions": 3,
+        "correct": 3,
+        "accuracy": 1.0,
+        "wilson_95": [
+          0.4385029682449546,
+          1
+        ],
+        "case_count": 3,
+        "trimmed_case_mean": 1.0,
+        "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+        "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+        "leaderboard_shape_8_cases_5_questions": false
+      }
+    }
+  },
+  "placebo": {
+    "contract": "e2-protocol-v2",
+    "configuration": "C3",
+    "control": "same_explicit_question_year_chart_placebo",
+    "repeats": 1,
+    "scoring": "single_trial_exact_match",
+    "option_shuffle_seed": 20261018,
+    "protocol_stage_calls": 3,
+    "actual_v4_runtime": false,
+    "model_requests": "unmeasured_use_authorized_transport_ledger",
+    "question_eligibility": {
+      "policy": "brain23_question_year_v1",
+      "source_questions": 3,
+      "included_questions": 3,
+      "excluded_questions": 0,
+      "excluded_reasons": {},
+      "year_basis": "question_explicit_target_year",
+      "metadata_year_fallback": false,
+      "question_audit": [
+        {
+          "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+          "included": true,
+          "reason": "explicit_target_clause",
+          "year_basis": "question_explicit_target_year",
+          "evidence_spans": [
+            [
+              0,
+              5
+            ]
+          ]
+        },
+        {
+          "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+          "included": true,
+          "reason": "explicit_target_clause",
+          "year_basis": "question_explicit_target_year",
+          "evidence_spans": [
+            [
+              0,
+              5
+            ]
+          ]
+        },
+        {
+          "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+          "included": true,
+          "reason": "explicit_target_clause",
+          "year_basis": "question_explicit_target_year",
+          "evidence_spans": [
+            [
+              0,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    "chart_year_binding": "question_aware_annual_view",
+    "outcomes": [
+      {
+        "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+        "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+        "correct": false,
+        "invalid_trials": 0,
+        "trials": [
+          {
+            "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+            "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+            "correct": false,
+            "invalid": false,
+            "canonical_selection": "B",
+            "displayed_selection": "D",
+            "option_mapping": {
+              "A": "D",
+              "B": "A",
+              "C": "C",
+              "D": "B"
+            },
+            "chart_fingerprint": "681284fc45048af620c4457660326146c6afba88dffc63c13de3d185b7ca40b2",
+            "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+          }
+        ]
+      },
+      {
+        "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+        "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+        "correct": false,
+        "invalid_trials": 0,
+        "trials": [
+          {
+            "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+            "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+            "correct": false,
+            "invalid": false,
+            "canonical_selection": "C",
+            "displayed_selection": "A",
+            "option_mapping": {
+              "A": "C",
+              "B": "B",
+              "C": "A",
+              "D": "D"
+            },
+            "chart_fingerprint": "0412dd280c10e88d17cfd4441e0b0942c715121cf4a96b6f500d6c8f9c0a992e",
+            "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+          }
+        ]
+      },
+      {
+        "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+        "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+        "correct": false,
+        "invalid_trials": 0,
+        "trials": [
+          {
+            "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+            "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+            "correct": false,
+            "invalid": false,
+            "canonical_selection": "A",
+            "displayed_selection": "A",
+            "option_mapping": {
+              "A": "A",
+              "B": "B",
+              "C": "C",
+              "D": "D"
+            },
+            "chart_fingerprint": "e4d7533d709524f24b61550c65c654c10b6677e3613b05e088513e82c03d6529",
+            "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "questions": 3,
+      "correct": 0,
+      "accuracy": 0.0,
+      "wilson_95": [
+        5.551115123125783e-17,
+        0.5614970317550454
+      ],
+      "case_count": 3,
+      "trimmed_case_mean": 0.0,
+      "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+      "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+      "leaderboard_shape_8_cases_5_questions": false
+    },
+    "year_basis": "question_year"
+  },
+  "other_year_basis_placebo": {
+    "contract": "e2-protocol-v2",
+    "configuration": "C3",
+    "control": "same_competition_year_chart_placebo",
+    "repeats": 1,
+    "scoring": "single_trial_exact_match",
+    "option_shuffle_seed": 20261018,
+    "protocol_stage_calls": 3,
+    "actual_v4_runtime": false,
+    "model_requests": "unmeasured_use_authorized_transport_ledger",
+    "question_eligibility": {
+      "policy": "brain23_question_year_v1",
+      "source_questions": 3,
+      "included_questions": 3,
+      "excluded_questions": 0,
+      "excluded_reasons": {},
+      "year_basis": "question_explicit_target_year",
+      "metadata_year_fallback": false,
+      "question_audit": [
+        {
+          "question_identity_sha256": "fd1e831652acfa98038432ae71300a5fb933bb86fad1432da237467c9dd9375e",
+          "included": true,
+          "reason": "explicit_target_clause",
+          "year_basis": "question_explicit_target_year",
+          "evidence_spans": [
+            [
+              0,
+              5
+            ]
+          ]
+        },
+        {
+          "question_identity_sha256": "1c161abbba962035df85a6ee03c13dd1e0babcb36f465d8d2d3884fd0550d721",
+          "included": true,
+          "reason": "explicit_target_clause",
+          "year_basis": "question_explicit_target_year",
+          "evidence_spans": [
+            [
+              0,
+              5
+            ]
+          ]
+        },
+        {
+          "question_identity_sha256": "1adb2d74586b761095d2f51e237728fe349b9ce9d1d298456823b4e252062e3f",
+          "included": true,
+          "reason": "explicit_target_clause",
+          "year_basis": "question_explicit_target_year",
+          "evidence_spans": [
+            [
+              0,
+              5
+            ]
+          ]
+        }
+      ]
+    },
+    "chart_year_binding": "question_aware_annual_view",
+    "outcomes": [
+      {
+        "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+        "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+        "correct": false,
+        "invalid_trials": 0,
+        "trials": [
+          {
+            "question_fingerprint": "baac760b20c39504407ba28896ab6d3670e81b091b8ce2db3b889e65307dfddb",
+            "case_fingerprint": "b29778b27091b4ce3dd0358375c17772aa64cb9b0c6797e59e0b7b692975b550",
+            "correct": false,
+            "invalid": false,
+            "canonical_selection": "B",
+            "displayed_selection": "D",
+            "option_mapping": {
+              "A": "D",
+              "B": "A",
+              "C": "C",
+              "D": "B"
+            },
+            "chart_fingerprint": "681284fc45048af620c4457660326146c6afba88dffc63c13de3d185b7ca40b2",
+            "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1"
+          }
+        ]
+      },
+      {
+        "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+        "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+        "correct": false,
+        "invalid_trials": 0,
+        "trials": [
+          {
+            "question_fingerprint": "cc276201dc2da2c45ed853eea71998bdee307213adfc09f021dd9ac11f11b623",
+            "case_fingerprint": "16f01911cb4f3018ab4a10b17016773495c732991574ea13aeae21ab7317ce82",
+            "correct": false,
+            "invalid": false,
+            "canonical_selection": "C",
+            "displayed_selection": "A",
+            "option_mapping": {
+              "A": "C",
+              "B": "B",
+              "C": "A",
+              "D": "D"
+            },
+            "chart_fingerprint": "0412dd280c10e88d17cfd4441e0b0942c715121cf4a96b6f500d6c8f9c0a992e",
+            "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af"
+          }
+        ]
+      },
+      {
+        "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+        "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+        "correct": false,
+        "invalid_trials": 0,
+        "trials": [
+          {
+            "question_fingerprint": "6dc543134bfa3334badb858510fc155ba81755e721afe0bdffd2747cb74b466c",
+            "case_fingerprint": "fc95133737fd65fc16d24bb73696cdcd1559df8add315cc662dc4332f9ec4469",
+            "correct": false,
+            "invalid": false,
+            "canonical_selection": "A",
+            "displayed_selection": "A",
+            "option_mapping": {
+              "A": "A",
+              "B": "B",
+              "C": "C",
+              "D": "D"
+            },
+            "chart_fingerprint": "e4d7533d709524f24b61550c65c654c10b6677e3613b05e088513e82c03d6529",
+            "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090"
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "questions": 3,
+      "correct": 0,
+      "accuracy": 0.0,
+      "wilson_95": [
+        5.551115123125783e-17,
+        0.5614970317550454
+      ],
+      "case_count": 3,
+      "trimmed_case_mean": 0.0,
+      "trim_method": "remove_one_best_and_one_worst_case_accuracy",
+      "trim_method_source": "https://destinylinker.github.io/MingLi-Bench/",
+      "leaderboard_shape_8_cases_5_questions": false
+    },
+    "year_basis": "competition_year"
+  },
+  "other_year_basis_placebo_status": "historical_competition_year_compatibility_smoke_only",
+  "current_year_basis": "question_year",
+  "paired_comparisons": {
+    "C0_to_C1": {
+      "questions": 3,
+      "difference_right_minus_left": 1.0,
+      "paired_standard_error": 0.0,
+      "left_only_correct": 0,
+      "right_only_correct": 3,
+      "mcnemar_exact_two_sided_p": 0.25,
+      "limits": "同一命主的题可能相关；逐题配对误差不是对新人物泛化的证明，多个配置比较未调整多重性。"
+    },
+    "C1_to_C2": {
+      "questions": 3,
+      "difference_right_minus_left": 0.0,
+      "paired_standard_error": 0.0,
+      "left_only_correct": 0,
+      "right_only_correct": 0,
+      "mcnemar_exact_two_sided_p": 1,
+      "limits": "同一命主的题可能相关；逐题配对误差不是对新人物泛化的证明，多个配置比较未调整多重性。"
+    },
+    "C2_to_C3": {
+      "questions": 3,
+      "difference_right_minus_left": 0.0,
+      "paired_standard_error": 0.0,
+      "left_only_correct": 0,
+      "right_only_correct": 0,
+      "mcnemar_exact_two_sided_p": 1,
+      "limits": "同一命主的题可能相关；逐题配对误差不是对新人物泛化的证明，多个配置比较未调整多重性。"
+    },
+    "C3_to_C4a": {
+      "questions": 3,
+      "difference_right_minus_left": 0.0,
+      "paired_standard_error": 0.0,
+      "left_only_correct": 0,
+      "right_only_correct": 0,
+      "mcnemar_exact_two_sided_p": 1,
+      "limits": "同一命主的题可能相关；逐题配对误差不是对新人物泛化的证明，多个配置比较未调整多重性。"
+    },
+    "C3_to_C4b": {
+      "questions": 3,
+      "difference_right_minus_left": 0.0,
+      "paired_standard_error": 0.0,
+      "left_only_correct": 0,
+      "right_only_correct": 0,
+      "mcnemar_exact_two_sided_p": 1,
+      "limits": "同一命主的题可能相关；逐题配对误差不是对新人物泛化的证明，多个配置比较未调整多重性。"
+    },
+    "C4a_to_C4b": {
+      "questions": 3,
+      "difference_right_minus_left": 0.0,
+      "paired_standard_error": 0.0,
+      "left_only_correct": 0,
+      "right_only_correct": 0,
+      "mcnemar_exact_two_sided_p": 1,
+      "limits": "同一命主的题可能相关；逐题配对误差不是对新人物泛化的证明，多个配置比较未调整多重性。"
+    },
+    "C3_to_placebo": {
+      "questions": 3,
+      "difference_right_minus_left": -1.0,
+      "paired_standard_error": 0.0,
+      "left_only_correct": 3,
+      "right_only_correct": 0,
+      "mcnemar_exact_two_sided_p": 0.25,
+      "limits": "同一命主的题可能相关；逐题配对误差不是对新人物泛化的证明，多个配置比较未调整多重性。"
+    }
+  },
+  "isolated_chart_calculations": 3,
+  "protocol_stage_calls": 30,
+  "engine_provenance": [
+    {
+      "cache_key": "da6f242fc13c5a3a2ab6ca7e9dbe6303e976fa4f4c0eb11977151673ebfbc88d",
+      "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090",
+      "benchmark_time_basis": {
+        "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+        "explicit_target_year": 2025,
+        "sampling_date": "2025-07-01",
+        "sampling_at": "2025-07-01T12:00:00+08:00",
+        "sampling_date_is_not_event_date": true,
+        "event_date": null,
+        "event_month": null,
+        "event_day": null,
+        "visible_time_layers": [
+          "natal",
+          "yearly"
+        ],
+        "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+        "limits": [
+          "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+          "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+          "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+        ]
+      },
+      "profiles": [
+        {
+          "actual_method": {
+            "calendar": "lunar-python EightChar",
+            "day_sect": 2,
+            "year_boundary": "立春准确时刻，UTC+8 节气表",
+            "month_boundary": "节交接准确时刻，UTC+8 节气表",
+            "dayun_sect": 1,
+            "equation_of_time_applied": false,
+            "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+            "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+            "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+            "natal_day_hour_time": "1990-01-15 08:00:00",
+            "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+            "year_month_calendar_time": "1990-01-15T08:00:00",
+            "day_snapshot": "requested_date_12:00_UTC+8",
+            "p8": {
+              "entry": "P8ChartAdapter_explicit_only",
+              "strength": "two_project_v1_methods",
+              "selected_schools": {
+                "command": "sanming_5520",
+                "tianyi": "combined_common",
+                "blade": "yang_only",
+                "hidden_order": "reverse_command_segments"
+              },
+              "climate": "versioned_opening_excerpt_not_full_book_rules",
+              "dayun_sect": 1,
+              "default_v3_fields": "unchanged_before_existing_adapter_derivation"
+            },
+            "e2_annual_view": {
+              "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+              "explicit_target_year": 2025,
+              "sampling_date": "2025-07-01",
+              "sampling_at": "2025-07-01T12:00:00+08:00",
+              "sampling_date_is_not_event_date": true,
+              "event_date": null,
+              "event_month": null,
+              "event_day": null,
+              "visible_time_layers": [
+                "natal",
+                "yearly"
+              ],
+              "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+              "limits": [
+                "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+                "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+                "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+              ],
+              "source_profile_id": "profile-84bce2e6910c06d688a44bf1",
+              "source_profile_sha256": "3ff10f826df07f975edb71a0e9f321068fa6e4844f89f2be6aa9e3778db029b0",
+              "source_artifact_id": "chart-b80b8f4ec831d6017aa4d723",
+              "source_artifact_sha256": "92cee82084b1f20698792d7e489075fb5d0a153f7de451859c12bcc09967923a",
+              "source_natal_sha256": "0162cbc9421d69bd97419cba59ad05e104274a2b6f7ae059d1ac53884a1a6558",
+              "source_annual_layer_sha256": "3ab81e39531df356918ecd9f995595a1137a105c76aac22baaa89822c16d828b"
+            }
+          },
+          "versions": {
+            "lunar-python": "1.4.8",
+            "engine": "bazi-core-3.1",
+            "p8": {
+              "version": "p8-calc-v3-rules",
+              "source_sha256": {
+                "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
+                "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+                "mingjing_core/adapters/charts/astro_ephemeris.py": "4488ba4255484b1d76be3d3593b3a27eeb2dfef8a1bb95e8949ba36568a5d141",
+                "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
+                "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+                "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
+                "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
+                "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
+                "mingjing_core/adapters/charts/interactions_ziwei.py": "baa2c814a0b2b1d3e678052a580f0c36e94e91fc3b85742adb7b6863777b05cd",
+                "mingjing_core/adapters/charts/jie_uncertainty.py": "f734d17258a0dcbc3aa1864d7b00e285071a3851f771a67ab99075daf0223060",
+                "mingjing_core/adapters/charts/named_bazi.py": "9f5e1843c10d540ccbd05268980ef00441593e93f19af9e132d6baf5aa4bd382",
+                "mingjing_core/adapters/charts/named_strength.py": "4ceb88bf8d8501f7defc978d5d05244d7c7e45c5c180bc9a2a2785b2042f938e",
+                "mingjing_core/adapters/charts/p8_adapter.py": "1af34ce763c2cd211a5f37e487694b9e744c7e200d8f77868cd5ed9b334b2ddc",
+                "mingjing_core/adapters/charts/p8_analysis.py": "72aae34f25e3ab4d1c9263564d3649eedc96aadc65bb6fef4060b6757caf2f4d",
+                "mingjing_core/adapters/charts/p8_policy.py": "2951cbc243484fae5759ee91e27b16b14ac9e1522721f776953475d3babe1b4c",
+                "mingjing_core/adapters/charts/p8_structure.py": "3dcc442a40d13511b2abb61f36e35be6995a898e0cfa6a61640bfe6333c36e07",
+                "mingjing_core/adapters/charts/p8_worker.py": "7bad35ed64d8e6add313598d61cc70465637f04d59a22456beab1ae7fc790d4f",
+                "mingjing_core/adapters/charts/profile_draft.py": "21443d86a5bb4fee45ff65e97ece0dac91fd18cb22016384b58e76de9a6be065",
+                "mingjing_core/adapters/charts/rectification_workbench/__init__.py": "4bd3b498ee34ff4ff9c5aca4dae8ade58869be65744364f7f637ceeddef005b3",
+                "mingjing_core/adapters/charts/rectification_workbench/calibration_scope.py": "e5cb58feb0c1b617bce3e0ba1bcbf4bf76423b48a37055d9445c42f877dd8667",
+                "mingjing_core/adapters/charts/rectification_workbench/chart_grid.py": "c8bb928c30cd5400971597c04df3db83a45fc9ee0cb33c48579460bd9401af8d",
+                "mingjing_core/adapters/charts/rectification_workbench/contracts.py": "2f24f27b55e43f49c432522f0b9fbbdb1537eee463f2c95119c8f6c589d8dee8",
+                "mingjing_core/adapters/charts/rectification_workbench/envelope.py": "9e78132bb335ff70c5f7970436c715b1963187068b72d9dbedc6eed92b4f04ce",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation.py": "534a20ab180077ea762bb553e08dae13c3cd9de12b80acd9d93f7f33e4703a95",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation_cases.py": "142d67240aa63088820d0d41070d7d0f67dad721206ad6beb48c33991caa5e3e",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation_charts.py": "f5a13ce6ae0e3723c9a41c1346e06e160171b068dd6384654b8b9d6c308d2ddf",
+                "mingjing_core/adapters/charts/rectification_workbench/sessions.py": "8175a945a009686e1719bbe2a1525b46196ea4827656c5d613b058d31edacbba",
+                "mingjing_core/adapters/charts/rectification_workbench/signals.py": "87415fd4ce38b002c3056c6bbf51104fdba066345b752b7dd96bffe40291db05",
+                "mingjing_core/adapters/charts/rectification_workbench/statistics.py": "21e04d93b0c20856efc0f4b175f09633fa6d5c4620e9186c98f605b9d8029633",
+                "mingjing_core/adapters/charts/rules/__init__.py": "eff1b36df054bcebc4a4fbec060f60e6075287ed64fb462e3c95bf78043a1a0f",
+                "mingjing_core/adapters/charts/rules/conditions.py": "2ffdac8c1c4f71bf04382d60c9f57956b54f179c6c17172c91a87da61dc2b3f7",
+                "mingjing_core/adapters/charts/rules/engine.py": "b0ecc4067936a0d53ca0b438fb4515da86142b70b856f75258054454029fc913",
+                "mingjing_core/adapters/charts/rules/interaction_metadata.py": "273af6285d3d57c414d8e09cf049f042e8809f73c7e85b6b4e901d0420f4f22c",
+                "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+                "mingjing_core/adapters/charts/time_basis.py": "e25bb738e292f71e69f2735af237b898438476d0fc6bfb867ca36053a5cfedef",
+                "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
+                "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
+                "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
+                "mingjing_core/adapters/charts/time_basis_request.py": "d7c2ce633e3fa1ead77d8799f4bad43223a7cc69ec52512db8ff61f539d30d32",
+                "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
+                "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+                "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
+                "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
+                "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
+                "mingjing_core/adapters/charts/ziwei_flying_support.py": "62bd34ec4c3776df68d91805d80d8b34c7a64e18046577d7121b966670dcdce9",
+                "hermes/bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+                "hermes/ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+                "hermes/astro.py": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8",
+                "mingjing_core/calculations/bazi/__init__.py": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15",
+                "mingjing_core/calculations/bazi/calendar_layers.py": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d",
+                "mingjing_core/calculations/bazi/elements.py": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0",
+                "mingjing_core/calculations/bazi/stars.py": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974",
+                "mingjing_core/calculations/bazi/strength.py": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6",
+                "mingjing_core/calculations/bazi/structure.py": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2",
+                "mingjing_core/calculations/bazi/supplement.py": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f",
+                "mingjing_core/knowledge/p8_bazi/auxiliary_stars.json": "02ba01121b72562bc4644e5db8ba00628c6b1524f3931a00cdbc9b8ee419ec4c",
+                "mingjing_core/knowledge/p8_bazi/climate.json": "8fe8e8ee0ff2af8fba1daaa9f5ba0157b2513318dd1c1452f54163e6c9af20f4",
+                "mingjing_core/knowledge/p8_bazi/climate_review_24.json": "e5d8357a4a4baf2b207b1c49831232fe16b477d669103d6264c49539550a68dc",
+                "mingjing_core/knowledge/p8_bazi/month_command.json": "bc20580ac1f031e508f99928648d2432caccd5363e952a5f5212f3fc28ef9296",
+                "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448",
+                "mingjing_core/knowledge/p8_bazi/schools.json": "10af42bc53caddcf9430657402b2460650608f201399348fc21b4cb2ff44276c",
+                "mingjing_core/knowledge/p8_ziwei/flying_v1.json": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+                "mingjing_core/knowledge/p8_interactions.json": "af859c9e1d1288ddb87c1f34a27e861da13e89e4b26ca142b1ecd49ccee34cde",
+                "mingjing_core/knowledge/rectification_rules_v1.json": "6091e2c573bfdbd5b6bb2b5abeb6ae7a8a54d84d0cb4abc02bfc452e9d7d6689"
+              }
+            },
+            "source_sha256": {
+              "bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+              "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+              "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+            },
+            "e2_annual_view": "e2-target-year-july01-noon-utc8-annual-view-v1"
+          },
+          "target_date": "2025-07-01"
+        }
+      ]
+    },
+    {
+      "cache_key": "252a1546bf36db7a58698b8e94099575b17ba8bd7ee61fbb20c6f92751fadb89",
+      "birth_fingerprint": "ce38d00dee70d7bda8635b1a8d7bda6e15721ab6d0dc308290d010c9f71438e1",
+      "benchmark_time_basis": {
+        "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+        "explicit_target_year": 2025,
+        "sampling_date": "2025-07-01",
+        "sampling_at": "2025-07-01T12:00:00+08:00",
+        "sampling_date_is_not_event_date": true,
+        "event_date": null,
+        "event_month": null,
+        "event_day": null,
+        "visible_time_layers": [
+          "natal",
+          "yearly"
+        ],
+        "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+        "limits": [
+          "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+          "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+          "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+        ]
+      },
+      "profiles": [
+        {
+          "actual_method": {
+            "calendar": "lunar-python EightChar",
+            "day_sect": 2,
+            "year_boundary": "立春准确时刻，UTC+8 节气表",
+            "month_boundary": "节交接准确时刻，UTC+8 节气表",
+            "dayun_sect": 1,
+            "equation_of_time_applied": false,
+            "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+            "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+            "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+            "natal_day_hour_time": "1990-07-21 14:00:00",
+            "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+            "year_month_calendar_time": "1990-07-21T14:00:00",
+            "day_snapshot": "requested_date_12:00_UTC+8",
+            "p8": {
+              "entry": "P8ChartAdapter_explicit_only",
+              "strength": "two_project_v1_methods",
+              "selected_schools": {
+                "command": "sanming_5520",
+                "tianyi": "combined_common",
+                "blade": "yang_only",
+                "hidden_order": "reverse_command_segments"
+              },
+              "climate": "versioned_opening_excerpt_not_full_book_rules",
+              "dayun_sect": 1,
+              "default_v3_fields": "unchanged_before_existing_adapter_derivation"
+            },
+            "e2_annual_view": {
+              "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+              "explicit_target_year": 2025,
+              "sampling_date": "2025-07-01",
+              "sampling_at": "2025-07-01T12:00:00+08:00",
+              "sampling_date_is_not_event_date": true,
+              "event_date": null,
+              "event_month": null,
+              "event_day": null,
+              "visible_time_layers": [
+                "natal",
+                "yearly"
+              ],
+              "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+              "limits": [
+                "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+                "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+                "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+              ],
+              "source_profile_id": "profile-5b097d4a8aa9e5b1f0282ef9",
+              "source_profile_sha256": "2803020394436fb32c50675cc43bd2cd731a47d36516b63ff6b53590899753aa",
+              "source_artifact_id": "chart-34206cd7844a02fe7bb2d149",
+              "source_artifact_sha256": "4193790a6322f73e58520ab8aa95821d20ecd79fe28fc70115e7960e1800fa1b",
+              "source_natal_sha256": "16af2065df2f82c0825a96c1b9216dfb9b646b547aba251983d20289018ddead",
+              "source_annual_layer_sha256": "d1ed5a873e8ef5168003b2deab0080bf9e37dd917bbf2a6f10fff8ca7508ca60"
+            }
+          },
+          "versions": {
+            "lunar-python": "1.4.8",
+            "engine": "bazi-core-3.1",
+            "p8": {
+              "version": "p8-calc-v3-rules",
+              "source_sha256": {
+                "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
+                "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+                "mingjing_core/adapters/charts/astro_ephemeris.py": "4488ba4255484b1d76be3d3593b3a27eeb2dfef8a1bb95e8949ba36568a5d141",
+                "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
+                "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+                "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
+                "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
+                "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
+                "mingjing_core/adapters/charts/interactions_ziwei.py": "baa2c814a0b2b1d3e678052a580f0c36e94e91fc3b85742adb7b6863777b05cd",
+                "mingjing_core/adapters/charts/jie_uncertainty.py": "f734d17258a0dcbc3aa1864d7b00e285071a3851f771a67ab99075daf0223060",
+                "mingjing_core/adapters/charts/named_bazi.py": "9f5e1843c10d540ccbd05268980ef00441593e93f19af9e132d6baf5aa4bd382",
+                "mingjing_core/adapters/charts/named_strength.py": "4ceb88bf8d8501f7defc978d5d05244d7c7e45c5c180bc9a2a2785b2042f938e",
+                "mingjing_core/adapters/charts/p8_adapter.py": "1af34ce763c2cd211a5f37e487694b9e744c7e200d8f77868cd5ed9b334b2ddc",
+                "mingjing_core/adapters/charts/p8_analysis.py": "72aae34f25e3ab4d1c9263564d3649eedc96aadc65bb6fef4060b6757caf2f4d",
+                "mingjing_core/adapters/charts/p8_policy.py": "2951cbc243484fae5759ee91e27b16b14ac9e1522721f776953475d3babe1b4c",
+                "mingjing_core/adapters/charts/p8_structure.py": "3dcc442a40d13511b2abb61f36e35be6995a898e0cfa6a61640bfe6333c36e07",
+                "mingjing_core/adapters/charts/p8_worker.py": "7bad35ed64d8e6add313598d61cc70465637f04d59a22456beab1ae7fc790d4f",
+                "mingjing_core/adapters/charts/profile_draft.py": "21443d86a5bb4fee45ff65e97ece0dac91fd18cb22016384b58e76de9a6be065",
+                "mingjing_core/adapters/charts/rectification_workbench/__init__.py": "4bd3b498ee34ff4ff9c5aca4dae8ade58869be65744364f7f637ceeddef005b3",
+                "mingjing_core/adapters/charts/rectification_workbench/calibration_scope.py": "e5cb58feb0c1b617bce3e0ba1bcbf4bf76423b48a37055d9445c42f877dd8667",
+                "mingjing_core/adapters/charts/rectification_workbench/chart_grid.py": "c8bb928c30cd5400971597c04df3db83a45fc9ee0cb33c48579460bd9401af8d",
+                "mingjing_core/adapters/charts/rectification_workbench/contracts.py": "2f24f27b55e43f49c432522f0b9fbbdb1537eee463f2c95119c8f6c589d8dee8",
+                "mingjing_core/adapters/charts/rectification_workbench/envelope.py": "9e78132bb335ff70c5f7970436c715b1963187068b72d9dbedc6eed92b4f04ce",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation.py": "534a20ab180077ea762bb553e08dae13c3cd9de12b80acd9d93f7f33e4703a95",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation_cases.py": "142d67240aa63088820d0d41070d7d0f67dad721206ad6beb48c33991caa5e3e",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation_charts.py": "f5a13ce6ae0e3723c9a41c1346e06e160171b068dd6384654b8b9d6c308d2ddf",
+                "mingjing_core/adapters/charts/rectification_workbench/sessions.py": "8175a945a009686e1719bbe2a1525b46196ea4827656c5d613b058d31edacbba",
+                "mingjing_core/adapters/charts/rectification_workbench/signals.py": "87415fd4ce38b002c3056c6bbf51104fdba066345b752b7dd96bffe40291db05",
+                "mingjing_core/adapters/charts/rectification_workbench/statistics.py": "21e04d93b0c20856efc0f4b175f09633fa6d5c4620e9186c98f605b9d8029633",
+                "mingjing_core/adapters/charts/rules/__init__.py": "eff1b36df054bcebc4a4fbec060f60e6075287ed64fb462e3c95bf78043a1a0f",
+                "mingjing_core/adapters/charts/rules/conditions.py": "2ffdac8c1c4f71bf04382d60c9f57956b54f179c6c17172c91a87da61dc2b3f7",
+                "mingjing_core/adapters/charts/rules/engine.py": "b0ecc4067936a0d53ca0b438fb4515da86142b70b856f75258054454029fc913",
+                "mingjing_core/adapters/charts/rules/interaction_metadata.py": "273af6285d3d57c414d8e09cf049f042e8809f73c7e85b6b4e901d0420f4f22c",
+                "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+                "mingjing_core/adapters/charts/time_basis.py": "e25bb738e292f71e69f2735af237b898438476d0fc6bfb867ca36053a5cfedef",
+                "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
+                "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
+                "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
+                "mingjing_core/adapters/charts/time_basis_request.py": "d7c2ce633e3fa1ead77d8799f4bad43223a7cc69ec52512db8ff61f539d30d32",
+                "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
+                "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+                "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
+                "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
+                "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
+                "mingjing_core/adapters/charts/ziwei_flying_support.py": "62bd34ec4c3776df68d91805d80d8b34c7a64e18046577d7121b966670dcdce9",
+                "hermes/bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+                "hermes/ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+                "hermes/astro.py": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8",
+                "mingjing_core/calculations/bazi/__init__.py": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15",
+                "mingjing_core/calculations/bazi/calendar_layers.py": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d",
+                "mingjing_core/calculations/bazi/elements.py": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0",
+                "mingjing_core/calculations/bazi/stars.py": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974",
+                "mingjing_core/calculations/bazi/strength.py": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6",
+                "mingjing_core/calculations/bazi/structure.py": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2",
+                "mingjing_core/calculations/bazi/supplement.py": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f",
+                "mingjing_core/knowledge/p8_bazi/auxiliary_stars.json": "02ba01121b72562bc4644e5db8ba00628c6b1524f3931a00cdbc9b8ee419ec4c",
+                "mingjing_core/knowledge/p8_bazi/climate.json": "8fe8e8ee0ff2af8fba1daaa9f5ba0157b2513318dd1c1452f54163e6c9af20f4",
+                "mingjing_core/knowledge/p8_bazi/climate_review_24.json": "e5d8357a4a4baf2b207b1c49831232fe16b477d669103d6264c49539550a68dc",
+                "mingjing_core/knowledge/p8_bazi/month_command.json": "bc20580ac1f031e508f99928648d2432caccd5363e952a5f5212f3fc28ef9296",
+                "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448",
+                "mingjing_core/knowledge/p8_bazi/schools.json": "10af42bc53caddcf9430657402b2460650608f201399348fc21b4cb2ff44276c",
+                "mingjing_core/knowledge/p8_ziwei/flying_v1.json": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+                "mingjing_core/knowledge/p8_interactions.json": "af859c9e1d1288ddb87c1f34a27e861da13e89e4b26ca142b1ecd49ccee34cde",
+                "mingjing_core/knowledge/rectification_rules_v1.json": "6091e2c573bfdbd5b6bb2b5abeb6ae7a8a54d84d0cb4abc02bfc452e9d7d6689"
+              }
+            },
+            "source_sha256": {
+              "bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+              "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+              "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+            },
+            "e2_annual_view": "e2-target-year-july01-noon-utc8-annual-view-v1"
+          },
+          "target_date": "2025-07-01"
+        }
+      ]
+    },
+    {
+      "cache_key": "a5ff70d2c22c6661e97b7c863232d0fb4dad37f4b009b18ad274eca468fb6158",
+      "birth_fingerprint": "e0441febef6aed3f68822ceb4051f76e3dec2ab4fc4e0f00805028e32099d6af",
+      "benchmark_time_basis": {
+        "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+        "explicit_target_year": 2025,
+        "sampling_date": "2025-07-01",
+        "sampling_at": "2025-07-01T12:00:00+08:00",
+        "sampling_date_is_not_event_date": true,
+        "event_date": null,
+        "event_month": null,
+        "event_day": null,
+        "visible_time_layers": [
+          "natal",
+          "yearly"
+        ],
+        "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+        "limits": [
+          "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+          "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+          "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+        ]
+      },
+      "profiles": [
+        {
+          "actual_method": {
+            "calendar": "lunar-python EightChar",
+            "day_sect": 2,
+            "year_boundary": "立春准确时刻，UTC+8 节气表",
+            "month_boundary": "节交接准确时刻，UTC+8 节气表",
+            "dayun_sect": 1,
+            "equation_of_time_applied": false,
+            "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+            "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+            "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+            "natal_day_hour_time": "1990-11-03 20:00:00",
+            "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+            "year_month_calendar_time": "1990-11-03T20:00:00",
+            "day_snapshot": "requested_date_12:00_UTC+8",
+            "p8": {
+              "entry": "P8ChartAdapter_explicit_only",
+              "strength": "two_project_v1_methods",
+              "selected_schools": {
+                "command": "sanming_5520",
+                "tianyi": "combined_common",
+                "blade": "yang_only",
+                "hidden_order": "reverse_command_segments"
+              },
+              "climate": "versioned_opening_excerpt_not_full_book_rules",
+              "dayun_sect": 1,
+              "default_v3_fields": "unchanged_before_existing_adapter_derivation"
+            },
+            "e2_annual_view": {
+              "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+              "explicit_target_year": 2025,
+              "sampling_date": "2025-07-01",
+              "sampling_at": "2025-07-01T12:00:00+08:00",
+              "sampling_date_is_not_event_date": true,
+              "event_date": null,
+              "event_month": null,
+              "event_day": null,
+              "visible_time_layers": [
+                "natal",
+                "yearly"
+              ],
+              "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+              "limits": [
+                "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+                "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+                "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+              ],
+              "source_profile_id": "profile-8ff3ae2d1801ca1f9e175e67",
+              "source_profile_sha256": "12fbcc236752e141ae012043636abe6b5b96e87fd049fc07c3efa7cef35b37f3",
+              "source_artifact_id": "chart-efb325a50f60383f34c209f8",
+              "source_artifact_sha256": "6ffd19394cea329ace45687339405655fffd72789d1b5467bd63c13007445196",
+              "source_natal_sha256": "be9450a18377cb1c86bd772bf847e98e703d65f6f182482a4ab499d8334609a2",
+              "source_annual_layer_sha256": "c69c9372d2d687c2482b45199e844aa478c412d782eb0eb4651b5ca3d88f3484"
+            }
+          },
+          "versions": {
+            "lunar-python": "1.4.8",
+            "engine": "bazi-core-3.1",
+            "p8": {
+              "version": "p8-calc-v3-rules",
+              "source_sha256": {
+                "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
+                "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+                "mingjing_core/adapters/charts/astro_ephemeris.py": "4488ba4255484b1d76be3d3593b3a27eeb2dfef8a1bb95e8949ba36568a5d141",
+                "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
+                "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+                "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
+                "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
+                "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
+                "mingjing_core/adapters/charts/interactions_ziwei.py": "baa2c814a0b2b1d3e678052a580f0c36e94e91fc3b85742adb7b6863777b05cd",
+                "mingjing_core/adapters/charts/jie_uncertainty.py": "f734d17258a0dcbc3aa1864d7b00e285071a3851f771a67ab99075daf0223060",
+                "mingjing_core/adapters/charts/named_bazi.py": "9f5e1843c10d540ccbd05268980ef00441593e93f19af9e132d6baf5aa4bd382",
+                "mingjing_core/adapters/charts/named_strength.py": "4ceb88bf8d8501f7defc978d5d05244d7c7e45c5c180bc9a2a2785b2042f938e",
+                "mingjing_core/adapters/charts/p8_adapter.py": "1af34ce763c2cd211a5f37e487694b9e744c7e200d8f77868cd5ed9b334b2ddc",
+                "mingjing_core/adapters/charts/p8_analysis.py": "72aae34f25e3ab4d1c9263564d3649eedc96aadc65bb6fef4060b6757caf2f4d",
+                "mingjing_core/adapters/charts/p8_policy.py": "2951cbc243484fae5759ee91e27b16b14ac9e1522721f776953475d3babe1b4c",
+                "mingjing_core/adapters/charts/p8_structure.py": "3dcc442a40d13511b2abb61f36e35be6995a898e0cfa6a61640bfe6333c36e07",
+                "mingjing_core/adapters/charts/p8_worker.py": "7bad35ed64d8e6add313598d61cc70465637f04d59a22456beab1ae7fc790d4f",
+                "mingjing_core/adapters/charts/profile_draft.py": "21443d86a5bb4fee45ff65e97ece0dac91fd18cb22016384b58e76de9a6be065",
+                "mingjing_core/adapters/charts/rectification_workbench/__init__.py": "4bd3b498ee34ff4ff9c5aca4dae8ade58869be65744364f7f637ceeddef005b3",
+                "mingjing_core/adapters/charts/rectification_workbench/calibration_scope.py": "e5cb58feb0c1b617bce3e0ba1bcbf4bf76423b48a37055d9445c42f877dd8667",
+                "mingjing_core/adapters/charts/rectification_workbench/chart_grid.py": "c8bb928c30cd5400971597c04df3db83a45fc9ee0cb33c48579460bd9401af8d",
+                "mingjing_core/adapters/charts/rectification_workbench/contracts.py": "2f24f27b55e43f49c432522f0b9fbbdb1537eee463f2c95119c8f6c589d8dee8",
+                "mingjing_core/adapters/charts/rectification_workbench/envelope.py": "9e78132bb335ff70c5f7970436c715b1963187068b72d9dbedc6eed92b4f04ce",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation.py": "534a20ab180077ea762bb553e08dae13c3cd9de12b80acd9d93f7f33e4703a95",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation_cases.py": "142d67240aa63088820d0d41070d7d0f67dad721206ad6beb48c33991caa5e3e",
+                "mingjing_core/adapters/charts/rectification_workbench/evaluation_charts.py": "f5a13ce6ae0e3723c9a41c1346e06e160171b068dd6384654b8b9d6c308d2ddf",
+                "mingjing_core/adapters/charts/rectification_workbench/sessions.py": "8175a945a009686e1719bbe2a1525b46196ea4827656c5d613b058d31edacbba",
+                "mingjing_core/adapters/charts/rectification_workbench/signals.py": "87415fd4ce38b002c3056c6bbf51104fdba066345b752b7dd96bffe40291db05",
+                "mingjing_core/adapters/charts/rectification_workbench/statistics.py": "21e04d93b0c20856efc0f4b175f09633fa6d5c4620e9186c98f605b9d8029633",
+                "mingjing_core/adapters/charts/rules/__init__.py": "eff1b36df054bcebc4a4fbec060f60e6075287ed64fb462e3c95bf78043a1a0f",
+                "mingjing_core/adapters/charts/rules/conditions.py": "2ffdac8c1c4f71bf04382d60c9f57956b54f179c6c17172c91a87da61dc2b3f7",
+                "mingjing_core/adapters/charts/rules/engine.py": "b0ecc4067936a0d53ca0b438fb4515da86142b70b856f75258054454029fc913",
+                "mingjing_core/adapters/charts/rules/interaction_metadata.py": "273af6285d3d57c414d8e09cf049f042e8809f73c7e85b6b4e901d0420f4f22c",
+                "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+                "mingjing_core/adapters/charts/time_basis.py": "e25bb738e292f71e69f2735af237b898438476d0fc6bfb867ca36053a5cfedef",
+                "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
+                "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
+                "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
+                "mingjing_core/adapters/charts/time_basis_request.py": "d7c2ce633e3fa1ead77d8799f4bad43223a7cc69ec52512db8ff61f539d30d32",
+                "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
+                "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+                "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
+                "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
+                "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
+                "mingjing_core/adapters/charts/ziwei_flying_support.py": "62bd34ec4c3776df68d91805d80d8b34c7a64e18046577d7121b966670dcdce9",
+                "hermes/bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+                "hermes/ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+                "hermes/astro.py": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8",
+                "mingjing_core/calculations/bazi/__init__.py": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15",
+                "mingjing_core/calculations/bazi/calendar_layers.py": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d",
+                "mingjing_core/calculations/bazi/elements.py": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0",
+                "mingjing_core/calculations/bazi/stars.py": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974",
+                "mingjing_core/calculations/bazi/strength.py": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6",
+                "mingjing_core/calculations/bazi/structure.py": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2",
+                "mingjing_core/calculations/bazi/supplement.py": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f",
+                "mingjing_core/knowledge/p8_bazi/auxiliary_stars.json": "02ba01121b72562bc4644e5db8ba00628c6b1524f3931a00cdbc9b8ee419ec4c",
+                "mingjing_core/knowledge/p8_bazi/climate.json": "8fe8e8ee0ff2af8fba1daaa9f5ba0157b2513318dd1c1452f54163e6c9af20f4",
+                "mingjing_core/knowledge/p8_bazi/climate_review_24.json": "e5d8357a4a4baf2b207b1c49831232fe16b477d669103d6264c49539550a68dc",
+                "mingjing_core/knowledge/p8_bazi/month_command.json": "bc20580ac1f031e508f99928648d2432caccd5363e952a5f5212f3fc28ef9296",
+                "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448",
+                "mingjing_core/knowledge/p8_bazi/schools.json": "10af42bc53caddcf9430657402b2460650608f201399348fc21b4cb2ff44276c",
+                "mingjing_core/knowledge/p8_ziwei/flying_v1.json": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+                "mingjing_core/knowledge/p8_interactions.json": "af859c9e1d1288ddb87c1f34a27e861da13e89e4b26ca142b1ecd49ccee34cde",
+                "mingjing_core/knowledge/rectification_rules_v1.json": "6091e2c573bfdbd5b6bb2b5abeb6ae7a8a54d84d0cb4abc02bfc452e9d7d6689"
+              }
+            },
+            "source_sha256": {
+              "bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+              "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+              "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+            },
+            "e2_annual_view": "e2-target-year-july01-noon-utc8-annual-view-v1"
+          },
+          "target_date": "2025-07-01"
+        }
+      ]
+    }
+  ],
+  "skill_provenance": {
+    "system": "bazi",
+    "topic": "basics",
+    "version": "p8-skills-draft-2026-10-19-v2.2",
+    "metadata": {
+      "topic": "basics",
+      "title": "基础、十神与司令",
+      "file": "01_basics.md",
+      "question_types": [
+        "日主是什么",
+        "十神、藏干和司令怎么区分"
+      ],
+      "artifact_root": "CalculationArtifact",
+      "required_fields": [
+        "/data/pillars",
+        "/data/day_master",
+        "/data/hidden_stems",
+        "/data/p8/ten_gods",
+        "/data/p8/month_command",
+        "/data/p8/selected_schools",
+        "/data/p8/auxiliary_stars"
+      ],
+      "pending_fields": [],
+      "sources": [
+        {
+          "title": "沈孝瞻著、徐乐吾评注《子平真诠评注》",
+          "locator": "第一章论十干十二支、第二章论阴阳生克；司令分野表PDF第19页/零基18，章节归属待核",
+          "url": "https://www.anhappy.com/share/books/others/books/%E5%9B%BD%E5%AD%A6/%E5%AD%90%E5%B9%B3%E7%9C%9F%E8%AF%A0%E8%AF%84%E6%B3%A8.pdf"
+        },
+        {
+          "title": "万民英《三命通会》",
+          "locator": "卷二论天干阴阳生死、论人元司事；与项目所选具名表对照",
+          "url": "https://zh.wikisource.org/wiki/三命通會/卷二"
+        },
+        {
+          "title": "袁树珊《命理探源》",
+          "locator": "卷三强弱·天乙贵人、羊刃（引古歌、曹震圭、《渊海子平》）；只核原文表，不采用站点现代白话",
+          "url": "https://libokang.com/zh-hant/classics/bazi/命理探源/"
+        },
+        {
+          "title": "张楠《神峰通考》",
+          "locator": "吉神类·天乙贵人；庚辛逢马虎公开转录已核，非原刊校勘",
+          "url": "https://zh.wikisource.org/zh-hans/神峰通考"
+        },
+        {
+          "title": "《三命通会》卷五·论阳刃",
+          "locator": "五阳干有刃正文可核；阴刃逆行第三说未找到对应原文，待核",
+          "url": "https://zh.wikisource.org/wiki/三命通會_(四庫全書本)/卷05"
+        }
+      ],
+      "status": "draft_requires_owner_review",
+      "rule_ids": [
+        "u12-combo-hurting-officer-officer",
+        "u12-combo-indirect-seal-output",
+        "u12-combo-officer-killer",
+        "u12-combo-output-killer",
+        "u12-combo-hurting-officer-seal"
+      ]
+    },
+    "text": "omitted_from_evidence",
+    "context": "omitted_from_evidence",
+    "sha256": "472e471173e2accf41ca19e9e3494b5935180e27edd865b2025465e659798c83",
+    "context_utf8_bytes": 4934,
+    "token_budget": {
+      "limit": 6000,
+      "accounted_units": 4934,
+      "accounting": "UTF-8 bytes as conservative proxy; not a measured model-token count",
+      "runtime_requirement": "主线装配时仍须按实际模型 tokenizer 验证总上下文预算"
+    }
+  },
+  "limits": [
+    "只有三道合成时支读数题；C0脚本固定选A，其他脚本读字段，不测试命理推理。",
+    "C4仅请求计划与替身回调，不是真实专科Agent或主线合参；未注册任何c#/r#别名。",
+    "真实题库未算盘、未打分；只复用先前本机缓存，无新增下载或真实调用。"
+  ],
+  "cli_parameters": {
+    "shuffle_options": true,
+    "shuffle_default": true,
+    "year_basis": "question_year",
+    "historical_compatibility_year_bases_tested": [
+      "competition_year"
+    ]
+  },
+  "source_adjudications": {
+    "contract": "e2-brain23-adjudication-v2",
+    "real_model_requests": 0,
+    "professional_corpus_score": null,
+    "new_downloads": 0,
+    "source_content_redistributed": false,
+    "year_policy": "explicit_question_target_only_no_birth_or_contest_year_fallback",
+    "automatic_decisions_are_conservative": true,
+    "local_review_fingerprint_and_year_span_required": true,
+    "sources": []
+  }
+}

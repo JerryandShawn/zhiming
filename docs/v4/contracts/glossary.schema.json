@@ -1,0 +1,445 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 educational glossary v1 terms dataset",
+  "description": "Structure only; source IDs, unique normalized terms and declared counts require semantic tests.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "p8-glossary-v1"
+    },
+    "stage": {
+      "enum": [
+        "draft_seed_10_pending_root_review",
+        "draft_in_progress_200_not_complete",
+        "draft_complete_200_for_review"
+      ]
+    },
+    "language": {
+      "const": "zh-CN"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "systems": {
+      "type": "object",
+      "properties": {
+        "bazi": {
+          "const": "八字"
+        },
+        "ziwei": {
+          "const": "紫微斗数"
+        },
+        "astro": {
+          "const": "西方占星"
+        },
+        "tarot": {
+          "const": "塔罗"
+        }
+      },
+      "required": [
+        "bazi",
+        "ziwei",
+        "astro",
+        "tarot"
+      ],
+      "additionalProperties": false
+    },
+    "planned_minimum_entries": {
+      "const": 200
+    },
+    "entry_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "system_counts": {
+      "type": "object",
+      "properties": {
+        "bazi": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ziwei": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "astro": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tarot": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "bazi",
+        "ziwei",
+        "astro",
+        "tarot"
+      ],
+      "additionalProperties": false
+    },
+    "sources_file": {
+      "const": "sources_v1.json"
+    },
+    "source_registry_version": {
+      "const": "p8-glossary-sources-v1"
+    },
+    "planned_system_minimums": {
+      "type": "object",
+      "properties": {
+        "bazi": {
+          "const": 60
+        },
+        "ziwei": {
+          "const": 55
+        },
+        "astro": {
+          "const": 50
+        },
+        "tarot": {
+          "const": 35
+        }
+      },
+      "required": [
+        "bazi",
+        "ziwei",
+        "astro",
+        "tarot"
+      ],
+      "additionalProperties": false
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Term"
+      },
+      "minItems": 1
+    },
+    "limits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "review_tag": {
+      "const": "v1_ready_editorial_reviewed"
+    }
+  },
+  "required": [
+    "version",
+    "stage",
+    "language",
+    "description",
+    "systems",
+    "planned_minimum_entries",
+    "entry_count",
+    "system_counts",
+    "sources_file",
+    "source_registry_version",
+    "planned_system_minimums",
+    "entries",
+    "limits"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Source": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "project_implementation",
+            "official_scientific_documentation",
+            "official_implementation_documentation",
+            "project_editorial",
+            "public_domain_transcription",
+            "primary_bibliographic_scan"
+          ]
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verification_status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "edition_page_status": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "source_id",
+        "title",
+        "kind",
+        "url",
+        "path",
+        "locator",
+        "verification_status",
+        "edition_page_status"
+      ],
+      "additionalProperties": false,
+      "anyOf": [
+        {
+          "properties": {
+            "url": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      ]
+    },
+    "SourceReference": {
+      "type": "object",
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "support_scope": {
+          "type": "string",
+          "minLength": 10
+        }
+      },
+      "required": [
+        "source_id",
+        "locator",
+        "support_scope"
+      ],
+      "additionalProperties": false
+    },
+    "SchoolDifference": {
+      "type": "object",
+      "properties": {
+        "school": {
+          "type": "string",
+          "minLength": 1
+        },
+        "note": {
+          "type": "string",
+          "minLength": 12
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "school",
+        "note",
+        "source_ids"
+      ],
+      "additionalProperties": false
+    },
+    "Term": {
+      "type": "object",
+      "properties": {
+        "term_id": {
+          "type": "string",
+          "pattern": "^(bazi|ziwei|astro|tarot)-[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "system": {
+          "enum": [
+            "bazi",
+            "ziwei",
+            "astro",
+            "tarot"
+          ]
+        },
+        "term": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "definition_kind": {
+          "enum": [
+            "traditional_concept",
+            "astronomical_time_coordinate",
+            "geometric_parameter",
+            "symbolic_timing_technique",
+            "editorial_symbol",
+            "editorial_method",
+            "project_convention"
+          ]
+        },
+        "plain_explanation": {
+          "type": "string",
+          "minLength": 20
+        },
+        "example": {
+          "type": "string",
+          "minLength": 15
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "minItems": 1
+        },
+        "school_differences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SchoolDifference"
+          },
+          "minItems": 1
+        },
+        "pending_review": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "term_id",
+        "system",
+        "term",
+        "aliases",
+        "definition_kind",
+        "plain_explanation",
+        "example",
+        "sources",
+        "school_differences",
+        "pending_review"
+      ],
+      "additionalProperties": false
+    },
+    "SourceRegistry": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "p8-glossary-sources-v1"
+        },
+        "stage": {
+          "const": "draft_source_registry"
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Source"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "version",
+        "stage",
+        "sources"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "const": "draft_seed_10_pending_root_review"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "entry_count": {
+            "const": 10
+          },
+          "entries": {
+            "minItems": 10,
+            "maxItems": 10
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "stage": {
+            "const": "draft_complete_200_for_review"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "review_tag"
+        ],
+        "properties": {
+          "entry_count": {
+            "minimum": 200
+          },
+          "entries": {
+            "minItems": 200
+          },
+          "system_counts": {
+            "properties": {
+              "bazi": {
+                "minimum": 60
+              },
+              "ziwei": {
+                "minimum": 55
+              },
+              "astro": {
+                "minimum": 50
+              },
+              "tarot": {
+                "minimum": 35
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

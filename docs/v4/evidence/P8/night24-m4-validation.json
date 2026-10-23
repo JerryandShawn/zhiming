@@ -1,0 +1,126 @@
+{
+  "schema": "p8-night24-m4-validation-v1",
+  "verified_at": "2026-10-19T07:15:32+08:00",
+  "base_remote_head": "d132c1b175b5cc57fcf17bc5ecf778ff6ffe73d4",
+  "base_local_equivalent_head": "6cd04ad0fcb2bedaf6183525b495391c58c64ec2",
+  "initial_attempt": {
+    "failed": 4,
+    "passed": 910,
+    "seconds": 137.32,
+    "reason": "isolated PostgreSQL ConnectionTimeout in four synthetic quota/service tests",
+    "code_or_tests_changed_to_pass": false,
+    "local_database_rechecked": "core_test_meta|127.0.0.1|55480; accepting connections"
+  },
+  "v4": {
+    "passed": 914,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 114.92,
+    "log_tail": "........................................................................ [  7%]\n........................................................................ [ 15%]\n........................................................................ [ 23%]\n........................................................................ [ 31%]\n........................................................................ [ 39%]\n........................................................................ [ 47%]\n........................................................................ [ 55%]\n........................................................................ [ 63%]\n........................................................................ [ 70%]\n........................................................................ [ 78%]\n........................................................................ [ 86%]\n........................................................................ [ 94%]\n..................................................                       [100%]\n914 passed in 114.92s (0:01:54)\n"
+  },
+  "handoff_targeted": {
+    "passed": 99,
+    "new_binding_tests": 52,
+    "seconds": 2.56,
+    "fixed_fixture_only": true
+  },
+  "performance_safety_tests": {
+    "passed": 11,
+    "seconds": 0.13
+  },
+  "solar_tests": {
+    "passed": 8,
+    "native_grid_repeated_by_full_suite": true
+  },
+  "solar_grid": {
+    "samples": 8156,
+    "max_eot_difference_seconds": 3.902981979813447,
+    "max_apparent_clock_difference_seconds": 4.371612244025975,
+    "probes": 42,
+    "any_day_hour_disagreement": 5,
+    "day_disagreement": 2,
+    "hour_disagreement": 5,
+    "thirty_second_control_disagreement": 0,
+    "independent_implementation_not_observation": true,
+    "default_method_changed": false
+  },
+  "performance": [
+    {
+      "system": "bazi",
+      "warmups_excluded": 1,
+      "repeats": 10,
+      "total_seconds": {
+        "n": 10,
+        "minimum_seconds": 1.119162,
+        "median_seconds": 1.134835,
+        "p95_nearest_rank_seconds": 1.160017,
+        "maximum_seconds": 1.160017
+      },
+      "result_envelope_hash_stable": true
+    },
+    {
+      "system": "ziwei",
+      "warmups_excluded": 1,
+      "repeats": 10,
+      "total_seconds": {
+        "n": 10,
+        "minimum_seconds": 1.104581,
+        "median_seconds": 1.124546,
+        "p95_nearest_rank_seconds": 1.143525,
+        "maximum_seconds": 1.143525
+      },
+      "result_envelope_hash_stable": true
+    },
+    {
+      "system": "astro",
+      "warmups_excluded": 1,
+      "repeats": 10,
+      "total_seconds": {
+        "n": 10,
+        "minimum_seconds": 2.634305,
+        "median_seconds": 2.674804,
+        "p95_nearest_rank_seconds": 2.81128,
+        "maximum_seconds": 2.81128
+      },
+      "result_envelope_hash_stable": true
+    }
+  ],
+  "samples": [
+    {
+      "path": "docs/v4/contracts/samples/ayuan_bazi.json",
+      "raw_sha256": "70d6508e652f7985354107b66f60b62de03fe4e187c8ba6bd408d6d3c385d80b",
+      "runtime_output_hash_matches_sample": true
+    },
+    {
+      "path": "docs/v4/contracts/samples/ayuan_ziwei.json",
+      "raw_sha256": "209ede466c103c1fef18149956699cf0e53e240eddd6645c5dafe3e8f5839dc7",
+      "runtime_output_hash_matches_sample": true
+    },
+    {
+      "path": "docs/v4/contracts/samples/ayuan_astro.json",
+      "raw_sha256": "afa13cb8adc2671e0051cc887dd2025dc5c274ea6a60962e76e7faa89e08858a",
+      "runtime_output_hash_matches_sample": true
+    }
+  ],
+  "frontend_reference_checks": 68,
+  "skills": {
+    "chapters": 28,
+    "version": "p8-skills-draft-2026-10-19-v2.2",
+    "max_context_utf8_bytes": 5138,
+    "limit_utf8_bytes": 5500,
+    "measured_model_tokens": false
+  },
+  "style_python_files": 118,
+  "protected_files_unchanged": 141,
+  "m3_exact_head_ci": {
+    "head": "d132c1b175b5cc57fcf17bc5ecf778ff6ffe73d4",
+    "run": 39141716204,
+    "conclusion": "success"
+  },
+  "new_head_ci": "pending_until_publish",
+  "real_model_requests": 0,
+  "server_access": false,
+  "merged": false,
+  "hourly_logging_requirement_fully_met": false,
+  "missing_verified_hourly_entries": "2026-10-19 00 through 06 Asia/Taipei; no backfill"
+}
