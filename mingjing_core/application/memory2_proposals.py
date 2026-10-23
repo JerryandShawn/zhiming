@@ -8,7 +8,13 @@ from typing import TYPE_CHECKING, Any
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
-from mingjing_core.application.agent_tools_policy import KIND_MAP, SENSITIVITIES, V4FactMemory, sensitivity_categories
+from mingjing_core.application.agent_tools_policy import (
+    KIND_MAP,
+    SENSITIVITIES,
+    V4FactMemory,
+    sensitivity_categories,
+)
+from mingjing_core.application.memory2_conflicts import checked_conflict
 from mingjing_core.application.memory2_consent import consent_live
 from mingjing_core.application.memory2_undo import verify_originals
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
@@ -124,7 +130,7 @@ class MemoryProposalService:
             )
 
     def _reject(self, owner: str, subject: str, ident: str, revision: int, operation_id: str) -> dict[str, Any]:
-        proposal = self._pending(owner, subject, ident, revision)
+        proposal = self._pending(owner, subject, ident, revision, allow_conflict=True)
         deleted = self.repo.delete(
             owner, "proposal", ident, expected_revision=proposal["revision"], operation_id=operation_id + ":reject"
         )
@@ -136,12 +142,19 @@ class MemoryProposalService:
             "code": "proposal_rejected",
         }
 
-    def _pending(self, owner: str, subject: str, ident: str, revision: int) -> dict[str, Any]:
+    def _pending(
+        self, owner: str, subject: str, ident: str, revision: int, *, allow_conflict: bool = False
+    ) -> dict[str, Any]:
         proposal = self.repo.get(owner, "proposal", ident)
         if proposal["subject_id"] != subject:
             raise ScopeError("记忆提案不属于当前人物")
         if proposal["revision"] != revision:
             raise RevisionConflict("记忆提案已经变化")
+        if proposal.get("proposal_type") == "memory_conflict":
+            if not allow_conflict:
+                raise EvidenceError("冲突提案需要先明确选择哪条说法为准")
+            checked_conflict(self.memory, owner, subject, proposal)
+            return proposal
         if proposal["status"] != "pending" or proposal.get("sensitivity") not in SENSITIVITIES:
             raise EvidenceError("此提案不能用作敏感记忆授权")
         refs = proposal.get("source_refs", [])

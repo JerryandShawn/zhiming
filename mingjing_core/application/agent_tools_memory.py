@@ -18,7 +18,14 @@ from mingjing_core.application.agent_tools_policy import (
     source_span,
 )
 from mingjing_core.application.memory import SECRET
-from mingjing_core.application.memory2_consent import categories_granted, category_authority_refs
+from mingjing_core.application.memory2_conflicts import (
+    conflict_feedback,
+    create_conflict_proposal,
+)
+from mingjing_core.application.memory2_consent import (
+    categories_granted,
+    category_authority_refs,
+)
 from mingjing_core.application.memory2_merge import merge_written_fact
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import has_optout, hypothetical
@@ -118,6 +125,9 @@ def save_memory(
     metadata, pending = event_metadata(service, args, ctx, source)
     if pending:
         return pending
+    conflict = create_conflict_proposal(service, args, ctx, source, start, end, level, metadata)
+    if conflict:
+        return conflict
     categories = sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
     if level in SENSITIVITIES and not categories_granted(service.memory, ctx.owner, ctx.subject, categories):
         return proposal(service, args, ctx, source, start, end, level, metadata)
@@ -131,6 +141,26 @@ def save_memory(
     )
     if row["write_status"] != "saved":
         return {"write_status": row["write_status"], "code": "memory_policy"}
+    row = decorate_memory(service, args, ctx, row, metadata, categories)
+    row, change_id = merge_written_fact(service, ctx, row)
+    return {
+        "write_status": "saved",
+        "id": row["id"],
+        "fact_id": row["id"],
+        "kind": "fact",
+        "revision": row["revision"],
+        **({"ids": [change_id], "code": "memory2_merged"} if change_id else {}),
+    }
+
+
+def decorate_memory(
+    service: AgentToolsService,
+    args: dict[str, Any],
+    ctx: ToolContext,
+    row: dict[str, Any],
+    metadata: dict[str, Any],
+    categories: tuple[str, ...],
+) -> dict[str, Any]:
     metadata.update(summary=args["summary"], requested_kind=args["kind"])
     if categories:
         refs, proofs = category_authority_refs(service.memory, ctx.owner, ctx.subject, categories)
@@ -148,15 +178,7 @@ def save_memory(
             expected_revision=row["revision"],
             operation_id=ctx.operation_id + ":metadata",
         )
-    row, change_id = merge_written_fact(service, ctx, row)
-    return {
-        "write_status": "saved",
-        "id": row["id"],
-        "fact_id": row["id"],
-        "kind": "fact",
-        "revision": row["revision"],
-        **({"ids": [change_id], "code": "memory2_merged"} if change_id else {}),
-    }
+    return row
 
 
 def save_note(service: AgentToolsService, args: dict[str, Any], ctx: ToolContext) -> dict[str, Any]:
@@ -239,9 +261,12 @@ def execute_write(
         if row["status"] in {"deleted", "stopped"}:
             raise EvidenceError("原写入结果已撤销")
     status = receipt["write_status"]
+    data: dict[str, Any] = {"write_status": status}
+    if receipt.get("code") == "memory2_possible_conflict":
+        data["possible_conflict"] = conflict_feedback(service, ctx, receipt)
     return ToolResult(
         ok=status in {"saved", "deleted", "stopped"},
         receipt=receipt,
-        data={"write_status": status},
+        data=data,
         summary="记忆操作状态：" + status,
     )

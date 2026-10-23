@@ -112,11 +112,12 @@ def test_inactive_or_stale_fact_is_never_merge_target(tool_repo: PostgresReposit
     assert "ids" not in new.receipt
 
 
-def test_unrelated_assertion_is_not_fuzzily_merged(tool_repo: PostgresRepository) -> None:
+def test_opposite_assertion_is_proposed_without_fuzzy_merge(tool_repo: PostgresRepository) -> None:
     first = setup(tool_repo, "我喜欢合成徒步")
     first.write("preference")
     first.finish()
     second = setup(tool_repo, "我不喜欢合成徒步")
     result, _, _ = second.write("preference")
-    assert result.ok and "ids" not in result.receipt
-    assert len(second.service.memory.facts("alice")) == 2
+    assert not result.ok and result.receipt["code"] == "memory2_possible_conflict"
+    assert len(second.service.memory.facts("alice")) == 1
+    assert second.service.memory.facts("alice")[0]["content"] == "我喜欢合成徒步"
