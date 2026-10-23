@@ -30,6 +30,8 @@
 
 ## Surprises & Discoveries
 
+2026-10-24 00:25 +08:00：同候选f18fc69正式脚本P3 48/48、日期7/7、原80展开69/81；剩12项延期/跨模型口径保持待决，未生成live gate。GitHub v4回归4001通过/75跳过/1失败；唯一失败是宿主默认PG16 dump客户端，既有PG15精确断言正确。Core/计算器与前端CI均已通过。CI改为显式安装并选择PG15客户端，增加不改变原5432测试库的独立55480原生恢复夹具；本机仅解析11段Bash及YAML，实际新CI未验证，不重复本机宽验或弱化版本门。官方安装来源为https://www.postgresql.org/download/linux/ubuntu/，新夹具全部合成、不触发真实模型或消息。
+
 唯一宽验失败是旧test_v4_cli_is_offline_only_and_default_fake_is_unchanged仍期待“不支持live/v4”的SystemExit字样。用户v7已明确有条件允许该模式，因此现改验缺密钥先停、仅有合成密钥但缺可信门仍manual_start_required；中央PG/target/HTTP均设失败探针且没有触发。默认fake/validate行为及零请求保护保留，不更改金标或放松授权。56个跳过均来自两个显式B1测试管理员环境未传；只为本机随机测试库/角色配置已有管理员入口，不改任何现有角色权限，原b9已知阻塞断言仍通过。Starlette/AnyIO旧依赖告警保留，不追逐警告或重复稳定性测试。
 
 F04初次失败并非生产重生成校验过严：旧评测直接queue_run并在事后修改线程字段，其immutable指纹与原生入队不同，Regenerator按设计拒绝。评测现复用ThreadService.receive与ThreadIngress.queue；不放松生产lease/epoch/请求指纹。最初相关链1失败/7通过，修复后F04单项通过，再以原生队列相关链验证。撤销语义观察仅从真实core_revocations与core_runs持久结果推导，保留source_store，不插假事件。此修复使同run撤销路径可执行，F02自撤销后独立公开回执仍由另片补齐。

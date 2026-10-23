@@ -48,6 +48,8 @@ jobs:
       HF_HUB_OFFLINE: "1"
       TRANSFORMERS_OFFLINE: "1"
       HF_HUB_DISABLE_TELEMETRY: "1"
+      FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN: postgresql://first_release_test:isolated_fr_ci_only@127.0.0.1:55480/core_test_main
+      FIRST_RELEASE_TEST_PG_BIN: /usr/lib/postgresql/15/bin
     steps:
       - uses: actions/checkout@v4
         with:
@@ -68,6 +70,39 @@ jobs:
           done
           docker logs --tail 40 p0-core-postgres
           exit 1
+      - name: Start separate loopback PostgreSQL 15 restore fixture
+        run: |
+          docker run --detach --name first-release-test-postgres --network host \
+            -e POSTGRES_USER=first_release_test \
+            -e POSTGRES_PASSWORD=isolated_fr_ci_only \
+            -e POSTGRES_DB=core_test_main \
+            postgres:15 -c port=55480 -c listen_addresses=127.0.0.1
+          for attempt in {1..30}; do
+            if docker exec first-release-test-postgres pg_isready -h 127.0.0.1 -p 55480 -U first_release_test -d core_test_main; then
+              exit 0
+            fi
+            sleep 2
+          done
+          docker logs --tail 40 first-release-test-postgres
+          exit 1
+      - name: Install exact PostgreSQL 15 dump and restore clients
+        run: |
+          sudo apt-get update
+          if ! apt-cache show postgresql-client-15 >/dev/null 2>&1; then
+            # Official PGDG setup: https://www.postgresql.org/download/linux/ubuntu/
+            sudo install -d /usr/share/postgresql-common/pgdg
+            sudo curl --fail --show-error --silent \
+              https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+              -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+            . /etc/os-release
+            printf 'Types: deb\nURIs: https://apt.postgresql.org/pub/repos/apt\nSuites: %s-pgdg\nComponents: main\nSigned-By: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc\n' \
+              "$VERSION_CODENAME" | sudo tee /etc/apt/sources.list.d/zhiming-pgdg.sources >/dev/null
+            sudo apt-get update
+          fi
+          sudo apt-get install --yes --no-install-recommends postgresql-client-15
+          /usr/lib/postgresql/15/bin/pg_dump --version | grep -E 'PostgreSQL\) 15\.'
+          /usr/lib/postgresql/15/bin/pg_restore --version | grep -E 'PostgreSQL\) 15\.'
+          echo /usr/lib/postgresql/15/bin >> "$GITHUB_PATH"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -120,4 +155,7 @@ jobs:
         run: |
           if docker container inspect p0-core-postgres >/dev/null 2>&1; then
             docker rm --force p0-core-postgres
+          fi
+          if docker container inspect first-release-test-postgres >/dev/null 2>&1; then
+            docker rm --force first-release-test-postgres
           fi
