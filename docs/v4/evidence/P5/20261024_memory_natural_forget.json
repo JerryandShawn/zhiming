@@ -1,0 +1,107 @@
+{
+  "recorded_beijing": "2026-10-24T03:01:29.043253+08:00",
+  "target": "v4",
+  "mode": "scripted",
+  "complete_memory2_acceptance": false,
+  "runtime_head_at_execution": "e80831f87765902f1a5c0bb75f1d4f5d2fe16f8d",
+  "working_tree_changes_at_execution": [
+    "mingjing_core/application/memory.py",
+    "mingjing_core/application/memory2_withdrawals.py",
+    "mingjing_core/memory/forget_intent.py",
+    "tools/eval/targets/v4_target.py",
+    "tools/eval/targets/v4_memory_history_seed.py",
+    "tools/eval/targets/v4_memory_actions.py",
+    "tools/eval/targets/v4_memory_script_args.py",
+    "tools/eval/targets/v4_corpus.py"
+  ],
+  "source_sha256": "52317d49f4b50a9357fb46c7bf669815051ed488414a2f7cb4a8a9694a41ec6f",
+  "case": {
+    "id": "F02",
+    "status": "failed",
+    "score": 0.0,
+    "scenario_contract_sha256": "9be7f6aec03f4c136a08a96028de4c1cafed9a676392ecb2dc7cd0acc7c1f97e",
+    "failed_assertions": [
+      "turn[1].receipts[1]",
+      "turn[1].db[2]",
+      "turn[1].db[3]"
+    ],
+    "assertions": [
+      {
+        "turn": 1,
+        "name": "must_not_include[1]",
+        "passed": true
+      },
+      {
+        "turn": 1,
+        "name": "tools_called[1]",
+        "passed": true
+      },
+      {
+        "turn": 1,
+        "name": "receipts[1]",
+        "passed": false
+      },
+      {
+        "turn": 1,
+        "name": "db[1]",
+        "passed": true
+      },
+      {
+        "turn": 1,
+        "name": "db[2]",
+        "passed": false
+      },
+      {
+        "turn": 1,
+        "name": "db[3]",
+        "passed": false
+      },
+      {
+        "turn": 1,
+        "name": "events",
+        "passed": true
+      }
+    ]
+  },
+  "scripted_setup_model_calls": 2,
+  "scripted_dialogue_model_calls": 2,
+  "external_provider_requests": 0,
+  "summary": {
+    "required_count": 37,
+    "attempted_across_checkpoints": 37,
+    "passed_across_checkpoints": 31,
+    "failed": [
+      "M08",
+      "KU01",
+      "KU02",
+      "F01",
+      "F02",
+      "F03"
+    ],
+    "unexecuted": [],
+    "single_final_frozen_run": false
+  },
+  "checks": {
+    "related_natural_forget_and_runtime_and_withdrawal_passed": 34,
+    "after_guard_change_natural_and_runtime_and_toolkit_passed": 55,
+    "corpus_and_legacy_memory_passed": 33,
+    "existing_test_dsn_warning": 1,
+    "final_nonempty_health_fixture_runtime_check_passed": 1,
+    "overlapping_checks_not_added": true
+  },
+  "known_attempts": [
+    "Initial new direct natural-forget replay used the new tombstone revision and failed its intent fingerprint; fixed by binding stable source intent before reading the initial target revision, no gate/fingerprint rewrite.",
+    "First F02 driver used raw queue_run and failed regeneration request proof; actual ThreadIngress removed target_error, remaining hard failures unchanged.",
+    "Historical sensitive seed metadata is revalidated from literal source and initialized before execution; prevents a vacuous zero-health-fact assertion."
+  ],
+  "actual_runtime_proofs": [
+    "A real pending P3 proposal and assistant reply exist before forgetting, with exact original source and original aware timestamps.",
+    "Actual memory_forget removes the literal health fact, deletes pending proposal, redacts the old assistant reply, and restarts runtime once.",
+    "A body-free deleted mutation receipt exists in core_mutation_requests; the old epoch tool output is cleared by privacy closure, so the final evaluated receipts assertion still fails."
+  ],
+  "limitations": [
+    "Original F02 still fails receipts[1], db[2], db[3]; raw proposal tombstone and fixture/native source id view remain incompatible.",
+    "No fabricated receipt or redacted flag; no Agent-loop/commit-gate/channel/model/scheduler changes.",
+    "37 executions at different checkpoints are not one final frozen acceptance and cannot establish live quality."
+  ]
+}

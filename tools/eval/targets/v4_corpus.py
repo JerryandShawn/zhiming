@@ -11,6 +11,8 @@ import yaml
 from tools.eval.contracts import scenario_contract_hash
 from tools.eval.schema import Scenario, load_scenarios
 
+from .v4_memory_script_args import adapt_memory_script_args
+
 REQUIRED_IDS = frozenset(
     [f"T{i:02}" for i in range(1, 15)]
     + [f"M{i:02}" for i in (1, 2, 3, 4, 9, 10, 11, 13)]
@@ -106,6 +108,7 @@ def execution_overlay(scenario: Scenario) -> Scenario:
                 original = data["turns"][step["turn"] - 1]["user"]
                 if args["question"] not in original:
                     args["question"] = original
+    adapt_memory_script_args(data)
     result = Scenario.model_validate(data)
     if scenario_contract_hash(result) != scenario_contract_hash(scenario):
         raise ValueError("Execution overlay changed the scoring contract")

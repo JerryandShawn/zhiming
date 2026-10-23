@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, Any
 from mingjing_core.application.memory2_proposals import approval_reference
 from mingjing_core.application.memory2_undo import verify_originals
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
+from mingjing_core.memory.forget_intent import forget_topic, require_unique_topic
 from mingjing_core.timekit.clock import get_clock
 from mingjing_core.timekit.timestamps import history_instant
 
@@ -32,6 +33,48 @@ class MemoryWithdrawalService:
     ) -> dict[str, Any]:
         return self._withdraw(owner, subject, "message", source_id, expected_revision, message_id, operation_id)
 
+    def forget_from_message(
+        self, owner: str, subject: str, fact_id: str, *, message_id: str, operation_id: str
+    ) -> dict[str, Any]:
+        with self.repo.transaction(owner):
+            action = self.memory.get_source(owner, message_id)
+            verify_originals(self.memory, owner, subject, [approval_reference(action)])
+            if (
+                forget_topic(action["content"]) is None
+                or action.get("policy", {}).get("origin") != "current_user"
+                or action.get("policy", {}).get("run_context") is not True
+            ):
+                raise EvidenceError("需要当前用户明确忘记所指的记忆")
+            receipt = self.repo.mutation_request(
+                owner,
+                "memory2_natural_forget",
+                operation_id,
+                {
+                    "subject": subject,
+                    "fact_id": fact_id,
+                    "message_id": message_id,
+                    "source_revision": action["revision"],
+                },
+                partial(self._natural_apply, owner, subject, fact_id, message_id, operation_id),
+            )
+            target = self.repo.get(owner, "fact", fact_id, include_deleted=True)
+            if target["status"] != "deleted" or not self.repo.is_revoked(owner, "fact", fact_id):
+                raise EvidenceError("原删除结果已变化")
+            return receipt
+
+    def _natural_apply(
+        self, owner: str, subject: str, fact_id: str, message_id: str, operation_id: str
+    ) -> dict[str, Any]:
+        fact = self.repo.get(owner, "fact", fact_id)
+        return self.withdraw_fact(
+            owner,
+            subject,
+            fact_id,
+            expected_revision=fact["revision"],
+            message_id=message_id,
+            operation_id=operation_id,
+        )
+
     def _withdraw(
         self, owner: str, subject: str, kind: str, ident: str, revision: int, message_id: str, operation_id: str
     ) -> dict[str, Any]:
@@ -46,6 +89,7 @@ class MemoryWithdrawalService:
                 content == "删除这条来源消息"
                 if kind == "message"
                 else bool(re.fullmatch(r"撤销这条[^。？！!?\n]{0,30}记忆", content))
+                or forget_topic(content) is not None
             )
             if (
                 not command
@@ -93,6 +137,8 @@ class MemoryWithdrawalService:
             raise RevisionConflict("所选记忆或来源已经变化")
         self._chronology(owner, kind, target, action)
         if kind == "fact":
+            if (topic := forget_topic(action["content"])) is not None:
+                require_unique_topic(self.memory.facts(owner, subject), topic, ident)
             row = self.memory.retire_fact(owner, ident, expected_revision=revision)
             affected = row.get("affected_fact_ids", [ident])
         else:

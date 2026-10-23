@@ -20,11 +20,11 @@ def test_memory_corpus_preserves_all_original_scoring_and_records_incomplete_cov
     manifest = write_memory2_corpus(ROOT / "tools/eval/scenarios", destination)
     originals = {case.id: case for case in load_scenarios(ROOT / "tools/eval/scenarios")}
     executable = load_scenarios(destination)
-    assert len(REQUIRED_MEMORY2_IDS) == 37 and len(SUPPORTED_MEMORY2_IDS) == 26
+    assert len(REQUIRED_MEMORY2_IDS) == 37 and len(SUPPORTED_MEMORY2_IDS) == 27
     assert {case.id for case in executable} == SUPPORTED_MEMORY2_IDS
     assert manifest["complete_acceptance"] is False
     assert manifest["executable_does_not_imply_passed"] is True
-    assert set(manifest["pending_action_drivers"]) == {"F02"}
+    assert set(manifest["pending_action_drivers"]) == set()
     assert len(manifest["missing_contract_files"]) == 10
     for case in executable:
         assert scenario_contract_hash(case) == scenario_contract_hash(originals[case.id])

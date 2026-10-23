@@ -278,7 +278,19 @@ class MemoryService:
         text=source.get('content','')
         if source['subject_id']!=fact['subject_id'] or source.get('role')!='user':raise ScopeError('Withdrawal source must belong to target subject')
         if fact['case_id'] is not None and fact['case_id'] not in source.get('case_ids',[]):raise ScopeError('Withdrawal target case is not selected by current source')
-        marker=re.search(r'删除|忘记|停止(?:使用)?|别再(?:用|记)|不要再(?:用|记)',text)
+        from mingjing_core.memory.forget_intent import forget_topic, withdrawal_denied
+        if withdrawal_denied(text):
+            raise EvidenceError("需要当前用户明确的肯定撤销请求")
+        if forget_topic(text) is not None:
+            from mingjing_core.application.memory2_withdrawals import MemoryWithdrawalService
+            receipt = MemoryWithdrawalService(self).forget_from_message(
+                owner, source['subject_id'], fact_id, message_id=source_id, operation_id=operation_id
+            )
+            return dict(
+                self.repo.get(owner, 'fact', fact_id, include_deleted=True),
+                write_status=receipt['write_status'], affected_fact_ids=receipt['affected_ids']
+            )
+        marker=re.search(r'删除|忘记|停止(?:使用)?|别再(?:用|记)|不要再(?:用|记)',mask_quoted(text))
         if not marker:raise EvidenceError('Original user did not request withdrawal')
         if fact['status'] in ('deleted','stopped'):
             return dict(fact,write_status='deleted' if fact['status']=='deleted' else 'stopped')

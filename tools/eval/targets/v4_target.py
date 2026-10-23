@@ -23,6 +23,7 @@ from .v4_chart_observations import chart_observations
 from .v4_context_observations import context_observations
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
+from .v4_memory_history_seed import memory_ingress_needed, seed_memory_sources
 from .v4_memory_privacy_seed import prepare_memory
 from .v4_memory_privacy_views import native_counts, privacy_rows
 from .v4_memory_revocation_fault import MemoryRevocationPort, queue_memory_revoke_turn, regeneration_observations
@@ -85,7 +86,7 @@ class V4Target:
         self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
         self.provider = ScriptedProvider(seed.get("_scripted", []))
         self.seeder = V3Seeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
-        self.seeder.seed(seed)
+        seed_memory_sources(self)
         self.tarot = TarotDriver(self.service, self.seeder)
         self.tarot.seed(seed)
         self.bindings = dict(self.seeder.ids)
@@ -132,7 +133,7 @@ class V4Target:
     def _request(self, turn: dict[str, Any]) -> dict[str, Any]:
         if self.repo is None:
             raise RuntimeError("Call reset before send")
-        if self.seed.get("controls", {}).get("revoke_after_context"):
+        if memory_ingress_needed(self.seed, turn):
             return queue_memory_revoke_turn(self, turn)
         if turn.get("action", {}).get("type") == "ingest_batch" or turn.get("channel") == "feishu":
             self.feishu = FeishuBatchDriver(self)

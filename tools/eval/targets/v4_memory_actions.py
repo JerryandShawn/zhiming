@@ -12,6 +12,7 @@ from mingjing_core.application.threads import ThreadService
 from tools.eval.providers.scripted import ScriptedProvider
 
 from .base import TurnResult
+from .v4_memory_history_seed import declared_reply, execute_historical, pending_source_label
 
 
 class MemoryActionDriver:
@@ -24,9 +25,11 @@ class MemoryActionDriver:
     def seed(self) -> None:
         target = self.target
         for fixture in target.seed.get("entities", []):
-            if fixture["kind"] != "proposal" or "source_message_id" not in fixture["data"]:
+            label = pending_source_label(target.seed, fixture)
+            if label is None:
                 continue
-            source_id = target.seeder.ids[fixture["data"]["source_message_id"]]
+            source_id = target.seeder.ids[label]
+            reply = declared_reply(target.seed, label)
             source = target.service.memory.get_source(target.owner, source_id)
             run = self._queue(source, fixture["id"])
             args = {
@@ -42,14 +45,16 @@ class MemoryActionDriver:
                         "turn": 1,
                         "model": [
                             {"tool_call": {"name": "memory_write", "arguments": args}},
-                            {"text": "这条敏感记忆需要你确认后才保存。"},
+                            {"text": reply["content"] if reply is not None else "这条敏感记忆需要你确认后才保存。"},
                         ],
                     }
                 ]
             )
             before = target.port.calls
-            target.port.start(provider, 1, {})
-            target.runtime.execute(target.service, target.owner, run["id"], run["lease_token"], lambda event: None)
+            result = execute_historical(target, run, provider, reply)
+            if reply is not None:
+                self.ids[reply["id"]] = result["message_id"]
+                target.seeder.ids[reply["id"]] = result["message_id"]
             self.setup_calls += target.port.calls - before
             from .v4_observations import tool_steps
 
