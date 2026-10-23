@@ -1,5 +1,9 @@
 # 首发核心30题计划（v2.2隔离子集）
 
+2026-10-24 05:40 +08:00当前态复核：精确physical attempt与Journal锚点已经由c5e7b5fe9aa268b817b723437ab547119e89dd5d实现，原生intent、中央同UUID终态和completed的权威PG重读均已存在，不能再把本文较早的“尚未实现方案”当作当前待办。7996c0b来源CI已成功，其X08真实本机HTTP断线/PG续接观察驱动已普通合入正式v4/integration的9f2506f；这是局部驱动/测试证据，原f18完整69/81报告保持不变，完整同候选脚本门没有因此解除。
+
+下一最小未覆盖点是实际累计执行预算：新RunControl仍以当前monotonic重记started，RuntimeLimits的原deadline/配置pin与私密生命周期的FrozenClock、请求计数不能替代已耗执行秒数。后续只拟通过专用DurableTarget的control_factory在原场景PG新增受source/run/epoch/limit-pin/deadline与LifecycleBinding绑定的私密runtime_step段；首段先open、退出monitor后按真实monotonic封closed并累计，poll扣旧累计与本段消耗。已有Journal却缺预算或遗留open/未知段都失败关闭，不猜耗时、不清停、不改业务Clock或原deadline。最多验证跨attach保留、累计耗尽零POST、未知预算拒绝三行为；此设计未实施或测试，attached send、CLI恢复、长5小时窗口等待及真实评测门继续关闭。精确物理锚点不重复开发，历史失败记录不删。
+
 当前离线CLI首次30/30，真实调用为0。可信等价证明至core会话的接线已用真实隔离PG与替身HTTP验证；正式脚本门和真实20步等价证明仍未齐，生产core依然不放行，跨额度窗口的持久续作尚未接通。本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
 
 ## 固定范围与评分
