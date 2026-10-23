@@ -8,6 +8,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 01:44 +08:00) 经主线批准最小legacy_memory目标解析修复，控制树新PG窄链首次8/8通过（2.69秒）：真实mapper的legacy/verified fact、无目标/None、歧义/来源/跨owner边界；真实候选打包与独立擦除后验仍待下一片。
+- [x] (2026-10-24 01:39 +08:00) 单一原生legacy迁移/旧备份/最新inactive/候选双apply复现执行完毕，正确擦除断言真实失败1/1（30.95秒）；已确认144b81e业务缺口，未修业务或effects，详见下文安全证据。
 - [x] (2026-10-24 01:26 +08:00) 显式同call本机新目标候选双重放首链7/7：真实90a27fb非空及prefix4空正例、真实7e3d098旧候选第二遍状态变化拒绝、类型/同call、helper hash、stale ledger及跨owner整批回滚。独立摘要覆盖全部字段/checkpoint/sequence，正常总9连接；仍非正式恢复证明。
 - [x] (2026-10-24 01:28 +08:00) 仅追加共享_process默认路由的原正常预检兼容节点1/1，仍只读且不执行撤销。新增replay限制原始prefix4/7，不扩大既有默认恢复1–7；未宽测。
 - [x] (2026-10-24 01:11 +08:00) 同call持锁新目标可选候选fresh-process只读预检9/9：完整Git候选包、实际Python3.11 venv与活动Core锁闭包、真实PG15迁移/owner/运行状态/中央空表；预载控制包、源码漂移及四种目标异常均拒绝并保留新目标，完整状态未变。未调用撤销重放，正式完成位仍false。
@@ -28,6 +30,10 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24主线批准的单一复现范围：`tests/v4/release/test_first_release_legacy_tombstone_pg.py::test_native_legacy_tombstone_erases_mapped_body_after_candidate_replay`。只新增测试并维护本计划，不修改业务、effects、记忆服务/工具/上下文。当前`legacy_memory`不是实体kind；无原话旧memory经原生migration_core迁移后，`core_legacy_map.kind='fact'`且status为legacy_unverified，但result_id实际指向kind=legacy。原生apply_privacy仅登记legacy_memory，未解析该map；这是待真实PG确认的业务缺口，不能让擦除观察器代删或把旁账存在当作正文已擦除。复现固定真实已提交候选archive/manifest/pin和独立venv/process：原生迁移active→旧PG备份→原SQLite改inactive后原生迁移/export→候选原生恢复/双重放，最后按正确隐私期望直接读取PG status/data。允许测试真实失败留证，只留本机private的映射kind、实际实体kind/status、正文存在布尔值；不回传DSN/正文，不重复宽测。source_span保留raw原话而mask上下文/FTS是既有契约，本复现不改变该语义。
+
+2026-10-24 01:44 +08:00控制树修复确认：真实mapper不论映射kind都为fact，必须以同owner的实际core_entities.kind解引用。新增helper只在原apply事务内FOR SHARE读取精确map、FOR UPDATE读取实际fact/legacy，legacy仍有内容时核source=memories与legacy_id；不增加另一写事务或自行删除。返回ID后复用原fact/legacy删除、闭包和embedding触发器，verified fact与无原话legacy两类均可清空。对无map、excluded/None与实际行缺席，不虚构实体或修改map；歧义/来源冲突固定安全EvidenceError，外部owner没有被回退查询或删除。尚未将修复装入真实新候选，不据控制树8/8宣布候选通过。
 
 活动锁解析必须先按子进程真实PEP508环境筛选，再以canonical name去重并传播extras。Core锁的两个numpy版本分别用于Python<3.12与>=3.12；Windows实际platform_machine=AMD64时hf-xet的纯小写marker不激活，不能用最后一条覆盖或忽略marker误报依赖缺失。新预检在实际venv内核已安装版本、活动Requires-Dist闭包及关键模块site来源，不将锁文本本身当成已安装证明。
 
@@ -62,6 +68,10 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24主线裁定legacy_memory为既有撤销契约遗漏，批准最小共享repository修复：新增`repositories/privacy_legacy.py`，在apply_privacy的legacy_memory分支解析同owner、source=memories、legacy_id、map.kind=fact的真实result_id，再查同owner的实际fact/legacy实体kind；不按ID前缀或旁账metadata推断。双kind同ID或仍有效legacy的source/legacy_id不符时固定EvidenceError，由原事务整批回滚。无map、None或实际实体缺席只保留防导入marker；返回事实ID或legacy目标交原删除、闭包与embedding路径，不另开写事务、不改map、state_version、迁移或source_span保raw契约。先新增`tests/v4/release/test_legacy_memory_apply_pg.py`不超过8个真实PG目标证明实际mapper、verified fact、无目标和歧义/来源/跨owner边界；根提交后才验证真实新候选和独立effects后验。原144复现继续保持正确断言及失败证据，不改金标/xfail。
+
+2026-10-24 legacy复现保留正确隐私期望为普通失败回归，不改成xfail或接受pending，不用直接put/map/revoke构造目标，也不修改旁账来补缺少的legacy撤销。active与inactive阶段均由独立受pin候选的migration_core.migrate实际执行，核manifest、worker、Python/活动Core锁与77个候选业务模块来源；仅测试编排与只读观察来自新测试。根审决定共享业务修复前，暂停该目标复测，不允许effects代替候选删除正文。
 
 双重放新增独立CandidateReplay及first-release-local-replay-pin-v1，绑定受审effects helper实际hash，不能拿旧预检pin或bool启用写阶段；只接受原始prefix4/7。旧preflight pin/schema、只读回执和默认路由保留。fresh worker以固定绝对路径runpy加载hash已审辅助编排，不把该支持代码放进候选tools namespace；实际apply/export、纯verify_monotone与receipt_key均导入自受pin候选，核真实co_filename及前后所有业务模块来源。只复用候选B1模块的纯单调函数，绝不构造旧ProofRequest或使用其固定SHA/迁移/importer。
 
@@ -158,6 +168,10 @@ Native apply严格不外套事务，第一遍成功后原生提交后checkpoint 
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
+
+2026-10-24 01:44 +08:00最小共享repository修复的控制树证据：`tests/v4/release/test_legacy_memory_apply_pg.py`共3组/8参数首次8/8通过（2.69秒，`private/safe-narrow-a7affe005d0043b3b1649b9f3644c0a5/metadata.json`）。实际迁移生成legacy_unverified legacy及verified fact，最新仅legacy_memory的原生导出经apply均清空目标正文，原embedding清理及派生note闭包生效，map不变、第二遍全部本schema表字段hash不变；缺map/None/实体、双kind同ID、archive来源与跨owner错映射均按保守规则处理。helper42行/函数28行，新测试188行/最大函数37行，Ruff/120列格式/语法/diff通过；postgres仅import与5行分支，没有改变memory服务/工具/上下文、source_span、state_version、原事务或迁移。令牌已释放。根提交新候选后才能验证真实candidate正例、旧候选拒绝和effects独立擦除后验；原144失败证据与正确断言保持，未伪称全链修好。
+
+2026-10-24 01:39 +08:00新增实际失败：候选`144b81eeed3e792221393673bd611637fbaae01f`的原生mapper使无原话memory映射kind=fact、mapping_status=legacy_unverified，实际实体kind=legacy/status=pending。真实dump之后SQLite改为deleted，原生迁移/export只产生legacy_memory旁账；旧备份原生恢复和两遍apply之后，实体仍pending、body_present=true、data_empty=false。两遍全状态hash却严格相等，故只看幂等/旁账无法证明擦除。运行证据`private/safe-narrow-35534b4e32e04af5bcd853f51cdaf6cf/metadata.json`，仅安全布尔值/状态的业务证据`private/legacy-native-replay-d8f8ab8dac6642d6ba1ffb180f9f46ba/metadata.json`；真实模型/服务器/外部发送0，TZ Tokyo。新测试172行/最大函数44行，Ruff、120列格式、语法和diff检查通过。测试令牌已释放；本片只交真实失败与两个文件，业务修复及独立span/legacy擦除观察仍未完成，正式首发保持No-Go。
 
 当前已完成实际受pin候选在同call新本机目标上的原生双重放及第二遍完整幂等基础；真实旧候选负例会停止，不能换用控制树修复将其放行。仍未涵盖源prefix8备份/中央身份保全、source_span或legacy_memory专门擦除证明、Linux运行时、供应链认证、既有库增量apply、正式stage/生产或开门。外部审核pin仍是受信前提，测试自产pin和真实Git包不认证审核人；正式首发继续No-Go。
 

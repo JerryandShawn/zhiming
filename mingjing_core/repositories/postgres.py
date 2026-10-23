@@ -21,6 +21,7 @@ from mingjing_core.domain.contracts import BudgetExceeded, EvidenceError, LeaseC
 from mingjing_core.memory.projections import tokenized_payload
 from .foundation import list_entities, migration_manifest, search as search_entities, validate_history
 from .privacy_foundation import DERIVED_KINDS, invalidate_foundation
+from .privacy_legacy import legacy_memory_target
 from .dispatch_hooks import admit_v4, notify_run
 
 ENTITY_KINDS = frozenset({'message','fact','case','episode','draw','reading','report','report_schedule','chart','delivery','upload','session','consent','legacy','feedback','request','interpretive_claim','runtime_step','artifact','model_call'})
@@ -632,6 +633,11 @@ class PostgresRepository:
                 if not isinstance(ident,str) or kind not in ('fact','message','source_span','episode','legacy_memory','legacy','upload','case','request','feedback',*DERIVED_KINDS):raise ValueError('Invalid revocation target')
                 if kind=='fact':fact_ids.append(ident)
                 if kind=='message':source_ids.append(ident)
+                if kind=='legacy_memory':
+                    target=legacy_memory_target(self,c,owner,ident)
+                    if target:
+                        if target[0]=='fact':fact_ids.append(target[1])
+                        else:other_targets.setdefault(target[0],[]).append(target[1])
                 if kind in ('episode','legacy','upload','case','request','feedback',*DERIVED_KINDS):other_targets.setdefault(kind,[]).append(ident)
                 if kind=='source_span':
                     if metadata.get('message_id'):span_sources.append(metadata['message_id'])
