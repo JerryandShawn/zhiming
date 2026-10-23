@@ -22,6 +22,7 @@ import yaml  # noqa: E402
 
 from mingjing_core.timekit.clock import get_clock  # noqa: E402
 from tools.eval.batching import run_batches  # noqa: E402
+from tools.eval.cli import parser  # noqa: E402
 from tools.eval.contracts import stamp_contracts  # noqa: E402
 from tools.eval.engine import evaluate_scenario  # noqa: E402
 from tools.eval.judges import JUDGE_SCHEMA, ModelJudge  # noqa: E402
@@ -58,30 +59,6 @@ def _endpoint_digest() -> str:
     except ValueError:
         raise ValueError("模型服务地址格式不可用") from None
     return hashlib.sha256(normalized.encode()).hexdigest()
-
-
-def parser() -> argparse.ArgumentParser:
-    result = argparse.ArgumentParser(description=__doc__)
-    result.add_argument("--mode", choices=["scripted", "live"], default="scripted")
-    result.add_argument("--target", choices=["fake", "v3", "v4"], default=None)
-    result.add_argument("--suite", choices=["default", "core30"], default="default")
-    result.add_argument("--model", default="kimi")
-    result.add_argument("--models", help="Comma-separated primary model names; each gets its own report")
-    result.add_argument("--config", type=Path, default=EVAL_ROOT / "config.yaml")
-    result.add_argument("--scenarios", type=Path, default=EVAL_ROOT / "scenarios")
-    result.add_argument("--scenario", help="Comma-separated scenario IDs")
-    result.add_argument("--scripted-gate", type=Path, help="Same-candidate completed scripted gate for live/v4")
-    result.add_argument("--candidate", help="Exact clean candidate commit to record and verify")
-    result.add_argument("--output", type=Path, default=ROOT / "docs/v4/eval")
-    result.add_argument("--batch-size", type=int, choices=range(1, 11), default=10)
-    result.add_argument("--validate", "--validate-only", action="store_true", dest="validate_only")
-    result.add_argument("--self-test", action="store_true")
-    result.add_argument(
-        "--resume",
-        action="store_true",
-        help="Reuse matching completed scenario results",
-    )
-    return result
 
 
 def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dict[str, Any]:
@@ -378,18 +355,23 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _run_models(args: argparse.Namespace, scenarios: list[Scenario], config: dict[str, Any], models: list[str]) -> int:
+    if getattr(args, "mode", None) == "live" and getattr(args, "target", None) == "v4":
+        from tools.eval.live import live_session
+        from tools.eval.model_selection import selected_model
+
+        if len(models) != 1:
+            raise SystemExit("Live v4 executes one proof-selected model, never a CLI fallback chain")
+        with live_session(args, [scenario.id for scenario in scenarios]):
+            selected = selected_model()
+            if models[0] not in {"kimi", "kimi-main", selected}:
+                raise SystemExit("Requested model differs from the trusted equivalence proof")
+            return _run(args, scenarios, config, selected)
     status = 0
     for name in models:
         model = config["models"].get(name, name)
         if name in {"kimi", "kimi-main"}:
             model = os.getenv("KIMI_MODEL", model)
-        if getattr(args, "mode", None) == "live" and getattr(args, "target", None) == "v4":
-            from tools.eval.live import live_session
-
-            with live_session(args, [scenario.id for scenario in scenarios]):
-                result = _run(args, scenarios, config, model)
-        else:
-            result = _run(args, scenarios, config, model)
+        result = _run(args, scenarios, config, model)
         status = max(status, result)
         if result == 2:
             break

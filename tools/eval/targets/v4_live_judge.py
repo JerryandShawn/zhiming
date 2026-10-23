@@ -9,8 +9,9 @@ from typing import Any
 
 from mingjing_core.models.legacy import PortBackedModel
 from mingjing_core.models.port import ModelPort
-from mingjing_core.models.registry import ModelHandle, ModelRegistry
+from mingjing_core.models.registry import ModelHandle
 from tools.eval.judges import ModelJudge
+from tools.eval.model_selection import ProofSelectedRegistry
 from tools.eval.quota import ProviderStopped, QuotaGuard
 
 from .v4_live_ports import LiveTrackingPort
@@ -24,7 +25,7 @@ class LiveJudgeProvider(QuotaGuard):
         environment: Mapping[str, str] | None = None,
         adapter_factory: Callable[[ModelHandle], ModelPort] | None = None,
     ) -> None:
-        registry = ModelRegistry(environment=environment)
+        registry = ProofSelectedRegistry(environment=environment)
         handles = registry.resolve("critic")
         if not handles or any(
             handle.model != model

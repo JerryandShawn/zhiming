@@ -1,6 +1,6 @@
 # 首发核心30题计划（v2.2隔离子集）
 
-当前只完成离线准备，真实调用为0。生产core授权门仍关闭，可信等价验证和跨额度窗口的持久续作尚未接通；本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
+当前只完成离线准备，真实调用为0。可信等价证明至core会话的接线已用真实隔离PG与替身HTTP验证；正式脚本门和真实20步等价证明仍未齐，生产core依然不放行，跨额度窗口的持久续作尚未接通。本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
 
 ## 固定范围与评分
 
@@ -28,18 +28,22 @@ python tools/eval/runner.py --mode scripted --target v4 --suite core30 --validat
 
 真实隔离PG的目标测试使用项目既有安全runner，清除真实供应商凭据与追踪；只替换模型/外部传输。测试包含TM01、AX01实际业务效果，以及同一个Agent run内12次Mock物理尝试按10+2轮转、模型日志12条唯一完成步骤；不能用假Outbox、声明DB行或事件注入证明通过。这里不提供尚未完成的真实30题或等价探针执行命令。
 
+live/v4入口现在要求`--scripted-gate`、`--candidate`、`--equivalence-proof`与既有独立`probe_`控制schema的`--control-schema`。装载证明只读，不隐式建控制表；先校验同候选脚本门，再从独立本机控制PG与中央20次物理账本重算证明，JSON自报布尔值不能授权。缺失、损坏、过期、来源不符、mock证明或未通过脚本门都在主模型与外部评审之前拒绝，新增core物理尝试为0。测试中的20步记录来自真实PG，但传输全是MockTransport，不是真实模型质量证据。
+
+只有上述验证所得sealed core会话能选择模型：完整等价为`k3-256k`，完整非等价为`k3`；未完成证明不能静默降级。专用registry只替换原会员K3配置的模型名与对应model_lock，保留提供方、协议、端点、凭据、工具能力和high思考策略，主模型、外部评审、官方本地K3计量均同选。普通ModelRegistry与from_base默认路径不变，不写改models.yaml，不接受CLI的其他模型或多模型fallback链。
+
 ## 物理批次与继续条件
 
 中央DelegatedSession在每次实际POST前检查同候选授权、账户身份、当前停止状态与批次。主模型、工具循环后的下一次生成、外部评分、任何允许的物理重试均计入同一批；每批最多10次物理请求，总在途1。CLI `--batch-size`仍只表示报告的场景数，不能据此推算HTTP请求预算，也不把六题一组当作一批。
 
 正常批次用满时，中央会话在同一次Agent.execute中转入下一批，保留PG run_id、epoch、Journal、已完成模型步骤和工具回执，不能从第一轮重新生成。物理请求数、场景数、模型步骤数和外部实际发送数分别报告。业务冻结时钟按每条原话时间；授权和5小时窗口使用独立实际墙钟。
 
-遇403 permission_error、usage limit、并发受限或Access terminated立即停止后续主模型与外部评分。只有明确5小时重置时刻到达且可信授权仍有效才具备断点续作条件；未知恢复时间不能猜，Access terminated永不自动恢复。现普通runner的跨进程`--resume`会新建场景schema，不能用于声称“同run恢复”；需要保留既有PG run、已完成turn评分和下一步Journal并核对候选/source/账本身份后才可开放真实续跑。
+遇403 permission_error、usage limit、并发受限或Access terminated立即停止后续主模型与外部评分。只有明确5小时重置时刻到达且可信授权仍有效才具备断点续作条件；未知恢复时间不能猜，Access terminated永不自动恢复。普通runner的跨进程`--resume`会新建场景schema，因此live/v4入口已硬性拒绝该参数，早于中央配置、permit、证明与target装配；独立等价probe既有续作不受影响。需要保留既有PG run、已完成turn评分和下一步Journal并核对候选/source/账本身份后才可开放core真实续跑。
 
 ## 放行前仍需补齐
 
 1. 同clean HEAD/source的48题、7题、81用例正式脚本门。报告先写ignored `private/candidate-eval/<sha>/`，三组完成前不提交归档报告改变HEAD；WIP报告不手工补候选身份。
-2. 可信等价探针结果须与候选、source、中央账户、固定两模型和≤20次真实物理记录核对。自报equivalent布尔值不能授予生产core权限；探针接线由额度线负责。
+2. 可信等价探针结果须与候选、source、中央账户、固定两模型和≤20次真实物理记录核对。该证明读取与core授权接线已通过离线PG验证；正式真实20步证明尚未执行，不能把替身的生产分支测试当作真实模型等价结论。
 3. F01共享NativePrivacyDriver已完成原生适配，并在本片真实隔离PG验证Core30接线：撤销动作0次模型调用，后续询问仅1次Mock物理请求，原评分契约通过。跟进、画像、搜索、向量均从真实持久层观察，没有注入假清理结果；这只解除本机原生入口验证项，不代表服务器或实测验收。
 4. 跨quota窗口/进程的持久同run、同turn、外部评分续作。必须有真实隔离PG中断恢复测试，确认已完成生成/评分均不重复；目前明确阻塞。
 5. 原80中M08的P5分类确认、P类的P7跟进、X08的P4真SSE等首发适用范围待大脑裁定。未裁定前完整81门保持保守关闭，不能擅自N/A、改金标或整条并入暂停模块凑绿。
@@ -50,3 +54,7 @@ python tools/eval/runner.py --mode scripted --target v4 --suite core30 --validat
 2026-10-23 22:33 +08:00：代码静态检查、Python语法与文件/函数尺寸检查通过；两份新增YAML可静态读取，TM01两轮且无预植fact，AX01一轮且无预植fact。按指令板v8先等待主线测试令牌，没有自行占用测试进程。
 
 2026-10-23 22:46 +08:00：获一个令牌后仅运行`test_eval_core30.py`与必要的既有`test_eval_comparison_contracts.py`，43/43通过（新23、既有20，30.19秒），已释放令牌。真实PG验证TM01原话绝对化与后续间隔、AX01历史三次询问且无占卜、F01本机真实撤销，以及同一个run的12次Mock物理尝试按10+2分批、12条唯一completed模型步骤无重放。原28题scenario_contract_sha256不变，原库仍80题；CLI只校验入口、阈值和独立报告也通过。最终元数据在`private/safe-narrow-1c4111663684440883368e2416b1e20a/metadata.json`，测试时区Asia/Tokyo。未跑整套30题脚本或任何真实模型评测；可信生产core门及跨窗口同run续作依然未解除。真实供应商/飞书/服务器调用均为0。
+
+2026-10-23 23:02 +08:00：仅占一个主线测试令牌，可信proof装配新目标7/7通过（56.75秒），另三个既有真实本地encoder/默认关闭/from_base成功目标已在首次链3/3通过。首链新fixture漏把MEMBER_*中央配置传给live_session的进程环境，5例被ledger_unavailable提前拒绝；失败保留在`private/safe-narrow-0050e946f13b4c189a094fc05376b1ff/metadata.json`。只修fixture传递后重跑全部7个新目标，结果在`private/safe-narrow-750b49ad632f4b56945255d5b35b8beb/metadata.json`，没有放宽生产校验。等价与非等价均验证实际Agent+外部评审同模型、官方本地K3计量同身份、P6仍未启用；原models.yaml字节与默认registry模型不变。负例覆盖证明布尔篡改、未完成、账户/来源错、损坏/缺失、过期、mock、脚本门拒绝、混合模型/低思考配置与CLI覆盖，新增core尝试均为0。测试时区Asia/Tokyo，业务冻结时间与中央实际墙钟分离；令牌已释放，真实模型/飞书/服务器调用均为0。正式48/7/81门、真实等价证明及跨窗口同run恢复仍未验收。
+
+2026-10-23 23:04 +08:00：主线审阅指出文档限制不足以防止`--resume`重新建run重发物理请求，已补live/v4入口失败关闭，并仅跑新增session+CLI负例1/1通过（0.65秒，`private/safe-narrow-f861e6d540994f039b301ccb10dea2d1/metadata.json`）。中央配置读取、target执行与HTTP均设失败探针且没有触发，保证0 permit、0 POST。独立probe续作未修改；没有重复7例或宽回归，令牌已释放。
