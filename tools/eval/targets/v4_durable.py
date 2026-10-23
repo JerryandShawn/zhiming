@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import uuid
+from contextlib import AbstractContextManager
 from typing import Any
 
 from mingjing_core.models.quota_guard import QuotaGuard
@@ -14,6 +15,7 @@ from tools.eval.lifecycle_identity import LifecycleBinding, LifecycleError
 from .base import TurnResult
 from .local_db import verify_local_postgres
 from .v4_core30 import Core30LiveTarget
+from .v4_execution_budget import ExecutionBudget, execution_scope
 from .v4_lifecycle_state import read_private, restore, save_private
 
 
@@ -22,6 +24,25 @@ class DurableCore30Target(Core30LiveTarget):
         super().__init__(**kwargs)
         self.lifecycle_session: str | None = None
         self._attached = False
+        self._budget_scope: ExecutionBudget | None = None
+        self._budget_started = self._budget_unknown = self._budget_legacy = False
+        self._lifecycle_record: dict[str, Any] | None = None
+        self._lifecycle_binding: LifecycleBinding | None = None
+
+    def _ports(self) -> None:
+        super()._ports()
+        self.runtime.control_factory = self._budget_control
+
+    def _execution_scope(
+        self, binding: LifecycleBinding, guard: QuotaGuard, run: dict[str, Any]
+    ) -> AbstractContextManager[None]:
+        self.lifecycle_session = self.lifecycle_session or "eval-" + uuid.uuid4().hex
+        return execution_scope(self, binding, guard, run)
+
+    def _budget_control(self, *args: Any, **kwargs: Any) -> Any:
+        if self._budget_scope is None:
+            raise LifecycleError("Durable控制器必须在原执行scope内构造")
+        return self._budget_scope.factory(*args, **kwargs)
 
     def checkpoint(
         self,
@@ -32,6 +53,8 @@ class DurableCore30Target(Core30LiveTarget):
         turn: int,
         completed: TurnResult | None = None,
     ) -> str:
+        if self._budget_scope is not None or self._budget_unknown:
+            raise LifecycleError("执行预算未可信闭合，不能保存新检查点")
         binding.verify(guard)
         if self.model != binding.model or self.repo is None or control.schema in {self.schema, guard.store.schema}:
             raise LifecycleError("评测对象与独立控制身份不符")
@@ -42,7 +65,7 @@ class DurableCore30Target(Core30LiveTarget):
         ident, digest = save_private(self, self.lifecycle_session, binding, turn, frozen)
         with self.repo.transaction() as connection:
             location = control.location(connection, self.schema)
-        control.save(
+        record = control.save(
             self.lifecycle_session,
             binding,
             guard,
@@ -51,11 +74,15 @@ class DurableCore30Target(Core30LiveTarget):
             state_id=ident,
             state_sha256=digest,
         )
+        self._lifecycle_record, self._lifecycle_binding = record, binding
         return self.lifecycle_session
 
     def detach(self) -> None:
-        if self.repo is None or self.lifecycle_session is None:
+        if self._budget_scope is not None or self._budget_unknown:
+            raise LifecycleError("活跃或未知执行段不能detach")
+        if self.repo is None or self._lifecycle_record is None or self._lifecycle_binding is None:
             raise LifecycleError("未持久保存的场景不能detach")
+        read_private(self.repo, self.owner, self._lifecycle_record, self._lifecycle_binding)
         repo, self.repo = self.repo, None
         repo.close()
         # Retain identifiers for diagnostics only; a fresh attach must re-read PG.
@@ -93,10 +120,15 @@ class DurableCore30Target(Core30LiveTarget):
             repo.close()
             raise
         self.lifecycle_session, self._attached = session, True
+        self._lifecycle_record, self._lifecycle_binding = record, binding
 
     def reset(self, seed: dict[str, Any]) -> None:
+        if self._budget_scope is not None:
+            raise LifecycleError("活跃执行scope不能reset")
         super().reset(seed)
         self.lifecycle_session, self._attached = None, False
+        self._budget_started = self._budget_unknown = self._budget_legacy = False
+        self._lifecycle_record = self._lifecycle_binding = None
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
         if self._attached:
