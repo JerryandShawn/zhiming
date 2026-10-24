@@ -1,9 +1,9 @@
 {
   "board_version": 37,
-  "candidate": "9f013824a06f5f8da162de2ba6556a6817c33042",
+  "candidate": "75d53f58796d429734b427e038ac740e266c5bb6",
   "worktree": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r35",
   "branch": "v4/p3-r35-sensitive-pending-20261024",
-  "R11_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r35\\private\\r11-run-d096365de055493ebf8a34d0c205462d\\metadata.json",
+  "R11_metadata": "C:/Users/Administrator/Documents/Codex/zhiming-v4-r35/private/r11-run-8d922df9e5814e4083187b9247a8fbf4/metadata.json",
   "R11_status": "running",
   "scope": "M05 real native pending proposal after omitted memory_write; no answer changes",
   "runtime_changes": [
@@ -27,10 +27,27 @@
       "path": "private/safe-narrow-4eb62691a1464ef68ac9327de4b2fabd",
       "passed": 3,
       "failed": 0
+    },
+    {
+      "path": "private/safe-narrow-9ac47a122275401b84e6cf758571ae03",
+      "passed": 5,
+      "failed": 0,
+      "seconds": 4.47,
+      "scope": "native forget, text-only forget, three sensitive positive categories"
     }
   ],
   "real_model_requests_this_work": 0,
   "SSH_stage_production": false,
   "paid_restart_status": "not started; prior service stop boundary retained",
-  "prior_r33_candidate_untouched": true
+  "prior_r33_candidate_untouched": true,
+  "previous_candidate": "9f013824a06f5f8da162de2ba6556a6817c33042",
+  "previous_R11": {
+    "metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r35\\private\\r11-run-d096365de055493ebf8a34d0c205462d\\metadata.json",
+    "status": "blocked",
+    "new_failure": "F02 turn[1].db[2]: fallback recreated pending health after forget",
+    "required_passed": 68,
+    "required_total": 69,
+    "original81_passed": 70
+  },
+  "forget_fix": "Native model memory_forget and unquoted delete/forget instructions suppress fallback; original F02 assertions unchanged"
 }
