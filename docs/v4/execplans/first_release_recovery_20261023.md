@@ -8,6 +8,10 @@
 
 ## Progress
 
+- [x] (2026-10-24 15:41 +08:00) 必要本机窄验2/2通过（482.11s）：原失败prefix7真实capture/新目标证明/源升级/原字段保全，以及实际外来writer客户端仍被拒绝且源状态不变。唯一原件private/safe-narrow-69704e53a0bc49248b3003152cd61b69，根已读metadata/XML/log。这里没有制造autovacuum或验证Linux新参数生效，后者由新CI启动后的SHOW及完整原测试核验；不是本机全量回归，也不继承6bfe失败结果为绿。
+
+- [x] (2026-10-24 15:34 +08:00) 精确头6bfe的push CI40071230606/job120804900783已失败：旧Core584通过；v4为4250 passed/75 skipped/1 error，唯一prefix7 source-forward夹具在M1捕获遇到真实autovacuum worker，原始失败门诊断为允许990/992、实际另有991。只给CI独立55480恢复测试服务器加autovacuum=off并启动后核SHOW；不改会话门、observer、测试断言或业务/恢复运行代码，不取消/重跑旧CI。11个工作流Bash块及YAML已只解析通过，实际新CI结果待推送后核；必要本机正反窄验进行中。
+
 - [x] (2026-10-24 14:41 +08:00) 两份交接单改为现有接口的逐步精确命令：F包/公开artifact上传→新copy/prepare→空增量备份/原生对调→新runtime资产/admit/8788及维护/实际cgroup核验；本机接入4物理/core30自动小批/已知5h新题头run/安全汇总。14个Bash、7个PowerShell块及内嵌Python只做语法解析，未执行服务器/请求；最终候选仍占位硬拒，不标就绪。另静态核现有CI配置发现native fixture误取主CORE5432而忽略已配置的独立restore55480；本机新目标先真实复现早拒1失败（3b2e210fcf534176895b67b09c19bd34），最小fixture修复后新路由与旧完整FK/新库对调两目标2/2（1.78s，bc219b74809b4e649ddcdf44f7ce45bc），根读metadata/XML/log。未放宽正式端口/身份，不声称远端CI已失败或已修绿。
 
 - [x] (2026-10-24 14:19 +08:00) F必要B7/运行资产接线：新副本关门0连接→只读检查精确prefix8/checkpoint→新empty-delta备份→既有R2新库restore/seal/exchange，保留两库、完整Core/checkpoint/sequence相等，旧prefix和在途会话拒绝且保留。初新B7两节点2/2（2.47s，8dc9e5789a974f7586e19c470f57be25）；补prefix8门后必要正反2/2（2.67s，2889fc7d81fb429a977461832d4f86a2）。新stage_app真实DML PG+公开K3+Agent装配，拒模型端口和所有非健康/状态/历史GET、实际writer锁及503维护门1/1（2.33s，70ab1019521643768ff10e21620e857f）；初夹具漏dict_row的setup error保留115a4e70c0f34af5abaf9607736a781a。新runtime工具只新建SCRAM writer/私有配置/unit资产，显式admit仍不安装/启动unit，配置hash拒绝和默认0连接两节点2/2（2.42s，1dabb38720474cd296565e63b66b6009），含新版本身份门的实际配置→健康链。根均已读metadata/XML/log；各轮不相加冒称一次全链，服务器/真实模型/外发0。
@@ -57,6 +61,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24 15:34 +08:00：原GitHub job的at_failed_gate原件明确额外PID991为autovacuum worker；不是伪装客户端、缺权限或55480路由问题。严格会话门拒绝所有额外PID的行为正确，不能过滤后台进程凑绿。新设置只影响每次CI创建的可丢弃独立恢复测试服务器，主5432、正式stage及本机PG服务均不改；不会把此设置写进交给Claude的stage单。原失败保留在GitHub job，不重复抄录整份日志。
 
 2026-10-24 14:41 +08:00：CI已有单独的FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN/55480，不应把native fixture的端口校验放宽到主CORE5432。新本机片将CORE显式设为不同的合成5432端点，证明修前在连接前拒绝、修后实际连接独立55480/55481；原库和身份门不改。交接单原始报告的主/外评物理小批与题目分组分开，原Markdown可能带回答预览，不能直接拷到公开docs。
 
@@ -131,6 +137,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 15:34 +08:00：选择隔离测试环境消除后台自动清理时序，保留实际运行会话门和原失败断言。仅改CI专用container启动参数，并在ready后实际SHOW autovacuum必须精确off；此轮Codex没有执行Docker、拉镜像或修改本机服务。必要窄验只复查失败prefix7原生全链及真实外来writer客户端拒绝，不重复全量绿测。
 
 2026-10-24 14:41 +08:00：最终候选尚未冻结，因此两份单保留不可执行的PENDING占位与No-Go，但所有参数/模块均来自实际CLI，没有虚构flags或中央凭据文件。只做语法核验，不借文档中的SSH/真实评测命令扩大Codex权限。native测试夹具仅优先既有显式restore管理员环境，沿用55480/55481与隔离库名门；这是CI环境接线修复，不改迁移、重放或正式运行源码。
 
@@ -276,6 +284,8 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## Outcomes & Retrospective
 
+2026-10-24 15:41 +08:00：CI专用自动清理配置最小修正、11块语法检查及本机必要正反2/2已完成；新Linux配置生效/全量CI仍待实际运行，最终集成保持阻塞。没有普通merge或标候选/stage就绪；6bfe失败原件保留，真实模型/服务器/飞书和外发0。
+
 2026-10-24 14:41 +08:00：必要运行源码保持feea；F与核心评测命令已具体化，唯一新测试环境缺口有本机红→绿与必要兼容证据。b008的实际push CI40064916028已只读确认success，feea CI40069757961仍in_progress，不能合并未知CI或用旧门发请求。下一等必要分支CI结果、普通集成后一次最终同源门/里程碑回归，再补最终SHA及就绪提醒。
 
 2026-10-24 14:19 +08:00：必要B7、实际只读Web/Agent装配、拒模型、writer栅栏及维护门、新writer和单位资产各有定向证据；仍未正式Linux启动/验证cgroup，未冻结同源发布候选，执行单不标就绪。下一只整合最终候选并补可审精确命令，不扩重构或新功能。
@@ -346,3 +356,5 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 - 2026-10-23 23:38 +08:00：记录独立发布准备树的只校验契约、0008精确ACL、45个定向行为与两次Windows夹具修正；明确未执行任何原生恢复或Linux发布。
 - 2026-10-23 23:46 +08:00：修复审阅发现的视图/SECURITY DEFINER与PGOPTIONS绕过，记录6/6定向结果和外部审核pin信任边界。
 - 2026-10-23 23:53 +08:00：固定并核验两个ACL事务的pg_catalog路径，记录真实目录伪装反例及双角色自定义路径正例2/2。
+
+- 2026-10-24 15:41 +08:00：按确切GitHub job诊断处理CI恢复测试库autovacuum竞态，保运行会话门不变；记录2/2必要窄验和待新CI边界。
