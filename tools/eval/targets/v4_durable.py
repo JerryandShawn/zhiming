@@ -134,3 +134,8 @@ class DurableCore30Target(Core30LiveTarget):
         if self._attached:
             raise LifecycleError("生命周期attach仅恢复观察，尚未开放同run执行")
         return super().send(turn)
+
+    def resume_pending(self, witness, *, control, binding, guard) -> TurnResult:
+        from .v4_resume_pending import resume_pending
+
+        return resume_pending(self, witness, control=control, binding=binding, guard=guard)

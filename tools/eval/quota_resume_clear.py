@@ -33,6 +33,51 @@ class QuotaClearReceipt:
     model_calls: int = 0
 
 
+class _ResumeHandoff:
+    __slots__ = ()
+
+    def __new__(cls):
+        raise LifecycleError("QUOTA_RESUME_PRIVATE_HANDOFF_REQUIRED")
+
+    def __reduce__(self):
+        raise LifecycleError("QUOTA_RESUME_HANDOFF_NOT_SERIALIZABLE")
+
+
+@dataclass(repr=False)
+class _HandoffState:
+    handoff: _ResumeHandoff
+    entry: Any
+    account: dict
+    receipt: QuotaClearReceipt
+    logical: dict
+    claimed: dict | None = None
+    consumed: bool = False
+
+
+_HANDOFFS: dict[int, _HandoffState] = {}
+
+
+def _peek_handoff(handoff):
+    require(type(handoff) is _ResumeHandoff)
+    state = _HANDOFFS.get(id(handoff))
+    require(state is not None and state.handoff is handoff and not state.consumed)
+    _check_consumed(state.entry)
+    return state
+
+
+def _bind_claim(handoff, run):
+    state = _peek_handoff(handoff)
+    require(state.claimed is None and run["id"] == state.entry.evidence.run_id and run["lease_token"])
+    state.claimed = dict(run)
+
+
+def _consume_handoff(handoff, repo, run):
+    state = _peek_handoff(handoff)
+    require(state.entry.repo is repo and state.claimed == run)
+    state.consumed = True
+    return state.entry, state.logical
+
+
 def _slots(connection: Any, guard: Any) -> None:
     for slot in (0, 1):
         require(connection.execute("SELECT pg_try_advisory_lock(%s) AS held", (guard._key(slot),)).fetchone()["held"])
@@ -160,28 +205,54 @@ def _write(connection, entry, account, now):
     )
 
 
+def _commit_clear(entry):
+    guard, target, control, binding = entry.guard, entry.target, entry.control, entry.binding
+    try:
+        _check_consumed(entry)
+        require(entry.session._receipt is None)
+        with guard.store.connect() as connection:
+            _slots(connection, guard)
+            with connection.transaction():
+                now = instant(guard.clock.now())
+                entry.session.approval.check(now)
+                account = _central(connection, entry)
+                logical_id = (
+                    f"{entry.evidence.run_id}:e{entry.evidence.epoch}:agent_model_attempts:{entry.evidence.seq}"
+                )
+                logical = entry.repo.get(target.owner, "runtime_step", logical_id)
+                require(gather(target, control, binding, guard) == entry.evidence)
+                require(fingerprint(logical) == fingerprint(entry.repo.get(target.owner, "runtime_step", logical_id)))
+                _check_consumed(entry)
+                now = instant(guard.clock.now())
+                entry.session.approval.check(now)
+                require(account["last_clock_at"] is None or now >= account["last_clock_at"])
+                require(account["resume_at"] is not None and now >= account["resume_at"])
+                receipt = _write(connection, entry, account, now)
+        return receipt, account, logical
+    except Exception:
+        raise LifecycleError("QUOTA_EXACT_CLEAR_FAILED_OR_UNKNOWN") from None
+
+
 def clear_quota5h(witness, *, target, control, binding, guard) -> QuotaClearReceipt:
     """Only this explicit transition writes; failure/unknown commit never restores its witness."""
     entry = _consume_for_clear(witness, target=target, control=control, binding=binding, guard=guard)
     try:
         with entry.session._lock:
-            _check_consumed(entry)
-            require(entry.session._receipt is None)
-            with guard.store.connect() as connection:
-                _slots(connection, guard)
-                with connection.transaction():
-                    now = instant(guard.clock.now())
-                    entry.session.approval.check(now)
-                    account = _central(connection, entry)
-                    require(gather(target, control, binding, guard) == entry.evidence)
-                    _check_consumed(entry)
-                    now = instant(guard.clock.now())
-                    entry.session.approval.check(now)
-                    require(account["last_clock_at"] is None or now >= account["last_clock_at"])
-                    require(account["resume_at"] is not None and now >= account["resume_at"])
-                    receipt = _write(connection, entry, account, now)
+            receipt, _, _ = _commit_clear(entry)
         return receipt
-    except Exception:
-        raise LifecycleError("QUOTA_EXACT_CLEAR_FAILED_OR_UNKNOWN") from None
     finally:
+        _finish_clear(entry)
+
+
+def _resume_after_clear(witness, *, target, control, binding, guard, continuation):
+    """Private same-stack continuation, issued only after confirmed COMMIT and slot connection close."""
+    entry = _consume_for_clear(witness, target=target, control=control, binding=binding, guard=guard)
+    handoff = object.__new__(_ResumeHandoff)
+    try:
+        with entry.session._lock:
+            receipt, account, logical = _commit_clear(entry)
+            _HANDOFFS[id(handoff)] = _HandoffState(handoff, entry, account, receipt, logical)
+            return continuation(handoff)
+    finally:
+        _HANDOFFS.pop(id(handoff), None)
         _finish_clear(entry)

@@ -42,6 +42,9 @@ class ModelHistoryEvidence:
     seq: int
     request_sha256: str
     evidence_sha256: str
+    current_versions: tuple[tuple[str, int], ...]
+    current_entities_sha256: str
+    revocations_sha256: str
 
     @property
     def execution_authority(self) -> bool:
@@ -66,8 +69,10 @@ def completed_model_history(
             _require(first == second)
     except (KeyError, TypeError, ValueError, AttributeError):
         raise EvidenceError("历史模型持久证明结构无效") from None
-    subject, request_hash, digest = first
-    return ModelHistoryEvidence(owner, run_id, subject, epoch, seq, request_hash, digest)
+    subject, request_hash, digest, versions, entities_hash, revocations_hash = first
+    return ModelHistoryEvidence(
+        owner, run_id, subject, epoch, seq, request_hash, digest, versions, entities_hash, revocations_hash
+    )
 
 
 def _steps(repo: PostgresRepository, connection: Any, run: dict) -> list[dict]:
@@ -237,7 +242,21 @@ def _versions(repo, run, base, versions, model_seq, cases) -> list[dict]:
     return entities
 
 
-def _read(ledger, connection, owner, run_id, epoch, seq) -> tuple[str, str, str]:
+def _current(repo, run, keys):
+    rows, versions = [], []
+    for key in sorted(keys):
+        kind, ident = lineage_key(key).split(":", 1)
+        row = repo.get(run["owner"], kind, ident, include_deleted=True)
+        _require(type(row["revision"]) is int and row["revision"] >= 1)
+        _require(row["owner"] == run["owner"] and row["subject_id"] == run["subject"])
+        _require(row["status"] not in {"deleted", "stopped", "superseded"})
+        _require(not repo.is_revoked(run["owner"], kind, ident))
+        rows.append(row)
+        versions.append((key, row["revision"]))
+    return tuple(versions), fingerprint(rows)
+
+
+def _read(ledger, connection, owner, run_id, epoch, seq) -> tuple:
     repo = ledger.repo
     run = repo.fetch_run(owner, run_id)
     _require(
@@ -262,12 +281,13 @@ def _read(ledger, connection, owner, run_id, epoch, seq) -> tuple[str, str, str]
     cases = marker_cases(run) or {}
     effects = _chains(repo, connection, run, rows, base, cases, originals, revocations)
     entities = _versions(repo, run, base, base.injected_versions, 0, cases)
-    requests, selected_hash = [], None
+    requests, selected_hash, current_keys = [], None, set(base.injected_versions)
     for step in rows:
         if step["kind"] != "model":
             continue
         call, saved = _request(ledger, run, step)
         entities.extend(_versions(repo, run, base, call.versions, step["seq"], cases))
+        current_keys.update(call.versions)
         requests.append(saved)
         if step["seq"] == seq:
             selected_hash = saved["output_sha256"]
@@ -279,4 +299,5 @@ def _read(ledger, connection, owner, run_id, epoch, seq) -> tuple[str, str, str]
     digest = fingerprint(
         [run, scope, thread, ingress_operation, rows, originals, revocations, frozen, requests, effects, entities]
     )
-    return run["subject"], selected_hash, digest
+    current_versions, current_hash = _current(repo, run, current_keys)
+    return run["subject"], selected_hash, digest, current_versions, current_hash, fingerprint(revocations)
