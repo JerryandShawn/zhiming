@@ -14,6 +14,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 08:08 +08:00) 六代码路径、必要测试/文档与CI预算已提交60eb8e4。首次HTTPS推送连接失败，原样一次重试成功推v4/p3-wire-journal-events-20261024；未改网络/TLS/凭据或取消CI。新CI待核，不合入正式integration/feed或main；以下为推后实时进度，随下一实质片提交，不为此重推取消刚启动检查。
+
 - [x] (2026-10-24 08:06 +08:00) 第二审窄修后，仅两个既有受影响目标08:05:26–08:05:30首次2/2通过、2.45秒：真实第二事项效果提交/未确认窗口可同epoch恢复且不重写proof/旧Journal/业务修订，外部同正文新revision仍拒绝且无新模型流。原三个新绿未重跑；两轮分开记，不称一次5/5。新helper264行/最大60、Ruff/format/AST通过，全部代码再次冻结，根已复核metadata/XML，等待小提交。
 
 - [x] (2026-10-24 08:04 +08:00) 第二只读审阅发现实际恢复回归：case_update效果已提交、Journal确认前崩溃时，旧run版本尚未注册，新started直接verify会在既有快照精确自写对账之前误拒。原三组虽通过但不覆盖此窗口，不能称收尾。获批只在verify失败分支复用既有reconcile_versions及原生set_run_dependencies，仍核精确pending-effect链、外部修订和撤销；不改既有证明或业务测试断言。后续窄修及08:06补链已完成，历史发现保留。
@@ -24,7 +26,7 @@
 - [x] (2026-10-24 07:51 +08:00) 根完整读实际Journal/ToolBatch/LoopCycle/RuntimeEvents/Runtime及finalization、regeneration、privacy调用；代理只读核完10处run usage写入，均从实际锁读行merge，正常finish/retry不覆盖未知顶层字段。先写最小计划，尚未实现或测试。
 - [x] typed工具事件通路与body-free私密侧账，先静态冻结根审。
 - [x] 三个必要真实PG行为首次通过；第二审另只验证两个直接受影响既有目标，分轮保留，不自动重试或重复绿。
-- [ ] 完成测试/根审后小提交推自己的分支；完整脚本、CLI/attached send及真实评测继续关闭。
+- [x] 完成测试/根审后小提交60eb8e4并推自己的分支；新CI仍待核，完整脚本、CLI/attached send及真实评测继续关闭。
 
 ## Plan of Work
 
@@ -80,6 +82,8 @@ started按run严格复用唯一、完整相同原事件；旧仅started可核验
 
 ## Outcomes & Retrospective
 
+已推60eb8e4（v4/p3-wire-journal-events-20261024），源M1观察另已推89c9e2a；均为独立工具/运行时小片，新CI未确认，不替代正式f6失败或原候选69/81脚本。首次网络推送失败已由一次原样重试恢复，不是需要用户介入的当前阻塞。
+
 六代码路径已静态实现并经根审；唯一首链首次3/3、2.77秒，证据仅在`private/safe-narrow-1af23b4415624d878b1d261c100622cf/metadata.json`和同目录pytest.xml/log，07:59:56.643–08:00:00.361 +08:00、真实隔离PG、清凭据/关追踪/TZ Tokyo。实际同epoch恢复两个缺口只产生一次memory effect，普通retry与原生撤销重生成正确区分旧完整事件和被擦除行，新epoch同raw ID保独立身份，两个并发result写只存一条；原timestamp/hash/半协议损坏、跨owner和真实来源撤销均拒且不复活。新CI待核，完整同run续作/CLI/attached send和真实评测仍关闭。
 
 第二审发现上述三组未覆盖pending case效果先提交的窗口，先窄修条件对账，再仅验证原正反两目标2/2、2.45秒；唯一证据为`private/safe-narrow-7dff8f70fce64a5e908ed2c9a7a09647/metadata.json`及同目录XML/log，08:05:26.963–08:05:30.320 +08:00。两个分轮结果不合成同次5/5，未修改原证明/业务测试或重跑前三绿；另只读复核确认公开run DTO/thread projection/SSE/core4均不直出新usage namespace。新CI及旧未知协议的全部历史形态仍未整体验证，首发门继续关闭。
@@ -87,6 +91,8 @@ started按run严格复用唯一、完整相同原事件；旧仅started可核验
 累计预算在fa23已有分轮实证，源M1限定统计观察另在89c9e2a推送（新CI run40041896351在途），不合并不同轮次为同次整体全绿。当前原81题仍69/81，最终候选/Linux/中央保全/全局writer与首发门未解除，真实模型/服务器/外发0。
 
 ## 修订记录
+
+- 2026-10-24 08:08 +08:00：实时记录实际60eb8e4提交/推送、一次网络失败及相同重试成功；新CI保留，不为进度记录取消重跑。
 
 - 2026-10-24 08:06 +08:00：记录仅受影响兼容正反两目标2/2及原三绿不重跑，根复核原始元数据后冻结供小提交；不把两个分轮结果或静态复核说成全量通过。
 

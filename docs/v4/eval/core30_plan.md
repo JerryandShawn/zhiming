@@ -113,6 +113,8 @@ live/v4入口现在要求`--scripted-gate`、`--candidate`、`--equivalence-proo
 
 2026-10-24 08:06 +08:00 当前独立进度：工具事件身份/缺口恢复与原started复用基础已通过首三组及仅受影响pending-case正反两组，分轮证据只在`docs/v4/execplans/P3_journal_events_20261024.md`登记。它保当前真实run/epoch/Journal/隐私边界，未开放Durable.send、CLI或跨额度清停；下述quota witness与完整可信续作仍待实现验证，原81脚本门未变。
 
+2026-10-24 08:30 +08:00：pre-clear只读资格witness已首次9/9通过，原始证据仅见`docs/v4/execplans/P3_quota_resume_witness_20261024.md`。当前中央仍须为同一原terminal建立的到期quota_5h；只核原checkpoint/当前epoch请求与终态/已闭合未耗尽预算，不接旧epoch未映射usage、未发布ok、未知或其它停机。该资格不清停、不claim/execute，attached send与CLI硬关，真实评测门不变；后续原同run执行及评分续作仍待独立实现，不能据固定业务钟测试延长现实绝对deadline。
+
 2026-10-24 08:01 +08:00 下一小片的只读设计收口：只考虑真实物理attempt已明确finished quota_5h、中央同UUID/terminal摘要完整、明确reset已到期且原执行预算可信closed的primary_pending同run续作。初步不处理仅intent而无中央行的情况；当前没有持久pre-send rejection receipt，不能拿内存0 calls或中央缺行当跨进程0 POST证据。未知发送、reserved/admitted未闭合、已成功但Journal未完成、open预算及Access停机均不重发。
 
 后续拟独立resume_pending接缝，保attach/send/CLI现硬关：重新load control/read_private、核原候选/source/run/epoch/turn/model/limit pin/deadline/closed预算和受信DelegatedSession，明确到期的quota_5h才可走窄resume_delegated。短生命周期进程内witness绑定原失败UUID与状态摘要；旧run无活租约时只claim原run，不reset/seed/receive/requeue或改epoch。仅在此witness下，StepAttempts.begin允许保旧finished quota记录并追加新UUID，仍经过实际中央admission/before_send/finish；已完成model/tool及评分继续核真实Journal而不重复。现仅只读设计，未实现、未验证或开放。
