@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from mingjing_core.application.memory2_fact_authority import authorized_fact, statement_instant
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
+from mingjing_core.memory.change_signals import explicit_replacement_slot
 from mingjing_core.memory.slots import SLOTS, compatible_statement, normalize_slot
 from mingjing_core.repositories.postgres import fingerprint
 from mingjing_core.timekit.clock import get_clock
@@ -80,12 +81,15 @@ class MemorySlotUpdateService:
         return old, new
 
     def _validate(self, owner: str, subject: str, old: dict, new: dict, slot: str) -> str:
+        explicit = explicit_replacement_slot(old.get("content", ""), new.get("content", "")) == slot
+        old_matches = normalize_slot(old.get("slot")) == slot or not old.get("slot") and explicit
         if (
-            normalize_slot(old.get("slot")) != slot
+            not old_matches
             or normalize_slot(new.get("slot")) not in {None, slot}
             or any(row.get("valid_to") or row.get("superseded_by") for row in (old, new))
             or new.get("supersedes")
-            or not all(compatible_statement(slot, row.get("content", "")) for row in (old, new))
+            or not compatible_statement(slot, new.get("content", ""))
+            or not (compatible_statement(slot, old.get("content", "")) or explicit)
         ):
             raise EvidenceError("记忆槽不一致、含临时状态或更新链已有变化")
         before = statement_instant(self.memory, owner, old)
