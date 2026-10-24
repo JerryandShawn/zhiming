@@ -161,3 +161,23 @@ def test_m05_pipeline_creates_pending_even_when_model_reports_normal(p2_repo, mo
             next(fixture)
         except StopIteration:
             pass
+
+
+def test_neutral_policy_preserves_actual_cancellation(monkeypatch):
+    from contextlib import contextmanager
+    from .test_eval_v4_pg import target as target_fixture
+    from tools.eval.first_release_r11 import offline_only
+
+    with contextmanager(target_fixture.__wrapped__)(monkeypatch) as target, offline_only():
+        scenario = load_scenario("tools/eval/scenarios_v4/X04.yaml")
+        seed = scenario.seed.model_dump(mode="json")
+        seed.update(
+            _scenario_id=scenario.id,
+            _clock=scenario.clock,
+            _scripted=[step.model_dump(exclude_none=True) for step in scenario.scripted],
+        )
+        target.reset(seed)
+        turn = scenario.turns[0].model_dump(mode="json", exclude={"expect"}, exclude_none=True)
+        result = target.send({**turn, "_index": 1})
+        assert result.events == ["run.cancel_requested", "stream.stopped"]
+        assert target.cancellation["stop_latency_ms"] <= 2000

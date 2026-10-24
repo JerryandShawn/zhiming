@@ -34,3 +34,7 @@ Git回退新分支提交即可；无迁移，无服务器操作。所有历史�
 - 2026-10-24 20:45 北京：落地最小产品修复、契约和按来源保留结果；准备新R11。原冻结f87源码未改。
 
 20:48：评分校验拆出小函数后必要2/2（private/safe-narrow-19e21f316135439bbfa11730c03aa117）；Ruff check与format --line-length120通过。将冻结修复候选，启动一次新R11。旧轮ConnectTimeout后不再请求供应商。
+
+20:53：83e2bcf首轮R11 P3为47/48，X04中断片段严格断言失败，原件private/r11_pending.json旧指向R11-511526a1b39446ffb9c30024512acec0保留。新定向直接复现（02f168751660482f848b6efddcfb8d1b：1失败/1通过，X02实际四Mock503/保存/幂等已过）；原因是新中性fallback把model_cancelled也当供应商故障，发送text_reset覆盖已显示片段。已把model_cancelled归回控制终止，先拒提交/重置，原X04不放宽。仅必要新X04定向验证后新候选R11。
+
+20:53：X04修复必要单项通过1/1，private/safe-narrow-ab60330dbdfd41699c387165a6af58c6；原件metadata/XML/log已核。首次push因GitHub443连接失败，不能称已推或CI绿。

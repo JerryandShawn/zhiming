@@ -150,6 +150,7 @@ class AgentRuntime:
         stopped = outcome.stop_reason
         if stopped in {
             "cancelled",
+            "model_cancelled",
             "wall_time_limit",
             "lease_or_source_invalid",
             "lease_or_dependency_invalid",
