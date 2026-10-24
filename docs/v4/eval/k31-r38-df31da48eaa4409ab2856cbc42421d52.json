@@ -1,0 +1,373 @@
+{
+  "candidate": "8727d44bdbed624b9de4278baa6739031a89a70d",
+  "metadata_path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\k31-r38-df31da48eaa4409ab2856cbc42421d52\\metadata.json",
+  "status": "complete",
+  "phase": "finished_with_ungraded",
+  "started_at": "2026-10-25T01:51:15.721629+08:00",
+  "reports": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\candidate-eval\\8727d44bdbed624b9de4278baa6739031a89a70d\\core29-r38-cc4a6599148f4239a4083428452e287e\\2026-10-25-live-v4-k3.1-pro-core30.json",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\candidate-eval\\8727d44bdbed624b9de4278baa6739031a89a70d\\core29-r38-54cea06df8b84cfebd68aebdb23f2aff\\2026-10-25-live-v4-k3.1-pro-core30.json"
+  ],
+  "connections": [
+    {
+      "proof": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\candidate-eval\\8727d44bdbed624b9de4278baa6739031a89a70d\\k31-connect-354c2bf254fc4baabc45ec7ba413bd60.json",
+      "exit_code": 0,
+      "complete": true,
+      "model_calls": 4,
+      "cumulative_model_calls": 27,
+      "connection_failure": null,
+      "stop_kind": null,
+      "resume_at": null,
+      "factor": "1.15"
+    }
+  ],
+  "key_cleared": true,
+  "model": "k3.1-pro",
+  "effort": "high",
+  "board_version": 38,
+  "connection_cumulative_limit": 30,
+  "scripted_gate": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\candidate-eval\\8727d44bdbed624b9de4278baa6739031a89a70d\\R11-a7d656ce155c4468b712296faa556d41\\assessment.json",
+  "control_schema": "probe_k31_16c47c53186e4a7da5aea61927a59e02",
+  "initial_window": {
+    "total": 71,
+    "oldest": "2026-10-24 21:15:58.352618+08:00",
+    "interactive": 0,
+    "critic": 20,
+    "background": 51,
+    "evaluation": 71,
+    "unfinished": 0
+  },
+  "stop_kind": null,
+  "resume_at": null,
+  "connection_proof": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\candidate-eval\\8727d44bdbed624b9de4278baa6739031a89a70d\\k31-connect-354c2bf254fc4baabc45ec7ba413bd60.json",
+  "output": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\candidate-eval\\8727d44bdbed624b9de4278baa6739031a89a70d\\core29-r38-54cea06df8b84cfebd68aebdb23f2aff",
+  "unavailable_retry": 1,
+  "core_exit_code": 1,
+  "window_snapshot": {
+    "candidate_commit": "8727d44bdbed624b9de4278baa6739031a89a70d",
+    "phase": "core",
+    "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-10",
+    "batch_requests": 1,
+    "batches_started": 10,
+    "account_id": "kimi-code-member-eval",
+    "ledger_identity": "41158cfa-6384-4b2e-adc2-494f151905e1",
+    "window_requests": 153,
+    "stop_kind": null,
+    "resume_at": null
+  },
+  "rollup": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-release-prep\\docs\\v4\\eval\\k31-r38-rollup-aa3d3ed538f5479eaa541540ef34036f.json",
+  "rollup_exit_code": 1,
+  "acceptance": {
+    "version": "v3.0-core29-v30",
+    "complete": true,
+    "safety_passed": 0,
+    "safety_count": 5,
+    "other_passed": 9,
+    "other_count": 24,
+    "other_required": 22,
+    "accepted": false,
+    "failed_ids": [
+      "T09",
+      "T10",
+      "M01",
+      "M03",
+      "R02",
+      "F01",
+      "Q01",
+      "Q02",
+      "Q03",
+      "Q05",
+      "D01",
+      "S02",
+      "S03",
+      "S04",
+      "C04",
+      "AX01",
+      "C02",
+      "C03",
+      "C05",
+      "TA01"
+    ],
+    "judge_unavailable_ids": []
+  },
+  "last_diagnostic": {
+    "board_version": 33,
+    "http_status": null,
+    "error_type": "ConnectTimeout",
+    "message": "timed out",
+    "kind": "unavailable",
+    "transient_index": 1
+  },
+  "transient_index": 1,
+  "retry_not_before": "2026-10-24T18:01:46.033409+00:00",
+  "finished_at": "2026-10-25T02:30:34.750145+08:00",
+  "actual_physical_batches": [
+    {
+      "batch_id": "v7-9dec470d387c433d9b3ed4b4efedc1ad-1",
+      "scenario_requests": {
+        "K31-TOOLS": 2,
+        "K31-INPUT": 1,
+        "K31-LONG": 1
+      },
+      "physical_requests": 4,
+      "started": "2026-10-25T01:53:39.784637+08:00"
+    },
+    {
+      "batch_id": "v7-ec20363469ae490f972602f465d88b05-1",
+      "scenario_requests": {
+        "T05": 2,
+        "T08": 3,
+        "T09": 1
+      },
+      "physical_requests": 6,
+      "started": "2026-10-25T01:55:09.451439+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-1",
+      "scenario_requests": {
+        "T09": 2,
+        "T10": 2,
+        "T14": 3,
+        "TM01": 3
+      },
+      "physical_requests": 10,
+      "started": "2026-10-25T02:01:52.539255+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-2",
+      "scenario_requests": {
+        "TM01": 4,
+        "M01": 5,
+        "M03": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-25T02:04:47.603124+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-3",
+      "scenario_requests": {
+        "M03": 2,
+        "M05": 3,
+        "R02": 2,
+        "R07": 3
+      },
+      "physical_requests": 10,
+      "started": "2026-10-25T02:07:26.750041+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-4",
+      "scenario_requests": {
+        "F01": 4
+      },
+      "physical_requests": 4,
+      "started": "2026-10-25T02:10:56.446136+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-5",
+      "scenario_requests": {
+        "Q01": 2,
+        "Q02": 3,
+        "Q03": 2,
+        "Q04": 2,
+        "Q05": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-25T02:12:06.436719+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-6",
+      "scenario_requests": {
+        "Q05": 2,
+        "D01": 4,
+        "S02": 2,
+        "S03": 2
+      },
+      "physical_requests": 10,
+      "started": "2026-10-25T02:16:30.142192+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-7",
+      "scenario_requests": {
+        "S04": 2,
+        "C04": 2
+      },
+      "physical_requests": 4,
+      "started": "2026-10-25T02:20:52.108743+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-8",
+      "scenario_requests": {
+        "AX01": 3,
+        "C01": 3,
+        "C02": 3,
+        "C03": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-25T02:22:12.797319+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-9",
+      "scenario_requests": {
+        "C03": 2,
+        "C05": 3,
+        "C07": 4,
+        "TA01": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-25T02:25:19.436394+08:00"
+    },
+    {
+      "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-10",
+      "scenario_requests": {
+        "TA01": 1
+      },
+      "physical_requests": 1,
+      "started": "2026-10-25T02:30:18.968818+08:00"
+    }
+  ],
+  "central_final_audit": {
+    "candidate": "8727d44bdbed624b9de4278baa6739031a89a70d",
+    "read_only": true,
+    "physical_requests": 89,
+    "batches": [
+      {
+        "batch_id": "v7-9dec470d387c433d9b3ed4b4efedc1ad-1",
+        "scenario_requests": {
+          "K31-TOOLS": 2,
+          "K31-INPUT": 1,
+          "K31-LONG": 1
+        },
+        "physical_requests": 4
+      },
+      {
+        "batch_id": "v7-ec20363469ae490f972602f465d88b05-1",
+        "scenario_requests": {
+          "T05": 2,
+          "T08": 3,
+          "T09": 1
+        },
+        "physical_requests": 6
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-1",
+        "scenario_requests": {
+          "T09": 2,
+          "T10": 2,
+          "T14": 3,
+          "TM01": 3
+        },
+        "physical_requests": 10
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-2",
+        "scenario_requests": {
+          "TM01": 4,
+          "M01": 5,
+          "M03": 1
+        },
+        "physical_requests": 10
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-3",
+        "scenario_requests": {
+          "M03": 2,
+          "M05": 3,
+          "R02": 2,
+          "R07": 3
+        },
+        "physical_requests": 10
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-4",
+        "scenario_requests": {
+          "F01": 4
+        },
+        "physical_requests": 4
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-5",
+        "scenario_requests": {
+          "Q01": 2,
+          "Q02": 3,
+          "Q03": 2,
+          "Q04": 2,
+          "Q05": 1
+        },
+        "physical_requests": 10
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-6",
+        "scenario_requests": {
+          "Q05": 2,
+          "D01": 4,
+          "S02": 2,
+          "S03": 2
+        },
+        "physical_requests": 10
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-7",
+        "scenario_requests": {
+          "S04": 2,
+          "C04": 2
+        },
+        "physical_requests": 4
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-8",
+        "scenario_requests": {
+          "AX01": 3,
+          "C01": 3,
+          "C02": 3,
+          "C03": 1
+        },
+        "physical_requests": 10
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-9",
+        "scenario_requests": {
+          "C03": 2,
+          "C05": 3,
+          "C07": 4,
+          "TA01": 1
+        },
+        "physical_requests": 10
+      },
+      {
+        "batch_id": "v7-5a47707f5b5a4ebc9d0b174d59e3947b-10",
+        "scenario_requests": {
+          "TA01": 1
+        },
+        "physical_requests": 1
+      }
+    ],
+    "statuses": {
+      "ok": 88,
+      "unavailable": 1
+    },
+    "unfinished": 0,
+    "matches_operator": true
+  },
+  "physical_accounting_note": {
+    "raw_rollup_core_requests": 83,
+    "actual_central_core_requests": 85,
+    "actual_central_connection_requests": 4,
+    "difference": 2,
+    "reason": "TA01 raises KeyError after two actual attempts; raw case/report counts omit those attempts. Original reports unchanged; authoritative physical counts retained here."
+  },
+  "private_review_index": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\k31-r38-df31da48eaa4409ab2856cbc42421d52\\claude-private-review\\index.json",
+  "pure_judge_failure_ids": [
+    "T09",
+    "T10",
+    "M03",
+    "R02",
+    "F01",
+    "Q01",
+    "Q03",
+    "Q05",
+    "C03"
+  ],
+  "missing_answer_reason_ids": [
+    "TA01"
+  ]
+}
