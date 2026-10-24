@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 11:18，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer的9控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 11:35，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer和admission的10控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -52,7 +52,7 @@ cd "$FR_CANDIDATE_ROOT"
 
 所有入口必须使用同一受保护 `FR_FENCE_WORKSPACE`，与 M1/Forward 的稳定文件和 PG key 一致。两个共享锁取得且维护标记不存在后才导入/调用业务；原入口 finally 完成后，仍持双锁刷新输出并真实结束整个进程，避免后台线程活着时先解锁。PG 专用连接丢失仍保留文件锁。这个退出方式可能中断尚未排空的投递或后台任务，不能证明外部请求已经取消，也不自动重试或补发；必须结合运行/Outbox 状态另审排空与止损。
 
-旧 unit、Hermes wrapper、其他 CLI 和外部子进程尚未统一纳管；维护标记的设置、停止服务、门内 readiness、移除标记及开门也尚未编排。当前 M1 不能在现有服务持 SH 时自动取得 EX；不能据 launcher 存在就称全局停写。Linux 权限/进程链和四个完整应用的联合运行仍待验证，B0–B8 与五个门继续 No-Go。
+旧 unit、Hermes wrapper、其他 CLI 和外部子进程尚未统一纳管；下文已补本机“关闭新准入→旧服务自然退出→M1显式采用原标记”接线，但实际停止服务、门内 readiness、移除标记及开门尚未编排。M1 仍须取得两个 EX，旧进程未退出就拒绝；不能据 launcher 或关闭准入成功声称全局停写。Linux 权限/进程链和四个完整应用的联合运行仍待验证，B0–B8 与五个门继续 No-Go。
 
 ## 3. 现有可运行的校验命令
 
@@ -147,7 +147,23 @@ cd "$FR_CONTROL_DIR"
 "$FR_CONTROL_PYTHON" -m tools.first_release_incremental --pin "$FR_LOCAL_INCREMENTAL_PIN" --backup-local
 ```
 
-第一条默认0连接/0进程/0文件写；第二条才取得合作性文件/PG栅栏，保留维护标记，实际生成同一MVCC快照的custom dump、候选原生旁账与独立前后状态证据。错误OID、额外会话、活动run/lease、锁冲突、已有输出或源漂移均停止，保留已写产物，不自动清理重试；锁释放不解除维护。当前应用尚未接这个协议，前后会话检查也不证明dump期间全局停写，`global_quiescence_verified=false`。成功仅为`backup_captured`，不能据JSON回执采用既有恢复库、迁移源库或解除B2/B3/B7、Linux、中央身份和发布门。实际8/8与独立marker写阻断1/1见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档证据。
+第一条默认0连接/0进程/0文件写；第二条才取得合作性文件/PG栅栏，保留维护标记，实际生成同一MVCC快照的custom dump、候选原生旁账与独立前后状态证据。错误OID、额外会话、活动run/lease、锁冲突、已有输出或源漂移均停止，保留已写产物，不自动清理重试；锁释放不解除维护。新固定launcher已接同一协议，但旧实际入口尚未联合纳管，前后会话检查不证明dump期间全局停写，`global_quiescence_verified=false`。成功仅为`backup_captured`，不能据JSON回执采用既有恢复库、迁移源库或解除B2/B3/B7、Linux、中央身份和发布门。原实际8/8与独立marker写阻断1/1见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档证据。
+
+若需要先阻新服务再排空旧进程，新增两阶段**本机**接口如下；只在允许的合成库上使用，不能据此操作服务器：
+
+```bash
+"$FR_CONTROL_PYTHON" -m tools.first_release_incremental --pin "$FR_LOCAL_INCREMENTAL_PIN" --close-admission-local
+```
+
+该命令在既有文件 SH 与 PG SH 内核实际身份，O_EXCL/fsync 写原格式维护标记。旧服务仍可持 SH 继续，回执 `admission_closed=true`、`drained=false`，不得当作已停写。已有标记一律拒，不建锁文件，不停 unit、不等待重试。审核确认该合成样本旧进程已自然退出后，另一次显式调用：
+
+```bash
+"$FR_CONTROL_PYTHON" -m tools.first_release_incremental --pin "$FR_LOCAL_INCREMENTAL_PIN" --backup-local --use-admission
+```
+
+只有 `--use-admission` 才采用同 operation/DBOID 且普通文件、字节和inode/mtime/hash始终未变的标记；不覆盖它，仍须两个 EX 和全部原会话/busy/源状态/同快照门。未加采用旗标的旧备份继续拒任何既有标记；任一 backup-started/dump/ledger/receipt 已存在就拒重入，真实进程错误后保留现场、新服务继续拒，不自动清理或恢复。
+
+本片新helper纳入M1控制hash，当前严格为10项，旧9项pin不能补字段/改hash自动升级，必须重新审核新输入。三条新行为及唯一受影响旧prefix4行为首次4/4；真实 native 旧服务→关闭准入→新服务拒→旧退出→实际M1采集和真实pg_dump失败保留、原guard材料兼容的唯一证据统一见[准入接线ExecPlan](../execplans/first_release_admission_20261024.md)。业务archive与控制源码分开记录，不冒称最终同候选验收；源0008、正式库、Linux及全局/发布位依旧关闭。
 
 ### 本机捕获与原始恢复绑定（M2）
 
@@ -184,7 +200,7 @@ cd "$FR_CONTROL_DIR"
 | 组件 | 本机已验证范围 | 仍关闭的门 |
 | --- | --- | --- |
 | same-call TargetProof | 八个独立行为按4+3+1分轮通过，另旧public M2 prefix7兼容1；同次新目标真实原始内容绑定→8→候选双重放后，核创建时OID、最终ACL/完整状态，creator锁内mint并单次消费，消费失败也耗尽token | 不透明对象不能由JSON重建；正常目标链16连接。仅可在下述实际Forward组合内消费，不单独赋予源写权；正式恢复仍未完成，先前session setup拒绝来源仍未知 |
-| Source guard | 12个独立行为分轮验证（纯文件1、真实PG夹具11）；真实Windows独占锁内改用同一持锁句柄读fence，保持默认锁行为及精确文件身份/hash、实际源OID/权限/会话/完整UTC状态核验 | 只读scope仍要求源capture不变，不返回写连接或升级许可；现应用未接合作栅栏，不能证明全局停写或Linux跨exec行为 |
+| Source guard | 12个独立行为分轮验证（纯文件1、真实PG夹具11）；真实Windows独占锁内改用同一持锁句柄读fence，保持默认锁行为及精确文件身份/hash、实际源OID/权限/会话/完整UTC状态核验 | 只读scope仍要求源capture不变，不返回写连接或升级许可；旧实际入口尚未接全合作栅栏，不能证明全局停写或Linux完整进程寿命行为 |
 | Source postcheck | 七个独立行为按6+1分轮通过，验证真实4/7测试夹具前向8后的原字段/列、完整迁移账本及owner/writer精确终态；两个正例均实际调用SDK setup，版本10→10、新增0 | 不是源升级入口，尚未覆盖存在待应用SDK迁移的升级；不因新增版本0声称setup未执行或零SQL，不自动修复异常状态 |
 | SourceForward内部API及本机CLI | 真实4/7同call目标证明、controller核验、源双栅栏与Core/SDK/grant组合已有实证；独立pin已接prefix7实际源隐私双重放及后续源回填。新显式main的默认/坏材料与非空prefix7全链首次2/2，保维护标记，未知提交停止不重入 | 不是Linux应用进程验收；应用全局停写与正式门仍未证明 |
 | 源重放worker及接线 | 独立组件4/4；新同call组合保留首1红1绿及规范UTC后仅原红1绿，真实SourceWitness内完成双重放、活lease/父终态ACK和末段独立业务/状态/导出核验 | 分轮证据见原计划，不称一次2/2；初始连接失败/控制故障注入与Linux未覆盖 |

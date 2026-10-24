@@ -27,6 +27,7 @@ HERE = Path(__file__).parent
 CONTROL_NAMES = frozenset(
     {
         "first_release_incremental.py",
+        "first_release_admission.py",
         "first_release_incremental_pg.py",
         "first_release_session_observer.py",
         "first_release_incremental_worker.py",
@@ -304,26 +305,43 @@ def execute(
     inputs: BackupInputs,
     *,
     backup_local: bool = False,
+    close_admission_local: bool = False,
+    use_admission: bool = False,
     environment: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     receipt = inputs.validate()
-    require(type(backup_local) is bool, "INCREMENTAL_EXPLICIT_BACKUP_FLAG")
-    if not backup_local:
+    require(
+        all(type(value) is bool for value in (backup_local, close_admission_local, use_admission)),
+        "INCREMENTAL_EXPLICIT_BACKUP_FLAG",
+    )
+    require(not (backup_local and close_admission_local), "INCREMENTAL_ACTION_FLAGS_REJECTED")
+    require(not use_admission or backup_local, "INCREMENTAL_ADMISSION_REQUIRES_BACKUP")
+    if not (backup_local or close_admission_local):
         return receipt
+    dsns = connections(inputs, environment)
+    if close_admission_local:
+        from tools.first_release_admission import close_admission
+
+        return close_admission(inputs, dsns)
     from tools.first_release_incremental_pg import backup
 
-    return backup(inputs, connections(inputs, environment))
+    return backup(inputs, dsns, use_admission=use_admission)
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = SafeParser(description=__doc__)
     parser.add_argument("--pin", required=True, type=Path)
-    parser.add_argument("--backup-local", action="store_true")
+    action = parser.add_mutually_exclusive_group()
+    action.add_argument("--backup-local", action="store_true")
+    action.add_argument("--close-admission-local", action="store_true")
+    parser.add_argument("--use-admission", action="store_true")
     try:
         args = parser.parse_args(argv)
         receipt = execute(
             BackupInputs.parse(read_json(args.pin), Path.cwd()),
             backup_local=args.backup_local,
+            close_admission_local=args.close_admission_local,
+            use_admission=args.use_admission,
         )
     except RestoreRejected as error:
         print(json.dumps({"status": "blocked", "code": str(error), "automatic_cleanup": False}))

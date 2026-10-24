@@ -402,13 +402,17 @@ def capture(inputs: BackupInputs, dsns: dict[str, str], connection: Any) -> dict
     }
 
 
-def backup(inputs: BackupInputs, dsns: dict[str, str]) -> dict[str, Any]:
+def backup(inputs: BackupInputs, dsns: dict[str, str], *, use_admission: bool = False) -> dict[str, Any]:
+    from tools.first_release_admission import marker_material, unchanged_marker
     from tools.first_release_session_observer import observe_source_sessions
 
-    inputs.fence_path.parent.mkdir(parents=True, exist_ok=True)
+    require(type(use_admission) is bool, "INCREMENTAL_EXPLICIT_ADMISSION_FLAG")
+    retained = marker_material(inputs) if use_admission else None
+    if not use_admission:
+        inputs.fence_path.parent.mkdir(parents=True, exist_ok=True)
     ordinary(inputs.fence_path.parent, directory=True)
     with (
-        file_lock(inputs.fence_path, exclusive=True),
+        file_lock(inputs.fence_path, exclusive=True, existing_only=use_admission),
         psycopg.connect(readonly(dsns["admin"]), autocommit=True, row_factory=dict_row) as admin,
     ):
         fields = conninfo_to_dict(dsns["admin"])
@@ -423,7 +427,10 @@ def backup(inputs: BackupInputs, dsns: dict[str, str]) -> dict[str, Any]:
             ):
                 sessions(owner, {owner.info.backend_pid})
                 source_scope(owner, inputs)
-                require(not inputs.maintenance.exists(), "INCREMENTAL_MAINTENANCE_ALREADY_PRESENT")
+                if use_admission:
+                    unchanged_marker(inputs, retained)
+                else:
+                    require(not inputs.maintenance.exists(), "INCREMENTAL_MAINTENANCE_ALREADY_PRESENT")
                 for name in (
                     "backup.dump",
                     "latest-withdrawals.json",
@@ -438,9 +445,13 @@ def backup(inputs: BackupInputs, dsns: dict[str, str]) -> dict[str, Any]:
                     "operation_id": inputs.operation_id,
                     "database_oid": inputs.source.database_oid,
                 }
-                write_private(inputs.maintenance, started)
+                if not use_admission:
+                    write_private(inputs.maintenance, started)
+                    retained = marker_material(inputs)
+                unchanged_marker(inputs, retained)
                 write_private(inputs.operation_dir / "backup-started.json", started)
                 result = capture(inputs, dsns, owner)
+                unchanged_marker(inputs, retained)
                 evidence = result.pop("_source_snapshots")
                 write_private(
                     inputs.operation_dir / "backup-receipt.json",
