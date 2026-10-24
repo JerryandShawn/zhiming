@@ -1,0 +1,182 @@
+{
+  "schema": "v30-preserved-original-evaluation",
+  "candidate": "f87fc97a9a3329782ca702577ec3e268b66c7bc5",
+  "reports": [
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r22\\private\\candidate-eval\\f87fc97a9a3329782ca702577ec3e268b66c7bc5\\core30-afab37d3b8884b73af671417ecd76e33\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "sha256": "b56b11083a86ee9e9180f35a3ebe494b34e54a18f94ed0d9b4fa4a1074b85c00"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r22\\private\\candidate-eval\\f87fc97a9a3329782ca702577ec3e268b66c7bc5\\core30-v27-ea118acb71cb4aac9eee0d584a31395b\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "sha256": "aa2a899261f51dc38a095d9f4a985b06b5d22fc0ee88d473fb693f6f21816afc"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r22\\private\\candidate-eval\\f87fc97a9a3329782ca702577ec3e268b66c7bc5\\core30-v27-cebe7bc736d640979b3b2a5026f18bad\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "sha256": "59fc528b59fe37f94ddbb44dccc908202a9a1ccb4eb1a3710b5c72d2ca08e9ca"
+    }
+  ],
+  "completed": 27,
+  "machine_passed": 7,
+  "machine_failed": 20,
+  "pending": [
+    "C05",
+    "C07",
+    "TA01"
+  ],
+  "physical_core": 85,
+  "connection_physical": 13,
+  "window_requests": 98,
+  "wasted_core_physical": 4,
+  "global_concurrency": 1,
+  "stop_kind": "provider_http_error",
+  "actual_error": {
+    "scenario": "C05",
+    "http_status": null,
+    "type": "ConnectTimeout",
+    "message": "timed out"
+  },
+  "retry_exhausted": true,
+  "key_cleared": true,
+  "old_results_unchanged": true,
+  "private_review_directory": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r30\\private\\v30-original-review",
+  "judge_reasons_missing_in_old_runner": true,
+  "central_physical_batches": [
+    {
+      "batch_id": "v7-a7b47c996ada43a28162e94539e8e645-1",
+      "scenario_requests": {
+        "T05": 2,
+        "T08": 4,
+        "T09": 3,
+        "T10": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T19:30:23.803774+08:00",
+      "window_cumulative": 23
+    },
+    {
+      "batch_id": "v7-a7b47c996ada43a28162e94539e8e645-2",
+      "scenario_requests": {
+        "T10": 1,
+        "T14": 3,
+        "TM01": 6
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T19:33:09.411693+08:00",
+      "window_cumulative": 33
+    },
+    {
+      "batch_id": "v7-a7b47c996ada43a28162e94539e8e645-3",
+      "scenario_requests": {
+        "TM01": 4,
+        "M01": 1
+      },
+      "physical_requests": 5,
+      "started": "2026-10-24T19:35:36.242639+08:00",
+      "window_cumulative": 38
+    },
+    {
+      "batch_id": "v7-c7aaa0d1e24645f2bf9349c30e273f5b-1",
+      "scenario_requests": {
+        "M01": 5,
+        "M03": 3,
+        "M05": 2
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T19:50:08.792773+08:00",
+      "window_cumulative": 48
+    },
+    {
+      "batch_id": "v7-c7aaa0d1e24645f2bf9349c30e273f5b-2",
+      "scenario_requests": {
+        "R02": 2,
+        "R07": 3,
+        "F01": 4,
+        "Q01": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T19:52:57.744318+08:00",
+      "window_cumulative": 58
+    },
+    {
+      "batch_id": "v7-c7aaa0d1e24645f2bf9349c30e273f5b-3",
+      "scenario_requests": {
+        "Q01": 1,
+        "Q02": 3,
+        "Q03": 3,
+        "Q04": 3
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T19:56:23.927410+08:00",
+      "window_cumulative": 68
+    },
+    {
+      "batch_id": "v7-c7aaa0d1e24645f2bf9349c30e273f5b-4",
+      "scenario_requests": {
+        "Q05": 3,
+        "D01": 3,
+        "S01": 2,
+        "S02": 2
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T19:59:31.433051+08:00",
+      "window_cumulative": 78
+    },
+    {
+      "batch_id": "v7-c7aaa0d1e24645f2bf9349c30e273f5b-5",
+      "scenario_requests": {
+        "S03": 2,
+        "S04": 2,
+        "C04": 2,
+        "AX01": 1
+      },
+      "physical_requests": 7,
+      "started": "2026-10-24T20:02:41.794161+08:00",
+      "window_cumulative": 85
+    },
+    {
+      "batch_id": "v7-9bcc57fae593420ca21e6c5b51aaf832-1",
+      "scenario_requests": {
+        "AX01": 2,
+        "C01": 3,
+        "C02": 3,
+        "C03": 2
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T20:34:54.819162+08:00",
+      "window_cumulative": 95
+    },
+    {
+      "batch_id": "v7-9bcc57fae593420ca21e6c5b51aaf832-2",
+      "scenario_requests": {
+        "C03": 1,
+        "C05": 2
+      },
+      "physical_requests": 3,
+      "started": "2026-10-24T20:37:38.029036+08:00",
+      "window_cumulative": 98
+    }
+  ],
+  "new_candidate": "7c7731aa458ef125152e88fb4da63662937d11a1",
+  "r11_passed": {
+    "p3": 48,
+    "dates": 7,
+    "required_original": 69,
+    "core29": 29,
+    "x02_equivalent": true
+  },
+  "new_retest_scheduled_beijing": "2026-10-24T21:08:34.454735+08:00",
+  "selected_retest_ids": [
+    "M05",
+    "Q02",
+    "Q03",
+    "D01",
+    "S03",
+    "AX01",
+    "C01",
+    "C02",
+    "C05",
+    "C07",
+    "TA01"
+  ],
+  "new_real_started": false
+}
