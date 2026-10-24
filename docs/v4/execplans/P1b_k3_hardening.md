@@ -18,6 +18,9 @@
 
 ## Progress
 
+2026-10-24 19:16 +08:00：已执行v22/R21，代码候选44889a319de4af870dec77ed7577c8d6091bf4ba已推且冻结，生命周期/主外评/额度恢复旧白名单与三处core-k31 token一致性已修，旧c21基线不动。必要旧45通过、新完整3/3与追加token1/1，原夹具计量失败保留，唯一证据索引代码树P1b计划19:11。新同源R11 19:11:28–19:14:42 complete/exit0（48/48、日期7/7、69/69、X02等价、离线core30 30/30），source8793e582058e39e2da728781168ad8e9fd8d9d6360d8403d29c3d55f4e40f902，四原报告已核，原81仍71/81与12延期不改。随即重做接入，control=probe_k31_492a7468964e4c718ba9e1c4d1168ec3；19:14:50停止：首请求unavailable、无有效响应记录，真实新增1、累计9/20，中央batch=v7-e4bdfd24fc2748898602cec69ab1661e-1/K31-TOOLS/status unavailable，inflight0、stop/reset空，不能称403/额度恢复时间或核响应身份成功。未生成新候选complete接入证明，不能拿旧e708证明批准新448。core30尚未启动/0请求/无core原报告或rollup，不记0/30失败；keyfinally清。未自动重试/换control或账本。唯一安全摘要docs/v4/eval/k31-r21-492a7468964e4c718ba9e1c4d1168ec3.json。
+
+
 2026-10-24 18:53 +08:00：已执行v21/R20。新冻结候选e708e684109ce50e06c8c172cbcd959d5ee53f2c，同源R11于18:46:50–18:49:49通过48/48、日期7/7、69/69、X02等价、离线core30 30/30；source0f30288760dc7935c22113b2f9c36df66cab393c3ea00295a25bb581785755bf，四原件已核，原81仍71/81及12延期不改。connect真实4/4检查通过，工具2轮/调用1次/额外0次，实际首required/次auto；精确k3.1-pro/high/推理回传及1594字长答通过，计量factor1.15；接入累计8/20含旧4。随后同进程立即启动core30，T05在首POST前被本地LifecycleBinding的旧k3/k3-256k白名单拒绝，映射ledger_unavailable；下游CoreObservation还使用K31批准没有的equivalent属性，尚未走到。core新增真实0、T05 incomplete/score=null，其余未运行，不能记0/30失败；原report和k31_results incomplete保留，key已清，不重试/换control/换账本。唯一安全摘要docs/v4/eval/k31-r20-cb7a00d706f047d4b810a0f62f6ef683.json；代码树不改，待必要新bug裁定。
 
 
@@ -73,6 +76,9 @@
 
 ## Surprises & Discoveries
 
+2026-10-24 19:16 +08:00：v22实际重新接入只发1请求即unavailable，中央物理1已完成、无stop/reset；无响应model可核，不能把网络/接口不可用说成本地白名单阻挡或额度拒绝。旧8继续保留。
+
+
 18:53：接入通过后第一次触达core，LifecycleBinding仍硬限旧模型；下游CoreObservation亦旧equivalent接口。此处账本可读、inflight0，ledger_unavailable并非供应商额度拒绝。
 
 
@@ -121,6 +127,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-24 19:16 +08:00：保持448/e708及旧证明原件，未改SHA绑定或复用旧成功proof，不重试；未启动core无报告不造rollup，累计请求9/20。
+
 
 18:53：保留v21新候选及所有原件；不把未执行核心题记失败，不更换账本或自动重发connect，不绕旧生命周期身份门。按板仅修裁定bug，当前等待core模型绑定裁定。
 
@@ -174,6 +183,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-24 19:16 +08:00：R21新增PG全链/恢复定向、新R11完成，真实入口在接入1请求后unavailable停止，尚无本候选核心题质量证据。主线无服务器/飞书/外发。
+
 
 18:53：v21根因修复与新R11、真实接入均通过，core已立即尝试但本地0POST停止；唯一安全摘要及原report/rollup在Progress，未验证core实际答题质量。
 

@@ -1,0 +1,58 @@
+{
+  "candidate": "44889a319de4af870dec77ed7577c8d6091bf4ba",
+  "status": "stopped",
+  "phase": "connection_stopped",
+  "control_schema": "probe_k31_492a7468964e4c718ba9e1c4d1168ec3",
+  "started_at": "2026-10-24T19:14:42.742241+08:00",
+  "finished_at": "2026-10-24T19:14:50.009852+08:00",
+  "model": "k3.1-pro",
+  "effort": "high",
+  "connection": {
+    "complete": false,
+    "model_calls": 1,
+    "cumulative_model_calls": 9,
+    "tool_rounds": 0,
+    "tool_call_requests": 0,
+    "additional_tool_calls": 0,
+    "connection_failure": "unavailable",
+    "stop_kind": null,
+    "resume_at": null,
+    "factor": "1.15",
+    "mode": "live"
+  },
+  "connection_exit_code": 2,
+  "reports": [],
+  "rollup": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-release-prep\\docs\\v4\\eval\\k31-core30-44889a319de4af870dec77ed7577c8d6091bf4ba-492a7468964e4c718ba9e1c4d1168ec3.json",
+  "stop_kind": null,
+  "resume_at": null,
+  "initial_window": {
+    "total": 8,
+    "oldest": "2026-10-24 18:11:20.330599+08:00",
+    "interactive": 0,
+    "critic": 0,
+    "background": 8,
+    "evaluation": 8,
+    "unfinished": 0
+  },
+  "key_cleared": true,
+  "board_version": 22,
+  "core30_started": false,
+  "core30_complete": false,
+  "core30_physical_requests": 0,
+  "core30_completed_questions": 0,
+  "accepted": false,
+  "connection_records": [],
+  "connection_batch": {
+    "batch_id": "v7-e4bdfd24fc2748898602cec69ab1661e-1",
+    "scenario_ids": [
+      "K31-TOOLS"
+    ],
+    "physical_requests": 1,
+    "status": "unavailable",
+    "window_total": 9,
+    "in_flight": 0
+  },
+  "response_identity_verified": false,
+  "provider_http_status": null,
+  "scripted_source_sha256": "8793e582058e39e2da728781168ad8e9fd8d9d6360d8403d29c3d55f4e40f902"
+}
