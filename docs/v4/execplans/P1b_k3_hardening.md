@@ -18,6 +18,19 @@
 
 ## Progress
 
+2026-10-24 19:22 +08:00：已执行v23/R22。为核心中途unavailable补原生--unavailable-retry 1/2，仅同源原report未完成题，保已完成及浪费；用实际SystemClock stopped_at而非题目冻结时间核10/30分钟，两次序号严格递增。quota5h原恢复合同不变，403/权限/并发/Access等不能走此分支。相关新13+原R12四项同轮17/17，1.91s，private/safe-narrow-4ce47bde1e43465eafa737567163d813，根核metadata/XML/log；Ruff/format过。旧448首unavailable计入次数1/累计9，请求不重签不造proof；新候选R11后先满足原失败后10min再新control接入，成功立即core30；再unavailable等30min最后一次，核心最多2次同节奏题头新run。
+
+
+2026-10-24 19:11 +08:00：已执行v22/R21，一次扫描core30全链；封装sealed批准选模型，修LifecycleBinding、CoreObservation、quota witness及三处恢复/账本token命名（K31实际core-k31）。仅c21独立baseline的runner_v2/subset/source/calibration不在runner→core30调用链，按板保留。原定向45旧项通过/1新增失败（e1092c3950b04874b4e7834df34a6cf2，409.32s）；再新3中2失败1过（108d4b984ac54450b7f45b42dcd38d19），原因复用计量压力Mock夸大10000输入导致RequiredContextOverflow，未改生产门。修此夹具后新3/3真实隔离PG/Agent/外评/已知5h恢复新run通过（e868c82b07b04082b0f06d87cd6148f5，32.79s）；追加native token对齐1/1（b2d1d6c1e3e34a5b8b8470fa4fcf7231，4.71s）。根核metadata/XML/log，各轮不相加冒称一次全链。Ruff/format通过。待同候选R11后<=4新接入累计<=20（旧8保留），成功立即core30。
+
+
+- [x] (2026-10-24 18:46 +08:00) 已执行v21/R20：v4单工具auto保持auto，v3 legacy单提交独立保required；两协议单/多工具、非法选择拒绝、K31原生回传及旧入口定向首轮127通过/1断言失败，原件private/safe-narrow-0b285a0b229f40a7b1f9e4c80214fc17。首请求原本显式required、续轮auto，修正新断言后仅该项1/1（private/safe-narrow-9866ae139a9b4fd0913548d9ff6acb70，2.71s），非一次128/128。待同候选R11后立即connect→core30，不等完整回归。
+
+
+- [x] (2026-10-24 18:29 +08:00) R18定向证据：第一轮新8项因Mock参数不符合原enum固定值而失败，旧必要3项及累计预算单元过（8failed/4passed，d80490f1e95f46e389adb263c2367c45，16.41s）；仅新循环测试在Mock合同中允许变参，2/3/4轮、重复/上限/逐轮身份/推理及20总数边界新9/9过（d2c85f83fc7c40f687b236f95e7af1ab，17.48s）。另原固定schema+实际required下重复拒绝，以及新control仍保旧2次累计两目标2/2过（d23dbcfbd57e48cf920a5a5c592ccc40，6.01s）。根读各metadata/XML/log，原失败不改，不合称一次全14/14。5文件Ruff/format及函数行数通过；无新增真实请求。真实schema不变，3/4轮正例是纯合成泛化测试，不冒充真实固定参数可以产生不同合法调用。
+
+- [ ] (2026-10-24 18:26 +08:00) 按用户直接要求读取v18/R18，独立r18树从冻结d167建分支，仅改K31工具循环及必要合同/PG完成判定：2–4轮最终无工具正文、连续同名同参数第二次拒绝、每轮原生推理回传和精确model/high；其他两个探针不改。累计接入预算读取同一中央账户所有候选k31-connect历史，含旧2次，≤20。新增定向测试待验；正式树milestone仍在途，不改其HEAD/源码。新探针进入source指纹，须新提交的同源R11后才真实请求，不能沿旧报告冒充新同源。
+
 - [x] 2026-10-24 13:45 +08:00 R16接入/可信核心选择与R12必要代码已接：固定4物理检查（工具往返/U39/high、长输入实际计量及Z1系数、中文长答完整结尾），PG重读证明/独立core-k31批准、主/外部评分精确K31及系数注入；新tools.eval.k31_cli和runner --connection-proof、--fresh-questions-from、无正文rollup入口。尚未整合最终同源候选，禁止真实运行；现有R11 b008不套新代码。
 - [x] 2026-10-24 13:45 +08:00 必要验证原件（根均读metadata/XML/log，不合计成一轮）：private/safe-narrow-c61c8bc9fcba4e9984fde820467737c9为2过1败（成功协议/PG可信选择及20上限通过，身份错只停本请求未持久全停失败）；修后2474c766f6354416981e196e70e9bfb5为6/6（4.32s，含5旧终止兼容）；2bfbdf8fafa94afb8fb65fa21fc828d3为6/6（2.08s，R12+旧judge/阈值/实际tokenizer启动）；a60d3756c8be41d485206e6a2c2977fe为2/2（1.03s，浪费计数汇总+旧过期/复位）；08eb916531c643c2b3442f7d8636e677为3/3（.61s，固定待跑集+旧禁任意子集）；700e976e4b4949c085888b280f274950为1/1（.57s，target额度后不进judge）；f7866d298b42483289c22639ed85e42b为2/2（1.30s，真实CLI缺中央0POST、R12实际CLI validate仅取未完成两题）。22e0c527cd3745a2acec2bf27e47bc63的首次测试导入collection失败保留，移入已有models测试包后才执行成功。所有真实模型/服务器/外发0。
 
@@ -68,6 +81,19 @@
 
 ## Surprises & Discoveries
 
+19:22：旧fresh-questions-from只接受已知quota5h，若不补会在v23首次核心unavailable恢复时本地拒绝；新增显式R22序号及实际停止时刻，不能把业务题目clock或不完整上次启动时刻用作等待锚点。
+
+
+19:11：除旧模型白名单及K31批准没有equivalent外，quota_resume_evidence/clear/session_accounting把token阶段拼成core-k3.1-pro，而中央原生为core-k31；已统一。原runner_v2等仅E1 c21冻结基线，core30从runner.py→live_session→ProofSelectedRegistry进入，不改变旧基线。
+
+
+2026-10-24 18:46 +08:00：R20裁定确认auto强升required是本地策略缺陷。探针首请求调用方明确required，第二请求明确auto；测试必须保护这个差别。旧v3 submit需要结构化单提交，强制策略移至legacy_request_policy，不改变其wire。
+
+
+2026-10-24 18:26 +08:00：safe_tool_choice对K3单工具请求会将auto变成required，既有原生wire测试也核两轮required。因此旧第二轮追加工具不能只归因模型习惯；R18本片不改生产策略、不扩大其他探针。新重复保护忽略每次变化的opaque call ID，只核名称/规范化参数；echo回传实际参数而非写死value，推理与opaque ID仍用原native as_chat。
+
+18:29补核：原ECHO只有一个value且enum仅合成，所有合法再次调用必然与前次相同；因此真实R18第二轮若再调用，按裁定正确失败。测试为验证泛化循环的第3/4轮，仅在Mock中显式允许不同合成值，真实合同/探针其他项不改；初轮失败来自错误Mock参数，未为迁就测试改真实schema。
+
 2026-10-24 13:45 +08:00：R16实际PG反例发现旧bad_request不属于中央持久停止类，单有error.global_stop不足以封住其他进程。身份异常现保留物理bad_request原件，同时使用既有permission_error人工解除类持久全停；无新增PG枚举/迁移。已知reset的snapshot原datetime亦改ISO字符串，避免quota报告序列化丢失。冻结脚本/旧默认模型不改。
 
 2026-10-24 13:19 +08:00：R11的原core报告保留incomplete及延期失败，不能消费旧全81门或仅信派生计数。新消费器重读四组原报告、固定case集合/零外发/同源及X02契约；实际b008原件只读兼容核验通过，不发批准、不重跑脚本，也不将旧候选证明套到新代码。
@@ -111,6 +137,19 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+19:22：只给v23明确授权的unavailable开放有限重试，默认flag0仍拒绝；前次序号、同候选/source/model/计划与未完成集合均核，10/30分钟未到拒绝。core仍每题全新run，无同run续作或改变期限；所有原报告输入只读。
+
+
+19:11：R21仅在当前sealed K31CoreApproval且候选/source/中央guard一致时允许Lifecycle capture/verify；连接专用批准、无批准、篡改来源均拒绝。旧K3选择及none/named保护不变；实际主/外评仍K31/high，R12整题新run，不投入旧同run续作。
+
+
+2026-10-24 18:46 +08:00：依用户直接指令及v21，替换旧单工具强制断言为保调用方auto，保留显式required能力检查、none/指定工具名拒绝和旧legacy断言；不改协议/schema/循环熔断/真实额度账本。
+
+
+2026-10-24 18:26 +08:00：R18直接授权新control重跑，但不能重置既有账本或丢旧请求；新探针在持有全账户exclusive锁内每POST前核所有k31-connect历史≥20即拒绝，proof同时列当前候选和累计次数。2–4轮的完成位来自真实PG连续step及final终态，不改旧proof/原始R11。仅在新候选同源门后执行授权接入及core30。
+
+18:29：探针合同升级r18，仅K31-TOOLS允许连续2–4个真实PG检查；INPUT/LONG原合同保持。完成位需无跳号/所有中间轮合法且不重复/最终无工具正文，失败记录带原因；摘要分别列工具请求数与实际执行额外次数，不能从一次探针外推整体K3/K31额度比。
 
 2026-10-24 13:45 +08:00：R12只对新sealed K31 core scope把停止题标incomplete/score=null，不计成败；旧评测契约不变。--fresh-questions-from仅接受同候选/同源、已知5h恢复窗口的原报告，并从原计划剔除已完成题，显式新调用/新run/新期限；仍禁--resume，原过期run零POST。rollup保留中断浪费，不重签、不延长旧期限、不做累计预算新账本。
 
@@ -159,6 +198,19 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+19:22：R22必要框架17/17，待新同源R11及后台固定退避真实重试；历史9物理保留，不使用旧成功接入proof批准新source，不改协议/客户端/限流特征。
+
+
+19:11：新增必要实际PG+公开tokenizer+Mock HTTP完整答题/外评及额度新run通过，无真实新请求；旧8计数保留。未宣称CI或真实core绿，源码固定后立即R11和真实流水线，不等完整回归。
+
+
+2026-10-24 18:46 +08:00：必要定向已核原件，真实评测尚未启动；原R18及v16共4物理保留，本轮新候选须重跑R11，成功后同进程立即接入/core30，累计接入仍<=20。
+
+
+2026-10-24 18:26 +08:00：此时仅必要R18代码/测试草案，未发新真实请求；旧2次及失败control保留。下一定向测试、提交、新同源R11、实际新control接入；失败仍停，不自动回退模型或放宽重复断言。stage继续Claude，生产不执行。
+
+18:29：必要定向均有分轮实证；下一提交probe-only分支并跑其新同源R11，不修改formal在途milestone。通过才用原R17账本、新control执行本次直接授权的接入；旧2次计累计，失败立即停止。生产策略单工具required和原enum均保留，不能据探针失败断言模型不兼容。
 
 2026-10-24 13:45 +08:00：本轮必要代码已具有真实可用入口，但不能拿b008旧门放行新源码；接下来仅普通集成、最终候选同源脚本/CI与交接精确命令、stage必需串联。真实接入/核心30由Claude执行，本代理零真实请求；中央配置仍缺，不自动创建账户。生产/Docker/服务器均未操作，stage就绪提醒仍不发。
 

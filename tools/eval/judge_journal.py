@@ -14,6 +14,7 @@ from mingjing_core.models.quota_delegated_session import require_active
 from mingjing_core.models.quota_runtime import call_scope
 from mingjing_core.repositories.postgres import fingerprint
 from tools.eval.judges import JUDGE_SCHEMA
+from tools.eval.judge_context import judge_payload
 from tools.eval.lifecycle_identity import LifecycleError
 from tools.eval.targets.v4_core30 import load_core30
 from tools.eval.targets.v4_lifecycle_state import read_private
@@ -39,17 +40,7 @@ class JudgeJournal:
         index = state["turn"]
         if type(index) is not int or not 1 <= index <= len(case.turns):
             raise LifecycleError("评分轮次不属于固定场景")
-        turn = case.turns[index - 1]
-        payload = {
-            "scenario_id": case.id,
-            "user": turn.user,
-            "clock": turn.at or case.clock,
-            "seed": case.seed.model_dump(mode="json"),
-            "receipts": result.receipts,
-            "tools_called": result.tools_called,
-            "criterion": turn.expect.judge,
-            "answer": result.text,
-        }
+        payload = judge_payload(case, index, result)
         rubric = RUBRIC.read_text(encoding="utf-8")
         identity = {
             **asdict(self.binding),
@@ -122,7 +113,7 @@ class JudgeJournal:
     def _completed(self, row: dict) -> dict:
         value = row["value"]
         rows = [item for item in self._physical(value["identity"]) if item["attempt_id"] in value["attempt_ids"]]
-        if len(rows) != 1 or fingerprint(rows) != value.get("physical_sha256"):
+        if not 1 <= len(rows) <= 2 or fingerprint(rows) != value.get("physical_sha256"):
             raise LifecycleError("已完成评分的中央物理证据改变")
         return deepcopy(value["result"])
 
@@ -155,14 +146,19 @@ class JudgeJournal:
         actual = [
             item for item in self._physical(value["identity"]) if item["attempt_id"] not in value["prior_attempt_ids"]
         ]
+        errors = reviewed.get("attempt_errors", []) if reviewed is not None else []
         complete = (
             reviewed is not None
-            and reviewed.get("error") is None
-            and len(actual) == 1
-            and actual[0]["finished_at"] is not None
-            and actual[0]["status"] == "ok"
-            and actual[0]["model"] == self.binding.model
-            and actual[0]["provider"] == "kimi_code"
+            and (reviewed.get("error") is None or reviewed.get("judge_unavailable") is True)
+            and 1 <= len(actual) <= 2
+            and len(errors) == len(actual)
+            and all(
+                item["finished_at"] is not None
+                and item["status"] == ("unavailable" if error == "JudgeTransportUnavailable" else "ok")
+                and item["model"] == self.binding.model
+                and item["provider"] == "kimi_code"
+                for item, error in zip(actual, errors, strict=True)
+            )
         )
         value.update(
             attempt_state="completed" if complete else "unknown",

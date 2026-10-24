@@ -35,12 +35,31 @@ class LifecycleBinding:
             re.fullmatch(r"[0-9a-f]{40}", self.candidate_commit or "") is None
             or any(
                 re.fullmatch(r"[0-9a-f]{64}", value or "") is None
-                for value in (self.source_sha256, self.contract_sha256, self.central_location)
+                for value in (
+                    self.source_sha256,
+                    self.contract_sha256,
+                    self.central_location,
+                )
             )
-            or self.model not in {"k3", "k3-256k"}
+            or self.model not in {"k3", "k3-256k", "k3.1-pro"}
             or self.scenario_id not in CORE30_IDS
         ):
             raise LifecycleError("生命周期绑定只接受固定core30契约和K3模型")
+
+    def _authority(self, guard: QuotaGuard) -> None:
+        if self.model != "k3.1-pro":
+            return
+        from mingjing_core.models.quota_delegated_session import require_active
+        from tools.eval.model_selection import selected_model
+
+        session = require_active()
+        if (
+            session.guard is not guard
+            or selected_model() != self.model
+            or session.approval.candidate != self.candidate_commit
+            or session.approval.source_sha256 != self.source_sha256
+        ):
+            raise LifecycleError("K31生命周期需要同候选同来源的接入批准")
 
     def _contract(self) -> None:
         from tools.eval.targets.v4_core30 import load_core30
@@ -50,10 +69,16 @@ class LifecycleBinding:
             raise LifecycleError("场景契约已经改变")
 
     @classmethod
-    def capture(cls, guard: QuotaGuard, candidate: str, scenario: Scenario, model: str) -> LifecycleBinding:
+    def capture(
+        cls, guard: QuotaGuard, candidate: str, scenario: Scenario, model: str
+    ) -> LifecycleBinding:
         from tools.eval.runner import ROOT, _source_digest
 
-        if re.fullmatch(r"[0-9a-f]{40}", candidate or "") is None or model not in {"k3", "k3-256k"}:
+        if re.fullmatch(r"[0-9a-f]{40}", candidate or "") is None or model not in {
+            "k3",
+            "k3-256k",
+            "k3.1-pro",
+        }:
             raise LifecycleError("评测候选与模型身份无效")
         candidate_provenance(ROOT, candidate)
         verify_local_postgres(guard.store.dsn)
@@ -69,18 +94,25 @@ class LifecycleBinding:
             guard.store.identity,
             account["location_id"],
         )
+        result._authority(guard)
         result._contract()
         return result
 
     def verify(self, guard: QuotaGuard) -> dict[str, Any]:
         from tools.eval.runner import ROOT, _source_digest
 
+        self._authority(guard)
         candidate_provenance(ROOT, self.candidate_commit)
         self._contract()
         verify_local_postgres(guard.store.dsn)
         with guard.store.connect() as connection:
             account = guard.store.verify(connection)
-        if (self.source_sha256, self.central_account, self.central_identity, self.central_location) != (
+        if (
+            self.source_sha256,
+            self.central_account,
+            self.central_identity,
+            self.central_location,
+        ) != (
             _source_digest(),
             guard.store.account_id,
             guard.store.identity,

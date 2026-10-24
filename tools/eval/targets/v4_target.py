@@ -44,6 +44,7 @@ from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
 from .v4_sse_reconnect import reconnect
 from .v4_tarot import TarotDriver
+from .v4_tool_effects import previous_turns, tool_effects
 from .v4_withdrawal import configure_withdrawal, regeneration_state, withdrawal_observations
 
 
@@ -299,6 +300,8 @@ class V4Target:
                 "physical_model_requests": 0,
                 "evaluator_observations": semantic,
                 "error_category": "business" if error else None,
+                "tool_effects": tool_effects(self.repo, self.owner, run["id"]),
+                "prior_turns": previous_turns(self.repo, self.owner, self.run_ids[:-1]),
             },
         )
 

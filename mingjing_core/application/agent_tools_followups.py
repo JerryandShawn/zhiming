@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, time, timedelta
 from functools import partial
 from typing import TYPE_CHECKING, Any
 from zoneinfo import ZoneInfo
@@ -132,6 +132,23 @@ def validate_fact(service: AgentToolsService, args: dict[str, Any], ctx: ToolCon
     return [ident]
 
 
+def followup_due(due: datetime, metadata: dict[str, Any], zone: str) -> datetime:
+    """Date-only events get an evening followup; reminders keep their explicit contract."""
+    event_at = metadata.get("event_at", "")
+    if not isinstance(event_at, str) or len(event_at) != 10:
+        return due
+    local = due.astimezone(ZoneInfo(zone))
+    day = date.fromisoformat(event_at)
+    if local.date() == day and 18 <= local.hour < 23:
+        return due
+    if local.hour >= 23:
+        day += timedelta(days=1)
+        at = time(8, 30)
+    else:
+        at = time(20)
+    return datetime.combine(day, at, tzinfo=ZoneInfo(zone)).astimezone(UTC)
+
+
 def persist_schedule(
     service: AgentToolsService,
     name: str,
@@ -154,11 +171,13 @@ def persist_schedule(
     if name == "schedule_followup" and settings.get("proactive_followups_enabled", True) is not True:
         return {"write_status": "stopped", "code": "proactive_disabled"}
     due = due_instant(args["due_at"])
-    if due <= service.clock.now():
-        raise EvidenceError("提醒时间必须在当前时刻之后")
     metadata, pending = schedule_metadata(service, args, ctx, source, due)
     if pending:
         return pending
+    if name == "schedule_followup":
+        due = followup_due(due, metadata, service.timezone(ctx))
+    if due <= service.clock.now():
+        raise EvidenceError("提醒时间必须在当前时刻之后")
     if name == "set_reminder":
         local_time = due.astimezone(ZoneInfo(service.timezone(ctx))).strftime("%H:%M")
         if args["text"] not in args["quote"] or local_time not in args["quote"]:

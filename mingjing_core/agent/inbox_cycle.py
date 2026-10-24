@@ -8,7 +8,6 @@ from mingjing_core.application.agent_current_sources import current_source_ids
 from mingjing_core.application.thread_inbox import ThreadInbox
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
-from .inbox_crisis import refresh_crisis
 from .loop_codec import extend_aliases
 
 
@@ -44,7 +43,6 @@ class InboxCycle:
             )
         self.pending = tuple(claim for claim in claims if self._admit(cycle, claim, restored))
         self._register_sources(cycle)
-        refresh_crisis(cycle)
 
     def _admit(self, cycle, claim, restored):
         identifiers = tuple(key[8:] for key in claim.versions if key.startswith("message:"))
@@ -54,7 +52,10 @@ class InboxCycle:
             if any(restored.versions.get(key) != version for key, version in claim.versions.items()):
                 return False
         else:
-            metadata = {"supplemental_source_ids": list(identifiers), "source_segments": claim.source_segments}
+            metadata = {
+                "supplemental_source_ids": list(identifiers),
+                "source_segments": claim.source_segments,
+            }
             from mingjing_core.models.port import ChatMessage
 
             cycle.messages.append(ChatMessage("system", "运行中补充的程序来源标识：" + json.dumps(metadata)))
@@ -66,7 +67,12 @@ class InboxCycle:
     def _dependencies(self, cycle, additions):
         with self.repo.transaction(cycle.run["owner"]) as connection:
             row = self.repo._run(
-                self.repo._leased(connection, cycle.run["owner"], cycle.run["id"], cycle.run["lease_token"])
+                self.repo._leased(
+                    connection,
+                    cycle.run["owner"],
+                    cycle.run["id"],
+                    cycle.run["lease_token"],
+                )
             )
             versions = reconcile_versions(self.repo, row, row["state_version"])
             for key, version in additions.items():
