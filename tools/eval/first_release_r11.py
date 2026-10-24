@@ -152,8 +152,15 @@ def offline_only():
 
     import urllib.request
 
+    native = httpx.HTTPTransport.handle_request
+
+    def loopback_only(transport, request):
+        if request.url.scheme != "http" or request.url.host not in {"127.0.0.1", "::1"}:
+            return forbidden()
+        return native(transport, request)
+
     with (
-        patch.object(httpx.HTTPTransport, "handle_request", forbidden),
+        patch.object(httpx.HTTPTransport, "handle_request", loopback_only),
         patch.object(urllib.request, "urlopen", forbidden),
     ):
         yield

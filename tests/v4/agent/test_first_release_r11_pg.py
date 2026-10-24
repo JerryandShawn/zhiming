@@ -5,9 +5,12 @@ from __future__ import annotations
 from contextlib import contextmanager
 from copy import deepcopy
 
+import httpx
 import pytest
 
 from tools.eval import first_release_r11 as gate
+from tools.eval.engine import evaluate_scenario
+from tools.eval.schema import load_scenario
 
 from .test_eval_v4_pg import target as target_fixture
 
@@ -87,3 +90,17 @@ def test_x02_repeated_real_mock_http_errors_commit_friendly_answer_and_replay_wi
         assert result["status"] == "passed" and result["mock_http_requests"] == 4
         assert result["external_provider_requests"] == result["repeat_writes"] == 0
         assert result["friendly_failure"] is result["committed_answer_preserved"] is True
+
+
+def test_r11_boundary_blocks_external_http_but_preserves_actual_loopback_cancellation(monkeypatch):
+    with (
+        gate.offline_only(),
+        httpx.Client(trust_env=False) as client,
+        pytest.raises(RuntimeError, match="^R11_EXTERNAL_HTTP_FORBIDDEN$"),
+    ):
+        client.get("https://synthetic-external.invalid/")
+    with contextmanager(target_fixture.__wrapped__)(monkeypatch) as target, gate.offline_only():
+        scenario = load_scenario(gate.runner.EVAL_ROOT / "scenarios_v4/X04.yaml")
+        result = evaluate_scenario(scenario, target, target_name="v4")
+        assert result["status"] == "passed", result["failed_assertions"]
+        assert target.cancellation["stop_latency_ms"] <= 2000
