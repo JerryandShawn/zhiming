@@ -8,6 +8,14 @@
 
 ## Progress
 
+- [x] (2026-10-24 10:48 +08:00) 新中央routing唯一节点首次1/1通过，0失败/error/skip/warning，XML5.443秒；10:47:49.444198–10:47:55.896752。根独立核metadata、全部XML和log；唯一原件 `private/safe-narrow-83cfec6bf1c9492c9772777ea33d5e65/`。真实prefix7 native restore→8前后原非空中央四表/sequence精确保持，当前宿主真实from_base/require_agent/Registry使用新业务writer+原四MEMBER。原eval历史实际guard reserve/finish及finish_batch，stop账号在基线前设好；受限role运行期禁止provision/clear、真实网络，只用非Mock外壳桥接Mock使真实from-env中央门生效。唯一合法primary POST仅往原中央追加1个http UUID，旧usage全行/batches/auth/account身份location/stop不变、当前账号last_clock_at单调；错库/UUID/location/Access四类共0新POST，中央完整后态不变，新业务四表空/sequence未用保持。官方K3从既有公开artifact真实装配，未patch计量；slot已释放，真实供应商/服务器/外发0。仅当前宿主装配的一次port.complete，不是fresh候选进程或完整Agent业务run，formal_central_rebinding_verified仍false。
+
+- [x] (2026-10-24 10:47 +08:00) 新central_routing专属测试273行/最大函数41已静态冻结，根全文核原restore/production/Registry/guard及fixture，R3独立审无实质阻塞，Ruff E/F/I/B/UP/SIM与120列format通过。仅授slot1唯一新node首次验证，沿真实os.environ四MEMBER及受限role；用BaseTransport桥接Mock避免裸MockTransport免guard，provision/clear和真实网络在运行期禁止。范围是原native restore夹具+当前宿主真实装配的一次port.complete，不是fresh候选app或完整业务run，不证明正式central_binding。尚无测试结果，不扩矩阵。
+
+- [x] (2026-10-24 10:42 +08:00) 前片源写CLI的唯一两节点已根核并推 `045d705` 至自己的 `v4/p3-wire-source-cli-20261024`；未推进formal/feed。当前切独立 `v4/p3-wire-central-routing-20261024`，只保本计划与下一专属测试WIP，归档源将是已提交045；两条源CLI测试已结束，旧控件及新CLI/test冻结。中央组合仍只静态准备，无PG/pytest/真实POST，根审前不给测试槽。
+
+- [ ] (2026-10-24 10:37 +08:00) 在源CLI首验间隙准备下一独立实际恢复/启动组合：不新增proof层、不修改P1b或自动迁移账本，新增专属本机真实PG测试，保留原已配置的非空中央库，恢复另一业务库后仅改业务DSN，沿真实production装配/Registry/MockTransport验证原中央历史不回退、允许调用只追加原中央UUID，新业务库额度表保持空；错库/UUID/location及原停止状态在POST前拒且不自建。先静态审，源CLI片提交推送后再切独立分支并授必要测试，不碰在途控件或已验矩阵。尚未编码或运行。
+
 - [x] (2026-10-24 04:14 +08:00) 根只读核实冻结工具提交7e2c870的Core CI成功（584旧Core、v4 4133通过/75跳过）；正式集成1891975的独立Core CI也成功（584旧Core、v4 4107通过/56跳过）。两者不是同一源码，未合计测试数或当作本机Linux恢复放行；不重复宽验。
 
 - [x] (2026-10-24 03:04 +08:00) 单个prefix7组合目标在两次新fixture错误修正后第三次1/1通过（53.69秒）：固定已提交206f43f实际候选，原生receive/save/correct且满足owner全集/零active和lease，M1真实捕获→另一新目标同call M2原始全状态比较→7至8→原生双重放。只新增capture_replay_chain测试与本计划，工具/effects599/旧测试/R7计划未改；令牌释放，无宽验。
@@ -38,6 +46,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+10:37 只读核实：CentralLocation.from_environment只读取MEMBER_CENTRAL_DSN / MEMBER_CENTRAL_SCHEMA / MEMBER_ACCOUNT_ID / MEMBER_LEDGER_IDENTITY，完全不回退ZHIMING_DATABASE_URL；真实configured_agent和每次HTTP guard可继续核原account UUID与实际DB/server/schema位置，runtime不provision。现有0008契约已允许中央与业务分库，无需搬迁或重签。启动guard成功不等于旧usage/batches/authorizations/sequence未回退；自定义启动environment mapping也不能替代真实HTTP最终读取的进程env，组合测试必须同时核这两层。旧库/中央角色保留、正式切换与隐私处置仍需本次发布裁定，不因本机通过开放正式门。
 
 上述两个GitHub CI job均成功，但测试集合不同。7e2工具树包含新恢复测试，正式集成1891975包含评测生命周期接线；不能用其中一个job替代另一个源码的验证，也不能把CI里的48题替身子集当作原81题首发门。
 
@@ -100,6 +110,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+10:37 决定下一片用一个实际恢复上下文验证既有中央路由，避免另建无调用的证明工具或修改共享记忆。测试只可显式provision本次隔离合成中央setup，运行路径不得provision/clear stop/更新旧location；模型只MockTransport，不伪造TTY或人工开始。与当前源CLI两节点互不修改或追加测试，根维护本计划/Git；新测试先留WIP，待前片推送后独立分支授槽。正式中央保全/权限/env切换门继续false。
 
 2026-10-24 04:14 +08:00：按指令板v8以现有绿色CI作为对应源码的回归证据，不在本机重跑同一全量。新增SourceForward尚未测试，88f1d27/5b8397d的CI仍在运行；本次只更新原计划，不追加第二套CI日志。实际Docker应用运行时、正式恢复/切换和新的服务器授权继续关闭。
 
@@ -233,6 +245,10 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## Outcomes & Retrospective
 
+10:48 本机实际恢复库与原非空中央的生产装配/Registry路由组合成立，新增273行专属测试，生产/P1b/旧测试无改动；只跑该唯一新node，不重复旧已验矩阵。配置接缝是仅切业务ZHIMING_DATABASE_URL、保原MEMBER中央四项；旧账本不复制、不重签、不清stop，错误绑定拒绝且runtime不开新账户。源restore fixture是明确的合成原生本机样本，app来自当前宿主已提交045代码，不声称是fresh候选archive。两份首发草案补可复用的配置策略，但正式权限、受保护env、真实中央基线、同候选Linux及三unit/wrapper切换均未验收，central_binding/publication继续false。
+
+10:37 原中央继续承载账本的现有配置能力已只读核实；新恢复库实际启动及ModelPort路由组合尚未验证。现阶段不宣称central_binding_verified，下一限定测试不能替代Linux应用、三unit/wrapper、全局writer或用户新授权。
+
 冻结工具[7e2c870 CI](https://github.com/JerryandShawn/zhiming/actions/runs/40009060893)于03:53 +08:00完成：Core584、v4 4133 passed/75 skipped/2 warnings，独立ModelPort949通过（与v4有重叠，不相加）。正式集成[1891975 CI](https://github.com/JerryandShawn/zhiming/actions/runs/40012851772)于04:07 +08:00完成：Core584、v4 4107 passed/56 skipped/2 warnings，ModelPort970通过（同样不相加）。保留跳过与警告，未重跑绿色集合；以上是GitHub Linux CI，未验证本机Docker首发应用恢复或解除全81题脚本/中央身份/正式上线门。
 
 2026-10-24 03:04 +08:00组合链第三次1/1通过（53.69秒，`private/safe-narrow-69ff1a619b7a41fdaa2d14d3992c0837/metadata.json`）；安全组合观察`private/capture-replay-chain-c2df0da3fb6a469da5161fdb70a4e715/metadata.json`。实际固定206f43f原生receive/save/correct、M1捕获及不同新目标同call M2→8→原生双replay完成；M2核24表、sequence=0，连接10，span source/overlap/preserved/run/Outbox各1、checkpoint范围3。源old fact superseded且有正文、run/Outbox stale、public checkpoint[1,1,1]；目标重放后old fact deleted/data={}、run revoked/空request、Outbox cancelled、checkpoint[0,0,0]。新更正fact完整行hash、另一owner、源全部原始状态、raw/context/FTS/非重叠fact均保持，第二遍完整状态与export一致。保留首次16.36秒和第二次13.93秒fixture错误，不能称首次或一次三项全绿；复杂blob是捕获前明确合成SDK seed，非correct_fact或真实Agent输出。新文件306行/最大函数51，Ruff/格式/AST/diff通过，测试令牌已释放，真实模型/服务器/消息0。没有改工具/effects/旧tests，Linux、正式恢复、全局停写、中央身份与发布门仍未放行。
@@ -272,6 +288,8 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 目录路径补正又有两个不同定向行为通过，累计52个不同通过行为；仍为validate-only，无apply或原生恢复执行。
 
 ## 修订记录
+- 2026-10-24 10:48 +08:00：中央routing唯一新节点首次1/1、根核原件，明确旧历史/sequence与唯一新增物理UUID、四类早拒及当前宿主装配边界；生产代码不改，正式门继续关闭。
+- 2026-10-24 10:37 +08:00：先登记原中央/新业务库真实恢复路由的必要组合设计与现有原生接缝，不新建证明层或擅改位置身份。
 
 - 2026-10-24 04:14 +08:00：根核对应冻结工具与正式集成两个确切SHA的绿色CI，分别记录范围、跳过项与不能放行的门；没有重新测试或复制原始日志。
 

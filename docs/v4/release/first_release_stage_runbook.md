@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 10:40，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer的9控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 10:48，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer的9控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -27,6 +27,12 @@
 | 当前环境及授权 | 未做新的服务器盘点；容量、旧schema/服务状态不能沿用历史值 | 用户新的stage授权，明确新对象/窗口；获准后只读B0复核一致 |
 
 关系/函数/ACL校验通过不代表数据已恢复、运行时已受信、中央账本已合法迁移或渠道已验收；本单不将任一门标为“已解除”。
+
+### 原中央与新业务库的配置接缝（不放行正式门）
+
+现有P1b按独立中央设计：业务仓库读取 `ZHIMING_DATABASE_URL`，中央守卫只读取 `MEMBER_CENTRAL_DSN`、`MEMBER_CENTRAL_SCHEMA`、`MEMBER_ACCOUNT_ID`、`MEMBER_LEDGER_IDENTITY`，不回退业务DSN。若已有正确中央，恢复业务到新库时可仅切业务DSN，保留原中央四项与实际PG位置，不把备份中的中央表当作权威。普通启动和每次物理请求都核原账号UUID与实际数据库/server/port/schema位置；旧中央改名、迁址或换schema须另审，禁止靠provision、改location/identity、clear stop修过启动门。若尚无中央账号，先停在门前，待另审的显式配置及授权；runtime不能自动创建。
+
+本机已用真实prefix7恢复至8、原非空中央历史、当前宿主生产装配/Registry及受限角色验证该路由：允许调用只向原中央追加，错误库/UUID/位置及已有停机拒绝，新业务额度表保持空。这里只替换传输为Mock，未注入guard绕路；完整唯一结果在[恢复ExecPlan](../execplans/first_release_recovery_20261023.md)。这不是fresh候选进程、完整Agent业务run、正式权限或配置切换验收，`central_binding_verified`保持false。正式切换仍须保全原四表/sequence完整基线、明确原中央库/角色长期保留与旧业务writer处置、审核实际受保护env，并在同候选Linux和所有入口重核；不能据构造guard成功推断旧usage/stop未回退。
 
 ## 3. 现有可运行的校验命令
 
