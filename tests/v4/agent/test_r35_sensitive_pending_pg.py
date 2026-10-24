@@ -17,7 +17,9 @@ TEXT = "听起来最近不容易。治疗和用药请跟医生商量；这条信
 
 
 def scenario(user="我被诊断出焦虑症了，最近在吃药", level="health", *, incognito=False):
-    value = execution_overlay(load_scenario("tools/eval/scenarios/M05.yaml")).model_dump(mode="json")
+    value = execution_overlay(
+        load_scenario("tools/eval/scenarios/M05.yaml")
+    ).model_dump(mode="json")
     value["turns"][0]["user"] = user
     value["seed"]["incognito"] = incognito
     value["turns"][0]["expect"]["db"][0]["where"] = {"data.sensitivity": level}
@@ -45,10 +47,18 @@ def test_text_only_model_creates_native_pending_once_and_keeps_answer(user, leve
         assert len(proposals) == 1 and proposals[0]["sensitivity"] == level
         assert proposals[0]["source_refs"][0]["quote"] == user
         source_id = proposals[0]["source_refs"][0]["message_id"]
-        assert not any(source_id in fact.get("source_ids", []) for fact in target.repo.list(target.owner, "fact"))
+        assert not any(
+            source_id in fact.get("source_ids", [])
+            for fact in target.repo.list(target.owner, "fact")
+        )
         # A repeated completed run reads the same committed result, no extra proposal.
-        again = target.runtime.execute(target.service, target.owner, run["id"], "old-token")
-        assert again == run["result"] and len(target.repo.list(target.owner, "proposal")) == 1
+        again = target.runtime.execute(
+            target.service, target.owner, run["id"], "old-token"
+        )
+        assert (
+            again == run["result"]
+            and len(target.repo.list(target.owner, "proposal")) == 1
+        )
     finally:
         target.close()
 
@@ -111,22 +121,57 @@ def test_pending_before_finalization_replays_without_duplicate_effect(monkeypatc
         previous = get_clock()
         try:
             set_clock(FrozenClock(datetime.fromisoformat(scenario().clock)))
-            envelope = target.runtime.execute(target.service, target.owner, run["id"], run["lease_token"])
+            envelope = target.runtime.execute(
+                target.service, target.owner, run["id"], run["lease_token"]
+            )
         finally:
             set_clock(previous)
         assert envelope["text"] == TEXT
-        assert len(envelope["receipts"]) == 1 and len(target.repo.list(target.owner, "proposal")) == 1
+        assert (
+            len(envelope["receipts"]) == 1
+            and len(target.repo.list(target.owner, "proposal")) == 1
+        )
     finally:
         target.close()
 
 
 @pytest.mark.parametrize(
-    "user", ["不要保存，我被诊断出焦虑症", "假如我被诊断出焦虑症怎么办", "朋友说：‘我确诊了焦虑症’"]
+    "user",
+    [
+        "不要保存，我被诊断出焦虑症",
+        "假如我被诊断出焦虑症怎么办",
+        "朋友说：‘我确诊了焦虑症’",
+    ],
 )
 def test_actual_pg_privacy_refusals_remain_without_pending(user):
     target = V4Target()
     try:
         evaluate_scenario(scenario(user), target, target_name="v4")
+        assert not target.repo.list(target.owner, "proposal")
+        run = target.repo.fetch_run(target.owner, target.run_ids[-1])
+        assert not run["result"]["receipts"]
+        assert run["result"]["text"] == TEXT
+    finally:
+        target.close()
+
+
+def test_native_forget_does_not_repropose_deleted_health():
+    target = V4Target()
+    try:
+        case = execution_overlay(load_scenario("tools/eval/scenarios/F02.yaml"))
+        result = evaluate_scenario(case, target, target_name="v4")
+        assert result["status"] == "passed", result["failed_assertions"]
+        assert not target.repo.list(target.owner, "proposal")
+        run = target.repo.fetch_run(target.owner, target.run_ids[-1])
+        assert not run["result"]["usage"].get("sensitive_pending_fallback")
+    finally:
+        target.close()
+
+
+def test_text_only_forget_does_not_create_pending():
+    target = V4Target()
+    try:
+        evaluate_scenario(scenario("把我焦虑症的事忘了"), target, target_name="v4")
         assert not target.repo.list(target.owner, "proposal")
         run = target.repo.fetch_run(target.owner, target.run_ids[-1])
         assert not run["result"]["receipts"]
