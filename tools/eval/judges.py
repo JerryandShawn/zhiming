@@ -8,6 +8,7 @@ from typing import Any
 
 from tools.eval.chart_goldens import load_golden, stability_checks, structure_checks
 from tools.eval.targets.base import TurnResult
+from tools.eval.review_assertions import cited_memory, naming_only_questions
 
 ISSUE_SEVERITIES: dict[str, int] = {
     "off_topic": 4,
@@ -108,18 +109,18 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
     if "events" in expect and expect["events"] is not None:
         checks.append(AssertionResult("events", _event_check(expect["events"], result.events)))
     for index, query in enumerate(expect.get("memory_access", []), 1):
-        injected = result.db.get("context", {}).get("injected_facts", [])
-        cited = any(
-            query in row.get("text", "") and "〔" + row["alias"] + "〕" in result.text
-            for row in injected
-            if isinstance(row.get("alias"), str)
-        )
         checks.append(
             AssertionResult(
-                f"memory_access[{index}]",
-                "memory_search" in result.tools_called or cited,
+                f"memory_access[{index}]", "memory_search" in result.tools_called or cited_memory(result, query)
             )
         )
+    if patterns := expect.get("memory_recall_or_text"):
+        passed = all(_includes(result.text, value) for value in patterns) or cited_memory(
+            result, patterns[0], constraint=True
+        )
+        checks.append(AssertionResult("memory_recall_or_text", passed))
+    if expect.get("naming_only_questions"):
+        checks.append(AssertionResult("naming_only_questions", naming_only_questions(result.text)))
     if expect.get("chart_structure"):
         checks.extend(
             AssertionResult("chart_structure." + name, passed) for name, passed in structure_checks(result.text).items()

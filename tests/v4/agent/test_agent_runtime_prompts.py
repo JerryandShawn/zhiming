@@ -9,7 +9,7 @@ from mingjing_core.application.consultation_context import crisis_policy
 
 def test_prompt_hashes_versions_and_resolved_placeholders():
     bundle = load_prompts()
-    assert bundle.manifest["files"]["system"]["version"] == "1.2.0"
+    assert bundle.manifest["files"]["system"]["version"] == "1.2.1"
     for name, row in bundle.manifest["files"].items():
         assert hashlib.sha256((DIRECTORY / row["file"]).read_bytes()).hexdigest() == row["sha256"]
         assert "{{" not in bundle.render(name)

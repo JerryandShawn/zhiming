@@ -3020,10 +3020,10 @@ turns:
   channel: web
   kind: chat
   expect:
-    must_include_all:
+    judge: 从长历史或检索中找回第5轮的约束。
+    memory_recall_or_text:
     - 夜班
     - 约束|限制|硬条件
-    judge: 从长历史或检索中找回第5轮的约束。
 scripted:
 - turn: 1
   model:

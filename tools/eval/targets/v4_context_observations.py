@@ -49,7 +49,7 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
                     "constraint",
                     "preference",
                 }:
-                    injected.append({"alias": value.get("alias"), "text": value.get("text", "")})
+                    injected.append({"alias": value.get("alias"), "kind": value["kind"], "text": value.get("text", "")})
     return {
         "injected_facts": injected,
         "l4": {
