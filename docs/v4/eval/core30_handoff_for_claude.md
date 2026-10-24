@@ -31,7 +31,9 @@ K3.1的离线wire/profile已在release-prep的47d03f7实现：精确k3.1-pro、O
 
 13:09已按v14在本聊天提醒用户：脚本门通过、降低主线思考强度至中档、找Claude接手评测。该提醒不是声明下面的真实运行入口或整个首发包已经完成；当前代码交接仍需补齐。
 
-原`tools.member_delegate`及`tools.eval.live`仍只认旧两模型等价证明；R11新assessment另由新`tools.eval.r11_gate`重读四组原件、核同HEAD/source/X02契约，签发独立K31接入批准。13:19代码a27aab0已推；实际隔离PG/Mock验证接入精确k3.1-pro、跨批/重启最多20物理、每批10、旧模型0POST拒绝，接入批准不能开核心评测。后续源指纹也纳入首发profile，不能把b008旧门套在新代码。真实接入检查CLI、可信核心模型选择、R12整题额度中断及浪费请求记账仍待接线。因此本版不编造尚不存在的真实命令；补齐并固定同源候选后再提供接入及核心30精确分批命令。
+13:46必要代码已推至release-prep的`e6bed0c3b6245e5845f7774bcb3d23d1b2cc90af`；CI运行40067524971仍in_progress，不称绿。现已实际存在`python -m tools.eval.k31_cli`的init-control/status/resume-ready/connect入口、runner的`--connection-proof`及R12专用`--fresh-questions-from`，和`python -m tools.eval.k31_results`无正文合并报告入口。新证明重读实际PG；旧两模型等价证明不能放行K31。K31输入系数从实际接入计量传给核心，身份错/缺持久全停；额度题score=null、不计成败，恢复后新调用从题头开始，浪费请求保留，旧expired不续签。
+
+当前仍不能启动真实请求：这些新代码尚未普通合并到v4/integration并在最终clean候选完成同源R11；b008的绿色报告仅属于原冻结源码。已通过的必要PG/Mock和框架原件只在P1b计划索引，不伪称最终全链。下一步固定最终候选和assessment路径后，替换本节为全部精确命令；当前不把动态HEAD或旧门当作已经放行的执行单。宿主中央配置仍缺，须大脑核原有账户与账本配置，不能用业务DSN代替或自动新建账户。
 
 ## 不能改变的停止和结果规则
 
