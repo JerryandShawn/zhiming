@@ -14,6 +14,9 @@
 
 ## Progress
 
+- [x] (2026-10-24 09:14 +08:00) 独立v4/p3-wire-forward-diagnostic-20261024只补原选中异常的同次诊断透传：SourceForward.execute此前丢弃RestoreRejected.session_diagnostic后构造SourceForwardStopped。新实现严格白名单/有界无正文，错误码/phase/优先级/严门不变，不透传任意notes、不重查PG。根逐行审两文件后仅授两个目标，首次共同2/2通过，09:06:41.807331–09:14:28.387912、XML465.695秒。唯一原件在 `private/safe-narrow-4fed7d2e348f457d8bcdefd6b3601018/`；根独立核metadata及全部XML。真实外来连接仍被原门拒绝，原瞬间PID/type透传而未知字段/notes被丢，源与材料不变；原CI红在本机实际到达SDK setup后SQL漂移门，SDK10→10/新0、无grant，原严格断言全保留。原CI未知额外会话原因仍未知，本机通过不称CI已修；控件新hash须重新审pin，旧pin不补写。
+- [ ] (2026-10-24 08:57 +08:00) 89c9e2a的run40041896351/job120714666379已正常汇总失败：4198通过/75跳过/1失败、2230.02秒；唯一post_setup_live_sql_drift目标预期 CONTROLLER_SAVER_SQL_CHANGED、实际 INCREMENTAL_OTHER_SOURCE_SESSION。Core584/Frontend通过，ModelPort跳过，PG清理成功。本次日志未打印原门allowed/actual/type诊断，额外会话来源仍未知；不与fa23或07db冒认为同因，不称超时，不合入红源。正在只读核SourceForward异常包装是否保留原失败闸门诊断，不重试CI或改原断言；原始证据仅GitHub该job。
+- [x] (2026-10-24 08:46 +08:00) fa23预算分支run40040504249/job120710196462的另一红为原active_lease目标预期 INCREMENTAL_ACTIVE_RUN_OR_LEASE、实际 OTHER_SOURCE_SESSION；没有原allowed/actual PID或backend_type，原因仍未知。根授单槽只复验此原红节点，当前release-prep保原先sessions→source_scope→marker严门与全部原断言，08:44:47.743569–08:45:01.124871本机1/1、XML12.485秒。严格活lease拒绝、源全态不变、无maintenance均通过，本次未触发会话诊断；不能称原CI原因已定位或修复。唯一证据 `private/safe-narrow-ea86ebaefdcd4fd9bb0f3acbe467138d/metadata.json` 及同目录XML/log，根已独立核原件；没有代码、测试、CI重试或放宽异常范围。
 - [x] (2026-10-24 08:16 +08:00) source-backfill 07dbf97 的 run40038236229/job120702870850 已失败：v4 4197通过/75跳过/1失败、2283.38秒。唯一 target_dml_after_mint 目标预期 TARGET_PROOF_TARGET_STATE_CHANGED，实际 TARGET_PROOF_ACTIVE_OR_OTHER_SESSION；该 OR 混合忙run/lease和其它会话，原日志不能判明哪项成立。后续 ModelPort 未跑；原始证据仅 GitHub job，不复制第二套日志，不合并该红源。
 - [x] 在独立 v4/p3-wire-target-diagnostic-20261024 分片，仅给 TargetProof 原失败 gate 同一查询增加有界无正文诊断，保相同 busy/会话谓词、错误码和拒绝；不重试、过滤后台或改旧断言。新增一个真实PG诊断行为并只验证该行为；原 CI 红的未知原因继续保留。
 - [x] (2026-10-24 08:21 +08:00) 同次诊断静态根审完成（helper308行/最大37；新测试59行/最大30）。指定宿主 `.venv-core` 首链在 conftest 因缺 jieba 导入失败 exit4，08:20:38–08:20:39，尚未collect或进入PG节点，无XML；原 metadata/log 保留 `private/safe-narrow-5a842771caa248abb11081fb6caa2046/`，不计产品失败/通过。仅改用既有 `.venv-k3` 宿主（jieba/pytest/psycopg 已可导入）重新执行尚未运行的同节点，不安装依赖、不修改测试或控件、不重复任何已绿目标。
@@ -380,7 +383,7 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 ## Outcomes & Retrospective
 
-08:24 +08:00 当前诊断片：实际 held 原生候选中，外来owner连接使同次观察精确2 PID、busy_run_count=0/other_session=true；关闭后实际failed运行带未来lease使busy_run_count=1/other_session=false、仅观察PID。原错误码、严格拒绝和consume烧毁token不变，附原观察JSON note且不后查；首链1/1只证明诊断行为，原07db CI红的根因仍未知。控件自身已有受hash pin，新调用需重新审新pin；没有授源写入、正式恢复、Linux或发布能力。原导入失败单独保留，不与本链合成第二个业务目标。
+08:24 +08:00 当前诊断片：实际 held 原生候选中，外来owner连接使同次观察精确2 PID、busy_run_count=0/other_session=true；关闭后实际failed运行带未来lease使busy_run_count=1/other_session=false、仅观察PID。原错误码、严格拒绝和consume烧毁token不变，附原观察JSON note且不后查；首链1/1只证明诊断行为，原07db CI红的根因仍未知。控件自身已有受hash pin，新调用需重新审新pin；没有授源写入、正式恢复、Linux或发布能力。原导入失败单独保留，不与本链合成第二个业务目标。08:24已提交并推46666d2至自己的v4/p3-wire-target-diagnostic-20261024，新CI待核；本句为推后实时状态，随下一实质片保存，不取消或重跑新检查。
 
 M1统计observer本机必要两目标首次2/2通过，唯一原证据为`private/safe-narrow-bbbcd541aa36476f9f1306035f965f1e/metadata.json`及同目录pytest.xml/log，07:47:43.682–07:48:30.416 +08:00、45.86秒，真实PG15.19、清凭据/关追踪/TZ Tokyo、真实模型/服务器/外发0。原七字段有限诊断、五个原精确PID门、旧候选runpy snapshot导入与独立pin闭包保留；旧8控输入不再适用，必须新capture/新9控pin。原CI额外PID均保留未知，新观察不能保证CI转绿；原脚本69/81、Linux应用/正式CLI/中央身份/全局writer和发布门仍关闭。
 
@@ -430,6 +433,7 @@ M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/2
 
 ## 修订记录
 
+- 2026-10-24 09:14 +08:00：根核仅两个授权目标首次共同2/2、同次有界诊断与原strict故障断言；保存唯一本机证据，保持原89c CI失败与未知原因，不自动重试CI或推进formal/feed。
 - 2026-10-24 07:49 +08:00：记录M1同次统计观察真实两目标首次2/2及根审的实际边界，唯一证据只在本计划登记，旧CI失败与正式No-Go保留。
 
 - 2026-10-24 07:44 +08:00：只读核对f6 PR合成检查的新两处会话拒绝与X02取消状态，分清push/PR实际checkout及未执行步骤，不复制完整日志或自动重跑。

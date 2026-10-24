@@ -144,6 +144,43 @@ class SourceForwardStopped(RestoreRejected):
         self.automatic_cleanup = False
 
 
+def _session_diagnostic(failure: BaseException) -> dict[str, Any] | None:
+    if not isinstance(failure, RestoreRejected) or str(failure) != "INCREMENTAL_OTHER_SOURCE_SESSION":
+        return None
+    value = vars(failure).get("session_diagnostic")
+    if type(value) is not dict or value.get("schema") != "source-session-set-v1":
+        return None
+    pids, rows = value.get("allowed_pids"), value.get("actual_backends")
+    counts = [value.get("allowed_count"), value.get("actual_count")]
+    if (
+        value.get("observation") != "at_failed_gate"
+        or (type(pids), type(rows)) != (list, list)
+        or (len(pids) > 32 or len(rows) > 32)
+        or any(type(count) is not int or not 0 <= count < 2**31 for count in counts)
+        or any(type(pid) is not int or not 0 < pid < 2**31 for pid in pids)
+        or any(
+            type(row) is not dict
+            or not (type(row.get("pid")) is int and 0 < row["pid"] < 2**31)
+            or not (type(row.get("backend_type")) is str and 0 < len(row["backend_type"]) <= 64)
+            for row in rows
+        )
+    ):
+        return None
+    if (
+        len(pids) != min(counts[0], 32)
+        or len(rows) != min(counts[1], 32)
+        or len(set(pids)) != len(pids)
+        or len({row["pid"] for row in rows}) != len(rows)
+        or type(value.get("truncated")) is not bool
+        or value["truncated"] != any(count > 32 for count in counts)
+    ):
+        return None
+    result = {key: value[key] for key in ("schema", "observation", "allowed_count", "actual_count", "truncated")}
+    result["allowed_pids"] = list(pids)
+    result["actual_backends"] = [{"pid": row["pid"], "backend_type": row["backend_type"]} for row in rows]
+    return result
+
+
 def _owner_postcheck(scope: Any, *, saver_count: int | None) -> dict[str, Any]:
     with scope.owner.transaction():
         scope.owner.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
@@ -265,7 +302,9 @@ def _apply(
                         result["source_replay"] = source_replay(witness, source_replay_pin)
                         result["privacy_replay_pending"] = False
                         if source_backfill_pin is not None:
-                            from tools.first_release_source_backfill_process import source_backfill
+                            from tools.first_release_source_backfill_process import (
+                                source_backfill,
+                            )
 
                             result["source_backfill"] = source_backfill(witness, source_backfill_pin, source_replay_pin)
                             result["backfill_pending"] = False
@@ -345,7 +384,10 @@ def execute(
         if isinstance(failure, (KeyboardInterrupt, SystemExit, GeneratorExit)):
             raise failure
         code = str(failure) if isinstance(failure, RestoreRejected) else "SOURCE_FORWARD_STAGE_FAILED"
-        raise SourceForwardStopped(code, phase, session_restored=restored) from None
+        stopped = SourceForwardStopped(code, phase, session_restored=restored)
+        if diagnostic := _session_diagnostic(failure):
+            stopped.session_diagnostic = diagnostic
+        raise stopped from None
     for name in ("database_connections", "processes", "file_writes"):
         receipt.pop(name)
     require(result is not None and scope is not None, "SOURCE_FORWARD_RESULT_REQUIRED")
