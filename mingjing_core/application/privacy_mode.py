@@ -7,7 +7,7 @@ from typing import Any
 
 from mingjing_core.application.privacy_mode_policy import blocks_current_run, privacy_action
 from mingjing_core.application.privacy_run_barrier import block_thread_runs
-from mingjing_core.application.thread_case_sources import bind_case_selection, normalize_case_ids, selected_cases
+from mingjing_core.application.thread_case_sources import bind_case_selection, normalize_case_ids
 from mingjing_core.application.thread_queue import owner_runtime
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
@@ -50,7 +50,7 @@ class PrivacyModeService:
         identity = self._identity(subject, channel, external_id, conversation_id, thread_id, message, at, cases)
         ident = "privacy-route:" + fingerprint([owner, channel, source_id or request_id])[:32]
         with self.repo.transaction(owner):
-            selected_cases(self.repo, owner, subject, cases)
+            self.repo.assert_scope(owner, subject)
             old = self._get(owner, "request", ident)
             if old is not None:
                 if old["subject_id"] != subject or old.get("origin_thread_id") != thread_id:
