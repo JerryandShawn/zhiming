@@ -69,6 +69,22 @@ def test_named_deferred_cases_remain_failed_without_weakening_required_sets():
     assert result["deferred"] == gate.DEFERRED and result["original_core_count"] == 81
 
 
+def test_original_complete_execution_with_deferred_failures_retains_its_incomplete_label():
+    values = reports()
+    values["core"]["metadata"]["status"] = "incomplete"
+    original = deepcopy(values)
+    result = gate.assess(values, CANDIDATE, SOURCE, x02())
+    assert values == original and result["core"]["raw_report_status"] == "incomplete"
+    assert result["core"]["passed"] == 69 and len(values["core"]["cases"]) == 81
+    next(row for row in values["core"]["cases"] if row["id"] == "L02")["status"] = "incomplete"
+    with pytest.raises(ValueError, match="^R11_SCRIPTED_GATE_REJECTED$"):
+        gate.assess(values, CANDIDATE, SOURCE, x02())
+    values = deepcopy(original)
+    values["core30"]["metadata"]["status"] = "incomplete"
+    with pytest.raises(ValueError, match="^R11_SCRIPTED_GATE_REJECTED$"):
+        gate.assess(values, CANDIDATE, SOURCE, x02())
+
+
 @pytest.mark.parametrize("drift", ["required_failure", "missing_core30", "source", "x02_missing"])
 def test_incomplete_or_mixed_candidate_reports_cannot_satisfy_r11(drift):
     values, equivalent = reports(), x02()

@@ -107,11 +107,15 @@ def assess(reports: dict[str, dict], candidate: str, source: str, x02: dict) -> 
         report = reports[name]
         meta, cases = report["metadata"], report["cases"]
         _require(meta.get("candidate_commit") == candidate and meta.get("source_sha256") == source)
-        _require(meta.get("worktree_clean") is True and meta.get("status") == "complete")
+        _require(meta.get("worktree_clean") is True)
+        # The original 81-case report truthfully stays incomplete when deferred
+        # features fail; completion of the 69-case release scope is checked below.
+        _require(meta.get("status") in ({"complete", "incomplete"} if name == "core" else {"complete"}))
         _require(meta.get("mode") == "scripted" and meta.get("target") == "v4")
         _require(meta.get("external_provider_requests") == 0 and not meta.get("stop_reason"))
         ids = [row["id"] for row in cases]
         _require(len(ids) == len(identities) and set(ids) == identities)
+        _require(all(row["status"] in {"passed", "failed"} for row in cases))
         needed = identities - set(DEFERRED) if name == "core" else identities
         passed = {row["id"] for row in cases if row["status"] == "passed" and row["score"] == 1}
         _require(needed <= passed)
@@ -120,6 +124,7 @@ def assess(reports: dict[str, dict], candidate: str, source: str, x02: dict) -> 
             "mode": "scripted",
             "target": "v4",
             "status": "complete",
+            "raw_report_status": meta["status"],
             "candidate_commit": candidate,
             "source_sha256": source,
             "worktree_clean": True,
