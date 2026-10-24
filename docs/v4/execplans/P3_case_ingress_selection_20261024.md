@@ -10,8 +10,8 @@
 
 - [x] (2026-10-24 08:59 +08:00) 根核ThreadIngress.submit/receive、PrivacyMode.receive/_receive、ThreadService.receive与现MemoryService.receive：选择只传入queue.run，首次存源时遗漏。checked_source的双域检查正确，不放宽它。
 - [x] (2026-10-24 09:04 +08:00) 六授权路径静态冻结：新helper43行，新测试167行，Ruff E/F/I/B/UP/SIM、120列格式/AST通过，改动函数最大52行。根全读diff/实际调用方与全部拟测节点，独立二审通过；唯一首链8/8通过、XML2.640秒，09:03:43.060796–09:03:46.613437。根独立核原metadata/XML，证据只见 `private/safe-narrow-589b7809e2604e58928e140628eded99/`；没有重复旧绿、全量或历史证明。
-- [ ] 实际正确入站后仅复验受影响的历史证明节点，不把旧未成立的2绿继续当验收；保持原失败记录。
-- [ ] 定向证据登记后小提交推自己的分支，新增CI与正式候选门另核。
+- [x] (2026-10-24 09:09 +08:00) 实际正确入站后，实质改变的共同历史证明夹具5/5通过，两次case_update均真实saved；唯一原件与原失败保留在历史证明计划，不在此重复。旧未成立的2绿不计验收。
+- [x] (2026-10-24 09:05 +08:00) 定向证据登记后7c20d40已提交推自身分支；新增CI与正式候选门另核。
 
 ## Plan of Work
 
@@ -31,8 +31,12 @@ Privacy route input_fp包含规范化非空case选择；空选择保持原持久
 
 2026-10-24 08:59 +08:00：选择贯通放在首次认证入站，拒绝queue事后修域。保持Memory.receive既有实现与checked_source严门；这是真实主线P3接线缺口，不能通过修改新测试种子或补SQL掩盖。改动路径/理由将写当日日报，避免与模块线的记忆2.0工作重叠。
 
+## Surprises & Discoveries
+
+真实provider工具响应与中央ok并不代表工具业务保存：首个历史夹具只有模型HTTP完成，原生工具因source域遗漏而拒写。现Memory.receive还允许不升原话revision的case域合并，因此仅传参数不足以保护幂等选择，必须在它之前拒绝旧事件范围变化；旧Memory SDK保持原行为，由首次入站层保证新的事件契约。
+
 ## Outcomes & Retrospective
 
 首次认证选择现已真实贯通，8/8验证source/run范围和原segments一致、同选择重放全态不变、换选/跨owner/subject/撤销4例拒绝、旧空source排队后真实工具仍AUTH_SCOPE_ERROR且空privacy fp兼容，以及两类无痕选择10表完整回滚。没有放宽checked_source或现Memory SDK，主线仅复用其首次接收参数；必要路径与理由已写09:01日报，模块线独占记忆服务/工具/检索均未改。
 
-此独立片尚未证明修复后两次case_update实际保存/历史证明通过；那5节点原共同夹具须下一片实证，不能用本片8绿替代。原完整81门仍69/81、无最终候选或发布Go，真实模型/服务器/外发0，同run恢复/clear/claim/CLI不开放。下一小提交推本片自身分支，新CI另核。
+已提交并推7c20d40至自身v4/p3-wire-case-ingress-20261024；首次push因TLS握手失败，仅原样一次重试成功，网络/凭据/SSL校验未修改。后续历史证明片另有真实两次saved及5/5证据，见 `P3_quota_historical_prefix_20261024.md`，不能用本片8绿替代。原完整81门仍69/81、无最终候选或发布Go，真实模型/服务器/外发0，同run恢复/clear/claim/CLI不开放，新CI另核。

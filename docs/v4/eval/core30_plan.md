@@ -111,13 +111,15 @@ live/v4入口现在要求`--scripted-gate`、`--candidate`、`--equivalence-proo
 
 ## 放行前仍需补齐
 
+2026-10-24 09:09 +08:00：completed模型历史版本的只读原生证明，已在真实两次case_update保存、中央quota和原租约自然过期后5/5通过；精确证据及原失败只见 `docs/v4/execplans/P3_quota_historical_prefix_20261024.md`。先前实际入站遗漏case选择已独立以7c20d40和8节点验证。历史证据的execution_authority始终False，不接StepAttempts或发送权限；中央exact-clear、claim、pending-step执行permit和实际同run续作仍未实现，不能据此放行真实评测或CLI。
+
 2026-10-24 08:06 +08:00 当前独立进度：工具事件身份/缺口恢复与原started复用基础已通过首三组及仅受影响pending-case正反两组，分轮证据只在`docs/v4/execplans/P3_journal_events_20261024.md`登记。它保当前真实run/epoch/Journal/隐私边界，未开放Durable.send、CLI或跨额度清停；下述quota witness与完整可信续作仍待实现验证，原81脚本门未变。
 
 2026-10-24 08:30 +08:00：pre-clear只读资格witness已首次9/9通过，原始证据仅见`docs/v4/execplans/P3_quota_resume_witness_20261024.md`。当前中央仍须为同一原terminal建立的到期quota_5h；只核原checkpoint/当前epoch请求与终态/已闭合未耗尽预算，不接旧epoch未映射usage、未发布ok、未知或其它停机。该资格不清停、不claim/execute，attached send与CLI硬关，真实评测门不变；后续原同run执行及评分续作仍待独立实现，不能据固定业务钟测试延长现实绝对deadline。
 
 2026-10-24 08:01 +08:00 下一小片的只读设计收口：只考虑真实物理attempt已明确finished quota_5h、中央同UUID/terminal摘要完整、明确reset已到期且原执行预算可信closed的primary_pending同run续作。初步不处理仅intent而无中央行的情况；当前没有持久pre-send rejection receipt，不能拿内存0 calls或中央缺行当跨进程0 POST证据。未知发送、reserved/admitted未闭合、已成功但Journal未完成、open预算及Access停机均不重发。
 
-后续拟独立resume_pending接缝，保attach/send/CLI现硬关：重新load control/read_private、核原候选/source/run/epoch/turn/model/limit pin/deadline/closed预算和受信DelegatedSession，明确到期的quota_5h才可走窄resume_delegated。短生命周期进程内witness绑定原失败UUID与状态摘要；旧run无活租约时只claim原run，不reset/seed/receive/requeue或改epoch。仅在此witness下，StepAttempts.begin允许保旧finished quota记录并追加新UUID，仍经过实际中央admission/before_send/finish；已完成model/tool及评分继续核真实Journal而不重复。现仅只读设计，未实现、未验证或开放。
+后续拟独立resume_pending接缝，保attach/send/CLI现硬关：重新load control/read_private、核原候选/source/run/epoch/turn/model/limit pin/deadline/closed预算和受信DelegatedSession。现有generic resume_delegated只核当前停机类别/时间，不能直接作为原步骤恢复入口；须原account/stop/reset/terminal UUID与整行hash精确绑定的窄门，清停前再次核同一证据、全账户无未闭合发送及旧批次可信结束。旧批次未知/仍有reserved不能补清。短生命周期进程内witness绑定原失败UUID与状态摘要；旧run无活租约时只claim原run，不reset/seed/receive/requeue或改epoch。跨业务库/中央库没有原子提交，任何clear/claim结果不确定均停协调器、保留现场且0POST，不能回写假的stop或自动补偿重试。只有新的活opaque执行permit可让StepAttempts.begin接纳原pending步骤的全部已知finished quota历史并追加新UUID，普通发送authority不变，仍经实际中央admission/before_send/finish。completed前缀历史版本另外核原case连续自写链与model seq对应，不覆盖原快照；工具和评分继续验真重放。真实累计预算/原绝对deadline不重置；物理总数从原中央UUID对账，不能把重新装配port.calls当累计0。上述协调器尚未实现、验证或开放。
 
 2026-10-24 00:02 +08:00最新正式脚本：同clean候选`f18fc6956e3fe009f55f9857aa7f100ab42ce610`的P3 48/48、日期7/7、完整81用例69/81；全部原始报告在集成工作树`private/candidate-eval/f18fc6956e3fe009f55f9857aa7f100ab42ce610/scripted-7a324e6afa064254bbd900fd7596f39e/`。12项延期/跨模型口径未解决，完整门保持关闭；没有发真实模型请求。当前生命周期开发分支不冒充该冻结候选，其后合并仍须按最终来源判断证据绑定。
 
