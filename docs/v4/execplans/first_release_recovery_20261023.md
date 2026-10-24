@@ -8,8 +8,10 @@
 
 ## Progress
 
+- [x] (2026-10-24 14:00 +08:00) F首发独立包/副本入口第一片：只用canonical Git tracked blobs打包、O_EXCL新产物；独立stdlib unpack可在真实Python -I下执行，先核artifact/manifest/Git blob，拒复用release与路径穿越，失败保留。另加固定原stage只读pg_dump→全新fr_stage恢复，保owner/ACL/库与角色库级设置，最终关闭新副本准入；原stage不改，不接受既有目标。必要新目标分别2/2（.84s，独立-I）和真实PG15 2/2（1.57s），唯一原件private/safe-narrow-7f9adaaa2e2843d1979d5fe387f75077与80c29bb6edf34021ac6ce6ac03e9d739，根已读metadata/XML/log。两轮不拼作同次全链；真实模型/服务器/外发0。
+
 - [x] (2026-10-24 12:55 +08:00) v12新库原生恢复与关门对调的stage限定入口完成必要本机证据。真实PG15首3/3（4.70秒）实际复现旧clean被新增FK阻挡→新库保对象owner/ACL→原库DB设置/CONNECT及授权选项/角色库级设置精确保留→两库0连接对调、旧库/数据保留。公开main首1/1、保护文件门新+受影响CLI2/2、增seal后受影响1/1、最终真实独立-I四步及在途会话保留2/2（4.35秒）；根核各原件，五个不同目标有通过，不冒称一次全5/5。无服务器/真实模型/外发，R11固定c74未改。
-- [ ] 完整stage执行单（包/上传/初始副本/迁移/回填/重放/新unit及收尾）与K3.1评测交接命令仍未就绪；正式生产对调不在此stage限定入口。R11待13:00原定候选运行，脚本通过时按v14立即提醒用户。
+- [ ] 完整stage执行单仍未就绪；包/初始副本已有必要本机证据，迁移/回填/重放/新unit串联和最终同源命令待完成。R11旧b008已13:09提醒用户；新K31代码须最终普通集成再绑定，不套旧门。正式生产对调不在此stage限定入口。
 
 - [x] (2026-10-24 10:48 +08:00) 新中央routing唯一节点首次1/1通过，0失败/error/skip/warning，XML5.443秒；10:47:49.444198–10:47:55.896752。根独立核metadata、全部XML和log；唯一原件 `private/safe-narrow-83cfec6bf1c9492c9772777ea33d5e65/`。真实prefix7 native restore→8前后原非空中央四表/sequence精确保持，当前宿主真实from_base/require_agent/Registry使用新业务writer+原四MEMBER。原eval历史实际guard reserve/finish及finish_batch，stop账号在基线前设好；受限role运行期禁止provision/clear、真实网络，只用非Mock外壳桥接Mock使真实from-env中央门生效。唯一合法primary POST仅往原中央追加1个http UUID，旧usage全行/batches/auth/account身份location/stop不变、当前账号last_clock_at单调；错库/UUID/location/Access四类共0新POST，中央完整后态不变，新业务四表空/sequence未用保持。官方K3从既有公开artifact真实装配，未patch计量；slot已释放，真实供应商/服务器/外发0。仅当前宿主装配的一次port.complete，不是fresh候选进程或完整Agent业务run，formal_central_rebinding_verified仍false。
 
@@ -49,6 +51,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24 14:00 +08:00：服务器尚无候选源码时不能先调用包内模块解包；新增stdlib standalone引导脚本，可单独随包传输并先核其审核hash，再由系统Python -I执行，不依赖预装Core。原stage只读复制需要保留库级元数据，不能只使用pg_restore对象owner/ACL；copy完成仍关门，后续迁移/新unit入口必须另作显式编排。
 
 2026-10-24 12:55 +08:00：用真实新合成库备份后再加parent FK，pg_restore clean确实因core_runs_pkey依赖失败且单事务保留新行；因此不能在原升级库上覆盖恢复。新的恢复必须完整保留archive owner/ACL，库级ACL和ALTER DATABASE/ROLE SET不能靠pg_restore自动补齐。metadata语义比较保全部ACL（含PUBLIC/授权选项）和库级/角色库级设置，实际OID/系统身份逐次重核；有任何会话时seal保持关门并拒绝，不强制终止，exchange同事务保持两个旧OID对应对象且不开放连接。
 
@@ -115,6 +119,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 14:00 +08:00：F只允许新副本，故新增CopyScope正式源/目标固定zhiming_core_stage→zhiming_core_fr_stage，不扩大旧local-only Forward工具到服务器。复用已验证的PG15控制身份、新库原生restore与metadata语义保留；所有产物/目标都须全新，失败无删除/采用/重试。此片仅复制与包引导，不能声称B0–B8可执行或stage已就绪。
 
 2026-10-24 12:55 +08:00 / 按v12/v14新增独立native_exchange及metadata工具，只支持新fr_stage副本和随机本机frx演练，不放宽既有本机restore或B1/b9常量，不提供live/prod/原stage目标。capture→restore→seal→exchange是四个显式动作，各写新私有收据，默认无自动清理/重试/开门。正式CLI必须POSIX私有管理员文件，复用已验字面env读取，不打印DSN；本机测试单独local_drill。libc locale及单owner grantor以外保守停止，不修改ACL绕过。输出admission_opened=false表示没有重新开准入，不冒称pg_restore没有建立过连接。
 
@@ -251,6 +257,8 @@ Native apply严格不外套事务，第一遍成功后原生提交后checkpoint 
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
+
+2026-10-24 14:00 +08:00：新copy/pack/unpack必要行为已验证；最终执行单、F副本迁移/回填/收据撤销重放及8788新unit仍待必要接线。无服务器操作，无Docker投入，不发stage就绪提醒；生产继续No-Go。
 
 2026-10-24 12:55 +08:00 R2片：工具新增124/348行，测试约350行、函数≤60。唯一原件都在release-prep/private：首链safe-narrow-6de81d03c3f04e1ea2f9ef1f22cbb05f；公开CLI初版94aa2c4694914a7a8bc3715b14799939；保护env门/必要CLI90760023039c47f3b961bb706a9ac149；seal接线071d53fb4f0f4ec2954e18390537b4f1；最终独立-I四步+在途客户端保留8ffacf96515348629bea32d9e746b5aa。根已读每次metadata/XML/log，没有重复稳定性或宽回归。正式stage需要的四步精确命令及每步继续/停止条件写入既有stage runbook，保原No-Go，不另建证据副本。Windows本机PG、受审管理员文件的早拒和stage限定接口不等同Linux已验、生产可用、完整执行单或授权；交大脑执行的全链及新模型交接尚待补齐，本代理真实请求/服务器0。
 

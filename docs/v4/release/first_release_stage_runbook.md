@@ -10,6 +10,8 @@ R16新增审核资产使用固定候选`config/models.first-release.yaml`，共�
 
 ## 1. 候选与安全边界
 
+2026-10-24 14:00补充：`tools.first_release_stage_package bundle`已具备规范Git打包与新产物拒覆盖；`tools/first_release_stage_unpack.py`为不依赖候选环境的stdlib引导脚本，已实际独立-I验证，只能随包先核hash再由大脑执行；`tools.first_release_stage_copy --apply`固定原stage只读备份→新fr_stage副本并最终关门，PG15保owner/ACL/库和角色设置实证见恢复计划。它们不执行SSH、迁移、回填或启动unit；最终同源包与后续串联未完成，整个执行单仍No-Go。以下旧通用步骤仍不能直接套用F。
+
 v14分工：真实评测及服务器stage均交大脑执行，本代理只完成必要代码与本地隔离验证。以下新R2接口已具备必要Windows PG15/独立进程证据，但整个执行单仍未就绪：最终候选打包、原stage只读备份→副本、Linux迁移/重放/回填/新unit串联的精确命令仍须补齐。不能把本节当成37号Go或服务器执行许可。
 
 首发按当前`core-only-1-8-v1`契约覆盖P1/P1b/P2/P3、旧网页兼容和现有文字飞书入口；P4/P6及新前端不在此单。当前要求迁移0001–0008精确连续且checksum不变。P5若达到就绪门并纳入候选，须另审含0009的profile、关系/routine清单、恢复工具及本单，不能以忽略0009绕过现契约。
