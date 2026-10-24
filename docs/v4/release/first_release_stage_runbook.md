@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 11:35，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer和admission的10控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 11:56，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer和admission的10控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -53,6 +53,26 @@ cd "$FR_CANDIDATE_ROOT"
 所有入口必须使用同一受保护 `FR_FENCE_WORKSPACE`，与 M1/Forward 的稳定文件和 PG key 一致。两个共享锁取得且维护标记不存在后才导入/调用业务；原入口 finally 完成后，仍持双锁刷新输出并真实结束整个进程，避免后台线程活着时先解锁。PG 专用连接丢失仍保留文件锁。这个退出方式可能中断尚未排空的投递或后台任务，不能证明外部请求已经取消，也不自动重试或补发；必须结合运行/Outbox 状态另审排空与止损。
 
 旧 unit、Hermes wrapper、其他 CLI 和外部子进程尚未统一纳管；下文已补本机“关闭新准入→旧服务自然退出→M1显式采用原标记”接线，但实际停止服务、门内 readiness、移除标记及开门尚未编排。M1 仍须取得两个 EX，旧进程未退出就拒绝；不能据 launcher 或关闭准入成功声称全局停写。Linux 权限/进程链和四个完整应用的联合运行仍待验证，B0–B8 与五个门继续 No-Go。
+
+### 首发服务审核资产（只在本机生成，尚未安装）
+
+`tools.first_release_service_assets` 生成三份固定 service、Hermes `core_consultation.py`、共同的无秘密配置/环境片段和 manifest，共七个文件。它不生成 timer、不运行 systemctl、不更新真实 unit、技能目录或链接。原 timer 的 effective 文件、drop-in、active/enabled 及到期任务仍待审核，不能把“保留且保持停止”的清单策略当成已执行的状态。
+
+输入 schema 为 `first-release-service-assets-v1`，精确字段为 `candidate`、`workspace`、`system_identifier`、`database`、`database_oid`、`writer`、`writer_oid`、`report_owner`、有序的两个 `env_files`、`config_path`、`common_env_path`、`k3_tokenizer_dir`。这些值须由最终审核输入给定；生成时只检查 Linux 字面路径和身份格式，不查询真实 SID/OID，不认证候选或环境存在。Core/Charts 解释器由同一 SHA 固定推导。秘密只引用原受保护文件，不写入此配置、argv 或 manifest；不能写入 `local_projection` 或 Go 标记。
+
+以下是现有本机接口，`FR_ASSETS_OUTPUT` 必须是当前控制工作目录 `private/` 内尚不存在的绝对目录；没有最终审核输入时不运行：
+
+```bash
+cd "$FR_CONTROL_DIR"
+"$FR_CONTROL_PYTHON" -m tools.first_release_service_assets \
+  --config "$FR_ASSET_PLAN" --output "$FR_ASSETS_OUTPUT"
+"$FR_CONTROL_PYTHON" -m tools.first_release_service_assets \
+  --config "$FR_ASSET_PLAN" --output "$FR_ASSETS_OUTPUT" --write-assets-local
+```
+
+默认零 PG/启动/写入；显式写入使用新目录和独占文件，失败保留现存产物，不覆盖、不清理重试。三 service 和 wrapper 共用固定 Core `-I` 薄入口，再进入原受限 writer/双锁 launcher；报告 owner 明确传递，Hermes 原参数按数组传递。共同环境固定 Agent=true、运行容量3、池4及独立 CHART/K3 路径，不强制开启飞书，不重写原四项 MEMBER 中央身份。实际运行才按声明顺序读取受保护环境及精确共同片段；非隔离解释器、隐式 PG/Python 注入或保护模式不符均拒绝。Windows 权限不能代替 POSIX 验收。
+
+本片的限定实证与未覆盖范围仅登记在[服务资产 ExecPlan](../execplans/first_release_service_assets_20261024.md)。资产是供审核的安装输入，不是 installer、effective unit、Linux 应用运行或切换回执；五个门继续 No-Go。
 
 ## 3. 现有可运行的校验命令
 

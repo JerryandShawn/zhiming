@@ -1,6 +1,6 @@
 # 核心首发生产切换草案
 
-2026-10-24 11:35，北京时间。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 新显式本机源写main的默认/坏材料与prefix7完整链首次两目标通过，范围及唯一证据只在[增量ExecPlan](../execplans/first_release_incremental_20261024.md)登记；本机方法级main通过不是Linux应用或生产恢复验收。原正式`f6fb9f1`的push/PR M1会话失败仍保留，旧额外PID身份未知，当前工具头/测试archive均非最终发布包；observer须新捕获并审核9控pin，不能补写旧输入。正式目标仍只有文件契约/可选只读ACL；Linux应用、原中央保全、全局writer、切换及开门均未放行。无服务器、真实模型或飞书动作。
+2026-10-24 11:56，北京时间。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 新显式本机源写main的默认/坏材料与prefix7完整链首次两目标通过，范围及唯一证据只在[增量ExecPlan](../execplans/first_release_incremental_20261024.md)登记；本机方法级main通过不是Linux应用或生产恢复验收。原正式`f6fb9f1`的push/PR M1会话失败仍保留，旧额外PID身份未知，当前工具头/测试archive均非最终发布包；observer/admission须新捕获并审核10控pin，不能补写旧输入。正式目标仍只有文件契约/可选只读ACL；Linux应用、原中央保全、全局writer、切换及开门均未放行。无服务器、真实模型或飞书动作。
 
 旧B1不再单独上线，旧B/D授权失效。**只有用户对本次最终候选、生产对象、维护窗口、修改、渠道恢复及止损范围重新授权，才可进入生产步骤。** 大脑审核stage及本单是必要输入，不替代用户授权。旧30/31文件、旧工作日窗口或旧一次模型冒烟不能自动成为本次许可。
 
@@ -88,6 +88,8 @@ TargetProof、源guard/postcheck、Forward内部组合及后续源重放/回填�
 | K3/模型/中央守卫 | 已验本地官方K3目录与锁、registry模型锁/高思考、已有account/identity/实际location；Agent开关明确true、运行容量至少3 | Linux装配及中央ledger保全/重绑定门未完成；不provision来放行 |
 | Hermes知命Core wrapper | 只更新固定release入口及受审manifest，环境加载顺序明确；退役stub/原备份保留，manifest最后原子写 | 旧/新wrapper共享维护门与完整Core进程锁的同源Linux演练待补；不整体重启Hermes |
 | 维护门与writer锁 | Web反代/应用门及共同workspace内稳定数据库身份锁覆盖全部Core入口；旧Hermes单独的core-skill锁不能代替；持EX期间核实际无writer | 不能只凭flag存在或源码常量相同声称跨进程成立；全入口替换和排空仍待 |
+
+首发三 service、Hermes wrapper 及共同 CHART/K3/Agent 配置现有本机审核资产生成接口，精确字段、默认零副作用和新目录命令统一见[stage 草案的审核资产](first_release_stage_runbook.md#首发服务审核资产只在本机生成尚未安装)。只生成供审文件，尚未安装；原 timer 不生成、不恢复，真实状态未知。资产不能代替 D5 的原文件备份、有效 drop-in/环境审查、部分失败关门、Linux 联演或授权；D1/D5–D7 仍不能执行。
 
 生产配置只能在受保护文件中做已批准的精确更新，不打印Environment、token、完整DSN、原始reasoning或私人正文。有效unit需核FragmentPath、DropInPaths、NeedDaemonReload、KillMode/SendSIGKILL及实际进程；磁盘文件hash不等于进程已切换。不要触碰无关Hermes技能或服务。
 
