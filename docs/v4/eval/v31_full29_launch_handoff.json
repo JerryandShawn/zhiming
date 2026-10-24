@@ -1,0 +1,52 @@
+{
+  "schema": "v31-full29-launch-handoff",
+  "candidate": "2f2c40f233229370c7cf1e73145cc55d7a094ea0",
+  "source_sha256": "c3ce2cfd8bc23db59c91a6c2b02b6e7ac681cd66ebd0927491fb42f43d603987",
+  "scripted_gate": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r30\\private\\candidate-eval\\2f2c40f233229370c7cf1e73145cc55d7a094ea0\\R11-1edecb450ad84ec1b7d48eb8a6941331\\assessment.json",
+  "r11": {
+    "p3": {
+      "count": 48,
+      "passed": 48
+    },
+    "date_checks": {
+      "count": 7,
+      "passed": 7
+    },
+    "core": {
+      "count": 69,
+      "passed": 69
+    },
+    "core30": {
+      "count": 29,
+      "passed": 29
+    }
+  },
+  "x02_equivalent": {
+    "id": "X02-r11",
+    "status": "passed",
+    "score": 1,
+    "original_contract_sha256": "5044d46b8136fb5fa2ca8d776c720009883c3d13d9f660ffe6ec9e26f3f94898",
+    "mock_http_requests": 4,
+    "external_provider_requests": 0,
+    "friendly_failure": true,
+    "committed_answer_preserved": true,
+    "repeat_writes": 0
+  },
+  "operator_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r30\\private\\k31-r31-845d30187f4b418a92cebc2297ef4c34\\metadata.json",
+  "scope": "one final candidate; whole29; no prior-candidate score inheritance",
+  "status_at_recording": "scheduled",
+  "phase_at_recording": "waiting_core_retry",
+  "model": "k3.1-pro",
+  "effort": "high",
+  "global_physical_concurrency": 1,
+  "batch_physical_max": 10,
+  "connection_budget_max": 20,
+  "previous_connection_calls": 13,
+  "unavailable_retry_minutes": [
+    10,
+    30
+  ],
+  "old_failed_only_operator_stopped": true,
+  "stage_server_requests": 0,
+  "feishu_messages": 0
+}
