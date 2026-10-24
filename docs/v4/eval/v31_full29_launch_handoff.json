@@ -48,5 +48,39 @@
   ],
   "old_failed_only_operator_stopped": true,
   "stage_server_requests": 0,
-  "feishu_messages": 0
+  "feishu_messages": 0,
+  "connection": {
+    "complete": true,
+    "model": "k3.1-pro",
+    "effort": "high",
+    "model_calls": 4,
+    "cumulative_model_calls": 17,
+    "factor": "1.15",
+    "tool_rounds": 2,
+    "additional_tool_calls": 0
+  },
+  "first_core_attempt": {
+    "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r30\\private\\candidate-eval\\2f2c40f233229370c7cf1e73145cc55d7a094ea0\\core29-r31-2f641b9b04b346afa35e4ae3be991887\\2026-10-24-live-v4-k3.1-pro-core30.json",
+    "completed": 0,
+    "pending_count": 29,
+    "incomplete_id": "T05",
+    "score": null,
+    "physical_requests": 1,
+    "actual_error_type": "ConnectTimeout",
+    "http_status": null,
+    "key_cleared": true,
+    "window_snapshot": {
+      "candidate_commit": "2f2c40f233229370c7cf1e73145cc55d7a094ea0",
+      "phase": "core",
+      "batch_id": "v7-5f50cacea15844e69e8856e8580120be-1",
+      "batch_requests": 1,
+      "batches_started": 1,
+      "account_id": "kimi-code-member-eval",
+      "ledger_identity": "41158cfa-6384-4b2e-adc2-494f151905e1",
+      "window_requests": 103,
+      "stop_kind": null,
+      "resume_at": null
+    }
+  },
+  "retry_not_before": "2026-10-24T13:27:35.582349+00:00"
 }
