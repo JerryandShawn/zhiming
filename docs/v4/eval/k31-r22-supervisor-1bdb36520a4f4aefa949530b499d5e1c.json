@@ -1,0 +1,33 @@
+{
+  "candidate": "f87fc97a9a3329782ca702577ec3e268b66c7bc5",
+  "status": "stopped",
+  "phase": "supervisor_stopped",
+  "connection_unavailable_count": 1,
+  "reports": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r22\\private\\candidate-eval\\f87fc97a9a3329782ca702577ec3e268b66c7bc5\\core30-afab37d3b8884b73af671417ecd76e33\\2026-10-24-live-v4-k3.1-pro-core30.json"
+  ],
+  "original_failed_at": "2026-10-24T19:14:50.009852+08:00",
+  "metadata_path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r22\\private\\r22-retry-1bdb36520a4f4aefa949530b499d5e1c\\metadata.json",
+  "retry_not_before": "2026-10-24T19:24:50.009852+08:00",
+  "connection_attempt": 2,
+  "operator_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r22\\private\\k31-r22_try2-afab37d3b8884b73af671417ecd76e33\\metadata.json",
+  "control_schema": "probe_k31_afab37d3b8884b73af671417ecd76e33",
+  "connection": {
+    "complete": true,
+    "model_calls": 4,
+    "cumulative_model_calls": 13,
+    "tool_rounds": 2,
+    "tool_call_requests": 1,
+    "additional_tool_calls": 0,
+    "connection_failure": null,
+    "stop_kind": null,
+    "resume_at": null,
+    "factor": "1.15",
+    "mode": "live"
+  },
+  "stop_kind": "provider_http_error",
+  "resume_at": null,
+  "key_cleared": true,
+  "safe_error": "RuntimeError",
+  "finished_at": "2026-10-24T19:36:37.606518+08:00"
+}

@@ -18,6 +18,9 @@
 
 ## Progress
 
+2026-10-24 19:43 +08:00：已读v26/R23并核M01原件。core30于19:36:37停止，6完成：T05/T08/T14通过，T09/T10/TM01失败；M01 incomplete/score=null，余23未运行，安全6题未执行，不能写安全0/6失败或最终3/30。core物理25（批10/10/5，实际中央batch尾号1/2/3），加接入累计13，窗口38；key已清。M01 attempt=http-be585aed31144eebab26c86ef15c8564，中央status=unavailable/latency11938ms；原report stop_reason=provider_http_error、HTTP码空。usage表无HTTP/type/message列，StepAttempts只存result_kind和terminalhash，关闭追踪且私有日志无原HTTP错误；不能事后恢复状态码或消息，不能断言5xx/超时/400/403或额度。按v26第3条判断不了则提醒，本轮真实请求0/不重发，不改原report或把未知改unavailable来续跑；前6结果和原k31_results汇总保留。唯一安全摘要docs/v4/eval/k31-r22_try2-afab37d3b8884b73af671417ecd76e33.json已补原报告hash、诊断缺口与三物理批，无正文/密钥。v25其余首发真实题runner仅default/core30且core批准绑定CORE30集合，所需余题/日期/P3去重suite需改代码，按板“需要改代码，跳过”；当前core尚未完整结束亦不抢跑。v24 stage/prod单仍待绑定/生产缺口，未称stage就绪。
+
+
 2026-10-24 19:32 +08:00：已执行v23/R22；新增有限unavailable题头重跑支持，17/17定向，唯一索引新代码树P1b计划19:22。冻结/pushed f87fc97a9a3329782ca702577ec3e268b66c7bc5，同源R11 19:25:46–19:28:59通过48/48、日期7/7、69/69、X02、离线core30 30/30，sourcece8cd8aabe4f143d8ad7f69453553ba375b7ced076b92cbbfe36c1a118056b8e，四原报告已核，原81及延期不改。距19:14:50失败已超10min，第二次接入重跑4请求通过，接入累计13/20（旧失败/浪费均保留），工具2轮/调用1次/额外0，K31/high/推理及1591字完整长答、factor1.15。control=probe_k31_afab37d3b8884b73af671417ecd76e33；通过后已立即启动core30，实际中央首批v7-a7b47c996ada43a28162e94539e8e645-1已有7物理请求/inflight0快照，非最终总数，不把接入13当总窗口请求。核心仍在途/未有最终accepted；supervisor private/r22_retry_pending.json及子private/k31_r22_try2_eval_pending.json为唯一路径，core如unavailable固定10/30min最多2次，只未完成题新run，其他平台停止不重试。等待/在途不重复启动、不改冻结源码，无SSH/服务器/飞书/外发。
 
 
@@ -79,6 +82,9 @@
 
 ## Surprises & Discoveries
 
+2026-10-24 19:43 +08:00：中央M01 status unavailable不等于已知HTTP503，通用报告把非STOP_REASONS内kind归为provider_http_error；历史诊断不包含HTTP/type/message，不能用耗时11.94s外推超时。模型传输错误边界明确不保原cause/rawbody，当前只能诚实报告unknown。
+
+
 2026-10-24 19:32 +08:00：v23第二次接入已恢复通过，旧unavailable不是模型协议不兼容；真实core已越过原本地身份门进入中央物理批。接入累计13和核心批7是不同计数，禁止把13作为总窗口量。
 
 
@@ -133,6 +139,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-24 19:43 +08:00：依v26第3条分类不明提醒，保留前6有效结果，不擅重试M01/改原JSON stop_reason/换账本/删除批次。v25扩展suite需代码按板跳过。
+
 
 2026-10-24 19:32 +08:00：复用原R17 ledger，固定退避无随机抖动；当前新source独立R11与connect绑定，不复用旧proof。核心若中断只原report未完成题新run；等待不持额外key，执行子进程finally清。
 
@@ -192,6 +201,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-24 19:43 +08:00：core真实6完成3通过3失败，M01中断，其余未运行；acceptedfalse/incomplete，窗口38/核心25/接入13，三批<=10已核，密钥清。暂缺可追溯HTTP诊断，未宣称完成或stage就绪。
+
 
 2026-10-24 19:32 +08:00：R22框架17/17和新同源R11完成，真实接入4通过，core30后台在途，accepted尚未形成；不提前称真实全通过或stage就绪。
 
