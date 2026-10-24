@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import time
+from contextlib import AbstractContextManager, nullcontext
 from pathlib import Path
 from typing import Any
 
@@ -85,6 +86,9 @@ def acceptance(cases: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 class Core30LiveTarget(V4LiveTarget):
+    def _execution_scope(self, binding: Any, guard: Any, run: dict[str, Any]) -> AbstractContextManager[None]:
+        return nullcontext()
+
     def _attempt(self, run: dict[str, Any], events: list[dict]) -> tuple[dict, dict | None, str | None, bool]:
         from dataclasses import asdict
 
@@ -99,8 +103,11 @@ class Core30LiveTarget(V4LiveTarget):
             session = require_active()
             scenario = next(case for case in load_core30() if case.id == self.seed["_scenario_id"])
             binding = LifecycleBinding.capture(session.guard, session.approval.candidate, scenario, self.model)
-            with core_observation(
-                self.repo, self.owner, session.guard, asdict(binding), lambda: binding.verify(session.guard)
+            with (
+                core_observation(
+                    self.repo, self.owner, session.guard, asdict(binding), lambda: binding.verify(session.guard)
+                ),
+                self._execution_scope(binding, session.guard, run),
             ):
                 try:
                     result = self.runtime.execute(

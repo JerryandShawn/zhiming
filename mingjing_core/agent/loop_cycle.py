@@ -74,6 +74,7 @@ class LoopCycle:
         incognito: bool = False,
         ledger: RequestLedger | None = None,
         emit: Callable[[str, dict[str, Any]], None] | None = None,
+        tool_emit: Callable[[JournalStep, str, dict[str, Any]], None] | None = None,
     ) -> None:
         self.port, self.registry, self.journal, self.run, self.frozen = (
             port,
@@ -86,6 +87,7 @@ class LoopCycle:
         self.control = control or RunControl(registry.service.repo, run, self.policy)
         self.budget_policy, self.crisis, self.incognito = budget_policy or BudgetPolicy(), crisis, incognito
         self.ledger, self.emit, self.revising, self.revised = ledger, emit, False, False
+        self.tool_emit = tool_emit
         self.cycle = f"{run['id']}:e{run['retry_epoch']}"
         self.messages: list[ChatMessage] = []
         self.aliases, self.versions = copy.deepcopy(frozen.alias_map), copy.deepcopy(frozen.injected_versions)
