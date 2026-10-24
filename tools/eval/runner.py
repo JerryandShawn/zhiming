@@ -40,7 +40,13 @@ def _source_digest() -> str:
     runtime_config = ROOT / "config/runtime.yaml"
     if runtime_config.is_file():
         candidates.append(runtime_config)
-    candidates += [path for path in (ROOT / "config/models.yaml", ROOT / "k3-tokenizer.lock.json") if path.is_file()]
+    candidates += [
+        path
+        for path in (
+            ROOT / "config/models.yaml", ROOT / "config/models.first-release.yaml", ROOT / "k3-tokenizer.lock.json",
+        )
+        if path.is_file()
+    ]
     candidates += [
         path for path in (ROOT / "mingjing_core").rglob("*") if path.suffix in {".py", ".md", ".json", ".sql"}
     ]

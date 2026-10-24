@@ -174,3 +174,18 @@ def test_r11_operator_rereads_raw_reports_and_rejects_synthetic_or_foreign_evide
     path.write_text(json.dumps(value), encoding="utf-8")
     with pytest.raises(GuardRejected):
         r11_gate.candidate_r11(path, CANDIDATE, NOW)
+
+
+def test_first_release_profile_is_part_of_scripted_source_fingerprint(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from tools.eval import runner
+
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    profile = tmp_path / "config/models.first-release.yaml"
+    profile.parent.mkdir()
+    profile.write_text("model: k3.1-pro\nreasoning_effort: high\n", encoding="utf-8")
+    before = runner._source_digest()
+    profile.write_text("model: k3.1-pro-highspeed\nreasoning_effort: high\n", encoding="utf-8")
+    assert runner._source_digest() != before
