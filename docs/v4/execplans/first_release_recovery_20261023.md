@@ -8,12 +8,14 @@
 
 ## Progress
 
+- [x] (2026-10-24 14:19 +08:00) F必要B7/运行资产接线：新副本关门0连接→只读检查精确prefix8/checkpoint→新empty-delta备份→既有R2新库restore/seal/exchange，保留两库、完整Core/checkpoint/sequence相等，旧prefix和在途会话拒绝且保留。初新B7两节点2/2（2.47s，8dc9e5789a974f7586e19c470f57be25）；补prefix8门后必要正反2/2（2.67s，2889fc7d81fb429a977461832d4f86a2）。新stage_app真实DML PG+公开K3+Agent装配，拒模型端口和所有非健康/状态/历史GET、实际writer锁及503维护门1/1（2.33s，70ab1019521643768ff10e21620e857f）；初夹具漏dict_row的setup error保留115a4e70c0f34af5abaf9607736a781a。新runtime工具只新建SCRAM writer/私有配置/unit资产，显式admit仍不安装/启动unit，配置hash拒绝和默认0连接两节点2/2（2.42s，1dabb38720474cd296565e63b66b6009），含新版本身份门的实际配置→健康链。根均已读metadata/XML/log；各轮不相加冒称一次全链，服务器/真实模型/外发0。
+
 - [x] (2026-10-24 14:06 +08:00) 新F副本一次性prepare入口：核copy原件与实际source/target OID、目标关门0连接，在同workspace排他writer锁内记started后，仅新副本显式开连接→精确1–8 checksum迁移→checkpoint→primary dry/apply/repeat零变化→副本撤销/收据双重放及完整Core/checkpoint/sequence幂等→关门0连接；源stage不变，不重试已开始操作。真实PG节点最终1/1（2.22s，private/safe-narrow-d09904b2930e45858b937e134680ad63），默认0连接节点此前单独通过；根已核原件。初轮夹具缺run_id及误把protected_receipts更新数当总数的两次失败原件dff64ed8c4e547aca2c790a6e065a6ee/00e5fc433dea4094b6b6d275c39d6320保留；没有改业务重放/断言迁就故障，也不合称一次2/2。模型/服务器/外发0。
 
 - [x] (2026-10-24 14:00 +08:00) F首发独立包/副本入口第一片：只用canonical Git tracked blobs打包、O_EXCL新产物；独立stdlib unpack可在真实Python -I下执行，先核artifact/manifest/Git blob，拒复用release与路径穿越，失败保留。另加固定原stage只读pg_dump→全新fr_stage恢复，保owner/ACL/库与角色库级设置，最终关闭新副本准入；原stage不改，不接受既有目标。必要新目标分别2/2（.84s，独立-I）和真实PG15 2/2（1.57s），唯一原件private/safe-narrow-7f9adaaa2e2843d1979d5fe387f75077与80c29bb6edf34021ac6ce6ac03e9d739，根已读metadata/XML/log。两轮不拼作同次全链；真实模型/服务器/外发0。
 
 - [x] (2026-10-24 12:55 +08:00) v12新库原生恢复与关门对调的stage限定入口完成必要本机证据。真实PG15首3/3（4.70秒）实际复现旧clean被新增FK阻挡→新库保对象owner/ACL→原库DB设置/CONNECT及授权选项/角色库级设置精确保留→两库0连接对调、旧库/数据保留。公开main首1/1、保护文件门新+受影响CLI2/2、增seal后受影响1/1、最终真实独立-I四步及在途会话保留2/2（4.35秒）；根核各原件，五个不同目标有通过，不冒称一次全5/5。无服务器/真实模型/外发，R11固定c74未改。
-- [ ] 完整stage执行单仍未就绪；包/初始副本与迁移/回填/双重放已有必要本机证据，B7空增量备份串联、新writer/8788 unit与维护门、最终同源命令待完成。R11旧b008已13:09提醒用户；新K31代码须最终普通集成再绑定，不套旧门。正式生产对调不在此stage限定入口。
+- [ ] 完整stage执行单仍未就绪；包/复制/迁移/回填/双重放、B7、无模型运行资产已有必要本机片；最终同源候选、Linux依赖/8788 unit的执行顺序和出站检查命令待完成。R11旧b008已13:09提醒用户；新K31及stage代码须最终普通集成再绑定，不套旧门。正式生产对调不在此stage限定入口。
 
 - [x] (2026-10-24 10:48 +08:00) 新中央routing唯一节点首次1/1通过，0失败/error/skip/warning，XML5.443秒；10:47:49.444198–10:47:55.896752。根独立核metadata、全部XML和log；唯一原件 `private/safe-narrow-83cfec6bf1c9492c9772777ea33d5e65/`。真实prefix7 native restore→8前后原非空中央四表/sequence精确保持，当前宿主真实from_base/require_agent/Registry使用新业务writer+原四MEMBER。原eval历史实际guard reserve/finish及finish_batch，stop账号在基线前设好；受限role运行期禁止provision/clear、真实网络，只用非Mock外壳桥接Mock使真实from-env中央门生效。唯一合法primary POST仅往原中央追加1个http UUID，旧usage全行/batches/auth/account身份location/stop不变、当前账号last_clock_at单调；错库/UUID/location/Access四类共0新POST，中央完整后态不变，新业务四表空/sequence未用保持。官方K3从既有公开artifact真实装配，未patch计量；slot已释放，真实供应商/服务器/外发0。仅当前宿主装配的一次port.complete，不是fresh候选进程或完整Agent业务run，formal_central_rebinding_verified仍false。
 
@@ -53,6 +55,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24 14:19 +08:00：F不能给configured_agent伪造key/中央账户，也不能省掉Agent冒称装配成功；stage专用端口无条件抛ModelUnavailable，注入真实Agent+公开本地计量，实际业务Web子app挂载在只读路由门内，故不启动子app原队列/维护/dispatcher生命周期。该模式只验证健康装配，不证明常驻队列、模型效果或Linux/cgroup出站规则。B7操作同一正式fr_stage；本机另建独立frx新库测试，不误用CopyScope的原source。
 
 2026-10-24 14:06 +08:00：copy继承原库自定义search_path，迁移及checkpoint入口必须显式按保留owner、public/pg_catalog会话路径执行；库/角色原设置不改。合法sent回执重放不做更新，因此protected_receipts为0，不能把它当已导出回执总数；测试保留实际sent/receipt并核全状态，而非期待重复写。无run_id的旧收据仍按既有安全契约拒绝，未放宽历史数据门。
 
@@ -123,6 +127,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 14:19 +08:00：先把空增量B7放在新writer开门之前，保留新旧两副本；runtime只消费显式exchanged_closed原件/OID，SCRAM在客户端生成，SQL/单位文件不含原口令。unit固定新名、127.0.0.1:8788、Restart=no、cgroup拒外网仅保留回环PG/健康；新运行配置只留DB/网站口令和本地路径，不带模型/中央/代理/追踪配置。显式admit不启动unit，失败不删/修/重试。
 
 2026-10-24 14:06 +08:00：prepare只消费全新copy的固定OID原件；started门置于实际排他锁内避免并发检查竞态。复用真实repository迁移、backfill、withdrawals业务及现有全状态观察，不改memory独占实现、不借替身或原stage迁移。当前只导出副本旁账用于副本重放演练，不称为冻结生产后的最新撤销旁账或B7全链。
 
@@ -263,6 +269,8 @@ Native apply严格不外套事务，第一遍成功后原生提交后checkpoint 
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
+
+2026-10-24 14:19 +08:00：必要B7、实际只读Web/Agent装配、拒模型、writer栅栏及维护门、新writer和单位资产各有定向证据；仍未正式Linux启动/验证cgroup，未冻结同源发布候选，执行单不标就绪。下一只整合最终候选并补可审精确命令，不扩重构或新功能。
 
 2026-10-24 14:06 +08:00：副本从prefix4到8、primary消息metadata/搜索回填与第二遍0、sent收据保持、双重放完整幂等、源库prefix4/正文不变及新对象属主均有同一真实PG节点证据。仍缺新运行角色/无模型8788装配、维护门与B7空增量备份串联；最终候选和执行单继续No-Go，不发就绪提醒。
 
