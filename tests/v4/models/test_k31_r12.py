@@ -98,7 +98,7 @@ def test_r12_rollup_retains_waste_rejects_duplicate_completed_or_foreign_candida
             aggregate(reports, candidate)
 
 
-def test_r12_pending_is_exact_unfinished_selection_and_cannot_reopen_a_completed_question(tmp_path, monkeypatch, capsys):
+def test_r12_pending_is_exact_and_cannot_reopen_completed_questions(tmp_path, monkeypatch, capsys):
     import json
 
     from tools.eval import runner
