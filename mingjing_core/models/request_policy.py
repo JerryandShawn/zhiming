@@ -23,17 +23,21 @@ def safe_tool_choice(model: str, tools: Sequence[ToolSpec] | None, choice: str) 
         return choice
     if choice not in {"auto", "required"}:
         raise CapabilityError()
-    return "required" if tools and len(tools) == 1 else choice
+    return choice
 
 
 def sampling_body(body: dict[str, Any], caps: Mapping[str, Any]) -> dict[str, Any]:
     """A fixed-sampling capability overrides both caller and configured values."""
     if not caps.get("sampling_fixed"):
         return body
-    return {key: value for key, value in body.items() if key not in {"temperature", "top_p"}}
+    return {
+        key: value for key, value in body.items() if key not in {"temperature", "top_p"}
+    }
 
 
-def check_request_size(request: httpx.Request, *, model: str, settings: Mapping[str, Any]) -> None:
+def check_request_size(
+    request: httpx.Request, *, model: str, settings: Mapping[str, Any]
+) -> None:
     """Use the K3 default or an explicit portable-provider limit before charging."""
     if "max_request_bytes" not in settings and not is_k3(model):
         return

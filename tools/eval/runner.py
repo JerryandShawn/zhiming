@@ -155,7 +155,13 @@ def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[s
         if path.name == "baseline-v3.json":
             continue
         data = json.loads(path.read_text(encoding="utf-8"))
-        identity = ("target", "model", "mode", "config_sha256", "provider_endpoint_sha256")
+        identity = (
+            "target",
+            "model",
+            "mode",
+            "config_sha256",
+            "provider_endpoint_sha256",
+        )
         same_run = all(data["metadata"].get(key) == metadata.get(key) for key in identity)
         if same_run and data["metadata"].get("source_sha256") != metadata.get("source_sha256"):
             changed_source = True
@@ -191,7 +197,11 @@ def _resume_cases(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[st
 
 
 def _observe_case(
-    scenario: Scenario, target: Target, judge: ModelJudge | None, metadata: dict[str, Any], previous: dict[str, Any]
+    scenario: Scenario,
+    target: Target,
+    judge: ModelJudge | None,
+    metadata: dict[str, Any],
+    previous: dict[str, Any],
 ) -> tuple[dict[str, Any], bool]:
     fingerprint = _fingerprint(scenario, metadata)
     cached = previous.get(scenario.id)
@@ -224,11 +234,16 @@ def _run(
     metadata = _metadata(config, args.mode, args.target, model)
     metadata.update(getattr(args, "candidate_provenance", {}))
     metadata["evaluation_suite"] = getattr(args, "suite", "default")
+    metadata["unavailable_retry"] = getattr(args, "unavailable_retry", 0)
     if getattr(args, "fresh_questions_from", None) is not None:
         metadata["fresh_questions_from_sha256"] = hashlib.sha256(args.fresh_questions_from.read_bytes()).hexdigest()
     prior_report = _resume_report(args, metadata)
     previous = _reusable_cases(prior_report)
-    report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
+    report: dict[str, Any] = {
+        "metadata": metadata,
+        "cases": [],
+        "batches": deepcopy(prior_report.get("batches", [])),
+    }
     metadata["planned_scenario_ids"] = [scenario.id for scenario in scenarios]
     scenario_map = {scenario.id: scenario for scenario in scenarios}
     judge = None
@@ -289,6 +304,13 @@ def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[st
         from tools.eval.targets.v4_core30 import acceptance
 
         metadata["core30_acceptance"] = acceptance(report["cases"])
+        if getattr(args, "review_retest_plan", None) is not None:
+            from tools.eval.review_retest import combined_results
+
+            report["reviewed_results"] = combined_results(args.review_retest_plan, report)
+            metadata["core30_acceptance"] = report["reviewed_results"]["acceptance"]
+            metadata["retest_plan_sha256"] = hashlib.sha256(args.review_retest_plan.read_bytes()).hexdigest()
+            metadata["cross_candidate_review"] = True
         core_accepted = metadata["core30_acceptance"]["accepted"]
     add_comparison(report, args.output / "baseline-v3.json")
     baseline = complete and args.mode == "live" and args.target == "v3" and not args.scenario and len(scenarios) == 80
@@ -310,7 +332,16 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     args.target = args.target or ("v3" if args.mode == "live" else "fake")
     lifecycle_selection(args)
-    if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3"), ("scripted", "v4"), ("live", "v4")}:
+    if args.unavailable_retry and (
+        args.mode != "live" or args.target != "v4" or args.suite != "core30" or args.fresh_questions_from is None
+    ):
+        raise SystemExit("R22 retry requires same-source core30 fresh-question report")
+    if (args.mode, args.target) not in {
+        ("scripted", "fake"),
+        ("live", "v3"),
+        ("scripted", "v4"),
+        ("live", "v4"),
+    }:
         raise SystemExit("Supported modes: scripted/fake, scripted/v4, live/v3 and gated live/v4")
     if args.suite == "core30":
         from tools.eval.targets.v4_core30 import load_core30
@@ -318,15 +349,35 @@ def main(argv: list[str] | None = None) -> int:
         if args.target != "v4" or args.scenario or args.scenarios.resolve() != (EVAL_ROOT / "scenarios").resolve():
             raise SystemExit("core30 requires v4 and its exact isolated selection; no custom scenario subset")
         scenarios = load_core30()
+        if args.review_retest_plan is not None:
+            from tools.eval.review_retest import selected_questions
+
+            if (
+                args.mode != "live"
+                or args.connection_proof is None
+                or not args.candidate
+                or args.resume
+                or args.fresh_questions_from
+            ):
+                raise SystemExit("V30 retest requires new live candidate proof and cannot combine resume modes")
+            selected = selected_questions(args.review_retest_plan, args.candidate, _source_digest())
+            scenarios = [scenario for scenario in scenarios if scenario.id in selected]
         if args.fresh_questions_from is not None:
             from tools.eval.k31_results import pending_questions
 
             if args.mode != "live" or args.connection_proof is None or args.resume or not args.candidate:
                 raise SystemExit("R12 fresh questions require R16 live proof and a new invocation")
             previous = json.loads(args.fresh_questions_from.read_text(encoding="utf-8"))
-            pending = pending_questions(previous, args.candidate, _source_digest())
+            pending = pending_questions(
+                previous,
+                args.candidate,
+                _source_digest(),
+                unavailable_retry=args.unavailable_retry,
+            )
             scenarios = [scenario for scenario in scenarios if scenario.id in pending]
     else:
+        if args.review_retest_plan is not None:
+            raise SystemExit("V30 retest requires core30")
         if args.fresh_questions_from is not None:
             raise SystemExit("R12 fresh questions require the original core30 selection")
         if args.target == "v4" and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve():
@@ -375,7 +426,12 @@ def main(argv: list[str] | None = None) -> int:
     return status
 
 
-def _run_models(args: argparse.Namespace, scenarios: list[Scenario], config: dict[str, Any], models: list[str]) -> int:
+def _run_models(
+    args: argparse.Namespace,
+    scenarios: list[Scenario],
+    config: dict[str, Any],
+    models: list[str],
+) -> int:
     lifecycle = lifecycle_selection(args)
     if getattr(args, "mode", None) == "live" and getattr(args, "target", None) == "v4":
         from tools.eval.live import live_session

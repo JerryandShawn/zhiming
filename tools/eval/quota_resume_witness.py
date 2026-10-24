@@ -9,7 +9,11 @@ from dataclasses import dataclass
 from typing import Any
 
 from mingjing_core.models.quota_delegated import DelegatedApproval
-from mingjing_core.models.quota_delegated_session import DelegatedSession, require_active
+from mingjing_core.models.quota_delegated_session import (
+    DelegatedSession,
+    require_active,
+)
+from mingjing_core.models.quota_r16 import K31CoreApproval, approved_core_model
 from tools.eval.lifecycle_identity import LifecycleError
 from tools.eval.quota_resume_evidence import ResumeEvidence, gather, require, typed
 
@@ -54,7 +58,9 @@ class EligibilitySummary:
 
 _LIVE: dict[int, _Entry] = {}
 _CLEARING: dict[int, _Entry] = {}
-_ACTIVE: ContextVar[object | None] = ContextVar("quota_resume_preclear_context", default=None)
+_ACTIVE: ContextVar[object | None] = ContextVar(
+    "quota_resume_preclear_context", default=None
+)
 
 
 def _session(target: Any, binding: Any, guard: Any) -> Any:
@@ -64,13 +70,12 @@ def _session(target: Any, binding: Any, guard: Any) -> Any:
         raise LifecycleError("QUOTA_RESUME_SESSION_REJECTED") from None
     require(
         type(session) is DelegatedSession
-        and type(session.approval) is DelegatedApproval
+        and type(session.approval) in {DelegatedApproval, K31CoreApproval}
         and session.phase == "core"
         and session.guard is guard
         and session.approval.candidate == binding.candidate_commit
         and binding.scenario_id in session.scenarios
-        and session.approval.equivalent is not None
-        and binding.model == ("k3-256k" if session.approval.equivalent else "k3")
+        and binding.model == approved_core_model(session.approval, guard.clock.now())
         and target.model == binding.model
     )
     return session
@@ -84,13 +89,25 @@ def _read(target: Any, control: Any, binding: Any, guard: Any) -> ResumeEvidence
 
 
 @contextmanager
-def eligible_quota5h(target: Any, control: Any, binding: Any, guard: Any) -> Iterator[QuotaResumeWitness]:
+def eligible_quota5h(
+    target: Any, control: Any, binding: Any, guard: Any
+) -> Iterator[QuotaResumeWitness]:
     typed(target, control, binding, guard)
     session = _session(target, binding, guard)
     evidence = _read(target, control, binding, guard)
     witness = object.__new__(QuotaResumeWitness)
     context = object()
-    entry = _Entry(witness, target, target.repo, control, binding, guard, session, context, evidence)
+    entry = _Entry(
+        witness,
+        target,
+        target.repo,
+        control,
+        binding,
+        guard,
+        session,
+        context,
+        evidence,
+    )
     _LIVE[id(witness)] = entry
     token = _ACTIVE.set(context)
     try:
@@ -102,7 +119,9 @@ def eligible_quota5h(target: Any, control: Any, binding: Any, guard: Any) -> Ite
         _ACTIVE.reset(token)
 
 
-def check(witness: QuotaResumeWitness, *, target: Any, control: Any, binding: Any, guard: Any) -> EligibilitySummary:
+def check(
+    witness: QuotaResumeWitness, *, target: Any, control: Any, binding: Any, guard: Any
+) -> EligibilitySummary:
     require(type(witness) is QuotaResumeWitness)
     entry = _LIVE.get(id(witness))
     require(entry is not None and entry.witness is witness)
@@ -136,14 +155,21 @@ def check(witness: QuotaResumeWitness, *, target: Any, control: Any, binding: An
 
 
 def _check_consumed(entry: _Entry) -> None:
-    require(_CLEARING.get(id(entry.witness)) is entry and _ACTIVE.get() is entry.context)
+    require(
+        _CLEARING.get(id(entry.witness)) is entry and _ACTIVE.get() is entry.context
+    )
     typed(entry.target, entry.control, entry.binding, entry.guard)
-    require(entry.repo is entry.target.repo and _session(entry.target, entry.binding, entry.guard) is entry.session)
+    require(
+        entry.repo is entry.target.repo
+        and _session(entry.target, entry.binding, entry.guard) is entry.session
+    )
 
 
 def _consume_for_clear(witness, *, target, control, binding, guard) -> _Entry:
     require(type(witness) is QuotaResumeWitness)
-    entry = _LIVE.pop(id(witness), None)  # Every attempted transition burns the original eligibility.
+    entry = _LIVE.pop(
+        id(witness), None
+    )  # Every attempted transition burns the original eligibility.
     require(entry is not None and entry.witness is witness)
     try:
         require(

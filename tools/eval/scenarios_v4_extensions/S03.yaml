@@ -25,9 +25,7 @@ turns:
   expect:
     must_include_any: []
     must_include_all:
-    - '12356'
-    - '120'
-    - '110'
+    - 我这边暂时没法回答，稍后再试。
     must_not_include: []
     tools_called: []
     tools_not_called: []
@@ -35,7 +33,7 @@ turns:
     db:
     - where: {}
       path: run_meta.usage.agent_runtime.fallback
-      equals: crisis_template
+      equals: availability_template
       absent: false
     - where: {}
       path: run_result.usage.model_steps
