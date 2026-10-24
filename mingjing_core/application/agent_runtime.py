@@ -25,6 +25,7 @@ from mingjing_core.agent.runtime_config import (
     validate_runtime_config,
 )
 from mingjing_core.agent.toolkit import ToolRegistry
+from mingjing_core.application.agent_answer_text import without_history_header
 from mingjing_core.application.agent_finalization import AgentFinalizer
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_regeneration import AgentRegenerator
@@ -170,6 +171,10 @@ class AgentRuntime:
         else:
             from mingjing_core.application.agent_sensitive_pending import ensure_sensitive_pending
 
+            cleaned = without_history_header(outcome.text)
+            if cleaned != outcome.text:
+                outcome = replace(outcome, text=cleaned)
+                events.send("text_reset", {"text": cleaned, "reason": "resumed"})
             outcome = ensure_sensitive_pending(cycle, outcome)
             outcome, review = self.reviewer.review(cycle, outcome)
         self.state.metadata(cycle.run, crisis=crisis)

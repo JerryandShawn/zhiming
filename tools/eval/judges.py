@@ -202,14 +202,21 @@ class ModelJudge:
         self.rubric = rubric.read_text(encoding="utf-8")
 
     def evaluate(self, payload: dict[str, Any]) -> dict[str, Any]:
-        calls, elapsed = 0, 0.0
+        calls, elapsed, errors = 0, 0.0, []
         for _ in range(2):
             result = self._evaluate_once(payload)
             calls += result["model_calls"]
             elapsed += result["elapsed_seconds"]
-            if result["error"] not in {"ModelProtocolError", "ValueError", "KeyError", "TypeError"}:
+            errors.append(result["error"])
+            if result["error"] not in {
+                "ModelProtocolError",
+                "JudgeTransportUnavailable",
+                "ValueError",
+                "KeyError",
+                "TypeError",
+            }:
                 break
-        result.update(model_calls=calls, elapsed_seconds=elapsed)
+        result.update(model_calls=calls, elapsed_seconds=elapsed, attempt_errors=errors)
         if result["error"]:
             result.update(score=None, judge_unavailable=True)
         return result

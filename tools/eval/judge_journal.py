@@ -155,16 +155,18 @@ class JudgeJournal:
         actual = [
             item for item in self._physical(value["identity"]) if item["attempt_id"] not in value["prior_attempt_ids"]
         ]
+        errors = reviewed.get("attempt_errors", []) if reviewed is not None else []
         complete = (
             reviewed is not None
             and (reviewed.get("error") is None or reviewed.get("judge_unavailable") is True)
             and 1 <= len(actual) <= 2
+            and len(errors) == len(actual)
             and all(
                 item["finished_at"] is not None
-                and item["status"] == "ok"
+                and item["status"] == ("unavailable" if error == "JudgeTransportUnavailable" else "ok")
                 and item["model"] == self.binding.model
                 and item["provider"] == "kimi_code"
-                for item in actual
+                for item, error in zip(actual, errors, strict=True)
             )
         )
         value.update(

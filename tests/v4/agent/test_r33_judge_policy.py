@@ -19,12 +19,12 @@ from tools.eval.overload_policy import is_overloaded, overload_due
 from tools.eval.quota import ProviderStopped
 from tools.eval.report import summarize
 from tools.eval.targets.v4_core30 import Core30LiveTarget, load_core30
-from tools.eval.targets.v4_live_judge import V4LiveJudge
+from tools.eval.targets.v4_live_judge import LiveJudgeProvider, V4LiveJudge
 from agent.test_k31_core_chain_pg import core as core  # noqa: F401, F811
 from agent.test_k31_core_chain_pg import counter_fixture as counter_fixture  # noqa: F401
 
 
-def _factory(core, invalid, sent, judge_calls):  # noqa: F811
+def _factory(core, invalid, sent, judge_calls, http_failures=0):  # noqa: F811
     def factory(handle):
         def reply(request):
             body = json.loads(request.content)
@@ -33,6 +33,10 @@ def _factory(core, invalid, sent, judge_calls):  # noqa: F811
             if body.get("tools") and body["tools"][0]["function"]["name"] == "submit":
                 assert body["tool_choice"] == "required"
                 judge_calls.append(body)
+                if len(judge_calls) <= http_failures:
+                    return httpx.Response(
+                        503, json={"error": {"type": "server_error", "message": "synthetic unavailable"}}
+                    )
                 if len(judge_calls) <= invalid:
                     delta["content"] = "合成的非工具评分"
                 else:
@@ -120,6 +124,49 @@ def test_judge_fatal_signal_never_retries(error):
 
     judge = ModelJudge("synthetic", Path("tools/eval/rubric_v1.md"), SimpleNamespace(generate=generate))
     with pytest.raises(type(error)):
+        judge.evaluate({})
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize("failures", [1, 2])
+def test_r38_native_judge_http_retry_then_ungraded(core, failures):  # noqa: F811
+    sent, judge_calls = [], []
+    factory = _factory(core, 0, sent, judge_calls, http_failures=failures)
+    scenario = next(c for c in load_core30() if c.id == "T05")
+    with core.session.activate(), call_scope(core.session.scope("T05")):
+        target = Core30LiveTarget(
+            model="k3.1-pro", dsn=core.guard.store.dsn, environment=core.env, adapter_factory=factory
+        )
+        judge = V4LiveJudge("k3.1-pro", Path("tools/eval/rubric_v1.md"), environment=core.env, adapter_factory=factory)
+        try:
+            result = evaluate_scenario(scenario, target, target_name="v4", judge=judge)
+            assert len(judge_calls) == 2
+            assert result["judge_model_calls"] == 2
+            assert result["status"] == ("passed" if failures == 1 else "judge_unavailable"), result.get("stop_reason")
+            if failures == 2:
+                assert result["score"] is None
+        finally:
+            target.close()
+
+
+@pytest.mark.parametrize(
+    "reason,status",
+    [("provider_http_error", 400), ("provider_http_error", 403), ("quota", 429), ("permission_error", None)],
+)
+def test_r38_http_or_permission_stop_is_not_converted(reason, status):
+    calls = []
+
+    def generate(**kwargs):
+        calls.append(kwargs)
+        raise ProviderStopped(reason, "judge", provider_http_status=status)
+
+    provider = object.__new__(LiveJudgeProvider)
+    provider.provider = SimpleNamespace(generate=generate)
+    provider.tracker = SimpleNamespace(begin_turn=lambda: None, calls=1)
+    provider.budget, provider.stop_reason, provider.provider_http_status = None, None, None
+    provider.role, provider.elapsed_seconds = "judge", 0.0
+    judge = ModelJudge("synthetic", Path("tools/eval/rubric_v1.md"), provider)
+    with pytest.raises(ProviderStopped):
         judge.evaluate({})
     assert len(calls) == 1
 
