@@ -1,6 +1,6 @@
 # 首发 F 副本 stage 执行单（候选2200485）
 
-2026-10-25 04:58，北京时间。命令和固定交付物绑定候选 `220048573110862d378015c35d99a37c0d83503e`，工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r39`。包hash `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`，bootstrap hash `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`，operation `ba63f7b2fa8a405d`。R11原件：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\r11-run-c38bd9e6b67744e387d110627f7e7ef6\metadata.json`，assessment：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\candidate-eval\220048573110862d378015c35d99a37c0d83503e\R11-58e3c43c0c33414cbe1b2d60e3d786ff\assessment.json`。此时R11仍在途；CI未核、五题定向真实复测未运行、37号Go缺失，执行准入尚未满足，不能宣布stage/首发就绪。
+2026-10-25 04:58，北京时间。命令和固定交付物绑定候选 `220048573110862d378015c35d99a37c0d83503e`，工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r39`。包hash `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`，bootstrap hash `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`，operation `ba63f7b2fa8a405d`。R11原件：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\r11-run-c38bd9e6b67744e387d110627f7e7ef6\metadata.json`，assessment：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\candidate-eval\220048573110862d378015c35d99a37c0d83503e\R11-58e3c43c0c33414cbe1b2d60e3d786ff\assessment.json`。R11已04:57:25–04:59:55 exit0，根核assessment及四原报告48/48、日期7/7、指定69/69、核心29/29，X02中性/正文保留/重复0写；CI未核、五题定向真实复测未运行、37号Go缺失，执行准入尚未满足，不能宣布stage/首发就绪。
 
 执行人：**主线**。只有本聊天具备直接人类F授权、37号首行 `结论：Go` 且复核晚于2026-10-24 12:30、候选40位SHA与本单一致，才进入下列服务器步骤。指令板和37号本身不扩大服务器权限。生产仍另需直接D授权与31号Go窗口，本文不操作生产。当前未SSH/上传/执行服务器命令。
 
@@ -12,7 +12,7 @@
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定2200485包/R11原件；R11完成需根核，CI未核，不复用旧候选批准|
+|同一首发源码、CI、R11|本单绑定2200485包/R11原件，R11已根核通过，CI未核，不复用旧候选批准|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
