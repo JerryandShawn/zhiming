@@ -10,6 +10,8 @@ R16新增审核资产使用固定候选`config/models.first-release.yaml`，共�
 
 ## 1. 候选与安全边界
 
+2026-10-24 14:06补充：`tools.first_release_stage_prepare --operation <COPY_OPERATION> --workspace <COPY_WORKSPACE> --copy-receipt <COPY_RECEIPT> --copy-receipt-sha256 <COPY_RECEIPT_SHA256> --admin-env-file /root/zhiming-core-secrets/fr-stage-admin.env --apply`已具备仅新副本迁移1–8/primary回填/副本旁账双重放/完成后关门的真实PG证据；参数均须取同次copy输出，禁止复用started workspace。此片不生成新unit/运行凭据或执行B7，最终候选未冻结，以下旧步骤仍不能直接用于F；无服务器执行，完整单保持No-Go。
+
 2026-10-24 14:00补充：`tools.first_release_stage_package bundle`已具备规范Git打包与新产物拒覆盖；`tools/first_release_stage_unpack.py`为不依赖候选环境的stdlib引导脚本，已实际独立-I验证，只能随包先核hash再由大脑执行；`tools.first_release_stage_copy --apply`固定原stage只读备份→新fr_stage副本并最终关门，PG15保owner/ACL/库和角色设置实证见恢复计划。它们不执行SSH、迁移、回填或启动unit；最终同源包与后续串联未完成，整个执行单仍No-Go。以下旧通用步骤仍不能直接套用F。
 
 v14分工：真实评测及服务器stage均交大脑执行，本代理只完成必要代码与本地隔离验证。以下新R2接口已具备必要Windows PG15/独立进程证据，但整个执行单仍未就绪：最终候选打包、原stage只读备份→副本、Linux迁移/重放/回填/新unit串联的精确命令仍须补齐。不能把本节当成37号Go或服务器执行许可。
