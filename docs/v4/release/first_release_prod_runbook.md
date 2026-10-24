@@ -1,6 +1,6 @@
 # 核心首发生产切换草案
 
-2026-10-24 10:48，北京时间。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 新显式本机源写main的默认/坏材料与prefix7完整链首次两目标通过，范围及唯一证据只在[增量ExecPlan](../execplans/first_release_incremental_20261024.md)登记；本机方法级main通过不是Linux应用或生产恢复验收。原正式`f6fb9f1`的push/PR M1会话失败仍保留，旧额外PID身份未知，当前工具头/测试archive均非最终发布包；observer须新捕获并审核9控pin，不能补写旧输入。正式目标仍只有文件契约/可选只读ACL；Linux应用、原中央保全、全局writer、切换及开门均未放行。无服务器、真实模型或飞书动作。
+2026-10-24 11:18，北京时间。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 新显式本机源写main的默认/坏材料与prefix7完整链首次两目标通过，范围及唯一证据只在[增量ExecPlan](../execplans/first_release_incremental_20261024.md)登记；本机方法级main通过不是Linux应用或生产恢复验收。原正式`f6fb9f1`的push/PR M1会话失败仍保留，旧额外PID身份未知，当前工具头/测试archive均非最终发布包；observer须新捕获并审核9控pin，不能补写旧输入。正式目标仍只有文件契约/可选只读ACL；Linux应用、原中央保全、全局writer、切换及开门均未放行。无服务器、真实模型或飞书动作。
 
 旧B1不再单独上线，旧B/D授权失效。**只有用户对本次最终候选、生产对象、维护窗口、修改、渠道恢复及止损范围重新授权，才可进入生产步骤。** 大脑审核stage及本单是必要输入，不替代用户授权。旧30/31文件、旧工作日窗口或旧一次模型冒烟不能自动成为本次许可。
 
@@ -56,6 +56,8 @@ cd "$FR_CONTROL_DIR"
 
 TargetProof、源guard/postcheck、Forward内部组合及后续源重放/回填组件的分轮结果与失败统一只指[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，组件范围与剩余门见[stage组件表](first_release_stage_runbook.md#本机目标证明与源升级组件正式源写入口未就绪)。本机Forward已组合目标证明/运行时、源升级及prefix7源隐私重放→回填完整闭环；新显式main已完成限定本机验收，固定15参数、默认零副作用与唯一执行旗标统一见[本机源写入口](first_release_stage_runbook.md#本机完整源写命令仅本机合成库)。没有可执行的正式源升级/原生恢复/回填CLI。Linux运行镜像、正式中央身份保全/重绑定、完整切换与开门门仍No-Go；本单不增加未验证生产命令。
 
+同进程固定服务入口 `tools.first_release_service` 的实际参数、受限 writer/SID 绑定、已有 workspace 双栅栏及持锁退出方式统一见[stage 草案的服务入口](first_release_stage_runbook.md#固定服务入口与进程寿命栅栏组件不放行停写门)，证据只登记其服务栅栏 ExecPlan。默认静态校验，显式 `--run` 才启动；当前没有生产运行授权，也未替换任何 unit 或 Hermes wrapper。硬退出能防止后台线程活着时先解锁，但不能证明在途外部投递取消、业务排空或完整停写；不得据此解除 D1/D5–D7、移除维护标记或自动补发。
+
 ## 3. 停写、备份、增量、切换、开门顺序
 
 获准后仍一次一阶段核验，不以shell循环串过审核门。以下修改动作当前均因缺失首发入口而阻塞；表中是实现和演练后的操作要求。
@@ -63,7 +65,7 @@ TargetProof、源guard/postcheck、Forward内部组合及后续源重放/回填�
 | 阶段 | 动作与当前入口状态 | 继续条件 | 停止条件 | 预计耗时 |
 | --- | --- | --- | --- | --- |
 | D0 | 完整核新授权/stage回执/候选；只读盘点当前主机、PG、schema、磁盘、队列、unit/env/wrapper安全摘要 | 在批准窗口内，所有输入与当前实际状态一致，恢复余量充分 | 任何授权/版本/身份/容量漂移；不能沿用历史容量值 | 10–20分 |
-| D1 | 设置生产维护门；停Web、飞书、报告service和timer；排空并持有Hermes Core排他writer锁；首发控制器缺失 | 所有入口停写，queued/running/有效lease及未知客户端0，锁跨exec有效 | writer未停、外部CLI绕过门、未核drop-in或守护进程 | 5–15分 |
+| D1 | 设置生产维护门；停Web、飞书、报告service和timer；排空并持有共同排他writer锁；首发控制器缺失 | 所有入口停写，queued/running/有效lease及未知客户端0，锁覆盖后台线程及完整进程寿命 | writer未停、外部CLI绕过门、未核drop-in或守护进程 | 5–15分 |
 | D2 | 一致PG custom dump、最新无正文撤销/墓碑/sent/uncertain旁账及配置/unit/技能备份；首发入口缺失 | 文件/目录保护模式、hash、原schema与业务安全摘要绑定同一停写点 | 备份/旁账失败，源前缀兼容缺口，中央账本可能回退 | 15–40分 |
 | D3 | 先恢复D2精确备份到新allowlist库，双重放与幂等/ACL/旧包兼容审查；现工具仅校验 | 实际新库恢复证明及开门前回退路径均合格，中央账本位置/历史保全 | 只有validate输出、旧B1空样本或Windows结果；任何replay差异 | 30–60分起 |
 | D4 | 合法已有库前缀前向至8、最小授权；受审owner dry-run→apply→repeat；首发增量/回填入口缺失 | 八checksum/最小ACL精确；repeat的message_metadata/search_tokens/assistant_created均0，其他只读计数可非0；原文、owner隔离、牌面、撤销与收据保持 | 错库/错角色/历史改写、未知owner、重复写变化、误给额度表DELETE | 15–45分 |
@@ -84,8 +86,8 @@ TargetProof、源guard/postcheck、Forward内部组合及后续源重放/回填�
 | 报告 `zhiming-core-reports.service`及`.timer` | 同SHA/解释器/env，保存active/enabled状态，核Persistent和已到期任务，不能启动即补发 | 最终恢复策略及无重复送达证据待审 |
 | Charts | `CHART_PYTHON`与独立Charts环境共同固定最终release；不把Core/Charts依赖合并，不仅看文本变量 | Linux解释器、锁依赖、实际子进程来源/缓存与权限未验 |
 | K3/模型/中央守卫 | 已验本地官方K3目录与锁、registry模型锁/高思考、已有account/identity/实际location；Agent开关明确true、运行容量至少3 | Linux装配及中央ledger保全/重绑定门未完成；不provision来放行 |
-| Hermes知命Core wrapper | 只更新固定release入口及受审manifest，环境加载顺序明确；退役stub/原备份保留，manifest最后原子写 | 旧/新wrapper共享维护门与锁覆盖exec的同源Linux演练待补；不整体重启Hermes |
-| 维护门与writer锁 | Web反代/应用门及`/root/zhiming-core-secrets/core-skill-writer.lock`覆盖全部Core入口；锁持有期间核实际无writer | 不能只凭flag存在或源码常量相同声称跨进程成立 |
+| Hermes知命Core wrapper | 只更新固定release入口及受审manifest，环境加载顺序明确；退役stub/原备份保留，manifest最后原子写 | 旧/新wrapper共享维护门与完整Core进程锁的同源Linux演练待补；不整体重启Hermes |
+| 维护门与writer锁 | Web反代/应用门及共同workspace内稳定数据库身份锁覆盖全部Core入口；旧Hermes单独的core-skill锁不能代替；持EX期间核实际无writer | 不能只凭flag存在或源码常量相同声称跨进程成立；全入口替换和排空仍待 |
 
 生产配置只能在受保护文件中做已批准的精确更新，不打印Environment、token、完整DSN、原始reasoning或私人正文。有效unit需核FragmentPath、DropInPaths、NeedDaemonReload、KillMode/SendSIGKILL及实际进程；磁盘文件hash不等于进程已切换。不要触碰无关Hermes技能或服务。
 

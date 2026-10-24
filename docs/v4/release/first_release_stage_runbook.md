@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 10:48，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer的9控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 11:18，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer的9控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -23,7 +23,7 @@
 | 候选身份 | 最终候选、manifest、artifact及外部审核pin待冻结 | 同一候选的明确审核、来源与必要评测；不能手填admissible |
 | 实际Linux运行时 | 现有Windows PG定向证据只证明相应逻辑；Linux Core/Charts/K3未整体验证 | Python3.11双环境、锁依赖/导入来源、真实文件权限、官方K3本地小文件及网络隔离 |
 | 增量与恢复 | 正式入口仍仅validate/可选只读ACL；本机Forward4/7、prefix7同call源重放及回填组合已有实证，正式恢复仍缺失 | 将已验证本机内部链接入受审正式入口，再补Linux、全局writer及既有中央身份保全 |
-| 停写与切换 | 最终Web/飞书/报告+timer、Hermes wrapper及维护/锁尚未联合演练 | 实际Linux跨exec writer栅栏、部分失败保持关门、所有入口同源 |
+| 停写与切换 | 最终Web/飞书/报告+timer、Hermes wrapper及维护/锁尚未联合演练 | 实际Linux完整进程寿命writer栅栏、部分失败保持关门、所有入口同源 |
 | 当前环境及授权 | 未做新的服务器盘点；容量、旧schema/服务状态不能沿用历史值 | 用户新的stage授权，明确新对象/窗口；获准后只读B0复核一致 |
 
 关系/函数/ACL校验通过不代表数据已恢复、运行时已受信、中央账本已合法迁移或渠道已验收；本单不将任一门标为“已解除”。
@@ -33,6 +33,26 @@
 现有P1b按独立中央设计：业务仓库读取 `ZHIMING_DATABASE_URL`，中央守卫只读取 `MEMBER_CENTRAL_DSN`、`MEMBER_CENTRAL_SCHEMA`、`MEMBER_ACCOUNT_ID`、`MEMBER_LEDGER_IDENTITY`，不回退业务DSN。若已有正确中央，恢复业务到新库时可仅切业务DSN，保留原中央四项与实际PG位置，不把备份中的中央表当作权威。普通启动和每次物理请求都核原账号UUID与实际数据库/server/port/schema位置；旧中央改名、迁址或换schema须另审，禁止靠provision、改location/identity、clear stop修过启动门。若尚无中央账号，先停在门前，待另审的显式配置及授权；runtime不能自动创建。
 
 本机已用真实prefix7恢复至8、原非空中央历史、当前宿主生产装配/Registry及受限角色验证该路由：允许调用只向原中央追加，错误库/UUID/位置及已有停机拒绝，新业务额度表保持空。这里只替换传输为Mock，未注入guard绕路；完整唯一结果在[恢复ExecPlan](../execplans/first_release_recovery_20261023.md)。这不是fresh候选进程、完整Agent业务run、正式权限或配置切换验收，`central_binding_verified`保持false。正式切换仍须保全原四表/sequence完整基线、明确原中央库/角色长期保留与旧业务writer处置、审核实际受保护env，并在同候选Linux和所有入口重核；不能据构造guard成功推断旧usage/stop未回退。
+
+### 固定服务入口与进程寿命栅栏（组件，不放行停写门）
+
+`tools.first_release_service` 是新的同进程入口，固定 `web`、`feishu`、`report`、`hermes` 四个角色。默认只校验已有路径和显式 writer 配置形状，零 PG、零业务导入、零进程启动和零写；实际运行必须显式加 `--run`。它不加载管理员或 owner DSN、不建角色或栅栏文件、不改维护标记，也不替代候选审核。限定真实PG15/子进程首链3/3通过，范围及唯一原件统一见[服务栅栏 ExecPlan](../execplans/first_release_service_fence_20261024.md)；只是原生 MemoryService 接缝验证，四个完整应用和Linux均未验收，不能解除正式门。
+
+以下只是静态校验的真实参数形状，变量须来自未来受审配置，不能照填任意 OID 或拿它执行服务器动作：
+
+```bash
+cd "$FR_CANDIDATE_ROOT"
+"$FR_CORE_PYTHON" -m tools.first_release_service \
+  --role web --candidate "$FR_CANDIDATE_ROOT" --workspace "$FR_FENCE_WORKSPACE" \
+  --system-identifier "$FR_SYSTEM_IDENTIFIER" --database "$FR_DATABASE" \
+  --database-oid "$FR_DATABASE_OID" --writer "$FR_WRITER" --writer-oid "$FR_WRITER_OID"
+```
+
+候选根必须是 launcher 自己所在的普通源码根；Web 固定单 worker、无 reload、127.0.0.1:8787，不接受其他原生参数。报告及 Hermes 的原生参数只能在 `--` 后；Hermes 的 stdout 仍完全交原业务，不追加包装回执。`ZHIMING_DATABASE_URL` 只含该受限 writer 的显式数字 TCP 地址/端口、数据库、用户和口令，不允许 PG 隐式路由、DSN options/service/passfile 或管理员凭据。实际运行核 PG15、SID、数据库/OID、session/current writer/OID、真实位置及无 owner/DDL 权能；若缺 `pg_control_system()` EXECUTE 则拒绝，只能由另审步骤给予该函数的精确权限，不能加广泛监控角色或自动授权。
+
+所有入口必须使用同一受保护 `FR_FENCE_WORKSPACE`，与 M1/Forward 的稳定文件和 PG key 一致。两个共享锁取得且维护标记不存在后才导入/调用业务；原入口 finally 完成后，仍持双锁刷新输出并真实结束整个进程，避免后台线程活着时先解锁。PG 专用连接丢失仍保留文件锁。这个退出方式可能中断尚未排空的投递或后台任务，不能证明外部请求已经取消，也不自动重试或补发；必须结合运行/Outbox 状态另审排空与止损。
+
+旧 unit、Hermes wrapper、其他 CLI 和外部子进程尚未统一纳管；维护标记的设置、停止服务、门内 readiness、移除标记及开门也尚未编排。当前 M1 不能在现有服务持 SH 时自动取得 EX；不能据 launcher 存在就称全局停写。Linux 权限/进程链和四个完整应用的联合运行仍待验证，B0–B8 与五个门继续 No-Go。
 
 ## 3. 现有可运行的校验命令
 
