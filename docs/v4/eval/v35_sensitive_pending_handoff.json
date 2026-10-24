@@ -1,0 +1,36 @@
+{
+  "board_version": 37,
+  "candidate": "9f013824a06f5f8da162de2ba6556a6817c33042",
+  "worktree": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r35",
+  "branch": "v4/p3-r35-sensitive-pending-20261024",
+  "R11_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r35\\private\\r11-run-d096365de055493ebf8a34d0c205462d\\metadata.json",
+  "R11_status": "running",
+  "scope": "M05 real native pending proposal after omitted memory_write; no answer changes",
+  "runtime_changes": [
+    "mingjing_core/application/agent_sensitive_pending.py",
+    "mingjing_core/application/agent_runtime.py"
+  ],
+  "memory_services_or_retrieval_modified": false,
+  "necessary_tests": [
+    {
+      "path": "private/safe-narrow-1ccbeba41ac241b4a4866219aca8b00b",
+      "passed": 12,
+      "failed": 1,
+      "failure": "replay fixture restored real clock after historical scenario; corrected to original frozen clock, no run deadline change"
+    },
+    {
+      "path": "private/safe-narrow-d811eaa33c2445c9b18179c074ae4f16",
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "path": "private/safe-narrow-4eb62691a1464ef68ac9327de4b2fabd",
+      "passed": 3,
+      "failed": 0
+    }
+  ],
+  "real_model_requests_this_work": 0,
+  "SSH_stage_production": false,
+  "paid_restart_status": "not started; prior service stop boundary retained",
+  "prior_r33_candidate_untouched": true
+}
