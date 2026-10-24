@@ -6,12 +6,12 @@
   "draft_pr": "https://github.com/JerryandShawn/zhiming/pull/22",
   "R11_pointer": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\r11_pending.json",
   "R11_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\r11-run-72323721a0554b0cab4e17d6eb5403a9\\metadata.json",
-  "R11_status": "running",
+  "R11_status": "complete",
   "operator_pointer": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\k31_r38_eval_pending.json",
   "operator_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r38\\private\\k31-r38-df31da48eaa4409ab2856cbc42421d52\\metadata.json",
-  "operator_status": "waiting_r11",
-  "key_cleared": true,
-  "core29_started": false,
+  "operator_status": "running/core29_1 snapshot02:16",
+  "key_cleared": false,
+  "core29_started": true,
   "core_result": null,
   "connection_cumulative_before_launch": 23,
   "connection_limit": 30,
@@ -37,5 +37,27 @@
   "prompt_version": "1.2.2",
   "CI": "not verified",
   "SSH_stage_production": false,
-  "stage_runbook_ready": false
+  "stage_runbook_ready": false,
+  "R11_source_sha256": "c2237ecaf6f2c8c5c6e4de4918562c7d93c7920859c7c3a3a52250b8f039497c",
+  "R11_finished_at": "2026-10-25T01:53:28.634060+08:00",
+  "R11_verified": {
+    "p3": "48/48",
+    "dates": "7/7",
+    "required": "69/69",
+    "core29": "29/29",
+    "original81": "71/81",
+    "deferred": 12,
+    "x02_equivalent": "passed"
+  },
+  "connection_cumulative_after_connect": 27,
+  "connection_proof": "C:/Users/Administrator/Documents/Codex/zhiming-v4-r38/private/candidate-eval/8727d44bdbed624b9de4278baa6739031a89a70d/k31-connect-354c2bf254fc4baabc45ec7ba413bd60.json",
+  "control_schema": "probe_k31_16c47c53186e4a7da5aea61927a59e02",
+  "last_completed_round": {
+    "completed": 2,
+    "passed": 2,
+    "incomplete": 27,
+    "stop": "ConnectTimeout",
+    "http_status": null,
+    "retry_policy": "actual stop plus5min, existing operator already resumed only unfinished questions"
+  }
 }
