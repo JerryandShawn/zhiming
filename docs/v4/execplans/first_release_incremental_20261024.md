@@ -14,6 +14,11 @@
 
 ## Progress
 
+- [x] (2026-10-24 08:16 +08:00) source-backfill 07dbf97 的 run40038236229/job120702870850 已失败：v4 4197通过/75跳过/1失败、2283.38秒。唯一 target_dml_after_mint 目标预期 TARGET_PROOF_TARGET_STATE_CHANGED，实际 TARGET_PROOF_ACTIVE_OR_OTHER_SESSION；该 OR 混合忙run/lease和其它会话，原日志不能判明哪项成立。后续 ModelPort 未跑；原始证据仅 GitHub job，不复制第二套日志，不合并该红源。
+- [x] 在独立 v4/p3-wire-target-diagnostic-20261024 分片，仅给 TargetProof 原失败 gate 同一查询增加有界无正文诊断，保相同 busy/会话谓词、错误码和拒绝；不重试、过滤后台或改旧断言。新增一个真实PG诊断行为并只验证该行为；原 CI 红的未知原因继续保留。
+- [x] (2026-10-24 08:21 +08:00) 同次诊断静态根审完成（helper308行/最大37；新测试59行/最大30）。指定宿主 `.venv-core` 首链在 conftest 因缺 jieba 导入失败 exit4，08:20:38–08:20:39，尚未collect或进入PG节点，无XML；原 metadata/log 保留 `private/safe-narrow-5a842771caa248abb11081fb6caa2046/`，不计产品失败/通过。仅改用既有 `.venv-k3` 宿主（jieba/pytest/psycopg 已可导入）重新执行尚未运行的同节点，不安装依赖、不修改测试或控件、不重复任何已绿目标。
+- [x] (2026-10-24 08:24 +08:00) 新节点首次真实PG链1/1、95.17秒、0 skip，通过原外来连接和failed+活lease两个谓词；08:21:54.604905–08:23:30.686226。唯一证据为 `private/safe-narrow-ff677d6240634ba19a897413b360c564/metadata.json` 与同目录XML/log，根独立核原始元数据/XML；槽已释放，文件冻结供小提交。不称原CI原因已修，不重复旧绿/原CI红。
+
 - [x] (2026-10-24 07:49 +08:00) M1限定统计observer三代码路径与新负例静态冻结后，唯一两节点07:47:43–07:48:30首次2/2通过、45.86秒：实际异角色客户端在owner视角type=NULL、在原检查admin行集中type=client backend，恰owner+foreign两PID且仍严格拒绝，源全态/维护marker/输出不变；随后原f6 capture_binding目标通过，原零I/O及血缘正文断言未改。根已复核metadata/XML及控件/调用边界；不重跑绿或扩大测试，等待小提交和新CI。
 
 - [ ] (2026-10-24 07:44 +08:00) f6关联PR #12合成checkout dcecec3673818bd76a6934df13883c2369395a96的run40034388584/job120690168739也失败，不能与f6 push混用：v4 4301通过/56跳过/1失败/1 setup错误、2791.29秒。target_proof重建同名库目标的setup在M1握手允许2379/2381，实际额外2380/None；源漂移目标预期保留产物拒绝却提前命中会话拒绝，允许859、实际另863/None。两者尚未知身份；ModelPort/runner_v2未执行。07db与fa23新CI仍在途；X02的836 CI已cancelled（v4步成功、ModelPort步取消），不能称全CI通过，主线未取消或重跑。
@@ -146,6 +151,8 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+2026-10-24 08:16 +08:00：TargetProof 的失败发生在 consume 首个最终核查，mint 与测试内两个 with 连接均已返回；这些事实不足定位额外会话或实际忙run。新 M1 observer 只绑定源库/备份动态作用域，不能借它诊断恢复目标。最小诊断只在原目标 SELECT 同时读取忙run计数及该库 pid/backend_type 集合，拒绝对象附限32条的安全摘要及 Python 异常 note；无query、application_name、DSN、正文。总数与截断位保留，异常本身仍抛原码，不追加失败后再读或删数据。原目标控件已纳入既有 hash pin，新调用须重新审 pin；发布与全局停写仍 No-Go。
 
 2026-10-24 07:49 +08:00：根审要求observer每次重核owner当前只读、admin只读/autocommit及真实全统计可见权限，新增查询显式限定pg_catalog；绑定对象仅保控制库身份四字段，不再持有password。新负例收紧到精确两个client backend，防另一未知会话替代所要证明的拒绝原因；原成功与失败正文不删改。控制helper120行、最长函数33；新测试59行、最长44，既有incremental_pg449行只窄改、最长56，维持旧文件软目标例外。Ruff E/F/I/B/UP/SIM、120列format及AST/diff均通过。
 
@@ -372,6 +379,8 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 显式FIRST_INCREMENTAL_OWNER_DSN/WRITER_DSN只允许本机55480/55481和本次fr_upgrade库、精确角色；FIRST_INCREMENTAL_ADMIN_DSN限同一服务器的postgres/core_test_main控制库；所有PG隐式环境拒绝。子进程有限环境，密码只在内存，不进入argv/回执/日志；只调用已pin真实PG15 pg_dump与Python3.11 venv。源状态摘要不是原始恢复内容核验，backup_captured也不构成升级/恢复/native/Linux/供应链/发布授权。
 
 ## Outcomes & Retrospective
+
+08:24 +08:00 当前诊断片：实际 held 原生候选中，外来owner连接使同次观察精确2 PID、busy_run_count=0/other_session=true；关闭后实际failed运行带未来lease使busy_run_count=1/other_session=false、仅观察PID。原错误码、严格拒绝和consume烧毁token不变，附原观察JSON note且不后查；首链1/1只证明诊断行为，原07db CI红的根因仍未知。控件自身已有受hash pin，新调用需重新审新pin；没有授源写入、正式恢复、Linux或发布能力。原导入失败单独保留，不与本链合成第二个业务目标。
 
 M1统计observer本机必要两目标首次2/2通过，唯一原证据为`private/safe-narrow-bbbcd541aa36476f9f1306035f965f1e/metadata.json`及同目录pytest.xml/log，07:47:43.682–07:48:30.416 +08:00、45.86秒，真实PG15.19、清凭据/关追踪/TZ Tokyo、真实模型/服务器/外发0。原七字段有限诊断、五个原精确PID门、旧候选runpy snapshot导入与独立pin闭包保留；旧8控输入不再适用，必须新capture/新9控pin。原CI额外PID均保留未知，新观察不能保证CI转绿；原脚本69/81、Linux应用/正式CLI/中央身份/全局writer和发布门仍关闭。
 
