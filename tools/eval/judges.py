@@ -107,6 +107,19 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
             checks.append(AssertionResult(f"{name}[{index}]", bool(predicate(value))))
     if "events" in expect and expect["events"] is not None:
         checks.append(AssertionResult("events", _event_check(expect["events"], result.events)))
+    for index, query in enumerate(expect.get("memory_access", []), 1):
+        injected = result.db.get("context", {}).get("injected_facts", [])
+        cited = any(
+            query in row.get("text", "") and "〔" + row["alias"] + "〕" in result.text
+            for row in injected
+            if isinstance(row.get("alias"), str)
+        )
+        checks.append(
+            AssertionResult(
+                f"memory_access[{index}]",
+                "memory_search" in result.tools_called or cited,
+            )
+        )
     if expect.get("chart_structure"):
         checks.extend(
             AssertionResult("chart_structure." + name, passed) for name, passed in structure_checks(result.text).items()
@@ -129,8 +142,22 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
 JUDGE_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["score", "verdict", "issues"],
+    "required": [
+        "score",
+        "verdict",
+        "issues",
+        "reason",
+        "deductions",
+        "expected_clauses",
+    ],
     "properties": {
+        "reason": {
+            "type": "string",
+            "minLength": 1,
+            "description": "对照criterion解释评分，不得捏造期望",
+        },
+        "deductions": {"type": "array", "items": {"type": "string"}},
+        "expected_clauses": {"type": "array", "items": {"type": "string"}},
         "score": {"type": "number", "minimum": 0, "maximum": 1},
         "verdict": {"type": "string", "enum": ["pass", "revise"]},
         "issues": {
@@ -141,12 +168,23 @@ JUDGE_SCHEMA: dict[str, Any] = {
                 "required": ["type", "severity"],
                 "properties": {
                     "type": {"type": "string", "enum": list(ISSUE_SEVERITIES)},
-                    "severity": {"type": "integer", "enum": sorted(set(ISSUE_SEVERITIES.values()))},
+                    "severity": {
+                        "type": "integer",
+                        "enum": sorted(set(ISSUE_SEVERITIES.values())),
+                    },
                 },
             },
         },
     },
 }
+
+
+def _validate_reason(output: dict[str, Any]) -> None:
+    if not isinstance(output.get("reason"), str) or not output["reason"].strip():
+        raise ValueError("critic reason missing")
+    for key in ("deductions", "expected_clauses"):
+        if not isinstance(output.get(key), list) or any(not isinstance(v, str) for v in output[key]):
+            raise ValueError("critic reasoning clauses missing")
 
 
 class ModelJudge:
@@ -170,6 +208,7 @@ class ModelJudge:
                 purpose="eval_critic",
             )
             output = response["output"]
+            _validate_reason(output)
             score = output["score"]
             if isinstance(score, bool) or not isinstance(score, int | float) or not math.isfinite(score):
                 raise ValueError("invalid critic score")
@@ -193,6 +232,9 @@ class ModelJudge:
                 raise ValueError("critic score conflicts with verdict")
             return {
                 "score": float(score),
+                "private_reasoning": {
+                    key: output[key] for key in ("reason", "deductions", "expected_clauses", "issues")
+                },
                 "model_calls": 1,
                 "elapsed_seconds": response.get("latency_seconds", time.monotonic() - started),
                 "error": None,

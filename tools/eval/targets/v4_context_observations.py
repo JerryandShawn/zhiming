@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import json
 from typing import Any
 
 from mingjing_core.application.agent_snapshots import STAGE
@@ -15,7 +16,12 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
     if not run:
         return empty
     try:
-        record = repo.get(owner, "runtime_step", f"{run['id']}:e{run['retry_epoch']}:{STAGE}", include_deleted=True)
+        record = repo.get(
+            owner,
+            "runtime_step",
+            f"{run['id']}:e{run['retry_epoch']}:{STAGE}",
+            include_deleted=True,
+        )
     except ScopeError:
         return empty
     if record["status"] == "deleted":
@@ -26,10 +32,29 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
     items = [item for layer in layers if layer["name"] == "L4" for item in layer["items"]]
     text = "\n".join(message["content"] for item in items for message in item["messages"])
     match = re.search(r'time_filter="(\d{4}-\d{2}-\d{2}\.\.\d{4}-\d{2}-\d{2})"', text)
+    injected = []
+    for layer in layers:
+        if layer["name"] not in {"L2", "L4"}:
+            continue
+        for item in layer["items"]:
+            for message in item["messages"]:
+                content = message["content"]
+                try:
+                    value = json.loads(content[content.index("\n") + 1 : content.rindex("\n")])
+                except (ValueError, TypeError):
+                    continue
+                if isinstance(value, dict) and value.get("kind") in {
+                    "fact",
+                    "event",
+                    "constraint",
+                    "preference",
+                }:
+                    injected.append({"alias": value.get("alias"), "text": value.get("text", "")})
     return {
+        "injected_facts": injected,
         "l4": {
             "time_filter": match.group(1) if match else None,
             "text": text,
             "item_ids": [item["key"] for item in items if item["key"] != "time-filter"],
-        }
+        },
     }

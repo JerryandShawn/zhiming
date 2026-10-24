@@ -38,7 +38,9 @@ def repository_fixture(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPa
 def queued(repo: PostgresRepository, text: str = "我喜欢合成夜班") -> dict[str, Any]:
     source = MemoryService(repo).receive("alice", content=text, source_id=uuid.uuid4().hex, at=get_clock().now())
     run = repo.queue_run(
-        "alice", uuid.uuid4().hex, {"message": text, "source_message_id": source["id"], "case_ids": []}
+        "alice",
+        uuid.uuid4().hex,
+        {"message": text, "source_message_id": source["id"], "case_ids": []},
     )
     modify(repo, run, "runtime='v4',thread_id='life:self'")
     return repo.claim_run("alice", run["id"], lease_seconds=150)
@@ -47,21 +49,34 @@ def queued(repo: PostgresRepository, text: str = "我喜欢合成夜班") -> dic
 def invoke(repo: PostgresRepository, run: dict, port: ScriptedPort, **options: Any) -> tuple[dict, list[dict]]:
     events: list[dict] = []
     runtime = AgentRuntime(repo, port, SyntheticMeter(), offline=True, **options)
-    result = runtime.execute(SimpleNamespace(repo=repo), "alice", run["id"], run["lease_token"], events.append)
+    result = runtime.execute(
+        SimpleNamespace(repo=repo),
+        "alice",
+        run["id"],
+        run["lease_token"],
+        events.append,
+    )
     return result, events
 
 
-def test_life_runtime_commits_once_and_persists_each_original_meter(runtime_repo: PostgresRepository) -> None:
+def test_life_runtime_commits_once_and_persists_each_original_meter(
+    runtime_repo: PostgresRepository,
+) -> None:
     repo, events = runtime_repo, []
     run = queued(repo)
-    port = ScriptedPort([answer("", [ToolCall("write", "memory_write", writer(run))]), answer("已记住〔f1〕")])
+    port = ScriptedPort(
+        [
+            answer("", [ToolCall("write", "memory_write", writer(run))]),
+            answer("已记住〔f1〕"),
+        ]
+    )
     result, events = invoke(repo, run, port)
     assert result["schema"] == "core4.0" and result["text"] == "已记住〔f1〕"
     current = repo.fetch_run("alice", run["id"])
     assert current["status"] == "succeeded" and len(repo.list("alice", "fact")) == 1
     assert len(current["usage"]["context_sends"]) == 2
     assert len(current["usage"]["context_steps"]) == 2
-    assert current["usage"]["agent_runtime"]["prompt_versions"]["system"]["version"] == "1.1.1"
+    assert current["usage"]["agent_runtime"]["prompt_versions"]["system"]["version"] == "1.2.0"
     assert [row["data"]["seq"] for row in events] == list(range(1, len(events) + 1))
     assert events[-1]["type"] == "final"
     for event in events:
@@ -73,7 +88,9 @@ def test_life_runtime_commits_once_and_persists_each_original_meter(runtime_repo
     assert len(assistant) == 1
 
 
-def test_critic_revise_generates_once_with_private_reasoning_preserved(runtime_repo: PostgresRepository) -> None:
+def test_critic_revise_generates_once_with_private_reasoning_preserved(
+    runtime_repo: PostgresRepository,
+) -> None:
     repo, run = runtime_repo, queued(runtime_repo)
     port = ScriptedPort([answer("你一定成功"), answer("这只是一个可能性")])
     critic = ScriptedPort(
@@ -83,7 +100,12 @@ def test_critic_revise_generates_once_with_private_reasoning_preserved(runtime_r
                     {
                         "verdict": "revise",
                         "issues": [
-                            {"type": "fatalism", "quote": "一定成功", "severity": 4, "fix_hint": "说明不确定性"}
+                            {
+                                "type": "fatalism",
+                                "quote": "一定成功",
+                                "severity": 4,
+                                "fix_hint": "说明不确定性",
+                            }
                         ],
                     }
                 )
@@ -108,19 +130,23 @@ def test_crisis_provider_failure_commits_audited_template(runtime_repo: Postgres
 
     repo, run = runtime_repo, queued(runtime_repo, "我现在不想活了")
     result, events = invoke(repo, run, FailedPort([]))
-    assert all(number in result["text"] for number in ("12356", "120", "110"))
+    assert result["text"] == "我这边暂时没法回答，稍后再试。"
     assert result["review"]["state"] == "skipped" and events[-1]["type"] == "final"
-    assert repo.fetch_run("alice", run["id"])["usage"]["agent_runtime"]["fallback"] == "crisis_template"
+    assert repo.fetch_run("alice", run["id"])["usage"]["agent_runtime"]["fallback"] == "availability_template"
 
 
-def test_incognito_is_explicitly_rejected_until_private_runtime_is_wired(runtime_repo: PostgresRepository) -> None:
+def test_incognito_is_explicitly_rejected_until_private_runtime_is_wired(
+    runtime_repo: PostgresRepository,
+) -> None:
     repo, run = runtime_repo, queued(runtime_repo)
     modify(repo, run, "thread_id='incognito:synthetic'")
     with pytest.raises(EvidenceError, match="无痕"):
         invoke(repo, run, ScriptedPort([]))
 
 
-def test_ask_user_public_event_matches_committed_question(runtime_repo: PostgresRepository) -> None:
+def test_ask_user_public_event_matches_committed_question(
+    runtime_repo: PostgresRepository,
+) -> None:
     repo, run = runtime_repo, queued(runtime_repo)
     question = {
         "question": "你更在意什么？",
@@ -136,7 +162,9 @@ def test_ask_user_public_event_matches_committed_question(runtime_repo: Postgres
     assert events[-1]["type"] == "final" and result["asked"]["question"] in result["text"]
 
 
-def test_crisis_twenty_seconds_without_body_switches_to_program_template(runtime_repo: PostgresRepository) -> None:
+def test_crisis_twenty_seconds_without_body_switches_to_program_template(
+    runtime_repo: PostgresRepository,
+) -> None:
     elapsed = [0.0]
 
     def controls(*args: Any, **kwargs: Any) -> RunControl:
@@ -151,6 +179,6 @@ def test_crisis_twenty_seconds_without_body_switches_to_program_template(runtime
 
     repo, run = runtime_repo, queued(runtime_repo, "我想伤害自己")
     result, events = invoke(repo, run, DelayedPort([]), control_factory=controls)
-    assert "12356" in result["text"] and "120" in result["text"] and "110" in result["text"]
-    assert repo.fetch_run("alice", run["id"])["usage"]["agent_runtime"]["fallback_reason"] == "crisis_no_text"
+    assert result["text"] == "我这边暂时没法回答，稍后再试。"
+    assert repo.fetch_run("alice", run["id"])["usage"]["agent_runtime"]["fallback_reason"] == "empty_answer"
     assert "只在私有协议" not in json.dumps(events, ensure_ascii=False)

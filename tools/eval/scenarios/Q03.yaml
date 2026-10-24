@@ -23,7 +23,22 @@ turns:
     min_questions: 1
     max_questions: 1
     judge: 选项为2至4个，或先给框架再问一个具体问题。
+    tools_called:
+    - ask_user
 scripted:
 - turn: 1
   model:
-  - text: 可以先看成长、收入和生活节奏。你目前最在乎哪一项？
+  - tool_call:
+      name: ask_user
+      arguments:
+        question: 你选工作时最在乎哪一项？
+        options:
+        - 成长空间
+        - 收入
+        - 生活节奏
+        allow_free_text: true
+        why: 偏好影响选项取舍
+        slot: 工作优先级
+        changes_conclusion: 优先级会改变A与B的建议顺序
+  - text: 你选工作时最在乎哪一项？
+notes: v30/38 Q03：保留一个问题，必须通过ask_user呈现2–4个选项。

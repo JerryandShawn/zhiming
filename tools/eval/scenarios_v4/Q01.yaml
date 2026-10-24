@@ -8,11 +8,12 @@ turns:
 - user: 你好
   expect:
     must_include_all:
-    - 明镜台
+    - 明镜
     - 怎么称呼|叫什么
     min_questions: 1
-    max_questions: 1
+    max_questions: 2
 scripted:
 - turn: 1
   model:
   - text: 你好，我是明镜台，可以陪你聊生活，也能在有资料时提供命理参考。我怎么称呼你？
+notes: v30授权；契约修订依据38号复核，见docs/v4/eval/contract_changes_20261024.md。

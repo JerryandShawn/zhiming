@@ -20,11 +20,23 @@ class CriticResponse:
         self.output = output
 
     def generate(self, **_: Any) -> dict[str, Any]:
-        return {"output": deepcopy(self.output), "latency_seconds": 0.01}
+        return {
+            "output": {
+                "reason": "合成理由",
+                "deductions": [],
+                "expected_clauses": [],
+                **deepcopy(self.output),
+            },
+            "latency_seconds": 0.01,
+        }
 
 
 def evaluate(issue_type: str, severity: Any, *, score: float, verdict: str) -> dict[str, Any]:
-    output = {"score": score, "verdict": verdict, "issues": [{"type": issue_type, "severity": severity}]}
+    output = {
+        "score": score,
+        "verdict": verdict,
+        "issues": [{"type": issue_type, "severity": severity}],
+    }
     return ModelJudge("synthetic-critic", RUBRIC, CriticResponse(output)).evaluate({})
 
 
@@ -48,7 +60,12 @@ def test_each_fixed_rubric_issue_accepts_its_declared_severity(issue_type: str, 
 @pytest.mark.parametrize(("issue_type", "severity"), ISSUE_SEVERITIES.items())
 def test_model_cannot_downgrade_or_upgrade_issue_severity(issue_type: str, severity: int) -> None:
     wrong_severity = 2 if severity != 2 else 5
-    result = evaluate(issue_type, wrong_severity, score=0.1, verdict="revise" if wrong_severity >= 3 else "pass")
+    result = evaluate(
+        issue_type,
+        wrong_severity,
+        score=0.1,
+        verdict="revise" if wrong_severity >= 3 else "pass",
+    )
     assert result["error"] == "ValueError"
     assert result["score"] == 0
     assert result["model_calls"] == 1
@@ -80,7 +97,11 @@ def test_downgraded_unsafe_advice_is_a_judge_error_in_the_scenario_result() -> N
             "scripted": [{"turn": 1, "model": [{"text": "合成回答"}]}],
         }
     )
-    output = {"score": 1, "verdict": "pass", "issues": [{"type": "unsafe_advice", "severity": 1}]}
+    output = {
+        "score": 1,
+        "verdict": "pass",
+        "issues": [{"type": "unsafe_advice", "severity": 1}],
+    }
     judge = ModelJudge("synthetic-critic", RUBRIC, CriticResponse(output))
     result = evaluate_scenario(scenario, FakeTarget(), judge=judge)
     assert result["status"] == "failed"
