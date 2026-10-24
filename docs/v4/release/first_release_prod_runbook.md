@@ -1,6 +1,6 @@
 # 核心首发生产切换草案
 
-2026-10-24 07:49，北京时间。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 已推源回填工具`07dbf97`与来源组件的普通集成`f6fb9f1`均非最终候选；f6的push和PR合成CI已在M1会话门失败。新同次统计观察仅本机两目标通过，CI待核、旧额外PID身份未知；新observer须纳入重新审核的9控pin，不能补写旧8控输入。源replay/回填实际分轮范围、原失败及唯一证据只在[增量ExecPlan](../execplans/first_release_incremental_20261024.md)登记，091测试archive不是最终发布包。正式目标仍只有文件契约/可选只读恢复库ACL，Linux应用、中央保全、全局writer、切换及开门门均未放行。无服务器、真实模型或飞书动作。
+2026-10-24 10:40，北京时间。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 新显式本机源写main的默认/坏材料与prefix7完整链首次两目标通过，范围及唯一证据只在[增量ExecPlan](../execplans/first_release_incremental_20261024.md)登记；本机方法级main通过不是Linux应用或生产恢复验收。原正式`f6fb9f1`的push/PR M1会话失败仍保留，旧额外PID身份未知，当前工具头/测试archive均非最终发布包；observer须新捕获并审核9控pin，不能补写旧输入。正式目标仍只有文件契约/可选只读ACL；Linux应用、原中央保全、全局writer、切换及开门均未放行。无服务器、真实模型或飞书动作。
 
 旧B1不再单独上线，旧B/D授权失效。**只有用户对本次最终候选、生产对象、维护窗口、修改、渠道恢复及止损范围重新授权，才可进入生产步骤。** 大脑审核stage及本单是必要输入，不替代用户授权。旧30/31文件、旧工作日窗口或旧一次模型冒烟不能自动成为本次许可。
 
@@ -54,7 +54,7 @@ cd "$FR_CONTROL_DIR"
 
 本机M2已能将新UTC捕获与同call新恢复目标的实际原始内容绑定，命令统一见[stage草案的M2入口](first_release_stage_runbook.md#本机捕获与原始恢复绑定m2)。单独绑定模式在升级之前检查完整表/逻辑列/序列语义；同节另给同时提供capture和replay独立pin的组合命令，已有真实prefix7捕获→原始比较→升级8→原生双重放的1/1定向证据及两次fixture错误记录。它不证明当前源库未再变化，也不提供生产恢复或现库升级授权；D2/D3仍需完整新证据及新授权。
 
-TargetProof、源guard/postcheck、Forward内部组合及后续源重放/回填组件的分轮结果与失败统一只指[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，组件范围与剩余门见[stage组件表](first_release_stage_runbook.md#本机目标证明与源升级组件无源写cli)。本机Forward已组合目标证明/运行时、源升级及prefix7源隐私重放，源回填尚未接成闭环；没有可执行的正式源升级/原生恢复/回填CLI。Linux运行镜像、正式中央身份保全/重绑定、完整切换与开门门仍No-Go；本单不增加未验证命令。
+TargetProof、源guard/postcheck、Forward内部组合及后续源重放/回填组件的分轮结果与失败统一只指[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，组件范围与剩余门见[stage组件表](first_release_stage_runbook.md#本机目标证明与源升级组件正式源写入口未就绪)。本机Forward已组合目标证明/运行时、源升级及prefix7源隐私重放→回填完整闭环；新显式main已完成限定本机验收，固定15参数、默认零副作用与唯一执行旗标统一见[本机源写入口](first_release_stage_runbook.md#本机完整源写命令仅本机合成库)。没有可执行的正式源升级/原生恢复/回填CLI。Linux运行镜像、正式中央身份保全/重绑定、完整切换与开门门仍No-Go；本单不增加未验证生产命令。
 
 ## 3. 停写、备份、增量、切换、开门顺序
 

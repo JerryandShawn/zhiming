@@ -1,6 +1,6 @@
 # 核心首发 stage 执行草案（B0–B8）
 
-2026-10-24 07:49，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 已推源回填工具`07dbf97`，来源组件普通集成`f6fb9f1`的push与PR合成CI均在M1会话门失败；不能把本机组合成功当作新merge通过。M1同次统计观察的新片仅本机两目标通过，原CI额外PID身份未知、新CI待核；必须新捕获并审核含observer的9控pin，不补写旧8控输入。源replay与回填的实际分轮范围、原失败及唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，工具提交号和091测试archive均非最终候选。正式apply、Linux应用/原生恢复、中央保全、全局writer、切换与开门均未放行。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 10:40，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 新显式本机源写CLI的默认早拒/零副作用与prefix7非空完整链已首次两目标通过；只证明本机 `main(argv)` 真实调用，不等于Linux应用进程、正式恢复或最终候选通过。源replay/回填及新CLI的实际archive、范围、原失败和唯一证据统一见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档。正式集成`f6fb9f1`原push/PR的M1会话失败仍保留，额外PID原因未知，不能用本机通过消除；新捕获须重新审核含observer的9控pin。正式apply、Linux应用、原中央保全、全局writer、切换和开门均未放行，工具头不是最终发布SHA。本单没有授权或执行服务器、模型或飞书动作。
 
 本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
 
@@ -151,20 +151,30 @@ cd "$FR_CONTROL_DIR"
 
 这条组合已在真实本机PG15的prefix7样本完成1/1定向验证：先真实更正，再M1捕获含新更正事实和三类物理checkpoint的原始状态；另一新目标先M2比较，再升级至8和实际候选双重放，最后才核擦除及完整第二遍不变。新更正事实、原话、非重叠事实、另一owner和源库完整状态保持，三类checkpoint从各1行清至0。复杂blob由明确合成SDK种子生成，未向重放注入结果。前两次新fixture阶段语义错误及最后通过均见[原恢复ExecPlan](../execplans/first_release_recovery_20261023.md)，不称首次全绿、全部样本或Linux通过；源库升级和正式各门仍关闭。
 
-### 本机目标证明与源升级组件（无源写CLI）
+### 本机目标证明与源升级组件（正式源写入口未就绪）
 
-以下为基线后逐片实现/验证的开发组件，不是可照做的源升级命令。每轮实际候选archive、控制代码与原始失败/修正统一见[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不另归档日志或合并不同轮次为一次全绿；不能把它们拼成同一最终发布包通过证据。
+以下为基线后逐片实现/验证的开发组件；本机完整入口见后节，组件本身不提供正式源升级命令。每轮实际候选archive、控制代码与原始失败/修正统一见[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不另归档日志或合并不同轮次为一次全绿；不能把它们拼成同一最终发布包通过证据。
 
 | 组件 | 本机已验证范围 | 仍关闭的门 |
 | --- | --- | --- |
 | same-call TargetProof | 八个独立行为按4+3+1分轮通过，另旧public M2 prefix7兼容1；同次新目标真实原始内容绑定→8→候选双重放后，核创建时OID、最终ACL/完整状态，creator锁内mint并单次消费，消费失败也耗尽token | 不透明对象不能由JSON重建；正常目标链16连接。仅可在下述实际Forward组合内消费，不单独赋予源写权；正式恢复仍未完成，先前session setup拒绝来源仍未知 |
 | Source guard | 12个独立行为分轮验证（纯文件1、真实PG夹具11）；真实Windows独占锁内改用同一持锁句柄读fence，保持默认锁行为及精确文件身份/hash、实际源OID/权限/会话/完整UTC状态核验 | 只读scope仍要求源capture不变，不返回写连接或升级许可；现应用未接合作栅栏，不能证明全局停写或Linux跨exec行为 |
 | Source postcheck | 七个独立行为按6+1分轮通过，验证真实4/7测试夹具前向8后的原字段/列、完整迁移账本及owner/writer精确终态；两个正例均实际调用SDK setup，版本10→10、新增0 | 不是源升级入口，尚未覆盖存在待应用SDK迁移的升级；不因新增版本0声称setup未执行或零SQL，不自动修复异常状态 |
-| SourceForward内部API | 真实4/7同call目标证明、controller核验、源双栅栏与Core/SDK/grant组合已有实证；另可选独立pin已接prefix7实际源隐私双重放，保维护标记，未知提交停止不重入 | 无源写CLI；源回填尚未接成整体，应用全局停写与正式门仍未证明 |
+| SourceForward内部API及本机CLI | 真实4/7同call目标证明、controller核验、源双栅栏与Core/SDK/grant组合已有实证；独立pin已接prefix7实际源隐私双重放及后续源回填。新显式main的默认/坏材料与非空prefix7全链首次2/2，保维护标记，未知提交停止不重入 | 不是Linux应用进程验收；应用全局停写与正式门仍未证明 |
 | 源重放worker及接线 | 独立组件4/4；新同call组合保留首1红1绿及规范UTC后仅原红1绿，真实SourceWitness内完成双重放、活lease/父终态ACK和末段独立业务/状态/导出核验 | 分轮证据见原计划，不称一次2/2；初始连接失败/控制故障注入与Linux未覆盖 |
-| 回填effects组件 | core3精确逐值/第二遍无写与异常整事务回滚2/2；core4历史缺口及原生撤销重放后不复活另2/2，均为真实PG组件 | 新候选fresh worker/源许可接线仅静态WIP，未测试；legacy映射回填待验，成功dict不赋权 |
+| 回填effects及源接线 | core3精确逐值/第二遍无写与异常整事务回滚2/2；core4历史缺口及撤销后不复活另2/2。独立pin/fresh worker已在原活witness内接到源replay之后，受影响正反两目标于07:07共同2/2，首遍回填两条历史、第二遍三个写计数0，closed及完整后验成立 | 原失败与各轮archive分别保留，只索引原计划；不把Windows本机、组件或成功dict当作Linux/正式恢复/发布能力 |
 
-当前CLI仍没有既有源库forward、源库原生撤销/收据重放或回填入口；上文针对同call新`fr_restore`目标的双重放接口保持原范围。Forward内部已有prefix7源隐私组合实证，源回填仍待接线/验证，尚未组成完整源闭环。源隐私重放须先于回填，不能跳过。`source_write_authorized`、全局停写、正式native/runtime/Linux、中央身份保全和publication继续关闭；typed凭据、Windows PG结果及组件测试均不构成stage或生产授权。
+Forward内部已有prefix7源隐私重放→回填的完整本机闭环，显式本机CLI的两条必要行为已完成上述限定验收。上文针对同call新`fr_restore`目标的双重放接口保持原范围。源隐私重放须先于回填，不能跳过。公开回执的`source_write_authorized`、全局停写、正式native/runtime/Linux、中央身份保全和publication继续关闭；内部活witness的一次性源写许可不等于这些公开发布位，Windows PG结果及组件测试均不构成stage或生产授权。
+
+### 本机完整源写命令（仅本机合成库）
+
+新增开发入口为 `tools.first_release_source_forward`，只选择原完整链，不增加授权或证明协议。所有输入路径均须绝对路径：原M1的 `capture-inputs.json` / capture pin、独立的目标release / contract / dump pin、原custom dump、真实PG15 `pg_restore`、候选Core Python与最新撤销账本/replay pin，以及TargetProof、controller runtime、Forward、源replay、源backfill五份独立受审pin。不可用JSON中的成功位、旧恢复目标或手填输出替代这些材料；控制代码变化后重新审核pin，不能自动更新hash继续。
+
+在本次合成工作区根目录，用pin绑定的同一Core Python3.11虚拟环境调用。只设受保护的 `FIRST_INCREMENTAL_OWNER_DSN` / `WRITER_DSN` / `ADMIN_DSN` 和 `FIRST_RELEASE_OWNER_DSN` / `WRITER_DSN` / `ADMIN_DSN`，不在命令行或记录中放DSN。原路由继续只允许同一回环55480/55481、既有本次 `fr_upgrade_<id>` prefix4/7源及同call新建 `fr_restore_<id>`，目标不可已存在；这不是stage或生产入口。
+
+参数集合固定为下列15项：`--pin`、`--contract`、`--dump-pin`、`--dump`、`--pg-restore`、`--capture-inputs`、`--capture-pin`、`--candidate-python`、`--replay-ledger`、`--replay-pin`、`--target-proof-pin`、`--controller-runtime-pin`、`--forward-pin`、`--source-replay-pin`、`--source-backfill-pin`。没有最后两份pin时连默认校验也拒绝。默认调用 `python -B -m tools.first_release_source_forward <上述文件参数>`，预期仅文件校验、连接/进程/文件写均0；唯一执行旗标是加 `--apply-source-local`，不能选择跳过撤销重放或回填。
+
+执行顺序仍是源维护/双栅栏→同次新目标恢复证明→controller运行时→源Core/SDK/最小授权→源原生撤销/收据双重放→源回填双遍→closed及完整后验。成功保留源维护标记，`source_forward_completed=true`、`privacy_replay_pending=false`、`backfill_pending=false`；公开正式位全部仍false。任一异常返回2及有界无正文错误码/phase、实际session恢复投影和 `automatic_cleanup=false`，保留源、目标与材料，不自动清理、解除维护或重试。唯一真实PG首链约15.6分钟（含夹具、有效默认验证和完整执行），只索引增量ExecPlan原件，不是测得RTO；实际验证为方法级 `main(argv)`，没有称Linux可执行进程已验。Linux应用、正式恢复、中央身份保全、全局writer及切换依旧另需验收和用户新授权。
 
 | 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
 | --- | --- | --- | --- | --- |

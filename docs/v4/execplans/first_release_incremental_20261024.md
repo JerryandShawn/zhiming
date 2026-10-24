@@ -10,9 +10,15 @@
 
 ## Purpose / Big Picture
 
-本计划已从M1显式本机备份扩展到M2同call新库原始内容绑定、M3a目标证明/运行时/源双栅栏组合与前向升级，以及M3b源原生重放/回填接缝，逐片实现范围见Progress。默认只读文件校验，零PG连接、零子进程、零文件写。backup入口自身不迁移源；另显式Forward内部API的原首8已真实验证合成源4/7→8，尚无源写CLI。源worker重放组件及同call组合已有分轮真实实证；源回填在新pin同次重复上游验证去重后，受影响正反两目标于07:07首次共同2/2通过，包括closed收尾与独立完整后验。此前首1红1绿、仅原红诊断复验1红分别保留，不据后续通过倒推唯一根因。Linux、中央身份、正式恢复与发布继续关闭。
+本计划已从M1显式本机备份扩展到M2同call新库原始内容绑定、M3a目标证明/运行时/源双栅栏组合与前向升级，以及M3b源原生重放/回填接缝，逐片实现范围见Progress。默认只读文件校验，零PG连接、零子进程、零文件写。backup入口自身不迁移源；另显式Forward内部API的原首8已真实验证合成源4/7→8，新完整源写CLI于10:39通过默认/坏材料和非空prefix7两条必要行为。源worker重放组件及同call组合已有分轮真实实证；源回填在新pin同次重复上游验证去重后，受影响正反两目标于07:07首次共同2/2通过，包括closed收尾与独立完整后验。此前首1红1绿、仅原红诊断复验1红分别保留，不据后续通过倒推唯一根因。Linux、中央身份、正式恢复与发布继续关闭。
 
 ## Progress
+
+- [x] (2026-10-24 10:40 +08:00) 新SourceForward CLI唯一首链2/2通过，0失败/error/skip，1既有Starlette/AnyIO弃用警告；10:24:08.860259–10:39:43.082585，XML933.265秒。根独立读metadata、全部XML及log；唯一原件 `private/safe-narrow-915a0463fdab4282a2b216e736f937d3/`。纯坏/缺pin0.033秒；真实prefix7 main链932.613秒，实际archive `5b3fe52a7b9aef189e56d8803d9eb309bb012f60`。同材料默认main完整validate零PG/进程/写且源全态/维护材料不变；再显式main真正完成目标证明/controller/源升级/源双重放/回填/closed及独立后验：历史回填2、第二遍三写0/0/0、checkpoint1/1/1→0/0/0，原字段/纠正fact/Bob/中央空表与sequence及正式false位均保持。未mock execute/业务返回，没有重复旧矩阵，slot1已释放；只是本机方法级main入口，不称Linux应用进程或正式发布通过。真实模型/服务器/外发0。
+
+- [x] (2026-10-24 10:23 +08:00) 新CLI145行/最大函数24、新专属测试205行/最大45已静态冻结，根全文审并核原parse调用与完整后验，R3独立全文审无实质阻塞；两文件Ruff E/F/I/B/UP/SIM、120列format均绿。所有旧已pin控件未改，无entry-pin或新权能层。仅授slot1原定两个新node首次验证：纯缺/坏pin早拒；真实prefix7同材料先默认0IO/全态不变，再显式main一次真实Forward→撤销重放→回填。其余已绿矩阵不复跑，尚无新测试结果。
+
+- [ ] (2026-10-24 10:17 +08:00) 下一独立片在 `v4/p3-wire-source-cli-20261024` 补显式本机 SourceForward 命令入口。复用已验证的 `ForwardInputs` / `execute` 完整源升级→原生撤销重放→回填链，新增文件只负责严格参数与文件契约；默认仍零连接/进程/写，唯一 `--apply-source-local` 必须同时给源 replay/backfill pin。先静态根审，再授槽运行一个文件拒绝行为与一个真实非空 prefix7 CLI 整链；不重跑旧 4/7 矩阵，不修改已 pin 控件或宣称正式恢复、全局停写、Linux 与发布通过。测试与结果尚未发生。
 
 - [x] (2026-10-24 09:14 +08:00) 独立v4/p3-wire-forward-diagnostic-20261024只补原选中异常的同次诊断透传：SourceForward.execute此前丢弃RestoreRejected.session_diagnostic后构造SourceForwardStopped。新实现严格白名单/有界无正文，错误码/phase/优先级/严门不变，不透传任意notes、不重查PG。根逐行审两文件后仅授两个目标，首次共同2/2通过，09:06:41.807331–09:14:28.387912、XML465.695秒。唯一原件在 `private/safe-narrow-4fed7d2e348f457d8bcdefd6b3601018/`；根独立核metadata及全部XML。真实外来连接仍被原门拒绝，原瞬间PID/type透传而未知字段/notes被丢，源与材料不变；原CI红在本机实际到达SDK setup后SQL漂移门，SDK10→10/新0、无grant，原严格断言全保留。原CI未知额外会话原因仍未知，本机通过不称CI已修；控件新hash须重新审pin，旧pin不补写。
 - [ ] (2026-10-24 08:57 +08:00) 89c9e2a的run40041896351/job120714666379已正常汇总失败：4198通过/75跳过/1失败、2230.02秒；唯一post_setup_live_sql_drift目标预期 CONTROLLER_SAVER_SQL_CHANGED、实际 INCREMENTAL_OTHER_SOURCE_SESSION。Core584/Frontend通过，ModelPort跳过，PG清理成功。本次日志未打印原门allowed/actual/type诊断，额外会话来源仍未知；不与fa23或07db冒认为同因，不称超时，不合入红源。正在只读核SourceForward异常包装是否保留原失败闸门诊断，不重试CI或改原断言；原始证据仅GitHub该job。
@@ -93,9 +99,13 @@
 - [x] (2026-10-24 03:40 +08:00) 记录TargetProof首8节点4通过/4源夹具严格绑定失败，实际正常mint及4个关闭行为已有证据；仅捕获前按官方parse规范化fixture，原strict比较保持，后续不重复4绿。
 - [x] (2026-10-24 03:47 +08:00) 记录仅4红复验3通过/1 M1握手精确session setup错误；生产strict控制未变，首4绿及复验3绿不重复，本轮唯一未触达ledger漂移目标保留真实失败记录。
 - [x] (2026-10-24 03:55 +08:00) 根批准最终fence冻结后仅补ledger1+旧public M2 prefix7兼容1，2通过/147.93秒；Proof八行为现按4+3+1分轮实证，另兼容1，不称一次8/8或9/9。只在ledger新fixture安装拒绝后body-free会话诊断，通过不造诊断；已释放测试令牌，冻结本片六路径供根审。
-- [ ] 后续在用户已授权的本机开发范围内，将同call目标证明与controller门组合到完整源guard及fr_upgrade前向入口，再落实源既有撤销重放与回填；尚无源升级命令。
+- [x] (2026-10-24 10:40 +08:00) 原本机组合目标现已逐片落实，显式源升级/重放/回填main的prefix7完整链及默认/坏材料通过；各阶段原archive和分轮证据见上述Progress，不把组件或原prefix4验收归入新CLI两节点。正式源升级/原生恢复命令、Linux与全局writer仍未完成。
 
 ## Surprises & Discoveries
+
+2026-10-24 10:35 后续停写缺口只读核实：Web/飞书/报告/Hermes最终都用 ConsultationService.from_base；Web还有独立后台dispatcher/隐私tick，LangGraph/Saver有pool直连，delivery在claim事务之后另做transport。现 cooperative_writer 只有定义，旧 deploy_core.execute_hermes_core 的共享文件锁只覆盖已装Hermes，三unit直接运行Python入口。因此只在Repo.transaction加锁不足以放行global_quiescence；下一实际接线需覆盖完整入口寿命，PG会话锁不能经旧exec继承，须统一同候选进程入口或另审父进程监管。当前未实施/未测试，不改共享记忆或照搬旧freeze/install/publish。
+
+10:17 只读核对发现完整源回填已真实接在 `first_release_incremental_forward._apply` 的原活 witness 内；当前可操作缺口是 `first_release_incremental.main` 仍只有 backup，不能把已接组件重复实现或沿用“回填未接”的过期当前态描述。新 CLI 不改迁移、隐私、权限、异常优先级和持久维护策略。
 
 新负例首次以真实PG角色差异复现type不可见，并在M1原门获得可见类型且拒绝，证明统计观察改动有效；没有复现原CI的1186/683/2380/863，不把这项成功当成这些PID身份或根因证据。负例拒绝后的同进程原capture_binding节点通过，也覆盖动态scope在异常退出后未污染下一次正常捕获；M1外的其他guard仍用原严格观察路径。
 
@@ -154,6 +164,8 @@ controller已加载业务模块，不具备fresh worker的-I/-B进程条件。�
 M3a首链两正例的旧字段比较错误来自将schema_migrations新增5–8行当作原行漂移。该断言原保护“全部旧行/旧字段含时间戳不变”；根审允许前后仅在这张账本表按version<=原prefix取旧行，完整1–8checksum核验仍独立保留，其他表不排字段、不排旧行。实现和受pin SQL未因该夹具问题改动。
 
 ## Decision Log
+
+10:17 决定只补一个薄的本机 CLI，参数显式绑定 BackupInputs、LocalInputs、CaptureBinding、CandidateReplay、TargetProofPin、ControllerRuntimePin、SourceForwardPin、SourceReplayPin、SourceBackfillPin；文件校验通过不产生源写权限，权限仍仅原 execute 同次活 witness 能授予。执行必须包含完整 replay/backfill，避免公开一个容易遗漏隐私重放的半条链。根维护计划/文档/Git，两代理分别独占新增 CLI 与新增专属测试；先静态、再唯一必要两行为。无需扩大用户授权。
 
 2026-10-24 08:16 +08:00：TargetProof 的失败发生在 consume 首个最终核查，mint 与测试内两个 with 连接均已返回；这些事实不足定位额外会话或实际忙run。新 M1 observer 只绑定源库/备份动态作用域，不能借它诊断恢复目标。最小诊断只在原目标 SELECT 同时读取忙run计数及该库 pid/backend_type 集合，拒绝对象附限32条的安全摘要及 Python 异常 note；无query、application_name、DSN、正文。总数与截断位保留，异常本身仍抛原码，不追加失败后再读或删数据。原目标控件已纳入既有 hash pin，新调用须重新审 pin；发布与全局停写仍 No-Go。
 
@@ -220,6 +232,8 @@ controller运行时凭据只作为未来同call源升级的必要条件。私有
 first_release_incremental负责不可变输入与CLI；first_release_incremental_pg核实际PG身份、其他会话/active/lease、源完整表/sequence摘要并执行受pin pg_dump；first_release_writer_fence提供Windows LockFileEx/POSIX flock及PG锁的合作协议；first_release_incremental_worker以纯stdlib bootstrap加载已核控制基础，固定实际候选导入后只读导出。prefix4/7源数据只读，不新增迁移或依赖。
 
 ## Concrete Steps
+
+本机完整源写CLI的新独立接口与15项受审文件参数统一见 `docs/v4/release/first_release_stage_runbook.md` 的“本机完整源写命令”。默认真实调用完整原pin闭包，只读文件；显式 `--apply-source-local` 才沿原 `first_release_incremental_forward.execute` 执行，源replay及backfill都不可省略。不提供自动造pin、更新hash、采用旧目标、解除维护或重试模式。新test复用原真实prefix7 fixture，仅将同一请求各typed pin序列化，再由实际CLI parse回原类型；没有替换execute、runtime、数据库或业务返回。
 
 在release-prep运行显式pin的first_release_incremental默认校验应无连接/进程/文件写；加--backup-local才取双栅栏并写该operation私有目录。PG与文件独占锁须真实跨进程互斥，不按application_name识别可信会话。只读worker在IMPORT SNAPSHOT后才握手回报实际PG PID，由controller精确允许；pg_dump没有可信backend握手，不假造关联，只在其前后核没有额外源会话。前后检查不是dump期间全局静默证明。
 
@@ -383,6 +397,10 @@ checkpoint是独立autocommit阶段，用刚再次核过的同一个Saver class�
 
 ## Outcomes & Retrospective
 
+10:40 当前新增显式本机完整源写CLI已按上述唯一两节点验收，CLI145行、新测试205行，旧已pin控件全部不改。默认及坏/缺材料均不产生PG/进程/写，执行必须同时绑定独立源replay与backfill pin，复用原同call权能而非JSON赋权。首验用5b已提交archive、控制目录未提交的新CLI，两种身份分开；不称新工具提交本身已是发布候选。两个首发草案同步移除“源回填未接”的过期当前态，新增参数、继续/停止和维护保留说明，仍No-Go。正式apply、中央原账本/新业务库组合、全局writer、Linux和切换继续缺失；不自动重试或修改旧失败证据。
+
+10:17 新本机 CLI 尚未实现、测试或提交；既有内部源回填组合成立不等于这次公开入口成立。正式 apply、生产 wrapper、中央身份保全、跨进程全局 writer 栅栏和 Linux 应用环境依旧 No-Go。失败后保留材料与维护状态，不自动清理或重试。
+
 08:24 +08:00 当前诊断片：实际 held 原生候选中，外来owner连接使同次观察精确2 PID、busy_run_count=0/other_session=true；关闭后实际failed运行带未来lease使busy_run_count=1/other_session=false、仅观察PID。原错误码、严格拒绝和consume烧毁token不变，附原观察JSON note且不后查；首链1/1只证明诊断行为，原07db CI红的根因仍未知。控件自身已有受hash pin，新调用需重新审新pin；没有授源写入、正式恢复、Linux或发布能力。原导入失败单独保留，不与本链合成第二个业务目标。08:24已提交并推46666d2至自己的v4/p3-wire-target-diagnostic-20261024，新CI待核；本句为推后实时状态，随下一实质片保存，不取消或重跑新检查。
 
 M1统计observer本机必要两目标首次2/2通过，唯一原证据为`private/safe-narrow-bbbcd541aa36476f9f1306035f965f1e/metadata.json`及同目录pytest.xml/log，07:47:43.682–07:48:30.416 +08:00、45.86秒，真实PG15.19、清凭据/关追踪/TZ Tokyo、真实模型/服务器/外发0。原七字段有限诊断、五个原精确PID门、旧候选runpy snapshot导入与独立pin闭包保留；旧8控输入不再适用，必须新capture/新9控pin。原CI额外PID均保留未知，新观察不能保证CI转绿；原脚本69/81、Linux应用/正式CLI/中央身份/全局writer和发布门仍关闭。
@@ -432,6 +450,8 @@ controller运行时独立组件的四个实际进程/依赖/已加载模块行�
 M3a第一基础片仅内部中性Core SQL原语与prefix4/7只读profile，148/213行；新PG测试250行、最长函数55行以内。Ruff E/F/I/B/UP/SIM及120列format通过。真实PG定向6+2已验证上述基础行为；中性grant原语尚未被新入口调用，PostgresSaver checkpoint阶段、完整源状态/运行时门、typed单次证明、源编排及M3b源隐私重放/回填都仍未完成，所有正式门保持false，不给生产/既有prefix8或额外关系开口。
 
 ## 修订记录
+- 2026-10-24 10:40 +08:00：新CLI两行为首次共同2/2、根核唯一原件，补实际main与archive身份/未验证边界；只新增入口和专属测试，不重写旧控件或旧CI结论。
+- 2026-10-24 10:17 +08:00：先于实现登记本机 SourceForward CLI 的实际可操作缺口、复用接口与仅两条必要验收；不重复已接回填或扩大正式位。
 
 - 2026-10-24 09:14 +08:00：根核仅两个授权目标首次共同2/2、同次有界诊断与原strict故障断言；保存唯一本机证据，保持原89c CI失败与未知原因，不自动重试CI或推进formal/feed。
 - 2026-10-24 07:49 +08:00：记录M1同次统计观察真实两目标首次2/2及根审的实际边界，唯一证据只在本计划登记，旧CI失败与正式No-Go保留。
