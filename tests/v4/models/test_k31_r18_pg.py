@@ -41,10 +41,14 @@ def variable_echo(monkeypatch):
             "additionalProperties": False,
         },
     )
-    monkeypatch.setattr(k31_connect, "CASES", (replace(CASES[0], tools=(echo,)), *CASES[1:]))
+    monkeypatch.setattr(
+        k31_connect, "CASES", (replace(CASES[0], tools=(echo,)), *CASES[1:])
+    )
 
 
-def transport(final_after, posted, *, repeat_at=None, bad_model_at=None, no_reasoning_at=None):
+def transport(
+    final_after, posted, *, repeat_at=None, bad_model_at=None, no_reasoning_at=None
+):
     def respond(request):
         body = json.loads(request.content)
         posted.append(body)
@@ -54,8 +58,14 @@ def transport(final_after, posted, *, repeat_at=None, bad_model_at=None, no_reas
             assistant, tool = body["messages"][-2:]
             assert assistant["reasoning_content"] == "合成推理" + str(turn - 1)
             assert assistant["tool_calls"][0]["id"] == tool["tool_call_id"]
-            assert json.loads(tool["content"]) == json.loads(assistant["tool_calls"][0]["function"]["arguments"])
-        delta = {} if turn == no_reasoning_at else {"reasoning_content": "合成推理" + str(turn)}
+            assert json.loads(tool["content"]) == json.loads(
+                assistant["tool_calls"][0]["function"]["arguments"]
+            )
+        delta = (
+            {}
+            if turn == no_reasoning_at
+            else {"reasoning_content": "合成推理" + str(turn)}
+        )
         if turn < final_after:
             value = turn - 1 if turn == repeat_at else turn
             delta["tool_calls"] = [
@@ -64,13 +74,17 @@ def transport(final_after, posted, *, repeat_at=None, bad_model_at=None, no_reas
                     "id": "opaque-" + str(turn),
                     "function": {
                         "name": "synthetic_echo",
-                        "arguments": json.dumps({"value": "合成" if value == 1 else "合成" + str(value)}),
+                        "arguments": json.dumps(
+                            {"value": "合成" if value == 1 else "合成" + str(value)}
+                        ),
                     },
                 }
             ]
             finish = "tool_calls"
         else:
-            delta["content"] = "合成故事。" * 300 + "[K31-END]" if turn == final_after + 2 else "合成"
+            delta["content"] = (
+                "合成故事。" * 300 + "[K31-END]" if turn == final_after + 2 else "合成"
+            )
             finish = "stop"
         return httpx.Response(
             200,
@@ -99,10 +113,18 @@ def test_tool_loop_finishes_within_four_requests_and_replays_every_round(
         K3EstimatedMeter(official_counter, model="k3.1-pro"),
         transport=transport(final_after, posted),
     )
-    assert result["complete"] and result["model_calls"] == len(posted) == final_after + 2
-    assert result["tool_rounds"] == final_after and result["additional_tool_calls"] == final_after - 2
+    assert (
+        result["complete"] and result["model_calls"] == len(posted) == final_after + 2
+    )
+    assert (
+        result["tool_rounds"] == final_after
+        and result["additional_tool_calls"] == final_after - 2
+    )
     assert result["tool_call_requests"] == final_after - 1
-    assert all(r["response_model"] == "k3.1-pro" and r["effort"] == "high" for r in result["records"])
+    assert all(
+        r["response_model"] == "k3.1-pro" and r["effort"] == "high"
+        for r in result["records"]
+    )
     assert guard.status()["in_flight"] == 0
 
 
@@ -124,7 +146,9 @@ def test_equal_name_and_arguments_ignore_changed_call_id_and_stop_before_executi
     assert result["additional_tool_calls"] == max(0, repeat_at - 2)
 
 
-def test_fourth_tool_request_is_retained_as_failure_without_a_fifth_request(central, official_counter, variable_echo):
+def test_fourth_tool_request_is_retained_as_failure_without_a_fifth_request(
+    central, official_counter, variable_echo
+):
     guard, _, control, session = setup(central)
     posted = []
     result = run_connection(
@@ -139,7 +163,9 @@ def test_fourth_tool_request_is_retained_as_failure_without_a_fifth_request(cent
 
 
 @pytest.mark.parametrize("failure", ["identity", "reasoning"])
-def test_later_round_still_checks_identity_and_reasoning(central, official_counter, failure, variable_echo):
+def test_later_round_still_checks_identity_and_reasoning(
+    central, official_counter, failure, variable_echo
+):
     guard, _, control, session = setup(central)
     posted = []
     options = {"bad_model_at" if failure == "identity" else "no_reasoning_at": 3}
@@ -151,18 +177,26 @@ def test_later_round_still_checks_identity_and_reasoning(central, official_count
         transport=transport(4, posted, **options),
     )
     assert not result["complete"] and result["model_calls"] == len(posted) == 3
-    assert result["stop_kind"] == ("permission_error" if failure == "identity" else None)
+    assert result["stop_kind"] == (
+        "permission_error" if failure == "identity" else None
+    )
 
 
 def test_twenty_call_guard_counts_old_candidate_attempts_before_any_new_post():
     authorization = "v7d-" + CANDIDATE + "-k31-connect-" + "a" * 32
-    control = SimpleNamespace(physical=lambda _: [{"authorization_id": authorization}] * 20)
-    execution = ConnectionExecution(None, SimpleNamespace(guard=None), control, "synthetic", None)
+    control = SimpleNamespace(
+        physical=lambda _: [{"authorization_id": authorization}] * 20
+    )
+    execution = ConnectionExecution(
+        None, SimpleNamespace(guard=None), control, "synthetic", None
+    )
     with pytest.raises(ProbeControlError, match="20"):
         execution.step(CASES[0], 1, [])
 
 
-def test_real_fixed_tool_contract_rejects_repeat_with_required_policy_visible(central, official_counter):
+def test_real_fixed_tool_contract_rejects_repeat_even_with_auto_policy(
+    central, official_counter
+):
     guard, _, control, session = setup(central)
     posted = []
     result = run_connection(
@@ -173,11 +207,13 @@ def test_real_fixed_tool_contract_rejects_repeat_with_required_policy_visible(ce
         transport=transport(5, posted, repeat_at=2),
     )
     assert not result["complete"] and len(posted) == result["model_calls"] == 2
-    assert all(body["tool_choice"] == "required" for body in posted)
+    assert [body["tool_choice"] for body in posted] == ["required", "auto"]
     assert result["records"][-1]["failure_reason"] == "repeated_identical_tool_call"
 
 
-def test_new_control_retains_two_prior_calls_in_cumulative_twenty_limit(central, official_counter):
+def test_new_control_retains_two_prior_calls_in_cumulative_twenty_limit(
+    central, official_counter
+):
     guard, _, old, first = setup(central)
     posted = []
     failed = run_connection(
@@ -189,8 +225,15 @@ def test_new_control_retains_two_prior_calls_in_cumulative_twenty_limit(central,
     )
     _, _, new, second = setup(central)
     completed = run_connection(
-        registry(), second, new, K3EstimatedMeter(official_counter, model="k3.1-pro"), transport=transport(2, [])
+        registry(),
+        second,
+        new,
+        K3EstimatedMeter(official_counter, model="k3.1-pro"),
+        transport=transport(2, []),
     )
-    assert completed["complete"] and completed["cumulative_model_calls"] == completed["model_calls"] == 6
+    assert (
+        completed["complete"]
+        and completed["cumulative_model_calls"] == completed["model_calls"] == 6
+    )
     assert set(failed["attempt_ids"]) <= set(completed["attempt_ids"])
     assert set(failed["attempt_ids"]) <= set(completed["wasted_attempt_ids"])
