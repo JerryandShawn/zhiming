@@ -1,0 +1,232 @@
+{
+  "board_version_observed": 36,
+  "board_sha256": "87d716cd562d1e851c72a5eaed15cf705a519c8aba162cb7bf93d600591ff252",
+  "candidate": "2f511f686bf6b31aee8ca80528e9cc952f84b246",
+  "source_sha256": "2cc60ffba847fcaf718a63492a5359aacfc7da8c27935353009283700073b826",
+  "operator_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\k31-r33-10a9ea95c66b43ddaf51189feb292e50\\metadata.json",
+  "actual_terminal_phase": "operator_stopped",
+  "actual_safe_error": "RuntimeError",
+  "operator_finished_at": "2026-10-24T22:59:12.524984+08:00",
+  "key_cleared": true,
+  "raw_completed": 13,
+  "raw_passed": 8,
+  "raw_failed_ids": [
+    "T09",
+    "T10",
+    "M05",
+    "R02",
+    "F01"
+  ],
+  "pending_ids": [
+    "Q02",
+    "Q03",
+    "Q04",
+    "Q05",
+    "D01",
+    "S02",
+    "S03",
+    "S04",
+    "C04",
+    "AX01",
+    "C01",
+    "C02",
+    "C03",
+    "C05",
+    "C07",
+    "TA01"
+  ],
+  "safety_completed": 0,
+  "accepted": false,
+  "core_physical": 55,
+  "core_waste": 13,
+  "connection_cumulative": 23,
+  "last_observed_window": 169,
+  "actual_physical_batches": [
+    {
+      "batch_id": "v7-1f21db49f3bf4716adcc5bb40cd5d494-1",
+      "scenario_requests": {
+        "K31-TOOLS": 1
+      },
+      "physical_requests": 1,
+      "started": "2026-10-24T22:04:36.397698+08:00"
+    },
+    {
+      "batch_id": "v7-7fb6dfea638d46f6804ab6d49b7df1c0-1",
+      "scenario_requests": {
+        "K31-TOOLS": 1
+      },
+      "physical_requests": 1,
+      "started": "2026-10-24T22:07:35.057663+08:00"
+    },
+    {
+      "batch_id": "v7-6ce15782cc7b427288750e5922c7d091-1",
+      "scenario_requests": {
+        "K31-TOOLS": 2,
+        "K31-INPUT": 1,
+        "K31-LONG": 1
+      },
+      "physical_requests": 4,
+      "started": "2026-10-24T22:09:04.729581+08:00"
+    },
+    {
+      "batch_id": "v7-280394c7650d4ab18fbdc7052a9e7269-1",
+      "scenario_requests": {
+        "T05": 1
+      },
+      "physical_requests": 1,
+      "started": "2026-10-24T22:10:24.347607+08:00"
+    },
+    {
+      "batch_id": "v7-c0619bbc5662445b8be14551b6981480-1",
+      "scenario_requests": {
+        "T05": 1
+      },
+      "physical_requests": 1,
+      "started": "2026-10-24T22:12:12.230632+08:00"
+    },
+    {
+      "batch_id": "v7-0847822817ef4fcda2b0dee80d23fb68-1",
+      "scenario_requests": {
+        "T05": 2
+      },
+      "physical_requests": 2,
+      "started": "2026-10-24T22:13:52.880240+08:00"
+    },
+    {
+      "batch_id": "v7-9645a467a58a4bfa93c9e6c4ae5b50ef-1",
+      "scenario_requests": {
+        "T05": 3,
+        "T08": 3,
+        "T09": 2,
+        "T10": 2
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T22:15:49.849011+08:00"
+    },
+    {
+      "batch_id": "v7-78b99858d96f42a385e092a7e4f5bc88-1",
+      "scenario_requests": {
+        "T10": 2,
+        "T14": 3,
+        "TM01": 5
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T22:23:53.782338+08:00"
+    },
+    {
+      "batch_id": "v7-78b99858d96f42a385e092a7e4f5bc88-2",
+      "scenario_requests": {
+        "TM01": 5,
+        "M01": 2
+      },
+      "physical_requests": 7,
+      "started": "2026-10-24T22:26:44.192372+08:00"
+    },
+    {
+      "batch_id": "v7-ed3467ae9f0c4547a17aa5a8457bf1c8-1",
+      "scenario_requests": {
+        "M01": 4,
+        "M03": 3,
+        "M05": 2,
+        "R02": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T22:38:59.397314+08:00"
+    },
+    {
+      "batch_id": "v7-ed3467ae9f0c4547a17aa5a8457bf1c8-2",
+      "scenario_requests": {
+        "R02": 1,
+        "R07": 2,
+        "F01": 4,
+        "Q01": 2,
+        "Q02": 1
+      },
+      "physical_requests": 10,
+      "started": "2026-10-24T22:42:07.108456+08:00"
+    },
+    {
+      "batch_id": "v7-ed3467ae9f0c4547a17aa5a8457bf1c8-3",
+      "scenario_requests": {
+        "Q02": 1
+      },
+      "physical_requests": 1,
+      "started": "2026-10-24T22:45:24.800405+08:00"
+    },
+    {
+      "batch_id": "v7-38cd42fa173047838dd023a70ef8a2ce-1",
+      "scenario_requests": {
+        "Q02": 3
+      },
+      "physical_requests": 3,
+      "started": "2026-10-24T22:55:51.156712+08:00"
+    }
+  ],
+  "reports": [
+    {
+      "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-3b39ec81c0a14ddaa69c467fdd80da7a\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "status": "incomplete",
+      "stopped_at": "2026-10-24T14:11:05.190846+00:00",
+      "physical_requests": 1,
+      "private_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-3b39ec81c0a14ddaa69c467fdd80da7a\\2026-10-24-live-v4-k3.1-pro-core30.private-evidence.json",
+      "evidence_exists": false
+    },
+    {
+      "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-91c014d85da840c9aaecf12ca7292221\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "status": "incomplete",
+      "stopped_at": "2026-10-24T14:12:45.863168+00:00",
+      "physical_requests": 1,
+      "private_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-91c014d85da840c9aaecf12ca7292221\\2026-10-24-live-v4-k3.1-pro-core30.private-evidence.json",
+      "evidence_exists": false
+    },
+    {
+      "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-bfbab79354bf4f00883621ab119640b2\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "status": "incomplete",
+      "stopped_at": "2026-10-24T14:14:42.706904+00:00",
+      "physical_requests": 2,
+      "private_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-bfbab79354bf4f00883621ab119640b2\\2026-10-24-live-v4-k3.1-pro-core30.private-evidence.json",
+      "evidence_exists": true
+    },
+    {
+      "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-7c31e4b76f804f86bf82e02c1ef17109\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "status": "incomplete",
+      "stopped_at": "2026-10-24T14:18:46.874479+00:00",
+      "physical_requests": 10,
+      "private_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-7c31e4b76f804f86bf82e02c1ef17109\\2026-10-24-live-v4-k3.1-pro-core30.private-evidence.json",
+      "evidence_exists": true
+    },
+    {
+      "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-c20f338fc7914ffea024c80e3333035f\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "status": "incomplete",
+      "stopped_at": "2026-10-24T14:28:29.391146+00:00",
+      "physical_requests": 17,
+      "private_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-c20f338fc7914ffea024c80e3333035f\\2026-10-24-live-v4-k3.1-pro-core30.private-evidence.json",
+      "evidence_exists": true
+    },
+    {
+      "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-96a857e0fb7b4f9e92ab42c6b4cfa91b\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "status": "incomplete",
+      "stopped_at": "2026-10-24T14:45:44.423532+00:00",
+      "physical_requests": 21,
+      "private_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-96a857e0fb7b4f9e92ab42c6b4cfa91b\\2026-10-24-live-v4-k3.1-pro-core30.private-evidence.json",
+      "evidence_exists": true
+    },
+    {
+      "report": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-5485d3b912144ae5a24f51bc6176bdaa\\2026-10-24-live-v4-k3.1-pro-core30.json",
+      "status": "incomplete",
+      "stopped_at": "2026-10-24T14:58:10.608750+00:00",
+      "physical_requests": 3,
+      "private_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\core29-r33-5485d3b912144ae5a24f51bc6176bdaa\\2026-10-24-live-v4-k3.1-pro-core30.private-evidence.json",
+      "evidence_exists": true
+    }
+  ],
+  "board35_review_passed_ids": [
+    "T09",
+    "T10",
+    "R02",
+    "F01"
+  ],
+  "board35_remaining_true_issue": "M05 pending proposal missing",
+  "review_overrides_raw_scores": false,
+  "current_action": "No additional real requests: original operator stopped at board change, first overload 22:05 has now exceeded R24 60-minute limit. Preserve remaining16 and proof. M05 necessary-code continuation next; no SSH/stage/production authorization inferred from v36 file."
+}

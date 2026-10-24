@@ -1,0 +1,51 @@
+{
+  "candidate": "2f511f686bf6b31aee8ca80528e9cc952f84b246",
+  "metadata_path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\k31-r33-7294dee9175f4abbb9796ad74010a49d\\metadata.json",
+  "status": "stopped",
+  "phase": "operator_stopped",
+  "started_at": "2026-10-24T22:03:32.457964+08:00",
+  "reports": [],
+  "connections": [
+    {
+      "proof": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\k31-connect-ed195be3f6c6460bb4539d6b348a8ea9.json",
+      "exit_code": 2,
+      "complete": false,
+      "model_calls": 1,
+      "cumulative_model_calls": 18,
+      "connection_failure": "engine_overloaded",
+      "stop_kind": null,
+      "resume_at": null,
+      "factor": "1.15"
+    }
+  ],
+  "key_cleared": true,
+  "model": "k3.1-pro",
+  "effort": "high",
+  "board_version": 33,
+  "connection_cumulative_limit": 30,
+  "scripted_gate": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\R11-e702281d5ae8428ca817a2956e8773f4\\assessment.json",
+  "control_schema": "probe_k31_bc41002c93054bd0a7d585382da1b913",
+  "initial_window": {
+    "total": 108,
+    "oldest": "2026-10-24 18:11:20.330599+08:00",
+    "interactive": 0,
+    "critic": 31,
+    "background": 77,
+    "evaluation": 108,
+    "unfinished": 0
+  },
+  "stop_kind": null,
+  "resume_at": null,
+  "safe_error": "ModuleNotFoundError",
+  "finished_at": "2026-10-24T22:05:02.877455+08:00",
+  "actual_physical_batches": [
+    {
+      "batch_id": "v7-1f21db49f3bf4716adcc5bb40cd5d494-1",
+      "scenario_requests": {
+        "K31-TOOLS": 1
+      },
+      "physical_requests": 1,
+      "started": "2026-10-24T22:04:36.397698+08:00"
+    }
+  ]
+}
