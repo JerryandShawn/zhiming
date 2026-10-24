@@ -1,12 +1,15 @@
 # 核心首发包：增量升级与恢复
 
-首发为P1/P1b/P2/P3，按指令板v8推进；记忆2.0是否随首发须按模块就绪门判断。这里的本机证据不授予服务器访问或发布权限；旧B/D均已取消。遵循`.agent/PLANS.md`，所有时间为北京时间。
+首发为P1/P1b/P2/P3，已采用指令板v14；真实评测及stage交大脑，模块暂停，本代理只写必要代码并做隔离本机验证。这里的本机证据不授予服务器访问或发布权限；旧B/D均已取消。遵循`.agent/PLANS.md`，所有时间为北京时间。
 
 ## Context and Orientation
 
 复用`tools/deploy_core.py:387`的export_withdrawals和`:405`的apply_withdrawals、仓库mutation_request的持久幂等、TarotService的真实删除与现有LangGraph checkpoint清除。旧b9包及其固定恢复工具/测试保留历史事实，不改hash或重签来掩盖已知非空往返限制。最终候选还未冻结，不填写虚构发布SHA。
 
 ## Progress
+
+- [x] (2026-10-24 12:55 +08:00) v12新库原生恢复与关门对调的stage限定入口完成必要本机证据。真实PG15首3/3（4.70秒）实际复现旧clean被新增FK阻挡→新库保对象owner/ACL→原库DB设置/CONNECT及授权选项/角色库级设置精确保留→两库0连接对调、旧库/数据保留。公开main首1/1、保护文件门新+受影响CLI2/2、增seal后受影响1/1、最终真实独立-I四步及在途会话保留2/2（4.35秒）；根核各原件，五个不同目标有通过，不冒称一次全5/5。无服务器/真实模型/外发，R11固定c74未改。
+- [ ] 完整stage执行单（包/上传/初始副本/迁移/回填/重放/新unit及收尾）与K3.1评测交接命令仍未就绪；正式生产对调不在此stage限定入口。R11待13:00原定候选运行，脚本通过时按v14立即提醒用户。
 
 - [x] (2026-10-24 10:48 +08:00) 新中央routing唯一节点首次1/1通过，0失败/error/skip/warning，XML5.443秒；10:47:49.444198–10:47:55.896752。根独立核metadata、全部XML和log；唯一原件 `private/safe-narrow-83cfec6bf1c9492c9772777ea33d5e65/`。真实prefix7 native restore→8前后原非空中央四表/sequence精确保持，当前宿主真实from_base/require_agent/Registry使用新业务writer+原四MEMBER。原eval历史实际guard reserve/finish及finish_batch，stop账号在基线前设好；受限role运行期禁止provision/clear、真实网络，只用非Mock外壳桥接Mock使真实from-env中央门生效。唯一合法primary POST仅往原中央追加1个http UUID，旧usage全行/batches/auth/account身份location/stop不变、当前账号last_clock_at单调；错库/UUID/location/Access四类共0新POST，中央完整后态不变，新业务四表空/sequence未用保持。官方K3从既有公开artifact真实装配，未patch计量；slot已释放，真实供应商/服务器/外发0。仅当前宿主装配的一次port.complete，不是fresh候选进程或完整Agent业务run，formal_central_rebinding_verified仍false。
 
@@ -46,6 +49,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24 12:55 +08:00：用真实新合成库备份后再加parent FK，pg_restore clean确实因core_runs_pkey依赖失败且单事务保留新行；因此不能在原升级库上覆盖恢复。新的恢复必须完整保留archive owner/ACL，库级ACL和ALTER DATABASE/ROLE SET不能靠pg_restore自动补齐。metadata语义比较保全部ACL（含PUBLIC/授权选项）和库级/角色库级设置，实际OID/系统身份逐次重核；有任何会话时seal保持关门并拒绝，不强制终止，exchange同事务保持两个旧OID对应对象且不开放连接。
 
 10:37 只读核实：CentralLocation.from_environment只读取MEMBER_CENTRAL_DSN / MEMBER_CENTRAL_SCHEMA / MEMBER_ACCOUNT_ID / MEMBER_LEDGER_IDENTITY，完全不回退ZHIMING_DATABASE_URL；真实configured_agent和每次HTTP guard可继续核原account UUID与实际DB/server/schema位置，runtime不provision。现有0008契约已允许中央与业务分库，无需搬迁或重签。启动guard成功不等于旧usage/batches/authorizations/sequence未回退；自定义启动environment mapping也不能替代真实HTTP最终读取的进程env，组合测试必须同时核这两层。旧库/中央角色保留、正式切换与隐私处置仍需本次发布裁定，不因本机通过开放正式门。
 
@@ -110,6 +115,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 12:55 +08:00 / 按v12/v14新增独立native_exchange及metadata工具，只支持新fr_stage副本和随机本机frx演练，不放宽既有本机restore或B1/b9常量，不提供live/prod/原stage目标。capture→restore→seal→exchange是四个显式动作，各写新私有收据，默认无自动清理/重试/开门。正式CLI必须POSIX私有管理员文件，复用已验字面env读取，不打印DSN；本机测试单独local_drill。libc locale及单owner grantor以外保守停止，不修改ACL绕过。输出admission_opened=false表示没有重新开准入，不冒称pg_restore没有建立过连接。
 
 10:37 决定下一片用一个实际恢复上下文验证既有中央路由，避免另建无调用的证明工具或修改共享记忆。测试只可显式provision本次隔离合成中央setup，运行路径不得provision/clear stop/更新旧location；模型只MockTransport，不伪造TTY或人工开始。与当前源CLI两节点互不修改或追加测试，根维护本计划/Git；新测试先留WIP，待前片推送后独立分支授槽。正式中央保全/权限/env切换门继续false。
 
@@ -245,6 +252,8 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## Outcomes & Retrospective
 
+2026-10-24 12:55 +08:00 R2片：工具新增124/348行，测试约350行、函数≤60。唯一原件都在release-prep/private：首链safe-narrow-6de81d03c3f04e1ea2f9ef1f22cbb05f；公开CLI初版94aa2c4694914a7a8bc3715b14799939；保护env门/必要CLI90760023039c47f3b961bb706a9ac149；seal接线071d53fb4f0f4ec2954e18390537b4f1；最终独立-I四步+在途客户端保留8ffacf96515348629bea32d9e746b5aa。根已读每次metadata/XML/log，没有重复稳定性或宽回归。正式stage需要的四步精确命令及每步继续/停止条件写入既有stage runbook，保原No-Go，不另建证据副本。Windows本机PG、受审管理员文件的早拒和stage限定接口不等同Linux已验、生产可用、完整执行单或授权；交大脑执行的全链及新模型交接尚待补齐，本代理真实请求/服务器0。
+
 10:48 本机实际恢复库与原非空中央的生产装配/Registry路由组合成立，新增273行专属测试，生产/P1b/旧测试无改动；只跑该唯一新node，不重复旧已验矩阵。配置接缝是仅切业务ZHIMING_DATABASE_URL、保原MEMBER中央四项；旧账本不复制、不重签、不清stop，错误绑定拒绝且runtime不开新账户。源restore fixture是明确的合成原生本机样本，app来自当前宿主已提交045代码，不声称是fresh候选archive。两份首发草案补可复用的配置策略，但正式权限、受保护env、真实中央基线、同候选Linux及三unit/wrapper切换均未验收，central_binding/publication继续false。
 
 10:37 原中央继续承载账本的现有配置能力已只读核实；新恢复库实际启动及ModelPort路由组合尚未验证。现阶段不宣称central_binding_verified，下一限定测试不能替代Linux应用、三unit/wrapper、全局writer或用户新授权。
@@ -288,6 +297,7 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 目录路径补正又有两个不同定向行为通过，累计52个不同通过行为；仍为validate-only，无apply或原生恢复执行。
 
 ## 修订记录
+- 2026-10-24 12:55 +08:00：采用v14，按v12交R2独立新库/metadata/关门对调与必要本机证据；新增stage限定实际命令，不宣称全单或生产就绪。
 - 2026-10-24 10:48 +08:00：中央routing唯一新节点首次1/1、根核原件，明确旧历史/sequence与唯一新增物理UUID、四类早拒及当前宿主装配边界；生产代码不改，正式门继续关闭。
 - 2026-10-24 10:37 +08:00：先登记原中央/新业务库真实恢复路由的必要组合设计与现有原生接缝，不新建证明层或擅改位置身份。
 

@@ -10,6 +10,8 @@ R16新增审核资产使用固定候选`config/models.first-release.yaml`，共�
 
 ## 1. 候选与安全边界
 
+v14分工：真实评测及服务器stage均交大脑执行，本代理只完成必要代码与本地隔离验证。以下新R2接口已具备必要Windows PG15/独立进程证据，但整个执行单仍未就绪：最终候选打包、原stage只读备份→副本、Linux迁移/重放/回填/新unit串联的精确命令仍须补齐。不能把本节当成37号Go或服务器执行许可。
+
 首发按当前`core-only-1-8-v1`契约覆盖P1/P1b/P2/P3、旧网页兼容和现有文字飞书入口；P4/P6及新前端不在此单。当前要求迁移0001–0008精确连续且checksum不变。P5若达到就绪门并纳入候选，须另审含0009的profile、关系/routine清单、恢复工具及本单，不能以忽略0009绕过现契约。
 
 最终审核输入至少包括：精确Git候选SHA、规范Git blob发布manifest原始SHA、artifact SHA、迁移八项hash、`requirements-core.lock`、`requirements-charts.lock`、`k3-tokenizer.lock.json`、模型配置及依赖工具commit/hash。最终候选或任一运行源码变化后，已有候选脚本/质量/恢复证据须重新判断绑定关系，不拼凑不同来源的通过报告。
@@ -31,6 +33,65 @@ R16新增审核资产使用固定候选`config/models.first-release.yaml`，共�
 | 当前环境及授权 | 未做新的服务器盘点；容量、旧schema/服务状态不能沿用历史值 | 用户新的stage授权，明确新对象/窗口；获准后只读B0复核一致 |
 
 关系/函数/ACL校验通过不代表数据已恢复、运行时已受信、中央账本已合法迁移或渠道已验收；本单不将任一门标为“已解除”。
+
+### R2新库恢复与改名对调：明确接口，尚未服务器执行
+
+工具`tools.first_release_native_exchange`只允许新首发副本`zhiming_core_fr_stage`，其他演练库名称由固定16位operation派生；不能指向原`zhiming_core_stage`、live或生产。先由大脑按F停新stage unit/所有该副本writer并核维护门。使用已经审核的同候选Core环境、B7空增量备份（备份后无新业务写入）与独立私有管理员文件；该文件只能含`FIRST_RELEASE_EXCHANGE_ADMIN_DSN`，固定回环5432/控制库postgres/实际PG15超级用户，不把DSN写进命令。操作前确认备份与目录0700/0600，保留14天，不自动清理。
+
+下面变量在本次审核执行上下文中绑定；缺少任何变量立即停止。只允许一次生成operation，失败后不能换ID重试。`FR_R2_BACKUP`必须是前一步审核过的精确dump，不能临时换成另一份。
+
+```bash
+set -eu
+: "${FR_RELEASE:?}" "${FR_R2_BACKUP:?}" "${FR_BACKUP_DIR:?}"
+FR_PY="$FR_RELEASE/venv/core/bin/python"
+FR_ADMIN_FILE=/root/zhiming-core-secrets/fr-stage-admin.env
+FR_PG_RESTORE=/usr/lib/postgresql/15/bin/pg_restore
+test -f "$FR_PG_RESTORE"
+FR_OP=$("$FR_PY" -I -c 'import secrets; print(secrets.token_hex(8))')
+FR_R2_DIR="$FR_BACKUP_DIR/r2-$FR_OP"
+umask 077
+mkdir -m 700 "$FR_R2_DIR"
+FR_METADATA="$FR_R2_DIR/database-metadata.json"
+FR_DUMP_SHA=$(sha256sum "$FR_R2_BACKUP" | cut -d' ' -f1)
+FR_PG_RESTORE_SHA=$(sha256sum "$FR_PG_RESTORE" | cut -d' ' -f1)
+fr_exchange() {
+  "$FR_PY" -I -c 'import sys; sys.path.insert(0,sys.argv.pop(1)); from tools.first_release_native_exchange import main; raise SystemExit(main())' \
+    "$FR_RELEASE" "$@" --operation "$FR_OP" --admin-env-file "$FR_ADMIN_FILE" --metadata "$FR_METADATA"
+}
+```
+
+分步执行，每一步非零或`status=blocked`立即停并保留全部对象，不继续后续命令、不改权限修重试。不得打印metadata或env正文。工具只支持libc locale及单属主grantor的库ACL；其他形态明确拒绝并交大脑复核。
+
+```bash
+fr_exchange capture --output "$FR_R2_DIR/capture.json"
+FR_METADATA_SHA=$(sha256sum "$FR_METADATA" | cut -d' ' -f1)
+```
+
+继续条件：`metadata_captured`，当前副本OID/PG系统身份和owner、全部库ACL（含CONNECT/PUBLIC/授权选项）、库级及角色库级设置已保存并将被后续逐项重核。此步不改库。
+
+```bash
+fr_exchange restore --metadata-sha256 "$FR_METADATA_SHA" \
+  --backup "$FR_R2_BACKUP" --backup-sha256 "$FR_DUMP_SHA" \
+  --pg-restore "$FR_PG_RESTORE" --pg-restore-sha256 "$FR_PG_RESTORE_SHA" \
+  --output "$FR_R2_DIR/restore.json"
+```
+
+继续条件：`restored_new_database`，真实pg_restore只写新`zhiming_core_fr_<operation>_restore`且保对象owner/ACL，不使用clean/create/no-owner/no-acl；新库恢复库级元数据后关闭连接准入。目标已存在、输入/身份漂移或恢复失败均留现场，不能接管目标或重试。
+
+```bash
+fr_exchange seal --metadata-sha256 "$FR_METADATA_SHA" --output "$FR_R2_DIR/seal.json"
+```
+
+继续条件：`closed_zero_connections`。只关闭副本新连接准入，不强制断开任何会话；仍有客户端时停止并保持关门，不杀会话。新旧两库的准入关闭及0连接在下一事务内再核。
+
+```bash
+FR_RESTORE_RECEIPT_SHA=$(sha256sum "$FR_R2_DIR/restore.json" | cut -d' ' -f1)
+fr_exchange exchange --metadata-sha256 "$FR_METADATA_SHA" \
+  --restore-receipt "$FR_R2_DIR/restore.json" --restore-receipt-sha256 "$FR_RESTORE_RECEIPT_SHA" \
+  --output "$FR_R2_DIR/exchange.json"
+```
+
+继续条件：`exchanged_closed`。一个PG事务中旧副本→`zhiming_core_fr_<operation>_failed`、新库→`zhiming_core_fr_stage`，重新施加并核验原库owner/ACL/设置，旧失败库保留；两库仍不开放连接。工具不改unit/env/中央位置、不删除或重新开门。B7后是否允许重新开放副本及启动新unit，必须由后续明确步骤核schema/候选兼容后处理，本节不自动执行。正式生产对调尚无入口，此限定stage工具不能拿掉限制用于live。
 
 ### 原中央与新业务库的配置接缝（不放行正式门）
 
