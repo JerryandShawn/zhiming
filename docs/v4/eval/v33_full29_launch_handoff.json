@@ -1,9 +1,9 @@
 {
   "board_version": 33,
   "candidate": "2f511f686bf6b31aee8ca80528e9cc952f84b246",
-  "operator_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\k31-r33-7294dee9175f4abbb9796ad74010a49d\\metadata.json",
-  "status_at_handoff": "starting",
-  "phase_at_handoff": "waiting_r11",
+  "operator_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\k31-r33-10a9ea95c66b43ddaf51189feb292e50\\metadata.json",
+  "status_at_handoff": "scheduled",
+  "phase_at_handoff": "waiting_connection_retry",
   "R11_pointer": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\r11_pending.json",
   "required_judge": true,
   "judge_validation_retry": 1,
@@ -11,5 +11,52 @@
   "connection_cumulative_cap": 30,
   "overload_policy": "explicit HTTP429 overload only, 1 min first5 then10 min, hard60min from first overload",
   "fatal_stops": "403, rate/quota429, usage, concurrency, Access, wrong/missing response model",
-  "stage_production_access": false
+  "stage_production_access": false,
+  "R11": {
+    "candidate": "2f511f686bf6b31aee8ca80528e9cc952f84b246",
+    "source": "2cc60ffba847fcaf718a63492a5359aacfc7da8c27935353009283700073b826",
+    "p3": "48/48",
+    "dates": "7/7",
+    "specified_core": "69/69",
+    "core29": "29/29",
+    "x02": {
+      "id": "X02-r11",
+      "status": "passed",
+      "score": 1,
+      "original_contract_sha256": "5044d46b8136fb5fa2ca8d776c720009883c3d13d9f660ffe6ec9e26f3f94898",
+      "mock_http_requests": 4,
+      "external_provider_requests": 0,
+      "friendly_failure": true,
+      "committed_answer_preserved": true,
+      "repeat_writes": 0
+    },
+    "original81": "71/81; 12 deferred unchanged"
+  },
+  "connections": [
+    {
+      "proof": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\k31-connect-ed195be3f6c6460bb4539d6b348a8ea9.json",
+      "exit_code": 2,
+      "complete": false,
+      "model_calls": 1,
+      "cumulative_model_calls": 18,
+      "connection_failure": "engine_overloaded",
+      "stop_kind": null,
+      "resume_at": null,
+      "factor": "1.15"
+    },
+    {
+      "proof": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r33\\private\\candidate-eval\\2f511f686bf6b31aee8ca80528e9cc952f84b246\\k31-connect-d9c65571844a4683a135e3abb7f19c30.json",
+      "exit_code": 2,
+      "complete": false,
+      "model_calls": 2,
+      "cumulative_model_calls": 19,
+      "connection_failure": "engine_overloaded",
+      "stop_kind": null,
+      "resume_at": null,
+      "factor": "1.15"
+    }
+  ],
+  "first_overload_at": "2026-10-24T14:05:02.366318+00:00",
+  "first_overload_classification": "explicit 429 engine_overloaded, R24 retry, 1 physical/18 cumulative; no core yet",
+  "private_operator_correction": "sys.path root fixed after first connection and before further POST; first operator terminal original retained; replacement waits at least actual overload +1min"
 }
