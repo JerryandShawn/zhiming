@@ -14,6 +14,7 @@ from mingjing_core.models.quota_delegated_session import require_active
 from mingjing_core.models.quota_runtime import call_scope
 from mingjing_core.repositories.postgres import fingerprint
 from tools.eval.judges import JUDGE_SCHEMA
+from tools.eval.judge_context import judge_payload
 from tools.eval.lifecycle_identity import LifecycleError
 from tools.eval.targets.v4_core30 import load_core30
 from tools.eval.targets.v4_lifecycle_state import read_private
@@ -39,17 +40,7 @@ class JudgeJournal:
         index = state["turn"]
         if type(index) is not int or not 1 <= index <= len(case.turns):
             raise LifecycleError("评分轮次不属于固定场景")
-        turn = case.turns[index - 1]
-        payload = {
-            "scenario_id": case.id,
-            "user": turn.user,
-            "clock": turn.at or case.clock,
-            "seed": case.seed.model_dump(mode="json"),
-            "receipts": result.receipts,
-            "tools_called": result.tools_called,
-            "criterion": turn.expect.judge,
-            "answer": result.text,
-        }
+        payload = judge_payload(case, index, result)
         rubric = RUBRIC.read_text(encoding="utf-8")
         identity = {
             **asdict(self.binding),

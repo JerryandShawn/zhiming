@@ -31,6 +31,7 @@ def grade_current(target, control, binding, guard, judge, scenario, state):
                 "score": score,
                 "judge": reviewed.get("private_reasoning"),
                 "reason_missing": not bool(reviewed.get("private_reasoning")),
+                "tool_effects": result.metadata.get("tool_effects", {}),
             }
         ],
         observed_turn=index,

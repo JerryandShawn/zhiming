@@ -12,6 +12,7 @@ from tools.eval.schema import Scenario, load_scenarios
 from .base import TurnResult
 from .v4_corpus import execution_overlay
 from .v4_live import V4LiveTarget
+from .v4_review39 import review39
 
 SUITE_VERSION = "v3.0-core29-v30"
 CORE30_IDS = (
@@ -56,7 +57,8 @@ def load_core30(*, original: Path | None = None, additions: Path | None = None) 
     if set(added) != NEW_IDS or not set(CORE30_IDS).difference(NEW_IDS).issubset(originals):
         raise ValueError("Core30 needs exactly 27 original questions plus isolated TM01 and AX01")
     return [
-        added[identity] if identity in NEW_IDS else execution_overlay(originals[identity]) for identity in CORE30_IDS
+        review39(added[identity] if identity in NEW_IDS else execution_overlay(originals[identity]))
+        for identity in CORE30_IDS
     ]
 
 

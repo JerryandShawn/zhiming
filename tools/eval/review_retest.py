@@ -25,23 +25,50 @@ REVIEWED = frozenset(
     }
 )
 AFFECTED = frozenset({"M05", "Q02", "Q03", "D01", "S03"})
+REVIEWED39 = frozenset(
+    {
+        "T09",
+        "T10",
+        "M03",
+        "R02",
+        "F01",
+        "Q01",
+        "Q02",
+        "Q03",
+        "Q05",
+        "S02",
+        "S03",
+        "S04",
+        "C04",
+        "AX01",
+        "C02",
+        "C03",
+        "C05",
+    }
+)
+AFFECTED39 = frozenset({"TA01", "M01", "D01", "Q03", "Q04"})
 
 
 def read_plan(path: Path, candidate: str, source: str) -> tuple[dict, dict]:
     plan = json.loads(path.read_text(encoding="utf-8"))
+    v39 = plan.get("schema") == "core-review-retest-v39"
     if (
-        plan.get("schema") != "core-review-retest-v30"
+        plan.get("schema") not in {"core-review-retest-v30", "core-review-retest-v39"}
         or plan.get("candidate_commit") != candidate
         or plan.get("source_sha256") != source
-        or plan.get("authority") != "main-v30-and-review-38"
+        or plan.get("authority") != ("main-v39-and-review-38-section7" if v39 else "main-v30-and-review-38")
         or not plan.get("reports")
+        or v39
+        and plan.get("original_candidate") != "8727d44bdbed624b9de4278baa6739031a89a70d"
     ):
         raise ValueError("V30_RETEST_BINDING_REJECTED")
     review = Path(plan["review_path"])
     if hashlib.sha256(review.read_bytes()).hexdigest() != plan["review_sha256"]:
         raise ValueError("V30_REVIEW_CHANGED")
     decisions = plan.get("adjudicated_passed", {})
-    if set(decisions) != REVIEWED or any(not isinstance(v, str) or not v.strip() for v in decisions.values()):
+    if set(decisions) != (REVIEWED39 if v39 else REVIEWED) or any(
+        not isinstance(v, str) or not v.strip() for v in decisions.values()
+    ):
         raise ValueError("V30_REVIEW_DECISIONS_REJECTED")
     completed = {}
     for item in plan["reports"]:
@@ -78,6 +105,8 @@ def selected_questions(path: Path, candidate: str, source: str) -> list[str]:
     plan, completed = read_plan(path, candidate, source)
     passed = {identity for identity, case in completed.items() if case["status"] == "passed" and case["score"] == 1}
     passed.update(plan["adjudicated_passed"])
+    if plan["schema"] == "core-review-retest-v39":
+        return [identity for identity in CORE30_IDS if identity in AFFECTED39]
     return [identity for identity in CORE30_IDS if identity not in passed or identity in AFFECTED]
 
 

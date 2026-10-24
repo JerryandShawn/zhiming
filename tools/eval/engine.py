@@ -7,6 +7,7 @@ from typing import Any
 
 from mingjing_core.timekit.clock import FrozenClock, get_clock, set_clock
 from tools.eval.judges import ModelJudge, check_assertions
+from tools.eval.judge_context import judge_payload
 from tools.eval.quota import ProviderStopped, guard_judge
 from tools.eval.schema import Scenario
 from tools.eval.targets.base import Target, TurnResult
@@ -117,6 +118,7 @@ def _evaluate_turns(scenario: Scenario, target: Target, judge: ModelJudge | None
                     "criterion": turn.expect.judge,
                     "score": grade,
                     "judge": case.pop("_private_judge", None),
+                    "tool_effects": result.metadata.get("tool_effects", {}),
                 }
             )
         grades.append(grade)
@@ -136,17 +138,7 @@ def _grade(
         return 1.0
     if result.error:
         return 0.0
-    turn = scenario.turns[index - 1]
-    payload = {
-        "scenario_id": scenario.id,
-        "user": turn.user,
-        "clock": turn.at or scenario.clock,
-        "seed": scenario.seed.model_dump(mode="json"),
-        "receipts": result.receipts,
-        "tools_called": result.tools_called,
-        "criterion": turn.expect.judge,
-        "answer": result.text,
-    }
+    payload = judge_payload(scenario, index, result)
     guard = guard_judge(judge)
     calls_before = guard.calls if guard else 0
     elapsed_before = guard.elapsed_seconds if guard else 0.0

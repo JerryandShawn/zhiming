@@ -95,6 +95,14 @@ def _event_check(expected: list[Any], actual: list[str]) -> bool:
 def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[AssertionResult]:
     """Each check has a stable name; failure diagnostics never contain text."""
     checks: list[AssertionResult] = []
+    if pattern := expect.get("profile_confirmation_or_text"):
+        actual = result.metadata.get("tool_effects", {}).get("profile_requests", [])
+        card = any(
+            row.get("status") == "pending"
+            and {"birth.date", "birth.time", "birth.city"}.issubset(row.get("fields", []))
+            for row in actual
+        )
+        checks.append(AssertionResult("profile_confirmation_or_text", _includes(result.text, pattern) or card))
     if expect.get("must_include_any"):
         passed = any(_includes(result.text, value) for value in expect["must_include_any"])
         checks.append(AssertionResult("must_include_any", passed))
