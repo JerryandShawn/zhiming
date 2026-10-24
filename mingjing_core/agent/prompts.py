@@ -11,7 +11,7 @@ from typing import Any
 
 from mingjing_core.domain.contracts import EvidenceError
 
-MANIFEST_SHA256 = "de92c9e714b0d885eeaf9c3820039bcfed217aa4136c7549b2762c7f07f5cf99"
+MANIFEST_SHA256 = "7232495299c25c9fafc6576fcd043696accd903a04645fcbd304a75212190d9a"
 DIRECTORY = Path(__file__).with_suffix("")
 
 

@@ -122,7 +122,7 @@ class JudgeJournal:
     def _completed(self, row: dict) -> dict:
         value = row["value"]
         rows = [item for item in self._physical(value["identity"]) if item["attempt_id"] in value["attempt_ids"]]
-        if len(rows) != 1 or fingerprint(rows) != value.get("physical_sha256"):
+        if not 1 <= len(rows) <= 2 or fingerprint(rows) != value.get("physical_sha256"):
             raise LifecycleError("已完成评分的中央物理证据改变")
         return deepcopy(value["result"])
 
@@ -157,12 +157,15 @@ class JudgeJournal:
         ]
         complete = (
             reviewed is not None
-            and reviewed.get("error") is None
-            and len(actual) == 1
-            and actual[0]["finished_at"] is not None
-            and actual[0]["status"] == "ok"
-            and actual[0]["model"] == self.binding.model
-            and actual[0]["provider"] == "kimi_code"
+            and (reviewed.get("error") is None or reviewed.get("judge_unavailable") is True)
+            and 1 <= len(actual) <= 2
+            and all(
+                item["finished_at"] is not None
+                and item["status"] == "ok"
+                and item["model"] == self.binding.model
+                and item["provider"] == "kimi_code"
+                for item in actual
+            )
         )
         value.update(
             attempt_state="completed" if complete else "unknown",

@@ -116,9 +116,9 @@ class ConnectionExecution:
                 (token_parts(row["authorization_id"]) or (None, None))[1] == "k31-connect"
                 for row in self.control.physical(self.session.guard)
             )
-            >= 20
+            >= 30
         ):
-            raise ProbeControlError("R18累计接入20次预算已耗尽")
+            raise ProbeControlError("R18累计接入30次预算已耗尽")
         run_id = f"{self.identity}:{MODEL}:{case.ident}:{step}"
         choice = "required" if case.tools and step == 1 else "auto"
         measured = measure_request(tuple(messages), case.tools, self.meter, tool_choice=choice)

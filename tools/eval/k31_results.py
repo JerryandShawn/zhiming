@@ -12,11 +12,38 @@ from tools.eval.targets.v4_core30 import CORE30_IDS, acceptance
 
 
 def unavailable_ready(meta: dict, retry: int, now: datetime | None = None) -> None:
-    if (
-        type(retry) is not int
-        or retry not in {1, 2}
-        or meta.get("unavailable_retry", 0) != retry - 1
-    ):
+    adjudication = meta.get("classification_adjudication", {})
+    if adjudication.get("board_version") == 33:
+        from tools.eval.overload_policy import is_overloaded, overload_due
+
+        if type(retry) is not int or retry < 1 or meta.get("unavailable_retry", 0) != retry - 1:
+            raise ValueError("R24_RETRY_SEQUENCE_REJECTED")
+        stopped = datetime.fromisoformat(meta["stopped_at"])
+        if adjudication.get("kind") == "unavailable":
+            status = adjudication.get("http_status")
+            index = adjudication.get("transient_index")
+            current = now or SystemClock().now()
+            if (
+                status is not None
+                and not 500 <= status <= 599
+                or type(index) is not int
+                or index not in {1, 2, 3}
+                or stopped.tzinfo is None
+                or current < stopped + timedelta(minutes=[5, 10, 10][index - 1])
+            ):
+                raise ValueError("V32_TRANSIENT_BACKOFF_REJECTED")
+            return
+        if not is_overloaded(
+            adjudication.get("http_status"), adjudication.get("error_type", ""), adjudication.get("message", "")
+        ):
+            raise ValueError("R24_OVERLOAD_CLASSIFICATION_REJECTED")
+        first = datetime.fromisoformat(adjudication["first_overload_at"])
+        due = overload_due(first, stopped, adjudication["overload_index"])
+        current = now or SystemClock().now()
+        if due is None or current < due or current > first + timedelta(minutes=60):
+            raise ValueError("R24_BACKOFF_NOT_ELAPSED_OR_EXHAUSTED")
+        return
+    if type(retry) is not int or retry not in {1, 2} or meta.get("unavailable_retry", 0) != retry - 1:
         raise ValueError("R22_RETRY_LIMIT_REJECTED")
     stopped = datetime.fromisoformat(meta.get("stopped_at", ""))
     current = now or SystemClock().now()
@@ -28,9 +55,7 @@ def unavailable_ready(meta: dict, retry: int, now: datetime | None = None) -> No
         raise ValueError("R22_BACKOFF_NOT_ELAPSED")
 
 
-def pending_questions(
-    report: dict, candidate: str, source: str, *, unavailable_retry: int = 0
-) -> list[str]:
+def pending_questions(report: dict, candidate: str, source: str, *, unavailable_retry: int = 0) -> list[str]:
     meta = report["metadata"]
     reason = meta.get("stop_reason")
     if reason == "unavailable":
@@ -57,19 +82,15 @@ def pending_questions(
     ):
         raise ValueError("R12_FRESH_QUESTION_SOURCE_REJECTED")
     planned = meta["planned_scenario_ids"]
-    if (
-        not planned
-        or len(planned) != len(set(planned))
-        or not set(planned) <= set(CORE30_IDS)
-    ):
+    if not planned or len(planned) != len(set(planned)) or not set(planned) <= set(CORE30_IDS):
         raise ValueError("R12_PLAN_REJECTED")
     cases = report["cases"]
     identities = [case["id"] for case in cases]
     if len(identities) != len(set(identities)) or not set(identities) <= set(planned):
         raise ValueError("R12_CASES_REJECTED")
-    if any(case["status"] not in {"passed", "failed", "incomplete"} for case in cases):
+    if any(case["status"] not in {"passed", "failed", "incomplete", "judge_unavailable"} for case in cases):
         raise ValueError("R12_CASE_STATUS_REJECTED")
-    finished = {case["id"] for case in cases if case["status"] in {"passed", "failed"}}
+    finished = {case["id"] for case in cases if case["status"] in {"passed", "failed", "judge_unavailable"}}
     pending = [identity for identity in planned if identity not in finished]
     if not pending or meta.get("pending_scenario_ids") != pending:
         raise ValueError("R12_PENDING_QUESTIONS_REJECTED")
@@ -99,21 +120,18 @@ def aggregate(reports: list[dict], candidate: str) -> dict:
                 "passed",
                 "failed",
                 "incomplete",
+                "judge_unavailable",
             }:
                 raise ValueError("K31_CASE_REJECTED")
             physical += case["model_calls"]
             if case["status"] == "incomplete":
                 if case["score"] is not None:
                     raise ValueError("K31_INTERRUPTED_SCORE_REJECTED")
-                interrupted.append(
-                    {"id": case["id"], "model_calls": case["model_calls"]}
-                )
+                interrupted.append({"id": case["id"], "model_calls": case["model_calls"]})
             elif case["id"] in completed:
                 raise ValueError("K31_COMPLETED_QUESTION_DUPLICATED")
             else:
-                completed[case["id"]] = {
-                    key: case[key] for key in ("id", "status", "score")
-                }
+                completed[case["id"]] = {key: case[key] for key in ("id", "status", "score")}
     if len(sources) != 1:
         raise ValueError("K31_REPORT_SOURCE_REJECTED")
     cases = [completed[identity] for identity in CORE30_IDS if identity in completed]
@@ -125,9 +143,7 @@ def aggregate(reports: list[dict], candidate: str) -> dict:
         "effort": "high",
         "acceptance": acceptance(cases),
         "cases": cases,
-        "pending_scenario_ids": [
-            identity for identity in CORE30_IDS if identity not in completed
-        ],
+        "pending_scenario_ids": [identity for identity in CORE30_IDS if identity not in completed],
         "interrupted_attempts": interrupted,
         "physical_requests": physical,
         "wasted_physical_requests": sum(row["model_calls"] for row in interrupted),

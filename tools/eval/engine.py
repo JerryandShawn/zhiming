@@ -55,7 +55,9 @@ def evaluate_scenario(
         target.reset(seed)
         grades = _evaluate_turns(scenario, target, judge, case)
         passed = all(check["passed"] for check in case["assertions"]) and not case.get("judge_error_code")
-        if case["status"] != "incomplete":
+        if case.get("judge_unavailable") and case["status"] != "incomplete":
+            case.update(status="judge_unavailable", score=None)
+        elif case["status"] != "incomplete":
             case["score"] = round((sum(grades) / len(grades)) * passed, 6)
             case["status"] = "passed" if passed and case["score"] == 1 else "failed"
     except ProviderStopped as exc:
@@ -173,9 +175,10 @@ def _grade(
     if reviewed["error"]:
         case["failed_assertions"].append(f"turn[{index}].judge_error")
         case["judge_error_code"] = reviewed["error"]
+        case["judge_unavailable"] = reviewed.get("judge_unavailable", False)
     elif reviewed["score"] < 1:
         case["failed_assertions"].append(f"turn[{index}].judge_score")
-    return reviewed["score"]
+    return reviewed["score"] if reviewed["score"] is not None else 0.0
 
 
 def _record_stop(

@@ -33,7 +33,7 @@ JUDGE_COMPARISON_KEYS = (
 
 
 def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
-    applicable = [case for case in cases if case["status"] not in {"n/a on v3", "incomplete"}]
+    applicable = [case for case in cases if case["status"] not in {"n/a on v3", "incomplete", "judge_unavailable"}]
     categories: dict[str, dict[str, Any]] = {}
     for case in cases:
         group = categories.setdefault(
@@ -49,7 +49,7 @@ def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
         if case["status"] == "n/a on v3":
             group["not_applicable"] += 1
             continue
-        if case["status"] == "incomplete":
+        if case["status"] in {"incomplete", "judge_unavailable"}:
             group["incomplete"] += 1
             continue
         group["count"] += 1
@@ -63,6 +63,7 @@ def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "passed": sum(case["status"] == "passed" for case in applicable),
         "not_applicable": sum(case["status"] == "n/a on v3" for case in cases),
         "incomplete": sum(case["status"] == "incomplete" for case in cases),
+        "judge_unavailable": sum(case["status"] == "judge_unavailable" for case in cases),
         "wasted_model_calls": sum(case.get("model_calls", 0) for case in cases if case["status"] == "incomplete"),
         "points": round(points, 6),
         "score": round(points / len(applicable), 6) if applicable else None,

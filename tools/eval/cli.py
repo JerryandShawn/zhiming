@@ -56,7 +56,6 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument(
         "--unavailable-retry",
         type=int,
-        choices=[0, 1, 2],
         default=0,
         help="R22 explicit fresh-question retry after 10/30 minutes",
     )

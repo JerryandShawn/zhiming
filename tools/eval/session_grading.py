@@ -50,4 +50,6 @@ def grade_current(target, control, binding, guard, judge, scenario, state):
             score=score,
             status="passed" if score == 1 and not case["failed_assertions"] else "failed",
         )
+    if reviewed.get("judge_unavailable"):
+        case.update(status="judge_unavailable", score=None, current_turn_score=None, judge_unavailable=True)
     return case

@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from mingjing_core.models.errors import ModelProtocolError
+
 from tools.eval.chart_goldens import load_golden, stability_checks, structure_checks
 from tools.eval.targets.base import TurnResult
 from tools.eval.review_assertions import cited_memory, naming_only_questions
@@ -200,6 +202,19 @@ class ModelJudge:
         self.rubric = rubric.read_text(encoding="utf-8")
 
     def evaluate(self, payload: dict[str, Any]) -> dict[str, Any]:
+        calls, elapsed = 0, 0.0
+        for _ in range(2):
+            result = self._evaluate_once(payload)
+            calls += result["model_calls"]
+            elapsed += result["elapsed_seconds"]
+            if result["error"] not in {"ModelProtocolError", "ValueError", "KeyError", "TypeError"}:
+                break
+        result.update(model_calls=calls, elapsed_seconds=elapsed)
+        if result["error"]:
+            result.update(score=None, judge_unavailable=True)
+        return result
+
+    def _evaluate_once(self, payload: dict[str, Any]) -> dict[str, Any]:
         started = time.monotonic()
         try:
             response = self.provider.generate(
@@ -240,7 +255,7 @@ class ModelJudge:
                 "elapsed_seconds": response.get("latency_seconds", time.monotonic() - started),
                 "error": None,
             }
-        except Exception as exc:
+        except (ValueError, KeyError, TypeError, ModelProtocolError) as exc:
             return {
                 "score": 0.0,
                 "model_calls": 1,

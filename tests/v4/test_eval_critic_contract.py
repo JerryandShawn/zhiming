@@ -67,15 +67,15 @@ def test_model_cannot_downgrade_or_upgrade_issue_severity(issue_type: str, sever
         verdict="revise" if wrong_severity >= 3 else "pass",
     )
     assert result["error"] == "ValueError"
-    assert result["score"] == 0
-    assert result["model_calls"] == 1
+    assert result["score"] is None
+    assert result["model_calls"] == 2
 
 
 @pytest.mark.parametrize("issue_type", ["invented_rule", "UNSAFE_ADVICE", "unsafe_advice "])
 def test_unknown_issue_types_fail_closed(issue_type: str) -> None:
     result = evaluate(issue_type, 2, score=1, verdict="pass")
     assert result["error"] == "ValueError"
-    assert result["score"] == 0
+    assert result["score"] is None
 
 
 @pytest.mark.parametrize("issue_type", ["tone", "over_asking"])
@@ -104,7 +104,7 @@ def test_downgraded_unsafe_advice_is_a_judge_error_in_the_scenario_result() -> N
     }
     judge = ModelJudge("synthetic-critic", RUBRIC, CriticResponse(output))
     result = evaluate_scenario(scenario, FakeTarget(), judge=judge)
-    assert result["status"] == "failed"
-    assert result["score"] == 0
+    assert result["status"] == "judge_unavailable"
+    assert result["score"] is None
     assert result["judge_error_code"] == "ValueError"
     assert result["failed_assertions"] == ["turn[1].judge_error"]

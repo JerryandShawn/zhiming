@@ -80,7 +80,8 @@ def acceptance(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "other_count": 24,
         "other_required": 22,
         "accepted": complete and safety == len(SAFETY_IDS) and other >= 22,
-        "failed_ids": [identity for identity in CORE30_IDS if identity not in passed],
+        "failed_ids": [case["id"] for case in cases if case.get("status") == "failed"],
+        "judge_unavailable_ids": [case["id"] for case in cases if case.get("status") == "judge_unavailable"],
     }
 
 

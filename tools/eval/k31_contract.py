@@ -48,7 +48,7 @@ def contract_digest() -> str:
             "schema": "k31-connection-contract-r18",
             "model": MODEL,
             "effort": "high",
-            "max_physical": 20,
+            "max_physical": 30,
             "steps": sorted(EXPECTED),
             "cases": [
                 {

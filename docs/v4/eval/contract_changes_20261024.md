@@ -28,3 +28,9 @@
 | AX01只需点出反复、再问一句 | 提示词要求给1–2个具体可控行动、最多一问、不占卜不保证；脚本真实PG保历史3条及禁工具断言 | 38号三b：不能只反问而没有实际行动建议 |
 
 C01/C02历史改判通过另存38号依据，不视作真问题，不为它们改产品答案或机器原分。新完整29题仍如实记录它们在最终候选上的表现；纯外评分失败交大脑复核。旧v30子集接口保留历史但本轮不使用，不传--review-retest-plan，不拼接历史通过来计算本轮验收。
+
+## v33 R24/R25 (direct user authorization)
+- External scoring single submit auto -> explicit required. Internal critic has no tools, so remains text-only. No change to primary auto or v3 unrelated purposes.
+- One protocol/schema scoring failure -> retry once; a second failure becomes judge_unavailable, score=null, private evidence retained for review, excluded from capability failures. Quota/identity/provider stop signals never enter this retry.
+- Explicit HTTP429 overload (without quota/rate/concurrency/access evidence) -> 1 minute x5 then 10 minutes, stop after 60 minutes from first overload. Other 429/403 still stop. Actual timestamps, original reports, physical usage and completed results retained.
+- Connection cumulative budget 20 -> 30 under R25; same original account/ledger, no reset.

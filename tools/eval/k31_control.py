@@ -138,8 +138,8 @@ def core_approval(guard: Any, scripted: K31ConnectionApproval, proof: dict, cont
             or actual["candidate_commit"] != scripted.candidate
             or actual["source_sha256"] != scripted.source_sha256
             or actual["stop_kind"]
-            or actual["model_calls"] > 20
-            or actual["cumulative_model_calls"] > 20
+            or actual["model_calls"] > 30
+            or actual["cumulative_model_calls"] > 30
         ):
             raise GuardRejected("manual_start_required")
         return _core_approval(scripted, actual["proof_sha256"], actual["factor"])
