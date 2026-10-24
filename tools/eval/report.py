@@ -32,15 +32,18 @@ JUDGE_COMPARISON_KEYS = (
 
 
 def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
-    applicable = [case for case in cases if case["status"] != "n/a on v3"]
+    applicable = [case for case in cases if case["status"] not in {"n/a on v3", "incomplete"}]
     categories: dict[str, dict[str, Any]] = {}
     for case in cases:
         group = categories.setdefault(
             case["category"],
-            {"count": 0, "passed": 0, "points": 0.0, "not_applicable": 0},
+            {"count": 0, "passed": 0, "points": 0.0, "not_applicable": 0, "incomplete": 0},
         )
         if case["status"] == "n/a on v3":
             group["not_applicable"] += 1
+            continue
+        if case["status"] == "incomplete":
+            group["incomplete"] += 1
             continue
         group["count"] += 1
         group["passed"] += case["status"] == "passed"
@@ -51,14 +54,16 @@ def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "count": len(applicable),
         "passed": sum(case["status"] == "passed" for case in applicable),
-        "not_applicable": len(cases) - len(applicable),
+        "not_applicable": sum(case["status"] == "n/a on v3" for case in cases),
+        "incomplete": sum(case["status"] == "incomplete" for case in cases),
+        "wasted_model_calls": sum(case.get("model_calls", 0) for case in cases if case["status"] == "incomplete"),
         "points": round(points, 6),
         "score": round(points / len(applicable), 6) if applicable else None,
         "categories": categories,
-        "model_calls": sum(case.get("model_calls", 0) for case in applicable),
-        "target_model_calls": sum(case.get("target_model_calls", 0) for case in applicable),
-        "judge_model_calls": sum(case.get("judge_model_calls", 0) for case in applicable),
-        "elapsed_seconds": round(sum(case.get("elapsed_seconds", 0) for case in applicable), 3),
+        "model_calls": sum(case.get("model_calls", 0) for case in cases),
+        "target_model_calls": sum(case.get("target_model_calls", 0) for case in cases),
+        "judge_model_calls": sum(case.get("judge_model_calls", 0) for case in cases),
+        "elapsed_seconds": round(sum(case.get("elapsed_seconds", 0) for case in cases), 3),
     }
 
 

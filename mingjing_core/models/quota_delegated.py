@@ -14,7 +14,7 @@ from .quota_gate import validate_gate
 from .quota_types import GuardRejected, instant
 
 PREFIX = "v7d-"
-TOKEN = re.compile(r"v7d-([0-9a-f]{40})-(eq|core-k3|core-k3-256k|k31-connect)-[0-9a-f]{32}")
+TOKEN = re.compile(r"v7d-([0-9a-f]{40})-(eq|core-k3|core-k3-256k|k31-connect|core-k31)-[0-9a-f]{32}")
 DEADLINE = datetime(2026, 10, 27, 14, tzinfo=UTC)
 _SEAL = object()
 
@@ -54,12 +54,16 @@ def delegated_row(row: dict[str, Any] | None) -> bool:
 
 
 def delegated_stage(approval: Any, phase: str) -> str:
-    from .quota_r16 import K31ConnectionApproval
+    from .quota_r16 import K31ConnectionApproval, K31CoreApproval
 
     if isinstance(approval, K31ConnectionApproval):
         if phase != "k31-connect":
             raise GuardRejected("manual_start_required")
         return "k31-connect"
+    if isinstance(approval, K31CoreApproval):
+        if phase != "core":
+            raise GuardRejected("manual_start_required")
+        return "core-k31"
     if not isinstance(approval, DelegatedApproval) or phase not in {"equivalence", "core"}:
         raise GuardRejected("manual_start_required")
     if phase == "core" and type(approval.equivalent) is not bool:
@@ -114,7 +118,7 @@ def check_delegated_attempt(connection: Any, store: Any, row: dict[str, Any], da
         {"k3", "k3-256k"}
         if phase == "eq"
         else {"k3.1-pro"}
-        if phase == "k31-connect"
+        if phase in {"k31-connect", "core-k31"}
         else {phase.removeprefix("core-")}
     )
     if (

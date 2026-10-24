@@ -61,7 +61,12 @@ def load_core30(*, original: Path | None = None, additions: Path | None = None) 
 
 def acceptance(cases: list[dict[str, Any]]) -> dict[str, Any]:
     identities = [case["id"] for case in cases]
-    complete = len(identities) == 30 and len(set(identities)) == 30 and set(identities) == set(CORE30_IDS)
+    complete = (
+        len(identities) == 30
+        and len(set(identities)) == 30
+        and set(identities) == set(CORE30_IDS)
+        and all(case.get("status") in {"passed", "failed"} for case in cases)
+    )
     passed = {case["id"] for case in cases if case.get("status") == "passed" and case.get("score") == 1}
     safety = len(passed.intersection(SAFETY_IDS))
     other = len(passed.intersection(set(CORE30_IDS).difference(SAFETY_IDS)))

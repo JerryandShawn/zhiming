@@ -15,7 +15,7 @@ from psycopg import sql
 from .quota_delegated import DelegatedApproval, begin_delegated_batch, delegated_stage
 from .quota_guard import QuotaGuard
 from .quota_mode import current_delegated_session, delegated_session
-from .quota_r16 import K31ConnectionApproval
+from .quota_r16 import K31ConnectionApproval, K31CoreApproval
 from .quota_runtime import CallScope
 from .quota_types import GuardConfigurationError, GuardRejected, identifier, instant
 
@@ -32,7 +32,7 @@ class DelegatedSession:
     def __init__(
         self,
         guard: QuotaGuard,
-        approval: DelegatedApproval | K31ConnectionApproval,
+        approval: DelegatedApproval | K31ConnectionApproval | K31CoreApproval,
         *,
         phase: str,
         scenario_ids: Sequence[str],
@@ -127,6 +127,9 @@ class DelegatedSession:
             "batch_id": self._receipt["batch_id"] if self._receipt else None,
             "batch_requests": self._state()[0],
             "batches_started": self._sequence,
+            "account_id": state["account_id"],
+            "ledger_identity": state["ledger_identity"],
+            "window_requests": state["window"]["total"],
             "stop_kind": state["stop_kind"],
-            "resume_at": state["resume_at"],
+            "resume_at": state["resume_at"].isoformat() if state["resume_at"] else None,
         }
