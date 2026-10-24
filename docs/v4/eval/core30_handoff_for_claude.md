@@ -1,5 +1,7 @@
 # 核心30题操作单（v18：Codex执行真实评测，stage仍由Claude执行）
 
+> v21最新状态：2026-10-24 18:53 +08:00：已执行v21/R20。新冻结候选e708e684109ce50e06c8c172cbcd959d5ee53f2c，同源R11于18:46:50–18:49:49通过48/48、日期7/7、69/69、X02等价、离线core30 30/30；source0f30288760dc7935c22113b2f9c36df66cab393c3ea00295a25bb581785755bf，四原件已核，原81仍71/81及12延期不改。connect真实4/4检查通过，工具2轮/调用1次/额外0次，实际首required/次auto；精确k3.1-pro/high/推理回传及1594字长答通过，计量factor1.15；接入累计8/20含旧4。随后同进程立即启动core30，T05在首POST前被本地LifecycleBinding的旧k3/k3-256k白名单拒绝，映射ledger_unavailable；下游CoreObservation还使用K31批准没有的equivalent属性，尚未走到。core新增真实0、T05 incomplete/score=null，其余未运行，不能记0/30失败；原report和k31_results incomplete保留，key已清，不重试/换control/换账本。唯一安全摘要docs/v4/eval/k31-r20-cb7a00d706f047d4b810a0f62f6ef683.json；代码树不改，待必要新bug裁定。
+
 **v18当前终态：R18真实重跑未通过，保持停止。** 探针修片冻结在`C:/Users/Administrator/Documents/Codex/zhiming-v4-r18` / `e9c82f491f27f69aebdb0f7bfcbc4b63a6e6f26e`，应用代码与d167相同，未改正式树。18:30:44–18:33:40新同源R11通过，source=86769412e90231b7a5b551da9df3dce5fca1ed795e479ea7b0f41cde5a1ec2a9；18:33:56接入因第二次相同工具调用而停止。本轮2次、含v16旧2次累计4/20；两轮均精确k3.1-pro/high/推理存在，2个工具请求，重复的第二个未执行，额外已执行工具0。核心30未启动，key已清，不自动重试或回退。安全摘要`k31-r18-aa6eb26c861e487c877e392e7eb2ba69.json`，唯一新control为probe_k31_aa6eb26c861e487c877e392e7eb2ba69。
 
 需大脑裁定的真实代码事实：K3单工具auto会被safe_tool_choice改成required；原echo的value enum仅允许合成，因此合法的重复工具请求必然同名同参数。本次按R18正确熔断，不把这个受本地策略影响的结果直接当模型不兼容；没有改生产策略或真实schema。下列命令仅保留实际操作接口，当前不得重新执行connect/core30，等待新裁定。

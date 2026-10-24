@@ -18,6 +18,9 @@
 
 ## Progress
 
+2026-10-24 18:53 +08:00：已执行v21/R20。新冻结候选e708e684109ce50e06c8c172cbcd959d5ee53f2c，同源R11于18:46:50–18:49:49通过48/48、日期7/7、69/69、X02等价、离线core30 30/30；source0f30288760dc7935c22113b2f9c36df66cab393c3ea00295a25bb581785755bf，四原件已核，原81仍71/81及12延期不改。connect真实4/4检查通过，工具2轮/调用1次/额外0次，实际首required/次auto；精确k3.1-pro/high/推理回传及1594字长答通过，计量factor1.15；接入累计8/20含旧4。随后同进程立即启动core30，T05在首POST前被本地LifecycleBinding的旧k3/k3-256k白名单拒绝，映射ledger_unavailable；下游CoreObservation还使用K31批准没有的equivalent属性，尚未走到。core新增真实0、T05 incomplete/score=null，其余未运行，不能记0/30失败；原report和k31_results incomplete保留，key已清，不重试/换control/换账本。唯一安全摘要docs/v4/eval/k31-r20-cb7a00d706f047d4b810a0f62f6ef683.json；代码树不改，待必要新bug裁定。
+
+
 - [x] (2026-10-24 18:36 +08:00) v18/R18代码片在独立r18分支e9c82f4已推，唯一代码/定向证据索引为该提交本计划18:26/18:29（旧3必要兼容过、新9过、追加2过；首Mock参数违schema的8失败保留，不合并计一次绿）。该e9新R11 18:30:44–18:33:40完整通过后，原R17账本/新control真实重跑2次，因第二次同名同参数重复正确停止；含旧2次累计4，core30未启动、key清除。唯一公开结果为本树docs/v4/eval/k31-r18-aa6eb26c861e487c877e392e7eb2ba69.json，原始PG/proof在r18/private，不重复抄录。
 
 - [x] 2026-10-24 13:45 +08:00 R16接入/可信核心选择与R12必要代码已接：固定4物理检查（工具往返/U39/high、长输入实际计量及Z1系数、中文长答完整结尾），PG重读证明/独立core-k31批准、主/外部评分精确K31及系数注入；新tools.eval.k31_cli和runner --connection-proof、--fresh-questions-from、无正文rollup入口。尚未整合最终同源候选，禁止真实运行；现有R11 b008不套新代码。
@@ -70,6 +73,9 @@
 
 ## Surprises & Discoveries
 
+18:53：接入通过后第一次触达core，LifecycleBinding仍硬限旧模型；下游CoreObservation亦旧equivalent接口。此处账本可读、inflight0，ledger_unavailable并非供应商额度拒绝。
+
+
 2026-10-24 18:36 +08:00：真实两轮签名完全相同且model/high/推理存在均正确，重复熔断不是供应商403或额度问题。现有单工具auto→required与value固定enum共同约束了探针，不能把失败直接当模型不兼容或根据2次探针推算总体倍率；这两个生产策略/真实schema本片都未修改。
 
 2026-10-24 13:45 +08:00：R16实际PG反例发现旧bad_request不属于中央持久停止类，单有error.global_stop不足以封住其他进程。身份异常现保留物理bad_request原件，同时使用既有permission_error人工解除类持久全停；无新增PG枚举/迁移。已知reset的snapshot原datetime亦改ISO字符串，避免quota报告序列化丢失。冻结脚本/旧默认模型不改。
@@ -115,6 +121,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+18:53：保留v21新候选及所有原件；不把未执行核心题记失败，不更换账本或自动重发connect，不绕旧生命周期身份门。按板仅修裁定bug，当前等待core模型绑定裁定。
+
 
 2026-10-24 18:36 +08:00：按R18失败立即停、由大脑决定后续，不擅自退回旧模型或再建control。旧账本与四条物理记录保留，额外执行工具0与额外工具请求1分别报告；泛化第3/4轮正例仅为Mock显式变参测试，未放宽真实schema。新代码同源R11独立重绑，不套旧d167报告、不动正式在途full回归。
 
@@ -165,6 +174,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+18:53：v21根因修复与新R11、真实接入均通过，core已立即尝试但本地0POST停止；唯一安全摘要及原report/rollup在Progress，未验证core实际答题质量。
+
 
 2026-10-24 18:36 +08:00：R18所要求的最小循环/每轮检查/重复及4请求边界/累计20预算有定向证据，新真实检查按重复调用止损。真实核心30仍未开始，不伪造k31_results或分数；等大脑对上述真实策略事实裁定。正式d167及stage/生产未动。
 
