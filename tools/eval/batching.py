@@ -30,7 +30,10 @@ def _account(batch: dict[str, Any], case: dict[str, Any], reused: bool) -> None:
 
 def _usage_metadata(report: dict[str, Any], attempt: int) -> None:
     current = [batch for batch in report["batches"] if batch["attempt"] == attempt]
-    usage = {name: _usage() for name in ("new_usage", "inherited_usage", "historical_actual_usage")}
+    usage = {
+        name: _usage()
+        for name in ("new_usage", "inherited_usage", "historical_actual_usage")
+    }
     for batch in current:
         for name in ("new_usage", "inherited_usage"):
             for key in USAGE_KEYS:
@@ -58,7 +61,9 @@ def run_batches(
         batch = {
             "attempt": attempt,
             "batch": offset // batch_size + 1,
-            "scenario_ids": [scenario.id for scenario in scenarios[offset : offset + batch_size]],
+            "scenario_ids": [
+                scenario.id for scenario in scenarios[offset : offset + batch_size]
+            ],
             "executed_ids": [],
             "cached_ids": [],
             "new_usage": _usage(),
@@ -66,7 +71,9 @@ def run_batches(
             "status": "running",
         }
         report["batches"].append(batch)
-        _run_batch(scenarios, offset, batch_size, batch, known, report, observe, publish)
+        _run_batch(
+            scenarios, offset, batch_size, batch, known, report, observe, publish
+        )
         _usage_metadata(report, attempt)
         publish()
         if report["metadata"].get("stop_reason"):
@@ -104,11 +111,19 @@ def _run_batch(
                 stop_role=case["stop_role"],
                 requires_user_decision=case.get("requires_user_decision", True),
             )
-            for key in ("resume_at", "automatic_resume_eligible", "permanent_stop", "provider_http_status"):
+            for key in (
+                "resume_at",
+                "automatic_resume_eligible",
+                "permanent_stop",
+                "provider_http_status",
+                "stopped_at",
+            ):
                 if key in case:
                     report["metadata"][key] = case[key]
             break
     batch["wall_seconds"] = round(time.perf_counter() - started, 3)
     batch["status"] = "stopped" if report["metadata"].get("stop_reason") else "complete"
-    if batch["status"] == "complete" and any(is_infrastructure_failure(known[item]) for item in batch["executed_ids"]):
+    if batch["status"] == "complete" and any(
+        is_infrastructure_failure(known[item]) for item in batch["executed_ids"]
+    ):
         batch["status"] = "incomplete"

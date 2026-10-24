@@ -18,6 +18,9 @@
 
 ## Progress
 
+2026-10-24 19:22 +08:00：已执行v23/R22。为核心中途unavailable补原生--unavailable-retry 1/2，仅同源原report未完成题，保已完成及浪费；用实际SystemClock stopped_at而非题目冻结时间核10/30分钟，两次序号严格递增。quota5h原恢复合同不变，403/权限/并发/Access等不能走此分支。相关新13+原R12四项同轮17/17，1.91s，private/safe-narrow-4ce47bde1e43465eafa737567163d813，根核metadata/XML/log；Ruff/format过。旧448首unavailable计入次数1/累计9，请求不重签不造proof；新候选R11后先满足原失败后10min再新control接入，成功立即core30；再unavailable等30min最后一次，核心最多2次同节奏题头新run。
+
+
 2026-10-24 19:11 +08:00：已执行v22/R21，一次扫描core30全链；封装sealed批准选模型，修LifecycleBinding、CoreObservation、quota witness及三处恢复/账本token命名（K31实际core-k31）。仅c21独立baseline的runner_v2/subset/source/calibration不在runner→core30调用链，按板保留。原定向45旧项通过/1新增失败（e1092c3950b04874b4e7834df34a6cf2，409.32s）；再新3中2失败1过（108d4b984ac54450b7f45b42dcd38d19），原因复用计量压力Mock夸大10000输入导致RequiredContextOverflow，未改生产门。修此夹具后新3/3真实隔离PG/Agent/外评/已知5h恢复新run通过（e868c82b07b04082b0f06d87cd6148f5，32.79s）；追加native token对齐1/1（b2d1d6c1e3e34a5b8b8470fa4fcf7231，4.71s）。根核metadata/XML/log，各轮不相加冒称一次全链。Ruff/format通过。待同候选R11后<=4新接入累计<=20（旧8保留），成功立即core30。
 
 
@@ -78,6 +81,9 @@
 
 ## Surprises & Discoveries
 
+19:22：旧fresh-questions-from只接受已知quota5h，若不补会在v23首次核心unavailable恢复时本地拒绝；新增显式R22序号及实际停止时刻，不能把业务题目clock或不完整上次启动时刻用作等待锚点。
+
+
 19:11：除旧模型白名单及K31批准没有equivalent外，quota_resume_evidence/clear/session_accounting把token阶段拼成core-k3.1-pro，而中央原生为core-k31；已统一。原runner_v2等仅E1 c21冻结基线，core30从runner.py→live_session→ProofSelectedRegistry进入，不改变旧基线。
 
 
@@ -131,6 +137,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+19:22：只给v23明确授权的unavailable开放有限重试，默认flag0仍拒绝；前次序号、同候选/source/model/计划与未完成集合均核，10/30分钟未到拒绝。core仍每题全新run，无同run续作或改变期限；所有原报告输入只读。
+
 
 19:11：R21仅在当前sealed K31CoreApproval且候选/source/中央guard一致时允许Lifecycle capture/verify；连接专用批准、无批准、篡改来源均拒绝。旧K3选择及none/named保护不变；实际主/外评仍K31/high，R12整题新run，不投入旧同run续作。
 
@@ -189,6 +198,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+19:22：R22必要框架17/17，待新同源R11及后台固定退避真实重试；历史9物理保留，不使用旧成功接入proof批准新source，不改协议/客户端/限流特征。
+
 
 19:11：新增必要实际PG+公开tokenizer+Mock HTTP完整答题/外评及额度新run通过，无真实新请求；旧8计数保留。未宣称CI或真实core绿，源码固定后立即R11和真实流水线，不等完整回归。
 

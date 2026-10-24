@@ -35,7 +35,9 @@ EVAL_ROOT = Path(__file__).parent
 
 
 def _source_digest() -> str:
-    candidates = list((ROOT / "tools/eval").rglob("*.py")) + list(ROOT.glob("requirements*.lock"))
+    candidates = list((ROOT / "tools/eval").rglob("*.py")) + list(
+        ROOT.glob("requirements*.lock")
+    )
     candidates += list((ROOT / "tools/eval/fixtures").glob("*.yaml"))
     runtime_config = ROOT / "config/runtime.yaml"
     if runtime_config.is_file():
@@ -50,7 +52,9 @@ def _source_digest() -> str:
         if path.is_file()
     ]
     candidates += [
-        path for path in (ROOT / "mingjing_core").rglob("*") if path.suffix in {".py", ".md", ".json", ".sql"}
+        path
+        for path in (ROOT / "mingjing_core").rglob("*")
+        if path.suffix in {".py", ".md", ".json", ".sql"}
     ]
     digest = hashlib.sha256()
     for path in sorted(candidates):
@@ -69,20 +73,32 @@ def _endpoint_digest() -> str:
     return hashlib.sha256(normalized.encode()).hexdigest()
 
 
-def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dict[str, Any]:
+def _metadata(
+    config: dict[str, Any], mode: str, target: str, model: str
+) -> dict[str, Any]:
     rubric = EVAL_ROOT / config["judge"]["rubric"]
     metadata = {
-        "date": get_clock().now().astimezone(ZoneInfo("Asia/Shanghai")).date().isoformat(),
+        "date": get_clock()
+        .now()
+        .astimezone(ZoneInfo("Asia/Shanghai"))
+        .date()
+        .isoformat(),
         "mode": mode,
         "target": target,
         "model": model,
-        "judge_model": config["judge"]["model"] if mode == "live" else "not called (scripted)",
+        "judge_model": config["judge"]["model"]
+        if mode == "live"
+        else "not called (scripted)",
         "judge_provider": config["judge"].get("provider", "configured-model-v3"),
-        "judge_schema_sha256": hashlib.sha256(json.dumps(JUDGE_SCHEMA, sort_keys=True).encode()).hexdigest(),
+        "judge_schema_sha256": hashlib.sha256(
+            json.dumps(JUDGE_SCHEMA, sort_keys=True).encode()
+        ).hexdigest(),
         "rubric_version": config["judge"]["version"],
         "rubric_sha256": hashlib.sha256(rubric.read_bytes()).hexdigest(),
         "config_version": config["version"],
-        "config_sha256": hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest(),
+        "config_sha256": hashlib.sha256(
+            json.dumps(config, sort_keys=True).encode()
+        ).hexdigest(),
         "source_sha256": _source_digest(),
         "provider_endpoint_sha256": _endpoint_digest() if mode == "live" else None,
         "synthetic_only": True,
@@ -103,7 +119,9 @@ def _metadata(config: dict[str, Any], mode: str, target: str, model: str) -> dic
     return metadata
 
 
-def _target(name: str, model: str, mode: str = "scripted", suite: str = "default") -> Target:
+def _target(
+    name: str, model: str, mode: str = "scripted", suite: str = "default"
+) -> Target:
     if name == "v4":
         if mode == "live":
             if suite == "core30":
@@ -147,7 +165,9 @@ def _fingerprint(scenario: Scenario, metadata: dict[str, Any]) -> str:
     return hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest()
 
 
-def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, Any]:
+def _resume_report(
+    args: argparse.Namespace, metadata: dict[str, Any]
+) -> dict[str, Any]:
     if not args.resume:
         return {}
     changed_source = False
@@ -155,9 +175,19 @@ def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[s
         if path.name == "baseline-v3.json":
             continue
         data = json.loads(path.read_text(encoding="utf-8"))
-        identity = ("target", "model", "mode", "config_sha256", "provider_endpoint_sha256")
-        same_run = all(data["metadata"].get(key) == metadata.get(key) for key in identity)
-        if same_run and data["metadata"].get("source_sha256") != metadata.get("source_sha256"):
+        identity = (
+            "target",
+            "model",
+            "mode",
+            "config_sha256",
+            "provider_endpoint_sha256",
+        )
+        same_run = all(
+            data["metadata"].get(key) == metadata.get(key) for key in identity
+        )
+        if same_run and data["metadata"].get("source_sha256") != metadata.get(
+            "source_sha256"
+        ):
             changed_source = True
             continue
         keys = (
@@ -174,7 +204,9 @@ def _resume_report(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[s
         if all(data["metadata"].get(key) == metadata.get(key) for key in keys):
             return data
     if changed_source:
-        raise SystemExit("Cannot resume across execution sources; use the preserved frozen execution snapshot")
+        raise SystemExit(
+            "Cannot resume across execution sources; use the preserved frozen execution snapshot"
+        )
     return {}
 
 
@@ -182,16 +214,23 @@ def _reusable_cases(report: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {
         case["id"]: case
         for case in report.get("cases", [])
-        if case["status"] in {"passed", "failed", "n/a on v3"} and not is_infrastructure_failure(case)
+        if case["status"] in {"passed", "failed", "n/a on v3"}
+        and not is_infrastructure_failure(case)
     }
 
 
-def _resume_cases(args: argparse.Namespace, metadata: dict[str, Any]) -> dict[str, dict[str, Any]]:
+def _resume_cases(
+    args: argparse.Namespace, metadata: dict[str, Any]
+) -> dict[str, dict[str, Any]]:
     return _reusable_cases(_resume_report(args, metadata))
 
 
 def _observe_case(
-    scenario: Scenario, target: Target, judge: ModelJudge | None, metadata: dict[str, Any], previous: dict[str, Any]
+    scenario: Scenario,
+    target: Target,
+    judge: ModelJudge | None,
+    metadata: dict[str, Any],
+    previous: dict[str, Any],
 ) -> tuple[dict[str, Any], bool]:
     fingerprint = _fingerprint(scenario, metadata)
     cached = previous.get(scenario.id)
@@ -199,7 +238,11 @@ def _observe_case(
     tracker = getattr(getattr(judge, "provider", None), "tracker", None)
     judge_before = tracker.external_calls if tracker is not None else 0
     case = (
-        deepcopy(cached) if reused else evaluate_scenario(scenario, target, target_name=metadata["target"], judge=judge)
+        deepcopy(cached)
+        if reused
+        else evaluate_scenario(
+            scenario, target, target_name=metadata["target"], judge=judge
+        )
     )
     if not reused and metadata["target"] == "v4":
         case["v4_evidence"] = target.case_evidence()
@@ -224,11 +267,18 @@ def _run(
     metadata = _metadata(config, args.mode, args.target, model)
     metadata.update(getattr(args, "candidate_provenance", {}))
     metadata["evaluation_suite"] = getattr(args, "suite", "default")
+    metadata["unavailable_retry"] = getattr(args, "unavailable_retry", 0)
     if getattr(args, "fresh_questions_from", None) is not None:
-        metadata["fresh_questions_from_sha256"] = hashlib.sha256(args.fresh_questions_from.read_bytes()).hexdigest()
+        metadata["fresh_questions_from_sha256"] = hashlib.sha256(
+            args.fresh_questions_from.read_bytes()
+        ).hexdigest()
     prior_report = _resume_report(args, metadata)
     previous = _reusable_cases(prior_report)
-    report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
+    report: dict[str, Any] = {
+        "metadata": metadata,
+        "cases": [],
+        "batches": deepcopy(prior_report.get("batches", [])),
+    }
     metadata["planned_scenario_ids"] = [scenario.id for scenario in scenarios]
     scenario_map = {scenario.id: scenario for scenario in scenarios}
     judge = None
@@ -237,14 +287,18 @@ def _run(
 
         judge = V4LiveJudge(model, EVAL_ROOT / config["judge"]["rubric"])
     elif args.mode == "live":
-        judge = ModelJudge(config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"])
+        judge = ModelJudge(
+            config["judge"]["model"], EVAL_ROOT / config["judge"]["rubric"]
+        )
     target = _target(args.target, model, args.mode, getattr(args, "suite", "default"))
     for scenario in scenarios:
         cached = previous.get(scenario.id)
         if cached and cached.get("fingerprint") == _fingerprint(scenario, metadata):
             report["cases"].append(deepcopy(cached))
         elif args.target == "v3" and "v3" not in scenario.targets:
-            report["cases"].append(evaluate_scenario(scenario, target, target_name="v3"))
+            report["cases"].append(
+                evaluate_scenario(scenario, target, target_name="v3")
+            )
     try:
         run_batches(
             scenarios,
@@ -259,13 +313,20 @@ def _run(
     return _finish(args, scenarios, report)
 
 
-def _publish_contract_report(report: dict[str, Any], output: Path, scenarios: dict[str, Scenario]) -> None:
-    if report["metadata"].get("mode") == "live" and report["metadata"].get("target") == "v4":
+def _publish_contract_report(
+    report: dict[str, Any], output: Path, scenarios: dict[str, Scenario]
+) -> None:
+    if (
+        report["metadata"].get("mode") == "live"
+        and report["metadata"].get("target") == "v4"
+    ):
         from tools.eval.live import update_live_metadata
 
         update_live_metadata(report["metadata"])
         report["metadata"].update(
-            physical_requests=sum(case.get("model_calls", 0) for case in report["cases"]),
+            physical_requests=sum(
+                case.get("model_calls", 0) for case in report["cases"]
+            ),
             external_provider_requests=sum(
                 case.get("v4_evidence", {}).get("external_provider_requests", 0)
                 + case.get("v4_evidence", {}).get("judge_external_provider_requests", 0)
@@ -276,7 +337,9 @@ def _publish_contract_report(report: dict[str, Any], output: Path, scenarios: di
     _publish(report, output)
 
 
-def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[str, Any]) -> int:
+def _finish(
+    args: argparse.Namespace, scenarios: list[Scenario], report: dict[str, Any]
+) -> int:
     metadata = report["metadata"]
     complete = (
         len(report["cases"]) == len(scenarios)
@@ -291,18 +354,34 @@ def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[st
         metadata["core30_acceptance"] = acceptance(report["cases"])
         core_accepted = metadata["core30_acceptance"]["accepted"]
     add_comparison(report, args.output / "baseline-v3.json")
-    baseline = complete and args.mode == "live" and args.target == "v3" and not args.scenario and len(scenarios) == 80
+    baseline = (
+        complete
+        and args.mode == "live"
+        and args.target == "v3"
+        and not args.scenario
+        and len(scenarios) == 80
+    )
     paths = write_report(report, args.output, baseline=baseline)
     summary = report["summary"]
-    print(f"Result: {summary['passed']}/{summary['count']}; n/a on v3: {summary['not_applicable']}")
+    print(
+        f"Result: {summary['passed']}/{summary['count']}; n/a on v3: {summary['not_applicable']}"
+    )
     print(
         "Reports: "
-        + ", ".join(str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path) for path in paths)
+        + ", ".join(
+            str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
+            for path in paths
+        )
     )
     return (
         2
         if metadata.get("stop_reason")
-        else int(not complete or not core_accepted or args.mode == "scripted" and summary["passed"] != summary["count"])
+        else int(
+            not complete
+            or not core_accepted
+            or args.mode == "scripted"
+            and summary["passed"] != summary["count"]
+        )
     )
 
 
@@ -310,26 +389,63 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     args.target = args.target or ("v3" if args.mode == "live" else "fake")
     lifecycle_selection(args)
-    if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3"), ("scripted", "v4"), ("live", "v4")}:
-        raise SystemExit("Supported modes: scripted/fake, scripted/v4, live/v3 and gated live/v4")
+    if args.unavailable_retry and (
+        args.mode != "live"
+        or args.target != "v4"
+        or args.suite != "core30"
+        or args.fresh_questions_from is None
+    ):
+        raise SystemExit("R22 retry requires same-source core30 fresh-question report")
+    if (args.mode, args.target) not in {
+        ("scripted", "fake"),
+        ("live", "v3"),
+        ("scripted", "v4"),
+        ("live", "v4"),
+    }:
+        raise SystemExit(
+            "Supported modes: scripted/fake, scripted/v4, live/v3 and gated live/v4"
+        )
     if args.suite == "core30":
         from tools.eval.targets.v4_core30 import load_core30
 
-        if args.target != "v4" or args.scenario or args.scenarios.resolve() != (EVAL_ROOT / "scenarios").resolve():
-            raise SystemExit("core30 requires v4 and its exact isolated selection; no custom scenario subset")
+        if (
+            args.target != "v4"
+            or args.scenario
+            or args.scenarios.resolve() != (EVAL_ROOT / "scenarios").resolve()
+        ):
+            raise SystemExit(
+                "core30 requires v4 and its exact isolated selection; no custom scenario subset"
+            )
         scenarios = load_core30()
         if args.fresh_questions_from is not None:
             from tools.eval.k31_results import pending_questions
 
-            if args.mode != "live" or args.connection_proof is None or args.resume or not args.candidate:
-                raise SystemExit("R12 fresh questions require R16 live proof and a new invocation")
+            if (
+                args.mode != "live"
+                or args.connection_proof is None
+                or args.resume
+                or not args.candidate
+            ):
+                raise SystemExit(
+                    "R12 fresh questions require R16 live proof and a new invocation"
+                )
             previous = json.loads(args.fresh_questions_from.read_text(encoding="utf-8"))
-            pending = pending_questions(previous, args.candidate, _source_digest())
+            pending = pending_questions(
+                previous,
+                args.candidate,
+                _source_digest(),
+                unavailable_retry=args.unavailable_retry,
+            )
             scenarios = [scenario for scenario in scenarios if scenario.id in pending]
     else:
         if args.fresh_questions_from is not None:
-            raise SystemExit("R12 fresh questions require the original core30 selection")
-        if args.target == "v4" and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve():
+            raise SystemExit(
+                "R12 fresh questions require the original core30 selection"
+            )
+        if (
+            args.target == "v4"
+            and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve()
+        ):
             args.scenarios = EVAL_ROOT / "scenarios_v4"
         scenarios = load_scenarios(args.scenarios)
     if not scenarios:
@@ -348,7 +464,9 @@ def main(argv: list[str] | None = None) -> int:
 
         private_output = (ROOT / "private/candidate-eval" / args.candidate).resolve()
         if not args.output.resolve().is_relative_to(private_output):
-            raise SystemExit("Candidate reports require private/candidate-eval/<candidate> output")
+            raise SystemExit(
+                "Candidate reports require private/candidate-eval/<candidate> output"
+            )
         args.candidate_provenance = candidate_provenance(ROOT, args.candidate)
     if args.scenario:
         requested = set(args.scenario.split(","))
@@ -356,12 +474,20 @@ def main(argv: list[str] | None = None) -> int:
         if requested != {scenario.id for scenario in scenarios}:
             raise SystemExit("Unknown scenario ID")
     config = yaml.safe_load(args.config.read_text(encoding="utf-8"))
-    if args.mode == "live" and not (os.getenv("KIMI_API_KEY") or os.getenv("MOONSHOT_API_KEY")):
-        raise SystemExit("Live preflight failed: provide KIMI_API_KEY or MOONSHOT_API_KEY through process environment")
+    if args.mode == "live" and not (
+        os.getenv("KIMI_API_KEY") or os.getenv("MOONSHOT_API_KEY")
+    ):
+        raise SystemExit(
+            "Live preflight failed: provide KIMI_API_KEY or MOONSHOT_API_KEY through process environment"
+        )
     os.environ["LANGSMITH_TRACING"] = "false"
     os.environ["LANGCHAIN_TRACING_V2"] = "false"
     scripted_model = "scripted-v4" if args.target == "v4" else "scripted-v1"
-    models = (args.models or args.model).split(",") if args.mode == "live" else [scripted_model]
+    models = (
+        (args.models or args.model).split(",")
+        if args.mode == "live"
+        else [scripted_model]
+    )
     status = _run_models(args, scenarios, config, models)
     if status == 2:
         return 2
@@ -375,18 +501,27 @@ def main(argv: list[str] | None = None) -> int:
     return status
 
 
-def _run_models(args: argparse.Namespace, scenarios: list[Scenario], config: dict[str, Any], models: list[str]) -> int:
+def _run_models(
+    args: argparse.Namespace,
+    scenarios: list[Scenario],
+    config: dict[str, Any],
+    models: list[str],
+) -> int:
     lifecycle = lifecycle_selection(args)
     if getattr(args, "mode", None) == "live" and getattr(args, "target", None) == "v4":
         from tools.eval.live import live_session
         from tools.eval.model_selection import selected_model
 
         if len(models) != 1:
-            raise SystemExit("Live v4 executes one proof-selected model, never a CLI fallback chain")
+            raise SystemExit(
+                "Live v4 executes one proof-selected model, never a CLI fallback chain"
+            )
         with live_session(args, [scenario.id for scenario in scenarios]) as active:
             selected = selected_model()
             if models[0] not in {"kimi", "kimi-main", selected}:
-                raise SystemExit("Requested model differs from the trusted equivalence proof")
+                raise SystemExit(
+                    "Requested model differs from the trusted equivalence proof"
+                )
             if lifecycle:
                 from tools.eval.session_driver import run_session
 
