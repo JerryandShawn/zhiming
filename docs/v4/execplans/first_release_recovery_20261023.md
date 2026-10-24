@@ -8,6 +8,8 @@
 
 ## Progress
 
+- [x] (2026-10-24 14:41 +08:00) 两份交接单改为现有接口的逐步精确命令：F包/公开artifact上传→新copy/prepare→空增量备份/原生对调→新runtime资产/admit/8788及维护/实际cgroup核验；本机接入4物理/core30自动小批/已知5h新题头run/安全汇总。14个Bash、7个PowerShell块及内嵌Python只做语法解析，未执行服务器/请求；最终候选仍占位硬拒，不标就绪。另静态核现有CI配置发现native fixture误取主CORE5432而忽略已配置的独立restore55480；本机新目标先真实复现早拒1失败（3b2e210fcf534176895b67b09c19bd34），最小fixture修复后新路由与旧完整FK/新库对调两目标2/2（1.78s，bc219b74809b4e649ddcdf44f7ce45bc），根读metadata/XML/log。未放宽正式端口/身份，不声称远端CI已失败或已修绿。
+
 - [x] (2026-10-24 14:19 +08:00) F必要B7/运行资产接线：新副本关门0连接→只读检查精确prefix8/checkpoint→新empty-delta备份→既有R2新库restore/seal/exchange，保留两库、完整Core/checkpoint/sequence相等，旧prefix和在途会话拒绝且保留。初新B7两节点2/2（2.47s，8dc9e5789a974f7586e19c470f57be25）；补prefix8门后必要正反2/2（2.67s，2889fc7d81fb429a977461832d4f86a2）。新stage_app真实DML PG+公开K3+Agent装配，拒模型端口和所有非健康/状态/历史GET、实际writer锁及503维护门1/1（2.33s，70ab1019521643768ff10e21620e857f）；初夹具漏dict_row的setup error保留115a4e70c0f34af5abaf9607736a781a。新runtime工具只新建SCRAM writer/私有配置/unit资产，显式admit仍不安装/启动unit，配置hash拒绝和默认0连接两节点2/2（2.42s，1dabb38720474cd296565e63b66b6009），含新版本身份门的实际配置→健康链。根均已读metadata/XML/log；各轮不相加冒称一次全链，服务器/真实模型/外发0。
 
 - [x] (2026-10-24 14:06 +08:00) 新F副本一次性prepare入口：核copy原件与实际source/target OID、目标关门0连接，在同workspace排他writer锁内记started后，仅新副本显式开连接→精确1–8 checksum迁移→checkpoint→primary dry/apply/repeat零变化→副本撤销/收据双重放及完整Core/checkpoint/sequence幂等→关门0连接；源stage不变，不重试已开始操作。真实PG节点最终1/1（2.22s，private/safe-narrow-d09904b2930e45858b937e134680ad63），默认0连接节点此前单独通过；根已核原件。初轮夹具缺run_id及误把protected_receipts更新数当总数的两次失败原件dff64ed8c4e547aca2c790a6e065a6ee/00e5fc433dea4094b6b6d275c39d6320保留；没有改业务重放/断言迁就故障，也不合称一次2/2。模型/服务器/外发0。
@@ -55,6 +57,8 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24 14:41 +08:00：CI已有单独的FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN/55480，不应把native fixture的端口校验放宽到主CORE5432。新本机片将CORE显式设为不同的合成5432端点，证明修前在连接前拒绝、修后实际连接独立55480/55481；原库和身份门不改。交接单原始报告的主/外评物理小批与题目分组分开，原Markdown可能带回答预览，不能直接拷到公开docs。
 
 2026-10-24 14:19 +08:00：F不能给configured_agent伪造key/中央账户，也不能省掉Agent冒称装配成功；stage专用端口无条件抛ModelUnavailable，注入真实Agent+公开本地计量，实际业务Web子app挂载在只读路由门内，故不启动子app原队列/维护/dispatcher生命周期。该模式只验证健康装配，不证明常驻队列、模型效果或Linux/cgroup出站规则。B7操作同一正式fr_stage；本机另建独立frx新库测试，不误用CopyScope的原source。
 
@@ -127,6 +131,8 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 14:41 +08:00：最终候选尚未冻结，因此两份单保留不可执行的PENDING占位与No-Go，但所有参数/模块均来自实际CLI，没有虚构flags或中央凭据文件。只做语法核验，不借文档中的SSH/真实评测命令扩大Codex权限。native测试夹具仅优先既有显式restore管理员环境，沿用55480/55481与隔离库名门；这是CI环境接线修复，不改迁移、重放或正式运行源码。
 
 2026-10-24 14:19 +08:00：先把空增量B7放在新writer开门之前，保留新旧两副本；runtime只消费显式exchanged_closed原件/OID，SCRAM在客户端生成，SQL/单位文件不含原口令。unit固定新名、127.0.0.1:8788、Restart=no、cgroup拒外网仅保留回环PG/健康；新运行配置只留DB/网站口令和本地路径，不带模型/中央/代理/追踪配置。显式admit不启动unit，失败不删/修/重试。
 
@@ -269,6 +275,8 @@ Native apply严格不外套事务，第一遍成功后原生提交后checkpoint 
 export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,draw_id)排序列表。apply新增只读计数draw_tombstones_added；所有旧计数及撤销/收据保护保留。新增helper不引依赖，真实PG15测试用已有本机客户端。
 
 ## Outcomes & Retrospective
+
+2026-10-24 14:41 +08:00：必要运行源码保持feea；F与核心评测命令已具体化，唯一新测试环境缺口有本机红→绿与必要兼容证据。b008的实际push CI40064916028已只读确认success，feea CI40069757961仍in_progress，不能合并未知CI或用旧门发请求。下一等必要分支CI结果、普通集成后一次最终同源门/里程碑回归，再补最终SHA及就绪提醒。
 
 2026-10-24 14:19 +08:00：必要B7、实际只读Web/Agent装配、拒模型、writer栅栏及维护门、新writer和单位资产各有定向证据；仍未正式Linux启动/验证cgroup，未冻结同源发布候选，执行单不标就绪。下一只整合最终候选并补可审精确命令，不扩重构或新功能。
 

@@ -105,7 +105,7 @@ def initialize(sample: Sample) -> None:
 
 @pytest.fixture
 def sample(tmp_path):
-    configured = os.environ.get("CORE_TEST_DSN", "")
+    configured = os.environ.get("FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN") or os.environ.get("CORE_TEST_DSN", "")
     fields = conninfo_to_dict(configured)
     assert fields.get("host") in {"127.0.0.1", "::1"} and fields.get("port") in {"55480", "55481"}
     assert fields.get("dbname") in {"postgres", "core_test_main"}
@@ -148,6 +148,19 @@ def sample(tmp_path):
                 connection.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(sql.Identifier(name)))
             for name in (value.reader, value.owner):
                 connection.execute(sql.SQL("DROP ROLE IF EXISTS {}").format(sql.Identifier(name)))
+
+
+def test_explicit_restore_endpoint_wins_over_distinct_core_ci_endpoint(monkeypatch, tmp_path):
+    configured = os.environ.get("FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN") or os.environ["CORE_TEST_DSN"]
+    monkeypatch.setenv("FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN", configured)
+    monkeypatch.setenv("CORE_TEST_DSN", "postgresql://ignored_core@127.0.0.1:5432/core_test")
+    generator = sample.__wrapped__(tmp_path)
+    try:
+        value = next(generator)
+        with control(value.scope, value.environment) as (connection, _):
+            assert connection.execute("SELECT inet_server_port() AS port").fetchone()["port"] in {55480, 55481}
+    finally:
+        generator.close()
 
 
 def restore(sample: Sample) -> dict:
