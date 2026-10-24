@@ -1,10 +1,8 @@
-# 首发 F 副本 stage 执行单（待最终候选绑定）
+# 首发 F 副本 stage 执行单（候选2200485）
 
-2026-10-25 00:46 北京补充：最新独立代码候选 `75d53f58796d429734b427e038ac740e266c5bb6` 位于 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r35`，同源R11已通过（48/48、7/7、69/69、29/29；原件见 `../eval/v35_sensitive_pending_handoff.json`）。该分支尚未集成，CI未核、M05真实复测及旧16题未完成；本单最终发布绑定和现有No-Go继续有效。尚未访问服务器，不可把脚本门通过称为stage/生产就绪。
+2026-10-25 04:58，北京时间。命令和固定交付物绑定候选 `220048573110862d378015c35d99a37c0d83503e`，工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r39`。包hash `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`，bootstrap hash `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`，operation `ba63f7b2fa8a405d`。R11原件：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\r11-run-c38bd9e6b67744e387d110627f7e7ef6\metadata.json`，assessment：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\candidate-eval\220048573110862d378015c35d99a37c0d83503e\R11-58e3c43c0c33414cbe1b2d60e3d786ff\assessment.json`。此时R11仍在途；CI未核、五题定向真实复测未运行、37号Go缺失，执行准入尚未满足，不能宣布stage/首发就绪。
 
-2026-10-24 14:35，北京时间。**当前 No-Go：最终 v4/integration SHA、该 SHA 的 CI/R11 尚未绑定；下列占位值故意不能执行。** 工具头 feea1de 不是首发候选。旧 b008 的 R11 通过仍只属于旧代码。完成最终绑定后，本单交大脑复核；Codex不执行模型请求、SSH或服务器命令。
-
-只允许大脑在自己聊天已有的人类授权 F 内，核 `37_大脑复核_首发stage.md` 首行 `结论：Go`、复核晚于2026-10-24 12:30及本单最终SHA后执行。生产另需用户D；旧B/D无效。本单整段取代旧通用stage/Hermes切换步骤。
+执行人：**主线**。只有本聊天具备直接人类F授权、37号首行 `结论：Go` 且复核晚于2026-10-24 12:30、候选40位SHA与本单一致，才进入下列服务器步骤。指令板和37号本身不扩大服务器权限。生产仍另需直接D授权与31号Go窗口，本文不操作生产。当前未SSH/上传/执行服务器命令。
 
 ## 范围与现有证据
 
@@ -14,7 +12,7 @@
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|待最终集成；不复用b008批准|
+|同一首发源码、CI、R11|本单绑定2200485包/R11原件；R11完成需根核，CI未核，不复用旧候选批准|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
@@ -24,26 +22,23 @@
 
 ## B0–B1：本机固定包、引导文件与公开分词器
 
-在最终clean集成树执行。把下列SHA换成通过同源CI/R11的完整40位号；其余路径是实际现有工具接口。新交付目录不得复用。
+在下面固定clean候选树核验已经实际生成的包，不重新打包、不覆盖旧交付物。任一hash/候选不符即停止。
 
 ```powershell
-$FrSha = 'PENDING_R11_CI_FINAL_SHA'
-if ($FrSha -notmatch '^[0-9a-f]{40}$') { throw '尚未绑定最终候选' }
-$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-formal-integration'
+$FrSha = '220048573110862d378015c35d99a37c0d83503e'
+$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-r39'
 $FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/python.exe'
 $FrTokenizer = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/private/artifacts/kimi-k3-installer-20261023'
 Set-Location $FrRepo
 if ((git rev-parse HEAD) -ne $FrSha -or (git status --porcelain)) { throw '候选或clean状态不符' }
 $FrDelivery = Join-Path $FrRepo "private/fr-stage-$FrSha"
-New-Item -ItemType Directory -Path $FrDelivery -ErrorAction Stop | Out-Null
 $FrTar = Join-Path $FrDelivery 'release.tar.gz'
-& $FrPython -m tools.first_release_stage_package bundle --candidate $FrSha --source $FrRepo --artifact $FrTar
-if ($LASTEXITCODE -ne 0) { throw '打包停止，保留现场' }
+if ((Get-FileHash -Algorithm SHA256 -LiteralPath $FrTar).Hash.ToLowerInvariant() -ne '9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff') { throw '包hash不符' }
+if ((Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $FrDelivery 'bootstrap.py')).Hash.ToLowerInvariant() -ne '18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42') { throw '引导hash不符' }
 & $FrPython -m tools.install_k3_tokenizer --destination $FrTokenizer --verify-only
-if ($LASTEXITCODE -ne 0) { throw '分词器原件不符' }
-& $FrPython -c 'import hashlib,json,pathlib,sys,tarfile,uuid; d=pathlib.Path(sys.argv[1]); t=tarfile.open(d/"release.tar.gz"); b=t.extractfile("tools/first_release_stage_unpack.py").read(); p=d/"bootstrap.py"; p.open("xb").write(b); lock=json.loads(pathlib.Path("k3-tokenizer.lock.json").read_text()); v=dict(candidate=sys.argv[2],operation=uuid.uuid4().hex[:16],artifact_sha256=hashlib.sha256((d/"release.tar.gz").read_bytes()).hexdigest(),bootstrap_sha256=hashlib.sha256(b).hexdigest(),tokenizer_files=list(lock["files"])); (d/"delivery.json").open("x").write(json.dumps(v,indent=2))' $FrDelivery $FrSha
-if ($LASTEXITCODE -ne 0) { throw '引导原件提取失败' }
-Get-Content (Join-Path $FrDelivery 'delivery.json')
+if ($LASTEXITCODE -ne 0) { throw '公开分词器原件不符' }
+$FrBound = Get-Content (Join-Path $FrDelivery 'delivery.json') -Raw | ConvertFrom-Json
+if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'ba63f7b2fa8a405d') { throw '交付身份不符' }
 ```
 
 大脑审核delivery.json中的SHA、operation、两项hash，作为后续固定参数。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
@@ -53,8 +48,8 @@ Get-Content (Join-Path $FrDelivery 'delivery.json')
 ```bash
 set -euo pipefail
 umask 077
-FR_SHA='PENDING_R11_CI_FINAL_SHA'
-FR_ID='PENDING_REVIEWED_16_HEX_OPERATION'
+FR_SHA='220048573110862d378015c35d99a37c0d83503e'
+FR_ID='ba63f7b2fa8a405d'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
@@ -71,7 +66,7 @@ mkdir -m 700 "$FR_ROOT/tokenizer/$FR_SHA" "$FR_ROOT/operations/$FR_ID"
 
 根分区不足8GiB、现有fr_stage数据库/新writer角色/同名unit或root存在均停止；不删旧物腾空间。数据库是否全新由copy/provision的实际PG门再次核验。
 
-回到本机，只上传三份公开交付物和lock列出的六个已核公开文件；下面是大脑执行的传输命令，Codex不执行。
+回到本机，只上传三份公开交付物和lock列出的六个已核公开文件；下面是主线在执行准入满足后使用的传输命令；当前没有上传。
 
 ```powershell
 scp -- $FrTar (Join-Path $FrDelivery 'bootstrap.py') (Join-Path $FrDelivery 'delivery.json') 'root@1.14.59.242:/root/zhiming-core-fr-stage/uploads/'
@@ -90,8 +85,8 @@ if ($LASTEXITCODE -ne 0) { throw '公开分词器上传失败停止' }
 set -euo pipefail
 set -C
 umask 077
-FR_SHA='PENDING_R11_CI_FINAL_SHA'
-FR_ID='PENDING_REVIEWED_16_HEX_OPERATION'
+FR_SHA='220048573110862d378015c35d99a37c0d83503e'
+FR_ID='ba63f7b2fa8a405d'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 FR_OP="$FR_ROOT/operations/$FR_ID"
@@ -101,8 +96,8 @@ FR_TOKENIZER="$FR_ROOT/tokenizer/$FR_SHA"
 FR_ADMIN=/root/zhiming-core-secrets/fr-stage-admin.env
 FR_DUMP=/usr/lib/postgresql/15/bin/pg_dump
 FR_RESTORE=/usr/lib/postgresql/15/bin/pg_restore
-FR_PACKAGE_SHA='PENDING_REVIEWED_ARTIFACT_SHA256'
-FR_BOOTSTRAP_SHA='PENDING_REVIEWED_BOOTSTRAP_SHA256'
+FR_PACKAGE_SHA='9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff'
+FR_BOOTSTRAP_SHA='18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42'
 h() { sha256sum "$1" | cut -d ' ' -f 1; }
 ```
 
@@ -295,4 +290,4 @@ fr tools.first_release_native_exchange capture --operation "$FR_ID" --admin-env-
 fr tools.first_release_native_exchange seal --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/finish-metadata.json" --metadata-sha256 "$(h "$FR_OP/finish-metadata.json")" --output "$FR_OP/finish-sealed.json"
 ```
 
-不自动恢复/重启，不移除维护门或删除任何备份/库/unit。Linux实际执行人负责一页以内回执：最终SHA/operation、每步exit/用时/安全结果、偏差或第一失败码、实际模型/外发次数0、原stage/live/Hermes未改、最终closed/inactive状态。没有实际执行的项目写“未验证”，不据本机测试补造Linux结果。生产执行单仍No-Go，需用户另给D及另审原生生产目标入口。
+不自动恢复/重启，不移除维护门或删除任何备份/库/unit。Linux实际执行人负责一页以内回执：最终SHA/operation、每步exit/用时/安全结果、偏差或第一失败码、实际模型/外发次数0、原stage/live/Hermes未改、最终closed/inactive状态。没有实际执行的项目写“未验证”，不据本机测试补造Linux结果。生产执行单仍未放行，需用户另给D及另审原生生产目标入口。

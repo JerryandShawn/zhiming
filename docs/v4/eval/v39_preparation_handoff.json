@@ -1,0 +1,83 @@
+{
+  "board_version": 39,
+  "candidate": "220048573110862d378015c35d99a37c0d83503e",
+  "source_sha256": "461b5d69671fb0b6237e90e23101a66f5a8e822c441c9b0b9aa47b222e3290ad",
+  "branch": "v4/p3-r39-followup-eval-20261025",
+  "worktree": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39",
+  "draft_pr": "https://github.com/JerryandShawn/zhiming/pull/23",
+  "R11_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\r11-run-c38bd9e6b67744e387d110627f7e7ef6\\metadata.json",
+  "R11_assessment": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\candidate-eval\\220048573110862d378015c35d99a37c0d83503e\\R11-58e3c43c0c33414cbe1b2d60e3d786ff\\assessment.json",
+  "R11_status": "running at04:58; not yet root-verified complete",
+  "retest_plan": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\retest_plan_v39.json",
+  "selected_questions": [
+    "M01",
+    "Q03",
+    "Q04",
+    "D01",
+    "TA01"
+  ],
+  "paid_operator_started": false,
+  "real_calls_this_work": 0,
+  "connection_budget": {
+    "cumulative_used": 27,
+    "limit": 30,
+    "remaining": 3,
+    "minimum_complete_new_proof": 4,
+    "status": "blocked before any paid call; requires explicit cap or proof-policy ruling"
+  },
+  "brain39_review_of_original": {
+    "raw_passed": 9,
+    "raw_not_passed": 20,
+    "reviewed_passed": 26,
+    "reviewed_failed": [
+      "M01",
+      "D01"
+    ],
+    "incomplete": [
+      "TA01"
+    ],
+    "safety_reviewed": "5/5",
+    "raw_scores_unchanged": true
+  },
+  "package": {
+    "candidate": "220048573110862d378015c35d99a37c0d83503e",
+    "operation": "ba63f7b2fa8a405d",
+    "artifact_sha256": "9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff",
+    "bootstrap_sha256": "18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42",
+    "tokenizer_files": [
+      "tiktoken.model",
+      "tokenization_kimi.py",
+      "encoding_k3.py",
+      "tokenizer_config.json",
+      "config.json",
+      "LICENSE"
+    ],
+    "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\fr-stage-220048573110862d378015c35d99a37c0d83503e\\release.tar.gz"
+  },
+  "stage_status": "commands bound; R11/live targeted quality/CI/37Go and chat authorization not yet satisfied",
+  "server_actions": 0,
+  "candidate_diff_files": [
+    "docs/v4/eval/contract_changes_20261024.md",
+    "docs/v4/execplans/P3_r39_followup_and_eval.md",
+    "mingjing_core/agent/prompts.py",
+    "mingjing_core/agent/prompts/manifest.json",
+    "mingjing_core/agent/prompts/system.md",
+    "mingjing_core/application/agent_tools_followups.py",
+    "tests/v4/agent/test_r39_followup_eval_pg.py",
+    "tests/v4/agent/test_r39_retest_plan.py",
+    "tests/v4/agent/test_r39_tarot_pg.py",
+    "tools/eval/contracts.py",
+    "tools/eval/engine.py",
+    "tools/eval/judge_context.py",
+    "tools/eval/judge_journal.py",
+    "tools/eval/judges.py",
+    "tools/eval/review_retest.py",
+    "tools/eval/schema.py",
+    "tools/eval/session_grading.py",
+    "tools/eval/targets/v4_core30.py",
+    "tools/eval/targets/v4_review39.py",
+    "tools/eval/targets/v4_target.py",
+    "tools/eval/targets/v4_tarot.py",
+    "tools/eval/targets/v4_tool_effects.py"
+  ]
+}
