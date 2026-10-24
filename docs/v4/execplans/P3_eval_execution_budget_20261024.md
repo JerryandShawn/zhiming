@@ -14,6 +14,9 @@
 
 ## Progress
 
+- [x] (2026-10-24 08:38 +08:00) fa23 的run40040504249/job120710196462正常汇总失败：4242通过/56跳过/6失败、2236.32秒；5个旧生命周期反例在修改原生状态后、目标attach之前被新增严格detach拒绝，另1个M1活lease反例被会话门先拒，原PID不可知。Core584/Frontend通过，fake自测与ModelPort后续未跑，不称超时或已绿。保原始GitHub来源，不复制日志；08:44根只读核89仍在v4，不称已绿。
+- [x] (2026-10-24 08:45 +08:00) 独立v4/p3-wire-lifecycle-detach-ci-20261024只修旧故障夹具时序：先保存并真实detach，再以initialize=False/max_size=1的独立原schema仓库施加同样cancel/terminal/source/revoke/epoch故障，关闭后以原control/session/binding核attach拒绝。撤销用fresh ConsultationService保留on_revoke，全部原私密删空/无新增POST断言不减。根完整审diff后唯一首验这5个CI红参数5/5通过、71.24秒；未重跑其它绿或全量，生产安全门完全未改。
+
 - [x] (2026-10-24 07:17:57 +08:00 实时复核录入) 建立最小实施计划；实现执行scope、PG预算helper、Durable窄接线与三个必要PG行为组，先静态审阅。首次创建未保存精确时间，不补造；原误填06:57已纠正。
 - [x] 根授测试槽后仅跑新目标首链，记录真实结果及必要修正；首轮2通过/1失败，获批后仅复验唯一红节点1通过。
 - [x] (2026-10-24 07:33 +08:00) 根完整审阅两个helper、三处调用方及新测试，受信scope/实际pin、成功清lease关闭、持久化后detach与旧queued只读范围成立，交根小提交。静态与两轮定向证据足够，不追加宽测或重复两绿；新提交CI另核。
@@ -47,6 +50,8 @@ RunControl.monitor由每个模型步骤调用；其finally不是整个execute终
 
 ## Decision Log
 
+2026-10-24 08:38 +08:00：真实CI先于下一quota实际续作编码处理。原反例意图是跨进程重新附着时观察当前原生状态，旧顺序却在故障之后要求原对象成功detach；新增detach会核已保存私密PG事实，正确提前拒绝。最小修正只移动真实detach到故障之前，后续故障由独立仓库实施，仍用原API/真实SQL及相同原始断言；生产安全门不改。原M1未知会话红不据此消失，整体CI与发布仍关闭。新同run续作设计已完成只读接口核对，暂未实现/清停/claim/发送。
+
 2026-10-24：默认Core30保持nullcontext，不启用此预算；Durable执行scope使用现有真实LifecycleBinding，工厂不从事后checkpoint自报字段赋权。现有未启用预算的生命周期保留只读观察兼容；任何后续执行资格都不能把缺预算解释为0秒。内部epoch/执行者变更或不明确阶段本片保守拒绝，不建立新的自动恢复权限。
 
 2026-10-24 07:27:23 +08:00：按根静态审点明确异常优先级使用显式None判断，保留falsey原异常对象；close同时核当前原生authority、预算完整原anchor及最后段原lease。首个进程控制异常最高，原ProviderStopped/ModelCancelled或global stop不能被普通close错误替换。三个新行为组内加入正常清lease、checkpoint前detach拒绝、实际open后detach拒绝、原KeyboardInterrupt对象及queued旧只读兼容，不增加测试节点。没有已验证控制器的退出保持未知，不制造closed或执行资格。
@@ -58,6 +63,8 @@ RunControl.monitor由每个模型步骤调用；其finally不是整个execute终
 使用原场景私密runtime_step及稳定run/epoch定位；在实际run行锁下核记录revision与完整段摘要。新进程只消费closed记录，遗留open/未知状态保持现场并拒绝，不猜补、不清停、不改旧记录来凑相等。失败后的测试记录不覆盖、不自动宽测或重试。
 
 ## Outcomes & Retrospective
+
+08:45后续CI窄修：原fa23远端实际6红保留，不能把本机五参数通过称整个CI转绿。唯一新证据为 `private/safe-narrow-6dfd2b874d674e0b84cd9b42f73d96ad/metadata.json` 及同目录pytest.xml/log；真实08:43:23.812608–08:44:36.028446，5通过/0错误/0跳过、71.243秒，根已逐项核原XML。测试文件267行、目标函数50行/全文件最大57、Ruff与120列格式通过。五例均先真实detach、独立真实PG故障、跨对象attach拒绝；revoke实际私密runtime_step deleted/data={}。没有宽化异常接受范围、修改detach/预算/attach、伪造候选证据或发送真实请求。另一个源会话CI红仍原因未知，源工具现有同闸门诊断已另窄验原节点，不与本片合并计数；正式integration/feed与发布门不前进。
 
 实现与静态检查已就绪；首链2通过/1失败、44.26秒，获批仅复验唯一红节点1通过、7.65秒，两绿不重复。三个必要行为分轮通过，不称一次3/3。原metadata/XML/log分别保留在`private/safe-narrow-a3192047659d45d7a17914345f92b1f1/`及`private/safe-narrow-65aef112837c4476ac04a9317ea8b1da/`；实际首段多模型步9,703,999,999ns/2物理Mock请求，耗尽组1,562,000,000ns/0POST，均来自真实monotonic和PG闭合记录。仅六代码路径加本计划，未修改生产RunControl/RuntimeLimits、原81金标、配置、记忆代码或物理UUID锚点。此片仅累计预算基础，不能证明已开放同run跨进程续作、外部评审续作、正式模型质量、Linux部署或首发Go。
 
