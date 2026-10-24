@@ -11,7 +11,9 @@ from mingjing_core.memory.policy import clause, has_optout, mask_quoted, third_p
 
 SENSITIVITIES = ("health", "third_party", "money", "identity", "legal")
 RULES = {
-    "health": re.compile(r"诊断|确诊|用药|吃药|服药|抑郁|焦虑症|怀孕|疾病|血压|癌症|创伤|自杀|病历|停药"),
+    "health": re.compile(
+        r"诊断|确诊|用药|吃药|服药|抑郁|焦虑症|怀孕|疾病|血压|癌症|创伤|自杀|病历|停药|治疗|处方|药物|手术|糖尿病|失眠症"
+    ),
     "money": re.compile(r"存款|欠款|债务|负债|收入|工资|薪水|借款|贷款|\d[\d.,，]*\s*(?:万|元|块|美元|人民币)"),
     "identity": re.compile(r"性取向|同性恋|双性恋|宗教|信教|佛教|基督教|政治立场|党派"),
     "legal": re.compile(r"官司|诉讼|法律纠纷|违法|犯罪|刑事|被捕|拘留"),
@@ -19,7 +21,7 @@ RULES = {
 CREDENTIAL = re.compile(r"卡号|身份证号|访问令牌|sk-[A-Za-z0-9_-]{20,}", re.I)
 BIRTH = re.compile(r"出生|生辰|生日.{0,8}\d")
 RELATED_PERSON = re.compile(
-    r"(?:^|[，,。！？；;\n\s])\s*(?:我的?)?(?:妈妈|爸爸|母亲|父亲|妈|爸|家人|朋友|同事)"
+    r"(?:^|[，,。！？；;\n\s])\s*(?:我的?)?(?:妈妈|爸爸|母亲|父亲|妈|爸|家人|朋友|同事|前女友|前男友|伴侣)"
     r"(?=今年|去年|最近|目前|一直|血压|患|确诊|用药|的|是|出生|生日)"
 )
 KIND_MAP = {"relationship": "background", "habit": "preference"}

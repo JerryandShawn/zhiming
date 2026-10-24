@@ -1,6 +1,8 @@
-"""Four physical checks of R16; all prompts and tools are synthetic and fixed."""
+"""R18 bounded tool loop; other R16 probes remain fixed and synthetic."""
 
 from __future__ import annotations
+
+import json
 
 from mingjing_core.models.port import ChatMessage
 from tools.probe_equivalence_cases import ECHO, EquivalenceCase
@@ -17,7 +19,7 @@ CASES = (
     ),
 )
 SCENARIOS = tuple(case.ident for case in CASES)
-EXPECTED = frozenset((case.ident, step) for case in CASES for step in range(1, 3 if case.roundtrip else 2))
+EXPECTED = frozenset((case.ident, step) for case in CASES for step in range(1, 5 if case.roundtrip else 2))
 FIELDS = frozenset(
     {
         "model",
@@ -33,6 +35,9 @@ FIELDS = frozenset(
         "input_estimated",
         "input_ratio",
         "factor",
+        "tool_signature",
+        "terminal",
+        "failure_reason",
     }
 )
 
@@ -40,7 +45,7 @@ FIELDS = frozenset(
 def contract_digest() -> str:
     return digest(
         {
-            "schema": "k31-connection-contract-r16",
+            "schema": "k31-connection-contract-r18",
             "model": MODEL,
             "effort": "high",
             "max_physical": 20,
@@ -57,6 +62,8 @@ def contract_digest() -> str:
             "long_min_chinese": 1000,
             "long_end": "[K31-END]",
             "max_output": 8192,
+            "tool_max_requests": 4,
+            "consecutive_identical_tool_calls": "reject_second",
         }
     )
 
@@ -65,7 +72,28 @@ def followup(response) -> list[ChatMessage]:
     return [
         response.as_chat(tool_cycle="k31-integration-cycle"),
         *[
-            ChatMessage("tool", '{"value":"合成"}', tool_call_id=call.id, tool_cycle="k31-integration-cycle")
+            ChatMessage(
+                "tool",
+                json.dumps(call.arguments, ensure_ascii=False, sort_keys=True),
+                tool_call_id=call.id,
+                tool_cycle="k31-integration-cycle",
+            )
             for call in response.tool_calls
         ],
     ]
+
+
+def checks_complete(results: list[dict]) -> bool:
+    tools = sorted((r for r in results if r["scenario"] == "K31-TOOLS"), key=lambda r: r["step"])
+    other = {(r["scenario"], r["step"]) for r in results if r["scenario"] != "K31-TOOLS"}
+    return (
+        2 <= len(tools) <= 4
+        and [r["step"] for r in tools] == list(range(1, len(tools) + 1))
+        and all(r["passed"] for r in results)
+        and all(r["tool_count"] == 1 and not r["terminal"] for r in tools[:-1])
+        and tools[-1]["tool_count"] == 0
+        and tools[-1]["terminal"]
+        and all(a["tool_signature"] != b["tool_signature"] for a, b in zip(tools, tools[1:], strict=False))
+        and other == {("K31-INPUT", 1), ("K31-LONG", 1)}
+        and len(results) == len(tools) + 2
+    )

@@ -25,7 +25,6 @@ from mingjing_core.agent.runtime_config import (
     validate_runtime_config,
 )
 from mingjing_core.agent.toolkit import ToolRegistry
-from mingjing_core.application.agent_crisis_sources import turn_has_crisis
 from mingjing_core.application.agent_finalization import AgentFinalizer
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_regeneration import AgentRegenerator
@@ -71,13 +70,20 @@ class AgentRuntime:
         self.prompts, self.state = load_prompts(), RuntimeState(repo)
         self.ledger = RequestLedger(repo, meter, offline=offline)
         self.reviewer = AgentReviewer(
-            critic, RequestLedger(repo, critic_meter or meter, offline=offline), self.prompts, offline=offline
+            critic,
+            RequestLedger(repo, critic_meter or meter, offline=offline),
+            self.prompts,
+            offline=offline,
         )
         self.control_factory = control_factory
 
     def _snapshot(self, run: dict[str, Any], system: str) -> ContextBuild:
         engine = ContextEngine(
-            MemoryService(self.repo), system, clock=get_clock(), policy=self.budget, token_meter=self.ledger.meter(run)
+            MemoryService(self.repo),
+            system,
+            clock=get_clock(),
+            policy=self.budget,
+            token_meter=self.ledger.meter(run),
         )
         return AgentSnapshotStore(self.repo).load_or_build(
             run,
@@ -92,7 +98,13 @@ class AgentRuntime:
         )
 
     def _cycle(
-        self, run: dict[str, Any], frozen: ContextBuild, events: RuntimeEvents, *, crisis: bool, policy: LoopPolicy
+        self,
+        run: dict[str, Any],
+        frozen: ContextBuild,
+        events: RuntimeEvents,
+        *,
+        crisis: bool,
+        policy: LoopPolicy,
     ) -> LoopCycle:
         policy = replace(policy, text_only=crisis)
         control = self.control_factory(self.repo, run, policy, no_text_seconds=20 if crisis else None)
@@ -127,10 +139,18 @@ class AgentRuntime:
         )
         events.send("status", {"text": "我在认真看你的话", "phase": "thinking"})
 
-    def _finish(self, cycle: LoopCycle, outcome: LoopOutcome, events: RuntimeEvents, *, crisis: bool) -> dict[str, Any]:
+    def _finish(
+        self,
+        cycle: LoopCycle,
+        outcome: LoopOutcome,
+        events: RuntimeEvents,
+        *,
+        crisis: bool,
+    ) -> dict[str, Any]:
         stopped = outcome.stop_reason
         if stopped in {
             "cancelled",
+            "model_cancelled",
             "wall_time_limit",
             "lease_or_source_invalid",
             "lease_or_dependency_invalid",
@@ -142,12 +162,12 @@ class AgentRuntime:
         }:
             raise EvidenceError("本轮已经停止或来源失效，不能发布正文")
         review = None
-        if crisis and stopped not in {"completed", "asked"}:
+        if stopped.startswith("model_") or stopped == "empty_answer":
             outcome = replace(outcome, text=fallback_text(), asked=None)
-            self.state.metadata(cycle.run, fallback="crisis_template", fallback_reason=stopped)
+            self.state.metadata(cycle.run, fallback="availability_template", fallback_reason=stopped)
             # Any partial draft is explicitly superseded by the audited template.
             events.send("text_reset", {"text": outcome.text, "reason": "resumed"})
-        elif not crisis:
+        else:
             outcome, review = self.reviewer.review(cycle, outcome)
         self.state.metadata(cycle.run, crisis=crisis)
         envelope = AgentFinalizer(self.repo).finalize(
@@ -183,7 +203,7 @@ class AgentRuntime:
             self.state.metadata(run, private_reminder_status=confirmation["write_status"])
         for attempt in range(2):
             policy = RuntimeLimits(self.repo).policy(run, self.config)
-            crisis = turn_has_crisis(self.repo, run)
+            crisis = False
             system = self.prompts.system(onboarding=self.state.onboarding(run), crisis=crisis)
             if confirmation:
                 system += (
@@ -193,25 +213,21 @@ class AgentRuntime:
             try:
                 frozen = self._snapshot(run, system)
             except ContextInputError as error:
-                if not crisis:
-                    raise
                 from mingjing_core.application.agent_crisis_fallback import (
-                    commit_crisis_template,
+                    commit_unavailable_template,
                 )
 
-                return commit_crisis_template(self.repo, run, events, reason=error.code)
+                return commit_unavailable_template(self.repo, run, events, reason=error.code)
             cycle = self._cycle(run, frozen, events, crisis=crisis, policy=policy)
             try:
                 outcome = cycle.execute()
                 return self._finish(cycle, outcome, events, crisis=cycle.crisis)
             except ContextInputError as error:
-                if not cycle.crisis:
-                    raise
                 from mingjing_core.application.agent_crisis_fallback import (
-                    commit_crisis_template,
+                    commit_unavailable_template,
                 )
 
-                return commit_crisis_template(self.repo, run, events, reason=error.code)
+                return commit_unavailable_template(self.repo, run, events, reason=error.code)
             except CoreError:
                 used = replace(frozen, injected_versions=cycle.versions)
                 if attempt or not AgentRegenerator(self.repo)._related(run, used):
