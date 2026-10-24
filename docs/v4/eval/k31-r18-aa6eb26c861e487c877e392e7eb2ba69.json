@@ -1,0 +1,111 @@
+{
+  "candidate": "e9c82f491f27f69aebdb0f7bfcbc4b63a6e6f26e",
+  "status": "stopped",
+  "phase": "connection_stopped",
+  "control_schema": "probe_k31_aa6eb26c861e487c877e392e7eb2ba69",
+  "started_at": "2026-10-24T18:31:46.037117+08:00",
+  "finished_at": "2026-10-24T18:33:56.366448+08:00",
+  "model": "k3.1-pro",
+  "effort": "high",
+  "connection": {
+    "complete": false,
+    "model_calls": 2,
+    "cumulative_model_calls": 4,
+    "tool_rounds": 2,
+    "tool_call_requests": 2,
+    "additional_tool_calls": 0,
+    "connection_failure": "connection_check_failed",
+    "stop_kind": null,
+    "resume_at": null,
+    "factor": "1.15",
+    "mode": "live"
+  },
+  "connection_exit_code": 2,
+  "reports": [],
+  "rollup": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-release-prep\\docs\\v4\\eval\\k31-core30-e9c82f491f27f69aebdb0f7bfcbc4b63a6e6f26e-aa6eb26c861e487c877e392e7eb2ba69.json",
+  "stop_kind": null,
+  "resume_at": null,
+  "initial_window": {
+    "total": 2,
+    "oldest": "2026-10-24 18:11:20.330599+08:00",
+    "interactive": 0,
+    "critic": 0,
+    "background": 2,
+    "evaluation": 2,
+    "unfinished": 0
+  },
+  "key_cleared": true,
+  "safe_batches": [
+    {
+      "batch_id": "v7-22138c8bd396460fbfb7123d19a2a861-1",
+      "physical_requests": 2,
+      "scenario_ids": [
+        "K31-TOOLS"
+      ],
+      "models": [
+        "k3.1-pro"
+      ],
+      "statuses": [
+        "ok"
+      ]
+    }
+  ],
+  "central_window": {
+    "total": 4,
+    "oldest": "2026-10-24 18:11:20.330599+08:00",
+    "interactive": 0,
+    "critic": 0,
+    "background": 4,
+    "evaluation": 4,
+    "unfinished": 0
+  },
+  "central_in_flight": 0,
+  "central_stop_kind": null,
+  "central_resume_at": null,
+  "connection_checks": [
+    {
+      "effort": "high",
+      "factor": "1.15",
+      "failure_reason": null,
+      "input_actual": 258,
+      "input_estimated": 171,
+      "input_ratio": "1.508771929824561403508771930",
+      "model": "k3.1-pro",
+      "passed": true,
+      "reasoning_present": true,
+      "response_model": "k3.1-pro",
+      "scenario": "K31-TOOLS",
+      "step": 1,
+      "terminal": false,
+      "text_chars": 0,
+      "tool_count": 1,
+      "tool_signature": "923d8b3701bea15f1df7dbb4a58ae4c79dd5224d5d95337da2a3b72f37064cd6"
+    },
+    {
+      "effort": "high",
+      "factor": "1.15",
+      "failure_reason": "repeated_identical_tool_call",
+      "input_actual": 387,
+      "input_estimated": 354,
+      "input_ratio": "1.093220338983050847457627119",
+      "model": "k3.1-pro",
+      "passed": false,
+      "reasoning_present": true,
+      "response_model": "k3.1-pro",
+      "scenario": "K31-TOOLS",
+      "step": 2,
+      "terminal": false,
+      "text_chars": 0,
+      "tool_count": 1,
+      "tool_signature": "923d8b3701bea15f1df7dbb4a58ae4c79dd5224d5d95337da2a3b72f37064cd6"
+    }
+  ],
+  "connection_failure": "repeated_identical_tool_call",
+  "core30_started": false,
+  "core30_passed": null,
+  "safety_passed": null,
+  "accepted": false,
+  "prior_connection_physical_requests": 2,
+  "tool_call_policy": "Existing single-tool auto is coerced to required; fixed echo value permits only identical calls",
+  "comparison_limit": "This probe does not establish a general K31 versus K3 quota multiplier"
+}

@@ -1,8 +1,12 @@
-# 核心30题操作单（v16：Codex执行真实评测，stage仍由Claude执行）
+# 核心30题操作单（v18：Codex执行真实评测，stage仍由Claude执行）
+
+**v18当前终态：R18真实重跑未通过，保持停止。** 探针修片冻结在`C:/Users/Administrator/Documents/Codex/zhiming-v4-r18` / `e9c82f491f27f69aebdb0f7bfcbc4b63a6e6f26e`，应用代码与d167相同，未改正式树。18:30:44–18:33:40新同源R11通过，source=86769412e90231b7a5b551da9df3dce5fca1ed795e479ea7b0f41cde5a1ec2a9；18:33:56接入因第二次相同工具调用而停止。本轮2次、含v16旧2次累计4/20；两轮均精确k3.1-pro/high/推理存在，2个工具请求，重复的第二个未执行，额外已执行工具0。核心30未启动，key已清，不自动重试或回退。安全摘要`k31-r18-aa6eb26c861e487c877e392e7eb2ba69.json`，唯一新control为probe_k31_aa6eb26c861e487c877e392e7eb2ba69。
+
+需大脑裁定的真实代码事实：K3单工具auto会被safe_tool_choice改成required；原echo的value enum仅允许合成，因此合法的重复工具请求必然同名同参数。本次按R18正确熔断，不把这个受本地策略影响的结果直接当模型不兼容；没有改生产策略或真实schema。下列命令仅保留实际操作接口，当前不得重新执行connect/core30，等待新裁定。
 
 2026-10-24 18:11，北京时间。用户直接授权按指令板v16立即由Codex执行K3.1真实评测；stage仍由Claude执行。本机R17评测专用账本已按大脑脚本首次创建，不代表线上v3额度。最终R11已于18:02:41通过，完整milestone回归在途不再是评测前提；旧v14禁止Codex真实评测的条款已被本次授权替代。禁止换账本或账户绕过供应商停止。
 
-**本次接入已停止，以下命令保留首次操作记录，不能重新执行connect或启动core30。** 18:11:17–18:11:33仅2次真实请求：两次model均精确k3.1-pro/high；K31-TOOLS第一步工具及推理存在检查通过，第二步仍返回工具调用，最终回答断言失败。无额度/权限停止，恢复时间为空；这不构成可自动重试的5h窗口。核心30未启动，key已finally清除。安全摘要为`k31-v16-6cda2856eaaf4b1a9b1226e04b86504e.json`，原proof和控制账本保留，不重签/新开control/重建账本或换模型绕过失败。
+**v16首次历史接入（原件保留）**：18:11:17–18:11:33仅2次真实请求，两次model均精确k3.1-pro/high；K31-TOOLS第二步最终回答断言失败，核心30未启动，key已清。安全摘要为`k31-v16-6cda2856eaaf4b1a9b1226e04b86504e.json`；仅本次v18直接授权允许新control重跑，旧2次仍计总预算。R18失败后不能据这次授权继续建新control重试。
 
 ## 候选与原件
 
@@ -25,9 +29,9 @@ Kimi key只从本机现有JSON环境映射读取：`C:/Users/Administrator/Docum
 以下都是现有CLI和实际字段。首次由主线填最终40位号；R11控制器必须已在该树生成完整原件。命令在同一个正常PowerShell会话执行，PowerShell不打印凭据。换进程时须从已留原件恢复同一control schema、proof和全部报告路径，不能重新生成control schema来绕过已有停止。
 
 ```powershell
-$FrSha = 'd16730928f263433963a15857e2f0fa6639045e1'
+$FrSha = 'e9c82f491f27f69aebdb0f7bfcbc4b63a6e6f26e'
 if ($FrSha -notmatch '^[0-9a-f]{40}$') { throw '最终候选尚未绑定' }
-$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-formal-integration'
+$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-r18'
 $FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/python.exe'
 $FrTokenizer = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/private/artifacts/kimi-k3-installer-20261023'
 Set-Location $FrRepo
@@ -58,7 +62,7 @@ foreach ($FrName in @('MEMBER_CENTRAL_DSN','MEMBER_CENTRAL_SCHEMA','MEMBER_ACCOU
     if (-not [Environment]::GetEnvironmentVariable($FrName,'Process')) { throw "大脑尚未配置受审中央字段：$FrName" }
 }
 Remove-Variable FrCentral
-$FrControl = 'probe_k31_6cda2856eaaf4b1a9b1226e04b86504e' # 本次已初始化，只从现有状态续查，勿重建
+$FrControl = 'probe_k31_aa6eb26c861e487c877e392e7eb2ba69' # 本次已初始化且失败停止，勿重建/重跑
 & $FrPython -m tools.eval.k31_cli init-control --control-schema $FrControl
 if ($LASTEXITCODE -ne 0) { throw '控制schema初始化停止' }
 & $FrPython -m tools.eval.k31_cli status --control-schema $FrControl
@@ -67,9 +71,9 @@ if ($LASTEXITCODE -ne 0) { throw '中央状态检查停止' }
 
 status只读0模型；stop_kind非空/in_flight未释放或恢复窗未到就停止。不能因新control schema绕过原中央停止。真正接入前再读新R11四组原报告，实际CLI会再次核同SHA/source/clean/原件及X02契约，不能改JSON或标布尔通过。
 
-## 2. k3.1-pro接入（固定4物理，授权上限20）
+## 2. k3.1-pro接入（R18最多6物理，累计授权上限20，含历史旧2次）
 
-仅中央未停止且最终脚本门全部通过后执行。端口仅OpenAI原生high，响应model每次须精确k3.1-pro。四物理包含工具调用+U39原推理回传两步、长输入实际系数和中文完整长答；不是旧k3/k3-256k等价验证。
+仅新裁定允许、中央未停止且同源脚本门全部通过后执行。端口仅OpenAI原生high，每响应核精确k3.1-pro；工具循环2–4请求、连续同名同参数第二次即拒绝，其后输入/长答各1次，最多6次。每POST前核同账户全部候选k31-connect累计不超过20，旧2次不清零；其他两探针未改，不使用旧等价证明。
 
 ```powershell
 $FrKeyFile = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep/private/claude-eval-k31.env.json'
