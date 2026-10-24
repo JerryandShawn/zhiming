@@ -22,7 +22,7 @@ import yaml  # noqa: E402
 
 from mingjing_core.timekit.clock import get_clock  # noqa: E402
 from tools.eval.batching import run_batches  # noqa: E402
-from tools.eval.cli import parser  # noqa: E402
+from tools.eval.cli import lifecycle_selection, parser  # noqa: E402
 from tools.eval.contracts import stamp_contracts  # noqa: E402
 from tools.eval.engine import evaluate_scenario  # noqa: E402
 from tools.eval.judges import JUDGE_SCHEMA, ModelJudge  # noqa: E402
@@ -299,6 +299,7 @@ def _finish(args: argparse.Namespace, scenarios: list[Scenario], report: dict[st
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     args.target = args.target or ("v3" if args.mode == "live" else "fake")
+    lifecycle_selection(args)
     if (args.mode, args.target) not in {("scripted", "fake"), ("live", "v3"), ("scripted", "v4"), ("live", "v4")}:
         raise SystemExit("Supported modes: scripted/fake, scripted/v4, live/v3 and gated live/v4")
     if args.suite == "core30":
@@ -355,16 +356,21 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _run_models(args: argparse.Namespace, scenarios: list[Scenario], config: dict[str, Any], models: list[str]) -> int:
+    lifecycle = lifecycle_selection(args)
     if getattr(args, "mode", None) == "live" and getattr(args, "target", None) == "v4":
         from tools.eval.live import live_session
         from tools.eval.model_selection import selected_model
 
         if len(models) != 1:
             raise SystemExit("Live v4 executes one proof-selected model, never a CLI fallback chain")
-        with live_session(args, [scenario.id for scenario in scenarios]):
+        with live_session(args, [scenario.id for scenario in scenarios]) as active:
             selected = selected_model()
             if models[0] not in {"kimi", "kimi-main", selected}:
                 raise SystemExit("Requested model differs from the trusted equivalence proof")
+            if lifecycle:
+                from tools.eval.session_driver import run_session
+
+                return run_session(args, scenarios, config, selected, active)
             return _run(args, scenarios, config, selected)
     status = 0
     for name in models:

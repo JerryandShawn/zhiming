@@ -185,6 +185,9 @@ class AgentRegenerator:
             raise EvidenceError("合并原话缺少原始入队区间的持久证明")
 
     def restart(self, original: dict[str, Any], frozen: ContextBuild) -> dict[str, Any]:
+        from mingjing_core.application.agent_model_resume import forbid_regeneration
+
+        forbid_regeneration(self.repo, original)
         owner, ident = original["owner"], original["id"]
         with self.repo.transaction(owner) as connection:
             row = connection.execute(

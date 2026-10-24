@@ -111,6 +111,7 @@ class AgentRuntime:
             incognito=thread_id(run).startswith("incognito:"),
             ledger=self.ledger,
             emit=events.send,
+            tool_emit=events.tool_event,
         )
 
     def _start(self, run: dict[str, Any], events: RuntimeEvents) -> None:
@@ -220,6 +221,7 @@ class AgentRuntime:
                 if callable(handoff := getattr(service, "agent_lease_changed", None)):
                     handoff(previous, run)
                 events.run = run
+                events.begin_epoch()
                 events.send("text_reset", {"text": "", "reason": "resumed"})
         raise EvidenceError("本轮重新生成次数已用尽")
 
