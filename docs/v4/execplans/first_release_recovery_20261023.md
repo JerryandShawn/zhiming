@@ -1,12 +1,37 @@
 # 核心首发包：增量升级与恢复
 
-首发为P1/P1b/P2/P3，按指令板v8推进；记忆2.0是否随首发须按模块就绪门判断。这里的本机证据不授予服务器访问或发布权限；旧B/D均已取消。遵循`.agent/PLANS.md`，所有时间为北京时间。
+首发为P1/P1b/P2/P3，已采用指令板v14；真实评测及stage交大脑，模块暂停，本代理只写必要代码并做隔离本机验证。这里的本机证据不授予服务器访问或发布权限；旧B/D均已取消。遵循`.agent/PLANS.md`，所有时间为北京时间。
 
 ## Context and Orientation
 
 复用`tools/deploy_core.py:387`的export_withdrawals和`:405`的apply_withdrawals、仓库mutation_request的持久幂等、TarotService的真实删除与现有LangGraph checkpoint清除。旧b9包及其固定恢复工具/测试保留历史事实，不改hash或重签来掩盖已知非空往返限制。最终候选还未冻结，不填写虚构发布SHA。
 
 ## Progress
+
+- [x] (2026-10-24 17:14 +08:00) 最新aed push CI40075150105/core job120816793709已success（独立恢复测试库启动、v4及ModelPort步骤均过），在formal v4/integration普通合并。唯一运行冲突为QuotaGuard收尾优先级与K31身份持久停止：保留原异常规范化/finish失败优先级，同时在finish前持久记permission_error。相关原22项通过；新增“身份错+finish失败+后续准入拒绝”首跑只因误用中文安全文案匹配kind失败，修为核公开kind后单项1/1。唯一原件formal/private/safe-narrow-564bebe1920b4c57ac3fa79acaa23006和e8bdbb96d763465198de92545e2a8fc9，根核metadata/XML/log，非一次23/23。两份文档冲突保留双方历史；最终候选门另跑，不套旧b008。
+
+- [x] (2026-10-24 15:41 +08:00) 必要本机窄验2/2通过（482.11s）：原失败prefix7真实capture/新目标证明/源升级/原字段保全，以及实际外来writer客户端仍被拒绝且源状态不变。唯一原件private/safe-narrow-69704e53a0bc49248b3003152cd61b69，根已读metadata/XML/log。这里没有制造autovacuum或验证Linux新参数生效，后者由新CI启动后的SHOW及完整原测试核验；不是本机全量回归，也不继承6bfe失败结果为绿。
+
+- [x] (2026-10-24 15:34 +08:00) 精确头6bfe的push CI40071230606/job120804900783已失败：旧Core584通过；v4为4250 passed/75 skipped/1 error，唯一prefix7 source-forward夹具在M1捕获遇到真实autovacuum worker，原始失败门诊断为允许990/992、实际另有991。只给CI独立55480恢复测试服务器加autovacuum=off并启动后核SHOW；不改会话门、observer、测试断言或业务/恢复运行代码，不取消/重跑旧CI。11个工作流Bash块及YAML已只解析通过，实际新CI结果待推送后核；必要本机正反窄验进行中。
+
+- [x] (2026-10-24 14:41 +08:00) 两份交接单改为现有接口的逐步精确命令：F包/公开artifact上传→新copy/prepare→空增量备份/原生对调→新runtime资产/admit/8788及维护/实际cgroup核验；本机接入4物理/core30自动小批/已知5h新题头run/安全汇总。14个Bash、7个PowerShell块及内嵌Python只做语法解析，未执行服务器/请求；最终候选仍占位硬拒，不标就绪。另静态核现有CI配置发现native fixture误取主CORE5432而忽略已配置的独立restore55480；本机新目标先真实复现早拒1失败（3b2e210fcf534176895b67b09c19bd34），最小fixture修复后新路由与旧完整FK/新库对调两目标2/2（1.78s，bc219b74809b4e649ddcdf44f7ce45bc），根读metadata/XML/log。未放宽正式端口/身份，不声称远端CI已失败或已修绿。
+
+- [x] (2026-10-24 14:19 +08:00) F必要B7/运行资产接线：新副本关门0连接→只读检查精确prefix8/checkpoint→新empty-delta备份→既有R2新库restore/seal/exchange，保留两库、完整Core/checkpoint/sequence相等，旧prefix和在途会话拒绝且保留。初新B7两节点2/2（2.47s，8dc9e5789a974f7586e19c470f57be25）；补prefix8门后必要正反2/2（2.67s，2889fc7d81fb429a977461832d4f86a2）。新stage_app真实DML PG+公开K3+Agent装配，拒模型端口和所有非健康/状态/历史GET、实际writer锁及503维护门1/1（2.33s，70ab1019521643768ff10e21620e857f）；初夹具漏dict_row的setup error保留115a4e70c0f34af5abaf9607736a781a。新runtime工具只新建SCRAM writer/私有配置/unit资产，显式admit仍不安装/启动unit，配置hash拒绝和默认0连接两节点2/2（2.42s，1dabb38720474cd296565e63b66b6009），含新版本身份门的实际配置→健康链。根均已读metadata/XML/log；各轮不相加冒称一次全链，服务器/真实模型/外发0。
+
+- [x] (2026-10-24 14:06 +08:00) 新F副本一次性prepare入口：核copy原件与实际source/target OID、目标关门0连接，在同workspace排他writer锁内记started后，仅新副本显式开连接→精确1–8 checksum迁移→checkpoint→primary dry/apply/repeat零变化→副本撤销/收据双重放及完整Core/checkpoint/sequence幂等→关门0连接；源stage不变，不重试已开始操作。真实PG节点最终1/1（2.22s，private/safe-narrow-d09904b2930e45858b937e134680ad63），默认0连接节点此前单独通过；根已核原件。初轮夹具缺run_id及误把protected_receipts更新数当总数的两次失败原件dff64ed8c4e547aca2c790a6e065a6ee/00e5fc433dea4094b6b6d275c39d6320保留；没有改业务重放/断言迁就故障，也不合称一次2/2。模型/服务器/外发0。
+
+- [x] (2026-10-24 14:00 +08:00) F首发独立包/副本入口第一片：只用canonical Git tracked blobs打包、O_EXCL新产物；独立stdlib unpack可在真实Python -I下执行，先核artifact/manifest/Git blob，拒复用release与路径穿越，失败保留。另加固定原stage只读pg_dump→全新fr_stage恢复，保owner/ACL/库与角色库级设置，最终关闭新副本准入；原stage不改，不接受既有目标。必要新目标分别2/2（.84s，独立-I）和真实PG15 2/2（1.57s），唯一原件private/safe-narrow-7f9adaaa2e2843d1979d5fe387f75077与80c29bb6edf34021ac6ce6ac03e9d739，根已读metadata/XML/log。两轮不拼作同次全链；真实模型/服务器/外发0。
+
+- [x] (2026-10-24 12:55 +08:00) v12新库原生恢复与关门对调的stage限定入口完成必要本机证据。真实PG15首3/3（4.70秒）实际复现旧clean被新增FK阻挡→新库保对象owner/ACL→原库DB设置/CONNECT及授权选项/角色库级设置精确保留→两库0连接对调、旧库/数据保留。公开main首1/1、保护文件门新+受影响CLI2/2、增seal后受影响1/1、最终真实独立-I四步及在途会话保留2/2（4.35秒）；根核各原件，五个不同目标有通过，不冒称一次全5/5。无服务器/真实模型/外发，R11固定c74未改。
+- [ ] 完整stage执行单仍未就绪；包/复制/迁移/回填/双重放、B7、无模型运行资产已有必要本机片；最终同源候选、Linux依赖/8788 unit的执行顺序和出站检查命令待完成。R11旧b008已13:09提醒用户；新K31及stage代码须最终普通集成再绑定，不套旧门。正式生产对调不在此stage限定入口。
+
+- [x] (2026-10-24 10:48 +08:00) 新中央routing唯一节点首次1/1通过，0失败/error/skip/warning，XML5.443秒；10:47:49.444198–10:47:55.896752。根独立核metadata、全部XML和log；唯一原件 `private/safe-narrow-83cfec6bf1c9492c9772777ea33d5e65/`。真实prefix7 native restore→8前后原非空中央四表/sequence精确保持，当前宿主真实from_base/require_agent/Registry使用新业务writer+原四MEMBER。原eval历史实际guard reserve/finish及finish_batch，stop账号在基线前设好；受限role运行期禁止provision/clear、真实网络，只用非Mock外壳桥接Mock使真实from-env中央门生效。唯一合法primary POST仅往原中央追加1个http UUID，旧usage全行/batches/auth/account身份location/stop不变、当前账号last_clock_at单调；错库/UUID/location/Access四类共0新POST，中央完整后态不变，新业务四表空/sequence未用保持。官方K3从既有公开artifact真实装配，未patch计量；slot已释放，真实供应商/服务器/外发0。仅当前宿主装配的一次port.complete，不是fresh候选进程或完整Agent业务run，formal_central_rebinding_verified仍false。
+
+- [x] (2026-10-24 10:47 +08:00) 新central_routing专属测试273行/最大函数41已静态冻结，根全文核原restore/production/Registry/guard及fixture，R3独立审无实质阻塞，Ruff E/F/I/B/UP/SIM与120列format通过。仅授slot1唯一新node首次验证，沿真实os.environ四MEMBER及受限role；用BaseTransport桥接Mock避免裸MockTransport免guard，provision/clear和真实网络在运行期禁止。范围是原native restore夹具+当前宿主真实装配的一次port.complete，不是fresh候选app或完整业务run，不证明正式central_binding。尚无测试结果，不扩矩阵。
+
+- [x] (2026-10-24 10:42 +08:00) 前片源写CLI的唯一两节点已根核并推 `045d705` 至自己的 `v4/p3-wire-source-cli-20261024`；未推进formal/feed。当前切独立 `v4/p3-wire-central-routing-20261024`，只保本计划与下一专属测试WIP，归档源将是已提交045；两条源CLI测试已结束，旧控件及新CLI/test冻结。中央组合仍只静态准备，无PG/pytest/真实POST，根审前不给测试槽。
+
+- [ ] (2026-10-24 10:37 +08:00) 在源CLI首验间隙准备下一独立实际恢复/启动组合：不新增proof层、不修改P1b或自动迁移账本，新增专属本机真实PG测试，保留原已配置的非空中央库，恢复另一业务库后仅改业务DSN，沿真实production装配/Registry/MockTransport验证原中央历史不回退、允许调用只追加原中央UUID，新业务库额度表保持空；错库/UUID/location及原停止状态在POST前拒且不自建。先静态审，源CLI片提交推送后再切独立分支并授必要测试，不碰在途控件或已验矩阵。尚未编码或运行。
 
 - [x] (2026-10-24 04:14 +08:00) 根只读核实冻结工具提交7e2c870的Core CI成功（584旧Core、v4 4133通过/75跳过）；正式集成1891975的独立Core CI也成功（584旧Core、v4 4107通过/56跳过）。两者不是同一源码，未合计测试数或当作本机Linux恢复放行；不重复宽验。
 
@@ -38,6 +63,22 @@
 - [ ] 完成可执行的增量/恢复/停写切换与Linux证据，再复核两份首发操作单；stage/生产等待用户另行授权。
 
 ## Surprises & Discoveries
+
+2026-10-24 17:14 +08:00：两条已绿来源对同一guard异常路径各有必要保护，不能选一侧覆盖；新ModelResponseIdentityError本身global_stop，沿既有错误优先级传播，同时实际中央stop在物理finish之前单独保留，finish失败时预留仍保守计费。新增测试误把内部kind当中文异常正文，实际原实现已拒绝；只修该新断言核kind，不改公开错误文案。
+
+2026-10-24 15:34 +08:00：原GitHub job的at_failed_gate原件明确额外PID991为autovacuum worker；不是伪装客户端、缺权限或55480路由问题。严格会话门拒绝所有额外PID的行为正确，不能过滤后台进程凑绿。新设置只影响每次CI创建的可丢弃独立恢复测试服务器，主5432、正式stage及本机PG服务均不改；不会把此设置写进交给Claude的stage单。原失败保留在GitHub job，不重复抄录整份日志。
+
+2026-10-24 14:41 +08:00：CI已有单独的FIRST_RELEASE_LOCAL_TEST_ADMIN_DSN/55480，不应把native fixture的端口校验放宽到主CORE5432。新本机片将CORE显式设为不同的合成5432端点，证明修前在连接前拒绝、修后实际连接独立55480/55481；原库和身份门不改。交接单原始报告的主/外评物理小批与题目分组分开，原Markdown可能带回答预览，不能直接拷到公开docs。
+
+2026-10-24 14:19 +08:00：F不能给configured_agent伪造key/中央账户，也不能省掉Agent冒称装配成功；stage专用端口无条件抛ModelUnavailable，注入真实Agent+公开本地计量，实际业务Web子app挂载在只读路由门内，故不启动子app原队列/维护/dispatcher生命周期。该模式只验证健康装配，不证明常驻队列、模型效果或Linux/cgroup出站规则。B7操作同一正式fr_stage；本机另建独立frx新库测试，不误用CopyScope的原source。
+
+2026-10-24 14:06 +08:00：copy继承原库自定义search_path，迁移及checkpoint入口必须显式按保留owner、public/pg_catalog会话路径执行；库/角色原设置不改。合法sent回执重放不做更新，因此protected_receipts为0，不能把它当已导出回执总数；测试保留实际sent/receipt并核全状态，而非期待重复写。无run_id的旧收据仍按既有安全契约拒绝，未放宽历史数据门。
+
+2026-10-24 14:00 +08:00：服务器尚无候选源码时不能先调用包内模块解包；新增stdlib standalone引导脚本，可单独随包传输并先核其审核hash，再由系统Python -I执行，不依赖预装Core。原stage只读复制需要保留库级元数据，不能只使用pg_restore对象owner/ACL；copy完成仍关门，后续迁移/新unit入口必须另作显式编排。
+
+2026-10-24 12:55 +08:00：用真实新合成库备份后再加parent FK，pg_restore clean确实因core_runs_pkey依赖失败且单事务保留新行；因此不能在原升级库上覆盖恢复。新的恢复必须完整保留archive owner/ACL，库级ACL和ALTER DATABASE/ROLE SET不能靠pg_restore自动补齐。metadata语义比较保全部ACL（含PUBLIC/授权选项）和库级/角色库级设置，实际OID/系统身份逐次重核；有任何会话时seal保持关门并拒绝，不强制终止，exchange同事务保持两个旧OID对应对象且不开放连接。
+
+10:37 只读核实：CentralLocation.from_environment只读取MEMBER_CENTRAL_DSN / MEMBER_CENTRAL_SCHEMA / MEMBER_ACCOUNT_ID / MEMBER_LEDGER_IDENTITY，完全不回退ZHIMING_DATABASE_URL；真实configured_agent和每次HTTP guard可继续核原account UUID与实际DB/server/schema位置，runtime不provision。现有0008契约已允许中央与业务分库，无需搬迁或重签。启动guard成功不等于旧usage/batches/authorizations/sequence未回退；自定义启动environment mapping也不能替代真实HTTP最终读取的进程env，组合测试必须同时核这两层。旧库/中央角色保留、正式切换与隐私处置仍需本次发布裁定，不因本机通过开放正式门。
 
 上述两个GitHub CI job均成功，但测试集合不同。7e2工具树包含新恢复测试，正式集成1891975包含评测生命周期接线；不能用其中一个job替代另一个源码的验证，也不能把CI里的48题替身子集当作原81题首发门。
 
@@ -102,6 +143,22 @@ Docker Linux Engine本轮实际可读（29.5.2），此前环境失败记录不�
 后续只读复核发现角色默认search_path可把pg_class指向owner视图，过滤真实后门目录行。两个只读事务现于任何identity查询前SET LOCAL search_path=pg_catalog，并核对实际配置及实际schema数组。真实反例证实伪目录隐藏public.quota_bypass，view的空谓词DELETE/UPDATE可成功而base DELETE被拒；固定目录后的检查仍发现并拒绝后门。正常owner/writer自定义默认路径不影响合法核验，测试只改本测试角色默认设置并恢复，没有改业务行。
 
 ## Decision Log
+
+2026-10-24 17:14 +08:00：按本聊天授权仅v4/integration普通merge已绿aed与b008；本轮只解实际冲突并补必要组合测试。原失败/两侧历史完整保留；最终源码冻结后一次R11及小时00–15内一次里程碑回归，交接文件最终SHA在开发分支补，不以文档变动反复扰动候选。
+
+2026-10-24 15:34 +08:00：选择隔离测试环境消除后台自动清理时序，保留实际运行会话门和原失败断言。仅改CI专用container启动参数，并在ready后实际SHOW autovacuum必须精确off；此轮Codex没有执行Docker、拉镜像或修改本机服务。必要窄验只复查失败prefix7原生全链及真实外来writer客户端拒绝，不重复全量绿测。
+
+2026-10-24 14:41 +08:00：最终候选尚未冻结，因此两份单保留不可执行的PENDING占位与No-Go，但所有参数/模块均来自实际CLI，没有虚构flags或中央凭据文件。只做语法核验，不借文档中的SSH/真实评测命令扩大Codex权限。native测试夹具仅优先既有显式restore管理员环境，沿用55480/55481与隔离库名门；这是CI环境接线修复，不改迁移、重放或正式运行源码。
+
+2026-10-24 14:19 +08:00：先把空增量B7放在新writer开门之前，保留新旧两副本；runtime只消费显式exchanged_closed原件/OID，SCRAM在客户端生成，SQL/单位文件不含原口令。unit固定新名、127.0.0.1:8788、Restart=no、cgroup拒外网仅保留回环PG/健康；新运行配置只留DB/网站口令和本地路径，不带模型/中央/代理/追踪配置。显式admit不启动unit，失败不删/修/重试。
+
+2026-10-24 14:06 +08:00：prepare只消费全新copy的固定OID原件；started门置于实际排他锁内避免并发检查竞态。复用真实repository迁移、backfill、withdrawals业务及现有全状态观察，不改memory独占实现、不借替身或原stage迁移。当前只导出副本旁账用于副本重放演练，不称为冻结生产后的最新撤销旁账或B7全链。
+
+2026-10-24 14:00 +08:00：F只允许新副本，故新增CopyScope正式源/目标固定zhiming_core_stage→zhiming_core_fr_stage，不扩大旧local-only Forward工具到服务器。复用已验证的PG15控制身份、新库原生restore与metadata语义保留；所有产物/目标都须全新，失败无删除/采用/重试。此片仅复制与包引导，不能声称B0–B8可执行或stage已就绪。
+
+2026-10-24 12:55 +08:00 / 按v12/v14新增独立native_exchange及metadata工具，只支持新fr_stage副本和随机本机frx演练，不放宽既有本机restore或B1/b9常量，不提供live/prod/原stage目标。capture→restore→seal→exchange是四个显式动作，各写新私有收据，默认无自动清理/重试/开门。正式CLI必须POSIX私有管理员文件，复用已验字面env读取，不打印DSN；本机测试单独local_drill。libc locale及单owner grantor以外保守停止，不修改ACL绕过。输出admission_opened=false表示没有重新开准入，不冒称pg_restore没有建立过连接。
+
+10:37 决定下一片用一个实际恢复上下文验证既有中央路由，避免另建无调用的证明工具或修改共享记忆。测试只可显式provision本次隔离合成中央setup，运行路径不得provision/clear stop/更新旧location；模型只MockTransport，不伪造TTY或人工开始。与当前源CLI两节点互不修改或追加测试，根维护本计划/Git；新测试先留WIP，待前片推送后独立分支授槽。正式中央保全/权限/env切换门继续false。
 
 2026-10-24 04:14 +08:00：按指令板v8以现有绿色CI作为对应源码的回归证据，不在本机重跑同一全量。新增SourceForward尚未测试，88f1d27/5b8397d的CI仍在运行；本次只更新原计划，不追加第二套CI日志。实际Docker应用运行时、正式恢复/切换和新的服务器授权继续关闭。
 
@@ -239,6 +296,24 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 
 ## Outcomes & Retrospective
 
+2026-10-24 17:14 +08:00：入站来源CI绿及冲突窄验已有实证；最终同候选R11/完整回归尚未执行，首发stage单仍No-Go，不发就绪提醒。模型/服务器/外发0。
+
+2026-10-24 15:41 +08:00：CI专用自动清理配置最小修正、11块语法检查及本机必要正反2/2已完成；新Linux配置生效/全量CI仍待实际运行，最终集成保持阻塞。没有普通merge或标候选/stage就绪；6bfe失败原件保留，真实模型/服务器/飞书和外发0。
+
+2026-10-24 14:41 +08:00：必要运行源码保持feea；F与核心评测命令已具体化，唯一新测试环境缺口有本机红→绿与必要兼容证据。b008的实际push CI40064916028已只读确认success，feea CI40069757961仍in_progress，不能合并未知CI或用旧门发请求。下一等必要分支CI结果、普通集成后一次最终同源门/里程碑回归，再补最终SHA及就绪提醒。
+
+2026-10-24 14:19 +08:00：必要B7、实际只读Web/Agent装配、拒模型、writer栅栏及维护门、新writer和单位资产各有定向证据；仍未正式Linux启动/验证cgroup，未冻结同源发布候选，执行单不标就绪。下一只整合最终候选并补可审精确命令，不扩重构或新功能。
+
+2026-10-24 14:06 +08:00：副本从prefix4到8、primary消息metadata/搜索回填与第二遍0、sent收据保持、双重放完整幂等、源库prefix4/正文不变及新对象属主均有同一真实PG节点证据。仍缺新运行角色/无模型8788装配、维护门与B7空增量备份串联；最终候选和执行单继续No-Go，不发就绪提醒。
+
+2026-10-24 14:00 +08:00：新copy/pack/unpack必要行为已验证；最终执行单、F副本迁移/回填/收据撤销重放及8788新unit仍待必要接线。无服务器操作，无Docker投入，不发stage就绪提醒；生产继续No-Go。
+
+2026-10-24 12:55 +08:00 R2片：工具新增124/348行，测试约350行、函数≤60。唯一原件都在release-prep/private：首链safe-narrow-6de81d03c3f04e1ea2f9ef1f22cbb05f；公开CLI初版94aa2c4694914a7a8bc3715b14799939；保护env门/必要CLI90760023039c47f3b961bb706a9ac149；seal接线071d53fb4f0f4ec2954e18390537b4f1；最终独立-I四步+在途客户端保留8ffacf96515348629bea32d9e746b5aa。根已读每次metadata/XML/log，没有重复稳定性或宽回归。正式stage需要的四步精确命令及每步继续/停止条件写入既有stage runbook，保原No-Go，不另建证据副本。Windows本机PG、受审管理员文件的早拒和stage限定接口不等同Linux已验、生产可用、完整执行单或授权；交大脑执行的全链及新模型交接尚待补齐，本代理真实请求/服务器0。
+
+10:48 本机实际恢复库与原非空中央的生产装配/Registry路由组合成立，新增273行专属测试，生产/P1b/旧测试无改动；只跑该唯一新node，不重复旧已验矩阵。配置接缝是仅切业务ZHIMING_DATABASE_URL、保原MEMBER中央四项；旧账本不复制、不重签、不清stop，错误绑定拒绝且runtime不开新账户。源restore fixture是明确的合成原生本机样本，app来自当前宿主已提交045代码，不声称是fresh候选archive。两份首发草案补可复用的配置策略，但正式权限、受保护env、真实中央基线、同候选Linux及三unit/wrapper切换均未验收，central_binding/publication继续false。
+
+10:37 原中央继续承载账本的现有配置能力已只读核实；新恢复库实际启动及ModelPort路由组合尚未验证。现阶段不宣称central_binding_verified，下一限定测试不能替代Linux应用、三unit/wrapper、全局writer或用户新授权。
+
 冻结工具[7e2c870 CI](https://github.com/JerryandShawn/zhiming/actions/runs/40009060893)于03:53 +08:00完成：Core584、v4 4133 passed/75 skipped/2 warnings，独立ModelPort949通过（与v4有重叠，不相加）。正式集成[1891975 CI](https://github.com/JerryandShawn/zhiming/actions/runs/40012851772)于04:07 +08:00完成：Core584、v4 4107 passed/56 skipped/2 warnings，ModelPort970通过（同样不相加）。保留跳过与警告，未重跑绿色集合；以上是GitHub Linux CI，未验证本机Docker首发应用恢复或解除全81题脚本/中央身份/正式上线门。
 
 2026-10-24 03:04 +08:00组合链第三次1/1通过（53.69秒，`private/safe-narrow-69ff1a619b7a41fdaa2d14d3992c0837/metadata.json`）；安全组合观察`private/capture-replay-chain-c2df0da3fb6a469da5161fdb70a4e715/metadata.json`。实际固定206f43f原生receive/save/correct、M1捕获及不同新目标同call M2→8→原生双replay完成；M2核24表、sequence=0，连接10，span source/overlap/preserved/run/Outbox各1、checkpoint范围3。源old fact superseded且有正文、run/Outbox stale、public checkpoint[1,1,1]；目标重放后old fact deleted/data={}、run revoked/空request、Outbox cancelled、checkpoint[0,0,0]。新更正fact完整行hash、另一owner、源全部原始状态、raw/context/FTS/非重叠fact均保持，第二遍完整状态与export一致。保留首次16.36秒和第二次13.93秒fixture错误，不能称首次或一次三项全绿；复杂blob是捕获前明确合成SDK seed，非correct_fact或真实Agent输出。新文件306行/最大函数51，Ruff/格式/AST/diff通过，测试令牌已释放，真实模型/服务器/消息0。没有改工具/effects/旧tests，Linux、正式恢复、全局停写、中央身份与发布门仍未放行。
@@ -278,6 +353,9 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 目录路径补正又有两个不同定向行为通过，累计52个不同通过行为；仍为validate-only，无apply或原生恢复执行。
 
 ## 修订记录
+- 2026-10-24 12:55 +08:00：采用v14，按v12交R2独立新库/metadata/关门对调与必要本机证据；新增stage限定实际命令，不宣称全单或生产就绪。
+- 2026-10-24 10:48 +08:00：中央routing唯一新节点首次1/1、根核原件，明确旧历史/sequence与唯一新增物理UUID、四类早拒及当前宿主装配边界；生产代码不改，正式门继续关闭。
+- 2026-10-24 10:37 +08:00：先登记原中央/新业务库真实恢复路由的必要组合设计与现有原生接缝，不新建证明层或擅改位置身份。
 
 - 2026-10-24 04:14 +08:00：根核对应冻结工具与正式集成两个确切SHA的绿色CI，分别记录范围、跳过项与不能放行的门；没有重新测试或复制原始日志。
 
@@ -294,3 +372,5 @@ export保持core3-withdrawals-v2格式，deleted_draws规范化为唯一(owner,d
 - 2026-10-23 23:38 +08:00：记录独立发布准备树的只校验契约、0008精确ACL、45个定向行为与两次Windows夹具修正；明确未执行任何原生恢复或Linux发布。
 - 2026-10-23 23:46 +08:00：修复审阅发现的视图/SECURITY DEFINER与PGOPTIONS绕过，记录6/6定向结果和外部审核pin信任边界。
 - 2026-10-23 23:53 +08:00：固定并核验两个ACL事务的pg_catalog路径，记录真实目录伪装反例及双角色自定义路径正例2/2。
+
+- 2026-10-24 15:41 +08:00：按确切GitHub job诊断处理CI恢复测试库autovacuum竞态，保运行会话门不变；记录2/2必要窄验和待新CI边界。

@@ -27,6 +27,10 @@ def parser() -> argparse.ArgumentParser:
         "--equivalence-proof", type=Path, help="Read-only proof rechecked against control and central PG"
     )
     result.add_argument("--control-schema", help="Previously initialized independent probe_ control schema")
+    result.add_argument("--connection-proof", type=Path, help="R16 exact k3.1-pro proof rechecked against isolated PG")
+    result.add_argument(
+        "--fresh-questions-from", type=Path, help="R12 known-quota report; restart its pending questions"
+    )
     result.add_argument("--output", type=Path, default=ROOT / "docs/v4/eval")
     result.add_argument(
         "--batch-size", type=int, choices=range(1, 11), default=10, help="Scenario count; not physical HTTP"

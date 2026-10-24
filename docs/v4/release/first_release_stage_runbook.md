@@ -1,201 +1,296 @@
-# 核心首发 stage 执行草案（B0–B8）
+# 首发 F 副本 stage 执行单（待最终候选绑定）
 
-2026-10-24 05:27，北京时间。**No-Go / 草案：尚不能照本单完成部署。** 已核工具基线为`5a34b2c`，本次新增Forward、源重放及回填组件的分轮进度统一见原增量ExecPlan；最终首发候选尚未冻结，工具提交号不是已验收的发布包，也不代表CI或Linux通过。当前没有正式首发增量apply、Linux/生产新库恢复、回填、切换或开门入口；本机组件仅用于隔离演练，源重放与回填尚未接成完整同call链。本单没有授权或执行服务器、模型或飞书动作。
+2026-10-24 14:35，北京时间。**当前 No-Go：最终 v4/integration SHA、该 SHA 的 CI/R11 尚未绑定；下列占位值故意不能执行。** 工具头 feea1de 不是首发候选。旧 b008 的 R11 通过仍只属于旧代码。完成最终绑定后，本单交大脑复核；Codex不执行模型请求、SSH或服务器命令。
 
-本单取代首发范围内旧B1执行建议，不改写旧证据。旧授权B/D已取消；stage和生产分别需要用户对最终SHA、对象、窗口、动作与止损范围的新授权。大脑复核或本文件存在均不能代替该授权。当前不执行任何SSH、建库、备份、服务或网络动作。
+只允许大脑在自己聊天已有的人类授权 F 内，核 `37_大脑复核_首发stage.md` 首行 `结论：Go`、复核晚于2026-10-24 12:30及本单最终SHA后执行。生产另需用户D；旧B/D无效。本单整段取代旧通用stage/Hermes切换步骤。
 
-## 1. 候选与安全边界
+## 范围与现有证据
 
-首发按当前`core-only-1-8-v1`契约覆盖P1/P1b/P2/P3、旧网页兼容和现有文字飞书入口；P4/P6及新前端不在此单。当前要求迁移0001–0008精确连续且checksum不变。P5若达到就绪门并纳入候选，须另审含0009的profile、关系/routine清单、恢复工具及本单，不能以忽略0009绕过现契约。
+原 `zhiming_core_stage` 只有只读备份；演练只用新 `zhiming_core_fr_stage` 及 `zhiming_core_fr_<operation>_restore/failed`。仅新 `zhiming-core-fr-stage.service`、127.0.0.1:8788，无模型/中央凭据，飞书/报告/公网反代不启动。原stage/live/Hermes不改、不停、不删。禁止freeze/install/publish、旧库clean恢复、Docker/代理/WSL/ACL修复。
 
-最终审核输入至少包括：精确Git候选SHA、规范Git blob发布manifest原始SHA、artifact SHA、迁移八项hash、`requirements-core.lock`、`requirements-charts.lock`、`k3-tokenizer.lock.json`、模型配置及依赖工具commit/hash。最终候选或任一运行源码变化后，已有候选脚本/质量/恢复证据须重新判断绑定关系，不拼凑不同来源的通过报告。
+恢复/复制/回填、B7和运行资产的唯一本机原件索引见[恢复计划14:00–14:19四活节](../execplans/first_release_recovery_20261023.md)。各定向轮次分别通过；不称一次完整Linux链。stage模型端口明确拒绝请求，真实Agent/公开K3/PG装配只开放健康、状态、历史，原Web子app队列/dispatcher/维护worker不启动。这不是模型或常驻队列验收。
 
-这是已有Core PG的增量路径：不重跑旧SQLite/JSON导入，不使用`deploy_core freeze/install/publish`迁移已有库，不使用硬编码live的`restore-withdrawals`。旧B1控制器、proof及Linux SQL drill仍固定b9、迁移1–7；它们的apply命令不能换个SHA直接用于本单，也不能把旧授权带过来。
+|门|当前结论|
+|---|---|
+|同一首发源码、CI、R11|待最终集成；不复用b008批准|
+|新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
+|副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
+|无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
+|F/37、容量、凭据与目标全新|执行前由大脑核；任一缺失即停止，不从文件自授权限|
 
-0008中央额度账本独立于业务时间和恢复点：不回退usage/attempt/batch/stop，不清空或provision账户来通过启动门，不复用生产凭据或伪造account、ledger identity及实际PG location。若账本位置随恢复库变化、备份包含旧账本，必须有另审的保全与重绑定方案；目前没有该入口，届时停止。
+任何**非预设负验**异常：立刻停，保持当前库/门/文件，记日报；不修补重试、覆盖、删除或杀PG会话。SSH每次一个短会话；拒绝等10分钟最多3次。耗时动作后台，后续短连只读检查结果；前一步未明确exit0不得执行下一步。备份/操作目录0700、文件0600、保留14天，不自动清理。回滚只在开门之前，B7只做空增量；开门后只关闭新服务准入，不回退数据。
 
-所有故障保持当前维护/停写状态，保留私有产物与安全错误码，交大脑复核；不自行修好重试、不覆盖或删除旧库/容器卷/备份。时间均为Asia/Shanghai，测试不能依赖机器时区。本文所有耗时是排期估计，不是测得RTO。
+## B0–B1：本机固定包、引导文件与公开分词器
 
-## 2. 必须解除的门（当前全部未放行）
+在最终clean集成树执行。把下列SHA换成通过同源CI/R11的完整40位号；其余路径是实际现有工具接口。新交付目录不得复用。
 
-| 门 | 当前事实与缺口 | 放行所需 |
-| --- | --- | --- |
-| 候选身份 | 最终候选、manifest、artifact及外部审核pin待冻结 | 同一候选的明确审核、来源与必要评测；不能手填admissible |
-| 实际Linux运行时 | 现有Windows PG定向证据只证明相应逻辑；Linux Core/Charts/K3未整体验证 | Python3.11双环境、锁依赖/导入来源、真实文件权限、官方K3本地小文件及网络隔离 |
-| 增量与恢复 | 正式入口仍仅validate/可选只读ACL；本机Forward已验证4/7同call组合，源重放及回填各有独立组件实证，完整源隐私/回填接线与正式恢复仍缺失 | 同源证明、源状态/运行时/停写门与原生重放/回填接成实际增量链，再补Linux及中央身份保全 |
-| 停写与切换 | 最终Web/飞书/报告+timer、Hermes wrapper及维护/锁尚未联合演练 | 实际Linux跨exec writer栅栏、部分失败保持关门、所有入口同源 |
-| 当前环境及授权 | 未做新的服务器盘点；容量、旧schema/服务状态不能沿用历史值 | 用户新的stage授权，明确新对象/窗口；获准后只读B0复核一致 |
-
-关系/函数/ACL校验通过不代表数据已恢复、运行时已受信、中央账本已合法迁移或渠道已验收；本单不将任一门标为“已解除”。
-
-## 3. 现有可运行的校验命令
-
-以下仅描述已有接口，**本轮没有运行**。所有变量须先由审核输入绑定为绝对路径；不从任意env文件source，不在argv放口令、DSN、token或正文。`FR_CONTROL_DIR`是含已审工具的目录，`FR_CONTROL_PYTHON`是其固定解释器。未有正式候选和pin时先停，不能用合成测试pin代替。
-
-```bash
-cd "$FR_CONTROL_DIR"
-"$FR_CONTROL_PYTHON" -m tools.first_release_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT"
+```powershell
+$FrSha = 'PENDING_R11_CI_FINAL_SHA'
+if ($FrSha -notmatch '^[0-9a-f]{40}$') { throw '尚未绑定最终候选' }
+$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-formal-integration'
+$FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/python.exe'
+$FrTokenizer = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/private/artifacts/kimi-k3-installer-20261023'
+Set-Location $FrRepo
+if ((git rev-parse HEAD) -ne $FrSha -or (git status --porcelain)) { throw '候选或clean状态不符' }
+$FrDelivery = Join-Path $FrRepo "private/fr-stage-$FrSha"
+New-Item -ItemType Directory -Path $FrDelivery -ErrorAction Stop | Out-Null
+$FrTar = Join-Path $FrDelivery 'release.tar.gz'
+& $FrPython -m tools.first_release_stage_package bundle --candidate $FrSha --source $FrRepo --artifact $FrTar
+if ($LASTEXITCODE -ne 0) { throw '打包停止，保留现场' }
+& $FrPython -m tools.install_k3_tokenizer --destination $FrTokenizer --verify-only
+if ($LASTEXITCODE -ne 0) { throw '分词器原件不符' }
+& $FrPython -c 'import hashlib,json,pathlib,sys,tarfile,uuid; d=pathlib.Path(sys.argv[1]); t=tarfile.open(d/"release.tar.gz"); b=t.extractfile("tools/first_release_stage_unpack.py").read(); p=d/"bootstrap.py"; p.open("xb").write(b); lock=json.loads(pathlib.Path("k3-tokenizer.lock.json").read_text()); v=dict(candidate=sys.argv[2],operation=uuid.uuid4().hex[:16],artifact_sha256=hashlib.sha256((d/"release.tar.gz").read_bytes()).hexdigest(),bootstrap_sha256=hashlib.sha256(b).hexdigest(),tokenizer_files=list(lock["files"])); (d/"delivery.json").open("x").write(json.dumps(v,indent=2))' $FrDelivery $FrSha
+if ($LASTEXITCODE -ne 0) { throw '引导原件提取失败' }
+Get-Content (Join-Path $FrDelivery 'delivery.json')
 ```
 
-默认只有文件/契约校验，PG连接数0、mutations=0。外部pin格式为`first-release-pin-v1`，契约为`first-release-restore-contract-v1`；字段以[源码契约](../../../tools/first_release_contracts.py)为准，不能多加通过布尔位。正式源码路径固定`/root/zhiming-core-releases/<最终SHA>`；本机模式须显式`local_drill=true`，且源码位于当前工作目录的`private/first-release-<operation随机标识>/<SHA>`。本机模式的成功不是Linux放行。
+大脑审核delivery.json中的SHA、operation、两项hash，作为后续固定参数。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
 
-正式允许的新恢复目标仅`zhiming_core_first_restore`及对应`_owner`/`_writer`；本机仅`fr_restore_<operation随机标识>`。该目标不是原stage库，也不是可用于任意数据库的模板。当前工具不创建这些对象，目标不存在时不能自动创建。
-
-未来恢复apply还须证明目标为空且属于本次操作。stage完成后应保留恢复副本；同机生产若遇到同名已占用目标，先停下另审独立目标/契约，不删除或覆盖stage副本来腾位置。
-
-当且仅当本机测试范围或新的stage授权允许、且独立恢复库已通过另审步骤建立后，可增加：
+第一次短SSH只读确认 `df -Pk /` 可用至少8388608 KiB、Python3.11和PG15客户端存在、原服务与8788端口当前状态。确认新root和新unit均不存在后，才在F范围内创建新目录；若已有同名物停止，不接管。
 
 ```bash
-"$FR_CONTROL_PYTHON" -m tools.first_release_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT" --check-acl
+set -euo pipefail
+umask 077
+FR_SHA='PENDING_R11_CI_FINAL_SHA'
+FR_ID='PENDING_REVIEWED_16_HEX_OPERATION'
+[[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
+FR_ROOT=/root/zhiming-core-fr-stage
+awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
+command -v python3.11 sha256sum
+/usr/lib/postgresql/15/bin/pg_dump --version
+/usr/lib/postgresql/15/bin/pg_restore --version
+! test -e "$FR_ROOT"
+! test -e /etc/systemd/system/zhiming-core-fr-stage.service
+! ss -ltn | awk '{print $4}' | grep -Eq '(^|:)8788$'
+mkdir -m 700 "$FR_ROOT"
+mkdir -m 700 "$FR_ROOT/uploads" "$FR_ROOT/releases" "$FR_ROOT/venvs" "$FR_ROOT/tokenizer" "$FR_ROOT/operations"
+mkdir -m 700 "$FR_ROOT/tokenizer/$FR_SHA" "$FR_ROOT/operations/$FR_ID"
 ```
 
-只由受保护加载器注入`FIRST_RELEASE_OWNER_DSN`与`FIRST_RELEASE_WRITER_DSN`；角色/库/loopback/端口必须一致，实际进程及显式环境均不得夹带PG隐式路由变量。工具各开一次只读事务，先固定并核验`search_path=pg_catalog`，检查真实PG15身份、精确关系/routine、额度表/列/序列权限、两个迁移账本只读及checkpoint DML；不修授权、不迁移、不重放。该入口不接受原stage/live DSN，不能拿它直接扫描业务库。
+根分区不足8GiB、现有fr_stage数据库/新writer角色/同名unit或root存在均停止；不删旧物腾空间。数据库是否全新由copy/provision的实际PG门再次核验。
 
-正常输出始终`runtime_verified=false`、`linux_attestation=false`、`native_restore_completed=false`、`publication=false`，没有`admissible=true`。外部pin被视为可信审核输入，但工具不认证审核人、pin保护模式、真实Git tree归属或审核新鲜度，这些仍由发布审查负责。`--apply`、`--native`及`--action migrate`均不是此入口的命令。
+回到本机，只上传三份公开交付物和lock列出的六个已核公开文件；下面是大脑执行的传输命令，Codex不执行。
 
-本机最终干净checkout的打包接口已存在；冻结之后才可按审核路径运行，打包不等于部署：
+```powershell
+scp -- $FrTar (Join-Path $FrDelivery 'bootstrap.py') (Join-Path $FrDelivery 'delivery.json') 'root@1.14.59.242:/root/zhiming-core-fr-stage/uploads/'
+if ($LASTEXITCODE -ne 0) { throw '上传失败停止' }
+$FrNames = (Get-Content 'k3-tokenizer.lock.json' -Raw | ConvertFrom-Json).files.PSObject.Properties.Name
+$FrPublicFiles = @($FrNames | ForEach-Object { Join-Path $FrTokenizer $_ })
+scp -- @FrPublicFiles "root@1.14.59.242:/root/zhiming-core-fr-stage/tokenizer/$FrSha/"
+if ($LASTEXITCODE -ne 0) { throw '公开分词器上传失败停止' }
+```
+
+## B2：核包、独立环境、短会话公共命令
+
+每次新短SSH重设已审的FR_SHA/FR_ID及下列路径；不能从新的HEAD自动取号。hash使用本机delivery原件中的已审核值，不能只信服务器同目录可改的JSON。
 
 ```bash
-"$FR_CONTROL_PYTHON" tools/deploy_core.py bundle \
-  --commit "$FR_SHA" --release-dir "/root/zhiming-core-releases/$FR_SHA" \
-  --source "$FR_CLEAN_CHECKOUT" --artifact "$FR_LOCAL_ARTIFACT"
+set -euo pipefail
+set -C
+umask 077
+FR_SHA='PENDING_R11_CI_FINAL_SHA'
+FR_ID='PENDING_REVIEWED_16_HEX_OPERATION'
+[[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
+FR_ROOT=/root/zhiming-core-fr-stage
+FR_OP="$FR_ROOT/operations/$FR_ID"
+FR_RELEASE="$FR_ROOT/releases/$FR_SHA"
+FR_PY="$FR_ROOT/venvs/$FR_SHA/core/bin/python"
+FR_TOKENIZER="$FR_ROOT/tokenizer/$FR_SHA"
+FR_ADMIN=/root/zhiming-core-secrets/fr-stage-admin.env
+FR_DUMP=/usr/lib/postgresql/15/bin/pg_dump
+FR_RESTORE=/usr/lib/postgresql/15/bin/pg_restore
+FR_PACKAGE_SHA='PENDING_REVIEWED_ARTIFACT_SHA256'
+FR_BOOTSTRAP_SHA='PENDING_REVIEWED_BOOTSTRAP_SHA256'
+h() { sha256sum "$1" | cut -d ' ' -f 1; }
 ```
 
-构建要求checkout HEAD与SHA一致、工作树干净。不得将测试库、凭据、备份、真实正文或未跟踪运行目录打进发布包。
-
-## 4. B0–B8：动作、继续与停止条件
-
-### 本机新入口（不能替代B3/B7）
-
-`tools.first_release_local_restore`已提供本机原始prefix恢复基础。外部同源审核dump-pin为`first-release-local-dump-pin-v1`，绑定候选/manifest、custom dump及PG15 pg_restore原始hash、源迁移前缀；只接受1–7，实际验证4或7。示例为已存在接口，不表示现在授权服务器执行：
+首次准备：两hash均须64hex且匹配，解包只允许全新release。只装Core锁，不混旧requirements-web.lock/Charts环境。不启动任何服务。
 
 ```bash
-cd "$FR_CONTROL_DIR"
-"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
-  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE"
+[[ "$FR_PACKAGE_SHA" =~ ^[0-9a-f]{64}$ && "$FR_BOOTSTRAP_SHA" =~ ^[0-9a-f]{64}$ ]]
+test "$(h "$FR_ROOT/uploads/release.tar.gz")" = "$FR_PACKAGE_SHA"
+test "$(h "$FR_ROOT/uploads/bootstrap.py")" = "$FR_BOOTSTRAP_SHA"
+python3.11 -I "$FR_ROOT/uploads/bootstrap.py" --candidate "$FR_SHA" --artifact "$FR_ROOT/uploads/release.tar.gz" --artifact-sha256 "$FR_PACKAGE_SHA" --release "$FR_RELEASE"
+! test -e "$FR_ROOT/venvs/$FR_SHA"
+mkdir -m 700 "$FR_ROOT/venvs/$FR_SHA"
 ```
 
-默认只读文件、0PG/0子进程；显式`--apply-local`才创建本次随机新库/新owner和writer并实际恢复。必须local_drill=true，dump固定在本次operation目录的backup.dump，管理DSN仅同一loopback 55480/55481的postgres/core_test_main控制库。任何既有目标库或任一角色均拒绝；失败保留新对象，再调用拒绝接管，不清理重跑。应用前实际TOC检查拒绝中央额度表，即使dump-pin谎称prefix7也不复制0008。
-
-新public初始化仅在本次新库/新owner匹配、public为空且原owner为pg_database_owner时进行，不放宽NOINHERIT或writer权限。角色DDL只提交客户端生成的SCRAM verifier，口令和verifier均不进回执。实际pg_restore由新owner执行no-owner/no-acl/exit-on-error/single-transaction/no-password；默认随后只核原prefix和owner。
-
-同一命令显式增加`--apply-local --upgrade-local`，才在该调用持锁新建且恢复的目标继续：再次核候选SQL和历史、一个事务前向至8、独立autocommit阶段checkpoint setup、复用最小授权、两角色精确只读ACL。正常总连接7，默认路径仍4；没有采用现成库的单独入口。0008四表必须实际为空，非空立即停止并保留，不清表或provision；空表不代表中央账本合法保全/重绑定。任一阶段失败保留其已提交现场，不修权限重试；不重放撤销/收据。成功仍保持正式native_restore_completed、linux_attestation、publication为false。本机新升级窄链11/11及原恢复证据见原ExecPlan，不新增证据副本。B3/B7所需正式全链仍缺失。
-
-本机同次新库还可显式增加以下候选只读预检；这是已有参数的完整组合，不能去掉apply/upgrade后用于采用现成库：
+venv创建、锁依赖安装应后台单步运行并留exit/log，不在长SSH会话等。下面公共函数可用于任意固定参数的长命令，未产生exit文件只表示未完成，不能进入下一步。函数不重试任何步骤，同名日志/pid/exit一律拒绝覆盖。
 
 ```bash
-"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
-  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
-  --apply-local --upgrade-local --replay-preflight-local \
-  --preflight-pin "$FR_LOCAL_PREFLIGHT_PIN" \
-  --preflight-ledger "$FR_LOCAL_LATEST_WITHDRAWALS" --candidate-python "$FR_CANDIDATE_PYTHON"
+start_step() {
+  local name="$1"; shift
+  [[ "$name" =~ ^[a-z0-9-]+$ ]]
+  for ext in log pid exit; do ! test -e "$FR_OP/$name.$ext"; done
+  nohup /bin/bash -c 'set -C; out=$1; shift; "$@"; rc=$?; printf "%s\n" "$rc" > "$out"; exit "$rc"' fr-step "$FR_OP/$name.exit" "$@" > "$FR_OP/$name.log" 2>&1 < /dev/null &
+  printf '%s\n' "$!" > "$FR_OP/$name.pid"
+}
+check_step() {
+  local name="$1"
+  test -f "$FR_OP/$name.exit"
+  test "$(cat "$FR_OP/$name.exit")" = 0
+}
+FR_RUN=(env -i PATH=/usr/bin:/bin HOME=/root LANG=C.UTF-8 TZ=Asia/Shanghai "$FR_PY" -I -c 'import runpy,sys;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name="__main__")' "$FR_RELEASE")
+fr() { "${FR_RUN[@]}" "$@"; }
 ```
 
-外部预检pin使用`first-release-local-preflight-pin-v1`，绑定同一候选/manifest/dump、最新旁账、实际Python可执行文件和受审控制worker的hash。候选Python必须是实际Python3.11 venv，并满足Core锁在该平台激活的版本及依赖闭包；只有锁文件相同不够。该新子进程拒绝预载控制树业务包，实际导入并核候选业务来源，只以新owner进行额外1次只读连接，正常总连接8。预检通过仅表示源码/已装依赖元数据/目标迁移和owner全集/空运行队列与中央空表核验；不调用apply_withdrawals，`latest_withdrawals_replayed`、`runtime_verified`、`native_restore_completed`、`linux_attestation`、`publication`仍为false。失败保留新目标，不自动重试或清理。证据只登记在原恢复ExecPlan；此命令不解除B3/B7或实际Linux门。
-
-另有经过隔离PG验证的显式本机双重放入口，只接受原备份prefix4或7。它与上述只读预检模式互斥，使用独立`first-release-local-replay-pin-v1`并额外绑定受审effects helper的hash：
+依次start、退出SSH、后续短连check，**每次check明确0后才手动开始下一条**：
 
 ```bash
-"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
-  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
-  --apply-local --upgrade-local --replay-withdrawals-local \
-  --replay-pin "$FR_LOCAL_REPLAY_PIN" \
-  --replay-ledger "$FR_LOCAL_LATEST_WITHDRAWALS" --candidate-python "$FR_CANDIDATE_PYTHON"
+start_step venv python3.11 -m venv "$FR_ROOT/venvs/$FR_SHA/core"
+# 后续短会话 check_step venv 成功后：
+start_step dependencies "$FR_PY" -m pip install --require-hashes -r "$FR_RELEASE/requirements-core.lock"
+# 后续 check_step dependencies 成功后：
+"$FR_PY" -m pip check
+fr tools.install_k3_tokenizer --destination "$FR_TOKENIZER" --verify-only
 ```
 
-仍只操作同call新建且持锁的本机目标，正常总连接9。子进程先只读核目标，再调用实际候选的原生apply/export；每次apply保留其原事务与提交后checkpoint清理边界。旁账不能比已恢复状态旧，第二次apply后的全部Core/checkpoint字段、sequence及导出必须与第一次相同，中央四表及sequence保持原空状态。实际测试含当前已提交候选的非空撤销/收据/墓碑，以及真实旧候选因状态变化或正文残留被拒的负例，没有向旧包注入修复。独立后验已覆盖whole撤销、draw、revoked-run checkpoint、真实legacy映射目标及受支持直接派生，另有原生更正source_span和whole fact组合的独立样本，验证保留原话、上下文/实际FTS遮挡、非重叠事实及运行私密清理。备份后才新增再更正的原话可在实际零同owner血缘时保留marker-only，单列计数，不冒称已擦除原文；孤立残留、损坏引用和无法归属形态仍保守拒绝，不借另一owner证明身份。其他片段形态和全部间接血缘仍未验证；证据统一见原恢复ExecPlan。失败保留并停止，不自动再试。成功只标记本机候选重放，中央身份保全、运行时、正式native恢复、Linux和publication仍为false；不能据此解除B7整链。
-
-**B7的新库恢复证明必须在B3修改已有stage库之前完成。** 表中缺失入口不是待猜命令，不能用旧B1 apply或手工SQL补过门。只要必要入口缺失，停在本地准备阶段。
-
-### 本机已有合成库备份（M1，不能替代stage停写）
-
-下列真实入口仅接受本机55480/55481、已存在的`fr_upgrade_<operation>`合成库与原prefix4或7。独立`first-release-local-incremental-backup-pin-v1`绑定实际系统/库/角色OID、owner全集、候选/manifest/三锁、Python、PG15 pg_dump及受审控制文件；`FIRST_INCREMENTAL_OWNER_DSN`、`FIRST_INCREMENTAL_WRITER_DSN`和同一服务器控制库的`FIRST_INCREMENTAL_ADMIN_DSN`只从受保护环境加载。
+大脑先备妥其已审的PG管理员私有文件FR_ADMIN：仅`FIRST_RELEASE_EXCHANGE_ADMIN_DSN`一个字段，实际PG15 superuser、数字回环127.0.0.1或::1、5432、控制库postgres；不能用业务writer替代、不要输出正文。文件/父目录须root所有0600/0700，无链接；工具会核实际身份。缺文件/凭据即停请大脑处理，不能自动建账户/改认证绕过。长步骤原始日志均在0700操作目录，禁止上传包含私有数据或凭据的日志正文。
 
 ```bash
-"$FR_CONTROL_PYTHON" -m tools.first_release_incremental --pin "$FR_LOCAL_INCREMENTAL_PIN"
-"$FR_CONTROL_PYTHON" -m tools.first_release_incremental --pin "$FR_LOCAL_INCREMENTAL_PIN" --backup-local
+test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
+test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 ```
 
-第一条默认0连接/0进程/0文件写；第二条才取得合作性文件/PG栅栏，保留维护标记，实际生成同一MVCC快照的custom dump、候选原生旁账与独立前后状态证据。错误OID、额外会话、活动run/lease、锁冲突、已有输出或源漂移均停止，保留已写产物，不自动清理重试；锁释放不解除维护。当前应用尚未接这个协议，前后会话检查也不证明dump期间全局停写，`global_quiescence_verified=false`。成功仅为`backup_captured`，不能据JSON回执采用既有恢复库、迁移源库或解除B2/B3/B7、Linux、中央身份和发布门。实际8/8与独立marker写阻断1/1见[增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不重复归档证据。
-
-### 本机捕获与原始恢复绑定（M2）
-
-新捕获显式使用UTC行投影，包含逻辑列集合及同次实际核验输入的`capture_lineage`。只接受`source_projection=postgres-jsonb-utc-v1`的新真实产物；旧无UTC/列/血缘的回执不能补字段或改hash后冒充。本次M1输入的逐字节副本固定为其operation目录的`capture-inputs.json`，独立`first-release-local-capture-binding-pin-v1`绑定它、receipt、dump、旁账、完整状态、候选/manifest、另一新恢复operation与消费控制文件。
+## B3–B5：只读复制、迁移与primary回填/副本旁账重放
 
 ```bash
-"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
-  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
-  --apply-local --upgrade-local --capture-bind-local \
-  --capture-inputs "$FR_LOCAL_CAPTURE_INPUTS" --capture-pin "$FR_LOCAL_CAPTURE_BINDING_PIN"
+start_step copy "${FR_RUN[@]}" tools.first_release_stage_copy --operation "$FR_ID" --workspace "$FR_OP" --pg-dump "$FR_DUMP" --pg-dump-sha256 "$(h "$FR_DUMP")" --pg-restore "$FR_RESTORE" --pg-restore-sha256 "$(h "$FR_RESTORE")" --admin-env-file "$FR_ADMIN" --apply
+# check_step copy 明确0，核copy-receipt.status=copied_closed后：
+start_step prepare "${FR_RUN[@]}" tools.first_release_stage_prepare --operation "$FR_ID" --workspace "$FR_OP" --copy-receipt "$FR_OP/copy-receipt.json" --copy-receipt-sha256 "$(h "$FR_OP/copy-receipt.json")" --admin-env-file "$FR_ADMIN" --apply
 ```
 
-比较在同call新目标creator锁内、实际原始恢复后且任何升级之前执行：实际owner/原prefix/关系、逻辑列和全部原字段行hash精确相等，sequence集合及last_value/is_called相等；保留源log_cnt证据，不伪造跨恢复日志计数相等。任一异常保留原目标且不升级；默认不加绑定参数仍0连接。上面的命令只增加嵌套`local_original_content_verified`，不执行latest撤销/收据重放，也不证明源库捕获后未再变化；源库升级、全局停写、正式恢复、Linux、中央身份和发布仍未放行。真实证据为首链3项通过、必要失败复验3项通过、合法profile两正例2项通过，不冒称一次8/8；两轮失败与修正均在原增量ExecPlan保留。
+`check_step prepare`明确0；prepare-receipt须prepared_closed、migrations完整1–8/checksum匹配、backfill_repeat的message_metadata/search_tokens/assistant_created全0、replay_full_state_unchanged=true、model_calls/external_sends=0。source/target OID必须来自同次copy；不手改receipt、started或任何数据来放行。缺primary、旧未核checksum、无run_id/冲突收据等真实错误均停止。
 
-同次原始恢复比较和候选原生双重放还可明确组合，两个独立pin都必须完整提供：
+## B7：开门前空增量新库恢复与改名对调
+
+新服务和writer均尚未创建。使用迁移后的新副本做空增量备份；不是恢复原stage旧前缀，也不在已迁移库执行clean。
 
 ```bash
-"$FR_CONTROL_PYTHON" -m tools.first_release_local_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT" --dump-pin "$FR_LOCAL_DUMP_PIN" \
-  --dump "$FR_LOCAL_BACKUP_DUMP" --pg-restore "$FR_LOCAL_PG_RESTORE" \
-  --apply-local --upgrade-local --capture-bind-local \
-  --capture-inputs "$FR_LOCAL_CAPTURE_INPUTS" --capture-pin "$FR_LOCAL_CAPTURE_BINDING_PIN" \
-  --replay-withdrawals-local --replay-pin "$FR_LOCAL_REPLAY_PIN" \
-  --replay-ledger "$FR_LOCAL_LATEST_WITHDRAWALS" --candidate-python "$FR_CANDIDATE_PYTHON"
+fr tools.first_release_native_exchange capture --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/rollback-before.json" --output "$FR_OP/capture-receipt.json"
+start_step backup "${FR_RUN[@]}" tools.first_release_stage_backup --operation "$FR_ID" --workspace "$FR_OP" --metadata "$FR_OP/rollback-before.json" --metadata-sha256 "$(h "$FR_OP/rollback-before.json")" --pg-dump "$FR_DUMP" --pg-dump-sha256 "$(h "$FR_DUMP")" --admin-env-file "$FR_ADMIN" --apply
+# check_step backup 明确0，核backed_up_closed后：
+start_step restore "${FR_RUN[@]}" tools.first_release_native_exchange restore --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/empty-delta-metadata.json" --metadata-sha256 "$(h "$FR_OP/empty-delta-metadata.json")" --backup "$FR_OP/empty-delta.dump" --backup-sha256 "$(h "$FR_OP/empty-delta.dump")" --pg-restore "$FR_RESTORE" --pg-restore-sha256 "$(h "$FR_RESTORE")" --output "$FR_OP/restore-receipt.json"
+# check_step restore 明确0，核restored_new_database后：
+fr tools.first_release_native_exchange seal --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/empty-delta-metadata.json" --metadata-sha256 "$(h "$FR_OP/empty-delta-metadata.json")" --output "$FR_OP/seal-receipt.json"
+fr tools.first_release_native_exchange exchange --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/empty-delta-metadata.json" --metadata-sha256 "$(h "$FR_OP/empty-delta-metadata.json")" --restore-receipt "$FR_OP/restore-receipt.json" --restore-receipt-sha256 "$(h "$FR_OP/restore-receipt.json")" --output "$FR_OP/exchange-receipt.json"
 ```
 
-这条组合已在真实本机PG15的prefix7样本完成1/1定向验证：先真实更正，再M1捕获含新更正事实和三类物理checkpoint的原始状态；另一新目标先M2比较，再升级至8和实际候选双重放，最后才核擦除及完整第二遍不变。新更正事实、原话、非重叠事实、另一owner和源库完整状态保持，三类checkpoint从各1行清至0。复杂blob由明确合成SDK种子生成，未向重放注入结果。前两次新fixture阶段语义错误及最后通过均见[原恢复ExecPlan](../execplans/first_release_recovery_20261023.md)，不称首次全绿、全部样本或Linux通过；源库升级和正式各门仍关闭。
+继续条件：exchange-receipt为exchanged_closed，current_oid为新恢复库OID，failed_database为本operation唯一failed名，admission_opened/old_database_deleted/production均false。两库必须保持closed/0连接；旧failed库和全部备份保留。owner、CONNECT ACL/授权选项、库级及角色库级SET由捕获原件恢复。任何活动会话/元数据漂移/已有目标都立即停，不终止PG会话。新writer和任何应用开门后不再执行本节回滚。
 
-### 本机目标证明与源升级组件（无源写CLI）
+## B6–B8：新运行资产、Linux启动与限定冒烟
 
-以下为基线后逐片实现/验证的开发组件，不是可照做的源升级命令。每轮实际候选archive、控制代码与原始失败/修正统一见[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，不另归档日志或合并不同轮次为一次全绿；不能把它们拼成同一最终发布包通过证据。
+```bash
+fr tools.first_release_stage_runtime provision --operation "$FR_ID" --workspace "$FR_OP" --receipt "$FR_OP/exchange-receipt.json" --receipt-sha256 "$(h "$FR_OP/exchange-receipt.json")" --candidate "$FR_SHA" --tokenizer "$FR_TOKENIZER" --admin-env-file "$FR_ADMIN" --apply
+systemd-analyze verify "$FR_OP/zhiming-core-fr-stage.service"
+! test -e /etc/systemd/system/zhiming-core-fr-stage.service
+# set -C的独占重定向保护已有unit；不使用覆盖式install/cp。
+(umask 022; cat "$FR_OP/zhiming-core-fr-stage.service" > /etc/systemd/system/zhiming-core-fr-stage.service)
+test "$(h /etc/systemd/system/zhiming-core-fr-stage.service)" = "$(h "$FR_OP/zhiming-core-fr-stage.service")"
+systemctl daemon-reload
+fr tools.first_release_stage_runtime admit --operation "$FR_ID" --workspace "$FR_OP" --receipt "$FR_OP/runtime-receipt.json" --receipt-sha256 "$(h "$FR_OP/runtime-receipt.json")" --admin-env-file "$FR_ADMIN" --apply
+systemctl start zhiming-core-fr-stage.service
+test "$(systemctl show -p ActiveState --value zhiming-core-fr-stage.service)" = active
+systemctl show zhiming-core-fr-stage.service -p MainPID -p ControlGroup -p IPAddressDeny -p IPAddressAllow -p RestrictAddressFamilies -p SocketBindAllow -p SocketBindDeny
+```
 
-| 组件 | 本机已验证范围 | 仍关闭的门 |
-| --- | --- | --- |
-| same-call TargetProof | 八个独立行为按4+3+1分轮通过，另旧public M2 prefix7兼容1；同次新目标真实原始内容绑定→8→候选双重放后，核创建时OID、最终ACL/完整状态，creator锁内mint并单次消费，消费失败也耗尽token | 不透明对象不能由JSON重建；正常目标链16连接。仅可在下述实际Forward组合内消费，不单独赋予源写权；正式恢复仍未完成，先前session setup拒绝来源仍未知 |
-| Source guard | 12个独立行为分轮验证（纯文件1、真实PG夹具11）；真实Windows独占锁内改用同一持锁句柄读fence，保持默认锁行为及精确文件身份/hash、实际源OID/权限/会话/完整UTC状态核验 | 只读scope仍要求源capture不变，不返回写连接或升级许可；现应用未接合作栅栏，不能证明全局停写或Linux跨exec行为 |
-| Source postcheck | 七个独立行为按6+1分轮通过，验证真实4/7测试夹具前向8后的原字段/列、完整迁移账本及owner/writer精确终态；两个正例均实际调用SDK setup，版本10→10、新增0 | 不是源升级入口，尚未覆盖存在待应用SDK迁移的升级；不因新增版本0声称setup未执行或零SQL，不自动修复异常状态 |
-| SourceForward内部API | 真实4/7同call目标证明、controller核验、源双栅栏与Core/SDK/grant组合已有实证；保维护标记，未知提交停止不重入，额外故障的分轮结果见原计划 | 无源写CLI；原生源重放/回填尚未接成同call整体，应用全局停写与正式门仍未证明 |
-| 源重放worker组件 | 真实候选非空双重放、独立擦除/第二遍全态不变、同一活物理lease及父实际终态ACK已有实证；无ACK不写、前后持久漂移均拒绝 | 组件测试未构造或伪造SourceWitness，不代表已与Forward接线；初始连接失败/控制故障注入与Linux未覆盖 |
-| 回填effects组件 | 真实core3旧轮的preview无写、四metadata/generated search及新助手/operation/owner增量逐项对账，second无写和实际后半异常全事务回滚已有实证 | 尚未接候选fresh worker/源许可；core4、legacy及撤销后回填仍待验证，成功dict不赋权 |
+systemd不识别指令、BPF/cgroup不可用、unit启动失败或监听不符都停止，不能忽略警告或放宽封锁。`ss -ltnp`应仅有新进程127.0.0.1:8788，不能0.0.0.0/公网。只向新角色授予新副本DML，schema/checkpoint迁移台账无写权，不修改旧库ACL。runtime.json含新网站token/DB口令，仅留私有目录，绝不打印或scp。
 
-当前CLI仍没有既有源库forward、源库原生撤销/收据重放或回填入口；上文只针对同call新`fr_restore`目标的双重放接口保持原范围。Forward内部组合与两个后续effects组件分别有本机实证，尚未组成完整源隐私/回填链。源隐私重放须先于回填，不能跳过。`source_write_authorized`、全局停写、正式native/runtime/Linux、中央身份保全和publication继续关闭；typed凭据、Windows PG结果及组件测试均不构成stage或生产授权。
+健康冒烟不把token放进命令行、日志或curl参数；只打印路径/状态码，不打印真实状态/历史正文：
 
-| 步骤 | 动作与当前入口 | 继续条件 | 停止条件 | 预计耗时 |
-| --- | --- | --- | --- | --- |
-| B0 | 新授权后只读盘点主机、PG15/实际schema前缀、角色、服务/反代、队列、磁盘和备份；命令范围见下文 | 目标、旧包、schema/checksum、owner范围及容量与审核输入一致；所有目标名称明确 | 无新授权、环境漂移、低于受审容量预算、未知writer/旧任务 | 10–20分 |
-| B1 | 本机冻结最终候选并规范打包；§3 validate；受审渠道传包/准备双环境的首发入口待补 | manifest/三锁/1–8一致；实际Linux Core、Charts、K3来源与权限均验过 | 依赖/额外文件/解释器不符；最终包未定；只有Windows或元数据证据 | 30–60分，下载另计 |
-| B2 | 保持stage停写，取得stage专属writer栅栏，精确备份与导出最新无正文旁账；首发控制器缺失 | 队列/lease/其他写会话为0；dump、原schema、状态摘要、撤销/收据及配置可绑定 | 无停写证据、来源读取依赖源库尚无的表、备份或导出失败 | 15–30分 |
-| B3 | B7已通过后才允许已有库前向迁至8、checkpoint setup及最小授权；首发apply入口缺失 | 原checksum合法连续前缀，目标八项精确一致；新恢复证据同源 | 任何迁移/身份/ACL异常；禁止改历史迁移或补多余DELETE | 10–20分 |
-| B4 | 对明确获准owner dry-run→审核→apply→repeat；首发回填控制器缺失 | repeat的message_metadata/search_tokens/assistant_created均0，其他只读计数可非0；原文/来源/牌面/撤销/收据不变；未获准owner只核计数 | repeat写变化、丢正文或固定牌、owner越界、收据回退 | 10–40分 |
-| B5 | 最终候选同源的必要脚本与定向回归；只用可丢弃验收库、替身传输；不在实际stage历史库跑测试 | 首发脚本/集成证据已满足当前门，无未解释失败/跳过；来源一致 | 假目标代替v4、旧报告凑绿、测试连业务库、触发真实供应商/消息 | 30–60分，按规模修正 |
-| B6 | 独立合成Web库/owner/writer/目录/端口/unit与实际出站封锁；首发装配/启动资产待补 | Agent实际启用且替身装配受审；loopback PG阳性/同cgroup出站阴性有对照；历史与记忆回执等行为通过 | 借live env/目录/中央身份，关闭Agent只验旧health，网络封锁未实证或有待恢复真实任务 | 20–45分 |
-| B7 | B2精确dump恢复到新allowlist库→核原前缀→前向1–8→最新撤销/收据重放两次→§3只读ACL；正式stage恢复/replay控制器缺失 | 非空deleted_draws墓碑可再导出、owner隔离；sent/uncertain不重发；checkpoint清除；第二遍无变化；中央账本不回退 | 复用旧b9恢复、覆盖stage/live、过期旁账、中央账户重建、任一状态/权限/提交后checkpoint异常 | 30–60分起 |
-| B8 | 一份stage回执，绑定候选/工具/配置与每步证据和实际耗时，交大脑审核 | 所有必要门真实完成，停止状态和未验证项明确 | 输入或步骤缺失仍写stage accepted；自动进入生产 | 10–20分 |
+```bash
+"$FR_PY" -I - "$FR_OP/runtime.json" <<'PY'
+import json,sys,urllib.request
+v=json.load(open(sys.argv[1],encoding='utf-8'))
+for path in ('/api/health','/api/state','/api/history'):
+    request=urllib.request.Request('http://127.0.0.1:8788'+path,headers={'X-Token':v['token']})
+    with urllib.request.urlopen(request,timeout=10) as response:
+        assert response.status==200
+        value=json.loads(response.read(4_000_001))
+        if path=='/api/health':
+            assert value['ok'] is True and value['model']=='stage-model-access-disabled'
+        print(path,response.status)
+PY
+```
 
-B0获准后的现有只读命令可包括`hostname`、`date --iso-8601=seconds`、`df -B1 --output=avail /`、`ss -lnt`及对**授权所列精确stage units**的`systemctl show`（Id/ActiveState/UnitFileState/FragmentPath/DropInPaths/NeedDaemonReload）。不打印Environment、完整DSN、私钥、正文；PG安全投影工具/当前参数未核准时停止，不临时拼接含口令命令。
+出站核验必须检查**实际新unit cgroup**，不是另建transient unit。以下仅大脑在F内做TCP连通正负验，不发任何应用层payload，不访问模型/飞书；外部正验自身不可达时本项不能证明阻断，停止交大脑核。子进程只把自己加入已确认的新unit cgroup，退出后不留进程、不动其他cgroup。
 
-容量以本次盘点和实测数据库/备份/双环境/恢复副本占用加余量计算；不能因历史磁盘已清理就认定充足。首次整体准备暂按3–5小时估计，缺失实现、审核和依赖等待另计；不能承诺维护时间或RTO。
+```bash
+FR_CGROUP="$(systemctl show -p ControlGroup --value zhiming-core-fr-stage.service)"
+test "$FR_CGROUP" = /system.slice/zhiming-core-fr-stage.service
+"$FR_PY" -I - "$FR_CGROUP" <<'PY'
+import errno,os,pathlib,socket,sys
+endpoint=('1.1.1.1',443)
+with socket.create_connection(endpoint,timeout=3):
+    pass
+pid=os.fork()
+if pid==0:
+    try:
+        assert sys.argv[1]=='/system.slice/zhiming-core-fr-stage.service'
+        path=pathlib.Path('/sys/fs/cgroup'+sys.argv[1])/'cgroup.procs'
+        with path.open('w') as stream:
+            stream.write(str(os.getpid()))
+        try:
+            connection=socket.create_connection(endpoint,timeout=3)
+        except OSError as error:
+            assert isinstance(error,TimeoutError) or error.errno in (errno.EPERM,errno.EACCES)
+            os._exit(0)
+        else:
+            connection.close()
+            os._exit(2)
+    except BaseException:
+        os._exit(3)
+_,status=os.waitpid(pid,0)
+assert os.waitstatus_to_exitcode(status)==0,'actual stage cgroup outbound check failed'
+print('host TCP reachable; actual new-unit cgroup blocked; application payloads=0')
+PY
+```
 
-## 5. B6/B7还缺的具体内容
+writer负验：新unit保持运行时，用同候选的file_lock对FR_OP/writer.lock申请exclusive必须得到预设`INCREMENTAL_FILE_FENCE_BUSY`；不得获得锁。随后新建maintenance.json，三个GET均应503。该负验为计划内门测试，不是允许忽略实际业务异常。
 
-独立合成环境需分别批准测试DDL库、Web库与恢复库的精确新名称和角色。当前validator只支持恢复目标，不存在通用`--stage`部署参数。旧[B6资产](B1_B6_stage_assets.md)固定b9、schema7及旧启动逻辑，只能参考隔离方法，不能原样安装后声称P3已通过。
+```bash
+"$FR_PY" -I - "$FR_RELEASE" "$FR_OP" <<'PY'
+import os,pathlib,sys
+sys.path.insert(0,sys.argv[1])
+from tools.first_release_contracts import RestoreRejected
+from tools.first_release_writer_fence import file_lock
+root=pathlib.Path(sys.argv[2])
+try:
+    with file_lock(root/'writer.lock',exclusive=True,existing_only=True):
+        raise SystemExit('unexpected exclusive writer admission')
+except RestoreRejected as error:
+    assert str(error)=='INCREMENTAL_FILE_FENCE_BUSY'
+fd=os.open(root/'maintenance.json',os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
+with os.fdopen(fd,'w') as stream:
+    stream.write('{"purpose":"F maintenance drill"}\n')
+print('expected writer rejection; maintenance gate closed')
+PY
+```
 
-Agent启动还要求明确的`MINGJING_AGENT_ENABLED=true`、至少三条运行容量、同源模型registry、已有中央account/ledger identity/location及已验`K3_TOKENIZER_DIR`。当前生产装配并非一个现成stage ScriptedProvider启动器；必须补受审离线装配，不能塞假API key或发真实请求来证明启动。P6独立评审不随此profile开启。
+三个端点均须返回503，不打印正文：
 
-恢复证明须观察实际pg_restore及空目标、备份源前缀、全部owner、最新撤销/墓碑/delivery收据、checkpoint及两次状态摘要，不接受手填字段。源prefix4/7的本机原生恢复及候选双重放已有定向证据；源prefix8、旧包/旧schema回退兼容、中央账本保全与重绑定、提交后checkpoint或回执写入失败的停留状态仍须补齐，整体还需本机Linux演练。
+```bash
+"$FR_PY" -I - "$FR_OP/runtime.json" <<'PY'
+import json,sys,urllib.error,urllib.request
+v=json.load(open(sys.argv[1],encoding='utf-8'))
+for path in ('/api/health','/api/state','/api/history'):
+    request=urllib.request.Request('http://127.0.0.1:8788'+path,headers={'X-Token':v['token']})
+    try:
+        with urllib.request.urlopen(request,timeout=10):
+            raise SystemExit('maintenance request unexpectedly admitted')
+    except urllib.error.HTTPError as error:
+        assert error.code==503
+    print(path,503)
+PY
+```
 
-当前精确ACL仅支持已审24张Core表、4张checkpoint表、0008单sequence和0007受审invoker触发函数；额外关系/规则/例程拒绝。新组件有真实需要时先变更审核profile与测试，不能临场宽授权。
+然后只停新unit，保持维护门，不做开门后回滚。确认新进程自然退出/0连接，再capture+seal新副本，收尾状态明确为“新unit inactive，新副本及failed均closed，维护门保留”。
 
-## 6. 失败与回执
+```bash
+systemctl stop zhiming-core-fr-stage.service
+test "$(systemctl show -p ActiveState --value zhiming-core-fr-stage.service)" = inactive
+fr tools.first_release_native_exchange capture --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/finish-metadata.json" --output "$FR_OP/finish-capture.json"
+fr tools.first_release_native_exchange seal --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/finish-metadata.json" --metadata-sha256 "$(h "$FR_OP/finish-metadata.json")" --output "$FR_OP/finish-sealed.json"
+```
 
-异常立刻停止，保留stage维护门/栅栏与私有产物；不自动删除新库再跑，不覆盖原stage，不启动旧代码配不兼容schema。**仅开门前可按另审并已演练的回滚方案恢复；开门后只关门止损、停writer、保存现场，等待审核的向前修复。** 本单不包含任何可执行rollback命令。
-
-B8记录实际北京时间、候选/工具/manifest/三锁、PG版本/角色/迁移安全投影、备份与最新旁账hash、两次回填/重放计数、ACL/网络/DOM行为、未完成项与停止状态。只引用现有证据索引，不复制多套证据。真实模型、飞书或外部消息默认0；任何真实冒烟须另有精确授权。
-
-相关来源：[恢复ExecPlan](../execplans/first_release_recovery_20261023.md)、[校验入口](../../../tools/first_release_restore.py)、[精确ACL](../../../tools/first_release_acl.py)、[生产草案](first_release_prod_runbook.md)。旧[B1 stage单](B1_stage_runbook.md)是历史范围，不能授予本次权限。
+不自动恢复/重启，不移除维护门或删除任何备份/库/unit。Linux实际执行人负责一页以内回执：最终SHA/operation、每步exit/用时/安全结果、偏差或第一失败码、实际模型/外发次数0、原stage/live/Hermes未改、最终closed/inactive状态。没有实际执行的项目写“未验证”，不据本机测试补造Linux结果。生产执行单仍No-Go，需用户另给D及另审原生生产目标入口。

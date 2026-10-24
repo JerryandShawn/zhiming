@@ -1,0 +1,41 @@
+# Explicit MODELS_CONFIG only. This profile is not live-evaluation authorization.
+version: 1
+providers:
+  kimi_code:
+    protocol: openai_compat
+    base_url: https://api.kimi.com/coding/v1
+    api_key_env: KIMI_API_KEY
+    api_key_fallback_env: MOONSHOT_API_KEY
+    settings:
+      membership: true
+      total_timeout: 600
+      first_byte_timeout: 60
+      connect_timeout: 10
+models:
+  kimi-code-main: &k31
+    provider: kimi_code
+    model: k3.1-pro
+    caps:
+      status: policy_locked_unverified
+      tools: true
+      vision: true
+      parallel_tools: true
+      include_usage: true
+      tool_choice: [auto, required]
+      schema_dialect: openai
+      reasoning_field: reasoning_content
+      reasoning_replay: true
+      sampling_fixed: true
+    settings:
+      model_lock: k3.1-pro
+      effort: high
+      reasoning_effort: high
+  kimi-critic: *k31
+roles:
+  primary: [kimi-code-main]
+  critic: [kimi-critic]
+  evaluation: [kimi-code-main]
+  background: [kimi-code-main]
+  fast: [kimi-code-main]
+  vision: [kimi-code-main]
+  embedding: local:bge-small-zh-v1.5

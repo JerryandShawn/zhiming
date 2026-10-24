@@ -71,7 +71,11 @@ def run_batches(
         publish()
         if report["metadata"].get("stop_reason"):
             break
-    report["metadata"]["pending_scenario_ids"] = [scenario.id for scenario in scenarios if scenario.id not in known]
+    report["metadata"]["pending_scenario_ids"] = [
+        scenario.id
+        for scenario in scenarios
+        if scenario.id not in known or known[scenario.id]["status"] == "incomplete"
+    ]
 
 
 def _run_batch(

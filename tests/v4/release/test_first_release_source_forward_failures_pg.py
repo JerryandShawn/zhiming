@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import inspect
+import json
 
 import psycopg
 import pytest
 from langgraph.checkpoint import postgres
 from psycopg import sql
+from test_first_release_incremental_backup_pg import state
 from test_first_release_incremental_forward_pg import archive_fixture as shared_archive
 from test_first_release_incremental_forward_pg import materials, prefix, source_rows
 from test_first_release_incremental_forward_pg import proposal as shared_proposal
@@ -15,6 +17,7 @@ from test_first_release_incremental_forward_pg import source_fixture as shared_e
 
 from tools import first_release_incremental_forward as forward
 from tools import first_release_incremental_scope as scopes
+from tools.first_release_contracts import RestoreRejected
 
 
 @pytest.fixture(scope="module", name="archive")
@@ -30,6 +33,19 @@ def source_fixture(request, archive):
 @pytest.fixture
 def proposal(existing):
     yield from shared_proposal.__wrapped__(existing)
+
+
+def observed_forward(request, **kwargs):
+    try:
+        return forward.execute(request, **kwargs)
+    except forward.SourceForwardStopped as error:
+        diagnostic = forward._session_diagnostic(error)
+        if diagnostic is not None:
+            try:
+                print(json.dumps(diagnostic, sort_keys=True), flush=True)
+            except Exception:  # noqa: BLE001 - Diagnostics cannot replace the selected source failure.
+                raise error from None
+        raise
 
 
 def sdk_setup_on_stack():
@@ -152,7 +168,7 @@ def test_real_post_setup_live_sql_drift_stops_before_grants_and_preserves_source
     original_migrations = list(postgres.PostgresSaver.MIGRATIONS)
     observed = post_setup_spies(proposal, monkeypatch)
     with pytest.raises(forward.SourceForwardStopped, match="^CONTROLLER_SAVER_SQL_CHANGED$") as stopped:
-        forward.execute(proposal.request, apply_source=True)
+        observed_forward(proposal.request, apply_source=True)
     assert observed["sdk_cursor_seen"] and observed["post_setup_hook"]
     assert observed["source_grant_attempted"] is False
     assert stopped.value.phase == "checkpoint_started" and stopped.value.session_restored is True
@@ -166,3 +182,62 @@ def test_real_post_setup_live_sql_drift_stops_before_grants_and_preserves_source
     record_property("sdk_versions_after", after_versions)
     record_property("sdk_new_versions", after_versions - old_versions)
     record_property("source_grant_attempted", False)
+
+
+def annotate_actual_session_failure(monkeypatch):
+    original, observed = scopes.guard.sessions, {}
+
+    def actual_gate(connection, allowed):
+        try:
+            return original(connection, allowed)
+        except RestoreRejected as error:
+            if str(error) == "INCREMENTAL_OTHER_SOURCE_SESSION":
+                diagnostic = error.session_diagnostic
+                diagnostic["unreviewed_field"] = "SYNTHETIC_UNREVIEWED_FIELD"
+                diagnostic["actual_backends"][0]["query"] = "SYNTHETIC_UNREVIEWED_QUERY"
+                error.add_note("SYNTHETIC_UNREVIEWED_NOTE")
+                observed["failure"] = error
+            raise
+
+    monkeypatch.setattr(scopes.guard, "sessions", actual_gate)
+    return observed
+
+
+def test_actual_foreign_session_diagnostic_survives_public_forward_stop_without_source_changes(
+    proposal, monkeypatch, capsys, record_property
+):
+    before = state(proposal.case.source)
+    controls = materials(proposal.case)
+    observed = annotate_actual_session_failure(monkeypatch)
+    with psycopg.connect(proposal.case.source.environment["FIRST_INCREMENTAL_OWNER_DSN"]) as foreign:
+        with pytest.raises(forward.SourceForwardStopped, match="^INCREMENTAL_OTHER_SOURCE_SESSION$") as stopped:
+            observed_forward(proposal.request, apply_source=True)
+        original, public = observed["failure"], stopped.value
+        diagnostic = public.session_diagnostic
+        assert str(original) == str(public) == "INCREMENTAL_OTHER_SOURCE_SESSION"
+        assert diagnostic["schema"] == "source-session-set-v1" and diagnostic["observation"] == "at_failed_gate"
+        assert set(diagnostic) == {
+            "schema",
+            "observation",
+            "allowed_pids",
+            "allowed_count",
+            "actual_backends",
+            "actual_count",
+            "truncated",
+        }
+        assert all(set(row) == {"pid", "backend_type"} for row in diagnostic["actual_backends"])
+        actual = {row["pid"]: row["backend_type"] for row in diagnostic["actual_backends"]}
+        assert actual[foreign.info.backend_pid] == "client backend"
+        assert foreign.info.backend_pid not in diagnostic["allowed_pids"]
+        assert diagnostic is not original.session_diagnostic
+        assert diagnostic["allowed_pids"] is not original.session_diagnostic["allowed_pids"]
+        assert diagnostic["actual_backends"][0] is not original.session_diagnostic["actual_backends"][0]
+        assert not getattr(public, "__notes__", ()) and not public.automatic_cleanup
+        assert public.phase == "source_checks" and public.session_restored is True
+    captured = capsys.readouterr().out
+    assert json.loads(captured) == diagnostic and "SYNTHETIC_UNREVIEWED" not in captured
+    assert state(proposal.case.source) == before and materials(proposal.case) == controls
+    assert not scopes._SCOPES and not scopes._WITNESSES
+    record_property("session_observation", "at_failed_gate")
+    record_property("actual_foreign_session_preserved", True)
+    record_property("unreviewed_diagnostic_fields_and_notes_dropped", True)

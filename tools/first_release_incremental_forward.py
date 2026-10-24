@@ -1,4 +1,4 @@
-"""Explicit synthetic-source forward stages; source privacy replay/backfill and release remain closed."""
+"""Explicit synthetic-source forward stages, with separately pinned replay; release remains closed."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ import re
 from collections.abc import Mapping
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import psycopg
 from psycopg.rows import dict_row
@@ -27,6 +27,10 @@ from tools.first_release_local_restore import _proved_target
 from tools.first_release_migration_steps import forward_core, grant_new_runtime, load_bundle
 from tools.first_release_source_postcheck import owner_state, writer_state
 from tools.first_release_target_proof import TargetProofPin
+
+if TYPE_CHECKING:
+    from tools.first_release_source_backfill_pin import SourceBackfillPin
+    from tools.first_release_source_process import SourceReplayPin
 
 ROOT = Path(__file__).parent.parent
 CONTROLS = frozenset(
@@ -140,6 +144,43 @@ class SourceForwardStopped(RestoreRejected):
         self.automatic_cleanup = False
 
 
+def _session_diagnostic(failure: BaseException) -> dict[str, Any] | None:
+    if not isinstance(failure, RestoreRejected) or str(failure) != "INCREMENTAL_OTHER_SOURCE_SESSION":
+        return None
+    value = vars(failure).get("session_diagnostic")
+    if type(value) is not dict or value.get("schema") != "source-session-set-v1":
+        return None
+    pids, rows = value.get("allowed_pids"), value.get("actual_backends")
+    counts = [value.get("allowed_count"), value.get("actual_count")]
+    if (
+        value.get("observation") != "at_failed_gate"
+        or (type(pids), type(rows)) != (list, list)
+        or (len(pids) > 32 or len(rows) > 32)
+        or any(type(count) is not int or not 0 <= count < 2**31 for count in counts)
+        or any(type(pid) is not int or not 0 < pid < 2**31 for pid in pids)
+        or any(
+            type(row) is not dict
+            or not (type(row.get("pid")) is int and 0 < row["pid"] < 2**31)
+            or not (type(row.get("backend_type")) is str and 0 < len(row["backend_type"]) <= 64)
+            for row in rows
+        )
+    ):
+        return None
+    if (
+        len(pids) != min(counts[0], 32)
+        or len(rows) != min(counts[1], 32)
+        or len(set(pids)) != len(pids)
+        or len({row["pid"] for row in rows}) != len(rows)
+        or type(value.get("truncated")) is not bool
+        or value["truncated"] != any(count > 32 for count in counts)
+    ):
+        return None
+    result = {key: value[key] for key in ("schema", "observation", "allowed_count", "actual_count", "truncated")}
+    result["allowed_pids"] = list(pids)
+    result["actual_backends"] = [{"pid": row["pid"], "backend_type": row["backend_type"]} for row in rows]
+    return result
+
+
 def _owner_postcheck(scope: Any, *, saver_count: int | None) -> dict[str, Any]:
     with scope.owner.transaction():
         scope.owner.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
@@ -226,7 +267,12 @@ def _grant(scope: Any) -> None:
     scope.phase = "grant_committed"
 
 
-def _apply(scope: Any) -> dict[str, Any]:
+def _apply(
+    scope: Any,
+    *,
+    source_replay_pin: SourceReplayPin | None = None,
+    source_backfill_pin: SourceBackfillPin | None = None,
+) -> dict[str, Any]:
     from langgraph.checkpoint.postgres import PostgresSaver
 
     request = scope.request
@@ -250,6 +296,18 @@ def _apply(scope: Any) -> dict[str, Any]:
                         scope_tools._active(witness, "source_forward_completed").target_summary
                     )
                     result["controller_runtime"] = runtime_summary(runtime)
+                    if source_replay_pin is not None:
+                        from tools.first_release_source_process import source_replay
+
+                        result["source_replay"] = source_replay(witness, source_replay_pin)
+                        result["privacy_replay_pending"] = False
+                        if source_backfill_pin is not None:
+                            from tools.first_release_source_backfill_process import (
+                                source_backfill,
+                            )
+
+                            result["source_backfill"] = source_backfill(witness, source_backfill_pin, source_replay_pin)
+                            result["backfill_pending"] = False
             except BaseException as error:
                 failure = scope_tools._prefer_failure(failure, error)
     except BaseException as error:
@@ -286,9 +344,26 @@ def _receipt(request: ForwardInputs) -> dict[str, Any]:
     }
 
 
-def execute(request: ForwardInputs, *, apply_source: bool = False) -> dict[str, Any]:
+def execute(
+    request: ForwardInputs,
+    *,
+    apply_source: bool = False,
+    source_replay_pin: SourceReplayPin | None = None,
+    source_backfill_pin: SourceBackfillPin | None = None,
+) -> dict[str, Any]:
     require(type(request) is ForwardInputs and type(apply_source) is bool, "SOURCE_FORWARD_TYPED_REQUEST")
     baseline = request.validate()
+    if source_replay_pin is not None:
+        from tools.first_release_source_process import SourceReplayPin
+
+        require(type(source_replay_pin) is SourceReplayPin, "SOURCE_REPLAY_TYPED_PIN")
+        source_replay_pin.validate(request)
+    if source_backfill_pin is not None:
+        from tools.first_release_source_backfill_pin import SourceBackfillPin
+
+        require(type(source_backfill_pin) is SourceBackfillPin, "SOURCE_BACKFILL_TYPED_PIN")
+        require(source_replay_pin is not None, "SOURCE_BACKFILL_REPLAY_PIN_REQUIRED")
+        source_backfill_pin.validate(request, source_replay_pin)
     receipt = _receipt(request)
     if not apply_source:
         return receipt
@@ -298,7 +373,7 @@ def execute(request: ForwardInputs, *, apply_source: bool = False) -> dict[str, 
     try:
         with scope_tools._held_forward(request, baseline) as scope:
             try:
-                result = _apply(scope)
+                result = _apply(scope, source_replay_pin=source_replay_pin, source_backfill_pin=source_backfill_pin)
             except BaseException as error:
                 failure = scope_tools._prefer_failure(failure, error)
     except BaseException as error:
@@ -309,7 +384,10 @@ def execute(request: ForwardInputs, *, apply_source: bool = False) -> dict[str, 
         if isinstance(failure, (KeyboardInterrupt, SystemExit, GeneratorExit)):
             raise failure
         code = str(failure) if isinstance(failure, RestoreRejected) else "SOURCE_FORWARD_STAGE_FAILED"
-        raise SourceForwardStopped(code, phase, session_restored=restored) from None
+        stopped = SourceForwardStopped(code, phase, session_restored=restored)
+        if diagnostic := _session_diagnostic(failure):
+            stopped.session_diagnostic = diagnostic
+        raise stopped from None
     for name in ("database_connections", "processes", "file_writes"):
         receipt.pop(name)
     require(result is not None and scope is not None, "SOURCE_FORWARD_RESULT_REQUIRED")

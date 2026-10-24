@@ -158,6 +158,45 @@ def _current_birth(
     return birth.database_oid, birth.owner_oid, birth.writer_oid
 
 
+def _quiescence(connection: Any) -> None:
+    observed = connection.execute(
+        "WITH activity AS MATERIALIZED ("
+        "SELECT pid,backend_type FROM pg_catalog.pg_stat_activity "
+        "WHERE datid=(SELECT oid FROM pg_catalog.pg_database WHERE datname=pg_catalog.current_database())),"
+        "busy_runs AS MATERIALIZED ("
+        "SELECT count(*) AS n FROM mingjing_core.core_runs WHERE status IN ('queued','running') "
+        "OR lease_until>pg_catalog.clock_timestamp()) "
+        "SELECT busy_runs.n AS busy_run_count,pg_catalog.pg_backend_pid() AS observer_pid,"
+        "(SELECT oid FROM pg_catalog.pg_database WHERE datname=pg_catalog.current_database()) AS database_oid,"
+        "(SELECT count(*) FROM activity) AS actual_count,"
+        "EXISTS(SELECT 1 FROM activity WHERE pid<>pg_catalog.pg_backend_pid()) AS other_session,"
+        "(SELECT coalesce(pg_catalog.jsonb_agg(pg_catalog.to_jsonb(b)),'[]'::jsonb) "
+        "FROM (SELECT pid,backend_type FROM activity ORDER BY pid LIMIT 32) b) AS actual_backends FROM busy_runs"
+    ).fetchone()
+    if observed["busy_run_count"] or observed["other_session"]:
+        error = RestoreRejected("TARGET_PROOF_ACTIVE_OR_OTHER_SESSION")
+        error.session_diagnostic = {
+            "schema": "target-proof-activity-gate-v1",
+            "observation": "at_failed_gate",
+            "database_oid": observed["database_oid"],
+            "allowed_pids": [observed["observer_pid"]],
+            "allowed_count": 1,
+            "busy_run_count": observed["busy_run_count"],
+            "other_session": observed["other_session"],
+            "actual_backends": [
+                {
+                    "pid": row["pid"],
+                    "backend_type": row["backend_type"][:64] if row["backend_type"] is not None else None,
+                }
+                for row in observed["actual_backends"]
+            ],
+            "actual_count": observed["actual_count"],
+            "truncated": observed["actual_count"] > 32,
+        }
+        error.add_note(json.dumps(error.session_diagnostic, sort_keys=True))
+        raise error
+
+
 def _final_state(inputs: LocalInputs, source: BackupInputs, dsns: dict[str, str], birth: tuple[int, int, int]) -> str:
     with (
         psycopg.connect(dsns["owner"], autocommit=True, row_factory=dict_row) as c,
@@ -182,13 +221,7 @@ def _final_state(inputs: LocalInputs, source: BackupInputs, dsns: dict[str, str]
         }
         require(history == dict(inputs.release.migrations), "TARGET_PROOF_HISTORY_1_8")
         triggers(c, 7)
-        busy = c.execute(
-            "SELECT EXISTS(SELECT 1 FROM mingjing_core.core_runs WHERE status IN ('queued','running') "
-            "OR lease_until>clock_timestamp()) OR EXISTS(SELECT 1 FROM pg_stat_activity "
-            "WHERE datid=(SELECT oid FROM pg_database WHERE datname=current_database()) "
-            "AND pid<>pg_backend_pid()) AS busy"
-        ).fetchone()["busy"]
-        require(not busy, "TARGET_PROOF_ACTIVE_OR_OTHER_SESSION")
+        _quiescence(c)
         for name in QUOTA:
             require(
                 not c.execute(

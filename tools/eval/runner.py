@@ -40,7 +40,15 @@ def _source_digest() -> str:
     runtime_config = ROOT / "config/runtime.yaml"
     if runtime_config.is_file():
         candidates.append(runtime_config)
-    candidates += [path for path in (ROOT / "config/models.yaml", ROOT / "k3-tokenizer.lock.json") if path.is_file()]
+    candidates += [
+        path
+        for path in (
+            ROOT / "config/models.yaml",
+            ROOT / "config/models.first-release.yaml",
+            ROOT / "k3-tokenizer.lock.json",
+        )
+        if path.is_file()
+    ]
     candidates += [
         path for path in (ROOT / "mingjing_core").rglob("*") if path.suffix in {".py", ".md", ".json", ".sql"}
     ]
@@ -216,6 +224,8 @@ def _run(
     metadata = _metadata(config, args.mode, args.target, model)
     metadata.update(getattr(args, "candidate_provenance", {}))
     metadata["evaluation_suite"] = getattr(args, "suite", "default")
+    if getattr(args, "fresh_questions_from", None) is not None:
+        metadata["fresh_questions_from_sha256"] = hashlib.sha256(args.fresh_questions_from.read_bytes()).hexdigest()
     prior_report = _resume_report(args, metadata)
     previous = _reusable_cases(prior_report)
     report: dict[str, Any] = {"metadata": metadata, "cases": [], "batches": deepcopy(prior_report.get("batches", []))}
@@ -307,7 +317,17 @@ def main(argv: list[str] | None = None) -> int:
         if args.target != "v4" or args.scenario or args.scenarios.resolve() != (EVAL_ROOT / "scenarios").resolve():
             raise SystemExit("core30 requires v4 and its exact isolated selection; no custom scenario subset")
         scenarios = load_core30()
+        if args.fresh_questions_from is not None:
+            from tools.eval.k31_results import pending_questions
+
+            if args.mode != "live" or args.connection_proof is None or args.resume or not args.candidate:
+                raise SystemExit("R12 fresh questions require R16 live proof and a new invocation")
+            previous = json.loads(args.fresh_questions_from.read_text(encoding="utf-8"))
+            pending = pending_questions(previous, args.candidate, _source_digest())
+            scenarios = [scenario for scenario in scenarios if scenario.id in pending]
     else:
+        if args.fresh_questions_from is not None:
+            raise SystemExit("R12 fresh questions require the original core30 selection")
         if args.target == "v4" and args.scenarios.resolve() == (EVAL_ROOT / "scenarios").resolve():
             args.scenarios = EVAL_ROOT / "scenarios_v4"
         scenarios = load_scenarios(args.scenarios)

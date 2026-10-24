@@ -72,13 +72,17 @@ jobs:
           exit 1
       - name: Start separate loopback PostgreSQL 15 restore fixture
         run: |
+          # Exact session-set tests must not race disposable-fixture autovacuum workers.
+          # Keep the runtime gate strict; this setting affects only this separate CI server.
           docker run --detach --name first-release-test-postgres --network host \
             -e POSTGRES_USER=first_release_test \
             -e POSTGRES_PASSWORD=isolated_fr_ci_only \
             -e POSTGRES_DB=core_test_main \
-            postgres:15 -c port=55480 -c listen_addresses=127.0.0.1
+            postgres:15 -c port=55480 -c listen_addresses=127.0.0.1 -c autovacuum=off
           for attempt in {1..30}; do
             if docker exec first-release-test-postgres pg_isready -h 127.0.0.1 -p 55480 -U first_release_test -d core_test_main; then
+              docker exec first-release-test-postgres psql -h 127.0.0.1 -p 55480 \
+                -U first_release_test -d core_test_main -Atqc 'SHOW autovacuum' | grep -x off
               exit 0
             fi
             sleep 2

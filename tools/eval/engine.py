@@ -55,8 +55,9 @@ def evaluate_scenario(
         target.reset(seed)
         grades = _evaluate_turns(scenario, target, judge, case)
         passed = all(check["passed"] for check in case["assertions"]) and not case.get("judge_error_code")
-        case["score"] = round((sum(grades) / len(grades)) * passed, 6)
-        case["status"] = "passed" if passed and case["score"] == 1 else "failed"
+        if case["status"] != "incomplete":
+            case["score"] = round((sum(grades) / len(grades)) * passed, 6)
+            case["status"] = "passed" if passed and case["score"] == 1 else "failed"
     except ProviderStopped as exc:
         _record_stop(case, exc.reason, exc.role, exc.provider_http_status, exc.resume_at)
         case["model_calls"] += exc.model_calls
@@ -103,6 +104,8 @@ def _evaluate_turns(scenario: Scenario, target: Target, judge: ModelJudge | None
             )
         if scenario.seed.synthetic and result.text:
             case["previews"].append(result.text[:200])
+        if case["status"] == "incomplete":
+            break
         grades.append(_grade(scenario, index, result, judge, case))
         if case.get("stop_reason"):
             break
@@ -163,6 +166,12 @@ def _record_stop(
     case: dict[str, Any], reason: str, role: str, provider_http_status: int | None = None, resume_at: str | None = None
 ) -> None:
     safe = ProviderStopped(reason, role, provider_http_status=provider_http_status, resume_at=resume_at)
+    from mingjing_core.models.quota_mode import current_delegated_session
+    from mingjing_core.models.quota_r16 import K31CoreApproval
+
+    session = current_delegated_session()
+    if session is not None and isinstance(session.approval, K31CoreApproval):
+        case.update(status="incomplete", score=None, retry_policy="fresh_question_new_run_new_deadline")
     eligible = safe.reason == "quota_5h" and safe.resume_at is not None
     case.update(
         stop_reason=safe.reason,
