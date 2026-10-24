@@ -168,6 +168,9 @@ class AgentRuntime:
             # Any partial draft is explicitly superseded by the audited template.
             events.send("text_reset", {"text": outcome.text, "reason": "resumed"})
         else:
+            from mingjing_core.application.agent_sensitive_pending import ensure_sensitive_pending
+
+            outcome = ensure_sensitive_pending(cycle, outcome)
             outcome, review = self.reviewer.review(cycle, outcome)
         self.state.metadata(cycle.run, crisis=crisis)
         envelope = AgentFinalizer(self.repo).finalize(
