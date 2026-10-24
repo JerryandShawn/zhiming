@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from mingjing_core.models.legacy import PortBackedModel
+from mingjing_core.models.errors import ModelProtocolError
 from mingjing_core.models.port import ModelPort
 from mingjing_core.models.registry import ModelHandle
 from tools.eval.judges import ModelJudge
@@ -15,6 +16,10 @@ from tools.eval.model_selection import ProofSelectedRegistry
 from tools.eval.quota import ProviderStopped, QuotaGuard
 
 from .v4_live_ports import LiveTrackingPort
+
+
+class JudgeTransportUnavailable(ModelProtocolError):
+    """A classified transient judge failure; fatal stop signals are never converted."""
 
 
 class LiveJudgeProvider(QuotaGuard):
@@ -49,6 +54,12 @@ class LiveJudgeProvider(QuotaGuard):
         try:
             return self.provider.generate(**kwargs)
         except ProviderStopped as error:
+            if error.reason == "provider_http_error" and (
+                error.provider_http_status is None or 500 <= error.provider_http_status <= 599
+            ):
+                # Keep the central guard authoritative; only this local transient circuit is reopened.
+                self.stop_reason, self.provider_http_status = None, None
+                raise JudgeTransportUnavailable() from None
             self.stop_reason, self.provider_http_status = error.reason, error.provider_http_status
             raise
         finally:

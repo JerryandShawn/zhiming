@@ -17,7 +17,9 @@ class LegacyConversationUnsupported(ModelBadRequest):
     code = "LEGACY_CONVERSATION_UNSUPPORTED"
 
 
-def configured_model(base: str, explicit: str | None, environment_model: str | None) -> str:
+def configured_model(
+    base: str, explicit: str | None, environment_model: str | None
+) -> str:
     if explicit:
         return explicit
     previous = environment_model or "kimi-k3"
@@ -29,14 +31,23 @@ def configured_model(base: str, explicit: str | None, environment_model: str | N
 def member_body(body: dict[str, Any], *, model: str, role: str) -> dict[str, Any]:
     if model not in {"k3", "k3-256k"} or body.get("model") != model:
         raise ConfigError("旧会员入口仅接受明确的K3模型身份")
-    controls = {key: body[key] for key in ("thinking", "effort", "reasoning_effort") if key in body}
+    controls = {
+        key: body[key]
+        for key in ("thinking", "effort", "reasoning_effort")
+        if key in body
+    }
     turn_policy(model, {**controls, "membership": True, "role_binding": role}, role)
     _fresh_user(body.get("messages"))
     tools = body.get("tools", [])
     if not isinstance(tools, list) or any(not isinstance(tool, dict) for tool in tools):
         raise ModelBadRequest()
     specs = [
-        ToolSpec(tool.get("name", ""), tool.get("description", ""), tool.get("input_schema", {})) for tool in tools
+        ToolSpec(
+            tool.get("name", ""),
+            tool.get("description", ""),
+            tool.get("input_schema", {}),
+        )
+        for tool in tools
     ]
     choice = body.get("tool_choice", {"type": "auto"})
     if not isinstance(choice, dict):
@@ -44,7 +55,12 @@ def member_body(body: dict[str, Any], *, model: str, role: str) -> dict[str, Any
     raw_choice = choice.get("type")
     if not isinstance(raw_choice, str):
         raise ModelBadRequest()
-    selected = safe_tool_choice(model, specs, "required" if raw_choice == "any" else raw_choice)
+    selected = safe_tool_choice(
+        model, specs, "required" if raw_choice == "any" else raw_choice
+    )
+    # The legacy submit API requires its single structured result; v4 loops do not.
+    if len(specs) == 1:
+        selected = "required"
     allowed = {
         "model",
         "system",
@@ -64,7 +80,10 @@ def member_body(body: dict[str, Any], *, model: str, role: str) -> dict[str, Any
     for key in ("thinking", "effort", "reasoning_effort"):
         result.pop(key, None)
     if specs:
-        result["tool_choice"] = {"type": "any" if selected == "required" else "auto", "disable_parallel_tool_use": True}
+        result["tool_choice"] = {
+            "type": "any" if selected == "required" else "auto",
+            "disable_parallel_tool_use": True,
+        }
     else:
         result.pop("tools", None)
         result.pop("tool_choice", None)
@@ -75,7 +94,11 @@ def _fresh_user(messages: Any) -> None:
     if not isinstance(messages, list) or len(messages) != 1:
         raise LegacyConversationUnsupported()
     message = messages[0]
-    if not isinstance(message, dict) or message.get("role") != "user" or set(message) != {"role", "content"}:
+    if (
+        not isinstance(message, dict)
+        or message.get("role") != "user"
+        or set(message) != {"role", "content"}
+    ):
         raise LegacyConversationUnsupported()
     content = message["content"]
     if isinstance(content, str):
@@ -83,6 +106,9 @@ def _fresh_user(messages: Any) -> None:
     if (
         not isinstance(content, list)
         or not content
-        or any(not isinstance(part, dict) or part.get("type") not in {"text", "image"} for part in content)
+        or any(
+            not isinstance(part, dict) or part.get("type") not in {"text", "image"}
+            for part in content
+        )
     ):
         raise LegacyConversationUnsupported()

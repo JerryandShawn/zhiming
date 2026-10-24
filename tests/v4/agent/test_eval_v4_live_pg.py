@@ -77,6 +77,9 @@ class Harness:
                         "score": 1.0,
                         "verdict": "pass",
                         "issues": [],
+                        "reason": "合成回答符合期望",
+                        "deductions": [],
+                        "expected_clauses": [],
                     },
                 }
             )
@@ -183,7 +186,11 @@ def test_actual_agent_u4_meter_and_wallclock_are_used(live: Harness) -> None:
     assert observed["status"] == "passed", {key: observed.get(key) for key in ("error_code", "failed_assertions")}
     assert observed["target_model_calls"] == 2 and observed["judge_model_calls"] == 1
     records = rows(live.guard)
-    assert len(records) == len(live.sent) == 3 and [row["role"] for row in records] == ["primary", "primary", "critic"]
+    assert len(records) == len(live.sent) == 3 and [row["role"] for row in records] == [
+        "primary",
+        "primary",
+        "critic",
+    ]
     assert all(row["lane"] == "eval" and row["scenario_id"] == "M01" for row in records)
     assert all(row["at"].year == 2026 for row in records)
     assert all(row["run_id"] == target.run_ids[-1] for row in records if row["role"] == "primary")
@@ -260,7 +267,8 @@ def test_native_feishu_delivery_is_only_local_transport(live: Harness) -> None:
 
 
 @pytest.mark.parametrize(
-    "reset,eligible", [(None, False), ("not a timestamp", False), ("2026-10-24T00:00:00+08:00", True)]
+    "reset,eligible",
+    [(None, False), ("not a timestamp", False), ("2026-10-24T00:00:00+08:00", True)],
 )
 def test_only_known_aware_quota_reset_is_resume_eligible(reset: str | None, eligible: bool) -> None:
     case = {}
@@ -269,7 +277,15 @@ def test_only_known_aware_quota_reset_is_resume_eligible(reset: str | None, elig
     assert ("resume_at" in case) is eligible
 
 
-def test_candidate_provenance_is_actual_head_and_clean_scope(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_candidate_provenance_is_actual_head_and_clean_scope(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     responses = iter(["a" * 40 + "\n", ""])
-    monkeypatch.setattr("tools.eval.live.subprocess.check_output", lambda *args, **kwargs: next(responses))
-    assert candidate_provenance(ROOT, "a" * 40) == {"candidate_commit": "a" * 40, "worktree_clean": True}
+    monkeypatch.setattr(
+        "tools.eval.live.subprocess.check_output",
+        lambda *args, **kwargs: next(responses),
+    )
+    assert candidate_provenance(ROOT, "a" * 40) == {
+        "candidate_commit": "a" * 40,
+        "worktree_clean": True,
+    }

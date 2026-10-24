@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from mingjing_core.models.quota_r16 import core_token_stage
+
 import math
 import re
 from dataclasses import dataclass, field
@@ -27,7 +29,9 @@ def _judge_ids(target, control, binding, guard, state):
         from mingjing_core.domain.contracts import ScopeError
 
         try:
-            target.repo.get(target.owner, "runtime_step", journal.ident, include_deleted=True)
+            target.repo.get(
+                target.owner, "runtime_step", journal.ident, include_deleted=True
+            )
         except ScopeError:
             return frozenset()
         require(False)
@@ -61,7 +65,11 @@ def _target_ids(target, binding, run, central, batches):
         entries, _ = _entries(target, binding, run, step)
         for entry in entries:
             ident = entry["attempt_id"]
-            require(ident not in found and ident in central and central[ident]["batch_id"] in batches)
+            require(
+                ident not in found
+                and ident in central
+                and central[ident]["batch_id"] in batches
+            )
             _terminal(
                 entry,
                 central[ident],
@@ -77,14 +85,26 @@ def _target_ids(target, binding, run, central, batches):
 def snapshot(target, control, binding, guard, state) -> SessionAccounting:
     run = target.repo.fetch_run(target.owner, state["runs"][-1]["id"])
     account, rows, batches = _central(guard, run["id"])
-    require(account["location_id"] == binding.central_location and guard.store.identity == binding.central_identity)
+    require(
+        account["location_id"] == binding.central_location
+        and guard.store.identity == binding.central_identity
+    )
     require(guard.store.account_id == binding.central_account and len(rows) <= 1024)
     central = {row["attempt_id"]: row for row in rows}
     require(len(central) == len(rows))
     for row in rows:
-        require(type(row["attempt_id"]) is str and re.fullmatch(r"http-[a-f0-9]{32}", row["attempt_id"]))
         require(
-            (row["run_id"], row["lane"], row["scenario_id"], row["provider"], row["model"])
+            type(row["attempt_id"]) is str
+            and re.fullmatch(r"http-[a-f0-9]{32}", row["attempt_id"])
+        )
+        require(
+            (
+                row["run_id"],
+                row["lane"],
+                row["scenario_id"],
+                row["provider"],
+                row["model"],
+            )
             == (run["id"], "eval", binding.scenario_id, "kimi_code", binding.model)
             and row["role"] in {"primary", "critic"}
             and row["finished_at"] is not None
@@ -102,12 +122,18 @@ def snapshot(target, control, binding, guard, state) -> SessionAccounting:
             and batch["recovery_authorization"] is None
             and row["finished_at"] <= batch["finished_at"]
             and binding.scenario_id in batch["scenario_ids"]
-            and token_parts(batch["authorization_id"]) == (binding.candidate_commit, "core-" + binding.model)
+            and token_parts(batch["authorization_id"])
+            == (binding.candidate_commit, core_token_stage(binding.model))
         )
     target_ids = _target_ids(target, binding, run, central, batches)
     judge_ids = _judge_ids(target, control, binding, guard, state)
     require(not target_ids & judge_ids and target_ids | judge_ids == set(central))
-    require(all(central[ident]["role"] == "critic" and central[ident]["status"] == "ok" for ident in judge_ids))
+    require(
+        all(
+            central[ident]["role"] == "critic" and central[ident]["status"] == "ok"
+            for ident in judge_ids
+        )
+    )
     _, end_rows, end_batches = _central(guard, run["id"])
     require(fingerprint([rows, batches]) == fingerprint([end_rows, end_batches]))
     return SessionAccounting(central, target_ids, judge_ids)
@@ -128,19 +154,36 @@ def _usage(rows, target_ids, judge_ids):
 
 def reconcile(before: SessionAccounting, after: SessionAccounting) -> dict:
     require(set(before.rows) <= set(after.rows))
-    require(all(fingerprint(row) == fingerprint(after.rows[ident]) for ident, row in before.rows.items()))
-    require(before.target_ids <= after.target_ids and before.judge_ids <= after.judge_ids)
+    require(
+        all(
+            fingerprint(row) == fingerprint(after.rows[ident])
+            for ident, row in before.rows.items()
+        )
+    )
+    require(
+        before.target_ids <= after.target_ids and before.judge_ids <= after.judge_ids
+    )
     new_ids = set(after.rows) - set(before.rows)
     groups = {
         "new": (after.target_ids & new_ids, after.judge_ids & new_ids),
         "inherited": (before.target_ids, before.judge_ids),
         "historical_actual": (after.target_ids, after.judge_ids),
     }
-    result = {"current_observation_only": True, "basis": "actual_same_run_central_UUID_rows_and_JudgeJournal"}
+    result = {
+        "current_observation_only": True,
+        "basis": "actual_same_run_central_UUID_rows_and_JudgeJournal",
+    }
     for name, (target_ids, judge_ids) in groups.items():
-        result[name] = dict(target=len(target_ids), judge=len(judge_ids), total=len(target_ids) + len(judge_ids))
+        result[name] = dict(
+            target=len(target_ids),
+            judge=len(judge_ids),
+            total=len(target_ids) + len(judge_ids),
+        )
         result[name + "_usage"] = _usage(after.rows, target_ids, judge_ids)
-    require(result["new"]["total"] + result["inherited"]["total"] == result["historical_actual"]["total"])
+    require(
+        result["new"]["total"] + result["inherited"]["total"]
+        == result["historical_actual"]["total"]
+    )
     result["before_sha256"] = fingerprint(before.rows)
     result["after_sha256"] = fingerprint(after.rows)
     return result

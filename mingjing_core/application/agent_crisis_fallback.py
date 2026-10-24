@@ -9,7 +9,7 @@ from mingjing_core.application.memory import MemoryService
 from mingjing_core.domain.contracts import EvidenceError
 
 
-def commit_crisis_template(repo, supplied, events, *, reason: str):
+def commit_unavailable_template(repo, supplied, events, *, reason: str):
     owner = supplied["owner"]
     state = RuntimeState(repo)
     with repo.transaction(owner):
@@ -29,14 +29,14 @@ def commit_crisis_template(repo, supplied, events, *, reason: str):
         versions.update({"message:" + row["id"]: row["revision"] for row in turn_sources(repo, current)})
         revision = repo.assert_scope(owner, current["subject"])["revision"]
         repo.set_run_dependencies(owner, current["id"], versions, current["lease_token"])
-        state.metadata(current, fallback="crisis_template", fallback_reason=reason)
+        state.metadata(current, fallback="availability_template", fallback_reason=reason)
         envelope = AgentFinalizer(repo).finalize(
             current,
             text=fallback_text(),
             alias_map={},
             versions=versions,
             snapshot_revision=revision,
-            usage={"model_steps": 0, "fallback": "crisis_template"},
+            usage={"model_steps": 0, "fallback": "availability_template"},
         )
     events.send("final", {"message_id": envelope["message_id"], "envelope": envelope})
     return envelope

@@ -34,9 +34,13 @@ def test_crisis_template_needs_no_admitted_model_request(crisis_repo, message):
     run = queued(repo, message)
     port = ScriptedPort([])
     result = AgentRuntime(repo, port, UnverifiedMeter(), offline=True).execute(
-        SimpleNamespace(repo=repo), "alice", run["id"], run["lease_token"], events.append
+        SimpleNamespace(repo=repo),
+        "alice",
+        run["id"],
+        run["lease_token"],
+        events.append,
     )
-    assert all(number in result["text"] for number in ("12356", "120", "110"))
+    assert result["text"] == "我这边暂时没法回答，稍后再试。"
     assert repo.fetch_run("alice", run["id"])["status"] == "succeeded"
     assert result["usage"]["model_steps"] == 0 and port.requests == []
     assert events[-1]["type"] == "final" and result["review"]["state"] == "skipped"
@@ -46,11 +50,10 @@ def test_noncrisis_does_not_bypass_meter_admission(crisis_repo):
     repo = crisis_repo
     run = queued(repo, "合成普通对话")
     port = ScriptedPort([])
-    with pytest.raises(InputMeterUnverified):
-        AgentRuntime(repo, port, UnverifiedMeter(), offline=True).execute(
-            SimpleNamespace(repo=repo), "alice", run["id"], run["lease_token"]
-        )
-    assert repo.fetch_run("alice", run["id"])["status"] == "running" and port.requests == []
+    result = AgentRuntime(repo, port, UnverifiedMeter(), offline=True).execute(
+        SimpleNamespace(repo=repo), "alice", run["id"], run["lease_token"]
+    )
+    assert result["text"] == "我这边暂时没法回答，稍后再试。" and port.requests == []
 
 
 @pytest.mark.parametrize("meter", [None, SyntheticMeter()])
@@ -62,7 +65,7 @@ def test_crisis_cycle_admission_failure_also_commits_template(crisis_repo, meter
         SimpleNamespace(repo=repo), "alice", run["id"], run["lease_token"]
     )
     assert result["usage"]["model_steps"] == 0
-    assert "12356" in result["text"] and port.requests == []
+    assert result["text"] == "我这边暂时没法回答，稍后再试。" and port.requests == []
 
 
 @pytest.mark.parametrize("stop", ["cancel", "withdraw"])
@@ -76,7 +79,13 @@ def test_template_never_bypasses_cancellation_or_source_withdrawal(crisis_repo, 
                 DispatcherCancellation(repo).request("alice", run["id"])
             else:
                 with repo.transaction("alice") as connection:
-                    repo.revoke(connection, "alice", "message", run["request"]["source_message_id"], "delete")
+                    repo.revoke(
+                        connection,
+                        "alice",
+                        "message",
+                        run["request"]["source_message_id"],
+                        "delete",
+                    )
             raise InputMeterUnverified()
 
     port = ScriptedPort([])

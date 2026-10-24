@@ -83,7 +83,7 @@ def handler(posted: list):
             content = recording(
                 {
                     "model": "k3.1-pro",
-                    "choices": [{"delta": {"content": text}, "finish_reason": "stop"}],
+                    "choices": [{"delta": {"reasoning_content": "合成推理", "content": text}, "finish_reason": "stop"}],
                     "usage": {"prompt_tokens": 10000, "completion_tokens": 2000},
                 }
             )
