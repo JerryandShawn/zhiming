@@ -16,7 +16,7 @@ from mingjing_core.models.quota_delegated_session import DelegatedSession
 from mingjing_core.models.quota_runtime import call_scope
 from tools.eval.k31_contract import CASES, MODEL, SCENARIOS, contract_digest, followup
 from tools.eval.k31_control import K31Control
-from tools.probe_equivalence_control import ProbeControlError
+from tools.probe_equivalence_control import ProbeControlError, digest
 from tools.probe_k3_equivalence import check_response
 
 
@@ -41,20 +41,37 @@ def check_profile(registry):
     return registry.resolve("evaluation")[0]
 
 
-def public_result(case, step, response, measured, actual: int) -> dict:
+def public_result(case, step, response, measured, actual: int, previous_signature: str | None = None) -> dict:
     estimated = measured.estimated_input_tokens
     if type(estimated) is not int or estimated <= 0 or type(actual) is not int or actual <= 0:
         raise ProbeControlError("实际输入计量缺失")
+    terminal, signature, failure = False, None, None
     passed = check_response(case, response, final=step == 2)
-    if case.ident == "K31-TOOLS" and step == 1:
+    if case.ident == "K31-TOOLS":
+        terminal = not response.tool_calls and step >= 2
+        passed = check_response(case, response, final=terminal)
         passed = passed and bool(response.reasoning) and response.reasoning_present
+        if response.tool_calls:
+            signature = digest([{"name": call.name, "arguments": call.arguments} for call in response.tool_calls])
+            if signature == previous_signature:
+                failure = "repeated_identical_tool_call"
+            elif step == 4:
+                failure = "tool_round_limit"
+        elif not terminal:
+            failure = "initial_tool_call_missing"
+        passed = passed and failure is None
     if case.ident == "K31-LONG":
         passed = (
             not response.tool_calls
             and len(re.findall(r"[\u4e00-\u9fff]", response.text)) >= 1000
             and response.text.rstrip().endswith("[K31-END]")
         )
-    passed = passed and response.model == MODEL and response.execution_meta.get("effort_source") == "explicit_request"
+    passed = (
+        passed
+        and response.model == MODEL
+        and response.execution_meta.get("effort_source") == "explicit_request"
+        and response.execution_meta.get("effort") == "high"
+    )
     return {
         "model": MODEL,
         "scenario": case.ident,
@@ -69,6 +86,9 @@ def public_result(case, step, response, measured, actual: int) -> dict:
         "input_estimated": estimated,
         "input_ratio": str(Decimal(actual) / Decimal(estimated)),
         "factor": calibration({}, measured, actual)["factor"],
+        "tool_signature": signature,
+        "terminal": terminal,
+        "failure_reason": failure,
     }
 
 
@@ -76,6 +96,7 @@ class ConnectionExecution:
     def __init__(self, adapter: Any, session: DelegatedSession, control: K31Control, identity: str, meter: Any):
         self.adapter, self.session, self.control, self.identity, self.meter = adapter, session, control, identity, meter
         self.attempt: str | None = None
+        self.previous_signature: str | None = None
 
     def before(self, run_id: str) -> None:
         pending = [
@@ -88,6 +109,16 @@ class ConnectionExecution:
         self.attempt = pending[0]["attempt_id"]
 
     def step(self, case, step: int, messages: list):
+        from mingjing_core.models.quota_delegated import token_parts
+
+        if (
+            sum(
+                (token_parts(row["authorization_id"]) or (None, None))[1] == "k31-connect"
+                for row in self.control.physical(self.session.guard)
+            )
+            >= 20
+        ):
+            raise ProbeControlError("R18累计接入20次预算已耗尽")
         run_id = f"{self.identity}:{MODEL}:{case.ident}:{step}"
         choice = "required" if case.tools and step == 1 else "auto"
         measured = measure_request(tuple(messages), case.tools, self.meter, tool_choice=choice)
@@ -106,11 +137,21 @@ class ConnectionExecution:
         )
         if physical is None:
             raise ProbeControlError("R16没有实际物理预留")
-        result = public_result(case, step, response, measured, physical["input_tokens"])
+        result = public_result(case, step, response, measured, physical["input_tokens"], self.previous_signature)
         self.control.record(self.session.guard, self.identity, self.attempt, result)
         if not result["passed"]:
-            raise ProbeControlError("R16接入检查未通过；保留结果，不自动重试或降级")
+            raise ProbeControlError(result["failure_reason"] or "R16接入检查未通过；保留结果，不自动重试或降级")
+        self.previous_signature = result["tool_signature"]
         return response
+
+    def case(self, case):
+        messages = case.messages()
+        self.previous_signature = None
+        for step in range(1, 5 if case.roundtrip else 2):
+            response = self.step(case, step, messages)
+            if not case.roundtrip or not response.tool_calls:
+                return
+            messages += followup(response)
 
 
 def run_connection(registry, session: DelegatedSession, control: K31Control, meter, *, transport=None) -> dict:
@@ -149,10 +190,7 @@ def run_connection(registry, session: DelegatedSession, control: K31Control, met
         try:
             with session.activate():
                 for case in CASES:
-                    messages = case.messages()
-                    first = execution.step(case, 1, messages)
-                    if case.roundtrip:
-                        execution.step(case, 2, messages + followup(first))
+                    execution.case(case)
             control.mark(session.guard, identity, "complete")
         except Exception as error:
             control.mark(session.guard, identity, "stopped", getattr(error, "kind", "connection_check_failed"))

@@ -11,7 +11,7 @@ from psycopg.types.json import Jsonb
 from mingjing_core.models.quota_delegated import token_parts
 from mingjing_core.models.quota_r16 import K31ConnectionApproval, _core_approval
 from mingjing_core.models.quota_types import GuardRejected
-from tools.eval.k31_contract import EXPECTED, FIELDS, MODEL, contract_digest
+from tools.eval.k31_contract import EXPECTED, FIELDS, MODEL, checks_complete, contract_digest
 from tools.probe_equivalence_control import ProbeControl, ProbeControlError, digest
 
 
@@ -21,6 +21,7 @@ def validate_check(session: dict, result: dict, physical: dict | None) -> None:
         or set(result) != FIELDS
         or (result["scenario"], result["step"]) not in EXPECTED
         or type(result["passed"]) is not bool
+        or type(result["terminal"]) is not bool
         or result["model"] != MODEL
         or result["response_model"] != MODEL
         or result["effort"] != "high"
@@ -81,7 +82,12 @@ class K31Control(ProbeControl):
             if key in observed or digest(row) != check["usage_sha256"]:
                 raise ProbeControlError("K31检查重复或物理账本已改变")
             observed.add(key)
-        complete = observed == EXPECTED and all(check["result"]["passed"] for check in checks)
+        complete = checks_complete([check["result"] for check in checks])
+        all_physical = [
+            r for r in self.physical(guard) if (token_parts(r["authorization_id"]) or (None, None))[1] == "k31-connect"
+        ]
+        tool_checks = [check["result"] for check in checks if check["scenario"] == "K31-TOOLS"]
+        executed = sum(r["tool_count"] for r in tool_checks if r["passed"])
         state = guard.status()
         result = {
             "schema": "k31-connection-proof-r16",
@@ -100,6 +106,11 @@ class K31Control(ProbeControl):
             "effort": "high",
             "records": [check["result"] for check in checks],
             "model_calls": len(physical),
+            "cumulative_model_calls": len(all_physical),
+            "tool_rounds": len(tool_checks),
+            "tool_call_requests": sum(r["tool_count"] for r in tool_checks),
+            "additional_tool_calls": max(0, executed - 1),
+            "connection_failure": session["stop_kind"],
             "attempt_ids": [row["attempt_id"] for row in physical],
             "wasted_attempt_ids": [
                 row["attempt_id"]
@@ -128,6 +139,7 @@ def core_approval(guard: Any, scripted: K31ConnectionApproval, proof: dict, cont
             or actual["source_sha256"] != scripted.source_sha256
             or actual["stop_kind"]
             or actual["model_calls"] > 20
+            or actual["cumulative_model_calls"] > 20
         ):
             raise GuardRejected("manual_start_required")
         return _core_approval(scripted, actual["proof_sha256"], actual["factor"])
