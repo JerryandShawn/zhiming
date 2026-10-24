@@ -4,7 +4,7 @@
   "worktree": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r35",
   "branch": "v4/p3-r35-sensitive-pending-20261024",
   "R11_metadata": "C:/Users/Administrator/Documents/Codex/zhiming-v4-r35/private/r11-run-8d922df9e5814e4083187b9247a8fbf4/metadata.json",
-  "R11_status": "running",
+  "R11_status": "complete",
   "scope": "M05 real native pending proposal after omitted memory_write; no answer changes",
   "runtime_changes": [
     "mingjing_core/application/agent_sensitive_pending.py",
@@ -49,5 +49,22 @@
     "required_total": 69,
     "original81_passed": 70
   },
-  "forget_fix": "Native model memory_forget and unquoted delete/forget instructions suppress fallback; original F02 assertions unchanged"
+  "forget_fix": "Native model memory_forget and unquoted delete/forget instructions suppress fallback; original F02 assertions unchanged",
+  "R11_finished_at": "2026-10-25T00:22:24.206205+08:00",
+  "source_sha256": "eb8d2f786216c1c9d8c9e5bb99c56fd5271c5cc65ee39cb682f7f9e71fbf0098",
+  "R11_assessment": "C:/Users/Administrator/Documents/Codex/zhiming-v4-r35/private/candidate-eval/75d53f58796d429734b427e038ac740e266c5bb6/R11-7090314d12d74a76985281dbc90294ee/assessment.json",
+  "R11_verified": {
+    "p3": "48/48",
+    "dates": "7/7",
+    "required": "69/69",
+    "core29": "29/29",
+    "original81": "71/81",
+    "deferred": 12,
+    "F02": "passed",
+    "x02_friendly": true,
+    "x02_answer_preserved": true,
+    "x02_repeat_writes": 0
+  },
+  "CI_status": "not verified",
+  "live_M05_status": "not run; prior service stop boundary retained"
 }
