@@ -160,6 +160,7 @@ class V4Target:
             channel=channel,
             external_id=external,
             conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
+            case_ids=cases,
         )
         self.bindings[f"turn-{index}"] = source["id"]
         run = ThreadIngress(self.service).queue(

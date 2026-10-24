@@ -8,6 +8,7 @@ from typing import Any
 from psycopg import sql
 
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.thread_case_sources import same_case_selection, selected_cases
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.private import is_private
 from mingjing_core.memory.threads import project_sources
@@ -87,6 +88,7 @@ class ThreadService:
         conversation_id: str = "shared",
         at: datetime | None = None,
         source_id: str | None = None,
+        case_ids: list[str] | None = None,
     ) -> dict[str, Any]:
         if not isinstance(request_id, str) or not 1 <= len(request_id) <= 200:
             raise EvidenceError("消息需要稳定请求标识")
@@ -95,8 +97,9 @@ class ThreadService:
         with self.repo.transaction(owner) as connection:
             self._lock(connection, owner, ident)
             thread = self.get(owner, ident, subject=subject)
+            cases = selected_cases(self.repo, owner, subject, case_ids, private=thread.get("mode") == "incognito")
             stable_source = source_id if source_id is not None else "thread-source:" + fingerprint([ident, request_id])
-            existed = self._existing_source(owner, ident, channel, stable_source)
+            existed = self._existing_source(owner, ident, channel, stable_source, cases)
             row = self.memory.receive(
                 owner,
                 subject,
@@ -106,6 +109,7 @@ class ThreadService:
                 external_id=external_id,
                 conversation_id=conversation_id,
                 at=at or self.clock.now(),
+                case_ids=cases,
             )
             if thread.get("mode") == "incognito":
                 if row.get("thread_id") not in {"life:" + subject, ident}:
@@ -122,7 +126,7 @@ class ThreadService:
                 self.touch(owner, ident, subject=subject)
             return row
 
-    def _existing_source(self, owner: str, ident: str, channel: str, source_id: str) -> bool:
+    def _existing_source(self, owner: str, ident: str, channel: str, source_id: str, case_ids: list[str]) -> bool:
         if not isinstance(source_id, str) or not 1 <= len(source_id) <= 200:
             raise EvidenceError("消息需要有效来源标识")
         message_id = "msg_" + fingerprint([owner, channel, source_id, "user"])[:32]
@@ -134,6 +138,7 @@ class ThreadService:
             raise EvidenceError("已撤销的原话不能重新导入")
         if original.get("thread_id") != ident:
             raise ScopeError("已存在的原话不能移到其他线程")
+        same_case_selection(original, case_ids)
         return True
 
     def history(
