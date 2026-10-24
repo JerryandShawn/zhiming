@@ -18,6 +18,9 @@
 
 ## Progress
 
+2026-10-24 19:11 +08:00：已执行v22/R21，一次扫描core30全链；封装sealed批准选模型，修LifecycleBinding、CoreObservation、quota witness及三处恢复/账本token命名（K31实际core-k31）。仅c21独立baseline的runner_v2/subset/source/calibration不在runner→core30调用链，按板保留。原定向45旧项通过/1新增失败（e1092c3950b04874b4e7834df34a6cf2，409.32s）；再新3中2失败1过（108d4b984ac54450b7f45b42dcd38d19），原因复用计量压力Mock夸大10000输入导致RequiredContextOverflow，未改生产门。修此夹具后新3/3真实隔离PG/Agent/外评/已知5h恢复新run通过（e868c82b07b04082b0f06d87cd6148f5，32.79s）；追加native token对齐1/1（b2d1d6c1e3e34a5b8b8470fa4fcf7231，4.71s）。根核metadata/XML/log，各轮不相加冒称一次全链。Ruff/format通过。待同候选R11后<=4新接入累计<=20（旧8保留），成功立即core30。
+
+
 - [x] (2026-10-24 18:46 +08:00) 已执行v21/R20：v4单工具auto保持auto，v3 legacy单提交独立保required；两协议单/多工具、非法选择拒绝、K31原生回传及旧入口定向首轮127通过/1断言失败，原件private/safe-narrow-0b285a0b229f40a7b1f9e4c80214fc17。首请求原本显式required、续轮auto，修正新断言后仅该项1/1（private/safe-narrow-9866ae139a9b4fd0913548d9ff6acb70，2.71s），非一次128/128。待同候选R11后立即connect→core30，不等完整回归。
 
 
@@ -75,6 +78,9 @@
 
 ## Surprises & Discoveries
 
+19:11：除旧模型白名单及K31批准没有equivalent外，quota_resume_evidence/clear/session_accounting把token阶段拼成core-k3.1-pro，而中央原生为core-k31；已统一。原runner_v2等仅E1 c21冻结基线，core30从runner.py→live_session→ProofSelectedRegistry进入，不改变旧基线。
+
+
 2026-10-24 18:46 +08:00：R20裁定确认auto强升required是本地策略缺陷。探针首请求调用方明确required，第二请求明确auto；测试必须保护这个差别。旧v3 submit需要结构化单提交，强制策略移至legacy_request_policy，不改变其wire。
 
 
@@ -125,6 +131,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+19:11：R21仅在当前sealed K31CoreApproval且候选/source/中央guard一致时允许Lifecycle capture/verify；连接专用批准、无批准、篡改来源均拒绝。旧K3选择及none/named保护不变；实际主/外评仍K31/high，R12整题新run，不投入旧同run续作。
+
 
 2026-10-24 18:46 +08:00：依用户直接指令及v21，替换旧单工具强制断言为保调用方auto，保留显式required能力检查、none/指定工具名拒绝和旧legacy断言；不改协议/schema/循环熔断/真实额度账本。
 
@@ -180,6 +189,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+19:11：新增必要实际PG+公开tokenizer+Mock HTTP完整答题/外评及额度新run通过，无真实新请求；旧8计数保留。未宣称CI或真实core绿，源码固定后立即R11和真实流水线，不等完整回归。
+
 
 2026-10-24 18:46 +08:00：必要定向已核原件，真实评测尚未启动；原R18及v16共4物理保留，本轮新候选须重跑R11，成功后同进程立即接入/core30，累计接入仍<=20。
 
