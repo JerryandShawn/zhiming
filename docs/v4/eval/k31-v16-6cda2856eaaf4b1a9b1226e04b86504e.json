@@ -1,0 +1,97 @@
+{
+  "candidate": "d16730928f263433963a15857e2f0fa6639045e1",
+  "status": "stopped",
+  "phase": "connection_stopped",
+  "control_schema": "probe_k31_6cda2856eaaf4b1a9b1226e04b86504e",
+  "started_at": "2026-10-24T18:11:17.094902+08:00",
+  "finished_at": "2026-10-24T18:11:33.081715+08:00",
+  "model": "k3.1-pro",
+  "effort": "high",
+  "connection": {
+    "complete": false,
+    "model_calls": 2,
+    "stop_kind": null,
+    "resume_at": null,
+    "factor": "1.15",
+    "mode": "live"
+  },
+  "connection_exit_code": 2,
+  "reports": [],
+  "rollup": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-release-prep\\docs\\v4\\eval\\k31-core30-d16730928f263433963a15857e2f0fa6639045e1-6cda2856eaaf4b1a9b1226e04b86504e.json",
+  "stop_kind": null,
+  "resume_at": null,
+  "initial_window": {
+    "total": 0,
+    "oldest": null,
+    "interactive": 0,
+    "critic": 0,
+    "background": 0,
+    "evaluation": 0,
+    "unfinished": 0
+  },
+  "key_cleared": true,
+  "safe_batches": [
+    {
+      "batch_id": "v7-778838d260c2457881fe5a649498be7f-1",
+      "physical_requests": 2,
+      "scenario_ids": [
+        "K31-TOOLS"
+      ],
+      "models": [
+        "k3.1-pro"
+      ],
+      "statuses": [
+        "ok"
+      ]
+    }
+  ],
+  "central_window": {
+    "total": 2,
+    "oldest": "2026-10-24 18:11:20.330599+08:00",
+    "interactive": 0,
+    "critic": 0,
+    "background": 2,
+    "evaluation": 2,
+    "unfinished": 0
+  },
+  "central_stop_kind": null,
+  "central_resume_at": null,
+  "central_in_flight": 0,
+  "connection_failure": "K31-TOOLS step2 returned another tool call; final-answer assertion failed",
+  "core30_started": false,
+  "core30_passed": null,
+  "safety_passed": null,
+  "accepted": false,
+  "connection_checks": [
+    {
+      "effort": "high",
+      "factor": "1.15",
+      "input_actual": 258,
+      "input_estimated": 171,
+      "input_ratio": "1.508771929824561403508771930",
+      "model": "k3.1-pro",
+      "passed": true,
+      "reasoning_present": true,
+      "response_model": "k3.1-pro",
+      "scenario": "K31-TOOLS",
+      "step": 1,
+      "text_chars": 0,
+      "tool_count": 1
+    },
+    {
+      "effort": "high",
+      "factor": "1.15",
+      "input_actual": 480,
+      "input_estimated": 452,
+      "input_ratio": "1.061946902654867256637168142",
+      "model": "k3.1-pro",
+      "passed": false,
+      "reasoning_present": true,
+      "response_model": "k3.1-pro",
+      "scenario": "K31-TOOLS",
+      "step": 2,
+      "text_chars": 2,
+      "tool_count": 1
+    }
+  ]
+}

@@ -1,10 +1,12 @@
-# 核心30题交接给Claude（待最终同源候选绑定）
+# 核心30题操作单（v16：Codex执行真实评测，stage仍由Claude执行）
 
-2026-10-24 14:40，北京时间。按v14，**真实请求只由大脑执行，Codex不执行。** 新CLI接口已有必要PG/Mock证据，但最终v4/integration候选的CI/R11尚未绑定；以下占位值会主动停止，当前不能开真实请求。宿主也尚无受审MEMBER_CENTRAL_DSN，须大脑核原有账户/账本配置；不建账户、换账本或用业务DSN替代来绕停。
+2026-10-24 18:11，北京时间。用户直接授权按指令板v16立即由Codex执行K3.1真实评测；stage仍由Claude执行。本机R17评测专用账本已按大脑脚本首次创建，不代表线上v3额度。最终R11已于18:02:41通过，完整milestone回归在途不再是评测前提；旧v14禁止Codex真实评测的条款已被本次授权替代。禁止换账本或账户绕过供应商停止。
+
+**本次接入已停止，以下命令保留首次操作记录，不能重新执行connect或启动core30。** 18:11:17–18:11:33仅2次真实请求：两次model均精确k3.1-pro/high；K31-TOOLS第一步工具及推理存在检查通过，第二步仍返回工具调用，最终回答断言失败。无额度/权限停止，恢复时间为空；这不构成可自动重试的5h窗口。核心30未启动，key已finally清除。安全摘要为`k31-v16-6cda2856eaaf4b1a9b1226e04b86504e.json`，原proof和控制账本保留，不重签/新开control/重建账本或换模型绕过失败。
 
 ## 候选与原件
 
-最终工作树固定 `C:/Users/Administrator/Documents/Codex/zhiming-v4-formal-integration`，分支v4/integration；最终SHA和该树private/r11_pending.json尚待主线填入。新评测/R12及F必要源码已推release-prep的feea1dea94b15e1547a59273ad216d925f83502b，工具头不是首发候选。
+最终工作树固定 `C:/Users/Administrator/Documents/Codex/zhiming-v4-formal-integration`，分支v4/integration，冻结SHA `d16730928f263433963a15857e2f0fa6639045e1`。该树private/r11_pending.json定位18:00:00–18:02:41 complete/exit0原件；source为3a23b9c425fe7d1c271da08231c20f666312e76fe4a5d799f87c2f8ce04ae297。根读四份原报告核48/48、7/7、69/69、X02等价及离线30/30；原全81仍71/81十失败，延期与raw incomplete保留。本操作单在开发分支更新，不改变冻结候选源码或复用旧b008门。
 
 旧冻结R11候选为 `b00882cd10e862a0e94103fa97ab263e2a6e18f3`，树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-eval-resume`。13:06–13:08:39原件由该树private/r11_pending.json定位，assessment为同候选private/candidate-eval下R11-080f70697adf4699bad27341809d75b0/assessment.json。原48/48、7/7、69/69、X02等价、离线30/30通过；原全81为71/81，十失败和十二延期/raw incomplete及旧blocked记录保留。13:09已提醒用户降中档/找Claude，不重复提醒。**旧门不批准新源码或新K31真实请求。**
 
@@ -16,14 +18,14 @@ Python `C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/pytho
 
 Kimi key只从本机现有JSON环境映射读取：`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep/private/claude-eval-k31.env.json`。该文件Git忽略、当前用户/SYSTEM私有DACL；不输出/提交/覆盖/删除正文，也不上传服务器。
 
-大脑须先在**自己的运行进程**配置经审核的原有 `MEMBER_CENTRAL_DSN`、`MEMBER_CENTRAL_SCHEMA`、`MEMBER_ACCOUNT_ID`、`MEMBER_LEDGER_IDENTITY`。本单不编造一个不存在的中央凭据文件路径。CLI会读实际PG核账户、UUID、位置、窗口与停止态；缺任一项立即停，不能用core_test_main自动替代中央位置。
+按v16/R17，首次精确初始化命令为：上述Core Python加`-X utf8`运行`C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/评测/provision_eval_ledger.py`，唯一参数为同目录`member_central_eval.json`。本次已exit0，不再次初始化；schema或JSON存在就保留，不删/重建。该JSON的四个同名MEMBER_*字段仅加载进评测子进程，来自隔离55480/core_test_main、schema member_central_eval、账户kimi-code-member-eval及脚本首次生成的ledger UUID；此处不抄DSN正文。CLI仍核实际PG账户、UUID、位置、停止态，线上v3不使用此账本。
 
 ## 1. 只读准备与同源门
 
 以下都是现有CLI和实际字段。首次由主线填最终40位号；R11控制器必须已在该树生成完整原件。命令在同一个正常PowerShell会话执行，PowerShell不打印凭据。换进程时须从已留原件恢复同一control schema、proof和全部报告路径，不能重新生成control schema来绕过已有停止。
 
 ```powershell
-$FrSha = 'PENDING_R11_CI_FINAL_SHA'
+$FrSha = 'd16730928f263433963a15857e2f0fa6639045e1'
 if ($FrSha -notmatch '^[0-9a-f]{40}$') { throw '最终候选尚未绑定' }
 $FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-formal-integration'
 $FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/python.exe'
@@ -35,7 +37,7 @@ $FrMeta = Get-Content -LiteralPath $FrPointer.metadata_path -Raw | ConvertFrom-J
 if ($FrPointer.candidate -ne $FrSha -or $FrMeta.candidate -ne $FrSha -or $FrMeta.status -ne 'complete' -or $FrMeta.exit_code -ne 0) { throw '最终R11原件未完成' }
 $FrGate = Join-Path $FrMeta.output 'assessment.json'
 if (-not (Test-Path -LiteralPath $FrGate -PathType Leaf)) { throw 'assessment缺失' }
-& $FrPython -m pip check
+uv pip check --python $FrPython
 if ($LASTEXITCODE -ne 0) { throw '依赖不符' }
 $env:CORE_TEST_DSN = 'postgresql://core_test@127.0.0.1:55480/core_test_main'
 $env:PROBE_CONTROL_DSN = $env:CORE_TEST_DSN
@@ -49,10 +51,14 @@ $env:LANGCHAIN_TRACING_V2 = 'false'
 $env:OTEL_SDK_DISABLED = 'true'
 $env:FEISHU_ENABLED = 'false'
 $env:CORE_FEISHU_ENABLED = 'false'
+$FrCentral = Get-Content -LiteralPath 'C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/评测/member_central_eval.json' -Raw | ConvertFrom-Json
 foreach ($FrName in @('MEMBER_CENTRAL_DSN','MEMBER_CENTRAL_SCHEMA','MEMBER_ACCOUNT_ID','MEMBER_LEDGER_IDENTITY')) {
+    if (-not $FrCentral.$FrName) { throw 'R17中央配置字段缺失' }
+    [Environment]::SetEnvironmentVariable($FrName, $FrCentral.$FrName, 'Process')
     if (-not [Environment]::GetEnvironmentVariable($FrName,'Process')) { throw "大脑尚未配置受审中央字段：$FrName" }
 }
-$FrControl = 'probe_k31_' + [guid]::NewGuid().ToString('N')
+Remove-Variable FrCentral
+$FrControl = 'probe_k31_6cda2856eaaf4b1a9b1226e04b86504e' # 本次已初始化，只从现有状态续查，勿重建
 & $FrPython -m tools.eval.k31_cli init-control --control-schema $FrControl
 if ($LASTEXITCODE -ne 0) { throw '控制schema初始化停止' }
 & $FrPython -m tools.eval.k31_cli status --control-schema $FrControl
