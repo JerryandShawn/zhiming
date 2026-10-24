@@ -18,6 +18,9 @@
 
 ## Progress
 
+2026-10-24 19:53 +08:00：已按用户直接要求执行v27，大脑明确将旧M01归暂时不可用，不再追旧HTTP码。19:50:01已用同候选f87、同接入证明/control/原R17账本执行--fresh-questions-from .../private/m01_v27_adjudicated_resume.json --unavailable-retry1，Validated24/24，从M01起新run，未再connect（接入仍13/20）。原6完成结果/原report不改；私有归类输入只改metadata及M01的stop_reason为unavailable，并附v27裁定/原report路径和SHA256，逐字段反向核验后与原件完全一致，所有旧分数/请求/正文保持，归类文件不是新通过证明。当前M01已passed1，剩余轮在途（非最终accepted）；private/r27_pending.json→private/r27-2de109376a5f4aa6970caca1761073db/metadata.json是唯一新运行指针，旧r22 supervisor已停不可重启。若再unavailable或控制账本unavailable无HTTP码，按本轮停止实际时刻+30min最后一次，仅未完成题新run；403/429/usage/并发/Access仍全停不重试。已在重跑启动后补私有core_error_observer.py给后续轮：只HTTP码/type/message前100字+安全attempt/scenario/time，脱敏key/请求payload，不改客户端/协议或消费正文；503分类、密钥遮蔽和ReadTimeout三项Mock离线核通过（private/error-observer-selftest-b1c09d2df4a549f4972d9c91e1504499.jsonl，真实0），不注入已在途的第一轮。最终原report全部k31_results汇总保浪费与已完成结果；当前不提前报成功。
+
+
 2026-10-24 19:43 +08:00：已读v26/R23并核M01原件。core30于19:36:37停止，6完成：T05/T08/T14通过，T09/T10/TM01失败；M01 incomplete/score=null，余23未运行，安全6题未执行，不能写安全0/6失败或最终3/30。core物理25（批10/10/5，实际中央batch尾号1/2/3），加接入累计13，窗口38；key已清。M01 attempt=http-be585aed31144eebab26c86ef15c8564，中央status=unavailable/latency11938ms；原report stop_reason=provider_http_error、HTTP码空。usage表无HTTP/type/message列，StepAttempts只存result_kind和terminalhash，关闭追踪且私有日志无原HTTP错误；不能事后恢复状态码或消息，不能断言5xx/超时/400/403或额度。按v26第3条判断不了则提醒，本轮真实请求0/不重发，不改原report或把未知改unavailable来续跑；前6结果和原k31_results汇总保留。唯一安全摘要docs/v4/eval/k31-r22_try2-afab37d3b8884b73af671417ecd76e33.json已补原报告hash、诊断缺口与三物理批，无正文/密钥。v25其余首发真实题runner仅default/core30且core批准绑定CORE30集合，所需余题/日期/P3去重suite需改代码，按板“需要改代码，跳过”；当前core尚未完整结束亦不抢跑。v24 stage/prod单仍待绑定/生产缺口，未称stage就绪。
 
 
@@ -82,6 +85,9 @@
 
 ## Surprises & Discoveries
 
+2026-10-24 19:53 +08:00：v27是明确归类授权，与无裁定时改旧report不同。采用独立派生resume输入，原件hash和前6成绩逐字段保留；原生runner实际Validated24/24，M01首题已完成通过，未重复前6。
+
+
 2026-10-24 19:43 +08:00：中央M01 status unavailable不等于已知HTTP503，通用报告把非STOP_REASONS内kind归为provider_http_error；历史诊断不包含HTTP/type/message，不能用耗时11.94s外推超时。模型传输错误边界明确不保原cause/rawbody，当前只能诚实报告unknown。
 
 
@@ -139,6 +145,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-24 19:53 +08:00：不更改冻结源码/原证明，不重做connect；先启动续跑，再补仅失败侧车诊断。无HTTP状态但中央unavailable按v27退避，已知403/429/并发/Access仍优先全停；明文key/请求正文不记录。
+
 
 2026-10-24 19:43 +08:00：依v26第3条分类不明提醒，保留前6有效结果，不擅重试M01/改原JSON stop_reason/换账本/删除批次。v25扩展suite需代码按板跳过。
 
@@ -201,6 +210,9 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-24 19:53 +08:00：M01起24题真实续跑在途，M01已通过，最终accepted待汇总。新run/期限/原账本，保所有轮物理浪费，已完成题不重发。
+
 
 2026-10-24 19:43 +08:00：core真实6完成3通过3失败，M01中断，其余未运行；acceptedfalse/incomplete，窗口38/核心25/接入13，三批<=10已核，密钥清。暂缺可追溯HTTP诊断，未宣称完成或stage就绪。
 
