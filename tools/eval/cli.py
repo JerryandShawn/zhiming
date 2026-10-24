@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from pathlib import Path
 
 EVAL_ROOT = Path(__file__).parent
@@ -36,4 +37,29 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument(
         "--resume", action="store_true", help="Reuse matching scenario results; not durable same-run recovery"
     )
+    result.add_argument("--lifecycle-session", help="Exact previously saved eval- session; current turn only")
+    result.add_argument("--lifecycle-schema", help="Previously initialized independent eval_control_ schema")
+    result.add_argument("--lifecycle-scenario", help="Exact core30 scenario bound to the saved session")
     return result
+
+
+def lifecycle_selection(args: argparse.Namespace) -> bool:
+    values = [getattr(args, "lifecycle_" + key, None) for key in ("session", "schema", "scenario")]
+    if all(value is None for value in values):
+        return False
+    from tools.eval.targets.v4_core30 import CORE30_IDS
+
+    if (
+        any(value is None for value in values)
+        or (args.mode, args.target, args.suite) != ("live", "v4", "core30")
+        or args.resume
+        or args.validate_only
+        or args.self_test
+        or args.scenario
+        or args.scenarios.resolve() != (EVAL_ROOT / "scenarios").resolve()
+        or re.fullmatch(r"eval-[a-f0-9]{32}", values[0] or "") is None
+        or re.fullmatch(r"eval_control_[a-z0-9_]{1,49}", values[1] or "") is None
+        or values[2] not in CORE30_IDS
+    ):
+        raise SystemExit("Lifecycle selection requires all three exact flags and live/v4/core30 without other modes")
+    return True

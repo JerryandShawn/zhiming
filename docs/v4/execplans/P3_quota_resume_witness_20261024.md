@@ -1,10 +1,10 @@
-# P3：额度恢复资格与独立精确清停转换
+# P3：额度恢复资格、同run续作与指定会话驱动
 
 本活计划遵循 AGENTS 与 `.agent/PLANS.md`，北京时间，沿用指令板 v8。原资格分片分支 `v4/p3-wire-quota-resume-20261024` 从60eb8e4继续并已推e2af97d；新增精确转换在 `v4/p3-wire-quota-clear-20261024` 从ddbdc8c继续。只做本机隔离 PG 和 MockTransport，不改暂停线、模块记忆服务或金标，不发真实模型请求、访问服务器或外发。
 
 ## Purpose / Big Picture
 
-为明确五小时额度恢复后从原场景继续建立可核验基础。已验收原片仅回答“原物理请求已可信结束为 quota_5h，明确恢复时间已到，原检查点和累计预算仍相同”这一资格问题；其eligible/check始终纯读。新增独立显式转换只消费该活资格并在精确中央事务内清同一停机，10个不同定向节点已有分轮通过证据。清停回执不授执行权，原 run 不 claim，Durable 的 attached send、普通 StepAttempts.begin 和 CLI 继续关闭。
+为明确五小时额度恢复后从原场景继续建立可核验基础。原eligible/check始终纯读；独立exact-clear只清绑定的同一中央停机，其公开回执不授执行权。09:52已验证显式resume_pending的原run续作，普通attached send与旧报告缓存--resume仍拒绝。现在直接把该真实方法接入指定已存生命周期会话的当前轮driver：复用原生成功答复和JudgeJournal，不重建场景或把累计请求重算为新增；整套core30及真实评测门仍未完成。
 
 ## Context and Orientation
 
@@ -14,6 +14,12 @@ StepAttempts 的 authority 依赖有效 lease；本片不借用它 mint 执行�
 
 ## Progress
 
+- [x] (2026-10-24 10:11 +08:00) 仅原3setup红复验3/3、132.141秒、无失败/error/skip，10:09:05.094375–10:11:18.252083；根独立核metadata、全部XML属性及log，唯一原件 `private/safe-narrow-49617ce2cecf4cc98ed8c65df8c3284d/`。规范M01原memory effect/工具/事件/旧UUID保持，首次观察实际target3+judge1累计4、继承2/新增2，另一新observer只读4/4/0且全态不变；再次quota只有新target1并闭第二预算/新pending，Access原永久stop保留、无假checkpoint/评审。与首链原5合为8个不同节点分轮通过，不称一次8/8；原失败保留，测试槽归零，真实模型/服务器/外发0。
+- [x] (2026-10-24 10:09 +08:00) 根按Memory.save_fact/SourceRef复核新fixture最小修：完整实际message_id/version/start/end/quote精确相等、原source内容与run一致、subject/status/content/summary/receipt.revision均核，后续完整fact不变仍在。新文件279行/最长50，Ruff/format/AST绿，生产/原5绿均不动；仅授slot1原3setup红复验。当时无新的执行结果，不称8/8。
+- [x] (2026-10-24 10:08 +08:00) 首链5通过/3 setup error，106.60秒，10:05:36.471634–10:07:24.053768。根核完整metadata/XML/log；唯一原件 `private/safe-narrow-50dec34ae88d4316be0888fc97049462/`。原5已绿：真实inflight→unknown评审拒、真实非canonical会话拒、12种CLI早拒、原选模与旧resume兼容。原3均在新M01 fixture的fact['source_ids']缺字段、尚未调用observer；真实Memory.save_fact使用source_refs，不是source_ids。仅准新测试改成原SourceRef的message_id/version/start/end/quote强断言，生产5文件与原5绿不变；静态根审后只复验原3红，当时不能称新驱动已通过。
+- [x] (2026-10-24 10:05 +08:00) 五生产路径、三新测试静态冻结并由根全文审、R3独立审；8文件Ruff规则/format绿，新增266/146/40行、测试265/107/60，函数均≤60。root最后统一外部请求字段为本次观察增量，中央UUID累计不变。仅授slot1首链：新5PG+1pure CLI（12种bad shape）及受runner接线影响的原选模/旧resume两个兼容节点，共8；旧7/7与其余已绿不重跑。当时无测试结果，真实模型/服务器/外发0。
+- [x] (2026-10-24 09:57 +08:00) 新heartbeat核指令板仍v8，从已推d4ce151 clean开v4/p3-wire-session-driver-20261024。根先核runner/cli/batching/JudgeJournal/生命周期真实调用，R3独立会计审；决定单轮专用回执不进入会reset/删schema的旧_run/evaluate_scenario或run_batches。timeparse独占生产CLI/runner与session helpers，R7独立新增测试，根持计划/Git。当时无pytest，主线两槽空，真实模型/服务器/外发0；现已完成下面限定本机验收。
+- [x] (2026-10-24 09:53 +08:00) d4ce151已推自己的v4/p3-wire-quota-execute-20261024，工作树clean；此为推后事实，随下一实质片保存，未再推文档取消刚启动CI。正式integration/feed未前进，新CI待核，不用本机7/7替代完整候选验收。
 - [x] (2026-10-24 09:52 +08:00) 唯一首链7/7、201.702秒、无失败/error/skip：09:48:55.852923–09:52:18.541869，根独立核metadata、全部7个XML节点/属性及log。唯一原件 `private/safe-narrow-d540e6a81fe348dab14723fe881ec698/metadata.json` 与同目录XML/log；Tokyo测试时区、原业务冻结钟、独立额度恢复钟、隔离PG和MockTransport，真实模型/服务器/外发0。新5节点全部成立，受重构clear影响的原rollback/commit_unknown两节点也通过；不重复原5/10其它绿。测试槽已释放，完整脚本仍69/81，未推进正式integration/feed或真实评测门。
 - [x] (2026-10-24 09:48 +08:00) 8生产路径与新5节点/54行支持文件静态冻结，根及R3独立审完成，R3发现的Clock倒拨已删除并有真实到期负例；R7修累计计数/真实撤销privacy契约。新测试400行/最长48，生产最长45、均不超400；已授主线slot1唯一首链新5+原clear SQL rollback/commit_unknown两节点，普通send/CLI仍关闭，尚无测试结果。根初用K3 python跑Ruff因该env无ruff而未启动检查，已切实际core环境的ruff.exe，10文件规则/format均通过，不安装依赖。
 
@@ -51,6 +57,14 @@ StepAttempts 的 authority 依赖有效 lease；本片不借用它 mint 执行�
 
 ## Decision Log
 
+2026-10-24 10:08 +08:00：新M01夹具的来源断言错误使用不存在的source_ids；按原Memory.save_fact实际SourceRef（message_id、原revision、quote区间）修新测试，保完整原事实与前缀不变比较。不改生产或旧字段契约，不删来源断言绕红；这是setup错误，不能当driver拒绝或真实恢复证据。
+
+2026-10-24 10:01 +08:00：根读真实旧history夹具发现它以T05 seed/binding运行“两次修改case计划”的合成原话；原只读/同run执行证明可用，不能把该原话交给T05日期题的正式judge评分。现read_private只核seed及源的实际hash，故新driver须在resume/judge之前额外核指定turn、绑定source/index/native操作、精确canonical turn.user及channel，业务钟锚点只比较不倒拨。新正向驱动测试改用既有真实M01 canonical saved夹具（一次memory_write→quota，2旧UUID），A累计4=target3+judge1、继承2/新增2，B再次quota累计3/继承2/新增1；不修改旧history夹具、金标或Runtime。旧T05非canonical原话改为新driver拒绝反例，不以题目不符但分数低来掩盖输入契约错误。既有两次case写原生续作7/7保留，不重复。
+
+2026-10-24 09:57 +08:00：指定会话使用三项显式参数--lifecycle-session/schema/scenario，必须全部齐备、仅gated live/v4/core30、固定场景/会话/schema，旧--resume/自定义scenario/validate/self-test混用在中央/target/key/POST前拒。仍经过原live_session的same-candidate全脚本与equivalence proof，不新增真实调用授权。本机观察函数接收真正空Durable对象、已初始化独立control、受信binding/guard/原生judge，实际attach→pending调用resume_pending或complete只读→check_assertions与JudgeJournal→detach；只有指定保存轮，不自动跑未来轮或其它题。不initialize控制库，不回拨当前Clock，不从JSON恢复能力，不调用会DROP场景的close。
+
+2026-10-24 09:57 +08:00：R3确认普通batching把case视为完整scenario，历史实际用量为旧batch.new之和；此片无可信旧report batches，故不修改该契约、不加载旧报告JSON，直接输出当前轮lifecycle执行回执并复用既有报告序列化。真实原run中央UUID前后集合B/A须唯一、绑定且可信finished，B整行保持、B⊆A；累计=|A|、继承=|B|、新增=|A−B|，实际历史累计=继承+新增。外部judge按实际JudgeJournal.value.attempt_ids归类，不能按critic角色猜；模型耗时用terminal.latency_ms，累计执行wall预算另列。示例两次case写旧3请求→续作1→judge1应5累计/3继承/2新增，再次缓存读取5/5/0，再quota4/3/1。报告只覆盖当前轮、原30题集合仍incomplete，多轮场景不能据当前轮通过称整题通过；未知或在途不能猜0或重POST。保存/断开不确定保原schema，清理异常不掩盖原停止信号，不补偿或自动重试。
+
 2026-10-24 09:47 +08:00：根审将成功TurnResult的model_calls/physical_model_requests定为原turn全部可信中央UUID累计数（夹具3旧+1新=4），segment_model_requests单列本段新增1，不把新port计数当原run总量。来源删除反例改走真实SourceWithdrawalService，合法清空request/私密数据后的实际Core快照是拒绝续作后的不变基线，不要求已撤销正文或旧私密证据保留。独立R3审发现resume入口回拨业务Clock到保存时刻可越过原绝对deadline；删除该回拨，沿当前原业务Clock校验，不延长原pin/deadline，并加mint后真实推进Clock过deadline的唯一必要反例。正例夹具原有冻结历法钟保持，额度钟仍独立到原reset。新增5节点加受重构clear影响的原2个SQL故障节点为拟首链，静态冻结和根审前不启动。
 
 2026-10-24 09:36 +08:00：独立入口沿真实clear后的同call私有活opaque handoff，允许application仅在该eval恢复分支lazy引用工具侧type/消费函数，普通运行时不导入tools；公开receipt、caller dict/布尔或序列化对象不能mint执行scope。实际COMMIT和专用连接关闭/双slot释放后才能进入后续物理guard，任一不确定不补偿clear或重POST。原CoreError停止/最终提交可能触发AgentRegenerator.restart并推进epoch，因此在restart函数入口加活resume scope的NEVER拒绝，早于任何UPDATE/prepare_retry，普通无scope路径不变。
@@ -62,6 +76,10 @@ StepAttempts 的 authority 依赖有效 lease；本片不借用它 mint 执行�
 2026-10-24 08:26 +08:00：本片最后未完成模型的全部历史 attempt 限 quota_5h，不接纳历史 ok、其它全局停机或 transient，避免把未发布成功输出重发；此前 completed 模型仍核原成功终态。中央usage无epoch字段，当前原epoch的私密锚点必须覆盖这个run全部usage；含旧epoch实际请求的run保守拒绝，不靠run_id猜归属。原请求/attempt实体另核实际subject_id，工具前缀只做原ToolResult结构验证；witness失败后注销、返回前再核registry/当前ContextVar，不能由复制上下文复活退出后的资格。
 
 ## Surprises & Discoveries
+
+独立进程的现实限界：timekit默认SystemClock，新runner分支不经旧engine的场景set_clock，attach只把保存钟给ThreadService.get；原_budget/Journal/RunControl仍用当前权威Clock核原绝对deadline。历史2026-10-17场景在默认当前Clock下会在clear/claim前拒绝，即使active consumed_ns未满。本机方法级正例由夹具显式保持原业务钟、额度钟独立到reset，不证明现实跨五小时/跨进程的整套续作。短期只接“当前调用方有效Clock且原deadline未过”的已有session，不按Clock类型回拨或重算旧deadline；若产品要历史业务日期和现实执行期限各自成立，需从建run时定义并持久双Clock身份/迁移，列为待大脑裁定的后续，不能用本CLI补set_clock放行。正常新跑core30仍旧Target，不自动创建本Durable会话；初始创建及未来轮也未在本片接通。
+
+本片driver草稿的_pending先捕获任意ProviderStopped再强求quota_5h，会把实际Access terminated等全局停止替成普通LifecycleError。根在测试前指出并要求非5h原抛、5h后重新核断点若失败也保原stop加固定未知说明；cleanup控制异常优先，其次主停止，再首普通异常。仅追加一个真实Mock Access停止PG节点验证新接缝：原reason/中央永久stop、单新UUID、0judge/无假pending checkpoint、schema/epoch保留，不扩大其它停止矩阵。
 
 actual恢复设计确认两处额外风险：辅助来源被撤销而primary尚有效时，原Runtime的CoreError catch可合法走普通重生成并改epoch，不能靠新epoch之后拒HTTP保护同run契约；另历史proof之后仍有跨事务漂移窗口，必须锁内重读其具体当前实体与撤销摘要，不能把proof.success当持续权能。两项分别用前写拒绝与专属completed-token对齐，尚未验证。R7新fixture将既有观察测试的目标工厂换成真实Durable类，不能用观察目标换壳或手填预算；外部源撤销故障放在clear后、fresh owner事务之前，避免伪造同一持锁事务中的跨进程插写。
 中央 account 无 revision，单个 usage 无 provider reset；已被清停的 account 不能还原原 reset 绑定。guard 的结束失败仍可能优先传播原 quota 异常，故异常类型不足证明中央及私密 finished 已可信落库。业务时钟与中央额度时钟分别保存，不能以宿主时间推断累计执行预算，也不能使普通生产绝对 deadline 延期。
@@ -84,7 +102,9 @@ QuotaStore.finish 对这次 usage 与 stop 使用同一个 finalizing 时间，�
 
 前述clear-only结果当时不包含同run执行。本片09:52的新5+原2故障首链7/7现已验证显式同run方法：两次真实case_update回执、revision+2、旧模型/工具/事件保持，原pending只新增一个真实UUID；成功原turn累计4、本段1，预算原段保持且新增闭合第二段，唯一native final与completed_result只读吻合；再次quota则同run/epoch原pending、新stop/闭批/两段closed/新检查点吻合。真正SourceWithdrawalService删除之后0claim/0POST、合法私密清空保持；历史证明后真实case revision漂移及活scope下再生首写前拒，0新POST/epoch；mint后当前Clock过原deadline则0clear/claim/POST、Core/中央/control全态不变。
 
-仍未接CLI或整套core30生命周期driver，不证明现实五小时后可延长deadline。末步骤仅quota终态历史、当前epoch覆盖全run usage、同一terminal建立当前stop等保守限制保留，未验证形态不扩写成已测矩阵。原完整脚本仍69/81，最终候选、Linux应用恢复及发布门未解除，真实模型/服务器/外发为零。新增CI另核，正式integration/feed未前进。
+现指定已存会话的当前轮CLI薄接线与原生driver已实现，唯一新6+原2节点有上述分轮5+3通过证据：仅该保存轮，真正JudgeJournal评分、真实终态UUID累计/继承/增量独立，不改旧batching与普通--resume。inflight/unknown评分及非canonical原话会在POST前拒，12种坏参数在key/PG/target/proof前拒；Access永久停止不会被cleanup换成普通错误。外部传输counter只报告本次观察增量，物理模型累计以中央UUID为准，active预算wall与模型terminal latency分列。
+
+仍未接初始Durable会话创建及未来轮/整套core30恢复。验证是实际PG下的方法级driver与CLI早拒/既有选模边界，没有跑真实CLI子进程或真实供应商，不能称现实跨五小时续作可用，更不能延长旧deadline；默认SystemClock对过期pending的拒绝保留，双Clock契约问题已列当日日报待决。单轮模拟评分不替代正式题目得分；本候选未重跑整套，f18原完整脚本69/81报告保持不变，最终候选、Linux应用恢复及发布门未解除，真实模型/服务器/外发为零。新增CI另核，正式integration/feed未前进。
 
 ## 实际执行里程碑（本机限定验收，CLI未接）
 
@@ -96,10 +116,12 @@ QuotaStore.finish 对这次 usage 与 stop 使用同一个 finalizing 时间，�
 
 上述设计现以新5个端到端节点完成本机验证：两次case_update→quota→detach/attach/租约自然过期→同run新增一个pending UUID成功final，原工具/终态/事件身份保持且预算第二段累加；同路径再quota仅新增一个UUID、两段closed与新pending检查点/新stop吻合；clear后claim前实际来源撤销0新POST/0claim且保中央已clear事实；另核历史证明后漂移/再生拒和clear前真实deadline到期。只允许显式同call方法，不开放普通send/CLI/真实模型。
 
-下一片直接接指定已存session的core30当前轮driver，不能把它交给会reset/close删除场景的旧evaluate_scenario路径；旧--resume报告缓存硬拒保留。待实现attach→primary_pending调用本方法/primary_complete只读→真实JudgeJournal→detach；不initialize控制库、不以report JSON作权能、不假称未来轮/整套考题已接好。报告计原run累计UUID，批次必须只加实际前后集合差与judge真实新增，避免旧3+累计4误计7，也不能将本段1标整case reused漏算；未有代码或测试。
+本片已接指定已存session的core30当前轮driver，没有交给会reset/close删除场景的旧evaluate_scenario路径；旧--resume报告缓存硬拒保留。实际attach→primary_pending调用本方法/primary_complete只读→真正JudgeJournal→detach，不initialize控制库或以report JSON作权能；报告计当前原run全部已核UUID，用前后集合差分新增与继承，未改普通batching契约。后续整套初始创建/未来轮以及默认SystemClock下历史pending的双Clock问题仍未解决，不能借当前局部通过冒充全套就绪；完整脚本适用范围与金标待决继续保守。
 
 ## 修订记录
 
+- 2026-10-24 10:11 +08:00：指定已有会话当前轮driver分轮5+3通过，保留首3个fixture错误与唯一原件；规范来源门/真实评分/增量会计/永久停机与未知拒绝成立，整套、真实CLI及双Clock限界明确未验收。
+- 2026-10-24 09:57 +08:00：开始指定已存session当前轮driver，采用独立单轮用量回执保持batching旧契约，显式继承/新增/累计UUID与真正Journal评分；不放宽原live授权门或旧--resume。
 - 2026-10-24 09:52 +08:00：显式同run恢复唯一首链7/7，记录真实clear→claim→pending追加、历史只读例外、累计预算、成功/再次quota检查点及撤销/漂移/到期拒绝；Clock倒拨在运行前被独立审发现并删除。CLI仍未接，真实评测门未解除。
 - 2026-10-24 09:28 +08:00：独立exact-clear分轮9+原1红通过，完整保留首夹具失败、真实回滚/未知commit及无执行权边界；根核全部原件，下一片直接接真实同run执行，不重复旧绿。
 - 2026-10-24 08:30 +08:00：根复核首次9/9原始metadata/XML与真实3组参数，记录只读资格及未覆盖/未授权边界，冻结供小提交；不重复绿、不改旧金标或执行门。
