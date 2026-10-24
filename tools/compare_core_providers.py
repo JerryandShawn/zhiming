@@ -206,6 +206,7 @@ def legacy_worker(arm, scenario, legacy_root):
     """Run the original production v5 controller and its real ConversationStore."""
     import logging
     import httpx
+    from mingjing_core.models.quota_retired import assert_retired_offline
     directory, source_hashes = verified_legacy_sources(legacy_root)
     original_source=(directory/'chat_agent.py').read_text(encoding='utf-8')
     # The production v5 has hardcoded history bounds, not a context env switch.
@@ -222,6 +223,7 @@ def legacy_worker(arm, scenario, legacy_root):
         async def __aenter__(self):await self.client.__aenter__();return self
         async def __aexit__(self,*args):return await self.client.__aexit__(*args)
         async def post(self,url,**kwargs):
+            assert_retired_offline(self.client)
             body=kwargs.get('json',{});started=time.monotonic()
             record={'purpose':'legacy-tool-round','input_body_bytes':len(json.dumps(body,ensure_ascii=False).encode()),'model':body.get('model'),'usage':{}}
             calls.append(record);persist_observations(calls)
@@ -439,6 +441,8 @@ def main(argv=None):
     parser.add_argument('--worker-arm', choices=ARMS)
     parser.add_argument('--worker-scenario', choices=tuple(QUESTIONS))
     args = parser.parse_args(argv)
+    if not args.dry_run:
+        parser.error('Retired live comparison is disabled; only --dry-run remains available')
     if args.worker_arm:
         global WORKER_OUTPUT, WORKER_CONTEXT
         WORKER_OUTPUT=args.output;WORKER_CONTEXT={'arm':args.worker_arm,'scenario':args.worker_scenario,'synthetic_only':True,

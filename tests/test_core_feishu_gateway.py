@@ -3,13 +3,15 @@ import asyncio
 import json
 import unittest
 import uuid
+from datetime import UTC, datetime, timedelta
 
 from psycopg import sql
-from test_core_memory import test_dsn
+from test_core_memory import test_dsn as core_test_dsn
 from mingjing_core.adapters.feishu_gateway import FeishuGateway, build_sdk_client
 from mingjing_core.application.consultation import ConsultationService
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.repositories.postgres import PostgresRepository
+from mingjing_core.timekit.clock import FrozenClock, get_clock, set_clock
 
 
 def event(ident='om_syntheticMessage', **changes):
@@ -58,8 +60,10 @@ class ObservedCore(ConsultationService):
 
 class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
+        self.previous_clock=get_clock();self.clock=FrozenClock(datetime(2026,10,17,12,tzinfo=UTC))
+        set_clock(self.clock);self.addCleanup(set_clock,self.previous_clock)
         self.schema='test_feishu_'+uuid.uuid4().hex[:20]
-        self.repo=PostgresRepository(test_dsn(),schema=self.schema)
+        self.repo=PostgresRepository(core_test_dsn(),schema=self.schema)
         self.addCleanup(self.cleanup)
         self.repo.ensure_owner('feishu-owner');self.repo.ensure_owner('other-owner')
         self.repo.bind_channel('feishu-owner','feishu','ou_syntheticAuthor')
@@ -68,6 +72,15 @@ class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
             self.sent.append((target,content,operation))
             return 'om_syntheticReceipt'
         self.gateway=FeishuGateway(self.core,transport)
+
+    async def run_external_worker(self,accepted: dict,*,gateway: FeishuGateway | None=None,advance: bool=True) -> dict:
+        gateway=gateway or self.gateway
+        if advance:self.clock.advance(timedelta(milliseconds=2500))
+        gateway.ingress.flush_due()
+        item=self.repo.get('feishu-owner','request',accepted['inbound_id'])
+        run=self.repo.fetch_run('feishu-owner',item['run_id'])
+        if run['status']=='queued':self.core.execute('feishu-owner',run['id'])
+        return await gateway.process('feishu-owner',accepted['inbound_id'])
 
     def cleanup(self):
         if hasattr(self,'core'):
@@ -83,7 +96,11 @@ class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
     async def test_official_typed_event_exact_payload_and_duplicate_once(self):
         from lark_oapi.api.im.v1 import P2ImMessageReceiveV1
         typed=P2ImMessageReceiveV1(event())
-        results=await asyncio.gather(self.gateway.handle(typed),self.gateway.handle(typed))
+        buffered=await asyncio.gather(self.gateway.handle(typed),self.gateway.handle(typed))
+        self.assertEqual([result['status'] for result in buffered],['buffering','buffering'])
+        self.assertEqual(self.core.executions,0);self.assertEqual(self.sent,[])
+        first=await self.run_external_worker(buffered[0])
+        results=[first,await self.gateway.handle(typed)]
         self.assertEqual([result['status'] for result in results],['sent','sent'])
         self.assertEqual(self.core.executions,1);self.assertEqual(len(self.sent),1)
         target,body,operation=self.sent[0]
@@ -104,10 +121,13 @@ class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
     async def test_accepted_then_interrupted_poll_recovers_original_queue(self):
         accepted=self.gateway.accept(event())
         self.assertEqual(self.core.executions,0);self.assertEqual(self.sent,[])
-        self.assertEqual(self.repo.fetch_run('feishu-owner',accepted['run_id'])['status'],'queued')
+        self.assertIsNone(accepted['run_id']);self.assertEqual(self.repo.queued_runs(),[])
         resumed=FeishuGateway(self.core,self.gateway.delivery.transport)
+        self.clock.advance(timedelta(milliseconds=2500))
         report=await resumed.tick()
         self.assertEqual(report,{'processed':1,'failed':0})
+        self.assertEqual(self.core.executions,0);self.assertEqual(self.sent,[])
+        await self.run_external_worker(accepted,gateway=resumed,advance=False)
         self.assertEqual(self.core.executions,1);self.assertEqual(len(self.sent),1)
 
     async def test_unknown_bot_group_and_nontext_cannot_enter_core(self):
@@ -130,13 +150,15 @@ class FeishuGatewayPostgresTests(unittest.IsolatedAsyncioTestCase):
         accepted=self.gateway.accept(event(content=json.dumps({'text':original})))
         source=self.repo.list('feishu-owner','message')[0]
         self.assertEqual(source['content'],original)
-        self.assertEqual(self.repo.fetch_run('feishu-owner',accepted['run_id'])['request']['message'],original)
+        self.clock.advance(timedelta(milliseconds=2500));self.gateway.ingress.flush_due()
+        item=self.repo.get('feishu-owner','request',accepted['inbound_id'])
+        self.assertEqual(self.repo.fetch_run('feishu-owner',item['run_id'])['request']['message'],original)
 
     async def test_ambiguous_send_is_persistent_and_never_replayed(self):
         def uncertain(target,content,operation):
             self.sent.append((target,content,operation));raise TimeoutError('synthetic timeout')
         self.gateway=FeishuGateway(self.core,uncertain)
-        first=await self.gateway.handle(event())
+        first=await self.run_external_worker(await self.gateway.handle(event()))
         self.assertEqual(first['status'],'uncertain')
         duplicate=await self.gateway.handle(event())
         self.assertEqual(duplicate['status'],'uncertain')

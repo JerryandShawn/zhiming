@@ -1,0 +1,72 @@
+id: R03
+title: 真实跨渠道或长历史检索的精确事实
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides: {}
+  facts:
+  - id: career-concern
+    kind: concern
+    summary: 考虑跳槽且担心出差
+    quote: 我想跳槽，但怕新岗位经常出差。
+    source_message_id: feishu-career
+    status: active
+    sensitivity: normal
+    legacy: false
+    data: {}
+  thread:
+  - id: feishu-career
+    role: user
+    content: 我想跳槽，但怕新岗位经常出差。
+    at: '2026-10-16T20:00:00+08:00'
+    channel: feishu
+  - id: feishu-reply
+    role: assistant
+    content: 可以先问清每月出差天数。
+    at: '2026-10-16T20:01:00+08:00'
+    channel: feishu
+  entities: []
+  settings: {}
+  context: {}
+  controls: {}
+  thread_id: life-synthetic
+  incognito: false
+turns:
+- user: 继续昨天那个话题
+  channel: web
+  kind: chat
+  action: {}
+  expect:
+    must_include_any: []
+    must_include_all: []
+    must_not_include: []
+    tools_called:
+    - memory_search
+    tools_not_called: []
+    receipts: []
+    db:
+    - where: {}
+      path: observed_tools.0.output.data.items.0.id
+      equals: career-concern
+      absent: false
+    - where: {}
+      path: observed_tools.0.output.data.items.0.content
+      contains: 我想跳槽，但怕新岗位经常出差。
+      absent: false
+    events: []
+    chart_structure: false
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 我想跳槽，但怕新岗位经常出差。
+        kinds:
+        - fact
+  - text: 已查询实际授权来源，再继续讨论。
+notes: 独立v4扩充契约；实际工具结果/线程/信封断言，不替换冻结47项。

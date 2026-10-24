@@ -7,6 +7,7 @@ from chat_agent import ChatAgent
 class Index:
     def search(self,query,*args):self.query=query;return []
 class Capture:
+    _zhiming_offline_transport=True
     async def __aenter__(self):return self
     async def __aexit__(self,*args):pass
     async def post(self,url,headers,json):self.request=json;raise RuntimeError('capture complete')

@@ -1,0 +1,40 @@
+id: X05
+title: 重复同参工具三次熔断
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  controls:
+    repeat_tool_call:
+      name: memory_search
+      arguments:
+        query: 工作限制
+    repeat_count: 3
+turns:
+- user: 找找我之前的工作限制
+  expect:
+    must_not_include:
+    - 本轮未完成
+    db:
+    - path: run_meta.repeated_call_count
+      equals: 3
+    events:
+    - tool.repeat_circuit_open
+    - run.completed
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 工作限制
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 工作限制
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 工作限制
+  - text: 检索已停止重复尝试，我先按目前可确认的内容回答，稍后可以补充信息。

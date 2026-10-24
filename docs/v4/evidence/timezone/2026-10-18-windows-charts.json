@@ -1,0 +1,203 @@
+{
+  "artifact_sha256": [
+    "8cc73c0a0bfca7dbfa59235d60b2eff82231dee33f53d206db1acd9173cfc0a7",
+    "b683bd1b6659ddcd810ff02ad09ba821d4bf1065072805063eb35c49617905ac"
+  ],
+  "lock_versions": {
+    "requirements-charts.lock": "2026.5",
+    "requirements-core.lock": "2026.5",
+    "tools/timezone/tzdata.lock": "2026.5"
+  },
+  "runtime": {
+    "platform": "win32",
+    "python": "3.11.16"
+  },
+  "scope": "Offline timezone package data only; excludes full Charts dependencies and chart algorithms.",
+  "sha256": "f66f063a04cb9fb1a5238bac645d1aaea32957502bd3bb782c670ac5df578df2",
+  "snapshot": {
+    "cases": [
+      {
+        "dst_seconds": 0,
+        "fold": 0,
+        "id": "shanghai-current",
+        "local": "2026-10-17T08:00:00+08:00",
+        "utc": "2026-10-17T00:00:00+00:00",
+        "zone": "Asia/Shanghai"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 0,
+        "id": "shanghai-1986-before",
+        "local": "1986-05-04T01:59:59+08:00",
+        "utc": "1986-05-03T17:59:59+00:00",
+        "zone": "Asia/Shanghai"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "shanghai-1986-after",
+        "local": "1986-05-04T03:00:00+09:00",
+        "utc": "1986-05-03T18:00:00+00:00",
+        "zone": "Asia/Shanghai"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "shanghai-1991-fold0",
+        "local": "1991-09-15T01:30:00+09:00",
+        "utc": "1991-09-14T16:30:00+00:00",
+        "zone": "Asia/Shanghai"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 1,
+        "id": "shanghai-1991-fold1",
+        "local": "1991-09-15T01:30:00+08:00",
+        "utc": "1991-09-14T17:30:00+00:00",
+        "zone": "Asia/Shanghai"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 0,
+        "id": "new-york-spring-before",
+        "local": "2026-03-08T01:59:59-05:00",
+        "utc": "2026-03-08T06:59:59+00:00",
+        "zone": "America/New_York"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "new-york-spring-after",
+        "local": "2026-03-08T03:00:00-04:00",
+        "utc": "2026-03-08T07:00:00+00:00",
+        "zone": "America/New_York"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "new-york-fold0",
+        "local": "2026-11-01T01:30:00-04:00",
+        "utc": "2026-11-01T05:30:00+00:00",
+        "zone": "America/New_York"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 1,
+        "id": "new-york-fold1",
+        "local": "2026-11-01T01:30:00-05:00",
+        "utc": "2026-11-01T06:30:00+00:00",
+        "zone": "America/New_York"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 0,
+        "id": "london-spring-before",
+        "local": "2026-03-29T00:59:59+00:00",
+        "utc": "2026-03-29T00:59:59+00:00",
+        "zone": "Europe/London"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "london-spring-after",
+        "local": "2026-03-29T02:00:00+01:00",
+        "utc": "2026-03-29T01:00:00+00:00",
+        "zone": "Europe/London"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "london-fold0",
+        "local": "2026-10-25T01:30:00+01:00",
+        "utc": "2026-10-25T00:30:00+00:00",
+        "zone": "Europe/London"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 1,
+        "id": "london-fold1",
+        "local": "2026-10-25T01:30:00+00:00",
+        "utc": "2026-10-25T01:30:00+00:00",
+        "zone": "Europe/London"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 0,
+        "id": "kathmandu-before",
+        "local": "1985-12-31T23:59:59+05:30",
+        "utc": "1985-12-31T18:29:59+00:00",
+        "zone": "Asia/Kathmandu"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 0,
+        "id": "kathmandu-after",
+        "local": "1986-01-01T00:15:00+05:45",
+        "utc": "1985-12-31T18:30:00+00:00",
+        "zone": "Asia/Kathmandu"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "apia-before",
+        "local": "2011-12-29T23:59:59-10:00",
+        "utc": "2011-12-30T09:59:59+00:00",
+        "zone": "Pacific/Apia"
+      },
+      {
+        "dst_seconds": 3600,
+        "fold": 0,
+        "id": "apia-after",
+        "local": "2011-12-31T00:00:00+14:00",
+        "utc": "2011-12-30T10:00:00+00:00",
+        "zone": "Pacific/Apia"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 0,
+        "id": "lord-howe-spring-before",
+        "local": "2026-10-04T01:59:59+10:30",
+        "utc": "2026-10-03T15:29:59+00:00",
+        "zone": "Australia/Lord_Howe"
+      },
+      {
+        "dst_seconds": 1800,
+        "fold": 0,
+        "id": "lord-howe-spring-after",
+        "local": "2026-10-04T02:30:00+11:00",
+        "utc": "2026-10-03T15:30:00+00:00",
+        "zone": "Australia/Lord_Howe"
+      },
+      {
+        "dst_seconds": 1800,
+        "fold": 0,
+        "id": "lord-howe-fold0",
+        "local": "2026-04-05T01:45:00+11:00",
+        "utc": "2026-04-04T14:45:00+00:00",
+        "zone": "Australia/Lord_Howe"
+      },
+      {
+        "dst_seconds": 0,
+        "fold": 1,
+        "id": "lord-howe-fold1",
+        "local": "2026-04-05T01:45:00+10:30",
+        "utc": "2026-04-04T15:15:00+00:00",
+        "zone": "Australia/Lord_Howe"
+      }
+    ],
+    "constructor": "zoneinfo.ZoneInfo",
+    "data_source": "tzdata-package",
+    "distribution_version": "2026.5",
+    "iana_version": "2026e",
+    "tzdata_zi_version": "2026e",
+    "tzpath": [],
+    "zone_sha256": {
+      "America/New_York": "d7f2206b3a45989fc9ad63d558922532fa7352280d5f87176bf1db79cb1d1fa9",
+      "Asia/Kathmandu": "76b8f1bfe072231a1d9e7f8501310e27c0d08048c48f7422860b6477c142c438",
+      "Asia/Shanghai": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+      "Australia/Lord_Howe": "f368bd25659c0293d02bb79ec7dac7d5b73a92dffafce14b4dd2ffb8ba11aada",
+      "Europe/London": "676541f0b8ad457c744c093f807589adcad909e3fd03f901787d08786eedbd33",
+      "Pacific/Apia": "dc70c47c80ab2c87a1ab754bab8febfc38508059e249dfe55e73a3759808ea14"
+    }
+  }
+}

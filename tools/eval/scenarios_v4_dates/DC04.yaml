@@ -1,0 +1,38 @@
+id: DC04
+title: 国庆我想请10月8号、9号两天年假连着休，一共能连休几天？哪天回去上班？
+category: time
+clock: '2026-09-28T10:00:00+08:00'
+targets:
+- v4
+seed: {}
+turns:
+- user: 国庆我想请10月8号、9号两天年假连着休，一共能连休几天？哪天回去上班？
+  expect:
+    tools_called:
+    - date_calc
+    - calendar_lookup
+    must_include_all:
+    - 9 天|九天
+    - 10月10日|10/10|10号
+    - 调休
+    db:
+    - path: observed_tools.0.output.data.result.days
+      equals: 9
+    - path: observed_tools.1.output.data.days.0.day_status.kind
+      equals: adjusted_workday
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: date_calc
+      arguments:
+        op: diff
+        a: '2026-10-01'
+        b: '2026-10-09'
+        inclusive: true
+  - tool_call:
+      name: calendar_lookup
+      arguments:
+        start_date: '2026-10-10'
+  - text: 从10月1日到10月9日，含首尾一共 9 天；10月10日（周六）需要回去上班，当天是调休工作日。
+notes: 19号及模块线v2.3候选材料的七题子集；真实本机PG+实际U4+脚本模型，不向解析器传预期答案。

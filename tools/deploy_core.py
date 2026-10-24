@@ -387,14 +387,17 @@ def sync_frozen_hermes(repo,source,bindings,owner='primary'):
 def export_withdrawals(repo):
     """Export program-compatible privacy ledgers and identifier-only guards."""
     from psycopg import sql
+    from tools.deploy_core_withdrawals import exported_deleted_draws
     with repo.connection() as c:
         c.execute('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY')
         owners=[row['id'] for row in c.execute(sql.SQL('SELECT id FROM {} ORDER BY id').format(repo.table('core_owners'))).fetchall()]
         ledgers=[repo.export_privacy(owner) for owner in owners]
         tarot=c.execute(sql.SQL('SELECT owner,operation,request_key,fingerprint,result_type FROM {} WHERE deleted=true ORDER BY owner,operation,request_key').format(repo.table('tarot_requests'))).fetchall()
-        deleted=[]
-        for row in c.execute(sql.SQL("SELECT owner,receipt FROM {} WHERE operation LIKE 'tarot-delete:%%' ORDER BY owner,operation,request_key").format(repo.table('core_mutation_requests'))).fetchall():
-            deleted.extend({'owner':row['owner'],'draw_id':ident} for ident in row['receipt'].get('deleted_ids',[]))
+        deletion_receipts=c.execute(sql.SQL(
+            "SELECT owner,receipt FROM {} WHERE operation LIKE 'tarot-delete:%%' "
+            "ORDER BY owner,operation,request_key"
+        ).format(repo.table('core_mutation_requests'))).fetchall()
+        deleted=exported_deleted_draws(deletion_receipts)
         receipts=c.execute(sql.SQL("SELECT id,owner,subject,business_id,channel,target,run_id,status,attempts,due,receipt FROM {} WHERE status IN ('sent','sending','uncertain') ORDER BY owner,business_id,channel,target").format(repo.table('delivery_outbox'))).fetchall()
     return {'schema':'core3-withdrawals-v2','owners':ledgers,'tarot_requests':tarot,'deleted_draws':deleted,
             'delivery_receipts':[dict(row,due=row['due'].isoformat(),status='uncertain' if row['status']=='sending' else row['status']) for row in receipts]}
@@ -407,6 +410,7 @@ def apply_withdrawals(repo,document):
     from psycopg.types.json import Jsonb
     from mingjing_core.adapters.tarot import TarotService
     from mingjing_core.runtime import LangGraphRuntime
+    from tools.deploy_core_withdrawals import retain_deleted_draws
     if not isinstance(document,dict) or document.get('schema')!='core3-withdrawals-v2':raise ValueError('A current complete withdrawal export is required')
     ledgers=document.get('owners');requests=document.get('tarot_requests');draws=document.get('deleted_draws');receipts=document.get('delivery_receipts')
     if any(not isinstance(value,list) for value in (ledgers,requests,draws,receipts)):raise ValueError('Withdrawal export arrays are invalid')
@@ -427,7 +431,7 @@ def apply_withdrawals(repo,document):
         due=datetime.fromisoformat(row['due'])
         if due.tzinfo is None:raise ValueError('Delivery receipt due must include a timezone')
         grouped_receipts[row['owner']].append(row)
-    removed=0;replayed=0;protected=0;purge=[]
+    removed=0;replayed=0;protected=0;retained=0;purge=[]
     # Keep every owner's privacy effects and the independent idempotency guards
     # in one transaction. Any mismatched fingerprint aborts the whole replay.
     with repo.transaction() as c:
@@ -440,6 +444,7 @@ def apply_withdrawals(repo,document):
                     if old and (old['fingerprint']!=row['fingerprint'] or old['result_type']!=row['result_type']):raise ValueError('Restored Tarot request differs from the latest withdrawal')
                     if old and old['result_id']:
                         (reading_ids if row['result_type']=='reading' else draw_ids).add(old['result_id'])
+                retained+=retain_deleted_draws(repo,c,owner,draw_ids)
                 repo.apply_privacy(owner,ledger)
                 revocations=repo.revocations(owner)
                 fact_ids=[row['entity_id'] for row in revocations if row['kind']=='fact']
@@ -472,7 +477,10 @@ def apply_withdrawals(repo,document):
         runtime=LangGraphRuntime(repo,initialize=False)
         for run in purge:
             for epoch in range(run['retry_epoch']+1):runtime.purge(run['id'],epoch)
-    return {'owners':len(owners),'deleted_draws':removed,'tarot_tombstones':replayed,'protected_receipts':protected,'external_sends':0,'model_calls':0}
+    return {
+        'owners':len(owners),'deleted_draws':removed,'tarot_tombstones':replayed,
+        'draw_tombstones_added':retained,'protected_receipts':protected,'external_sends':0,'model_calls':0,
+    }
 
 
 def freeze(args):

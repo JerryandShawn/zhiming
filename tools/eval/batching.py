@@ -71,7 +71,11 @@ def run_batches(
         publish()
         if report["metadata"].get("stop_reason"):
             break
-    report["metadata"]["pending_scenario_ids"] = [scenario.id for scenario in scenarios if scenario.id not in known]
+    report["metadata"]["pending_scenario_ids"] = [
+        scenario.id
+        for scenario in scenarios
+        if scenario.id not in known or known[scenario.id]["status"] == "incomplete"
+    ]
 
 
 def _run_batch(
@@ -98,8 +102,11 @@ def _run_batch(
                 status="incomplete",
                 stop_reason=case["stop_reason"],
                 stop_role=case["stop_role"],
-                requires_user_decision=True,
+                requires_user_decision=case.get("requires_user_decision", True),
             )
+            for key in ("resume_at", "automatic_resume_eligible", "permanent_stop", "provider_http_status"):
+                if key in case:
+                    report["metadata"][key] = case[key]
             break
     batch["wall_seconds"] = round(time.perf_counter() - started, 3)
     batch["status"] = "stopped" if report["metadata"].get("stop_reason") else "complete"

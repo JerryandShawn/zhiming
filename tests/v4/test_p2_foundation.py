@@ -57,10 +57,10 @@ def test_existing_four_migrations_with_data_upgrade_atomically(p2_repo: Postgres
             assert constraint["conname"] == "core_runs_check"
         upgraded = PostgresRepository(repo.dsn, schema=schema)
         try:
-            assert upgraded.verify_schema()["version"] == 7
+            assert upgraded.verify_schema()["version"] == 8
             assert upgraded.get("legacy", "message", "old")["content"] == "合成既有消息"
             upgraded.initialize()
-            assert upgraded.verify_schema()["version"] == 7
+            assert upgraded.verify_schema()["version"] == 8
         finally:
             upgraded.close()
     finally:

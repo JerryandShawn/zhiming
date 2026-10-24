@@ -1,0 +1,42 @@
+{
+  "schema": "b1-stage-restore-replay-evidence-v1",
+  "recorded_at_beijing": "2026-10-20T23:07:45+08:00",
+  "platform": "Windows",
+  "postgres_version_num": 150019,
+  "candidate": "b9a89b6f84f7bebb640de080548010859aae630c",
+  "manifest_sha256": "49038f8c0dc6bb293ba688af91018cbe6339b319c388d290fd000a256e36b33c",
+  "candidate_files": 636,
+  "checksums": {
+    "1": "0015f6b2a9d655b5d47774a7fc44456a299953db1b0b05fcd13558206f855586",
+    "2": "a7df7398ce522df386dbefcf464b7d0b550fabd558e47adec6fd991c15715f67",
+    "3": "9905263b6a5bb7eabd133607b587efc055c475ea6017c497116be02df6d32ff5",
+    "4": "eb6f19a7753168387388cff5d001694f90676dcbc60a72c5d7de8ccb76f27145",
+    "5": "19182ec61c19d9ff3472a867b9b2ce41fa60fe22579e83dd04b4a50308708e62",
+    "6": "c3469b6bad49358c11562ec16c70f840d5a0d50a8c9041c2f044a888aa644ee2",
+    "7": "6c6c544a9b3def93da445ff5a58338e242c096294627dd7414c139263e3083ce"
+  },
+  "tests": {
+    "pure": 17,
+    "real_postgres": 8,
+    "passed": 25,
+    "failed": 0,
+    "seconds": 27.7
+  },
+  "ruff_check": "passed",
+  "ruff_format": "passed",
+  "linux_verified": false,
+  "stage_accessed": false,
+  "production_accessed": false,
+  "ssh_connections": 0,
+  "model_calls": 0,
+  "feishu_sends": 0,
+  "production_restore_ready": false,
+  "files_sha256": {
+    "tests/test_b1_restore_replay_contracts.py": "628820d62511f34c891f99f45916339d00be98e87849ac32c23aff85524f0718",
+    "tests/test_b1_restore_replay_pg.py": "17d7622e8c733d02b303adcdd2a47308aca1412823e56f7ea9c9e0aaa4a256f5",
+    "tests/test_b1_restore_replay_support.py": "ee552cf47c3e4c29f2ad5637b5167617dceda99663c1f5577340083bf30f75a8",
+    "tools/b1_restore_replay.py": "9536b4ef9ff19dc20d34b3b742ce753d8aba468aa247bf684cdbc8503e75304f",
+    "tools/b1_restore_replay_contracts.py": "28f1712d9a5da59ef190066e4c6e596e2b7af4a132d70a8f73b6232922334a08",
+    "tools/b1_restore_replay_worker.py": "c82e82df119905017d0d7617541c8b46a271a1427d47cb44c134fbe3db0eb66b"
+  }
+}

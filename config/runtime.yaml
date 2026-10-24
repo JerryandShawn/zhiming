@@ -1,0 +1,13 @@
+version: 1
+interactive:
+  max_iterations: 40
+  max_seconds: 480
+  max_tools: 6
+  repeat_limit: 3
+background:
+  max_iterations: 60
+  max_seconds: 1200
+  max_tools: 10
+  repeat_limit: 3
+lease_seconds: 150
+renew_seconds: 20

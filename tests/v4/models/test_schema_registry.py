@@ -131,7 +131,7 @@ def registry(tmp_path: Any, *, shared: Any = False) -> Any:
     )
 
 
-def test_provider_503_twice_then_failover(tmp_path: Any) -> None:
+def test_provider_503_four_attempts_then_failover(tmp_path: Any) -> None:
     model_registry = registry(tmp_path)
     attempts = []
 
@@ -149,7 +149,7 @@ def test_provider_503_twice_then_failover(tmp_path: Any) -> None:
         return model
 
     result = model_registry.port(factory=factory).complete([ChatMessage("user", "查询")])
-    assert attempts == ["a", "a", "sibling"]
+    assert attempts == ["a", "a", "a", "a", "sibling"]
     assert (result.model, result.provider) == ("sibling", "two")
 
 
@@ -228,7 +228,7 @@ def test_default_registry_loads_no_network() -> None:
     reg = ModelRegistry(
         root / "config/models.yaml", environment={"KIMI_API_KEY": "synthetic-value", "KIMI_MODEL": "k3"}
     )
-    assert [handle.model for handle in reg.resolve()] == ["k3"]
+    assert [handle.model for handle in reg.resolve()] == ["k3-256k"]
     assert reg.resolve("critic")[0].model == "k3-256k"
     assert reg.resolve("fast")[0].provider == "kimi_code"
 

@@ -1,0 +1,29 @@
+id: M13
+title: 无痕线程不写记忆与反思
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  incognito: true
+turns:
+- user: 我在考虑离婚
+  expect:
+    must_include_any:
+    - 无痕
+    - 不记
+    tools_not_called:
+    - memory_write
+    - note_write
+    - episode_write
+    db:
+    - kind: fact
+      count: 0
+    - kind: note
+      count: 0
+    - kind: reflection_job
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - text: 这听起来是个很重的决定，我们可以先谈谈你最困扰的部分。这次无痕对话不记入长期记忆。

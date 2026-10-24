@@ -1,0 +1,584 @@
+{
+  "metadata": {
+    "date": "2026-10-23",
+    "mode": "scripted",
+    "target": "v4",
+    "model": "scripted-v4",
+    "judge_model": "not called (scripted)",
+    "judge_provider": "configured-model-v3",
+    "judge_schema_sha256": "048dd7889e4c9c96c6500d6fbbf35b9cdc9e67f16c14607d1e292dc03ef884bc",
+    "rubric_version": "critic-eval-v1.0.0",
+    "rubric_sha256": "4647f8ac8cda20b056a9f14b088d809b425df60d15f4dfadc5378b36ca775c53",
+    "config_version": "eval-config-v1.0.0",
+    "config_sha256": "16295c8a4113462c3c42fcf7c4428055377e44456c1ae6a7358ca3114798278a",
+    "source_sha256": "d68c1b97e3ce11fc94ef5efbc13f7b37796c082fd36a504702c38d3ad8480dd2",
+    "provider_endpoint_sha256": null,
+    "synthetic_only": true,
+    "status": "complete",
+    "evaluation_scope": "real local PG + scripted ports/codec mocks; no live quality claim",
+    "external_provider_requests": 0,
+    "u4_parser": "declared substitute under Z6",
+    "planned_scenario_ids": [
+      "DC01",
+      "DC02",
+      "DC03",
+      "DC04",
+      "TR01",
+      "TR02",
+      "TR03"
+    ],
+    "batch_size": 10,
+    "attempt": 1,
+    "execution_usage": {
+      "new_usage": {
+        "model_calls": 12,
+        "target_model_calls": 12,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 2.7943,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 2.794
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "historical_actual_usage": {
+        "model_calls": 12,
+        "target_model_calls": 12,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 2.7943,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 2.794
+      }
+    },
+    "scoring_contract_version": "deterministic-eval-v1.0.0",
+    "scoring_corpus_sha256": "e01031f43d0be4a12506faf3bdf6f0a32e9d7780c062df78e21727cbdcc5a5e8",
+    "pending_scenario_ids": []
+  },
+  "cases": [
+    {
+      "id": "DC01",
+      "category": "time",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "还有 4 天，下周三（10/21 周三）。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.4375,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.438,
+      "v4_evidence": {
+        "run_ids": [
+          "run_3741c080cca6468c943b064f7c0efcdc"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
+        "tool_steps": [
+          {
+            "run_id": "run_3741c080cca6468c943b064f7c0efcdc",
+            "epoch": 0,
+            "seq": 2,
+            "name": "date_calc",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {},
+        "ingress": {}
+      },
+      "fingerprint": "9a65126574f0622f3e0b553bd7b3819f5de3e1348547156f9cad416ac4166856",
+      "scenario_contract_sha256": "219651b8d4e56d2e7da2c6a61742f0dc0eb15fffff9c82dae6d8e860c1f00c2f"
+    },
+    {
+      "id": "DC02",
+      "category": "time",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "你现在32周岁，虚岁33；这里虚岁按出生一岁、农历春节加一岁这一传统口径。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.4112,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.411,
+      "v4_evidence": {
+        "run_ids": [
+          "run_2805a8cb23284b339c403d41d054cdc7"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
+        "tool_steps": [
+          {
+            "run_id": "run_2805a8cb23284b339c403d41d054cdc7",
+            "epoch": 0,
+            "seq": 2,
+            "name": "date_calc",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {},
+        "ingress": {}
+      },
+      "fingerprint": "6538cd808fb6467649d3511f52759d1567d5a2f1992bd96006087f5d75f9e564",
+      "scenario_contract_sha256": "21af157e4b7c2177ff51510fee5dc1b864b3d36f781c10b4f14abcf83ca6a22a"
+    },
+    {
+      "id": "DC03",
+      "category": "time",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[3]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "今年是10月21日（周三）。这里只核对日期，没有替你保存母亲的生日。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.5023,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.502,
+      "v4_evidence": {
+        "run_ids": [
+          "run_4d00c81f64f4403ba609bde4f141524e"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
+        "tool_steps": [
+          {
+            "run_id": "run_4d00c81f64f4403ba609bde4f141524e",
+            "epoch": 0,
+            "seq": 2,
+            "name": "date_calc",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {},
+        "ingress": {}
+      },
+      "fingerprint": "6ac0f8ad72776d5174d068a29a1c325128b435c9ee09dcb8b591d9970d2441f0",
+      "scenario_contract_sha256": "345193fbb2e5afb405862d6c3847b2638d1062ea9646f3ece2a20837681abfc5"
+    },
+    {
+      "id": "DC04",
+      "category": "time",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "从10月1日到10月9日，含首尾一共 9 天；10月10日（周六）需要回去上班，当天是调休工作日。"
+      ],
+      "model_calls": 3,
+      "target_model_calls": 3,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.6807,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.681,
+      "v4_evidence": {
+        "run_ids": [
+          "run_9ceafecf5b354c3db6226a3e486c8a51"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
+        "tool_steps": [
+          {
+            "run_id": "run_9ceafecf5b354c3db6226a3e486c8a51",
+            "epoch": 0,
+            "seq": 2,
+            "name": "date_calc",
+            "status": "completed"
+          },
+          {
+            "run_id": "run_9ceafecf5b354c3db6226a3e486c8a51",
+            "epoch": 0,
+            "seq": 4,
+            "name": "calendar_lookup",
+            "status": "completed"
+          }
+        ],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {},
+        "ingress": {}
+      },
+      "fingerprint": "591c06f390a28f3b2c4cc9c52b2206a9018c1215ffa31ea9c98c98504b3f2d28",
+      "scenario_contract_sha256": "0099bbaa935020da01c5bb8d63b30429ff5a64c02fe5066bbfe2e1af965355c1"
+    },
+    {
+      "id": "TR01",
+      "category": "memory_recall",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "国庆那几天，你提过回老家时和表哥因为合伙开店闹得不愉快。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.2554,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.255,
+      "v4_evidence": {
+        "run_ids": [
+          "run_e01d7920e12d4592831b2dbdb0f5f2df"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
+        "tool_steps": [],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {},
+        "ingress": {}
+      },
+      "fingerprint": "c837e84d288296206ed8c4221a593a8c4a9ccd512c5a11c29eb77179bcac3e4d",
+      "scenario_contract_sha256": "6eba190617da024e11fa6645c7df96b6f5d26feb7f18549adc06880de59fac0a"
+    },
+    {
+      "id": "TR02",
+      "category": "memory_recall",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "上个月你说想买一台微单相机。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.2858,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.286,
+      "v4_evidence": {
+        "run_ids": [
+          "run_e00729d6765a45d5b8ac377254309bbe"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
+        "tool_steps": [],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {},
+        "ingress": {}
+      },
+      "fingerprint": "0cd9d6fc1d16d5b42a34bce9da72cfa1afc9d5f730fb292c14993d79672eacb9",
+      "scenario_contract_sha256": "f53a4ea0270d36db6b0245f7ed13c5d6047660a1d805b2b154d0a33b22854a2f"
+    },
+    {
+      "id": "TR03",
+      "category": "memory_recall",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "我没有听你提过去年冬天想去哪旅游；目前没有找到这条记忆。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.2214,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.221,
+      "v4_evidence": {
+        "run_ids": [
+          "run_d30807d5c8d541cab76fb9d297fe783a"
+        ],
+        "external_provider_requests": 0,
+        "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
+        "tool_steps": [],
+        "semantic_observations": [],
+        "decision_rows": [],
+        "cancellation": {},
+        "portability": {},
+        "ingress": {}
+      },
+      "fingerprint": "e14853789465fa0d15f5a6fa08f0efb4f4b67be761fd1772fe3b5b4a3d1058df",
+      "scenario_contract_sha256": "e91c530bed59b480056e4574544a48b70cd17064ef2df8390040d20c14bb673b"
+    }
+  ],
+  "batches": [
+    {
+      "attempt": 1,
+      "batch": 1,
+      "scenario_ids": [
+        "DC01",
+        "DC02",
+        "DC03",
+        "DC04",
+        "TR01",
+        "TR02",
+        "TR03"
+      ],
+      "executed_ids": [
+        "DC01",
+        "DC02",
+        "DC03",
+        "DC04",
+        "TR01",
+        "TR02",
+        "TR03"
+      ],
+      "cached_ids": [],
+      "new_usage": {
+        "model_calls": 12,
+        "target_model_calls": 12,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 2.7943,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 2.794
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "status": "complete",
+      "wall_seconds": 5.41
+    }
+  ],
+  "summary": {
+    "count": 7,
+    "passed": 7,
+    "not_applicable": 0,
+    "points": 7.0,
+    "score": 1.0,
+    "categories": {
+      "time": {
+        "count": 4,
+        "passed": 4,
+        "points": 4.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "memory_recall": {
+        "count": 3,
+        "passed": 3,
+        "points": 3.0,
+        "not_applicable": 0,
+        "score": 1.0
+      }
+    },
+    "model_calls": 12,
+    "target_model_calls": 12,
+    "judge_model_calls": 0,
+    "elapsed_seconds": 2.794
+  },
+  "comparison": {
+    "baseline": "baseline-v3.json",
+    "comparable": false,
+    "reason": "current_not_live"
+  }
+}

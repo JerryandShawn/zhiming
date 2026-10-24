@@ -122,7 +122,7 @@ def test_legacy_v3_error_reaches_eval_guard_before_business_retry(subtype: str) 
 
 
 def test_legacy_other_403_keeps_http_reason_and_no_public_body() -> None:
-    model = ConfiguredModel(key="synthetic", base="https://synthetic.invalid")
+    model = ConfiguredModel(key="synthetic", base="https://synthetic.invalid", model="synthetic-nonmember")
     with patch("mingjing_core.adapters.model.httpx.Client") as client:
         client.return_value.__enter__.return_value.post.return_value = httpx.Response(
             403,

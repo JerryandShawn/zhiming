@@ -1,0 +1,26 @@
+id: M02
+title: 备考目标自动保存
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+seed: {}
+turns:
+- user: 我最近在准备考研，目标是复旦
+  expect:
+    receipts:
+    - write_status: saved
+    db:
+    - kind: fact
+      where:
+        data.kind: goal
+      count: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我最近在准备考研，目标是复旦
+        summary: 准备考研，目标复旦
+        kind: goal
+  - text: 记下了，你在准备考研，目标是复旦。

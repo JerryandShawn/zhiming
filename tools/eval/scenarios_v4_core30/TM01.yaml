@@ -1,0 +1,60 @@
+id: TM01
+title: 记忆中的相对日期按原话时间绝对化后再计算间隔
+category: time
+clock: '2026-10-15T10:30:00+08:00'
+targets: [v4]
+seed:
+  profile: empty_profile
+  settings:
+    timezone: Asia/Shanghai
+turns:
+- user: 记住，下周三面试。
+  expect:
+    tools_called: [memory_write]
+    receipts:
+    - write_status: saved
+    db:
+    - kind: fact
+      where:
+        data.event_at: '2026-10-21'
+        data.original_expression: 下周三
+      count: 1
+    judge: 将下周三依据10月15日这条原话的时间解析为10月21日，不向用户捏造保存回执。
+- user: 面试是哪天？还有几天？
+  at: '2026-10-17T10:30:00+08:00'
+  expect:
+    tools_called: [memory_search, date_calc]
+    must_include_all: ['10月21日|10/21|21号', '周三|星期三', '4天|4 天|四天']
+    must_not_include: [10月28日, 11天]
+    db:
+    - kind: fact
+      where:
+        data.event_at: '2026-10-21'
+      count: 1
+    judge: 从此前原话保存的绝对日期回答10月21日周三，依据10月17日当前日期给出还有4天，不能重新把下周三偏移到10月28日。
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 下周三面试
+        summary: 合成面试安排
+        kind: event
+        date_expression: 下周三
+  - text: 记下了，你将在10月21日（周三）面试。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 面试
+  - tool_call:
+      name: date_calc
+      arguments:
+        op: diff
+        a: '2026-10-17'
+        b: '2026-10-21'
+  - text: 面试在10月21日（周三），从今天算还有4天。
+notes: 07附录B契约v2.2隔离新增；先通过真实U4记忆写入，再检索和计算，未预植event_at或修改v2.1的80题。
