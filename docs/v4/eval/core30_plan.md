@@ -111,6 +111,8 @@ live/v4入口现在要求`--scripted-gate`、`--candidate`、`--equivalence-proo
 
 ## 放行前仍需补齐
 
+2026-10-24 09:28 +08:00：独立显式exact-clear已实现，只消费原活资格并锁内核同一terminal/stop与完整中央摘要、跨库当前状态；10个不同定向行为分首9绿1夹具红、仅原红1绿成立，精确原件只在 `docs/v4/execplans/P3_quota_resume_witness_20261024.md`。成功清停及真实commit未知都不授执行权，不claim/新POST、不自动补偿，attached send/CLI仍硬关。下一实际resume_pending与原pending一次permit、完成/再quota断点仍待实现；旧gather/check一直只读，完整81门和真实评测门未变。
+
 2026-10-24 09:09 +08:00：completed模型历史版本的只读原生证明，已在真实两次case_update保存、中央quota和原租约自然过期后5/5通过；精确证据及原失败只见 `docs/v4/execplans/P3_quota_historical_prefix_20261024.md`。先前实际入站遗漏case选择已独立以7c20d40和8节点验证。历史证据的execution_authority始终False，不接StepAttempts或发送权限；中央exact-clear、claim、pending-step执行permit和实际同run续作仍未实现，不能据此放行真实评测或CLI。
 
 2026-10-24 08:06 +08:00 当前独立进度：工具事件身份/缺口恢复与原started复用基础已通过首三组及仅受影响pending-case正反两组，分轮证据只在`docs/v4/execplans/P3_journal_events_20261024.md`登记。它保当前真实run/epoch/Journal/隐私边界，未开放Durable.send、CLI或跨额度清停；下述quota witness与完整可信续作仍待实现验证，原81脚本门未变。

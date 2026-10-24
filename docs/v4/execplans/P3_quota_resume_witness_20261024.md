@@ -1,19 +1,23 @@
-# P3：额度恢复前的只读资格核验
+# P3：额度恢复资格与独立精确清停转换
 
-本活计划遵循 AGENTS 与 `.agent/PLANS.md`，北京时间，沿用指令板 v8。工作分支 `v4/p3-wire-quota-resume-20261024` 从已推 60eb8e4 继续；只做本机隔离 PG 和 MockTransport，不改暂停线、模块记忆服务或金标，不发真实模型请求、访问服务器或外发。
+本活计划遵循 AGENTS 与 `.agent/PLANS.md`，北京时间，沿用指令板 v8。原资格分片分支 `v4/p3-wire-quota-resume-20261024` 从60eb8e4继续并已推e2af97d；新增精确转换在 `v4/p3-wire-quota-clear-20261024` 从ddbdc8c继续。只做本机隔离 PG 和 MockTransport，不改暂停线、模块记忆服务或金标，不发真实模型请求、访问服务器或外发。
 
 ## Purpose / Big Picture
 
-为明确五小时额度恢复后从原场景继续建立可核验基础。本片仅回答“原物理请求已可信结束为 quota_5h，明确恢复时间已到，原检查点和累计预算仍相同”这一资格问题，不能执行恢复。中央停机仍保留，原 run 不 claim，Durable 的 attached send、普通 StepAttempts.begin 和 CLI 继续关闭。
+为明确五小时额度恢复后从原场景继续建立可核验基础。已验收原片仅回答“原物理请求已可信结束为 quota_5h，明确恢复时间已到，原检查点和累计预算仍相同”这一资格问题；其eligible/check始终纯读。新增独立显式转换只消费该活资格并在精确中央事务内清同一停机，10个不同定向节点已有分轮通过证据。清停回执不授执行权，原 run 不 claim，Durable 的 attached send、普通 StepAttempts.begin 和 CLI 继续关闭。
 
 ## Context and Orientation
 
-复用 `LifecycleControl.load`、`v4_lifecycle_state.read_private`、`BudgetStore.read_closed`、原 RequestLedger 与模型私密 attempts，以及中央 `QuotaStore.verify`。后者只读；不能使用会更新 last_clock_at 的 locked。实际每次 usage 只有状态和 finished_at，reset_at 在 account 上，因此只接受中央仍停在同一 quota_5h 的 pre-clear 观察；已经清停不能从历史 usage 猜恢复窗口。
+复用 `LifecycleControl.load`、`v4_lifecycle_state.read_private`、`BudgetStore.read_closed`、原 RequestLedger 与模型私密 attempts，以及中央 `QuotaStore.verify`。资格读取只读，不能使用会更新 last_clock_at 的 locked；新增转换在双slot之后对verify(lock=True)加账户行锁，所有断言成立后才显式写时间和清停。实际每次 usage 只有状态和 finished_at，reset_at 在 account 上，因此只接受中央仍停在同一 quota_5h 的 pre-clear 观察；已经清停不能从历史 usage 猜恢复窗口。
 
 StepAttempts 的 authority 依赖有效 lease；本片不借用它 mint 执行权，也不为了核历史申请新 lease。必须按实际请求/Journal/中央字段只读比较同样锚点，不能把 ProviderStopped 的异常或零计数当未发送证明。
 
 ## Progress
 
+- [x] (2026-10-24 09:14 +08:00) 下一独立片在v4/p3-wire-quota-clear-20261024（ddbdc8c之后）补一次性exact-clear转换；先记设计再编码。旧eligible/check继续纯读，新增转换须先消费活witness，核原session和完整原证据，在中央同一account锁中对比原stop/reset/terminal UUID整行、原run usage/batches摘要；只清同一已到点quota_5h，不调用generic resume_delegated/clear_stop。所有实际旧batch须可信completed、无recovery关闭、session无活receipt；全账户无active batch或未闭合/unknown usage，两个中央slot均须可非阻塞取得。失败与提交结果未知均烧毁witness，不补偿、不自动重试；即便清停成功也无claim/执行/CLI权限。
+- [x] (2026-10-24 09:22 +08:00) 四授权路径静态冻结：evidence328/最长44、witness165/31、新clear187/45、新测试304/36；Ruff E/F/I/B/UP/SIM、120列format/AST/尺寸均通过。根全文及最终差异审阅完成，R3独立审转换、R7独立审真实夹具均无实质阻塞。已明确stop截短batch期限，核原grant有效窗并容许同取时相等，不改原账本。仅授slot1首验1+3+4+2共10必要节点，旧9绿不重跑；尚无结果，不作已验收。
+- [x] (2026-10-24 09:26 +08:00) 唯一首链9通过/1失败、无error/skip，194.933秒，09:22:13.555266–09:25:30.718734；根独立核 `private/safe-narrow-45e46776976a4633938834b9626fb190/metadata.json`及XML。唯一新成功组夹具在嵌套other.activate入栈时被原quota_mode.delegated_session拒为batch_conflict，尚未调用新clear或正常成功段；不能把9拒绝/故障绿扩成正常清停验收。原9已触达各拒绝/rollback/已COMMIT后丢ACK断言，保持证据不重跑。仅准该新测试用ExitStack保活原eligible并真实退出原session后再进入另一session，禁止patch ContextVar/生产门或放宽异常断言；静态审后只复验原1红。
+- [x] (2026-10-24 09:28 +08:00) 根核最小fixture改动，生产3路径及原9节点不变；新测试311行/最大36，静态检查通过。仅原1红复验1/1、22.425秒，09:27:29.002903–09:27:52.459059，无失败/error/skip。唯一原件 `private/safe-narrow-56b805e9d02949a3839b8e0c1c395148/metadata.json`及同目录XML，根已独立核。正常真实clear、正确会话负例、一次消费与attached send拒均执行到，原状态及0新增POST断言通过。10个不同节点分两轮成立，不称同次10/10；原失败保留，槽已释放。
 - [x] (2026-10-24 08:13 +08:00) 根与两位只读审阅者核实际字段和接缝，记录先做 pre-clear 资格、不打开执行的范围；尚未实现或测试。
 - [x] (2026-10-24 08:26 +08:00) 两 helper 318/129行、新PG文件180行，最长函数43行；Ruff/format/AST通过，根已全文及最终差异审阅，两位独立审阅的实质边界均采纳。实际为3组9个不同节点；尚未运行，代码冻结后仅授一个主线测试槽。
 - [x] (2026-10-24 08:30 +08:00) 唯一首链9/9、148.38秒、0 skip/错误/失败/警告，08:26:47.673399–08:29:17.065168；根已独立核 metadata/XML/log，槽已释放，三路径继续冻结。不重复已绿目标或做全量；真实模型/服务器/外发0。
@@ -35,12 +39,15 @@ StepAttempts 的 authority 依赖有效 lease；本片不借用它 mint 执行�
 
 ## Validation and Acceptance
 
-仅新增 `tests/v4/agent/test_eval_quota_resume_eligibility_pg.py`。复用真实 Durable/独立控制库/模型 attempt 测试夹具，以实际 MockTransport quota 响应与 Retry-After 产生中央和私密证据，不构造假的 stopped 字典或替代 Journal/PG。只替代传输；固定候选的 clean-checkout 边界可按现有夹具显式隔离，实际 source digest/契约/账号/位置/业务原话保持核验。
+原片新增 `tests/v4/agent/test_eval_quota_resume_eligibility_pg.py`。复用真实 Durable/独立控制库/模型 attempt 测试夹具，以实际 MockTransport quota 响应与 Retry-After 产生中央和私密证据，不构造假的 stopped 字典或替代 Journal/PG。只替代传输；固定候选的 clean-checkout 边界可按现有夹具显式隔离，实际 source digest/契约/账号/位置/业务原话保持核验。
 
 必要三组行为：真实工具完成后遇 quota，闭合保存/detach/attach；恢复钟到期后 mint/check 成功但无新增 POST、中央仍停、旧 Journal/工具/usage 不改，退出失效。其次早于/缺 reset、Access、更强停机、intent/中央未知拒绝。最后实际 control/source/预算漂移与伪造/退出 witness 拒绝；attached send 保持硬关。具体参数按真实风险最少选择，冻结后授单槽，主线最多两个测试进程。
 
+新增转换只验 `tests/v4/agent/test_eval_quota_clear_pg.py` 的10节点：真实原session.close在mint与基线前完成，成功仅增加一个clear授权及账户停止/单调clock字段，原usage/batches、10张业务表和独立control不变；伪造/退出/非原session/重复及attached send拒。stop/terminal/source真实漂移三例、另一run七小时前reserved/已finished unknown、真实active batch污染及独立连接slot占用四例均拒且无新增写；两项故障分别在真实授权INSERT后用原PG除零回滚，以及真实COMMIT后丢ACK，后者保实际已提交状态、烧资格且不再UPDATE。反例污染只在自有测试PG，成功路径不手填终态；不复跑原9绿或扩全量。
+
 ## Decision Log
 
+2026-10-24 09:14 +08:00：把精确中央转换与下一执行协调器隔离实现，但不把只读资格check改为隐式写入。新增helper仅受活witness入口调用，中央事务内在所有断言与跨库重读之后才记录clear授权并更新account；批次不自动关闭、不启动新批次、未知记录不恢复。账户锁/两slot保护中央正常写入，与场景/控制库没有原子性；后续任何claim/执行仍须独立重验，不能把clear回执当permit。只做相关PG定向验真，静态审阅及根授槽之前不启动测试。
 2026-10-24 08:13 +08:00：第一片只证明“可以进入将来的受审恢复门”，不清 quota、不调用 resume_delegated 或 generic clear_stop、不 claim/execute/seed/receive/requeue，不把 check 的成功解释为并发无变化或持续执行权。后续真恢复仍须在实际 admission/claim/发送前重新核全部证据。
 
 2026-10-24 08:26 +08:00：本片最后未完成模型的全部历史 attempt 限 quota_5h，不接纳历史 ok、其它全局停机或 transient，避免把未发布成功输出重发；此前 completed 模型仍核原成功终态。中央usage无epoch字段，当前原epoch的私密锚点必须覆盖这个run全部usage；含旧epoch实际请求的run保守拒绝，不靠run_id猜归属。原请求/attempt实体另核实际subject_id，工具前缀只做原ToolResult结构验证；witness失败后注销、返回前再核registry/当前ContextVar，不能由复制上下文复活退出后的资格。
@@ -55,7 +62,7 @@ QuotaStore.finish 对这次 usage 与 stop 使用同一个 finalizing 时间，�
 
 ## Idempotence and Recovery
 
-本片只读，不改 account/Journal/control/业务。读取事务结束后只返回短期进程资格，后续 check 完整重读；损坏、撤销、未知或上下文改变均拒绝，不能清记录、猜零、自动重试或从 JSON 恢复 witness。实际执行与清停必须留给独立后续里程碑。
+原eligible/check只读，不改 account/Journal/control/业务。读取事务结束后只返回短期进程资格，后续 check 完整重读；损坏、撤销、未知或上下文改变均拒绝，不能清记录、猜零、自动重试或从 JSON 恢复 witness。独立clear入口一次消费活资格；任意失败、已提交但结果未知或退出上下文都不能复活。成功只写精确中央clear事务，不修改旧usage/batches/next_batch，不能自动关闭批次或领新批次。中央与业务库非原子，最后重读后撤销仍可能发生；后续claim/执行必须重新验真，不能拿无执行权回执豁免，更不能失败后补偿清停或重POST。真实执行仍未实现。
 
 ## Outcomes & Retrospective
 
@@ -63,9 +70,22 @@ QuotaStore.finish 对这次 usage 与 stop 使用同一个 finalizing 时间，�
 
 实际Mock403/Retry-After生成中央与私密finished终态后闭合保存、detach/attach；到期mint/check成功仍保中央停机，原run/Journal/工具/usage/control全态不变、无新增POST/claim。早于或缺reset、实际Access更强停机、未知/缺中央记录及control/source/budget漂移均拒；构造/复制/JSON、退出后旧witness和attached send也拒绝。未知/缺记录负例明确破坏自有测试账本，不构造假的成功终态。
 
-这不是同run执行、自动清额度、CLI续作或现实五小时后延长deadline的验收。末步骤仅quota终态历史、当前epoch覆盖全run usage、同一terminal建立当前stop等保守限制保留；reserved/intent等其它形态本轮未增加实证，不把静态拒绝扩写成已测矩阵。原完整脚本仍69/81，最终候选、Linux应用恢复及发布门未解除，真实模型/服务器/外发为零。
+以上是原只读片结果。新增explicit exact-clear已有上述分轮10节点证据：真实原close→原活资格→精确清停，只增唯一clear授权及停止/单调clock字段；10业务表/control/usage/batches/旧grant不动且无新POST。另一run历史reserved/finished unknown、active batch和真实slot占用拒绝；真实SQL除零撤回授权与clear，真实COMMIT后ACK未知则保已提交事实、不补偿、不再UPDATE，两者均烧资格。正常清停后attached send仍拒绝，不能把clear回执当执行许可。
+
+这仍不是同run执行、CLI续作或现实五小时后延长deadline的验收。末步骤仅quota终态历史、当前epoch覆盖全run usage、同一terminal建立当前stop等保守限制保留，未验证形态不扩写成已测矩阵。原完整脚本仍69/81，最终候选、Linux应用恢复及发布门未解除，真实模型/服务器/外发为零。新增CI另核，正式integration/feed未前进。
+
+## 下一实际执行里程碑（未实现）
+
+直接做 `DurableCore30Target.resume_pending(witness, control,binding,guard)` 独立入口，普通send/CLI仍关闭；不再增加无调用的纯证据层。拟最小接线：v4_durable薄方法、新v4_resume_pending协调器、新application/agent_model_resume活不可序列化scope，以及agent_model_attempts的completed/pending窄接缝。clear工具只增加同call私有after-commit交接，公开回执始终无权；真实clear COMMIT且专用连接关闭、双slot释放后才允许未来物理admission，不能持双slot再调用guard.acquire。是否需要RequestLedger完成验证位置或再生前拒绝接缝，先核真实调用栈再改，普通执行不变。
+
+顺序为原session真实close→活资格fresh check→原中央exact-clear→跨库重新核原private/control/来源/epoch/完整Journal/预算/原deadline→业务事务内确认旧lease自然过期，实际claim原run并核新lease与旧request/epoch/pin/deadline不变→只在此路径mint本次执行scope→原core_observation/execution_scope与真实runtime.execute。同run不reset/seed/receive/requeue或推进epoch。跨库及claim任一未知即停，不补偿clear、不自动再claim/重POST。
+
+完成前缀仅在本次scope内、seq小于原pending且新lease/原Journal/中央UUID全部匹配时接历史版本证明；dd helper拒外层事务，须在进入原authority事务前核，再以同一selected/newlease绑定，不给prepare/send历史版本豁免。原pending begin/prepare仅一次许可、原seq/input_fp/request hash/原logical revision及全部旧quota终态成立时追加一个真实新UUID；其它新步骤仍走旧begin。直接复用原累计BudgetStore/open、EventReceipts与工具回执，不重写旧请求/历史结果、不重做case写。成功用native_answer建真实TurnResult后冻结完成checkpoint；再次quota必须真实闭合预算与批次后保存原turn pending，未知闭合不保存假断点。
+
+只需三项真正端到端行为：两次case_update→quota→detach/attach/租约自然过期→同run新增一个pending UUID成功final，原工具/终态/事件身份保持且预算第二段累加；同路径再quota仅新增一个UUID、两段closed与新pending检查点/新stop吻合；clear后claim前实际来源撤销或到期导致0新POST/0重试且保中央已clear事实。上述尚无实现、测试或执行权限。
 
 ## 修订记录
 
+- 2026-10-24 09:28 +08:00：独立exact-clear分轮9+原1红通过，完整保留首夹具失败、真实回滚/未知commit及无执行权边界；根核全部原件，下一片直接接真实同run执行，不重复旧绿。
 - 2026-10-24 08:30 +08:00：根复核首次9/9原始metadata/XML与真实3组参数，记录只读资格及未覆盖/未授权边界，冻结供小提交；不重复绿、不改旧金标或执行门。
 - 2026-10-24 08:13 +08:00：先记录两个只读审阅的实际字段限制与最小分片，等待代码与必要真实 PG 验证。

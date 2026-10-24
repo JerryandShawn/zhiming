@@ -40,6 +40,11 @@ class ResumeEvidence:
     reset_at: str
     consumed_ns: int
     has_text: bool
+    terminal_id: str
+    terminal_sha256: str
+    stop_sha256: str
+    usage_sha256: str
+    batches_sha256: str
 
 
 def typed(target: Any, control: Any, binding: Any, guard: Any) -> None:
@@ -315,4 +320,9 @@ def gather(target: Any, control: Any, binding: Any, guard: Any) -> ResumeEvidenc
         stop["resume_at"].isoformat(),
         budget["summary"]["consumed_ns"],
         budget["has_text"],
+        terminal["attempt_id"],
+        fingerprint(terminal),
+        fingerprint(stop),
+        fingerprint(usage),
+        fingerprint(batches),
     )

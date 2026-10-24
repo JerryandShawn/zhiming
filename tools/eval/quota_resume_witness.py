@@ -8,7 +8,8 @@ from contextvars import ContextVar
 from dataclasses import dataclass
 from typing import Any
 
-from mingjing_core.models.quota_delegated_session import require_active
+from mingjing_core.models.quota_delegated import DelegatedApproval
+from mingjing_core.models.quota_delegated_session import DelegatedSession, require_active
 from tools.eval.lifecycle_identity import LifecycleError
 from tools.eval.quota_resume_evidence import ResumeEvidence, gather, require, typed
 
@@ -52,6 +53,7 @@ class EligibilitySummary:
 
 
 _LIVE: dict[int, _Entry] = {}
+_CLEARING: dict[int, _Entry] = {}
 _ACTIVE: ContextVar[object | None] = ContextVar("quota_resume_preclear_context", default=None)
 
 
@@ -61,7 +63,9 @@ def _session(target: Any, binding: Any, guard: Any) -> Any:
     except Exception:
         raise LifecycleError("QUOTA_RESUME_SESSION_REJECTED") from None
     require(
-        session.phase == "core"
+        type(session) is DelegatedSession
+        and type(session.approval) is DelegatedApproval
+        and session.phase == "core"
         and session.guard is guard
         and session.approval.candidate == binding.candidate_commit
         and binding.scenario_id in session.scenarios
@@ -92,7 +96,9 @@ def eligible_quota5h(target: Any, control: Any, binding: Any, guard: Any) -> Ite
     try:
         yield witness
     finally:
-        _LIVE.pop(id(witness), None)
+        with session._lock:
+            _LIVE.pop(id(witness), None)
+            _CLEARING.pop(id(witness), None)
         _ACTIVE.reset(token)
 
 
@@ -127,3 +133,33 @@ def check(witness: QuotaResumeWitness, *, target: Any, control: Any, binding: An
         current.consumed_ns,
         current.has_text,
     )
+
+
+def _check_consumed(entry: _Entry) -> None:
+    require(_CLEARING.get(id(entry.witness)) is entry and _ACTIVE.get() is entry.context)
+    typed(entry.target, entry.control, entry.binding, entry.guard)
+    require(entry.repo is entry.target.repo and _session(entry.target, entry.binding, entry.guard) is entry.session)
+
+
+def _consume_for_clear(witness, *, target, control, binding, guard) -> _Entry:
+    require(type(witness) is QuotaResumeWitness)
+    entry = _LIVE.pop(id(witness), None)  # Every attempted transition burns the original eligibility.
+    require(entry is not None and entry.witness is witness)
+    try:
+        require(
+            entry.target is target
+            and entry.repo is target.repo
+            and entry.control is control
+            and entry.binding is binding
+            and entry.guard is guard
+        )
+        _CLEARING[id(witness)] = entry
+        _check_consumed(entry)
+    except BaseException:
+        _CLEARING.pop(id(witness), None)
+        raise
+    return entry
+
+
+def _finish_clear(entry: _Entry) -> None:
+    _CLEARING.pop(id(entry.witness), None)
