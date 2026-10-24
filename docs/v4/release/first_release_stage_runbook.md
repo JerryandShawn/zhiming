@@ -1,8 +1,8 @@
 # 首发 F 副本 stage 执行单（候选2200485）
 
-2026-10-25 04:58，北京时间。命令和固定交付物绑定候选 `220048573110862d378015c35d99a37c0d83503e`，工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r39`。包hash `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`，bootstrap hash `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`，operation `ba63f7b2fa8a405d`。R11原件：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\r11-run-c38bd9e6b67744e387d110627f7e7ef6\metadata.json`，assessment：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\candidate-eval\220048573110862d378015c35d99a37c0d83503e\R11-58e3c43c0c33414cbe1b2d60e3d786ff\assessment.json`。R11已04:57:25–04:59:55 exit0，根核assessment及四原报告48/48、日期7/7、指定69/69、核心29/29，X02中性/正文保留/重复0写；CI未核、五题定向真实复测未运行、37号Go缺失，执行准入尚未满足，不能宣布stage/首发就绪。
+2026-10-25 04:58，北京时间。命令和固定交付物绑定候选 `220048573110862d378015c35d99a37c0d83503e`，工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r39`。包hash `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`，bootstrap hash `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`，operation `ba63f7b2fa8a405d`。R11原件：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\r11-run-c38bd9e6b67744e387d110627f7e7ef6\metadata.json`，assessment：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\candidate-eval\220048573110862d378015c35d99a37c0d83503e\R11-58e3c43c0c33414cbe1b2d60e3d786ff\assessment.json`。R11已04:57:25–04:59:55 exit0，根核assessment及四原报告48/48、日期7/7、指定69/69、核心29/29，X02中性/正文保留/重复0写；PR23当前SHA的CI已核为cancelled（run40132087922，非通过）、五题定向任务已启动尚无最终结果、37号Go缺失，执行准入尚未满足，不能宣布stage/首发就绪。
 
-执行人：**主线**。只有本聊天具备直接人类F授权、37号首行 `结论：Go` 且复核晚于2026-10-24 12:30、候选40位SHA与本单一致，才进入下列服务器步骤。指令板和37号本身不扩大服务器权限。生产仍另需直接D授权与31号Go窗口，本文不操作生产。当前未SSH/上传/执行服务器命令。
+执行人：**主线**。本单服务器步骤以授权F对应的37号首行 `结论：Go` 且复核晚于2026-10-24 12:30、候选40位SHA与本单一致，才进入下列服务器步骤。本单为执行准备；当前没有37号Go，本轮未进入服务器步骤。生产按独立D范围与31号Go窗口，本文不操作生产。当前未SSH/上传/执行服务器命令。
 
 ## 范围与现有证据
 
@@ -12,13 +12,27 @@
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定2200485包/R11原件，R11已根核通过，CI未核，不复用旧候选批准|
+|同一首发源码、CI、R11|本单绑定2200485包/R11原件，R11已根核通过，CI已核cancelled（run40132087922），仅success才继续，不复用旧候选批准|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
-|F/37、容量、凭据与目标全新|执行前由大脑核；任一缺失即停止，不从文件自授权限|
+|F/37、容量、凭据与目标全新|主线按下方37号/候选本机门与现场只读容量、凭据和全新对象门核验，任一缺失即停止|
 
 任何**非预设负验**异常：立刻停，保持当前库/门/文件，记日报；不修补重试、覆盖、删除或杀PG会话。SSH每次一个短会话；拒绝等10分钟最多3次。耗时动作后台，后续短连只读检查结果；前一步未明确exit0不得执行下一步。备份/操作目录0700、文件0600、保留14天，不自动清理。回滚只在开门之前，B7只做空增量；开门后只关闭新服务准入，不回退数据。
+
+## 执行前本机身份门（不连接服务器）
+
+主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。CI已核取消，须后续同SHA实际success，不能把取消当通过。
+
+```powershell
+$FrGate = 'C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/37_大脑复核_首发stage.md'
+if (-not (Test-Path -LiteralPath $FrGate -PathType Leaf)) { throw '37号未出现，停止' }
+$FrGateLines = Get-Content -LiteralPath $FrGate
+if ($FrGateLines[0].Trim() -ne '结论：Go') { throw '37号没有Go，停止' }
+if (($FrGateLines -join "`n") -notmatch '220048573110862d378015c35d99a37c0d83503e') { throw '37号候选不符，停止' }
+```
+
+复核时间需从实际37号的明确时间字段核验；字段缺失、格式歧义或不晚于阈值均停止，不能用文件修改时间代替。该字段尚未产生，本文不编造字段名或时间值。CI证据见 `../eval/v40_candidate_ci.json`；当前为cancelled。本单保留实际准入条件，尚不发布“首发 stage 执行单就绪”。
 
 ## B0–B1：本机固定包、引导文件与公开分词器
 
@@ -41,7 +55,7 @@ $FrBound = Get-Content (Join-Path $FrDelivery 'delivery.json') -Raw | ConvertFro
 if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'ba63f7b2fa8a405d') { throw '交付身份不符' }
 ```
 
-大脑审核delivery.json中的SHA、operation、两项hash，作为后续固定参数。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
+主线用上述命令核delivery.json中的SHA、operation、两项hash；全部相等才采用下方固定参数，任一不符停止并提醒。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
 
 第一次短SSH只读确认 `df -Pk /` 可用至少8388608 KiB、Python3.11和PG15客户端存在、原服务与8788端口当前状态。确认新root和新unit均不存在后，才在F范围内创建新目录；若已有同名物停止，不接管。
 
@@ -142,9 +156,11 @@ start_step dependencies "$FR_PY" -m pip install --require-hashes -r "$FR_RELEASE
 fr tools.install_k3_tokenizer --destination "$FR_TOKENIZER" --verify-only
 ```
 
-大脑先备妥其已审的PG管理员私有文件FR_ADMIN：仅`FIRST_RELEASE_EXCHANGE_ADMIN_DSN`一个字段，实际PG15 superuser、数字回环127.0.0.1或::1、5432、控制库postgres；不能用业务writer替代、不要输出正文。文件/父目录须root所有0600/0700，无链接；工具会核实际身份。缺文件/凭据即停请大脑处理，不能自动建账户/改认证绕过。长步骤原始日志均在0700操作目录，禁止上传包含私有数据或凭据的日志正文。
+主线在已获准的服务器步骤就地核验现有PG管理员私有文件FR_ADMIN：仅`FIRST_RELEASE_EXCHANGE_ADMIN_DSN`一个字段，实际PG15 superuser、数字回环127.0.0.1或::1、5432、控制库postgres；不能用业务writer替代、不要输出正文。文件/父目录须root所有0600/0700，无链接；工具会核实际身份。缺文件/凭据立即停止并发【提醒用户】，不能自动建账户/改认证绕过。长步骤原始日志均在0700操作目录，禁止上传包含私有数据或凭据的日志正文。
 
 ```bash
+test -f "$FR_ADMIN" && ! test -L "$FR_ADMIN"
+test -d "$(dirname "$FR_ADMIN")" && ! test -L "$(dirname "$FR_ADMIN")"
 test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
 test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 ```
@@ -210,7 +226,7 @@ for path in ('/api/health','/api/state','/api/history'):
 PY
 ```
 
-出站核验必须检查**实际新unit cgroup**，不是另建transient unit。以下仅大脑在F内做TCP连通正负验，不发任何应用层payload，不访问模型/飞书；外部正验自身不可达时本项不能证明阻断，停止交大脑核。子进程只把自己加入已确认的新unit cgroup，退出后不留进程、不动其他cgroup。
+出站核验必须检查**实际新unit cgroup**，不是另建transient unit。以下由主线在F范围内做TCP连通正负验，不发任何应用层payload，不访问模型/飞书；外部正验自身不可达时本项不能证明阻断，立即停止并发【提醒用户】。子进程只把自己加入已确认的新unit cgroup，退出后不留进程、不动其他cgroup。
 
 ```bash
 FR_CGROUP="$(systemctl show -p ControlGroup --value zhiming-core-fr-stage.service)"
@@ -290,4 +306,4 @@ fr tools.first_release_native_exchange capture --operation "$FR_ID" --admin-env-
 fr tools.first_release_native_exchange seal --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/finish-metadata.json" --metadata-sha256 "$(h "$FR_OP/finish-metadata.json")" --output "$FR_OP/finish-sealed.json"
 ```
 
-不自动恢复/重启，不移除维护门或删除任何备份/库/unit。Linux实际执行人负责一页以内回执：最终SHA/operation、每步exit/用时/安全结果、偏差或第一失败码、实际模型/外发次数0、原stage/live/Hermes未改、最终closed/inactive状态。没有实际执行的项目写“未验证”，不据本机测试补造Linux结果。生产执行单仍未放行，需用户另给D及另审原生生产目标入口。
+不自动恢复/重启，不移除维护门或删除任何备份/库/unit。Linux实际执行人负责一页以内回执：最终SHA/operation、每步exit/用时/安全结果、偏差或第一失败码、实际模型/外发次数0、原stage/live/Hermes未改、最终closed/inactive状态。没有实际执行的项目写“未验证”，不据本机测试补造Linux结果。生产执行单仍未放行，按独立31号窗口核D范围及原生生产目标入口。

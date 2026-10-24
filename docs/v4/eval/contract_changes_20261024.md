@@ -51,3 +51,8 @@ C01/C02历史改判通过另存38号依据，不视作真问题，不为它们�
 | Full new candidate29 every change | Frozen8727d44 full29 + new candidate targeted TA01/M01/D01 and affected M/Q03/Q04 | Board39 narrow changes1-5 only, preserve old raw reports/review provenance |
 
 Tool evidence (actual followup due_at, decision option fields, ask_user options) is private diagnostic evidence, not fabricated receipts or scoring overrides. TA01 must resolve the actual first-turn generated draw in evaluation, preserving its scoring contract. No historic raw score is rewritten.
+
+
+### 2026-10-25 07:53 v40 累计接入策略
+
+原累计上限30→明确授权36，原R17账户/账本累计27保留；不重置、不换key。冻结候选源码不改，由private/board40_budget.py仅在三处原生预算常量施加36，连接合同digest据实际运行策略重新生成，proof仍由原生中央记录产生。保留实际模型/身份、源SHA、同源R11、单在途和每批≤10等全部检查。35允许下一次、36在计量/HTTP前拒绝的离线边界验证通过（0模型/0账本写）。该运行策略不是产品源码或旧分变更；旧proof不复用。

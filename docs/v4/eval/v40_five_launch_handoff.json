@@ -1,0 +1,56 @@
+{
+  "board_version": 40,
+  "recorded_at": "2026-10-25 07:53",
+  "candidate": "220048573110862d378015c35d99a37c0d83503e",
+  "ci": {
+    "candidate": "220048573110862d378015c35d99a37c0d83503e",
+    "checked_at": "2026-10-25 07:53 +08:00",
+    "workflow": "Core v3 checks",
+    "run_id": 40132087922,
+    "run_number": 922,
+    "status": "completed",
+    "conclusion": "cancelled",
+    "url": "https://github.com/JerryandShawn/zhiming/actions/runs/40132087922",
+    "green": false,
+    "rerun_requested": false
+  },
+  "budget_policy": {
+    "board_version": 40,
+    "cumulative_connection_limit": 36,
+    "prior_limit": 30,
+    "original_contract_digest": "c7e04dfe9c3179dcfbb57e27a7338ba832cf5262e32e529db8e07a8d2ed1e1f4",
+    "runtime_contract_digest": "4e3d33b85b87476345f0d03d03aa18910f6eb0cca0083c67e52d6026d6f30978",
+    "board_sha256": "fdffa5985e2988314b030554673e0c2bb8d99e6d11be2f11104ee98d299acc2d",
+    "changed_functions": [
+      "tools.eval.k31_contract.contract_digest",
+      "tools.eval.k31_connect.ConnectionExecution.step",
+      "tools.eval.k31_control.core_approval"
+    ],
+    "tracked_candidate": "220048573110862d378015c35d99a37c0d83503e",
+    "ledger_reset": false
+  },
+  "boundary_evidence": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\check_board40_boundary.json",
+  "pending_pointer": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\k31_r40_eval_pending.json",
+  "operator": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\run_k31_r40_five_once.py",
+  "operator_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\k31-r40-17a57dd9cd684183bdffec0f59d9c752\\metadata.json",
+  "observed_status": "running",
+  "observed_phase": "connection_1",
+  "observed_reports": 0,
+  "selected": [
+    "M01",
+    "Q03",
+    "Q04",
+    "D01",
+    "TA01"
+  ],
+  "server_actions": 0,
+  "stage_ready": false,
+  "stage_gates": [
+    "same-SHA CI success",
+    "targeted real results",
+    "37 Go and matching SHA/time",
+    "applicable human F authorization"
+  ],
+  "production_ready": false,
+  "after_release_todo": "followup_due normalized past time: preserve original model future due_at; add narrow test after release, do not change frozen220."
+}
