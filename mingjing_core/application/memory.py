@@ -56,6 +56,12 @@ class MemoryService:
         self.repo=repository
         self.on_revoke=on_revoke
 
+    def _third_party_authorized(self,owner,subject,source,kind,authorization_id,case_id,quote):
+        return False
+
+    def _fact_id(self,owner,message_id,start,end,kind,case_id,field,value,authorization_id):
+        return 'fact_'+fingerprint([owner,message_id,start,end,kind,case_id,field,value])[:32]
+
     def receive(self,owner,subject='self',content=None,*,message=None,channel='web',source_id=None,external_id=None,
                 conversation_id='default',case_ids=None,role='user',at=None,operation_id=None,origin='current_user'):
         content=content if content is not None else message
@@ -196,7 +202,7 @@ class MemoryService:
             for revocation in self.repo.revocations(owner):
                 span=revocation['metadata']
                 if revocation['kind']=='source_span' and span.get('message_id')==message_id and max(start,span['start'])<min(end,span['end']):raise EvidenceError('Withdrawn source range cannot be reimported')
-            if subject=='self' and third_party(quote):return {'write_status':'pending_confirmation','reason':'先明确第三人范围与保存授权'}
+            if subject=='self' and third_party(quote) and not self._third_party_authorized(owner,subject,source,kind,authorization_id,case_id,quote):return {'write_status':'pending_confirmation','reason':'先明确第三人范围与保存授权'}
             authorized=self._authorized(owner,subject,source,kind,authorization_id,case_id,quote)
             settings=self.repo.assert_scope(owner,subject)['settings']
             sensitive=subject!='self' or kind not in ('preference','constraint') or bool(field) or bool(SENSITIVE.search(quote))
@@ -205,7 +211,7 @@ class MemoryService:
             if field and not re.fullmatch(r'(?:name|gender|birth\.(?:solar_datetime|location\.(?:lng|lat|city|name)|timezone_offset|time_unknown|time_uncertainty_minutes|precision|interval_start|interval_end))',field):raise ValueError('Unsupported profile field')
             for cid in [case_id] if case_id else []:
                 if self.repo.get(owner,'case',cid)['subject_id']!=subject:raise ScopeError('Fact case belongs to another subject')
-            ident='fact_'+fingerprint([owner,message_id,start,end,kind,case_id,field,value])[:32]
+            ident=self._fact_id(owner,message_id,start,end,kind,case_id,field,value,authorization_id)
             data={'kind':kind,'content':quote,'source_refs':[SourceRef(message_id=message_id,version=source['revision'],start=start,end=end,quote=quote).model_dump()],
                   'assertion_status':assertion_status,'consent':'pending' if assertion_status=='legacy_unverified' else 'granted','status':'pending' if assertion_status=='legacy_unverified' else 'active',
                   'field':field,'value':value,'valid_from':valid_from or source.get('at'),'valid_to':valid_to,'retention':'until_revoked'}
@@ -272,7 +278,19 @@ class MemoryService:
         text=source.get('content','')
         if source['subject_id']!=fact['subject_id'] or source.get('role')!='user':raise ScopeError('Withdrawal source must belong to target subject')
         if fact['case_id'] is not None and fact['case_id'] not in source.get('case_ids',[]):raise ScopeError('Withdrawal target case is not selected by current source')
-        marker=re.search(r'删除|忘记|停止(?:使用)?|别再(?:用|记)|不要再(?:用|记)',text)
+        from mingjing_core.memory.forget_intent import forget_topic, withdrawal_denied
+        if withdrawal_denied(text):
+            raise EvidenceError("需要当前用户明确的肯定撤销请求")
+        if forget_topic(text) is not None:
+            from mingjing_core.application.memory2_withdrawals import MemoryWithdrawalService
+            receipt = MemoryWithdrawalService(self).forget_from_message(
+                owner, source['subject_id'], fact_id, message_id=source_id, operation_id=operation_id
+            )
+            return dict(
+                self.repo.get(owner, 'fact', fact_id, include_deleted=True),
+                write_status=receipt['write_status'], affected_fact_ids=receipt['affected_ids']
+            )
+        marker=re.search(r'删除|忘记|停止(?:使用)?|别再(?:用|记)|不要再(?:用|记)',mask_quoted(text))
         if not marker:raise EvidenceError('Original user did not request withdrawal')
         if fact['status'] in ('deleted','stopped'):
             return dict(fact,write_status='deleted' if fact['status']=='deleted' else 'stopped')
@@ -322,6 +340,8 @@ class MemoryService:
                     self.repo.update(owner,'fact',fact['id'],{'status':'stopped','consent':'revoked'},expected_revision=fact['revision'])
                     self.repo.revoke(c,owner,'fact',fact['id'],'stopped')
                 affected.append(fact['id'])
+            from mingjing_core.application.memory2_forget_chain import detach_withdrawn_chain
+            detach_withdrawn_chain(self,owner,facts)
             self.repo.invalidate_derived(owner,affected,sources if scope=='source' else [])
             if scope=='source':
                 for upload in self.repo.list(owner,'upload',include_deleted=True):
@@ -330,10 +350,12 @@ class MemoryService:
             return dict(self.repo.get(owner,'fact',fact_id,include_deleted=True),write_status='deleted' if operation=='delete' else 'stopped',affected_fact_ids=affected)
 
     def facts(self,owner,subject='self',case_ids=None,*,include_inactive=False):
+        from mingjing_core.application.memory2_read_authority import fact_consents_live
         rows=self.repo.list(owner,'fact',subject=subject,case_ids=case_ids,include_deleted=include_inactive)
         when=get_clock().now()
         def effective(fact):
             if fact['status']!='active' or fact.get('consent')!='granted' or fact.get('assertion_status')=='legacy_unverified':return False
+            if not fact_consents_live(self,owner,subject,fact):return False
             for key in ('valid_from','valid_to'):
                 value=fact.get(key)
                 if value:

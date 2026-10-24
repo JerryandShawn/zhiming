@@ -56,8 +56,12 @@ def json_item(
 
 
 def fact_layer(snapshot: SourceSnapshot, aliases: AliasBook) -> ContextLayer:
-    items = []
+    from .context_profiles import profile_items
+
+    items, represented = profile_items(snapshot, aliases)
     for row in sorted(snapshot.facts, key=lambda fact: (fact.get("kind") != "constraint", fact["id"])):
+        if row["id"] in represented and row.get("kind") != "constraint":
+            continue
         alias = aliases.add("f", "fact", row)
         data = {
             "alias": alias,

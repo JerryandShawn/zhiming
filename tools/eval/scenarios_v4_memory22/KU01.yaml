@@ -1,0 +1,61 @@
+id: KU01
+title: 明确搬迁后只保留新的当前城市
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+turns:
+- user: 我在杭州工作
+  expect:
+    receipts:
+    - write_status: saved
+  at: '2026-10-03T10:30:00+08:00'
+- user: 我搬到上海了
+  expect:
+    receipts:
+    - write_status: updated
+    db:
+    - kind: fact
+      where:
+        data.status: active
+        data.valid_to: null
+      count: 1
+  at: '2026-10-10T10:30:00+08:00'
+- user: 我现在在哪？
+  expect:
+    must_include_all:
+    - 上海
+    must_not_include:
+    - 杭州
+    db:
+    - path: context.l2.text
+      contains: 上海
+  at: '2026-10-17T10:30:00+08:00'
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我在杭州工作
+        summary: 我在杭州工作
+        kind: background
+  - text: 记下了，你在杭州工作。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-2
+        quote: 我搬到上海了
+        summary: 我搬到上海了
+        kind: background
+  - text: 已更新，你搬到上海了。
+- turn: 3
+  model:
+  - text: 你现在在上海。
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。

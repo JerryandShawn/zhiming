@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, SerializerFunctionWrapHandler, field_validator, model_serializer
+
+from mingjing_core.memory.slots import SLOTS, normalize_slot
 
 
 class Parameters(BaseModel):
@@ -49,6 +51,26 @@ class MemoryWrite(Parameters):
     sensitivity: Literal["normal", "health", "third_party", "money", "identity", "legal"] = "normal"
     date_expression: str | None = Field(default=None, max_length=200)
     event_at: str | None = Field(default=None, max_length=80)
+
+    slot: str | None = Field(
+        default=None,
+        max_length=60,
+        description="可选记忆槽；注册ID: " + ", ".join(SLOTS) + "；未知视为不填。只能由原话支持，不推断槽位。",
+    )
+
+    @field_validator("slot")
+    @classmethod
+    def checked_slot(cls, value: str | None) -> str | None:
+        return normalize_slot(value)
+
+    @model_serializer(mode="wrap")
+    def serialize_memory_arguments(self, handler: SerializerFunctionWrapHandler) -> dict:
+        values = handler(self)
+        # Old journal fingerprints included the original default fields. Adding
+        # an absent slot must not change replay authority for those old calls.
+        if values.get("slot") is None:
+            values.pop("slot", None)
+        return values
 
 
 class MemoryForget(Parameters):

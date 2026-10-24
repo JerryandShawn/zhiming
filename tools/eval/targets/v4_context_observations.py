@@ -11,11 +11,20 @@ from mingjing_core.repositories.postgres import PostgresRepository
 
 
 def context_observations(repo: PostgresRepository, owner: str, run: dict[str, Any]) -> dict[str, Any]:
-    empty = {"l4": {"time_filter": None, "text": "", "item_ids": []}}
+    empty = {
+        "l4": {"time_filter": None, "text": "", "item_ids": []},
+        "l2": {"text": "", "item_ids": []},
+        "l5": {"text": "", "item_ids": []},
+    }
     if not run:
         return empty
     try:
-        record = repo.get(owner, "runtime_step", f"{run['id']}:e{run['retry_epoch']}:{STAGE}", include_deleted=True)
+        record = repo.get(
+            owner,
+            "runtime_step",
+            f"{run['id']}:e{run['retry_epoch']}:{STAGE}",
+            include_deleted=True,
+        )
     except ScopeError:
         return empty
     if record["status"] == "deleted":
@@ -26,10 +35,20 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
     items = [item for layer in layers if layer["name"] == "L4" for item in layer["items"]]
     text = "\n".join(message["content"] for item in items for message in item["messages"])
     match = re.search(r'time_filter="(\d{4}-\d{2}-\d{2}\.\.\d{4}-\d{2}-\d{2})"', text)
+    profile = [item for layer in layers if layer["name"] == "L2" for item in layer["items"]]
+    history = [item for layer in layers if layer["name"] == "L5" for item in layer["items"]]
     return {
+        "l5": {
+            "text": "\n".join(message["content"] for item in history for message in item["messages"]),
+            "item_ids": [item["key"] for item in history],
+        },
+        "l2": {
+            "text": "\n".join(message["content"] for item in profile for message in item["messages"]),
+            "item_ids": [item["key"] for item in profile],
+        },
         "l4": {
             "time_filter": match.group(1) if match else None,
             "text": text,
             "item_ids": [item["key"] for item in items if item["key"] != "time-filter"],
-        }
+        },
     }

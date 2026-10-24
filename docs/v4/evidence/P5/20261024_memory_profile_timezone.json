@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-24T05:27:31.345963+08:00",
+  "timezone": "Asia/Shanghai",
+  "scope": "profile event expiry retains original owner timezone",
+  "initial_regression": {
+    "passed": 1,
+    "failed": 2
+  },
+  "after_fix": {
+    "passed": 27,
+    "seconds": 8.3
+  },
+  "boundary_zones": [
+    "America/Los_Angeles",
+    "Asia/Tokyo"
+  ],
+  "clock_and_zone_injected": true,
+  "change": "Prefer recorded event owner_timezone; preserve existing fallback only when field absent",
+  "external_requests": 0,
+  "model_downloads": 0,
+  "full_regression_started": false,
+  "ready": false,
+  "required37_latest_evidence": "34/37 on preceding consent-read candidate; not rerun for this narrow profile change"
+}

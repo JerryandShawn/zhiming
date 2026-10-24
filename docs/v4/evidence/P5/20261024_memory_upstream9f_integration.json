@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-10-24T06:45:32.498319+08:00",
+  "timezone": "Asia/Shanghai",
+  "board_version": 3,
+  "branch": "v4/p5-memory2",
+  "candidate": "aa009a962f95c32318f03b300d6515207800379e",
+  "upstream_sha": "9f2506f62e5fd11cc82bcdf2432a1332689b5fa5",
+  "upstream_commits_since_prior_sync": 28,
+  "sync": {
+    "completed_beijing": "2026-10-24T06:42:47+08:00",
+    "next_due_beijing": "2026-10-24T08:42:47+08:00",
+    "direct_fetch_failures": 2,
+    "fallback": "GitHub connector verified exact published head; fetched that exact existing commit object from read-only local primary Git cache into this checkout, followed by ordinary merge",
+    "local_source_checkout_writes": false,
+    "uncommitted_source_files_imported": false
+  },
+  "conflict": {
+    "file": "tools/eval/targets/v4_target.py",
+    "resolution": "retain upstream critic/review and SSE dispatch plus previously delivered source-backed memory confirmation/withdrawal drivers",
+    "runtime_edits_by_this_resolution": false,
+    "score_expectations_changed": false
+  },
+  "targeted": {
+    "passed": 36,
+    "failed": 0,
+    "seconds": 14.33,
+    "scope": [
+      "P5 memory confirmation driver",
+      "native privacy originals F01/F03",
+      "upstream SSE reconnect driver and real loopback HTTP",
+      "upstream scripted critic review",
+      "P5 profile action chronology"
+    ]
+  },
+  "required37": {
+    "target": "v4",
+    "mode": "scripted",
+    "count": 37,
+    "passed": 34,
+    "failed": [
+      {
+        "id": "KU01",
+        "failed_assertions": [
+          "turn[2].receipts[1]",
+          "turn[2].db[1]"
+        ]
+      },
+      {
+        "id": "KU02",
+        "failed_assertions": [
+          "turn[2].receipts[1]",
+          "turn[3].db[1]"
+        ]
+      },
+      {
+        "id": "M08",
+        "failed_assertions": [
+          "turn[2].receipts[1]",
+          "turn[2].db[1]"
+        ]
+      }
+    ],
+    "scripted_model_calls": 72,
+    "judge_model_calls": 0,
+    "external_provider_requests": 0,
+    "source_sha256": "cb87a8a9b4e0345dadfceba7aba0bc881b755a4fc5f58e97e5844fb3dc73515a",
+    "scoring_corpus_sha256": "1ace95b84cbf159a5835d050d86dedc40e576fed37a802df5ca6942d05e5c31f",
+    "unexecuted": []
+  },
+  "ready": false,
+  "full_regression_repeated": false,
+  "prior_full_boundary": "cf48cb1 alone has 4403pass/0fail/72skip/1warning; no full result claimed for aa009a9",
+  "external_provider_requests": 0,
+  "model_downloads": 0,
+  "server_or_feishu_actions": 0,
+  "limitations": [
+    "M08 range-date policy and KU ambiguity/updated proofs remain unresolved",
+    "authoritative chart profile section and authenticated/background wiring missing",
+    "local scripted evidence does not establish CI, deployment or live quality"
+  ],
+  "next": "Continue authorized memory work only; do not modify Agent/gates/channels/scheduler/model to force remaining cases through. No duplicate full regression."
+}
