@@ -18,6 +18,9 @@
 
 ## Progress
 
+- [x] (2026-10-24 12:31 +08:00) R16首发独立配置与OpenAI原生wire/身份消费者离线片完成，v13已读，单代理；原c74排13:00树不改。首链8新+2直接旧U39兼容共10/10（0.18秒），为控制函数≤60提取既有parser调用后仅两条受影响行为2/2（0.14秒），固定服务资产显式MODELS_CONFIG接缝必要一条1/1（3.14秒，真实本机PG）。根读各metadata/XML/log；不是真实接入、最终候选门或Linux通过，真实请求0。
+- [ ] R16新模型接入批准/可信选择器与R12题级incomplete处理仍待实现；旧两模型等价证明不能授予K3.1调用。
+
 - [x] (2026-10-21 01:31 +08:00) 修复候选本机4ec0d978→远端03230c6bd180305fa8b4dfd47f8f8a5ae8e9677c，tree2918b79c4d8580adc690112373b1234084715f6f。精确头CI运行39462173453、Core job118764176145及全部步骤success，含旧Core/计算器、前端、v4框架和ModelPort合成覆盖。旧dedce109失败留档，不以定向修复替代完整结果。真实256k等价、P1b与P3集成和部署仍未验证，阶段未完成。
 
 - [x] (2026-10-21 00:56 +08:00) 精确CI失败审计：dedce109的Core553项只有冻结legacy sha失败。查明5ed56de给两个冻结替身新增离线标记，恢复原始字节；manifest/严格断言不动。两文件逐项Git候选blob等于03514f7原blob，11源文件/AST102一致，architecture6项/0.693s通过。
@@ -58,6 +61,8 @@
 
 ## Surprises & Discoveries
 
+2026-10-24 12:31 +08:00：旧turn_policy的high只表示服务器默认，没有发送参数；仅换YAML会让K3.1实际使用默认max。旧done.model是请求值也不能证明响应身份。因此新独立profile只用官方OpenAI原生Chat Completions、显式reasoning_effort=high，首响应必须声明精确model，后续声明若改变也拒绝，空响应同样不走协议重试。旧k3/k3-256k响应合同不强加model字段；尚未验证Anthropic K3.1的high wire，故该路径发送前拒绝，保留旧Anthropic行为。
+
 2026-10-21 00:56 +08:00 / CI失败不是Windows CRLF：`test_quality_v6.py` 与 `test_review_v6.py` 在5ed56de各增加 `_zhiming_offline_transport=True`，因此真实Git blob已经不同于冻结清单。其余9源文件原字节匹配。CI只读取这两份文件做AST/hash，不执行其退役控制器，无需改冻结替身来允许离线传输。
 
 2026-10-21 00:07 +08:00 / 仅给YAML锁256仍漏ConfiguredModel环境默认，且旧body继续发送1024预算不能只靠“历史”标注。故默认路由和实际send前请求规范同时收口；旧接口没有规范助手回执，连续工具历史明确拒绝，依赖RuntimeRouter切至ModelPort，不冒称多轮兼容。
@@ -95,6 +100,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-24 12:31 +08:00 / 按R16补最小消费者：新增config/models.first-release.yaml，旧default/v3文件不改；审核资产共同env最后固定MODELS_CONFIG至同候选新profile，既有资产测试只新增一条对应断言，不弱化原断言。新错误沿原BadRequest分类和全停动作使Registry不重试/不fallback，评测TrackingPort沿原provider_http_error停批，不新建中央stop类型或重签旧批准。未把此静态配置/Mock成功当账号权限、effort实测、K3.1分词器等价或正式新模型批准。
 
 2026-10-21 00:56 +08:00 / 恢复而非重签基线：两个文件恢复到03514f7原始字节；不改manifest哈希，不归一化/忽略新增行，不弱化102-ID或目标场景断言。仅对这两个已冻结文件加`.gitattributes -text`，保留普通可变tests的text=auto/eol=lf。退役网络守卫及正常非冻结替身的离线标记不变；无需新legacy执行harness。root统一提交发布，CI待精确新头复核。
 
@@ -137,6 +144,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-24 12:31 +08:00 R16离线片：主/评审实际合成HTTP请求均精确k3.1-pro/high，U39原推理/原tool ID回传、合成中文长答不丢、错/缺/后续改变身份在不可信内容前全停且无重试、空响应和未核Anthropic路径均关闭。effort_verified保持false。唯一原件均在release-prep的private/safe-narrow-b38fca028bb140a99c2d96b16b0c1f71、014798210b7e47f1b08d44d747dd95b5、3ac18992206d4d329892a42c591a3e6d；不合计成一次13/13。官方依据https://www.kimi.com/code/docs/kimi-code/models.html于本轮只读核验。真实新模型选择/≤20接入/核心30尚未执行，R11固定c74仍scheduled；本片是另树后续提交，不能套用c74脚本证明。v12停止Docker，R2新库对调工具仍缺，stage/prod执行单仍No-Go。
 
 2026-10-21 00:56 +08:00 / 最小恢复候选完成：11份源的工作树原字节及拟提交Git blob均等于03514f7，AST精确102；architecture6项0.693s通过，diff检查通过。此前CI553项的1失败不能称绿，恢复后的远端CI尚未运行。证据见[冻结字节审计](../evidence/P1b/2026-10-21-frozen-legacy-integrity.md)及同名JSON。没有新依赖、模型/服务器/飞书请求或迁移；P1b整体仍未完成。
 
@@ -225,6 +234,8 @@ Decision Log补充（2026-10-18/Codex）：旧test_membership_quota_never_retry�
 2026-10-18 / Codex：402会员验证60秒重试仅限membership提供方，非会员402保留原ModelBadRequest且不重试；避免把Kimi专项动作扩到其他供应商。新增非会员反例；真实供应商兼容/探针仍未执行。
 
 ## 修订记录
+
+- 2026-10-24 12:31 +08:00：v13及R16离线片、必要三轮原件与未验证边界；保旧默认/授权，更新现有runbook的v12恢复规则及F限定对象，不连接服务器。
 
 - 2026-10-20 23:45 +08:00：追加旧HTTP/退役阻断/TTY批门第二切片证据、零skip复验、夹具显式非会员与离线I/O声明的Decision Log；下一步为授权scope接线。
 

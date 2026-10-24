@@ -105,6 +105,18 @@ class ModelPermissionDenied(ModelBadRequest):
     allowed_kinds = frozenset({"permission_error", "access_terminated"})
 
 
+class ModelResponseIdentityError(ModelBadRequest):
+    """A wrong/missing response identity must never trigger retry or fallback."""
+
+    code = "MODEL_RESPONSE_IDENTITY"
+
+    def __init__(self) -> None:
+        super().__init__(
+            retry_actions=ErrorActions(global_stop=True, stop_reason="provider_http_error", manual_clear=True)
+        )
+        self.args = ("模型返回身份不符，已停止本次评测，请核对后再继续",)
+
+
 # Both public names must identify the same class for existing exception handlers.
 ModelPermissionError = ModelPermissionDenied
 

@@ -132,6 +132,7 @@ def rendered_builder_contract(assets):
     common = files["service-common.env"].decode()
     assert "CHART_PYTHON=" + assets.chart_python + "\n" in common
     assert "K3_TOKENIZER_DIR=" + assets.k3_tokenizer_dir + "\n" in common
+    assert "MODELS_CONFIG=" + assets.release + "/config/models.first-release.yaml\n" in common
     assert not any(name in common for name in ("PASSWORD", "ZHIMING_DATABASE_URL", "MEMBER_"))
     manifest = json.loads(files["manifest.json"])
     assert manifest["linux_runtime_verified"] is manifest["timer_generated"] is False

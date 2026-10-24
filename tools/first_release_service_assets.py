@@ -167,6 +167,7 @@ def common_environment(assets: Assets) -> bytes:
     return (
         "TZ=Asia/Shanghai\nMINGJING_AGENT_ENABLED=true\nCORE_RUN_CONCURRENCY=3\nCORE_DB_POOL_SIZE=4\n"
         "CHART_PYTHON=" + assets.chart_python + "\nK3_TOKENIZER_DIR=" + assets.k3_tokenizer_dir + "\n"
+        "MODELS_CONFIG=" + assets.release + "/config/models.first-release.yaml\n"
     ).encode()
 
 
