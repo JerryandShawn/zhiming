@@ -28,7 +28,7 @@ class PortBackedModel:
         result = self.port.complete(
             [ChatMessage("system", system), ChatMessage("user", parts)],
             tools=[ToolSpec("submit", "提交本阶段完整结构化结果。", schema)],
-            tool_choice="submit" if forced else "auto",
+            tool_choice="required" if purpose == "eval_critic" else "submit" if forced else "auto",
             role=self.role,
             max_output=14000 if purpose in {"synthesis", "review", "repair"} else 6000,
         )

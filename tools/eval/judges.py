@@ -6,8 +6,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from mingjing_core.models.errors import ModelProtocolError
+
 from tools.eval.chart_goldens import load_golden, stability_checks, structure_checks
 from tools.eval.targets.base import TurnResult
+from tools.eval.review_assertions import cited_memory, naming_only_questions
 
 ISSUE_SEVERITIES: dict[str, int] = {
     "off_topic": 4,
@@ -107,6 +110,19 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
             checks.append(AssertionResult(f"{name}[{index}]", bool(predicate(value))))
     if "events" in expect and expect["events"] is not None:
         checks.append(AssertionResult("events", _event_check(expect["events"], result.events)))
+    for index, query in enumerate(expect.get("memory_access", []), 1):
+        checks.append(
+            AssertionResult(
+                f"memory_access[{index}]", "memory_search" in result.tools_called or cited_memory(result, query)
+            )
+        )
+    if patterns := expect.get("memory_recall_or_text"):
+        passed = all(_includes(result.text, value) for value in patterns) or cited_memory(
+            result, patterns[0], constraint=True
+        )
+        checks.append(AssertionResult("memory_recall_or_text", passed))
+    if expect.get("naming_only_questions"):
+        checks.append(AssertionResult("naming_only_questions", naming_only_questions(result.text)))
     if expect.get("chart_structure"):
         checks.extend(
             AssertionResult("chart_structure." + name, passed) for name, passed in structure_checks(result.text).items()
@@ -129,8 +145,22 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
 JUDGE_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["score", "verdict", "issues"],
+    "required": [
+        "score",
+        "verdict",
+        "issues",
+        "reason",
+        "deductions",
+        "expected_clauses",
+    ],
     "properties": {
+        "reason": {
+            "type": "string",
+            "minLength": 1,
+            "description": "对照criterion解释评分，不得捏造期望",
+        },
+        "deductions": {"type": "array", "items": {"type": "string"}},
+        "expected_clauses": {"type": "array", "items": {"type": "string"}},
         "score": {"type": "number", "minimum": 0, "maximum": 1},
         "verdict": {"type": "string", "enum": ["pass", "revise"]},
         "issues": {
@@ -141,12 +171,23 @@ JUDGE_SCHEMA: dict[str, Any] = {
                 "required": ["type", "severity"],
                 "properties": {
                     "type": {"type": "string", "enum": list(ISSUE_SEVERITIES)},
-                    "severity": {"type": "integer", "enum": sorted(set(ISSUE_SEVERITIES.values()))},
+                    "severity": {
+                        "type": "integer",
+                        "enum": sorted(set(ISSUE_SEVERITIES.values())),
+                    },
                 },
             },
         },
     },
 }
+
+
+def _validate_reason(output: dict[str, Any]) -> None:
+    if not isinstance(output.get("reason"), str) or not output["reason"].strip():
+        raise ValueError("critic reason missing")
+    for key in ("deductions", "expected_clauses"):
+        if not isinstance(output.get(key), list) or any(not isinstance(v, str) for v in output[key]):
+            raise ValueError("critic reasoning clauses missing")
 
 
 class ModelJudge:
@@ -161,6 +202,19 @@ class ModelJudge:
         self.rubric = rubric.read_text(encoding="utf-8")
 
     def evaluate(self, payload: dict[str, Any]) -> dict[str, Any]:
+        calls, elapsed = 0, 0.0
+        for _ in range(2):
+            result = self._evaluate_once(payload)
+            calls += result["model_calls"]
+            elapsed += result["elapsed_seconds"]
+            if result["error"] not in {"ModelProtocolError", "ValueError", "KeyError", "TypeError"}:
+                break
+        result.update(model_calls=calls, elapsed_seconds=elapsed)
+        if result["error"]:
+            result.update(score=None, judge_unavailable=True)
+        return result
+
+    def _evaluate_once(self, payload: dict[str, Any]) -> dict[str, Any]:
         started = time.monotonic()
         try:
             response = self.provider.generate(
@@ -170,6 +224,7 @@ class ModelJudge:
                 purpose="eval_critic",
             )
             output = response["output"]
+            _validate_reason(output)
             score = output["score"]
             if isinstance(score, bool) or not isinstance(score, int | float) or not math.isfinite(score):
                 raise ValueError("invalid critic score")
@@ -193,11 +248,14 @@ class ModelJudge:
                 raise ValueError("critic score conflicts with verdict")
             return {
                 "score": float(score),
+                "private_reasoning": {
+                    key: output[key] for key in ("reason", "deductions", "expected_clauses", "issues")
+                },
                 "model_calls": 1,
                 "elapsed_seconds": response.get("latency_seconds", time.monotonic() - started),
                 "error": None,
             }
-        except Exception as exc:
+        except (ValueError, KeyError, TypeError, ModelProtocolError) as exc:
             return {
                 "score": 0.0,
                 "model_calls": 1,

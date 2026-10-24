@@ -11,7 +11,7 @@ from typing import Any
 
 from mingjing_core.domain.contracts import EvidenceError
 
-MANIFEST_SHA256 = "6897a15c19e2ddf60bdf7ff3127e5b86e96c1e084dec74c57f2bccc676d7056f"
+MANIFEST_SHA256 = "7232495299c25c9fafc6576fcd043696accd903a04645fcbd304a75212190d9a"
 DIRECTORY = Path(__file__).with_suffix("")
 
 
@@ -21,14 +21,14 @@ class PromptBundle:
     manifest: dict[str, Any]
 
     def render(self, name: str) -> str:
-        value = self.texts[name].replace("{{crisis_hotline}}", "12356").replace("{{assistant_name_line}}", "")
+        value = self.texts[name].replace("{{assistant_name_line}}", "")
         value = re.sub(r"\{\{L[1-6]_[^}]+\}\}", "", value)
         if "{{" in value or "}}" in value:
             raise EvidenceError("运行时提示词存在未处理的占位符")
         return value.strip()
 
     def system(self, *, onboarding: bool = False, crisis: bool = False) -> str:
-        names = ["system"] + (["onboarding"] if onboarding and not crisis else []) + (["crisis"] if crisis else [])
+        names = ["system"] + (["onboarding"] if onboarding else [])
         return "\n\n".join(self.render(name) for name in names)
 
 

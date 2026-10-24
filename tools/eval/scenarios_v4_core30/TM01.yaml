@@ -2,7 +2,8 @@ id: TM01
 title: 记忆中的相对日期按原话时间绝对化后再计算间隔
 category: time
 clock: '2026-10-15T10:30:00+08:00'
-targets: [v4]
+targets:
+- v4
 seed:
   profile: empty_profile
   settings:
@@ -10,7 +11,8 @@ seed:
 turns:
 - user: 记住，下周三面试。
   expect:
-    tools_called: [memory_write]
+    tools_called:
+    - memory_write
     receipts:
     - write_status: saved
     db:
@@ -23,15 +25,23 @@ turns:
 - user: 面试是哪天？还有几天？
   at: '2026-10-17T10:30:00+08:00'
   expect:
-    tools_called: [memory_search, date_calc]
-    must_include_all: ['10月21日|10/21|21号', '周三|星期三', '4天|4 天|四天']
-    must_not_include: [10月28日, 11天]
+    tools_called:
+    - date_calc
+    must_include_all:
+    - 10月21日|10/21|21号
+    - 周三|星期三
+    - 4天|4 天|四天
+    must_not_include:
+    - 10月28日
+    - 11天
     db:
     - kind: fact
       where:
         data.event_at: '2026-10-21'
       count: 1
     judge: 从此前原话保存的绝对日期回答10月21日周三，依据10月17日当前日期给出还有4天，不能重新把下周三偏移到10月28日。
+    memory_access:
+    - 面试
 scripted:
 - turn: 1
   model:

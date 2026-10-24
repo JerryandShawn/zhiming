@@ -34,7 +34,12 @@ DEFERRED = {
     "X06": "第三批P6评审员",
     "X08": "第三批P4真流式",
 }
-REQUIRED = {"p3": P3_IDS, "date_checks": DATES_IDS, "core": CORE_IDS, "core30": frozenset(CORE30_IDS)}
+REQUIRED = {
+    "p3": P3_IDS,
+    "date_checks": DATES_IDS,
+    "core": CORE_IDS,
+    "core30": frozenset(CORE30_IDS),
+}
 
 
 def _require(value: object) -> None:
@@ -51,7 +56,12 @@ def _state(target: V4Target) -> list[str]:
                     "FROM {} t"
                 ).format(target.repo.table(name))
             ).fetchone()["digest"]
-            for name in ("core_entities", "core_runs", "core_run_steps", "delivery_outbox")
+            for name in (
+                "core_entities",
+                "core_runs",
+                "core_run_steps",
+                "delivery_outbox",
+            )
         ]
 
 
@@ -78,7 +88,7 @@ def x02_equivalent() -> dict[str, Any]:
         run = target.repo.fetch_run(target.owner, target.run_ids[-1])
         proof, before = port.proof(), _state(target)
         _require(run["status"] == "succeeded" and result.text == run["result"]["text"])
-        _require(result.text and any(word in result.text for word in ("稍后", "暂时", "再试")))
+        _require(result.text == "我这边暂时没法回答，稍后再试。")
         _require([row["http_status"] for row in proof["attempts"]] == [503] * 4)
         _require(proof["mock_http_requests"] == proof["adapter_http_requests"] == 4)
         _require(len(set(proof["selected_models"])) == 1 and proof["success_actions_consumed"] == 0)
@@ -189,7 +199,16 @@ def run(candidate: str, output: Path) -> dict[str, Any]:
     with offline_only():
         for name, corpus in selections.items():
             destination = output / name
-            args = ["--mode", "scripted", "--target", "v4", "--candidate", candidate, "--output", str(destination)]
+            args = [
+                "--mode",
+                "scripted",
+                "--target",
+                "v4",
+                "--candidate",
+                candidate,
+                "--output",
+                str(destination),
+            ]
             args += ["--suite", "core30"] if corpus is None else ["--scenarios", str(corpus)]
             result = runner.main(args)
             _require(result in ({0, 1} if name == "core" else {0}))

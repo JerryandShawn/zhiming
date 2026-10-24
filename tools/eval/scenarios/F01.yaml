@@ -67,8 +67,8 @@ turns:
   kind: chat
   expect:
     must_not_include:
-    - 面试
     - 10月21日
+    - 21号的面试
     db:
     - kind: search_hit
       count: 0
@@ -99,3 +99,4 @@ scripted:
         start: '2026-10-17'
         end: '2026-10-24'
   - text: 目前没有保存的个人安排，可以按你现在告诉我的内容来聊。
+notes: v30授权；契约修订依据38号复核，见docs/v4/eval/contract_changes_20261024.md。

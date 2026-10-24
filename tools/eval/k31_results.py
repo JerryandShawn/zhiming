@@ -5,12 +5,68 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from datetime import datetime, timedelta
+from mingjing_core.timekit.clock import SystemClock
 
 from tools.eval.targets.v4_core30 import CORE30_IDS, acceptance
 
 
-def pending_questions(report: dict, candidate: str, source: str) -> list[str]:
+def unavailable_ready(meta: dict, retry: int, now: datetime | None = None) -> None:
+    adjudication = meta.get("classification_adjudication", {})
+    if adjudication.get("board_version") == 33:
+        from tools.eval.overload_policy import is_overloaded, overload_due
+
+        if type(retry) is not int or retry < 1 or meta.get("unavailable_retry", 0) != retry - 1:
+            raise ValueError("R24_RETRY_SEQUENCE_REJECTED")
+        stopped = datetime.fromisoformat(meta["stopped_at"])
+        if adjudication.get("kind") == "unavailable":
+            status = adjudication.get("http_status")
+            index = adjudication.get("transient_index")
+            current = now or SystemClock().now()
+            if (
+                status is not None
+                and not 500 <= status <= 599
+                or type(index) is not int
+                or index not in {1, 2, 3}
+                or stopped.tzinfo is None
+                or current < stopped + timedelta(minutes=[5, 10, 10][index - 1])
+            ):
+                raise ValueError("V32_TRANSIENT_BACKOFF_REJECTED")
+            return
+        if not is_overloaded(
+            adjudication.get("http_status"), adjudication.get("error_type", ""), adjudication.get("message", "")
+        ):
+            raise ValueError("R24_OVERLOAD_CLASSIFICATION_REJECTED")
+        first = datetime.fromisoformat(adjudication["first_overload_at"])
+        due = overload_due(first, stopped, adjudication["overload_index"])
+        current = now or SystemClock().now()
+        if due is None or current < due or current > first + timedelta(minutes=60):
+            raise ValueError("R24_BACKOFF_NOT_ELAPSED_OR_EXHAUSTED")
+        return
+    if type(retry) is not int or retry not in {1, 2} or meta.get("unavailable_retry", 0) != retry - 1:
+        raise ValueError("R22_RETRY_LIMIT_REJECTED")
+    stopped = datetime.fromisoformat(meta.get("stopped_at", ""))
+    current = now or SystemClock().now()
+    if (
+        stopped.tzinfo is None
+        or current.tzinfo is None
+        or current < stopped + timedelta(minutes=10 if retry == 1 else 30)
+    ):
+        raise ValueError("R22_BACKOFF_NOT_ELAPSED")
+
+
+def pending_questions(report: dict, candidate: str, source: str, *, unavailable_retry: int = 0) -> list[str]:
     meta = report["metadata"]
+    reason = meta.get("stop_reason")
+    if reason == "unavailable":
+        unavailable_ready(meta, unavailable_retry)
+    elif (
+        reason != "quota_5h"
+        or unavailable_retry
+        or not meta.get("resume_at")
+        or meta.get("automatic_resume_eligible") is not True
+    ):
+        raise ValueError("R12_FRESH_QUESTION_SOURCE_REJECTED")
     if any(
         meta.get(key) != expected
         for key, expected in {
@@ -22,10 +78,8 @@ def pending_questions(report: dict, candidate: str, source: str) -> list[str]:
             "evaluation_suite": "core30",
             "source_sha256": source,
             "status": "incomplete",
-            "stop_reason": "quota_5h",
-            "automatic_resume_eligible": True,
         }.items()
-    ) or not meta.get("resume_at"):
+    ):
         raise ValueError("R12_FRESH_QUESTION_SOURCE_REJECTED")
     planned = meta["planned_scenario_ids"]
     if not planned or len(planned) != len(set(planned)) or not set(planned) <= set(CORE30_IDS):
@@ -34,9 +88,9 @@ def pending_questions(report: dict, candidate: str, source: str) -> list[str]:
     identities = [case["id"] for case in cases]
     if len(identities) != len(set(identities)) or not set(identities) <= set(planned):
         raise ValueError("R12_CASES_REJECTED")
-    if any(case["status"] not in {"passed", "failed", "incomplete"} for case in cases):
+    if any(case["status"] not in {"passed", "failed", "incomplete", "judge_unavailable"} for case in cases):
         raise ValueError("R12_CASE_STATUS_REJECTED")
-    finished = {case["id"] for case in cases if case["status"] in {"passed", "failed"}}
+    finished = {case["id"] for case in cases if case["status"] in {"passed", "failed", "judge_unavailable"}}
     pending = [identity for identity in planned if identity not in finished]
     if not pending or meta.get("pending_scenario_ids") != pending:
         raise ValueError("R12_PENDING_QUESTIONS_REJECTED")
@@ -62,7 +116,12 @@ def aggregate(reports: list[dict], candidate: str) -> dict:
         sources.add(meta["source_sha256"])
         windows.append(meta.get("central_physical_batch", {}))
         for case in report["cases"]:
-            if case["id"] not in CORE30_IDS or case["status"] not in {"passed", "failed", "incomplete"}:
+            if case["id"] not in CORE30_IDS or case["status"] not in {
+                "passed",
+                "failed",
+                "incomplete",
+                "judge_unavailable",
+            }:
                 raise ValueError("K31_CASE_REJECTED")
             physical += case["model_calls"]
             if case["status"] == "incomplete":
@@ -102,11 +161,19 @@ def main(argv: list[str] | None = None) -> int:
         paths = [path.resolve(strict=True) for path in args.report]
         if len(paths) != len(set(paths)) or args.output.exists():
             raise ValueError("K31_REPORT_PATH_REJECTED")
-        result = aggregate([json.loads(path.read_text(encoding="utf-8")) for path in paths], args.candidate)
+        result = aggregate(
+            [json.loads(path.read_text(encoding="utf-8")) for path in paths],
+            args.candidate,
+        )
         with args.output.open("x", encoding="utf-8") as stream:
             json.dump(result, stream, ensure_ascii=False, indent=2, allow_nan=False)
         print(
-            json.dumps({"accepted": result["acceptance"]["accepted"], "physical_requests": result["physical_requests"]})
+            json.dumps(
+                {
+                    "accepted": result["acceptance"]["accepted"],
+                    "physical_requests": result["physical_requests"],
+                }
+            )
         )
         return 0 if result["acceptance"]["accepted"] else 1
     except Exception:

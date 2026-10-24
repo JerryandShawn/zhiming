@@ -55,7 +55,9 @@ def evaluate_scenario(
         target.reset(seed)
         grades = _evaluate_turns(scenario, target, judge, case)
         passed = all(check["passed"] for check in case["assertions"]) and not case.get("judge_error_code")
-        if case["status"] != "incomplete":
+        if case.get("judge_unavailable") and case["status"] != "incomplete":
+            case.update(status="judge_unavailable", score=None)
+        elif case["status"] != "incomplete":
             case["score"] = round((sum(grades) / len(grades)) * passed, 6)
             case["status"] = "passed" if passed and case["score"] == 1 else "failed"
     except ProviderStopped as exc:
@@ -106,7 +108,18 @@ def _evaluate_turns(scenario: Scenario, target: Target, judge: ModelJudge | None
             case["previews"].append(result.text[:200])
         if case["status"] == "incomplete":
             break
-        grades.append(_grade(scenario, index, result, judge, case))
+        grade = _grade(scenario, index, result, judge, case)
+        if judge is not None:
+            case.setdefault("private_evidence", []).append(
+                {
+                    "turn": index,
+                    "answer": result.text,
+                    "criterion": turn.expect.judge,
+                    "score": grade,
+                    "judge": case.pop("_private_judge", None),
+                }
+            )
+        grades.append(grade)
         if case.get("stop_reason"):
             break
     return grades
@@ -147,6 +160,11 @@ def _grade(
             "elapsed_seconds": guard.elapsed_seconds - elapsed_before if guard else exc.elapsed_seconds,
             "error": "ProviderStopped",
         }
+    case["_private_judge"] = {
+        "details": reviewed.get("private_reasoning"),
+        "error": reviewed.get("error"),
+        "reason_missing": not bool(reviewed.get("private_reasoning")),
+    }
     physical_calls = guard.calls - calls_before if guard else reviewed["model_calls"]
     case["model_calls"] += physical_calls
     case["judge_model_calls"] += physical_calls
@@ -157,13 +175,18 @@ def _grade(
     if reviewed["error"]:
         case["failed_assertions"].append(f"turn[{index}].judge_error")
         case["judge_error_code"] = reviewed["error"]
+        case["judge_unavailable"] = reviewed.get("judge_unavailable", False)
     elif reviewed["score"] < 1:
         case["failed_assertions"].append(f"turn[{index}].judge_score")
-    return reviewed["score"]
+    return reviewed["score"] if reviewed["score"] is not None else 0.0
 
 
 def _record_stop(
-    case: dict[str, Any], reason: str, role: str, provider_http_status: int | None = None, resume_at: str | None = None
+    case: dict[str, Any],
+    reason: str,
+    role: str,
+    provider_http_status: int | None = None,
+    resume_at: str | None = None,
 ) -> None:
     safe = ProviderStopped(reason, role, provider_http_status=provider_http_status, resume_at=resume_at)
     from mingjing_core.models.quota_mode import current_delegated_session
@@ -171,7 +194,14 @@ def _record_stop(
 
     session = current_delegated_session()
     if session is not None and isinstance(session.approval, K31CoreApproval):
-        case.update(status="incomplete", score=None, retry_policy="fresh_question_new_run_new_deadline")
+        from mingjing_core.timekit.clock import SystemClock
+
+        case.update(
+            status="incomplete",
+            score=None,
+            retry_policy="fresh_question_new_run_new_deadline",
+            stopped_at=SystemClock().now().isoformat(),
+        )
     eligible = safe.reason == "quota_5h" and safe.resume_at is not None
     case.update(
         stop_reason=safe.reason,

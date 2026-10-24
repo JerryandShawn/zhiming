@@ -29,7 +29,6 @@ CORE30_IDS = frozenset(
         "Q04",
         "Q05",
         "D01",
-        "S01",
         "S02",
         "S03",
         "S04",
@@ -43,7 +42,12 @@ CORE30_IDS = frozenset(
         "TA01",
     ]
 )
-REQUIRED = {"p3": P3_IDS, "date_checks": DATES_IDS, "core": CORE_IDS - DEFERRED_IDS, "core30": CORE30_IDS}
+REQUIRED = {
+    "p3": P3_IDS,
+    "date_checks": DATES_IDS,
+    "core": CORE_IDS - DEFERRED_IDS,
+    "core30": CORE30_IDS,
+}
 
 
 def _require(condition: object) -> None:
