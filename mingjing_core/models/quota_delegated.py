@@ -14,7 +14,7 @@ from .quota_gate import validate_gate
 from .quota_types import GuardRejected, instant
 
 PREFIX = "v7d-"
-TOKEN = re.compile(r"v7d-([0-9a-f]{40})-(eq|core-k3|core-k3-256k)-[0-9a-f]{32}")
+TOKEN = re.compile(r"v7d-([0-9a-f]{40})-(eq|core-k3|core-k3-256k|k31-connect)-[0-9a-f]{32}")
 DEADLINE = datetime(2026, 10, 27, 14, tzinfo=UTC)
 _SEAL = object()
 
@@ -53,9 +53,23 @@ def delegated_row(row: dict[str, Any] | None) -> bool:
     return row is not None and token_parts(row.get("authorization_id")) is not None
 
 
+def delegated_stage(approval: Any, phase: str) -> str:
+    from .quota_r16 import K31ConnectionApproval
+
+    if isinstance(approval, K31ConnectionApproval):
+        if phase != "k31-connect":
+            raise GuardRejected("manual_start_required")
+        return "k31-connect"
+    if not isinstance(approval, DelegatedApproval) or phase not in {"equivalence", "core"}:
+        raise GuardRejected("manual_start_required")
+    if phase == "core" and type(approval.equivalent) is not bool:
+        raise GuardRejected("manual_start_required")
+    return "eq" if phase == "equivalence" else "core-k3-256k" if approval.equivalent else "core-k3"
+
+
 def begin_delegated_batch(
     guard: Any,
-    approval: DelegatedApproval,
+    approval: Any,
     *,
     phase: str,
     batch_id: str,
@@ -65,9 +79,7 @@ def begin_delegated_batch(
 
     now = instant(guard.clock.now())
     approval.check(now)
-    if phase not in {"equivalence", "core"} or phase == "core" and approval.equivalent is None:
-        raise GuardRejected("manual_start_required")
-    stage = "eq" if phase == "equivalence" else "core-k3-256k" if approval.equivalent else "core-k3"
+    stage = delegated_stage(approval, phase)
     authorization = f"{PREFIX}{approval.candidate}-{stage}-" + uuid.uuid4().hex
     expires = min(now + timedelta(minutes=15), approval.expires_at)
     digest, expires = _batch_digest(batch_id, scenario_ids, authorization, expires, now)
@@ -98,20 +110,26 @@ def begin_delegated_batch(
 
 def check_delegated_attempt(connection: Any, store: Any, row: dict[str, Any], data: dict[str, Any]) -> None:
     candidate, phase = token_parts(row["authorization_id"])
-    models = {"k3", "k3-256k"} if phase == "eq" else {phase.removeprefix("core-")}
+    models = (
+        {"k3", "k3-256k"}
+        if phase == "eq"
+        else {"k3.1-pro"}
+        if phase == "k31-connect"
+        else {phase.removeprefix("core-")}
+    )
     if (
         data["provider"] != "kimi_code"
         or data["model"] not in models
         or data["role"] not in {"primary", "critic", "evaluation"}
     ):
         raise GuardRejected("batch_conflict")
-    if phase == "eq":
+    if phase in {"eq", "k31-connect"}:
         count = connection.execute(
             sql.SQL(
                 "SELECT count(*) AS n FROM {} u JOIN {} b USING(account_id,batch_id) "
                 "WHERE u.account_id=%s AND b.authorization_id LIKE %s"
             ).format(store.table("core_model_usage"), store.table("core_model_batches")),
-            (store.account_id, f"{PREFIX}{candidate}-eq-%"),
+            (store.account_id, f"{PREFIX}{candidate}-{phase}-%"),
         ).fetchone()["n"]
         if count >= 20:
             raise GuardRejected("delegation_request_limit")

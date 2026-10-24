@@ -18,6 +18,8 @@
 
 ## Progress
 
+- [x] 2026-10-24 13:19 +08:00 R16必要接线第一片：R11派生69门+四组原报告消费、同HEAD/source绑定、独立K31接入批准与中央20物理/10每批跨重启约束。隔离PG/Mock必要6/6（3.46s），随后新增路径穿越拒绝定向1/1（0.19s）；原件分别private/safe-narrow-d5f29485a8534711a7fb2279e98369d6与9fc66e0659e2407d8d3542deab3ca294，根已读metadata/XML/log。真实/服务器/外发0，真实CLI、可信核心选择与R12尚未完成。
+
 - [x] (2026-10-24 12:31 +08:00) R16首发独立配置与OpenAI原生wire/身份消费者离线片完成，v13已读，单代理；原c74排13:00树不改。首链8新+2直接旧U39兼容共10/10（0.18秒），为控制函数≤60提取既有parser调用后仅两条受影响行为2/2（0.14秒），固定服务资产显式MODELS_CONFIG接缝必要一条1/1（3.14秒，真实本机PG）。根读各metadata/XML/log；不是真实接入、最终候选门或Linux通过，真实请求0。
 - [ ] R16新模型接入批准/可信选择器与R12题级incomplete处理仍待实现；旧两模型等价证明不能授予K3.1调用。
 
@@ -61,6 +63,8 @@
 
 ## Surprises & Discoveries
 
+2026-10-24 13:19 +08:00：R11的原core报告保留incomplete及延期失败，不能消费旧全81门或仅信派生计数。新消费器重读四组原报告、固定case集合/零外发/同源及X02契约；实际b008原件只读兼容核验通过，不发批准、不重跑脚本，也不将旧候选证明套到新代码。
+
 2026-10-24 12:31 +08:00：旧turn_policy的high只表示服务器默认，没有发送参数；仅换YAML会让K3.1实际使用默认max。旧done.model是请求值也不能证明响应身份。因此新独立profile只用官方OpenAI原生Chat Completions、显式reasoning_effort=high，首响应必须声明精确model，后续声明若改变也拒绝，空响应同样不走协议重试。旧k3/k3-256k响应合同不强加model字段；尚未验证Anthropic K3.1的high wire，故该路径发送前拒绝，保留旧Anthropic行为。
 
 2026-10-21 00:56 +08:00 / CI失败不是Windows CRLF：`test_quality_v6.py` 与 `test_review_v6.py` 在5ed56de各增加 `_zhiming_offline_transport=True`，因此真实Git blob已经不同于冻结清单。其余9源文件原字节匹配。CI只读取这两份文件做AST/hash，不执行其退役控制器，无需改冻结替身来允许离线传输。
@@ -100,6 +104,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+2026-10-24 13:19 +08:00：R16接入使用独立sealed K31ConnectionApproval和k31-connect中央阶段，不能从旧两模型等价布尔升级，也不能由接入批准进入core。沿用现有PG批/在途账本；不新造同run续作账本。新增纯策略反例与实际PG+HTTP Mock验证20次跨批/重启硬上限及旧模型0POST拒绝。
 
 2026-10-24 12:31 +08:00 / 按R16补最小消费者：新增config/models.first-release.yaml，旧default/v3文件不改；审核资产共同env最后固定MODELS_CONFIG至同候选新profile，既有资产测试只新增一条对应断言，不弱化原断言。新错误沿原BadRequest分类和全停动作使Registry不重试/不fallback，评测TrackingPort沿原provider_http_error停批，不新建中央stop类型或重签旧批准。未把此静态配置/Mock成功当账号权限、effort实测、K3.1分词器等价或正式新模型批准。
 
@@ -144,6 +150,8 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+2026-10-24 13:19 +08:00：交接仍未可发真实请求；只完成必要门消费/接入限流底座，后续须补K31实际接入检查、PG证明可信核心选择、R12整题中断及实际CLI后再交Claude。R11冻结b008不变；本树新实现必须整合后重新绑定候选。旧模型配置/既有证明/v3未改，stage单仍No-Go，不重复通知用户。
 
 2026-10-24 12:31 +08:00 R16离线片：主/评审实际合成HTTP请求均精确k3.1-pro/high，U39原推理/原tool ID回传、合成中文长答不丢、错/缺/后续改变身份在不可信内容前全停且无重试、空响应和未核Anthropic路径均关闭。effort_verified保持false。唯一原件均在release-prep的private/safe-narrow-b38fca028bb140a99c2d96b16b0c1f71、014798210b7e47f1b08d44d747dd95b5、3ac18992206d4d329892a42c591a3e6d；不合计成一次13/13。官方依据https://www.kimi.com/code/docs/kimi-code/models.html于本轮只读核验。真实新模型选择/≤20接入/核心30尚未执行，R11固定c74仍scheduled；本片是另树后续提交，不能套用c74脚本证明。v12停止Docker，R2新库对调工具仍缺，stage/prod执行单仍No-Go。
 
