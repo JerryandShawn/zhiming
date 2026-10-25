@@ -1,10 +1,10 @@
-# 首发 F 副本 stage 执行单（候选2200485）
+# 首发 F 副本 stage 执行单（候选e578e2d）
 
-执行人：**主线**。本单已绑定候选 `220048573110862d378015c35d99a37c0d83503e`，授权依据为 v13 授权 F、main v36/v41/v49/v50 和匹配候选的37号首行 `结论：Go`；复核时间须晚于2026-10-24 12:30。文档就绪与服务器执行分开记录：37号未出现时只完成本机准备，不连接服务器，不上传。
+执行人：**主线**。本单已绑定候选 `e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd`，授权依据为 v13 授权 F、main v36/v41/v49/v50 和匹配候选的37号首行 `结论：Go`；复核时间须晚于2026-10-24 12:30。文档就绪与服务器执行分开记录：37号未出现时只完成本机准备，不连接服务器，不上传。
 
-固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r39/private/fr-stage-220048573110862d378015c35d99a37c0d83503e/`；包SHA256 `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `ba63f7b2fa8a405d`。同源R11证据：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r39/private/candidate-eval/220048573110862d378015c35d99a37c0d83503e/R11-58e3c43c0c33414cbe1b2d60e3d786ff/assessment.json`，48/48、7/7、69/69、29/29已核。质量依据main v41/38号第九节：旧8727完整29＋220定向五题＋独立人工改判，安全5/5、其他23/24；TA01保留失败，首发后查。不覆盖原机器分数，不再跑评测。
+固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/fr-stage-e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/`；包SHA256 `e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `4e680f175ea28cc8`。同源R11证据：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/candidate-eval/e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/R11-de7472f506d04966a4b1a54c8bc78f72/assessment.json`，48/48、7/7、69/69、29/29已核。质量依据main v41/38号第九节：旧8727完整29＋220定向五题＋独立人工改判，安全5/5、其他23/24；TA01保留失败，首发后查。不覆盖原机器分数，不再跑评测。
 
-CI实测记录仍是PR23当前SHA的run40132087922 cancelled，不能写绿。进入服务器前，须有同SHA success，并在37号中引用该结果；不能自行忽略取消。37号未放行前，无服务器执行结果。
+PR24同SHA CI run 40217280728（https://github.com/JerryandShawn/zhiming/actions/runs/40217280728）已启动，当前in_progress，conclusion为空，不能写绿。进入服务器前须同SHA success，并由37号引用；37号未放行前无服务器执行结果。原220失败证据保留在v43_candidate_ci.json。
 
 ## 范围与现有证据
 
@@ -14,7 +14,7 @@ CI实测记录仍是PR23当前SHA的run40132087922 cancelled，不能写绿。�
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定2200485包/R11原件，R11已根核通过，CI已核cancelled（run40132087922）；同SHA success并由37号引用后才继续，不复用旧候选批准|
+|同一首发源码、CI、R11|本单绑定e578e2d包/R11原件，R11已根核通过，新CI在途（run40217280728）；同SHA success并由37号引用后才继续，不复用旧候选批准|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
@@ -24,7 +24,7 @@ CI实测记录仍是PR23当前SHA的run40132087922 cancelled，不能写绿。�
 
 ## 执行前本机身份门（不连接服务器）
 
-主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。CI已核取消，不能把取消当通过；37号必须引用同SHA成功CI。
+主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。新CI尚在途，不能当通过；37号必须引用同SHA成功CI。
 
 ```powershell
 $FrGate = 'C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/37_大脑复核_首发stage.md'
@@ -32,34 +32,34 @@ if (-not (Test-Path -LiteralPath $FrGate -PathType Leaf)) { throw '37号未出�
 $FrGateLines = Get-Content -LiteralPath $FrGate
 if ($FrGateLines[0].Trim() -ne '结论：Go') { throw '37号没有Go，停止' }
 $FrGateText = $FrGateLines -join "`n"
-if ($FrGateText -notmatch '220048573110862d378015c35d99a37c0d83503e') { throw '37号候选不符，停止' }
+if ($FrGateText -notmatch 'e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd') { throw '37号候选不符，停止' }
 $FrTimes = [regex]::Matches($FrGateText, '(?:复核时间|写入时间)[：:]\s*(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?\s*(?:\+08:00|北京时间))')
 if ($FrTimes.Count -ne 1) { throw '37号复核时间缺失或歧义，停止' }
 $FrTime = [DateTimeOffset]::Parse($FrTimes[0].Groups[1].Value.Replace('北京时间','+08:00'))
 if ($FrTime -le [DateTimeOffset]'2026-10-24T12:30:00+08:00') { throw '37号复核时间太旧，停止' }
 ```
 
-37号时间字段按上述格式核验；实际文件格式不同或有歧义就停，不能用文件修改时间代替。CI原证据见 `../eval/v40_candidate_ci.json`；当前取消状态原样保留。继续条件为37号对同一候选明确放行及CI处置有据；否则停止并提醒。
+37号时间字段按上述格式核验；实际文件格式不同或有歧义就停，不能用文件修改时间代替。CI原证据见 `../eval/v50_candidate_ci.json`；原220失败见v43_candidate_ci.json，不覆盖原件。继续条件为同SHA CI success及37号明确放行；否则停止并提醒。
 
 ## B0–B1：本机固定包、引导文件与公开分词器
 
 在下面固定clean候选树核验已经实际生成的包，不重新打包、不覆盖旧交付物。任一hash/候选不符即停止。
 
 ```powershell
-$FrSha = '220048573110862d378015c35d99a37c0d83503e'
-$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-r39'
+$FrSha = 'e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
+$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-r46'
 $FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/python.exe'
 $FrTokenizer = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/private/artifacts/kimi-k3-installer-20261023'
 Set-Location $FrRepo
 if ((git rev-parse HEAD) -ne $FrSha -or (git status --porcelain)) { throw '候选或clean状态不符' }
 $FrDelivery = Join-Path $FrRepo "private/fr-stage-$FrSha"
 $FrTar = Join-Path $FrDelivery 'release.tar.gz'
-if ((Get-FileHash -Algorithm SHA256 -LiteralPath $FrTar).Hash.ToLowerInvariant() -ne '9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff') { throw '包hash不符' }
+if ((Get-FileHash -Algorithm SHA256 -LiteralPath $FrTar).Hash.ToLowerInvariant() -ne 'e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795') { throw '包hash不符' }
 if ((Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $FrDelivery 'bootstrap.py')).Hash.ToLowerInvariant() -ne '18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42') { throw '引导hash不符' }
 & $FrPython -m tools.install_k3_tokenizer --destination $FrTokenizer --verify-only
 if ($LASTEXITCODE -ne 0) { throw '公开分词器原件不符' }
 $FrBound = Get-Content (Join-Path $FrDelivery 'delivery.json') -Raw | ConvertFrom-Json
-if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'ba63f7b2fa8a405d') { throw '交付身份不符' }
+if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne '4e680f175ea28cc8') { throw '交付身份不符' }
 ```
 
 主线用上述命令核delivery.json中的SHA、operation、两项hash；全部相等才采用下方固定参数，任一不符停止并提醒。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
@@ -69,8 +69,8 @@ if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'ba63f7b2fa8a405d')
 ```bash
 set -euo pipefail
 umask 077
-FR_SHA='220048573110862d378015c35d99a37c0d83503e'
-FR_ID='ba63f7b2fa8a405d'
+FR_SHA='e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
+FR_ID='4e680f175ea28cc8'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
@@ -120,8 +120,8 @@ if ($LASTEXITCODE -ne 0) { throw '公开分词器上传失败停止' }
 set -euo pipefail
 set -C
 umask 077
-FR_SHA='220048573110862d378015c35d99a37c0d83503e'
-FR_ID='ba63f7b2fa8a405d'
+FR_SHA='e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
+FR_ID='4e680f175ea28cc8'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 FR_OP="$FR_ROOT/operations/$FR_ID"
@@ -146,7 +146,7 @@ command -v python3.11 sha256sum runuser
 test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
 grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
 sha256sum -c "$FR_ROOT/pg-programs.sha256"
-FR_PACKAGE_SHA='9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff'
+FR_PACKAGE_SHA='e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795'
 FR_BOOTSTRAP_SHA='18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42'
 h() { sha256sum "$1" | cut -d ' ' -f 1; }
 ```
@@ -245,7 +245,8 @@ if existing:
 else:
  assert call(socket,"SELECT count(*) FROM pg_roles WHERE rolname='zhiming_fr_admin';",base)=='0','R28 role exists without files; stop, no password rotation'
  password=secrets.token_hex(32);user='zhiming_fr_admin'
- query="SET log_statement='none'; SET log_min_duration_statement=-1; SET log_min_error_statement='panic'; SET password_encryption='scram-sha-256'; CREATE ROLE zhiming_fr_admin SUPERUSER LOGIN PASSWORD '"+password+"';"
+ # psql reads separate stdin commands: disable statement logging before sending the credential statement.
+ query="SET log_statement='none';\nSET log_min_duration_statement=-1;\nSET log_min_error_statement='panic';\nSET password_encryption='scram-sha-256';\nCREATE ROLE zhiming_fr_admin SUPERUSER LOGIN PASSWORD '"+password+"';\n"
  call(socket,query,base)
  dsn='postgresql://'+user+':'+password+'@127.0.0.1:5432/postgres'
  data=(key+'='+dsn+'\n').encode()

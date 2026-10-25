@@ -1,14 +1,14 @@
-# 首发生产执行单：220048573110862d378015c35d99a37c0d83503e
+# 首发生产执行单：e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd
 
-执行人：**主线**。授权依据为main v17/v34/v37/v41/v49/v50的D-首发，以及同候选、在有效窗口内的31号 `结论：Go`。先有同候选stage成功回执，再进入生产。本单只交审核，本次没有连接服务器、改库、切服务或发模型请求。
+执行人：**主线**。授权依据为main v17/v34/v37/v41/v49/v50的D-首发，以及同候选、在有效窗口内的31号 `结论：Go`。先有同候选stage成功回执，再进入生产。37/31号实际放行前仅本机准备；现场执行逐步记回执，不以文档就绪代替验收。
 
-质量依据：38号第九节/main v41，安全5/5、其他23/24；TA01仍失败，首发后排查。原机器分数不改。R11和包见stage单；PR23当前已知CI为cancelled，Go必须引用同SHA成功CI，主线不能把取消当绿。
+质量依据：38号第九节/main v41，安全5/5、其他23/24；TA01仍失败，首发后排查。原机器分数不改。R11和包见stage单；PR24同SHA CI run 40217280728 当前in_progress，Go必须引用同SHA成功CI，不能把在途当绿。
 
 本文使用 PostgreSQL 15 原生命令及候选已有Python API，不存在 `first_release_prod --apply` 命令。不得把 `first_release_native_exchange` 的fr_stage guard改成live，也不传 `--local-drill` 冒充生产路径。下面原生SQL/备份/文件切换步骤是本次待审生产操作的明确实现，不依赖尚未开发的CLI。所有代码块先审后执行；任何非0立即停，维护门保留，不覆盖失败产物、不自动重试。
 
 ## D0：放行、固定路径、容量与运行时
 
-31号必须明确：首行Go；完整候选SHA；北京时间开始/结束窗口；接受开门前回滚、开门后一次网页冒烟；stage回执成功的operation与路径。缺项、歧义或窗口未到均停止。37号不能代替31号。新operation固定 `c41e2200485a1025`，与stage的 `ba63f7b2fa8a405d` 区分，不复用旧目录。
+31号必须明确：首行Go；完整候选SHA；北京时间开始/结束窗口；接受开门前回滚、开门后一次网页冒烟；stage回执成功的operation与路径。缺项、歧义或窗口未到均停止。37号不能代替31号。新operation固定 `1a131275da9dc8d6`，与stage的 `4e680f175ea28cc8` 区分，不复用旧目录。
 
 本机读取31号，核文字与窗口后再进入服务器；不得以文件mtime作为窗口。远端第一次短连仅只读核以下路径/容量/目标，不根据历史状态直接停服务：
 
@@ -16,9 +16,9 @@
 set -euo pipefail
 set -C
 umask 077
-FR_SHA=220048573110862d378015c35d99a37c0d83503e
+FR_SHA=e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd
 FR_OLD=7dbc951eaffebd3d812169865eaefcde16a00ed9
-FR_ID=c41e2200485a1025
+FR_ID=1a131275da9dc8d6
 FR_RELEASE=/root/zhiming-core-releases/$FR_SHA
 FR_OLD_RELEASE=/root/zhiming-core-releases/$FR_OLD
 FR_STAGE=/root/zhiming-core-fr-stage/releases/$FR_SHA
@@ -93,7 +93,8 @@ if existing:
 else:
  assert call(socket,"SELECT count(*) FROM pg_roles WHERE rolname='zhiming_fr_admin';",base)=='0','R28 role exists without files; stop, no password rotation'
  password=secrets.token_hex(32);user='zhiming_fr_admin'
- query="SET log_statement='none'; SET log_min_duration_statement=-1; SET log_min_error_statement='panic'; SET password_encryption='scram-sha-256'; CREATE ROLE zhiming_fr_admin SUPERUSER LOGIN PASSWORD '"+password+"';"
+ # psql reads separate stdin commands: disable statement logging before sending the credential statement.
+ query="SET log_statement='none';\nSET log_min_duration_statement=-1;\nSET log_min_error_statement='panic';\nSET password_encryption='scram-sha-256';\nCREATE ROLE zhiming_fr_admin SUPERUSER LOGIN PASSWORD '"+password+"';\n"
  call(socket,query,base)
  dsn='postgresql://'+user+':'+password+'@127.0.0.1:5432/postgres'
  data=(key+'='+dsn+'\n').encode()
@@ -116,7 +117,7 @@ test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 
 上述文件使用单字段URI DSN；若已有文件不是该受支持格式，停止审查而不覆盖。任意错误输出只记录步骤失败，不复制SQL/口令/原stderr；不现场安装软件或修改认证。
 
-包必须与stage同一公开包，SHA256 `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
+包必须与stage同一公开包，SHA256 `e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
 
 ```bash
 test ! -e "$FR_RELEASE" && test ! -e "$FR_OP"
@@ -136,12 +137,12 @@ import hashlib,json,os,pathlib,sys,tarfile
 sys.path.insert(0,sys.argv[1])
 from tools.first_release_stage_unpack import safe_name,extract_member,MANIFEST
 a=pathlib.Path('/root/zhiming-core-fr-stage/uploads/release.tar.gz')
-assert hashlib.sha256(a.read_bytes()).hexdigest()=='9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff'
+assert hashlib.sha256(a.read_bytes()).hexdigest()=='e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795'
 dest=pathlib.Path(sys.argv[2]);assert not dest.exists()
 with tarfile.open(a,'r:gz') as t:
     members=t.getmembers();names=[safe_name(x.name) for x in members]
     m=json.load(t.extractfile(MANIFEST))
-    assert m['commit']=='220048573110862d378015c35d99a37c0d83503e'
+    assert m['commit']=='e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
     assert m['schema']=='core3-release-v1' and len(names)==len(set(names))
     assert set(names)=={MANIFEST,*m['files']} and all(x.isfile() for x in members)
     dest.mkdir(mode=0o700)
@@ -222,9 +223,9 @@ import psycopg
 from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict,make_conninfo
 from psycopg.rows import dict_row
-SHA='220048573110862d378015c35d99a37c0d83503e'
+SHA='e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
 ROOT=Path('/root/zhiming-core-releases')/SHA
-OP=Path('/root/zhiming-core-backups/first-release-c41e2200485a1025')
+OP=Path('/root/zhiming-core-backups/first-release-1a131275da9dc8d6')
 sys.path.insert(0,str(ROOT))
 from tools.first_release_hermes_entry import _private_read,_parse_environment
 from tools.first_release_database_metadata import capture,validate,apply_metadata,semantic
@@ -237,7 +238,7 @@ def private_env(path):return _parse_environment(_private_read(Path(path)))
 assert F['host'] in ('127.0.0.1','::1') and F['port']=='5432' and F['dbname']=='postgres'
 assert not any(k.startswith('PG') and v for k,v in os.environ.items())
 assert not set(F)-{'host','port','dbname','user','password','connect_timeout'}
-LIVE='zhiming_core_live';NEW='zhiming_core_first_c41e2200485a1025';KEPT='zhiming_core_before_c41e2200485a1025'
+LIVE='zhiming_core_live';NEW='zhiming_core_first_1a131275da9dc8d6';KEPT='zhiming_core_before_1a131275da9dc8d6'
 def admin():
  c=psycopg.connect(DSN,autocommit=True,row_factory=dict_row)
  r=c.execute("SELECT current_user,session_user,current_database(),inet_server_port() AS port,current_setting('server_version_num')::int AS version,(SELECT rolsuper FROM pg_roles WHERE rolname=session_user) AS su").fetchone()
@@ -392,7 +393,7 @@ PY
 
 停止：真实owner/ACL/历史checksum异常、存在未知writer、隐私旁账不等、repeat非0、中央位置不受支持等，均保持维护和两个库，不修改工具guard或PG认证来继续。该路径保留原live基线，缩小原地升级风险；不是把恢复成功直接当作允许开门。
 
-## D5：对调与四入口固定到2200485
+## D5：对调与四入口固定到e578e2d
 
 同一个控制事务内检查原SID、两个OID、原库元数据、0连接及closed，再对调。保留旧live为KEPT，不删除。新live的owner/ACL/库与角色SET从原快照恢复。
 
@@ -567,7 +568,7 @@ PY
 
 触发：D3–D6失败或窗口不足，且FR_OP/opened.json不存在。公共维护门保持，三service/timer停，Hermes仍被门与旧writer锁挡住。原live未对调时不需要回退原库，保留失败新库；已对调则执行下面恢复，禁止在新live上 `--clean` 或删除表。
 
-先在候选新live只读导出当前privacy，与D2精确相等才可使用D2 dump；本路径开门前没有正常writer，新隐私差异意味着前提不成立，停止并保留现场，不丢弃最新撤销/送达收据。恢复到第三个全新库 `zhiming_core_rb_c41e2200485a1025`，对调失败新live保存为 `zhiming_core_failed_c41e2200485a1025`。恢复保owner/ACL/库与角色SET，旧包schema与D2原前缀一致。
+先在候选新live只读导出当前privacy，与D2精确相等才可使用D2 dump；本路径开门前没有正常writer，新隐私差异意味着前提不成立，停止并保留现场，不丢弃最新撤销/送达收据。恢复到第三个全新库 `zhiming_core_rb_1a131275da9dc8d6`，对调失败新live保存为 `zhiming_core_failed_1a131275da9dc8d6`。恢复保owner/ACL/库与角色SET，旧包schema与D2原前缀一致。
 
 ```bash
 systemctl stop zhiming-core-reports.timer zhiming-core-feishu.service zhiming-core-reports.service mingjingtai.service
@@ -576,7 +577,7 @@ import sys,subprocess
 sys.path.insert(0,sys.argv[1]);from context import *
 from tools.deploy_core import skill_writer_lock,export_withdrawals
 assert not (OP/'opened.json').exists() and (OP/'exchange-receipt.json').is_file()
-RB='zhiming_core_rb_c41e2200485a1025';FAILED='zhiming_core_failed_c41e2200485a1025'
+RB='zhiming_core_rb_1a131275da9dc8d6';FAILED='zhiming_core_failed_1a131275da9dc8d6'
 with skill_writer_lock(exclusive=True),admin() as c:
  snap=read('database-before.json');allow(c,LIVE,False);zero(c,LIVE)
  allow(c,LIVE,True);r=repo(LIVE,True)
@@ -643,4 +644,4 @@ PY
 
 ## 首发后待办
 
-TA01第2轮未调用tarot_read，保留失败原件后查；followup_due规整为过去时间时应退回模型原未来时间，另加定向脚本。两项不在本次冻结220上改，不再发评测请求。
+TA01第2轮未调用tarot_read，保留失败原件后查；followup_due规整为过去时间时应退回模型原未来时间，另加定向脚本。两项不在本次冻结e578e2d上改，不再发评测请求。

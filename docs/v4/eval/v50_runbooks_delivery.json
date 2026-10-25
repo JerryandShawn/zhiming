@@ -1,0 +1,615 @@
+{
+  "recorded_at": "2026-10-26T01:37:49.739970+08:00",
+  "candidate": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+  "baseline": "220048573110862d378015c35d99a37c0d83503e",
+  "pr_url": "https://github.com/JerryandShawn/zhiming/pull/24",
+  "relative_files": [
+    ".github/workflows/ci.yml",
+    "docs/v4/eval/v46_local_validation.json",
+    "docs/v4/execplans/P3_r46_ci_contracts.md",
+    "tests/v4/agent/test_agent_runtime_pg.py",
+    "tests/v4/agent/test_agent_runtime_prompts.py",
+    "tests/v4/agent/test_eval_core30.py",
+    "tests/v4/agent/test_eval_judge_journal_pg.py",
+    "tests/v4/agent/test_eval_live_proof_pg.py",
+    "tests/v4/agent/test_eval_x01_review_pg.py",
+    "tests/v4/agent/test_first_release_r11_pg.py",
+    "tests/v4/agent/test_k31_core_chain_pg.py",
+    "tests/v4/agent/test_r31_ax_contracts.py",
+    "tests/v4/agent/test_tool_effect_recovery_matrix_pg.py",
+    "tests/v4/models/test_contract_v2.py",
+    "tests/v4/models/test_k31_r18_pg.py",
+    "tests/v4/models/test_schema_registry.py",
+    "tests/v4/test_eval_comparison_contracts.py",
+    "tests/v4/test_eval_framework.py"
+  ],
+  "r11": {
+    "candidate": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+    "source_sha256": "01cfc1623e3a830a664b31dcdf56eaace3ba36c85bb08e108849bbd0ab4b6211",
+    "metadata_path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r46\\private\\r11-run-d062dfe956524ba8a07cf5abc91dedaa\\metadata.json",
+    "assessment_path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r46\\private\\candidate-eval\\e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd\\R11-de7472f506d04966a4b1a54c8bc78f72\\assessment.json",
+    "assessment_sha256": "9cbdb15d8ca75ef329b26a977e72bdd0639308a0bfcae4cd9077b39ed3f1f761",
+    "started_at": "2026-10-26T01:32:59.352972+08:00",
+    "finished_at": "2026-10-26T01:35:31.441466+08:00",
+    "r11_exit_code": 0,
+    "groups": {
+      "p3": {
+        "count": 48,
+        "passed": 48
+      },
+      "date_checks": {
+        "count": 7,
+        "passed": 7
+      },
+      "core": {
+        "count": 69,
+        "passed": 69
+      },
+      "core30": {
+        "count": 29,
+        "passed": 29
+      }
+    },
+    "raw_core": {
+      "count": 81,
+      "passed": 71,
+      "failed": 10,
+      "status": "incomplete"
+    },
+    "deferred": {
+      "L02": "首发仅Kimi；多模型对照延后",
+      "M08": "第二批P5记忆2.0",
+      "P01": "后续P7主动跟进",
+      "P02": "后续P7主动跟进",
+      "P03": "后续P7主动跟进",
+      "P04": "后续P7主动跟进",
+      "P05": "后续P7主动跟进",
+      "P06": "后续P7主动跟进",
+      "X01": "第三批P6评审员",
+      "X02": "首发无跨供应商降级；另验X02-r11等价断言",
+      "X06": "第三批P6评审员",
+      "X08": "第三批P4真流式"
+    },
+    "x02_equivalent": {
+      "id": "X02-r11",
+      "status": "passed",
+      "score": 1,
+      "original_contract_sha256": "c566b22a66fb1a76349375dd48536b9672442fd04210e96dcafc058c646e32d9",
+      "mock_http_requests": 4,
+      "external_provider_requests": 0,
+      "friendly_failure": true,
+      "committed_answer_preserved": true,
+      "repeat_writes": 0
+    },
+    "reports": {
+      "p3": {
+        "path": "private\\candidate-eval\\e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd\\R11-de7472f506d04966a4b1a54c8bc78f72\\p3\\2026-10-26-scripted-v4-scripted-v4.json",
+        "sha256": "b0ad9afd2db946ae979a06d3178146446259e616fcaa73cc92c305837dd207e8"
+      },
+      "date_checks": {
+        "path": "private\\candidate-eval\\e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd\\R11-de7472f506d04966a4b1a54c8bc78f72\\date_checks\\2026-10-26-scripted-v4-scripted-v4.json",
+        "sha256": "bd5f615a42bc7518157a787f2c0a00ad2f6fa2a2e1a80ae447df53db0408a367"
+      },
+      "core": {
+        "path": "private\\candidate-eval\\e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd\\R11-de7472f506d04966a4b1a54c8bc78f72\\core\\2026-10-26-scripted-v4-scripted-v4.json",
+        "sha256": "080bf5a8983425e00085986e4189111af7c0f355f7ce2e1147855e361c3f3958"
+      },
+      "core30": {
+        "path": "private\\candidate-eval\\e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd\\R11-de7472f506d04966a4b1a54c8bc78f72\\core30\\2026-10-26-scripted-v4-scripted-v4-core30.json",
+        "sha256": "d944390cb2fcf5afafdfa6e5eee6757dd1ed2d6aebf906ffc4b64b45fd222895"
+      }
+    },
+    "root_verified_all_four_original_reports": true,
+    "real_model_requests": 0,
+    "remote_servers": 0
+  },
+  "delivery": {
+    "candidate": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+    "operation": "4e680f175ea28cc8",
+    "artifact_sha256": "e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795",
+    "bootstrap_sha256": "18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42",
+    "tokenizer_files": [
+      "tiktoken.model",
+      "tokenization_kimi.py",
+      "encoding_k3.py",
+      "tokenizer_config.json",
+      "config.json",
+      "LICENSE"
+    ]
+  },
+  "production_operation": "1a131275da9dc8d6",
+  "local_validation": {
+    "schema": "r46-local-validation-v1",
+    "baseline": "220048573110862d378015c35d99a37c0d83503e",
+    "tested_worktree_head": "220048573110862d378015c35d99a37c0d83503e",
+    "full_metadata": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r46\\private\\r46-full-85328919bd17430ba8da8da1e5e4a30f\\metadata.json",
+    "full_xml": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r46\\private\\r46-full-85328919bd17430ba8da8da1e5e4a30f\\pytest.xml",
+    "full_log": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r46\\private\\r46-full-85328919bd17430ba8da8da1e5e4a30f\\pytest.log",
+    "full_counts": {
+      "tests": 4558,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 56
+    },
+    "passed": 4502,
+    "finished_at": "2026-10-26T01:32:08.363784+08:00",
+    "tested_files_unchanged": true,
+    "changed_files_sha256": {
+      ".github/workflows/ci.yml": "f472db9f9a5a612b4cf47ef6b9c3b93854e30c7546be6a33c4d90650f21c1e09",
+      "tests/v4/agent/test_agent_runtime_pg.py": "bec7d9e05ba3b7a859f0fac3cbf6bd41c833152909cfe4e73924d6e4b6f26d4b",
+      "tests/v4/agent/test_agent_runtime_prompts.py": "69e58f54137c274afa933e2766d170c7e51b49163728f68df06f3477773d2c26",
+      "tests/v4/agent/test_eval_core30.py": "b6751bfe75ae9d91bddce425c6007158734013913e3663b8e3788eb184f547f1",
+      "tests/v4/agent/test_eval_judge_journal_pg.py": "1afb968b87155421bbe3419ecc77d56270e93ad15635f23fee8195b07dbc34bf",
+      "tests/v4/agent/test_eval_live_proof_pg.py": "06c3bc2e8d9963d503440f787f793eae852b297a605b736e43f45ef4cfdad59b",
+      "tests/v4/agent/test_eval_x01_review_pg.py": "f7a0bf250b3aa05334f3194d762ca8691cb9b48fbe9fa226db50981b8cc9b18b",
+      "tests/v4/agent/test_first_release_r11_pg.py": "a5ff9b9e46cc0af106b8447f02244614d117213904187ad86d6c3f2fef4d5c6b",
+      "tests/v4/agent/test_k31_core_chain_pg.py": "35ca33cb45acc75e4e2f42115e2bc7c151982bda4b75d147cd11831c913084ac",
+      "tests/v4/agent/test_r31_ax_contracts.py": "8c88359d3c3b222408206a41306c40344cafd8945234268be969e0116d2d77fc",
+      "tests/v4/agent/test_tool_effect_recovery_matrix_pg.py": "6c2bd3cd73ee76b3036eff7736eabdfeeb5415a3d0bc125a406b30e38cd64868",
+      "tests/v4/models/test_contract_v2.py": "2e83afc8ce7a7a06046d5a8dc2efad5e5400a7fb62d42113b1405293d805ec3e",
+      "tests/v4/models/test_k31_r18_pg.py": "015e56a18e05c4ea8ac34a46bb38d825bfe5945d794fad41b1f63ca8b7167c37",
+      "tests/v4/models/test_schema_registry.py": "b9d0798908a95c1fb058462d5432876039234c450840452d6f6cd693f71444a7",
+      "tests/v4/test_eval_comparison_contracts.py": "945a33635bb06280b06cad78cba2cde02dd49b02a7354427f45ef4ac8689e967",
+      "tests/v4/test_eval_framework.py": "bcb761e8cb1ef683f30eb85ccaed1153ca63c86252229cfb1a6d71efbf81feaf"
+    },
+    "original_ci_run": 40132087922,
+    "original_28_cases": [
+      {
+        "original": "tests/v4/agent/test_agent_runtime_pg.py::test_life_runtime_commits_once_and_persists_each_original_meter",
+        "current": "tests/v4/agent/test_agent_runtime_pg.py::test_life_runtime_commits_once_and_persists_each_original_meter",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_agent_runtime_prompts.py::test_prompt_hashes_versions_and_resolved_placeholders",
+        "current": "tests/v4/agent/test_agent_runtime_prompts.py::test_prompt_hashes_versions_and_resolved_placeholders",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_eval_core30.py::test_exact_selection_preserves_all_twenty_eight_original_scoring_contracts",
+        "current": "tests/v4/agent/test_eval_core30.py::test_exact_selection_preserves_originals_except_board39_approved_expectations",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_eval_judge_journal_pg.py::test_incomplete_real_mock_response_is_unknown_and_cannot_repost",
+        "current": "tests/v4/agent/test_eval_judge_journal_pg.py::test_two_invalid_score_responses_persist_ungraded_and_cannot_repost",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_eval_judge_journal_pg.py::test_withdrawal_after_inflight_before_native_send_blocks_payload_and_clears_state",
+        "current": "tests/v4/agent/test_eval_judge_journal_pg.py::test_withdrawal_after_inflight_before_native_send_blocks_payload_and_clears_state",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_eval_live_proof_pg.py::test_verified_proof_selects_same_model_for_actual_agent_meter_and_external_judge[True]",
+        "current": "tests/v4/agent/test_eval_live_proof_pg.py::test_verified_proof_selects_same_model_for_actual_agent_meter_and_external_judge[True]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_eval_live_proof_pg.py::test_verified_proof_selects_same_model_for_actual_agent_meter_and_external_judge[False]",
+        "current": "tests/v4/agent/test_eval_live_proof_pg.py::test_verified_proof_selects_same_model_for_actual_agent_meter_and_external_judge[False]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_eval_x01_review_pg.py::test_overlay_preserves_original_contract_and_uses_only_declared_model_responses",
+        "current": "tests/v4/agent/test_eval_x01_review_pg.py::test_overlay_preserves_original_contract_and_uses_only_declared_model_responses",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_first_release_r11_pg.py::test_named_deferred_cases_remain_failed_without_weakening_required_sets",
+        "current": "tests/v4/agent/test_first_release_r11_pg.py::test_named_deferred_cases_remain_failed_without_weakening_required_sets",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_k31_core_chain_pg.py::test_k31_actual_core_lifecycle_primary_and_external_score",
+        "current": "tests/v4/agent/test_k31_core_chain_pg.py::test_k31_actual_core_lifecycle_primary_and_external_score",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_r31_ax_contracts.py::test_ax01_script_uses_three_originals_without_divination",
+        "current": "tests/v4/agent/test_r31_ax_contracts.py::test_ax01_script_uses_three_originals_without_divination",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/agent/test_tool_effect_recovery_matrix_pg.py::test_effect_committed_before_ack_reclaims_same_epoch_without_second_mutation[memory_update_proposal]",
+        "current": "tests/v4/agent/test_tool_effect_recovery_matrix_pg.py::test_effect_committed_before_ack_reclaims_same_epoch_without_second_mutation[memory_update_proposal]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/models/test_contract_v2.py::test_wording_negation_cases_keep_s01_phone_facts_hard",
+        "current": "tests/v4/models/test_contract_v2.py::test_wording_negation_preserves_board29_removal_of_forced_crisis_numbers",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/models/test_k31_r18_pg.py::test_twenty_call_guard_counts_old_candidate_attempts_before_any_new_post",
+        "current": "tests/v4/models/test_k31_r18_pg.py::test_board25_thirty_call_guard_counts_old_candidate_attempts_before_any_new_post",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output0]",
+        "current": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output0]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output1]",
+        "current": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output1]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output2]",
+        "current": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output2]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output3]",
+        "current": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output3]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output4]",
+        "current": "tests/v4/test_eval_framework.py::test_critic_rejects_inconsistent_or_malformed_issues[output4]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_framework.py::test_critic_errors_never_turn_into_passed_cases",
+        "current": "tests/v4/test_eval_framework.py::test_critic_errors_never_turn_into_passed_cases",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_backfill_preserves_original_execution_scores_calls_and_unfingerprinted_na",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_backfill_preserves_original_execution_scores_calls_and_unfingerprinted_na",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_lf_archive_cannot_impersonate_original_crlf_execution_source",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_lf_archive_cannot_impersonate_original_crlf_execution_source",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[fingerprint]",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[fingerprint]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[observed_na]",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[observed_na]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[na_calls]",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[na_calls]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[applicable_na]",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_backfill_rejects_unproven_observations[applicable_na]",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_changed_execution_snapshot_is_rejected",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_changed_execution_snapshot_is_rejected",
+        "status": "passed"
+      },
+      {
+        "original": "tests/v4/test_eval_comparison_contracts.py::test_partial_business_zero_cannot_be_silently_rerun_after_source_change",
+        "current": "tests/v4/test_eval_comparison_contracts.py::test_partial_business_zero_cannot_be_silently_rerun_after_source_change",
+        "status": "passed"
+      }
+    ],
+    "real_models": 0,
+    "remote_servers": 0,
+    "external_sends": 0,
+    "interrupted_full_round": {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r46\\private\\r46-full-2c78ab989637494c96153716c5f9392f",
+      "status": "interrupted",
+      "audit": "interruption_audit.json",
+      "counted_as_complete": false
+    },
+    "preserved_failed_full_round": {
+      "path": "private/r46-full-c61f99996c064e0e899694d4db3d22de",
+      "passed": 4501,
+      "failed": 1,
+      "skipped": 56,
+      "exit_code": 1,
+      "failure": "test_registry_shares_total_deadline_across_retries_and_providers",
+      "finished_at": "2026-10-25T21:22:22.037480+08:00",
+      "counted_as_green": false
+    },
+    "narrow_rounds": [
+      {
+        "path": "private/r46-narrow-86f3a70f1b884b5ea59e2743473c4390",
+        "passed": 192,
+        "failed": 1
+      },
+      {
+        "path": "private/r46-narrow-9d08d17652024c148302c31bf10ea9bb",
+        "passed": 10,
+        "failed": 0
+      },
+      {
+        "path": "private/r46-narrow-7383c96628f846f5bfee19062cd918f4",
+        "passed": 20,
+        "failed": 0,
+        "reason": "Board v47 test-only controlled deadline clock; no runtime change"
+      }
+    ],
+    "evidence_policy": "Board v46/R26: inherit 220 reviewed quality for github/tests/docs-only changes; new candidate R11 and CI still required."
+  },
+  "quality_inheritance": {
+    "basis": "R26/main v41 and review38 section9",
+    "safety": "5/5",
+    "other": "23/24",
+    "new_full_live_29_claimed": false
+  },
+  "ci": {
+    "observed_at": "2026-10-26T01:37:06.140170+08:00",
+    "head_sha": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+    "pull_request": 24,
+    "run_id": 40217280728,
+    "run_number": 932,
+    "run_attempt": 1,
+    "name": "Core v3 checks",
+    "status": "in_progress",
+    "conclusion": null,
+    "url": "https://github.com/JerryandShawn/zhiming/actions/runs/40217280728",
+    "created_at": "2026-10-25T17:36:28Z",
+    "run_started_at": "2026-10-25T17:36:28Z",
+    "updated_at": "2026-10-25T17:36:31Z",
+    "completed_at": null,
+    "completed_at_basis": "latest actual job completed_at; not run updated_at",
+    "jobs": [
+      {
+        "id": 121241055086,
+        "name": "core",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-25T17:36:30Z",
+        "completed_at": null,
+        "failed_steps": []
+      }
+    ],
+    "historical_220_ci_preserved": "docs/v4/eval/v43_candidate_ci.json",
+    "rerun_requested": false,
+    "real_model_requests": 0,
+    "remote_servers": 0
+  },
+  "documents": [
+    {
+      "path": "docs\\v4\\release\\first_release_stage_runbook.md",
+      "sha256": "c27472196eedcef1fc8d783161c0206df905a3ed8d617cec4623b62f94fcdd9b"
+    },
+    {
+      "path": "docs\\v4\\release\\first_release_prod_runbook.md",
+      "sha256": "d8dea5f25741a6f4f23390b18fd787cde255a74178e004d1a6ea6959228e8a36"
+    }
+  ],
+  "v49_changes": [
+    "actual postmaster directory PG15 binaries and hashes",
+    "R28 loopback administrator and private files",
+    "positive TCP fallback 223.5.5.5:443",
+    "read-only Python3.11/cgroup2/nginx preflight"
+  ],
+  "direct_human_authorization": "User explicitly requested overnight stage after 37 Go and production after 31 Go; all runbook gates still apply",
+  "server_connections": 0,
+  "real_model_requests": 0,
+  "stage_go_observed": false,
+  "production_go_observed": false,
+  "syntax": [
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 0,
+      "language": "powershell",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 1,
+      "language": "powershell",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 2,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 3,
+      "language": "powershell",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 4,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 5,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 6,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 7,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 8,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 9,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 10,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 11,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 12,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 13,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 14,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 15,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 16,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 17,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 18,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 0,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 1,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 2,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 3,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 4,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 5,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 6,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 7,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 8,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 9,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 10,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 11,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 12,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 13,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 14,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 15,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 16,
+      "language": "bash",
+      "syntax_passed": true
+    }
+  ],
+  "syntax_only_not_linux_execution": true
+}
