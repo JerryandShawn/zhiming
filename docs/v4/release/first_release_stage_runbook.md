@@ -4,7 +4,7 @@
 
 固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/fr-stage-e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/`；包SHA256 `e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `4e680f175ea28cc8`。同源R11证据：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/candidate-eval/e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/R11-de7472f506d04966a4b1a54c8bc78f72/assessment.json`，48/48、7/7、69/69、29/29已核。质量依据main v41/38号第九节：旧8727完整29＋220定向五题＋独立人工改判，安全5/5、其他23/24；TA01保留失败，首发后查。不覆盖原机器分数，不再跑评测。
 
-PR24同SHA CI run 40217280728（https://github.com/JerryandShawn/zhiming/actions/runs/40217280728）已启动，当前in_progress，conclusion为空，不能写绿。进入服务器前须同SHA success，并由37号引用；37号未放行前无服务器执行结果。原220失败证据保留在v43_candidate_ci.json。
+PR24同SHA CI run 40217280728（https://github.com/JerryandShawn/zhiming/actions/runs/40217280728）已启动，已实际success，head_sha/attempt1与全部job终态已核，最后实际job完成时间2026-10-25T18:50:07Z（北京时间02:50:07）。进入服务器前须同SHA success，并由37号引用；37号未放行前无服务器执行结果。原220失败证据保留在v43_candidate_ci.json。
 
 ## 范围与现有证据
 
@@ -14,7 +14,7 @@ PR24同SHA CI run 40217280728（https://github.com/JerryandShawn/zhiming/actions
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定e578e2d包/R11原件，R11已根核通过，新CI在途（run40217280728）；同SHA success并由37号引用后才继续，不复用旧候选批准|
+|同一首发源码、CI、R11|本单绑定e578e2d包/R11原件，R11已根核通过，同SHA CI success（run40217280728，attempt1，完成北京时间02:50:07）；同SHA success并由37号引用后才继续，不复用旧候选批准|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
@@ -24,7 +24,7 @@ PR24同SHA CI run 40217280728（https://github.com/JerryandShawn/zhiming/actions
 
 ## 执行前本机身份门（不连接服务器）
 
-主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。新CI尚在途，不能当通过；37号必须引用同SHA成功CI。
+主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。同SHA CI已success；37号仍必须引用该候选和成功CI后才继续。
 
 ```powershell
 $FrGate = 'C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/37_大脑复核_首发stage.md'

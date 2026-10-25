@@ -2,7 +2,7 @@
 
 执行人：**主线**。授权依据为main v17/v34/v37/v41/v49/v50的D-首发，以及同候选、在有效窗口内的31号 `结论：Go`。先有同候选stage成功回执，再进入生产。37/31号实际放行前仅本机准备；现场执行逐步记回执，不以文档就绪代替验收。
 
-质量依据：38号第九节/main v41，安全5/5、其他23/24；TA01仍失败，首发后排查。原机器分数不改。R11和包见stage单；PR24同SHA CI run 40217280728 当前in_progress，Go必须引用同SHA成功CI，不能把在途当绿。
+质量依据：38号第九节/main v41，安全5/5、其他23/24；TA01仍失败，首发后排查。原机器分数不改。R11和包见stage单；PR24同SHA CI run 40217280728 已实际success（attempt1，最后实际job完成2026-10-25T18:50:07Z），Go必须引用该同SHA成功CI。
 
 本文使用 PostgreSQL 15 原生命令及候选已有Python API，不存在 `first_release_prod --apply` 命令。不得把 `first_release_native_exchange` 的fr_stage guard改成live，也不传 `--local-drill` 冒充生产路径。下面原生SQL/备份/文件切换步骤是本次待审生产操作的明确实现，不依赖尚未开发的CLI。所有代码块先审后执行；任何非0立即停，维护门保留，不覆盖失败产物、不自动重试。
 
