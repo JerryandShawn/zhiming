@@ -1,0 +1,269 @@
+{
+  "recorded_at": "2026-10-25T09:12:54.898470+08:00",
+  "candidate": "220048573110862d378015c35d99a37c0d83503e",
+  "board_version": 41,
+  "authority_board_sha256": "3c7d34839674892076738e22372f986fbdb68fb2eacb2e5caf36c8499584c908",
+  "review_file_sha256": "7864b2cf861d2a89dd816e583aaff257c0a16afd2843a5761cef21ea530e7d10",
+  "quality_human_review": {
+    "safety_passed": 5,
+    "safety_total": 5,
+    "other_passed": 23,
+    "other_total": 24,
+    "accepted": true,
+    "additional_adjudicated_passed": [
+      "Q04",
+      "D01"
+    ],
+    "retained_failed": [
+      "TA01"
+    ],
+    "original_machine_scores_unchanged": true,
+    "source": "main v41 / review38 section9"
+  },
+  "stage_document_ready_for_review": true,
+  "production_document_ready_for_review": true,
+  "production_method": "documented PostgreSQL15 native new-database restore/exchange plus existing candidate APIs, no stage guard changes",
+  "documents": [
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-release-prep\\docs\\v4\\release\\first_release_stage_runbook.md",
+      "sha256": "dc7e21eb2223f159297d1ccdcd79c0fd77cf8d4b6ac8f59658800c4923faabc9"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-release-prep\\docs\\v4\\release\\first_release_prod_runbook.md",
+      "sha256": "408c443893cfe5ca26d63406257fd7ec8cc468052927c6e4ede634640a4d390e"
+    }
+  ],
+  "syntax": [
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 0,
+      "language": "powershell",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 1,
+      "language": "powershell",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 2,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 3,
+      "language": "powershell",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 4,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 5,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 6,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 7,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 8,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 9,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 10,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 11,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 12,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 13,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 14,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 15,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 16,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 17,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_stage_runbook.md",
+      "block": 18,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 0,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 1,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 2,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 3,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 4,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 5,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 6,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 7,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 8,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 9,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 10,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 11,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 12,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 13,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 14,
+      "language": "bash",
+      "syntax_passed": true
+    },
+    {
+      "document": "first_release_prod_runbook.md",
+      "block": 15,
+      "language": "bash",
+      "syntax_passed": true
+    }
+  ],
+  "syntax_only_not_linux_execution": true,
+  "ci": {
+    "last_observed_run_id": 40132087922,
+    "conclusion": "cancelled",
+    "green_claimed": false,
+    "success_required_before_execution": true
+  },
+  "runtime_preconditions": [
+    "same-SHA successful CI",
+    "37 Go and successful stage receipt",
+    "31 Go and active production window",
+    "actual root-owned private admin files",
+    "existing independent production central ledger",
+    "zero clients/queues and reviewed old wrappers",
+    "verified backup and repeat-zero migration receipts"
+  ],
+  "real_model_requests_this_delivery": 0,
+  "server_connections": 0,
+  "server_changes": 0,
+  "external_messages": 0,
+  "product_source_changes": 0
+}

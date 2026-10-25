@@ -1,132 +1,550 @@
-# 核心首发生产切换草案
+# 首发生产执行单：220048573110862d378015c35d99a37c0d83503e
 
-2026-10-25 07:53 北京 v40 差距盘点（仅本机文档，无服务器动作）：候选220048573110862d378015c35d99a37c0d83503e已绑定stage包及R11，当前CI为cancelled，五题定向实测在途，37/31尚未出现。下面历史草案不代表当前可执行生产命令；stage实际回执成功之前不扩产品或生产入口。
+执行人：**主线**。授权依据为main v17/v34/v37/v41的D-首发，以及同候选、在有效窗口内的31号 `结论：Go`。先有同候选stage成功回执，再进入生产。本单只交审核，本次没有连接服务器、改库、切服务或发模型请求。
 
-| 仍缺入口/实证 | 必须实现或现场证明 | 估时口径 |
-| --- | --- | --- |
-| 正式生产scope的新库恢复、改名对调CLI | native_exchange当前fr_stage guard不可放宽；需独立生产allowlist/身份/中央账本保全、restore→seal→exchange及失败保留门 | 本机实现与必要隔离PG约4–8小时，审核/Linux演练另计 |
-| 全入口维护及writer栅栏控制器 | Web、飞书、报告service/timer、Hermes Core wrapper共用停写/排空证据，无未知writer/lease | 约3–6小时，依赖现场入口盘点 |
-| 正式迁移/primary回填编排 | 同一恢复目标dry-run→apply→第二次0变化，来源/owner/撤销/收据保持 | 约2–4小时，依赖生产scope入口 |
-| 全入口切换及开门前回退 | 全部入口切到候选、精确k3.1-pro/high；回滚恢复到新库并改名对调，所有入口回7dbc951，保留7dbc951/0aa433a目录、备份和库 | 约3–6小时，依赖受审unit/env/wrapper清单 |
-| 门内核验、开门及一次网页冒烟 | 真实stage回执、31号Go窗口、候选一致、开门前回退证据；开门后只做批准的一次网页冒烟 | stage完成后再按现场用时给窗口，当前不可承诺RTO |
+质量依据：38号第九节/main v41，安全5/5、其他23/24；TA01仍失败，首发后排查。原机器分数不改。R11和包见stage单；PR23当前已知CI为cancelled，Go必须引用同SHA成功CI，主线不能把取消当绿。
 
-以上是未验证计划估时，有依赖重叠，不能相加当承诺完成时间。当前做不到立即给出可执行生产apply和已验证的旧包兼容回滚链；不编造命令、不修改fr_stage guard。授权边界仍以本次人类授权及31号范围为准，未连接服务器。
+本文使用 PostgreSQL 15 原生命令及候选已有Python API，不存在 `first_release_prod --apply` 命令。不得把 `first_release_native_exchange` 的fr_stage guard改成live，也不传 `--local-drill` 冒充生产路径。下面原生SQL/备份/文件切换步骤是本次待审生产操作的明确实现，不依赖尚未开发的CLI。所有代码块先审后执行；任何非0立即停，维护门保留，不覆盖失败产物、不自动重试。
 
-2026-10-25 00:46 北京补充：最新独立代码候选 `75d53f58796d429734b427e038ac740e266c5bb6` 位于 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r35`，同源R11已通过（48/48、7/7、69/69、29/29；原件见 `../eval/v35_sensitive_pending_handoff.json`）。该分支尚未集成，CI未核、M05真实复测及旧16题未完成；本单最终发布绑定和现有No-Go继续有效。尚未访问服务器，不可把脚本门通过称为stage/生产就绪。
+## D0：放行、固定路径、容量与运行时
 
-2026-10-24 11:56，北京时间。**No-Go / 草案：尚无可执行的首发生产切换与原生恢复入口。** 新显式本机源写main的默认/坏材料与prefix7完整链首次两目标通过，范围及唯一证据只在[增量ExecPlan](../execplans/first_release_incremental_20261024.md)登记；本机方法级main通过不是Linux应用或生产恢复验收。原正式`f6fb9f1`的push/PR M1会话失败仍保留，旧额外PID身份未知，当前工具头/测试archive均非最终发布包；observer/admission须新捕获并审核10控pin，不能补写旧输入。正式目标仍只有文件契约/可选只读ACL；Linux应用、原中央保全、全局writer、切换及开门均未放行。无服务器、真实模型或飞书动作。
+31号必须明确：首行Go；完整候选SHA；北京时间开始/结束窗口；接受开门前回滚、开门后一次网页冒烟；stage回执成功的operation与路径。缺项、歧义或窗口未到均停止。37号不能代替31号。新operation固定 `c41e2200485a1025`，与stage的 `ba63f7b2fa8a405d` 区分，不复用旧目录。
 
-旧B1不再单独上线，旧B/D授权失效。**只有用户对本次最终候选、生产对象、维护窗口、修改、渠道恢复及止损范围重新授权，才可进入生产步骤。** 大脑审核stage及本单是必要输入，不替代用户授权。旧30/31文件、旧工作日窗口或旧一次模型冒烟不能自动成为本次许可。
-
-## 1. 发布身份与前置门
-
-当前草案为P1/P1b/P2/P3的`core-only-1-8-v1`：八项迁移checksum、规范Git blob manifest、artifact、Core/Charts/K3三锁和模型配置须绑定最终审核候选。若P5/0009并入，先新增受审profile、关系/例程清单、恢复链与stage证据，再重写本单；不能临时跳过现门。
-
-| 前置门 | 当前状态 | 必须具备 |
-| --- | --- | --- |
-| 最终候选与质量 | 最终候选未冻结，不能引用工具提交替代 | 同源脚本/集成及必要真实质量门；实际主模型由受信等价结果/明确fallback决定 |
-| stage B0–B8 | 首发stage未验收 | [stage草案](first_release_stage_runbook.md)全部必要步骤完成，并由大脑审核 |
-| Linux运行时 | Core/Charts/K3整链未证明 | 实际Linux Python3.11双环境、锁依赖/导入来源/权限、官方K3本地文件、实际网络与跨exec锁 |
-| 原生新库恢复 | 只有validate/可选只读ACL，没有apply | 精确备份→新库恢复→合法前缀/1–8→最新撤销及送达收据双重放→幂等/权限/checkpoint证明 |
-| 增量/切换/回滚 | 本机Forward及同call源重放/回填闭环已有实证；正式CLI、受保护重绑定与开门前回退链仍缺失 | 分步可审的完整实现、同源Linux演练、失败不放开writer，R1门落实 |
-| 新授权与当前环境 | 没有本次生产新授权/盘点 | 明确SHA、窗口、库/角色/unit/env/wrapper/入口、owner范围、正常业务恢复及止损权限 |
-
-任一门缺失就是No-Go。现有Windows逻辑测试、实际Linux PG容器可启动、单个HTTP200或JSON布尔值均不能解除这些门。所有估时是计划值，尚未测得正式RTO。
-
-## 2. 当前能运行的校验，以及不能运行的命令
-
-以下接口已存在，**本次未运行**；所有路径先由审核输入绑定。敏感环境只由受保护loader注入，禁止source任意env、打印口令/完整DSN或把它们放argv。
+本机读取31号，核文字与窗口后再进入服务器；不得以文件mtime作为窗口。远端第一次短连仅只读核以下路径/容量/目标，不根据历史状态直接停服务：
 
 ```bash
-cd "$FR_CONTROL_DIR"
-"$FR_CONTROL_PYTHON" -m tools.first_release_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT"
+set -euo pipefail
+set -C
+umask 077
+FR_SHA=220048573110862d378015c35d99a37c0d83503e
+FR_OLD=7dbc951eaffebd3d812169865eaefcde16a00ed9
+FR_ID=c41e2200485a1025
+FR_RELEASE=/root/zhiming-core-releases/$FR_SHA
+FR_OLD_RELEASE=/root/zhiming-core-releases/$FR_OLD
+FR_STAGE=/root/zhiming-core-fr-stage/releases/$FR_SHA
+FR_OP=/root/zhiming-core-backups/first-release-$FR_ID
+FR_ADMIN=/root/zhiming-core-secrets/fr-prod-admin.env
+test "$(id -u)" = 0
+test -d "$FR_OLD_RELEASE" && test -d "$FR_STAGE"
+test -f "$FR_ADMIN" && ! test -L "$FR_ADMIN"
+test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
+test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
+awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
+/usr/lib/postgresql/15/bin/pg_dump --version
+/usr/lib/postgresql/15/bin/pg_restore --version
+for unit in mingjingtai.service zhiming-core-feishu.service zhiming-core-reports.service zhiming-core-reports.timer; do
+  systemctl show "$unit" -p FragmentPath -p DropInPaths -p NeedDaemonReload -p ActiveState -p UnitFileState -p MainPID -p KillMode
+done
 ```
 
-默认文件校验、0PG连接、0修改。正式候选路径固定`/root/zhiming-core-releases/<最终SHA>`。外部审核pin为受信输入；工具校验其字节绑定，不认证审核人、pin文件保护模式、真实Git tree归属或新鲜度。venv/artifacts仍有独立运行时门。
+继续：PG15、容量≥8GiB、旧7dbc951及0aa433a实际目录保留、stage成功且同SHA、私有管理员文件存在。FR_ADMIN只接受 `FIRST_RELEASE_EXCHANGE_ADMIN_DSN`，127.0.0.1或::1、5432、postgres控制库、实际superuser；后面脚本再次核验。缺文件停止并【提醒用户】，不创建账户、不改认证。上述命令不打印私有内容。8GiB只是最低门，实际dump×3＋双环境＋旧包共存余量不足也停。
 
-本机隔离范围或用户新授权明确允许**已独立建立的恢复库**后，才可增加只读ACL：
+包必须与stage同一公开包，SHA256 `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
 
 ```bash
-"$FR_CONTROL_PYTHON" -m tools.first_release_restore \
-  --pin "$FR_PIN" --contract "$FR_CONTRACT" --check-acl
+test ! -e "$FR_RELEASE" && test ! -e "$FR_OP"
+test ! -e /root/zhiming-core-secrets/first-release-service-config.json
+test ! -e /root/zhiming-core-secrets/first-release-common.env
+test ! -e /root/.hermes/skills/zhiming/first-release-service-assets-manifest.json
+mkdir -m 700 "$FR_OP"
+FR_STAGE_PY=/root/zhiming-core-fr-stage/venvs/$FR_SHA/core/bin/python
+"$FR_STAGE_PY" -I - "$FR_STAGE" "$FR_RELEASE" <<'PY'
+import hashlib,json,os,pathlib,sys,tarfile
+sys.path.insert(0,sys.argv[1])
+from tools.first_release_stage_unpack import safe_name,extract_member,MANIFEST
+a=pathlib.Path('/root/zhiming-core-fr-stage/uploads/release.tar.gz')
+assert hashlib.sha256(a.read_bytes()).hexdigest()=='9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff'
+dest=pathlib.Path(sys.argv[2]);assert not dest.exists()
+with tarfile.open(a,'r:gz') as t:
+    members=t.getmembers();names=[safe_name(x.name) for x in members]
+    m=json.load(t.extractfile(MANIFEST))
+    assert m['commit']=='220048573110862d378015c35d99a37c0d83503e'
+    assert m['schema']=='core3-release-v1' and len(names)==len(set(names))
+    assert set(names)=={MANIFEST,*m['files']} and all(x.isfile() for x in members)
+    dest.mkdir(mode=0o700)
+    for x in members:extract_member(t,x,dest/x.name,m['files'].get(x.name))
+print('canonical candidate extracted; private data copied=0')
+PY
+python3.11 -m venv "$FR_RELEASE/venv/core"
+python3.11 -m venv "$FR_RELEASE/venv/charts"
+"$FR_RELEASE/venv/core/bin/python" -m pip install --require-hashes -r "$FR_RELEASE/requirements-core.lock"
+"$FR_RELEASE/venv/charts/bin/python" -m pip install --require-hashes -r "$FR_RELEASE/requirements-charts.lock"
+"$FR_RELEASE/venv/core/bin/python" -m pip check
+"$FR_RELEASE/venv/charts/bin/python" -m pip check
+FR_PY=$FR_RELEASE/venv/core/bin/python
+FR_TOKENIZER=/root/zhiming-core-fr-stage/tokenizer/$FR_SHA
+cd "$FR_RELEASE"
+"$FR_PY" -m tools.install_k3_tokenizer --destination "$FR_TOKENIZER" --verify-only
 ```
 
-正式只允许`zhiming_core_first_restore`和同名`_owner`/`_writer`，不接受`zhiming_core_live`、原stage或旧B1恢复库；不创建目标。`FIRST_RELEASE_OWNER_DSN`与`FIRST_RELEASE_WRITER_DSN`不得误指运行库；两次只读事务固定并核验pg_catalog路径，按当前八项迁移和精确最小权限核验，绝不自动修权限。无apply/pg_restore/切换/回滚参数，输出不构成恢复证明。
+安装/备份/恢复均按stage单的 `start_step/check_step` 后台单步执行，长命令不占长SSH会话；日志、pid、exit只在FR_OP独占写入，结束码0才继续。此处不要重跑评测、重新接入或发模型探测。
 
-如果同机stage已占用该固定恢复目标，生产不能覆盖、清空或删除它。独立生产恢复目标及其空库/操作身份约束须先新增受审契约和apply实现；当前单一目标校验不能解决这一缺口。
+## D1：保存旧文件、维护与全部writer停写
 
-**禁止套用旧入口：** `core_incremental`、B1 restore proof/replay、`b1_publication`均保留其原b9/scope契约；不改常量来接受最终候选，不用手填proof解除Native拒绝。`deploy_core freeze/install/publish`包含既有全量迁移、旧入口或真实渠道副作用，不能用于已有Core PG增量。`restore-withdrawals`硬live目标也不用于本次新库恢复。本单不提供尚不存在的首发apply命令。
+在FR_OP保留三service、report timer、所有实际drop-in、Hermes wrapper及manifest、两个原env的原字节/模式/属主；归档不打印正文。实际drop-in存在且不在下面归档范围时先补入清单、复核，再继续，不能忽略。Hermes配置加载次序保持 `.hermes/.env`→`live-runtime.env`，后者不直接覆盖。
 
-新增`tools.first_release_local_restore`只接受local_drill=true、本机55480/55481及本次随机新库/角色，默认仅校验，显式--apply-local才实际恢复原prefix1–7；创建前拒绝任一既有对象及含中央额度表的archive。同次再显式--upgrade-local可从原持锁新目标前向至8、checkpoint setup、最小授权与精确ACL，0008仅验空表，不构成合法账本保全/重绑定；失败保留阶段，不接管旧库或修复重试。它没有formal/stage/production入口，不支持0008账本恢复、重绑定、unit或开门；默认及upgrade-only路径不重放最新旁账，不能代替D3。实际Windows PG15定向证据见原ExecPlan；Linux容器NAT身份不匹配仍硬拒，未把Windows结果改称Linux通过。
+```bash
+test -f /root/.hermes/skills/zhiming/core_consultation.py
+tar --acls --xattrs --numeric-owner -cpf "$FR_OP/runtime-before.tar" \
+ /etc/systemd/system/mingjingtai.service \
+ /etc/systemd/system/zhiming-core-feishu.service \
+ /etc/systemd/system/zhiming-core-reports.service \
+ /etc/systemd/system/zhiming-core-reports.timer \
+ /root/.hermes/skills/zhiming \
+ /root/.hermes/.env /root/zhiming-core-secrets/live-runtime.env \
+ /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
+chmod 600 "$FR_OP/runtime-before.tar"
+sha256sum "$FR_OP/runtime-before.tar" > "$FR_OP/runtime-before.sha256"
+"$FR_PY" -I - "$FR_OP" "$FR_OLD_RELEASE" <<'PY'
+import json,pathlib,subprocess,sys
+out=pathlib.Path(sys.argv[1]);old=sys.argv[2];units={}
+for name in ('mingjingtai.service','zhiming-core-feishu.service','zhiming-core-reports.service','zhiming-core-reports.timer'):
+    text=subprocess.check_output(['systemctl','show',name,'-p','ActiveState','-p','UnitFileState','-p','ExecStart','-p','WorkingDirectory'],text=True)
+    values=dict(line.split('=',1) for line in text.splitlines() if '=' in line)
+    if not name.endswith('.timer'):assert old in values.get('ExecStart','') and values.get('WorkingDirectory')==old
+    units[name]=values
+with (out/'units-before.json').open('x') as f:json.dump(units,f)
+wrapper=pathlib.Path('/root/.hermes/skills/zhiming/core_consultation.py').read_bytes()
+assert b'7dbc951eaffebd3d812169865eaefcde16a00ed9' in wrapper
+print('previous fixed entries and timer state verified')
+PY
+for unit in mingjingtai.service zhiming-core-feishu.service zhiming-core-reports.service zhiming-core-reports.timer; do
+ systemctl show "$unit" -p ActiveState -p UnitFileState -p FragmentPath -p DropInPaths >> "$FR_OP/units-before.txt"
+done
+test -f /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
+grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
+touch /www/wwwroot/p-acme/core-maintenance.flag
+chmod 644 /www/wwwroot/p-acme/core-maintenance.flag
+nginx -t
+systemctl stop zhiming-core-reports.timer
+systemctl stop zhiming-core-feishu.service zhiming-core-reports.service mingjingtai.service
+for unit in mingjingtai.service zhiming-core-feishu.service zhiming-core-reports.service zhiming-core-reports.timer; do
+ if [[ "$unit" != *.timer ]]; then test "$(systemctl show -p MainPID --value "$unit")" = 0; fi
+ test "$(systemctl show -p ActiveState --value "$unit")" = inactive
+done
+```
 
-该本机入口另有显式`--replay-preflight-local --preflight-pin --preflight-ledger --candidate-python`组合，完整本机命令及受审pin字段见[stage草案的本机入口](first_release_stage_runbook.md#本机新入口不能替代b3b7)。它必须仍在同call新库恢复/升级的creator锁内，额外启动实际候选Python3.11 venv进程核源码来源、活动依赖与只读目标状态；正常总连接8。名称含replay的预检参数不执行撤销/收据重放，所有正式恢复、运行时、Linux与发布完成位保持false。不能将这一预检移到生产已有库，或拿其回执解除D3；源prefix8的中央身份和历史保全仍未实现。
+继续：公网维护响应503、三service/timer停、没有遗留子进程。Hermes主体不重启，旧Core wrapper必须实际具备“维护门内二次检查＋持共享锁直到exec退出”的已审实现；不匹配就停，不能用新锁推断旧wrapper已经受控。下一步在同一控制进程持 `/root/zhiming-core-secrets/core-skill-writer.lock` 排他锁，关闭live新连接并核0连接；不杀PG会话、不伪造清空队列。core_runs queued/running、有效lease、到期pending/sending outbox或未知客户端非0均停，保留现场。
 
-本机显式`--replay-withdrawals-local`另用独立replay pin与helper hash，只接受新目标原prefix4/7→8，真实候选原生撤销/收据双重放后严格比较完整状态，正常总连接9；完整可用命令与独立擦除未覆盖项同见stage草案。其成功不标记正式native、中央身份、Linux或publication；源prefix8、生产已有库接管及实际Linux切换仍未实现，不能把本机重放结果改称D3通过。
+## D2–D4：原生一致备份、新库验证与迁移回填
 
-本机已有合成库M1备份现已接显式“关闭准入→旧进程自然退出→采用原标记采集”，命令及精确限制统一见[stage草案的本机备份入口](first_release_stage_runbook.md#本机已有合成库备份m1不能替代stage停写)。新`--close-admission-local`与备份互斥，`--use-admission`只配`--backup-local`，不接管已有失败备份，不覆盖/清除标记，不支持任何生产对象；M1控制hash现为10项，旧pin必须重新审核而非自动升级。限定首链4/4及真实故障保留只证明本机组件接通，旧实际入口尚未共同纳管，Linux、正式中央身份及切换仍未解除，D1/D2不能据此执行。
+在FR_OP创建下列 `context.py`（0600），代码为本执行单的一部分，审核时一起核hash。不是产品代码补丁；不修改候选源码。只允许已有live owner/writer，禁止新建角色。原中央若位于即将对调的live库，立即停：先由31号给出保留该中央OID/位置的独立方案，本单不自动搬运/重绑中央。
 
-本机M2已能将新UTC捕获与同call新恢复目标的实际原始内容绑定，命令统一见[stage草案的M2入口](first_release_stage_runbook.md#本机捕获与原始恢复绑定m2)。单独绑定模式在升级之前检查完整表/逻辑列/序列语义；同节另给同时提供capture和replay独立pin的组合命令，已有真实prefix7捕获→原始比较→升级8→原生双重放的1/1定向证据及两次fixture错误记录。它不证明当前源库未再变化，也不提供生产恢复或现库升级授权；D2/D3仍需完整新证据及新授权。
+```bash
+cat > "$FR_OP/context.py" <<'PY'
+# context.py
+import hashlib,json,os,sys
+from pathlib import Path
+import psycopg
+from psycopg import sql
+from psycopg.conninfo import conninfo_to_dict,make_conninfo
+from psycopg.rows import dict_row
+SHA='220048573110862d378015c35d99a37c0d83503e'
+ROOT=Path('/root/zhiming-core-releases')/SHA
+OP=Path('/root/zhiming-core-backups/first-release-c41e2200485a1025')
+sys.path.insert(0,str(ROOT))
+from tools.first_release_hermes_entry import _private_read,_parse_environment
+from tools.first_release_database_metadata import capture,validate,apply_metadata,semantic
+from tools.first_release_native_exchange import write_private
+from tools.first_release_local_restore import process_environment
+ADMIN=_parse_environment(_private_read(Path('/root/zhiming-core-secrets/fr-prod-admin.env')))
+assert set(ADMIN)=={'FIRST_RELEASE_EXCHANGE_ADMIN_DSN'}
+DSN=ADMIN['FIRST_RELEASE_EXCHANGE_ADMIN_DSN'];F=conninfo_to_dict(DSN)
+def private_env(path):return _parse_environment(_private_read(Path(path)))
+assert F['host'] in ('127.0.0.1','::1') and F['port']=='5432' and F['dbname']=='postgres'
+assert not any(k.startswith('PG') and v for k,v in os.environ.items())
+assert not set(F)-{'host','port','dbname','user','password','connect_timeout'}
+LIVE='zhiming_core_live';NEW='zhiming_core_first_c41e2200485a1025';KEPT='zhiming_core_before_c41e2200485a1025'
+def admin():
+ c=psycopg.connect(DSN,autocommit=True,row_factory=dict_row)
+ r=c.execute("SELECT current_user,session_user,current_database(),inet_server_port() AS port,current_setting('server_version_num')::int AS version,(SELECT rolsuper FROM pg_roles WHERE rolname=session_user) AS su").fetchone()
+ assert r['current_database']=='postgres' and r['port']==5432 and 150000<=r['version']<160000 and r['su']
+ assert r['current_user']==r['session_user']==F['user']
+ assert c.execute("SELECT pg_try_advisory_lock(hashtextextended('v41-production-live',0)) AS held").fetchone()['held']
+ return c
+def read(name):return json.loads((OP/name).read_text())
+def save(name,value):write_private(OP/name,value)
+def h(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+def zero(c,name):
+ r=c.execute('SELECT datallowconn,(SELECT count(*) FROM pg_stat_activity WHERE datid=d.oid) AS n FROM pg_database d WHERE datname=%s',(name,)).fetchone()
+ assert r and not r['datallowconn'] and r['n']==0
+def allow(c,name,value):c.execute(sql.SQL('ALTER DATABASE {} ALLOW_CONNECTIONS {}').format(sql.Identifier(name),sql.SQL('true' if value else 'false')))
+def repo(name,readonly=False):
+ from mingjing_core.repositories.postgres import PostgresRepository
+ return PostgresRepository(make_conninfo(DSN,dbname=name,options='-c role=zhiming_core_live_owner -c search_path=public,pg_catalog'+(' -c default_transaction_read_only=on' if readonly else '')),initialize=False,max_size=1)
+def check_queue(r):
+ with r.connection() as c:
+  c.execute('SET TRANSACTION READ ONLY')
+  assert c.execute("SELECT count(*) AS n FROM mingjing_core.core_runs WHERE status IN ('queued','running') OR lease_until>now()").fetchone()['n']==0
+  assert c.execute("SELECT count(*) AS n FROM mingjing_core.delivery_outbox WHERE status='sending' OR lease_until>now() OR (status='pending' AND due<=now())").fetchone()['n']==0
+PY
+chmod 600 "$FR_OP/context.py"
+```
 
-TargetProof、源guard/postcheck、Forward内部组合及后续源重放/回填组件的分轮结果与失败统一只指[原增量ExecPlan](../execplans/first_release_incremental_20261024.md)，组件范围与剩余门见[stage组件表](first_release_stage_runbook.md#本机目标证明与源升级组件正式源写入口未就绪)。本机Forward已组合目标证明/运行时、源升级及prefix7源隐私重放→回填完整闭环；新显式main已完成限定本机验收，固定15参数、默认零副作用与唯一执行旗标统一见[本机源写入口](first_release_stage_runbook.md#本机完整源写命令仅本机合成库)。没有可执行的正式源升级/原生恢复/回填CLI。Linux运行镜像、正式中央身份保全/重绑定、完整切换与开门门仍No-Go；本单不增加未验证生产命令。
+D2在同一进程中排空Hermes、核队列、导出隐私旁账与数据库元数据并完成dump。不能用旧deploy_core的maintenance备份（其 `--no-owner/--no-acl` 不满足本单）。
 
-同进程固定服务入口 `tools.first_release_service` 的实际参数、受限 writer/SID 绑定、已有 workspace 双栅栏及持锁退出方式统一见[stage 草案的服务入口](first_release_stage_runbook.md#固定服务入口与进程寿命栅栏组件不放行停写门)，证据只登记其服务栅栏 ExecPlan。默认静态校验，显式 `--run` 才启动；当前没有生产运行授权，也未替换任何 unit 或 Hermes wrapper。硬退出能防止后台线程活着时先解锁，但不能证明在途外部投递取消、业务排空或完整停写；不得据此解除 D1/D5–D7、移除维护标记或自动补发。
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys,subprocess
+sys.path.insert(0,sys.argv[1]);from context import *
+from tools.deploy_core import skill_writer_lock,export_withdrawals
+with skill_writer_lock(exclusive=True),admin() as c:
+ assert Path('/www/wwwroot/p-acme/core-maintenance.flag').is_file()
+ env={}
+ for path in ('/root/.hermes/.env','/root/zhiming-core-secrets/live-runtime.env'):
+  env.update(private_env(path))
+ central=conninfo_to_dict(env.get('MEMBER_CENTRAL_DSN',''))
+ assert central and central['dbname']!=LIVE
+ assert all(env.get(k) for k in ('MEMBER_CENTRAL_SCHEMA','MEMBER_ACCOUNT_ID','MEMBER_LEDGER_IDENTITY'))
+ save('central-before.json',{'fields':{k:env[k] for k in ('MEMBER_CENTRAL_DSN','MEMBER_CENTRAL_SCHEMA','MEMBER_ACCOUNT_ID','MEMBER_LEDGER_IDENTITY')}})
+ with psycopg.connect(make_conninfo(DSN,dbname=LIVE),row_factory=dict_row) as db:
+  assert db.execute('SELECT count(*) AS n FROM pg_stat_activity WHERE datid=(SELECT oid FROM pg_database WHERE datname=current_database()) AND pid<>pg_backend_pid()').fetchone()['n']==0
+ r=repo(LIVE,True)
+ try:
+  check_queue(r);privacy=export_withdrawals(r)
+  with r.connection() as db:
+   history=[dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]
+ finally:r.close()
+ snap=capture(c,LIVE);validate(c,snap)
+ assert snap['owner']=='zhiming_core_live_owner'
+ save('database-before.json',snap);save('privacy-before.json',privacy);save('schema-before.json',{'rows':history})
+ allow(c,LIVE,False);zero(c,LIVE)
+ assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([NEW,KEPT],)).fetchone()
+ allow(c,LIVE,True)
+ try:
+  with (OP/'live-before.dump').open('xb') as out:
+   cmd=['/usr/lib/postgresql/15/bin/pg_dump','--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+LIVE,'--no-password','--format=custom']
+   result=subprocess.run(cmd,env=process_environment(DSN),stdout=out,stderr=subprocess.PIPE)
+   assert result.returncode==0,'dump failed; keep private diagnostic'
+ finally:allow(c,LIVE,False)
+ zero(c,LIVE)
+ save('backup-receipt.json',{'sha256':h(OP/'live-before.dump'),'source_oid':snap['oid'],'closed':True,'pg_dump_sha256':h('/usr/lib/postgresql/15/bin/pg_dump'),'pg_restore_sha256':h('/usr/lib/postgresql/15/bin/pg_restore')})
+print('D2: backup and privacy captured; live closed')
+PY
+```
 
-## 3. 停写、备份、增量、切换、开门顺序
+D2结束继续条件：live仍closed/0连接，dump非空且hash与receipt相符，原主机SID/owner/OID/ACL/库及角色SET已捕获；不得重试覆盖。新增候选恢复库仅此operation使用。D3先恢复原schema，核完整dump、owner、ACL与隐私快照，然后D4只在新库前向迁移，不原地修改原live：
 
-获准后仍一次一阶段核验，不以shell循环串过审核门。以下修改动作当前均因缺失首发入口而阻塞；表中是实现和演练后的操作要求。
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys,subprocess
+sys.path.insert(0,sys.argv[1]);from context import *
+from tools.deploy_core import export_withdrawals
+with admin() as c:
+ zero(c,LIVE);snap=read('database-before.json');validate(c,snap)
+ assert capture(c,LIVE)==snap and h(OP/'live-before.dump')==read('backup-receipt.json')['sha256']
+ assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([NEW,KEPT],)).fetchone()
+ c.execute(sql.SQL('CREATE DATABASE {} OWNER {} TEMPLATE template0 ENCODING {} LC_COLLATE {} LC_CTYPE {}').format(sql.Identifier(NEW),sql.Identifier(snap['owner']),sql.Literal(snap['encoding']),sql.Literal(snap['collate']),sql.Literal(snap['ctype'])))
+ result=subprocess.run(['/usr/lib/postgresql/15/bin/pg_restore','--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+NEW,'--no-password','--exit-on-error','--single-transaction',str(OP/'live-before.dump')],env=process_environment(DSN),capture_output=True)
+ assert result.returncode==0,'restore failed: preserve new database'
+ assert h('/usr/lib/postgresql/15/bin/pg_restore')==read('backup-receipt.json')['pg_restore_sha256']
+ with c.transaction():apply_metadata(c,NEW,snap)
+ assert semantic(capture(c,NEW))==semantic(snap)
+ r=repo(NEW,True)
+ try:
+  check_queue(r);assert export_withdrawals(r)==read('privacy-before.json')
+  with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
+ finally:r.close()
+ allow(c,NEW,False);zero(c,NEW)
+ save('restore-verified.json',{'oid':capture(c,NEW)['oid'],'schema_before_verified':True,'privacy_equal':True})
+print('D3: new database restored with owner/ACL, original schema and privacy verified')
+PY
+```
 
-| 阶段 | 动作与当前入口状态 | 继续条件 | 停止条件 | 预计耗时 |
-| --- | --- | --- | --- | --- |
-| D0 | 完整核新授权/stage回执/候选；只读盘点当前主机、PG、schema、磁盘、队列、unit/env/wrapper安全摘要 | 在批准窗口内，所有输入与当前实际状态一致，恢复余量充分 | 任何授权/版本/身份/容量漂移；不能沿用历史容量值 | 10–20分 |
-| D1 | 设置生产维护门；停Web、飞书、报告service和timer；排空并持有共同排他writer锁；首发控制器缺失 | 所有入口停写，queued/running/有效lease及未知客户端0，锁覆盖后台线程及完整进程寿命 | writer未停、外部CLI绕过门、未核drop-in或守护进程 | 5–15分 |
-| D2 | 一致PG custom dump、最新无正文撤销/墓碑/sent/uncertain旁账及配置/unit/技能备份；首发入口缺失 | 文件/目录保护模式、hash、原schema与业务安全摘要绑定同一停写点 | 备份/旁账失败，源前缀兼容缺口，中央账本可能回退 | 15–40分 |
-| D3 | 先恢复D2精确备份到新allowlist库，双重放与幂等/ACL/旧包兼容审查；现工具仅校验 | 实际新库恢复证明及开门前回退路径均合格，中央账本位置/历史保全 | 只有validate输出、旧B1空样本或Windows结果；任何replay差异 | 30–60分起 |
-| D4 | 合法已有库前缀前向至8、最小授权；受审owner dry-run→apply→repeat；首发增量/回填入口缺失 | 八checksum/最小ACL精确；repeat的message_metadata/search_tokens/assistant_created均0，其他只读计数可非0；原文、owner隔离、牌面、撤销与收据保持 | 错库/错角色/历史改写、未知owner、重复写变化、误给额度表DELETE | 15–45分 |
-| D5 | 同一维护窗更新三service+timer、Core/Charts路径、受审环境、Hermes Core wrapper/manifest；原子步骤入口缺失 | 所有文件与实际进程同最终SHA；原启停状态已保存；没有部分切换 | 部分更新、旧解释器或wrapper残留、环境覆写、未知drop-in | 10–20分 |
-| D6 | 门内仅启动受审Web，核Agent实际启用、真实实例/队列/旧网页读兼容；保持渠道/报告停 | 无待恢复真实任务；readiness检查不触发模型或外发；准确核Web自身PG会话 | 关闭Agent混作成功、后台任务抢跑、非预期调用或数据变化 | 10–20分 |
-| D7 | 最终Go/No-Go；经新授权的开门控制器记录开门点并恢复获准后台状态；入口缺失 | 同源全部门、窗口、维护/fence、配置和新库恢复证据再次核准，非原子顺序被明确接受 | 任一缺项、窗口不足、只有手删flag方案；不开门 | 3–10分 |
-| D8 | 仅当本次新授权明确允许时做精确限定冒烟；本单默认0模型/0飞书 | 指定场景/模型/物理次数与失败规则被授权；结果独立记录 | 未授权、额度/权限错误；不重试、不换key/模型绕过 | 0–5分 |
-| D9 | 观察30–60分安全计数、错误和业务状态，交回执 | 无严重故障；正常后台恢复与观察数据一致 | 任一严重异常：按§5关门止损，绝不恢复旧备份覆盖新写入 | 30–60分 |
+D4必须核候选恰好1–8迁移。由原owner创建新表，primary回填dry-run→apply→repeat；不手填checksum，不启自动schema升级服务，不给runtime DDL权限。
 
-建议先为主动维护预留2–4小时并按stage实测调整，观察时间另计；缺失实现、审核、安装和等待不计入可承诺维护窗口。避开实际报告准备/投递时段（现有06:45/07:00及其他日程），不为发布擅改日程或补报。
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+from mingjing_core.repositories.foundation import migration_manifest,validate_history
+from mingjing_core.application.memory import MemoryService
+from mingjing_core.memory.backfill import backfill
+from mingjing_core.runtime import LangGraphRuntime
+from mingjing_core.repositories.permissions import grant_runtime_tables
+from tools.deploy_core import export_withdrawals,apply_withdrawals
+with admin() as c:
+ zero(c,LIVE);zero(c,NEW);allow(c,NEW,True)
+ r=repo(NEW)
+ try:
+  expected=migration_manifest();assert sorted(expected)==list(range(1,9))
+  before={x['version']:x['checksum'] for x in read('schema-before.json')['rows']}
+  validate_history(before,expected,complete=False)
+  r.initialize();assert r.verify_schema()['version']==8;LangGraphRuntime(r)
+  memory=MemoryService(r)
+  dry=backfill(memory,'primary',apply=False);first=backfill(memory,'primary',apply=True);second=backfill(memory,'primary',apply=True)
+  assert all(second[k]==0 for k in ('message_metadata','search_tokens','assistant_created'))
+  apply_withdrawals(r,read('privacy-before.json'))
+  privacy=export_withdrawals(r);assert privacy==read('privacy-before.json')
+  apply_withdrawals(r,read('privacy-before.json'));assert export_withdrawals(r)==privacy
+  with r.connection() as db:
+   grant_runtime_tables(db,'zhiming_core_live_writer')
+   role=sql.Identifier('zhiming_core_live_writer')
+   db.execute(sql.SQL('GRANT USAGE ON SCHEMA public TO {}').format(role))
+   for table in ('checkpoints','checkpoint_blobs','checkpoint_writes'):
+    db.execute(sql.SQL('GRANT SELECT,INSERT,UPDATE,DELETE ON public.{} TO {}').format(sql.Identifier(table),role))
+   db.execute(sql.SQL('GRANT SELECT ON public.checkpoint_migrations TO {}').format(role))
+   db.execute(sql.SQL('REVOKE INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER ON public.checkpoint_migrations FROM {}').format(role))
+   db.execute(sql.SQL('REVOKE INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER ON mingjing_core.schema_migrations FROM {}').format(role))
+   db.commit()
+  save('migration-receipt.json',{'version':8,'repeat':{k:second[k] for k in ('message_metadata','search_tokens','assistant_created')},'privacy_equal':True,'source_oid':read('database-before.json')['oid'],'target_oid':read('restore-verified.json')['oid']})
+ finally:r.close();allow(c,NEW,False)
+ zero(c,LIVE);zero(c,NEW)
+print('D4: schema8, primary repeat-zero and privacy verified; both databases closed')
+PY
+```
 
-## 4. D5必须一起处理的对象
+停止：真实owner/ACL/历史checksum异常、存在未知writer、隐私旁账不等、repeat非0、中央位置不受支持等，均保持维护和两个库，不修改工具guard或PG认证来继续。该路径保留原live基线，缩小原地升级风险；不是把恢复成功直接当作允许开门。
 
-| 对象 | 受审更新与核验要求 | 当前缺口 |
-| --- | --- | --- |
-| Web `mingjingtai.service` | WorkingDirectory、固定Core解释器、有效ExecStart、env、单Uvicorn worker及实际PID；Agent dispatcher随Web进程，不凭空加独立worker unit | 最终unit与Linux门内装配/停启未演练 |
-| 飞书 `zhiming-core-feishu.service` | 同SHA/解释器/env；既有文字入口，精确恢复维护前获准状态；验收不发测试消息 | 新运行时正常恢复可产生真实业务，须新授权明确包含 |
-| 报告 `zhiming-core-reports.service`及`.timer` | 同SHA/解释器/env，保存active/enabled状态，核Persistent和已到期任务，不能启动即补发 | 最终恢复策略及无重复送达证据待审 |
-| Charts | `CHART_PYTHON`与独立Charts环境共同固定最终release；不把Core/Charts依赖合并，不仅看文本变量 | Linux解释器、锁依赖、实际子进程来源/缓存与权限未验 |
-| K3/模型/中央守卫 | 已验本地官方K3目录与锁、registry模型锁/高思考、已有account/identity/实际location；Agent开关明确true、运行容量至少3 | Linux装配及中央ledger保全/重绑定门未完成；不provision来放行 |
-| Hermes知命Core wrapper | 只更新固定release入口及受审manifest，环境加载顺序明确；退役stub/原备份保留，manifest最后原子写 | 旧/新wrapper共享维护门与完整Core进程锁的同源Linux演练待补；不整体重启Hermes |
-| 维护门与writer锁 | Web反代/应用门及共同workspace内稳定数据库身份锁覆盖全部Core入口；旧Hermes单独的core-skill锁不能代替；持EX期间核实际无writer | 不能只凭flag存在或源码常量相同声称跨进程成立；全入口替换和排空仍待 |
+## D5：对调与四入口固定到2200485
 
-首发三 service、Hermes wrapper 及共同 CHART/K3/Agent 配置现有本机审核资产生成接口，精确字段、默认零副作用和新目录命令统一见[stage 草案的审核资产](first_release_stage_runbook.md#首发服务审核资产只在本机生成尚未安装)。只生成供审文件，尚未安装；原 timer 不生成、不恢复，真实状态未知。资产不能代替 D5 的原文件备份、有效 drop-in/环境审查、部分失败关门、Linux 联演或授权；D1/D5–D7 仍不能执行。
+同一个控制事务内检查原SID、两个OID、原库元数据、0连接及closed，再对调。保留旧live为KEPT，不删除。新live的owner/ACL/库与角色SET从原快照恢复。
 
-生产配置只能在受保护文件中做已批准的精确更新，不打印Environment、token、完整DSN、原始reasoning或私人正文。有效unit需核FragmentPath、DropInPaths、NeedDaemonReload、KillMode/SendSIGKILL及实际进程；磁盘文件hash不等于进程已切换。不要触碰无关Hermes技能或服务。
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+with admin() as c:
+ snap=read('database-before.json');zero(c,LIVE);zero(c,NEW)
+ assert capture(c,LIVE)==snap and capture(c,NEW)['oid']==read('restore-verified.json')['oid']
+ assert read('migration-receipt.json')['privacy_equal']
+ with c.transaction():
+  c.execute("SET LOCAL lock_timeout='2s'")
+  assert not c.execute('SELECT 1 FROM pg_database WHERE datname=%s',(KEPT,)).fetchone()
+  c.execute(sql.SQL('ALTER DATABASE {} RENAME TO {}').format(sql.Identifier(LIVE),sql.Identifier(KEPT)))
+  c.execute(sql.SQL('ALTER DATABASE {} RENAME TO {}').format(sql.Identifier(NEW),sql.Identifier(LIVE)))
+  apply_metadata(c,LIVE,snap)
+ zero(c,LIVE);zero(c,KEPT)
+ save('exchange-receipt.json',{'old_oid':snap['oid'],'new_oid':capture(c,LIVE)['oid'],'kept_database':KEPT,'admission_opened':False})
+print('D5 database exchanged; both versions retained and closed')
+PY
+```
 
-门内Web启动可能恢复队列/反思/提醒任务，HTTP maintenance不自动约束dispatcher和后台writer。必须证明队列为空、无有效租约、无未知PG客户端、渠道及报告仍停；不能把自身“0请求”当作后台流量为0。若采用先Web开门再恢复后台的非原子顺序，新授权须明确接受，中途失败只关门止损。
+用候选实际 `first_release_service_assets` 渲染四入口。SID和新live OID从当前PG采集，writer OID仍用原角色。配置从原两env按原次序加载，新增common.env固定Agent=true、k3.1-pro/high配置、双解释器及公开K3；不更改旧env，以便原样回退。生成后先审核manifest和unit，后安装，manifest最后写。
 
-## 5. R1：只在开门前回滚；开门后保留现场
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+from tools.first_release_service_assets import Assets,render
+with admin() as c:
+ zero(c,LIVE)
+ snap=capture(c,LIVE)
+ writer=c.execute("SELECT oid FROM pg_roles WHERE rolname='zhiming_core_live_writer'").fetchone()['oid']
+a=Assets(SHA,str(OP),snap['system_identifier'],LIVE,snap['oid'],'zhiming_core_live_writer',writer,'primary',('/root/.hermes/.env','/root/zhiming-core-secrets/live-runtime.env'),'/root/zhiming-core-secrets/first-release-service-config.json','/root/zhiming-core-secrets/first-release-common.env',str(Path('/root/zhiming-core-fr-stage/tokenizer')/SHA))
+out=OP/'assets';out.mkdir(mode=0o700)
+for name,data in render(a).items():
+ with (out/name).open('xb') as f:f.write(data)
+ (out/name).chmod(0o600)
+fences=OP/'private/first-release-writers';fences.mkdir(mode=0o700,parents=True)
+lock=fences/(snap['system_identifier']+'-'+str(snap['oid'])+'.lock');lock.touch(exist_ok=False,mode=0o600)
+save('service-identity.json',{'sid':snap['system_identifier'],'oid':snap['oid'],'writer_oid':writer,'fence':str(lock),'maintenance':str(lock.with_suffix('.maintenance.json'))})
+Path(str(lock.with_suffix('.maintenance.json'))).write_text('{"closed":true}\n');lock.with_suffix('.maintenance.json').chmod(0o600)
+print('four-entry assets generated, not started')
+PY
+systemd-analyze verify "$FR_OP/assets/mingjingtai.service" "$FR_OP/assets/zhiming-core-feishu.service" "$FR_OP/assets/zhiming-core-reports.service"
+install -m 600 "$FR_OP/assets/service-config.json" /root/zhiming-core-secrets/first-release-service-config.json
+install -m 600 "$FR_OP/assets/service-common.env" /root/zhiming-core-secrets/first-release-common.env
+install -m 644 "$FR_OP/assets/mingjingtai.service" /etc/systemd/system/mingjingtai.service
+install -m 644 "$FR_OP/assets/zhiming-core-feishu.service" /etc/systemd/system/zhiming-core-feishu.service
+install -m 644 "$FR_OP/assets/zhiming-core-reports.service" /etc/systemd/system/zhiming-core-reports.service
+install -m 600 "$FR_OP/assets/core_consultation.py" /root/.hermes/skills/zhiming/core_consultation.py
+install -m 600 "$FR_OP/assets/manifest.json" /root/.hermes/skills/zhiming/first-release-service-assets-manifest.json
+systemctl daemon-reload
+```
 
-开门点指首次对外移除维护限制或恢复任何正常业务writer中较早发生的时刻，不能等所有服务成功后才记时。
+manifest是新增四入口审核manifest，原Core skill manifest/退役stub保留，不能谎称旧deploy verifier支持新manifest。旧Core skill描述、别名或其他入口仍指向旧wrapper时停止；不得整体重启Hermes。各实际drop-in必须与审核清单一致且不能覆盖ExecStart/WorkingDirectory为旧包。配置文件已存在或与保存清单不符时先保存原件再安装，禁止覆盖未知私有文件。
 
-**开门前：** 保持维护与全部writer停止，只有已演练、授权涵盖的回退路径可执行。若业务库尚未改变，可在兼容审查后回到原配置；若迁移或回填已提交，不能只把unit换回旧包。需要把精确备份恢复到另一个新目标、重放最新撤销/收据、核旧schema/旧代码兼容与权限，再审核DB重绑定。当前首发校验契约只覆盖新候选1–8，不提供旧schema恢复或原生重绑定；旧包兼容链缺失时继续关门，不声称可以回滚。恢复到8并继续新候选是向前恢复，不是旧包回滚。
+## D6：门内核验（0模型、0投递）
 
-**v12/R2的新库对调规则：** 禁止向已升级业务库执行`pg_restore --clean --if-exists --single-transaction`，0005的父run外键会阻挡删除旧主键。应把维护前精确dump恢复到另一个新库，保留对象属主和ACL，不能用`--no-owner`或`--no-acl`；现有本机local-only入口使用这两个旗标的合成两角色映射，不是此正式恢复路径，不改其限制冒充合格。对调前记录原库OID、owner、完整CONNECT授权（含PUBLIC/授权选项）及库级和角色库级`ALTER DATABASE/ROLE ... SET`设置，持续维护/停writer并确认两库连接均0，才将原库改名为受审`live_failed_<时间>`、新库改为原名，按原快照恢复库级身份/权限/设置并逐项核验。任一步异常保留两库与现场，禁止强制断连、覆盖、删除或自行重试；旧库保留，未审核前不开放连接。新`first_release_native_exchange`已有必要本机原生PG/隔离进程证据及stage限定命令，见[stage的R2接口](first_release_stage_runbook.md#r2新库恢复与改名对调明确接口尚未服务器执行)，它硬限定新stage副本，不能用于live；正式生产对调链及D3仍No-Go。不再投入Docker拉镜像，应用Linux留给大脑在新授权stage验证，生产另需新D。
+四入口暂不启动。核验有效unit与配置，模型注册表六个角色均只有精确k3.1-pro、effort/reasoning_effort high；provider URL官方coding端点。原四MEMBER字段必须逐字相等；不得把本机评测账本当作生产中央或自动provision。
 
-**开门后：** 不论距开门几分钟，都不自动恢复维护前dump、不降schema、不切旧代码去写不兼容库。严重异常先保持/重设维护门，停止获准Web/飞书/报告+timer写入口，取得Hermes Core writer栅栏，保存最新状态、撤销/送达收据和故障信息，保留新写入，等受审向前修复。旧B1“开门后60分钟恢复旧备份”的规则不适用于本次，不能沿用其接受丢失新消息的旧许可。
+```bash
+for unit in mingjingtai.service zhiming-core-feishu.service zhiming-core-reports.service; do
+ systemctl show "$unit" -p FragmentPath -p DropInPaths -p ExecStart -p WorkingDirectory -p NeedDaemonReload
+done
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+from tools.first_release_service_assets import Assets
+from tools.first_release_hermes_entry import load_environment
+import yaml
+a=Assets.parse(json.loads(Path('/root/zhiming-core-secrets/first-release-service-config.json').read_text()))
+env=load_environment(a)
+assert all(env[k]==v for k,v in read('central-before.json')['fields'].items())
+assert env['MINGJING_AGENT_ENABLED']=='true'
+model=yaml.safe_load((ROOT/'config/models.first-release.yaml').read_text())
+for role in ('primary','critic','evaluation','background','fast','vision'):
+ ids=model['roles'][role];assert len(ids)==1
+ v=model['models'][ids[0]]
+ assert v['model']=='k3.1-pro' and v['settings']['effort']==v['settings']['reasoning_effort']=='high'
+ assert model['providers'][v['provider']]['base_url']=='https://api.kimi.com/coding/v1'
+assert Path(env['CHART_PYTHON']).is_file()
+with admin() as c:
+ zero(c,LIVE);allow(c,LIVE,True)
+ r=repo(LIVE,True)
+ try:check_queue(r);assert r.verify_schema()['version']==8
+ finally:r.close();allow(c,LIVE,False)
+save('preopen-receipt.json',{'candidate':SHA,'model':'k3.1-pro','effort':'high','queue_empty':True,'schema':8,'opened':False})
+print('preopen verified; no model request or delivery')
+PY
+```
 
-0008额度账本绝不随业务备份回退。禁止清空usage/attempt、重建账户、重置stop或自动provision；既有account/ledger identity/location不符时停留关门。正常回填/恢复也不能重发sent/uncertain、复活已撤销内容或丢失恢复后墓碑。提交后checkpoint清除或回执落盘失败均保留现场，不自动重放整批。
+继续核验实际writer身份和维护标记拒绝。以下不调用业务入口，不启动模型/dispatcher。临时连接准入只供这次只读检查，结束即关闭；任一失败保持公共维护门。
 
-已有中央继续保留原位置、仅切新业务DSN的实际配置接缝与本机限定验证统一见[stage中央策略](first_release_stage_runbook.md#原中央与新业务库的配置接缝不放行正式门)。本机路由成立不解除D阶段中央门：实际中央基线/角色、原库保留和旧业务writer处置、受保护env、同候选Linux及各入口仍须逐项审核；不得把“保留原中央”解释成许可继续运行旧业务入口或自动迁移账本。
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+from tools.first_release_service_assets import Assets
+from tools.first_release_hermes_entry import load_environment
+from tools.first_release_service_binding import ServiceBinding,writer_parameters,checked_writer
+from tools.first_release_writer_fence import file_lock,pg_lock
+a=Assets.parse(json.loads(Path('/root/zhiming-core-secrets/first-release-service-config.json').read_text()))
+b=ServiceBinding('web',ROOT,OP,a.system_identifier,a.database,a.database_oid,a.writer,a.writer_oid)
+env=load_environment(a);os.environ.clear();os.environ.update(env)
+b.validate([]);params=writer_parameters(b)
+with admin() as c:
+ zero(c,LIVE);allow(c,LIVE,True)
+ try:
+  with psycopg.connect(**params,autocommit=True,row_factory=dict_row) as writer:
+   checked_writer(writer,b,params)
+   with file_lock(b.fence_path,exclusive=True,existing_only=True),pg_lock(writer,b.fence_key,exclusive=True):
+    assert b.maintenance.is_file()
+    assert writer.execute("SELECT NOT has_table_privilege(current_user,'mingjing_core.core_model_usage','DELETE') AS safe").fetchone()['safe']
+    save('writer-preopen.json',{'identity_verified':True,'maintenance_rejects_admission':b.maintenance.is_file(),'model_requests':0})
+ finally:allow(c,LIVE,False)
+ zero(c,LIVE)
+print('writer identity and closed maintenance checked; no business/model entry invoked')
+PY
+```
 
-不在本单中删除原库、旧release、备份、卷、媒体或技能原备份；保留时长和后续清理另批。任何操作异常停止并记录安全错误码，不自行改PG认证/权限后重试。
+实际四入口都由同一已核service入口在锁内再次检查maintenance；这里不把“标记存在”说成已经运行四次真实业务。任一入口配置没有走该service就停止，不能开门。
 
-## 6. 最终回执与来源
+## D7：开门点和恢复服务
 
-一份生产回执应包含新授权引用及窗口、候选/工具/manifest/artifact/三锁、stage验收来源、实际主机/PG/迁移安全投影、备份与最新旁账hash、迁移/回填/双重放计数、三服务+timer/CHART/wrapper前后状态、开门与停写实际北京时间、授权范围内请求/消息计数、观察结果、异常和未验证项。不能由本单生成“通过”布尔值或推断已部署；只引用受保护证据，不新增重复证据副本。
+继续条件：31号仍在窗口、stage回执成功、D2–D6所有receipt与hash一致、原文件备份可读、当前无未知连接/任务、门内writer身份及维护拒绝验证通过。主线现场逐项核准，再执行以下块。首次移除任一writer维护限制即为开门点，先独占落盘opened记录，之后禁止旧备份回滚。
 
-源码：[校验CLI](../../../tools/first_release_restore.py)、[契约](../../../tools/first_release_contracts.py)、[只读ACL](../../../tools/first_release_acl.py)、[Agent装配](../../../mingjing_core/application/production_agent.py)。状态与证据索引见[恢复ExecPlan](../execplans/first_release_recovery_20261023.md)。[旧B1生产单](B1_prod_runbook.md)保留历史事实，其固定b9、旧授权和开门后回滚不得复制进本次执行。
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+from datetime import datetime,timezone
+sys.path.insert(0,sys.argv[1]);from context import *
+assert read('preopen-receipt.json')['candidate']==SHA
+assert read('writer-preopen.json')['identity_verified'] and read('writer-preopen.json')['maintenance_rejects_admission']
+assert not (OP/'opened.json').exists()
+with admin() as c:
+ zero(c,LIVE);zero(c,KEPT)
+ save('opened.json',{'candidate':SHA,'at':datetime.now(timezone.utc).isoformat(),'rollback_after_this_point':False})
+ allow(c,LIVE,True)
+ Path(read('service-identity.json')['maintenance']).unlink()
+Path('/www/wwwroot/p-acme/core-maintenance.flag').unlink()
+print('opened boundary recorded')
+PY
+systemctl start mingjingtai.service
+systemctl is-active --quiet mingjingtai.service
+systemctl start zhiming-core-feishu.service
+systemctl is-active --quiet zhiming-core-feishu.service
+```
+
+报告timer只按D1保存的原active/enabled状态恢复，31号必须明确接受恢复已到期报告的正常投递。原状态的机器读取命令：
+
+```bash
+"$FR_PY" -I - "$FR_OP/units-before.json" <<'PY'
+import json,sys
+v=json.load(open(sys.argv[1]))['zhiming-core-reports.timer']
+print('prior report timer:',v['ActiveState'],v['UnitFileState'])
+PY
+```
+
+若原timer active且31号允许正常报告恢复，执行 `systemctl start zhiming-core-reports.timer`；原inactive不启动，不手动执行report service补发。未得到该项许可则保持停，并如实记录报告入口未恢复，不能宣布全入口上线完成。Hermes无需重启，下一次Core调用应走新固定wrapper；不主动发测试飞书。
+
+任何开门后异常：重建公共维护门，停三service及timer；保存最新数据/隐私/收据与日志，发【提醒用户】；不换回旧包、不restore旧dump。开门前已接受的非原子服务启动顺序不能变成“部分成功仍放行”的理由。
+
+## D8：一次网页冒烟和回执
+
+主线只用网页做一次真实对话：核返回完整、实际model为k3.1-pro/high、同owner历史可读；不发飞书、不触发报告、不重试凑绿。token只由受保护页面会话读取，不放argv/日志。记录一次对话实际物理请求数（含内评）、实际model核验及安全结果，不输出用户正文/思考。失败按开门后止损处理，不再补一次。
+
+最终核三个入口PID有效ExecStart/WorkingDirectory/新SHA、Hermes固定wrapper hash、报告timer与维护前状态；保留7dbc951、0aa433a、全部旧库及备份≥14天，不自动清理。回执≤1页：SHA/operation、31号窗口、stage来源、每步exit/hash/实际用时、四入口状态、开门时刻、网页冒烟实际物理数和结果、异常与未验证项。文档语法检查不是Linux演练或生产验收。
+
+## R1：开门前回滚＝恢复到另一个新库＋改名对调＋全部入口回7dbc951
+
+触发：D3–D6失败或窗口不足，且FR_OP/opened.json不存在。公共维护门保持，三service/timer停，Hermes仍被门与旧writer锁挡住。原live未对调时不需要回退原库，保留失败新库；已对调则执行下面恢复，禁止在新live上 `--clean` 或删除表。
+
+先在候选新live只读导出当前privacy，与D2精确相等才可使用D2 dump；本路径开门前没有正常writer，新隐私差异意味着前提不成立，停止并保留现场，不丢弃最新撤销/送达收据。恢复到第三个全新库 `zhiming_core_rb_c41e2200485a1025`，对调失败新live保存为 `zhiming_core_failed_c41e2200485a1025`。恢复保owner/ACL/库与角色SET，旧包schema与D2原前缀一致。
+
+```bash
+systemctl stop zhiming-core-reports.timer zhiming-core-feishu.service zhiming-core-reports.service mingjingtai.service
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys,subprocess
+sys.path.insert(0,sys.argv[1]);from context import *
+from tools.deploy_core import skill_writer_lock,export_withdrawals
+assert not (OP/'opened.json').exists() and (OP/'exchange-receipt.json').is_file()
+RB='zhiming_core_rb_c41e2200485a1025';FAILED='zhiming_core_failed_c41e2200485a1025'
+with skill_writer_lock(exclusive=True),admin() as c:
+ snap=read('database-before.json');allow(c,LIVE,False);zero(c,LIVE)
+ allow(c,LIVE,True);r=repo(LIVE,True)
+ try:assert export_withdrawals(r)==read('privacy-before.json')
+ finally:r.close();allow(c,LIVE,False)
+ assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([RB,FAILED],)).fetchone()
+ assert h(OP/'live-before.dump')==read('backup-receipt.json')['sha256']
+ c.execute(sql.SQL('CREATE DATABASE {} OWNER {} TEMPLATE template0 ENCODING {} LC_COLLATE {} LC_CTYPE {}').format(sql.Identifier(RB),sql.Identifier(snap['owner']),sql.Literal(snap['encoding']),sql.Literal(snap['collate']),sql.Literal(snap['ctype'])))
+ result=subprocess.run(['/usr/lib/postgresql/15/bin/pg_restore','--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+RB,'--no-password','--exit-on-error','--single-transaction',str(OP/'live-before.dump')],env=process_environment(DSN),capture_output=True)
+ assert result.returncode==0
+ with c.transaction():apply_metadata(c,RB,snap)
+ r=repo(RB,True)
+ try:
+  assert export_withdrawals(r)==read('privacy-before.json')
+  with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
+ finally:r.close();allow(c,RB,False)
+ zero(c,LIVE);zero(c,RB)
+ with c.transaction():
+  c.execute("SET LOCAL lock_timeout='2s'")
+  c.execute(sql.SQL('ALTER DATABASE {} RENAME TO {}').format(sql.Identifier(LIVE),sql.Identifier(FAILED)))
+  c.execute(sql.SQL('ALTER DATABASE {} RENAME TO {}').format(sql.Identifier(RB),sql.Identifier(LIVE)))
+  apply_metadata(c,LIVE,snap)
+ save('rollback-database.json',{'restored_old_schema':True,'failed_database':FAILED,'new_live_oid':capture(c,LIVE)['oid'],'closed':True})
+print('old schema restored to a new database and exchanged; failed database retained')
+PY
+```
+
+之后从D1归档恢复所有旧unit/drop-in/两env/Hermes完整目录（包含原manifest和wrapper），逐项hash核对，所有四入口必须明确回到 `7dbc951eaffebd3d812169865eaefcde16a00ed9`，不能只切Web：
+
+```bash
+sha256sum -c "$FR_OP/runtime-before.sha256"
+tar --acls --xattrs --numeric-owner -xpf "$FR_OP/runtime-before.tar" -C /
+systemctl daemon-reload
+for unit in mingjingtai.service zhiming-core-feishu.service zhiming-core-reports.service; do
+ systemctl show "$unit" -p ExecStart -p WorkingDirectory -p DropInPaths -p NeedDaemonReload
+done
+test -d /root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9
+```
+
+回退完成后仍保持公共维护、恢复库closed、三service/timer停。用原归档核四入口文件，再用旧7dbc解释器做只读schema兼容检查；不启动旧服务：
+
+```bash
+tar --acls --xattrs --numeric-owner -dpf "$FR_OP/runtime-before.tar" -C /
+"$FR_PY" -I - "$FR_OP" "$FR_OLD_RELEASE" <<'PY'
+import sys,subprocess
+sys.path.insert(0,sys.argv[1]);from context import *
+old=Path(sys.argv[2]);assert old.name=='7dbc951eaffebd3d812169865eaefcde16a00ed9'
+code="import os,sys;sys.path.insert(0,sys.argv[1]);from mingjing_core.repositories.postgres import PostgresRepository;r=PostgresRepository(os.environ['ZHIMING_DATABASE_URL'],initialize=False);r.verify_schema();r.close()"
+with admin() as c:
+ zero(c,LIVE);allow(c,LIVE,True)
+ try:
+  env={'PATH':'/usr/bin:/bin','ZHIMING_DATABASE_URL':make_conninfo(DSN,dbname=LIVE,options='-c default_transaction_read_only=on -c role=zhiming_core_live_owner')}
+  result=subprocess.run([str(old/'venv/core/bin/python'),'-I','-c',code,str(old)],env=env,capture_output=True)
+  assert result.returncode==0,'old package read-only schema check failed; keep closed'
+ finally:allow(c,LIVE,False)
+ zero(c,LIVE)
+ save('rollback-old-runtime.json',{'old_sha':old.name,'schema_readonly_verified':True,'closed':True})
+print('old runtime verified read-only; public and database admission remain closed')
+PY
+```
+
+媒体路径、撤销与送达收据不恢复旧文件副本来覆盖新数据；其相等性由前述privacy校验保护。完成后向审核人报告。未经门内旧包兼容验证不重开门。本单不删除新manifest、候选、旧包、KEPT/FAILED库或备份。任何对调中间错误不自行逆向rename重试，不强制断连、不改PG认证。
+
+
+## 首发后待办
+
+TA01第2轮未调用tarot_read，保留失败原件后查；followup_due规整为过去时间时应退回模型原未来时间，另加定向脚本。两项不在本次冻结220上改，不再发评测请求。

@@ -1,8 +1,10 @@
 # 首发 F 副本 stage 执行单（候选2200485）
 
-2026-10-25 04:58，北京时间。命令和固定交付物绑定候选 `220048573110862d378015c35d99a37c0d83503e`，工作树 `C:/Users/Administrator/Documents/Codex/zhiming-v4-r39`。包hash `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`，bootstrap hash `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`，operation `ba63f7b2fa8a405d`。R11原件：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\r11-run-c38bd9e6b67744e387d110627f7e7ef6\metadata.json`，assessment：`C:\Users\Administrator\Documents\Codex\zhiming-v4-r39\private\candidate-eval\220048573110862d378015c35d99a37c0d83503e\R11-58e3c43c0c33414cbe1b2d60e3d786ff\assessment.json`。R11已04:57:25–04:59:55 exit0，根核assessment及四原报告48/48、日期7/7、指定69/69、核心29/29，X02中性/正文保留/重复0写；PR23当前SHA的CI已核为cancelled（run40132087922，非通过）、五题定向已08:04:29结束，M01/Q03通过，Q04/D01/TA01未过；保留旧成绩与17项人工复核来源的合成口径安全5/5、其他21/24，未达22/24门槛、37号Go缺失，执行准入尚未满足，不能宣布stage/首发就绪。
+执行人：**主线**。本单已绑定候选 `220048573110862d378015c35d99a37c0d83503e`，授权依据为 v13 授权 F、main v36/v41 和匹配候选的37号首行 `结论：Go`；复核时间须晚于2026-10-24 12:30。文档就绪与服务器执行分开记录：37号未出现时只完成本机准备，不连接服务器，不上传。
 
-执行人：**主线**。本单服务器步骤以授权F对应的37号首行 `结论：Go` 且复核晚于2026-10-24 12:30、候选40位SHA与本单一致，才进入下列服务器步骤。本单为执行准备；当前没有37号Go，本轮未进入服务器步骤。生产按独立D范围与31号Go窗口，本文不操作生产。当前未SSH/上传/执行服务器命令。
+固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r39/private/fr-stage-220048573110862d378015c35d99a37c0d83503e/`；包SHA256 `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `ba63f7b2fa8a405d`。同源R11证据：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r39/private/candidate-eval/220048573110862d378015c35d99a37c0d83503e/R11-58e3c43c0c33414cbe1b2d60e3d786ff/assessment.json`，48/48、7/7、69/69、29/29已核。质量依据main v41/38号第九节：旧8727完整29＋220定向五题＋独立人工改判，安全5/5、其他23/24；TA01保留失败，首发后查。不覆盖原机器分数，不再跑评测。
+
+CI实测记录仍是PR23当前SHA的run40132087922 cancelled，不能写绿。进入服务器前，须有同SHA success，并在37号中引用该结果；不能自行忽略取消。37号未放行前，无服务器执行结果。
 
 ## 范围与现有证据
 
@@ -12,7 +14,7 @@
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定2200485包/R11原件，R11已根核通过，CI已核cancelled（run40132087922），仅success才继续，不复用旧候选批准|
+|同一首发源码、CI、R11|本单绑定2200485包/R11原件，R11已根核通过，CI已核cancelled（run40132087922）；同SHA success并由37号引用后才继续，不复用旧候选批准|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
@@ -22,17 +24,22 @@
 
 ## 执行前本机身份门（不连接服务器）
 
-主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。CI已核取消，须后续同SHA实际success，不能把取消当通过。
+主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。CI已核取消，不能把取消当通过；37号必须引用同SHA成功CI。
 
 ```powershell
 $FrGate = 'C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/37_大脑复核_首发stage.md'
 if (-not (Test-Path -LiteralPath $FrGate -PathType Leaf)) { throw '37号未出现，停止' }
 $FrGateLines = Get-Content -LiteralPath $FrGate
 if ($FrGateLines[0].Trim() -ne '结论：Go') { throw '37号没有Go，停止' }
-if (($FrGateLines -join "`n") -notmatch '220048573110862d378015c35d99a37c0d83503e') { throw '37号候选不符，停止' }
+$FrGateText = $FrGateLines -join "`n"
+if ($FrGateText -notmatch '220048573110862d378015c35d99a37c0d83503e') { throw '37号候选不符，停止' }
+$FrTimes = [regex]::Matches($FrGateText, '(?:复核时间|写入时间)[：:]\s*(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?\s*(?:\+08:00|北京时间))')
+if ($FrTimes.Count -ne 1) { throw '37号复核时间缺失或歧义，停止' }
+$FrTime = [DateTimeOffset]::Parse($FrTimes[0].Groups[1].Value.Replace('北京时间','+08:00'))
+if ($FrTime -le [DateTimeOffset]'2026-10-24T12:30:00+08:00') { throw '37号复核时间太旧，停止' }
 ```
 
-复核时间需从实际37号的明确时间字段核验；字段缺失、格式歧义或不晚于阈值均停止，不能用文件修改时间代替。该字段尚未产生，本文不编造字段名或时间值。CI证据见 `../eval/v40_candidate_ci.json`；当前为cancelled。本单保留实际准入条件，尚不发布“首发 stage 执行单就绪”。
+37号时间字段按上述格式核验；实际文件格式不同或有歧义就停，不能用文件修改时间代替。CI原证据见 `../eval/v40_candidate_ci.json`；当前取消状态原样保留。继续条件为37号对同一候选明确放行及CI处置有据；否则停止并提醒。
 
 ## B0–B1：本机固定包、引导文件与公开分词器
 
@@ -143,6 +150,16 @@ check_step() {
 }
 FR_RUN=(env -i PATH=/usr/bin:/bin HOME=/root LANG=C.UTF-8 TZ=Asia/Shanghai "$FR_PY" -I -c 'import runpy,sys;sys.path.insert(0,sys.argv.pop(1));runpy.run_module(sys.argv.pop(1),run_name="__main__")' "$FR_RELEASE")
 fr() { "${FR_RUN[@]}" "$@"; }
+receipt_status() {
+  "$FR_PY" -I - "$1" "$2" <<'PY'
+import json,sys
+v=json.load(open(sys.argv[1],encoding='utf-8'))
+assert v['status']==sys.argv[2]
+assert not v.get('admission_opened',False)
+print('receipt status verified:',sys.argv[2])
+PY
+}
+
 ```
 
 依次start、退出SSH、后续短连check，**每次check明确0后才手动开始下一条**：
@@ -169,11 +186,32 @@ test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 
 ```bash
 start_step copy "${FR_RUN[@]}" tools.first_release_stage_copy --operation "$FR_ID" --workspace "$FR_OP" --pg-dump "$FR_DUMP" --pg-dump-sha256 "$(h "$FR_DUMP")" --pg-restore "$FR_RESTORE" --pg-restore-sha256 "$(h "$FR_RESTORE")" --admin-env-file "$FR_ADMIN" --apply
-# check_step copy 明确0，核copy-receipt.status=copied_closed后：
+check_step copy
+receipt_status "$FR_OP/copy-receipt.json" copied_closed
+# 上述两项成功后才执行下一条：
 start_step prepare "${FR_RUN[@]}" tools.first_release_stage_prepare --operation "$FR_ID" --workspace "$FR_OP" --copy-receipt "$FR_OP/copy-receipt.json" --copy-receipt-sha256 "$(h "$FR_OP/copy-receipt.json")" --admin-env-file "$FR_ADMIN" --apply
 ```
 
-`check_step prepare`明确0；prepare-receipt须prepared_closed、migrations完整1–8/checksum匹配、backfill_repeat的message_metadata/search_tokens/assistant_created全0、replay_full_state_unchanged=true、model_calls/external_sends=0。source/target OID必须来自同次copy；不手改receipt、started或任何数据来放行。缺primary、旧未核checksum、无run_id/冲突收据等真实错误均停止。
+prepare结束后执行以下安全投影校验；非0立即停止，不继续B7：
+
+```bash
+check_step prepare
+receipt_status "$FR_OP/prepare-receipt.json" prepared_closed
+fr tools.first_release_stage_prepare --help >/dev/null
+"$FR_PY" -I - "$FR_OP/prepare-receipt.json" "$FR_RELEASE" <<'PY'
+import json,sys
+sys.path.insert(0,sys.argv[2])
+from tools.first_release_contracts import MIGRATIONS
+v=json.load(open(sys.argv[1],encoding='utf-8'))
+assert v['migration_checksums']==MIGRATIONS
+assert all(v['backfill_repeat'][k]==0 for k in ('message_metadata','search_tokens','assistant_created'))
+assert v['replay_full_state_unchanged'] is True
+assert v['model_calls']==v['external_sends']==0
+print('prepare: migrations, repeat-zero, privacy replay verified')
+PY
+```
+
+prepare-receipt还须migrations完整1–8/checksum匹配、backfill_repeat的message_metadata/search_tokens/assistant_created全0、replay_full_state_unchanged=true、model_calls/external_sends=0。source/target OID必须来自同次copy；不手改receipt、started或任何数据来放行。缺primary、旧未核checksum、无run_id/冲突收据等真实错误均停止。
 
 ## B7：开门前空增量新库恢复与改名对调
 
@@ -182,14 +220,31 @@ start_step prepare "${FR_RUN[@]}" tools.first_release_stage_prepare --operation 
 ```bash
 fr tools.first_release_native_exchange capture --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/rollback-before.json" --output "$FR_OP/capture-receipt.json"
 start_step backup "${FR_RUN[@]}" tools.first_release_stage_backup --operation "$FR_ID" --workspace "$FR_OP" --metadata "$FR_OP/rollback-before.json" --metadata-sha256 "$(h "$FR_OP/rollback-before.json")" --pg-dump "$FR_DUMP" --pg-dump-sha256 "$(h "$FR_DUMP")" --admin-env-file "$FR_ADMIN" --apply
-# check_step backup 明确0，核backed_up_closed后：
+check_step backup
+receipt_status "$FR_OP/empty-delta-receipt.json" backed_up_closed
+# 上述校验成功后：
 start_step restore "${FR_RUN[@]}" tools.first_release_native_exchange restore --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/empty-delta-metadata.json" --metadata-sha256 "$(h "$FR_OP/empty-delta-metadata.json")" --backup "$FR_OP/empty-delta.dump" --backup-sha256 "$(h "$FR_OP/empty-delta.dump")" --pg-restore "$FR_RESTORE" --pg-restore-sha256 "$(h "$FR_RESTORE")" --output "$FR_OP/restore-receipt.json"
-# check_step restore 明确0，核restored_new_database后：
+check_step restore
+receipt_status "$FR_OP/restore-receipt.json" restored_new_database
+# 上述校验成功后：
 fr tools.first_release_native_exchange seal --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/empty-delta-metadata.json" --metadata-sha256 "$(h "$FR_OP/empty-delta-metadata.json")" --output "$FR_OP/seal-receipt.json"
 fr tools.first_release_native_exchange exchange --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/empty-delta-metadata.json" --metadata-sha256 "$(h "$FR_OP/empty-delta-metadata.json")" --restore-receipt "$FR_OP/restore-receipt.json" --restore-receipt-sha256 "$(h "$FR_OP/restore-receipt.json")" --output "$FR_OP/exchange-receipt.json"
 ```
 
-继续条件：exchange-receipt为exchanged_closed，current_oid为新恢复库OID，failed_database为本operation唯一failed名，admission_opened/old_database_deleted/production均false。两库必须保持closed/0连接；旧failed库和全部备份保留。owner、CONNECT ACL/授权选项、库级及角色库级SET由捕获原件恢复。任何活动会话/元数据漂移/已有目标都立即停，不终止PG会话。新writer和任何应用开门后不再执行本节回滚。
+执行exchange后必须运行：
+
+```bash
+receipt_status "$FR_OP/exchange-receipt.json" exchanged_closed
+"$FR_PY" -I - "$FR_OP/exchange-receipt.json" <<'PY'
+import json,sys
+v=json.load(open(sys.argv[1],encoding='utf-8'))
+assert all(v[k] is False for k in ('admission_opened','old_database_deleted','production'))
+assert v['current_oid']>0
+print('exchange: closed, preserved, stage-only verified')
+PY
+```
+
+继续条件还包括current_oid为新恢复库OID，failed_database为本operation唯一failed名，admission_opened/old_database_deleted/production均false。两库必须保持closed/0连接；旧failed库和全部备份保留。owner、CONNECT ACL/授权选项、库级及角色库级SET由捕获原件恢复。任何活动会话/元数据漂移/已有目标都立即停，不终止PG会话。新writer和任何应用开门后不再执行本节回滚。
 
 ## B6–B8：新运行资产、Linux启动与限定冒烟
 
