@@ -1,6 +1,6 @@
 # 首发生产执行单：220048573110862d378015c35d99a37c0d83503e
 
-执行人：**主线**。授权依据为main v17/v34/v37/v41的D-首发，以及同候选、在有效窗口内的31号 `结论：Go`。先有同候选stage成功回执，再进入生产。本单只交审核，本次没有连接服务器、改库、切服务或发模型请求。
+执行人：**主线**。授权依据为main v17/v34/v37/v41/v49/v50的D-首发，以及同候选、在有效窗口内的31号 `结论：Go`。先有同候选stage成功回执，再进入生产。本单只交审核，本次没有连接服务器、改库、切服务或发模型请求。
 
 质量依据：38号第九节/main v41，安全5/5、其他23/24；TA01仍失败，首发后排查。原机器分数不改。R11和包见stage单；PR23当前已知CI为cancelled，Go必须引用同SHA成功CI，主线不能把取消当绿。
 
@@ -26,18 +26,95 @@ FR_OP=/root/zhiming-core-backups/first-release-$FR_ID
 FR_ADMIN=/root/zhiming-core-secrets/fr-prod-admin.env
 test "$(id -u)" = 0
 test -d "$FR_OLD_RELEASE" && test -d "$FR_STAGE"
-test -f "$FR_ADMIN" && ! test -L "$FR_ADMIN"
-test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
-test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
-/usr/lib/postgresql/15/bin/pg_dump --version
-/usr/lib/postgresql/15/bin/pg_restore --version
+# v49: use programs beside the actual 5432 postmaster, never a distribution-specific path.
+mapfile -t FR_PG_PIDS < <(ss -H -ltnp 'sport = :5432' | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u)
+test "${#FR_PG_PIDS[@]}" = 1
+FR_PG_EXE="$(readlink -f "/proc/${FR_PG_PIDS[0]}/exe")"
+test "$(basename "$FR_PG_EXE")" = postgres -o "$(basename "$FR_PG_EXE")" = postmaster
+FR_PG_BIN="$(dirname "$FR_PG_EXE")"
+FR_DUMP="$FR_PG_BIN/pg_dump"
+FR_RESTORE="$FR_PG_BIN/pg_restore"
+FR_PSQL="$FR_PG_BIN/psql"
+for program in "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" "$FR_PSQL"; do
+ test -x "$program"
+ "$program" --version | grep -Eq '\) 15\.'
+done
+command -v python3.11 sha256sum runuser
+test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
+grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
 for unit in mingjingtai.service zhiming-core-feishu.service zhiming-core-reports.service zhiming-core-reports.timer; do
   systemctl show "$unit" -p FragmentPath -p DropInPaths -p NeedDaemonReload -p ActiveState -p UnitFileState -p MainPID -p KillMode
 done
 ```
 
-继续：PG15、容量≥8GiB、旧7dbc951及0aa433a实际目录保留、stage成功且同SHA、私有管理员文件存在。FR_ADMIN只接受 `FIRST_RELEASE_EXCHANGE_ADMIN_DSN`，127.0.0.1或::1、5432、postgres控制库、实际superuser；后面脚本再次核验。缺文件停止并【提醒用户】，不创建账户、不改认证。上述命令不打印私有内容。8GiB只是最低门，实际dump×3＋双环境＋旧包共存余量不足也停。
+继续：PG15、容量≥8GiB、旧7dbc951及0aa433a实际目录保留、stage成功且同SHA、私有管理员文件存在。FR_ADMIN只接受 `FIRST_RELEASE_EXCHANGE_ADMIN_DSN`，127.0.0.1或::1、5432、postgres控制库、实际superuser；后面脚本再次核验。缺文件时仅按下方R28就地准备；认证不允许即停并【提醒用户】，不改pg_hba。上述命令不打印私有内容。8GiB只是最低门，实际dump×3＋双环境＋旧包共存余量不足也停。
+
+### R28：只在服务器就地准备回环管理员（stage / 生产共用）
+
+仅在对应37/31号Go及授权范围内运行。先读权限、已有文件和实际身份；两文件都不存在才经 postgres 系统用户和 `/tmp` socket 创建 `zhiming_fr_admin`。32字节随机口令仅在服务器内存/两个root私有文件中，禁止shell tracing、打印、日志或回传；已有角色但凭据文件都缺失则停，不重置口令。只供127.0.0.1本机管理，不配置远程访问，不修改pg_hba。TCP口令认证不允许时停并【提醒用户】，保留现场、不重试建角色。
+
+```bash
+set +x
+python3.11 -I - "$FR_PSQL" <<'PY'
+import os,pathlib,secrets,shlex,shutil,stat,subprocess,urllib.parse
+assert os.geteuid()==0
+psql=__import__('sys').argv[1]
+parent=pathlib.Path('/root/zhiming-core-secrets')
+assert not parent.is_symlink()
+if not parent.exists():parent.mkdir(mode=0o700)
+assert parent.is_dir() and parent.stat().st_uid==0 and stat.S_IMODE(parent.stat().st_mode)==0o700
+paths=[parent/'fr-stage-admin.env',parent/'fr-prod-admin.env']
+key='FIRST_RELEASE_EXCHANGE_ADMIN_DSN'
+def private(path):
+ fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW)
+ with os.fdopen(fd,'rb') as stream:
+  s=os.fstat(stream.fileno());assert stat.S_ISREG(s.st_mode) and s.st_uid==0 and stat.S_IMODE(s.st_mode)==0o600
+  data=stream.read(8193);assert len(data)<=8192
+ return data
+existing=[private(p) for p in paths if p.exists() or p.is_symlink()]
+base={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','PGCONNECT_TIMEOUT':'5'}
+def call(argv,query,env):
+ r=subprocess.run(argv,input=query,text=True,env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+ assert r.returncode==0,'R28 authentication/SQL refused; stop, do not alter pg_hba; private diagnostics not printed'
+ return r.stdout.strip()
+runuser=shutil.which('runuser');assert runuser and pathlib.Path(runuser).is_absolute()
+socket=[runuser,'-u','postgres','--',psql,'-X','-w','-h','/tmp','-p','5432','-d','postgres','-v','ON_ERROR_STOP=1','-Atq']
+if existing:
+ assert all(data==existing[0] for data in existing),'R28 files disagree; stop'
+ data=existing[0];lines=[x for x in data.decode().splitlines() if x.strip()]
+ assert len(lines)==1
+ name,sep,value=lines[0].partition('=');assert sep and name==key
+ values=shlex.split(value);assert len(values)==1
+ dsn=values[0];u=urllib.parse.urlsplit(dsn)
+ assert u.scheme in ('postgres','postgresql') and u.hostname=='127.0.0.1' and u.port==5432 and u.path=='/postgres' and not u.query and not u.fragment
+ user=urllib.parse.unquote(u.username or '');password=urllib.parse.unquote(u.password or '')
+ assert user and password
+else:
+ assert call(socket,"SELECT count(*) FROM pg_roles WHERE rolname='zhiming_fr_admin';",base)=='0','R28 role exists without files; stop, no password rotation'
+ password=secrets.token_hex(32);user='zhiming_fr_admin'
+ query="SET log_statement='none'; SET log_min_duration_statement=-1; SET log_min_error_statement='panic'; SET password_encryption='scram-sha-256'; CREATE ROLE zhiming_fr_admin SUPERUSER LOGIN PASSWORD '"+password+"';"
+ call(socket,query,base)
+ dsn='postgresql://'+user+':'+password+'@127.0.0.1:5432/postgres'
+ data=(key+'='+dsn+'\n').encode()
+env={**base,'PGPASSWORD':password}
+check=call([psql,'-X','-w','-h','127.0.0.1','-p','5432','-U',user,'-d','postgres','-v','ON_ERROR_STOP=1','-Atq'],"SELECT current_user=session_user AND (SELECT rolsuper FROM pg_roles WHERE rolname=session_user) AND current_database()='postgres' AND inet_server_addr()='127.0.0.1'::inet AND inet_server_port()=5432 AND current_setting('server_version_num')::int BETWEEN 150000 AND 159999;",env)
+assert check=='t','R28 actual superuser/loopback/PG15 check failed'
+for path in paths:
+ if path.exists() or path.is_symlink():assert private(path)==data
+ else:
+  fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+  with os.fdopen(fd,'wb') as stream:stream.write(data);stream.flush();os.fsync(stream.fileno())
+ assert private(path)==data
+env.clear();password=dsn=data=None
+print('R28: local administrator authenticated; two private files verified; credential output=0')
+PY
+test -f "$FR_ADMIN" && ! test -L "$FR_ADMIN"
+test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
+test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
+```
+
+上述文件使用单字段URI DSN；若已有文件不是该受支持格式，停止审查而不覆盖。任意错误输出只记录步骤失败，不复制SQL/口令/原stderr；不现场安装软件或修改认证。
 
 包必须与stage同一公开包，SHA256 `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
 
@@ -47,6 +124,12 @@ test ! -e /root/zhiming-core-secrets/first-release-service-config.json
 test ! -e /root/zhiming-core-secrets/first-release-common.env
 test ! -e /root/.hermes/skills/zhiming/first-release-service-assets-manifest.json
 mkdir -m 700 "$FR_OP"
+python3.11 -I - "$FR_OP/pg-programs.json" "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" <<'PY'
+import hashlib,json,pathlib,sys
+p=pathlib.Path(sys.argv[1]);programs={k:{'path':v,'sha256':hashlib.sha256(pathlib.Path(v).read_bytes()).hexdigest()} for k,v in zip(('postmaster','pg_dump','pg_restore'),sys.argv[2:])}
+with p.open('x') as stream:json.dump(programs,stream)
+p.chmod(0o600)
+PY
 FR_STAGE_PY=/root/zhiming-core-fr-stage/venvs/$FR_SHA/core/bin/python
 "$FR_STAGE_PY" -I - "$FR_STAGE" "$FR_RELEASE" <<'PY'
 import hashlib,json,os,pathlib,sys,tarfile
@@ -128,7 +211,7 @@ done
 
 ## D2–D4：原生一致备份、新库验证与迁移回填
 
-在FR_OP创建下列 `context.py`（0600），代码为本执行单的一部分，审核时一起核hash。不是产品代码补丁；不修改候选源码。只允许已有live owner/writer，禁止新建角色。原中央若位于即将对调的live库，立即停：先由31号给出保留该中央OID/位置的独立方案，本单不自动搬运/重绑中央。
+在FR_OP创建下列 `context.py`（0600），代码为本执行单的一部分，审核时一起核hash。不是产品代码补丁；不修改候选源码。只允许已有live owner/writer，仅R28允许就地创建回环管理角色，不新建业务owner/writer。原中央若位于即将对调的live库，立即停：先由31号给出保留该中央OID/位置的独立方案，本单不自动搬运/重绑中央。
 
 ```bash
 cat > "$FR_OP/context.py" <<'PY'
@@ -165,6 +248,19 @@ def admin():
 def read(name):return json.loads((OP/name).read_text())
 def save(name,value):write_private(OP/name,value)
 def h(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+def pg_program(name):
+ import re,subprocess
+ record=read('pg-programs.json');path=Path(record[name]['path'])
+ listeners=subprocess.check_output(['ss','-H','-ltnp','sport = :5432'],text=True)
+ pids=set(re.findall(r'pid=(\d+)',listeners));assert len(pids)==1
+ actual=Path('/proc')/next(iter(pids))/'exe'
+ assert actual.resolve()==Path(record['postmaster']['path'])
+ assert h(actual)==record['postmaster']['sha256']
+ assert path.parent==actual.resolve().parent and path.name==name and h(path)==record[name]['sha256']
+ assert re.search(r'\) 15\.',subprocess.check_output([str(path),'--version'],text=True))
+ return str(path)
+
 def zero(c,name):
  r=c.execute('SELECT datallowconn,(SELECT count(*) FROM pg_stat_activity WHERE datid=d.oid) AS n FROM pg_database d WHERE datname=%s',(name,)).fetchone()
  assert r and not r['datallowconn'] and r['n']==0
@@ -213,12 +309,12 @@ with skill_writer_lock(exclusive=True),admin() as c:
  allow(c,LIVE,True)
  try:
   with (OP/'live-before.dump').open('xb') as out:
-   cmd=['/usr/lib/postgresql/15/bin/pg_dump','--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+LIVE,'--no-password','--format=custom']
+   cmd=[pg_program('pg_dump'),'--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+LIVE,'--no-password','--format=custom']
    result=subprocess.run(cmd,env=process_environment(DSN),stdout=out,stderr=subprocess.PIPE)
    assert result.returncode==0,'dump failed; keep private diagnostic'
  finally:allow(c,LIVE,False)
  zero(c,LIVE)
- save('backup-receipt.json',{'sha256':h(OP/'live-before.dump'),'source_oid':snap['oid'],'closed':True,'pg_dump_sha256':h('/usr/lib/postgresql/15/bin/pg_dump'),'pg_restore_sha256':h('/usr/lib/postgresql/15/bin/pg_restore')})
+ save('backup-receipt.json',{'sha256':h(OP/'live-before.dump'),'source_oid':snap['oid'],'closed':True,'pg_dump_sha256':h(pg_program('pg_dump')),'pg_restore_sha256':h(pg_program('pg_restore'))})
 print('D2: backup and privacy captured; live closed')
 PY
 ```
@@ -235,9 +331,9 @@ with admin() as c:
  assert capture(c,LIVE)==snap and h(OP/'live-before.dump')==read('backup-receipt.json')['sha256']
  assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([NEW,KEPT],)).fetchone()
  c.execute(sql.SQL('CREATE DATABASE {} OWNER {} TEMPLATE template0 ENCODING {} LC_COLLATE {} LC_CTYPE {}').format(sql.Identifier(NEW),sql.Identifier(snap['owner']),sql.Literal(snap['encoding']),sql.Literal(snap['collate']),sql.Literal(snap['ctype'])))
- result=subprocess.run(['/usr/lib/postgresql/15/bin/pg_restore','--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+NEW,'--no-password','--exit-on-error','--single-transaction',str(OP/'live-before.dump')],env=process_environment(DSN),capture_output=True)
+ result=subprocess.run([pg_program('pg_restore'),'--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+NEW,'--no-password','--exit-on-error','--single-transaction',str(OP/'live-before.dump')],env=process_environment(DSN),capture_output=True)
  assert result.returncode==0,'restore failed: preserve new database'
- assert h('/usr/lib/postgresql/15/bin/pg_restore')==read('backup-receipt.json')['pg_restore_sha256']
+ assert h(pg_program('pg_restore'))==read('backup-receipt.json')['pg_restore_sha256']
  with c.transaction():apply_metadata(c,NEW,snap)
  assert semantic(capture(c,NEW))==semantic(snap)
  r=repo(NEW,True)
@@ -489,7 +585,7 @@ with skill_writer_lock(exclusive=True),admin() as c:
  assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([RB,FAILED],)).fetchone()
  assert h(OP/'live-before.dump')==read('backup-receipt.json')['sha256']
  c.execute(sql.SQL('CREATE DATABASE {} OWNER {} TEMPLATE template0 ENCODING {} LC_COLLATE {} LC_CTYPE {}').format(sql.Identifier(RB),sql.Identifier(snap['owner']),sql.Literal(snap['encoding']),sql.Literal(snap['collate']),sql.Literal(snap['ctype'])))
- result=subprocess.run(['/usr/lib/postgresql/15/bin/pg_restore','--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+RB,'--no-password','--exit-on-error','--single-transaction',str(OP/'live-before.dump')],env=process_environment(DSN),capture_output=True)
+ result=subprocess.run([pg_program('pg_restore'),'--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+RB,'--no-password','--exit-on-error','--single-transaction',str(OP/'live-before.dump')],env=process_environment(DSN),capture_output=True)
  assert result.returncode==0
  with c.transaction():apply_metadata(c,RB,snap)
  r=repo(RB,True)

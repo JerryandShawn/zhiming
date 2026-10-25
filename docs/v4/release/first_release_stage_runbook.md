@@ -1,6 +1,6 @@
 # 首发 F 副本 stage 执行单（候选2200485）
 
-执行人：**主线**。本单已绑定候选 `220048573110862d378015c35d99a37c0d83503e`，授权依据为 v13 授权 F、main v36/v41 和匹配候选的37号首行 `结论：Go`；复核时间须晚于2026-10-24 12:30。文档就绪与服务器执行分开记录：37号未出现时只完成本机准备，不连接服务器，不上传。
+执行人：**主线**。本单已绑定候选 `220048573110862d378015c35d99a37c0d83503e`，授权依据为 v13 授权 F、main v36/v41/v49/v50 和匹配候选的37号首行 `结论：Go`；复核时间须晚于2026-10-24 12:30。文档就绪与服务器执行分开记录：37号未出现时只完成本机准备，不连接服务器，不上传。
 
 固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r39/private/fr-stage-220048573110862d378015c35d99a37c0d83503e/`；包SHA256 `9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `ba63f7b2fa8a405d`。同源R11证据：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r39/private/candidate-eval/220048573110862d378015c35d99a37c0d83503e/R11-58e3c43c0c33414cbe1b2d60e3d786ff/assessment.json`，48/48、7/7、69/69、29/29已核。质量依据main v41/38号第九节：旧8727完整29＋220定向五题＋独立人工改判，安全5/5、其他23/24；TA01保留失败，首发后查。不覆盖原机器分数，不再跑评测。
 
@@ -74,13 +74,27 @@ FR_ID='ba63f7b2fa8a405d'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
-command -v python3.11 sha256sum
-/usr/lib/postgresql/15/bin/pg_dump --version
-/usr/lib/postgresql/15/bin/pg_restore --version
+# v49: use programs beside the actual 5432 postmaster, never a distribution-specific path.
+mapfile -t FR_PG_PIDS < <(ss -H -ltnp 'sport = :5432' | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u)
+test "${#FR_PG_PIDS[@]}" = 1
+FR_PG_EXE="$(readlink -f "/proc/${FR_PG_PIDS[0]}/exe")"
+test "$(basename "$FR_PG_EXE")" = postgres -o "$(basename "$FR_PG_EXE")" = postmaster
+FR_PG_BIN="$(dirname "$FR_PG_EXE")"
+FR_DUMP="$FR_PG_BIN/pg_dump"
+FR_RESTORE="$FR_PG_BIN/pg_restore"
+FR_PSQL="$FR_PG_BIN/psql"
+for program in "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" "$FR_PSQL"; do
+ test -x "$program"
+ "$program" --version | grep -Eq '\) 15\.'
+done
+command -v python3.11 sha256sum runuser
+test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
+grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
 ! test -e "$FR_ROOT"
 ! test -e /etc/systemd/system/zhiming-core-fr-stage.service
 ! ss -ltn | awk '{print $4}' | grep -Eq '(^|:)8788$'
 mkdir -m 700 "$FR_ROOT"
+sha256sum "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" "$FR_PSQL" > "$FR_ROOT/pg-programs.sha256"
 mkdir -m 700 "$FR_ROOT/uploads" "$FR_ROOT/releases" "$FR_ROOT/venvs" "$FR_ROOT/tokenizer" "$FR_ROOT/operations"
 mkdir -m 700 "$FR_ROOT/tokenizer/$FR_SHA" "$FR_ROOT/operations/$FR_ID"
 ```
@@ -115,8 +129,23 @@ FR_RELEASE="$FR_ROOT/releases/$FR_SHA"
 FR_PY="$FR_ROOT/venvs/$FR_SHA/core/bin/python"
 FR_TOKENIZER="$FR_ROOT/tokenizer/$FR_SHA"
 FR_ADMIN=/root/zhiming-core-secrets/fr-stage-admin.env
-FR_DUMP=/usr/lib/postgresql/15/bin/pg_dump
-FR_RESTORE=/usr/lib/postgresql/15/bin/pg_restore
+# v49: use programs beside the actual 5432 postmaster, never a distribution-specific path.
+mapfile -t FR_PG_PIDS < <(ss -H -ltnp 'sport = :5432' | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u)
+test "${#FR_PG_PIDS[@]}" = 1
+FR_PG_EXE="$(readlink -f "/proc/${FR_PG_PIDS[0]}/exe")"
+test "$(basename "$FR_PG_EXE")" = postgres -o "$(basename "$FR_PG_EXE")" = postmaster
+FR_PG_BIN="$(dirname "$FR_PG_EXE")"
+FR_DUMP="$FR_PG_BIN/pg_dump"
+FR_RESTORE="$FR_PG_BIN/pg_restore"
+FR_PSQL="$FR_PG_BIN/psql"
+for program in "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" "$FR_PSQL"; do
+ test -x "$program"
+ "$program" --version | grep -Eq '\) 15\.'
+done
+command -v python3.11 sha256sum runuser
+test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
+grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
+sha256sum -c "$FR_ROOT/pg-programs.sha256"
 FR_PACKAGE_SHA='9478c42966d98150c71307950702aff6a8d4b751f370041e2d66d23dc71c94ff'
 FR_BOOTSTRAP_SHA='18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42'
 h() { sha256sum "$1" | cut -d ' ' -f 1; }
@@ -173,14 +202,71 @@ start_step dependencies "$FR_PY" -m pip install --require-hashes -r "$FR_RELEASE
 fr tools.install_k3_tokenizer --destination "$FR_TOKENIZER" --verify-only
 ```
 
-主线在已获准的服务器步骤就地核验现有PG管理员私有文件FR_ADMIN：仅`FIRST_RELEASE_EXCHANGE_ADMIN_DSN`一个字段，实际PG15 superuser、数字回环127.0.0.1或::1、5432、控制库postgres；不能用业务writer替代、不要输出正文。文件/父目录须root所有0600/0700，无链接；工具会核实际身份。缺文件/凭据立即停止并发【提醒用户】，不能自动建账户/改认证绕过。长步骤原始日志均在0700操作目录，禁止上传包含私有数据或凭据的日志正文。
+### R28：只在服务器就地准备回环管理员（stage / 生产共用）
+
+仅在对应37/31号Go及授权范围内运行。先读权限、已有文件和实际身份；两文件都不存在才经 postgres 系统用户和 `/tmp` socket 创建 `zhiming_fr_admin`。32字节随机口令仅在服务器内存/两个root私有文件中，禁止shell tracing、打印、日志或回传；已有角色但凭据文件都缺失则停，不重置口令。只供127.0.0.1本机管理，不配置远程访问，不修改pg_hba。TCP口令认证不允许时停并【提醒用户】，保留现场、不重试建角色。
 
 ```bash
+set +x
+python3.11 -I - "$FR_PSQL" <<'PY'
+import os,pathlib,secrets,shlex,shutil,stat,subprocess,urllib.parse
+assert os.geteuid()==0
+psql=__import__('sys').argv[1]
+parent=pathlib.Path('/root/zhiming-core-secrets')
+assert not parent.is_symlink()
+if not parent.exists():parent.mkdir(mode=0o700)
+assert parent.is_dir() and parent.stat().st_uid==0 and stat.S_IMODE(parent.stat().st_mode)==0o700
+paths=[parent/'fr-stage-admin.env',parent/'fr-prod-admin.env']
+key='FIRST_RELEASE_EXCHANGE_ADMIN_DSN'
+def private(path):
+ fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW)
+ with os.fdopen(fd,'rb') as stream:
+  s=os.fstat(stream.fileno());assert stat.S_ISREG(s.st_mode) and s.st_uid==0 and stat.S_IMODE(s.st_mode)==0o600
+  data=stream.read(8193);assert len(data)<=8192
+ return data
+existing=[private(p) for p in paths if p.exists() or p.is_symlink()]
+base={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8','PGCONNECT_TIMEOUT':'5'}
+def call(argv,query,env):
+ r=subprocess.run(argv,input=query,text=True,env=env,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+ assert r.returncode==0,'R28 authentication/SQL refused; stop, do not alter pg_hba; private diagnostics not printed'
+ return r.stdout.strip()
+runuser=shutil.which('runuser');assert runuser and pathlib.Path(runuser).is_absolute()
+socket=[runuser,'-u','postgres','--',psql,'-X','-w','-h','/tmp','-p','5432','-d','postgres','-v','ON_ERROR_STOP=1','-Atq']
+if existing:
+ assert all(data==existing[0] for data in existing),'R28 files disagree; stop'
+ data=existing[0];lines=[x for x in data.decode().splitlines() if x.strip()]
+ assert len(lines)==1
+ name,sep,value=lines[0].partition('=');assert sep and name==key
+ values=shlex.split(value);assert len(values)==1
+ dsn=values[0];u=urllib.parse.urlsplit(dsn)
+ assert u.scheme in ('postgres','postgresql') and u.hostname=='127.0.0.1' and u.port==5432 and u.path=='/postgres' and not u.query and not u.fragment
+ user=urllib.parse.unquote(u.username or '');password=urllib.parse.unquote(u.password or '')
+ assert user and password
+else:
+ assert call(socket,"SELECT count(*) FROM pg_roles WHERE rolname='zhiming_fr_admin';",base)=='0','R28 role exists without files; stop, no password rotation'
+ password=secrets.token_hex(32);user='zhiming_fr_admin'
+ query="SET log_statement='none'; SET log_min_duration_statement=-1; SET log_min_error_statement='panic'; SET password_encryption='scram-sha-256'; CREATE ROLE zhiming_fr_admin SUPERUSER LOGIN PASSWORD '"+password+"';"
+ call(socket,query,base)
+ dsn='postgresql://'+user+':'+password+'@127.0.0.1:5432/postgres'
+ data=(key+'='+dsn+'\n').encode()
+env={**base,'PGPASSWORD':password}
+check=call([psql,'-X','-w','-h','127.0.0.1','-p','5432','-U',user,'-d','postgres','-v','ON_ERROR_STOP=1','-Atq'],"SELECT current_user=session_user AND (SELECT rolsuper FROM pg_roles WHERE rolname=session_user) AND current_database()='postgres' AND inet_server_addr()='127.0.0.1'::inet AND inet_server_port()=5432 AND current_setting('server_version_num')::int BETWEEN 150000 AND 159999;",env)
+assert check=='t','R28 actual superuser/loopback/PG15 check failed'
+for path in paths:
+ if path.exists() or path.is_symlink():assert private(path)==data
+ else:
+  fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+  with os.fdopen(fd,'wb') as stream:stream.write(data);stream.flush();os.fsync(stream.fileno())
+ assert private(path)==data
+env.clear();password=dsn=data=None
+print('R28: local administrator authenticated; two private files verified; credential output=0')
+PY
 test -f "$FR_ADMIN" && ! test -L "$FR_ADMIN"
-test -d "$(dirname "$FR_ADMIN")" && ! test -L "$(dirname "$FR_ADMIN")"
 test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
 test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 ```
+
+上述文件使用单字段URI DSN；若已有文件不是该受支持格式，停止审查而不覆盖。任意错误输出只记录步骤失败，不复制SQL/口令/原stderr；不现场安装软件或修改认证。
 
 ## B3–B5：只读复制、迁移与primary回填/副本旁账重放
 
@@ -281,16 +367,24 @@ for path in ('/api/health','/api/state','/api/history'):
 PY
 ```
 
-出站核验必须检查**实际新unit cgroup**，不是另建transient unit。以下由主线在F范围内做TCP连通正负验，不发任何应用层payload，不访问模型/飞书；外部正验自身不可达时本项不能证明阻断，立即停止并发【提醒用户】。子进程只把自己加入已确认的新unit cgroup，退出后不留进程、不动其他cgroup。
+出站核验必须检查**实际新unit cgroup**，不是另建transient unit。以下由主线在F范围内做TCP连通正负验，不发任何应用层payload，不访问模型/飞书；正验依次试1.1.1.1:443、223.5.5.5:443，选首个可达地址做同地址负验；两者都不可达时不能证明阻断，立即停止并发【提醒用户】。子进程只把自己加入已确认的新unit cgroup，退出后不留进程、不动其他cgroup。
 
 ```bash
 FR_CGROUP="$(systemctl show -p ControlGroup --value zhiming-core-fr-stage.service)"
 test "$FR_CGROUP" = /system.slice/zhiming-core-fr-stage.service
 "$FR_PY" -I - "$FR_CGROUP" <<'PY'
 import errno,os,pathlib,socket,sys
-endpoint=('1.1.1.1',443)
-with socket.create_connection(endpoint,timeout=3):
-    pass
+endpoint=None
+for candidate in (('1.1.1.1',443),('223.5.5.5',443)):
+    try:
+        with socket.create_connection(candidate,timeout=3):
+            pass
+    except OSError:
+        continue
+    endpoint=candidate
+    break
+assert endpoint is not None,'neither positive TCP endpoint reachable; stop'
+print('selected TCP endpoint:',endpoint[0],endpoint[1])
 pid=os.fork()
 if pid==0:
     try:
