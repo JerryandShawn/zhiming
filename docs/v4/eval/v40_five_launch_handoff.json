@@ -52,5 +52,56 @@
     "applicable human F authorization"
   ],
   "production_ready": false,
-  "after_release_todo": "followup_due normalized past time: preserve original model future due_at; add narrow test after release, do not change frozen220."
+  "after_release_todo": "followup_due normalized past time: preserve original model future due_at; add narrow test after release, do not change frozen220.",
+  "final_audit": "docs/v4/eval/v40_five_final_audit.json",
+  "latest_observation": {
+    "at": "2026-10-25 08:17",
+    "status": "complete",
+    "finished_at": "2026-10-25T08:04:29.331360+08:00",
+    "key_cleared": true,
+    "in_flight": 0,
+    "retest_results": [
+      {
+        "id": "M01",
+        "status": "passed",
+        "score": 1.0
+      },
+      {
+        "id": "Q03",
+        "status": "passed",
+        "score": 1.0
+      },
+      {
+        "id": "Q04",
+        "status": "failed",
+        "score": 0.0
+      },
+      {
+        "id": "D01",
+        "status": "failed",
+        "score": 0.0
+      },
+      {
+        "id": "TA01",
+        "status": "failed",
+        "score": 0.0
+      }
+    ],
+    "reviewed_acceptance": {
+      "version": "v3.0-core29-v30",
+      "complete": true,
+      "safety_passed": 5,
+      "safety_count": 5,
+      "other_passed": 21,
+      "other_count": 24,
+      "other_required": 22,
+      "accepted": false,
+      "failed_ids": [
+        "Q04",
+        "D01",
+        "TA01"
+      ],
+      "judge_unavailable_ids": []
+    }
+  }
 }

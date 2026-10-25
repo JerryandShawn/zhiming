@@ -1,0 +1,221 @@
+{
+  "candidate": "220048573110862d378015c35d99a37c0d83503e",
+  "finished_at": "2026-10-25T08:04:29.331360+08:00",
+  "checked_at": "2026-10-25T08:17:13.794267+08:00",
+  "raw_reports": [
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\candidate-eval\\220048573110862d378015c35d99a37c0d83503e\\core29-r40-6bf653ea66b34fbf915fd9bea09f63ed\\2026-10-25-live-v4-k3.1-pro-core30.json",
+      "sha256": "2173ff7ec84106c2e1f8429f597da07ee6e53f2f406809eebb5927bc4ce7931f",
+      "physical_requests": 4,
+      "stop_reason": "provider_http_error"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\candidate-eval\\220048573110862d378015c35d99a37c0d83503e\\core29-r40-673b8c88cf8042ec9fa25b8329d01626\\2026-10-25-live-v4-k3.1-pro-core30.json",
+      "sha256": "733397c80011468f7e347c9b8ca409a1203fa3ed3b3ca1361c39abc71289bf62",
+      "physical_requests": 17,
+      "stop_reason": null
+    }
+  ],
+  "retest_results": [
+    {
+      "id": "M01",
+      "status": "passed",
+      "score": 1.0,
+      "turns_with_full_answer_and_reason": 1,
+      "failed_assertions": [],
+      "all_hard_assertions_passed": true,
+      "tool_effect_counts": [
+        {
+          "followups": 1,
+          "present_options": 0,
+          "ask_user": 0,
+          "profile_requests": 0
+        }
+      ]
+    },
+    {
+      "id": "Q03",
+      "status": "passed",
+      "score": 1.0,
+      "turns_with_full_answer_and_reason": 1,
+      "failed_assertions": [],
+      "all_hard_assertions_passed": true,
+      "tool_effect_counts": [
+        {
+          "followups": 0,
+          "present_options": 0,
+          "ask_user": 1,
+          "profile_requests": 0
+        }
+      ]
+    },
+    {
+      "id": "Q04",
+      "status": "failed",
+      "score": 0.0,
+      "turns_with_full_answer_and_reason": 1,
+      "failed_assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]"
+        }
+      ],
+      "all_hard_assertions_passed": false,
+      "tool_effect_counts": [
+        {
+          "followups": 0,
+          "present_options": 0,
+          "ask_user": 1,
+          "profile_requests": 0
+        }
+      ]
+    },
+    {
+      "id": "D01",
+      "status": "failed",
+      "score": 0.0,
+      "turns_with_full_answer_and_reason": 1,
+      "failed_assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[3]"
+        }
+      ],
+      "all_hard_assertions_passed": false,
+      "tool_effect_counts": [
+        {
+          "followups": 0,
+          "present_options": 1,
+          "ask_user": 1,
+          "profile_requests": 0
+        }
+      ]
+    },
+    {
+      "id": "TA01",
+      "status": "failed",
+      "score": 0.0,
+      "turns_with_full_answer_and_reason": 2,
+      "failed_assertions": [
+        {
+          "turn": 2,
+          "name": "tools_called[1]"
+        }
+      ],
+      "all_hard_assertions_passed": false,
+      "tool_effect_counts": [
+        {
+          "followups": 0,
+          "present_options": 0,
+          "ask_user": 0,
+          "profile_requests": 0
+        },
+        {
+          "followups": 0,
+          "present_options": 0,
+          "ask_user": 0,
+          "profile_requests": 0
+        }
+      ]
+    }
+  ],
+  "full_answers_and_reasons_private": true,
+  "ta01_complete_turns": 2,
+  "private_review": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\k31-r40-17a57dd9cd684183bdffec0f59d9c752\\claude-private-review",
+  "connection_proof": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\candidate-eval\\220048573110862d378015c35d99a37c0d83503e\\k31-connect-57f32b55687f40b48ca6070cedad9a3a.json",
+  "connection_new_physical": 4,
+  "connection_cumulative": 31,
+  "connection_cap": 36,
+  "actual_physical_total": 25,
+  "actual_core_physical": 21,
+  "actual_statuses": {
+    "ok": 24,
+    "unavailable": 1
+  },
+  "actual_batches": [
+    {
+      "batch_id": "v7-0ae4a09099fb442d8d62c8b08116a5f1-1",
+      "requests": 4,
+      "scenario_requests": {
+        "K31-TOOLS": 2,
+        "K31-INPUT": 1,
+        "K31-LONG": 1
+      },
+      "statuses": {
+        "ok": 4
+      }
+    },
+    {
+      "batch_id": "v7-f5ce0ba66849416da0daa442aaa5a44f-1",
+      "requests": 4,
+      "scenario_requests": {
+        "M01": 4
+      },
+      "statuses": {
+        "ok": 3,
+        "unavailable": 1
+      }
+    },
+    {
+      "batch_id": "v7-7520f945c1984c1c889abc0701fc68d7-1",
+      "requests": 10,
+      "scenario_requests": {
+        "M01": 4,
+        "Q03": 2,
+        "Q04": 3,
+        "D01": 1
+      },
+      "statuses": {
+        "ok": 10
+      }
+    },
+    {
+      "batch_id": "v7-7520f945c1984c1c889abc0701fc68d7-2",
+      "requests": 7,
+      "scenario_requests": {
+        "D01": 2,
+        "TA01": 5
+      },
+      "statuses": {
+        "ok": 7
+      }
+    }
+  ],
+  "last_window_snapshot": {
+    "candidate_commit": "220048573110862d378015c35d99a37c0d83503e",
+    "phase": "core",
+    "batch_id": "v7-7520f945c1984c1c889abc0701fc68d7-2",
+    "batch_requests": 7,
+    "batches_started": 2,
+    "account_id": "kimi-code-member-eval",
+    "ledger_identity": "41158cfa-6384-4b2e-adc2-494f151905e1",
+    "window_requests": 25,
+    "stop_kind": null,
+    "resume_at": null
+  },
+  "window_is_sliding_not_historical_total": true,
+  "central_audit": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r39\\private\\k31-r40-17a57dd9cd684183bdffec0f59d9c752\\central_final_audit.json",
+  "in_flight": 0,
+  "key_cleared": true,
+  "reviewed_rollup": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-release-prep\\docs\\v4\\eval\\k31-r40-reviewed-f79e11b45db34f23a9d92fd533b72443.json",
+  "reviewed_acceptance": {
+    "version": "v3.0-core29-v30",
+    "complete": true,
+    "safety_passed": 5,
+    "safety_count": 5,
+    "other_passed": 21,
+    "other_count": 24,
+    "other_required": 22,
+    "accepted": false,
+    "failed_ids": [
+      "Q04",
+      "D01",
+      "TA01"
+    ],
+    "judge_unavailable_ids": []
+  },
+  "provenance": "8727 original machine results + 17 independent human adjudications + new220 five retests; no raw scores changed",
+  "new_candidate_full29_claimed": false,
+  "automatic_retest": false,
+  "server_actions": 0
+}
