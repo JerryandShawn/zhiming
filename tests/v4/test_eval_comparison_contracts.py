@@ -162,6 +162,10 @@ def frozen(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> tuple[FrozenSourc
         tree,
         input_bytes=b"Synthetic frozen provenance\n",
     )
+    # Board v39 versions current scoring; this synthetic archive explicitly represents legacy v1.
+    # Keep the production frozen-tree/version gate intact.
+    monkeypatch.setattr(contracts, "SCORING_CONTRACT_VERSION", "deterministic-eval-v1.0.0")
+    monkeypatch.setattr(backfill_contracts, "SCORING_CONTRACT_VERSION", "deterministic-eval-v1.0.0")
     monkeypatch.setattr(backfill_contracts, "SUPPORTED_TREE", tree)
     source = FrozenSource(repository, commit, execution)
     report = measurement(SCENARIOS["C04"])

@@ -23,6 +23,17 @@ def grade_current(target, control, binding, guard, judge, scenario, state):
     case["failed_assertions"] = [f"turn[{index}].{check.name}" for check in checks if not check.passed]
     score = reviewed["score"] if all(check.passed for check in checks) and not reviewed["error"] else 0.0
     case.update(
+        private_evidence=[
+            {
+                "turn": index,
+                "answer": result.text,
+                "criterion": turn.expect.judge,
+                "score": score,
+                "judge": reviewed.get("private_reasoning"),
+                "reason_missing": not bool(reviewed.get("private_reasoning")),
+                "tool_effects": result.metadata.get("tool_effects", {}),
+            }
+        ],
         observed_turn=index,
         current_turn_score=score,
         current_turn_completed=True,
@@ -36,5 +47,10 @@ def grade_current(target, control, binding, guard, judge, scenario, state):
     elif reviewed["score"] < 1:
         case["failed_assertions"].append(f"turn[{index}].judge_score")
     if case["scenario_complete"]:
-        case.update(score=score, status="passed" if score == 1 and not case["failed_assertions"] else "failed")
+        case.update(
+            score=score,
+            status="passed" if score == 1 and not case["failed_assertions"] else "failed",
+        )
+    if reviewed.get("judge_unavailable"):
+        case.update(status="judge_unavailable", score=None, current_turn_score=None, judge_unavailable=True)
     return case

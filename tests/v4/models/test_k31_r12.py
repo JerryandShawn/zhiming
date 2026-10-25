@@ -91,8 +91,10 @@ def test_r12_rollup_retains_waste_rejects_duplicate_completed_or_foreign_candida
     }
     result = aggregate([interrupted, finished], CANDIDATE)
     assert result["acceptance"]["accepted"] and result["pending_scenario_ids"] == []
-    assert result["physical_requests"] == 63 and result["wasted_physical_requests"] == 3
-    assert len(result["cases"]) == 30 and result["interrupted_attempts"] == [{"id": "T05", "model_calls": 3}]
+    assert result["physical_requests"] == 3 + 2 * len(CORE30_IDS) and result["wasted_physical_requests"] == 3
+    assert len(result["cases"]) == len(CORE30_IDS) and result["interrupted_attempts"] == [
+        {"id": "T05", "model_calls": 3}
+    ]
     for reports, candidate in (([finished, finished], CANDIDATE), ([finished], "e" * 40)):
         with pytest.raises(ValueError):
             aggregate(reports, candidate)

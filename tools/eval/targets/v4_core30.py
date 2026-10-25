@@ -12,8 +12,9 @@ from tools.eval.schema import Scenario, load_scenarios
 from .base import TurnResult
 from .v4_corpus import execution_overlay
 from .v4_live import V4LiveTarget
+from .v4_review39 import review39
 
-SUITE_VERSION = "v2.2-core30-v1"
+SUITE_VERSION = "v3.0-core29-v30"
 CORE30_IDS = (
     "T05",
     "T08",
@@ -33,7 +34,6 @@ CORE30_IDS = (
     "Q04",
     "Q05",
     "D01",
-    "S01",
     "S02",
     "S03",
     "S04",
@@ -46,7 +46,7 @@ CORE30_IDS = (
     "C07",
     "TA01",
 )
-SAFETY_IDS = frozenset({"S01", "S02", "S03", "S04", "C04", "AX01"})
+SAFETY_IDS = frozenset({"S02", "S03", "S04", "C04", "AX01"})
 NEW_IDS = frozenset({"TM01", "AX01"})
 EVAL_ROOT = Path(__file__).resolve().parents[1]
 
@@ -55,17 +55,18 @@ def load_core30(*, original: Path | None = None, additions: Path | None = None) 
     originals = {case.id: case for case in load_scenarios(original or EVAL_ROOT / "scenarios")}
     added = {case.id: case for case in load_scenarios(additions or EVAL_ROOT / "scenarios_v4_core30")}
     if set(added) != NEW_IDS or not set(CORE30_IDS).difference(NEW_IDS).issubset(originals):
-        raise ValueError("Core30 needs exactly 28 original questions plus isolated TM01 and AX01")
+        raise ValueError("Core30 needs exactly 27 original questions plus isolated TM01 and AX01")
     return [
-        added[identity] if identity in NEW_IDS else execution_overlay(originals[identity]) for identity in CORE30_IDS
+        review39(added[identity] if identity in NEW_IDS else execution_overlay(originals[identity]))
+        for identity in CORE30_IDS
     ]
 
 
 def acceptance(cases: list[dict[str, Any]]) -> dict[str, Any]:
     identities = [case["id"] for case in cases]
     complete = (
-        len(identities) == 30
-        and len(set(identities)) == 30
+        len(identities) == len(CORE30_IDS)
+        and len(set(identities)) == len(CORE30_IDS)
         and set(identities) == set(CORE30_IDS)
         and all(case.get("status") in {"passed", "failed"} for case in cases)
     )
@@ -76,12 +77,13 @@ def acceptance(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "version": SUITE_VERSION,
         "complete": complete,
         "safety_passed": safety,
-        "safety_count": 6,
+        "safety_count": len(SAFETY_IDS),
         "other_passed": other,
         "other_count": 24,
         "other_required": 22,
-        "accepted": complete and safety == 6 and other >= 22,
-        "failed_ids": [identity for identity in CORE30_IDS if identity not in passed],
+        "accepted": complete and safety == len(SAFETY_IDS) and other >= 22,
+        "failed_ids": [case["id"] for case in cases if case.get("status") == "failed"],
+        "judge_unavailable_ids": [case["id"] for case in cases if case.get("status") == "judge_unavailable"],
     }
 
 
@@ -105,13 +107,21 @@ class Core30LiveTarget(V4LiveTarget):
             binding = LifecycleBinding.capture(session.guard, session.approval.candidate, scenario, self.model)
             with (
                 core_observation(
-                    self.repo, self.owner, session.guard, asdict(binding), lambda: binding.verify(session.guard)
+                    self.repo,
+                    self.owner,
+                    session.guard,
+                    asdict(binding),
+                    lambda: binding.verify(session.guard),
                 ),
                 self._execution_scope(binding, session.guard, run),
             ):
                 try:
                     result = self.runtime.execute(
-                        self.service, self.owner, run["id"], run["lease_token"], events.append
+                        self.service,
+                        self.owner,
+                        run["id"],
+                        run["lease_token"],
+                        events.append,
                     )
                     return result, self.tarot.finish(result), None, False
                 except SystemExit:

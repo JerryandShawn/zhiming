@@ -64,7 +64,7 @@ def test_named_deferred_cases_remain_failed_without_weakening_required_sets():
         (48, 48),
         (7, 7),
         (69, 69),
-        (30, 30),
+        (29, 29),  # Board v29/v30: S01 removed from first-release selection.
     ]
     assert result["deferred"] == gate.DEFERRED and result["original_core_count"] == 81
 
