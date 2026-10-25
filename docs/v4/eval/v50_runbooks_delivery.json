@@ -391,7 +391,7 @@
   "direct_human_authorization": "User explicitly requested overnight stage after 37 Go and production after 31 Go; all runbook gates still apply",
   "server_connections": 0,
   "real_model_requests": 0,
-  "stage_go_observed": false,
+  "stage_go_observed": true,
   "production_go_observed": false,
   "syntax": [
     {
@@ -612,5 +612,8 @@
     }
   ],
   "syntax_only_not_linux_execution": true,
-  "ci_success_root_verified": true
+  "ci_success_root_verified": true,
+  "stage_execution_status": "stopped_before_remote_commands",
+  "stage_stop_receipt": "docs\\v4\\release\\first_release_stage_4e680f175ea28cc8_receipt.md",
+  "automation_status": "PAUSED"
 }

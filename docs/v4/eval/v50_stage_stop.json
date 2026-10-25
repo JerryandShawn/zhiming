@@ -1,0 +1,124 @@
+{
+  "recorded_at": "2026-10-26T03:07:26.696328+08:00",
+  "candidate": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+  "operation": "4e680f175ea28cc8",
+  "status": "stopped_before_remote_commands",
+  "stage_success": false,
+  "production_started": false,
+  "authority": {
+    "gate_sha256": "e81eb26964bb0a5a047918f6204326be3681b6f17386d5944bca52f130a51d2f",
+    "runbook_sha256": "28d954aa22faa2826efbfdee11cc7dc486326b958ce5df1cc9aa04a9800bab9b",
+    "candidate": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+    "operation": "4e680f175ea28cc8",
+    "duplicate_push_ci_rule": true
+  },
+  "preflight": {
+    "phase": "preflight",
+    "started_at": "2026-10-26T03:04:14.999614+08:00",
+    "finished_at": "2026-10-26T03:04:25.052565+08:00",
+    "ssh_exit_code": 255,
+    "stdout": "",
+    "stderr": "Connection timed out during banner exchange\nConnection to 1.14.59.242 port 22 timed out\n",
+    "real_model_requests": 0
+  },
+  "raw_path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-r46\\private\\stage-4e680f175ea28cc8\\preflight.json",
+  "raw_sha256": "38dffbf16b39c807c7d229f432c533fd7302e73e7543ede290e3757e46d4c2a6",
+  "ssh_attempts": 1,
+  "authenticated_sessions": 0,
+  "remote_shell_started": false,
+  "uploads": 0,
+  "remote_mutations": 0,
+  "real_model_requests": 0,
+  "external_messages": 0,
+  "old_services_touched": false,
+  "old_runtime_health": "not checked: SSH unavailable",
+  "duplicate_push_ci_at_stop": {
+    "observed_at": "2026-10-26T03:05:28.954505+08:00",
+    "head_sha": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+    "run_id": 40217250546,
+    "event": "push",
+    "run_attempt": 1,
+    "status": "in_progress",
+    "conclusion": null,
+    "url": "https://github.com/JerryandShawn/zhiming/actions/runs/40217250546",
+    "updated_at": "2026-10-25T17:36:06Z",
+    "rerun_requested": false,
+    "authority": "37 additional rule: stop if duplicate push run fails before stage ends"
+  },
+  "steps": [
+    {
+      "name": "本机Go/候选/包/分词器核验",
+      "exit_code": 0,
+      "result": "成功"
+    },
+    {
+      "name": "SSH只读前置核验",
+      "exit_code": 255,
+      "result": "失败：banner exchange timeout"
+    },
+    {
+      "name": "备份",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "复制",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "迁移1–8",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "回填第二次0变化",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "撤销重放",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "空增量恢复与改名对调",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "服务启动",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "无模型冒烟",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "出站阻断正负验",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "writer负验",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "维护门503",
+      "exit_code": null,
+      "result": "未执行"
+    },
+    {
+      "name": "收尾inactive/closed",
+      "exit_code": null,
+      "result": "未执行"
+    }
+  ],
+  "automation_status": "PAUSED",
+  "automatic_retry": false,
+  "stop_basis": "Human/main v50 and review37: stop non-preset exceptions; banner timeout is not the stated connection-refusal retry exception",
+  "resumption": "Wait for direct human resumption; preserve failed preflight and use a new phase identifier if retry authorized"
+}
