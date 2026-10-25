@@ -1,0 +1,65 @@
+{
+  "candidate": "220048573110862d378015c35d99a37c0d83503e",
+  "board_version": 43,
+  "run_id": 40132087922,
+  "run_number": 922,
+  "run_attempt": 2,
+  "workflow": "Core v3 checks",
+  "url": "https://github.com/JerryandShawn/zhiming/actions/runs/40132087922",
+  "rerun_requested_at": "2026-10-25T10:47:31.454874+08:00",
+  "rerun_request_http_status": 201,
+  "prior_conclusion": "cancelled",
+  "status": "completed",
+  "conclusion": "failure",
+  "completed_at": "2026-10-25T04:05:23Z",
+  "latest_job_id": 121056713369,
+  "latest_job_name": "core",
+  "candidate_commits_added": 0,
+  "candidate_changed": false,
+  "additional_cancellation_retries_used": 0,
+  "server_actions": 0,
+  "real_model_requests": 0,
+  "head_sha": "220048573110862d378015c35d99a37c0d83503e",
+  "run_started_at": "2026-10-25T02:46:57Z",
+  "run_updated_at": "2026-10-25T04:05:24Z",
+  "completed_at_source": "maximum completed_at among attempt2 jobs",
+  "jobs": [
+    {
+      "id": 121056713369,
+      "name": "core",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T02:47:01Z",
+      "completed_at": "2026-10-25T04:05:23Z",
+      "runner_name": "GitHub Actions 1000001176",
+      "runner_group_name": "GitHub Actions",
+      "failed_steps": [
+        {
+          "name": "v4 clock and evaluation framework",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 13,
+          "started_at": "2026-10-25T03:03:03Z",
+          "completed_at": "2026-10-25T04:05:17Z"
+        }
+      ]
+    }
+  ],
+  "observed_at": "2026-10-25T15:37:09.276325+08:00",
+  "head_sha_verified": true,
+  "first_error": "ValueError: Backfill supports only the reviewed frozen P0 tree and scoring contract v1",
+  "first_error_test": "tests/v4/test_eval_comparison_contracts.py::test_backfill_preserves_original_execution_scores_calls_and_unfingerprinted_na",
+  "failed_job": "core",
+  "failed_step": "v4 clock and evaluation framework",
+  "test_summary": {
+    "failed": 20,
+    "passed": 4474,
+    "skipped": 56,
+    "warnings": 2,
+    "errors": 8
+  },
+  "raw_job_log_url": "https://github.com/JerryandShawn/zhiming/actions/runs/40132087922/job/121056713369",
+  "rerun_after_failure": false,
+  "code_changed": false,
+  "next_action": "Wait for explicit board adjudication; no code fix, evaluation, or server action",
+  "terminal_observation_gap": "Final state first confirmed in this 15:35+ wake; no earlier final-state observation claimed"
+}
