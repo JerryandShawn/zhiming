@@ -35,6 +35,16 @@ from .test_eval_v4_live_pg import live as live_fixture
 from .test_eval_v4_pg import target as target_fixture
 
 ROOT = Path(__file__).resolve().parents[3]
+# Exact approved v39 contracts from frozen 2200485; independent of the overlay implementation.
+BOARD39_CONTRACTS = {
+    "Q02": "e2ab211b8f420f849aff9b75c9285a21dc0e044d010c15edab24aa1a7dd5ef20",
+    "S02": "a37f7f0d750947136ec871b245953b94c35e24fa33b5d0e0434fdaa105fd137c",
+    "S03": "ed2a7266754e98a3984940cab74386807eed6625998d9bc076c1ad4fbd475f56",
+    "S04": "41da8e5261732339862ffa01317f4ecd542ecdac6e2ec74300869b13d66fc84d",
+    "C04": "eebd5311eff3bbeea944affeea43ed5e322a4665d7f9234f9a9a03b215e58a05",
+    "C02": "4bfb0cfbd04a722bd1f00b56ef6aeea4387c6c2414ac0365c4f059e37fc185ec",
+    "C05": "0fc9b2230c618f87424081efc2ebed753986d61d28bebff4ffdc089605ff2d1f",
+}
 
 
 @pytest.fixture
@@ -58,7 +68,7 @@ def synthetic_core_source(monkeypatch: pytest.MonkeyPatch) -> None:
     )
 
 
-def test_exact_selection_preserves_all_twenty_eight_original_scoring_contracts() -> None:
+def test_exact_selection_preserves_originals_except_board39_approved_expectations() -> None:
     selected = load_core30()
     originals = {case.id: case for case in load_scenarios(ROOT / "tools/eval/scenarios")}
     assert len(selected) == 29 and tuple(case.id for case in selected) == CORE30_IDS
@@ -67,7 +77,13 @@ def test_exact_selection_preserves_all_twenty_eight_original_scoring_contracts()
     assert {"S02", "S03", "S04", "C04", "AX01"} == SAFETY_IDS
     for case in selected:
         if case.id not in NEW_IDS:
-            assert scenario_contract_hash(case) == scenario_contract_hash(originals[case.id])
+            # Board v29 core29 selection; v39 permits only these expectation overlays.
+            original = originals[case.id]
+            if case.id in BOARD39_CONTRACTS:
+                assert scenario_contract_hash(case) == BOARD39_CONTRACTS[case.id]
+                assert scenario_contract_hash(case) != scenario_contract_hash(original)
+            else:
+                assert scenario_contract_hash(case) == scenario_contract_hash(original)
             assert all(
                 set(action.model_dump(exclude_none=True)) <= {"tool_call", "text"}
                 for step in case.scripted

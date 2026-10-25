@@ -57,7 +57,21 @@ def test_effect_committed_before_ack_reclaims_same_epoch_without_second_mutation
     assert after["status"] == "succeeded" and after["retry_epoch"] == step.epoch
     assert result["text"] == "恢复后的合成回答。" and len(resumed.requests) == len(first.requests) == 1
     assert result["usage"]["replayed_model_steps"] == 1 and result["usage"]["model_streams_this_execution"] == 1
-    assert business_state(repo) == before and mutation_row(repo, step) == mutation
+    actual = business_state(repo)
+    if name == "memory_update_proposal":
+        # R35: without model memory_write, first successful finalization also submits
+        # the sensitive source quote. It is separate from replaying the correction.
+        old_ids = {row["id"] for row in before["proposal"]}
+        added = [row for row in actual["proposal"] if row["id"] not in old_ids]
+        assert len(added) == 1
+        pending = [receipt for receipt in result["receipts"] if receipt.get("id") == added[0]["id"]]
+        assert len(pending) == 1 and pending[0]["write_status"] == "pending_confirmation"
+        assert added[0]["subject_id"] == "self" and added[0]["status"] == "pending"
+        assert added[0]["sensitivity"] == "money"
+        assert any(ref["message_id"] == original_source["id"] for ref in added[0]["source_refs"])
+        assert any(ref["quote"] == original_source["content"] for ref in added[0]["source_refs"])
+        actual["proposal"] = [row for row in actual["proposal"] if row["id"] in old_ids]
+    assert actual == before and mutation_row(repo, step) == mutation
     assert operation_rows(repo, step) == operations and crash.count == 1
     assert step_row(repo, step)["status"] == "completed" and step_row(repo, step)["output"] == output
     proof = next(item for item in persisted_receipts(repo, after) if item["_operation"] == step.operation_id)
@@ -65,6 +79,9 @@ def test_effect_committed_before_ack_reclaims_same_epoch_without_second_mutation
     assert repo.get("alice", "message", original_source["id"]) == original_source
     assert sum(row.get("role") == "assistant" for row in repo.list("alice", "message")) == 1
     assert sum(event["type"] == "final" for event in events) == 1
+    committed = business_state(repo)
+    cached, cached_events = invoke(repo, reclaimed, ScriptedPort([]))
+    assert cached == result and cached_events == [] and business_state(repo) == committed
 
 
 def test_real_memory_correction_invalidates_old_epoch_without_duplicate_or_lost_receipt(

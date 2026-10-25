@@ -104,7 +104,9 @@ def native_reply(body):
                 "function": {
                     "name": "submit",
                     "arguments": json.dumps(
-                        {"score": 1, "verdict": "pass", "issues": []}
+                        {"score": 1, "verdict": "pass", "issues": [],
+                         "reason": "Synthetic complete response (v30/R25)",
+                         "deductions": [], "expected_clauses": []}
                     ),
                 },
             }

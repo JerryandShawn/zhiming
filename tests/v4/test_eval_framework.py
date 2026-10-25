@@ -273,15 +273,18 @@ def test_critic_rejects_inconsistent_or_malformed_issues(
 ) -> None:
     judge = ModelJudge("fixed-model", ROOT / "tools/eval/rubric_v1.md", CriticFixture(output))
     result = judge.evaluate({})
-    assert result["score"] == 0
+    # R25: two invalid external scores are ungraded, never a business failure.
+    assert result["score"] is None and result["judge_unavailable"]
     assert result["error"] == "ValueError"
+    assert result["model_calls"] == 2
 
 
 def test_critic_errors_never_turn_into_passed_cases() -> None:
     judge = ModelJudge("fixed-model", ROOT / "tools/eval/rubric_v1.md", CriticFixture({"score": 9}))
     case = evaluate_scenario(Scenario.model_validate(example()), FakeTarget(), judge=judge)
-    assert case["score"] == 0
-    assert case["status"] == "failed"
+    # R25: preserve missing grading instead of recording a fabricated zero.
+    assert case["score"] is None
+    assert case["status"] == "judge_unavailable"
     assert case["failed_assertions"] == ["turn[1].judge_error"]
 
 

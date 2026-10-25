@@ -182,15 +182,15 @@ def test_later_round_still_checks_identity_and_reasoning(
     )
 
 
-def test_twenty_call_guard_counts_old_candidate_attempts_before_any_new_post():
+def test_board25_thirty_call_guard_counts_old_candidate_attempts_before_any_new_post():
     authorization = "v7d-" + CANDIDATE + "-k31-connect-" + "a" * 32
     control = SimpleNamespace(
-        physical=lambda _: [{"authorization_id": authorization}] * 20
+        physical=lambda _: [{"authorization_id": authorization}] * 30  # R25 native cumulative cap.
     )
     execution = ConnectionExecution(
         None, SimpleNamespace(guard=None), control, "synthetic", None
     )
-    with pytest.raises(ProbeControlError, match="20"):
+    with pytest.raises(ProbeControlError, match="30"):
         execution.step(CASES[0], 1, [])
 
 
@@ -211,7 +211,7 @@ def test_real_fixed_tool_contract_rejects_repeat_even_with_auto_policy(
     assert result["records"][-1]["failure_reason"] == "repeated_identical_tool_call"
 
 
-def test_new_control_retains_two_prior_calls_in_cumulative_twenty_limit(
+def test_new_control_retains_two_prior_calls_in_cumulative_thirty_limit(
     central, official_counter
 ):
     guard, _, old, first = setup(central)
