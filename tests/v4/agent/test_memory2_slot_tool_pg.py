@@ -73,20 +73,16 @@ def test_first_known_slot_persists_actual_metadata_and_saved_receipt(tool_repo: 
     h.finish()
 
 
-def test_new_current_value_is_not_written_until_strict_update_proof_is_available(tool_repo: Any):
-    h = setup(tool_repo, "我不吃辣")
-    first, _, _ = h.write("preference", slot="spice_preference")
+def test_explicit_new_current_value_uses_updated_instead_of_saved(tool_repo: Any, monkeypatch):
+    from .test_memory2_r14_writer_pg import write_at
+
+    h, first, _, _ = write_at(tool_repo, monkeypatch, "我不吃辣", 3, slot="spice_preference")
     h.finish()
     old = tool_repo.get("alice", "fact", first.receipt["fact_id"])
-    h = setup(tool_repo, "最近开始能吃点辣了")
-    blocked, _, _ = h.write("preference", slot="spice_preference")
-    assert not blocked.ok and blocked.receipt == {
-        "write_status": "needs_confirmation",
-        "code": "slot_update_requires_commit_proof",
-    }
-    assert tool_repo.get("alice", "fact", old["id"]) == old
-    assert [r["id"] for r in h.service.memory.facts("alice")] == [old["id"]]
-    assert len(tool_repo.list("alice", "fact")) == 1
+    h, updated, _, _ = write_at(tool_repo, monkeypatch, "最近开始能吃点辣了", 10, slot="spice_preference")
+    assert updated.ok and updated.receipt["write_status"] == "updated"
+    assert tool_repo.get("alice", "fact", old["id"])["superseded_by"] == updated.receipt["fact_id"]
+    assert [r["id"] for r in h.service.memory.facts("alice")] == [updated.receipt["fact_id"]]
     h.finish()
 
 
@@ -117,8 +113,11 @@ def test_multi_slot_values_can_coexist_without_update_receipt(tool_repo: Any):
 def test_transient_or_hypothetical_cannot_write_a_durable_city_slot(tool_repo: Any, text: str):
     h = setup(tool_repo, text)
     result, _, _ = h.write("background", slot="residence_city")
-    assert not result.ok and result.receipt["write_status"] in {"rejected", "needs_confirmation"}
-    assert tool_repo.list("alice", "fact") == []
+    if "如果" in text:
+        assert not result.ok and tool_repo.list("alice", "fact") == []
+    else:
+        assert result.ok and result.receipt["code"] == "slot_ignored"
+        assert not tool_repo.get("alice", "fact", result.receipt["fact_id"]).get("slot")
     h.finish()
 
 
@@ -204,7 +203,7 @@ def test_legacy_unslotted_compatible_statement_is_only_a_guard_and_is_never_rela
     original = tool_repo.get("alice", "fact", saved.receipt["fact_id"])
     second = setup(tool_repo, "我喜欢吃辣")
     guarded, _, _ = second.write("preference", slot="spice_preference")
-    assert not guarded.ok and guarded.receipt["code"] == "slot_update_requires_commit_proof"
+    assert not guarded.ok and guarded.receipt["code"] == "memory2_possible_conflict"
     assert tool_repo.get("alice", "fact", original["id"]) == original
     assert "slot" not in original and len(tool_repo.list("alice", "fact")) == 1
     second.finish()

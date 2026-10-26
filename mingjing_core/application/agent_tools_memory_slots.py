@@ -1,9 +1,10 @@
-"""Admit initial model-declared slots; replacement stays closed until its commit proof is integrated."""
+"""Optional slot metadata cannot suppress actual source-driven memory changes."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
+from mingjing_core.application.agent_tools_memory_changes import explicit_candidates
 from mingjing_core.application.agent_tools_policy import KIND_MAP
 from mingjing_core.application.memory2_merge import same_fact
 from mingjing_core.memory.slots import SLOTS, compatible_statement, normalize_slot
@@ -23,7 +24,7 @@ def prepare_slot_write(
     if slot is None:
         return metadata, None
     if not compatible_statement(slot, args["quote"]):
-        return metadata, {"write_status": "rejected", "code": "slot_statement_mismatch"}
+        return metadata, None
     prepared = dict(metadata, slot=slot)
     if SLOTS[slot].cardinality == "multi":
         return prepared, None
@@ -49,6 +50,8 @@ def prepare_slot_write(
     )
     if len(peers) == 1 and same_fact(peers[0], prospective):
         return prepared, None
-    # Persisting a second current value or returning saved for an update would
-    # bypass the mainline's still-missing strict updated receipt proof.
-    return metadata, {"write_status": "needs_confirmation", "code": "slot_update_requires_commit_proof"}
+    if len(explicit_candidates(service, args, ctx)) == 1:
+        return prepared, None
+    # Eligible contradictions were already turned into P3 proposals. Any
+    # remaining ambiguity must not create a second current value.
+    return metadata, {"write_status": "needs_confirmation", "code": "ambiguous_slot_target"}

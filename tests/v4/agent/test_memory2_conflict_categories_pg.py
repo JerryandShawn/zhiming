@@ -45,6 +45,8 @@ def sensitive_conflict(repo: Any, monkeypatch: pytest.MonkeyPatch) -> tuple[Any,
     current = setup(repo, "我不喜欢合成复诊")
     result, _, _ = current.write("preference")
     assert result.receipt["code"] == "memory2_possible_conflict"
+    assert result.data["possible_conflict"]["sensitive"] is True
+    assert "敏感信息" in result.data["possible_conflict"]["summary"]
     return current, old, result
 
 

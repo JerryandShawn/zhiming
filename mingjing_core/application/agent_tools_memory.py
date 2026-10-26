@@ -7,6 +7,11 @@ from typing import TYPE_CHECKING, Any
 
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult
 from mingjing_core.application.agent_tools_dates import event_metadata
+from mingjing_core.application.agent_tools_memory_changes import (
+    apply_explicit_change,
+    explicit_candidates,
+    verify_updated,
+)
 from mingjing_core.application.agent_tools_memory_slots import prepare_slot_write
 from mingjing_core.application.agent_tools_policy import (
     CREDENTIAL,
@@ -31,6 +36,7 @@ from mingjing_core.application.memory2_merge import merge_written_fact
 from mingjing_core.application.v4_forget import retire_from_message
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import has_optout, hypothetical
+from mingjing_core.memory.slots import normalize_slot
 from mingjing_core.repositories.postgres import fingerprint
 
 if TYPE_CHECKING:
@@ -127,12 +133,17 @@ def save_memory(
     metadata, pending = event_metadata(service, args, ctx, source)
     if pending:
         return pending
+    categories = sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
+    if level in SENSITIVITIES and not categories_granted(service.memory, ctx.owner, ctx.subject, categories):
+        sensitive_conflict = create_conflict_proposal(service, args, ctx, source, start, end, level, metadata)
+        if sensitive_conflict:
+            return sensitive_conflict
+        return proposal(service, args, ctx, source, start, end, level, metadata)
+    if len(explicit_candidates(service, args, ctx)) > 1:
+        return {"write_status": "needs_confirmation", "code": "ambiguous_change_target"}
     conflict = create_conflict_proposal(service, args, ctx, source, start, end, level, metadata)
     if conflict:
         return conflict
-    categories = sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
-    if level in SENSITIVITIES and not categories_granted(service.memory, ctx.owner, ctx.subject, categories):
-        return proposal(service, args, ctx, source, start, end, level, metadata)
     metadata, pending = prepare_slot_write(service, args, ctx, metadata)
     if pending:
         return pending
@@ -147,6 +158,9 @@ def save_memory(
     if row["write_status"] != "saved":
         return {"write_status": row["write_status"], "code": "memory_policy"}
     row = decorate_memory(service, args, ctx, row, metadata, categories)
+    updated = apply_explicit_change(service, args, ctx, row)
+    if updated:
+        return updated
     row, change_id = merge_written_fact(service, ctx, row)
     return {
         "write_status": "saved",
@@ -155,6 +169,7 @@ def save_memory(
         "kind": "fact",
         "revision": row["revision"],
         **({"ids": [change_id], "code": "memory2_merged"} if change_id else {}),
+        **({"code": "slot_ignored"} if normalize_slot(args.get("slot")) and not metadata.get("slot") else {}),
     }
 
 
@@ -257,6 +272,8 @@ def execute_write(
     else:
         raise EvidenceError("未注册的写入工具")
     receipt = service.repo.mutation_request(ctx.owner, "agent_" + name, ctx.operation_id, args, effect)
+    if receipt.get("code") == "memory2_slot_updated":
+        verify_updated(service, ctx, receipt)
     if receipt.get("code") == "memory2_merged":
         change = service.repo.get(ctx.owner, "proposal", receipt["ids"][0], include_deleted=True)
         if change["status"] != "applied":
@@ -270,7 +287,7 @@ def execute_write(
     if receipt.get("code") == "memory2_possible_conflict":
         data["possible_conflict"] = conflict_feedback(service, ctx, receipt)
     return ToolResult(
-        ok=status in {"saved", "deleted", "stopped"},
+        ok=status in {"saved", "updated", "deleted", "stopped"},
         receipt=receipt,
         data=data,
         summary="记忆操作状态：" + status,

@@ -18,7 +18,7 @@ from mingjing_core.application.memory2_proposals import (
 )
 from mingjing_core.application.memory2_undo import verify_originals
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
-from mingjing_core.memory2.conflict_candidates import opposing_preferences
+from mingjing_core.memory2.contradictions import contradictory
 from mingjing_core.timekit.clock import get_clock
 from mingjing_core.timekit.timestamps import history_instant
 
@@ -186,7 +186,7 @@ class MemoryConflictResolutionService:
             for row in self.memory.facts(owner, subject, cases)
             if row.get("case_id") == old.get("case_id")
             and row.get("kind") == old.get("kind")
-            and opposing_preferences(row.get("content", ""), incoming)
+            and contradictory(row, incoming, proposal.get("conflict_slot"))
         ]
         if {row["id"] for row in matches} != {old["id"]}:
             raise EvidenceError("有多条同主题旧记忆，需要先明确更正范围")

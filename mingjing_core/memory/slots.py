@@ -41,6 +41,7 @@ _SLOTS = (
     Slot("preferred_name", "称呼", "single", r"叫我|称呼我|称呼改为|称呼是", ("临时叫我队长",)),
     Slot("important_people", "重要的人", "multi", r"朋友|同事|家人|妈妈|爸爸|父亲|母亲|伴侣", ("虚构人物",)),
     Slot("hobbies", "爱好", "multi", r"喜欢|爱好|热爱|兴趣", ("仅仅路过球场",)),
+    Slot("preference", "同一主题偏好", "single", r"喜欢|喜爱|热爱|不爱|讨厌|厌恶", ("如果我不再喜欢跑步",)),
 )
 SLOTS = MappingProxyType({slot.name: slot for slot in _SLOTS})
 _LABELS = {slot.label: slot.name for slot in _SLOTS}

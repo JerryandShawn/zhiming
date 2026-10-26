@@ -105,6 +105,7 @@ class MemorySlotUpdateService:
             and row["status"] == "active"
             and row.get("case_id") == old.get("case_id")
             and normalize_slot(row.get("slot")) == slot
+            and (slot != "preference" or explicit_replacement_slot(row.get("content", ""), new["content"]) == slot)
             and not row.get("valid_to")
             for row in peers
         ):
@@ -150,6 +151,7 @@ class MemorySlotUpdateService:
             "kind": "fact",
             "revision": new_after["revision"],
             "ids": [ident],
+            "affected_ids": [old["id"]],
         }
 
     def _record(

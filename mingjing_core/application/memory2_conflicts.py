@@ -5,14 +5,15 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from mingjing_core.application.agent_tools_policy import (
-    KIND_MAP,
+    SENSITIVITIES,
     sensitivity_categories,
 )
 from mingjing_core.application.agent_tools_projection import sources_active
 from mingjing_core.application.memory2_fact_authority import authorized_fact, statement_instant
 from mingjing_core.application.memory2_undo import verify_originals
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
-from mingjing_core.memory2.conflict_candidates import opposing_preferences
+from mingjing_core.memory.slots import compatible_statement, normalize_slot
+from mingjing_core.memory2.contradictions import contradictory
 from mingjing_core.repositories.postgres import fingerprint
 from mingjing_core.timekit.timestamps import history_instant
 
@@ -23,8 +24,6 @@ if TYPE_CHECKING:
 
 
 def conflict_candidate(service: AgentToolsService, args: dict, ctx: ToolContext) -> dict | None:
-    if args["kind"] not in {"preference", "habit"}:
-        return None
     boundary = history_instant(service.memory.get_source(ctx.owner, args["message_id"]).get("at"))
     if boundary is None:
         return None
@@ -32,10 +31,8 @@ def conflict_candidate(service: AgentToolsService, args: dict, ctx: ToolContext)
     for fact in sorted(facts, key=lambda row: row["id"]):
         if (
             fact.get("case_id") != args.get("case_id")
-            or fact.get("kind") != KIND_MAP.get(args["kind"], args["kind"])
-            or fact.get("slot")
             or fact.get("field")
-            or not opposing_preferences(fact.get("content", ""), args["quote"])
+            or not contradictory(fact, args["quote"], args.get("slot"))
             or not sources_active(service, fact, ctx)
         ):
             continue
@@ -82,6 +79,10 @@ def create_conflict_proposal(
             "proposal_type": "memory_conflict",
             "kind": args["kind"],
             "sensitivity": level,
+            "sensitive": level in SENSITIVITIES,
+            "conflict_slot": normalize_slot(args.get("slot"))
+            if normalize_slot(args.get("slot")) and compatible_statement(args["slot"], args["quote"])
+            else None,
             "categories": list(
                 sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
             ),
@@ -122,7 +123,7 @@ def checked_conflict(memory: MemoryService, owner: str, subject: str, proposal: 
     cases = [old["case_id"]] if old.get("case_id") else []
     if old["id"] not in {row["id"] for row in memory.facts(owner, subject, cases)}:
         raise EvidenceError("冲突对应的旧记忆已不再有效")
-    if not opposing_preferences(old["content"], proposal["source_refs"][0]["quote"]):
+    if not contradictory(old, proposal["source_refs"][0]["quote"], proposal.get("conflict_slot")):
         raise EvidenceError("冲突提案与当前原话不一致")
     return old
 
@@ -133,9 +134,13 @@ def conflict_feedback(service: AgentToolsService, ctx: ToolContext, receipt: dic
         raise ScopeError("冲突提案不属于当前事项范围")
     old = checked_conflict(service.memory, ctx.owner, ctx.subject, proposal)
     incoming = proposal["source_refs"][0]["quote"]
+    sensitive = proposal.get("sensitivity") in SENSITIVITIES
+    labels = {"health": "健康", "money": "财务", "third_party": "他人隐私", "identity": "身份", "legal": "法律"}
+    notice = f"这是{labels[proposal['sensitivity']]}类敏感信息，选择新说法将授权保存这一条。" if sensitive else ""
     return {
         "fact_id": old["id"],
-        "summary": f"以前你说“{old['content']}”，现在说“{incoming}”，以哪个为准？",
+        "summary": notice + f"以前你说“{old['content']}”，现在说“{incoming}”，以哪个为准？",
+        "sensitive": sensitive,
         "detector": "exact_topic_opposite_preference",
         "vector_available": False,
     }
