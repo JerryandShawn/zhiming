@@ -10,7 +10,7 @@ from mingjing_core.application.agent_tools_contracts import ToolResult, tool_inp
 from mingjing_core.application.charts_natal import natal_request
 from mingjing_core.application.p8_chart_service import P8CalculationUnavailable
 from mingjing_core.application.synastry_consent import SynastryConsentService
-from mingjing_core.application.synastry_result import verify_synastry
+from mingjing_core.application.synastry_result import verify_cached_synastry, verify_synastry
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
 from mingjing_core.repositories.postgres import fingerprint
 
@@ -26,6 +26,9 @@ def cached(service, ctx):
         return None
     if (
         row["status"] != "active"
+        or row["subject_id"] != ctx.subject
+        or type(row.get("epoch")) is not int
+        or row.get("ephemeral_synastry") is not True
         or (row.get("run_id"), row.get("epoch"), row.get("input_fp")) != (ctx.run_id, ctx.epoch, ctx.input_fp)
         or not service.repo.verify_versions(ctx.owner, row["source_versions"])
     ):
@@ -33,13 +36,15 @@ def cached(service, ctx):
     for ident in row["source_ids"]:
         if service.repo.is_revoked(ctx.owner, "message", ident):
             raise EvidenceError("合盘来源已经撤销")
+    consent_service = SynastryConsentService(service.repo, clock=service.clock)
+    consent = None
     if row.get("consent_id"):
-        consent = SynastryConsentService(service.repo, clock=service.clock)._current(ctx.owner, row["consent_id"])
+        consent = consent_service._current(ctx.owner, row["consent_id"])
         if consent.get("consumed_by") != ctx.operation_id:
             raise EvidenceError("合盘授权消费与原步骤不符")
     if row["state"] != "completed":
         raise P8CalculationUnavailable("原合盘计算未取得完整结果，不能重复消费旧授权")
-    return ToolResult.model_validate(row["tool_output"])
+    return verify_cached_synastry(row, ctx, consent_service, consent)
 
 
 def store(service, ctx, data, *, previous=None):

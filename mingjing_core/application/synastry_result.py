@@ -4,7 +4,9 @@ from copy import deepcopy
 
 from mingjing_core.adapters.charts.tool_evidence import content_hash
 from mingjing_core.application.charts_documents import _rule_paths
-from mingjing_core.domain.contracts import EvidenceError
+from mingjing_core.application.agent_tools_contracts import ToolResult
+from mingjing_core.agent.tools.p8_parameters import Synastry
+from mingjing_core.domain.contracts import CoreError, EvidenceError
 from mingjing_core.domain.json_values import ensure_finite_json
 from mingjing_core.repositories.postgres import fingerprint
 
@@ -46,3 +48,37 @@ def project_synastry(data: dict) -> dict:
         "alias_registration": "not_registered",
         "reference_policy": "native_step_verified_no_reference_aliases",
     }
+
+
+def verify_cached_synastry(row, ctx, service, consent):
+    """A matching journal/cache is insufficient if its native payload is corrupt."""
+    try:
+        result = ToolResult.model_validate(row["tool_output"])
+        if not result.ok:
+            return result
+        args = Synastry.model_validate(row["arguments"]).model_dump()
+        if (
+            not consent
+            or (consent["subject_a"], consent["subject_b"], consent["comparison_kind"])
+            != (ctx.subject, args["other_subject_id"], args["kind"])
+            or consent["state"] != "consumed"
+            or type(consent["uses_left"]) is not int
+            or consent["uses_left"] != 0
+            or consent.get("consumed_by") != ctx.operation_id
+            or result.receipt is not None
+            or result.ends_turn
+            or set(result.data) != {"adapter_mode", "calculation", "record_policy"}
+            or result.data["adapter_mode"] != "p8_synastry_transient"
+            or fingerprint(result.data["record_policy"])
+            != fingerprint({"memory": False, "profile": False, "reflection": False})
+        ):
+            raise EvidenceError("原合盘缓存的用途、授权或临时保存策略不符")
+        snapshots = service._pair(ctx.owner, ctx.subject, args["other_subject_id"], ctx.operation_id)
+        if fingerprint(row["snapshots"]) != fingerprint(snapshots):
+            raise EvidenceError("原合盘缓存与双方当前授权资料不符")
+        verify_synastry(result.data["calculation"], ctx.owner, snapshots, ctx.operation_id, args["kind"])
+        return result
+    except CoreError:
+        raise
+    except (ValueError, KeyError, TypeError):
+        raise EvidenceError("原合盘缓存结构已失效，不能采用旧结果") from None
