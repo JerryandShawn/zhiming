@@ -275,9 +275,9 @@ def execute_write(
     receipt = service.repo.mutation_request(ctx.owner, "agent_" + name, ctx.operation_id, args, effect)
     if receipt.get("code") == "memory2_slot_updated":
         verify_updated(service, ctx, receipt)
-    if receipt.get("code") == "memory2_merged":
+    if receipt.get("write_status") == "saved" and receipt.get("ids"):
         change = service.repo.get(ctx.owner, "proposal", receipt["ids"][0], include_deleted=True)
-        if change["status"] != "applied":
+        if change["status"] != "applied" or change.get("kind") != "memory2_merge_undo":
             raise EvidenceError("原记忆合并已撤销或失效")
     if receipt.get("id") and receipt.get("kind") in {"fact", "note", "proposal"}:
         row = service.repo.get(ctx.owner, receipt["kind"], receipt["id"], include_deleted=True)

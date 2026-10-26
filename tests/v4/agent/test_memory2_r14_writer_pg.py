@@ -97,3 +97,17 @@ def test_sensitive_change_still_requires_sensitive_confirmation(tool_repo, monke
 
 def test_change_in_another_domain_is_not_preference_authority():
     assert explicit_replacement_slot("我喜欢合成跑步", "我换工作了，我不喜欢合成跑步") is None
+
+
+def test_slot_ignored_merge_still_checks_undo_proof_on_replay(tool_repo, monkeypatch):
+    from .test_memory2_merge_pg import undo as undo_merge
+
+    h, _, _, _ = write_at(tool_repo, monkeypatch, "我在上海上班", 3, kind="background")
+    h.finish()
+    h, merged, ctx, args = write_at(
+        tool_repo, monkeypatch, "我在上海上班", 10, kind="background", slot="residence_city"
+    )
+    assert merged.ok and merged.receipt["code"] == "slot_ignored" and merged.receipt["ids"]
+    undo_merge(tool_repo, merged)
+    assert not h.registry.execute("memory_write", args, ctx).ok
+    h.finish()
