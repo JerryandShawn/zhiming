@@ -599,4 +599,6 @@ def create_app(service=None):
     app.include_router(thread_router(core,auth,body))
     from .synastry_routes import synastry_router
     app.include_router(synastry_router(core,auth,body))
+    from .p8_profile_routes import p8_profile_router
+    app.include_router(p8_profile_router(core,auth))
     return app

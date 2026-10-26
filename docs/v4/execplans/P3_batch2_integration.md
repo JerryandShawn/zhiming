@@ -260,3 +260,14 @@ agent_synastry_lineage只接受同run/epoch唯一已完成Journal完整输出与
 - 最终提示词manifest/原R31 AX/原Agent runtime/实际P8脚本tool_message→core4.0提交，private/safe-narrow-e253039417064ceaafcc05c2198ec11b为19/19、11.57秒，原metadata/XML/log根核exit0/fail0/error0。两组分轮不能合称一次全链。Ruff/check+format120八文件及diff--check过。
 - 原失败保留：a7bf1c8f39514c7d8315112335904f6e collection ImportError1（误导入fixture公开名repo，改用真实repository包装）；初Ruff F811同原因已修不忽略。e9ecb8a9728343628ea90c59c2d48f43为1pass3fail（实际提示词manifest旧pin正确拒绝），同步manifest后复核通过，不改闸门。
 - 未完成/限制：跨轮同资料版本“只完整说一次”目前是可见历史上的提示词约束，未新增服务端已展示状态，也不能把生成工具提示当最终回答已经展示；最终真实模型输出未验。可选review警告未接。P8合盘临时专业c/r、真实反思消费者排除、完整补资料卡、15工具容量精确策略、命理档案摘要/晨报可信开关及最后全量/CI仍待。没有全量/真实模型/服务器操作，不称P8整项完成。下一优先模块就绪门，否则继续独立剩余项，勿重复绿测。
+
+## 2026-10-27 05:43 实际交付：准确排盘缺资料的原生网页确认入口
+
+- main58，模块03cc0bb首段仍未就绪，未提前merge。05:35唯一SSH只读探测banner timeout/native255，未认证/远端命令0；原PG55480/PID50516只核存活未启停。首发e578及无P8门d4344bdc不动。
+- ToolRegistry专门投影真实P8InputsRequired，required_fields仅白名单字段名，不回显资料值，保MISSING_INPUT/ok=false；self提供profile_confirmation动作，另一人物不错误引向self表单。其余CoreError身份/来源拒绝保持原逻辑。未假调用另一个工具或伪造ToolContext、未创建长期提案/事实、未自动降旧计算。
+- 新GET /api/subjects/self/profile/requirements?conversation_id基于本owner/self、v4当前epoch、非取消/无痕、实际完成且原生缺项marker的chart_compute/daily_transit/window_search步骤。源必须当前web/user/同对话/active、内容不变、已绑定来源修订一致且未撤销，读取context-redacted原话防撤销区间复活；当前资料重用confirmed_snapshot原生事实/来源授权闭包再natal_request，只返回当前缺项标签，不返回出生值。资料补齐后不显示，已明确近似/未知资料不强迫改成准确；无数据库迁移、GET不写库，不依赖模型正文或receipt猜测。
+- 新static/p8-profile-confirmation.js与原app历史/回答完成刷新实际接线，文字用textContent；真实卡片只提供“打开资料确认表”，明确打开不保存/不重算，点击沿原我的档案页面openProfile，不从模型填入值。换对话/口令及过时异步响应不能复活旧卡，提交中禁双击。保存仍用已有原生profile/confirm的显式勾选、原版本、原生原话授权和稳定mutation回执；确认保存后刷新缺项卡，无自动重新发模型或重新提交原工具步骤。
+- 最终private/safe-narrow-f2fa5e7de3604bd6a795807231db8448为46/46、11.88秒，metadata/XML/log根核exit0/fail0/error0，既有Starlette/anyio弃用warning1：真实租约工具缺项→Journal.complete→原生API、认证/同对话和owner隔离/无出生值、同文本来源修订变化/删除/取消/旧epoch/无痕不展示、显式false422无写/真实按钮保存两字段/同key重放0重复/保存后卡消失/无计算artifact，以及原资料确认HTTP、旧MISSING_INPUT和工具集兼容。此前766c9728e04543f9ad3ee46275efe206的11/11是加固前中间轮，不拼成全链。
+- Node新增真实DOM测试通过明确点击/不创建input或勾选/只GET与导航无写/XSS/旧身份和延迟响应/补齐后清空/错误脱敏，原完整frontend.test.cjs、dom.test.cjs通过；app与新JS语法通过。Ruff/check+format120四Python文件、旧web.py局部AST、diff--check过。没有跨尺寸浏览器截图，不称视觉全验。
+- 原失败保留：8d20d70bc2234f3ba4dd84a54f1b68c1为6pass1fail，纯工具fixture禁止所有HTTP，新增API测试精确改用同真实隔离PG的p2_repo+原生内存ASGI而非放开网络；cb690bf8cc3741238a9954099c0b0bcf为6pass1fail，新测试误期400，按现存MissingInput.http_status=422纠正断言，产品拒绝未改变。
+- 范围/下一：本入口是当前self准确资料缺项的网页确认引导，不提供第三人人物资料编辑，不把unknown自动猜成exact，确有缺时刻资料仍沿原onboarding/profile流程。用户补完后须新请求/新工具步骤才能计算，不把旧失败重放成新成功。P8仍未整体就绪：合盘临时专业c/r、真实反思消费者排除、15工具容量精确策略、临界展示去重服务端状态/可选warning、命理档案摘要、晨报daily可信开关及最后完整脚本/tests/v4/CI仍待。真实模型0/服务器修改0，无全量/新CI。模块一就绪仍优先无P8门树普通合入。

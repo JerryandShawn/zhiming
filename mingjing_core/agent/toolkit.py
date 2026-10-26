@@ -23,6 +23,7 @@ from mingjing_core.agent.tools.p8_definitions import p8_definitions
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult, tool_input_fingerprint
 from mingjing_core.domain.contracts import CoreError
+from mingjing_core.application.charts_natal import P8InputsRequired
 from mingjing_core.models.port import ToolSpec
 from mingjing_core.models.schema_flatten import flatten_schema
 
@@ -138,6 +139,17 @@ class ToolRegistry:
                 ok=False,
                 data={"code": "invalid_arguments"},
                 summary="工具参数无效，请检查字段",
+            )
+        except P8InputsRequired as error:
+            from mingjing_core.application.p8_profile_confirmation import missing_input_result
+
+            data = missing_input_result(error)
+            if ctx.subject != "self":
+                data.pop("next_action", None)
+            return ToolResult(
+                ok=False,
+                data=data,
+                summary="准确排盘尚未计算，请核对当前人物的已授权出生资料",
             )
         except CoreError as error:
             return ToolResult(

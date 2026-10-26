@@ -350,6 +350,14 @@ function refreshSynastryConsents() {
   const session=currentSession,token=getToken();
   renderSynastryConsents(root,{apiJson,conversationId:session,isCurrent:()=>session===currentSession && token===getToken()});
 }
+function refreshP8ProfileRequirements() {
+  if(typeof renderP8ProfileRequirements!=='function')return;
+  const flow=$('#chatFlow');if(!flow)return;
+  let root=flow.querySelector('[data-p8-profile-requirements]');
+  if(!root){root=document.createElement('div');root.dataset.p8ProfileRequirements='';flow.append(root);}
+  const session=currentSession,token=getToken();
+  renderP8ProfileRequirements(root,{apiJson,conversationId:session,isCurrent:()=>session===currentSession && token===getToken(),openProfile:async()=>{switchPage('chart');await openProfile();}});
+}
 async function loadHistory(older=false) {
   const session=currentSession;
   const flow=$("#chatFlow");
@@ -364,6 +372,7 @@ async function loadHistory(older=false) {
     if(older)flow.prepend(wrap);else flow.append(wrap);
     bindHistory(wrap);
     refreshSynastryConsents();
+    refreshP8ProfileRequirements();
     $('#olderHistoryBtn').disabled=list.length<60;
     if(!historyRows.length)flow.innerHTML=`<div class="chat-welcome"><span>明镜，映照日常。</span><h2>今天，从哪件事聊起？</h2><p>可以说说近况，上传一张图片，或从命盘中选一个细节展开。你的经历和想法，始终是解读的起点。</p></div>`;
     if(older)flow.scrollTop=flow.scrollHeight-previousHeight;else scrollChat();
@@ -435,7 +444,7 @@ $("#chatFlow").addEventListener("click", e => {
 let sending = false, activeTurn=null;
 const chatRequests=new Map();
 function progress(text) {$('#chatProgress').textContent=text;$('#chatProgress').classList.remove('hidden');}
-function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);bindClarification(body,result);refreshSynastryConsents();const m=result?.meta || {},caseId=m.case_id || m.case_ids?.[0];if(Array.isArray(m.case_ids) || caseId)setChatContext({case_ids:m.case_ids || [caseId],case_id:caseId,title:m.case_title || chatScopeCases.filter(entry=>(m.case_ids || [caseId]).includes(entry.id)).map(entry=>entry.title).join('、'),...(m.draw_id?{draw_id:m.draw_id,draw_case_id:caseId}:{})});scrollChat(false); }
+function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);bindClarification(body,result);refreshSynastryConsents();refreshP8ProfileRequirements();const m=result?.meta || {},caseId=m.case_id || m.case_ids?.[0];if(Array.isArray(m.case_ids) || caseId)setChatContext({case_ids:m.case_ids || [caseId],case_id:caseId,title:m.case_title || chatScopeCases.filter(entry=>(m.case_ids || [caseId]).includes(entry.id)).map(entry=>entry.title).join('、'),...(m.draw_id?{draw_id:m.draw_id,draw_case_id:caseId}:{})});scrollChat(false); }
 function bindClarification(body,result) {
   const interrupt=result?.meta?.interrupt,runId=result?.meta?.core_run?.run_id;
   if(!interrupt?.id || !interrupt.state_version || !runId)return;
@@ -564,7 +573,7 @@ async function loadProfile() {
       try{const precision=$('#profilePrecision').value,solar=$('#profileDate').value+(precision==='unknown'?'':' '+$('#profileTime').value),profile={gender:$('#profileGender').value,birth:{solar_datetime:solar,precision,time_unknown:precision==='unknown',time_uncertainty_minutes:precision==='approximate'?Number($('#profileUncertainty').value):0,timezone_offset:Number($('#profileTimezone').value),clock_basis:$('#profileClockBasis').value,location:{city:$('#profileCity').value.trim(),lng:Number($('#profileLng').value),lat:Number($('#profileLat').value),tz:$('#profileIana').value.trim()}}};
         const result=await writeJson('/api/subjects/self/profile/confirm',{confirmed:$('#profileConsent').checked,expected_revision:snapshot.revision,profile});
         const saved=tarotList(result.receipts).filter(r=>r.write_status==='saved');status.textContent=saved.length?'已保存 '+saved.length+' 项你确认的资料。':'本次未收到保存成功回执，请核对后再试。';
-        if(saved.length){loaded.chart=false;ziweiLoaded=false;astroLoaded=false;loaded.memory=false;await refreshLinkedCharts();$('#profileConsent').checked=false;snapshot.revision=(await apiJson('/api/subjects/self/profile')).revision;}
+        if(saved.length){loaded.chart=false;ziweiLoaded=false;astroLoaded=false;loaded.memory=false;await refreshLinkedCharts();$('#profileConsent').checked=false;snapshot.revision=(await apiJson('/api/subjects/self/profile')).revision;refreshP8ProfileRequirements();}
       }catch(e){status.textContent='资料尚未保存：'+e.message;}finally{button.disabled=false;}
     };
   }catch(e){root.innerHTML=errState('档案暂时无法读取：'+e.message,'loadProfile');}finally{delete root.dataset.loading;}
