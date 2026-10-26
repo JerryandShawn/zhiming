@@ -100,3 +100,15 @@ persist_documents在原生owner事务/租约/来源版本复核后写现有artif
 最终a1e7d168328a4fdf9d872b7b2be7a51a为44/44、3.07s（原始metadata/XML/log根核），含三份真实donor样例Pointer解析+工具原生内容校验+真实PG版本/撤销+出生映射。先前60c73db330c24770acce48b023528164为8pass8fail：ScopeError继承ValueError被转换、native source实际为对象而非字符串；已在边界保留CoreError并兼容真实具名来源对象修复。2a3be3707bf44b5e9aacd752e02afe65为16/16、e7b802f74e7e4ede9a6381fc3c10a1fd为23/23、2eb8d2c1b296456193836c315d02feb7为20/20均为中间定向，不相加称全链。末次仅格式规整后check/format120通过，不重复刷测试。真实模型/服务器修改均0，无全量/CI。
 
 main57、模块仍35/37未就绪；00:35只读SSH仍banner超时/native255，session34911已结束；PG55480原PID50516只核存活未重启。下一继续P8运行时路由/资料确认/lineage及四工具授权，保留旧容量冲突待裁定，不吞冲突或放宽15；记忆一就绪从3b095f39无P8基点另做候选，首发e578不动。
+
+### 2026-10-27 01:00 chart_skill实际接线子项
+
+已注册chart_skill ToolDefinition并分发到实际应用处理器；schema的system/topic枚举从获准本地catalog读取，运行时严格核体系/章节配对，不给出生资料或consent参数，拒目录穿越/额外字段。沿用原可见性：只有本轮chart_compute成功后才出现，危机不可见，只读且标记可无痕；没有解开无痕读取长期出生资料的禁令，当前无痕原计算仍不可用。
+
+执行时核本步骤名称/fingerprint/原生租约/当前原话，只允许本epoch本seq之前已完成且成功的真实chart_compute。调用原有chart_cache逐项重核原生结果/cache/产物/来源版本，单有ok标志不能读取技能；被撤销产物、变更资料、伪造cache、未完成计算都拒绝。返回本地loader原章和实际版本/hash/字节预算，不产生c/r或保存用户事实，不把技能当专业依据。没有新增模型/网络请求。
+
+第一轮a45ba5bfe6074edd9073ba4f5512fd9f：37/37、3.29s，真实PG成功计算→Journal完成→技能读取；未完成/撤销/资料变化/伪cache/危机/指纹拒绝，原参数和注册表契约同步。新增全部已知topic跨体系无效配对断言后，187381ecba894843a920332c2f33df3d：29/29、3.17s，含旧可见性兼容。两原metadata/XML/log根核，不相加称全链；Ruff/check及format120过。
+
+旧测试修改依据：42 D12明确新增注册chart_skill，注册数20→21及computation_definitions清单补一项；保留默认15工具、原顺序、strict schema、隐私和危机约束，非删断言刷绿。只改对应计数/名单及过时测试命名，未放宽原工具授权。原全真容量冲突仍保留待明确策略，未吞异常/放宽15。
+
+00:55 SSH true仍banner超时/native255（71439已结束），未认证/远端命令/修改0；模块首段仍未记忆2.0就绪。P8整体未完成：下一继续确认资料tz/clock_basis、P8计算路由和lineage、四工具及合盘同意/卡片；不重读42全文或重跑已过子项。记忆候选仍须无P8基点3b095f39，首发e578不动，未跑全量/CI/真实评测。

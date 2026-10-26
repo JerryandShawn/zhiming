@@ -158,6 +158,7 @@ class AgentToolsService:
         return self._execute(name, arguments, ctx)
 
     def _execute(self, name: str, arguments: dict[str, Any], ctx: ToolContext) -> ToolResult:
+        from mingjing_core.application.agent_tools_chart_skill import execute_chart_skill
         from mingjing_core.application.agent_tools_charts import execute_chart
         from mingjing_core.application.agent_tools_interactions import INTERACTION_NAMES, execute_interaction
         from mingjing_core.application.agent_tools_memory import execute_write
@@ -173,6 +174,8 @@ class AgentToolsService:
             raise ScopeError("危机模式下此工具不可用")
         if name == "chart_compute":
             return execute_chart(self, arguments, ctx, charts=self.charts)
+        if name == "chart_skill":
+            return execute_chart_skill(self, arguments, ctx)
         if name in UPDATE_NAMES:
             return execute_update(self, name, arguments, ctx)
         if ctx.private and name == "set_reminder":

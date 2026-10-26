@@ -91,7 +91,7 @@ def test_profile_request_contains_field_names_only_and_update_requires_revision(
         MemoryUpdate.model_validate(dict(update, expected_revision=True))
 
 
-def test_new_definitions_flatten_without_expanding_default_registry() -> None:
+def test_registered_computation_definitions_flatten_without_mutating_default_registry() -> None:
     from mingjing_core.agent.toolkit import DEFINITIONS
 
     before = tuple(item.name for item in DEFINITIONS)
@@ -101,11 +101,12 @@ def test_new_definitions_flatten_without_expanding_default_registry() -> None:
         "date_calc",
         "memory_update",
         "profile_update_request",
+        "chart_skill",
     ]
     for item in definitions:
         assert flatten_schema(item.parameters.model_json_schema())["type"] == "object"
         assert item.description
-    # Wiring and the unresolved date_calc disclosure decision belong to root.
+    # Reading definitions must not mutate the actual mainline registration.
     assert tuple(item.name for item in DEFINITIONS) == before
 
 

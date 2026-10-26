@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from mingjing_core.agent.tools.computation_parameters import (
     ChartCompute,
+    ChartSkill,
     DateCalc,
     MemoryUpdate,
     ProfileUpdateRequest,
@@ -45,5 +46,14 @@ def computation_definitions() -> tuple[ToolDefinition, ...]:
             "当初次相识或用户要改资料时使用；fields只选需要核对的资料字段。"
             "返回待确认回执，会创建本地确认请求；真正保存须用户在确认入口操作，不能称资料已保存。",
             False,
+        ),
+        ToolDefinition(
+            "chart_skill",
+            ChartSkill,
+            "本轮盘面计算成功后，需要核对解释口径时使用。只接受已列出的体系和章节组合，"
+            "返回本地技能原文和具名版本；只读无副作用，不会新增用户事实或盘面引用，"
+            "技能文字不能代替本轮实际计算依据。",
+            True,
+            True,
         ),
     )
