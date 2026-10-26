@@ -27,21 +27,28 @@ def repository(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch) -> 
     return source_fixture.__wrapped__(p2_repo, monkeypatch)
 
 
-def profile(repo: PostgresRepository) -> list[dict[str, Any]]:
+def profile(repo: PostgresRepository, *, precision: str = "exact") -> list[dict[str, Any]]:
     memory, facts = MemoryService(repo), []
     fields = {
         "gender": "男",
         "birth.solar_datetime": "2012-05-03 13:18",
         "birth.timezone_offset": 8,
-        "birth.precision": "exact",
+        "birth.precision": precision,
         "birth.location.lng": 104.07,
         "birth.location.lat": 30.67,
     }
+    if precision == "approximate":
+        fields["birth.time_uncertainty_minutes"] = 1
     for field, value in fields.items():
         text = f"请保存我的{field}为{value}"
         source = memory.receive("alice", content=text, source_id=uuid.uuid4().hex, at=SAID_AT)
         facts.append(memory.save_fact("alice", "self", source["id"], text, "profile", field=field, value=value))
     return facts
+
+
+def legacy_profile(repo: PostgresRepository) -> list[dict[str, Any]]:
+    # Board42 D3 keeps uncertain-time sampling on the existing legacy path.
+    return profile(repo, precision="approximate")
 
 
 def context(h: Harness) -> tuple[dict[str, Any], ToolContext]:
@@ -63,7 +70,7 @@ def engine(repo: PostgresRepository, effect: Any = None) -> ChartsService:
 
 
 def test_chart_real_persistence_replay_and_explicit_legacy_limits(tool_repo: PostgresRepository) -> None:
-    profile(tool_repo)
+    legacy_profile(tool_repo)
     h = setup(tool_repo, "请看看合成八字")
     args, ctx = context(h)
     calls = []
@@ -80,7 +87,7 @@ def test_chart_real_persistence_replay_and_explicit_legacy_limits(tool_repo: Pos
     count = len(tool_repo.list("alice", "artifact"))
     repeated = execute_chart(h.service, args, ctx, charts=charts)
     assert repeated.data["persisted"] == records and len(tool_repo.list("alice", "artifact")) == count
-    assert calls == ["calculate"]
+    assert calls == ["calculate"] * 3  # Approximate input samples both endpoints and center once.
 
 
 def test_missing_profile_and_incognito_do_not_invoke_calculator(tool_repo: PostgresRepository) -> None:
@@ -88,14 +95,14 @@ def test_missing_profile_and_incognito_do_not_invoke_calculator(tool_repo: Postg
     args, ctx = context(h)
     with pytest.raises(ChartInputsRequired):
         execute_chart(h.service, args, ctx, charts=engine(tool_repo))
-    profile(tool_repo)
+    legacy_profile(tool_repo)
     with pytest.raises(ScopeError):
         execute_chart(h.service, args, replace(ctx, incognito=True), charts=engine(tool_repo))
     assert tool_repo.list("alice", "artifact") == []
 
 
 def test_outer_transaction_is_rejected_instead_of_holding_it_for_engine(tool_repo: PostgresRepository) -> None:
-    profile(tool_repo)
+    legacy_profile(tool_repo)
     h = setup(tool_repo, "看看合成八字")
     args, ctx = context(h)
     with tool_repo.transaction("alice"), pytest.raises(EvidenceError, match="外层"):
@@ -107,7 +114,7 @@ def test_inflight_calculation_cannot_save_after_current_authority_changes(
     tool_repo: PostgresRepository,
     change: str,
 ) -> None:
-    facts = profile(tool_repo)
+    facts = legacy_profile(tool_repo)
     h = setup(tool_repo, "看看合成八字")
     args, ctx = context(h)
 
@@ -124,7 +131,7 @@ def test_inflight_calculation_cannot_save_after_current_authority_changes(
 
 
 def test_private_engine_failure_is_sanitized_without_fake_result(tool_repo: PostgresRepository) -> None:
-    profile(tool_repo)
+    legacy_profile(tool_repo)
     h = setup(tool_repo, "看看合成八字")
     args, ctx = context(h)
 
@@ -139,7 +146,7 @@ def test_private_engine_failure_is_sanitized_without_fake_result(tool_repo: Post
 
 @pytest.mark.parametrize("withdrawal", ["artifact", "profile_source", "current_source"])
 def test_cached_calculation_cannot_resurrect_withdrawn_data(tool_repo: PostgresRepository, withdrawal: str) -> None:
-    facts = profile(tool_repo)
+    facts = legacy_profile(tool_repo)
     h = setup(tool_repo, "看看合成八字")
     args, ctx = context(h)
     result = execute_chart(h.service, args, ctx, charts=engine(tool_repo))

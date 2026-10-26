@@ -18,7 +18,7 @@ from mingjing_core.domain.contracts import CoreError
 from mingjing_core.repositories.dependencies import entity_dependency
 from mingjing_core.repositories.postgres import PostgresRepository
 
-from .test_computation_charts_pg import engine, profile
+from .test_computation_charts_pg import engine, legacy_profile as profile
 from .test_computation_updates_pg import prior
 from .test_toolkit_pg import Harness, setup
 from .test_toolkit_pg import tool_repo as source_fixture

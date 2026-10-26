@@ -11,11 +11,21 @@ from mingjing_core.repositories.dependencies import entity_dependency
 from mingjing_core.repositories.postgres import fingerprint
 
 
-def selected_references(documents: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def selected_references(
+    documents: list[dict[str, Any]], system: str | None = None, limit: int = 10
+) -> list[dict[str, Any]]:
     """At most ten rows; a rule never loses its actual chart dependencies."""
+    if type(limit) is not int or not 0 <= limit <= 10:
+        raise EvidenceError("P8本轮引用数量限制无效")
     selected: dict[tuple[str, str], dict[str, Any]] = {}
     for doc in documents:
-        refs = {row["pointer"]: row for row in doc["references"]}
+        refs = {
+            row["pointer"]: row
+            for row in doc["references"]
+            if system != "ziwei" or not row["pointer"].startswith("/charts/") or "/ziwei_column" in row["pointer"]
+        }
+        if system == "bazi":
+            refs = {path: row for path, row in refs.items() if "/ziwei_column" not in path}
         rules = sorted(
             (row for row in refs.values() if row["kind"] == "rule"),
             key=lambda row: (not row["pointer"].startswith("/boundary_alerts/"), row["pointer"]),
@@ -23,7 +33,7 @@ def selected_references(documents: list[dict[str, Any]]) -> list[dict[str, Any]]
         for row in rules + [row for row in refs.values() if row["kind"] == "chart"]:
             pending = [refs[path] for path in row.get("evidence_pointers", [])] + [row]
             additions = {(item["document_id"], item["pointer"]): item for item in pending}
-            if len(selected.keys() | additions.keys()) <= 10:
+            if len(selected.keys() | additions.keys()) <= limit:
                 selected.update(additions)
     return list(selected.values())
 
@@ -47,13 +57,21 @@ def _spec(ctx: Any, snapshot: dict[str, Any], reference: dict[str, Any], documen
     return kind, native, ident, content
 
 
-def persist_reference_bundle(service: Any, ctx: Any, snapshot: dict[str, Any], documents: list[dict[str, Any]]) -> dict:
+def persist_reference_bundle(
+    service: Any,
+    ctx: Any,
+    snapshot: dict[str, Any],
+    documents: list[dict[str, Any]],
+    *,
+    system: str | None = None,
+    limit: int = 10,
+) -> dict:
     """Only trusted calculation callers supply documents; this is not an API."""
     with service.repo.transaction(ctx.owner):
         stored = persist_documents(service, ctx, snapshot, documents)
         indexed = {row["document_id"]: row for row in stored}
-        result = {"documents": stored, "artifacts": [], "claims": []}
-        for ref in selected_references(documents):
+        result = {"documents": stored, "artifacts": [], "claims": [], "system": system, "limit": limit}
+        for ref in selected_references(documents, system, limit):
             kind, native, ident, content = _spec(ctx, snapshot, ref, indexed[ref["document_id"]])
             row = service.repo.put(
                 ctx.owner,
@@ -73,7 +91,7 @@ def persist_reference_bundle(service: Any, ctx: Any, snapshot: dict[str, Any], d
 
 
 def verify_reference_bundle(
-    service: Any, ctx: Any, snapshot: dict[str, Any], documents: list[dict], bundle: dict
+    service: Any, ctx: Any, snapshot: dict[str, Any], documents: list[dict], bundle: dict, *, system: str | None = None
 ) -> tuple:
     """Re-read exact native rows; completed-tool attestation stays with caller."""
     if ctx.private or ctx.crisis:
@@ -81,7 +99,11 @@ def verify_reference_bundle(
     with service.repo.transaction(ctx.owner) as connection:
         service.authority(connection, ctx)
         recheck_chart(service, ctx, snapshot)
-        if not isinstance(bundle, dict) or set(bundle) != {"documents", "artifacts", "claims"}:
+        if (
+            not isinstance(bundle, dict)
+            or set(bundle) != {"documents", "artifacts", "claims", "system", "limit"}
+            or (bundle["system"] != system or system not in (None, "bazi", "ziwei"))
+        ):
             raise EvidenceError("P8引用清单无效")
         for group, identifier in (("documents", "document_id"), ("artifacts", "native_id"), ("claims", "native_id")):
             if not isinstance(bundle[group], list) or any(
@@ -120,7 +142,7 @@ def verify_reference_bundle(
             indexed[doc["document_id"]] = record
             versions[entity_dependency("artifact", expected_id)] = row["revision"]
         rows, expected_groups = [], {"artifacts": [], "claims": []}
-        for ref in selected_references(documents):
+        for ref in selected_references(documents, system, bundle["limit"]):
             kind, native, ident, content = _spec(ctx, snapshot, ref, indexed[ref["document_id"]])
             row = service.repo.get(ctx.owner, kind, ident, include_deleted=True)
             record = {"id": ident, "native_id": native, "revision": row["revision"]}

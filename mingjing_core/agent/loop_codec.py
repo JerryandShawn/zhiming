@@ -45,6 +45,10 @@ def tool_message(
     call_id: str, result: ToolResult, cycle: str, *, aliases: dict[str, dict[str, Any]] | None = None
 ) -> ChatMessage:
     output = result.model_dump()
+    if output["data"].get("adapter_mode") == "p8_v1_1":
+        from mingjing_core.application.agent_p8_charts import tool_projection
+
+        output["data"] = tool_projection(output["data"])
     output["data"].pop("registered_aliases", None)
     output["data"].pop("alias_registration", None)
     if aliases is not None:

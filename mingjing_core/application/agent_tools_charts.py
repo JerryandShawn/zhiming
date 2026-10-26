@@ -123,6 +123,18 @@ def cached_chart(service: AgentToolsService, ctx: ToolContext) -> ToolResult | N
             raise EvidenceError("原计算步骤已撤销或改变，不能重新生成旧结果")
         recheck_chart(service, ctx, cached["snapshot"])
         result = ToolResult.model_validate(cached["tool_output"])
+        if result.data.get("adapter_mode") == "p8_v1_1":
+            from mingjing_core.application.p8_reference_records import verify_reference_bundle
+
+            verify_reference_bundle(
+                service,
+                ctx,
+                cached["snapshot"],
+                result.data["documents"],
+                result.data["persisted"],
+                system=result.data["requested_system"],
+            )
+            return result
         for key, kind in (("artifacts", "artifact"), ("claims", "interpretive_claim")):
             for record in result.data["persisted"][key]:
                 row = service.repo.get(ctx.owner, kind, record["id"], include_deleted=True)
@@ -201,6 +213,10 @@ def execute_chart(
         return cached
     snapshot = prepare_chart(service, ctx)
     engine = charts or ChartsService()
+    from mingjing_core.application.agent_p8_charts import execute_p8, uses_p8
+
+    if uses_p8(snapshot, args["system"]):
+        return execute_p8(service, ctx, args, snapshot, engine)
     try:
         evaluation = engine.evaluate(
             ctx.owner, ctx.subject, snapshot, args["target"], [args["system"]], topic="general", scale=args["scale"]
@@ -224,5 +240,7 @@ def execute_chart(
         recheck_chart(service, ctx, snapshot)
         records = persist_calculation(service, ctx, snapshot, evaluation)
         result = chart_result(evaluation, records)
+        if args["system"] in {"bazi", "ziwei"}:
+            result.data["basis_notice"] = "旧口径，未做真太阳时与交界提示；区间或未知时刻只作分支采样"
         save_chart_cache(service, ctx, snapshot, result)
         return result

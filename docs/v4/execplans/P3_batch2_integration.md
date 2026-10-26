@@ -160,3 +160,23 @@ verify_reference_bundle只读重核实际文档和每条引用的内容、owner/
 private/safe-narrow-90278c670320415a84de0f5aee37cdfa为12/12、4.42s，metadata/XML/log根核exit0/fail0/error0：真实PG幂等无重复、chart/rule各自ID和doc版本闭包、10条选择保规则全部依据，删除/更改doc或引用、资料变化、取消、重复/缺失记录和错误修订拒绝。首轮d81610b76ec54c73b5753aa0fa85db9b为11pass/1fail：Python True==1让清单比较误接受布尔修订；已增加全部投影严格整数及类型敏感fingerprint比较，原失败保留。没有放宽该负例或原分。Ruff/check/format120/git diff--check通过，无全量/CI/真实模型。
 
 02:55只读SSH仍banner timeout/native255，session74476结束，未认证/远端命令0。main58/模块35/37仍未就绪，不提前merge；PG55480/PID50516仅核存活未启停。H1无P8路线41660531及首发e578冻结不动；模块就绪立即优先mem2-gate合入和41/46门。续项不重复已绿边界/飞化/TA01/M01/评分包测试。
+### 2026-10-27 03:25 实际Agent P8计算、缓存及c/r接线
+
+按42 D1/D3/D4/D5/D6，execute_chart准确时刻八字/紫微默认进入真实evaluate_time_basis；明确approximate/interval/unknown或time_unknown保留原calculate并标明“旧口径，未做真太阳时与交界提示”。西占保持原calculate。准确资料缺IANA/clock_basis不得静默降旧路，返回MISSING_INPUT；缺资料的确认卡完整交互仍待后续，不把错误码当卡片已完成。
+
+新增agent_p8_charts：原生authority/隐私二次闸门/prepare snapshot→在PG事务外实际Charts子进程→真实文档校验→新短事务复核租约及资料→原生doc/Pointer记录和缓存。cached_chart识别P8并重核完整doc/引用/来源版本，chart_cache和chart_lineage仍要求当前epoch唯一真实已完成chart_compute步骤及完整输出一致，再向原有loop_codec.verified_versions/extend_aliases提供c/r证明。未完成、伪工具输出、撤销doc或引用、资料变化、计算后取消均拒绝；重放原步骤不重算。chart_skill复用相同原生cache证明，已实际验bazi/ziwei两种。
+
+根据实际requested_system筛选本次引用：紫微不借八字rule_hits，八字不塞紫微整列；原生临界提示保留。单bundle存system/limit并在复核中严格核一致；额度来自同run/epoch已完成原生工具输出的实际专业记录ID并集，后续计算只用剩余槽，不听模型传限额。同轮两次实际计算已验c/r总数不超过10，规则保全部依据，额度耗尽可保完整doc但不新造引用。四个新工具尚未注册，计数器预留其原生名称不代表它们已完成。
+
+loop_codec的P8工具消息只投影真实reference_views、可见主/比较盘摘要、口径方法、全部临界提示及physical_instant_confirmation_required/能力限制；完整原生doc、持久记录和重复calculation留私有Journal/cache，不整包注入模型。原生完成后才加入已验证别名。脚本Agent已通过实际tool_message→c/r→最终core4.0发布及used_claim_ids绑定，不是只测纯helper。脚本模型0真实请求，排盘库本机真实运行。
+
+测试契约变更：旧PG测试与backfill_support原本保护旧引擎重放/隐私/回填/已完成证明，按42 D3把其fixture明确改为approximate±1分钟，使这些断言继续验证被批准保留的旧采样路径；未改产品去识别测试、不设隐藏开关。原profile函数默认exact仍保留，新增P8用例走原生确认exact+IANA/clock_basis。旧“只调用1次引擎”断言改成实际三个采样点各1次，重放不新增和隐私无写仍严格保留。新P8测试补准确缺IANA拒旧路、真实两体系和最终发布，因此没有拿不确定资料替代准确入口验收。
+
+证据分轮（metadata/XML/log全部根核，不相加称一次全链）：
+- 4d84a682b06a40929b786dd0cfb43975：45pass/3fail；新紫微测试误用不存在basics主题、两个旧准确fixture改采样后仍期待只一次；按真实catalog和三采样契约修测试，原件保留。
+- 53de47a3a4f34af4ad582dc97f3dbf2e：48/48、38.47s，实际P8+旧计算/技能/隐私/lineage。
+- 13e30f8a3b594910bdade3c21667f949：10/10、22.08s，新增P8工具消息投影与脚本Agent最终发布。
+- 61d8cb2a4f8e440e94d9fa8e07be66a3：22pass/1fail；同轮第二次测试用了未complete的Harness.call，原生已完成证明正确拒绝。补真实Journal.complete后不改产品闸门。
+- 最终30f24c179df345b79d2213462d1920e1：51/51、53.81s，含实际P8/同轮两算≤10/原生引用和旧回填隐私、原分、Outbox终态兼容。Ruff/check与format120共11文件及diff--check过。
+
+本轮无完整tests/v4/CI/真实模型/服务器修改。03:15一次SSH仍banner timeout/native255，session29141结束，未认证/远端命令0；PG55480/PID50516只核存活未启停。main仍58/模块35/37未就绪，H1独立无P8 41660531保持发布，首发e578/r46冻结。下一P8四工具/合盘同意卡/缺资料确认卡、可见性容量裁定及system临界文案/档案摘要等剩余项；不要再重做已过实际计算lineage或纯helper。模块就绪优先无P8记忆合入与41/46门。

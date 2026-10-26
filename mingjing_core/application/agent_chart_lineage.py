@@ -55,6 +55,8 @@ def chart_cache(service: Any, run: dict[str, Any], result: ToolResult) -> tuple[
     if cached.get("run_id") != run["id"] or cached.get("epoch") != run["retry_epoch"]:
         raise ScopeError("计算缓存不属于当前运行批次")
     snapshot, calculation = cached["snapshot"], result.data["calculation"]
+    if result.data.get("adapter_mode") == "p8_v1_1":
+        return cached, calculation
     verify_calculation_scope(calculation, ctx.owner, ctx.subject, snapshot["revision"])
     if not KnowledgeRegistry.load_builtin().revalidate_claims(calculation, result.data["claims"])["eligible"]:
         raise EvidenceError("解释依据无法从本次真实盘面复核")
@@ -131,6 +133,17 @@ def chart_lineage(service: Any, run: dict[str, Any], result: ToolResult) -> tupl
     if not result.ok:
         return [], {}
     cached, calculation = chart_cache(service, run, result)
+    if result.data.get("adapter_mode") == "p8_v1_1":
+        from mingjing_core.application.p8_reference_records import verify_reference_bundle
+
+        return verify_reference_bundle(
+            service,
+            completed_chart_context(service, run, result),
+            cached["snapshot"],
+            result.data["documents"],
+            result.data["persisted"],
+            system=result.data["requested_system"],
+        )
     claims = {row["claim_id"]: row for row in result.data["claims"]}
     records = []
     persisted = result.data.get("persisted")

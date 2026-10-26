@@ -13,7 +13,7 @@ from mingjing_core.application.memory import MemoryService
 from mingjing_core.models.port import ToolCall
 from mingjing_core.repositories.postgres import PostgresRepository
 
-from .test_computation_charts_pg import engine, profile
+from .test_computation_charts_pg import engine, legacy_profile as profile
 from .test_loop_cycle_support import ScriptedPort, answer, cycle, prepare
 
 

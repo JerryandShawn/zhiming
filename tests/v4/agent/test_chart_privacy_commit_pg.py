@@ -2,7 +2,7 @@
 
 import pytest
 
-from .test_computation_charts_pg import engine, profile
+from .test_computation_charts_pg import engine, legacy_profile as profile
 from .test_toolkit_pg import setup
 from .test_toolkit_pg import tool_repo as source_fixture
 from .test_turn_sources_runtime_pg import intake
@@ -27,7 +27,7 @@ def test_privacy_command_during_calculation_prevents_artifacts_claims_and_cache(
 
     harness.service.charts = engine(repo, optout)
     result, _ = harness.call("chart_compute", {"system": "bazi", "target": "2026-10-17"})
-    assert calls == ["calculated"]
+    assert calls == ["calculated"] * 3  # Native approximate-time branches, no replayed calculation.
     assert result.ok is False and result.receipt == {"write_status": "stopped", "code": "privacy_optout"}
     assert repo.list("alice", "artifact") == [] and repo.list("alice", "interpretive_claim") == []
     assert not [row for row in repo.list("alice", "runtime_step") if row["id"].startswith("agent_chart_cache_")]

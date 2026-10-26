@@ -14,7 +14,7 @@ from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.skills.loader import SkillLibrary
 
-from .test_computation_charts_pg import engine, profile
+from .test_computation_charts_pg import engine, legacy_profile as profile
 from .test_toolkit_pg import setup
 from .test_toolkit_pg import tool_repo as source_fixture
 
