@@ -122,3 +122,11 @@ main58仍生效；H1无P8闸门已在独立mem2-gate 41660531发布，模块首�
 private/safe-narrow-58625d70718d4b998b074c898dd7cd9f为4/4、2.07s，真实PG+HTTP确认新字段、逐字段来源授权、原请求重放、无认证拒绝、另一owner为空、非法/未勾选不写及旧HTTP不猜字段；metadata/XML/log根核。首次1782aff6f30e44069cee2ff9eb4fce43为3pass1fail，测试误用Bearer而原生认证为X-Token，已修测试按原契约调用，不改认证产品。另2c927cc6010d4b5fb93af4e1f5e41289为24/24、1.77s，原profile更正/删除原话后重放不复活及computation参数兼容，原metadata/XML/log根核。两轮均带同一既有Starlette弃用警告，不是失败；不相加称一轮全链。新文件Ruff/check+format120、旧局部改文件AST、node --check、完整原DOM脚本及git diff --check通过。一次命令的PowerShell引号解析错误发生在任何修改/测试执行前，随后用private定点编辑脚本完成DOM测试改动，不算业务测试失败。
 
 01:35单次SSH仍banner超时/native255，session67301结束，远端命令/修改0。真实模型0，未跑全量/CI。P8原生计算路由/lineage/四工具和合盘同意仍未接完，容量策略待精确裁定不吞异常。下一继续实际P8路由或mem2附加段2–5可独立项；模块就绪优先无P8记忆合入，首发e578冻结。不要再重复已过资料字段、chart_skill及TA01/M01/评分包测试。
+
+### 2026-10-27 01:58 显式P8应用计算服务与实际子进程
+
+新增ChartsService.evaluate_time_basis及独立p8_chart_service，仅从已授权原生snapshot构造请求，调用实际P8ChartAdapter隔离Charts进程；调用前取真实worker来源hash，返回后核owner/subject/revision/operation及原生文档。明确返回physical_instant_confirmation_required、边界声明和不支持能力，不自动修正出生资料，不写事实或artifact。传输异常只给固定安全错误，不泄漏stderr；原CoreError保留原义。默认旧ChartsService.evaluate/factory未切换，尚未接Agent chart_compute/cache/alias链，不把服务子项冒称产品闭环。
+
+private/safe-narrow-94bb0462142f45019ea1027f6c4014ef：3/3、6.71s，原metadata/XML/log根核exit0、fail/error0。实际PG确认资料→prepare_chart→真实Charts子进程→原生有归属盘面与references，snapshot/owner revision不变、model_calls/writes为0、artifact为空；另验证缺IANA/跨owner在factory前拒绝及私有stderr不外露。Ruff/check及format120通过。无完整测试/CI/真实模型/服务器修改。
+
+main58/模块首段35/37仍未就绪，本轮不提前merge；H1独立41660531和无P8路线保持。01:55本wake只读SSH仍banner timeout/native255，session2306已结束，未认证、远端命令0。下一接Agent实际P8路由/cache/lineage及四工具授权，紫微引用/合盘同意和容量策略仍待；不重复已绿子项。

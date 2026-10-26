@@ -79,6 +79,20 @@ class ChartsService:
         )
         return {"calculation": result, "claims": claims["claims"], "gaps": claims["gaps"]}
 
+    def evaluate_time_basis(
+        self,
+        owner: str,
+        subject: str,
+        snapshot: dict[str, Any],
+        target: str,
+        *,
+        operation_id: str,
+        p8_factory: Any = None,
+    ) -> dict[str, Any]:
+        from mingjing_core.application.p8_chart_service import evaluate_time_basis
+
+        return evaluate_time_basis(owner, subject, snapshot, target, operation_id, factory=p8_factory)
+
 
 def verify_calculation_scope(
     result: dict[str, Any],
