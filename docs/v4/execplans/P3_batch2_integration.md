@@ -88,3 +88,15 @@ main57；模块最新10-27首段仍未记忆2.0就绪（35/37、KU未完），�
 新定向首次0f8762e42b804c33b05b9cfafa185d86为44pass1fail（弯单引号引述未被旧mask_quoted屏蔽）；局部补充弯单引号遮罩后144d257a1c68423aacb414382444ea01为45/45、0.49s。metadata/XML/log已根核，Ruff/check及format120过。只做意图与旧容量基础，不相加称端到端，未跑全量/CI/真实模型。未修改原工具可见性或旧测试契约。
 
 本wake00:15只读SSH true仍banner超时，原生255，未认证、远端命令/修改0。首发e578树/原包不动。继续P8可独立实现项，记忆就绪后优先切回记忆；不重读42全文、不重跑已过TA01/M01/评分包。
+
+### 2026-10-27 00:42 P8受信资料与产物边界子项
+
+新增charts_natal.natal_request：只读已授权服务端snapshot，精确owner/subject/revision/operation绑定；exact映射原生reported，保留秒及微秒，不从时区偏移猜IANA，不默认为clock，缺项/冲突/区间/未知/过去目标/非法坐标返回MISSING_INPUT。纬度两极因后续西占不支持而拒绝。未把新出生字段接入资料确认卡或模型参数，四工具运行时仍未注册，不能把本函数单测称产品闭环。
+
+新增charts_documents：区分time_basis顶层scope和三工具scope（黄历native scope必须None）；核原生工具document_id内容hash、原生time_basis source_sha256与调用方受信worker摘要、严格有限JSON、实际规则met/source及所有登记Pointer。只提升/data路径，不二次提升/charts/i/ziwei_column；重新生成绑定scope/kind/source/payload的文档ID和引用行，不复制上游短别名。hash不是来源认证，调用者必须持有自己adapter实际执行结果，不能把模型/HTTP产物传进来。合盘明确排除持久chart envelope，后续只用授权后临时结果。
+
+persist_documents在原生owner事务/租约/来源版本复核后写现有artifact，无迁移；保存source_versions/source_ids/used_fact_ids/source_refs/run/epoch，重放同operation零重复，已删除不复活。真实PG测试覆盖重放、删除后拒绝、取消/资料变化/来源删除/无痕/危机/篡改引用均不写。当前尚未接agent_chart_lineage/loop_codec、四工具或P8计算路由；time_basis规则登记目前只已核bazi rule_hits，紫微飞化/边界声明需后续明确接入，未宣称完整P8引用展示完成。
+
+最终a1e7d168328a4fdf9d872b7b2be7a51a为44/44、3.07s（原始metadata/XML/log根核），含三份真实donor样例Pointer解析+工具原生内容校验+真实PG版本/撤销+出生映射。先前60c73db330c24770acce48b023528164为8pass8fail：ScopeError继承ValueError被转换、native source实际为对象而非字符串；已在边界保留CoreError并兼容真实具名来源对象修复。2a3be3707bf44b5e9aacd752e02afe65为16/16、e7b802f74e7e4ede9a6381fc3c10a1fd为23/23、2eb8d2c1b296456193836c315d02feb7为20/20均为中间定向，不相加称全链。末次仅格式规整后check/format120通过，不重复刷测试。真实模型/服务器修改均0，无全量/CI。
+
+main57、模块仍35/37未就绪；00:35只读SSH仍banner超时/native255，session34911已结束；PG55480原PID50516只核存活未重启。下一继续P8运行时路由/资料确认/lineage及四工具授权，保留旧容量冲突待裁定，不吞冲突或放宽15；记忆一就绪从3b095f39无P8基点另做候选，首发e578不动。
