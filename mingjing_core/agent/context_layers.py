@@ -75,6 +75,9 @@ def fact_layer(snapshot: SourceSnapshot, aliases: AliasBook) -> ContextLayer:
 
 def stable_layer(snapshot: SourceSnapshot, aliases: AliasBook) -> ContextLayer:
     items = []
+    for row in snapshot.extra_entities.get("artifact", ()):
+        if row.get("_p8_profile_text"):
+            items.append(json_item(row["id"], "命理档案摘要", {"text": row["_p8_profile_text"]}))
     events = snapshot.extra_entities.get("feedback", ())
     for row in snapshot.extra_entities.get("case", ()):
         recent = [event for event in events if event.get("case_id") == row["id"]][-3:]

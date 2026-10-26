@@ -16,6 +16,7 @@ def injected_versions(snapshot: SourceSnapshot, budget: BudgetResult) -> dict[st
     catalog.update({row["id"]: row for rows in snapshot.extra_entities.values() for row in rows})
     pending = {ident for layer in budget.layers for item in layer.items for ident in (item.key, *item.source_ids)}
     retained: set[str] = set()
+    profile_keys: set[str] = set()
     while pending:
         ident = pending.pop()
         if ident in retained:
@@ -26,5 +27,12 @@ def injected_versions(snapshot: SourceSnapshot, budget: BudgetResult) -> dict[st
         links.update(ref["message_id"] for ref in row.get("source_refs", []))
         if row.get("source_fact_id"):
             links.add(row["source_fact_id"])
+        if row.get("entity_kind") == "artifact" and row.get("_p8_profile_text"):
+            links.update(row["profile_dependency_ids"])
+            profile_keys.update(row["profile_version_keys"])
         pending.update(links - retained)
-    return {key: version for key, version in snapshot.versions.items() if dependency_entity_id(key) in retained}
+    return {
+        key: version
+        for key, version in snapshot.versions.items()
+        if dependency_entity_id(key) in retained or key in profile_keys
+    }

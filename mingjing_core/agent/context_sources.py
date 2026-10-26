@@ -273,8 +273,12 @@ class BoundedSources:
             )
             retrieved = [row for row in retrieved if row["id"] != source_message_id]
             entities = read_entities(self, owner, subject, case_ids, facts)
+            from .context_p8_profiles import read_chart_profiles
+
+            entities["artifact"], chart_versions = read_chart_profiles(self, owner, subject, case_ids, facts)
             versions = {"message:" + row["id"]: row["revision"] for row in self.cache.values()}
             versions.update({"fact:" + fact["id"]: fact["revision"] for fact in facts})
+            versions.update(chart_versions)
             versions.update(
                 {entity_dependency(kind, row["id"]): row["revision"] for kind, rows in entities.items() for row in rows}
             )

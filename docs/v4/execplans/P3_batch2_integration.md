@@ -271,3 +271,17 @@ agent_synastry_lineage只接受同run/epoch唯一已完成Journal完整输出与
 - Node新增真实DOM测试通过明确点击/不创建input或勾选/只GET与导航无写/XSS/旧身份和延迟响应/补齐后清空/错误脱敏，原完整frontend.test.cjs、dom.test.cjs通过；app与新JS语法通过。Ruff/check+format120四Python文件、旧web.py局部AST、diff--check过。没有跨尺寸浏览器截图，不称视觉全验。
 - 原失败保留：8d20d70bc2234f3ba4dd84a54f1b68c1为6pass1fail，纯工具fixture禁止所有HTTP，新增API测试精确改用同真实隔离PG的p2_repo+原生内存ASGI而非放开网络；cb690bf8cc3741238a9954099c0b0bcf为6pass1fail，新测试误期400，按现存MissingInput.http_status=422纠正断言，产品拒绝未改变。
 - 范围/下一：本入口是当前self准确资料缺项的网页确认引导，不提供第三人人物资料编辑，不把unknown自动猜成exact，确有缺时刻资料仍沿原onboarding/profile流程。用户补完后须新请求/新工具步骤才能计算，不把旧失败重放成新成功。P8仍未整体就绪：合盘临时专业c/r、真实反思消费者排除、15工具容量精确策略、临界展示去重服务端状态/可选warning、命理档案摘要、晨报daily可信开关及最后完整脚本/tests/v4/CI仍待。真实模型0/服务器修改0，无全量/新CI。模块一就绪仍优先无P8门树普通合入。
+
+## 2026-10-27 05:58 当前项计划：命理档案摘要
+
+晨报现有CoreReportAdapter走scheduled_report，v4入口validate_agent_input明确拒绝，原生工具source_policy仅认current_user，不把后台系统提示伪装用户或只设morning_report布尔。该真实入口缺口记录待精确接线。先做42 2.3命理档案摘要：只从成功运行、真实完成chart_compute、保护cache、原生文档及当前事实来源闭包取摘要；新上下文有改资料/撤销/篡改即不注入。稳定层≤400字保实际格局候选/旺衰分歧/三种喜用口径及版本，不注册c/r，需当轮计算才能引用。只本P8树，不接入无P8记忆候选，不跑全量或真实模型。
+
+## 2026-10-27 06:05 实际交付：原生历史命理档案摘要进入稳定层
+
+- main58；模块最新首段已变f44f5dd（含无P8主线d4344bd），指定37/37+变体4/4过，但仍未记忆2.0就绪，旧9ef7262完整失败不改，不再写仍03cc0bb。无提前merge/代修/代跑/其他聊天消息。05:55 SSH仍banner timeout/native255，未认证/远端命令0；原55480 PG/PID50516只核存活未启停。
+- 新context_p8_profiles：有界读取最近8条成功v4同owner/subject/life线程的当前epoch真实完成chart_compute，不读四工具或合盘临时结果；复核原生runtime_step精确身份/指纹/完整tool_output和当前source_versions、原生文档来源字节hash/owner/subject/operation/资料修订、原artifact精确记录/revision及内容/source/facts闭包。复用现有BoundedSources的授权事实/原话区间/来源边界校验；未选择事项来源、撤销或资料改动、未完成或失败运行、伪cache/doc不注入。缓存epoch严格整数，文档回执类型敏感fingerprint匹配。不改任何已完成工具闸门或重开租约，不造ToolContext。
+- p8_profile_text只从唯一可见真太阳主盘原生data.p8中取通过筛选的格局候选、两个项目旺衰结论和各method、三种喜用候选及method/学校口径、档案记录修订和文档ID。保分歧/摘表及非定论限制，≤400字；真实时刻仍需确认/多主盘/内容超预算即不注入，不截必要口径或推断结论。无出生值/UTC/坐标/旧c/r别名，明确“历史档案，非本轮计算依据，要引用须本轮chart_compute”。
+- 实际BoundedSources→extra_entities.artifact→L3_STABLE json_item接线，不注册c/r。injected_versions仅在摘要真保留时纳入原artifact/runtime_step、原事实原话及原生owner/subject/global/case版本闭包，摘要被移除不额外保留其版本；缓存/档案后改动会使原上下文依赖失效。只读，无新fact/profile_doc/SQL迁移，不进入无P8记忆候选。
+- 最终private/safe-narrow-1294e92ecbc34c2ebda423576d13c634为41/41、29.41秒，metadata/XML/log根核exit0/fail0/error0/skip0。实际脚本Agent→真实Charts worker→Journal→core4.0发布→下一条真实消息→ContextEngine稳定层摘要、≤400字/无c-r/精确依赖，缓存变化使旧context版本失效并不再注入；doc篡改/出生资料或来源撤销/运行失败/跨owner无摘要；待物理时刻确认和超预算不补造。另含原context_layers/context/context_epochs兼容。
+- 首轮36d81360cfd44df58c78aa9e00799bf1为32pass1fail：测试给“第一个visible”对照盘改长口径，而产品正确只选true_solar主盘，因此未触发超预算；修测试精确选择主盘，不改产品筛选/400上限，原件保留。初Ruff未用导入已删除，不忽略规则。六Python文件Ruff/check+format120、diff--check与新函数≤60检查过。没有全量/CI/真实模型/服务器修改。
+- 未完/限制：只有符合当前来源闭包且最近8条内的真实P8成功档案才摘要，旧产物/需要确认/超预算省略，不能称所有档案或记忆2.0关于我第七节已完成；模块AboutMe尚未合入，组合仍待。晨报入口本轮已查明旧scheduled_report被v4入口明确拒绝，source_policy只认current_user，不能伪装系统报告为用户或只加bool绕过；该实际接线缺口待精确方案。另有合盘临时c/r、反思消费者排除、15工具容量策略、临界展示去重/可选warning及最后完整脚本/tests/v4/CI，P8整体未就绪。下一模块一就绪先无P8门树，否则继续其余独立项，不重复摘要绿测。
