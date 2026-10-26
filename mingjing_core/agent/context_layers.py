@@ -69,6 +69,10 @@ def fact_layer(snapshot: SourceSnapshot, aliases: AliasBook) -> ContextLayer:
             "kind": row["kind"],
             "text": row["content"],
         }
+        if (row.get("field") == "birth.precision" and row.get("value") == "unknown") or (
+            row.get("field") == "birth.time_unknown" and row.get("value") is True
+        ):
+            data["birth_time_notice"] = "时辰还不确定，以下只看不依赖时柱的部分。"
         items.append(json_item(row["id"], "画像", data, required=True))
     return ContextLayer("L2", tuple(items))
 
@@ -158,7 +162,12 @@ def retrieval_layer(snapshot: SourceSnapshot, aliases: AliasBook, policy: Budget
         header = f'<相关记忆 time_filter="{snapshot.retrieval_time_filter}">\n'
         header += "时间命中的条目优先；time_match=false只是补充资料，不能当成该时段发生的事。"
         items.append(
-            ContextItem("time-filter", (ChatMessage("system", header),), True, source_ids=(snapshot.current["id"],))
+            ContextItem(
+                "time-filter",
+                (ChatMessage("system", header),),
+                True,
+                source_ids=(snapshot.current["id"],),
+            )
         )
     candidates = [(row.get("_retrieval_kind", "message"), row) for row in snapshot.retrieved]
     query = set(tokenize(snapshot.current["content"][:2000])[:32])

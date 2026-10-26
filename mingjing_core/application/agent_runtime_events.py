@@ -9,6 +9,8 @@ from psycopg import sql
 from psycopg.types.json import Jsonb
 
 from mingjing_core.agent.events import make_event, validate_event
+from mingjing_core.agent.journal import JournalStep
+from mingjing_core.application.agent_event_receipts import EventReceipts
 from mingjing_core.application.public_tool_ids import public_call_id
 from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.repositories.postgres import PostgresRepository
@@ -77,9 +79,25 @@ class RuntimeEvents:
                 if row["retry_epoch"] != self.run["retry_epoch"]:
                     raise EvidenceError("事件不属于当前运行批次")
             event = (
-                self._existing(connection, kind, payload) if kind in {"final", "ask_user", "present_options"} else None
+                EventReceipts(self.repo, self.run).started(connection, payload, self._append)
+                if kind == "started"
+                else self._existing(connection, kind, payload)
+                if kind in {"final", "ask_user", "present_options"}
+                else None
             )
             event = event or self._append(connection, kind, payload)
+        self._deliver(event)
+
+    def begin_epoch(self) -> None:
+        with self.repo.transaction(self.run["owner"]) as connection:
+            EventReceipts(self.repo, self.run).begin_epoch(connection)
+
+    def tool_event(self, step: JournalStep, kind: str, payload: dict[str, Any]) -> None:
+        with self.repo.transaction(self.run["owner"]) as connection:
+            event = EventReceipts(self.repo, self.run).tool(connection, step, kind, payload, self._append)
+        self._deliver(event)
+
+    def _deliver(self, event: dict[str, Any]) -> None:
         if self.callback:
             try:
                 self.callback(event)

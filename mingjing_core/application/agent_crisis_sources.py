@@ -1,6 +1,5 @@
 """Crisis detection uses authorized originals from this turn, never unrelated history."""
 
-from mingjing_core.agent.crisis import crisis_detected
 from mingjing_core.application.agent_tools_policy import source_policy
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.domain.contracts import EvidenceError
@@ -20,7 +19,3 @@ def turn_sources(repo, run, identifiers=None):
             raise EvidenceError("危机判定原话已改变或撤销")
         rows.append(row)
     return rows
-
-
-def turn_has_crisis(repo, run, identifiers=None):
-    return any(crisis_detected(row["content"]) for row in turn_sources(repo, run, identifiers))

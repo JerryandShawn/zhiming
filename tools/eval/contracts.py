@@ -11,7 +11,7 @@ import yaml
 from tools.eval.schema import Scenario
 
 # Bump when deterministic assertion semantics change; business fixes do not change this version.
-SCORING_CONTRACT_VERSION = "deterministic-eval-v1.0.0"
+SCORING_CONTRACT_VERSION = "deterministic-eval-v1.1.0-board39"
 FIXTURES = Path(__file__).parent / "fixtures"
 
 

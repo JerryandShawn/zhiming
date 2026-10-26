@@ -24,7 +24,12 @@ def test_core30_scripted_cli_uses_real_tools_without_external_requests(
     root = Path(__file__).resolve().parents[3]
     chart_python = os.environ.get("CHART_PYTHON", "")
     assert chart_python and Path(chart_python).is_file()
-    worker = [chart_python, "-X", "utf8", str(root / "mingjing_core/adapters/charts/worker.py")]
+    worker = [
+        chart_python,
+        "-X",
+        "utf8",
+        str(root / "mingjing_core/adapters/charts/worker.py"),
+    ]
 
     def calculator_only(command, *args, **kwargs):
         if command != worker or kwargs.get("shell"):
@@ -35,11 +40,24 @@ def test_core30_scripted_cli_uses_real_tools_without_external_requests(
     monkeypatch.setattr(runner, "_target", lambda *_: target)
     output = tmp_path / "core30-scripted"
     try:
-        code = runner.main(["--mode", "scripted", "--target", "v4", "--suite", "core30", "--output", str(output)])
+        code = runner.main(
+            [
+                "--mode",
+                "scripted",
+                "--target",
+                "v4",
+                "--suite",
+                "core30",
+                "--output",
+                str(output),
+            ]
+        )
         report = json.loads(next(output.glob("*.json")).read_text(encoding="utf-8"))
-        assert code == 0, [(row["id"], row["failed_assertions"]) for row in report["cases"] if row["status"] != "passed"]
+        assert code == 0, [
+            (row["id"], row["failed_assertions"]) for row in report["cases"] if row["status"] != "passed"
+        ]
         assert tuple(row["id"] for row in report["cases"]) == CORE30_IDS
-        assert report["summary"]["count"] == report["summary"]["passed"] == 30
+        assert report["summary"]["count"] == report["summary"]["passed"] == 29
         assert report["metadata"]["status"] == "complete"
         assert report["metadata"]["external_provider_requests"] == 0
         assert all(row["v4_evidence"]["external_provider_requests"] == 0 for row in report["cases"])

@@ -112,9 +112,29 @@ def admin_identity(connection: Any, inputs: BackupInputs, fields: dict[str, str]
 
 
 def sessions(connection: Any, allowed: set[int]) -> None:
-    connection.execute("SELECT pg_stat_clear_snapshot()")
-    actual = connection.execute("SELECT pid FROM pg_stat_activity WHERE datname=current_database()").fetchall()
-    require({row["pid"] for row in actual} == allowed, "INCREMENTAL_OTHER_SOURCE_SESSION")
+    from tools.first_release_session_observer import observed_rows
+
+    actual = observed_rows(connection)
+    if actual is None:
+        connection.execute("SELECT pg_stat_clear_snapshot()")
+        actual = connection.execute(
+            "SELECT pid,backend_type FROM pg_stat_activity WHERE datname=current_database() ORDER BY pid"
+        ).fetchall()
+    if {row["pid"] for row in actual} != allowed:
+        error = RestoreRejected("INCREMENTAL_OTHER_SOURCE_SESSION")
+        # These are the rows which failed the gate, not a later observation. Never include query/appname/DSNs.
+        error.session_diagnostic = {
+            "schema": "source-session-set-v1",
+            "observation": "at_failed_gate",
+            "allowed_pids": sorted(allowed)[:32],
+            "allowed_count": len(allowed),
+            "actual_backends": [
+                {"pid": row["pid"], "backend_type": str(row["backend_type"])[:64]} for row in actual[:32]
+            ],
+            "actual_count": len(actual),
+            "truncated": len(allowed) > 32 or len(actual) > 32,
+        }
+        raise error
 
 
 def source_scope(connection: Any, inputs: BackupInputs) -> None:
@@ -382,20 +402,35 @@ def capture(inputs: BackupInputs, dsns: dict[str, str], connection: Any) -> dict
     }
 
 
-def backup(inputs: BackupInputs, dsns: dict[str, str]) -> dict[str, Any]:
-    inputs.fence_path.parent.mkdir(parents=True, exist_ok=True)
+def backup(inputs: BackupInputs, dsns: dict[str, str], *, use_admission: bool = False) -> dict[str, Any]:
+    from tools.first_release_admission import marker_material, unchanged_marker
+    from tools.first_release_session_observer import observe_source_sessions
+
+    require(type(use_admission) is bool, "INCREMENTAL_EXPLICIT_ADMISSION_FLAG")
+    retained = marker_material(inputs) if use_admission else None
+    if not use_admission:
+        inputs.fence_path.parent.mkdir(parents=True, exist_ok=True)
     ordinary(inputs.fence_path.parent, directory=True)
-    with file_lock(inputs.fence_path, exclusive=True):
-        with psycopg.connect(readonly(dsns["admin"]), row_factory=dict_row) as admin:
-            admin_identity(admin, inputs, conninfo_to_dict(dsns["admin"]))
+    with (
+        file_lock(inputs.fence_path, exclusive=True, existing_only=use_admission),
+        psycopg.connect(readonly(dsns["admin"]), autocommit=True, row_factory=dict_row) as admin,
+    ):
+        fields = conninfo_to_dict(dsns["admin"])
+        admin_identity(admin, inputs, fields)
         with psycopg.connect(readonly(dsns["writer"]), row_factory=dict_row) as writer:
             identity(writer, inputs, "writer")
         with psycopg.connect(readonly(dsns["owner"]), autocommit=True, row_factory=dict_row) as owner:
             identity(owner, inputs, "owner")
-            with pg_lock(owner, inputs.fence_key, exclusive=True):
+            with (
+                pg_lock(owner, inputs.fence_key, exclusive=True),
+                observe_source_sessions(owner, admin, inputs, fields),
+            ):
                 sessions(owner, {owner.info.backend_pid})
                 source_scope(owner, inputs)
-                require(not inputs.maintenance.exists(), "INCREMENTAL_MAINTENANCE_ALREADY_PRESENT")
+                if use_admission:
+                    unchanged_marker(inputs, retained)
+                else:
+                    require(not inputs.maintenance.exists(), "INCREMENTAL_MAINTENANCE_ALREADY_PRESENT")
                 for name in (
                     "backup.dump",
                     "latest-withdrawals.json",
@@ -410,9 +445,13 @@ def backup(inputs: BackupInputs, dsns: dict[str, str]) -> dict[str, Any]:
                     "operation_id": inputs.operation_id,
                     "database_oid": inputs.source.database_oid,
                 }
-                write_private(inputs.maintenance, started)
+                if not use_admission:
+                    write_private(inputs.maintenance, started)
+                    retained = marker_material(inputs)
+                unchanged_marker(inputs, retained)
                 write_private(inputs.operation_dir / "backup-started.json", started)
                 result = capture(inputs, dsns, owner)
+                unchanged_marker(inputs, retained)
                 evidence = result.pop("_source_snapshots")
                 write_private(
                     inputs.operation_dir / "backup-receipt.json",

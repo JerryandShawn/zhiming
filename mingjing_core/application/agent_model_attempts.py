@@ -20,6 +20,7 @@ from mingjing_core.models.quota_attempt_observer import (
 )
 from mingjing_core.models.quota_delegated_session import require_active
 from mingjing_core.models.quota_guard import QuotaGuard
+from mingjing_core.models.quota_r16 import approved_core_model
 from mingjing_core.models.quota_runtime import current_scope
 from mingjing_core.repositories.postgres import PostgresRepository, fingerprint
 
@@ -53,7 +54,7 @@ class CoreObservation:
 
     def check(self) -> None:
         session, scope = require_active(), current_scope()
-        wanted = "k3-256k" if session.approval.equivalent is True else "k3"
+        wanted = approved_core_model(session.approval, session.guard.clock.now())
         if (
             session.phase != "core"
             or session.guard is not self.guard
@@ -67,7 +68,9 @@ class CoreObservation:
             raise ModelAttemptUnconfirmed()
 
 
-_CORE: ContextVar[CoreObservation | None] = ContextVar("core_eval_model_observation", default=None)
+_CORE: ContextVar[CoreObservation | None] = ContextVar(
+    "core_eval_model_observation", default=None
+)
 
 
 def observing_core() -> bool:
@@ -97,7 +100,9 @@ def _ident(step: JournalStep) -> str:
 
 
 class StepAttempts:
-    def __init__(self, context: CoreObservation, step: JournalStep, snapshot: dict[str, Any]) -> None:
+    def __init__(
+        self, context: CoreObservation, step: JournalStep, snapshot: dict[str, Any]
+    ) -> None:
         self.context, self.repo, self.step = context, context.repo, step
         self.snapshot, self.revision, self.active_id = snapshot, 0, None
         self.admitted_revision: int | None = None
@@ -120,7 +125,9 @@ class StepAttempts:
         self.context.check()
         with self.repo.transaction(self.step.owner) as connection:
             run = Journal(self.repo, self.step.owner)._leased(
-                connection, vars(self.step) | {"id": self.step.run_id, "retry_epoch": self.step.epoch}
+                connection,
+                vars(self.step)
+                | {"id": self.step.run_id, "retry_epoch": self.step.epoch},
             )
             assert_thread(self.repo, run)
             source_id = run["request"]["source_message_id"]
@@ -136,7 +143,9 @@ class StepAttempts:
                 raise ModelAttemptUnconfirmed()
 
     def load(self) -> dict[str, Any]:
-        row = self.repo.get(self.step.owner, "runtime_step", _ident(self.step), include_deleted=True)
+        row = self.repo.get(
+            self.step.owner, "runtime_step", _ident(self.step), include_deleted=True
+        )
         value = row.get("value")
         if (
             row["status"] != "active"
@@ -164,7 +173,9 @@ class StepAttempts:
                 "epoch": self.step.epoch,
                 "value": value,
                 "value_sha256": fingerprint(value),
-                "source_ids": [key[8:] for key in versions if key.startswith("message:")],
+                "source_ids": [
+                    key[8:] for key in versions if key.startswith("message:")
+                ],
                 "fact_ids": [key[5:] for key in versions if key.startswith("fact:")],
             },
             subject=self.step.subject,
@@ -175,21 +186,30 @@ class StepAttempts:
 
     def begin(self) -> None:
         self.authority()
+        from mingjing_core.application.agent_model_resume import begin_pending
+
+        if begin_pending(self):
+            return
         try:
-            self.repo.get(self.step.owner, "runtime_step", _ident(self.step), include_deleted=True)
+            self.repo.get(
+                self.step.owner, "runtime_step", _ident(self.step), include_deleted=True
+            )
         except ScopeError:
             self.save(dict(self.anchor, attempts=[]), "logical_intent")
             return
         # Existing unfinished dispatch is never evidence that no POST happened.
         raise ModelAttemptUnconfirmed()
 
-    def _scope(self, guard: QuotaGuard, scope: Any, role: str, provider: str, model: str) -> dict[str, Any]:
+    def _scope(
+        self, guard: QuotaGuard, scope: Any, role: str, provider: str, model: str
+    ) -> dict[str, Any]:
         self.authority()
         if (
             guard is not self.context.guard
             or (scope.run_id, scope.lane, scope.scenario_id)
             != (self.step.run_id, "eval", self.context.binding["scenario_id"])
-            or (role, provider, model) != (self.anchor["role"], "kimi_code", self.context.binding["model"])
+            or (role, provider, model)
+            != (self.anchor["role"], "kimi_code", self.context.binding["model"])
             or not scope.batch_id
             or not scope.authorization_id
         ):
@@ -205,37 +225,63 @@ class StepAttempts:
             "model": model,
         }
 
-    def prepare(self, guard: QuotaGuard, scope: Any, attempt_id: str, role: str, provider: str, model: str) -> None:
+    def prepare(
+        self,
+        guard: QuotaGuard,
+        scope: Any,
+        attempt_id: str,
+        role: str,
+        provider: str,
+        model: str,
+    ) -> None:
         with confirmed():
             admitted = self._scope(guard, scope, role, provider, model)
+            from mingjing_core.application.agent_model_resume import prepare_pending
+
+            prepare_pending(self)
             value = self.load()
-            if any(item["attempt_id"] == attempt_id or item["state"] != "finished" for item in value["attempts"]):
+            if any(
+                item["attempt_id"] == attempt_id or item["state"] != "finished"
+                for item in value["attempts"]
+            ):
                 raise ModelAttemptUnconfirmed()
-            value["attempts"].append(dict(admitted, attempt_id=attempt_id, state="intent"))
+            value["attempts"].append(
+                dict(admitted, attempt_id=attempt_id, state="intent")
+            )
             self.save(value, attempt_id + ":intent")
             self.active_id = attempt_id
 
-    def central(self, guard: QuotaGuard, scope: Any, attempt_id: str) -> dict[str, Any]:
+    def central(
+        self, guard: QuotaGuard, scope: Any, attempt_id: str, *, read=None
+    ) -> dict[str, Any]:
         value = self.load()
-        entry = next(item for item in value["attempts"] if item["attempt_id"] == attempt_id)
+        entry = next(
+            item for item in value["attempts"] if item["attempt_id"] == attempt_id
+        )
         if scope is not None:
-            admitted = self._scope(guard, scope, entry["role"], entry["provider"], entry["model"])
+            admitted = self._scope(
+                guard, scope, entry["role"], entry["provider"], entry["model"]
+            )
             if any(entry[key] != item for key, item in admitted.items()):
                 raise ModelAttemptUnconfirmed()
+        elif read is not None:
+            from mingjing_core.application.agent_model_resume import completed_authority
+
+            completed_authority(read, self)
         else:
             self.authority()
         with guard.store.connect() as connection:
             account = guard.store.verify(connection)
             row = connection.execute(
-                sql.SQL("SELECT * FROM {} WHERE account_id=%s AND attempt_id=%s").format(
-                    guard.store.table("core_model_usage")
-                ),
+                sql.SQL(
+                    "SELECT * FROM {} WHERE account_id=%s AND attempt_id=%s"
+                ).format(guard.store.table("core_model_usage")),
                 (guard.store.account_id, attempt_id),
             ).fetchone()
             batch = connection.execute(
-                sql.SQL("SELECT authorization_id FROM {} WHERE account_id=%s AND batch_id=%s").format(
-                    guard.store.table("core_model_batches")
-                ),
+                sql.SQL(
+                    "SELECT authorization_id FROM {} WHERE account_id=%s AND batch_id=%s"
+                ).format(guard.store.table("core_model_batches")),
                 (guard.store.account_id, entry["batch_id"]),
             ).fetchone()
         if (
@@ -247,16 +293,32 @@ class StepAttempts:
             or fingerprint(batch["authorization_id"]) != entry["authorization_sha256"]
             or any(
                 row[key] != entry[key]
-                for key in ("run_id", "lane", "scenario_id", "batch_id", "role", "provider", "model")
+                for key in (
+                    "run_id",
+                    "lane",
+                    "scenario_id",
+                    "batch_id",
+                    "role",
+                    "provider",
+                    "model",
+                )
             )
         ):
             raise ModelAttemptUnconfirmed()
+        if read is not None:
+            from mingjing_core.application.agent_model_resume import completed_terminal
+
+            completed_terminal(read, self, row)
         return row
 
     def admitted(self, guard: QuotaGuard, scope: Any, attempt_id: str) -> None:
         with confirmed():
             row = self.central(guard, scope, attempt_id)
-            if row["status"] != "reserved" or row["finished_at"] is not None or self.active_id != attempt_id:
+            if (
+                row["status"] != "reserved"
+                or row["finished_at"] is not None
+                or self.active_id != attempt_id
+            ):
                 raise ModelAttemptUnconfirmed()
             value = self.load()
             value["attempts"][-1]["state"] = "admitted"
@@ -284,20 +346,41 @@ class StepAttempts:
             if row["finished_at"] is None or row["status"] in {"reserved", "unknown"}:
                 raise ModelAttemptUnconfirmed()
             value = self.load()
-            entry = next(item for item in value["attempts"] if item["attempt_id"] == attempt_id)
+            entry = next(
+                item for item in value["attempts"] if item["attempt_id"] == attempt_id
+            )
             if entry["state"] != "admitted":
                 raise ModelAttemptUnconfirmed()
-            entry.update(state="finished", terminal_sha256=fingerprint(row), result_kind=row["status"])
+            entry.update(
+                state="finished",
+                terminal_sha256=fingerprint(row),
+                result_kind=row["status"],
+            )
             self.save(value, attempt_id + ":finished")
 
     def verify_completed(self) -> None:
-        with self.repo.transaction(self.step.owner) as connection:
-            self.authority()
+        from mingjing_core.application.agent_model_resume import (
+            completed_authority,
+            completed_read,
+        )
+
+        with (
+            completed_read(self) as read,
+            self.repo.transaction(self.step.owner) as connection,
+        ):
+            if read is None:
+                self.authority()
+            else:
+                completed_authority(read, self)
             journal = Journal(self.repo, self.step.owner)
             run = journal._leased(
-                connection, vars(self.step) | {"id": self.step.run_id, "retry_epoch": self.step.epoch}
+                connection,
+                vars(self.step)
+                | {"id": self.step.run_id, "retry_epoch": self.step.epoch},
             )
-            native = journal._read(connection, self.step.run_id, self.step.epoch, self.step.seq)
+            native = journal._read(
+                connection, self.step.run_id, self.step.epoch, self.step.seq
+            )
             if native is None:
                 raise ModelAttemptUnconfirmed()
             journal._check(native, self.step.kind, self.step.name, self.step.input_fp)
@@ -319,36 +402,58 @@ class StepAttempts:
                 {key: getattr(self.step, key) for key in keys}
             ):
                 raise ModelAttemptUnconfirmed()
-        value = self.load()
-        if not self.step.completed or not value["attempts"] or value["attempts"][-1].get("result_kind") != "ok":
-            raise ModelAttemptUnconfirmed()
-        for entry in value["attempts"]:
-            row = self.central(self.context.guard, None, entry["attempt_id"])
-            if entry["state"] != "finished" or fingerprint(row) != entry.get("terminal_sha256"):
+            value = self.load()
+            if (
+                not self.step.completed
+                or not value["attempts"]
+                or value["attempts"][-1].get("result_kind") != "ok"
+            ):
                 raise ModelAttemptUnconfirmed()
+            for entry in value["attempts"]:
+                row = self.central(
+                    self.context.guard, None, entry["attempt_id"], read=read
+                )
+                if entry["state"] != "finished" or fingerprint(row) != entry.get(
+                    "terminal_sha256"
+                ):
+                    raise ModelAttemptUnconfirmed()
 
 
-def _selected(repo: PostgresRepository, step: JournalStep, offline: bool) -> StepAttempts | None:
+def _selected(
+    repo: PostgresRepository, step: JournalStep, offline: bool
+) -> StepAttempts | None:
     context = _CORE.get()
     if context is None:
         return None
     if offline or context.repo is not repo or step.owner != context.owner:
         raise ModelAttemptUnconfirmed()
-    snapshot = repo.get(step.owner, "runtime_step", f"{step.run_id}:e{step.epoch}:agent_model_request:{step.seq}")
+    snapshot = repo.get(
+        step.owner,
+        "runtime_step",
+        f"{step.run_id}:e{step.epoch}:agent_model_request:{step.seq}",
+    )
     if (
         snapshot.get("schema") != "agent-model-request-v1"
-        or (snapshot.get("run_id"), snapshot.get("epoch"), snapshot.get("seq"), snapshot.get("input_fp"))
+        or (
+            snapshot.get("run_id"),
+            snapshot.get("epoch"),
+            snapshot.get("seq"),
+            snapshot.get("input_fp"),
+        )
         != (step.run_id, step.epoch, step.seq, step.input_fp)
         or snapshot.get("output_sha256") != fingerprint(snapshot.get("output"))
         or snapshot.get("output", {}).get("name") != step.name
-        or snapshot.get("output", {}).get("role") != ("critic" if step.name == "critic" else "primary")
+        or snapshot.get("output", {}).get("role")
+        != ("critic" if step.name == "critic" else "primary")
     ):
         raise ModelAttemptUnconfirmed()
     return StepAttempts(context, step, snapshot)
 
 
 @contextmanager
-def physical_step(repo: PostgresRepository, step: JournalStep, *, offline: bool) -> Iterator[None]:
+def physical_step(
+    repo: PostgresRepository, step: JournalStep, *, offline: bool
+) -> Iterator[None]:
     with confirmed():
         selected = _selected(repo, step, offline)
         if selected is not None:
@@ -360,7 +465,9 @@ def physical_step(repo: PostgresRepository, step: JournalStep, *, offline: bool)
             yield
 
 
-def verify_completed(repo: PostgresRepository, step: JournalStep, *, offline: bool) -> None:
+def verify_completed(
+    repo: PostgresRepository, step: JournalStep, *, offline: bool
+) -> None:
     with confirmed():
         selected = _selected(repo, step, offline)
         if selected is not None:

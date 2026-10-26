@@ -21,7 +21,7 @@ from psycopg import sql
 from mingjing_core.timekit.clock import Clock, SystemClock
 
 from .error_actions import NEVER
-from .errors import ModelCancelled, ModelUnavailable
+from .errors import ModelCancelled, ModelResponseIdentityError, ModelUnavailable
 from .quota_batches import begin_batch, close_abandoned_batch, finish_batch
 from .quota_mode import verified_delegated_attempt
 from .quota_store import QuotaStore
@@ -200,6 +200,10 @@ class QuotaGuard:
                 attempt.resume_at = getattr(caught, "provider_reset_at", None)
                 error = _normalized_error(caught, delegated)
             try:
+                if isinstance(error, ModelResponseIdentityError):
+                    # Keep the physical bad_request result; use the existing
+                    # manual-only persistent stop so every other lane closes.
+                    self.store.stop(connection, "permission_error", instant(self.clock.now()))
                 self.store.finish(
                     connection,
                     data["attempt_id"],

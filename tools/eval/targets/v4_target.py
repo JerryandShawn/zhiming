@@ -23,6 +23,7 @@ from .v4_chart_observations import chart_observations
 from .v4_context_observations import context_observations
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
+from .v4_http_faults import HttpFaultPort, fault_evidence, fault_port
 from .v4_memory_history_seed import memory_ingress_needed, seed_memory_sources
 from .v4_memory_privacy_seed import prepare_memory
 from .v4_memory_privacy_views import native_counts, privacy_rows
@@ -46,7 +47,12 @@ from .v4_runtime import EvaluationRuntime
 from .v4_scripted import ForbiddenLegacyModel, ScriptedMeter, ScriptedModelPort
 from .v4_sse_reconnect import reconnect
 from .v4_tarot import TarotDriver
-from .v4_withdrawal import configure_withdrawal, regeneration_state, withdrawal_observations
+from .v4_tool_effects import previous_turns, tool_effects
+from .v4_withdrawal import (
+    configure_withdrawal,
+    regeneration_state,
+    withdrawal_observations,
+)
 
 
 class V4Target:
@@ -71,13 +77,16 @@ class V4Target:
         self.crashed_run: str | None = None
         self.feishu: FeishuBatchDriver | None = None
         self.stream: dict[str, Any] = {}
+        self.http_faults: HttpFaultPort | None = None
 
     def reset(self, seed: dict[str, Any]) -> None:
-        self.close()
         if seed.get("synthetic") is not True:
             raise ValueError("v4 evaluation requires explicitly synthetic data")
+        http_faults = fault_port(seed, self.protocol, scripted=type(self)._ports is V4Target._ports)
+        self.close()
         verify_local_postgres(self.dsn)
         self.seed = seed
+        self.http_faults = http_faults
         self.cancellation = {}
         self.portability = {}
         self.semantic = []
@@ -109,7 +118,9 @@ class V4Target:
     def _ports(self) -> None:
         controls = self.seed.get("controls", {})
         self.port = (
-            ScriptedWirePort(self.protocol, self.candidate)
+            self.http_faults
+            if self.http_faults is not None
+            else ScriptedWirePort(self.protocol, self.candidate)
             if self.protocol
             else FaultScriptedPort(crash_after_tool=controls.get("crash_after") == "tool_commit")
         )
@@ -160,6 +171,7 @@ class V4Target:
             channel=channel,
             external_id=external,
             conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
+            case_ids=cases,
         )
         self.bindings[f"turn-{index}"] = source["id"]
         run = ThreadIngress(self.service).queue(
@@ -218,6 +230,8 @@ class V4Target:
         run_id: str,
     ) -> list[dict]:
         semantic = semantic_observations(steps)
+        if self.http_faults is not None:
+            semantic.extend(self.http_faults.observations())
         if crashed:
             semantic += crash_observations(steps, run_id)
         if resumed:
@@ -298,6 +312,8 @@ class V4Target:
                 "physical_model_requests": 0,
                 "evaluator_observations": semantic,
                 "error_category": "business" if error else None,
+                "tool_effects": tool_effects(self.repo, self.owner, run["id"]),
+                "prior_turns": previous_turns(self.repo, self.owner, self.run_ids[:-1]),
             },
         )
 
@@ -374,6 +390,7 @@ class V4Target:
             **kinds,
             "chart": chart_observations(kinds.get("artifact", []), self.owner, run),
             **({"stream": self.stream} if self.stream else {}),
+            **fault_evidence(self.port),
         }
 
     def close(self) -> None:
@@ -410,5 +427,6 @@ class V4Target:
             "portability": self.portability,
             "ingress": self.feishu.proof if self.feishu else {},
             **harness_evidence(self),
+            **fault_evidence(self.port),
             **({"stream": self.stream} if self.stream else {}),
         }

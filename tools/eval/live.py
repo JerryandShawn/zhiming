@@ -33,6 +33,12 @@ def live_session(args: Any, scenario_ids: Sequence[str]) -> Iterator[DelegatedSe
     # physical quota window until the original run and completed turns persist.
     if getattr(args, "resume", False):
         raise GuardRejected("manual_start_required")
+    if getattr(args, "connection_proof", None) is not None:
+        from tools.eval.k31_live import core_session
+
+        with core_session(args, scenario_ids) as session:
+            yield session
+        return
     path, candidate = getattr(args, "scripted_gate", None), getattr(args, "candidate", None)
     proof, schema = getattr(args, "equivalence_proof", None), getattr(args, "control_schema", None)
     if path is None or not candidate or proof is None or not schema:

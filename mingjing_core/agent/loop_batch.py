@@ -50,8 +50,6 @@ class ToolBatch:
     def prepare(self, call: ToolCall, ended: bool) -> PreparedTool:
         cycle = self.cycle
         cycle.control.poll()
-        if cycle.emit:
-            cycle.emit("tool_call", {"call_id": call.id, "name": call.name, "summary": "正在处理这一步"})
         failure = None
         try:
             fingerprint = cycle.registry.fingerprint(
@@ -67,6 +65,7 @@ class ToolBatch:
         cycle.repeats[fingerprint] = cycle.repeats.get(fingerprint, 0) + 1
         repeated = cycle.repeats[fingerprint] >= cycle.policy.repeat_limit
         step = cycle.journal.next_or_replay(cycle.run, kind="tool", name=call.name, input_fp=fingerprint)
+        self._emit(step, "tool_call", {"call_id": call.id, "name": call.name, "summary": "正在处理这一步"})
         code = "turn_ended" if ended else "repeated_tool" if repeated else failure
         immediate = ToolResult(ok=False, data={"code": code}, summary="本次工具未执行") if code else None
         if step.completed:
@@ -83,16 +82,18 @@ class ToolBatch:
         # A write may legitimately advance dependencies before its own acknowledgement.
         # Journal and registration retain the lease, cancellation and withdrawal fences.
         with cycle.registry.service.repo.transaction(cycle.run["owner"]):
-            if not prepared.step.completed:
-                cycle.journal.complete(prepared.step, result.model_dump())
+            step = (
+                prepared.step if prepared.step.completed else cycle.journal.complete(prepared.step, result.model_dump())
+            )
             cycle._register(call.name, result)
         if result.receipt:
             cycle.receipts.append(copy.deepcopy(result.receipt))
         if result.ends_turn:
             cycle.asked = copy.deepcopy(result.data.get("asked"))
         cycle.messages.append(tool_message(call.id, result, cycle.cycle, aliases=cycle.aliases))
-        if cycle.emit:
-            cycle.emit(
+        if cycle.tool_emit or cycle.emit:
+            self._emit(
+                step,
                 "tool_result",
                 {
                     "call_id": call.id,
@@ -108,6 +109,12 @@ class ToolBatch:
 
             result = ask_privacy(cycle, result.data["privacy_confirmation"])
         return result, "repeated_tool" if prepared.repeated and not prepared.ended else None
+
+    def _emit(self, step: JournalStep, kind: str, payload: dict) -> None:
+        if self.cycle.tool_emit:
+            self.cycle.tool_emit(step, kind, payload)
+        elif self.cycle.emit:
+            self.cycle.emit(kind, payload)
 
     def serial(self, call: ToolCall, ended: bool = False) -> tuple[ToolResult, str | None]:
         prepared = self.prepare(call, ended)

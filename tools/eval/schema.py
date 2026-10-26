@@ -176,6 +176,10 @@ class Expectation(StrictModel):
     must_include_any: list[Nonempty] = Field(default_factory=list)
     must_include_all: list[Nonempty] = Field(default_factory=list)
     must_not_include: list[Nonempty] = Field(default_factory=list)
+    memory_access: list[Nonempty] = Field(default_factory=list)
+    memory_recall_or_text: list[Nonempty] = Field(default_factory=list)
+    naming_only_questions: bool = False
+    profile_confirmation_or_text: Nonempty | None = None
     tools_called: list[Nonempty] = Field(default_factory=list)
     tools_not_called: list[Nonempty] = Field(default_factory=list)
     receipts: list[JsonMap] = Field(default_factory=list)

@@ -96,6 +96,8 @@ def validate_seed(seed: dict[str, Any], binding: LifecycleBinding) -> None:
 
 
 def snapshot(target: Any, binding: LifecycleBinding, turn: int, completed: dict | None = None) -> dict[str, Any]:
+    from .v4_execution_budget_store import closed_budgets
+
     validate_seed(target.seed, binding)
     if (
         target.repo is None
@@ -112,6 +114,7 @@ def snapshot(target: Any, binding: LifecycleBinding, turn: int, completed: dict 
     ]
     if records[-1]["thread"] != target.thread["id"]:
         raise LifecycleError("评测线程与运行不一致")
+    budgets = closed_budgets(target, binding, required=target._budget_started)
     return {
         "format": FORMAT,
         "owner": target.owner,
@@ -129,6 +132,7 @@ def snapshot(target: Any, binding: LifecycleBinding, turn: int, completed: dict 
         "tarot": {key: deepcopy(getattr(target.tarot, key)) for key in ("ids", "failed_reading", "retry_reading")},
         "runs": records,
         "metrics": {key: getattr(target.port, key) for key in ("calls", "external_calls")},
+        **({"execution_budget": budgets} if budgets is not None else {}),
     }
 
 
@@ -162,6 +166,8 @@ def save_private(
 
 
 def read_private(repo: PostgresRepository, owner: str, record: dict, binding: LifecycleBinding) -> dict[str, Any]:
+    from .v4_execution_budget_store import verify_saved_budgets
+
     row = repo.get(owner, "runtime_step", record["state_id"], include_deleted=True)
     state = row.get("state")
     if (
@@ -192,6 +198,7 @@ def read_private(repo: PostgresRepository, owner: str, record: dict, binding: Li
         if completed.get("turn") != state["turn"] or completed.get("native", {}).get("run_id") != records[-1]["id"]:
             raise LifecycleError("完成观察不属于当前原生运行及轮次")
         verify_completed(repo, owner, state.get("completed_turn"))
+    verify_saved_budgets(repo, owner, state, record, binding)
     return state
 
 
@@ -218,3 +225,5 @@ def restore(target: Any, state: dict[str, Any]) -> None:
     for key, value in state["metrics"].items():
         setattr(target.port, key, value)
     target.feishu = None
+    target._budget_started = "execution_budget" in state
+    target._budget_legacy = "execution_budget" not in state

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Iterator
 from contextlib import contextmanager
+from dataclasses import dataclass, field
 from typing import Any
 
 import psycopg
@@ -13,6 +14,35 @@ from psycopg.rows import dict_row
 
 from tools.first_release_contracts import require
 from tools.first_release_local_inputs import LocalInputs
+
+
+@dataclass(frozen=True)
+class _Birth:
+    creator: Any = field(repr=False)
+    operation: str
+    database: str
+    database_oid: int
+    owner_oid: int
+    writer_oid: int
+    backend_pid: int
+
+
+_BIRTHS: dict[int, _Birth] = {}
+
+
+def _birth_identity(inputs: LocalInputs, creator: Any) -> _Birth:
+    record = _BIRTHS.get(id(creator))
+    require(
+        isinstance(creator, psycopg.Connection)
+        and not creator.closed
+        and record is not None
+        and record.creator is creator
+        and record.operation == inputs.contract.operation_id
+        and record.database == inputs.contract.database
+        and record.backend_pid == creator.pgconn.backend_pid,
+        "LOCAL_TARGET_LIVE_CREATION_REQUIRED",
+    )
+    return record
 
 
 def server_identity(connection: Any, fields: dict[str, str]) -> None:
@@ -40,13 +70,17 @@ def new_target(inputs: LocalInputs, dsns: dict[str, str]) -> Iterator[Any]:
             ("first-release-local:" + inputs.contract.database,),
         ).fetchone()["ok"]
         require(locked, "LOCAL_RESTORE_ALREADY_RUNNING")
-        create_target(admin, inputs, dsns)
-        initialize_public(inputs, dsns)
-        # Closing this session releases the lock; no cleanup/retry removes a partial restore.
-        yield admin
+        try:
+            create_target(admin, inputs, dsns)
+            initialize_public(inputs, dsns)
+            # Closing this session releases the lock; no cleanup/retry removes a partial restore.
+            yield admin
+        finally:
+            _BIRTHS.pop(id(admin), None)
 
 
 def create_target(admin: Any, inputs: LocalInputs, dsns: dict[str, str]) -> None:
+    require(id(admin) not in _BIRTHS, "LOCAL_TARGET_CREATOR_ALREADY_REGISTERED")
     name = inputs.contract.database
     roles = [name + "_owner", name + "_writer"]
     exists = admin.execute(
@@ -55,7 +89,34 @@ def create_target(admin: Any, inputs: LocalInputs, dsns: dict[str, str]) -> None
         (name, roles),
     ).fetchone()["present"]
     require(not exists, "LOCAL_DATABASE_OR_ROLE_ALREADY_EXISTS")
+    role_oids = _create_roles(admin, dsns)
+    admin.execute(
+        sql.SQL("CREATE DATABASE {} OWNER {} TEMPLATE template0 ENCODING 'UTF8'").format(
+            sql.Identifier(name), sql.Identifier(roles[0])
+        )
+    )
+    database = admin.execute("SELECT oid,datdba FROM pg_database WHERE datname=%s", (name,)).fetchone()
+    require(database and database["datdba"] == role_oids["owner"], "LOCAL_TARGET_CREATED_OWNER_CHANGED")
+    _BIRTHS[id(admin)] = _Birth(
+        admin,
+        inputs.contract.operation_id,
+        name,
+        database["oid"],
+        role_oids["owner"],
+        role_oids["writer"],
+        admin.pgconn.backend_pid,
+    )
+    admin.execute(sql.SQL("REVOKE ALL ON DATABASE {} FROM PUBLIC").format(sql.Identifier(name)))
+    admin.execute(
+        sql.SQL("GRANT CONNECT ON DATABASE {} TO {},{}").format(
+            sql.Identifier(name), sql.Identifier(roles[0]), sql.Identifier(roles[1])
+        )
+    )
+
+
+def _create_roles(admin: Any, dsns: dict[str, str]) -> dict[str, int]:
     with admin.transaction():
+        result = {}
         for role in ("owner", "writer"):
             fields = conninfo_to_dict(dsns[role])
             password = fields.get("password")
@@ -72,17 +133,10 @@ def create_target(admin: Any, inputs: LocalInputs, dsns: dict[str, str]) -> None
                     "NOREPLICATION NOBYPASSRLS PASSWORD {}"
                 ).format(sql.Identifier(fields["user"]), sql.Literal(verifier))
             )
-    admin.execute(
-        sql.SQL("CREATE DATABASE {} OWNER {} TEMPLATE template0 ENCODING 'UTF8'").format(
-            sql.Identifier(name), sql.Identifier(roles[0])
-        )
-    )
-    admin.execute(sql.SQL("REVOKE ALL ON DATABASE {} FROM PUBLIC").format(sql.Identifier(name)))
-    admin.execute(
-        sql.SQL("GRANT CONNECT ON DATABASE {} TO {},{}").format(
-            sql.Identifier(name), sql.Identifier(roles[0]), sql.Identifier(roles[1])
-        )
-    )
+            row = admin.execute("SELECT oid FROM pg_roles WHERE rolname=%s", (fields["user"],)).fetchone()
+            require(row is not None, "LOCAL_TARGET_CREATED_ROLE_MISSING")
+            result[role] = row["oid"]
+    return result
 
 
 def initialize_public(inputs: LocalInputs, dsns: dict[str, str]) -> None:

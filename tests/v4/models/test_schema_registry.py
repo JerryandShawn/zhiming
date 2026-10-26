@@ -1,8 +1,8 @@
 """Schema preservation and failover behavior are independent of live credentials."""
 
 import json
-import time
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import httpx
@@ -233,15 +233,22 @@ def test_default_registry_loads_no_network() -> None:
     assert reg.resolve("fast")[0].provider == "kimi_code"
 
 
-def test_registry_shares_total_deadline_across_retries_and_providers(tmp_path: Any) -> None:
+def test_registry_shares_total_deadline_across_retries_and_providers(
+    tmp_path: Any, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Board v47/R27: advance only model clocks; host scheduling must not spend the budget before the first request.
+    clock = SimpleNamespace(now=100.0)
+    model_time = SimpleNamespace(monotonic=lambda: clock.now, sleep=lambda seconds: None)
+    for module in ("registry", "transport", "retry_policy"):
+        monkeypatch.setattr(f"mingjing_core.models.{module}.time", model_time)
     reg = registry(tmp_path)
-    reg.data["providers"]["one"]["settings"]["total_timeout"] = 0.01
+    reg.data["providers"]["one"]["settings"]["total_timeout"] = 600
     attempts: list[str] = []
 
     def factory(handle: Any) -> Any:
         def respond(_: httpx.Request) -> httpx.Response:
             attempts.append(handle.model)
-            time.sleep(0.03)
+            clock.now += 601
             return httpx.Response(
                 200, content=recording({"choices": [{"delta": {"content": "too late"}, "finish_reason": "stop"}]})
             )

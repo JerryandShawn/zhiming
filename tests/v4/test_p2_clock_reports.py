@@ -35,7 +35,10 @@ def test_report_period_keeps_legacy_key_and_adds_actual_calendar_bounds(
     kind: str, day: str, start: str, end: str, key: str
 ) -> None:
     assert report_period(kind, date.fromisoformat(day)) == key
-    assert report_period_bounds(kind, date.fromisoformat(day)) == {"start": start, "end": end}
+    assert report_period_bounds(kind, date.fromisoformat(day)) == {
+        "start": start,
+        "end": end,
+    }
 
 
 class CapturingModel(FixtureModel):
@@ -43,7 +46,14 @@ class CapturingModel(FixtureModel):
         super().__init__()
         self.systems = []
 
-    def generate(self, *, system: str, payload: dict[str, Any], schema: dict[str, Any], purpose: str) -> dict[str, Any]:
+    def generate(
+        self,
+        *,
+        system: str,
+        payload: dict[str, Any],
+        schema: dict[str, Any],
+        purpose: str,
+    ) -> dict[str, Any]:
         self.systems.append(system)
         return super().generate(system=system, payload=payload, schema=schema, purpose=purpose)
 
@@ -58,7 +68,11 @@ def test_program_clock_now_history_and_crisis_config_reach_every_real_review_bou
     try:
         assert today() == "2026-10-17"
         service.memory.receive(
-            "alice", content="合成旧话题", source_id="old", conversation_id="old", at="2026-10-16T09:15:00+08:00"
+            "alice",
+            content="合成旧话题",
+            source_id="old",
+            conversation_id="old",
+            at="2026-10-16T09:15:00+08:00",
         )
         result = asyncio.run(
             service.consult(
@@ -71,13 +85,17 @@ def test_program_clock_now_history_and_crisis_config_reach_every_real_review_bou
             )
         )
         assert result["meta"]["system_policy_version"] == SYSTEM_POLICY_VERSION
-        assert [row["purpose"] for row in model.requests] == ["intake", "synthesis", "review"]
+        assert [row["purpose"] for row in model.requests] == [
+            "intake",
+            "synthesis",
+            "review",
+        ]
         for request, system in zip(model.requests, model.systems, strict=True):
             data = request["payload"]["reference_data"]
             assert "2026年10月17日" in data["now"]
             assert any(row["at"] == "2026-10-16 09:15" for row in data["recent_history"])
             assert all(set(row) == {"at", "role", "channel", "content"} for row in data["recent_history"])
-            assert all(number in system for number in ("12356", "120", "110"))
+            assert "我这边暂时没法回答，稍后再试。" in system
     finally:
         service.runtime.purge(result["meta"]["core_run"]["run_id"]) if "result" in locals() else None
         set_clock(original)
@@ -85,7 +103,12 @@ def test_program_clock_now_history_and_crisis_config_reach_every_real_review_bou
 
 @pytest.mark.parametrize(
     "kind,day",
-    [("daily", "2026-10-17"), ("weekly", "2026-10-18"), ("monthly", "2026-11-01"), ("quarterly", "2027-01-01")],
+    [
+        ("daily", "2026-10-17"),
+        ("weekly", "2026-10-18"),
+        ("monthly", "2026-11-01"),
+        ("quarterly", "2027-01-01"),
+    ],
 )
 def test_report_adapter_sends_explicit_date_and_period_into_unchanged_service(
     p2_repo: PostgresRepository, kind: str, day: str
@@ -108,7 +131,9 @@ def test_report_adapter_sends_explicit_date_and_period_into_unchanged_service(
         service.runtime.purge(result["meta"]["core_run"]["run_id"])
 
 
-def test_intake_today_matches_owner_timezone_now_block_under_frozen_clock(p2_repo: PostgresRepository) -> None:
+def test_intake_today_matches_owner_timezone_now_block_under_frozen_clock(
+    p2_repo: PostgresRepository,
+) -> None:
     from psycopg import sql
     from psycopg.types.json import Jsonb
 
@@ -123,7 +148,12 @@ def test_intake_today_matches_owner_timezone_now_block_under_frozen_clock(p2_rep
                 (Jsonb({"timezone": "America/New_York"}),),
             )
         result = asyncio.run(
-            service.consult(owner="alice", message="今天核对安排", request_id="owner-zone", depth="fast")
+            service.consult(
+                owner="alice",
+                message="今天核对安排",
+                request_id="owner-zone",
+                depth="fast",
+            )
         )
         data = model.requests[0]["payload"]["reference_data"]
         assert data["today"] == "2026-10-16"

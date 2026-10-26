@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from typing import Any
 
@@ -12,6 +13,7 @@ from mingjing_core.repositories.postgres import PostgresRepository
 
 def context_observations(repo: PostgresRepository, owner: str, run: dict[str, Any]) -> dict[str, Any]:
     empty = {
+        "injected_facts": [],
         "l4": {"time_filter": None, "text": "", "item_ids": []},
         "l2": {"text": "", "item_ids": []},
         "l5": {"text": "", "item_ids": []},
@@ -37,6 +39,24 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
     match = re.search(r'time_filter="(\d{4}-\d{2}-\d{2}\.\.\d{4}-\d{2}-\d{2})"', text)
     profile = [item for layer in layers if layer["name"] == "L2" for item in layer["items"]]
     history = [item for layer in layers if layer["name"] == "L5" for item in layer["items"]]
+    injected = []
+    for layer in layers:
+        if layer["name"] not in {"L2", "L4"}:
+            continue
+        for item in layer["items"]:
+            for message in item["messages"]:
+                content = message["content"]
+                try:
+                    value = json.loads(content[content.index("\n") + 1 : content.rindex("\n")])
+                except (ValueError, TypeError):
+                    continue
+                if isinstance(value, dict) and value.get("kind") in {
+                    "fact",
+                    "event",
+                    "constraint",
+                    "preference",
+                }:
+                    injected.append({"alias": value.get("alias"), "kind": value["kind"], "text": value.get("text", "")})
     return {
         "l5": {
             "text": "\n".join(message["content"] for item in history for message in item["messages"]),
@@ -46,6 +66,7 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
             "text": "\n".join(message["content"] for item in profile for message in item["messages"]),
             "item_ids": [item["key"] for item in profile],
         },
+        "injected_facts": injected,
         "l4": {
             "time_filter": match.group(1) if match else None,
             "text": text,
