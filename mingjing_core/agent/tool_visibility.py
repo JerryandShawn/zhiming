@@ -11,7 +11,6 @@ from mingjing_core.domain.contracts import EvidenceError
 
 RESIDENT_TOOLS = (
     "time_context",
-    "calendar_lookup",
     "memory_search",
     "memory_write",
     "memory_forget",
@@ -21,7 +20,6 @@ RESIDENT_TOOLS = (
     "present_options",
     "chart_compute",
     "schedule_followup",
-    "set_reminder",
 )
 CONDITIONAL_TOOLS = (
     "date_calc",
@@ -37,6 +35,8 @@ CONDITIONAL_TOOLS = (
     "window_search",
     "almanac",
     "synastry",
+    "calendar_lookup",
+    "set_reminder",
 )
 CRISIS_TOOLS = frozenset({"time_context", "memory_search"})
 PRIVATE_WRITES = frozenset(
@@ -68,6 +68,7 @@ class VisibilityState:
     chart_computed: bool = False
     date_context: bool = False
     metaphysics_intent: str = "none"
+    reminder_requested: bool = False
 
     def conditional(self) -> dict[str, bool]:
         return {
@@ -84,6 +85,8 @@ class VisibilityState:
             "window_search": self.metaphysics_intent == "window",
             "almanac": self.metaphysics_intent == "almanac",
             "synastry": self.metaphysics_intent == "synastry",
+            "calendar_lookup": self.date_context,
+            "set_reminder": self.reminder_requested,
         }
 
     def necessary(self) -> set[str]:
@@ -100,6 +103,7 @@ class VisibilityState:
                 ("window_search", self.metaphysics_intent == "window"),
                 ("almanac", self.metaphysics_intent == "almanac"),
                 ("synastry", self.metaphysics_intent == "synastry"),
+                ("set_reminder", self.reminder_requested),
             )
             if active
         }

@@ -9,6 +9,7 @@ from psycopg import sql
 
 from mingjing_core.agent.tool_visibility import VisibilityState
 from mingjing_core.application.agent_tools_contracts import ToolContext
+from mingjing_core.application.agent_tools_followups import reminder_intent
 from mingjing_core.application.metaphysics_intent import metaphysics_intent
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
 from mingjing_core.memory.policy import mask_quoted
@@ -25,7 +26,13 @@ PROFILE = re.compile(
     r"|(?:资料|生日|出生|姓名|名字|时区).{0,12}(?:改为|改成|不对|有误|记错)"
 )
 PROGRESS = re.compile(r"那件事.{0,8}(?:进展|后续|怎么样)|事情.{0,8}进展")
-DATE_CALC = re.compile(r"日期|几天|多少天|相隔|天数|间隔|年龄|周岁|虚岁|多大|农历|公历|阴历|阳历|星期")
+DATE_CALC = re.compile(
+    r"日期|几天|多少天|相隔|天数|间隔|年龄|周岁|虚岁|多大|农历|公历|阴历|阳历|星期|日历|历法|假日|调休"
+)
+
+
+def reminder_requested(text: str) -> bool:
+    return reminder_intent(text) == "confirmed"
 
 
 def step_state(rows: list[dict[str, Any]]) -> tuple[bool, bool]:
@@ -86,4 +93,5 @@ def visibility_state(service: AgentToolsService, ctx: ToolContext) -> Visibility
         case_progress=PROGRESS.search(text) is not None,
         chart_computed=computed,
         metaphysics_intent=metaphysics_intent(source["content"]),
+        reminder_requested=reminder_requested(source["content"]),
     )

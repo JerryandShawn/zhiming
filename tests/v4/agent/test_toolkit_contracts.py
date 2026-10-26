@@ -7,7 +7,7 @@ from typing import Any
 
 import pytest
 
-from mingjing_core.agent.tool_visibility import CONDITIONAL_TOOLS, RESIDENT_TOOLS, VisibilityState
+from mingjing_core.agent.tool_visibility import RESIDENT_TOOLS, VisibilityState
 from mingjing_core.agent.toolkit import DEFINITIONS, ToolContext, ToolDefinition, ToolRegistry, ToolResult
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.domain.contracts import EvidenceError
@@ -38,13 +38,14 @@ def context(**changes: Any) -> ToolContext:
 def test_registry_order_visibility_and_flattened_schemas() -> None:
     registry = ToolRegistry(SchemaOnlyService())
     specs = registry.specs(context())
-    registered = {item.name for item in DEFINITIONS}
     assert [item.name for item in specs] == [
-        name
-        for name in (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS)
-        if name in registered and name not in {"tarot_read", "memory_update", "profile_update_request", "date_calc"}
-    ][:15]
-    assert len(DEFINITIONS) == 25 and len(specs) == 15
+        *RESIDENT_TOOLS,
+        "tarot_start",
+        "case_list",
+        "case_update",
+        "case_add_event",
+    ]
+    assert len(DEFINITIONS) == 25 and len(specs) == 14
     for item in specs:
         text = str(item.parameters)
         assert "$ref" not in text and "$defs" not in text and "anyOf" not in text
@@ -57,7 +58,7 @@ def test_registry_order_visibility_and_flattened_schemas() -> None:
     )
     assert not registry.read_only("ask_user")
     private_names = {item.name for item in registry.specs(context(thread_id="incognito:one"))}
-    assert len(private_names) == 8 and "set_reminder" in private_names and "date_calc" not in private_names
+    assert len(private_names) == 6 and "set_reminder" not in private_names and "date_calc" not in private_names
     assert not private_names.intersection({"memory_write", "note_write", "memory_forget", "schedule_followup"})
 
 
@@ -75,7 +76,7 @@ def test_unreviewed_extra_tool_is_not_disclosed() -> None:
     extra = ToolDefinition("extra_time", DEFINITIONS[0].parameters, DEFINITIONS[0].description)
     registry = ToolRegistry(SchemaOnlyService(), definitions=DEFINITIONS + (extra,))
     specs = registry.specs(context())
-    assert len(specs) == 15 and "extra_time" not in {tool.name for tool in specs}
+    assert len(specs) == 14 and "extra_time" not in {tool.name for tool in specs}
 
 
 @pytest.mark.parametrize("changes", [{"epoch": True}, {"seq": 0}, {"input_fp": "raw"}, {"thread_id": ""}])

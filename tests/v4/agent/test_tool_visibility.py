@@ -47,16 +47,19 @@ def names(
     )
 
 
-def test_exact_twelve_residents_and_no_unrelated_conditional_tools() -> None:
+def test_exact_ten_residents_and_no_unrelated_conditional_tools() -> None:
     assert names(VisibilityState()) == RESIDENT_TOOLS
-    assert len(RESIDENT_TOOLS) == 12 and len(set(RESIDENT_TOOLS)) == 12
+    assert len(RESIDENT_TOOLS) == 10 and len(set(RESIDENT_TOOLS)) == 10
     assert "date_calc" not in names(VisibilityState())
+    assert "calendar_lookup" not in names(VisibilityState())
+    assert "set_reminder" not in names(VisibilityState())
 
 
 @pytest.mark.parametrize(
     "state,visible",
     [
-        (VisibilityState(date_context=True), ("date_calc",)),
+        (VisibilityState(date_context=True), ("date_calc", "calendar_lookup")),
+        (VisibilityState(reminder_requested=True), ("set_reminder",)),
         (VisibilityState(memory_search_has_results=True), ("memory_update",)),
         (VisibilityState(memory_correcting=True), ("memory_update",)),
         (VisibilityState(first_meeting=True), ("profile_update_request",)),
@@ -97,6 +100,8 @@ def test_optional_overflow_uses_frozen_conditional_order() -> None:
         "memory_update",
         "profile_update_request",
         "tarot_start",
+        "case_list",
+        "case_update",
     )
 
 
@@ -112,8 +117,8 @@ def test_state_necessary_tool_survives_lower_registration_priority(
     state: VisibilityState, required: str
 ) -> None:
     selected = names(state)
-    assert selected[:12] == RESIDENT_TOOLS and len(selected) == 15
-    assert required in selected and "tarot_start" not in selected
+    assert selected[:10] == RESIDENT_TOOLS and len(selected) == 15
+    assert required in selected and "case_update" not in selected
 
 
 def test_only_tool_is_reserved_before_truncation() -> None:
@@ -121,7 +126,7 @@ def test_only_tool_is_reserved_before_truncation() -> None:
     assert (
         len(selected) == 15
         and selected[-1] == "case_update"
-        and "tarot_start" not in selected
+        and "case_add_event" not in selected
     )
 
 
@@ -135,6 +140,8 @@ def test_impossible_necessary_set_has_distinct_failure_instead_of_dropping_tools
                 chart_computed=True,
                 profile_editing=True,
                 memory_correcting=True,
+                date_context=True,
+                reminder_requested=True,
             )
         )
     assert caught.value.code == "TOOL_VISIBILITY_CONFLICT"
@@ -186,7 +193,7 @@ def test_unimplemented_tools_are_not_fabricated_and_unknown_tools_are_not_disclo
         Definition(name) for name in RESIDENT_TOOLS if name != "chart_compute"
     ] + [Definition("unreviewed")]
     selected = select_visible(definitions, context(), VisibilityState())
-    assert len(selected) == 11 and "unreviewed" not in {tool.name for tool in selected}
+    assert len(selected) == 9 and "unreviewed" not in {tool.name for tool in selected}
     with pytest.raises(EvidenceError, match="尚未注册"):
         select_visible(
             definitions, context(), VisibilityState(), required=("chart_compute",)
@@ -205,8 +212,8 @@ def test_date_context_or_trusted_required_opens_date_tool_without_replacing_resi
         (crowded(), ("date_calc",)),
     ):
         selected = names(state, required=required)
-        assert selected[:12] == RESIDENT_TOOLS and len(selected) == 15
-        assert "date_calc" in selected and "tarot_start" not in selected
+        assert selected[:10] == RESIDENT_TOOLS and len(selected) == 15
+        assert "date_calc" in selected and "case_update" not in selected
     assert "date_calc" not in names(
         VisibilityState(), crisis=True, required=("date_calc",)
     )
