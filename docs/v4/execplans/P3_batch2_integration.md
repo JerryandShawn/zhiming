@@ -140,3 +140,12 @@ private/safe-narrow-e09e3c22642b4463a47e6d1aee484735为29/29、0.85s，metadata/
 同时修正应用服务对subprocess.TimeoutExpired的安全转换，超时命令/stderr不外露；private/safe-narrow-5b56223757384f3d843e4e916811e3c8为4/4、3.42s，原metadata/XML/log根核，含实际PG→Charts worker通过新增临界校验以及普通/超时错误负例。分轮不合称一次全链。Ruff/check/format120/git diff--check过，无全量/CI/真实模型/远端修改。
 
 main58未变，模块仍35/37未就绪，不提前merge。02:15单次SSH仍banner timeout/native255（session51663结束），未认证/远端命令0。原PG55480 PID50516仅核存活，未启停PG。H1无P8闸门41660531保持已发布，记忆路线仍mem2-gate。下一继续P8真实Agent路由/cache/lineage/紫微引用/四工具与合盘授权，或模块就绪优先无P8记忆合入；不重复已绿子项。
+### 2026-10-27 02:37 紫微飞化真实盘面引用
+
+新增p8_ziwei_references并接入verify_p8_document/reference_rows：对每个原生ziwei_column，以其实际星曜/宫位和声明的获准具名table_id重算原生palace_flying_transformations，使用原生rebase_column_evidence规整到当前文档后逐内容hash一致核验；包含实际表来源摘要/版本/学校/星曜定位/缺失或歧义状态/原生运限可用性。不修改上游计算或资料，不把未出现运限补成已计算。
+
+飞化全部*_pointer/evidence_paths必须位于该盘本身的ziwei_column且实际可解析；不能跨另一个候选或二次提升。登记原生column和flying对象为chart事实引用，附真实Pointer/value_sha256，不制造met或rule引用，不借用短别名。解释规则引用仍只来自真正命中rule_hits/临界规则，后续仍需Agent原生持久化及alias链，不把本子项冒称Agent闭环或四工具完成。
+
+private/safe-narrow-cd7798da1191445fa00ebcb5410d83bb为38/38、1.17s，metadata/XML/log根核exit0/fail0/error0，含原生三份样例、飞化正例/八种篡改拒绝及原文档临界规则。private/safe-narrow-823724006c01486b8fba34647f719883为4/4、3.28s：实际PG确认资料→真实Charts worker→新增飞化文档校验及错误负例；原件根核，不把两轮合称一次全链。因本次更改产物验收入口才复核真实worker，不重跑无关TA01/M01/评分包。Ruff/check/format120/git diff--check过，无全量/CI/真实模型。
+
+main58/模块首段35/37未就绪，不提前merge；02:35只读SSH仍banner timeout/native255，session47201结束，未认证/远端命令0。原PG55480 PID50516仅确认存活，未启停。H1独立无P8闸门41660531保持发布；首发e578/r46冻结。下一优先实际Agent P8路由/cache/lineage、四工具/合盘，容量策略仍待裁定不吞异常或放宽15；模块就绪立即优先无P8记忆路线，不再重复已绿飞化/临界子项。

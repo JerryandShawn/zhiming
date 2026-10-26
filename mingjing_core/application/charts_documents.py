@@ -110,6 +110,11 @@ def reference_rows(payload: dict[str, Any], kind: str, document_id: str) -> list
                 "evidence_pointers": paths,
             }
         )
+    if kind == "time_basis":
+        from mingjing_core.application.p8_ziwei_references import ziwei_reference_rows
+
+        for row in ziwei_reference_rows(payload, document_id):
+            evidence[row["pointer"]] = row
     return list(evidence.values()) + rows
 
 
