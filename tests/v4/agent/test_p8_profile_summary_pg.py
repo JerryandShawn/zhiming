@@ -83,7 +83,8 @@ def test_published_archive_enters_later_stable_layer_with_native_dependency_clos
     assert not any(key.startswith(("c", "r")) for key in built.alias_map)
     assert built.injected_versions[entity_dependency("artifact", doc["id"])] == doc["revision"]
     assert built.injected_versions[entity_dependency("runtime_step", cache["id"])] == cache["revision"]
-    assert "subject:self" in built.injected_versions and repo.verify_versions("alice", built.injected_versions)
+    assert not any(key.startswith(("owner:", "subject:", "global:", "case:")) for key in built.injected_versions)
+    assert repo.verify_versions("alice", built.injected_versions)
     old_versions = dict(built.injected_versions)
     repo.update(
         "alice",

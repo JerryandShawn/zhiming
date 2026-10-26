@@ -90,7 +90,10 @@ class ToolBatch:
             cycle.receipts.append(copy.deepcopy(result.receipt))
         if result.ends_turn:
             cycle.asked = copy.deepcopy(result.data.get("asked"))
-        cycle.messages.append(tool_message(call.id, result, cycle.cycle, aliases=cycle.aliases))
+        from .p8_boundary_delivery import boundary_delivery
+
+        message = tool_message(call.id, result, cycle.cycle, aliases=cycle.aliases)
+        cycle.messages.append(boundary_delivery(cycle, prepared, result, message))
         if cycle.tool_emit or cycle.emit:
             self._emit(
                 step,

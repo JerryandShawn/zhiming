@@ -14,7 +14,7 @@ from .context_entities import _valid
 from .p8_profile_text import profile_text
 
 
-def _document(sources, owner, subject, step):
+def _document(sources, owner, subject, step, *, profile_only=False):
     output = step["output"]
     data = output["data"]
     if data.get("adapter_mode") != "p8_v1_1" or data.get("tool_name"):
@@ -30,7 +30,9 @@ def _document(sources, owner, subject, step):
         or cache.get("epoch") != step["epoch"]
         or cache.get("input_fp") != step["input_fp"]
         or fingerprint(cache.get("tool_output")) != fingerprint(output)
-        or not sources.repo.verify_versions(owner, cache["snapshot"]["versions"])
+        or not sources.repo.verify_versions(
+            owner, profile_versions(cache["snapshot"]) if profile_only else cache["snapshot"]["versions"]
+        )
         or sources.repo.is_revoked(owner, "runtime_step", cache_id)
     ):
         return None
@@ -50,6 +52,15 @@ def _document(sources, owner, subject, step):
     if fingerprint(checked) != fingerprint(doc):
         return None
     return _archive(sources, owner, subject, step, cache, doc, operation)
+
+
+def profile_versions(snapshot):
+    """A displayed birth boundary does not depend on unrelated case/background facts."""
+    return {
+        key: value
+        for key, value in snapshot["versions"].items()
+        if key.startswith(("owner:", "subject:", "fact:", "message:"))
+    }
 
 
 def _archive(sources, owner, subject, step, cache, doc, operation):
@@ -111,9 +122,12 @@ def read_chart_profiles(sources, owner, subject, cases, facts):
                 row.update(
                     _p8_profile_text=text,
                     profile_dependency_ids=[cache["id"]],
-                    profile_version_keys=list(cache["snapshot"]["versions"]),
                 )
-                versions = dict(cache["snapshot"]["versions"])
+                versions = {
+                    key: value
+                    for key, value in cache["snapshot"]["versions"].items()
+                    if key.startswith(("fact:", "message:"))
+                }
                 versions[entity_dependency("runtime_step", cache["id"])] = cache["revision"]
                 return (row,), versions
             except (CoreError, KeyError, TypeError, ValueError):

@@ -285,3 +285,17 @@ agent_synastry_lineage只接受同run/epoch唯一已完成Journal完整输出与
 - 最终private/safe-narrow-1294e92ecbc34c2ebda423576d13c634为41/41、29.41秒，metadata/XML/log根核exit0/fail0/error0/skip0。实际脚本Agent→真实Charts worker→Journal→core4.0发布→下一条真实消息→ContextEngine稳定层摘要、≤400字/无c-r/精确依赖，缓存变化使旧context版本失效并不再注入；doc篡改/出生资料或来源撤销/运行失败/跨owner无摘要；待物理时刻确认和超预算不补造。另含原context_layers/context/context_epochs兼容。
 - 首轮36d81360cfd44df58c78aa9e00799bf1为32pass1fail：测试给“第一个visible”对照盘改长口径，而产品正确只选true_solar主盘，因此未触发超预算；修测试精确选择主盘，不改产品筛选/400上限，原件保留。初Ruff未用导入已删除，不忽略规则。六Python文件Ruff/check+format120、diff--check与新函数≤60检查过。没有全量/CI/真实模型/服务器修改。
 - 未完/限制：只有符合当前来源闭包且最近8条内的真实P8成功档案才摘要，旧产物/需要确认/超预算省略，不能称所有档案或记忆2.0关于我第七节已完成；模块AboutMe尚未合入，组合仍待。晨报入口本轮已查明旧scheduled_report被v4入口明确拒绝，source_policy只认current_user，不能伪装系统报告为用户或只加bool绕过；该实际接线缺口待精确方案。另有合盘临时c/r、反思消费者排除、15工具容量策略、临界展示去重/可选warning及最后完整脚本/tests/v4/CI，P8整体未就绪。下一模块一就绪先无P8门树，否则继续其余独立项，不重复摘要绿测。
+
+## 2026-10-27 06:18 当前项计划：原生发布证明驱动临界说明去重
+
+按42 2.6，不把工具结果生成当已向用户完整说明。只在同owner/subject/thread/conversation、同出生事实版本，真实成功run的原生assistant正文/公开信封一致且含完整当前模板（忽略本轮引用编号和空白差异）时选择brief。还需旧原生chart/cache/doc及已引用boundary claim完整有效、来源未撤销；读取证明进入本轮版本闭包。缺证明/只是“已说过”/跨对话/改资料/删旧正文均默认full。不新增迁移或事实/档案，不把历史c/r注册到本轮。模型改写未能逐字证明时保守完整说明，不伪称语义识别完成。
+
+## 2026-10-27 06:28 实际交付：成功发布正文驱动临界说明去重
+
+- main58，模块首段f44f5dd仍未记忆2.0就绪，不提前合入或代修。06:15唯一SSH探测仍banner timeout/native255，无认证/远端命令/服务器修改；原55480 PG仅核存活未启停。首发e578及无P8门d4344bdc不动。
+- 新p8_boundary_history只认可同owner/subject/thread/conversation、当前来话之前的成功v4运行及原生assistant发布。公开core4.0信封/正文/used_claim_ids一致、旧已完成chart_compute/保护cache/doc/实际引用记录及当前出生事实版本全核验；完整当前白话模板确实出现在已发布正文且使用原生boundary claim才选brief。仅工具提示、模型说“以前说过”、跨对话、资料新修订、撤销引用均不算证明。无关偏好新增不把同出生版本误判为新版本。
+- loop_batch实际接受工具结果时调用p8_boundary_delivery；本轮仍用本轮已核验c/r，不登记旧别名。brief附既有原生发布message_id/revision，证明的精确实体版本进入本轮租约依赖，旧正文随后撤销会阻止最终提交。没有事先写“已展示”状态、无迁移/新事实/档案/真实模型请求。只对完整模板的逐字证明（忽略空白及c/r编号）去重；模型改写不能证明时保守full，不声称任意语义改写或真实模型输出已验，可选review warning仍待。
+- 实际跨轮AgentSnapshotStore暴露上一项摘要接线缺陷：06:05摘要把owner/subject/global/case聚合版本纳入初始注入，原快照闸门正确拒绝。已在context_p8_profiles/context_dependencies修为精确fact/message/cache/artifact依赖，原AgentSnapshotStore禁止聚合依赖的规则不改。摘要加载时仍校原snapshot版本，边界发布证明仅对出生资料授权版本做严格复核。上段06:05的聚合依赖描述记录为旧实现，本段覆盖；旧41/41是ContextEngine层验收，不能冒称当时完整下一轮快照路径已通过。本轮实际连续两轮Agent运行补足该路径。
+- 最终private/safe-narrow-86dba3dad1734b2591e91860f117c596：47/47，85.40秒，06:25:14–06:26:40，metadata/XML/log根核exit0/fail0/error0/skip0。含新8项真实PG/隔离Charts worker/Journal/Finalizer的跨轮发布、未发布提示、仅自称说过、跨对话、资料修订、撤销旧claim、无关偏好及选brief后撤销正文；另含原P8摘要、AgentSnapshotStore和LoopCycle兼容。真实模型/外发/服务器均0；无全量/新CI。
+- 原件保留：7b6698c5a58e47d6ba92fd06a7efd761为2pass6fail、38.45秒，发现上述聚合版本缺陷及测试对话不一致；f3577e3089364d4c966743cf72493aea为0pass2fail、14.32秒，修依赖后仍因fixture来话默认default而原发布shared被正确拒绝，按实际ThreadIngress契约仅修测试来话conversation_id为shared，生产隔离不放宽；31bb00f1cbf446acbd143dccf3887bee为2/2、14.55秒补验，不与最终拼成全链。四轮metadata/XML/log均根核。
+- 七个变更Python文件Ruff/check及format120、diff--check、新函数≤60检查通过。P8仍待合盘临时专业c/r、真实反思消费者排除、15工具精确容量策略、晨报受信后台入口及最终完整脚本/tests/v4/CI。临界去重只完成上述保守原生发布证明组件，不称P8整体就绪。模块一就绪优先无P8门树，否则继续其余独立项，不重复绿测。
