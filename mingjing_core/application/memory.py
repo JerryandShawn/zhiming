@@ -202,7 +202,10 @@ class MemoryService:
             sensitive=subject!='self' or kind not in ('preference','constraint') or bool(field) or bool(SENSITIVE.search(quote))
             if assertion_status!='legacy_unverified' and (sensitive or not settings.get('auto_save_low_sensitivity',True)) and not authorized:return {'write_status':'pending_confirmation','reason':'需要明确保存授权，未写入长期事实'}
             if field and value is not None and str(value) not in quote and str(value).lower() not in quote.lower():raise EvidenceError('Structured field value is not in original quote')
-            if field and not re.fullmatch(r'(?:name|gender|birth\.(?:solar_datetime|location\.(?:lng|lat|city|name)|timezone_offset|time_unknown|time_uncertainty_minutes|precision|interval_start|interval_end))',field):raise ValueError('Unsupported profile field')
+            if field and not re.fullmatch(r'(?:name|gender|birth\.(?:solar_datetime|location\.(?:lng|lat|city|name|tz)|clock_basis|timezone_offset|time_unknown|time_uncertainty_minutes|precision|interval_start|interval_end))',field):raise ValueError('Unsupported profile field')
+            if field in {'birth.location.tz','birth.clock_basis'}:
+                from mingjing_core.domain.profile_time_basis import validate_profile_time_basis
+                validate_profile_time_basis({field:value})
             for cid in [case_id] if case_id else []:
                 if self.repo.get(owner,'case',cid)['subject_id']!=subject:raise ScopeError('Fact case belongs to another subject')
             ident='fact_'+fingerprint([owner,message_id,start,end,kind,case_id,field,value])[:32]

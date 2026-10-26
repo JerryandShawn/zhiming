@@ -25,6 +25,7 @@ ProfileField = Literal[
     "birth.location.lat", "birth.location.city", "birth.location.name",
     "birth.timezone_offset", "birth.time_unknown", "birth.time_uncertainty_minutes",
     "birth.precision", "birth.interval_start", "birth.interval_end",
+    "birth.location.tz", "birth.clock_basis",
 ]
 
 

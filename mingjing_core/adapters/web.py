@@ -327,8 +327,10 @@ def create_app(service=None):
                 if isinstance(value,dict): flatten(value,path+'.')
                 else: fields[path]=value
         flatten(payload)
-        supported={'name','gender','birth.solar_datetime','birth.location.lng','birth.location.lat','birth.location.city','birth.location.name','birth.timezone_offset','birth.time_unknown','birth.time_uncertainty_minutes','birth.precision','birth.interval_start','birth.interval_end'}
+        supported={'name','gender','birth.solar_datetime','birth.location.lng','birth.location.lat','birth.location.city','birth.location.name','birth.timezone_offset','birth.time_unknown','birth.time_uncertainty_minutes','birth.precision','birth.interval_start','birth.interval_end','birth.location.tz','birth.clock_basis'}
         fields={k:v for k,v in fields.items() if k in supported and v is not None}
+        from mingjing_core.domain.profile_time_basis import validate_profile_time_basis
+        validate_profile_time_basis(fields)
         if not fields: raise MissingInput('需要实际出生资料或性别字段')
         def confirm_effect():
             if svc.repo.get_revision(owner)!=revision(data): raise RevisionConflict('资料已改变，请重新核对')

@@ -112,3 +112,13 @@ main57、模块仍35/37未就绪；00:35只读SSH仍banner超时/native255，ses
 旧测试修改依据：42 D12明确新增注册chart_skill，注册数20→21及computation_definitions清单补一项；保留默认15工具、原顺序、strict schema、隐私和危机约束，非删断言刷绿。只改对应计数/名单及过时测试命名，未放宽原工具授权。原全真容量冲突仍保留待明确策略，未吞异常/放宽15。
 
 00:55 SSH true仍banner超时/native255（71439已结束），未认证/远端命令/修改0；模块首段仍未记忆2.0就绪。P8整体未完成：下一继续确认资料tz/clock_basis、P8计算路由和lineage、四工具及合盘同意/卡片；不重读42全文或重跑已过子项。记忆候选仍须无P8基点3b095f39，首发e578不动，未跑全量/CI/真实评测。
+
+### 2026-10-27 01:41 P8确认资料时区与记录依据接线
+
+main58仍生效；H1无P8闸门已在独立mem2-gate 41660531发布，模块首段仍35/37未就绪，本轮不提前merge。P8继续仅本batch2树。新增ProfileField的birth.location.tz/birth.clock_basis；确认HTTP入口及MemoryService.save_fact白名单同步，两者共同调用严格IANA/clock-standard-unknown验证。数值UTC偏移不转换为IANA，不把未知依据改成clock。非法值在确认原话/事实写入前拒绝。旧HTTP输入不含两字段仍保持旧路，且不会生成新字段；后续P8准确排盘继续由natal_request缺项闸门拒绝，不能把旧偏移冒充已确认时区。
+
+现有资料确认卡新增IANA输入与时间依据选择，空资料不预选、不从UTC偏移推断；旧候选只展示已有明确字段，勾选授权仍默认关闭。用户明确提交后与原生源消息/授权/版本/幂等一起保存。原无痕/敏感/更正和owner隔离未放宽。Node DOM检查验证新字段初始空、明确选择后带入payload、未知时辰原流程保留；未声称已做不同屏幕视觉截图。
+
+private/safe-narrow-58625d70718d4b998b074c898dd7cd9f为4/4、2.07s，真实PG+HTTP确认新字段、逐字段来源授权、原请求重放、无认证拒绝、另一owner为空、非法/未勾选不写及旧HTTP不猜字段；metadata/XML/log根核。首次1782aff6f30e44069cee2ff9eb4fce43为3pass1fail，测试误用Bearer而原生认证为X-Token，已修测试按原契约调用，不改认证产品。另2c927cc6010d4b5fb93af4e1f5e41289为24/24、1.77s，原profile更正/删除原话后重放不复活及computation参数兼容，原metadata/XML/log根核。两轮均带同一既有Starlette弃用警告，不是失败；不相加称一轮全链。新文件Ruff/check+format120、旧局部改文件AST、node --check、完整原DOM脚本及git diff --check通过。一次命令的PowerShell引号解析错误发生在任何修改/测试执行前，随后用private定点编辑脚本完成DOM测试改动，不算业务测试失败。
+
+01:35单次SSH仍banner超时/native255，session67301结束，远端命令/修改0。真实模型0，未跑全量/CI。P8原生计算路由/lineage/四工具和合盘同意仍未接完，容量策略待精确裁定不吞异常。下一继续实际P8路由或mem2附加段2–5可独立项；模块就绪优先无P8记忆合入，首发e578冻结。不要再重复已过资料字段、chart_skill及TA01/M01/评分包测试。
