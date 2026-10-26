@@ -57,3 +57,16 @@ def test_equivalent_clock_timezones_produce_identical_score():
 
 def test_retired_fact_has_no_importance():
     assert authorized_fact_importance(row(status="retired"), clock=FrozenClock(NOW)) == 0
+
+
+def test_equal_lexical_match_keeps_old_background_ahead_of_raw_message():
+    from mingjing_core.memory2.ranking import rank_key
+
+    fact = ranked_projection(
+        row("background", 365), {"id": "fact", "entity_kind": "fact", "search_rank": 1}, clock=FrozenClock(NOW)
+    )
+    message = ranked_projection(
+        {}, {"id": "message", "entity_kind": "message", "search_rank": 1}, clock=FrozenClock(NOW)
+    )
+    assert fact["retrieval_score"] > message["retrieval_score"]
+    assert sorted([message, fact], key=rank_key)[0]["id"] == "fact"

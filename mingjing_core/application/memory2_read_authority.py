@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from mingjing_core.application.memory2_consent import consent_live
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.repositories.dependencies import entity_dependency
+from mingjing_core.repositories.postgres import fingerprint
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -35,6 +36,58 @@ def fact_consents_live(memory: MemoryService, owner: str, subject: str, fact: di
         )
     except (EvidenceError, ScopeError, KeyError, TypeError, ValueError):
         return False
+
+
+def consent_verifier(memory: MemoryService, owner: str, subject: str):
+    """Caller holds the owner transaction; no memo survives this facts() call."""
+    ledger, originals, proofs = None, {}, {}
+
+    def verify(fact: dict) -> bool:
+        nonlocal ledger
+        try:
+            ids = fact_consent_ids(fact)
+            if ids and ledger is None:
+                ledger = memory.repo.revocations(owner)
+            for ident in ids:
+                if ident not in proofs:
+                    try:
+                        proof = memory.repo.get(owner, "consent", ident)
+                        proofs[ident] = consent_live(memory, owner, subject, proof, ledger=ledger, originals=originals)
+                    except (EvidenceError, ScopeError):
+                        proofs[ident] = False
+                    if not proofs[ident]:
+                        inactive_notice(memory, owner, subject, ident)
+                if not proofs[ident]:
+                    return False
+            return True
+        except (EvidenceError, ScopeError, KeyError, TypeError, ValueError):
+            return False
+
+    return verify
+
+
+def inactive_notice(memory: MemoryService, owner: str, subject: str, consent_id: str) -> None:
+    ident = "memory_authority_notice_" + fingerprint([owner, subject, consent_id])[:24]
+    try:
+        memory.repo.get(owner, "knowledge_gap", ident, include_deleted=True)
+        return
+    except ScopeError:
+        pass
+    if memory.repo.is_revoked(owner, "knowledge_gap", ident):
+        return
+    memory.repo.put(
+        owner,
+        "knowledge_gap",
+        ident,
+        {
+            "kind": "memory_authority_notice",
+            "summary": "一项记忆保存授权已失效，相关内容暂不用于回答。",
+            "consent_ids": [consent_id],
+            "inferred": True,
+        },
+        subject=subject,
+        expected_revision=0,
+    )
 
 
 def fact_consent_versions(

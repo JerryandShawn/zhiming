@@ -354,20 +354,22 @@ class MemoryService:
             return dict(self.repo.get(owner,'fact',fact_id,include_deleted=True),write_status='deleted' if operation=='delete' else 'stopped',affected_fact_ids=affected)
 
     def facts(self,owner,subject='self',case_ids=None,*,include_inactive=False):
-        from mingjing_core.application.memory2_read_authority import fact_consents_live
-        rows=self.repo.list(owner,'fact',subject=subject,case_ids=case_ids,include_deleted=include_inactive)
-        when=get_clock().now()
-        def effective(fact):
-            if fact['status']!='active' or fact.get('consent')!='granted' or fact.get('assertion_status')=='legacy_unverified':return False
-            if not fact_consents_live(self,owner,subject,fact):return False
-            for key in ('valid_from','valid_to'):
-                value=fact.get(key)
-                if value:
-                    at=datetime.fromisoformat(str(value).replace('Z','+00:00'))
-                    if at.tzinfo is None:at=at.replace(tzinfo=timezone.utc)
-                    if key=='valid_from' and at>when or key=='valid_to' and at<=when:return False
-            return True
-        return rows if include_inactive else [row for row in rows if effective(row)]
+        from mingjing_core.application.memory2_read_authority import consent_verifier
+        with self.repo.transaction(owner):
+            rows=self.repo.list(owner,'fact',subject=subject,case_ids=case_ids,include_deleted=include_inactive)
+            when=get_clock().now()
+            consent_valid=consent_verifier(self,owner,subject)
+            def effective(fact):
+                if fact['status']!='active' or fact.get('consent')!='granted' or fact.get('assertion_status')=='legacy_unverified':return False
+                if not consent_valid(fact):return False
+                for key in ('valid_from','valid_to'):
+                    value=fact.get(key)
+                    if value:
+                        at=datetime.fromisoformat(str(value).replace('Z','+00:00'))
+                        if at.tzinfo is None:at=at.replace(tzinfo=timezone.utc)
+                        if key=='valid_from' and at>when or key=='valid_to' and at<=when:return False
+                return True
+            return rows if include_inactive else [row for row in rows if effective(row)]
 
     def create_case(self,owner,subject,title,*,goal='',message_id=None,operation_id=None,case_id=None,conversation_id='default'):
         if not isinstance(title,str) or not 1<=len(title)<=120:raise ValueError('Case title must contain 1..120 characters')

@@ -78,7 +78,9 @@ def _project(
     fact = facts.get(row["id"])
     if fact is None:
         return None
-    original = next(ref for ref in fact["source_refs"] if ref.get("quote") == fact.get("content"))
+    original = next((ref for ref in fact["source_refs"] if ref.get("quote") == fact.get("content")), None)
+    if original is None:
+        return None
     source = sources._source(owner, original["message_id"])
     if sources._project(owner, subject, source, list(facts.values()), cases) is None:
         return None
@@ -108,7 +110,7 @@ def retrieve(
         rows = [
             dict(row, _retrieval_kind=kind)
             for kind in ("message", "fact")
-            for row in sources.repo.search(owner, subject, tokens, [kind], 50)
+            for row in sources.repo.search(owner, subject, tokens, [kind], sources.policy.search_limit)
         ]
     else:
         rows = time_query_candidates(sources.repo, owner, subject, tokens)

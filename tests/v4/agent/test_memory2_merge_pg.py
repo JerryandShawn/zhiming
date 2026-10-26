@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
 import pytest
@@ -48,6 +49,19 @@ def undo(repo: PostgresRepository, result: Any, *, key: str = "synthetic-undo") 
 def payload(row: dict[str, Any]) -> dict[str, Any]:
     reserved = {"revision", "created_at", "updated_at"}
     return {key: value for key, value in row.items() if key not in reserved}
+
+
+def test_merge_compares_instants_across_utc_and_owner_offsets(tool_repo, monkeypatch):
+    first = setup(tool_repo, "我喜欢合成晨读")
+    old, _, _ = first.write("preference")
+    first.finish()
+    monkeypatch.setattr(f"{setup.__module__}.SAID_AT", datetime.fromisoformat("2026-10-17T02:31:00+00:00"))
+    second = setup(tool_repo, "我喜欢合成晨读")
+    merged, _, _ = second.write("preference")
+    assert merged.ok and merged.receipt["code"] == "memory2_merged"
+    assert merged.receipt["fact_id"] == old.receipt["fact_id"]
+    assert len(second.service.memory.facts("alice")) == 1
+    second.finish()
 
 
 def test_equivalent_assertions_are_one_active_fact_with_both_sources(tool_repo: PostgresRepository) -> None:

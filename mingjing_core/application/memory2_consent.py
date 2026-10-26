@@ -7,21 +7,35 @@ from typing import TYPE_CHECKING, Any
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import has_optout
 from mingjing_core.memory.private import is_private
+from mingjing_core.repositories.postgres import fingerprint
 
 if TYPE_CHECKING:
     from mingjing_core.application.memory import MemoryService
 
 
-def consent_live(memory: MemoryService, owner: str, subject: str, consent: dict[str, Any]) -> bool:
+def consent_live(
+    memory: MemoryService,
+    owner: str,
+    subject: str,
+    consent: dict[str, Any],
+    *,
+    ledger: list[dict] | None = None,
+    originals: dict | None = None,
+) -> bool:
     if consent.get("status") != "active" or consent.get("subject_id") != subject:
         return False
-    if memory.repo.is_revoked(owner, "consent", consent["id"]):
+    ledger = memory.repo.revocations(owner) if ledger is None else ledger
+    revoked = {(row["kind"], row["entity_id"]) for row in ledger}
+    if ("consent", consent["id"]) in revoked:
         return False
-    spans = [row["metadata"] for row in memory.repo.revocations(owner) if row["kind"] == "source_span"]
+    spans = [row["metadata"] for row in ledger if row["kind"] == "source_span"]
+    originals = {} if originals is None else originals
     for prefix in ("source", "approval"):
         ident = consent.get("message_id" if prefix == "source" else "approval_message_id")
         try:
-            original = memory.get_source(owner, ident)
+            if ident not in originals:
+                originals[ident] = memory.get_source(owner, ident)
+            original = originals[ident]
         except (ScopeError, EvidenceError):
             return False
         start = consent.get("scope_start" if prefix == "source" else "approval_start")
@@ -33,7 +47,7 @@ def consent_live(memory: MemoryService, owner: str, subject: str, consent: dict[
             or type(end) is not int
             or not 0 <= start < end <= len(original.get("content", ""))
             or original["subject_id"] != subject
-            or original["revision"] != version
+            or not unchanged_quote(memory, owner, consent, prefix, original, start, end, version)
             or original["status"] != "active"
             or original.get("role") != "user"
             or is_private(original)
@@ -41,12 +55,39 @@ def consent_live(memory: MemoryService, owner: str, subject: str, consent: dict[
             or policy.get("origin") != "current_user"
             or policy.get("run_context") is not True
             or has_optout(original["content"])
-            or memory.repo.is_revoked(owner, "message", ident)
+            or ("message", ident) in revoked
         ):
             return False
         if any(span.get("message_id") == ident and max(start, span["start"]) < min(end, span["end"]) for span in spans):
             return False
     return True
+
+
+def unchanged_quote(
+    memory: MemoryService, owner: str, consent: dict, prefix: str, original: dict, start: int, end: int, version: int
+) -> bool:
+    """Compare the authorized interval; a revision bump elsewhere is not revocation."""
+    expected = consent.get(prefix + "_quote_hash")
+    if not expected:
+        try:
+            proposal = memory.repo.get(owner, "proposal", consent["proposal_id"])
+        except (KeyError, EvidenceError, ScopeError):
+            return False
+        ref = next(
+            (
+                ref
+                for ref in proposal.get("source_refs", [])
+                if ref.get("message_id") == original["id"]
+                and ref.get("start") == start
+                and ref.get("end") == end
+                and ref.get("version") == version
+            ),
+            None,
+        )
+        if ref is None or not isinstance(ref.get("quote"), str):
+            return False
+        expected = fingerprint([ref["quote"]])
+    return expected == fingerprint([original["content"][start:end]])
 
 
 def categories_granted(memory: MemoryService, owner: str, subject: str, categories: tuple[str, ...]) -> bool:

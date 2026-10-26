@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
 from mingjing_core.timekit.timestamps import history_instant
@@ -12,6 +13,16 @@ from .scoring import importance_score
 
 if TYPE_CHECKING:
     from mingjing_core.timekit.clock import Clock
+
+
+@dataclass(frozen=True)
+class RetrievalRankingPolicy:
+    message_weight: float = 0.5
+    fact_floor: float = 0.5
+    importance_weight: float = 0.5
+
+
+DEFAULT_RANKING = RetrievalRankingPolicy()
 
 
 def finite_score(value: object, default: float = 0.0) -> float:
@@ -42,13 +53,23 @@ def authorized_fact_importance(row: dict[str, Any], *, clock: Clock) -> float:
     return importance_score(fact, clock=clock)
 
 
-def ranked_projection(original: dict[str, Any], projected: dict[str, Any], *, clock: Clock) -> dict[str, Any]:
+def ranked_projection(
+    original: dict[str, Any],
+    projected: dict[str, Any],
+    *,
+    clock: Clock,
+    policy: RetrievalRankingPolicy = DEFAULT_RANKING,
+) -> dict[str, Any]:
     """Lexical-only degradation is explicit; no vector model is loaded or inferred."""
     lexical = finite_score(projected.get("search_rank"))
     if projected.get("entity_kind") != "fact":
-        return dict(projected, retrieval_score=lexical)
+        return dict(projected, retrieval_score=lexical * policy.message_weight)
     importance = authorized_fact_importance(original, clock=clock)
-    return dict(projected, memory_importance=importance, retrieval_score=lexical * importance)
+    return dict(
+        projected,
+        memory_importance=importance,
+        retrieval_score=lexical * (policy.fact_floor + policy.importance_weight * importance),
+    )
 
 
 def rank_key(row: dict[str, Any]) -> tuple[float, float, str]:

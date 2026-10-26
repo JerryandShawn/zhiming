@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from mingjing_core.application.agent_tools_projection import sources_active
 from mingjing_core.memory2.dedup import normalized
 from mingjing_core.repositories.postgres import fingerprint
+from mingjing_core.timekit.timestamps import history_instant
 
 if TYPE_CHECKING:
     from mingjing_core.application.agent_tools import AgentToolsService
@@ -34,7 +35,8 @@ def merge_written_fact(
             continue
         if not sources_active(service, old, ctx) or not sources_active(service, incoming, ctx):
             continue
-        if old.get("valid_from", "") > incoming.get("valid_from", ""):
+        before, after = history_instant(old.get("valid_from")), history_instant(incoming.get("valid_from"))
+        if before is None or after is None or before > after:
             continue
         return _merge(service, ctx, old, incoming)
     return incoming, None
