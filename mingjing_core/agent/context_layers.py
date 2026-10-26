@@ -12,6 +12,7 @@ from mingjing_core.timekit.clock import Clock
 from mingjing_core.timekit.now_block import render_now_block
 
 from .context_current import current_layer
+from .context_fact_guards import fact_item, preserve_field_facts
 from .context_types import BudgetPolicy, ContextItem, ContextLayer, SourceSnapshot
 
 
@@ -60,20 +61,9 @@ def fact_layer(snapshot: SourceSnapshot, aliases: AliasBook) -> ContextLayer:
 
     items, represented = profile_items(snapshot, aliases)
     for row in sorted(snapshot.facts, key=lambda fact: (fact.get("kind") != "constraint", fact["id"])):
-        if row["id"] in represented and row.get("kind") != "constraint":
+        if row["id"] in represented and row.get("kind") != "constraint" and not row.get("field"):
             continue
-        alias = aliases.add("f", "fact", row)
-        data = {
-            "alias": alias,
-            "date": row.get("said_at") or row.get("valid_from"),
-            "kind": row["kind"],
-            "text": row["content"],
-        }
-        if (row.get("field") == "birth.precision" and row.get("value") == "unknown") or (
-            row.get("field") == "birth.time_unknown" and row.get("value") is True
-        ):
-            data["birth_time_notice"] = "时辰还不确定，以下只看不依赖时柱的部分。"
-        items.append(json_item(row["id"], "画像", data, required=True))
+        items.append(fact_item(row, aliases))
     return ContextLayer("L2", tuple(items))
 
 
@@ -232,7 +222,7 @@ def build_layers(
     aliases = AliasBook()
     layers = [
         ContextLayer("L0", (ContextItem("system", (ChatMessage("system", system),), True),)),
-        fact_layer(snapshot, aliases),
+        preserve_field_facts(snapshot, aliases, fact_layer(snapshot, aliases)),
         stable_layer(snapshot, aliases),
         history_layer(snapshot, aliases, policy),
         retrieval_layer(snapshot, aliases, policy),
