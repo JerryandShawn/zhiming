@@ -15,7 +15,8 @@ def profile_items(snapshot: SourceSnapshot, aliases: AliasBook) -> tuple[list[Co
     from .context_layers import json_item
 
     items, represented = [], set()
-    rows = sorted(snapshot.extra_entities.get("profile_doc", ()), key=lambda row: (row["section"], row["id"]))
+    documents = getattr(snapshot, "extra_entities", {}).get("profile_doc", ())
+    rows = sorted(documents, key=lambda row: (row["section"], row["id"]))
     for row in rows:
         alias = aliases.add("p", "profile_doc", row)
         data = {
