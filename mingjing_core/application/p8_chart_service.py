@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from subprocess import TimeoutExpired
 from typing import Any
 
 from mingjing_core.adapters.charts.p8_adapter import P8ChartAdapter
@@ -35,7 +36,7 @@ def evaluate_time_basis(
         payload = adapter.time_basis(request)
     except CoreError:
         raise
-    except (OSError, RuntimeError, ValueError, TypeError):
+    except (OSError, RuntimeError, ValueError, TypeError, TimeoutExpired):
         raise P8CalculationUnavailable("本次时间口径计算未完成，未采用未经验证的盘面") from None
     document = verify_p8_document(
         payload,

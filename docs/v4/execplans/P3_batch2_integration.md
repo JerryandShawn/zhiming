@@ -130,3 +130,13 @@ private/safe-narrow-58625d70718d4b998b074c898dd7cd9f为4/4、2.07s，真实PG+HT
 private/safe-narrow-94bb0462142f45019ea1027f6c4014ef：3/3、6.71s，原metadata/XML/log根核exit0、fail/error0。实际PG确认资料→prepare_chart→真实Charts子进程→原生有归属盘面与references，snapshot/owner revision不变、model_calls/writes为0、artifact为空；另验证缺IANA/跨owner在factory前拒绝及私有stderr不外露。Ruff/check及format120通过。无完整测试/CI/真实模型/服务器修改。
 
 main58/模块首段35/37仍未就绪，本轮不提前merge；H1独立41660531和无P8路线保持。01:55本wake只读SSH仍banner timeout/native255，session2306已结束，未认证、远端命令0。下一接Agent实际P8路由/cache/lineage及四工具授权，紫微引用/合盘同意和容量策略仍待；不重复已绿子项。
+
+### 2026-10-27 02:17 P8临界提示引用绑定
+
+在现有verify_p8_document/reference_rows纳入原生boundary_alerts，作为实际命中规则引用，保留原文档Pointer/测量值/候选，不信上游短别名。必须met/critical为真、default_formula_changed为假、原规则版本/候选存在，instant_id/source_instant_id/UTC/原柱一致，并唯一绑定真实true_solar主盘。每条依据只许本次time_basis.items/source_variants中该候选的原生字段，不借用另一个已存在候选或interpretation对象；真实Pointer和值hash保留。未推断新临界值或改动出生事实/默认公式。紫微飞化引用及Agent alias持久链仍待，不冒称已接完。
+
+private/safe-narrow-e09e3c22642b4463a47e6d1aee484735为29/29、0.85s，metadata/XML/log根核exit0/fail0/error0；含三份原生样例引用、实际临界规则及12个精确拒绝变体（假命中、非critical、改公式、版本空、时刻/UTC/柱不符、重复主盘、无候选、借另一候选、文档外引用、缺失路径）。未修改原样例或旧gold。
+
+同时修正应用服务对subprocess.TimeoutExpired的安全转换，超时命令/stderr不外露；private/safe-narrow-5b56223757384f3d843e4e916811e3c8为4/4、3.42s，原metadata/XML/log根核，含实际PG→Charts worker通过新增临界校验以及普通/超时错误负例。分轮不合称一次全链。Ruff/check/format120/git diff--check过，无全量/CI/真实模型/远端修改。
+
+main58未变，模块仍35/37未就绪，不提前merge。02:15单次SSH仍banner timeout/native255（session51663结束），未认证/远端命令0。原PG55480 PID50516仅核存活，未启停PG。H1无P8闸门41660531保持已发布，记忆路线仍mem2-gate。下一继续P8真实Agent路由/cache/lineage/紫微引用/四工具与合盘授权，或模块就绪优先无P8记忆合入；不重复已绿子项。

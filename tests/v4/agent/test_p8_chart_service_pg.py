@@ -1,6 +1,7 @@
 """Explicit P8 route uses actual isolated Charts with a native authorized snapshot."""
 
 from copy import deepcopy
+from subprocess import TimeoutExpired
 from types import SimpleNamespace
 
 import pytest
@@ -70,10 +71,13 @@ def test_missing_or_unscoped_profile_never_invokes_worker(repo: PostgresReposito
     h.finish()
 
 
-def test_transport_error_is_fixed_safe_message_without_private_stderr(repo: PostgresRepository) -> None:
+@pytest.mark.parametrize("timeout", [False, True])
+def test_transport_error_is_fixed_safe_message_without_private_stderr(repo: PostgresRepository, timeout: bool) -> None:
     h, ctx, snapshot = prepare(repo)
 
     def fail(request):
+        if timeout:
+            raise TimeoutExpired("PRIVATE_BIRTH_COMMAND", 45, stderr="PRIVATE_BIRTH_STDERR")
         raise RuntimeError("PRIVATE_BIRTH_STDERR")
 
     with pytest.raises(P8CalculationUnavailable) as error:

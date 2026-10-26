@@ -81,6 +81,12 @@ def reference_rows(payload: dict[str, Any], kind: str, document_id: str) -> list
             if not isinstance(hits, list):
                 raise EvidenceError("P8盘面规则索引无效")
             rules.extend((f"/charts/{index}/data/p8/rule_hits/{n}", hit, index) for n, hit in enumerate(hits))
+        alerts = payload.get("boundary_alerts", [])
+        if not isinstance(alerts, list):
+            raise EvidenceError("P8临界提示索引无效")
+        for index, alert in enumerate(alerts):
+            _boundary_binding(payload, alert)
+            rules.append((f"/boundary_alerts/{index}", alert, None))
     else:
         if not isinstance(payload.get("rule_hits"), list):
             raise EvidenceError("P8工具规则索引无效")
@@ -105,6 +111,57 @@ def reference_rows(payload: dict[str, Any], kind: str, document_id: str) -> list
             }
         )
     return list(evidence.values()) + rows
+
+
+def _boundary_binding(payload: dict[str, Any], alert: Any) -> None:
+    """A school choice cannot invent or resolve a physical birth instant."""
+    if (
+        not isinstance(alert, dict)
+        or alert.get("critical") is not True
+        or alert.get("met") is not True
+        or alert.get("default_formula_changed") is not False
+        or not isinstance(alert.get("rules_version"), str)
+        or not alert["rules_version"]
+        or not isinstance(alert.get("instant_id"), str)
+        or not alert["instant_id"]
+        or not isinstance(alert.get("alternatives"), list)
+        or not alert["alternatives"]
+    ):
+        raise EvidenceError("P8临界提示必须保留真实命中与候选")
+    charts = [
+        chart
+        for chart in payload["charts"]
+        if chart["time_basis"]["basis"] == "true_solar" and chart["time_basis"]["instant_id"] == alert["instant_id"]
+    ]
+    if len(charts) != 1:
+        raise EvidenceError("P8临界提示没有唯一真实主盘")
+    candidate = charts[0]["time_basis"]
+    if (
+        alert.get("source_instant_id") != alert["instant_id"]
+        or alert.get("source_utc") != candidate["utc"]
+        or alert.get("current_pillars") != candidate["pillars"]
+    ):
+        raise EvidenceError("P8临界提示与主盘时刻或原柱不符")
+    paths = alert.get("evidence_paths")
+    if not isinstance(paths, list) or not paths:
+        raise EvidenceError("P8临界提示缺少真实时间依据")
+    for path in paths:
+        if (
+            not isinstance(path, str)
+            or re.fullmatch(
+                r"/time_basis/items/\d+/source_variants/\d+/(coordinate_datetime|pillars|solar_time|jie_uncertainty)",
+                path,
+            )
+            is None
+        ):
+            raise EvidenceError("P8临界提示必须引用本次时间口径产物")
+        source = resolve_pointer(payload, path.rsplit("/", 1)[0])
+        if source != candidate:
+            raise EvidenceError("P8临界提示不能借用其他候选的依据")
+        value = resolve_pointer(payload, path)
+        # Pointer existence is necessary; the native rule itself remains the
+        # source of measured seconds, alternatives and affected pillars.
+        ensure_finite_json(value)
 
 
 def verify_p8_document(

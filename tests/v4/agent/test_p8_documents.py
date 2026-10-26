@@ -134,3 +134,84 @@ def test_almanac_has_no_private_scope_and_synastry_cannot_be_persisted_as_a_char
     assert verify(payload, kind="almanac")["scope"] == SCOPE
     with pytest.raises(EvidenceError):
         verify(tool_payload(), kind="synastry")
+
+
+def boundary_document() -> dict:
+    preview = json.loads((ROOT / "ayuan_bazi.json").read_text(encoding="utf-8"))
+    return next(doc["payload"] for doc in preview["documents"] if doc["kind"] == "time_basis")
+
+
+def verify_boundary(payload: dict) -> dict:
+    return verify_p8_document(
+        payload,
+        kind="time_basis",
+        owner=payload["owner_user_id"],
+        subject=payload["subject_id"],
+        revision=payload["revision"],
+        operation_id=payload["operation_id"],
+        source_sha256=payload["source_sha256"],
+    )
+
+
+def test_native_boundary_has_rule_and_measured_evidence_without_inventing_aliases() -> None:
+    payload = boundary_document()
+    before = deepcopy(payload)
+    document = verify_boundary(payload)
+    rules = [row for row in document["references"] if row["pointer"].startswith("/boundary_alerts/")]
+    assert len(rules) == len(payload["boundary_alerts"]) > 0
+    for rule in rules:
+        native = resolve_pointer(payload, rule["pointer"])
+        assert rule["kind"] == "rule" and rule["evidence_pointers"] == native["evidence_paths"]
+        assert native["distance_seconds"] >= 0 and native["alternatives"]
+        assert all(any(row["pointer"] == path for row in document["references"]) for path in rule["evidence_pointers"])
+        assert "alias" not in rule
+    assert payload == before
+
+
+@pytest.mark.parametrize(
+    "mode",
+    [
+        "false",
+        "noncritical",
+        "changed_formula",
+        "missing_version",
+        "foreign_instant",
+        "duplicate_primary",
+        "foreign_utc",
+        "foreign_pillars",
+        "missing_alternatives",
+        "other_variant",
+        "other_document",
+        "missing_path",
+    ],
+)
+def test_boundary_cannot_borrow_candidate_or_drop_native_warning(mode: str) -> None:
+    payload = boundary_document()
+    alert = payload["boundary_alerts"][0]
+    changes = {
+        "false": ("met", False),
+        "noncritical": ("critical", False),
+        "changed_formula": ("default_formula_changed", True),
+        "missing_version": ("rules_version", ""),
+        "foreign_instant": ("instant_id", "foreign"),
+        "foreign_utc": ("source_utc", "foreign"),
+        "foreign_pillars": ("current_pillars", {}),
+        "missing_alternatives": ("alternatives", []),
+        "other_document": ("evidence_paths", ["/interpretation"]),
+        "missing_path": ("evidence_paths", ["/time_basis/items/999/source_variants/0/pillars"]),
+    }
+    if mode in changes:
+        key, value = changes[mode]
+        alert[key] = value
+    elif mode == "duplicate_primary":
+        primary = next(
+            c
+            for c in payload["charts"]
+            if c["time_basis"]["basis"] == "true_solar" and c["time_basis"]["instant_id"] == alert["instant_id"]
+        )
+        payload["charts"].append(deepcopy(primary))
+    else:
+        # An existing path is insufficient when it belongs to another basis.
+        alert["evidence_paths"] = ["/time_basis/items/0/source_variants/0/pillars"]
+    with pytest.raises(EvidenceError):
+        verify_boundary(payload)
