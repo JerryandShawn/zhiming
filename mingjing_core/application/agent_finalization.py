@@ -23,6 +23,7 @@ from mingjing_core.application.agent_review_proofs import ReviewProofStore
 from mingjing_core.application.agent_thread_scope import assert_thread, thread_id
 from mingjing_core.application.agent_withdrawal_ack import withdrawal_acknowledgements
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.p8_boundary_review import boundary_warning, with_boundary_warning
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
 from mingjing_core.repositories.dependencies import entity_dependency
@@ -141,6 +142,7 @@ class AgentFinalizer:
                 ReviewProofStore(self.repo).verify(review, current, checked.text)
             self._aliases(current, alias_map, checked.cited_keys, effective)
             source = self._source(current, effective)
+            notice = boundary_warning(self.repo, current, checked, alias_map)
             message = self._message(current, source, checked, effective)
             envelope = build_envelope(
                 current,
@@ -152,6 +154,7 @@ class AgentFinalizer:
                 usage=usage,
                 review=review,
             )
+            envelope = with_boundary_warning(envelope, notice)
             connection.execute(
                 sql.SQL(
                     "UPDATE {} SET result=%s,state_version=%s,status='succeeded',checkpoint='{{}}',"

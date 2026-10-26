@@ -299,3 +299,16 @@ agent_synastry_lineage只接受同run/epoch唯一已完成Journal完整输出与
 - 最终private/safe-narrow-86dba3dad1734b2591e91860f117c596：47/47，85.40秒，06:25:14–06:26:40，metadata/XML/log根核exit0/fail0/error0/skip0。含新8项真实PG/隔离Charts worker/Journal/Finalizer的跨轮发布、未发布提示、仅自称说过、跨对话、资料修订、撤销旧claim、无关偏好及选brief后撤销正文；另含原P8摘要、AgentSnapshotStore和LoopCycle兼容。真实模型/外发/服务器均0；无全量/新CI。
 - 原件保留：7b6698c5a58e47d6ba92fd06a7efd761为2pass6fail、38.45秒，发现上述聚合版本缺陷及测试对话不一致；f3577e3089364d4c966743cf72493aea为0pass2fail、14.32秒，修依赖后仍因fixture来话默认default而原发布shared被正确拒绝，按实际ThreadIngress契约仅修测试来话conversation_id为shared，生产隔离不放宽；31bb00f1cbf446acbd143dccf3887bee为2/2、14.55秒补验，不与最终拼成全链。四轮metadata/XML/log均根核。
 - 七个变更Python文件Ruff/check及format120、diff--check、新函数≤60检查通过。P8仍待合盘临时专业c/r、真实反思消费者排除、15工具精确容量策略、晨报受信后台入口及最终完整脚本/tests/v4/CI。临界去重只完成上述保守原生发布证明组件，不称P8整体就绪。模块一就绪优先无P8门树，否则继续其余独立项，不重复绿测。
+
+## 2026-10-27 06:36 当前项：42 2.6 可选轻量复核
+
+不扩充评审schema/提示词，不新增模型请求。真实Finalizer已核原生权限/依赖/引用及critic证明后，按本轮唯一已完成P8 chart_compute/cache/doc/原生引用重建临界提示，只采用与真实登记record完整一致的alias。正文出现受影响柱标签并引用对应专业依据、但无临界/分界/交界/换日等词时，在既有review.reasons加chart_inconsistency severity1；不拦截、不改正文、不冒称critic已跑（skipped原状态保留），已有critic状态/理由/修订号不覆盖。不对无真实完成证明、旧epoch、其他工具或伪alias造警告。轻量词面检查不是语义或命理准确性判断。
+
+## 2026-10-27 06:42 实际交付：临界缺说明的低严重度复核提示
+
+- main58及模块f44f5dd未就绪状态本轮首段已实际读，不提前合入。06:35唯一SSH true仍banner timeout/native255（session73702已结束），未认证/远端命令/服务器修改0。原PG55480/PID50516仅核存活，未启停其他PG。记忆门d4344bdc/首发e578不改。
+- application/p8_boundary_review从当前owner/run/epoch真实已完成且成功的P8 chart_compute重建lineage/cache/doc和原生record，alias整个record的fingerprint必须一致，不信正文/模型自报alerts。借现有boundary_guidance得到真实受影响柱；正文含对应柱标签且引用该组本轮c/r、全文无临界/分界/交界/换日/交节/交接/小边界/实现差值等词时，固定review.reasons追加chart_inconsistency severity1。不带引用的仅提柱名、未用受影响柱、已有完整/简短提示、没有本轮完成证明/旧epoch/伪alias均无此提示。
+- Finalizer在原lease/source/依赖/引用与critic证明全部检查之后、写assistant之前做可选检查，公开信封只合并固定代码/严重度。没有独立critic时state仍skipped；真实critic原状态、理由和revision_id保留，不把结构检查冒充模型评审。正文/引用/保存回执不改，不额外调用模型或工具，不新增SQL迁移/事实/档案/运行配置；警告不阻止发布，不覆盖或弱化原来的任何硬拒绝。可选检查无法证明时不造警告，原Finalizer拒绝仍照旧。复用现有公开Review schema/code，不新增模型可控字段或提示词版本。
+- 最终private/safe-narrow-7bd7d713c944443d82e500ef2bdad645为35/35、35.32秒，06:40:15–06:40:51，metadata/XML/log根核exit0/fail0/error0/skip0。新增7项覆盖真实脚本Agent→真实P8 worker→Journal→Finalizer发布缺说明与有说明/无柱/无引用/完整提示，以及pending/旧epoch/伪alias不能造提示，原有评审状态/理由/修订号合并及0重复；同时完整原test_agent_finalization_pg和test_eval_x01_review_pg通过，原critic真实持久证明和提交拒绝契约保留。实际原模型脚本仍两步，无新增critic/付费模型/外发/服务器请求。
+- 原失败完整保留：3c89355c3a284ef88f9097a192ce4b3a为6pass1fail、24.43秒；2f9063617d334073a2acf80c2bdcbed0为0pass1fail、5.11秒，只定位到脚本夹具取了首个reasoning事件替成text，随后原完整text仍到达正文，产品正确没有警告。试改fixture脚本未显式UTF-8，执行前UnicodeDecodeError、文件0改动，但同一shell继续测试产生11823ae611514aca9d436c62f02848c5为34pass1fail、32.46秒，属于误重复未修夹具，并非第三种产品修法；不隐去浪费。随后仅修fixture在生成ScriptedPort响应前填写真实投影选取的正文，不替换reasoning事件，产品判定无修改，最终35/35通过。四轮metadata/XML/log根核，不拼分轮为全链。初Ruff未用answer导入已删除，最终夹具实际使用answer/ScriptedPort。
+- 三个Python文件Ruff/check+format120/diff--check过，新文件70/120行，新函数均≤60。仅轻量词面提示，不判断引用句的真实语义或盘面预测是否正确；文本出现任一提示词即不报该警告，不声称完整语义验收。P8整体仍未就绪：合盘临时专业c/r、真实反思消费排除、15工具容量精确策略、晨报受信后台入口及最后完整脚本/tests/v4/CI待；不提前全量/冻结/部署/真实评测。下一模块就绪优先无P8门，否则继续其余独立项，临界去重/提示与摘要旧绿不再重复。
