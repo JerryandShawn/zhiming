@@ -295,8 +295,10 @@ class MemoryService:
         if fact['status'] in ('deleted','stopped'):
             return dict(fact,write_status='deleted' if fact['status']=='deleted' else 'stopped')
         # A guessed fact ID is insufficient. Reference must include current text or an unambiguous sole retained fact.
-        candidates=[f for f in self.facts(owner,source['subject_id'],include_inactive=False) if f.get('content') and (f['content'] in text or any(part in text for part in re.split(r'[，。,:：]',f['content']) if len(part)>=4))]
-        if candidates and {f['id'] for f in candidates}!={fact_id} or not candidates and len(self.facts(owner,source['subject_id']))!=1:raise EvidenceError('Withdrawal target is not unique; ask for the fact to remove')
+        from mingjing_core.application.memory2_forget_candidates import forget_candidates
+        eligible=forget_candidates(self,owner,source['subject_id'],source.get('case_ids',[]))
+        candidates=[f for f in eligible if f.get('content') and (f['content'] in text or any(part in text for part in re.split(r'[，。,:：]',f['content']) if len(part)>=4))]
+        if candidates and {f['id'] for f in candidates}!={fact_id} or not candidates and len(eligible)!=1:raise EvidenceError('Withdrawal target is not unique; ask for the fact to remove')
         return self.retire_fact(owner,fact_id,expected_revision=fact['revision'],operation='delete' if re.search(r'删除|忘记',text) else 'stop',scope='source' if re.search(r'原话|整条消息|所有来源',text) else 'fact')
 
     def import_message(self,owner,source,id,role,content,at=None,subject='self',case=None,channel=None,external_id=None,conversation_id='default',origin='migration'):
@@ -331,6 +333,8 @@ class MemoryService:
                 for source_id in sources:
                     source=self.repo.get(owner,'message',source_id,include_deleted=True)
                     self.repo.delete(owner,'message',source_id,expected_revision=source['revision'])
+            from mingjing_core.application.memory2_forget_candidates import merged_descendants
+            facts=merged_descendants(self,owner,facts)
             affected=[]
             for fact in facts:
                 if fact['status']=='deleted':continue

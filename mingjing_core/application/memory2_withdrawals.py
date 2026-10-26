@@ -6,6 +6,7 @@ import re
 from functools import partial
 from typing import TYPE_CHECKING, Any
 
+from mingjing_core.application.memory2_forget_candidates import forget_candidates
 from mingjing_core.application.memory2_proposals import approval_reference
 from mingjing_core.application.memory2_undo import verify_originals
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
@@ -138,7 +139,9 @@ class MemoryWithdrawalService:
         self._chronology(owner, kind, target, action)
         if kind == "fact":
             if (topic := forget_topic(action["content"])) is not None:
-                require_unique_topic(self.memory.facts(owner, subject), topic, ident)
+                require_unique_topic(
+                    forget_candidates(self.memory, owner, subject, action.get("case_ids", [])), topic, ident
+                )
             row = self.memory.retire_fact(owner, ident, expected_revision=revision)
             affected = row.get("affected_fact_ids", [ident])
         else:
