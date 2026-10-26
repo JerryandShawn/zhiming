@@ -78,8 +78,13 @@ def _own_revision(
     receipts: tuple[dict[str, Any], ...],
 ) -> bool:
     for receipt in receipts:
+        if kind == "fact" and receipt.get("write_status") == "updated":
+            from mingjing_core.application.agent_updated_receipts import affected_revision
+
+            if affected_revision(connection, repo, run, row, receipt):
+                return True
         if (
-            receipt.get("write_status") != "saved"
+            receipt.get("write_status") not in {"saved", "updated"}
             or receipt.get("kind") != kind
             or receipt.get("id", receipt.get("fact_id")) != row["id"]
             or type(receipt.get("revision")) is not int

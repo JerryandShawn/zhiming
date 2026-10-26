@@ -15,7 +15,20 @@ from mingjing_core.domain.json_values import ensure_finite_json
 from mingjing_core.validation.structural import StructuralResult
 
 RECEIPT_FIELDS = frozenset(
-    {"write_status", "status", "code", "id", "fact_id", "proposal_id", "kind", "revision", "affected_ids", "draw_id"}
+    {
+        "write_status",
+        "status",
+        "code",
+        "id",
+        "fact_id",
+        "proposal_id",
+        "kind",
+        "revision",
+        "affected_ids",
+        "ids",
+        "draw_id",
+        "summary",
+    }
 )
 USAGE_COUNTERS = frozenset({"model_steps", "model_streams_this_execution", "replayed_model_steps"})
 TOKEN_FIELDS = frozenset({"input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens"})
@@ -25,10 +38,12 @@ def public_receipt(value: Mapping[str, Any]) -> dict[str, Any]:
     result: dict[str, Any] = {}
     for key in RECEIPT_FIELDS.intersection(value):
         child = value[key]
-        if isinstance(child, str) and len(child) <= 200 or type(child) is int and 0 <= child < 2**63:
+        if key not in {"affected_ids", "ids"} and (
+            isinstance(child, str) and len(child) <= 200 or type(child) is int and 0 <= child < 2**63
+        ):
             result[key] = child
         elif (
-            key == "affected_ids"
+            key in {"affected_ids", "ids"}
             and isinstance(child, list)
             and len(child) <= 1024
             and all(isinstance(item, str) and len(item) <= 200 for item in child)
