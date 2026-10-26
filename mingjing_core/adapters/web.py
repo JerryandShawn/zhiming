@@ -411,7 +411,11 @@ def create_app(service=None):
         svc=core(req);owner=auth(req);data=await body(req);draw=svc.tarot.get_for_reading(owner,ident);request=key(data)
         from ..application.thread_queue import owner_runtime
         if owner_runtime(svc.repo.assert_scope(owner,draw['subject_id'])['settings'])=='v4':
-            raise EvidenceError('v4 既有牌阵解读入口尚未接线，原牌阵已保留')
+            from ..application.tarot_reveal_ingress import TarotRevealIngress
+            svc.runtime_assembly.require_agent()
+            run=TarotRevealIngress(svc).submit(owner=owner,subject=draw['subject_id'],draw_id=ident,
+                request_id='reading:'+request,message=data.get('supplement'),depth=data.get('depth','standard'))
+            return await stream(owner,run,request=req)
         snap=svc.memory.snapshot(owner,draw['subject_id'],[draw['case_id']])
         version=svc.tarot.begin_reading(owner,ident,model=getattr(svc.model,'model','configured'),prompt_version='core3.0',
                     context_snapshot={'revision':snap['revision'],'fact_ids':[f['id'] for f in snap['facts']],'supplement':data.get('supplement','')},idempotency_key=request)['reading']

@@ -34,6 +34,7 @@ class SendMessage(BaseModel):
     conversation_id: str = Field(default="shared", min_length=1, max_length=200)
     case_ids: list[str] = Field(default_factory=list, max_length=8)
     depth: Literal["standard", "deep"] = "standard"
+    draw_id: str | None = Field(default=None, min_length=1, max_length=200)
 
 
 class CloseThread(BaseModel):
@@ -106,7 +107,14 @@ def message_routes(router: APIRouter, core: Any, auth: Any, body: Any) -> None:
         ready(service, owner, value.subject_id, private=ident.startswith("incognito:"))
         if ident.startswith("incognito:") and value.case_ids:
             raise EvidenceError("无痕线程不能携带长期事项")
-        run = ThreadIngress(service).submit(
+        ingress = ThreadIngress(service)
+        options = {}
+        if value.draw_id is not None:
+            from mingjing_core.application.tarot_reveal_ingress import TarotRevealIngress
+
+            ingress = TarotRevealIngress(service)
+            options["draw_id"] = value.draw_id
+        run = ingress.submit(
             owner=owner,
             subject=value.subject_id,
             thread_id=ident,
@@ -115,6 +123,7 @@ def message_routes(router: APIRouter, core: Any, auth: Any, body: Any) -> None:
             conversation_id=value.conversation_id,
             case_ids=value.case_ids,
             depth=value.depth,
+            **options,
         )
         return JSONResponse(run_projection(run), status_code=202)
 

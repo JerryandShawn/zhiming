@@ -24,7 +24,8 @@ def tarot_definitions() -> tuple[ToolDefinition, ...]:
         ToolDefinition(
             "tarot_read",
             TarotRead,
-            "当运行已选中且用户已揭示固定牌阵时使用。只接受该真实draw_id，不抽新牌、不修改牌面。"
+            "当运行已选中且用户已揭示固定牌阵时使用。无需填写draw_id，系统读取本轮牌阵；"
+            "如填写则必须与本轮牌阵一致。不抽新牌、不修改牌面。"
             "返回牌面、牌义和来源；只读无副作用，来源撤销后不可读。",
         ),
     )

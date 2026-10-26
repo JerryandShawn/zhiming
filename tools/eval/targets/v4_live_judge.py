@@ -79,3 +79,4 @@ class V4LiveJudge(ModelJudge):
         super().__init__(
             model, rubric, LiveJudgeProvider(model, environment=environment, adapter_factory=adapter_factory)
         )
+        self.judge_metadata["effort"] = "high"

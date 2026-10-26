@@ -22,6 +22,12 @@ class NativePrivacyDriver:
         name, field = ("fact", "fact_id") if kind == "fact_revoke" else ("message", "message_id")
         ident = target.bindings[action[field]]
         row = target.repo.get(target.owner, name, ident, include_deleted=True)
+        linked_followups = []
+        if name == "fact":
+            for followup in target.repo.list(target.owner, "followup", include_deleted=True):
+                links = set(followup.get("used_fact_ids", [])) | set(followup.get("fact_ids", []))
+                if followup.get("source_fact_id") == ident or ident in links:
+                    linked_followups.append(followup["id"])
         request = f"eval-native:{target.seed['_scenario_id']}:{turn['_index']}"
         if kind == "source_delete":
             receipt = SourceWithdrawalService(target.service.memory).delete(
@@ -60,6 +66,21 @@ class NativePrivacyDriver:
                 )
         target.semantic = semantics
         target.semantic_history.extend(semantics)
+        native = target.repo.get(target.owner, name, ident, include_deleted=True)
+        effects = [name + " " + ident + " → " + native["status"]]
+        for followup_id in linked_followups:
+            followup = target.repo.get(target.owner, "followup", followup_id, include_deleted=True)
+            state = followup["status"]
+            if (
+                state == "deleted"
+                and target.repo.is_revoked(target.owner, "fact", ident)
+                and erased(target.repo, target.owner, "followup", followup_id)
+            ):
+                state = "cancelled (native_status=deleted)"
+            effects.append("followup " + followup_id + " → " + state)
+        target.judge_action_history.append(
+            {"turn": turn["_index"], "user_gist": turn["user"][:60], "receipts": [receipt], "effects": effects}
+        )
         return TurnResult(
             text="来源与相关派生内容已清理。" if kind == "source_delete" else "这条记忆已撤销，相关跟进也已关闭。",
             receipts=[receipt],
@@ -70,5 +91,6 @@ class NativePrivacyDriver:
                 "physical_model_requests": 0,
                 "evaluator_observations": semantics,
                 "native_action": kind,
+                "tool_effects": {"memories": [receipt], "effects": effects},
             },
         )

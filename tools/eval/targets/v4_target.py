@@ -91,6 +91,8 @@ class V4Target:
         self.portability = {}
         self.semantic = []
         self.semantic_history = []
+        self.judge_action_history = []
+        self.tool_visibility_history = []
         self.crashed_run = None
         self.feishu = None
         self.stream = {}
@@ -163,6 +165,23 @@ class V4Target:
         if channel == "feishu":
             external = "synthetic-eval-feishu"
             self.repo.bind_channel(self.owner, channel, external)
+        if draw_id:
+            from mingjing_core.application.tarot_reveal_ingress import TarotRevealIngress
+
+            run = TarotRevealIngress(self.service).submit(
+                owner=self.owner,
+                thread_id=self.thread["id"],
+                message=turn["user"],
+                request_id=operation,
+                draw_id=draw_id,
+                case_ids=cases,
+                conversation_id=self.seed.get("context", {}).get("topic_id", "shared"),
+                reading_id=self.tarot.failed_reading,
+            )
+            current = self.repo.fetch_run(self.owner, run["id"])
+            self.bindings[f"turn-{index}"] = current["request"]["source_message_id"]
+            self.tarot.resume(run)
+            return self.repo.claim_run(self.owner, run["id"], lease_seconds=150)
         source = ThreadService(self.repo).receive(
             self.owner,
             self.thread["id"],
@@ -253,6 +272,8 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
+        from .v4_judge_evidence import judge_evidence
+
         if turn.get("action", {}).get("type") == "sse_reconnect":
             return reconnect(self, turn)
         if turn.get("action", {}).get("type") in {"source_delete", "fact_revoke"}:
@@ -263,6 +284,7 @@ class V4Target:
             time.perf_counter(),
             self.port.calls + (self.critic.calls if self.critic else 0),
         )
+        request_offset = len(self.port.requests)
         if turn.get("action", {}).get("type") == "cancel_run":
             return self._cancel(turn, started)
         run, resumed = self._start_turn(turn)
@@ -291,6 +313,16 @@ class V4Target:
             names += ["run.completed"]
         self.semantic = semantic
         self.semantic_history += semantic
+        self.tool_visibility_history.append(
+            {
+                "turn": turn["_index"],
+                "run_id": run["id"],
+                "visible_tools_per_request": [
+                    request.get("tool_names", []) for request in self.port.requests[request_offset:]
+                ],
+                "actual_tool_names": [step["name"] for step in steps],
+            }
+        )
         return TurnResult(
             text=result.get("text", ""),
             tools_called=[step["name"] for step in steps],
@@ -313,7 +345,15 @@ class V4Target:
                 "evaluator_observations": semantic,
                 "error_category": "business" if error else None,
                 "tool_effects": tool_effects(self.repo, self.owner, run["id"]),
-                "prior_turns": previous_turns(self.repo, self.owner, self.run_ids[:-1]),
+                "prior_turns": sorted(
+                    previous_turns(self.repo, self.owner, self.run_ids[:-1]) + self.judge_action_history,
+                    key=lambda row: row["turn"],
+                ),
+                "judge_evidence": judge_evidence(self, current),
+                "visible_tools_per_request": [
+                    request.get("tool_names", []) for request in self.port.requests[request_offset:]
+                ],
+                "actual_tool_names": [step["name"] for step in steps],
             },
         )
 
@@ -420,6 +460,7 @@ class V4Target:
             "u4_scope": "actual shared U4 parser; scripted model output, no live-language quality claim",
             "tool_steps": [{key: step[key] for key in ("run_id", "epoch", "seq", "name", "status")} for step in steps],
             "semantic_observations": self.semantic_history,
+            "tool_visibility_by_turn": self.tool_visibility_history,
             "decision_rows": [
                 {key: row[key] for key in ("id", "source_store", "source_seq")} for row in decision_rows(steps)
             ],

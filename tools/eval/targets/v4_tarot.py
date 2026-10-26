@@ -94,7 +94,7 @@ class TarotDriver:
         for action in script["model"]:
             call = action.get("tool_call", {})
             if call.get("name") == "tarot_read":
-                return self.ids.get(call["arguments"]["draw_id"])
+                return self.ids.get(call.get("arguments", {}).get("draw_id"))
         return None
 
     def resume(self, run: dict[str, Any]) -> None:

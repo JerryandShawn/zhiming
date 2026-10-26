@@ -73,6 +73,10 @@ def evaluate_scenario(
     finally:
         set_clock(previous_clock)
     case["elapsed_seconds"] = round(case["elapsed_seconds"], 3)
+    if judge is not None:
+        from tools.eval.brain_review import mark_brain_review
+
+        mark_brain_review(case)
     return case
 
 
@@ -119,6 +123,7 @@ def _evaluate_turns(scenario: Scenario, target: Target, judge: ModelJudge | None
                     "score": grade,
                     "judge": case.pop("_private_judge", None),
                     "tool_effects": result.metadata.get("tool_effects", {}),
+                    "packet": case.pop("_private_packet", None),
                 }
             )
         grades.append(grade)
@@ -139,6 +144,7 @@ def _grade(
     if result.error:
         return 0.0
     payload = judge_payload(scenario, index, result)
+    case["_private_packet"] = {key: payload[key] for key in ("packet_sha256", "packet_chars", "truncation")}
     guard = guard_judge(judge)
     calls_before = guard.calls if guard else 0
     elapsed_before = guard.elapsed_seconds if guard else 0.0
@@ -157,6 +163,7 @@ def _grade(
         "error": reviewed.get("error"),
         "reason_missing": not bool(reviewed.get("private_reasoning")),
     }
+    case["judge_metadata"] = reviewed.get("judge_metadata", {})
     physical_calls = guard.calls - calls_before if guard else reviewed["model_calls"]
     case["model_calls"] += physical_calls
     case["judge_model_calls"] += physical_calls
