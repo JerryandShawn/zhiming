@@ -51,6 +51,18 @@
         "paths": {"$ref": "#/$defs/Paths"}
       }
     },
+    "WiringApplicability": {
+      "type": "object", "additionalProperties": false,
+      "required": ["after_successful_chart_compute", "skill_incognito_allowed", "enforcement_owner", "execution"],
+      "properties": {
+        "after_successful_chart_compute": {"const": true},
+        "skill_incognito_allowed": {"const": true},
+        "enforcement_owner": {"const": "mainline"},
+        "execution": {"enum": ["read_only_interpretation", "frozen_refusal_only", "educational_only_not_wired"]},
+        "intent_required": {"enum": ["daily_transit", "window_search", "almanac", "synastry"]},
+        "underlying_tool_hidden_in": {"const": ["crisis", "incognito"]}
+      }
+    },
     "Chapter": {
       "type": "object", "additionalProperties": false,
       "required": ["topic", "title", "file", "question_types", "artifact_root", "required_fields", "pending_fields", "sources", "status", "rule_ids"],
@@ -66,7 +78,8 @@
         "conditional_fields": {"type": "array", "items": {"$ref": "#/$defs/Conditional"}},
         "additional_interfaces": {"type": "array", "items": {"$ref": "#/$defs/Additional"}},
         "feature_state": {"enum": ["accurate_record_time_basis_check", "experimental_frozen"]},
-        "visible_by_default": {"type": "boolean"}
+        "visible_by_default": {"type": "boolean"},
+        "wiring_applicability": {"$ref": "#/$defs/WiringApplicability"}
       }
     },
     "System": {

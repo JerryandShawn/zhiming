@@ -5,7 +5,7 @@ description: 按只读计算结果讲解流日、区间择日、黄历和合盘�
 
 # 日历与关系计算解释技能
 
-版本：p8-skills-draft-2026-10-21-v2.4。四章面向独立工具信封，不把它当旧CalculationArtifact。
+版本：p8-skills-draft-2026-10-26-v2.5。四章面向独立工具信封，不把它当旧CalculationArtifact。
 先由工具计算，再解释本轮已有结果；不在技能文本中计算天文位置、补生辰或写入档案。
 
 | topic | 章节 / 使用时机 |

@@ -115,4 +115,4 @@ def test_reference_policy_keeps_u12_boundary_tools_and_tarot_types_distinct() ->
     tarot = (ASSETS / "tarot/SKILL.md").read_text(encoding="utf8")
     assert "真实〔t#〕" in tarot and "不能把它说成牌义或新抽牌依据" in tarot
     assert "塔罗技能不生成八字U12结构r" in tarot
-    assert CATALOG["version"] == "p8-skills-draft-2026-10-21-v2.4"
+    assert CATALOG["version"] == "p8-skills-draft-2026-10-26-v2.5"

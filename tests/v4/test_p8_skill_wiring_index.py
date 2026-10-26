@@ -2,6 +2,13 @@
 
 from __future__ import annotations
 
+import json
+from copy import deepcopy
+from pathlib import Path
+
+import pytest
+from jsonschema import Draft202012Validator, ValidationError
+
 from mingjing_core.skills import SkillLibrary
 from mingjing_core.skills.wiring_index import skill_index
 
@@ -59,3 +66,26 @@ def test_frozen_and_unsupported_topics_never_claim_execution_authority() -> None
             assert row["applicability"]["intent_required"] == row["topic"].replace(
                 "-", "_"
             )
+
+
+@pytest.mark.parametrize(
+    "key,value",
+    [
+        ("execution", "write"),
+        ("enforcement_owner", "model"),
+        ("after_successful_chart_compute", False),
+        ("unknown", True),
+    ],
+)
+def test_applicability_schema_does_not_open_an_execution_or_visibility_bypass(
+    key: str, value
+) -> None:
+    catalog = deepcopy(SkillLibrary().catalog)
+    catalog["systems"]["bazi"]["chapters"][0]["wiring_applicability"][key] = value
+    path = (
+        Path(__file__).resolve().parents[2]
+        / "docs/v4/contracts/skill_assets.schema.json"
+    )
+    schema = json.loads(path.read_text(encoding="utf8"))
+    with pytest.raises(ValidationError):
+        Draft202012Validator(schema).validate(catalog)
