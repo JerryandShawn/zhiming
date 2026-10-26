@@ -33,6 +33,9 @@ CONDITIONAL_TOOLS = (
     "case_update",
     "case_add_event",
     "chart_skill",
+    "daily_transit",
+    "window_search",
+    "almanac",
 )
 CRISIS_TOOLS = frozenset({"time_context", "memory_search"})
 PRIVATE_WRITES = frozenset(
@@ -63,6 +66,7 @@ class VisibilityState:
     case_progress: bool = False
     chart_computed: bool = False
     date_context: bool = False
+    metaphysics_intent: str = "none"
 
     def conditional(self) -> dict[str, bool]:
         return {
@@ -75,6 +79,9 @@ class VisibilityState:
             "case_update": self.case_bound or self.case_progress,
             "case_add_event": self.case_bound or self.case_progress,
             "chart_skill": self.chart_computed,
+            "daily_transit": self.metaphysics_intent == "daily",
+            "window_search": self.metaphysics_intent == "window",
+            "almanac": self.metaphysics_intent == "almanac",
         }
 
     def necessary(self) -> set[str]:
@@ -87,6 +94,9 @@ class VisibilityState:
                 ("tarot_read", self.tarot_pending),
                 ("case_add_event", self.case_progress),
                 ("chart_skill", self.chart_computed),
+                ("daily_transit", self.metaphysics_intent == "daily"),
+                ("window_search", self.metaphysics_intent == "window"),
+                ("almanac", self.metaphysics_intent == "almanac"),
             )
             if active
         }
@@ -121,13 +131,7 @@ def select_visible(
     eligible = [
         name
         for name in order
-        if name in by_name
-        and (
-            name in RESIDENT_TOOLS
-            or conditions[name]
-            or name == "date_calc"
-            and name in requested
-        )
+        if name in by_name and (name in RESIDENT_TOOLS or conditions[name] or name == "date_calc" and name in requested)
     ]
     if ctx.crisis:
         eligible = [name for name in eligible if name in CRISIS_TOOLS]
@@ -135,8 +139,7 @@ def select_visible(
         eligible = [
             name
             for name in eligible
-            if name not in PRIVATE_WRITES
-            and (by_name[name].read_only or by_name[name].private_allowed)
+            if name not in PRIVATE_WRITES and (by_name[name].read_only or by_name[name].private_allowed)
         ]
     necessary = (state.necessary() | requested).intersection(eligible)
     resident = [name for name in eligible if name in RESIDENT_TOOLS]

@@ -180,3 +180,21 @@ loop_codec的P8工具消息只投影真实reference_views、可见主/比较盘�
 - 最终30f24c179df345b79d2213462d1920e1：51/51、53.81s，含实际P8/同轮两算≤10/原生引用和旧回填隐私、原分、Outbox终态兼容。Ruff/check与format120共11文件及diff--check过。
 
 本轮无完整tests/v4/CI/真实模型/服务器修改。03:15一次SSH仍banner timeout/native255，session29141结束，未认证/远端命令0；PG55480/PID50516只核存活未启停。main仍58/模块35/37未就绪，H1独立无P8 41660531保持发布，首发e578/r46冻结。下一P8四工具/合盘同意卡/缺资料确认卡、可见性容量裁定及system临界文案/档案摘要等剩余项；不要再重做已过实际计算lineage或纯helper。模块就绪优先无P8记忆合入与41/46门。
+### 2026-10-27 03:43 三个P8日期工具实际接线
+
+注册daily_transit/window_search/almanac（独立p8_definitions/p8_parameters）。只接受1901–2099年绝对日期、六种原生择日目的、最多366日区间和原生分页<=31；拒出生值/owner/consent及额外字段，不把相对日期冒充已解析日期。定义说明快照12:00/排序限制/公共黄历与本轮派生记录效果，不声称事实已保存。DailyTransit合法复用日期参数基类，不含桩处理器。
+
+将原metaphysics_intent纯分类真正接到原生source的VisibilityState，三工具只对应daily/window/almanac各一项必要工具；引述/否定/无关不开放，synastry意图不误开其他三个。无痕/危机隐藏。原15上限/常驻顺序/全真旧冲突保持，不吞ToolVisibilityConflict。注册数21→24是42新增三工具的字面契约同步，旧15条实际披露上限断言保留。复杂必要组合仍有已知容量缺口待裁定，不借正常场景通过宣称全容量问题已解决。
+
+agent_p8_tools执行原生步骤指纹/租约/隐私，短事务准备→事务外真实P8ChartAdapter隔离计算→短事务复核→verify_p8_document/原生doc/Pointer保存/已有cache；daily/window从已授权snapshot读取准确出生值，almanac仅当前source空facts快照，不读出生档案。原生worker返回实际三体系快照、单日择日样例和黄历，scope/hash/真实规则Pointer全核，不写用户事实。工具本身不产生真实模型请求，窗口大范围可能触发45秒原生计算时限，不延长/不虚造部分成功。
+
+新增agent_p8_tool_lineage，只接受同run/epoch/name唯一已完成Journal完整输出与受保护缓存，复用原生版本闭包/引用撤销/10条剩余槽；loop_codec._registries新增三工具分支。P8 tool_message按通用工具投影原生tool_data、限界和选定引用，不注入私有documents/persisted。真实脚本Agent黄历→工具消息→最终core4.0已过，事实仍空。
+
+证据（原metadata/XML/log全部根核，分轮不相加）：
+- 0b34ea304ad84e59b8df33e723bd1106：57pass/3fail；测试把原话/事实等全部alias数也算进c/r<=10，实际工具已成功且已完成证明通过；修断言仅数专业c/r并保留repo.verify_versions检查，未改产品限额或来源闭包，原件保留。
+- 970bc97bcefd46ea9c2ff80029163c3d：60/60、10.89s，三真实工具/缺出生黄历且禁止fact读取/未完成与伪输出拒绝/缓存重放/引述否定无关及无痕危机拒绝/schema拒绝/旧可见性与15上限。
+- 最终cbc128b42f984fdf9434c932afac03e7：24/24、8.50s，新增实际脚本Agent黄历投影与最终发布、旧context可见性兼容；两个成功轮不冒称完整全链。Ruff/check+format120共12文件、diff--check过。
+
+main58/模块首段35/37仍未就绪，不提前merge。03:35 SSH仍banner timeout/native255，session72089结束，未认证/远端命令/修改0。PG55480/PID50516仅核存活未启停，无后台测试/模型/新CI，无完整tests/v4。
+
+尚未完成：synastry原生同意卡/24小时单次授权与临时结果；准确缺IANA/clock_basis返回MISSING_INPUT但完整补资料确认卡仍待；容量精确裁定、临界文案/命理档案摘要及晨报daily可信开关接线。P8整项未就绪，不能提前全量/冻结/部署/真实评测。下一继续这些剩余项，不重做准确排盘主链/三日期工具或旧绿轮；模块一就绪优先独立无P8 mem2-gate合入与41/46门。H1 41660531和首发e578/r46保持冻结。

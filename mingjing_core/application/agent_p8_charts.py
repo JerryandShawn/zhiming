@@ -85,6 +85,11 @@ def remaining_reference_slots(service: Any, ctx: Any, connection: Any) -> int:
 def tool_projection(data: dict[str, Any]) -> dict[str, Any]:
     """Full native documents stay private; actual selected references reach the model."""
     native = data["calculation"]
+    if data.get("tool_name"):
+        return {key: data[key] for key in ("adapter_mode", "tool_name", "arguments", "reference_views")} | {
+            "tool_data": native["data"],
+            "limits": native.get("limits", []),
+        }
     summaries = []
     for chart in native["charts"]:
         if chart.get("visible_by_default") is not True:

@@ -203,6 +203,10 @@ def _registries(service: Any, run: dict[str, Any], name: str, result: ToolResult
     rows, captured = [], {}
     if name == "chart_compute":
         rows, captured = chart_lineage(service, run, result)
+    elif name in {"daily_transit", "window_search", "almanac"}:
+        from mingjing_core.application.agent_p8_tool_lineage import p8_tool_lineage
+
+        rows, captured = p8_tool_lineage(service, run, name, result)
     elif name in {"tarot_start", "tarot_read"}:
         rows, captured = tarot_lineage(service, run, name, result)
     indexes = case_index_lineage(service, run, result) if name == "case_list" else []

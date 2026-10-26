@@ -19,6 +19,7 @@ from mingjing_core.agent.tools.parameters import (
     TimeContext,
 )
 from mingjing_core.agent.tools.tarot_definitions import tarot_definitions
+from mingjing_core.agent.tools.p8_definitions import p8_definitions
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult, tool_input_fingerprint
 from mingjing_core.domain.contracts import CoreError
@@ -84,6 +85,7 @@ DEFINITIONS = (
     + interaction_definitions()
     + tarot_definitions()
     + computation_definitions()
+    + p8_definitions()
 )
 
 
