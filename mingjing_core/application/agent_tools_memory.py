@@ -136,9 +136,7 @@ def save_memory(
     categories = sensitivity_categories(args["quote"], source["content"], start, end, args["sensitivity"])
     if level in SENSITIVITIES and not categories_granted(service.memory, ctx.owner, ctx.subject, categories):
         sensitive_conflict = create_conflict_proposal(service, args, ctx, source, start, end, level, metadata)
-        if sensitive_conflict:
-            return sensitive_conflict
-        return proposal(service, args, ctx, source, start, end, level, metadata)
+        return sensitive_conflict or proposal(service, args, ctx, source, start, end, level, metadata)
     if len(explicit_candidates(service, args, ctx)) > 1:
         return {"write_status": "needs_confirmation", "code": "ambiguous_change_target"}
     conflict = create_conflict_proposal(service, args, ctx, source, start, end, level, metadata)
@@ -182,6 +180,9 @@ def decorate_memory(
     categories: tuple[str, ...],
 ) -> dict[str, Any]:
     metadata.update(summary=args["summary"], requested_kind=args["kind"])
+    source = service.memory.get_source(ctx.owner, args["message_id"])
+    start, end = source_span(source, args["quote"], args.get("start"), args.get("end"))
+    metadata["sensitivity"] = sensitivity(args["quote"], source["content"], start, end, args["sensitivity"])
     if categories:
         refs, proofs = category_authority_refs(service.memory, ctx.owner, ctx.subject, categories)
         if proofs:

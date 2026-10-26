@@ -8,15 +8,18 @@ from typing import TYPE_CHECKING, Any, Literal
 from psycopg import sql
 from psycopg.types.json import Jsonb
 
+from mingjing_core.application.agent_tools_dates import resolve_event_fields
 from mingjing_core.application.agent_tools_policy import (
     KIND_MAP,
     SENSITIVITIES,
     V4FactMemory,
+    sensitivity,
     sensitivity_categories,
 )
 from mingjing_core.application.memory2_conflicts import checked_conflict
 from mingjing_core.application.memory2_consent import consent_live
 from mingjing_core.application.memory2_undo import verify_originals
+from mingjing_core.application.time_range_parser import ModuleTimeRangeParser
 from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
 from mingjing_core.repositories.postgres import fingerprint
 from mingjing_core.timekit.timestamps import history_instant
@@ -27,7 +30,18 @@ if TYPE_CHECKING:
 SAVE_ONCE = "请保存这条记忆"
 SAVE_CATEGORY = "请保存这条记忆，以后这类都记"
 SAVE_CATEGORY_SHORT = "以后这类都记"
-META_FIELDS = frozenset({"summary", "requested_kind", "said_at", "owner_timezone", "event_at", "original_expression"})
+META_FIELDS = frozenset(
+    {
+        "summary",
+        "requested_kind",
+        "said_at",
+        "owner_timezone",
+        "event_at",
+        "event_end",
+        "precision",
+        "original_expression",
+    }
+)
 
 
 def approval_reference(action: dict[str, Any]) -> dict[str, Any]:
@@ -324,11 +338,23 @@ class MemoryProposalService:
         operation_id: str,
     ) -> dict[str, Any]:
         metadata = proposal.get("fact_metadata", {})
+        if "fact_metadata" not in proposal:
+            zone = self.repo.assert_scope(owner, row["subject_id"])["settings"].get("timezone", "Asia/Shanghai")
+            metadata, pending = resolve_event_fields(
+                {"kind": proposal["kind"], "quote": proposal["source_refs"][0]["quote"]},
+                source,
+                zone,
+                ModuleTimeRangeParser(),
+            )
+            if pending:
+                raise EvidenceError("旧提案的事件日期仍需明确")
         if not isinstance(metadata, dict) or set(metadata) - META_FIELDS:
             raise EvidenceError("提案中的记忆字段无效")
         if proposal["kind"] == "event" and not metadata.get("event_at"):
             raise EvidenceError("事件提案缺少已经核实的绝对日期")
         metadata = dict(metadata, summary=proposal["summary"], requested_kind=proposal["kind"])
+        ref = proposal["source_refs"][0]
+        metadata["sensitivity"] = sensitivity(ref["quote"], source["content"], ref["start"], ref["end"])
         metadata.setdefault("said_at", history_instant(source["at"]).isoformat())
         metadata.update(source_refs=[*row["source_refs"], approval_reference(action)], approval_consent_id=proof_id)
         return self.repo.update(
