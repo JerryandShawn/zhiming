@@ -1,0 +1,28 @@
+{
+  "board_version": 58,
+  "branch": "v4/mem2-gate",
+  "published_sha": "416605312775597c2ba86607821aca7cc08f2053",
+  "base_without_p8": "3b095f397568e783ec05454f855694456bbbca4d",
+  "scope": "H1 updated receipt, exact own-revision proof, affected fact closure, public ids and update label",
+  "local_targeted": {
+    "passed": 106,
+    "failed": 0,
+    "seconds": 13.82,
+    "evidence": "zhiming-v4-mem2-gate/private/safe-narrow-99fd6280f25f46dda0964e9f4fcd4770",
+    "metadata_xml_log_checked": true,
+    "saved_regressions_included": true
+  },
+  "frontend": "Existing Node checks plus update label and escaping passed; syntax check passed",
+  "migrations": {
+    "baseline": "e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd",
+    "count": 8,
+    "same_canonical_lf_bytes_per_file": true,
+    "git_diff_empty": true,
+    "new_migration": false
+  },
+  "undo": "Only the requested update label is displayed; change-id plus revision undo route is subsequent integration scope, no invented endpoint",
+  "not_verified": ["Module KU01/KU02", "Memory2 full acceptance", "Full tests/v4", "CI", "Deployment"],
+  "real_model_requests": 0,
+  "server_changes": 0,
+  "ssh_probe": {"beijing_time": "2026-10-27 01:15", "native_exit": 255, "phase": "banner_timeout"}
+}
