@@ -104,6 +104,12 @@ def submit_agent(service: Any, values: dict[str, Any], existing: Any = None) -> 
         case_ids=values.get("case_ids"),
         depth=values.get("depth", "standard"),
     )
+    if values.get("draw_id"):
+        from mingjing_core.application.tarot_reveal_ingress import TarotRevealIngress
+
+        return TarotRevealIngress(service).submit(
+            draw_id=values["draw_id"], message=values["message"], source_ids=sources, **common
+        )
     if sources:
         return ingress.queue(source_ids=sources, **common)
     return ingress.submit(message=values["message"], **common)
@@ -118,7 +124,6 @@ def validate_agent_input(values: dict[str, Any]) -> None:
     if (
         values.get("mode", "chat") != "chat"
         or values.get("images")
-        or values.get("draw_id")
         or values.get("reading_id")
         or values.get("selection")
         or values.get("parent_run")

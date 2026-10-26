@@ -29,4 +29,18 @@ def current_layer(snapshot: SourceSnapshot, aliases: Any) -> ContextLayer:
                 True,
             )
         )
+    for draw in snapshot.extra_entities.get("revealed_draw", ()):
+        items.append(
+            ContextItem(
+                "revealed-draw:" + draw["id"],
+                (
+                    ChatMessage(
+                        "system",
+                        "本轮用户已揭示牌阵，请用tarot_read读取后再解释。系统绑定资料："
+                        + json.dumps(draw, ensure_ascii=False),
+                    ),
+                ),
+                True,
+            )
+        )
     return ContextLayer("L6", tuple(items))

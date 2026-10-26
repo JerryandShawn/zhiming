@@ -9,7 +9,7 @@
 - [x] 读取 main v56 顶部及 v55 双轨；恢复20分钟自动任务。
 - [x] 一次只读 SSH 探测：banner 超时，未进入远端命令；本机命令包装退出1。没有远端修改。
 - [x] 独立工作树建立；读取42号第一部分1.4及涉及路径。
-- [ ] 项1 TA01：可省略draw_id但显式值仍须匹配run；共用已揭牌入口校验owner/subject/case/ready；Web旧入口、面板和线程接线；系统上下文仅展示受信状态；评测走真实入口并记录每轮可见/实际工具；TA01两轮、TA02/03/04/AX01定向验收。
+- [x] 项1 TA01本机脚本修复：P1–P7/E1–E4完成；TA01两轮（pick/auto，显式/省略ID）、TA02/03/04/AX01及三条真实HTTP路径定向通过。没有真实模型评测；最终记忆候选全量/CI/真实门仍待后续。
 - [ ] 项2 M01：开始时只读38号第八节及已有followup实现，修20点后明天跟进；定向验收。
 - [ ] 项3 记忆2.0候选：模块线首段真正就绪才普通merge；41号附加段接线，R31不发任何迁移，撤销用变更ID+修订号，migrations与e578逐文件相同。03:00归档/反思仅脚本。46号脚本门、完整tests/v4、CI后冻结v4/release-mem2并写候选就绪+SHA；两份mem2执行单；仅46号指定约20题真实评测一页回执。
 - [ ] 项4 评分包v2：开始时只读43号第六节，仅tools/eval；脚本验收。
@@ -34,6 +34,20 @@ TA01当前TarotRead强制draw_id；execute_tarot要求显式字段等于run.requ
 ## 未验证
 
 TA01及第二批各项尚未实现/验收；模块线首段“尚未记忆2.0就绪”，命理线现有日报未见P8接线就绪。首发stage/生产均未完成。
+
+### 2026-10-26 23:23 实际推进（覆盖上句TA01状态）
+
+共用TarotRevealIngress在接收原话前核owner、subject、已揭示状态、原生事项授权及非无痕线程；所有路径只显式绑定用户提交的draw，不猜最新牌阵。runtime_assembly只放开draw_id，仍拒绝附件/reading/selection/parent；面板readings、旧chat及线程messages接入相同服务。现有模型服务仍执行原生run/ToolBatch/Journal，来源和幂等不另造。P4系统事实从权威租约run取draw id/问题/牌阵，不含牌面，牌面仍须tarot_read读取；P8飞书按钮不做。
+
+评测揭牌动作走同一产品入口，记录每轮可见工具及真实调用工具（仅名字）；TA01脚本可省略ID，原expect/gold不变。TA04放新scenarios_v4_batch2目录，schema仅扩TA04，避免污染固定首发48题集合；AX01从真实scenarios_v4_core30读取。
+
+证据分轮，不能相加冒充一次完整全链：
+- private/safe-narrow-dcb7ebb744ea487f8dcee5bf510ee397：23pass/7fail。6项因新校验误把原生case.status=open当active，改为复用原生selected_cases；1项旧测试仍要求所有draw输入“不支持”，按42改为共享授权路径并保留附件等拒绝，失败原件保留。
+- private/safe-narrow-318bad7a44124c99872bd7b4e550b2d4：29/29，13.31s，含TA01两轮4模式、入口幂等/owner/事项/未揭牌/删除/无痕拒绝、runtime及线程兼容。metadata/XML/log根读0fail/err/skip。
+- 增补三条真实HTTP执行及5个场景：首轮373d78b0cdc14beda3435902b388509e为13pass/2fixturefail（TA04未加入schema、AX01文件路径误指），原件保留；修后f1a648c2e4e34d1196fb81417784ccb2为15/15，10.12s，metadata/XML/log根读0fail/err/skip。三条HTTP均实际执行tarot_read并在随后模型请求读取真实工具结果。
+- Ruff/check及format120过；旧web单体只做新增小段，AST语法过，未整文件格式化。未跑完整tests/v4或真实评测，按v56等记忆候选阶段。
+
+本wake23:15只读SSH仍banner超时/native255，无认证/远端命令；模块首段尚未就绪（35/37原脚本、KU未完），命理尚未接线就绪。下一项M01，开始时仅读38号第八节和对应followup代码。原隔离PG session13558仍存活，不停其他PG。
 
 ## v57 / 46号优先规则（已全文读取）
 
