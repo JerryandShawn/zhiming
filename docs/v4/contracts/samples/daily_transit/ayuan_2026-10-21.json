@@ -1,0 +1,5294 @@
+{
+  "version": "p8-daily-transit-v1",
+  "scope": {
+    "owner_user_id": "synthetic-owner-ayuan",
+    "subject_id": "synthetic-subject-ayuan",
+    "revision": 1,
+    "operation_id": "synthetic-ayuan-daily-week-20261021"
+  },
+  "data": {
+    "date": "2026-10-21",
+    "snapshot_at": "2026-10-21T12:00:00+08:00",
+    "snapshot_at_utc": "2026-10-21T04:00:00Z",
+    "time_basis": {
+      "primary": {
+        "basis": "true_solar",
+        "utc": "1994-03-12T00:20:00Z",
+        "instant_id": "instant-d84ee400f41ac0430bcc690c",
+        "coordinate_datetime": "1994-03-12T07:06:20.536889",
+        "calendar_datetime": "1994-03-12T08:20:00",
+        "civil_datetime": "1994-03-12 08:20",
+        "civil_datetime_basis": "standard_clock_minute_for_legacy_only_when_compatible; exact UTC is authoritative",
+        "timezone_offset": 8.0,
+        "engine_longitude": 101.58557037249676,
+        "engine_longitude_role": "effective_meridian_not_geographic_birth_longitude",
+        "legacy_args_compatible": true,
+        "pillars": {
+          "year": "甲戌",
+          "month": "丁卯",
+          "day": "丁酉",
+          "hour": "甲辰"
+        },
+        "pillar_method": {
+          "year_month": "physical_UTC_plus8_exact_jie",
+          "day_hour": "declared_coordinate_sect1_late_zi",
+          "day_boundary": "23:00_advances_day",
+          "subsecond_handling": "floor_to_engine_second"
+        },
+        "solar_time": {
+          "standard": "1994-03-12T08:20:00",
+          "beijing_standard": "1994-03-12T08:20:00",
+          "mean_solar": "1994-03-12T07:16:16.800000",
+          "true_solar": "1994-03-12T07:06:20.536889",
+          "longitude": 104.07,
+          "standard_central_meridian": 120.0,
+          "longitude_correction_minutes": -63.72000000000003,
+          "eot_minutes": -9.937718510012912,
+          "eot_sign": "apparent_minus_mean",
+          "method": "noaa-meeus-julian-century-equation-of-time-v1",
+          "eot_evaluated_at": "1994-03-12T00:20:00Z",
+          "source": "https://gml.noaa.gov/grad/solcalc/calcdetails.html",
+          "limits": [
+            "天文公式近似，不将同算法数值对照称为独立实测。",
+            "太阳时是时钟坐标，不是另一个UTC瞬间。"
+          ]
+        },
+        "jie_uncertainty": {
+          "uncertain": false,
+          "nearest_jie": "惊蛰",
+          "calendar_boundary": "1994-03-06T03:37:42+08:00",
+          "distance_seconds": 535338.0,
+          "method": "physical_instant_UTC_plus8_not_solar_coordinate"
+        },
+        "assumptions": [
+          "clock"
+        ],
+        "requires_confirmation": false,
+        "timezone_source": {
+          "zone": "Asia/Shanghai",
+          "source": "explicit_environment_tzpath",
+          "iana_version": "2026e",
+          "tzdata_package_version": null,
+          "zone_sha256": "bf8b7ed82fe6e63e6d98f8cea934eeac901cd16aba85eb5755ce3f8b4289ea8a",
+          "historical_accuracy": "tzdb_convention_not_birth_document_verification",
+          "selection_policy": "current_explicit_environment_then_package_then_unpinned_system",
+          "source_limits": "caller_selected_files_may_differ_from_package_lock"
+        },
+        "engine_versions": {
+          "lunar-python": "1.4.8"
+        }
+      },
+      "comparisons": []
+    },
+    "bazi": {
+      "natal_pillars": {
+        "year": "甲戌",
+        "month": "丁卯",
+        "day": "丁酉",
+        "hour": "甲辰"
+      },
+      "snapshot": {
+        "date": "2026-10-21",
+        "sample_at": "2026-10-21T12:00:00+08:00",
+        "year": {
+          "ganzhi": "丙午",
+          "stem_ten_god": "劫财",
+          "hidden_ten_gods": [
+            {
+              "stem": "丁",
+              "ten_god": "比肩"
+            },
+            {
+              "stem": "丙",
+              "ten_god": "劫财"
+            }
+          ],
+          "natal_relations": [
+            {
+              "pillar": "year",
+              "natal_ganzhi": "甲戌",
+              "relations": []
+            },
+            {
+              "pillar": "month",
+              "natal_ganzhi": "丁卯",
+              "relations": []
+            },
+            {
+              "pillar": "day",
+              "natal_ganzhi": "丁酉",
+              "relations": []
+            },
+            {
+              "pillar": "hour",
+              "natal_ganzhi": "甲辰",
+              "relations": []
+            }
+          ],
+          "transformation_established": false
+        },
+        "month": {
+          "ganzhi": "戊戌",
+          "stem_ten_god": "伤官",
+          "hidden_ten_gods": [
+            {
+              "stem": "戊",
+              "ten_god": "伤官"
+            },
+            {
+              "stem": "丙",
+              "ten_god": "劫财"
+            },
+            {
+              "stem": "辛",
+              "ten_god": "偏财"
+            }
+          ],
+          "natal_relations": [
+            {
+              "pillar": "year",
+              "natal_ganzhi": "甲戌",
+              "relations": []
+            },
+            {
+              "pillar": "month",
+              "natal_ganzhi": "丁卯",
+              "relations": [
+                "地支六合"
+              ]
+            },
+            {
+              "pillar": "day",
+              "natal_ganzhi": "丁酉",
+              "relations": []
+            },
+            {
+              "pillar": "hour",
+              "natal_ganzhi": "甲辰",
+              "relations": [
+                "地支六冲"
+              ]
+            }
+          ],
+          "transformation_established": false
+        },
+        "day": {
+          "ganzhi": "戊辰",
+          "stem_ten_god": "伤官",
+          "hidden_ten_gods": [
+            {
+              "stem": "戊",
+              "ten_god": "伤官"
+            },
+            {
+              "stem": "壬",
+              "ten_god": "正官"
+            },
+            {
+              "stem": "乙",
+              "ten_god": "偏印"
+            }
+          ],
+          "natal_relations": [
+            {
+              "pillar": "year",
+              "natal_ganzhi": "甲戌",
+              "relations": [
+                "地支六冲"
+              ]
+            },
+            {
+              "pillar": "month",
+              "natal_ganzhi": "丁卯",
+              "relations": []
+            },
+            {
+              "pillar": "day",
+              "natal_ganzhi": "丁酉",
+              "relations": [
+                "地支六合"
+              ]
+            },
+            {
+              "pillar": "hour",
+              "natal_ganzhi": "甲辰",
+              "relations": []
+            }
+          ],
+          "transformation_established": false
+        },
+        "hour": {
+          "ganzhi": "戊午",
+          "stem_ten_god": "伤官",
+          "hidden_ten_gods": [
+            {
+              "stem": "丁",
+              "ten_god": "比肩"
+            },
+            {
+              "stem": "丙",
+              "ten_god": "劫财"
+            }
+          ],
+          "natal_relations": [
+            {
+              "pillar": "year",
+              "natal_ganzhi": "甲戌",
+              "relations": []
+            },
+            {
+              "pillar": "month",
+              "natal_ganzhi": "丁卯",
+              "relations": []
+            },
+            {
+              "pillar": "day",
+              "natal_ganzhi": "丁酉",
+              "relations": []
+            },
+            {
+              "pillar": "hour",
+              "natal_ganzhi": "甲辰",
+              "relations": []
+            }
+          ],
+          "transformation_established": false
+        },
+        "hour_is_snapshot_only": true,
+        "period_start": "2026-10-08T14:29:17+08:00",
+        "period_end_exclusive": "2026-11-07T17:52:05+08:00"
+      },
+      "selected_schools": {
+        "command": "sanming_5520",
+        "tianyi": "combined_common",
+        "blade": "yang_only"
+      },
+      "interactions": {
+        "version": "p8-time-interactions-v1",
+        "method": "p8-layered-structural-graph-v1",
+        "school": "ziping-structural-relations-project-v1",
+        "ordering_school": "子平",
+        "ordering_label": "项目口径·子平视角",
+        "priority_labels": {
+          "子平": "项目口径·子平视角",
+          "通用": "项目口径·通用"
+        },
+        "annotation_version": "p8-u12-interaction-labels-v2-review24",
+        "annotation_status": "project_convention_v1_not_expert_calibrated",
+        "annotation_basis": {
+          "priority_source_status": "数字为项目排序参数，未作专家校准；不代表古籍或任何流派公认权重。调候、盲派排序未有可靠出处，暂停使用。",
+          "palace_source": {
+            "book": "子平真诠",
+            "chapter": "第二十三章·论宫分用神配六亲",
+            "url": "https://www.donglishuzhai.net/chapter/3736.html",
+            "basis": "年月日時，自上而下；祖父妻子，亦自上而下。"
+          },
+          "palace_source_status": "祖、父、妻、子宫分已核公开原文转录，未作原刊校勘；现代关系称呼与检索领域是项目映射，不推出现实亲属事实。",
+          "palace_modern_mappings": {
+            "month": {
+              "domains": [
+                "事业",
+                "学业"
+              ],
+              "status": "现代常用检索映射，非第二十三章原文"
+            }
+          },
+          "palace_pending_claims": [
+            "年柱早年、月柱青年、时柱晚年的具体年龄范围存疑，待核《渊海子平》。",
+            "月柱兼指兄弟存疑，不能用本章祖父妻子句作证。"
+          ],
+          "ten_god_traditional_mappings": {
+            "source": {
+              "book": "子平真诠",
+              "chapter": "第二十三章·论宫分用神配六亲",
+              "url": "https://www.donglishuzhai.net/chapter/3736.html",
+              "basis": "年月日時，自上而下；祖父妻子，亦自上而下。"
+            },
+            "male_context": {
+              "正印": "母",
+              "偏财": "父",
+              "正财": "妻",
+              "正官": "子女",
+              "七杀": "子女",
+              "比肩": "兄弟"
+            },
+            "source_status": "传统说法；正印为母、偏财为父、正财为妻、官杀为子女、比肩为兄弟已核第二十三章公开转录。",
+            "female_context": {
+              "正官": "夫（待核）",
+              "七杀": "夫星扩展（待核）",
+              "食神": "子女（待核）",
+              "伤官": "子女（待核）"
+            },
+            "female_source_status": "出处待核《渊海子平》《三命通会》女命篇，本轮未得可靠对应原文；不得冒称第二十三章已支持。",
+            "modern_boundary": "这些是传统性别家庭模型，不据此推断实际家庭角色、亲属关系、性别认同、性取向、婚姻状态或婚育意愿。domains为宽泛检索标签，不是现实事实或未询问的关系断言。"
+          },
+          "ten_god_domain_status": "事业/学业/财运/性格为项目现代检索标签；婚恋与六亲包括传统男女命对应，必须连同traditional_mappings的性别语境与待核状态说明，不按标签断事。"
+        },
+        "day_master": "丁",
+        "nodes": [
+          {
+            "id": "natal.year",
+            "ganzhi": "甲戌",
+            "stem": "甲",
+            "branch": "戌",
+            "stem_ten_god": "正印",
+            "hidden_ten_gods": [
+              {
+                "stem": "戊",
+                "ten_god": "伤官"
+              },
+              {
+                "stem": "丙",
+                "ten_god": "劫财"
+              },
+              {
+                "stem": "辛",
+                "ten_god": "偏财"
+              }
+            ]
+          },
+          {
+            "id": "natal.month",
+            "ganzhi": "丁卯",
+            "stem": "丁",
+            "branch": "卯",
+            "stem_ten_god": "比肩",
+            "hidden_ten_gods": [
+              {
+                "stem": "乙",
+                "ten_god": "偏印"
+              },
+              {
+                "stem": "甲",
+                "ten_god": "正印"
+              }
+            ]
+          },
+          {
+            "id": "natal.day",
+            "ganzhi": "丁酉",
+            "stem": "丁",
+            "branch": "酉",
+            "stem_ten_god": "比肩",
+            "hidden_ten_gods": [
+              {
+                "stem": "辛",
+                "ten_god": "偏财"
+              },
+              {
+                "stem": "庚",
+                "ten_god": "正财"
+              }
+            ]
+          },
+          {
+            "id": "natal.hour",
+            "ganzhi": "甲辰",
+            "stem": "甲",
+            "branch": "辰",
+            "stem_ten_god": "正印",
+            "hidden_ten_gods": [
+              {
+                "stem": "戊",
+                "ten_god": "伤官"
+              },
+              {
+                "stem": "壬",
+                "ten_god": "正官"
+              },
+              {
+                "stem": "乙",
+                "ten_god": "偏印"
+              }
+            ]
+          },
+          {
+            "id": "target.yearly",
+            "ganzhi": "丙午",
+            "stem": "丙",
+            "branch": "午",
+            "stem_ten_god": "劫财",
+            "hidden_ten_gods": [
+              {
+                "stem": "丁",
+                "ten_god": "比肩"
+              },
+              {
+                "stem": "丙",
+                "ten_god": "劫财"
+              }
+            ]
+          },
+          {
+            "id": "target.monthly",
+            "ganzhi": "戊戌",
+            "stem": "戊",
+            "branch": "戌",
+            "stem_ten_god": "伤官",
+            "hidden_ten_gods": [
+              {
+                "stem": "戊",
+                "ten_god": "伤官"
+              },
+              {
+                "stem": "丙",
+                "ten_god": "劫财"
+              },
+              {
+                "stem": "辛",
+                "ten_god": "偏财"
+              }
+            ]
+          },
+          {
+            "id": "target.daily",
+            "ganzhi": "戊辰",
+            "stem": "戊",
+            "branch": "辰",
+            "stem_ten_god": "伤官",
+            "hidden_ten_gods": [
+              {
+                "stem": "戊",
+                "ten_god": "伤官"
+              },
+              {
+                "stem": "壬",
+                "ten_god": "正官"
+              },
+              {
+                "stem": "乙",
+                "ten_god": "偏印"
+              }
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "id": "u2-69b6ef0e8d0ae4e27bf88cfc",
+            "kind": "三合",
+            "members": [
+              {
+                "id": "natal.year",
+                "ganzhi": "甲戌",
+                "branch": "戌",
+                "stem": "甲"
+              },
+              {
+                "id": "target.yearly",
+                "ganzhi": "丙午",
+                "branch": "午",
+                "stem": "丙"
+              },
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "寅",
+              "午",
+              "戌"
+            ],
+            "present_branches": [
+              "午",
+              "戌"
+            ],
+            "missing_branches": [
+              "寅"
+            ],
+            "complete": false,
+            "status": "incomplete_members",
+            "palace": [
+              "year"
+            ],
+            "domains": [
+              "事业",
+              "财运",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 2,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-2838b5e26a7d983b23217b06",
+            "kind": "六冲",
+            "members": [
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "辰",
+              "戌"
+            ],
+            "complete": true,
+            "palace": [],
+            "domains": [
+              "事业",
+              "六亲",
+              "性格"
+            ],
+            "priority": {
+              "子平": 2,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-806a738eae4ead04e3f94911",
+            "kind": "六冲",
+            "members": [
+              {
+                "id": "natal.hour",
+                "ganzhi": "甲辰",
+                "branch": "辰",
+                "stem": "甲"
+              },
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "辰",
+              "戌"
+            ],
+            "complete": true,
+            "palace": [
+              "hour"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 2,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-ed62911136e43a3ec0001320",
+            "kind": "六冲",
+            "members": [
+              {
+                "id": "natal.year",
+                "ganzhi": "甲戌",
+                "branch": "戌",
+                "stem": "甲"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "辰",
+              "戌"
+            ],
+            "complete": true,
+            "palace": [
+              "year"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 2,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-16be4d2a19332e620eb6fed6",
+            "kind": "天干相克",
+            "members": [
+              {
+                "id": "natal.year",
+                "ganzhi": "甲戌",
+                "branch": "戌",
+                "stem": "甲"
+              },
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "source": "natal.year",
+            "target": "target.monthly",
+            "palace": [
+              "year"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-d634dd3956b68615cfea9d80",
+            "kind": "三会",
+            "members": [
+              {
+                "id": "natal.year",
+                "ganzhi": "甲戌",
+                "branch": "戌",
+                "stem": "甲"
+              },
+              {
+                "id": "natal.day",
+                "ganzhi": "丁酉",
+                "branch": "酉",
+                "stem": "丁"
+              },
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "申",
+              "酉",
+              "戌"
+            ],
+            "present_branches": [
+              "酉",
+              "戌"
+            ],
+            "missing_branches": [
+              "申"
+            ],
+            "complete": false,
+            "status": "incomplete_members",
+            "palace": [
+              "year",
+              "day"
+            ],
+            "domains": [
+              "事业",
+              "婚恋",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-79a6879bc04a99faf8acddcb",
+            "kind": "六合",
+            "members": [
+              {
+                "id": "natal.month",
+                "ganzhi": "丁卯",
+                "branch": "卯",
+                "stem": "丁"
+              },
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "卯",
+              "戌"
+            ],
+            "complete": true,
+            "palace": [
+              "month"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-10b260e83c34baa37f265c13",
+            "kind": "天干相克",
+            "members": [
+              {
+                "id": "natal.hour",
+                "ganzhi": "甲辰",
+                "branch": "辰",
+                "stem": "甲"
+              },
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "source": "natal.hour",
+            "target": "target.monthly",
+            "palace": [
+              "hour"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-7c89caff594b941bfb5925d9",
+            "kind": "天干相克",
+            "members": [
+              {
+                "id": "natal.year",
+                "ganzhi": "甲戌",
+                "branch": "戌",
+                "stem": "甲"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "source": "natal.year",
+            "target": "target.daily",
+            "palace": [
+              "year"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-d75c909470113d433e3839b7",
+            "kind": "三会",
+            "members": [
+              {
+                "id": "natal.month",
+                "ganzhi": "丁卯",
+                "branch": "卯",
+                "stem": "丁"
+              },
+              {
+                "id": "natal.hour",
+                "ganzhi": "甲辰",
+                "branch": "辰",
+                "stem": "甲"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "寅",
+              "卯",
+              "辰"
+            ],
+            "present_branches": [
+              "卯",
+              "辰"
+            ],
+            "missing_branches": [
+              "寅"
+            ],
+            "complete": false,
+            "status": "incomplete_members",
+            "palace": [
+              "month",
+              "hour"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-b5ce8d52b73954bd29047f8c",
+            "kind": "六合",
+            "members": [
+              {
+                "id": "natal.day",
+                "ganzhi": "丁酉",
+                "branch": "酉",
+                "stem": "丁"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "辰",
+              "酉"
+            ],
+            "complete": true,
+            "palace": [
+              "day"
+            ],
+            "domains": [
+              "事业",
+              "婚恋",
+              "六亲",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-e4dfee793e0703c83e1d3aa1",
+            "kind": "天干相克",
+            "members": [
+              {
+                "id": "natal.hour",
+                "ganzhi": "甲辰",
+                "branch": "辰",
+                "stem": "甲"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "source": "natal.hour",
+            "target": "target.daily",
+            "palace": [
+              "hour"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 3,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-0a6568bc40ccc6216728c39a",
+            "kind": "六破",
+            "members": [
+              {
+                "id": "natal.month",
+                "ganzhi": "丁卯",
+                "branch": "卯",
+                "stem": "丁"
+              },
+              {
+                "id": "target.yearly",
+                "ganzhi": "丙午",
+                "branch": "午",
+                "stem": "丙"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "卯",
+              "午"
+            ],
+            "complete": true,
+            "palace": [
+              "month"
+            ],
+            "domains": [
+              "事业",
+              "财运",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 5,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-62a703a5c995c065950941c9",
+            "kind": "六害",
+            "members": [
+              {
+                "id": "natal.day",
+                "ganzhi": "丁酉",
+                "branch": "酉",
+                "stem": "丁"
+              },
+              {
+                "id": "target.monthly",
+                "ganzhi": "戊戌",
+                "branch": "戌",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "酉",
+              "戌"
+            ],
+            "complete": true,
+            "palace": [
+              "day"
+            ],
+            "domains": [
+              "事业",
+              "婚恋",
+              "六亲",
+              "性格"
+            ],
+            "priority": {
+              "子平": 5,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-c154fa8f8df0f0ed37fbe2c1",
+            "kind": "六害",
+            "members": [
+              {
+                "id": "natal.month",
+                "ganzhi": "丁卯",
+                "branch": "卯",
+                "stem": "丁"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "required_members": [
+              "卯",
+              "辰"
+            ],
+            "complete": true,
+            "palace": [
+              "month"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 5,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          },
+          {
+            "id": "u2-4d5dc2aed53a9800cf89173c",
+            "kind": "自刑",
+            "members": [
+              {
+                "id": "natal.hour",
+                "ganzhi": "甲辰",
+                "branch": "辰",
+                "stem": "甲"
+              },
+              {
+                "id": "target.daily",
+                "ganzhi": "戊辰",
+                "branch": "辰",
+                "stem": "戊"
+              }
+            ],
+            "transformation_established": false,
+            "complete": true,
+            "palace": [
+              "hour"
+            ],
+            "domains": [
+              "事业",
+              "六亲",
+              "学业",
+              "性格"
+            ],
+            "priority": {
+              "子平": 5,
+              "通用": 3
+            },
+            "mapping_status": "project_convention_v1_not_expert_calibrated"
+          }
+        ],
+        "source_refs": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ],
+        "limits": [
+          "结构组合不证明合化或现实事件，未计算旺衰权重和吉凶。",
+          "两支只标成员不完整，不命名为半合或半会，不用缺失支补盘。",
+          "相刑方向与成员完整性分列，不把两支直接说成三支齐全。"
+        ],
+        "hidden_stems": {
+          "寅": "甲丙戊",
+          "卯": "乙甲",
+          "辰": "戊壬乙",
+          "巳": "丙庚戊",
+          "午": "丁丙",
+          "未": "己甲丁",
+          "申": "庚壬戊",
+          "酉": "辛庚",
+          "戌": "戊丙辛",
+          "亥": "壬甲戊",
+          "子": "癸壬",
+          "丑": "己庚癸"
+        },
+        "natal_only_relations_included": false
+      }
+    },
+    "ziwei": {
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "versions": {
+        "py-iztro": "0.1.5",
+        "pythonmonkey": "1.1.0",
+        "iztro_upstream_declared": "2.4.4",
+        "iztro_upstream_version_source": "installed_py_iztro_distribution_description",
+        "iztro_bundle_sha256": {
+          "py_iztro/res/iztro-2.5.0.min.js": "09333d6a2da7fff7bd338134c8d17de0d589259c16a70ece1db1d64e17217ea0"
+        },
+        "upstream_version_independently_verified": false
+      },
+      "natal": {
+        "corrected_time": "1994-03-12 07:06",
+        "engine_version": "ziwei-core-3.1",
+        "time_basis": "true_solar",
+        "method": {
+          "calendar": "py-iztro by_solar 默认历法与闰月规则",
+          "hour_index": 4,
+          "late_zi": "23:00 单独编码为 12，由 py-iztro 默认日界规则处理",
+          "equation_of_time_applied": true,
+          "links": "本宫的两组三合宫及对宫；四化按真实星曜位置关联本命宫和运限宫",
+          "input": "preconverted_coordinate_no_second_longitude_or_DST_adjustment"
+        },
+        "quality": {
+          "calculation": "deterministic_convention",
+          "prediction_probability": null,
+          "limitations": [
+            "采用当前 py-iztro 默认流派，未做不同流派交叉校盘",
+            "宫位关联与四化是传统盘面结构，不代表事件已发生或必然发生",
+            "出生时刻靠近时辰或日界时，时间误差可能改变命盘"
+          ]
+        },
+        "lunar_date": "甲戌 丁卯 丁酉 甲辰",
+        "zodiac": "狗",
+        "sign": "双鱼座",
+        "wuxing_ju": "火六局",
+        "ming_gong": "亥",
+        "shen_gong": "未",
+        "ming_zhu": "巨门",
+        "shen_zhu": "文昌",
+        "palaces": [
+          {
+            "name": "田宅",
+            "ganzhi": "丙寅",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [],
+            "minor": [
+              {
+                "name": "禄存"
+              }
+            ],
+            "decadal": {
+              "range": [
+                36,
+                45
+              ],
+              "ganzhi": "丙寅"
+            },
+            "ages": [
+              11,
+              23,
+              35,
+              47,
+              59,
+              71,
+              83,
+              95,
+              107,
+              119
+            ],
+            "index": 0,
+            "linked_palaces": [
+              {
+                "index": 4,
+                "relation": "三合",
+                "name": "疾厄",
+                "ganzhi": "庚午",
+                "major": [
+                  {
+                    "name": "太阳",
+                    "brightness": "旺",
+                    "mutagen": "忌"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "文昌",
+                    "brightness": "陷"
+                  }
+                ]
+              },
+              {
+                "index": 8,
+                "relation": "三合",
+                "name": "兄弟",
+                "ganzhi": "甲戌",
+                "major": [
+                  {
+                    "name": "巨门",
+                    "brightness": "陷"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 6,
+                "relation": "对宫",
+                "name": "子女",
+                "ganzhi": "壬申",
+                "major": [
+                  {
+                    "name": "天机",
+                    "brightness": "得"
+                  },
+                  {
+                    "name": "太阴",
+                    "brightness": "利"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "文曲",
+                    "brightness": "得"
+                  },
+                  {
+                    "name": "天马"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "官禄",
+            "ganzhi": "丁卯",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [],
+            "minor": [
+              {
+                "name": "地劫"
+              },
+              {
+                "name": "擎羊",
+                "brightness": "陷"
+              }
+            ],
+            "decadal": {
+              "range": [
+                46,
+                55
+              ],
+              "ganzhi": "丁卯"
+            },
+            "ages": [
+              12,
+              24,
+              36,
+              48,
+              60,
+              72,
+              84,
+              96,
+              108,
+              120
+            ],
+            "index": 1,
+            "linked_palaces": [
+              {
+                "index": 5,
+                "relation": "三合",
+                "name": "财帛",
+                "ganzhi": "辛未",
+                "major": [
+                  {
+                    "name": "天府",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "天钺"
+                  },
+                  {
+                    "name": "地空"
+                  },
+                  {
+                    "name": "铃星",
+                    "brightness": "利"
+                  }
+                ]
+              },
+              {
+                "index": 9,
+                "relation": "三合",
+                "name": "命宫",
+                "ganzhi": "乙亥",
+                "major": [
+                  {
+                    "name": "天相",
+                    "brightness": "得"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 7,
+                "relation": "对宫",
+                "name": "夫妻",
+                "ganzhi": "癸酉",
+                "major": [
+                  {
+                    "name": "紫微",
+                    "brightness": "旺"
+                  },
+                  {
+                    "name": "贪狼",
+                    "brightness": "利"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "右弼"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "仆役",
+            "ganzhi": "戊辰",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "天同",
+                "brightness": "平"
+              }
+            ],
+            "minor": [],
+            "decadal": {
+              "range": [
+                56,
+                65
+              ],
+              "ganzhi": "戊辰"
+            },
+            "ages": [
+              1,
+              13,
+              25,
+              37,
+              49,
+              61,
+              73,
+              85,
+              97,
+              109
+            ],
+            "index": 2,
+            "linked_palaces": [
+              {
+                "index": 6,
+                "relation": "三合",
+                "name": "子女",
+                "ganzhi": "壬申",
+                "major": [
+                  {
+                    "name": "天机",
+                    "brightness": "得"
+                  },
+                  {
+                    "name": "太阴",
+                    "brightness": "利"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "文曲",
+                    "brightness": "得"
+                  },
+                  {
+                    "name": "天马"
+                  }
+                ]
+              },
+              {
+                "index": 10,
+                "relation": "三合",
+                "name": "父母",
+                "ganzhi": "丙子",
+                "major": [
+                  {
+                    "name": "天梁",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 8,
+                "relation": "对宫",
+                "name": "兄弟",
+                "ganzhi": "甲戌",
+                "major": [
+                  {
+                    "name": "巨门",
+                    "brightness": "陷"
+                  }
+                ],
+                "minor": []
+              }
+            ]
+          },
+          {
+            "name": "迁移",
+            "ganzhi": "己巳",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "武曲",
+                "brightness": "平",
+                "mutagen": "科"
+              },
+              {
+                "name": "破军",
+                "brightness": "平",
+                "mutagen": "权"
+              }
+            ],
+            "minor": [
+              {
+                "name": "左辅"
+              },
+              {
+                "name": "火星",
+                "brightness": "得"
+              }
+            ],
+            "decadal": {
+              "range": [
+                66,
+                75
+              ],
+              "ganzhi": "己巳"
+            },
+            "ages": [
+              2,
+              14,
+              26,
+              38,
+              50,
+              62,
+              74,
+              86,
+              98,
+              110
+            ],
+            "index": 3,
+            "linked_palaces": [
+              {
+                "index": 7,
+                "relation": "三合",
+                "name": "夫妻",
+                "ganzhi": "癸酉",
+                "major": [
+                  {
+                    "name": "紫微",
+                    "brightness": "旺"
+                  },
+                  {
+                    "name": "贪狼",
+                    "brightness": "利"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "右弼"
+                  }
+                ]
+              },
+              {
+                "index": 11,
+                "relation": "三合",
+                "name": "福德",
+                "ganzhi": "丁丑",
+                "major": [
+                  {
+                    "name": "廉贞",
+                    "brightness": "利",
+                    "mutagen": "禄"
+                  },
+                  {
+                    "name": "七杀",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "天魁"
+                  },
+                  {
+                    "name": "陀罗",
+                    "brightness": "庙"
+                  }
+                ]
+              },
+              {
+                "index": 9,
+                "relation": "对宫",
+                "name": "命宫",
+                "ganzhi": "乙亥",
+                "major": [
+                  {
+                    "name": "天相",
+                    "brightness": "得"
+                  }
+                ],
+                "minor": []
+              }
+            ]
+          },
+          {
+            "name": "疾厄",
+            "ganzhi": "庚午",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "太阳",
+                "brightness": "旺",
+                "mutagen": "忌"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文昌",
+                "brightness": "陷"
+              }
+            ],
+            "decadal": {
+              "range": [
+                76,
+                85
+              ],
+              "ganzhi": "庚午"
+            },
+            "ages": [
+              3,
+              15,
+              27,
+              39,
+              51,
+              63,
+              75,
+              87,
+              99,
+              111
+            ],
+            "index": 4,
+            "linked_palaces": [
+              {
+                "index": 8,
+                "relation": "三合",
+                "name": "兄弟",
+                "ganzhi": "甲戌",
+                "major": [
+                  {
+                    "name": "巨门",
+                    "brightness": "陷"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 0,
+                "relation": "三合",
+                "name": "田宅",
+                "ganzhi": "丙寅",
+                "major": [],
+                "minor": [
+                  {
+                    "name": "禄存"
+                  }
+                ]
+              },
+              {
+                "index": 10,
+                "relation": "对宫",
+                "name": "父母",
+                "ganzhi": "丙子",
+                "major": [
+                  {
+                    "name": "天梁",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": []
+              }
+            ]
+          },
+          {
+            "name": "财帛",
+            "ganzhi": "辛未",
+            "is_body": true,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "天府",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天钺"
+              },
+              {
+                "name": "地空"
+              },
+              {
+                "name": "铃星",
+                "brightness": "利"
+              }
+            ],
+            "decadal": {
+              "range": [
+                86,
+                95
+              ],
+              "ganzhi": "辛未"
+            },
+            "ages": [
+              4,
+              16,
+              28,
+              40,
+              52,
+              64,
+              76,
+              88,
+              100,
+              112
+            ],
+            "index": 5,
+            "linked_palaces": [
+              {
+                "index": 9,
+                "relation": "三合",
+                "name": "命宫",
+                "ganzhi": "乙亥",
+                "major": [
+                  {
+                    "name": "天相",
+                    "brightness": "得"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 1,
+                "relation": "三合",
+                "name": "官禄",
+                "ganzhi": "丁卯",
+                "major": [],
+                "minor": [
+                  {
+                    "name": "地劫"
+                  },
+                  {
+                    "name": "擎羊",
+                    "brightness": "陷"
+                  }
+                ]
+              },
+              {
+                "index": 11,
+                "relation": "对宫",
+                "name": "福德",
+                "ganzhi": "丁丑",
+                "major": [
+                  {
+                    "name": "廉贞",
+                    "brightness": "利",
+                    "mutagen": "禄"
+                  },
+                  {
+                    "name": "七杀",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "天魁"
+                  },
+                  {
+                    "name": "陀罗",
+                    "brightness": "庙"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "子女",
+            "ganzhi": "壬申",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "天机",
+                "brightness": "得"
+              },
+              {
+                "name": "太阴",
+                "brightness": "利"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文曲",
+                "brightness": "得"
+              },
+              {
+                "name": "天马"
+              }
+            ],
+            "decadal": {
+              "range": [
+                96,
+                105
+              ],
+              "ganzhi": "壬申"
+            },
+            "ages": [
+              5,
+              17,
+              29,
+              41,
+              53,
+              65,
+              77,
+              89,
+              101,
+              113
+            ],
+            "index": 6,
+            "linked_palaces": [
+              {
+                "index": 10,
+                "relation": "三合",
+                "name": "父母",
+                "ganzhi": "丙子",
+                "major": [
+                  {
+                    "name": "天梁",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 2,
+                "relation": "三合",
+                "name": "仆役",
+                "ganzhi": "戊辰",
+                "major": [
+                  {
+                    "name": "天同",
+                    "brightness": "平"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 0,
+                "relation": "对宫",
+                "name": "田宅",
+                "ganzhi": "丙寅",
+                "major": [],
+                "minor": [
+                  {
+                    "name": "禄存"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "夫妻",
+            "ganzhi": "癸酉",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "紫微",
+                "brightness": "旺"
+              },
+              {
+                "name": "贪狼",
+                "brightness": "利"
+              }
+            ],
+            "minor": [
+              {
+                "name": "右弼"
+              }
+            ],
+            "decadal": {
+              "range": [
+                106,
+                115
+              ],
+              "ganzhi": "癸酉"
+            },
+            "ages": [
+              6,
+              18,
+              30,
+              42,
+              54,
+              66,
+              78,
+              90,
+              102,
+              114
+            ],
+            "index": 7,
+            "linked_palaces": [
+              {
+                "index": 11,
+                "relation": "三合",
+                "name": "福德",
+                "ganzhi": "丁丑",
+                "major": [
+                  {
+                    "name": "廉贞",
+                    "brightness": "利",
+                    "mutagen": "禄"
+                  },
+                  {
+                    "name": "七杀",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "天魁"
+                  },
+                  {
+                    "name": "陀罗",
+                    "brightness": "庙"
+                  }
+                ]
+              },
+              {
+                "index": 3,
+                "relation": "三合",
+                "name": "迁移",
+                "ganzhi": "己巳",
+                "major": [
+                  {
+                    "name": "武曲",
+                    "brightness": "平",
+                    "mutagen": "科"
+                  },
+                  {
+                    "name": "破军",
+                    "brightness": "平",
+                    "mutagen": "权"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "左辅"
+                  },
+                  {
+                    "name": "火星",
+                    "brightness": "得"
+                  }
+                ]
+              },
+              {
+                "index": 1,
+                "relation": "对宫",
+                "name": "官禄",
+                "ganzhi": "丁卯",
+                "major": [],
+                "minor": [
+                  {
+                    "name": "地劫"
+                  },
+                  {
+                    "name": "擎羊",
+                    "brightness": "陷"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "兄弟",
+            "ganzhi": "甲戌",
+            "is_body": false,
+            "is_laiyin": true,
+            "major": [
+              {
+                "name": "巨门",
+                "brightness": "陷"
+              }
+            ],
+            "minor": [],
+            "decadal": {
+              "range": [
+                116,
+                125
+              ],
+              "ganzhi": "甲戌"
+            },
+            "ages": [
+              7,
+              19,
+              31,
+              43,
+              55,
+              67,
+              79,
+              91,
+              103,
+              115
+            ],
+            "index": 8,
+            "linked_palaces": [
+              {
+                "index": 0,
+                "relation": "三合",
+                "name": "田宅",
+                "ganzhi": "丙寅",
+                "major": [],
+                "minor": [
+                  {
+                    "name": "禄存"
+                  }
+                ]
+              },
+              {
+                "index": 4,
+                "relation": "三合",
+                "name": "疾厄",
+                "ganzhi": "庚午",
+                "major": [
+                  {
+                    "name": "太阳",
+                    "brightness": "旺",
+                    "mutagen": "忌"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "文昌",
+                    "brightness": "陷"
+                  }
+                ]
+              },
+              {
+                "index": 2,
+                "relation": "对宫",
+                "name": "仆役",
+                "ganzhi": "戊辰",
+                "major": [
+                  {
+                    "name": "天同",
+                    "brightness": "平"
+                  }
+                ],
+                "minor": []
+              }
+            ]
+          },
+          {
+            "name": "命宫",
+            "ganzhi": "乙亥",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "天相",
+                "brightness": "得"
+              }
+            ],
+            "minor": [],
+            "decadal": {
+              "range": [
+                6,
+                15
+              ],
+              "ganzhi": "乙亥"
+            },
+            "ages": [
+              8,
+              20,
+              32,
+              44,
+              56,
+              68,
+              80,
+              92,
+              104,
+              116
+            ],
+            "index": 9,
+            "linked_palaces": [
+              {
+                "index": 1,
+                "relation": "三合",
+                "name": "官禄",
+                "ganzhi": "丁卯",
+                "major": [],
+                "minor": [
+                  {
+                    "name": "地劫"
+                  },
+                  {
+                    "name": "擎羊",
+                    "brightness": "陷"
+                  }
+                ]
+              },
+              {
+                "index": 5,
+                "relation": "三合",
+                "name": "财帛",
+                "ganzhi": "辛未",
+                "major": [
+                  {
+                    "name": "天府",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "天钺"
+                  },
+                  {
+                    "name": "地空"
+                  },
+                  {
+                    "name": "铃星",
+                    "brightness": "利"
+                  }
+                ]
+              },
+              {
+                "index": 3,
+                "relation": "对宫",
+                "name": "迁移",
+                "ganzhi": "己巳",
+                "major": [
+                  {
+                    "name": "武曲",
+                    "brightness": "平",
+                    "mutagen": "科"
+                  },
+                  {
+                    "name": "破军",
+                    "brightness": "平",
+                    "mutagen": "权"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "左辅"
+                  },
+                  {
+                    "name": "火星",
+                    "brightness": "得"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "父母",
+            "ganzhi": "丙子",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "天梁",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [],
+            "decadal": {
+              "range": [
+                16,
+                25
+              ],
+              "ganzhi": "丙子"
+            },
+            "ages": [
+              9,
+              21,
+              33,
+              45,
+              57,
+              69,
+              81,
+              93,
+              105,
+              117
+            ],
+            "index": 10,
+            "linked_palaces": [
+              {
+                "index": 2,
+                "relation": "三合",
+                "name": "仆役",
+                "ganzhi": "戊辰",
+                "major": [
+                  {
+                    "name": "天同",
+                    "brightness": "平"
+                  }
+                ],
+                "minor": []
+              },
+              {
+                "index": 6,
+                "relation": "三合",
+                "name": "子女",
+                "ganzhi": "壬申",
+                "major": [
+                  {
+                    "name": "天机",
+                    "brightness": "得"
+                  },
+                  {
+                    "name": "太阴",
+                    "brightness": "利"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "文曲",
+                    "brightness": "得"
+                  },
+                  {
+                    "name": "天马"
+                  }
+                ]
+              },
+              {
+                "index": 4,
+                "relation": "对宫",
+                "name": "疾厄",
+                "ganzhi": "庚午",
+                "major": [
+                  {
+                    "name": "太阳",
+                    "brightness": "旺",
+                    "mutagen": "忌"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "文昌",
+                    "brightness": "陷"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "福德",
+            "ganzhi": "丁丑",
+            "is_body": false,
+            "is_laiyin": false,
+            "major": [
+              {
+                "name": "廉贞",
+                "brightness": "利",
+                "mutagen": "禄"
+              },
+              {
+                "name": "七杀",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天魁"
+              },
+              {
+                "name": "陀罗",
+                "brightness": "庙"
+              }
+            ],
+            "decadal": {
+              "range": [
+                26,
+                35
+              ],
+              "ganzhi": "丁丑"
+            },
+            "ages": [
+              10,
+              22,
+              34,
+              46,
+              58,
+              70,
+              82,
+              94,
+              106,
+              118
+            ],
+            "index": 11,
+            "linked_palaces": [
+              {
+                "index": 3,
+                "relation": "三合",
+                "name": "迁移",
+                "ganzhi": "己巳",
+                "major": [
+                  {
+                    "name": "武曲",
+                    "brightness": "平",
+                    "mutagen": "科"
+                  },
+                  {
+                    "name": "破军",
+                    "brightness": "平",
+                    "mutagen": "权"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "左辅"
+                  },
+                  {
+                    "name": "火星",
+                    "brightness": "得"
+                  }
+                ]
+              },
+              {
+                "index": 7,
+                "relation": "三合",
+                "name": "夫妻",
+                "ganzhi": "癸酉",
+                "major": [
+                  {
+                    "name": "紫微",
+                    "brightness": "旺"
+                  },
+                  {
+                    "name": "贪狼",
+                    "brightness": "利"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "右弼"
+                  }
+                ]
+              },
+              {
+                "index": 5,
+                "relation": "对宫",
+                "name": "财帛",
+                "ganzhi": "辛未",
+                "major": [
+                  {
+                    "name": "天府",
+                    "brightness": "庙"
+                  }
+                ],
+                "minor": [
+                  {
+                    "name": "天钺"
+                  },
+                  {
+                    "name": "地空"
+                  },
+                  {
+                    "name": "铃星",
+                    "brightness": "利"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "horoscope": {
+        "target_date": "2026-10-21",
+        "snapshot_time_index": 6,
+        "lunar": "二〇二六年九月十二",
+        "yearly": {
+          "name": "流年",
+          "ganzhi": "丙午",
+          "index": 4,
+          "mutagen": [
+            "天同",
+            "天机",
+            "文昌",
+            "廉贞"
+          ],
+          "palace_names": [
+            "财帛",
+            "子女",
+            "夫妻",
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄"
+          ]
+        },
+        "monthly": {
+          "name": "流月",
+          "ganzhi": "戊戌",
+          "index": 3,
+          "mutagen": [
+            "贪狼",
+            "太阴",
+            "右弼",
+            "天机"
+          ],
+          "palace_names": [
+            "子女",
+            "夫妻",
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄",
+            "财帛"
+          ]
+        },
+        "daily": {
+          "name": "流日",
+          "ganzhi": "戊辰",
+          "index": 2,
+          "mutagen": [
+            "贪狼",
+            "太阴",
+            "右弼",
+            "天机"
+          ],
+          "palace_names": [
+            "夫妻",
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄",
+            "财帛",
+            "子女"
+          ]
+        }
+      },
+      "transformations": {
+        "yearly": {
+          "status": "resolved",
+          "ganzhi": "丙午",
+          "life_palace": {
+            "palace_index": 4,
+            "natal_palace": "疾厄",
+            "ganzhi": "庚午",
+            "palace_pointer": "/data/ziwei/natal/palaces/4",
+            "scope_palace": "命宫"
+          },
+          "palace_names": [
+            "财帛",
+            "子女",
+            "夫妻",
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄"
+          ],
+          "matches_named_table": true,
+          "links": [
+            {
+              "mutagen": "禄",
+              "star": "天同",
+              "original_star": "天同",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 2,
+                  "natal_palace": "仆役",
+                  "star_name": "天同",
+                  "canonical_star": "天同",
+                  "star_pointer": "/data/ziwei/natal/palaces/2/major/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/2",
+                  "natal_mutagen": null,
+                  "scope_palace": "夫妻"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/yearly/mutagen/0",
+                "/data/ziwei/natal/palaces/2/major/0"
+              ]
+            },
+            {
+              "mutagen": "权",
+              "star": "天机",
+              "original_star": "天机",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 6,
+                  "natal_palace": "子女",
+                  "star_name": "天机",
+                  "canonical_star": "天机",
+                  "star_pointer": "/data/ziwei/natal/palaces/6/major/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/6",
+                  "natal_mutagen": null,
+                  "scope_palace": "福德"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/yearly/mutagen/1",
+                "/data/ziwei/natal/palaces/6/major/0"
+              ]
+            },
+            {
+              "mutagen": "科",
+              "star": "文昌",
+              "original_star": "文昌",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 4,
+                  "natal_palace": "疾厄",
+                  "star_name": "文昌",
+                  "canonical_star": "文昌",
+                  "star_pointer": "/data/ziwei/natal/palaces/4/minor/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/4",
+                  "natal_mutagen": null,
+                  "scope_palace": "命宫"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/yearly/mutagen/2",
+                "/data/ziwei/natal/palaces/4/minor/0"
+              ]
+            },
+            {
+              "mutagen": "忌",
+              "star": "廉贞",
+              "original_star": "廉贞",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 11,
+                  "natal_palace": "福德",
+                  "star_name": "廉贞",
+                  "canonical_star": "廉贞",
+                  "star_pointer": "/data/ziwei/natal/palaces/11/major/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/11",
+                  "natal_mutagen": "禄",
+                  "scope_palace": "疾厄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/yearly/mutagen/3",
+                "/data/ziwei/natal/palaces/11/major/0"
+              ]
+            }
+          ],
+          "evidence_paths": [
+            "/data/ziwei/horoscope/yearly/index",
+            "/data/ziwei/horoscope/yearly/ganzhi",
+            "/data/ziwei/horoscope/yearly/palace_names"
+          ]
+        },
+        "monthly": {
+          "status": "resolved",
+          "ganzhi": "戊戌",
+          "life_palace": {
+            "palace_index": 3,
+            "natal_palace": "迁移",
+            "ganzhi": "己巳",
+            "palace_pointer": "/data/ziwei/natal/palaces/3",
+            "scope_palace": "命宫"
+          },
+          "palace_names": [
+            "子女",
+            "夫妻",
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄",
+            "财帛"
+          ],
+          "matches_named_table": true,
+          "links": [
+            {
+              "mutagen": "禄",
+              "star": "贪狼",
+              "original_star": "贪狼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 7,
+                  "natal_palace": "夫妻",
+                  "star_name": "贪狼",
+                  "canonical_star": "贪狼",
+                  "star_pointer": "/data/ziwei/natal/palaces/7/major/1",
+                  "palace_pointer": "/data/ziwei/natal/palaces/7",
+                  "natal_mutagen": null,
+                  "scope_palace": "官禄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/monthly/mutagen/0",
+                "/data/ziwei/natal/palaces/7/major/1"
+              ]
+            },
+            {
+              "mutagen": "权",
+              "star": "太阴",
+              "original_star": "太阴",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 6,
+                  "natal_palace": "子女",
+                  "star_name": "太阴",
+                  "canonical_star": "太阴",
+                  "star_pointer": "/data/ziwei/natal/palaces/6/major/1",
+                  "palace_pointer": "/data/ziwei/natal/palaces/6",
+                  "natal_mutagen": null,
+                  "scope_palace": "田宅"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/monthly/mutagen/1",
+                "/data/ziwei/natal/palaces/6/major/1"
+              ]
+            },
+            {
+              "mutagen": "科",
+              "star": "右弼",
+              "original_star": "右弼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 7,
+                  "natal_palace": "夫妻",
+                  "star_name": "右弼",
+                  "canonical_star": "右弼",
+                  "star_pointer": "/data/ziwei/natal/palaces/7/minor/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/7",
+                  "natal_mutagen": null,
+                  "scope_palace": "官禄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/monthly/mutagen/2",
+                "/data/ziwei/natal/palaces/7/minor/0"
+              ]
+            },
+            {
+              "mutagen": "忌",
+              "star": "天机",
+              "original_star": "天机",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 6,
+                  "natal_palace": "子女",
+                  "star_name": "天机",
+                  "canonical_star": "天机",
+                  "star_pointer": "/data/ziwei/natal/palaces/6/major/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/6",
+                  "natal_mutagen": null,
+                  "scope_palace": "田宅"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/monthly/mutagen/3",
+                "/data/ziwei/natal/palaces/6/major/0"
+              ]
+            }
+          ],
+          "evidence_paths": [
+            "/data/ziwei/horoscope/monthly/index",
+            "/data/ziwei/horoscope/monthly/ganzhi",
+            "/data/ziwei/horoscope/monthly/palace_names"
+          ]
+        },
+        "daily": {
+          "status": "resolved",
+          "ganzhi": "戊辰",
+          "life_palace": {
+            "palace_index": 2,
+            "natal_palace": "仆役",
+            "ganzhi": "戊辰",
+            "palace_pointer": "/data/ziwei/natal/palaces/2",
+            "scope_palace": "命宫"
+          },
+          "palace_names": [
+            "夫妻",
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄",
+            "财帛",
+            "子女"
+          ],
+          "matches_named_table": true,
+          "links": [
+            {
+              "mutagen": "禄",
+              "star": "贪狼",
+              "original_star": "贪狼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 7,
+                  "natal_palace": "夫妻",
+                  "star_name": "贪狼",
+                  "canonical_star": "贪狼",
+                  "star_pointer": "/data/ziwei/natal/palaces/7/major/1",
+                  "palace_pointer": "/data/ziwei/natal/palaces/7",
+                  "natal_mutagen": null,
+                  "scope_palace": "仆役"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/daily/mutagen/0",
+                "/data/ziwei/natal/palaces/7/major/1"
+              ]
+            },
+            {
+              "mutagen": "权",
+              "star": "太阴",
+              "original_star": "太阴",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 6,
+                  "natal_palace": "子女",
+                  "star_name": "太阴",
+                  "canonical_star": "太阴",
+                  "star_pointer": "/data/ziwei/natal/palaces/6/major/1",
+                  "palace_pointer": "/data/ziwei/natal/palaces/6",
+                  "natal_mutagen": null,
+                  "scope_palace": "官禄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/daily/mutagen/1",
+                "/data/ziwei/natal/palaces/6/major/1"
+              ]
+            },
+            {
+              "mutagen": "科",
+              "star": "右弼",
+              "original_star": "右弼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 7,
+                  "natal_palace": "夫妻",
+                  "star_name": "右弼",
+                  "canonical_star": "右弼",
+                  "star_pointer": "/data/ziwei/natal/palaces/7/minor/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/7",
+                  "natal_mutagen": null,
+                  "scope_palace": "仆役"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/daily/mutagen/2",
+                "/data/ziwei/natal/palaces/7/minor/0"
+              ]
+            },
+            {
+              "mutagen": "忌",
+              "star": "天机",
+              "original_star": "天机",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 6,
+                  "natal_palace": "子女",
+                  "star_name": "天机",
+                  "canonical_star": "天机",
+                  "star_pointer": "/data/ziwei/natal/palaces/6/major/0",
+                  "palace_pointer": "/data/ziwei/natal/palaces/6",
+                  "natal_mutagen": null,
+                  "scope_palace": "官禄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/ziwei/horoscope/daily/mutagen/3",
+                "/data/ziwei/natal/palaces/6/major/0"
+              ]
+            }
+          ],
+          "evidence_paths": [
+            "/data/ziwei/horoscope/daily/index",
+            "/data/ziwei/horoscope/daily/ganzhi",
+            "/data/ziwei/horoscope/daily/palace_names"
+          ]
+        }
+      },
+      "source_refs": [
+        "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/data/heavenlyStems.ts",
+        "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/astro/FunctionalPalace.ts",
+        "https://docs.iztro.com/posts/palace",
+        "https://docs.iztro.com/posts/horoscope"
+      ],
+      "table_sha256": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+      "limits": [
+        "具名表不是各派通用真理；壬干天府化科（24号裁定《全书》口径）可显式选quanshu；其他派别庚干异表仍须另立口径，不改默认庚干太阴化科。",
+        "只计算本命星曜间的飞化结构，不用来增加已冻结的倒推评分。",
+        "生年星曜四化和运限四化保留引擎实际输出；与所选表不一致时明确标注。"
+      ]
+    },
+    "astro": {
+      "natal_at_utc": "1994-03-12T00:20:00Z",
+      "snapshot_at_utc": "2026-10-21T04:00:00Z",
+      "natal_planets": {
+        "太阳": {
+          "longitude": 351.1965446207021,
+          "latitude": 0.00011143989513376271,
+          "distance_au": 0.9936573184608443,
+          "speed_degrees_per_day": 0.9985174078030244,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "月亮": {
+          "longitude": 348.05536204525185,
+          "latitude": 4.676199418969718,
+          "distance_au": 0.0026798873058223776,
+          "speed_degrees_per_day": 12.199225827685389,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "水星": {
+          "longitude": 324.80355045110576,
+          "latitude": 0.23117777901609338,
+          "distance_au": 0.8125823900548482,
+          "speed_degrees_per_day": 0.6012649840962325,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "金星": {
+          "longitude": 4.245227597115715,
+          "latitude": -1.2066746521116445,
+          "distance_au": 1.6568104578727887,
+          "speed_degrees_per_day": 1.243735942129807,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "火星": {
+          "longitude": 333.58264388970207,
+          "latitude": -1.1140724755947295,
+          "distance_au": 2.29917892520574,
+          "speed_degrees_per_day": 0.7864953409221513,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "木星": {
+          "longitude": 224.45109362497598,
+          "latitude": 1.33736469383033,
+          "distance_au": 4.783881383503372,
+          "speed_degrees_per_day": -0.03580401653331104,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "土星": {
+          "longitude": 335.049527227853,
+          "latitude": -1.4518245446402631,
+          "distance_au": 10.710850696782186,
+          "speed_degrees_per_day": 0.11852531454652532,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "天王": {
+          "longitude": 295.3277596433744,
+          "latitude": -0.4722132762953179,
+          "distance_au": 20.18471461986454,
+          "speed_degrees_per_day": 0.03915209160175062,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "海王": {
+          "longitude": 292.81644739152176,
+          "latitude": 0.6100335334868623,
+          "distance_au": 30.688612757749432,
+          "speed_degrees_per_day": 0.02329891922460015,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "冥王": {
+          "longitude": 238.04063340870727,
+          "latitude": 14.198755385218254,
+          "distance_au": 29.377462076133902,
+          "speed_degrees_per_day": -0.0061500286517002754,
+          "retrograde": true,
+          "returned_flags": 260
+        }
+      },
+      "transit_planets": {
+        "太阳": {
+          "longitude": 207.77751964583018,
+          "latitude": 2.71851729684959e-05,
+          "distance_au": 0.995594593751111,
+          "speed_degrees_per_day": 0.9940038268421515,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "月亮": {
+          "longitude": 325.5244292737686,
+          "latitude": -0.2258748165369781,
+          "distance_au": 0.0026322478073484805,
+          "speed_degrees_per_day": 12.451079940414633,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "水星": {
+          "longitude": 230.37724562364235,
+          "latitude": -3.176729240567798,
+          "distance_au": 0.8428066984227456,
+          "speed_degrees_per_day": 0.3685457245827555,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "金星": {
+          "longitude": 212.559271956942,
+          "latitude": -6.963196094298359,
+          "distance_au": 0.2750425812791936,
+          "speed_degrees_per_day": -0.591293639830827,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "火星": {
+          "longitude": 132.98861161979707,
+          "latitude": 1.3824863702593508,
+          "distance_au": 1.5182762630998419,
+          "speed_degrees_per_day": 0.5353404131556888,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "木星": {
+          "longitude": 142.8774978900966,
+          "latitude": 0.6547949354053428,
+          "distance_au": 5.65864104905268,
+          "speed_degrees_per_day": 0.14476548105643608,
+          "retrograde": false,
+          "returned_flags": 260
+        },
+        "土星": {
+          "longitude": 10.025042290235117,
+          "latitude": -2.7046603672028904,
+          "distance_au": 8.476461510857867,
+          "speed_degrees_per_day": -0.07274747953169056,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "天王": {
+          "longitude": 65.04088170243331,
+          "latitude": -0.15223482221589976,
+          "distance_au": 18.63583793665759,
+          "speed_degrees_per_day": -0.030774796134644396,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "海王": {
+          "longitude": 2.33030458176135,
+          "latitude": -1.4178834043369244,
+          "distance_au": 28.975901592133184,
+          "speed_degrees_per_day": -0.024387800414084174,
+          "retrograde": true,
+          "returned_flags": 260
+        },
+        "冥王": {
+          "longitude": 303.074518139888,
+          "latitude": -4.280309012374963,
+          "distance_au": 35.5187276678621,
+          "speed_degrees_per_day": 0.002375210810608168,
+          "retrograde": false,
+          "returned_flags": 260
+        }
+      },
+      "orb_limit_degrees": 2.0,
+      "aspects": [
+        {
+          "from": "天王",
+          "to": "土星",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 0.008645525419694877
+        },
+        {
+          "from": "月亮",
+          "to": "水星",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 0.7208788226628258
+        },
+        {
+          "from": "天王",
+          "to": "金星",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 0.7956541053175954
+        },
+        {
+          "from": "水星",
+          "to": "太阳",
+          "aspect": "拱相",
+          "angle": 120,
+          "orb_degrees": 0.819298997059775
+        },
+        {
+          "from": "金星",
+          "to": "火星",
+          "aspect": "拱相",
+          "angle": 120,
+          "orb_degrees": 1.0233719327600568
+        },
+        {
+          "from": "冥王",
+          "to": "金星",
+          "aspect": "六合",
+          "angle": 60,
+          "orb_degrees": 1.1707094572277015
+        },
+        {
+          "from": "天王",
+          "to": "火星",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 1.4582378127312268
+        },
+        {
+          "from": "火星",
+          "to": "木星",
+          "aspect": "刑相",
+          "angle": 90,
+          "orb_degrees": 1.462482005178913
+        },
+        {
+          "from": "海王",
+          "to": "金星",
+          "aspect": "合相",
+          "angle": 0,
+          "orb_degrees": 1.9149230153543613
+        },
+        {
+          "from": "木星",
+          "to": "水星",
+          "aspect": "冲相",
+          "angle": 180,
+          "orb_degrees": 1.9260525610091577
+        }
+      ],
+      "method": {
+        "engine": "pyswisseph",
+        "swisseph_version": "2.10.03",
+        "pyswisseph_version": "2.10.3.2",
+        "ephemeris": "Moshier",
+        "requested_flags": 260,
+        "returned_flags": [
+          260
+        ],
+        "zodiac": "tropical",
+        "coordinates": "geocentric apparent ecliptic longitude of date",
+        "time_scale": "Swiss utc_to_jd: UTC -> TT and UT1; calc_ut uses UT1",
+        "tidal_acceleration_arcsec_per_century_squared": -25.58,
+        "delta_t": "Swiss automatic model with explicit Moshier tidal acceleration; no user fixed delta-T",
+        "utc_caveat": "1972年前由Swiss按UT1处理；未来UTC取决于其闰秒与Delta-T模型。",
+        "legacy_difference": "v3以julday将民用UTC近似当UT；本入口不改动v3计算。"
+      },
+      "limits": [
+        "北京时间正午单点快照，不代表全天进入/离开区间，也不计算当前地宫位。",
+        "几何相位不判断事件吉凶或概率，不改变原v3历表口径。"
+      ]
+    }
+  },
+  "rule_hits": [
+    {
+      "rule_id": "daily.bazi.relation.u2-69b6ef0e8d0ae4e27bf88cfc",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "三合",
+        "complete": false,
+        "natal_pillars": [
+          "year"
+        ],
+        "target_layers": [
+          "yearly",
+          "monthly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/0",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-806a738eae4ead04e3f94911",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "六冲",
+        "complete": true,
+        "natal_pillars": [
+          "hour"
+        ],
+        "target_layers": [
+          "monthly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/2",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-ed62911136e43a3ec0001320",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "六冲",
+        "complete": true,
+        "natal_pillars": [
+          "year"
+        ],
+        "target_layers": [
+          "daily"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/3",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-16be4d2a19332e620eb6fed6",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "天干相克",
+        "complete": true,
+        "natal_pillars": [
+          "year"
+        ],
+        "target_layers": [
+          "monthly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/4",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-d634dd3956b68615cfea9d80",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "三会",
+        "complete": false,
+        "natal_pillars": [
+          "year",
+          "day"
+        ],
+        "target_layers": [
+          "monthly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/5",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-79a6879bc04a99faf8acddcb",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "六合",
+        "complete": true,
+        "natal_pillars": [
+          "month"
+        ],
+        "target_layers": [
+          "monthly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/6",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-10b260e83c34baa37f265c13",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "天干相克",
+        "complete": true,
+        "natal_pillars": [
+          "hour"
+        ],
+        "target_layers": [
+          "monthly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/7",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-7c89caff594b941bfb5925d9",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "天干相克",
+        "complete": true,
+        "natal_pillars": [
+          "year"
+        ],
+        "target_layers": [
+          "daily"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/8",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-d75c909470113d433e3839b7",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "三会",
+        "complete": false,
+        "natal_pillars": [
+          "month",
+          "hour"
+        ],
+        "target_layers": [
+          "daily"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/9",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-b5ce8d52b73954bd29047f8c",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "六合",
+        "complete": true,
+        "natal_pillars": [
+          "day"
+        ],
+        "target_layers": [
+          "daily"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/10",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-e4dfee793e0703c83e1d3aa1",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "天干相克",
+        "complete": true,
+        "natal_pillars": [
+          "hour"
+        ],
+        "target_layers": [
+          "daily"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/11",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-0a6568bc40ccc6216728c39a",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "六破",
+        "complete": true,
+        "natal_pillars": [
+          "month"
+        ],
+        "target_layers": [
+          "yearly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/12",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-62a703a5c995c065950941c9",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "六害",
+        "complete": true,
+        "natal_pillars": [
+          "day"
+        ],
+        "target_layers": [
+          "monthly"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/13",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-c154fa8f8df0f0ed37fbe2c1",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "六害",
+        "complete": true,
+        "natal_pillars": [
+          "month"
+        ],
+        "target_layers": [
+          "daily"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/14",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.relation.u2-4d5dc2aed53a9800cf89173c",
+      "met": true,
+      "school": "ziping-structural-relations-project-v1",
+      "source": {
+        "title": "既有P8时间交互结构表",
+        "references": [
+          {
+            "id": "sanming-v2",
+            "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+            "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+            "scope": [
+              "天干五合",
+              "六合",
+              "三合",
+              "六害",
+              "三刑",
+              "六冲"
+            ],
+            "status": "public_domain_transcription_not_original_facsimile"
+          },
+          {
+            "id": "project-directional-break-table",
+            "title": "项目结构表：四时同方三支与六破配对",
+            "scope": [
+              "三会",
+              "六破"
+            ],
+            "status": "project_convention_primary_edition_collation_pending",
+            "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+          }
+        ]
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "relation",
+        "relation": "自刑",
+        "complete": true,
+        "natal_pillars": [
+          "hour"
+        ],
+        "target_layers": [
+          "daily"
+        ],
+        "transformation_established": false
+      },
+      "evidence_paths": [
+        "/data/bazi/interactions/relations/15",
+        "/data/bazi/natal_pillars"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.ten_god.yearly",
+      "met": true,
+      "school": "ziping-five-elements-polarity-project-v1",
+      "source": {
+        "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+        "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+        "status": "project_arithmetic_original_edition_collation_pending"
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "ten_god",
+        "layer": "yearly",
+        "ten_god": "劫财"
+      },
+      "evidence_paths": [
+        "/data/bazi/snapshot/year",
+        "/data/bazi/natal_pillars/day"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.ten_god.monthly",
+      "met": true,
+      "school": "ziping-five-elements-polarity-project-v1",
+      "source": {
+        "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+        "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+        "status": "project_arithmetic_original_edition_collation_pending"
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "ten_god",
+        "layer": "monthly",
+        "ten_god": "伤官"
+      },
+      "evidence_paths": [
+        "/data/bazi/snapshot/month",
+        "/data/bazi/natal_pillars/day"
+      ]
+    },
+    {
+      "rule_id": "daily.bazi.ten_god.daily",
+      "met": true,
+      "school": "ziping-five-elements-polarity-project-v1",
+      "source": {
+        "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+        "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+        "status": "project_arithmetic_original_edition_collation_pending"
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "ten_god",
+        "layer": "daily",
+        "ten_god": "伤官"
+      },
+      "evidence_paths": [
+        "/data/bazi/snapshot/day",
+        "/data/bazi/natal_pillars/day"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.yearly.0",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "yearly",
+        "mutagen": "禄",
+        "natal_palace": "仆役",
+        "palace_index": 2
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/yearly/mutagen/0",
+        "/data/ziwei/natal/palaces/2/major/0"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.yearly.1",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "yearly",
+        "mutagen": "权",
+        "natal_palace": "子女",
+        "palace_index": 6
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/yearly/mutagen/1",
+        "/data/ziwei/natal/palaces/6/major/0"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.yearly.2",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "yearly",
+        "mutagen": "科",
+        "natal_palace": "疾厄",
+        "palace_index": 4
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/yearly/mutagen/2",
+        "/data/ziwei/natal/palaces/4/minor/0"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.yearly.3",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "yearly",
+        "mutagen": "忌",
+        "natal_palace": "福德",
+        "palace_index": 11
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/yearly/mutagen/3",
+        "/data/ziwei/natal/palaces/11/major/0"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.monthly.0",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "monthly",
+        "mutagen": "禄",
+        "natal_palace": "夫妻",
+        "palace_index": 7
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/monthly/mutagen/0",
+        "/data/ziwei/natal/palaces/7/major/1"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.monthly.1",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "monthly",
+        "mutagen": "权",
+        "natal_palace": "子女",
+        "palace_index": 6
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/monthly/mutagen/1",
+        "/data/ziwei/natal/palaces/6/major/1"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.monthly.2",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "monthly",
+        "mutagen": "科",
+        "natal_palace": "夫妻",
+        "palace_index": 7
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/monthly/mutagen/2",
+        "/data/ziwei/natal/palaces/7/minor/0"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.monthly.3",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "monthly",
+        "mutagen": "忌",
+        "natal_palace": "子女",
+        "palace_index": 6
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/monthly/mutagen/3",
+        "/data/ziwei/natal/palaces/6/major/0"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.daily.0",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "daily",
+        "mutagen": "禄",
+        "natal_palace": "夫妻",
+        "palace_index": 7
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/daily/mutagen/0",
+        "/data/ziwei/natal/palaces/7/major/1"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.daily.1",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "daily",
+        "mutagen": "权",
+        "natal_palace": "子女",
+        "palace_index": 6
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/daily/mutagen/1",
+        "/data/ziwei/natal/palaces/6/major/1"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.daily.2",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "daily",
+        "mutagen": "科",
+        "natal_palace": "夫妻",
+        "palace_index": 7
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/daily/mutagen/2",
+        "/data/ziwei/natal/palaces/7/minor/0"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.daily.3",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "daily",
+        "mutagen": "忌",
+        "natal_palace": "子女",
+        "palace_index": 6
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/daily/mutagen/3",
+        "/data/ziwei/natal/palaces/6/major/0"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.0",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "天王",
+        "to": "土星",
+        "aspect": "刑相",
+        "orb_degrees": 0.008645525419694877,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/0",
+        "/data/astro/transit_planets/天王/longitude",
+        "/data/astro/natal_planets/土星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.1",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "月亮",
+        "to": "水星",
+        "aspect": "合相",
+        "orb_degrees": 0.7208788226628258,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/1",
+        "/data/astro/transit_planets/月亮/longitude",
+        "/data/astro/natal_planets/水星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.2",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "天王",
+        "to": "金星",
+        "aspect": "六合",
+        "orb_degrees": 0.7956541053175954,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/2",
+        "/data/astro/transit_planets/天王/longitude",
+        "/data/astro/natal_planets/金星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.3",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "水星",
+        "to": "太阳",
+        "aspect": "拱相",
+        "orb_degrees": 0.819298997059775,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/3",
+        "/data/astro/transit_planets/水星/longitude",
+        "/data/astro/natal_planets/太阳/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.4",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "金星",
+        "to": "火星",
+        "aspect": "拱相",
+        "orb_degrees": 1.0233719327600568,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/4",
+        "/data/astro/transit_planets/金星/longitude",
+        "/data/astro/natal_planets/火星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.5",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "冥王",
+        "to": "金星",
+        "aspect": "六合",
+        "orb_degrees": 1.1707094572277015,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/5",
+        "/data/astro/transit_planets/冥王/longitude",
+        "/data/astro/natal_planets/金星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.6",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "天王",
+        "to": "火星",
+        "aspect": "刑相",
+        "orb_degrees": 1.4582378127312268,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/6",
+        "/data/astro/transit_planets/天王/longitude",
+        "/data/astro/natal_planets/火星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.7",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "火星",
+        "to": "木星",
+        "aspect": "刑相",
+        "orb_degrees": 1.462482005178913,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/7",
+        "/data/astro/transit_planets/火星/longitude",
+        "/data/astro/natal_planets/木星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.8",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "海王",
+        "to": "金星",
+        "aspect": "合相",
+        "orb_degrees": 1.9149230153543613,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/8",
+        "/data/astro/transit_planets/海王/longitude",
+        "/data/astro/natal_planets/金星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.9",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "木星",
+        "to": "水星",
+        "aspect": "冲相",
+        "orb_degrees": 1.9260525610091577,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/9",
+        "/data/astro/transit_planets/木星/longitude",
+        "/data/astro/natal_planets/水星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+      "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+      "status": "project_arithmetic_original_edition_collation_pending"
+    },
+    {
+      "title": "安装py-iztro运限与本命星曜映射",
+      "url": "https://docs.iztro.com/posts/horoscope",
+      "status": "installed_library_convention_not_independent_school_validation"
+    },
+    {
+      "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+      "url": "https://www.astro.com/swisseph/swephprg.htm",
+      "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+    }
+  ],
+  "document_id": "tool-0e5c3412f29265cba9a30e6c0ec132b52f397f4234ba27af5ed5e5116d514448",
+  "aliases": {
+    "c": [
+      {
+        "alias": "c1",
+        "path": "/data/astro/aspects/0",
+        "value_sha256": "9a16f4b7107e6dcd16a0286ce9bd2e9533e6cb76dce52df56d960dec7f83302e",
+        "claim_id": "claim-d7b01e90b7751c1e92793cc950fe35f1923dd85b90e4d8c94121004d7f22ce7d"
+      },
+      {
+        "alias": "c2",
+        "path": "/data/astro/aspects/1",
+        "value_sha256": "92add77a47c8641fb8a5f83ce3f0f52ecd4e83fc7f9870f715ba99a89e53452a",
+        "claim_id": "claim-9e4f7f1392464fecba67a473085902633a224a06932f07f9d133964d481a229f"
+      },
+      {
+        "alias": "c3",
+        "path": "/data/astro/aspects/2",
+        "value_sha256": "11cd79b93e2712c0e8643903b649cc48f192d682fe91057f1353b4ba85e2a126",
+        "claim_id": "claim-7282d18b3437dedb574100605170bbc152a7b6ebbffb53c36524ae3a7225f8c3"
+      },
+      {
+        "alias": "c4",
+        "path": "/data/astro/aspects/3",
+        "value_sha256": "75d6b6f022635ef02eb5ae963224bc9a924ae387d57faa001f2b7863f094815e",
+        "claim_id": "claim-9f7e7e4a31dd5023e2c9469677140e80d868105f785f5150e240e368f35e0f84"
+      },
+      {
+        "alias": "c5",
+        "path": "/data/astro/aspects/4",
+        "value_sha256": "6b59e1357972576243893ce30b49b692d2bf34b212e3da655c1b00630dd28d00",
+        "claim_id": "claim-795e5e7fb7b5def5a568f1e5696e2bac69826fbe59ed71fdc46dab8625b91538"
+      },
+      {
+        "alias": "c6",
+        "path": "/data/astro/aspects/5",
+        "value_sha256": "2dbfc86d350480afbbd58f0d3b09467b26e4850c3ad37619be39bdd6e107e4ec",
+        "claim_id": "claim-f1727cc2ad4a10c876e464b41da051f477a2729479c2d1f7028654813a03f033"
+      },
+      {
+        "alias": "c7",
+        "path": "/data/astro/aspects/6",
+        "value_sha256": "7cd8a823a7284c825be10e9991c1c424df13f3649a2c00833d865bc452649b0c",
+        "claim_id": "claim-9e45db8582067239e756da82f88d105ca83d492e94cf94224120c5ca59052763"
+      },
+      {
+        "alias": "c8",
+        "path": "/data/astro/aspects/7",
+        "value_sha256": "3d67e2874addb1caba987b29fa92cc8524c633f01e9ec1f9c5f4ff0027b96ae2",
+        "claim_id": "claim-bf6b95c093d99b8e792ce22b7679843dea5bc4888bb7d33046688e980376e559"
+      },
+      {
+        "alias": "c9",
+        "path": "/data/astro/aspects/8",
+        "value_sha256": "bc62b4fb9be0f878a7fc14d030f4a05d156b1a90ea7b6a6f273322b8208e7a8c",
+        "claim_id": "claim-857f07a2e31e828b6ff3d2ec5b789d8bee427788275c480d05d34e9adc991044"
+      },
+      {
+        "alias": "c10",
+        "path": "/data/astro/aspects/9",
+        "value_sha256": "3e9e6e5e68b7fb81f9cb5a861fe378cde28d1ec4a80dde0064deff07490f67a7",
+        "claim_id": "claim-fa81fda183b4cdb6385280a5f83be3d2ed9183e7f8c0b04cd3f3cb8f4352e255"
+      },
+      {
+        "alias": "c11",
+        "path": "/data/astro/natal_planets/土星/longitude",
+        "value_sha256": "3d2f533973e38dbe8908c369577b82e0539066a3af59f3eac0daf50ff2e60fc8",
+        "claim_id": "claim-8dfedcacb09f48944dc114af2d7bf68e2d0120f04f1929c7385b16cfb192f339"
+      },
+      {
+        "alias": "c12",
+        "path": "/data/astro/natal_planets/太阳/longitude",
+        "value_sha256": "65f8fd717d50790e84763521ab24f295b179890746893a9e0b559a8216b05c36",
+        "claim_id": "claim-c59682e25fed1bacfe1362aaec03821b67f57fb515b030a8641439eb938ad854"
+      },
+      {
+        "alias": "c13",
+        "path": "/data/astro/natal_planets/木星/longitude",
+        "value_sha256": "61bcdb55583aa77262018963745ec26af114dbaecabe2192e585a63521c593a5",
+        "claim_id": "claim-b97d77a57d4ea2ba50c650aac9d47ab12f806dca932e82a5e04c3b2bafd07e51"
+      },
+      {
+        "alias": "c14",
+        "path": "/data/astro/natal_planets/水星/longitude",
+        "value_sha256": "878a23e158a4e22acbe44e965ecc914ea8ca76943b07804673a9304dbfdf0196",
+        "claim_id": "claim-743277b740c1524933facf6c43221a5c5a4957f9843fb864d228491b09db4e9f"
+      },
+      {
+        "alias": "c15",
+        "path": "/data/astro/natal_planets/火星/longitude",
+        "value_sha256": "9b5a4f51442d349fe2e7da9510beac448ed49b58e9f05d17cae21b04bb194aab",
+        "claim_id": "claim-4600d046802ac8b1aa9650f9b951dea48b60a0d3d3db56c4ba670f80c27f89f7"
+      },
+      {
+        "alias": "c16",
+        "path": "/data/astro/natal_planets/金星/longitude",
+        "value_sha256": "55ce731ba4531c3182e49ee7640f20c8d8796c343f61753d42be76e15fdc53d8",
+        "claim_id": "claim-d8234a7531231c423d5c21a89b9c459680afdd379f40c81c3f17d1323c76d8fe"
+      },
+      {
+        "alias": "c17",
+        "path": "/data/astro/orb_limit_degrees",
+        "value_sha256": "d84bdb34d4eeef4034d77e5403f850e35bc4a51b1143e3a83510e1aaad839748",
+        "claim_id": "claim-3d9c8e9332a16a90dcf50c4f641978a293ef8f2562cfa33f88f37b84c5687935"
+      },
+      {
+        "alias": "c18",
+        "path": "/data/astro/transit_planets/冥王/longitude",
+        "value_sha256": "0612a53e8c865eedf9f347c773e8bc81045027751ec040f921eab7246d57de77",
+        "claim_id": "claim-20e5331a4ba4efe89d0726eae6a9bc035c337967cee1bab062189e543fac647e"
+      },
+      {
+        "alias": "c19",
+        "path": "/data/astro/transit_planets/天王/longitude",
+        "value_sha256": "f94e20b028cdc630ef2ef562b4698f9879b14d2582bcebbb5584d7b842d62cb2",
+        "claim_id": "claim-da7a4536b7c69495d632309ce79eb10309298d4a723e4cb0b1c8f0a7e7b24f4a"
+      },
+      {
+        "alias": "c20",
+        "path": "/data/astro/transit_planets/月亮/longitude",
+        "value_sha256": "77da05ed0a1a1b6e4eb2c4cd493a421e5a58122d79b9f757b883714b8f23990f",
+        "claim_id": "claim-7116fa6ba3ddb0ceeec8353d03c060a733fc35f58bef2680dfb9e4208f6bbf0a"
+      },
+      {
+        "alias": "c21",
+        "path": "/data/astro/transit_planets/木星/longitude",
+        "value_sha256": "1f05348a8ba1cc9f965957f972a85065edc8ce4bb321eea8d6372c7fa3878ebc",
+        "claim_id": "claim-7c40d26abc85a350eda937850f62d53626ccb88b644f2e82a4538d3b265ebb14"
+      },
+      {
+        "alias": "c22",
+        "path": "/data/astro/transit_planets/水星/longitude",
+        "value_sha256": "d0cb2f5ab577d8399f71ba5869c0d3ba9166e8c27adf8a4d1959a1c1c5717f26",
+        "claim_id": "claim-ac689b30a0e77ab95e0a0243161c217be8b195476a2763f7238c427a39851e74"
+      },
+      {
+        "alias": "c23",
+        "path": "/data/astro/transit_planets/海王/longitude",
+        "value_sha256": "76a5048b4b0a43b60137462b7f20f041ace98741b28156a69ab32e7dc9cf580d",
+        "claim_id": "claim-3d2c7d0eaeea1d253e2a74a73f4c3cfa4b190b68ac4a0b0d0226ffacdf3efedd"
+      },
+      {
+        "alias": "c24",
+        "path": "/data/astro/transit_planets/火星/longitude",
+        "value_sha256": "425c2ea6a565f4e1e8319478f852e26eb2e4f2ee29a1556b6ddfb090a7c54520",
+        "claim_id": "claim-72cf54a33ff9c3586e0031c260734085df5ba9b03a559cd0f6cc819d48c1f8a8"
+      },
+      {
+        "alias": "c25",
+        "path": "/data/astro/transit_planets/金星/longitude",
+        "value_sha256": "e4f68572cb7bfa463c68154680b03715694e66aa46a38670e6612f6abb595c59",
+        "claim_id": "claim-84f9f954f4557c982e44a60e691088656723eb29019fcbbaea155217e6c4a061"
+      },
+      {
+        "alias": "c26",
+        "path": "/data/bazi/interactions/relations/0",
+        "value_sha256": "96bd5b20b6c092613331945535aea0c2276bdb0b8ea7c83a08cd51b371128866",
+        "claim_id": "claim-bda60c538231014490c4844b6d13bd6f26a142c6d5b8e45e14bd5d858dfdc190"
+      },
+      {
+        "alias": "c27",
+        "path": "/data/bazi/interactions/relations/10",
+        "value_sha256": "a44509827d44eb6686d07e7064bba568fbd0f0f5a506a4c00c9c79806cd4a279",
+        "claim_id": "claim-0d533f7e42a7f65710cd14e493be6959238ccdfce0c6245afb9b590cba2ce78d"
+      },
+      {
+        "alias": "c28",
+        "path": "/data/bazi/interactions/relations/11",
+        "value_sha256": "b72f1315bf47001847f7811f1f5538612396cf83d257ecc0ecd6bd3941724393",
+        "claim_id": "claim-f32cf164bc34ee91522b2abf4228d8cbb83d0613666102d90d37daf429043e16"
+      },
+      {
+        "alias": "c29",
+        "path": "/data/bazi/interactions/relations/12",
+        "value_sha256": "4d360ef0ff1362f64efd7cbf14f4db8495bea124b7eefe05a66834266cb32d4e",
+        "claim_id": "claim-ae5d892f7ebc8582ab97c279c05869eb73ac6c95a5d71465708861d9de56a028"
+      },
+      {
+        "alias": "c30",
+        "path": "/data/bazi/interactions/relations/13",
+        "value_sha256": "b99c130ca678003f5a0457a9fb0fcf11b4faa8fd1eb6a517bd7b9fd2844399d9",
+        "claim_id": "claim-a503b3643164bb1f8ab2a634805b9bb48cd83e04b69485596bcac23e85629672"
+      },
+      {
+        "alias": "c31",
+        "path": "/data/bazi/interactions/relations/14",
+        "value_sha256": "47e5a03c9b4fdb79d4cfc516e7fb842e59bc387b4b2510659690e57c7052dbed",
+        "claim_id": "claim-6c42d6297148e0194bd09777a8d7525f67c841126768d8d7d8ddb4493122bcad"
+      },
+      {
+        "alias": "c32",
+        "path": "/data/bazi/interactions/relations/15",
+        "value_sha256": "72d31378e5b8438c886643867eb0a209ec8ef31d5080306c05d7a3e451b38a98",
+        "claim_id": "claim-37b771386730401fec4461f5dba3ae13a6e626e73b86e5a48ad7bc2adcc4bd24"
+      },
+      {
+        "alias": "c33",
+        "path": "/data/bazi/interactions/relations/2",
+        "value_sha256": "35060ad8403ec33f77480545370c163dcbd8ab1582d0b6f17f91e8afff9d058c",
+        "claim_id": "claim-8e59745da85de5120662dd1f184b51602629a80f080bacd6f1aa054d137c2e1c"
+      },
+      {
+        "alias": "c34",
+        "path": "/data/bazi/interactions/relations/3",
+        "value_sha256": "b5890db5996272865c3dfed843fac0c24aaeffa58f11d78f2eec4279e394a46c",
+        "claim_id": "claim-4c1eb4c30b4ca16d96ee342de53e4f11c481498080b0289572e8b00359e9fadc"
+      },
+      {
+        "alias": "c35",
+        "path": "/data/bazi/interactions/relations/4",
+        "value_sha256": "41386a4b469ba9e5fbbccf0e4979692f90cf4f804c8427843a1f65b57834af88",
+        "claim_id": "claim-442dbfece93f52051a7a309d310997b5d82135bdbef7136a42ae89af73a42ec8"
+      },
+      {
+        "alias": "c36",
+        "path": "/data/bazi/interactions/relations/5",
+        "value_sha256": "fcaffe5b627ab7392d5d26c08857f1ef6b4bf8a30defc3ab2f298f5889dd257f",
+        "claim_id": "claim-fd79752f129979a8f32f557315565112daca78e93d990b4d1ef634b9f644006d"
+      },
+      {
+        "alias": "c37",
+        "path": "/data/bazi/interactions/relations/6",
+        "value_sha256": "5e32d0a7ac9d786f10ca3901aac2aa20ac75141994f4e351c80183e27993b837",
+        "claim_id": "claim-c491fd8a3bd8e765a092e0110cdf38ed7a76dc623861f81ad7e63f9b45754096"
+      },
+      {
+        "alias": "c38",
+        "path": "/data/bazi/interactions/relations/7",
+        "value_sha256": "bab0b104a7ed34c77ca119e76a58c23d85ecef6c330d3deaed6ed072796a9565",
+        "claim_id": "claim-397e265e77c78ed03d9a8c6c1703f653e09d0a35ffe5e1d2a14e1c544a6f1658"
+      },
+      {
+        "alias": "c39",
+        "path": "/data/bazi/interactions/relations/8",
+        "value_sha256": "2f5e649b1f821b2300d2ed5968aeb7501b1150c75c9d00303c9318bf7e8de2bd",
+        "claim_id": "claim-2095b8500e7010f3a31b68fa774a54ebecbdc549758640f88978ba7516782b85"
+      },
+      {
+        "alias": "c40",
+        "path": "/data/bazi/interactions/relations/9",
+        "value_sha256": "83479efe4d5ded2f891c66b101d313fd2ebc10bf5185653b7cd9d98058d48eff",
+        "claim_id": "claim-aeb148d8fb605bcc7e7d844e6aef6874e9fed46f9ab17cd482df45da72183c53"
+      },
+      {
+        "alias": "c41",
+        "path": "/data/bazi/natal_pillars",
+        "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+        "claim_id": "claim-0298255d7fa4c417d0d7057d14e42f3a14995536f87be4a645fd9640d3ab8065"
+      },
+      {
+        "alias": "c42",
+        "path": "/data/bazi/natal_pillars/day",
+        "value_sha256": "7c60180341ff8440b931339ba286204f7e6aae5edb33e34f6b40a1be74e0ebbf",
+        "claim_id": "claim-9db8e668b6266bf900bc2dbbb66801c07f2faf27d66881d7d0ff88e3ea240ef7"
+      },
+      {
+        "alias": "c43",
+        "path": "/data/bazi/snapshot/day",
+        "value_sha256": "133b481544b4b14a8b9bd7b8fec4beb256d7458db3caefe2c8ef7867549d4512",
+        "claim_id": "claim-5de20ea6acb98dc979b24ade7e9dc61101f7678cde7eb60f81bb0e6ebfd0fa8d"
+      },
+      {
+        "alias": "c44",
+        "path": "/data/bazi/snapshot/month",
+        "value_sha256": "bc03b224982756b0233df18060d80d3ac59bc8f04e6d3685eab55643bcc69831",
+        "claim_id": "claim-a31050c43767f1d88e3588d80346f55a74ba20a0e6f9f7f9387fab3e94acbc7b"
+      },
+      {
+        "alias": "c45",
+        "path": "/data/bazi/snapshot/year",
+        "value_sha256": "9a13b7c2ee5d876faebc25572d848c42db95d195fe1c51f9c90921e6fca0dc91",
+        "claim_id": "claim-37216924a8fde9c2745dfbbc69ee3a78e7cbeaf87d03281079576d8c8ccbad94"
+      },
+      {
+        "alias": "c46",
+        "path": "/data/ziwei/horoscope/daily/mutagen/0",
+        "value_sha256": "22ad81952edd7adae2618e142d0aeef933e43190dae4ac4191f3c9027923a7b6",
+        "claim_id": "claim-a700fb42f8093ec4ba8e1173df13f04e5bed77eabff3dc77dac2e396c2751af3"
+      },
+      {
+        "alias": "c47",
+        "path": "/data/ziwei/horoscope/daily/mutagen/1",
+        "value_sha256": "3a2dfd03033e2d4aae61a6d415b47144a8fb0acca7c9cc2cdf1ec03a22a847e8",
+        "claim_id": "claim-af7d8381799d66a4523799952463808f7c6286cb406e87e0f6b044c2310321ab"
+      },
+      {
+        "alias": "c48",
+        "path": "/data/ziwei/horoscope/daily/mutagen/2",
+        "value_sha256": "938f4513e3e849faf81e873bc630f59cee90b887c35153c19d795c97cdd7b1ab",
+        "claim_id": "claim-0229e76ebe4ac40d5e82cd25b38c521d14213ef53b14bdeb4e48f203d2d63a4a"
+      },
+      {
+        "alias": "c49",
+        "path": "/data/ziwei/horoscope/daily/mutagen/3",
+        "value_sha256": "0499432d60479f0349c008644c4a87ef02bf10bf2f9dcb4a6072d0ccfcdcde0a",
+        "claim_id": "claim-34db1cbb1b278118a8ef9ce9eba9312d72fda49ebfe80dcb6a7bd5ebc8486b3c"
+      },
+      {
+        "alias": "c50",
+        "path": "/data/ziwei/horoscope/monthly/mutagen/0",
+        "value_sha256": "22ad81952edd7adae2618e142d0aeef933e43190dae4ac4191f3c9027923a7b6",
+        "claim_id": "claim-51cc71f11c6836c06a9e6f97118695263c8e1c73b42732124599fa1bfc963617"
+      },
+      {
+        "alias": "c51",
+        "path": "/data/ziwei/horoscope/monthly/mutagen/1",
+        "value_sha256": "3a2dfd03033e2d4aae61a6d415b47144a8fb0acca7c9cc2cdf1ec03a22a847e8",
+        "claim_id": "claim-0f425b33f6906e6ba320b1fa2a132c4b8d85556bcedc79cd8bd23626d9840a7b"
+      },
+      {
+        "alias": "c52",
+        "path": "/data/ziwei/horoscope/monthly/mutagen/2",
+        "value_sha256": "938f4513e3e849faf81e873bc630f59cee90b887c35153c19d795c97cdd7b1ab",
+        "claim_id": "claim-4192a8457890e1042bedf0b0c0218a3d66760874d68bb93f59389c135d0d8c79"
+      },
+      {
+        "alias": "c53",
+        "path": "/data/ziwei/horoscope/monthly/mutagen/3",
+        "value_sha256": "0499432d60479f0349c008644c4a87ef02bf10bf2f9dcb4a6072d0ccfcdcde0a",
+        "claim_id": "claim-2c65eefd2e2da28244d6c366999655baa051600793888449dc1fbd94c9e5b069"
+      },
+      {
+        "alias": "c54",
+        "path": "/data/ziwei/horoscope/yearly/mutagen/0",
+        "value_sha256": "f1e17234e993bafd2a96af7706b093d301f3cff535ee1cd053ca4417b88dab48",
+        "claim_id": "claim-0f2bf83f551bf689f66f297a7c6bea59ddcd93fcf29606c6ab20f2de1f326aea"
+      },
+      {
+        "alias": "c55",
+        "path": "/data/ziwei/horoscope/yearly/mutagen/1",
+        "value_sha256": "0499432d60479f0349c008644c4a87ef02bf10bf2f9dcb4a6072d0ccfcdcde0a",
+        "claim_id": "claim-b6e079a8829bd7fef02db0119895d6467788856254a8e4a9318b065e5dd2fc21"
+      },
+      {
+        "alias": "c56",
+        "path": "/data/ziwei/horoscope/yearly/mutagen/2",
+        "value_sha256": "100e861bf341587a2d214f8ad466875f7e322622c98b5fc01da335d954c170dc",
+        "claim_id": "claim-08b364062609095d56cbcaec9da4927a6178c7d2b18beef8bc8ba897fb5ceb11"
+      },
+      {
+        "alias": "c57",
+        "path": "/data/ziwei/horoscope/yearly/mutagen/3",
+        "value_sha256": "b803417d62e9be4042090fa52c8c050b5f51c450ca5911cb326bfec11de3160a",
+        "claim_id": "claim-bae576f8a6a30029bf3d6e6df4d5f46c7728e062091a169fd2cf6ac87dd22b84"
+      },
+      {
+        "alias": "c58",
+        "path": "/data/ziwei/natal/palaces/11/major/0",
+        "value_sha256": "28b83903afdceed0759147a9236ab3b7da440a6c9d2355a9cda3c4f53aa525b2",
+        "claim_id": "claim-b50a7f66856c99b52bbd66e1d8921b165a85edfc82bb22ef22c66b04d92442f2"
+      },
+      {
+        "alias": "c59",
+        "path": "/data/ziwei/natal/palaces/2/major/0",
+        "value_sha256": "7593b791a142172a91a294c37d197c61065e7f207b5326dbf8c12222d014af74",
+        "claim_id": "claim-b0133a4988e58f830c8449e1f29052cc1ba613b5de28bbc6d6ce442c97372afb"
+      },
+      {
+        "alias": "c60",
+        "path": "/data/ziwei/natal/palaces/4/minor/0",
+        "value_sha256": "279b667873771dc38aa2e2af09e82cd2f8b6bfff78ce8d936ee9250ab6fa591f",
+        "claim_id": "claim-0ba740656ba3d4407145a0070b700118dc924bd400437bfd326887ddf038e001"
+      },
+      {
+        "alias": "c61",
+        "path": "/data/ziwei/natal/palaces/6/major/0",
+        "value_sha256": "2bd1445a2fc23795556c3a4cffb00fa1ceb230f4c2cc6aa686da808100b86b49",
+        "claim_id": "claim-dc7d5d36aab143a675bbe11a230e545dc83eeccde1c955b4d6ca451783daf35e"
+      },
+      {
+        "alias": "c62",
+        "path": "/data/ziwei/natal/palaces/6/major/1",
+        "value_sha256": "dc451feab4c4e0f9c1844a0a82bf7cf68b968342d7065e815cc29223fec6e743",
+        "claim_id": "claim-a7500aabdfb67126996f720cf7c0de123aa11c54b0a4c7eab884bf3feb7a1a10"
+      },
+      {
+        "alias": "c63",
+        "path": "/data/ziwei/natal/palaces/7/major/1",
+        "value_sha256": "af7dcb4edfe094cfa2b1f2ec58d55e07433b9027a9aec7e6f8ed434b310ca08e",
+        "claim_id": "claim-9a90351582337795b3788ce032e0135adffe072c3af137865a39a7aefa2938bf"
+      },
+      {
+        "alias": "c64",
+        "path": "/data/ziwei/natal/palaces/7/minor/0",
+        "value_sha256": "a48ec17a358885ba81420847199f7eeedf9ff4c90cfbf21e3b9acb160547ab25",
+        "claim_id": "claim-2bda2f8059dacf3d4b3164e797ff530c7e5cbf348b78d2cdcdd2d400e8639c23"
+      }
+    ],
+    "r": [
+      {
+        "alias": "r1",
+        "path": "/rule_hits/0",
+        "rule_id": "daily.bazi.relation.u2-69b6ef0e8d0ae4e27bf88cfc",
+        "value_sha256": "7a2b181943c9645dfa16f598ff654b1d953de4bf064273a1e782e2a78b9fdae2",
+        "claim_id": "claim-822847ce8455e5c1ad9d39e1a63a1294a301a04872335330a016bf8407c8f4a5",
+        "evidence_aliases": [
+          "c26",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r2",
+        "path": "/rule_hits/1",
+        "rule_id": "daily.bazi.relation.u2-806a738eae4ead04e3f94911",
+        "value_sha256": "5e9eb8dca4eee0b22c4d0b78ce5653d999e9176333de3a1197b0bae80c2c599c",
+        "claim_id": "claim-3df2993fe22497486e1be51dee6460db2c0f5e7738bd0b326d65ea69fe922d3e",
+        "evidence_aliases": [
+          "c33",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r3",
+        "path": "/rule_hits/2",
+        "rule_id": "daily.bazi.relation.u2-ed62911136e43a3ec0001320",
+        "value_sha256": "9596e7f77508f7594dfc44c3c7be52a3d9997758c8b2ee26e29387b29bb99185",
+        "claim_id": "claim-df4e9110b2c3f9eb957c6309b2e087e873eedcda1699c35f896a07ea8d6163dd",
+        "evidence_aliases": [
+          "c34",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r4",
+        "path": "/rule_hits/3",
+        "rule_id": "daily.bazi.relation.u2-16be4d2a19332e620eb6fed6",
+        "value_sha256": "0beb71532820a9e8d50b6a90f15164265047ac6d5e078748d23332cc15ace8e7",
+        "claim_id": "claim-fc595ceb97db9d320e14821c5703d985ee0d865426756b3ad6638a1c687209a5",
+        "evidence_aliases": [
+          "c35",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r5",
+        "path": "/rule_hits/4",
+        "rule_id": "daily.bazi.relation.u2-d634dd3956b68615cfea9d80",
+        "value_sha256": "928aeceed78d940749a94c8179601ba9583d1ef2166f617510220715a0bc680a",
+        "claim_id": "claim-ef858302b98ab5f1c282a6b1d1831b7bd16d5b91fe17ea92160f4b4e7e810269",
+        "evidence_aliases": [
+          "c36",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r6",
+        "path": "/rule_hits/5",
+        "rule_id": "daily.bazi.relation.u2-79a6879bc04a99faf8acddcb",
+        "value_sha256": "97a21856bec48fc53ac1736b456313f926535d78bf87a138cc98ad1fe69368a6",
+        "claim_id": "claim-d22fa48faa008a147528c22a9423162601d397d9a0dec47f6de138ee05a96dab",
+        "evidence_aliases": [
+          "c37",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r7",
+        "path": "/rule_hits/6",
+        "rule_id": "daily.bazi.relation.u2-10b260e83c34baa37f265c13",
+        "value_sha256": "b71595413afbadd2dc8028fa0a016462f6a90bc8b5f5f881fd890a55574b18c3",
+        "claim_id": "claim-81848a62e30c6957617b3520d69e2a2365feba05a32ed216b8fff78e2b7017f5",
+        "evidence_aliases": [
+          "c38",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r8",
+        "path": "/rule_hits/7",
+        "rule_id": "daily.bazi.relation.u2-7c89caff594b941bfb5925d9",
+        "value_sha256": "c19ba2c22209e5e83a0c83bca6772ce2ed737b1cf9134ded31e1f60487414fa6",
+        "claim_id": "claim-55b4e16528d8bbd3a7107a0e8c0ae742cfa2f71d80e4fc61fc32391f83fc8860",
+        "evidence_aliases": [
+          "c39",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r9",
+        "path": "/rule_hits/8",
+        "rule_id": "daily.bazi.relation.u2-d75c909470113d433e3839b7",
+        "value_sha256": "420516df1987f4cfe1cc29158e2189d597f1c3d59e0866b660c5614149823f70",
+        "claim_id": "claim-217e540810e0937282f9a09a7636d1011e17463acfbd32a5a4094f975c29dd3e",
+        "evidence_aliases": [
+          "c40",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r10",
+        "path": "/rule_hits/9",
+        "rule_id": "daily.bazi.relation.u2-b5ce8d52b73954bd29047f8c",
+        "value_sha256": "44c0c75071b48ecf9cd73b83dda80b3ab0b78a62f314ab821b2059b4ee181461",
+        "claim_id": "claim-e7a46b78b372a5b425de7108cb3d36c9686c7ee8dcc7494fa7ae1f59bdcf0306",
+        "evidence_aliases": [
+          "c27",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r11",
+        "path": "/rule_hits/10",
+        "rule_id": "daily.bazi.relation.u2-e4dfee793e0703c83e1d3aa1",
+        "value_sha256": "46314ec014f0dc8a4015ec7e0891ee9cbff6e4e19a63477e9a4157d238f2bd7c",
+        "claim_id": "claim-315f56b0d0b9eb8f2d2d3c26892e70e550ee3fcc92bdd795af0827010b944247",
+        "evidence_aliases": [
+          "c28",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r12",
+        "path": "/rule_hits/11",
+        "rule_id": "daily.bazi.relation.u2-0a6568bc40ccc6216728c39a",
+        "value_sha256": "9a0ab64124b4facca41ddc96566f9afbc2129519cd9b3664d68df57430296ecd",
+        "claim_id": "claim-0e5fd26175e0b63560b3ed9dd95433dc65825be9cb060c1911055b58d220c4c5",
+        "evidence_aliases": [
+          "c29",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r13",
+        "path": "/rule_hits/12",
+        "rule_id": "daily.bazi.relation.u2-62a703a5c995c065950941c9",
+        "value_sha256": "90fb18d66d2fe19cda0b87e906edeebf5520391597ce7cb27a62416dcb347c56",
+        "claim_id": "claim-b0e7285cceab0d11d1c794ea172c95617ef6c0ad417121d4c45829579b156fd4",
+        "evidence_aliases": [
+          "c30",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r14",
+        "path": "/rule_hits/13",
+        "rule_id": "daily.bazi.relation.u2-c154fa8f8df0f0ed37fbe2c1",
+        "value_sha256": "c3f318afda1e76a698f01996704a86bbe45f550f60e6d819252dcc9d7c24d33b",
+        "claim_id": "claim-877e99658a9f81ba78941eb4c3c6bb5770a3f42b34cfa9a58b0af8900cf219a2",
+        "evidence_aliases": [
+          "c31",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r15",
+        "path": "/rule_hits/14",
+        "rule_id": "daily.bazi.relation.u2-4d5dc2aed53a9800cf89173c",
+        "value_sha256": "4bb2f8f2a269e51fe765c67419d0cdbece3def8e561d988d273bfefc63730278",
+        "claim_id": "claim-2c8cd50b3a0cbee918327f97487068a3c48df4b59d9dcc6e036d5dde04be2968",
+        "evidence_aliases": [
+          "c32",
+          "c41"
+        ]
+      },
+      {
+        "alias": "r16",
+        "path": "/rule_hits/15",
+        "rule_id": "daily.bazi.ten_god.yearly",
+        "value_sha256": "ddf8980b97409a1b540f6c0ce46c5f7d494785ad3ff46d5a85d9bd2103b3fe84",
+        "claim_id": "claim-6141c283618b830ae02c127aae1e8590a14ac770b5121dee51c0f7e7602ed688",
+        "evidence_aliases": [
+          "c45",
+          "c42"
+        ]
+      },
+      {
+        "alias": "r17",
+        "path": "/rule_hits/16",
+        "rule_id": "daily.bazi.ten_god.monthly",
+        "value_sha256": "b9103149460ff4ba95ead40dab302f64fa94e8b72c212e683fec2ba946c115dd",
+        "claim_id": "claim-54e6de8749b7e3af1092541732477185d27c4118ee82cc8b6d410c17aa67f220",
+        "evidence_aliases": [
+          "c44",
+          "c42"
+        ]
+      },
+      {
+        "alias": "r18",
+        "path": "/rule_hits/17",
+        "rule_id": "daily.bazi.ten_god.daily",
+        "value_sha256": "3b4e10da19cfbdd034cc0b5c1b1e17e98d527765aac217874083c29464cedb5b",
+        "claim_id": "claim-28f031fe43e70f3cb08e29eb39338a8b6dab2e6590b2c8f083d34a74e5e69b16",
+        "evidence_aliases": [
+          "c43",
+          "c42"
+        ]
+      },
+      {
+        "alias": "r19",
+        "path": "/rule_hits/18",
+        "rule_id": "daily.ziwei.yearly.0",
+        "value_sha256": "e76b6715ffc8c8e3247edd4b4cdcf800ffaca0026519f5ed21627a37b70d9a45",
+        "claim_id": "claim-859b9292067387e8c24863523e6feeef6534bda4ad6008e06cb5a5b723c953f7",
+        "evidence_aliases": [
+          "c54",
+          "c59"
+        ]
+      },
+      {
+        "alias": "r20",
+        "path": "/rule_hits/19",
+        "rule_id": "daily.ziwei.yearly.1",
+        "value_sha256": "766061beffd7a4b5abd45c9c4c2c39504fe67c097d502aef6d108472ebcd7bcc",
+        "claim_id": "claim-57b89c79d962d579088a99f1373212feedc77d0585d0efa09ddbb9724e9ecc46",
+        "evidence_aliases": [
+          "c55",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r21",
+        "path": "/rule_hits/20",
+        "rule_id": "daily.ziwei.yearly.2",
+        "value_sha256": "0256a2388e088ef49472f92bbd532793808d3939b01ac28cef6f02ed3b7206f5",
+        "claim_id": "claim-48ebe2ff339a9ae89fe6621d702fa3783703bf5accbcc7b9e5e52151564ef271",
+        "evidence_aliases": [
+          "c56",
+          "c60"
+        ]
+      },
+      {
+        "alias": "r22",
+        "path": "/rule_hits/21",
+        "rule_id": "daily.ziwei.yearly.3",
+        "value_sha256": "3891ecce8301532dd798c4b4836e5c192e3576e8ab64fbdd0784c45153d8a096",
+        "claim_id": "claim-9c2c56ed8662ab72643831a942948260bbe620c3babc496b051122012519ee9d",
+        "evidence_aliases": [
+          "c57",
+          "c58"
+        ]
+      },
+      {
+        "alias": "r23",
+        "path": "/rule_hits/22",
+        "rule_id": "daily.ziwei.monthly.0",
+        "value_sha256": "da831c5fc919c30a1119cba8a26870a6068d09e34fdad8119e08c224f4218969",
+        "claim_id": "claim-d22831e834af21ecab0f95dbd6d169a3e0b70306db82b3ec8075aa39289067e3",
+        "evidence_aliases": [
+          "c50",
+          "c63"
+        ]
+      },
+      {
+        "alias": "r24",
+        "path": "/rule_hits/23",
+        "rule_id": "daily.ziwei.monthly.1",
+        "value_sha256": "60095618300d2e41bd9d72b38827ddbffd0abb93f2a442ff0db7a83ca693a96a",
+        "claim_id": "claim-871fcf1a523b1ce37744666c059ec4a14982de3087923b5a49370363c5a169db",
+        "evidence_aliases": [
+          "c51",
+          "c62"
+        ]
+      },
+      {
+        "alias": "r25",
+        "path": "/rule_hits/24",
+        "rule_id": "daily.ziwei.monthly.2",
+        "value_sha256": "03fb7a8993f32c64201b9d618fdee540b3169f642110e33555dbc183d055c045",
+        "claim_id": "claim-56e6e008bdf258dccfc90702208b98ed59d82949552db35f937c8c063be48434",
+        "evidence_aliases": [
+          "c52",
+          "c64"
+        ]
+      },
+      {
+        "alias": "r26",
+        "path": "/rule_hits/25",
+        "rule_id": "daily.ziwei.monthly.3",
+        "value_sha256": "62cb06349d0d5fecb39dda9b7b821c6701f0e16c769dccc7cf572a3538e0e6b4",
+        "claim_id": "claim-a2ca0d33765ef7cb30a15bba67f6409b7dfe0c8c6aef264991c9d1d1c18c8e05",
+        "evidence_aliases": [
+          "c53",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r27",
+        "path": "/rule_hits/26",
+        "rule_id": "daily.ziwei.daily.0",
+        "value_sha256": "4716f0a96a9e918a8a5328905542e3f37130649ac8d21eb8abfc353ca01b671c",
+        "claim_id": "claim-fed7597921e99573994bef51d6631eed9e644b65937205876a66fd2e0d141257",
+        "evidence_aliases": [
+          "c46",
+          "c63"
+        ]
+      },
+      {
+        "alias": "r28",
+        "path": "/rule_hits/27",
+        "rule_id": "daily.ziwei.daily.1",
+        "value_sha256": "6a0ec163f09775bf4adfdf832ccd23bfb9829e64e52866faf937b5fcc58e1cb3",
+        "claim_id": "claim-c923e3ae648742a73e1d0895fc0c920ed3a2490d9d02c32dfe2199502b02700b",
+        "evidence_aliases": [
+          "c47",
+          "c62"
+        ]
+      },
+      {
+        "alias": "r29",
+        "path": "/rule_hits/28",
+        "rule_id": "daily.ziwei.daily.2",
+        "value_sha256": "0733288b201987e07efebe983fd8ccae3b86fb9c3afbfcb4ac783b4c9176d1b0",
+        "claim_id": "claim-ca3cc72ab81397d950194a0f728e327a49fe2de25132959ba59316106b35b031",
+        "evidence_aliases": [
+          "c48",
+          "c64"
+        ]
+      },
+      {
+        "alias": "r30",
+        "path": "/rule_hits/29",
+        "rule_id": "daily.ziwei.daily.3",
+        "value_sha256": "1a7edfdc6c8f21bbb22226d8869eb95959912ac709b24fdb4edc5cf922e794b9",
+        "claim_id": "claim-65ec0c04c1fe8b977a7b5215d2797aa9d25d94179eea3e5915a1e33eba469cba",
+        "evidence_aliases": [
+          "c49",
+          "c61"
+        ]
+      },
+      {
+        "alias": "r31",
+        "path": "/rule_hits/30",
+        "rule_id": "daily.astro.aspect.0",
+        "value_sha256": "077c8f40293a6697f74b30419c9620f768e681d952a897d658f3043692b4389e",
+        "claim_id": "claim-44cd1020b9e2f2458a44ccecf8e3154e1a06a21745efa04c239bd12b153d4fbb",
+        "evidence_aliases": [
+          "c1",
+          "c19",
+          "c11",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r32",
+        "path": "/rule_hits/31",
+        "rule_id": "daily.astro.aspect.1",
+        "value_sha256": "f9e5d817b4d0dbfe118202567d71635f23f44f94a0b8cc8570b9a16c84845758",
+        "claim_id": "claim-572b9bcc22edaf341045de97f66fe56dfc838ca6815d5fc18b54c129bf169331",
+        "evidence_aliases": [
+          "c2",
+          "c20",
+          "c14",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r33",
+        "path": "/rule_hits/32",
+        "rule_id": "daily.astro.aspect.2",
+        "value_sha256": "ba877aa2eda96591f88fcd7de443c439e2357c9880ba9f06d456a25a053a6e79",
+        "claim_id": "claim-eb9d829dd827f6cae13cc655030b1d3f27dc232290fc29878845aa6e450a7196",
+        "evidence_aliases": [
+          "c3",
+          "c19",
+          "c16",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r34",
+        "path": "/rule_hits/33",
+        "rule_id": "daily.astro.aspect.3",
+        "value_sha256": "6def959215f92cfbc81c37245dd6aaccf9d46097b2cbedbe97a36ef2d46eb6a7",
+        "claim_id": "claim-9daba600dc5d56705c9e2b5c8166c28ed53430147ab54b3cb18dc4bc0c2bc3d9",
+        "evidence_aliases": [
+          "c4",
+          "c22",
+          "c12",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r35",
+        "path": "/rule_hits/34",
+        "rule_id": "daily.astro.aspect.4",
+        "value_sha256": "ef55dcdbd713813f516d89184f9abb1a6e6ec4f53055502dd996184b6dcda1cf",
+        "claim_id": "claim-516525b23090e01ccf84adab9978f13bcabcd86c528294e7ddf9b5d46d106ce3",
+        "evidence_aliases": [
+          "c5",
+          "c25",
+          "c15",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r36",
+        "path": "/rule_hits/35",
+        "rule_id": "daily.astro.aspect.5",
+        "value_sha256": "207b575cd2ae1c9061c49eec4cb008218f908e52ba2a965025d16fae164bbbfe",
+        "claim_id": "claim-e6d1f1b9f0a863de08cd34a4eeeeec20df0c115c0e6be9d90bf550cdfb1c41fa",
+        "evidence_aliases": [
+          "c6",
+          "c18",
+          "c16",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r37",
+        "path": "/rule_hits/36",
+        "rule_id": "daily.astro.aspect.6",
+        "value_sha256": "d9ec860ca2feebd7bbb20b661c1504f8268bc1b9922dd8dc318bc0f983a7decd",
+        "claim_id": "claim-d8f46869c9ec4e66137b90cab8ef904282535d7cee7f2cc2d1215c664e787c1b",
+        "evidence_aliases": [
+          "c7",
+          "c19",
+          "c15",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r38",
+        "path": "/rule_hits/37",
+        "rule_id": "daily.astro.aspect.7",
+        "value_sha256": "551a4fdf772cf4234d5362aa30858692255e17f60d369815bd284ab6004f7a2a",
+        "claim_id": "claim-e3f1f9790e903f815db1dfaddeb91b241bfb1acd148562f8def6ba7049b502a3",
+        "evidence_aliases": [
+          "c8",
+          "c24",
+          "c13",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r39",
+        "path": "/rule_hits/38",
+        "rule_id": "daily.astro.aspect.8",
+        "value_sha256": "a296bc728a719f05619ac957afb0d76931e12c6b489225aa55f0f447cba4f64c",
+        "claim_id": "claim-082009f30b9e12cf5acc3622b746c6a1635378408de0b8ff0c7dde3e6fe72fff",
+        "evidence_aliases": [
+          "c9",
+          "c23",
+          "c16",
+          "c17"
+        ]
+      },
+      {
+        "alias": "r40",
+        "path": "/rule_hits/39",
+        "rule_id": "daily.astro.aspect.9",
+        "value_sha256": "9c88e3f1f37d5420a33411b837ac254e72356a874b80c65f85afbaba7355dcd6",
+        "claim_id": "claim-6966f6acbe92f831cba528be32b05e088f61e0c7ea7a0c05d4cdb6ae71d0fe27",
+        "evidence_aliases": [
+          "c10",
+          "c21",
+          "c14",
+          "c17"
+        ]
+      }
+    ]
+  },
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "alias_registry": "ephemeral_only"
+  },
+  "limits": [
+    "短别名仅此结果有效，主线接入时须登记到当前上下文，不是持久化依据账本。",
+    "传统条件及数值计算不证明现实预测有效；没有确认或写入出生资料。",
+    "目标为明确日期北京时间12:00快照，不是全天应期或择时结论。",
+    "本命真太阳主口径；北京时间四柱或紫微盘不同时并列，不改变已确认出生资料。"
+  ]
+}

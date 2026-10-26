@@ -1,0 +1,114 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-18",
+  "order": 18,
+  "title": "交界提示用于敏感性核对",
+  "level": "进阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-17"
+  ],
+  "objectives": [
+    "理解临界候选不是新出生事实。",
+    "保留准确记录并冻结倒推。"
+  ],
+  "paragraphs": [
+    "交界提示是在问：若坐标跨过附近边界，哪些字段会变？它不是在说实际记录错了。准确记录仍是依据，不从人生大事挑一张更像的盘。",
+    "阿远真太阳坐标距07:00卯辰界约六分多钟，系统给出边界两侧敏感性样本。两侧的时柱不同，不等于阿远有两个出生时刻，更不是倒推已成功。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "边界规则真实引用这份坐标，但敏感性样本都明确不是出生事实。〔c26〕〔r10〕",
+      "evidence_ids": [
+        "solar_boundary"
+      ],
+      "learning_point_ids": [
+        "learning-11"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-18-q1",
+      "question": "被本例边界规则引用的当前真太阳坐标是哪项？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "边界前06:59:59",
+          "value": "1994-03-12T06:59:59"
+        },
+        {
+          "option_id": "b",
+          "text": "当前07:06:20.536889",
+          "value": "1994-03-12T07:06:20.536889"
+        },
+        {
+          "option_id": "c",
+          "text": "边界后07:00:01",
+          "value": "1994-03-12T07:00:01"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "r10引用实际当前坐标c26；前后点是敏感性候选，不可替代出生记录。〔c26〕〔r10〕",
+      "basis": {
+        "kind": "matched_rule",
+        "evidence_id": "solar_boundary",
+        "expected": "1994-03-12T07:06:20.536889"
+      }
+    },
+    {
+      "quiz_id": "lesson-18-q2",
+      "question": "人生事件与某张候选更像时，本产品怎样处理？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "自动改出生资料",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "放宽门槛宣布倒推成功",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "继续冻结隐藏倒推，诚实保留限制",
+          "value": "rectification_stays_frozen"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "当前信号没有通过既定门槛，教学也不能越过冻结政策。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-basis-pillars",
+          "p8-time-basis"
+        ],
+        "expected": "rectification_stays_frozen"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-basis-pillars",
+    "p8-time-basis"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "八字sect1与紫微晚子索引12分开声明；主口径不靠应验感倒选。",
+      "source_ids": [
+        "p8-basis-pillars",
+        "p8-time-basis"
+      ]
+    }
+  ],
+  "pending_review": [
+    "交界几何敏感性不验证出生记录误差，也不证明事件倒推有效。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

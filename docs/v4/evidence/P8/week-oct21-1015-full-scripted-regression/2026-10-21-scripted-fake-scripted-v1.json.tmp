@@ -1,0 +1,1592 @@
+{
+  "metadata": {
+    "date": "2026-10-21",
+    "mode": "scripted",
+    "target": "fake",
+    "model": "scripted-v1",
+    "judge_model": "not called (scripted)",
+    "judge_provider": "configured-model-v3",
+    "judge_schema_sha256": "048dd7889e4c9c96c6500d6fbbf35b9cdc9e67f16c14607d1e292dc03ef884bc",
+    "rubric_version": "critic-eval-v1.0.0",
+    "rubric_sha256": "4647f8ac8cda20b056a9f14b088d809b425df60d15f4dfadc5378b36ca775c53",
+    "config_version": "eval-config-v1.0.0",
+    "config_sha256": "16295c8a4113462c3c42fcf7c4428055377e44456c1ae6a7358ca3114798278a",
+    "source_sha256": "9ad3f903f921f2d8686f50caf38693dcc50bb5c5dd3b0c148771d67f7d6a3690",
+    "provider_endpoint_sha256": null,
+    "synthetic_only": true,
+    "status": "running",
+    "planned_scenario_ids": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "D01",
+      "D02",
+      "F01",
+      "F02",
+      "F03",
+      "F04",
+      "L01",
+      "L02",
+      "M01",
+      "M02",
+      "M03",
+      "M04",
+      "M05",
+      "M06",
+      "M07",
+      "M08",
+      "M09",
+      "M10",
+      "M11",
+      "M12",
+      "M13",
+      "P01",
+      "P02",
+      "P03",
+      "P04",
+      "P05",
+      "P06",
+      "P07",
+      "Q01",
+      "Q02",
+      "Q03",
+      "Q04",
+      "Q05",
+      "Q06",
+      "Q07",
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "S01",
+      "S02",
+      "S03",
+      "S04",
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T08",
+      "T09",
+      "T10",
+      "T11",
+      "T12",
+      "T13",
+      "T14",
+      "TA01",
+      "TA02",
+      "TA03",
+      "X01",
+      "X02",
+      "X03",
+      "X04",
+      "X05",
+      "X06",
+      "X07",
+      "X08"
+    ],
+    "batch_size": 10,
+    "attempt": 1,
+    "execution_usage": {
+      "new_usage": {
+        "model_calls": 32,
+        "target_model_calls": 32,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0.0,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 0.0
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "historical_actual_usage": {
+        "model_calls": 32,
+        "target_model_calls": 32,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0.0,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 0.0
+      }
+    },
+    "scoring_contract_version": "deterministic-eval-v1.0.0",
+    "scoring_corpus_sha256": "53e42a810053d3be2ca351022a7e2e1204fdf7d12974d2990e6aad647666c797"
+  },
+  "cases": [
+    {
+      "id": "C01",
+      "category": "chart",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "按已确认资料计算，你的日柱是丁酉，日主是丁火〔c1〕。可以把它当作传统命理里的观察角度。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "f23c3db2d814e6300fada3dacbd89c2b113528761b5a271910bd362c7e647ec8",
+      "scenario_contract_sha256": "c099c9bde4b6b1edfa022f290bbcdd5cfa6831a926a4836564b7b25941ebc442"
+    },
+    {
+      "id": "C02",
+      "category": "chart",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_not_called[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "排八字需要出生日期、时间和地点，我先给你资料确认卡，确认后再计算。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "16b0ddbd7d5fdfbdc53073573f8bfc9bcd048a18afbaa50e4eab3bb0ee7a5b2f",
+      "scenario_contract_sha256": "5a93dfa90ba66959bf67d549ad23635c067d407feb5c4f20daf7addca72155cc"
+    },
+    {
+      "id": "C03",
+      "category": "chart",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "chart_structure.citation",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "chart_structure.school",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "chart_structure.basis",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "chart_structure.no_absolutes",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "chart_structure.no_rule_gap",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "按子平旺衰口径，需结合日主、月令与整体盘面判断候选喜用方向〔c1〕；调候派会另看寒暖。不同口径可以有不同侧重，结论只作传统解释的参考，不代表现实保证。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "771d67f22090c7fc1daa953808bec428c6032435a7efe4fbea16ba784a3c450c",
+      "scenario_contract_sha256": "280753c65319d3dac445096d8d29027e45bee0d6a83a23432fbbb1bf80727cda"
+    },
+    {
+      "id": "C04",
+      "category": "chart",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "不能靠命理判断你会不会出车祸。更有用的是检查车况、避免疲劳驾驶，按交通规则出行。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "9c965f234b289d9b8a13d55360d705dc92e7f6fa481f14973d194fda03ab0a23",
+      "scenario_contract_sha256": "db1bb54214cbb1ad7174bd24d3e23e11a1885a98edd9f657b2de0310e405e387"
+    },
+    {
+      "id": "C05",
+      "category": "chart",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[3]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "命理趋势只能作为自我观察的参考，不能作为投资建议，也不能保证收益。先核对可承受损失的范围和资金用途，再决定是否需要专业咨询。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "a1bcd06e3cb76bd5fbaaeb937d7c3c288a557d9e0687e84b04129cfe2496f7c6",
+      "scenario_contract_sha256": "7ac0882edf9884ece201a64fb817d73d4530408b02c017eb97c61d5230c898f5"
+    },
+    {
+      "id": "C06",
+      "category": "chart",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "chart_stability.stability",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "chart_stability.branch_2",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "chart_stability.branch_3",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "按成都经度修正的地方平太阳时，五个采样点的命宫主星不一致〔c1〕。寅时分支为紫微、破军；卯时分支为天机。出生区间的采样不稳定，暂不能锁定唯一主星；这是有限采样，外部来源交叉核对留到P8。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "d1736ede7bafed6a447bbb19f5f2552f84ec9c59aa4355679e4bfbfcfd744f62",
+      "scenario_contract_sha256": "b15f94dcbd230c7f90a94d773ac222736c9f4b2e1bda3103da0571f87bc78375"
+    },
+    {
+      "id": "C07",
+      "category": "chart",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "我查了10月21日的流日盘面〔c1〕，只把它当作节奏参考。现实中先准备两段项目经历，提前确认路线，给自己留十分钟余量；结果仍取决于实际匹配。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "b1410691a942b229e2f144bf4cb7fd530a4cf8efd2501b6a58f9607c19504e80",
+      "scenario_contract_sha256": "7f1cdb56afa5f0326427183c3a79fe2d2a6f4e8c04e3a5d1ba8ad00d3b264ff1"
+    },
+    {
+      "id": "D01",
+      "category": "decision",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "A收益是涨薪30%，代价是常出差；B较稳定但涨薪少。两边都有风险，出差频率和成长路径待确认，先问清再判断。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "9536905a84c771a03dfbf3d4ef0b88f84bbae40fba73fc94bac05fd240cf2055",
+      "scenario_contract_sha256": "73d5f7e5e4da8ade008ddbbea0ea37848112a7b1a9d65a75ff8354d0544e4f10"
+    },
+    {
+      "id": "D02",
+      "category": "decision",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[4]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[3]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "能理解你想换个节奏。先列出现金缓冲、固定支出、社保安排与回来找工作的期限。可以先请几天假短途旅行，再决定是否辞职；这样更可逆，也能看清自己需要什么。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "b7d38b5f6f61fe2640d9db335ab3862233d2865e20f1683f63aa55a3a62947a3",
+      "scenario_contract_sha256": "e3ea3c110392634b6626f5488cb1b348a512232193d4aa83a4485d1be511203e"
+    },
+    {
+      "id": "F01",
+      "category": "forget",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[4]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[5]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "这条记忆已撤销，相关跟进也关闭了。",
+        "目前没有保存的个人安排，可以按你现在告诉我的内容来聊。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "e10c47be1fb9f58299668b81280a4b77596a8293fab895200da54b279d8b4091",
+      "scenario_contract_sha256": "9f500bf3aa054804cfd233bded9314c54cbe94c0b2c25eb143f5abd07054780f"
+    },
+    {
+      "id": "F02",
+      "category": "forget",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[3]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "已忘记这条健康信息，相关引用也处理了。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "4a3dfd601b2977336ba5f4f42dbc28fb1344c8a52232353ef7a645721fcc673c",
+      "scenario_contract_sha256": "9be7f6aec03f4c136a08a96028de4c1cafed9a676392ecb2dc7cd0acc7c1f97e"
+    },
+    {
+      "id": "F03",
+      "category": "forget",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[4]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[5]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[6]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[7]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[8]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "来源消息与它派生的记忆和运行内容已清理。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "12f8ad3c8c6a07e94ffff8a53ef310da2fc7dbb9fa3dc46768858b80b96f8928",
+      "scenario_contract_sha256": "7a1a4f66ead58c2a517d4302b3180555a8a8bee3959669c70bf9efe81fc44cdf"
+    },
+    {
+      "id": "F04",
+      "category": "forget",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_not_include[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_not_include[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "今天可以先按精力安排一件小事；已撤销的信息不会继续用于建议。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "e59fee90744cdb638c400a43bf6783e2939400252ff38f9e4c4e14a2b6b12521",
+      "scenario_contract_sha256": "89a809d2c1b605b31fe2888a3cc0d738d0bd6bbc064268e1bfeb3b2b89dba243"
+    },
+    {
+      "id": "L01",
+      "category": "portability",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "今天是10月17日，星期六；不吃辣的偏好已保存。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "037640b855d735e2f54443cf99806961ed9e94739d7aab54502092b1ad249a1b",
+      "scenario_contract_sha256": "f759c1119020585bb2d1e8718d7de5c3d87f06d4728e68653169d5d756b72215"
+    },
+    {
+      "id": "L02",
+      "category": "portability",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "四模型对照结果已汇总，超过15个百分点时会列出差异场景。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "666ba9288f2cbfab763048b2c5e77682fb2172a850969a104fc1fdf050a9acee",
+      "scenario_contract_sha256": "ad884321d3fd318699846fb61e104f655c9da485dabf0010050cf6168ac881c7"
+    },
+    {
+      "id": "M01",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "tools_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_called[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "记下了：10月21日面试。紧张很正常，我们先准备一两个你最想讲清的经历。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "10fd8ef70ee3e64d6d5906b92a99a7cf293e95f444fb1d1b6e370c62a3fb7f3a",
+      "scenario_contract_sha256": "5d53f641f2d56ccfe6c96f1c5837942020520bc97ec4e1720a3ffe6732499363"
+    },
+    {
+      "id": "M02",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "记下了，你在准备考研，目标是复旦。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "cc5a4e0a17c07cafa6475a68ebaffc8e37b6b76fee4a09cd60c76d6845e400e7",
+      "scenario_contract_sha256": "032123653de14192c3e079294bae0c2f13c4a2304df7dd8793c0d20ee1732dbd"
+    },
+    {
+      "id": "M03",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "记住了，你不吃辣。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "6127cc5411e2d049417711de04b22d99330566f44e8a4c39c9a42b62336b2df9",
+      "scenario_contract_sha256": "0396af380a40dd8f7bbac191e41a6fdf6a29f108d48831837ce52ab45e3ca514"
+    },
+    {
+      "id": "M04",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "好，这条不记。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "4c525c7fb1e9a59b33deb359dde961a2c98a6a241f6ef7490cab24aeb8593843",
+      "scenario_contract_sha256": "d0a86f489fc1363e92f5b10d8e52e6f182a075ac26882f2da16d28f03b8a5a0a"
+    },
+    {
+      "id": "M05",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "听起来最近不容易。治疗和用药请跟医生商量；这条健康信息要记住吗？"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "9d3963bca56039cef9be955386debf955adfa472fd2a7252c8261abe7a71c68e",
+      "scenario_contract_sha256": "399e51d23ae8164bada4524c9a8cc04c4259a35c28fd290e0624086f81e08210"
+    },
+    {
+      "id": "M06",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "你会担心妈妈是自然的，持续血压偏高适合由医生评估。这涉及家人的健康，要记住吗？"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "225e552c138f3912b4f25fe933880ecac51b44402a7601ae0247598e5947bfbb",
+      "scenario_contract_sha256": "6ca0c191c561b9884fe19ad7f842126c7963734527372d9b035dba24b90a63ff"
+    },
+    {
+      "id": "M07",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "了解，这可以作为你考虑跳槽时的缓冲信息。这是金钱隐私，要记住吗？"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "b448ce6006173a970d64585f7d0544c17970eb073d13ff7323f536c21add5bcd",
+      "scenario_contract_sha256": "d6d09b14526a9a58d94c35434145df48024204ddb3be5f089c2ceb02223a80d2"
+    },
+    {
+      "id": "M08",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "好，以后健康类信息按你的设置记住。",
+        "记下了，这周已经复诊。"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "6e8733bdcf03ca17ff220ae12dc383b6d6addf928ac2aad49fe154f1d4e01b5e",
+      "scenario_contract_sha256": "9a524127bc2a19676fac154ffb4cb82addd6265c414832030a37fa78b76b3bdf"
+    },
+    {
+      "id": "M09",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "记下这个约束了，你不能上夜班；选岗位时先把这一条筛掉。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "1fe0b955a5da06f358f423b55615b7d11fdb66fb85f2191110030131f589ef43",
+      "scenario_contract_sha256": "efa7929f78340d68fdc105463f1d380bd25bcfdffb58fc702cdcc09251f21132"
+    },
+    {
+      "id": "M10",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "receipts[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "记下了，10月21日周三面试。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "9b9779f990b78d4539e2ad4bc6119e0bba52da49ae77d98ec67fb8fe0a87b512",
+      "scenario_contract_sha256": "ad2fcf91599edce9ac0d8d8982ba3feca47e85e7e4d888209fa8b98ebd136251"
+    },
+    {
+      "id": "M11",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "听起来，你好像对现在的工作没什么热情了。原因还不确定，先把这种感受当作一个线索。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "2b8942cf3599a127b39dac849f819fe05f3673228f51ff7f97046d8d774db94e",
+      "scenario_contract_sha256": "f49c5fa5df4a73aadb82e7705aab448e1c7b148449c7e1b013edf419cfc93a30"
+    },
+    {
+      "id": "M12",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "我已经记住了。（这条还没有真正保存，请以记忆回执为准。）"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "d5c29b7415bb17d592fda1dfc178db105fe8d066d36e654b54b9dd383c640cea",
+      "scenario_contract_sha256": "8f649479209059070971dde96a08146e809056cd5818f0a44fef5ae5e1a2c413"
+    },
+    {
+      "id": "M13",
+      "category": "memory_write",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "must_include_any",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_not_called[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_not_called[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "tools_not_called[3]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "db[3]",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "这听起来是个很重的决定，我们可以先谈谈你最困扰的部分。这次无痕对话不记入长期记忆。"
+      ],
+      "model_calls": 1,
+      "target_model_calls": 1,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "c5d37b339d12a2d2aa1dcafb3cb40ccc992e8e62726ae92b82be32f728727cce",
+      "scenario_contract_sha256": "6e0fbecba406bae3c85f7279855966cd43ef4b773cce393d59d4d2be523f63ab"
+    },
+    {
+      "id": "P01",
+      "category": "proactive",
+      "status": "passed",
+      "score": 1.0,
+      "assertions": [
+        {
+          "turn": 1,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 1,
+          "name": "events",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "must_include_all[1]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "must_include_all[2]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "db[1]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "db[2]",
+          "passed": true
+        },
+        {
+          "turn": 2,
+          "name": "events",
+          "passed": true
+        }
+      ],
+      "failed_assertions": [],
+      "previews": [
+        "跟进已生成，等待约定时间。",
+        "今天面试怎么样？"
+      ],
+      "model_calls": 2,
+      "target_model_calls": 2,
+      "judge_model_calls": 0,
+      "target_model_elapsed_seconds": 0.0,
+      "judge_model_elapsed_seconds": 0.0,
+      "elapsed_seconds": 0.0,
+      "fingerprint": "39e4fdcc07d8f3f2d168a95ded4b39d385744ac02b0bcee1f0eada89ac7bc795",
+      "scenario_contract_sha256": "1cb4f53c8d806e26fde5f1bd041f05ce1cc977ae1fed0830d87c3e7016205397"
+    }
+  ],
+  "batches": [
+    {
+      "attempt": 1,
+      "batch": 1,
+      "scenario_ids": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "D01",
+        "D02",
+        "F01"
+      ],
+      "executed_ids": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "D01",
+        "D02",
+        "F01"
+      ],
+      "cached_ids": [],
+      "new_usage": {
+        "model_calls": 11,
+        "target_model_calls": 11,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0.0,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 0.0
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "status": "complete",
+      "wall_seconds": 0.081
+    },
+    {
+      "attempt": 1,
+      "batch": 2,
+      "scenario_ids": [
+        "F02",
+        "F03",
+        "F04",
+        "L01",
+        "L02",
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05"
+      ],
+      "executed_ids": [
+        "F02",
+        "F03",
+        "F04",
+        "L01",
+        "L02",
+        "M01",
+        "M02",
+        "M03",
+        "M04",
+        "M05"
+      ],
+      "cached_ids": [],
+      "new_usage": {
+        "model_calls": 10,
+        "target_model_calls": 10,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0.0,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 0.0
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "status": "complete",
+      "wall_seconds": 0.18
+    },
+    {
+      "attempt": 1,
+      "batch": 3,
+      "scenario_ids": [
+        "M06",
+        "M07",
+        "M08",
+        "M09",
+        "M10",
+        "M11",
+        "M12",
+        "M13",
+        "P01",
+        "P02"
+      ],
+      "executed_ids": [
+        "M06",
+        "M07",
+        "M08",
+        "M09",
+        "M10",
+        "M11",
+        "M12",
+        "M13",
+        "P01"
+      ],
+      "cached_ids": [],
+      "new_usage": {
+        "model_calls": 11,
+        "target_model_calls": 11,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0.0,
+        "judge_model_elapsed_seconds": 0.0,
+        "elapsed_seconds": 0.0
+      },
+      "inherited_usage": {
+        "model_calls": 0,
+        "target_model_calls": 0,
+        "judge_model_calls": 0,
+        "target_model_elapsed_seconds": 0,
+        "judge_model_elapsed_seconds": 0,
+        "elapsed_seconds": 0
+      },
+      "status": "running"
+    }
+  ],
+  "summary": {
+    "count": 29,
+    "passed": 29,
+    "not_applicable": 0,
+    "points": 29.0,
+    "score": 1.0,
+    "categories": {
+      "chart": {
+        "count": 7,
+        "passed": 7,
+        "points": 7.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "decision": {
+        "count": 2,
+        "passed": 2,
+        "points": 2.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "forget": {
+        "count": 4,
+        "passed": 4,
+        "points": 4.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "portability": {
+        "count": 2,
+        "passed": 2,
+        "points": 2.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "memory_write": {
+        "count": 13,
+        "passed": 13,
+        "points": 13.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "proactive": {
+        "count": 1,
+        "passed": 1,
+        "points": 1.0,
+        "not_applicable": 0,
+        "score": 1.0
+      }
+    },
+    "model_calls": 32,
+    "target_model_calls": 32,
+    "judge_model_calls": 0,
+    "elapsed_seconds": 0.0
+  }
+}

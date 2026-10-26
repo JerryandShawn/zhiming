@@ -1,0 +1,32 @@
+{
+  "version": "p8-core-job-timeout-orphan-native-probe-v1",
+  "started_at_beijing": "2026-10-21T09:02:48.939261+09:00",
+  "source_lf_sha256": "50c5daf0f6c1fa67b678d7c905a7566a75257f3b120e0cf1bf0b357cd0ced345",
+  "rows": [
+    {
+      "kind": "sleep_timeout",
+      "owned_launcher_pid": 44300,
+      "live_job_active_before_terminate": 3,
+      "terminate_seconds": 4.749999789055437e-05,
+      "job_active_after_terminate": 0,
+      "status": "passed"
+    },
+    {
+      "kind": "parent_exit_orphan",
+      "owned_launcher_pid": 46996,
+      "parent_exit_code": 0,
+      "orphan_job_active_before_terminate": 2,
+      "terminate_seconds": 3.480000304989517e-05,
+      "job_active_after_terminate": 0,
+      "status": "passed"
+    }
+  ],
+  "collector_executions": 0,
+  "charts_processes": 0,
+  "real_model_requests": 0,
+  "limit": "WindowsJob API synthetic children only; not full supervisor or coverage execution",
+  "source_unchanged": true,
+  "completed_at_beijing": "2026-10-21T09:02:49.148453+09:00",
+  "declared_pre_probe_process_budget_assumption": 4,
+  "process_budget_status": "withdrawn_estimate_not_measured: observed_job_active3 plus outer launcher chain; total_peak_unknown_may_exceed4"
+}

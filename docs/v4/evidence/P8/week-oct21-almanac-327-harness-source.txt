@@ -1,0 +1,221 @@
+"""Core context, real base image, one inline test process, OS process cap four."""
+import argparse
+import contextlib
+import ctypes
+import hashlib
+import json
+import os
+import runpy
+import subprocess
+import sys
+from datetime import timedelta, timezone
+from pathlib import Path
+
+ROOT = Path.cwd().resolve()
+sys.path.insert(0, str(ROOT))
+from mingjing_core.timekit.clock import get_clock
+from mingjing_core.adapters.charts.benchmarks.line_coverage_core_job import WindowsJob, Extended
+
+parser = argparse.ArgumentParser()
+parser.add_argument("task", choices=("refresh_almanac", "format_almanac", "probe", "targeted", "bridges", "v4", "scripted", "delivery", "diagnose", "owned_pids", "format_own", "format_environment", "milestone", "inventory", "bind_commit"))
+parser.add_argument("--label", required=True)
+parser.add_argument("--direct-charts", action="store_true")
+parser.add_argument("--nodes", nargs="+")
+parser.add_argument("--commit")
+args = parser.parse_args()
+core = ROOT.parent / "zhiming-v4/.venv-core/Scripts/python.exe"
+assert Path(sys.executable).resolve() == core.resolve()
+assert Path(sys.prefix).resolve() == core.parent.parent.resolve()
+assert sys.flags.isolated and sys.dont_write_bytecode
+started = get_clock().now().astimezone(timezone(timedelta(hours=8)))
+if args.task in ("v4", "scripted") and not 15 <= started.minute < 30:
+    raise SystemExit("Full validation starts only in Beijing minute15-29")
+folder = ROOT / "private/p8-validation"
+record_path = folder / (args.task + "-" + args.label + ".start.json")
+log_path = record_path.with_suffix(".log")
+assert not record_path.exists() and not log_path.exists()
+for key in tuple(os.environ):
+    if any(word in key.upper() for word in ("API_KEY", "LANGCHAIN", "LANGSMITH")):
+        os.environ.pop(key)
+os.environ.update(LANGCHAIN_TRACING_V2="false", LANGSMITH_TRACING="false", PYTHONUTF8="1", CHART_PYTHON=str(ROOT.parent / "zhiming-v4/.venv-charts/Scripts/python.exe"), PYTHONTZPATH=str(core.parent.parent / "Lib/site-packages/tzdata/zoneinfo"))
+for key in ("CORE_TEST_DSN", "ZHIMING_TEST_DSN", "ZHIMING_DATABASE_URL"):
+    os.environ[key] = "postgresql://core_test@127.0.0.1:55480/core_test_meta"
+os.environ["PATH"] = "C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/work/postgres/pgsql/bin" + os.pathsep + os.environ.get("PATH", "")
+if args.direct_charts:
+    original_popen = subprocess.Popen
+    chart_launcher = Path(os.environ["CHART_PYTHON"]).resolve()
+    chart_site = chart_launcher.parent.parent / "Lib/site-packages"
+    base_image = sys._base_executable
+    assert chart_site.is_dir()
+    class DirectChartPopen(original_popen):
+        def __init__(self, command, *positional, **kwargs):
+            if isinstance(command, (list, tuple)) and command and Path(str(command[0])).resolve() == chart_launcher:
+                environment = dict(kwargs.get("env", os.environ))
+                for key in ("__PYVENV_LAUNCHER__", "PYTHONHOME", "PYTHONEXECUTABLE", "VIRTUAL_ENV"):
+                    environment.pop(key, None)
+                environment.update(PYTHONPATH=str(chart_site) + os.pathsep + str(ROOT), PYTHONNOUSERSITE="1", PYTHONDONTWRITEBYTECODE="1")
+                kwargs["env"] = environment
+                command = [base_image, "-S", *command[1:]]
+            super().__init__(command, *positional, **kwargs)
+    subprocess.Popen = DirectChartPopen
+
+def snapshots():
+    names = subprocess.check_output(["git", "-c", "core.quotepath=false", "diff", "--name-only", "7fa5e10a4dbe0e2878e28c6f6a115f17d013aaa2"]).decode().splitlines()
+    names += subprocess.check_output(["git", "-c", "core.quotepath=false", "ls-files", "--others", "--exclude-standard"]).decode().splitlines()
+    return {name: hashlib.sha256((ROOT / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() for name in sorted(set(names)) if (name.endswith(".py") or name.startswith(("mingjing_core/knowledge/", "mingjing_core/skills/", "docs/v4/contracts/"))) and (ROOT / name).is_file()}
+
+job = WindowsJob()
+# This Job includes the coordinator itself. KILL_ON_CLOSE is deliberately off
+# while its one owned process remains; any leaked child makes final proof fail.
+limits = Extended()
+limits.basic.flags = 8
+limits.basic.active = 4
+job._check(job.api.SetInformationJobObject(job.handle, 9, ctypes.byref(limits), ctypes.sizeof(limits)), "inline_process_cap_setup_failed")
+job._check(job.api.AssignProcessToJobObject(job.handle, ctypes.c_void_p(-1)), "inline_self_job_assignment_failed")
+assert job.active() == 1
+observed = Extended()
+job._check(job.api.QueryInformationJobObject(job.handle, 9, ctypes.byref(observed), ctypes.sizeof(observed), None), "inline_process_cap_query_failed")
+assert observed.basic.flags == 8 and observed.basic.active == 4
+record = {"started_at_beijing": started.isoformat(), "effective_core_executable": sys.executable, "actual_base_executable": sys._base_executable, "core_prefix": sys.prefix, "command": sys.orig_argv, "source_snapshot_before": snapshots(), "process_budget": {"mechanism": "Windows Job ACTIVE_PROCESS_LIMIT=4 including this inline coordinator and all descendants; no BREAKAWAY flags", "configured_limit": 4, "active_before": job.active()}, "real_model_requests": 0, "project_server_access": False}
+record["validation_harness_lf_sha256"] = hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+record["chart_launch_transport"] = "direct base -S with only locked Charts site and project PYTHONPATH, no Core site, no venv wrapper execution" if args.direct_charts else "original configured Charts venv wrapper"
+record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
+code = 1
+try:
+    with log_path.open("x", encoding="utf8", newline="\n") as stream, contextlib.redirect_stdout(stream), contextlib.redirect_stderr(stream):
+        if args.task == "refresh_almanac":
+            sys.argv = ["private/p8-validation/refresh_almanac_bindings.py"]
+            runpy.run_path(sys.argv[0], run_name="__main__")
+            refresh = json.loads((ROOT / "docs/v4/evidence/P8/week-oct21-almanac-version-rebinding.json").read_text("utf8"))
+            record["intentional_refresh_paths"] = refresh["intentional_refresh_paths"]
+            code = 0
+        elif args.task == "format_almanac":
+            import ast
+            names = ["mingjing_core/adapters/charts/almanac.py", "tests/v4/test_p8_almanac_version.py"]
+            before_ast = [ast.dump(ast.parse((ROOT / name).read_text("utf8")), include_attributes=False) for name in names]
+            result = subprocess.run([sys.executable, "-m", "ruff", "format", *names], capture_output=True, text=True)
+            print(result.stdout, result.stderr)
+            assert before_ast == [ast.dump(ast.parse((ROOT / name).read_text("utf8")), include_attributes=False) for name in names]
+            record["format_ast_unchanged"] = True
+            code = result.returncode
+        elif args.task == "probe":
+            print("current process assigned to capped Job, Core prefix and package context preserved")
+            code = 0
+        elif args.task == "format_environment":
+            import ast
+            names = ["mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py", "tests/v4/test_p8_core_environment_roles.py", "tests/v4/test_p8_core_environment_consumers.py"]
+            before_ast = [ast.dump(ast.parse((ROOT / name).read_text("utf8")), include_attributes=False) for name in names]
+            result = subprocess.run([sys.executable, "-m", "ruff", "format", *names], capture_output=True, text=True)
+            print(result.stdout, result.stderr)
+            after_ast = [ast.dump(ast.parse((ROOT / name).read_text("utf8")), include_attributes=False) for name in names]
+            record["format_ast_unchanged"] = before_ast == after_ast
+            record["intentional_format_paths"] = names
+            assert record["format_ast_unchanged"]
+            code = result.returncode
+        elif args.task == "format_own":
+            result = subprocess.run([sys.executable, "-m", "ruff", "format", "tests/v4/test_p8_synastry_latitude_contract.py"], capture_output=True, text=True)
+            print(result.stdout, result.stderr)
+            code = result.returncode
+        elif args.task == "inventory":
+            assert args.commit and len(args.commit) == 40 and set(args.commit) <= set("0123456789abcdef")
+            sys.argv = ["private/p8-validation/build_committed_own_static.py", args.commit]
+            runpy.run_path(sys.argv[0], run_name="__main__")
+            code = 0
+        elif args.task == "bind_commit":
+            assert args.commit and len(args.commit) == 40 and set(args.commit) <= set("0123456789abcdef")
+            sys.argv = ["private/p8-validation/bind_members_commit.py", args.commit]
+            runpy.run_path(sys.argv[0], run_name="__main__")
+            code = 0
+        elif args.task == "delivery":
+            sys.argv = ["private/p8-validation/check_delivery.py"]
+            runpy.run_path("private/p8-validation/check_delivery.py", run_name="__main__")
+            code = 0
+        elif args.task == "diagnose":
+            child_code = "import json,subprocess,sys\ntry:\n p=subprocess.run([sys.executable,'-I','-S','-B','-c','raise SystemExit(0)'],capture_output=True,text=True,timeout=5);print(json.dumps({'child_exit':p.returncode,'child_stderr':p.stderr,'effective_executable':sys.executable}))\nexcept OSError as e: print(json.dumps({'nested_start_error_type':type(e).__name__,'winerror':getattr(e,'winerror',None),'effective_executable':sys.executable}))"
+            result = subprocess.run([os.environ["CHART_PYTHON"], "-c", child_code], cwd=ROOT, env=dict(os.environ), capture_output=True, text=True, timeout=15)
+            print(json.dumps({"chart_parent_returncode": result.returncode, "stdout": result.stdout, "stderr": result.stderr}, ensure_ascii=False))
+            code = result.returncode
+        elif args.task == "owned_pids":
+            import time
+            from ctypes import wintypes as w
+            class Pids(ctypes.Structure):
+                _fields_ = [("assigned", w.DWORD), ("count", w.DWORD), ("ids", ctypes.c_size_t * 32)]
+            api = job.api
+            api.OpenProcess.argtypes = (w.DWORD, w.BOOL, w.DWORD)
+            api.OpenProcess.restype = w.HANDLE
+            api.QueryFullProcessImageNameW.argtypes = (w.HANDLE, w.DWORD, w.LPWSTR, ctypes.POINTER(w.DWORD))
+            api.QueryFullProcessImageNameW.restype = w.BOOL
+            child = subprocess.Popen([os.environ["CHART_PYTHON"], "-I", "-S", "-B", "-c", "import time; time.sleep(1)"], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=0x08000000)
+            time.sleep(.15)
+            ids = Pids()
+            job._check(api.QueryInformationJobObject(job.handle, 3, ctypes.byref(ids), ctypes.sizeof(ids), None), "owned_pid_list_failed")
+            images = []
+            for pid in ids.ids[:ids.count]:
+                handle = api.OpenProcess(0x1000, False, pid)
+                if not handle:
+                    images.append({"pid":pid,"image":"already_exited"});continue
+                try:
+                    buffer = ctypes.create_unicode_buffer(32768)
+                    size = w.DWORD(len(buffer))
+                    job._check(api.QueryFullProcessImageNameW(handle, 0, buffer, ctypes.byref(size)), "owned_image_query_failed")
+                    images.append({"pid":pid,"image":buffer.value})
+                finally:
+                    api.CloseHandle(handle)
+            child.wait(timeout=3)
+            print(json.dumps({"owned_job_active":ids.count,"images":images},ensure_ascii=False))
+            code=0
+        elif args.task == "scripted":
+            output = ROOT / "private/tmp" / (args.label + "-scripted-regression")
+            record["private_scripted_output"] = str(output)
+            assert not output.exists()
+            sys.argv = ["tools/eval/runner.py", "--mode", "scripted", "--target", "fake", "--self-test", "--output", str(output)]
+            script_popen = subprocess.Popen
+            expected_self_command = [sys.executable, "-m", "pytest", "tests/v4/test_eval_framework.py", "-q"]
+            class SelfTestCapturePopen(script_popen):
+                def __init__(self, command, *positional, **kwargs):
+                    if command == expected_self_command:
+                        stream.flush()
+                        kwargs.update(stdout=stream, stderr=subprocess.STDOUT)
+                        record["scripted_self_test_processes_captured"] = record.get("scripted_self_test_processes_captured", 0) + 1
+                    super().__init__(command, *positional, **kwargs)
+            subprocess.Popen = SelfTestCapturePopen
+            try:
+                runpy.run_path(sys.argv[0], run_name="__main__")
+                code = 0
+            except SystemExit as error:
+                code = error.code or 0
+            finally:
+                subprocess.Popen = script_popen
+        else:
+            import pytest
+            nodes = ["tests/v4"] if args.task == "v4" else (["tests/v4/test_p8_chart_process.py", "tests/v4/test_p8_meta_integration_process.py"] if args.task == "bridges" else ["tests/v4/test_p8_core_coverage_job.py", "tests/v4/test_p8_core_coverage_supervisor.py", "tests/v4/test_p8_tarot_source_review.py", "tests/v4/test_p8_tarot_spreads_asset.py"])
+            if args.nodes:
+                nodes = args.nodes
+            xml = folder / (args.task + "-" + args.label + ".xml")
+            assert not xml.exists()
+            code = int(pytest.main([*nodes, "-q", "--junitxml=" + str(xml)]))
+            if args.task == "milestone" and code == 0:
+                sys.argv = ["private/p8-validation/check_delivery.py"]
+                runpy.run_path(sys.argv[0], run_name="__main__")
+except BaseException:
+    code = 1
+    raise
+finally:
+    remaining = job.active()
+    if remaining != 1:
+        record.update(completed_at_beijing=get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(), exit_code=1)
+        record["process_budget"].update(active_after=remaining, failure="owned_descendant_remained; terminating whole owned Job including coordinator")
+        record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
+        job.terminate(.5)
+    record.update(completed_at_beijing=get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(), source_snapshot_after=snapshots(), exit_code=code)
+    record["sources_unchanged"] = record["source_snapshot_before"] == record["source_snapshot_after"]
+    record["process_budget"]["active_after"] = job.active()
+    record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
+    if job.active() != 1:
+        record["process_budget"]["failure"] = "owned_descendant_remained; whole_job_termination_required"
+        record_path.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf8")
+        job.terminate(.5)
+    job.close()
+print(log_path.read_text(encoding="utf8")[-5000:])
+assert record["sources_unchanged"] or (args.task in ("format_environment", "format_almanac") and record.get("format_ast_unchanged") is True) or (args.task == "refresh_almanac" and set(name for name in set(record["source_snapshot_before"]) | set(record["source_snapshot_after"]) if record["source_snapshot_before"].get(name) != record["source_snapshot_after"].get(name)) <= set(record.get("intentional_refresh_paths", [])))
+raise SystemExit(code)

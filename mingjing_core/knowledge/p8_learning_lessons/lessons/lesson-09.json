@@ -1,0 +1,115 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-09",
+  "order": 9,
+  "title": "节界、月令与司令不是一栏",
+  "level": "中阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-08"
+  ],
+  "objectives": [
+    "用节界理解节月。",
+    "区分月支本气与当段司令。"
+  ],
+  "paragraphs": [
+    "八字月柱按节界切换，不直接等于公历月或农历月。月令提供季节背景；人元司令还要从前节起算经过时长，再查具名分日表。",
+    "阿远月支是卯，本气角色为乙，但出生时距前节约6.20日，当前三命司令表的首段仍取甲。两个字段不同有明确方法原因，不能悄悄改成同一个字。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "当前具名分日表给出的司令干为甲，而不是把月支本气乙直接当司令。〔c3〕",
+      "evidence_ids": [
+        "command"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-09-q1",
+      "question": "本例month_command登记哪个司令干？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "甲",
+          "value": "甲"
+        },
+        {
+          "option_id": "b",
+          "text": "乙",
+          "value": "乙"
+        },
+        {
+          "option_id": "c",
+          "text": "丁",
+          "value": "丁"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "节后连续日数落入甲段，实际字段是甲；不同于按藏干角色直接取乙。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "command",
+        "expected": "甲"
+      }
+    },
+    {
+      "quiz_id": "lesson-09-q2",
+      "question": "比较两软件月柱不同时先核什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "哪一份更像自己",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "节界瞬间、实际UTC和所选方法",
+          "value": "check_boundary_method"
+        },
+        {
+          "option_id": "c",
+          "text": "直接认定公历月初换柱",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "先把时间和方法对齐，再比较结果，不能凭应验感倒选算法。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-basis-pillars",
+          "p8-named-methods",
+          "p8-calendar"
+        ],
+        "expected": "check_boundary_method"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-basis-pillars",
+    "p8-named-methods",
+    "p8-calendar"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "sanming_5520与徐表分日数不同；徐表申月还需显式归一戊或己。",
+      "source_ids": [
+        "p8-basis-pillars",
+        "p8-named-methods",
+        "p8-calendar"
+      ]
+    }
+  ],
+  "pending_review": [
+    "古籍异本与分日表来源页码继续待核，7/7/16不代表全月同一参数。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

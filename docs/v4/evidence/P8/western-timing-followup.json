@@ -1,0 +1,174 @@
+{
+  "version": "p8-western-timing-followup-v1",
+  "data": "public synthetic epochs, no personal birth data",
+  "live_model_calls": 0,
+  "native_tests": 21,
+  "native_existing_interaction_tests": 5,
+  "swisseph_version": "2.10.03",
+  "nasa_cached_cells": 16,
+  "nasa_positions": [
+    {
+      "body": "太阳",
+      "at_UTC": "2000-Jan-01 12:00",
+      "longitude_arcsec": 0.05279447796056047,
+      "latitude_arcsec": 0.02078465018327812
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2000-Jan-02 12:00",
+      "longitude_arcsec": 0.052831963034805085,
+      "latitude_arcsec": 0.02235186389445623
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2000-Jan-03 12:00",
+      "longitude_arcsec": 0.05487764487952518,
+      "latitude_arcsec": 0.024164554052925252
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2000-Jan-01 12:00",
+      "longitude_arcsec": 0.13984109696139058,
+      "latitude_arcsec": 0.2611337806182945
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2000-Jan-02 12:00",
+      "longitude_arcsec": 0.14770488535305049,
+      "latitude_arcsec": 0.21270783697922013
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2000-Jan-03 12:00",
+      "longitude_arcsec": 0.36392440001691284,
+      "latitude_arcsec": 0.27059926916486177
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2024-Dec-31 13:32",
+      "longitude_arcsec": 0.9399981963497339,
+      "latitude_arcsec": 0.4709987223471046
+    },
+    {
+      "body": "月亮",
+      "at_UTC": "2024-Dec-31 13:33",
+      "longitude_arcsec": 0.9398504225373472,
+      "latitude_arcsec": 0.471095078917827
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2000-Jan-01 12:00",
+      "longitude_arcsec": 0.04141285166952002,
+      "latitude_arcsec": 0.023697283494295007
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2000-Jan-02 12:00",
+      "longitude_arcsec": 0.040837784149516665,
+      "latitude_arcsec": 0.025165824796058445
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2000-Jan-03 12:00",
+      "longitude_arcsec": 0.04206985413475195,
+      "latitude_arcsec": 0.025045667006740047
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2024-Dec-31 13:32",
+      "longitude_arcsec": 0.06792426645461092,
+      "latitude_arcsec": 0.04515098532094086
+    },
+    {
+      "body": "水星",
+      "at_UTC": "2024-Dec-31 13:33",
+      "longitude_arcsec": 0.06793246950564935,
+      "latitude_arcsec": 0.04512698952199301
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2024-Dec-31 13:31",
+      "longitude_arcsec": 0.04484663970742986,
+      "latitude_arcsec": 0.058935296578107005
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2024-Dec-31 13:32",
+      "longitude_arcsec": 0.04480160027924285,
+      "latitude_arcsec": 0.05890925458491542
+    },
+    {
+      "body": "太阳",
+      "at_UTC": "2024-Dec-31 13:33",
+      "longitude_arcsec": 0.044756629404218984,
+      "latitude_arcsec": 0.05888319677395077
+    }
+  ],
+  "max_nasa_longitude_arcsec": 0.9399981963497339,
+  "max_nasa_latitude_arcsec": 0.471095078917827,
+  "solar_return": {
+    "actual_UTC": {
+      "birth_at": "2000-01-01T12:00:00.000000Z",
+      "return_at": "2024-12-31T13:31:59.274308Z"
+    },
+    "root": {
+      "bracket_seconds": 0.0102996826171875,
+      "requested_bracket_seconds": 0.02,
+      "residual_degrees": 1.561136286909459e-08,
+      "birth_jd_ut1": 2451545.00000411,
+      "birth_jd_tt": 2451545.0007428704,
+      "return_jd_ut1": 2460676.0638826205,
+      "return_jd_tt": 2460676.0646812306,
+      "anniversary_anchor_at_UTC": "2025-01-01T12:00:00.000000Z",
+      "leap_day_anchor_clamped": false,
+      "crossed_anniversary_year_boundary": true
+    },
+    "nasa_interpolated_root_UTC": "2024-12-31T13:31:59.084875+00:00",
+    "nasa_root_difference_seconds": 0.189433,
+    "placidus_cusps": 12
+  },
+  "progression": {
+    "actual_UTC": {
+      "birth_at": "2000-01-01T12:00:00.000000Z",
+      "target_at": "2000-12-31T17:48:46.080000Z"
+    },
+    "symbolic_ephemeris_at_UTC": "2000-01-02T12:00:00.000121Z",
+    "mapping": {
+      "year_length_days": 365.2422,
+      "age_in_tropical_years": 0.9999999916918061,
+      "formula": "progressed_JD_UT1 = birth_JD_UT1 + (target_JD_UT1-birth_JD_UT1)/365.2422",
+      "birth_jd_ut1": 2451545.00000411,
+      "target_jd_ut1": 2451910.2422010754,
+      "progressed_jd_ut1": 2451546.0000041015,
+      "birth_jd_tt": 2451545.0007428704,
+      "target_jd_tt": 2451910.2429428706,
+      "progressed_jd_tt": 2451546.000742872
+    }
+  },
+  "mercury_retrograde": {
+    "conjunction_exact_at": [
+      "2026-10-13T08:26:21.152343Z",
+      "2026-11-02T09:52:37.910156Z",
+      "2026-11-25T22:20:10.253906Z"
+    ],
+    "passes": 3
+  },
+  "limits": [
+    "16 cached values cover Sun/Moon/Mercury at these epochs only; not all supported dates/bodies",
+    "Nasa apparent ecliptic frame uses IAU76/80; nonzero model/frame residuals retained",
+    "Solar root crosscheck uses NASA 1-minute interpolation and separate Swiss solcross_ut; Swiss solver is not an independent ephemeris",
+    "All 12 Placidus cusps have NOT been compared to an independent house implementation; Asc/MC have spherical identity checks",
+    "No inference quality or real-world prediction validity established"
+  ],
+  "tidal_acceleration_arcsec_per_century_squared": -25.58,
+  "delta_t": "Swiss automatic model; explicit TIDAL_MOSEPH; previous custom tidal/delta-T state is reset in isolated worker",
+  "targeted_core_pytest": {
+    "passed": 42,
+    "skipped": 0,
+    "seconds": 1.52
+  },
+  "skill_context_utf8_bytes": {
+    "transits-progressions": 4596,
+    "returns": 3811
+  }
+}

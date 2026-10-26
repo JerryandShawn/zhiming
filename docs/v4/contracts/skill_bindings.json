@@ -1,0 +1,365 @@
+{
+  "contract_version": "p8-skill-bindings-v1",
+  "catalog_version": "p8-skills-draft-2026-10-26-v2.5",
+  "scope": "local_registered_roots_and_published_synthetic_samples_not_authorization_or_prediction_validation",
+  "sources": {
+    "bazi_artifact": {
+      "status": "available",
+      "artifact_root": "CalculationArtifact",
+      "sample": "samples/skill-bindings/bazi-artifact.json",
+      "provenance": "samples/skill-bindings/manifest.json",
+      "basis": "legacy_explicit_local_mean_solar_time_day_sect2_not_true_solar_primary",
+      "witness_test": "tests/v4/test_p8_skill_field_paths.py::test_artifact_pointer_requirements_exist_in_real_isolated_engine_output"
+    },
+    "ziwei_artifact": {
+      "status": "available",
+      "artifact_root": "CalculationArtifact",
+      "sample": "samples/skill-bindings/ziwei-artifact.json",
+      "provenance": "samples/skill-bindings/manifest.json",
+      "basis": "legacy_explicit_local_mean_solar_time_py_iztro_defaults_not_true_solar_primary",
+      "witness_test": "tests/v4/test_p8_skill_field_paths.py::test_artifact_pointer_requirements_exist_in_real_isolated_engine_output"
+    },
+    "profile_proposal": {
+      "status": "available",
+      "artifact_root": "read-only profile proposal",
+      "sample": "samples/skill-bindings/profile-proposal.json",
+      "provenance": "samples/skill-bindings/manifest.json",
+      "basis": "unpersisted_proposal_from_actual_legacy_explicit_bazi_calculation",
+      "witness_test": "tests/v4/test_p8_skill_field_paths.py::test_artifact_pointer_requirements_exist_in_real_isolated_engine_output"
+    },
+    "astro_artifact": {
+      "status": "available",
+      "artifact_root": "CalculationArtifact",
+      "sample": "samples/ayuan_astro.json",
+      "document_kind": "calculation_bundle",
+      "select_artifact_system": "astro",
+      "basis": "actual_UTC",
+      "purpose": "Actual saved natal artifact; its presence alone is not a solar-return result."
+    },
+    "time_basis": {
+      "status": "available",
+      "artifact_root": "P8ChartAdapter.time_basis read-only envelope",
+      "sample": "samples/ayuan_bazi.json",
+      "document_kind": "time_basis",
+      "basis": "explicit_native_coordinate_branches"
+    },
+    "secondary": {
+      "status": "available",
+      "artifact_root": "P8ChartAdapter.western_timing read-only envelope",
+      "sample": "samples/ayuan_astro.json",
+      "document_kind": "western_timing",
+      "technique": "secondary_progressions",
+      "basis": "actual_UTC_with_declared_symbolic_mapping"
+    },
+    "solar_return": {
+      "status": "available",
+      "artifact_root": "P8ChartAdapter.western_timing read-only envelope",
+      "sample": "samples/ayuan_astro.json",
+      "document_kind": "western_timing",
+      "technique": "solar_return",
+      "basis": "actual_UTC_with_explicit_return_location"
+    },
+    "tarot_public": {
+      "status": "available",
+      "artifact_root": "TarotService.get_for_reading public draw",
+      "factory": "existing_public_tarot_fixture",
+      "basis": "fixed_revealed_synthetic_draw",
+      "witness_test": "tests/v4/test_p8_skill_field_paths.py::test_tarot_pointer_requirements_match_actual_public_view_serializer"
+    },
+    "daily": {
+      "status": "available",
+      "artifact_root": "P8ToolEvidenceResult",
+      "sample": "samples/daily_transit/ayuan_2026-10-21.json",
+      "tool_version": "p8-daily-transit-v1"
+    },
+    "window": {
+      "status": "available",
+      "artifact_root": "P8ToolEvidenceResult",
+      "sample": "samples/window-search-ayuan-contract-20261021-27.json",
+      "tool_version": "p8-window-search-v1"
+    },
+    "almanac": {
+      "status": "available",
+      "artifact_root": "P8ToolEvidenceResult",
+      "sample": "samples/almanac-20261021.json",
+      "tool_version": "p8-almanac-v1"
+    },
+    "synastry": {
+      "status": "available",
+      "artifact_root": "P8ToolEvidenceResult",
+      "sample": "samples/synastry-ayuan-xiaohe.json",
+      "tool_version": "p8-synastry-v1"
+    }
+  },
+  "chapters": [
+    {
+      "system": "bazi",
+      "topic": "basics",
+      "required_source": "bazi_artifact",
+      "chapter_file": "01_basics.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "aa2ca6018b1cbd03c236ac5b66339e90e55bb0dd3fdc76f338e8cd4a83f358d7"
+    },
+    {
+      "system": "bazi",
+      "topic": "strength",
+      "required_source": "bazi_artifact",
+      "chapter_file": "02_strength.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "a5f1afb188691f34b8eaec48577ce304659095a1e1e8b784e2d4694791c2f0a8"
+    },
+    {
+      "system": "bazi",
+      "topic": "patterns",
+      "required_source": "bazi_artifact",
+      "chapter_file": "03_patterns.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "bfa51187ac1a2b39f11a395a1efaf5befeb5a6bbdc6c2feed620197011f03a58"
+    },
+    {
+      "system": "bazi",
+      "topic": "climate-useful",
+      "required_source": "bazi_artifact",
+      "additional_sources": {
+        "charts.profile_draft.profile_proposal": "profile_proposal"
+      },
+      "chapter_file": "04_climate-useful.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "7b2d508adbb8963b09ff110c8577950c478dbcd8b1a378af24d8fd5c0d776dff"
+    },
+    {
+      "system": "bazi",
+      "topic": "time-layers",
+      "required_source": "bazi_artifact",
+      "chapter_file": "05_time-layers.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "fe62b7294e3c561be7c7fcd5d71ef1639ecfe0264ab3129deb9861ed0502886c"
+    },
+    {
+      "system": "bazi",
+      "topic": "life-topics",
+      "required_source": "bazi_artifact",
+      "chapter_file": "06_life-topics.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "13767b28ade087c7d8b6e7e2c80c0f4fe87c23fc4b04baea940b16885a2fd5a2"
+    },
+    {
+      "system": "bazi",
+      "topic": "misreadings",
+      "required_source": "bazi_artifact",
+      "additional_sources": {
+        "charts.profile_draft.profile_proposal": "profile_proposal"
+      },
+      "chapter_file": "07_misreadings.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "6c33808e9ee5e2f829061a90592779178938bbe7ade7a78c4414c0e57fd41e3d"
+    },
+    {
+      "system": "bazi",
+      "topic": "rectification",
+      "required_source": "time_basis",
+      "chapter_file": "08_rectification.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "ffe16edc80d302f5e64e47c68debfd91af08d9ec5c1eb5d8e1f17bd422d18d7a"
+    },
+    {
+      "system": "bazi",
+      "topic": "rectification-rules",
+      "required_source": "time_basis",
+      "chapter_file": "09_rectification-rules.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "e6d434c20fd7b8eb792eb7a26484bfa86c89522fa2190daa197cd5cd9c2dfca7"
+    },
+    {
+      "system": "bazi",
+      "topic": "traditional-hour-methods",
+      "required_source": "time_basis",
+      "chapter_file": "10_traditional-hour-methods.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "9a21d45db8acb281fa88ecc0c0da6c26ec81f50f57019977eabb56ff12dbf1d0"
+    },
+    {
+      "system": "ziwei",
+      "topic": "palaces",
+      "required_source": "ziwei_artifact",
+      "chapter_file": "01_palaces.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "e5145397c603f4f990b549340a17845df00a90a529b285aba94d7af2252e86b0"
+    },
+    {
+      "system": "ziwei",
+      "topic": "major-stars",
+      "required_source": "ziwei_artifact",
+      "chapter_file": "02_major-stars.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "5c9c5a47fffb56f13dcec4a31ba703af3e2706ef9afeca7b18dc1dbc230286d5"
+    },
+    {
+      "system": "ziwei",
+      "topic": "mutagens",
+      "required_source": "ziwei_artifact",
+      "chapter_file": "03_mutagens.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "41cd4e27b985634b5daa67592e35499b48e1a8ddbcfe9a01d91174b769fc45f7"
+    },
+    {
+      "system": "ziwei",
+      "topic": "combinations",
+      "required_source": "ziwei_artifact",
+      "chapter_file": "04_combinations.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "de696f753623ffa8e1780deae13386fbdc9b56078cf1459f95784275af9738c0"
+    },
+    {
+      "system": "ziwei",
+      "topic": "time-layers",
+      "required_source": "ziwei_artifact",
+      "chapter_file": "05_time-layers.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "66c273fd0734f3b5876185bcbd229eaba1244786721ba8963f3e4a262ad92ea4"
+    },
+    {
+      "system": "ziwei",
+      "topic": "misreadings",
+      "required_source": "ziwei_artifact",
+      "chapter_file": "06_misreadings.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "6bcc063dae16911dd30c166c79c3f606e0757749fba08d7b4bdcc3955c779669"
+    },
+    {
+      "system": "astro",
+      "topic": "natal",
+      "required_source": "astro_artifact",
+      "chapter_file": "01_natal.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "9ced93ed9fabb815a86d6238d0442c16f431f778c539c44404d56c092ded5fe6"
+    },
+    {
+      "system": "astro",
+      "topic": "aspects",
+      "required_source": "astro_artifact",
+      "chapter_file": "02_aspects.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "635c2beb0eef07f14abd23a63a1ae73df618a32f29a1e64f613f633594ca9a3f"
+    },
+    {
+      "system": "astro",
+      "topic": "transits-progressions",
+      "required_source": "astro_artifact",
+      "conditional_sources": {
+        "explicit_transit_period": "astro_artifact",
+        "secondary_progressions": "secondary"
+      },
+      "chapter_file": "03_transits-progressions.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "40a06e3ca627666297c812ddfe785f0ef8cb941e195c64ab3a4a3641e431388f"
+    },
+    {
+      "system": "astro",
+      "topic": "returns",
+      "required_source": "astro_artifact",
+      "conditional_sources": {
+        "solar_return": "solar_return"
+      },
+      "chapter_file": "04_returns.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "b4efd5850bd6762c4b10e57b7d1a2082d0beec856b24b0958bc32cc56caa2555"
+    },
+    {
+      "system": "astro",
+      "topic": "misreadings",
+      "required_source": "astro_artifact",
+      "chapter_file": "05_misreadings.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "f36bc0a06d59b00ea752ef958fa9723cd4b32fdd70b12db5b6f04b2ac559ab36"
+    },
+    {
+      "system": "tarot",
+      "topic": "major",
+      "required_source": "tarot_public",
+      "chapter_file": "01_major.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "36100d9978d12cf0e3305d04e1f3c23f8be29739007fb84805d30c2797f7df82"
+    },
+    {
+      "system": "tarot",
+      "topic": "minor",
+      "required_source": "tarot_public",
+      "chapter_file": "02_minor.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "2c639164a6473af7e473e5874087395735a0d12291608054acb31078b208f806"
+    },
+    {
+      "system": "tarot",
+      "topic": "court",
+      "required_source": "tarot_public",
+      "chapter_file": "03_court.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "0081698706569269e1b9920e69a59342497e899c567ee16278c57e3f73adc9ff"
+    },
+    {
+      "system": "tarot",
+      "topic": "spread",
+      "required_source": "tarot_public",
+      "chapter_file": "04_spread.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "4fbaff323943616c941f6a2ed82ef550f729248c34abc20846608a8563bbb46a"
+    },
+    {
+      "system": "tarot",
+      "topic": "relations",
+      "required_source": "tarot_public",
+      "chapter_file": "05_relations.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "c7fb9e0290c01e997164e60a4fb03f3967e664e9bb90e43665657a1015c7cb48"
+    },
+    {
+      "system": "tarot",
+      "topic": "reversals",
+      "required_source": "tarot_public",
+      "chapter_file": "06_reversals.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "4dd1fbdbf4c1264b2adf51c61b4f5c242b6ce137b784040d2ad827db49bccb2e"
+    },
+    {
+      "system": "tarot",
+      "topic": "misreadings",
+      "required_source": "tarot_public",
+      "chapter_file": "07_misreadings.md",
+      "chapter_version": "p8-skills-draft-2026-10-19-v2.2",
+      "chapter_sha256": "5151eb635833e5da0e8e71dd48c3b9376bb85012e67b5391ee3127b948a4f743"
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "daily-transit",
+      "required_source": "daily",
+      "chapter_file": "01_daily-transit.md",
+      "chapter_version": "p8-skills-draft-2026-10-21-v2.3",
+      "chapter_sha256": "f9cd8c655b7fec9a764d2ca43048a0e394c4176c2bf1d007c5ced67d729c8390"
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "window-search",
+      "required_source": "window",
+      "chapter_file": "02_window-search.md",
+      "chapter_version": "p8-skills-draft-2026-10-21-v2.3",
+      "chapter_sha256": "08f5d11dc938e404c0f16b09451278ffdf4c36dffc51ff9a7949886d787f2d60"
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "almanac",
+      "required_source": "almanac",
+      "chapter_file": "03_almanac.md",
+      "chapter_version": "p8-skills-draft-2026-10-21-v2.3",
+      "chapter_sha256": "00faebdb56cdb9fce2eb1331567ed8f27851afdc9dcc5004a49703dd41dc1df4"
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "synastry",
+      "required_source": "synastry",
+      "chapter_file": "04_synastry.md",
+      "chapter_version": "p8-skills-draft-2026-10-21-v2.3",
+      "chapter_sha256": "8b924c819eb6f29a09ab5b93ca960064f26aab0607926ef842def5d4fe04b564"
+    }
+  ]
+}

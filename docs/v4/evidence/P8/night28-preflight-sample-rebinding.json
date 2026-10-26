@@ -1,0 +1,29 @@
+{
+  "version": "p8-preflight-sample-rebinding-v1",
+  "recorded_at_beijing": "2026-10-21T01:07:34.307705+08:00",
+  "baseline": "ef5fed9a3fc4e1b727e6077f5b99f41be31e6f7b",
+  "checks": [
+    {
+      "system": "bazi",
+      "primary_values_equal": true,
+      "checker_comparisons_equal": true
+    },
+    {
+      "system": "ziwei",
+      "primary_values_equal": true,
+      "checker_comparisons_equal": true
+    },
+    {
+      "system": "astro",
+      "primary_values_equal": true,
+      "checker_comparisons_equal": true
+    }
+  ],
+  "curriculum_sources_sha256": "a781219cbf9f364ca6fbe89e82ce5e4640a99851a29bc65988b7ddcfcf67f1f1",
+  "limits": [
+    "Only three synthetic primary results and checker comparisons; no predictive or authorization claim",
+    "Source/document/alias bindings regenerated after strict preflight changes; old performance reports preserved"
+  ],
+  "real_model_calls": 0,
+  "chart_processes_in_this_comparison": 0
+}

@@ -1,0 +1,663 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF....F..                                  [100%]
+================================== FAILURES ===================================
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-__PYVENV_LAUNCHER__] _
+
+name = '__PYVENV_LAUNCHER__', style = 'upper'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C453671D0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-PYTHONHOME] _
+
+name = 'PYTHONHOME', style = 'upper'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454901E0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-PYTHONEXECUTABLE] _
+
+name = 'PYTHONEXECUTABLE', style = 'upper'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454932A0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-PYTHONPATH] _
+
+name = 'PYTHONPATH', style = 'upper'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45491F20>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-VIRTUAL_ENV] _
+
+name = 'VIRTUAL_ENV', style = 'upper'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454939F0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-__PYVENV_LAUNCHER__] _
+
+name = '__PYVENV_LAUNCHER__', style = 'lower'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C402E6DC0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-PYTHONHOME] _
+
+name = 'PYTHONHOME', style = 'lower'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C4549C860>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-PYTHONEXECUTABLE] _
+
+name = 'PYTHONEXECUTABLE', style = 'lower'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C4549DBE0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-PYTHONPATH] _
+
+name = 'PYTHONPATH', style = 'lower'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454865A0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-VIRTUAL_ENV] _
+
+name = 'VIRTUAL_ENV', style = 'lower'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45484AD0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-__PYVENV_LAUNCHER__] _
+
+name = '__PYVENV_LAUNCHER__', style = 'mixed'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45485E50>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-PYTHONHOME] _
+
+name = 'PYTHONHOME', style = 'mixed'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454876B0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-PYTHONEXECUTABLE] _
+
+name = 'PYTHONEXECUTABLE', style = 'mixed'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45485970>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-PYTHONPATH] _
+
+name = 'PYTHONPATH', style = 'mixed'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45366330>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-VIRTUAL_ENV] _
+
+name = 'VIRTUAL_ENV', style = 'mixed'
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454A5BE0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-__PYVENV_LAUNCHER__] _
+
+name = '__PYVENV_LAUNCHER__', style = 'upper'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454A75E0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-PYTHONHOME] _
+
+name = 'PYTHONHOME', style = 'upper'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454A58A0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-PYTHONEXECUTABLE] _
+
+name = 'PYTHONEXECUTABLE', style = 'upper'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454A5490>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-PYTHONPATH] _
+
+name = 'PYTHONPATH', style = 'upper'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45366F60>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-VIRTUAL_ENV] _
+
+name = 'VIRTUAL_ENV', style = 'upper'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C4549E4D0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-__PYVENV_LAUNCHER__] _
+
+name = '__PYVENV_LAUNCHER__', style = 'lower'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45491E50>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-PYTHONHOME] _
+
+name = 'PYTHONHOME', style = 'lower'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45491560>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-PYTHONEXECUTABLE] _
+
+name = 'PYTHONEXECUTABLE', style = 'lower'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45492330>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-PYTHONPATH] _
+
+name = 'PYTHONPATH', style = 'lower'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45485D80>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-VIRTUAL_ENV] _
+
+name = 'VIRTUAL_ENV', style = 'lower'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45367030>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-__PYVENV_LAUNCHER__] _
+
+name = '__PYVENV_LAUNCHER__', style = 'mixed'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45487920>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-PYTHONHOME] _
+
+name = 'PYTHONHOME', style = 'mixed'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C454898A0>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-PYTHONEXECUTABLE] _
+
+name = 'PYTHONEXECUTABLE', style = 'mixed'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C45489D80>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-PYTHONPATH] _
+
+name = 'PYTHONPATH', style = 'mixed'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C4548B370>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-VIRTUAL_ENV] _
+
+name = 'VIRTUAL_ENV', style = 'mixed'
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    @pytest.mark.parametrize("name", FORBIDDEN)
+    @pytest.mark.parametrize("style", ["upper", "lower", "mixed"])
+    def test_launch_context_names_are_removed_case_insensitively(
+        name: str, style: str, environment_factory
+    ) -> None:
+        inherited_name = spelling(name, style)
+        assert inherited_name.upper() == name
+        with inherited_environment({inherited_name: "SYNTHETIC_INHERITED_CONTEXT"}):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_launch_context_names_are_removed_case_insensitively.<locals>.<genexpr> at 0x0000021C4548A810>)
+
+tests\v4\test_p8_core_environment_roles.py:77: AssertionError
+_ test_all_five_contexts_are_removed_without_broad_python_filter[metadata_git] _
+
+environment_factory = <function safe_environment at 0x0000021C45350180>
+
+    def test_all_five_contexts_are_removed_without_broad_python_filter(
+        environment_factory,
+    ) -> None:
+        extra = {name: "SYNTHETIC_CONTEXT_" + name for name in FORBIDDEN}
+        extra["PYTHONHOME_NOTE"] = "SYNTHETIC_NON_CONTEXT_NOTE"
+        with inherited_environment(extra):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_all_five_contexts_are_removed_without_broad_python_filter.<locals>.<genexpr> at 0x0000021C45488C70>)
+
+tests\v4\test_p8_core_environment_roles.py:90: AssertionError
+_ test_all_five_contexts_are_removed_without_broad_python_filter[supervisor_taskkill] _
+
+environment_factory = <function _environment at 0x0000021C45352200>
+
+    def test_all_five_contexts_are_removed_without_broad_python_filter(
+        environment_factory,
+    ) -> None:
+        extra = {name: "SYNTHETIC_CONTEXT_" + name for name in FORBIDDEN}
+        extra["PYTHONHOME_NOTE"] = "SYNTHETIC_NON_CONTEXT_NOTE"
+        with inherited_environment(extra):
+            result = environment_factory()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_all_five_contexts_are_removed_without_broad_python_filter.<locals>.<genexpr> at 0x0000021C45499B10>)
+
+tests\v4\test_p8_core_environment_roles.py:90: AssertionError
+_____ test_supervisor_reuses_real_cleaner_then_pins_plugins_and_tracking ______
+
+    def test_supervisor_reuses_real_cleaner_then_pins_plugins_and_tracking() -> None:
+        inherited = {name.lower(): "SYNTHETIC_LAUNCH_CONTEXT" for name in FORBIDDEN}
+        inherited.update(
+            PYTEST_DISABLE_PLUGIN_AUTOLOAD="0",
+            PYTEST_ADDOPTS="SYNTHETIC_UNTRUSTED_OPTIONS",
+            PYDANTIC_DISABLE_PLUGINS="SYNTHETIC_PLUGIN_SELECTION",
+            LANGCHAIN_TRACING_V2="true",
+            LANGSMITH_TRACING="true",
+        )
+        with (
+            inherited_environment(inherited),
+            patch.object(
+                supervisor, "safe_environment", wraps=metadata.safe_environment
+            ) as cleaner,
+        ):
+            result = supervisor._environment()
+            cleaner.assert_called_once_with()
+>           assert all(key.upper() not in FORBIDDEN for key in result)
+E           assert False
+E            +  where False = all(<generator object test_supervisor_reuses_real_cleaner_then_pins_plugins_and_tracking.<locals>.<genexpr> at 0x0000021C43C8D2F0>)
+
+tests\v4\test_p8_core_environment_roles.py:154: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-__PYVENV_LAUNCHER__]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-PYTHONHOME]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-PYTHONEXECUTABLE]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-PYTHONPATH]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-upper-VIRTUAL_ENV]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-__PYVENV_LAUNCHER__]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-PYTHONHOME]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-PYTHONEXECUTABLE]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-PYTHONPATH]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-lower-VIRTUAL_ENV]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-__PYVENV_LAUNCHER__]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-PYTHONHOME]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-PYTHONEXECUTABLE]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-PYTHONPATH]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[metadata_git-mixed-VIRTUAL_ENV]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-__PYVENV_LAUNCHER__]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-PYTHONHOME]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-PYTHONEXECUTABLE]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-PYTHONPATH]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-upper-VIRTUAL_ENV]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-__PYVENV_LAUNCHER__]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-PYTHONHOME]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-PYTHONEXECUTABLE]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-PYTHONPATH]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-lower-VIRTUAL_ENV]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-__PYVENV_LAUNCHER__]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-PYTHONHOME]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-PYTHONEXECUTABLE]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-PYTHONPATH]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_launch_context_names_are_removed_case_insensitively[supervisor_taskkill-mixed-VIRTUAL_ENV]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_all_five_contexts_are_removed_without_broad_python_filter[metadata_git]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_all_five_contexts_are_removed_without_broad_python_filter[supervisor_taskkill]
+FAILED tests/v4/test_p8_core_environment_roles.py::test_supervisor_reuses_real_cleaner_then_pins_plugins_and_tracking
+33 failed, 6 passed in 0.30s

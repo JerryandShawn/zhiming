@@ -1,0 +1,1249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 synastry v1 consent-gated read-only evidence result",
+  "description": "Root validates successful output. $defs.Request validates input. Ownership, date range, exact library values, finite numbers and aliases need semantic validation.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "p8-synastry-v1"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "data": {
+      "$ref": "#/$defs/Data"
+    },
+    "rule_hits": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Hit"
+      },
+      "minItems": 1
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Source"
+      },
+      "minItems": 1
+    },
+    "document_id": {
+      "type": "string",
+      "pattern": "^tool-[0-9a-f]{64}$"
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ChartAlias"
+          },
+          "minItems": 1
+        },
+        "r": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuleAlias"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "c",
+        "r"
+      ],
+      "additionalProperties": false
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "model_calls": {
+          "const": 0
+        },
+        "writes": {
+          "const": 0
+        },
+        "alias_registry": {
+          "const": "ephemeral_only"
+        }
+      },
+      "required": [
+        "model_calls",
+        "writes",
+        "alias_registry"
+      ],
+      "additionalProperties": false
+    },
+    "limits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 2
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "data",
+    "rule_hits",
+    "sources",
+    "document_id",
+    "aliases",
+    "effects",
+    "limits"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Source": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri"
+        },
+        {
+          "type": "object",
+          "minProperties": 1,
+          "anyOf": [
+            {
+              "required": [
+                "title"
+              ]
+            },
+            {
+              "required": [
+                "url"
+              ]
+            }
+          ],
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 1
+            },
+            "url": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        }
+      ]
+    },
+    "Position": {
+      "type": "object",
+      "properties": {
+        "longitude": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 360
+        },
+        "latitude": {
+          "type": "number"
+        },
+        "distance_au": {
+          "type": "number"
+        },
+        "speed_degrees_per_day": {
+          "type": "number"
+        },
+        "retrograde": {
+          "type": "boolean"
+        },
+        "returned_flags": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "longitude",
+        "latitude",
+        "distance_au",
+        "speed_degrees_per_day",
+        "retrograde",
+        "returned_flags"
+      ],
+      "additionalProperties": false
+    },
+    "Positions": {
+      "type": "object",
+      "properties": {
+        "太阳": {
+          "$ref": "#/$defs/Position"
+        },
+        "月亮": {
+          "$ref": "#/$defs/Position"
+        },
+        "水星": {
+          "$ref": "#/$defs/Position"
+        },
+        "金星": {
+          "$ref": "#/$defs/Position"
+        },
+        "火星": {
+          "$ref": "#/$defs/Position"
+        },
+        "木星": {
+          "$ref": "#/$defs/Position"
+        },
+        "土星": {
+          "$ref": "#/$defs/Position"
+        },
+        "天王": {
+          "$ref": "#/$defs/Position"
+        },
+        "海王": {
+          "$ref": "#/$defs/Position"
+        },
+        "冥王": {
+          "$ref": "#/$defs/Position"
+        }
+      },
+      "required": [
+        "太阳",
+        "月亮",
+        "水星",
+        "金星",
+        "火星",
+        "木星",
+        "土星",
+        "天王",
+        "海王",
+        "冥王"
+      ],
+      "additionalProperties": false
+    },
+    "Pillars": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "string",
+          "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"
+        },
+        "month": {
+          "type": "string",
+          "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"
+        },
+        "day": {
+          "type": "string",
+          "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"
+        },
+        "hour": {
+          "type": "string",
+          "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"
+        }
+      },
+      "required": [
+        "year",
+        "month",
+        "day",
+        "hour"
+      ],
+      "additionalProperties": false
+    },
+    "Visible": {
+      "type": "object",
+      "properties": {
+        "stems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "甲",
+              "乙",
+              "丙",
+              "丁",
+              "戊",
+              "己",
+              "庚",
+              "辛",
+              "壬",
+              "癸"
+            ]
+          },
+          "minItems": 8,
+          "maxItems": 8
+        },
+        "element_counts": {
+          "type": "object",
+          "properties": {
+            "木": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "火": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "土": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "金": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            },
+            "水": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 8
+            }
+          },
+          "required": [
+            "木",
+            "火",
+            "土",
+            "金",
+            "水"
+          ],
+          "additionalProperties": false
+        },
+        "method": {
+          "const": "four_exposed_stems_plus_selected_hidden_table_first_stem_per_branch"
+        },
+        "qi_strength_assessed": {
+          "const": false
+        }
+      },
+      "required": [
+        "stems",
+        "element_counts",
+        "method",
+        "qi_strength_assessed"
+      ],
+      "additionalProperties": false
+    },
+    "Useful": {
+      "type": "object",
+      "properties": {
+        "recipient": {
+          "enum": [
+            "a",
+            "b"
+          ]
+        },
+        "method": {
+          "enum": [
+            "扶抑",
+            "调候",
+            "格局"
+          ]
+        },
+        "candidate_stems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "甲",
+              "乙",
+              "丙",
+              "丁",
+              "戊",
+              "己",
+              "庚",
+              "辛",
+              "壬",
+              "癸"
+            ]
+          }
+        },
+        "other_exposed_stems": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "甲",
+              "乙",
+              "丙",
+              "丁",
+              "戊",
+              "己",
+              "庚",
+              "辛",
+              "壬",
+              "癸"
+            ]
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "overlap": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "甲",
+              "乙",
+              "丙",
+              "丁",
+              "戊",
+              "己",
+              "庚",
+              "辛",
+              "壬",
+              "癸"
+            ]
+          }
+        },
+        "candidate_only": {
+          "const": true
+        },
+        "effective_strength_assessed": {
+          "const": false
+        },
+        "aggregation": {
+          "const": "union_of_parallel_candidates_not_consensus"
+        }
+      },
+      "required": [
+        "recipient",
+        "method",
+        "candidate_stems",
+        "other_exposed_stems",
+        "overlap",
+        "candidate_only",
+        "effective_strength_assessed"
+      ],
+      "additionalProperties": false
+    },
+    "Bazi": {
+      "type": "object",
+      "properties": {
+        "pillars_a": {
+          "$ref": "#/$defs/Pillars"
+        },
+        "pillars_b": {
+          "$ref": "#/$defs/Pillars"
+        },
+        "day_stem_combination": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string",
+              "enum": [
+                "甲",
+                "乙",
+                "丙",
+                "丁",
+                "戊",
+                "己",
+                "庚",
+                "辛",
+                "壬",
+                "癸"
+              ]
+            },
+            "b": {
+              "type": "string",
+              "enum": [
+                "甲",
+                "乙",
+                "丙",
+                "丁",
+                "戊",
+                "己",
+                "庚",
+                "辛",
+                "壬",
+                "癸"
+              ]
+            },
+            "met": {
+              "type": "boolean"
+            },
+            "transformation_established": {
+              "const": false
+            }
+          },
+          "required": [
+            "a",
+            "b",
+            "met",
+            "transformation_established"
+          ],
+          "additionalProperties": false
+        },
+        "branch_relations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "a_pillar": {
+                "enum": [
+                  "year",
+                  "month",
+                  "day",
+                  "hour"
+                ]
+              },
+              "b_pillar": {
+                "enum": [
+                  "year",
+                  "month",
+                  "day",
+                  "hour"
+                ]
+              },
+              "a": {
+                "type": "string",
+                "minLength": 1
+              },
+              "b": {
+                "type": "string",
+                "minLength": 1
+              },
+              "kind": {
+                "enum": [
+                  "地支六合",
+                  "地支六冲"
+                ]
+              },
+              "transformation_established": {
+                "const": false
+              }
+            },
+            "required": [
+              "a_pillar",
+              "b_pillar",
+              "a",
+              "b",
+              "kind",
+              "transformation_established"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "visible_a": {
+          "$ref": "#/$defs/Visible"
+        },
+        "visible_b": {
+          "$ref": "#/$defs/Visible"
+        },
+        "element_complement": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "recipient": {
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              },
+              "absent_in_own_present_in_other": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "木",
+                    "火",
+                    "土",
+                    "金",
+                    "水"
+                  ]
+                }
+              },
+              "meaning": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "recipient",
+              "absent_in_own_present_in_other",
+              "meaning"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "useful_complement": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Useful"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "school": {
+          "const": "ziping-structural-pairs-and-project-candidate-overlap-v1"
+        }
+      },
+      "required": [
+        "pillars_a",
+        "pillars_b",
+        "day_stem_combination",
+        "branch_relations",
+        "visible_a",
+        "visible_b",
+        "element_complement",
+        "useful_complement",
+        "school"
+      ],
+      "additionalProperties": false
+    },
+    "Aspect": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aspect": {
+          "enum": [
+            "合相",
+            "六合",
+            "刑相",
+            "拱相",
+            "冲相"
+          ]
+        },
+        "angle": {
+          "enum": [
+            0,
+            60,
+            90,
+            120,
+            180
+          ]
+        },
+        "orb_degrees": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        }
+      },
+      "required": [
+        "from",
+        "to",
+        "aspect",
+        "angle",
+        "orb_degrees"
+      ],
+      "additionalProperties": false
+    },
+    "Astro": {
+      "type": "object",
+      "properties": {
+        "positions_a": {
+          "$ref": "#/$defs/Positions"
+        },
+        "positions_b": {
+          "$ref": "#/$defs/Positions"
+        },
+        "orb_degrees": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "aspects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Aspect"
+          }
+        },
+        "school": {
+          "const": "tropical-geocentric-five-major-aspects-uniform-orb"
+        },
+        "time_basis": {
+          "const": "actual_UTC_not_true_solar"
+        },
+        "method": {
+          "type": "object",
+          "required": [
+            "engine",
+            "ephemeris",
+            "time_scale"
+          ],
+          "properties": {
+            "engine": {
+              "const": "pyswisseph"
+            },
+            "ephemeris": {
+              "const": "Moshier"
+            },
+            "time_scale": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "natal_at_utc": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "string",
+              "minLength": 1
+            },
+            "b": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "a",
+            "b"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "positions_a",
+        "positions_b",
+        "orb_degrees",
+        "aspects",
+        "school",
+        "time_basis",
+        "method",
+        "natal_at_utc"
+      ],
+      "additionalProperties": false
+    },
+    "Palace": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 11
+        },
+        "name": {
+          "enum": [
+            "夫妻",
+            "命宫"
+          ]
+        },
+        "ganzhi": {
+          "type": "string",
+          "minLength": 1
+        },
+        "major": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ]
+          }
+        },
+        "minor": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name"
+            ]
+          }
+        }
+      },
+      "required": [
+        "index",
+        "name",
+        "ganzhi",
+        "major",
+        "minor"
+      ],
+      "additionalProperties": false
+    },
+    "Ziwei": {
+      "type": "object",
+      "properties": {
+        "cross_views": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "recipient": {
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              },
+              "own_spouse_palace": {
+                "$ref": "#/$defs/Palace"
+              },
+              "other_life_palace": {
+                "$ref": "#/$defs/Palace"
+              },
+              "same_branch": {
+                "type": "boolean"
+              },
+              "shared_star_names": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "interpretation": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "recipient",
+              "own_spouse_palace",
+              "other_life_palace",
+              "same_branch",
+              "shared_star_names",
+              "interpretation"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "school": {
+          "const": "installed-py-iztro-natal-plus-project-side-by-side-v1"
+        },
+        "compatibility_score": {
+          "const": null
+        }
+      },
+      "required": [
+        "cross_views",
+        "school",
+        "compatibility_score"
+      ],
+      "additionalProperties": false
+    },
+    "Candidate": {
+      "type": "object",
+      "required": [
+        "basis",
+        "utc",
+        "coordinate_datetime",
+        "pillars",
+        "pillar_method"
+      ],
+      "properties": {
+        "basis": {
+          "enum": [
+            "true_solar",
+            "beijing_standard",
+            "standard"
+          ]
+        },
+        "utc": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coordinate_datetime": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pillars": {
+          "$ref": "#/$defs/Pillars"
+        },
+        "pillar_method": {
+          "type": "object"
+        }
+      }
+    },
+    "TimeBasisView": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/Candidate"
+            },
+            {
+              "properties": {
+                "basis": {
+                  "const": "true_solar"
+                }
+              }
+            }
+          ]
+        },
+        "comparisons": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "basis",
+              "fields_changed",
+              "ziwei_natal"
+            ]
+          }
+        }
+      },
+      "required": [
+        "primary",
+        "comparisons"
+      ],
+      "additionalProperties": false
+    },
+    "Data": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "romantic",
+            "friendship",
+            "collaboration"
+          ]
+        },
+        "consent": {
+          "const": "user_confirmed"
+        },
+        "as_of_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "format": "date"
+        },
+        "bazi": {
+          "$ref": "#/$defs/Bazi"
+        },
+        "astro": {
+          "$ref": "#/$defs/Astro"
+        },
+        "ziwei": {
+          "$ref": "#/$defs/Ziwei"
+        },
+        "methods": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "type": "object"
+            },
+            "b": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "a",
+            "b"
+          ],
+          "additionalProperties": false
+        },
+        "time_basis": {
+          "type": "object",
+          "properties": {
+            "a": {
+              "$ref": "#/$defs/TimeBasisView"
+            },
+            "b": {
+              "$ref": "#/$defs/TimeBasisView"
+            }
+          },
+          "required": [
+            "a",
+            "b"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "kind",
+        "consent",
+        "as_of_date",
+        "bazi",
+        "astro",
+        "ziwei",
+        "methods",
+        "time_basis"
+      ],
+      "additionalProperties": false
+    },
+    "Hit": {
+      "type": "object",
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "pattern": "^synastry\\."
+        },
+        "met": {
+          "const": true
+        },
+        "school": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "evidence_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^/data/"
+          },
+          "minItems": 1
+        },
+        "claim_kind": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "rule_id",
+        "met",
+        "school",
+        "source",
+        "evidence_paths"
+      ],
+      "additionalProperties": false
+    },
+    "ChartAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^c[1-9][0-9]*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^/data/"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^claim-[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "alias",
+        "path",
+        "value_sha256",
+        "claim_id"
+      ],
+      "additionalProperties": false
+    },
+    "RuleAlias": {
+      "type": "object",
+      "properties": {
+        "alias": {
+          "type": "string",
+          "pattern": "^r[1-9][0-9]*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^/rule_hits/[0-9]+$"
+        },
+        "value_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "claim_id": {
+          "type": "string",
+          "pattern": "^claim-[0-9a-f]{64}$"
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^c[1-9][0-9]*$"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "alias",
+        "path",
+        "value_sha256",
+        "claim_id",
+        "rule_id",
+        "evidence_aliases"
+      ],
+      "additionalProperties": false
+    },
+    "Scope": {
+      "type": "object",
+      "properties": {
+        "owner_user_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "revisions": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "operation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "owner_user_id",
+        "subject_ids",
+        "revisions",
+        "operation_ids"
+      ],
+      "additionalProperties": false
+    },
+    "Birth": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "format": "date"
+        },
+        "reported_time": {
+          "type": "string",
+          "pattern": "^[0-9]{2}:[0-9]{2}$"
+        },
+        "gender": {
+          "enum": [
+            "男",
+            "女"
+          ]
+        },
+        "place": {
+          "type": "object",
+          "properties": {
+            "tz": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lon": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            },
+            "lat": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            }
+          },
+          "required": [
+            "tz",
+            "lon"
+          ],
+          "additionalProperties": false
+        },
+        "clock_basis": {
+          "enum": [
+            "clock",
+            "standard",
+            "unknown"
+          ]
+        },
+        "precision": {
+          "const": "reported"
+        }
+      },
+      "required": [
+        "date",
+        "reported_time",
+        "gender",
+        "place",
+        "clock_basis",
+        "precision"
+      ],
+      "additionalProperties": false
+    },
+    "ChartInput": {
+      "type": "object",
+      "properties": {
+        "owner_user_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "operation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "birth": {
+          "$ref": "#/$defs/Birth"
+        },
+        "p8_options": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "owner_user_id",
+        "subject_id",
+        "revision",
+        "operation_id",
+        "birth"
+      ],
+      "additionalProperties": false
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "chart_a": {
+          "$ref": "#/$defs/ChartInput"
+        },
+        "chart_b": {
+          "$ref": "#/$defs/ChartInput"
+        },
+        "kind": {
+          "enum": [
+            "romantic",
+            "friendship",
+            "collaboration"
+          ]
+        },
+        "consent": {
+          "const": "user_confirmed"
+        },
+        "as_of_date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "format": "date"
+        },
+        "orb_degrees": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 6
+        }
+      },
+      "required": [
+        "chart_a",
+        "chart_b",
+        "kind",
+        "consent",
+        "as_of_date"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

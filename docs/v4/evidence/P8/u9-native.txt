@@ -1,0 +1,31 @@
+{"tests": 25, "successful": true, "skipped": 0}
+test_approximate_range_samples_both_sides_of_hour_boundary (__main__.RectificationNative.test_approximate_range_samples_both_sides_of_hour_boundary) ... ok
+test_as_of_date_must_be_supplied_by_caller (__main__.RectificationNative.test_as_of_date_must_be_supplied_by_caller) ... ok
+test_birth_owner_and_subject_mismatch_are_rejected (__main__.RectificationNative.test_birth_owner_and_subject_mismatch_are_rejected) ... ok
+test_current_year_unknown_month_never_samples_after_as_of_date (__main__.RectificationNative.test_current_year_unknown_month_never_samples_after_as_of_date) ... ok
+test_cutoff_tie_metrics_keep_random_tie_probability (__main__.RectificationNative.test_cutoff_tie_metrics_keep_random_tie_probability) ... ok
+test_duplicate_source_cannot_double_count (__main__.RectificationNative.test_duplicate_source_cannot_double_count) ... ok
+test_event_owner_and_subject_mismatch_are_rejected (__main__.RectificationNative.test_event_owner_and_subject_mismatch_are_rejected) ... ok
+test_future_birth_is_not_valid_confirmed_history (__main__.RectificationNative.test_future_birth_is_not_valid_confirmed_history) ... ok
+test_future_events_are_not_accepted_as_confirmed_history (__main__.RectificationNative.test_future_events_are_not_accepted_as_confirmed_history) ... ok
+test_identical_input_and_operation_are_deterministic (__main__.RectificationNative.test_identical_input_and_operation_are_deterministic) ... ok
+test_invalid_revision_and_empty_confirmation_are_rejected (__main__.RectificationNative.test_invalid_revision_and_empty_confirmation_are_rejected) ... ok
+test_known_event_month_before_birth_month_is_rejected (__main__.RectificationNative.test_known_event_month_before_birth_month_is_rejected) ... ok
+test_known_month_is_not_a_fabricated_event_day (__main__.RectificationNative.test_known_month_is_not_a_fabricated_event_day) ... ok
+test_known_month_partition_includes_real_jie_boundary (__main__.RectificationNative.test_known_month_partition_includes_real_jie_boundary) ... ok
+test_non_finite_input_is_rejected_before_calculation (__main__.RectificationNative.test_non_finite_input_is_rejected_before_calculation) ... ok
+test_owner_and_revision_change_result_and_candidate_scope (__main__.RectificationNative.test_owner_and_revision_change_result_and_candidate_scope) ... ok
+test_partition_keeps_both_sides_of_nominal_decade_switch (__main__.RectificationNative.test_partition_keeps_both_sides_of_nominal_decade_switch) ... ok
+test_read_only_and_no_birth_profile_confirmation (__main__.RectificationNative.test_read_only_and_no_birth_profile_confirmation) ... ok
+test_support_and_non_support_are_explicit_and_capped (__main__.RectificationNative.test_support_and_non_support_are_explicit_and_capped) ... ok
+test_time_range_must_intersect_declared_birth_date (__main__.RectificationNative.test_time_range_must_intersect_declared_birth_date) ... ok
+test_twelve_way_tie_reports_quarter_expectation_despite_stable_order (__main__.RectificationNative.test_twelve_way_tie_reports_quarter_expectation_despite_stable_order) ... ok
+test_unconfirmed_event_is_excluded_from_score (__main__.RectificationNative.test_unconfirmed_event_is_excluded_from_score) ... ok
+test_unknown_month_keeps_multiple_hypotheses_and_conservative_score (__main__.RectificationNative.test_unknown_month_keeps_multiple_hypotheses_and_conservative_score) ... ok
+test_unknown_produces_twelve_distinct_hour_branches (__main__.RectificationNative.test_unknown_produces_twelve_distinct_hour_branches) ... ok
+test_unknown_year_partitions_cover_continuously_without_gaps (__main__.RectificationNative.test_unknown_year_partitions_cover_continuously_without_gaps) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 19.691s
+
+OK

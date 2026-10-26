@@ -1,0 +1,89 @@
+{
+  "version": "p8-core-b1-author-boundary-tests-v1",
+  "recorded_at_beijing": "2026-10-21T02:07:16.747453+08:00",
+  "actual_collector_invocations": 0,
+  "actual_trace_samples": 0,
+  "charts_processes": 0,
+  "metadata_git_processes_in_test": 0,
+  "test_runs": [
+    {
+      "state": "before_original_stream_buffer_fix",
+      "passed": 79,
+      "seconds": 0.36,
+      "skipped": 0
+    },
+    {
+      "state": "after_original_stream_buffer_fix",
+      "passed": 80,
+      "seconds": 0.25,
+      "skipped": 0
+    }
+  ],
+  "test_process_budget": "one Core process at a time; both exited",
+  "network_child_process_guard": "Socket.connect/DNS/subprocess.run/Popen rejected by outer runner",
+  "sources": [
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py",
+      "sha256_raw": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+      "sha256_lf": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+      "lines": 78,
+      "max_function_lines": 33
+    },
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_boundary.py",
+      "sha256_raw": "47718350bcae6b718079baf7ccf1f98ccb0d1eb4d38b80c45f96fec93a0278f2",
+      "sha256_lf": "47718350bcae6b718079baf7ccf1f98ccb0d1eb4d38b80c45f96fec93a0278f2",
+      "lines": 192,
+      "max_function_lines": 56
+    },
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py",
+      "sha256_raw": "0ac477678e3ee95ad0a73015b3f453ddacb3c6142a7c77a44368c036146716be",
+      "sha256_lf": "0ac477678e3ee95ad0a73015b3f453ddacb3c6142a7c77a44368c036146716be",
+      "lines": 265,
+      "max_function_lines": 43
+    },
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py",
+      "sha256_raw": "831e2b6b3490c7ad1fa4a2c92333de7ec8e7c2217ddf9a2b5653802968f72d05",
+      "sha256_lf": "831e2b6b3490c7ad1fa4a2c92333de7ec8e7c2217ddf9a2b5653802968f72d05",
+      "lines": 216,
+      "max_function_lines": 59
+    },
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_reports.py",
+      "sha256_raw": "dbd499915db9e3514b6924118a635f055d1bf46c66ddd285c86f11f4eda6b4e3",
+      "sha256_lf": "dbd499915db9e3514b6924118a635f055d1bf46c66ddd285c86f11f4eda6b4e3",
+      "lines": 286,
+      "max_function_lines": 57
+    },
+    {
+      "path": "mingjing_core/adapters/charts/benchmarks/line_coverage_core_run.py",
+      "sha256_raw": "7a7424d88ae38040eac65724f763b2b579cade8fd1a926ab8d0199a653ca637b",
+      "sha256_lf": "7a7424d88ae38040eac65724f763b2b579cade8fd1a926ab8d0199a653ca637b",
+      "lines": 329,
+      "max_function_lines": 60
+    },
+    {
+      "path": "tests/v4/test_p8_core_coverage_guards.py",
+      "sha256_raw": "3e09eeffcb0d6e64c14f1bedfa3cec160b460c682254b54c6630acbd7938bf26",
+      "sha256_lf": "3e09eeffcb0d6e64c14f1bedfa3cec160b460c682254b54c6630acbd7938bf26",
+      "lines": 307,
+      "max_function_lines": 37
+    },
+    {
+      "path": "tests/v4/test_p8_core_coverage_receipts.py",
+      "sha256_raw": "563c72acae87c170484a9ecd59d6c6ee6e377350ca30dce95b427bc27ad0e110",
+      "sha256_lf": "563c72acae87c170484a9ecd59d6c6ee6e377350ca30dce95b427bc27ad0e110",
+      "lines": 227,
+      "max_function_lines": 41
+    }
+  ],
+  "execution_approved": false,
+  "coverage_collected": false,
+  "limits": [
+    "Pure helpers and mocked tracer only; no actual pytest target sampling.",
+    "Boundary marker is synthetic; no private corpus or birth data read.",
+    "Git merge test uses synthetic monkeypatches; real fixed-source merge not claimed exercised."
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "version": "p8-learning-preview-performance-v1",
+  "mode": "scripted_synthetic_core_only",
+  "started_at_beijing": "2026-10-21T00:03:42.517755+08:00",
+  "recorded_at_beijing": "2026-10-21T00:03:43.282692+08:00",
+  "measurements": {
+    "bazi": {
+      "warmups": 1,
+      "observations": 10,
+      "milliseconds": [
+        21.047,
+        20.7057,
+        20.966,
+        21.2081,
+        20.4403,
+        20.1601,
+        20.9271,
+        20.4565,
+        20.5717,
+        21.4094
+      ],
+      "median_ms": 20.8164,
+      "min_ms": 20.1601,
+      "max_ms": 21.4094,
+      "points": 11,
+      "c_aliases": 13,
+      "r_aliases": 10
+    },
+    "ziwei": {
+      "warmups": 1,
+      "observations": 10,
+      "milliseconds": [
+        15.7085,
+        15.1934,
+        15.405,
+        15.7459,
+        15.3104,
+        15.2218,
+        15.6044,
+        15.4466,
+        15.2342,
+        15.7174
+      ],
+      "median_ms": 15.425799999999999,
+      "min_ms": 15.1934,
+      "max_ms": 15.7459,
+      "points": 2,
+      "c_aliases": 4,
+      "r_aliases": 1
+    },
+    "astro": {
+      "warmups": 1,
+      "observations": 10,
+      "milliseconds": [
+        15.143,
+        15.2924,
+        15.4677,
+        15.5068,
+        15.3794,
+        15.5009,
+        15.6916,
+        15.7161,
+        15.7951,
+        16.1959
+      ],
+      "median_ms": 15.50385,
+      "min_ms": 15.143,
+      "max_ms": 16.1959,
+      "points": 2,
+      "c_aliases": 4,
+      "r_aliases": 1
+    }
+  },
+  "provenance": {
+    "chart_inputs": {
+      "bazi": {
+        "file": "ayuan_bazi.json",
+        "file_sha256": "8f8e8dafb6ee9ad4cfd9fc6042b10def0f1ed660a7c91f6b440964c020bbb28a",
+        "content_sha256": "536ba5531d06740e70a39beb988c1f2554e40765993c334fcbdbb60d8c45ca95"
+      },
+      "ziwei": {
+        "file": "ayuan_ziwei.json",
+        "file_sha256": "125de08efaa75586ded08ef0feb8f25dc9f8a7c09653af5d9658154cdcaa3bc2",
+        "content_sha256": "7cea6301f44b751ccfdb7f7e03625d6e30b9fc5169daf1db7e6d6aec617800ee"
+      },
+      "astro": {
+        "file": "ayuan_astro.json",
+        "file_sha256": "fc8f39223f0a1532921c97666bfc4eb81550f732afac7b61d8fce7143c2cabf7",
+        "content_sha256": "9f254b1be1069c0893fd85590e99eb6d8979a3c32f37ad2a7f73517b681f6307"
+      }
+    },
+    "learning_schema_sha256": "d76e45ec4ceca330b9bd414e024f70ff366c01ee96aed65323a8350f4649857f",
+    "code_sha256": {
+      "mingjing_core/adapters/charts/benchmarks/learning_preview.py": "865eeedb4d7279ddd50d2e067722df8c29ef44b45389fa36ad7db4daddecf89e",
+      "mingjing_core/skills/learning.py": "175d9eac9dc511aa6b5c38fdabe1eac9409027c6775982025c5307f3913b2695",
+      "mingjing_core/skills/learning_input.py": "edf1bc0529d6c4697643c83e1022c7bebbe3d4b94d8cbaf3b0a4b79deed09e5f"
+    }
+  },
+  "python_version": [
+    3,
+    11,
+    16
+  ],
+  "method": "Core in-process learning_outline content validation/hash and rule-card generation only",
+  "excluded_from_timing": [
+    "input_and_output_file_IO",
+    "JSON_serialization",
+    "JSON_Schema_validation",
+    "output_equality_check",
+    "outer_input_immutability_hash_check"
+  ],
+  "model_calls": 0,
+  "chart_processes": 0,
+  "profile_writes": 0,
+  "effects_scope": "sample_and_new_measurement_files_only",
+  "limits": [
+    "本机Core单进程1次预热+10次观测；不代表HTTP/Agent/模型/排盘延迟或生产SLA。",
+    "纯读取本分支原三份合成样例；别名复用，不创建或注册新的证据账本。"
+  ]
+}

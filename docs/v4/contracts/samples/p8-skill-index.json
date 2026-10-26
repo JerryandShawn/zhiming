@@ -1,0 +1,813 @@
+{
+  "version": "p8-skills-draft-2026-10-26-v2.5",
+  "systems": [
+    "bazi",
+    "ziwei",
+    "astro",
+    "tarot",
+    "calendar-tools"
+  ],
+  "topics_by_system": {
+    "bazi": [
+      "basics",
+      "strength",
+      "patterns",
+      "climate-useful",
+      "time-layers",
+      "life-topics",
+      "misreadings",
+      "rectification",
+      "rectification-rules",
+      "traditional-hour-methods"
+    ],
+    "ziwei": [
+      "palaces",
+      "major-stars",
+      "mutagens",
+      "combinations",
+      "time-layers",
+      "misreadings"
+    ],
+    "astro": [
+      "natal",
+      "aspects",
+      "transits-progressions",
+      "returns",
+      "misreadings"
+    ],
+    "tarot": [
+      "major",
+      "minor",
+      "court",
+      "spread",
+      "relations",
+      "reversals",
+      "misreadings"
+    ],
+    "calendar-tools": [
+      "daily-transit",
+      "window-search",
+      "almanac",
+      "synastry"
+    ]
+  },
+  "chapters": [
+    {
+      "system": "bazi",
+      "topic": "basics",
+      "question_types": [
+        "日主是什么",
+        "十神、藏干和司令怎么区分"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/pillars",
+        "/data/day_master",
+        "/data/hidden_stems",
+        "/data/p8/ten_gods",
+        "/data/p8/month_command",
+        "/data/p8/selected_schools",
+        "/data/p8/auxiliary_stars"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "bazi",
+      "topic": "strength",
+      "question_types": [
+        "为什么两种算法强弱不同",
+        "能否直接定喜用"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/p8/strength",
+        "/data/p8/ten_gods",
+        "/data/p8/month_command",
+        "/data/p8/useful_candidates"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "bazi",
+      "topic": "patterns",
+      "question_types": [
+        "这是正官格还是从格",
+        "为什么不能直接定格"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/p8/patterns",
+        "/data/p8/strength",
+        "/data/p8/ten_gods"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "bazi",
+      "topic": "climate-useful",
+      "question_types": [
+        "喜什么",
+        "调候和扶抑为什么冲突"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/p8/climate",
+        "/data/p8/useful_candidates",
+        "/data/p8/patterns",
+        "/data/p8/strength"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "bazi",
+      "topic": "time-layers",
+      "question_types": [
+        "什么时候换运",
+        "某月有什么结构变化"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/p8/decade_luck",
+        "/data/p8/calendar_layers",
+        "/data/target_year",
+        "/data/target_month",
+        "/data/relations",
+        "/data/p8/time_interactions"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "bazi",
+      "topic": "life-topics",
+      "question_types": [
+        "能否谈行业、关系和现实选择"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/pillars",
+        "/data/p8/ten_gods",
+        "/data/p8/patterns",
+        "/data/p8/useful_candidates"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "bazi",
+      "topic": "misreadings",
+      "question_types": [
+        "结论冲突",
+        "旧分析是否能当事实"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/method",
+        "/data/p8",
+        "/warnings",
+        "/revision",
+        "/branch_id"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "bazi",
+      "topic": "rectification",
+      "question_types": [
+        "出生时辰未知",
+        "人生事件能否缩小范围"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "frozen_refusal_only"
+      },
+      "required_fields": [
+        "/time_basis",
+        "/charts",
+        "/profile_update_allowed",
+        "/life_event_scoring_performed",
+        "/model_calls",
+        "/writes",
+        "/interpretation",
+        "/profile_basis_record",
+        "/release_policy/rectification"
+      ],
+      "pending_fields": [
+        "档案持久化、API、UI待主线接入；事件倒推冻结为实验且默认隐藏，不启用解读倾向"
+      ]
+    },
+    {
+      "system": "bazi",
+      "topic": "rectification-rules",
+      "question_types": [
+        "为什么候选得这些分",
+        "同分和月份未知如何处理"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "frozen_refusal_only"
+      },
+      "required_fields": [
+        "/time_basis",
+        "/charts",
+        "/profile_update_allowed",
+        "/life_event_scoring_performed",
+        "/model_calls",
+        "/writes",
+        "/interpretation",
+        "/profile_basis_record",
+        "/release_policy/rectification"
+      ],
+      "pending_fields": [
+        "档案持久化、API、UI待主线接入；事件倒推冻结为实验且默认隐藏，不启用解读倾向"
+      ]
+    },
+    {
+      "system": "bazi",
+      "topic": "traditional-hour-methods",
+      "question_types": [
+        "民间口诀为什么不能定时辰"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "frozen_refusal_only"
+      },
+      "required_fields": [
+        "/time_basis",
+        "/charts",
+        "/profile_update_allowed",
+        "/life_event_scoring_performed",
+        "/model_calls",
+        "/writes"
+      ],
+      "pending_fields": [
+        "民间口诀无可靠古籍出处，不做数值规则或弱先验"
+      ]
+    },
+    {
+      "system": "ziwei",
+      "topic": "palaces",
+      "question_types": [
+        "命宫身宫有什么不同"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/ming_gong",
+        "/data/shen_gong",
+        "/data/palaces",
+        "/data/topic_palace",
+        "/data/method"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "ziwei",
+      "topic": "major-stars",
+      "question_types": [
+        "主星怎样读",
+        "单星能否定性格"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/palaces",
+        "/data/topic_palace/major",
+        "/data/topic_palace/minor",
+        "/data/topic_palace/linked_palaces"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "ziwei",
+      "topic": "mutagens",
+      "question_types": [
+        "化忌是否一定不好",
+        "自化怎样核对"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/palaces",
+        "/data/horoscope/yearly/mutagen",
+        "/data/horoscope/yearly/mutagen_links",
+        "/data/p8_time_interactions",
+        "/data/p8_flying_transformations"
+      ],
+      "pending_fields": [
+        "API/UI与Agent别名待主线接入；表及流派待抽查，非独立流派校盘"
+      ]
+    },
+    {
+      "system": "ziwei",
+      "topic": "combinations",
+      "question_types": [
+        "事业、感情该看哪些宫"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/selected_topic",
+        "/data/topic_palace",
+        "/data/topic_palace/linked_palaces",
+        "/data/palaces"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "ziwei",
+      "topic": "time-layers",
+      "question_types": [
+        "今年和十年背景如何区分"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/horoscope/decadal",
+        "/data/horoscope/yearly",
+        "/data/horoscope/monthly",
+        "/data/horoscope/daily",
+        "/data/palaces",
+        "/data/p8_time_interactions",
+        "/data/p8_flying_transformations"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "ziwei",
+      "topic": "misreadings",
+      "question_types": [
+        "为什么同一人不同时间盘差很多"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/method",
+        "/data/quality",
+        "/branch_id",
+        "/warnings",
+        "/data/palaces"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "astro",
+      "topic": "natal",
+      "question_types": [
+        "如何读本命盘而不只讲太阳星座"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/planets",
+        "/data/houses",
+        "/data/asc",
+        "/data/mc",
+        "/data/method",
+        "/data/calculation_flags/natal"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "astro",
+      "topic": "aspects",
+      "question_types": [
+        "刑冲是否必坏",
+        "相位为什么软件不同"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/aspects",
+        "/data/aspect_orb",
+        "/data/planets",
+        "/data/method"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "astro",
+      "topic": "transits-progressions",
+      "question_types": [
+        "行运何时精确",
+        "次限是否已经算出"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "educational_only_not_wired"
+      },
+      "required_fields": [
+        "/data/transits",
+        "/data/transit_method",
+        "/data/transits/aspects_to_natal"
+      ],
+      "pending_fields": [
+        "只读计算入口已验证；Agent工具、UI及档案持久化待主线接入；推运宫位未定义"
+      ]
+    },
+    {
+      "system": "astro",
+      "topic": "returns",
+      "question_types": [
+        "今年回归盘怎样看",
+        "能否用生日中午代替"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "educational_only_not_wired"
+      },
+      "required_fields": [
+        "/data/planets",
+        "/data/method",
+        "/data/asc",
+        "/data/houses"
+      ],
+      "pending_fields": [
+        "只读计算入口已验证；Agent工具、UI及档案持久化待主线接入；推运宫位未定义"
+      ]
+    },
+    {
+      "system": "astro",
+      "topic": "misreadings",
+      "question_types": [
+        "为什么不能用星盘诊断或保证未来"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/data/quality",
+        "/data/method",
+        "/warnings",
+        "/data/utc_time",
+        "/data/calculation_flags"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "tarot",
+      "topic": "major",
+      "question_types": [
+        "大牌多意味着命运已注定吗"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/cards",
+        "/deck_version",
+        "/meaning_version",
+        "/status"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "tarot",
+      "topic": "minor",
+      "question_types": [
+        "同花色或同数字怎样连读"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/cards",
+        "/cards/0/card/suit",
+        "/cards/0/card/number",
+        "/meaning_version"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "tarot",
+      "topic": "court",
+      "question_types": [
+        "宫廷牌一定代表某个人吗"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/cards/0/card/rank",
+        "/cards/0/card/suit",
+        "/cards/0/orientation",
+        "/spread"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "tarot",
+      "topic": "spread",
+      "question_types": [
+        "牌阵位置怎样改变解读",
+        "能否补抽"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/id",
+        "/question",
+        "/spread/positions",
+        "/cards",
+        "/draw_source",
+        "/context_snapshot"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "tarot",
+      "topic": "relations",
+      "question_types": [
+        "几张牌能否形成故事",
+        "重复牌怎样看"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/cards",
+        "/spread/positions",
+        "/cards/0/card/meaning_version",
+        "/meaning_version"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "tarot",
+      "topic": "reversals",
+      "question_types": [
+        "逆位是不是坏牌",
+        "怎么避免随意解释"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/reversals",
+        "/cards/0/orientation",
+        "/cards/0/card/upright",
+        "/cards/0/card/reversed",
+        "/cards/0/card/misreading"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "tarot",
+      "topic": "misreadings",
+      "question_types": [
+        "能否用牌决定分手、就医或投资"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation"
+      },
+      "required_fields": [
+        "/cards",
+        "/question",
+        "/status",
+        "/revision",
+        "/previous_draw_id",
+        "/context_snapshot"
+      ],
+      "pending_fields": []
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "daily-transit",
+      "question_types": [
+        "今天有什么流日结构",
+        "晨报如何解释流月与流日"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation",
+        "intent_required": "daily_transit",
+        "underlying_tool_hidden_in": [
+          "crisis",
+          "incognito"
+        ]
+      },
+      "required_fields": [
+        "/version",
+        "/data",
+        "/rule_hits",
+        "/aliases",
+        "/sources",
+        "/effects"
+      ],
+      "pending_fields": [
+        "主线Agent工具接入与上下文别名账本尚待主线验证"
+      ]
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "window-search",
+      "question_types": [
+        "一段日期中哪天更合适",
+        "候选日为什么有加减分"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation",
+        "intent_required": "window_search",
+        "underlying_tool_hidden_in": [
+          "crisis",
+          "incognito"
+        ]
+      },
+      "required_fields": [
+        "/version",
+        "/data",
+        "/rule_hits",
+        "/aliases",
+        "/sources",
+        "/effects"
+      ],
+      "pending_fields": [
+        "主线Agent工具接入与上下文别名账本尚待主线验证"
+      ]
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "almanac",
+      "question_types": [
+        "今天黄历宜忌",
+        "冲煞和值神怎样理解"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation",
+        "intent_required": "almanac",
+        "underlying_tool_hidden_in": [
+          "crisis",
+          "incognito"
+        ]
+      },
+      "required_fields": [
+        "/data/date",
+        "/data/yi",
+        "/data/ji",
+        "/data/chong_sha",
+        "/data/duty",
+        "/data/mansion",
+        "/data/pengzu",
+        "/data/method",
+        "/rule_hits",
+        "/aliases",
+        "/sources",
+        "/effects"
+      ],
+      "pending_fields": [
+        "主线Agent工具接入与上下文别名账本尚待主线验证"
+      ]
+    },
+    {
+      "system": "calendar-tools",
+      "topic": "synastry",
+      "question_types": [
+        "获得确认后比较两人盘面",
+        "结构互补是否等于关系成功"
+      ],
+      "applicability": {
+        "after_successful_chart_compute": true,
+        "skill_incognito_allowed": true,
+        "enforcement_owner": "mainline",
+        "execution": "read_only_interpretation",
+        "intent_required": "synastry",
+        "underlying_tool_hidden_in": [
+          "crisis",
+          "incognito"
+        ]
+      },
+      "required_fields": [
+        "/version",
+        "/data",
+        "/rule_hits",
+        "/aliases",
+        "/sources",
+        "/effects",
+        "/data/consent",
+        "/data/kind",
+        "/data/as_of_date",
+        "/data/bazi",
+        "/data/astro",
+        "/data/ziwei"
+      ],
+      "pending_fields": [
+        "主线Agent工具接入与上下文别名账本尚待主线验证"
+      ]
+    }
+  ],
+  "visibility_owner": "mainline_agent_tool_assembly",
+  "tool_budget": {
+    "maximum_total": 15,
+    "maximum_new_metaphysics_tool": 1
+  },
+  "state_writes": 0,
+  "model_calls": 0
+}

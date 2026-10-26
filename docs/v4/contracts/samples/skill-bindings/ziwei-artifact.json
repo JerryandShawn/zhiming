@@ -1,0 +1,3954 @@
+{
+  "id": "chart-766258355cf25018e3540881",
+  "system": "ziwei",
+  "school_id": "sanhe-structure-v1",
+  "owner_user_id": "synthetic-skills-owner",
+  "subject_id": "synthetic-skills-subject",
+  "revision": 1,
+  "branch_id": "time-8c971e1db4feed70e0aafdcb",
+  "profile_id": "profile-abfd6e746ddf7ce28a61cc77",
+  "time_scale": "natal_with_explicit_separate_target_layers",
+  "target_date": "2026-10-21",
+  "data": {
+    "corrected_time": "2000-06-15 10:30",
+    "engine_version": "ziwei-core-3.1",
+    "time_basis": "地方平太阳时：仅经度修正，未计均时差；不是完整真太阳时",
+    "method": {
+      "calendar": "py-iztro by_solar 默认历法与闰月规则",
+      "hour_index": 5,
+      "late_zi": "23:00 单独编码为 12，由 py-iztro 默认日界规则处理",
+      "equation_of_time_applied": false,
+      "links": "本宫的两组三合宫及对宫；四化按真实星曜位置关联本命宫和运限宫"
+    },
+    "quality": {
+      "calculation": "deterministic_convention",
+      "prediction_probability": null,
+      "limitations": [
+        "采用当前 py-iztro 默认流派，未做不同流派交叉校盘",
+        "宫位关联与四化是传统盘面结构，不代表事件已发生或必然发生",
+        "出生时刻靠近时辰或日界时，时间误差可能改变命盘"
+      ]
+    },
+    "lunar_date": "庚辰 壬午 甲辰 己巳",
+    "zodiac": "龙",
+    "sign": "双子座",
+    "wuxing_ju": "火六局",
+    "ming_gong": "丑",
+    "shen_gong": "亥",
+    "ming_zhu": "巨门",
+    "shen_zhu": "文昌",
+    "palaces": [
+      {
+        "name": "父母",
+        "ganzhi": "戊寅",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "七杀",
+            "brightness": "庙"
+          }
+        ],
+        "minor": [
+          {
+            "name": "天马"
+          }
+        ],
+        "decadal": {
+          "range": [
+            16,
+            25
+          ],
+          "ganzhi": "戊寅"
+        },
+        "ages": [
+          5,
+          17,
+          29,
+          41,
+          53,
+          65,
+          77,
+          89,
+          101,
+          113
+        ],
+        "index": 0,
+        "linked_palaces": [
+          {
+            "index": 4,
+            "relation": "三合",
+            "name": "仆役",
+            "ganzhi": "壬午",
+            "major": [
+              {
+                "name": "破军",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "右弼"
+              },
+              {
+                "name": "地空"
+              }
+            ]
+          },
+          {
+            "index": 8,
+            "relation": "三合",
+            "name": "子女",
+            "ganzhi": "丙戌",
+            "major": [
+              {
+                "name": "贪狼",
+                "brightness": "庙"
+              }
+            ],
+            "minor": []
+          },
+          {
+            "index": 6,
+            "relation": "对宫",
+            "name": "疾厄",
+            "ganzhi": "甲申",
+            "major": [
+              {
+                "name": "紫微",
+                "brightness": "旺"
+              },
+              {
+                "name": "天府",
+                "brightness": "得"
+              }
+            ],
+            "minor": [
+              {
+                "name": "左辅"
+              },
+              {
+                "name": "禄存"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "福德",
+        "ganzhi": "己卯",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "天同",
+            "brightness": "平",
+            "mutagen": "忌"
+          }
+        ],
+        "minor": [
+          {
+            "name": "铃星",
+            "brightness": "利"
+          }
+        ],
+        "decadal": {
+          "range": [
+            26,
+            35
+          ],
+          "ganzhi": "己卯"
+        },
+        "ages": [
+          6,
+          18,
+          30,
+          42,
+          54,
+          66,
+          78,
+          90,
+          102,
+          114
+        ],
+        "index": 1,
+        "linked_palaces": [
+          {
+            "index": 5,
+            "relation": "三合",
+            "name": "迁移",
+            "ganzhi": "癸未",
+            "major": [
+              {
+                "name": "天机",
+                "brightness": "陷"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天钺"
+              },
+              {
+                "name": "火星",
+                "brightness": "利"
+              },
+              {
+                "name": "陀罗",
+                "brightness": "庙"
+              }
+            ]
+          },
+          {
+            "index": 9,
+            "relation": "三合",
+            "name": "夫妻",
+            "ganzhi": "丁亥",
+            "major": [
+              {
+                "name": "巨门",
+                "brightness": "旺"
+              }
+            ],
+            "minor": []
+          },
+          {
+            "index": 7,
+            "relation": "对宫",
+            "name": "财帛",
+            "ganzhi": "乙酉",
+            "major": [
+              {
+                "name": "太阴",
+                "brightness": "不",
+                "mutagen": "科"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文曲",
+                "brightness": "庙"
+              },
+              {
+                "name": "擎羊",
+                "brightness": "陷"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "田宅",
+        "ganzhi": "庚辰",
+        "is_body": false,
+        "is_laiyin": true,
+        "major": [
+          {
+            "name": "武曲",
+            "brightness": "庙",
+            "mutagen": "权"
+          }
+        ],
+        "minor": [
+          {
+            "name": "地劫"
+          }
+        ],
+        "decadal": {
+          "range": [
+            36,
+            45
+          ],
+          "ganzhi": "庚辰"
+        },
+        "ages": [
+          7,
+          19,
+          31,
+          43,
+          55,
+          67,
+          79,
+          91,
+          103,
+          115
+        ],
+        "index": 2,
+        "linked_palaces": [
+          {
+            "index": 6,
+            "relation": "三合",
+            "name": "疾厄",
+            "ganzhi": "甲申",
+            "major": [
+              {
+                "name": "紫微",
+                "brightness": "旺"
+              },
+              {
+                "name": "天府",
+                "brightness": "得"
+              }
+            ],
+            "minor": [
+              {
+                "name": "左辅"
+              },
+              {
+                "name": "禄存"
+              }
+            ]
+          },
+          {
+            "index": 10,
+            "relation": "三合",
+            "name": "兄弟",
+            "ganzhi": "戊子",
+            "major": [
+              {
+                "name": "廉贞",
+                "brightness": "平"
+              },
+              {
+                "name": "天相",
+                "brightness": "庙"
+              }
+            ],
+            "minor": []
+          },
+          {
+            "index": 8,
+            "relation": "对宫",
+            "name": "子女",
+            "ganzhi": "丙戌",
+            "major": [
+              {
+                "name": "贪狼",
+                "brightness": "庙"
+              }
+            ],
+            "minor": []
+          }
+        ]
+      },
+      {
+        "name": "官禄",
+        "ganzhi": "辛巳",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "太阳",
+            "brightness": "旺",
+            "mutagen": "禄"
+          }
+        ],
+        "minor": [
+          {
+            "name": "文昌",
+            "brightness": "庙"
+          }
+        ],
+        "decadal": {
+          "range": [
+            46,
+            55
+          ],
+          "ganzhi": "辛巳"
+        },
+        "ages": [
+          8,
+          20,
+          32,
+          44,
+          56,
+          68,
+          80,
+          92,
+          104,
+          116
+        ],
+        "index": 3,
+        "linked_palaces": [
+          {
+            "index": 7,
+            "relation": "三合",
+            "name": "财帛",
+            "ganzhi": "乙酉",
+            "major": [
+              {
+                "name": "太阴",
+                "brightness": "不",
+                "mutagen": "科"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文曲",
+                "brightness": "庙"
+              },
+              {
+                "name": "擎羊",
+                "brightness": "陷"
+              }
+            ]
+          },
+          {
+            "index": 11,
+            "relation": "三合",
+            "name": "命宫",
+            "ganzhi": "己丑",
+            "major": [
+              {
+                "name": "天梁",
+                "brightness": "旺"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天魁"
+              }
+            ]
+          },
+          {
+            "index": 9,
+            "relation": "对宫",
+            "name": "夫妻",
+            "ganzhi": "丁亥",
+            "major": [
+              {
+                "name": "巨门",
+                "brightness": "旺"
+              }
+            ],
+            "minor": []
+          }
+        ]
+      },
+      {
+        "name": "仆役",
+        "ganzhi": "壬午",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "破军",
+            "brightness": "庙"
+          }
+        ],
+        "minor": [
+          {
+            "name": "右弼"
+          },
+          {
+            "name": "地空"
+          }
+        ],
+        "decadal": {
+          "range": [
+            56,
+            65
+          ],
+          "ganzhi": "壬午"
+        },
+        "ages": [
+          9,
+          21,
+          33,
+          45,
+          57,
+          69,
+          81,
+          93,
+          105,
+          117
+        ],
+        "index": 4,
+        "linked_palaces": [
+          {
+            "index": 8,
+            "relation": "三合",
+            "name": "子女",
+            "ganzhi": "丙戌",
+            "major": [
+              {
+                "name": "贪狼",
+                "brightness": "庙"
+              }
+            ],
+            "minor": []
+          },
+          {
+            "index": 0,
+            "relation": "三合",
+            "name": "父母",
+            "ganzhi": "戊寅",
+            "major": [
+              {
+                "name": "七杀",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天马"
+              }
+            ]
+          },
+          {
+            "index": 10,
+            "relation": "对宫",
+            "name": "兄弟",
+            "ganzhi": "戊子",
+            "major": [
+              {
+                "name": "廉贞",
+                "brightness": "平"
+              },
+              {
+                "name": "天相",
+                "brightness": "庙"
+              }
+            ],
+            "minor": []
+          }
+        ]
+      },
+      {
+        "name": "迁移",
+        "ganzhi": "癸未",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "天机",
+            "brightness": "陷"
+          }
+        ],
+        "minor": [
+          {
+            "name": "天钺"
+          },
+          {
+            "name": "火星",
+            "brightness": "利"
+          },
+          {
+            "name": "陀罗",
+            "brightness": "庙"
+          }
+        ],
+        "decadal": {
+          "range": [
+            66,
+            75
+          ],
+          "ganzhi": "癸未"
+        },
+        "ages": [
+          10,
+          22,
+          34,
+          46,
+          58,
+          70,
+          82,
+          94,
+          106,
+          118
+        ],
+        "index": 5,
+        "linked_palaces": [
+          {
+            "index": 9,
+            "relation": "三合",
+            "name": "夫妻",
+            "ganzhi": "丁亥",
+            "major": [
+              {
+                "name": "巨门",
+                "brightness": "旺"
+              }
+            ],
+            "minor": []
+          },
+          {
+            "index": 1,
+            "relation": "三合",
+            "name": "福德",
+            "ganzhi": "己卯",
+            "major": [
+              {
+                "name": "天同",
+                "brightness": "平",
+                "mutagen": "忌"
+              }
+            ],
+            "minor": [
+              {
+                "name": "铃星",
+                "brightness": "利"
+              }
+            ]
+          },
+          {
+            "index": 11,
+            "relation": "对宫",
+            "name": "命宫",
+            "ganzhi": "己丑",
+            "major": [
+              {
+                "name": "天梁",
+                "brightness": "旺"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天魁"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "疾厄",
+        "ganzhi": "甲申",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "紫微",
+            "brightness": "旺"
+          },
+          {
+            "name": "天府",
+            "brightness": "得"
+          }
+        ],
+        "minor": [
+          {
+            "name": "左辅"
+          },
+          {
+            "name": "禄存"
+          }
+        ],
+        "decadal": {
+          "range": [
+            76,
+            85
+          ],
+          "ganzhi": "甲申"
+        },
+        "ages": [
+          11,
+          23,
+          35,
+          47,
+          59,
+          71,
+          83,
+          95,
+          107,
+          119
+        ],
+        "index": 6,
+        "linked_palaces": [
+          {
+            "index": 10,
+            "relation": "三合",
+            "name": "兄弟",
+            "ganzhi": "戊子",
+            "major": [
+              {
+                "name": "廉贞",
+                "brightness": "平"
+              },
+              {
+                "name": "天相",
+                "brightness": "庙"
+              }
+            ],
+            "minor": []
+          },
+          {
+            "index": 2,
+            "relation": "三合",
+            "name": "田宅",
+            "ganzhi": "庚辰",
+            "major": [
+              {
+                "name": "武曲",
+                "brightness": "庙",
+                "mutagen": "权"
+              }
+            ],
+            "minor": [
+              {
+                "name": "地劫"
+              }
+            ]
+          },
+          {
+            "index": 0,
+            "relation": "对宫",
+            "name": "父母",
+            "ganzhi": "戊寅",
+            "major": [
+              {
+                "name": "七杀",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天马"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "财帛",
+        "ganzhi": "乙酉",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "太阴",
+            "brightness": "不",
+            "mutagen": "科"
+          }
+        ],
+        "minor": [
+          {
+            "name": "文曲",
+            "brightness": "庙"
+          },
+          {
+            "name": "擎羊",
+            "brightness": "陷"
+          }
+        ],
+        "decadal": {
+          "range": [
+            86,
+            95
+          ],
+          "ganzhi": "乙酉"
+        },
+        "ages": [
+          12,
+          24,
+          36,
+          48,
+          60,
+          72,
+          84,
+          96,
+          108,
+          120
+        ],
+        "index": 7,
+        "linked_palaces": [
+          {
+            "index": 11,
+            "relation": "三合",
+            "name": "命宫",
+            "ganzhi": "己丑",
+            "major": [
+              {
+                "name": "天梁",
+                "brightness": "旺"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天魁"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "relation": "三合",
+            "name": "官禄",
+            "ganzhi": "辛巳",
+            "major": [
+              {
+                "name": "太阳",
+                "brightness": "旺",
+                "mutagen": "禄"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文昌",
+                "brightness": "庙"
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "relation": "对宫",
+            "name": "福德",
+            "ganzhi": "己卯",
+            "major": [
+              {
+                "name": "天同",
+                "brightness": "平",
+                "mutagen": "忌"
+              }
+            ],
+            "minor": [
+              {
+                "name": "铃星",
+                "brightness": "利"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "子女",
+        "ganzhi": "丙戌",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "贪狼",
+            "brightness": "庙"
+          }
+        ],
+        "minor": [],
+        "decadal": {
+          "range": [
+            96,
+            105
+          ],
+          "ganzhi": "丙戌"
+        },
+        "ages": [
+          1,
+          13,
+          25,
+          37,
+          49,
+          61,
+          73,
+          85,
+          97,
+          109
+        ],
+        "index": 8,
+        "linked_palaces": [
+          {
+            "index": 0,
+            "relation": "三合",
+            "name": "父母",
+            "ganzhi": "戊寅",
+            "major": [
+              {
+                "name": "七杀",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天马"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "relation": "三合",
+            "name": "仆役",
+            "ganzhi": "壬午",
+            "major": [
+              {
+                "name": "破军",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "右弼"
+              },
+              {
+                "name": "地空"
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "relation": "对宫",
+            "name": "田宅",
+            "ganzhi": "庚辰",
+            "major": [
+              {
+                "name": "武曲",
+                "brightness": "庙",
+                "mutagen": "权"
+              }
+            ],
+            "minor": [
+              {
+                "name": "地劫"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "夫妻",
+        "ganzhi": "丁亥",
+        "is_body": true,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "巨门",
+            "brightness": "旺"
+          }
+        ],
+        "minor": [],
+        "decadal": {
+          "range": [
+            106,
+            115
+          ],
+          "ganzhi": "丁亥"
+        },
+        "ages": [
+          2,
+          14,
+          26,
+          38,
+          50,
+          62,
+          74,
+          86,
+          98,
+          110
+        ],
+        "index": 9,
+        "linked_palaces": [
+          {
+            "index": 1,
+            "relation": "三合",
+            "name": "福德",
+            "ganzhi": "己卯",
+            "major": [
+              {
+                "name": "天同",
+                "brightness": "平",
+                "mutagen": "忌"
+              }
+            ],
+            "minor": [
+              {
+                "name": "铃星",
+                "brightness": "利"
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "relation": "三合",
+            "name": "迁移",
+            "ganzhi": "癸未",
+            "major": [
+              {
+                "name": "天机",
+                "brightness": "陷"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天钺"
+              },
+              {
+                "name": "火星",
+                "brightness": "利"
+              },
+              {
+                "name": "陀罗",
+                "brightness": "庙"
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "relation": "对宫",
+            "name": "官禄",
+            "ganzhi": "辛巳",
+            "major": [
+              {
+                "name": "太阳",
+                "brightness": "旺",
+                "mutagen": "禄"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文昌",
+                "brightness": "庙"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "兄弟",
+        "ganzhi": "戊子",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "廉贞",
+            "brightness": "平"
+          },
+          {
+            "name": "天相",
+            "brightness": "庙"
+          }
+        ],
+        "minor": [],
+        "decadal": {
+          "range": [
+            116,
+            125
+          ],
+          "ganzhi": "戊子"
+        },
+        "ages": [
+          3,
+          15,
+          27,
+          39,
+          51,
+          63,
+          75,
+          87,
+          99,
+          111
+        ],
+        "index": 10,
+        "linked_palaces": [
+          {
+            "index": 2,
+            "relation": "三合",
+            "name": "田宅",
+            "ganzhi": "庚辰",
+            "major": [
+              {
+                "name": "武曲",
+                "brightness": "庙",
+                "mutagen": "权"
+              }
+            ],
+            "minor": [
+              {
+                "name": "地劫"
+              }
+            ]
+          },
+          {
+            "index": 6,
+            "relation": "三合",
+            "name": "疾厄",
+            "ganzhi": "甲申",
+            "major": [
+              {
+                "name": "紫微",
+                "brightness": "旺"
+              },
+              {
+                "name": "天府",
+                "brightness": "得"
+              }
+            ],
+            "minor": [
+              {
+                "name": "左辅"
+              },
+              {
+                "name": "禄存"
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "relation": "对宫",
+            "name": "仆役",
+            "ganzhi": "壬午",
+            "major": [
+              {
+                "name": "破军",
+                "brightness": "庙"
+              }
+            ],
+            "minor": [
+              {
+                "name": "右弼"
+              },
+              {
+                "name": "地空"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "命宫",
+        "ganzhi": "己丑",
+        "is_body": false,
+        "is_laiyin": false,
+        "major": [
+          {
+            "name": "天梁",
+            "brightness": "旺"
+          }
+        ],
+        "minor": [
+          {
+            "name": "天魁"
+          }
+        ],
+        "decadal": {
+          "range": [
+            6,
+            15
+          ],
+          "ganzhi": "己丑"
+        },
+        "ages": [
+          4,
+          16,
+          28,
+          40,
+          52,
+          64,
+          76,
+          88,
+          100,
+          112
+        ],
+        "index": 11,
+        "linked_palaces": [
+          {
+            "index": 3,
+            "relation": "三合",
+            "name": "官禄",
+            "ganzhi": "辛巳",
+            "major": [
+              {
+                "name": "太阳",
+                "brightness": "旺",
+                "mutagen": "禄"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文昌",
+                "brightness": "庙"
+              }
+            ]
+          },
+          {
+            "index": 7,
+            "relation": "三合",
+            "name": "财帛",
+            "ganzhi": "乙酉",
+            "major": [
+              {
+                "name": "太阴",
+                "brightness": "不",
+                "mutagen": "科"
+              }
+            ],
+            "minor": [
+              {
+                "name": "文曲",
+                "brightness": "庙"
+              },
+              {
+                "name": "擎羊",
+                "brightness": "陷"
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "relation": "对宫",
+            "name": "迁移",
+            "ganzhi": "癸未",
+            "major": [
+              {
+                "name": "天机",
+                "brightness": "陷"
+              }
+            ],
+            "minor": [
+              {
+                "name": "天钺"
+              },
+              {
+                "name": "火星",
+                "brightness": "利"
+              },
+              {
+                "name": "陀罗",
+                "brightness": "庙"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "timezone_offset": 8.0,
+    "horoscope": {
+      "target_date": "2026-10-21",
+      "lunar": "二〇二六年九月十二",
+      "decadal": {
+        "name": "大限",
+        "ganzhi": "己卯",
+        "index": 1,
+        "mutagen": [
+          "武曲",
+          "贪狼",
+          "天梁",
+          "文曲"
+        ],
+        "palace_names": [
+          "兄弟",
+          "命宫",
+          "父母",
+          "福德",
+          "田宅",
+          "官禄",
+          "仆役",
+          "迁移",
+          "疾厄",
+          "财帛",
+          "子女",
+          "夫妻"
+        ],
+        "mutagen_links": [
+          {
+            "star": "武曲",
+            "mutagen": "禄",
+            "natal_palace": "田宅",
+            "palace_index": 2,
+            "scope_palace": "父母"
+          },
+          {
+            "star": "贪狼",
+            "mutagen": "权",
+            "natal_palace": "子女",
+            "palace_index": 8,
+            "scope_palace": "疾厄"
+          },
+          {
+            "star": "天梁",
+            "mutagen": "科",
+            "natal_palace": "命宫",
+            "palace_index": 11,
+            "scope_palace": "夫妻"
+          },
+          {
+            "star": "文曲",
+            "mutagen": "忌",
+            "natal_palace": "财帛",
+            "palace_index": 7,
+            "scope_palace": "迁移"
+          }
+        ]
+      },
+      "yearly": {
+        "name": "流年",
+        "ganzhi": "丙午",
+        "index": 4,
+        "mutagen": [
+          "天同",
+          "天机",
+          "文昌",
+          "廉贞"
+        ],
+        "palace_names": [
+          "财帛",
+          "子女",
+          "夫妻",
+          "兄弟",
+          "命宫",
+          "父母",
+          "福德",
+          "田宅",
+          "官禄",
+          "仆役",
+          "迁移",
+          "疾厄"
+        ],
+        "mutagen_links": [
+          {
+            "star": "天同",
+            "mutagen": "禄",
+            "natal_palace": "福德",
+            "palace_index": 1,
+            "scope_palace": "子女"
+          },
+          {
+            "star": "天机",
+            "mutagen": "权",
+            "natal_palace": "迁移",
+            "palace_index": 5,
+            "scope_palace": "父母"
+          },
+          {
+            "star": "文昌",
+            "mutagen": "科",
+            "natal_palace": "官禄",
+            "palace_index": 3,
+            "scope_palace": "兄弟"
+          },
+          {
+            "star": "廉贞",
+            "mutagen": "忌",
+            "natal_palace": "兄弟",
+            "palace_index": 10,
+            "scope_palace": "迁移"
+          }
+        ]
+      },
+      "monthly": {
+        "name": "流月",
+        "ganzhi": "戊戌",
+        "index": 1,
+        "mutagen": [
+          "贪狼",
+          "太阴",
+          "右弼",
+          "天机"
+        ],
+        "palace_names": [
+          "兄弟",
+          "命宫",
+          "父母",
+          "福德",
+          "田宅",
+          "官禄",
+          "仆役",
+          "迁移",
+          "疾厄",
+          "财帛",
+          "子女",
+          "夫妻"
+        ],
+        "mutagen_links": [
+          {
+            "star": "贪狼",
+            "mutagen": "禄",
+            "natal_palace": "子女",
+            "palace_index": 8,
+            "scope_palace": "疾厄"
+          },
+          {
+            "star": "太阴",
+            "mutagen": "权",
+            "natal_palace": "财帛",
+            "palace_index": 7,
+            "scope_palace": "迁移"
+          },
+          {
+            "star": "右弼",
+            "mutagen": "科",
+            "natal_palace": "仆役",
+            "palace_index": 4,
+            "scope_palace": "田宅"
+          },
+          {
+            "star": "天机",
+            "mutagen": "忌",
+            "natal_palace": "迁移",
+            "palace_index": 5,
+            "scope_palace": "官禄"
+          }
+        ]
+      },
+      "daily": {
+        "name": "流日",
+        "ganzhi": "戊辰",
+        "index": 0,
+        "mutagen": [
+          "贪狼",
+          "太阴",
+          "右弼",
+          "天机"
+        ],
+        "palace_names": [
+          "命宫",
+          "父母",
+          "福德",
+          "田宅",
+          "官禄",
+          "仆役",
+          "迁移",
+          "疾厄",
+          "财帛",
+          "子女",
+          "夫妻",
+          "兄弟"
+        ],
+        "mutagen_links": [
+          {
+            "star": "贪狼",
+            "mutagen": "禄",
+            "natal_palace": "子女",
+            "palace_index": 8,
+            "scope_palace": "财帛"
+          },
+          {
+            "star": "太阴",
+            "mutagen": "权",
+            "natal_palace": "财帛",
+            "palace_index": 7,
+            "scope_palace": "疾厄"
+          },
+          {
+            "star": "右弼",
+            "mutagen": "科",
+            "natal_palace": "仆役",
+            "palace_index": 4,
+            "scope_palace": "官禄"
+          },
+          {
+            "star": "天机",
+            "mutagen": "忌",
+            "natal_palace": "迁移",
+            "palace_index": 5,
+            "scope_palace": "仆役"
+          }
+        ]
+      }
+    },
+    "p8_time_interactions": {
+      "version": "p8-yearly-mutagen-links-v1",
+      "method": "installed-py-iztro-horoscope-four-transformations-to-actual-stars",
+      "school": "installed-py-iztro-default-not-independent-school-verification",
+      "target_date": "2026-10-21",
+      "yearly_ganzhi": "丙午",
+      "links": [
+        {
+          "id": "yearly-mutagen-0",
+          "mutagen": "禄",
+          "star": "天同",
+          "status": "resolved",
+          "locations": [
+            {
+              "natal_palace": "福德",
+              "palace_index": 1,
+              "yearly_palace": "子女",
+              "star_pointer": "/data/palaces/1"
+            }
+          ]
+        },
+        {
+          "id": "yearly-mutagen-1",
+          "mutagen": "权",
+          "star": "天机",
+          "status": "resolved",
+          "locations": [
+            {
+              "natal_palace": "迁移",
+              "palace_index": 5,
+              "yearly_palace": "父母",
+              "star_pointer": "/data/palaces/5"
+            }
+          ]
+        },
+        {
+          "id": "yearly-mutagen-2",
+          "mutagen": "科",
+          "star": "文昌",
+          "status": "resolved",
+          "locations": [
+            {
+              "natal_palace": "官禄",
+              "palace_index": 3,
+              "yearly_palace": "兄弟",
+              "star_pointer": "/data/palaces/3"
+            }
+          ]
+        },
+        {
+          "id": "yearly-mutagen-3",
+          "mutagen": "忌",
+          "star": "廉贞",
+          "status": "resolved",
+          "locations": [
+            {
+              "natal_palace": "兄弟",
+              "palace_index": 10,
+              "yearly_palace": "迁移",
+              "star_pointer": "/data/palaces/10"
+            }
+          ]
+        }
+      ],
+      "complete": true,
+      "source_refs": [
+        "https://docs.iztro.com/posts/horoscope"
+      ],
+      "limits": [
+        "只关联已算出的流年四化，不新增宫干飞化、自化或现实事件预测。"
+      ]
+    },
+    "p8_flying_transformations": {
+      "version": "p8-ziwei-palace-stem-flying-v1.1-review24",
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "table_id": "iztro",
+      "claim_kind": "traditional_structure_not_event_prediction",
+      "method": "declared_palace_stem_table_to_actual_natal_major_minor_stars",
+      "table_sha256": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+      "target_date": "2026-10-21",
+      "nodes": [
+        {
+          "palace_index": 0,
+          "natal_palace": "父母",
+          "ganzhi": "戊寅",
+          "palace_pointer": "/data/palaces/0",
+          "outgoing": [
+            "palace-0-0",
+            "palace-0-1",
+            "palace-0-2",
+            "palace-0-3"
+          ],
+          "incoming": []
+        },
+        {
+          "palace_index": 1,
+          "natal_palace": "福德",
+          "ganzhi": "己卯",
+          "palace_pointer": "/data/palaces/1",
+          "outgoing": [
+            "palace-1-0",
+            "palace-1-1",
+            "palace-1-2",
+            "palace-1-3"
+          ],
+          "incoming": [
+            "palace-2-3",
+            "palace-8-0",
+            "palace-9-1"
+          ]
+        },
+        {
+          "palace_index": 2,
+          "natal_palace": "田宅",
+          "ganzhi": "庚辰",
+          "palace_pointer": "/data/palaces/2",
+          "outgoing": [
+            "palace-2-0",
+            "palace-2-1",
+            "palace-2-2",
+            "palace-2-3"
+          ],
+          "incoming": [
+            "palace-1-0",
+            "palace-2-1",
+            "palace-4-3",
+            "palace-6-2",
+            "palace-11-0"
+          ]
+        },
+        {
+          "palace_index": 3,
+          "natal_palace": "官禄",
+          "ganzhi": "辛巳",
+          "palace_pointer": "/data/palaces/3",
+          "outgoing": [
+            "palace-3-0",
+            "palace-3-1",
+            "palace-3-2",
+            "palace-3-3"
+          ],
+          "incoming": [
+            "palace-2-0",
+            "palace-3-1",
+            "palace-3-3",
+            "palace-6-3",
+            "palace-8-2"
+          ]
+        },
+        {
+          "palace_index": 4,
+          "natal_palace": "仆役",
+          "ganzhi": "壬午",
+          "palace_pointer": "/data/palaces/4",
+          "outgoing": [
+            "palace-4-0",
+            "palace-4-1",
+            "palace-4-2",
+            "palace-4-3"
+          ],
+          "incoming": [
+            "palace-0-2",
+            "palace-5-0",
+            "palace-6-1",
+            "palace-10-2"
+          ]
+        },
+        {
+          "palace_index": 5,
+          "natal_palace": "迁移",
+          "ganzhi": "癸未",
+          "palace_pointer": "/data/palaces/5",
+          "outgoing": [
+            "palace-5-0",
+            "palace-5-1",
+            "palace-5-2",
+            "palace-5-3"
+          ],
+          "incoming": [
+            "palace-0-3",
+            "palace-7-0",
+            "palace-8-1",
+            "palace-9-2",
+            "palace-10-3"
+          ]
+        },
+        {
+          "palace_index": 6,
+          "natal_palace": "疾厄",
+          "ganzhi": "甲申",
+          "palace_pointer": "/data/palaces/6",
+          "outgoing": [
+            "palace-6-0",
+            "palace-6-1",
+            "palace-6-2",
+            "palace-6-3"
+          ],
+          "incoming": [
+            "palace-4-1",
+            "palace-4-2",
+            "palace-7-2"
+          ]
+        },
+        {
+          "palace_index": 7,
+          "natal_palace": "财帛",
+          "ganzhi": "乙酉",
+          "palace_pointer": "/data/palaces/7",
+          "outgoing": [
+            "palace-7-0",
+            "palace-7-1",
+            "palace-7-2",
+            "palace-7-3"
+          ],
+          "incoming": [
+            "palace-0-1",
+            "palace-1-3",
+            "palace-2-2",
+            "palace-3-2",
+            "palace-5-2",
+            "palace-7-3",
+            "palace-9-0",
+            "palace-10-1",
+            "palace-11-3"
+          ]
+        },
+        {
+          "palace_index": 8,
+          "natal_palace": "子女",
+          "ganzhi": "丙戌",
+          "palace_pointer": "/data/palaces/8",
+          "outgoing": [
+            "palace-8-0",
+            "palace-8-1",
+            "palace-8-2",
+            "palace-8-3"
+          ],
+          "incoming": [
+            "palace-0-0",
+            "palace-1-1",
+            "palace-5-3",
+            "palace-10-0",
+            "palace-11-1"
+          ]
+        },
+        {
+          "palace_index": 9,
+          "natal_palace": "夫妻",
+          "ganzhi": "丁亥",
+          "palace_pointer": "/data/palaces/9",
+          "outgoing": [
+            "palace-9-0",
+            "palace-9-1",
+            "palace-9-2",
+            "palace-9-3"
+          ],
+          "incoming": [
+            "palace-3-0",
+            "palace-5-1",
+            "palace-9-3"
+          ]
+        },
+        {
+          "palace_index": 10,
+          "natal_palace": "兄弟",
+          "ganzhi": "戊子",
+          "palace_pointer": "/data/palaces/10",
+          "outgoing": [
+            "palace-10-0",
+            "palace-10-1",
+            "palace-10-2",
+            "palace-10-3"
+          ],
+          "incoming": [
+            "palace-6-0",
+            "palace-8-3"
+          ]
+        },
+        {
+          "palace_index": 11,
+          "natal_palace": "命宫",
+          "ganzhi": "己丑",
+          "palace_pointer": "/data/palaces/11",
+          "outgoing": [
+            "palace-11-0",
+            "palace-11-1",
+            "palace-11-2",
+            "palace-11-3"
+          ],
+          "incoming": [
+            "palace-1-2",
+            "palace-4-0",
+            "palace-7-1",
+            "palace-11-2"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "palace-0-0",
+          "mutagen": "禄",
+          "star": "贪狼",
+          "source": {
+            "palace_index": 0,
+            "natal_palace": "父母",
+            "ganzhi": "戊寅",
+            "palace_pointer": "/data/palaces/0"
+          },
+          "table_ref": "flying_v1.json#/table/戊/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 8,
+              "natal_palace": "子女",
+              "star_name": "贪狼",
+              "canonical_star": "贪狼",
+              "star_pointer": "/data/palaces/8/major/0",
+              "palace_pointer": "/data/palaces/8",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/0/ganzhi",
+            "/data/palaces/8/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-0-1",
+          "mutagen": "权",
+          "star": "太阴",
+          "source": {
+            "palace_index": 0,
+            "natal_palace": "父母",
+            "ganzhi": "戊寅",
+            "palace_pointer": "/data/palaces/0"
+          },
+          "table_ref": "flying_v1.json#/table/戊/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "太阴",
+              "canonical_star": "太阴",
+              "star_pointer": "/data/palaces/7/major/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": "科"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/0/ganzhi",
+            "/data/palaces/7/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-0-2",
+          "mutagen": "科",
+          "star": "右弼",
+          "source": {
+            "palace_index": 0,
+            "natal_palace": "父母",
+            "ganzhi": "戊寅",
+            "palace_pointer": "/data/palaces/0"
+          },
+          "table_ref": "flying_v1.json#/table/戊/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 4,
+              "natal_palace": "仆役",
+              "star_name": "右弼",
+              "canonical_star": "右弼",
+              "star_pointer": "/data/palaces/4/minor/0",
+              "palace_pointer": "/data/palaces/4",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/0/ganzhi",
+            "/data/palaces/4/minor/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-0-3",
+          "mutagen": "忌",
+          "star": "天机",
+          "source": {
+            "palace_index": 0,
+            "natal_palace": "父母",
+            "ganzhi": "戊寅",
+            "palace_pointer": "/data/palaces/0"
+          },
+          "table_ref": "flying_v1.json#/table/戊/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 5,
+              "natal_palace": "迁移",
+              "star_name": "天机",
+              "canonical_star": "天机",
+              "star_pointer": "/data/palaces/5/major/0",
+              "palace_pointer": "/data/palaces/5",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/0/ganzhi",
+            "/data/palaces/5/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 11,
+            "natal_palace": "命宫",
+            "ganzhi": "己丑",
+            "palace_pointer": "/data/palaces/11",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-1-0",
+          "mutagen": "禄",
+          "star": "武曲",
+          "source": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1"
+          },
+          "table_ref": "flying_v1.json#/table/己/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 2,
+              "natal_palace": "田宅",
+              "star_name": "武曲",
+              "canonical_star": "武曲",
+              "star_pointer": "/data/palaces/2/major/0",
+              "palace_pointer": "/data/palaces/2",
+              "natal_mutagen": "权"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/1/ganzhi",
+            "/data/palaces/2/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-1-1",
+          "mutagen": "权",
+          "star": "贪狼",
+          "source": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1"
+          },
+          "table_ref": "flying_v1.json#/table/己/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 8,
+              "natal_palace": "子女",
+              "star_name": "贪狼",
+              "canonical_star": "贪狼",
+              "star_pointer": "/data/palaces/8/major/0",
+              "palace_pointer": "/data/palaces/8",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/1/ganzhi",
+            "/data/palaces/8/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-1-2",
+          "mutagen": "科",
+          "star": "天梁",
+          "source": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1"
+          },
+          "table_ref": "flying_v1.json#/table/己/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 11,
+              "natal_palace": "命宫",
+              "star_name": "天梁",
+              "canonical_star": "天梁",
+              "star_pointer": "/data/palaces/11/major/0",
+              "palace_pointer": "/data/palaces/11",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/1/ganzhi",
+            "/data/palaces/11/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-1-3",
+          "mutagen": "忌",
+          "star": "文曲",
+          "source": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1"
+          },
+          "table_ref": "flying_v1.json#/table/己/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "文曲",
+              "canonical_star": "文曲",
+              "star_pointer": "/data/palaces/7/minor/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/1/ganzhi",
+            "/data/palaces/7/minor/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-2-0",
+          "mutagen": "禄",
+          "star": "太阳",
+          "source": {
+            "palace_index": 2,
+            "natal_palace": "田宅",
+            "ganzhi": "庚辰",
+            "palace_pointer": "/data/palaces/2"
+          },
+          "table_ref": "flying_v1.json#/table/庚/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 3,
+              "natal_palace": "官禄",
+              "star_name": "太阳",
+              "canonical_star": "太阳",
+              "star_pointer": "/data/palaces/3/major/0",
+              "palace_pointer": "/data/palaces/3",
+              "natal_mutagen": "禄"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/2/ganzhi",
+            "/data/palaces/3/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-2-1",
+          "mutagen": "权",
+          "star": "武曲",
+          "source": {
+            "palace_index": 2,
+            "natal_palace": "田宅",
+            "ganzhi": "庚辰",
+            "palace_pointer": "/data/palaces/2"
+          },
+          "table_ref": "flying_v1.json#/table/庚/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 2,
+              "natal_palace": "田宅",
+              "star_name": "武曲",
+              "canonical_star": "武曲",
+              "star_pointer": "/data/palaces/2/major/0",
+              "palace_pointer": "/data/palaces/2",
+              "natal_mutagen": "权"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/2/ganzhi",
+            "/data/palaces/2/major/0"
+          ],
+          "self_transformation": true,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-2-2",
+          "mutagen": "科",
+          "star": "太阴",
+          "source": {
+            "palace_index": 2,
+            "natal_palace": "田宅",
+            "ganzhi": "庚辰",
+            "palace_pointer": "/data/palaces/2"
+          },
+          "table_ref": "flying_v1.json#/table/庚/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "太阴",
+              "canonical_star": "太阴",
+              "star_pointer": "/data/palaces/7/major/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": "科"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/2/ganzhi",
+            "/data/palaces/7/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-2-3",
+          "mutagen": "忌",
+          "star": "天同",
+          "source": {
+            "palace_index": 2,
+            "natal_palace": "田宅",
+            "ganzhi": "庚辰",
+            "palace_pointer": "/data/palaces/2"
+          },
+          "table_ref": "flying_v1.json#/table/庚/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 1,
+              "natal_palace": "福德",
+              "star_name": "天同",
+              "canonical_star": "天同",
+              "star_pointer": "/data/palaces/1/major/0",
+              "palace_pointer": "/data/palaces/1",
+              "natal_mutagen": "忌"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/2/ganzhi",
+            "/data/palaces/1/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 7,
+            "natal_palace": "财帛",
+            "ganzhi": "乙酉",
+            "palace_pointer": "/data/palaces/7",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-3-0",
+          "mutagen": "禄",
+          "star": "巨门",
+          "source": {
+            "palace_index": 3,
+            "natal_palace": "官禄",
+            "ganzhi": "辛巳",
+            "palace_pointer": "/data/palaces/3"
+          },
+          "table_ref": "flying_v1.json#/table/辛/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 9,
+              "natal_palace": "夫妻",
+              "star_name": "巨门",
+              "canonical_star": "巨门",
+              "star_pointer": "/data/palaces/9/major/0",
+              "palace_pointer": "/data/palaces/9",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/3/ganzhi",
+            "/data/palaces/9/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-3-1",
+          "mutagen": "权",
+          "star": "太阳",
+          "source": {
+            "palace_index": 3,
+            "natal_palace": "官禄",
+            "ganzhi": "辛巳",
+            "palace_pointer": "/data/palaces/3"
+          },
+          "table_ref": "flying_v1.json#/table/辛/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 3,
+              "natal_palace": "官禄",
+              "star_name": "太阳",
+              "canonical_star": "太阳",
+              "star_pointer": "/data/palaces/3/major/0",
+              "palace_pointer": "/data/palaces/3",
+              "natal_mutagen": "禄"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/3/ganzhi",
+            "/data/palaces/3/major/0"
+          ],
+          "self_transformation": true,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-3-2",
+          "mutagen": "科",
+          "star": "文曲",
+          "source": {
+            "palace_index": 3,
+            "natal_palace": "官禄",
+            "ganzhi": "辛巳",
+            "palace_pointer": "/data/palaces/3"
+          },
+          "table_ref": "flying_v1.json#/table/辛/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "文曲",
+              "canonical_star": "文曲",
+              "star_pointer": "/data/palaces/7/minor/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/3/ganzhi",
+            "/data/palaces/7/minor/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-3-3",
+          "mutagen": "忌",
+          "star": "文昌",
+          "source": {
+            "palace_index": 3,
+            "natal_palace": "官禄",
+            "ganzhi": "辛巳",
+            "palace_pointer": "/data/palaces/3"
+          },
+          "table_ref": "flying_v1.json#/table/辛/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 3,
+              "natal_palace": "官禄",
+              "star_name": "文昌",
+              "canonical_star": "文昌",
+              "star_pointer": "/data/palaces/3/minor/0",
+              "palace_pointer": "/data/palaces/3",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/3/ganzhi",
+            "/data/palaces/3/minor/0"
+          ],
+          "self_transformation": true,
+          "ji_opposition": {
+            "palace_index": 9,
+            "natal_palace": "夫妻",
+            "ganzhi": "丁亥",
+            "palace_pointer": "/data/palaces/9",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-4-0",
+          "mutagen": "禄",
+          "star": "天梁",
+          "source": {
+            "palace_index": 4,
+            "natal_palace": "仆役",
+            "ganzhi": "壬午",
+            "palace_pointer": "/data/palaces/4"
+          },
+          "table_ref": "flying_v1.json#/table/壬/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 11,
+              "natal_palace": "命宫",
+              "star_name": "天梁",
+              "canonical_star": "天梁",
+              "star_pointer": "/data/palaces/11/major/0",
+              "palace_pointer": "/data/palaces/11",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/4/ganzhi",
+            "/data/palaces/11/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-4-1",
+          "mutagen": "权",
+          "star": "紫微",
+          "source": {
+            "palace_index": 4,
+            "natal_palace": "仆役",
+            "ganzhi": "壬午",
+            "palace_pointer": "/data/palaces/4"
+          },
+          "table_ref": "flying_v1.json#/table/壬/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 6,
+              "natal_palace": "疾厄",
+              "star_name": "紫微",
+              "canonical_star": "紫微",
+              "star_pointer": "/data/palaces/6/major/0",
+              "palace_pointer": "/data/palaces/6",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/4/ganzhi",
+            "/data/palaces/6/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-4-2",
+          "mutagen": "科",
+          "star": "左辅",
+          "source": {
+            "palace_index": 4,
+            "natal_palace": "仆役",
+            "ganzhi": "壬午",
+            "palace_pointer": "/data/palaces/4"
+          },
+          "table_ref": "flying_v1.json#/table/壬/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 6,
+              "natal_palace": "疾厄",
+              "star_name": "左辅",
+              "canonical_star": "左辅",
+              "star_pointer": "/data/palaces/6/minor/0",
+              "palace_pointer": "/data/palaces/6",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/4/ganzhi",
+            "/data/palaces/6/minor/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-4-3",
+          "mutagen": "忌",
+          "star": "武曲",
+          "source": {
+            "palace_index": 4,
+            "natal_palace": "仆役",
+            "ganzhi": "壬午",
+            "palace_pointer": "/data/palaces/4"
+          },
+          "table_ref": "flying_v1.json#/table/壬/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 2,
+              "natal_palace": "田宅",
+              "star_name": "武曲",
+              "canonical_star": "武曲",
+              "star_pointer": "/data/palaces/2/major/0",
+              "palace_pointer": "/data/palaces/2",
+              "natal_mutagen": "权"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/4/ganzhi",
+            "/data/palaces/2/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 8,
+            "natal_palace": "子女",
+            "ganzhi": "丙戌",
+            "palace_pointer": "/data/palaces/8",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-5-0",
+          "mutagen": "禄",
+          "star": "破军",
+          "source": {
+            "palace_index": 5,
+            "natal_palace": "迁移",
+            "ganzhi": "癸未",
+            "palace_pointer": "/data/palaces/5"
+          },
+          "table_ref": "flying_v1.json#/table/癸/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 4,
+              "natal_palace": "仆役",
+              "star_name": "破军",
+              "canonical_star": "破军",
+              "star_pointer": "/data/palaces/4/major/0",
+              "palace_pointer": "/data/palaces/4",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/5/ganzhi",
+            "/data/palaces/4/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-5-1",
+          "mutagen": "权",
+          "star": "巨门",
+          "source": {
+            "palace_index": 5,
+            "natal_palace": "迁移",
+            "ganzhi": "癸未",
+            "palace_pointer": "/data/palaces/5"
+          },
+          "table_ref": "flying_v1.json#/table/癸/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 9,
+              "natal_palace": "夫妻",
+              "star_name": "巨门",
+              "canonical_star": "巨门",
+              "star_pointer": "/data/palaces/9/major/0",
+              "palace_pointer": "/data/palaces/9",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/5/ganzhi",
+            "/data/palaces/9/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-5-2",
+          "mutagen": "科",
+          "star": "太阴",
+          "source": {
+            "palace_index": 5,
+            "natal_palace": "迁移",
+            "ganzhi": "癸未",
+            "palace_pointer": "/data/palaces/5"
+          },
+          "table_ref": "flying_v1.json#/table/癸/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "太阴",
+              "canonical_star": "太阴",
+              "star_pointer": "/data/palaces/7/major/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": "科"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/5/ganzhi",
+            "/data/palaces/7/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-5-3",
+          "mutagen": "忌",
+          "star": "贪狼",
+          "source": {
+            "palace_index": 5,
+            "natal_palace": "迁移",
+            "ganzhi": "癸未",
+            "palace_pointer": "/data/palaces/5"
+          },
+          "table_ref": "flying_v1.json#/table/癸/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 8,
+              "natal_palace": "子女",
+              "star_name": "贪狼",
+              "canonical_star": "贪狼",
+              "star_pointer": "/data/palaces/8/major/0",
+              "palace_pointer": "/data/palaces/8",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/5/ganzhi",
+            "/data/palaces/8/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 2,
+            "natal_palace": "田宅",
+            "ganzhi": "庚辰",
+            "palace_pointer": "/data/palaces/2",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-6-0",
+          "mutagen": "禄",
+          "star": "廉贞",
+          "source": {
+            "palace_index": 6,
+            "natal_palace": "疾厄",
+            "ganzhi": "甲申",
+            "palace_pointer": "/data/palaces/6"
+          },
+          "table_ref": "flying_v1.json#/table/甲/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 10,
+              "natal_palace": "兄弟",
+              "star_name": "廉贞",
+              "canonical_star": "廉贞",
+              "star_pointer": "/data/palaces/10/major/0",
+              "palace_pointer": "/data/palaces/10",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/6/ganzhi",
+            "/data/palaces/10/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-6-1",
+          "mutagen": "权",
+          "star": "破军",
+          "source": {
+            "palace_index": 6,
+            "natal_palace": "疾厄",
+            "ganzhi": "甲申",
+            "palace_pointer": "/data/palaces/6"
+          },
+          "table_ref": "flying_v1.json#/table/甲/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 4,
+              "natal_palace": "仆役",
+              "star_name": "破军",
+              "canonical_star": "破军",
+              "star_pointer": "/data/palaces/4/major/0",
+              "palace_pointer": "/data/palaces/4",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/6/ganzhi",
+            "/data/palaces/4/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-6-2",
+          "mutagen": "科",
+          "star": "武曲",
+          "source": {
+            "palace_index": 6,
+            "natal_palace": "疾厄",
+            "ganzhi": "甲申",
+            "palace_pointer": "/data/palaces/6"
+          },
+          "table_ref": "flying_v1.json#/table/甲/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 2,
+              "natal_palace": "田宅",
+              "star_name": "武曲",
+              "canonical_star": "武曲",
+              "star_pointer": "/data/palaces/2/major/0",
+              "palace_pointer": "/data/palaces/2",
+              "natal_mutagen": "权"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/6/ganzhi",
+            "/data/palaces/2/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-6-3",
+          "mutagen": "忌",
+          "star": "太阳",
+          "source": {
+            "palace_index": 6,
+            "natal_palace": "疾厄",
+            "ganzhi": "甲申",
+            "palace_pointer": "/data/palaces/6"
+          },
+          "table_ref": "flying_v1.json#/table/甲/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 3,
+              "natal_palace": "官禄",
+              "star_name": "太阳",
+              "canonical_star": "太阳",
+              "star_pointer": "/data/palaces/3/major/0",
+              "palace_pointer": "/data/palaces/3",
+              "natal_mutagen": "禄"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/6/ganzhi",
+            "/data/palaces/3/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 9,
+            "natal_palace": "夫妻",
+            "ganzhi": "丁亥",
+            "palace_pointer": "/data/palaces/9",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-7-0",
+          "mutagen": "禄",
+          "star": "天机",
+          "source": {
+            "palace_index": 7,
+            "natal_palace": "财帛",
+            "ganzhi": "乙酉",
+            "palace_pointer": "/data/palaces/7"
+          },
+          "table_ref": "flying_v1.json#/table/乙/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 5,
+              "natal_palace": "迁移",
+              "star_name": "天机",
+              "canonical_star": "天机",
+              "star_pointer": "/data/palaces/5/major/0",
+              "palace_pointer": "/data/palaces/5",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/7/ganzhi",
+            "/data/palaces/5/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-7-1",
+          "mutagen": "权",
+          "star": "天梁",
+          "source": {
+            "palace_index": 7,
+            "natal_palace": "财帛",
+            "ganzhi": "乙酉",
+            "palace_pointer": "/data/palaces/7"
+          },
+          "table_ref": "flying_v1.json#/table/乙/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 11,
+              "natal_palace": "命宫",
+              "star_name": "天梁",
+              "canonical_star": "天梁",
+              "star_pointer": "/data/palaces/11/major/0",
+              "palace_pointer": "/data/palaces/11",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/7/ganzhi",
+            "/data/palaces/11/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-7-2",
+          "mutagen": "科",
+          "star": "紫微",
+          "source": {
+            "palace_index": 7,
+            "natal_palace": "财帛",
+            "ganzhi": "乙酉",
+            "palace_pointer": "/data/palaces/7"
+          },
+          "table_ref": "flying_v1.json#/table/乙/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 6,
+              "natal_palace": "疾厄",
+              "star_name": "紫微",
+              "canonical_star": "紫微",
+              "star_pointer": "/data/palaces/6/major/0",
+              "palace_pointer": "/data/palaces/6",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/7/ganzhi",
+            "/data/palaces/6/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-7-3",
+          "mutagen": "忌",
+          "star": "太阴",
+          "source": {
+            "palace_index": 7,
+            "natal_palace": "财帛",
+            "ganzhi": "乙酉",
+            "palace_pointer": "/data/palaces/7"
+          },
+          "table_ref": "flying_v1.json#/table/乙/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "太阴",
+              "canonical_star": "太阴",
+              "star_pointer": "/data/palaces/7/major/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": "科"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/7/ganzhi",
+            "/data/palaces/7/major/0"
+          ],
+          "self_transformation": true,
+          "ji_opposition": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-8-0",
+          "mutagen": "禄",
+          "star": "天同",
+          "source": {
+            "palace_index": 8,
+            "natal_palace": "子女",
+            "ganzhi": "丙戌",
+            "palace_pointer": "/data/palaces/8"
+          },
+          "table_ref": "flying_v1.json#/table/丙/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 1,
+              "natal_palace": "福德",
+              "star_name": "天同",
+              "canonical_star": "天同",
+              "star_pointer": "/data/palaces/1/major/0",
+              "palace_pointer": "/data/palaces/1",
+              "natal_mutagen": "忌"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/8/ganzhi",
+            "/data/palaces/1/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-8-1",
+          "mutagen": "权",
+          "star": "天机",
+          "source": {
+            "palace_index": 8,
+            "natal_palace": "子女",
+            "ganzhi": "丙戌",
+            "palace_pointer": "/data/palaces/8"
+          },
+          "table_ref": "flying_v1.json#/table/丙/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 5,
+              "natal_palace": "迁移",
+              "star_name": "天机",
+              "canonical_star": "天机",
+              "star_pointer": "/data/palaces/5/major/0",
+              "palace_pointer": "/data/palaces/5",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/8/ganzhi",
+            "/data/palaces/5/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-8-2",
+          "mutagen": "科",
+          "star": "文昌",
+          "source": {
+            "palace_index": 8,
+            "natal_palace": "子女",
+            "ganzhi": "丙戌",
+            "palace_pointer": "/data/palaces/8"
+          },
+          "table_ref": "flying_v1.json#/table/丙/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 3,
+              "natal_palace": "官禄",
+              "star_name": "文昌",
+              "canonical_star": "文昌",
+              "star_pointer": "/data/palaces/3/minor/0",
+              "palace_pointer": "/data/palaces/3",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/8/ganzhi",
+            "/data/palaces/3/minor/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-8-3",
+          "mutagen": "忌",
+          "star": "廉贞",
+          "source": {
+            "palace_index": 8,
+            "natal_palace": "子女",
+            "ganzhi": "丙戌",
+            "palace_pointer": "/data/palaces/8"
+          },
+          "table_ref": "flying_v1.json#/table/丙/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 10,
+              "natal_palace": "兄弟",
+              "star_name": "廉贞",
+              "canonical_star": "廉贞",
+              "star_pointer": "/data/palaces/10/major/0",
+              "palace_pointer": "/data/palaces/10",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/8/ganzhi",
+            "/data/palaces/10/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 4,
+            "natal_palace": "仆役",
+            "ganzhi": "壬午",
+            "palace_pointer": "/data/palaces/4",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-9-0",
+          "mutagen": "禄",
+          "star": "太阴",
+          "source": {
+            "palace_index": 9,
+            "natal_palace": "夫妻",
+            "ganzhi": "丁亥",
+            "palace_pointer": "/data/palaces/9"
+          },
+          "table_ref": "flying_v1.json#/table/丁/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "太阴",
+              "canonical_star": "太阴",
+              "star_pointer": "/data/palaces/7/major/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": "科"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/9/ganzhi",
+            "/data/palaces/7/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-9-1",
+          "mutagen": "权",
+          "star": "天同",
+          "source": {
+            "palace_index": 9,
+            "natal_palace": "夫妻",
+            "ganzhi": "丁亥",
+            "palace_pointer": "/data/palaces/9"
+          },
+          "table_ref": "flying_v1.json#/table/丁/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 1,
+              "natal_palace": "福德",
+              "star_name": "天同",
+              "canonical_star": "天同",
+              "star_pointer": "/data/palaces/1/major/0",
+              "palace_pointer": "/data/palaces/1",
+              "natal_mutagen": "忌"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/9/ganzhi",
+            "/data/palaces/1/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-9-2",
+          "mutagen": "科",
+          "star": "天机",
+          "source": {
+            "palace_index": 9,
+            "natal_palace": "夫妻",
+            "ganzhi": "丁亥",
+            "palace_pointer": "/data/palaces/9"
+          },
+          "table_ref": "flying_v1.json#/table/丁/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 5,
+              "natal_palace": "迁移",
+              "star_name": "天机",
+              "canonical_star": "天机",
+              "star_pointer": "/data/palaces/5/major/0",
+              "palace_pointer": "/data/palaces/5",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/9/ganzhi",
+            "/data/palaces/5/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-9-3",
+          "mutagen": "忌",
+          "star": "巨门",
+          "source": {
+            "palace_index": 9,
+            "natal_palace": "夫妻",
+            "ganzhi": "丁亥",
+            "palace_pointer": "/data/palaces/9"
+          },
+          "table_ref": "flying_v1.json#/table/丁/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 9,
+              "natal_palace": "夫妻",
+              "star_name": "巨门",
+              "canonical_star": "巨门",
+              "star_pointer": "/data/palaces/9/major/0",
+              "palace_pointer": "/data/palaces/9",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/9/ganzhi",
+            "/data/palaces/9/major/0"
+          ],
+          "self_transformation": true,
+          "ji_opposition": {
+            "palace_index": 3,
+            "natal_palace": "官禄",
+            "ganzhi": "辛巳",
+            "palace_pointer": "/data/palaces/3",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-10-0",
+          "mutagen": "禄",
+          "star": "贪狼",
+          "source": {
+            "palace_index": 10,
+            "natal_palace": "兄弟",
+            "ganzhi": "戊子",
+            "palace_pointer": "/data/palaces/10"
+          },
+          "table_ref": "flying_v1.json#/table/戊/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 8,
+              "natal_palace": "子女",
+              "star_name": "贪狼",
+              "canonical_star": "贪狼",
+              "star_pointer": "/data/palaces/8/major/0",
+              "palace_pointer": "/data/palaces/8",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/10/ganzhi",
+            "/data/palaces/8/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-10-1",
+          "mutagen": "权",
+          "star": "太阴",
+          "source": {
+            "palace_index": 10,
+            "natal_palace": "兄弟",
+            "ganzhi": "戊子",
+            "palace_pointer": "/data/palaces/10"
+          },
+          "table_ref": "flying_v1.json#/table/戊/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "太阴",
+              "canonical_star": "太阴",
+              "star_pointer": "/data/palaces/7/major/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": "科"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/10/ganzhi",
+            "/data/palaces/7/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-10-2",
+          "mutagen": "科",
+          "star": "右弼",
+          "source": {
+            "palace_index": 10,
+            "natal_palace": "兄弟",
+            "ganzhi": "戊子",
+            "palace_pointer": "/data/palaces/10"
+          },
+          "table_ref": "flying_v1.json#/table/戊/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 4,
+              "natal_palace": "仆役",
+              "star_name": "右弼",
+              "canonical_star": "右弼",
+              "star_pointer": "/data/palaces/4/minor/0",
+              "palace_pointer": "/data/palaces/4",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/10/ganzhi",
+            "/data/palaces/4/minor/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-10-3",
+          "mutagen": "忌",
+          "star": "天机",
+          "source": {
+            "palace_index": 10,
+            "natal_palace": "兄弟",
+            "ganzhi": "戊子",
+            "palace_pointer": "/data/palaces/10"
+          },
+          "table_ref": "flying_v1.json#/table/戊/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 5,
+              "natal_palace": "迁移",
+              "star_name": "天机",
+              "canonical_star": "天机",
+              "star_pointer": "/data/palaces/5/major/0",
+              "palace_pointer": "/data/palaces/5",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/10/ganzhi",
+            "/data/palaces/5/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 11,
+            "natal_palace": "命宫",
+            "ganzhi": "己丑",
+            "palace_pointer": "/data/palaces/11",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        },
+        {
+          "id": "palace-11-0",
+          "mutagen": "禄",
+          "star": "武曲",
+          "source": {
+            "palace_index": 11,
+            "natal_palace": "命宫",
+            "ganzhi": "己丑",
+            "palace_pointer": "/data/palaces/11"
+          },
+          "table_ref": "flying_v1.json#/table/己/0",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 2,
+              "natal_palace": "田宅",
+              "star_name": "武曲",
+              "canonical_star": "武曲",
+              "star_pointer": "/data/palaces/2/major/0",
+              "palace_pointer": "/data/palaces/2",
+              "natal_mutagen": "权"
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/11/ganzhi",
+            "/data/palaces/2/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-11-1",
+          "mutagen": "权",
+          "star": "贪狼",
+          "source": {
+            "palace_index": 11,
+            "natal_palace": "命宫",
+            "ganzhi": "己丑",
+            "palace_pointer": "/data/palaces/11"
+          },
+          "table_ref": "flying_v1.json#/table/己/1",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 8,
+              "natal_palace": "子女",
+              "star_name": "贪狼",
+              "canonical_star": "贪狼",
+              "star_pointer": "/data/palaces/8/major/0",
+              "palace_pointer": "/data/palaces/8",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/11/ganzhi",
+            "/data/palaces/8/major/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-11-2",
+          "mutagen": "科",
+          "star": "天梁",
+          "source": {
+            "palace_index": 11,
+            "natal_palace": "命宫",
+            "ganzhi": "己丑",
+            "palace_pointer": "/data/palaces/11"
+          },
+          "table_ref": "flying_v1.json#/table/己/2",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 11,
+              "natal_palace": "命宫",
+              "star_name": "天梁",
+              "canonical_star": "天梁",
+              "star_pointer": "/data/palaces/11/major/0",
+              "palace_pointer": "/data/palaces/11",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/11/ganzhi",
+            "/data/palaces/11/major/0"
+          ],
+          "self_transformation": true,
+          "ji_opposition": null
+        },
+        {
+          "id": "palace-11-3",
+          "mutagen": "忌",
+          "star": "文曲",
+          "source": {
+            "palace_index": 11,
+            "natal_palace": "命宫",
+            "ganzhi": "己丑",
+            "palace_pointer": "/data/palaces/11"
+          },
+          "table_ref": "flying_v1.json#/table/己/3",
+          "status": "resolved",
+          "locations": [
+            {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "文曲",
+              "canonical_star": "文曲",
+              "star_pointer": "/data/palaces/7/minor/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": null
+            }
+          ],
+          "evidence_paths": [
+            "/data/palaces/11/ganzhi",
+            "/data/palaces/7/minor/0"
+          ],
+          "self_transformation": false,
+          "ji_opposition": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1",
+            "relation": "对宫",
+            "geometry_only": true
+          }
+        }
+      ],
+      "complete": true,
+      "natal": {
+        "method": "actual_engine_natal_star_mutagen_tags",
+        "links": [
+          {
+            "mutagen": "忌",
+            "original_mutagen": "忌",
+            "star": "天同",
+            "location": {
+              "palace_index": 1,
+              "natal_palace": "福德",
+              "star_name": "天同",
+              "canonical_star": "天同",
+              "star_pointer": "/data/palaces/1/major/0",
+              "palace_pointer": "/data/palaces/1",
+              "natal_mutagen": "忌"
+            },
+            "evidence_paths": [
+              "/data/palaces/1/major/0/mutagen"
+            ]
+          },
+          {
+            "mutagen": "权",
+            "original_mutagen": "权",
+            "star": "武曲",
+            "location": {
+              "palace_index": 2,
+              "natal_palace": "田宅",
+              "star_name": "武曲",
+              "canonical_star": "武曲",
+              "star_pointer": "/data/palaces/2/major/0",
+              "palace_pointer": "/data/palaces/2",
+              "natal_mutagen": "权"
+            },
+            "evidence_paths": [
+              "/data/palaces/2/major/0/mutagen"
+            ]
+          },
+          {
+            "mutagen": "禄",
+            "original_mutagen": "禄",
+            "star": "太阳",
+            "location": {
+              "palace_index": 3,
+              "natal_palace": "官禄",
+              "star_name": "太阳",
+              "canonical_star": "太阳",
+              "star_pointer": "/data/palaces/3/major/0",
+              "palace_pointer": "/data/palaces/3",
+              "natal_mutagen": "禄"
+            },
+            "evidence_paths": [
+              "/data/palaces/3/major/0/mutagen"
+            ]
+          },
+          {
+            "mutagen": "科",
+            "original_mutagen": "科",
+            "star": "太阴",
+            "location": {
+              "palace_index": 7,
+              "natal_palace": "财帛",
+              "star_name": "太阴",
+              "canonical_star": "太阴",
+              "star_pointer": "/data/palaces/7/major/0",
+              "palace_pointer": "/data/palaces/7",
+              "natal_mutagen": "科"
+            },
+            "evidence_paths": [
+              "/data/palaces/7/major/0/mutagen"
+            ]
+          }
+        ],
+        "complete": true,
+        "missing_or_ambiguous_labels": []
+      },
+      "temporal_layers": {
+        "decadal": {
+          "status": "resolved",
+          "ganzhi": "己卯",
+          "life_palace": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1",
+            "scope_palace": "命宫"
+          },
+          "palace_names": [
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄",
+            "财帛",
+            "子女",
+            "夫妻"
+          ],
+          "matches_named_table": true,
+          "links": [
+            {
+              "mutagen": "禄",
+              "star": "武曲",
+              "original_star": "武曲",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 2,
+                  "natal_palace": "田宅",
+                  "star_name": "武曲",
+                  "canonical_star": "武曲",
+                  "star_pointer": "/data/palaces/2/major/0",
+                  "palace_pointer": "/data/palaces/2",
+                  "natal_mutagen": "权",
+                  "scope_palace": "父母"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/decadal/mutagen/0",
+                "/data/palaces/2/major/0"
+              ]
+            },
+            {
+              "mutagen": "权",
+              "star": "贪狼",
+              "original_star": "贪狼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 8,
+                  "natal_palace": "子女",
+                  "star_name": "贪狼",
+                  "canonical_star": "贪狼",
+                  "star_pointer": "/data/palaces/8/major/0",
+                  "palace_pointer": "/data/palaces/8",
+                  "natal_mutagen": null,
+                  "scope_palace": "疾厄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/decadal/mutagen/1",
+                "/data/palaces/8/major/0"
+              ]
+            },
+            {
+              "mutagen": "科",
+              "star": "天梁",
+              "original_star": "天梁",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 11,
+                  "natal_palace": "命宫",
+                  "star_name": "天梁",
+                  "canonical_star": "天梁",
+                  "star_pointer": "/data/palaces/11/major/0",
+                  "palace_pointer": "/data/palaces/11",
+                  "natal_mutagen": null,
+                  "scope_palace": "夫妻"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/decadal/mutagen/2",
+                "/data/palaces/11/major/0"
+              ]
+            },
+            {
+              "mutagen": "忌",
+              "star": "文曲",
+              "original_star": "文曲",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 7,
+                  "natal_palace": "财帛",
+                  "star_name": "文曲",
+                  "canonical_star": "文曲",
+                  "star_pointer": "/data/palaces/7/minor/0",
+                  "palace_pointer": "/data/palaces/7",
+                  "natal_mutagen": null,
+                  "scope_palace": "迁移"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/decadal/mutagen/3",
+                "/data/palaces/7/minor/0"
+              ]
+            }
+          ],
+          "evidence_paths": [
+            "/data/horoscope/decadal/index",
+            "/data/horoscope/decadal/ganzhi",
+            "/data/horoscope/decadal/palace_names"
+          ]
+        },
+        "yearly": {
+          "status": "resolved",
+          "ganzhi": "丙午",
+          "life_palace": {
+            "palace_index": 4,
+            "natal_palace": "仆役",
+            "ganzhi": "壬午",
+            "palace_pointer": "/data/palaces/4",
+            "scope_palace": "命宫"
+          },
+          "palace_names": [
+            "财帛",
+            "子女",
+            "夫妻",
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄"
+          ],
+          "matches_named_table": true,
+          "links": [
+            {
+              "mutagen": "禄",
+              "star": "天同",
+              "original_star": "天同",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 1,
+                  "natal_palace": "福德",
+                  "star_name": "天同",
+                  "canonical_star": "天同",
+                  "star_pointer": "/data/palaces/1/major/0",
+                  "palace_pointer": "/data/palaces/1",
+                  "natal_mutagen": "忌",
+                  "scope_palace": "子女"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/yearly/mutagen/0",
+                "/data/palaces/1/major/0"
+              ]
+            },
+            {
+              "mutagen": "权",
+              "star": "天机",
+              "original_star": "天机",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 5,
+                  "natal_palace": "迁移",
+                  "star_name": "天机",
+                  "canonical_star": "天机",
+                  "star_pointer": "/data/palaces/5/major/0",
+                  "palace_pointer": "/data/palaces/5",
+                  "natal_mutagen": null,
+                  "scope_palace": "父母"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/yearly/mutagen/1",
+                "/data/palaces/5/major/0"
+              ]
+            },
+            {
+              "mutagen": "科",
+              "star": "文昌",
+              "original_star": "文昌",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 3,
+                  "natal_palace": "官禄",
+                  "star_name": "文昌",
+                  "canonical_star": "文昌",
+                  "star_pointer": "/data/palaces/3/minor/0",
+                  "palace_pointer": "/data/palaces/3",
+                  "natal_mutagen": null,
+                  "scope_palace": "兄弟"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/yearly/mutagen/2",
+                "/data/palaces/3/minor/0"
+              ]
+            },
+            {
+              "mutagen": "忌",
+              "star": "廉贞",
+              "original_star": "廉贞",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 10,
+                  "natal_palace": "兄弟",
+                  "star_name": "廉贞",
+                  "canonical_star": "廉贞",
+                  "star_pointer": "/data/palaces/10/major/0",
+                  "palace_pointer": "/data/palaces/10",
+                  "natal_mutagen": null,
+                  "scope_palace": "迁移"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/yearly/mutagen/3",
+                "/data/palaces/10/major/0"
+              ]
+            }
+          ],
+          "evidence_paths": [
+            "/data/horoscope/yearly/index",
+            "/data/horoscope/yearly/ganzhi",
+            "/data/horoscope/yearly/palace_names"
+          ]
+        },
+        "monthly": {
+          "status": "resolved",
+          "ganzhi": "戊戌",
+          "life_palace": {
+            "palace_index": 1,
+            "natal_palace": "福德",
+            "ganzhi": "己卯",
+            "palace_pointer": "/data/palaces/1",
+            "scope_palace": "命宫"
+          },
+          "palace_names": [
+            "兄弟",
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄",
+            "财帛",
+            "子女",
+            "夫妻"
+          ],
+          "matches_named_table": true,
+          "links": [
+            {
+              "mutagen": "禄",
+              "star": "贪狼",
+              "original_star": "贪狼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 8,
+                  "natal_palace": "子女",
+                  "star_name": "贪狼",
+                  "canonical_star": "贪狼",
+                  "star_pointer": "/data/palaces/8/major/0",
+                  "palace_pointer": "/data/palaces/8",
+                  "natal_mutagen": null,
+                  "scope_palace": "疾厄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/monthly/mutagen/0",
+                "/data/palaces/8/major/0"
+              ]
+            },
+            {
+              "mutagen": "权",
+              "star": "太阴",
+              "original_star": "太阴",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 7,
+                  "natal_palace": "财帛",
+                  "star_name": "太阴",
+                  "canonical_star": "太阴",
+                  "star_pointer": "/data/palaces/7/major/0",
+                  "palace_pointer": "/data/palaces/7",
+                  "natal_mutagen": "科",
+                  "scope_palace": "迁移"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/monthly/mutagen/1",
+                "/data/palaces/7/major/0"
+              ]
+            },
+            {
+              "mutagen": "科",
+              "star": "右弼",
+              "original_star": "右弼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 4,
+                  "natal_palace": "仆役",
+                  "star_name": "右弼",
+                  "canonical_star": "右弼",
+                  "star_pointer": "/data/palaces/4/minor/0",
+                  "palace_pointer": "/data/palaces/4",
+                  "natal_mutagen": null,
+                  "scope_palace": "田宅"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/monthly/mutagen/2",
+                "/data/palaces/4/minor/0"
+              ]
+            },
+            {
+              "mutagen": "忌",
+              "star": "天机",
+              "original_star": "天机",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 5,
+                  "natal_palace": "迁移",
+                  "star_name": "天机",
+                  "canonical_star": "天机",
+                  "star_pointer": "/data/palaces/5/major/0",
+                  "palace_pointer": "/data/palaces/5",
+                  "natal_mutagen": null,
+                  "scope_palace": "官禄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/monthly/mutagen/3",
+                "/data/palaces/5/major/0"
+              ]
+            }
+          ],
+          "evidence_paths": [
+            "/data/horoscope/monthly/index",
+            "/data/horoscope/monthly/ganzhi",
+            "/data/horoscope/monthly/palace_names"
+          ]
+        },
+        "daily": {
+          "status": "resolved",
+          "ganzhi": "戊辰",
+          "life_palace": {
+            "palace_index": 0,
+            "natal_palace": "父母",
+            "ganzhi": "戊寅",
+            "palace_pointer": "/data/palaces/0",
+            "scope_palace": "命宫"
+          },
+          "palace_names": [
+            "命宫",
+            "父母",
+            "福德",
+            "田宅",
+            "官禄",
+            "仆役",
+            "迁移",
+            "疾厄",
+            "财帛",
+            "子女",
+            "夫妻",
+            "兄弟"
+          ],
+          "matches_named_table": true,
+          "links": [
+            {
+              "mutagen": "禄",
+              "star": "贪狼",
+              "original_star": "贪狼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 8,
+                  "natal_palace": "子女",
+                  "star_name": "贪狼",
+                  "canonical_star": "贪狼",
+                  "star_pointer": "/data/palaces/8/major/0",
+                  "palace_pointer": "/data/palaces/8",
+                  "natal_mutagen": null,
+                  "scope_palace": "财帛"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/daily/mutagen/0",
+                "/data/palaces/8/major/0"
+              ]
+            },
+            {
+              "mutagen": "权",
+              "star": "太阴",
+              "original_star": "太阴",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 7,
+                  "natal_palace": "财帛",
+                  "star_name": "太阴",
+                  "canonical_star": "太阴",
+                  "star_pointer": "/data/palaces/7/major/0",
+                  "palace_pointer": "/data/palaces/7",
+                  "natal_mutagen": "科",
+                  "scope_palace": "疾厄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/daily/mutagen/1",
+                "/data/palaces/7/major/0"
+              ]
+            },
+            {
+              "mutagen": "科",
+              "star": "右弼",
+              "original_star": "右弼",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 4,
+                  "natal_palace": "仆役",
+                  "star_name": "右弼",
+                  "canonical_star": "右弼",
+                  "star_pointer": "/data/palaces/4/minor/0",
+                  "palace_pointer": "/data/palaces/4",
+                  "natal_mutagen": null,
+                  "scope_palace": "官禄"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/daily/mutagen/2",
+                "/data/palaces/4/minor/0"
+              ]
+            },
+            {
+              "mutagen": "忌",
+              "star": "天机",
+              "original_star": "天机",
+              "status": "resolved",
+              "locations": [
+                {
+                  "palace_index": 5,
+                  "natal_palace": "迁移",
+                  "star_name": "天机",
+                  "canonical_star": "天机",
+                  "star_pointer": "/data/palaces/5/major/0",
+                  "palace_pointer": "/data/palaces/5",
+                  "natal_mutagen": null,
+                  "scope_palace": "仆役"
+                }
+              ],
+              "evidence_paths": [
+                "/data/horoscope/daily/mutagen/3",
+                "/data/palaces/5/major/0"
+              ]
+            }
+          ],
+          "evidence_paths": [
+            "/data/horoscope/daily/index",
+            "/data/horoscope/daily/ganzhi",
+            "/data/horoscope/daily/palace_names"
+          ]
+        }
+      },
+      "definitions": {
+        "self_transformation": "来源宫宫干所化星曜实际位于同一宫；仅采用iztro同宫自化定义，不细分向心离心。",
+        "ji_opposition": "化忌所落宫的索引加6取模12得到对宫；仅几何关联，不宣布事件或吉凶。",
+        "temporal_layers": "使用实际horoscope层的干支、命宫索引、宫名数组与四化星；不推造缺失层，不移动本命星。"
+      },
+      "source_refs": [
+        "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/data/heavenlyStems.ts",
+        "https://raw.githubusercontent.com/SylarLong/iztro/v2.5.0/src/astro/FunctionalPalace.ts",
+        "https://docs.iztro.com/posts/palace",
+        "https://docs.iztro.com/posts/horoscope"
+      ],
+      "limits": [
+        "具名表不是各派通用真理；壬干天府化科（24号裁定《全书》口径）可显式选quanshu；其他派别庚干异表仍须另立口径，不改默认庚干太阴化科。",
+        "只计算本命星曜间的飞化结构，不用来增加已冻结的倒推评分。",
+        "生年星曜四化和运限四化保留引擎实际输出；与所选表不一致时明确标注。"
+      ],
+      "rectification_scoring_used": false
+    },
+    "topic_palace": {
+      "name": "命宫",
+      "ganzhi": "己丑",
+      "is_body": false,
+      "is_laiyin": false,
+      "major": [
+        {
+          "name": "天梁",
+          "brightness": "旺"
+        }
+      ],
+      "minor": [
+        {
+          "name": "天魁"
+        }
+      ],
+      "decadal": {
+        "range": [
+          6,
+          15
+        ],
+        "ganzhi": "己丑"
+      },
+      "ages": [
+        4,
+        16,
+        28,
+        40,
+        52,
+        64,
+        76,
+        88,
+        100,
+        112
+      ],
+      "index": 11,
+      "linked_palaces": [
+        {
+          "index": 3,
+          "relation": "三合",
+          "name": "官禄",
+          "ganzhi": "辛巳",
+          "major": [
+            {
+              "name": "太阳",
+              "brightness": "旺",
+              "mutagen": "禄"
+            }
+          ],
+          "minor": [
+            {
+              "name": "文昌",
+              "brightness": "庙"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "relation": "三合",
+          "name": "财帛",
+          "ganzhi": "乙酉",
+          "major": [
+            {
+              "name": "太阴",
+              "brightness": "不",
+              "mutagen": "科"
+            }
+          ],
+          "minor": [
+            {
+              "name": "文曲",
+              "brightness": "庙"
+            },
+            {
+              "name": "擎羊",
+              "brightness": "陷"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "relation": "对宫",
+          "name": "迁移",
+          "ganzhi": "癸未",
+          "major": [
+            {
+              "name": "天机",
+              "brightness": "陷"
+            }
+          ],
+          "minor": [
+            {
+              "name": "天钺"
+            },
+            {
+              "name": "火星",
+              "brightness": "利"
+            },
+            {
+              "name": "陀罗",
+              "brightness": "庙"
+            }
+          ]
+        }
+      ]
+    },
+    "selected_topic": {
+      "topic": "general",
+      "palace_name": "命宫",
+      "mapping_version": "topic-palace-selection-v1",
+      "scope": "选择结构视角，不是现实事件或人生结果断言"
+    }
+  },
+  "warnings": [
+    "py-iztro内嵌iztro版本尚未从包元数据独立核验；使用安装版本和源码哈希追踪",
+    "采用当前 py-iztro 默认流派，未做不同流派交叉校盘",
+    "宫位关联与四化是传统盘面结构，不代表事件已发生或必然发生",
+    "出生时刻靠近时辰或日界时，时间误差可能改变命盘",
+    "出生参数的字段确认状态未在此档案提供；适配器不会把已有值升级为已确认事实"
+  ]
+}

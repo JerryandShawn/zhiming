@@ -1,0 +1,112 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-08",
+  "order": 8,
+  "title": "本中余是具名顺序",
+  "level": "基础",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-07"
+  ],
+  "objectives": [
+    "理解藏干角色不等于气量实测。",
+    "知道二藏干结构没有自动补出的中气。"
+  ],
+  "paragraphs": [
+    "当前P8按所选司令段的逆序给藏干标角色。本气、中气、余气在这里是具名位置标签，不是古籍已经给出了精确百分比。",
+    "阿远卯支在本表列乙、甲：乙标本气、甲标余气。因为只有两项，第二项直接记余气，不再补一个中气凑成三层。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本例月支第二项藏干甲的角色为余气。〔c3〕",
+      "evidence_ids": [
+        "residual"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-08-q1",
+      "question": "卯支第二项在当前输出中标为什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "中气",
+          "value": "中气"
+        },
+        {
+          "option_id": "b",
+          "text": "余气",
+          "value": "余气"
+        },
+        {
+          "option_id": "c",
+          "text": "没有任何角色",
+          "value": "未知"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "二段结构的第二项明确是余气；这不是在测量甲的现实力量。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "residual",
+        "expected": "余气"
+      }
+    },
+    {
+      "quiz_id": "lesson-08-q2",
+      "question": "换另一张藏干表时，应保留什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "只保留最顺眼的字",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "合并两表全部成员",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "表名、顺序与各自差异",
+          "value": "preserve_named_table"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "具名差异不能靠混成一张无来源的表消除。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-named-methods",
+          "p8-school-tables"
+        ],
+        "expected": "preserve_named_table"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-named-methods",
+    "p8-school-tables"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "司令逆段序是项目定义，并非全部古法统一藏干序。",
+      "source_ids": [
+        "p8-named-methods",
+        "p8-school-tables"
+      ]
+    }
+  ],
+  "pending_review": [
+    "逆序角色与气量比例的对应没有历史或实测标定。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

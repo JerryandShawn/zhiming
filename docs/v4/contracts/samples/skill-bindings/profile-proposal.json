@@ -1,0 +1,1204 @@
+{
+  "schema": "p8-metaphysics-profile-proposal-v1",
+  "owner_user_id": "synthetic-skills-owner",
+  "subject_id": "synthetic-skills-subject",
+  "revision": 1,
+  "previous_version": null,
+  "change_reason": null,
+  "branches": [
+    {
+      "branch_id": "time-8c971e1db4feed70e0aafdcb",
+      "judgments": [
+        {
+          "topic": "格局候选",
+          "artifact_id": "chart-585684cf38a929e125d16520",
+          "path": "/data/p8/patterns",
+          "value": {
+            "method": "p8-pattern-condition-screen-v2-reviewed",
+            "school": "p8-explicit-multimethod-v1",
+            "source": "子平真诠·论用神/变化；项目候选筛选，不宣称成格",
+            "limits": [
+              "传统符号规则与项目诊断分数；不是现实事件预测，也没有科学效度或专家认证"
+            ],
+            "editorial_status": "project_candidate_screen",
+            "regular_eight": [
+              {
+                "pattern": "正官格",
+                "ten_god": "正官",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": false,
+                    "evidence": {
+                      "matches": [],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": true,
+                    "evidence": {
+                      "checks": {
+                        "伤官透出": false
+                      },
+                      "blocked": false,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "刑冲、合化与印星救应未判"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [
+                  "未见本筛选的显性牵制条件"
+                ],
+                "unsatisfied": [
+                  "月支藏该十神",
+                  "年月时透该十神"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "七杀格",
+                "ten_god": "七杀",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": false,
+                    "evidence": {
+                      "matches": [],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": true,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": false,
+                    "evidence": {
+                      "checks": {
+                        "财星透出且无食神透出": true
+                      },
+                      "blocked": true,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "食神制杀力量、身强及财食先后未判；有食神透出仅解除本条显性筛选"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [
+                  "年月时透该十神"
+                ],
+                "unsatisfied": [
+                  "月支藏该十神",
+                  "未见本筛选的显性牵制条件"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "正印格",
+                "ten_god": "正印",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": false,
+                    "evidence": {
+                      "matches": [],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": false,
+                    "evidence": {
+                      "checks": {
+                        "财星透出": true
+                      },
+                      "blocked": true,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "印轻前提未判；身强印重透杀及印多用财救应未判"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [],
+                "unsatisfied": [
+                  "月支藏该十神",
+                  "年月时透该十神",
+                  "未见本筛选的显性牵制条件"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "偏印格",
+                "ten_god": "偏印",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": false,
+                    "evidence": {
+                      "matches": [],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": true,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": false,
+                    "evidence": {
+                      "checks": {
+                        "财星透出": true
+                      },
+                      "blocked": true,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "印轻前提未判；身强印重透杀及印多用财救应未判"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [
+                  "年月时透该十神"
+                ],
+                "unsatisfied": [
+                  "月支藏该十神",
+                  "未见本筛选的显性牵制条件"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "正财格",
+                "ten_god": "正财",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": false,
+                    "evidence": {
+                      "matches": [],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": true,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": false,
+                    "evidence": {
+                      "checks": {
+                        "比劫透出": false,
+                        "七杀透出": true
+                      },
+                      "blocked": true,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "财轻比重前提未判；食神化劫、合杀等救应未判"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [
+                  "年月时透该十神"
+                ],
+                "unsatisfied": [
+                  "月支藏该十神",
+                  "未见本筛选的显性牵制条件"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "偏财格",
+                "ten_god": "偏财",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": false,
+                    "evidence": {
+                      "matches": [],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": false,
+                    "evidence": {
+                      "checks": {
+                        "比劫透出": false,
+                        "七杀透出": true
+                      },
+                      "blocked": true,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "财轻比重前提未判；食神化劫、合杀等救应未判"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [],
+                "unsatisfied": [
+                  "月支藏该十神",
+                  "年月时透该十神",
+                  "未见本筛选的显性牵制条件"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "食神格",
+                "ten_god": "食神",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": true,
+                    "evidence": {
+                      "matches": [
+                        {
+                          "stem": "丙",
+                          "ten_god": "食神",
+                          "qi_rank": 1,
+                          "role": "余气"
+                        }
+                      ],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": false,
+                    "evidence": {
+                      "checks": {
+                        "偏印透出": true
+                      },
+                      "blocked": true,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "生财露杀及救应未判"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [
+                  "月支藏该十神"
+                ],
+                "unsatisfied": [
+                  "年月时透该十神",
+                  "未见本筛选的显性牵制条件"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "伤官格",
+                "ten_god": "伤官",
+                "notes": [],
+                "conditions": [
+                  {
+                    "condition": "月支藏该十神",
+                    "satisfied": true,
+                    "evidence": {
+                      "matches": [
+                        {
+                          "stem": "丁",
+                          "ten_god": "伤官",
+                          "qi_rank": 0,
+                          "role": "本气"
+                        }
+                      ],
+                      "month_branch": "午"
+                    }
+                  },
+                  {
+                    "condition": "年月时透该十神",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "未见本筛选的显性牵制条件",
+                    "satisfied": true,
+                    "evidence": {
+                      "checks": {
+                        "非庚辛日主且正官透出": false
+                      },
+                      "blocked": false,
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "day_master": "甲",
+                      "metal_water_exception": false,
+                      "not_evaluated": [
+                        "庚辛例外按24号裁定；财印辅助、季节及伤官官星并透等专章限制未判"
+                      ]
+                    }
+                  }
+                ],
+                "satisfied": [
+                  "月支藏该十神",
+                  "未见本筛选的显性牵制条件"
+                ],
+                "unsatisfied": [
+                  "年月时透该十神"
+                ],
+                "screen_passed": false
+              }
+            ],
+            "regular_extra": [
+              {
+                "pattern": "建禄格",
+                "notes": [
+                  "三项是项目显性候选筛选；根气强弱、制伏有效、合去官杀与救应均未判"
+                ],
+                "conditions": [
+                  {
+                    "condition": "月令符合具名格局锚点",
+                    "satisfied": false,
+                    "evidence": {
+                      "day_master": "甲",
+                      "month": "午"
+                    }
+                  },
+                  {
+                    "condition": "透干满足一条候选取用路径",
+                    "satisfied": false,
+                    "evidence": {
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "lu_pathways": {
+                        "透官逢财或印": false,
+                        "透财逢食伤": false,
+                        "透杀逢食神候选制伏": false
+                      }
+                    }
+                  },
+                  {
+                    "condition": "未见本条显性败因",
+                    "satisfied": true,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  }
+                ],
+                "satisfied": [
+                  "未见本条显性败因"
+                ],
+                "unsatisfied": [
+                  "月令符合具名格局锚点",
+                  "透干满足一条候选取用路径"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "月劫格",
+                "notes": [
+                  "三项是项目显性候选筛选；根气强弱、制伏有效、合去官杀与救应均未判"
+                ],
+                "conditions": [
+                  {
+                    "condition": "月令符合具名格局锚点",
+                    "satisfied": false,
+                    "evidence": {
+                      "day_master": "甲",
+                      "month": "午"
+                    }
+                  },
+                  {
+                    "condition": "透干满足一条候选取用路径",
+                    "satisfied": false,
+                    "evidence": {
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "lu_pathways": {
+                        "透官逢财或印": false,
+                        "透财逢食伤": false,
+                        "透杀逢食神候选制伏": false
+                      }
+                    }
+                  },
+                  {
+                    "condition": "未见本条显性败因",
+                    "satisfied": true,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  }
+                ],
+                "satisfied": [
+                  "未见本条显性败因"
+                ],
+                "unsatisfied": [
+                  "月令符合具名格局锚点",
+                  "透干满足一条候选取用路径"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "阳刃格",
+                "notes": [
+                  "三项是项目显性候选筛选；根气强弱、制伏有效、合去官杀与救应均未判"
+                ],
+                "conditions": [
+                  {
+                    "condition": "月令符合具名格局锚点",
+                    "satisfied": false,
+                    "evidence": {
+                      "day_master": "甲",
+                      "month": "午"
+                    }
+                  },
+                  {
+                    "condition": "透干满足一条候选取用路径",
+                    "satisfied": true,
+                    "evidence": {
+                      "exposed": [
+                        "七杀",
+                        "偏印",
+                        "正财"
+                      ],
+                      "lu_pathways": {
+                        "透官逢财或印": false,
+                        "透财逢食伤": false,
+                        "透杀逢食神候选制伏": false
+                      }
+                    }
+                  },
+                  {
+                    "condition": "未见本条显性败因",
+                    "satisfied": true,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  }
+                ],
+                "satisfied": [
+                  "透干满足一条候选取用路径",
+                  "未见本条显性败因"
+                ],
+                "unsatisfied": [
+                  "月令符合具名格局锚点"
+                ],
+                "screen_passed": false
+              }
+            ],
+            "following": [
+              {
+                "pattern": "从财",
+                "conditions": [
+                  {
+                    "condition": "日主无同五行根",
+                    "satisfied": false,
+                    "evidence": [
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "伤官",
+                      "食神",
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "食神",
+                      "七杀",
+                      "偏财"
+                    ]
+                  },
+                  {
+                    "condition": "年月时无印比生扶",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "两种诊断分均不高于20",
+                    "satisfied": true,
+                    "evidence": [
+                      8.666667,
+                      10.0
+                    ]
+                  },
+                  {
+                    "condition": "该类十神至少占透藏非日干的一半",
+                    "satisfied": false,
+                    "evidence": [
+                      "偏财",
+                      "偏财",
+                      "偏财",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "月令含该类十神",
+                    "satisfied": false,
+                    "evidence": [
+                      "伤官",
+                      "食神"
+                    ]
+                  }
+                ],
+                "satisfied": [
+                  "两种诊断分均不高于20"
+                ],
+                "unsatisfied": [
+                  "日主无同五行根",
+                  "年月时无印比生扶",
+                  "该类十神至少占透藏非日干的一半",
+                  "月令含该类十神"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "从杀",
+                "conditions": [
+                  {
+                    "condition": "日主无同五行根",
+                    "satisfied": false,
+                    "evidence": [
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "伤官",
+                      "食神",
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "食神",
+                      "七杀",
+                      "偏财"
+                    ]
+                  },
+                  {
+                    "condition": "年月时无印比生扶",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "两种诊断分均不高于20",
+                    "satisfied": true,
+                    "evidence": [
+                      8.666667,
+                      10.0
+                    ]
+                  },
+                  {
+                    "condition": "该类十神至少占透藏非日干的一半",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "七杀"
+                    ]
+                  },
+                  {
+                    "condition": "月令含该类十神",
+                    "satisfied": false,
+                    "evidence": [
+                      "伤官",
+                      "食神"
+                    ]
+                  }
+                ],
+                "satisfied": [
+                  "两种诊断分均不高于20"
+                ],
+                "unsatisfied": [
+                  "日主无同五行根",
+                  "年月时无印比生扶",
+                  "该类十神至少占透藏非日干的一半",
+                  "月令含该类十神"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "从儿",
+                "conditions": [
+                  {
+                    "condition": "日主无同五行根",
+                    "satisfied": false,
+                    "evidence": [
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "伤官",
+                      "食神",
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "食神",
+                      "七杀",
+                      "偏财"
+                    ]
+                  },
+                  {
+                    "condition": "年月时无印比生扶",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "两种诊断分均不高于20",
+                    "satisfied": true,
+                    "evidence": [
+                      8.666667,
+                      10.0
+                    ]
+                  },
+                  {
+                    "condition": "该类十神至少占透藏非日干的一半",
+                    "satisfied": false,
+                    "evidence": [
+                      "伤官",
+                      "食神",
+                      "食神"
+                    ]
+                  },
+                  {
+                    "condition": "月令含该类十神",
+                    "satisfied": true,
+                    "evidence": [
+                      "伤官",
+                      "食神"
+                    ]
+                  }
+                ],
+                "satisfied": [
+                  "两种诊断分均不高于20",
+                  "月令含该类十神"
+                ],
+                "unsatisfied": [
+                  "日主无同五行根",
+                  "年月时无印比生扶",
+                  "该类十神至少占透藏非日干的一半"
+                ],
+                "screen_passed": false
+              },
+              {
+                "pattern": "从旺",
+                "conditions": [
+                  {
+                    "condition": "年月时全为印比",
+                    "satisfied": false,
+                    "evidence": [
+                      "七杀",
+                      "偏印",
+                      "正财"
+                    ]
+                  },
+                  {
+                    "condition": "四支本气全为印比",
+                    "satisfied": false,
+                    "evidence": [
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "伤官",
+                      "食神",
+                      "偏财",
+                      "偏印",
+                      "劫财",
+                      "食神",
+                      "七杀",
+                      "偏财"
+                    ]
+                  },
+                  {
+                    "condition": "两种诊断分均不低于80",
+                    "satisfied": false,
+                    "evidence": [
+                      8.666667,
+                      10.0
+                    ]
+                  }
+                ],
+                "satisfied": [],
+                "unsatisfied": [
+                  "年月时全为印比",
+                  "四支本气全为印比",
+                  "两种诊断分均不低于80"
+                ],
+                "screen_passed": false
+              }
+            ],
+            "establishment": "candidate_only",
+            "not_evaluated": [
+              "合化成立",
+              "救应力量",
+              "特殊外格",
+              "真假从格",
+              "岁运成败"
+            ],
+            "warnings": [
+              "过筛不等于成格；救应合化待正式阶段；采用显式选择的藏干表"
+            ]
+          },
+          "actual_method": {
+            "calendar": "lunar-python EightChar",
+            "day_sect": 2,
+            "year_boundary": "立春准确时刻，UTC+8 节气表",
+            "month_boundary": "节交接准确时刻，UTC+8 节气表",
+            "dayun_sect": 1,
+            "equation_of_time_applied": false,
+            "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+            "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+            "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+            "natal_day_hour_time": "2000-06-15 10:30:00",
+            "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+            "year_month_calendar_time": "2000-06-15T10:30:00",
+            "day_snapshot": "requested_date_12:00_UTC+8",
+            "p8": {
+              "entry": "P8ChartAdapter_explicit_only",
+              "strength": "two_project_v1_methods",
+              "selected_schools": {
+                "command": "sanming_5520",
+                "tianyi": "combined_common",
+                "blade": "yang_only",
+                "hidden_order": "reverse_command_segments"
+              },
+              "climate": "versioned_opening_excerpt_not_full_book_rules",
+              "dayun_sect": 1,
+              "default_v3_fields": "unchanged_before_existing_adapter_derivation"
+            }
+          }
+        },
+        {
+          "topic": "旺衰",
+          "artifact_id": "chart-585684cf38a929e125d16520",
+          "path": "/data/p8/strength",
+          "value": {
+            "method": "p8-two-editorial-strength-v1",
+            "school": "p8-explicit-multimethod-v1",
+            "source": "项目口径v1；旺相等术语参三命通会卷二，数值非古法原文",
+            "limits": [
+              "传统符号规则与项目诊断分数；不是现实事件预测，也没有科学效度或专家认证"
+            ],
+            "editorial_status": "project_method_v1_accepted_not_empirical_validity",
+            "methods": [
+              {
+                "method": "p8-month-root-exposed-v1",
+                "parameters": {
+                  "month_weight": 40,
+                  "root_weight_per_branch": 10,
+                  "exposed_weight_per_stem": 6.666666666666667,
+                  "hidden_weights": [
+                    0.6,
+                    0.3,
+                    0.1
+                  ],
+                  "two_hidden_weights": [
+                    0.7,
+                    0.3
+                  ],
+                  "lower": 45,
+                  "upper": 55
+                },
+                "score": 8.666667,
+                "conclusion": "偏弱",
+                "month_support": false,
+                "roots": [
+                  {
+                    "pillar": "year",
+                    "same_element_root_fraction": 0.1,
+                    "contribution": 1.0
+                  },
+                  {
+                    "pillar": "month",
+                    "same_element_root_fraction": 0,
+                    "contribution": 0
+                  },
+                  {
+                    "pillar": "day",
+                    "same_element_root_fraction": 0.1,
+                    "contribution": 1.0
+                  },
+                  {
+                    "pillar": "hour",
+                    "same_element_root_fraction": 0,
+                    "contribution": 0
+                  }
+                ],
+                "exposed": [
+                  {
+                    "pillar": "year",
+                    "stem": "庚",
+                    "supports": false
+                  },
+                  {
+                    "pillar": "month",
+                    "stem": "壬",
+                    "supports": true
+                  },
+                  {
+                    "pillar": "hour",
+                    "stem": "己",
+                    "supports": false
+                  }
+                ]
+              },
+              {
+                "method": "p8-order-ground-momentum-v1",
+                "parameters": {
+                  "axes_max": [
+                    40,
+                    30,
+                    30
+                  ],
+                  "lower": 45,
+                  "upper": 55
+                },
+                "score": 10.0,
+                "conclusion": "偏弱",
+                "axes": {
+                  "得令": {
+                    "value": false,
+                    "score": 0
+                  },
+                  "得地": {
+                    "supportive_branches": [],
+                    "score": 0.0
+                  },
+                  "得势": {
+                    "supportive_exposed": [
+                      "month"
+                    ],
+                    "score": 10
+                  }
+                }
+              }
+            ],
+            "agreement": true,
+            "hidden_stems_used": {
+              "寅": "甲丙戊",
+              "卯": "乙甲",
+              "辰": "戊壬乙",
+              "巳": "丙庚戊",
+              "午": "丁丙",
+              "未": "己甲丁",
+              "申": "庚壬戊",
+              "酉": "辛庚",
+              "戌": "戊丙辛",
+              "亥": "壬甲戊",
+              "子": "癸壬",
+              "丑": "己庚癸"
+            },
+            "warning": "项目自定权重与45/55阈值；两法并列，不合并唯一结论；不处理合化/燥湿减力"
+          },
+          "actual_method": {
+            "calendar": "lunar-python EightChar",
+            "day_sect": 2,
+            "year_boundary": "立春准确时刻，UTC+8 节气表",
+            "month_boundary": "节交接准确时刻，UTC+8 节气表",
+            "dayun_sect": 1,
+            "equation_of_time_applied": false,
+            "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+            "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+            "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+            "natal_day_hour_time": "2000-06-15 10:30:00",
+            "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+            "year_month_calendar_time": "2000-06-15T10:30:00",
+            "day_snapshot": "requested_date_12:00_UTC+8",
+            "p8": {
+              "entry": "P8ChartAdapter_explicit_only",
+              "strength": "two_project_v1_methods",
+              "selected_schools": {
+                "command": "sanming_5520",
+                "tianyi": "combined_common",
+                "blade": "yang_only",
+                "hidden_order": "reverse_command_segments"
+              },
+              "climate": "versioned_opening_excerpt_not_full_book_rules",
+              "dayun_sect": 1,
+              "default_v3_fields": "unchanged_before_existing_adapter_derivation"
+            }
+          }
+        },
+        {
+          "topic": "喜用候选",
+          "artifact_id": "chart-585684cf38a929e125d16520",
+          "path": "/data/p8/useful_candidates",
+          "value": {
+            "method": "p8-three-useful-proposals-v2-reviewed",
+            "school": "p8-explicit-multimethod-v1",
+            "source": "扶抑为项目诊断；调候为版本化摘表；格局参子平真诠顺逆用概念",
+            "limits": [
+              "传统符号规则与项目诊断分数；不是现实事件预测，也没有科学效度或专家认证"
+            ],
+            "balancing": [
+              {
+                "strength_method": "p8-month-root-exposed-v1",
+                "conclusion": "偏弱",
+                "candidate_stems": [
+                  "甲",
+                  "乙",
+                  "壬",
+                  "癸"
+                ],
+                "status": "candidate"
+              },
+              {
+                "strength_method": "p8-order-ground-momentum-v1",
+                "conclusion": "偏弱",
+                "candidate_stems": [
+                  "甲",
+                  "乙",
+                  "壬",
+                  "癸"
+                ],
+                "status": "candidate"
+              }
+            ],
+            "climate": {
+              "candidate_stems": [
+                "癸",
+                "丁",
+                "庚"
+              ],
+              "source_locator": "论甲；p33"
+            },
+            "pattern": [
+              {
+                "pattern": "食神格",
+                "pattern_screen_passed": false,
+                "candidate_ten_gods": [
+                  "偏财"
+                ],
+                "candidate_stems": [
+                  "戊"
+                ]
+              },
+              {
+                "pattern": "伤官格",
+                "pattern_screen_passed": false,
+                "candidate_ten_gods": [
+                  "正印",
+                  "正财"
+                ],
+                "candidate_stems": [
+                  "己",
+                  "癸"
+                ]
+              }
+            ],
+            "consensus_stems": [
+              "癸"
+            ],
+            "disagreements": {
+              "扶抑": [
+                "甲",
+                "乙",
+                "壬"
+              ],
+              "调候": [
+                "丁",
+                "庚"
+              ],
+              "格局": [
+                "戊",
+                "己"
+              ]
+            },
+            "comparison_scope": "候选天干集合交集，不按票数裁定喜用；扶抑自身分歧保留",
+            "warnings": [
+              "不使用五行缺什么补什么，不据此给职业/健康/投资保证；完整取用须复核合冲与流派例外"
+            ],
+            "pattern_support": {
+              "正官": [
+                "正财",
+                "正印"
+              ],
+              "七杀": [
+                "食神",
+                "正印",
+                "偏印"
+              ],
+              "正印": [
+                "正官"
+              ],
+              "偏印": [
+                "正财"
+              ],
+              "正财": [
+                "食神",
+                "正官"
+              ],
+              "偏财": [
+                "食神",
+                "正官"
+              ],
+              "食神": [
+                "偏财"
+              ],
+              "伤官": [
+                "正印",
+                "正财"
+              ]
+            },
+            "pattern_support_note": "七杀用食或用印为并列候选，不主张同时并用；第三十九章力量与先后条件未判"
+          },
+          "actual_method": {
+            "calendar": "lunar-python EightChar",
+            "day_sect": 2,
+            "year_boundary": "立春准确时刻，UTC+8 节气表",
+            "month_boundary": "节交接准确时刻，UTC+8 节气表",
+            "dayun_sect": 1,
+            "equation_of_time_applied": false,
+            "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+            "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+            "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+            "natal_day_hour_time": "2000-06-15 10:30:00",
+            "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+            "year_month_calendar_time": "2000-06-15T10:30:00",
+            "day_snapshot": "requested_date_12:00_UTC+8",
+            "p8": {
+              "entry": "P8ChartAdapter_explicit_only",
+              "strength": "two_project_v1_methods",
+              "selected_schools": {
+                "command": "sanming_5520",
+                "tianyi": "combined_common",
+                "blade": "yang_only",
+                "hidden_order": "reverse_command_segments"
+              },
+              "climate": "versioned_opening_excerpt_not_full_book_rules",
+              "dayun_sect": 1,
+              "default_v3_fields": "unchanged_before_existing_adapter_derivation"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "status": "calculation_proposal_not_persisted",
+  "writes": 0,
+  "limits": [
+    "多个时间分支与流派判断并列保留；候选不是事实，档案持久化/版本更正由主线服务负责。"
+  ],
+  "version_id": "metaphysics-profile-3b221cddbac3fd68fba5aa44"
+}

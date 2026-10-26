@@ -1,0 +1,148 @@
+{
+  "version": "p8-direct-base-detached-bootstrap-help-v1",
+  "started_at_beijing": "2026-10-21T09:42:55.839748+08:00",
+  "fixed_sha256_before": {
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe": "f79a5d8c0415d7946468864b02156bfd771a6a5336bce178721dbddb58b54672",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe": "f38084ff0b75c199883d4369bce0d142e08ade5e3b66a0a7f42085599468b751",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\pyvenv.cfg": "131b393661b76c90b7ff21cd8d465513787b500761bbe15c82a90cc23706fa44",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_identity_child.py": "b53380fa72e6597018789daee1887df4a0c3bb24175dde5377a557711ff8a371",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_parent_probe.py": "5619098ce313afd702f034bfbece338d6ad9a9e25deb7a91b98d407d9f94c23a",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_job.py": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.dll": "3432a83cbc355f017b7da313cc2ea661b01517f8772da67b603edd7203b1b6ef",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python3.dll": "6639c0fa6da4d3147711a817a373ac787bb605e0b910b78a84ee25eb5afac6bd",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_detached_bootstrap_help.py": "d9be489f12f02e46fdf08ee9711f2a78d8670594a76cbaf7107a6df96255fdde",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_hold_child.py": "0023218d005627ce6cd4cdc6ec8ebf6c04b1903492f1cd0a4df922c3d7cacc76",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_job_observer.py": "151108f00edf98de5b108971869cc7b7f9024ffcac7619d2f53f24d796d432c1"
+  },
+  "outer_limit": 4,
+  "inner_limit": 3,
+  "child_hold_seconds": 0.0,
+  "creation_flags": 12,
+  "real_model_requests": 0,
+  "server_access": false,
+  "collector_invocations": 0,
+  "pytest_invocations": 0,
+  "trace_invocations": 0,
+  "bootstrap_help_launch_attempts": 1,
+  "transport_approved_for_sampling": false,
+  "acceptance_gate": "child_exit_zero_and_inner_total_exactly_one",
+  "observations_are_exhaustive": false,
+  "state": "bootstrap_help_only",
+  "a_reference": {
+    "path": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-detached-015b1e82aba8463588e8c7c1c7f96150\\final.json",
+    "sha256": "34c09fafdfa3022e568e45a3a4eb020e6a3f5f0eb81206d8defb68f736d00254"
+  },
+  "limitations": [
+    "Only fixed bootstrap --help, not collect_core/bootstrap_guard/pytest/trace.",
+    "B internal Python identity not separately recorded; A native identity is separate.",
+    "Launch proof grants no sampling permission and changes no production guard."
+  ],
+  "outer_before": {
+    "total": 1,
+    "active": 1,
+    "terminated": 0
+  },
+  "row": {
+    "kind": "B-bootstrap-help-only",
+    "started_at_beijing": "2026-10-21T09:42:55.839748+08:00",
+    "command": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+      "-I",
+      "-S",
+      "-B",
+      "-X",
+      "pycache_prefix=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-detached-help-dbf7aa7b3b95402db17e413b5e675f1b\\cache-B",
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py",
+      "--help"
+    ],
+    "state": "exited_job_empty",
+    "inner_before": {
+      "total": 0,
+      "active": 0,
+      "terminated": 0
+    },
+    "owned_popen_pid": 46212,
+    "suspended_image": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+    "assigned": {
+      "total": 1,
+      "active": 1,
+      "terminated": 0
+    },
+    "exit_code": 0,
+    "inner_after": {
+      "total": 1,
+      "active": 0,
+      "terminated": 0
+    },
+    "observations": {
+      "accounting": {
+        "total": 1,
+        "active": 0,
+        "terminated": 0
+      },
+      "elapsed_at_last_sample": 0.625,
+      "events": [
+        {
+          "message": 6,
+          "pid": 46212
+        },
+        {
+          "message": 7,
+          "pid": 46212
+        },
+        {
+          "message": 4
+        }
+      ],
+      "processes": [
+        {
+          "pid": 46212,
+          "image": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+          "creation_filetime": 134370205758416225,
+          "parent_pid": 54180,
+          "state": "observed_exited",
+          "membership_confirmed": true,
+          "incomplete": false,
+          "sources": [
+            "job_iocp_message",
+            "job_pid_list"
+          ]
+        }
+      ],
+      "notes": [],
+      "complete": false,
+      "limits": [
+        "IOCP messages are not guaranteed; no identity is inferred.",
+        "Parent PID is a snapshot, not a retained parent identity.",
+        "No Job limit, total==1 gate, or sampling permission changes."
+      ]
+    },
+    "inner_cleanup_before_close": {
+      "total": 1,
+      "active": 0,
+      "terminated": 0
+    },
+    "completed_at_beijing": "2026-10-21T09:42:56.465402+08:00"
+  },
+  "fixed_sha256_after": {
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe": "f79a5d8c0415d7946468864b02156bfd771a6a5336bce178721dbddb58b54672",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe": "f38084ff0b75c199883d4369bce0d142e08ade5e3b66a0a7f42085599468b751",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\pyvenv.cfg": "131b393661b76c90b7ff21cd8d465513787b500761bbe15c82a90cc23706fa44",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_identity_child.py": "b53380fa72e6597018789daee1887df4a0c3bb24175dde5377a557711ff8a371",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_parent_probe.py": "5619098ce313afd702f034bfbece338d6ad9a9e25deb7a91b98d407d9f94c23a",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_job.py": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.dll": "3432a83cbc355f017b7da313cc2ea661b01517f8772da67b603edd7203b1b6ef",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python3.dll": "6639c0fa6da4d3147711a817a373ac787bb605e0b910b78a84ee25eb5afac6bd",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_detached_bootstrap_help.py": "d9be489f12f02e46fdf08ee9711f2a78d8670594a76cbaf7107a6df96255fdde",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_hold_child.py": "0023218d005627ce6cd4cdc6ec8ebf6c04b1903492f1cd0a4df922c3d7cacc76",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_job_observer.py": "151108f00edf98de5b108971869cc7b7f9024ffcac7619d2f53f24d796d432c1"
+  },
+  "outer_final": {
+    "total": 2,
+    "active": 1,
+    "terminated": 0
+  },
+  "completed_at_beijing": "2026-10-21T09:42:56.469919+08:00"
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-05",
+  "order": 5,
+  "title": "比劫与食伤：同类和输出",
+  "level": "基础",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-04"
+  ],
+  "objectives": [
+    "分清比肩、劫财的阴阳差别。",
+    "读懂我生关系的食神与伤官。"
+  ],
+  "paragraphs": [
+    "同五行里，同阴阳叫比肩，异阴阳叫劫财；日主所生的五行里，同阴阳叫食神，异阴阳叫伤官。这里的名称只是分类，不说明有人来抢钱或伤害谁。",
+    "阿远以丁为参照，丁是比肩、丙是劫财，己是食神、戊是伤官。练习时先走生克，再核阴阳，比背一组吉凶词更可靠。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "丁日主的完整十神表把己登记为食神。〔c3〕",
+      "evidence_ids": [
+        "food"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-05-q1",
+      "question": "当前丁日主表中，己对应哪类关系？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "食神",
+          "value": "食神"
+        },
+        {
+          "option_id": "b",
+          "text": "伤官",
+          "value": "伤官"
+        },
+        {
+          "option_id": "c",
+          "text": "正财",
+          "value": "正财"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "丁与己同属阴，火生土，得到食神；换成戊就不是同一标签。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "food",
+        "expected": "食神"
+      }
+    },
+    {
+      "quiz_id": "lesson-05-q2",
+      "question": "劫财这个名字本身能证明什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "财物将被抢夺",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "仅是一种同五行异阴阳关系",
+          "value": "symbolic_relation"
+        },
+        {
+          "option_id": "c",
+          "text": "已经出现坏朋友",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "先区分关系名称与现实事件；是否有财务问题仍看真实账目。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-elements"
+        ],
+        "expected": "symbolic_relation"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-elements"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "十神基础算式与强弱、制化解释分开。",
+      "source_ids": [
+        "p8-elements"
+      ]
+    }
+  ],
+  "pending_review": [
+    "传统六亲映射有语境，本课不据符号确认第三人身份。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

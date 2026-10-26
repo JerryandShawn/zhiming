@@ -1,0 +1,58 @@
+{
+  "version": "p8-night28-m1-validation-v1",
+  "recorded_at_beijing": "2026-10-20T23:03:32+08:00",
+  "test_scope": "targeted_only_not_full_v4",
+  "tests": {
+    "passed": 370,
+    "skipped": 0,
+    "elapsed_seconds": 5.17
+  },
+  "source_note": "M1-M4 plus stable almanac preparation; full regression pending next Beijing minute15-30 window",
+  "style_python_files": 133,
+  "protected_files_unchanged": 141,
+  "samples": {
+    "bazi": {
+      "path": "docs/v4/contracts/samples/ayuan_bazi.json",
+      "sha256": "ba2059065492707ae630fa179292f1b8e30c06f585fbf76d38a01fca8ef3566a",
+      "bytes": 1223007,
+      "version": "p8-chart-compute-preview-v1.1",
+      "structural_hits": 9,
+      "boundary_alerts": 1,
+      "c_aliases": 28,
+      "r_aliases": 10
+    },
+    "ziwei": {
+      "path": "docs/v4/contracts/samples/ayuan_ziwei.json",
+      "sha256": "53eb16082613e726192fa55ee48ccb3e618502921119a0c462d30fd51d67449f",
+      "bytes": 1199849,
+      "version": "p8-chart-compute-preview-v1.1",
+      "structural_hits": 0,
+      "boundary_alerts": 1,
+      "c_aliases": 9,
+      "r_aliases": 1
+    },
+    "astro": {
+      "path": "docs/v4/contracts/samples/ayuan_astro.json",
+      "sha256": "d6ad1ee1a0e9c64cee9a13927cf5e55ebec3f9fa6d90530be48cf68de5a005f4",
+      "bytes": 1381248,
+      "version": "p8-chart-compute-preview-v1.1",
+      "structural_hits": 0,
+      "boundary_alerts": 1,
+      "c_aliases": 9,
+      "r_aliases": 1
+    }
+  },
+  "e2": {
+    "included": 14,
+    "subset": 80,
+    "excluded": 66,
+    "same_source_placebo": 14,
+    "no_chart": 14,
+    "professional_score": null
+  },
+  "model_calls": 0,
+  "server_access": false,
+  "feishu_calls": 0,
+  "database_migrations": [],
+  "pr_state": "draft_unmerged"
+}

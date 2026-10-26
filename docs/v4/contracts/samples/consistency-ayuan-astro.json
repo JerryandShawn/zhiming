@@ -1,0 +1,387 @@
+{
+  "fixture_kind": "synthetic_assertion_preview",
+  "input_sample": "ayuan_astro.json",
+  "answer_text": "本命太阳在双鱼21.2度。本命木星在第8宫。行运太阳在白羊座。",
+  "result": {
+    "version": "p8-chart-consistency-preview-v1",
+    "scope": {
+      "owner_user_id": "synthetic-owner-ayuan",
+      "subject_id": "synthetic-subject-ayuan",
+      "revision": 1,
+      "operation_id": "synthetic-ayuan-astro-20261019"
+    },
+    "data": {
+      "status": "inconsistent",
+      "review_key": "chart_inconsistency",
+      "policy": "record_only",
+      "text_length": 31,
+      "checks": [
+        {
+          "field": "planet",
+          "outcome": "matched",
+          "reason_code": "value_matches",
+          "assertion": {
+            "field": "planet",
+            "key": "太阳",
+            "value": {
+              "sign": "双鱼",
+              "degree": 21.2,
+              "tolerance": 0.05
+            },
+            "negative": false,
+            "component": "position"
+          },
+          "expected_values": [
+            {
+              "sign": "双鱼",
+              "degree": 21.196540000000027
+            }
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+              "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data/planets/太阳"
+            }
+          ],
+          "input_c_aliases": [
+            "c7"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c7〕",
+          "fact_sources": [
+            {
+              "school": {
+                "zodiac": "tropical",
+                "coordinates": "geocentric ecliptic longitude",
+                "aspects": "0/60/90/120/180 度，本命统一容许度 6 度，行运 2 度",
+                "houses": "Placidus",
+                "birth_timezone": "显式固定 UTC 偏移；不自动推断历史夏令时",
+                "time_scale": "民用 UTC 近似作为 UT 输入 swe.calc_ut/houses_ex",
+                "ephemeris": [
+                  "Moshier"
+                ],
+                "returned_flags": {
+                  "natal": {
+                    "太阳": 260,
+                    "月亮": 260,
+                    "水星": 260,
+                    "金星": 260,
+                    "火星": 260,
+                    "木星": 260,
+                    "土星": 260,
+                    "天王": 260,
+                    "海王": 260,
+                    "冥王": 260
+                  },
+                  "transit_snapshot": {
+                    "太阳": 260,
+                    "月亮": 260,
+                    "水星": 260,
+                    "金星": 260,
+                    "火星": 260,
+                    "木星": 260,
+                    "土星": 260,
+                    "天王": 260,
+                    "海王": 260,
+                    "冥王": 260
+                  }
+                },
+                "requested_flags": 260,
+                "input_time": "civil_minus_explicit_offset_to_UTC",
+                "delta_t": "calc_ut converts UT internally; civil UTC used as UT approximation",
+                "transit_target": "requested_date_12:00_UTC+8_snapshot",
+                "ephemeris_files": "Moshier requested explicitly; no Swiss data-file fallback presumed"
+              },
+              "source": "https://www.astro.com/swisseph/swephprg.htm"
+            }
+          ],
+          "check_id": "check-1",
+          "span": {
+            "start": 0,
+            "end": 12
+          }
+        },
+        {
+          "field": "planet",
+          "outcome": "contradiction",
+          "reason_code": "value_differs",
+          "assertion": {
+            "field": "planet",
+            "key": "木星",
+            "value": 8,
+            "negative": false,
+            "component": "house"
+          },
+          "expected_values": [
+            7
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+              "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data/planets/木星"
+            }
+          ],
+          "input_c_aliases": [
+            "c7"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c7〕",
+          "fact_sources": [
+            {
+              "school": {
+                "zodiac": "tropical",
+                "coordinates": "geocentric ecliptic longitude",
+                "aspects": "0/60/90/120/180 度，本命统一容许度 6 度，行运 2 度",
+                "houses": "Placidus",
+                "birth_timezone": "显式固定 UTC 偏移；不自动推断历史夏令时",
+                "time_scale": "民用 UTC 近似作为 UT 输入 swe.calc_ut/houses_ex",
+                "ephemeris": [
+                  "Moshier"
+                ],
+                "returned_flags": {
+                  "natal": {
+                    "太阳": 260,
+                    "月亮": 260,
+                    "水星": 260,
+                    "金星": 260,
+                    "火星": 260,
+                    "木星": 260,
+                    "土星": 260,
+                    "天王": 260,
+                    "海王": 260,
+                    "冥王": 260
+                  },
+                  "transit_snapshot": {
+                    "太阳": 260,
+                    "月亮": 260,
+                    "水星": 260,
+                    "金星": 260,
+                    "火星": 260,
+                    "木星": 260,
+                    "土星": 260,
+                    "天王": 260,
+                    "海王": 260,
+                    "冥王": 260
+                  }
+                },
+                "requested_flags": 260,
+                "input_time": "civil_minus_explicit_offset_to_UTC",
+                "delta_t": "calc_ut converts UT internally; civil UTC used as UT approximation",
+                "transit_target": "requested_date_12:00_UTC+8_snapshot",
+                "ephemeris_files": "Moshier requested explicitly; no Swiss data-file fallback presumed"
+              },
+              "source": "https://www.astro.com/swisseph/swephprg.htm"
+            }
+          ],
+          "check_id": "check-2",
+          "span": {
+            "start": 13,
+            "end": 21
+          }
+        },
+        {
+          "field": null,
+          "outcome": "needs_review",
+          "reason_code": "other_layer",
+          "assertion": null,
+          "expected_values": [],
+          "source_refs": [],
+          "input_c_aliases": [],
+          "input_r_aliases": [],
+          "input_citations": "",
+          "fact_sources": [],
+          "check_id": "check-3",
+          "span": {
+            "start": 22,
+            "end": 30
+          }
+        }
+      ],
+      "coverage": {
+        "checked": 2,
+        "deferred": 1,
+        "not_checked": 0
+      },
+      "input_aliases": {
+        "c": [
+          {
+            "alias": "c7",
+            "scope": {
+              "owner_user_id": "synthetic-owner-ayuan",
+              "subject_id": "synthetic-subject-ayuan",
+              "revision": 1,
+              "operation_id": "synthetic-ayuan-astro-20261019"
+            },
+            "ref": {
+              "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+              "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data"
+            },
+            "value_sha256": "fb3a95f855c9562c48863c5597f671b16c3a2e4190aa49809bd1ea315b5459a4",
+            "branch_id": "time-ce23fbc4a4c6c3e51da04e0a",
+            "basis": "actual_UTC",
+            "claim_id": "demo-claim-fe925eb88bf4d787187a583b21abeef48945924f671428b02e83a601f16a07ca"
+          }
+        ],
+        "r": []
+      },
+      "input_document_ids": [
+        "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+        "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+        "doc-482ebeed6aab889875b154c8e79dda7dc7c1eb6c209b5bb24d663bdb64345c34",
+        "doc-ce0de687d4f35f8fe3a3be2fe325b64b93fad71965367db03e551c9d43f3ac31"
+      ],
+      "input_scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-astro-20261019"
+      }
+    },
+    "rule_hits": [
+      {
+        "rule_id": "p8.consistency.planet.matched",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/0"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.planet.contradiction",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/1"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.context_guard.needs_review",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/2"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "p8-explicit-text-consistency-v1",
+        "title": "P8明确文本断言一致性项目规则",
+        "kind": "project_implementation",
+        "path": "mingjing_core/skills/consistency.py",
+        "locators": [
+          "consistency_text.parse_clause",
+          "consistency_eval.evaluate",
+          "learning_input.verified_input"
+        ],
+        "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+      }
+    ],
+    "document_id": "tool-0fb4c7b3b5904150be5d5b23a2a7e0f93cee10ef61adabcfa83f7fab5987cb7e",
+    "aliases": {
+      "c": [
+        {
+          "alias": "c1",
+          "path": "/data/checks/0",
+          "value_sha256": "a2a76d9bc680f616ff154fc24695b044f8100dba0f30ba111b7600e7c9beee1c",
+          "claim_id": "claim-bbd2ebdefcdacadd4a065a7165590b0bee624fe07f7f71a8cdabe59fd4f45b67"
+        },
+        {
+          "alias": "c2",
+          "path": "/data/checks/1",
+          "value_sha256": "2a276ff4b152989dbbf6260c39db1d456ad3ae1bbc68a5512318ed30770beb67",
+          "claim_id": "claim-ed788c340cbb4554f479850d2b408bdf4d676002fd6dff665b45f700d5e1a6c9"
+        },
+        {
+          "alias": "c3",
+          "path": "/data/checks/2",
+          "value_sha256": "239e8d47109a45f5a960fead407f912cec8fa24daea35c92c013ca6ee3dfab13",
+          "claim_id": "claim-89590e5366aee51dd0ad9e90640306f8cdf3adcbc01df846b4bf605f7f31bd4b"
+        }
+      ],
+      "r": [
+        {
+          "alias": "r1",
+          "path": "/rule_hits/0",
+          "rule_id": "p8.consistency.planet.matched",
+          "value_sha256": "3c2c54eccae54b2647ab43965312d44136a2b99128413ea392891e0dd956d263",
+          "claim_id": "claim-37afba6d5a9782ea5aeb009471f7501366c17b3cbfe2a2af7945e7d0807c6385",
+          "evidence_aliases": [
+            "c1"
+          ]
+        },
+        {
+          "alias": "r2",
+          "path": "/rule_hits/1",
+          "rule_id": "p8.consistency.planet.contradiction",
+          "value_sha256": "fb764c3d4038dfef556181c740793e76c14779ecf268f6e381d2050f20b549ec",
+          "claim_id": "claim-69a4d781eb5f1f049bd018871869c3c0f7c7c8bbdd4a43476593894a668108a8",
+          "evidence_aliases": [
+            "c2"
+          ]
+        },
+        {
+          "alias": "r3",
+          "path": "/rule_hits/2",
+          "rule_id": "p8.consistency.context_guard.needs_review",
+          "value_sha256": "0be186b0ea827300cf94b0a7efac52c5815cf2a6acc2d7dd8779e93c1c8b7be2",
+          "claim_id": "claim-f6266c92f17a7ae6d0945276e5eed4fb38aacad0231f43aab11aacd00c31fc69",
+          "evidence_aliases": [
+            "c3"
+          ]
+        }
+      ]
+    },
+    "effects": {
+      "model_calls": 0,
+      "writes": 0,
+      "alias_registry": "ephemeral_only"
+    },
+    "limits": [
+      "有限中文白名单语法，精度优先、召回有限；no_contradiction_found不等于全文已核或正确。",
+      "格局筛选/三法用神都保留候选属性；已成格/用神已定、引用、假设、疑问、比较口径须人工复核。",
+      "输入hash只校验内容不是签名，主线须验证provider、owner、修订与撤销；expected_scope只是可选上下文比较。",
+      "顶层c/r仅本结果比较规则命名空间；data.input_aliases/input_citations是原盘命名空间，不能混用短名。",
+      "不回显正文、不发模型、不自动阻断/改写；主线review #15仍须独立授权与集成验收。"
+    ]
+  }
+}

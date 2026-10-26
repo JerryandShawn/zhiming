@@ -1,0 +1,205 @@
+{
+  "schema_version": "core-calculation-validation-v1",
+  "checked_at": "2026-10-18T07:58:32.572662+00:00",
+  "python_version": "3.11.16",
+  "synthetic_only": true,
+  "tests": {
+    "run": 60,
+    "passed": 60,
+    "skipped": 0
+  },
+  "pack": {
+    "version": "core-knowledge-2026-10-11-v2",
+    "hash": "a4344149e979d5ce044159275d8d460898a36a43a30e4d111c6d4304d08c59cc",
+    "rules": 16,
+    "sources": 6,
+    "cards": 78
+  },
+  "chart_rules_exercised": [
+    "astro.natal.major-configurations.v1",
+    "astro.natal.placements.v1",
+    "astro.target.transit-snapshot.v1",
+    "bazi.natal.hidden-ten-gods.v1",
+    "bazi.natal.raw-relations.v1",
+    "bazi.natal.seasonal-structure.v1",
+    "bazi.target.day-snapshot.v1",
+    "bazi.target.monthly-period.v1",
+    "bazi.target.yearly-period.v1",
+    "ziwei.daily.mutagen-structure.v1",
+    "ziwei.decadal.mutagen-structure.v1",
+    "ziwei.monthly.mutagen-structure.v1",
+    "ziwei.natal.linked-palaces.v1",
+    "ziwei.yearly.mutagen-structure.v1"
+  ],
+  "software": {
+    "lunar-python": {
+      "version": "1.4.8",
+      "license_metadata": "MIT"
+    },
+    "py-iztro": {
+      "version": "0.1.5",
+      "license_metadata": "not_exposed"
+    },
+    "pythonmonkey": {
+      "version": "1.1.0",
+      "license_metadata": "not_exposed"
+    },
+    "pyswisseph": {
+      "version": "2.10.3.2",
+      "license_metadata": "not_exposed"
+    }
+  },
+  "actual_profiles": {
+    "bazi": {
+      "actual_method": {
+        "calendar": "lunar-python EightChar",
+        "day_sect": 2,
+        "year_boundary": "立春准确时刻，UTC+8 节气表",
+        "month_boundary": "节交接准确时刻，UTC+8 节气表",
+        "dayun_sect": 1,
+        "equation_of_time_applied": false,
+        "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+        "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+        "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+        "natal_day_hour_time": "2012-05-03 12:14:16",
+        "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+        "year_month_calendar_time": "2012-05-03T13:18:00",
+        "day_snapshot": "requested_date_12:00_UTC+8"
+      },
+      "versions": {
+        "lunar-python": "1.4.8",
+        "engine": "bazi-core-3.1",
+        "source_sha256": {
+          "bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+          "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+          "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+        }
+      },
+      "warnings": [
+        "五行数量不等于实际力量；未计藏干权重、通根、合化及调候",
+        "喜用神仅为探索线索，不可单独作为行动建议或吉凶结论",
+        "出生时刻误差及日界流派可能改变日时柱；未估计出生时间误差",
+        "出生参数的字段确认状态未在此档案提供；适配器不会把已有值升级为已确认事实"
+      ],
+      "fallback": []
+    },
+    "ziwei": {
+      "actual_method": {
+        "calendar": "py-iztro by_solar 默认历法与闰月规则",
+        "hour_index": 6,
+        "late_zi": "23:00 单独编码为 12，由 py-iztro 默认日界规则处理",
+        "equation_of_time_applied": false,
+        "links": "本宫的两组三合宫及对宫；四化按真实星曜位置关联本命宫和运限宫",
+        "by_solar_defaults": {
+          "fix_leap": "True",
+          "language": "'zh-CN'"
+        },
+        "local_time": "local_mean_solar_time_without_equation_of_time",
+        "leap_month": "solar_input_with_installed_by_solar_defaults",
+        "horoscope_layers": [
+          "decadal",
+          "yearly",
+          "monthly",
+          "daily"
+        ]
+      },
+      "versions": {
+        "py-iztro": "0.1.5",
+        "pythonmonkey": "1.1.0",
+        "engine": "ziwei-core-3.1",
+        "iztro_upstream_declared": "2.4.4",
+        "iztro_upstream_version_source": "installed_py_iztro_distribution_description",
+        "iztro_bundle_sha256": {
+          "py_iztro/res/iztro-2.5.0.min.js": "09333d6a2da7fff7bd338134c8d17de0d589259c16a70ece1db1d64e17217ea0"
+        },
+        "upstream_version_independently_verified": false,
+        "source_sha256": {
+          "ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+          "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+          "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+        }
+      },
+      "warnings": [
+        "py-iztro内嵌iztro版本尚未从包元数据独立核验；使用安装版本和源码哈希追踪",
+        "采用当前 py-iztro 默认流派，未做不同流派交叉校盘",
+        "宫位关联与四化是传统盘面结构，不代表事件已发生或必然发生",
+        "出生时刻靠近时辰或日界时，时间误差可能改变命盘",
+        "出生参数的字段确认状态未在此档案提供；适配器不会把已有值升级为已确认事实"
+      ],
+      "fallback": []
+    },
+    "astro": {
+      "actual_method": {
+        "zodiac": "tropical",
+        "coordinates": "geocentric ecliptic longitude",
+        "aspects": "0/60/90/120/180 度，本命统一容许度 6 度，行运 2 度",
+        "houses": "Placidus",
+        "birth_timezone": "显式固定 UTC 偏移；不自动推断历史夏令时",
+        "time_scale": "民用 UTC 近似作为 UT 输入 swe.calc_ut/houses_ex",
+        "ephemeris": [
+          "Moshier"
+        ],
+        "returned_flags": {
+          "natal": {
+            "太阳": 260,
+            "月亮": 260,
+            "水星": 260,
+            "金星": 260,
+            "火星": 260,
+            "木星": 260,
+            "土星": 260,
+            "天王": 260,
+            "海王": 260,
+            "冥王": 260
+          },
+          "transit_snapshot": {
+            "太阳": 260,
+            "月亮": 260,
+            "水星": 260,
+            "金星": 260,
+            "火星": 260,
+            "木星": 260,
+            "土星": 260,
+            "天王": 260,
+            "海王": 260,
+            "冥王": 260
+          }
+        },
+        "requested_flags": 260,
+        "input_time": "civil_minus_explicit_offset_to_UTC",
+        "delta_t": "calc_ut converts UT internally; civil UTC used as UT approximation",
+        "transit_target": "requested_date_12:00_UTC+8_snapshot",
+        "ephemeris_files": "Moshier requested explicitly; no Swiss data-file fallback presumed"
+      },
+      "versions": {
+        "pyswisseph": "2.10.3.2",
+        "swisseph": "2.10.03",
+        "engine": "astro-core-3.1",
+        "source_sha256": {
+          "astro.py": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8",
+          "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+          "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+        }
+      },
+      "warnings": [
+        "行运为指定日UTC+8正午快照；不能替代整日、整月或整年的连续搜索",
+        "天体位置计算可复核，不等于占星解释有事件预测效度",
+        "出生时间或时区误差影响上升、宫位及月亮位置",
+        "统一容许度是本项目规则，不代表各占星流派共识",
+        "未计算行运精确入相、出相、太阳弧或次限",
+        "出生参数的字段确认状态未在此档案提供；适配器不会把已有值升级为已确认事实"
+      ],
+      "fallback": []
+    }
+  },
+  "license_evidence": {
+    "swisseph": "https://github.com/aloistr/swisseph/blob/master/LICENSE",
+    "pyswisseph": "https://github.com/astrorigin/pyswisseph/blob/master/LICENSE.txt",
+    "attestation": "Deployment authorization is recorded separately; tests do not verify license contracts."
+  },
+  "limits": [
+    "Finite time samples are not continuous coverage.",
+    "Ziwei upstream version is a distribution declaration, not independent verification.",
+    "No full strength/useful-god, flying-palace, dignity, progression or exact event prediction is claimed."
+  ]
+}

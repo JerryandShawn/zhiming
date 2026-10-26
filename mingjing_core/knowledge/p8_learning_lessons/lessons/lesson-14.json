@@ -1,0 +1,112 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-14",
+  "order": 14,
+  "title": "建禄月劫阳刃按复合条件展开",
+  "level": "进阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-13"
+  ],
+  "objectives": [
+    "读取复合规则的三个子条件。",
+    "把未过筛与未定义阴刃分开。"
+  ],
+  "paragraphs": [
+    "建禄、月劫、阳刃在本项目各是一条复合候选，内部仍展开锚点、取用路径、败因三项。不是看到禄或劫财一字，就省略其它条件。",
+    "阿远建禄候选的锚点和路径都未满足，整条false。阳刃默认只定义五阳干，丁日主不因此被套进某个阴刃表；可选异说需要显式标出且保留出处待核。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本例建禄候选未通过，不因“未见败因”单项为true就升级成格。〔c3〕",
+      "evidence_ids": [
+        "established_lu_screen"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-14-q1",
+      "question": "建禄候选的整条screen_passed是什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "false",
+          "value": false
+        },
+        {
+          "option_id": "b",
+          "text": "true",
+          "value": true
+        },
+        {
+          "option_id": "c",
+          "text": "程序未返回",
+          "value": "unknown"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "有一项通过也不能补另外两项，本例整条明确false。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "established_lu_screen",
+        "expected": false
+      }
+    },
+    {
+      "quiz_id": "lesson-14-q2",
+      "question": "逆行阴刃第三表目前应怎样介绍？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "古籍原刊已经全部确认",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "所有阴干默认都按它算",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "具名可选异说，原典出处仍待核",
+          "value": "pending_named_variant"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "不以程序表存在冒充古籍原文已找到，也不改变五阳干默认。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-pattern-review",
+          "p8-school-tables"
+        ],
+        "expected": "pending_named_variant"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-pattern-review",
+    "p8-school-tables"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "月劫与阳刃不混为一条；阴刃异说不覆盖默认五阳干。",
+      "source_ids": [
+        "p8-pattern-review",
+        "p8-school-tables"
+      ]
+    }
+  ],
+  "pending_review": [
+    "阴刃逆行第三表原典未找到，需具体书名、版本及页码。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

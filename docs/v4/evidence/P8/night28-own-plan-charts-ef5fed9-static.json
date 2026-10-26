@@ -1,0 +1,30 @@
+{
+  "version": "p8-history-static-sampling-plan-v2",
+  "commit": "ef5fed9a3fc4e1b727e6077f5b99f41be31e6f7b",
+  "inventory_sha256": "6b4d2c868ce430bc04498ea8c56734a919a578b04b1d263452fe3043142d2d57",
+  "inventory_complete_for_p8_history": true,
+  "coverage_collected": false,
+  "execution_approved": false,
+  "runtime": "charts",
+  "entries": [
+    {"node_id":"tests/test_p8_daily_transit_native.py::NativeDailyTransit::test_daily_day_pillars_advance_one_sexagenary_step","runtime":"charts","framework":"stdlib_unittest","path":"tests/test_p8_daily_transit_native.py","lf_sha256":"5b39171fdc22a1e13c51c246370119c6848c1e875b5e4d827d41ba03ceaae1ef","target":{"name":"test_daily_day_pillars_advance_one_sexagenary_step","start_line":94,"end_line":104},"lifecycle_hooks":[{"name":"NativeDailyTransit.setUpClass","start_line":38,"end_line":44}],"selection_review":"fixed-candidate-only-not-authorization-to-execute","hidden_import_or_helper_effects_proven_safe":false}
+  ],
+  "pinned_configuration": [
+    {"path":"pytest.ini","lf_sha256":"e54d3840dbca625d7e2ce6943c95ed432c3700c36a3149f97d3664a30cb3c8d9"}
+  ],
+  "denominator_files": 214,
+  "unselected_files_still_in_denominator": true,
+  "required_before_execution": [
+    "Explicit root approval of B1/B2 and each exact node, dependency, fixture, and process budget.",
+    "Interpreter/dependency fingerprints; real HEAD and source/config pre/post verification.",
+    "Clear credentials; deny network/model/child processes; discard all captured test text.",
+    "Fresh private temporary directories and exclusive new evidence paths.",
+    "Small baseline and trace overhead trial before any expanded run; no automatic sampling."
+  ],
+  "limits": [
+    "AST parsing does not execute or collect tests and cannot prove indirect effects absent.",
+    "Native lifecycle hooks are listed, not bypassed or executed; child-spawning suites remain unapproved.",
+    "This artifact is a static candidate plan, not a coverage receipt or permission token."
+  ],
+  "plan_sha256": "3490a4d87a091f97db93c43a42dbe94793b1441eb0ca3b4c9f913bedf0153bbb"
+}

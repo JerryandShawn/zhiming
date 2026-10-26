@@ -1,0 +1,129 @@
+{
+  "scope": "P8 review23 continuation only",
+  "source_commit": "9c2ca7085b2e99ebbd0882cd7e6307475b372f84",
+  "local_equivalent_source_commit": "885535b87d2556b72d230117209ee048438aed5f",
+  "source_tree": "bfe72ec4e900ce3294640cce51c53fc9c452ee46",
+  "parent_accepted_draft": "13c6f42243b8d5dd1520ee76bfb8b95f05c1b438",
+  "v4": {
+    "passed": 677,
+    "skipped": 0,
+    "seconds": 117.78,
+    "command": "<Core Python> -m pytest tests/v4 -q",
+    "database": "127.0.0.1:55480/core_test_meta"
+  },
+  "scripted": {
+    "passed": 80,
+    "total": 80,
+    "real_model_calls": 0,
+    "output": "review23-scripted-regression/"
+  },
+  "root_integration": {
+    "passed": 98,
+    "includes": "time_basis actual UTC+8 overseas comparison; nested evidence resolution; western timing isolated entry; frozen statistical success veto"
+  },
+  "astro_native": {
+    "passed": 21,
+    "old_native_interaction_checks": 5,
+    "skipped": 0
+  },
+  "ziwei_native": {
+    "passed": 3,
+    "new_core_checks": 21,
+    "skipped": 0
+  },
+  "e2_targeted": {
+    "passed": 113,
+    "skipped": 0
+  },
+  "ruff": {
+    "python_files": 91,
+    "status": "passed"
+  },
+  "protected_files_unchanged": 141,
+  "v1_baseline_raw_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79",
+  "legacy_core_rerun_this_continuation": false,
+  "previous_same_phase_legacy_core": {
+    "passed": 553,
+    "calculations_passed": 60
+  },
+  "prior_accepted_head_CI": {
+    "head": "13c6f42243b8d5dd1520ee76bfb8b95f05c1b438",
+    "run_id": 39117024579,
+    "conclusion": "success",
+    "does_not_cover_this_new_head": true
+  },
+  "real_model_calls": 0,
+  "stage_or_production_access": false,
+  "merged_prs": [],
+  "server": "not started; reserved 8003",
+  "full_P8_acceptance": false,
+  "professional_corpus_scores": null,
+  "rectification": {
+    "state": "experimental_frozen",
+    "visible_by_default": false,
+    "enabled_for_interpretation": false,
+    "previous_ER1_unique_first": "0/10",
+    "ER1_rerun_this_continuation": false,
+    "thresholds_relaxed": false
+  },
+  "timezone_runtime_readonly_check": {
+    "Core": "2026.5",
+    "Charts": "2026.5",
+    "lock_file_changed_by_this_line": false,
+    "test_tzpath": "explicit Core package bytes; installed Charts package also exists"
+  },
+  "e2_source_counts": {
+    "MingLi": {
+      "source": 160,
+      "schema_valid": 160,
+      "included": 22,
+      "excluded": 138
+    },
+    "BaziQA": {
+      "source": 200,
+      "schema_valid": 199,
+      "included": 26,
+      "excluded": 174
+    },
+    "BaziQA2023_missing_label_excluded": 1,
+    "BaziQA2021_actual_cases": 9,
+    "competition2025_included": {
+      "MingLi": 9,
+      "BaziQA": 5
+    },
+    "policy": "conservative automatic target-year screen; not full official benchmark"
+  },
+  "skills": {
+    "version": "p8-skills-draft-2026-10-18-v2.1",
+    "chapters": 28,
+    "max_context_utf8_bytes": 4596,
+    "measured_model_tokens": false
+  },
+  "private_logs": [
+    {
+      "name": "v4-review23-final.log",
+      "bytes": 843,
+      "sha256": "a19d5d13aaa9ca5dcf6cb8df535304498ffe569d53bece5e3756c1d88640e9cf"
+    },
+    {
+      "name": "scripted-review23-final.log",
+      "bytes": 2192,
+      "sha256": "011a7b1d1512ea82d7ed6b2750539743fca6040bda7c9def4fb27e6ef3e4961a"
+    },
+    {
+      "name": "e2-review23-final.log",
+      "bytes": 190,
+      "sha256": "a8c8337290afaf1de0bbfb5cd707bf446c85a654c62469969c5dc7ceac8435d6"
+    },
+    {
+      "name": "delivery-review23-final.log",
+      "bytes": 108,
+      "sha256": "7b57ba5312638fb812f5b87c2cc091cafe5797de51095f4993027986cdb9c41c"
+    },
+    {
+      "name": "root-review23-skills-final.log",
+      "bytes": 182,
+      "sha256": "a4cd5c6afd3d43fd6e5d26357edb9d6bc1e9ad28b659cc86a21e843e4b87b028"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{"tests": 10, "successful": true, "skipped": 0}
+test_approximate_range_crosses_jie_even_with_distant_center (__main__.RectificationJieNative.test_approximate_range_crosses_jie_even_with_distant_center) ... ok
+test_exact_minute_jie_uses_strict_sides_and_no_boundary_as_before (__main__.RectificationJieNative.test_exact_minute_jie_uses_strict_sides_and_no_boundary_as_before) ... ok
+test_invalid_or_excessive_ranges_do_not_silently_widen (__main__.RectificationJieNative.test_invalid_or_excessive_ranges_do_not_silently_widen) ... ok
+test_left_edge_clips_before_sample (__main__.RectificationJieNative.test_left_edge_clips_before_sample) ... ok
+test_non_jie_day_retains_twelve_candidates_and_inputs (__main__.RectificationJieNative.test_non_jie_day_retains_twelve_candidates_and_inputs) ... ok
+test_refined_public_candidates_keep_scope_and_inference_only (__main__.RectificationJieNative.test_refined_public_candidates_keep_scope_and_inference_only) ... ok
+test_right_edge_clips_after_sample_without_expanding_declared_range (__main__.RectificationJieNative.test_right_edge_clips_after_sample_without_expanding_declared_range) ... ok
+test_timezone_conversion_finds_same_instant_on_other_civil_dates (__main__.RectificationJieNative.test_timezone_conversion_finds_same_instant_on_other_civil_dates) ... ok
+test_unknown_lichun_day_adds_sides_missed_by_twelve_centers (__main__.RectificationJieNative.test_unknown_lichun_day_adds_sides_missed_by_twelve_centers) ... ok
+test_zhongqi_does_not_refine_birth_candidates (__main__.RectificationJieNative.test_zhongqi_does_not_refine_birth_candidates) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 8.046s
+
+OK

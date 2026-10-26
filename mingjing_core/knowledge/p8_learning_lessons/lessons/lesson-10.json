@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-10",
+  "order": 10,
+  "title": "旺衰两种项目法并排读",
+  "level": "中阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-09"
+  ],
+  "objectives": [
+    "比较两套分数而不混成一个分数。",
+    "区分项目参数与古法定量。"
+  ],
+  "paragraphs": [
+    "旺衰讨论的是所选方法下的支持条件，不是人的能力等级。本项目把月令、根气、透干组合成两套诊断；权重和45/55阈值都须明说。",
+    "阿远两法分别给63与77.5，文字结论都是偏强。分数不同并不需要相加平均；当两法结论不同，也应保留分歧，而不是挑一个听起来舒服的。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "第一种项目旺衰法实际分数为63，第二种另为77.5。〔c3〕",
+      "evidence_ids": [
+        "strength_a"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-10-q1",
+      "question": "第一种方法记录的分数是多少？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "77.5",
+          "value": 77.5
+        },
+        {
+          "option_id": "b",
+          "text": "140.5",
+          "value": 140.5
+        },
+        {
+          "option_id": "c",
+          "text": "63",
+          "value": 63.0
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "读取methods[0]的63，不能拿另一法或两者总和代替。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "strength_a",
+        "expected": 63.0
+      }
+    },
+    {
+      "quiz_id": "lesson-10-q2",
+      "question": "两法同称偏强，可以推出哪项？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "身心能力已获专家认证",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "两种项目筛选标签相同，现实能力仍另核",
+          "value": "project_agreement_only"
+        },
+        {
+          "option_id": "c",
+          "text": "其它全部门派也会同判",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "同标签是项目方法内部一致，不构成跨派或现实有效性认证。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-strength"
+        ],
+        "expected": "project_agreement_only"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-strength"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "月令根气透干法与得令得地得势法是两种项目参数化口径。",
+      "source_ids": [
+        "p8-strength"
+      ]
+    }
+  ],
+  "pending_review": [
+    "权重未完成专家标定，不能把分数解释成健康、财富或个人价值。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "version": "p8-night28-legacy-core-validation-v1",
+  "recorded_at_beijing": "2026-10-21T00:32:18+08:00",
+  "command": "python -m unittest discover -s tests -p test_core*.py",
+  "start_beijing_minute": "2026-10-21T00:18+08:00",
+  "observed_completed_at_beijing": "2026-10-21T00:32:18+08:00",
+  "tested_code_commit": "d90478a4922ff53ee1dbc814e361d2a04f8bccae",
+  "passed": 553,
+  "seconds": 803.702,
+  "exit_code": 0,
+  "result": "OK",
+  "environment": {
+    "API_keys": "all inherited *_API_KEY removed; no values logged",
+    "tracing": "LANGSMITH_TRACING=false; LANGCHAIN_TRACING_V2=false",
+    "database": "127.0.0.1:55480/core_test_meta",
+    "chart_runtime": "explicit isolated CHART_PYTHON",
+    "port_8003": "reserved; application server not started"
+  },
+  "log_notices": [
+    {
+      "kind": "asyncio_slow_task",
+      "test": "FeishuGatewayPostgresTests.test_official_sdk_receiver_constructs_without_network",
+      "seconds": 7.938,
+      "scope": "local SDK construction test; not a real Feishu request or production latency claim"
+    },
+    {
+      "kind": "expected_configuration_refusal",
+      "count": 2,
+      "prefix": "CORE_SKILL_CONFIGURATION_ERROR",
+      "test": "tests/test_core_release_hermes_skill.py:test_wrapper_does_not_exec_with_unprotected_env_or_modified_release",
+      "evidence": "two modified=False/True cases assert SystemExit 78 and os.execv not called; local temporary fixtures and mocked execution",
+      "not_a_failed_test": true
+    }
+  ],
+  "effects": {
+    "real_model_calls": 0,
+    "project_server_or_real_feishu_requests": 0,
+    "deployed": false,
+    "merged": false
+  },
+  "limits": [
+    "Legacy compatibility checks do not establish new Agent/UI/auth or deployment behavior.",
+    "New unpublished U12/coverage/skills increments started later and are not included in this evidence."
+  ]
+}

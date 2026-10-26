@@ -1,0 +1,391 @@
+{
+  "fixture_kind": "synthetic_assertion_preview",
+  "input_sample": "ayuan_bazi.json",
+  "answer_text": "日主是甲。正印格候选筛选通过。调候候选天干包括甲。用神已定为庚。",
+  "result": {
+    "version": "p8-chart-consistency-preview-v1",
+    "scope": {
+      "owner_user_id": "synthetic-owner-ayuan",
+      "subject_id": "synthetic-subject-ayuan",
+      "revision": 1,
+      "operation_id": "synthetic-ayuan-bazi-20261019"
+    },
+    "data": {
+      "status": "inconsistent",
+      "review_key": "chart_inconsistency",
+      "policy": "record_only",
+      "text_length": 32,
+      "checks": [
+        {
+          "field": "day_master",
+          "outcome": "contradiction",
+          "reason_code": "value_differs",
+          "assertion": {
+            "field": "day_master",
+            "value": "甲",
+            "negative": false
+          },
+          "expected_values": [
+            "丁"
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+              "path": "/charts/1/data/pillars/day/gan"
+            }
+          ],
+          "input_c_aliases": [
+            "c3"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c3〕",
+          "fact_sources": [
+            {
+              "school": "declared_coordinate_sect1_late_zi",
+              "source": {
+                "kind": "project_implementation",
+                "path": "mingjing_core/adapters/charts/time_basis_candidates.py",
+                "locator": "_candidate: declared coordinate getEightChar/setSect(1)/getDay",
+                "engine_versions": {
+                  "lunar-python": "1.4.8"
+                },
+                "declared_method": {
+                  "year_month": "physical_UTC_plus8_exact_jie",
+                  "day_hour": "declared_coordinate_sect1_late_zi",
+                  "day_boundary": "23:00_advances_day",
+                  "subsecond_handling": "floor_to_engine_second"
+                },
+                "method_ref": {
+                  "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                  "path": "/charts/1/time_basis/pillar_method"
+                },
+                "concept_source": {
+                  "path": "mingjing_core/calculations/bazi/elements.py",
+                  "locator": "ten_gods: master=pillars[day][0]"
+                }
+              }
+            }
+          ],
+          "check_id": "check-1",
+          "span": {
+            "start": 0,
+            "end": 4
+          }
+        },
+        {
+          "field": "pattern_screen",
+          "outcome": "matched",
+          "reason_code": "value_matches",
+          "assertion": {
+            "field": "pattern_screen",
+            "key": "正印格",
+            "value": true
+          },
+          "expected_values": [
+            true
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+              "path": "/charts/1/data/p8/patterns/regular_eight/2/screen_passed"
+            }
+          ],
+          "input_c_aliases": [
+            "c3"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c3〕",
+          "fact_sources": [
+            {
+              "school": "p8-explicit-multimethod-v1",
+              "source": "子平真诠·论用神/变化；项目候选筛选，不宣称成格"
+            }
+          ],
+          "check_id": "check-2",
+          "span": {
+            "start": 5,
+            "end": 14
+          }
+        },
+        {
+          "field": "useful",
+          "outcome": "matched",
+          "reason_code": "value_matches",
+          "assertion": {
+            "field": "useful",
+            "key": "调候:",
+            "value": "甲",
+            "negative": false
+          },
+          "expected_values": [
+            [
+              "庚",
+              "甲"
+            ]
+          ],
+          "source_refs": [
+            {
+              "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+              "path": "/charts/1/data/p8/useful_candidates/climate/candidate_stems"
+            }
+          ],
+          "input_c_aliases": [
+            "c3"
+          ],
+          "input_r_aliases": [],
+          "input_citations": "〔c3〕",
+          "fact_sources": [
+            {
+              "school": "p8-explicit-multimethod-v1",
+              "source": {
+                "source": "扶抑为项目诊断；调候为版本化摘表；格局参子平真诠顺逆用概念",
+                "locator": "论丁；p288"
+              }
+            }
+          ],
+          "check_id": "check-3",
+          "span": {
+            "start": 15,
+            "end": 24
+          }
+        },
+        {
+          "field": null,
+          "outcome": "needs_review",
+          "reason_code": "unsupported_or_nonfinal_assertion",
+          "assertion": null,
+          "expected_values": [],
+          "source_refs": [],
+          "input_c_aliases": [],
+          "input_r_aliases": [],
+          "input_citations": "",
+          "fact_sources": [],
+          "check_id": "check-4",
+          "span": {
+            "start": 25,
+            "end": 31
+          }
+        }
+      ],
+      "coverage": {
+        "checked": 3,
+        "deferred": 1,
+        "not_checked": 0
+      },
+      "input_aliases": {
+        "c": [
+          {
+            "alias": "c3",
+            "scope": {
+              "owner_user_id": "synthetic-owner-ayuan",
+              "subject_id": "synthetic-subject-ayuan",
+              "revision": 1,
+              "operation_id": "synthetic-ayuan-bazi-20261019"
+            },
+            "ref": {
+              "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+              "path": "/charts/1/data"
+            },
+            "value_sha256": "d94da4dfa67a2fbb5f3b83bf86a11253700353f738752b6c538de9eefd99c927",
+            "branch_id": "time-chart-0dae00e864cc58abf97376b0",
+            "basis": "true_solar",
+            "claim_id": "demo-claim-4c246d83e0695f5fb6f5058384ab1dfb12a9069c5c6f17ab6ea1270db2fca661"
+          }
+        ],
+        "r": []
+      },
+      "input_document_ids": [
+        "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386"
+      ],
+      "input_scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-bazi-20261019"
+      }
+    },
+    "rule_hits": [
+      {
+        "rule_id": "p8.consistency.day_master.contradiction",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/0"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.pattern_screen.matched",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/1"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.useful.matched",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/2"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      },
+      {
+        "rule_id": "p8.consistency.context_guard.needs_review",
+        "met": true,
+        "school": "project-explicit-text-grammar-v1",
+        "source": {
+          "source_id": "p8-explicit-text-consistency-v1",
+          "title": "P8明确文本断言一致性项目规则",
+          "kind": "project_implementation",
+          "path": "mingjing_core/skills/consistency.py",
+          "locators": [
+            "consistency_text.parse_clause",
+            "consistency_eval.evaluate",
+            "learning_input.verified_input"
+          ],
+          "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+        },
+        "evidence_paths": [
+          "/data/checks/3"
+        ],
+        "meaning": "命中的是文本比较或保守守卫规则，不是命理格局/用神成立"
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "p8-explicit-text-consistency-v1",
+        "title": "P8明确文本断言一致性项目规则",
+        "kind": "project_implementation",
+        "path": "mingjing_core/skills/consistency.py",
+        "locators": [
+          "consistency_text.parse_clause",
+          "consistency_eval.evaluate",
+          "learning_input.verified_input"
+        ],
+        "support_scope": "只核白名单断言与受信计算事实是否一致；不证明命理效度或完整语义理解"
+      }
+    ],
+    "document_id": "tool-41f5f20ad954da1d0fe14bf31e534cce1b0c9e2619d94dc8dfb8063d740369cb",
+    "aliases": {
+      "c": [
+        {
+          "alias": "c1",
+          "path": "/data/checks/0",
+          "value_sha256": "280c58b1d7603fb9aaddfcd0a29116f136bd7f252082c087f86f590d7d3ba1a1",
+          "claim_id": "claim-3675827b57d4e791d0a104a4041495157661e25bf8bb621d163c75ed2a079521"
+        },
+        {
+          "alias": "c2",
+          "path": "/data/checks/1",
+          "value_sha256": "dc62e883e2f934ddba16ea5e13d9829ebe741200eb4d9a4d9bcda826e16bbe28",
+          "claim_id": "claim-2f45c4fc5a15f7d7b77a841ea5ef0c59b213595d6f02d1d611b466edede117a3"
+        },
+        {
+          "alias": "c3",
+          "path": "/data/checks/2",
+          "value_sha256": "5ff6ed9d3b160c4bfc03c284f0bd093c3a51144d038de8ee48050e41331afbf9",
+          "claim_id": "claim-aad15dfd082674c9bc55b9c926640967818d04cf796a7cb81877b1c96f9cc6f8"
+        },
+        {
+          "alias": "c4",
+          "path": "/data/checks/3",
+          "value_sha256": "20b642302d9617026792265b91de974c87359caf88179ef86c455576a7f5a136",
+          "claim_id": "claim-4f2a5076aa2a7be5771b1ce2f46bcf408366ddb96e1dab4060e7797a6b46c813"
+        }
+      ],
+      "r": [
+        {
+          "alias": "r1",
+          "path": "/rule_hits/0",
+          "rule_id": "p8.consistency.day_master.contradiction",
+          "value_sha256": "86d348b186f3c62ba0edadfd56dd2c34151cce55d462e729639187e7a9768c82",
+          "claim_id": "claim-36dfcea6c1c01d8ae82a2437518710f8432b40592593d9ba1f9ac566782853bf",
+          "evidence_aliases": [
+            "c1"
+          ]
+        },
+        {
+          "alias": "r2",
+          "path": "/rule_hits/1",
+          "rule_id": "p8.consistency.pattern_screen.matched",
+          "value_sha256": "6bd3239209c5463a4886a70077ee047a1a79f7acbca6a45a8a4387d70bb06f71",
+          "claim_id": "claim-fda99cd362a929fa04c7334b2616277d31bb87d945947dd7261a4407797ccccc",
+          "evidence_aliases": [
+            "c2"
+          ]
+        },
+        {
+          "alias": "r3",
+          "path": "/rule_hits/2",
+          "rule_id": "p8.consistency.useful.matched",
+          "value_sha256": "5d7f8cc990812fb4cab8fe07b3f57d102d9062aa4195ba3985839d0cd905a6bf",
+          "claim_id": "claim-a4702ebc055375a264c261096cbe772632c86aa2f1688f4e0dbe4977f2278d9d",
+          "evidence_aliases": [
+            "c3"
+          ]
+        },
+        {
+          "alias": "r4",
+          "path": "/rule_hits/3",
+          "rule_id": "p8.consistency.context_guard.needs_review",
+          "value_sha256": "4995df5b2065eb03752a95a1acb83156cdfc676b4a48b41d4849b86e9c78807d",
+          "claim_id": "claim-e51f7aab91795987a95c75427e2d63ff391f89597405e470c7ded382763da179",
+          "evidence_aliases": [
+            "c4"
+          ]
+        }
+      ]
+    },
+    "effects": {
+      "model_calls": 0,
+      "writes": 0,
+      "alias_registry": "ephemeral_only"
+    },
+    "limits": [
+      "有限中文白名单语法，精度优先、召回有限；no_contradiction_found不等于全文已核或正确。",
+      "格局筛选/三法用神都保留候选属性；已成格/用神已定、引用、假设、疑问、比较口径须人工复核。",
+      "输入hash只校验内容不是签名，主线须验证provider、owner、修订与撤销；expected_scope只是可选上下文比较。",
+      "顶层c/r仅本结果比较规则命名空间；data.input_aliases/input_citations是原盘命名空间，不能混用短名。",
+      "不回显正文、不发模型、不自动阻断/改写；主线review #15仍须独立授权与集成验收。"
+    ]
+  }
+}

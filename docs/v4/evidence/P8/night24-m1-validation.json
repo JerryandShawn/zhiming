@@ -1,0 +1,61 @@
+{
+  "schema": "p8-night24-m1-validation-v1",
+  "verified_at": "2026-10-18T22:36:45+08:00",
+  "starting_head": "0aa9ab7b3c5fa9cbd35c8d031c858c426074fb07",
+  "design_source": {
+    "file": "24_命理规则与技能包审校.md",
+    "sha256": "a772c97dcd21e35a2811d4997f7d6778c792f545405d0521d9a3c2a999e8423f"
+  },
+  "v4": {
+    "command": "python -m pytest tests/v4 -q",
+    "passed": 769,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 113.43,
+    "log_tail": "........................................................................ [  9%]\n........................................................................ [ 18%]\n........................................................................ [ 28%]\n........................................................................ [ 37%]\n........................................................................ [ 46%]\n........................................................................ [ 56%]\n........................................................................ [ 65%]\n........................................................................ [ 74%]\n........................................................................ [ 84%]\n........................................................................ [ 93%]\n.................................................                        [100%]\n769 passed in 113.43s (0:01:53)\n"
+  },
+  "scripted": {
+    "passed": 80,
+    "total": 80,
+    "self_tests_passed": 48,
+    "path": "night24-scripted-regression/"
+  },
+  "rules": {
+    "total": 38,
+    "positive": 38,
+    "negative": 76,
+    "named_review_counterexamples": 3,
+    "public_snapshots": 3
+  },
+  "skills": {
+    "version": "p8-skills-draft-2026-10-19-v2.2",
+    "chapters": 28,
+    "max_context_utf8_bytes": 5017,
+    "limit_bytes": 5500
+  },
+  "initial_regression_failure": {
+    "failed": 11,
+    "passed": 758,
+    "cause": "P8 pattern_support tuple rejected by finite JSON contract",
+    "fix": "emit lists and add whole-result ensure_finite_json regression; legacy tuple unchanged"
+  },
+  "protected_files_unchanged": 141,
+  "shared_climate_candidates_unchanged": 120,
+  "python_style_files": 96,
+  "database": "127.0.0.1:55480/core_test_meta",
+  "port_8003": "not_started",
+  "model_requests": 0,
+  "server_access": false,
+  "merged_prs": [],
+  "prior_head_ci": {
+    "head": "0aa9ab7b3c5fa9cbd35c8d031c858c426074fb07",
+    "run_id": 39120038250,
+    "conclusion": "success"
+  },
+  "current_milestone_ci": "pending_until_published",
+  "limits": [
+    "original editions and named quanshu text remain partly uncollated",
+    "no model/production/frontend/Agent/DB persistence acceptance",
+    "rectification remains experimental_frozen and honest refusal"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-13",
+  "order": 13,
+  "title": "有藏印不等于偏印格已过筛",
+  "level": "进阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-12"
+  ],
+  "objectives": [
+    "比较单项命中和整条未通过。",
+    "认识救应路径未判的限制。"
+  ],
+  "paragraphs": [
+    "先问一条条件满足了什么，再看整条还缺什么。月支有某个十神，并不能代替年月时透出；同样，食制与用印是不同候选路径，不能混成已经生效的救应。",
+    "阿远卯中有乙偏印，但年月时透出的为正印、比肩、正印，没有偏印。因此偏印候选仍未过筛。这是学习正反例的好材料，不需要改盘才能保留反例。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "偏印候选screen_passed实际为false，已有藏神条件不能补足透干。〔c3〕",
+      "evidence_ids": [
+        "indirect_seal_screen"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-13-q1",
+      "question": "本例偏印候选的整条screen_passed为何？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "true",
+          "value": true
+        },
+        {
+          "option_id": "b",
+          "text": "资料完全不存在",
+          "value": "unknown"
+        },
+        {
+          "option_id": "c",
+          "text": "false",
+          "value": false
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "月支藏神有证据，透干条件却不满足，所以整条为false；没有为此造一个r命中。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "indirect_seal_screen",
+        "expected": false
+      }
+    },
+    {
+      "quiz_id": "lesson-13-q2",
+      "question": "七杀用食或用印两路径并列，意味着什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "两套完整救应已经同时生效",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "只列候选，不主张无条件混用",
+          "value": "alternative_candidates"
+        },
+        {
+          "option_id": "c",
+          "text": "可以删掉力量和先后条件",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "路径候选与有效制化之间仍有力量、先后等未判条件。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-pattern-review"
+        ],
+        "expected": "alternative_candidates"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-pattern-review"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "正偏印、食制与用印均保留具名条件，不将术语同现视为救应成立。",
+      "source_ids": [
+        "p8-pattern-review"
+      ]
+    }
+  ],
+  "pending_review": [
+    "印轻与财印力量、制杀力度和先后关系尚未完整量化。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

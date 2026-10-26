@@ -1,0 +1,538 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "P8 almanac v1 read-only evidence contract",
+  "description": "Library values require semantic agreement tests; hashes and alias targets must be independently resolved.",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "p8-almanac-v1"
+    },
+    "scope": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "format": "date"
+        },
+        "calendar": {
+          "const": "gregorian"
+        },
+        "timezone": {
+          "const": "Asia/Shanghai"
+        },
+        "sample_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T12:00:00\\+08:00$"
+        },
+        "lunar": {
+          "type": "object",
+          "properties": {
+            "year": {
+              "type": "integer"
+            },
+            "month": {
+              "type": "integer",
+              "minimum": -12,
+              "maximum": 12,
+              "not": {
+                "const": 0
+              }
+            },
+            "day": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30
+            },
+            "is_leap_month": {
+              "type": "boolean"
+            },
+            "display": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "year",
+            "month",
+            "day",
+            "is_leap_month",
+            "display"
+          ],
+          "additionalProperties": false
+        },
+        "ganzhi": {
+          "type": "object",
+          "properties": {
+            "year": {
+              "type": "string",
+              "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"
+            },
+            "month": {
+              "type": "string",
+              "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"
+            },
+            "day": {
+              "type": "string",
+              "pattern": "^[甲乙丙丁戊己庚辛壬癸][子丑寅卯辰巳午未申酉戌亥]$"
+            }
+          },
+          "required": [
+            "year",
+            "month",
+            "day"
+          ],
+          "additionalProperties": false
+        },
+        "yi": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "ji": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "chong_sha": {
+          "type": "object",
+          "properties": {
+            "branch": {
+              "type": "string",
+              "enum": [
+                "子",
+                "丑",
+                "寅",
+                "卯",
+                "辰",
+                "巳",
+                "午",
+                "未",
+                "申",
+                "酉",
+                "戌",
+                "亥"
+              ]
+            },
+            "stem": {
+              "type": "string",
+              "enum": [
+                "甲",
+                "乙",
+                "丙",
+                "丁",
+                "戊",
+                "己",
+                "庚",
+                "辛",
+                "壬",
+                "癸"
+              ]
+            },
+            "zodiac": {
+              "type": "string",
+              "minLength": 1
+            },
+            "display": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha_direction": {
+              "type": "string",
+              "enum": [
+                "东",
+                "西",
+                "南",
+                "北"
+              ]
+            }
+          },
+          "required": [
+            "branch",
+            "stem",
+            "zodiac",
+            "display",
+            "sha_direction"
+          ],
+          "additionalProperties": false
+        },
+        "duty": {
+          "type": "object",
+          "properties": {
+            "deity": {
+              "type": "string",
+              "minLength": 1
+            },
+            "category": {
+              "type": "string",
+              "minLength": 1
+            },
+            "luck": {
+              "type": "string",
+              "minLength": 1
+            },
+            "officer": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "deity",
+            "category",
+            "luck",
+            "officer"
+          ],
+          "additionalProperties": false
+        },
+        "mansion": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "luminary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "animal": {
+              "type": "string",
+              "minLength": 1
+            },
+            "luck": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "name",
+            "luminary",
+            "animal",
+            "luck"
+          ],
+          "additionalProperties": false
+        },
+        "pengzu": {
+          "type": "object",
+          "properties": {
+            "stem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "branch": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "stem",
+            "branch"
+          ],
+          "additionalProperties": false
+        },
+        "method": {
+          "type": "object",
+          "properties": {
+            "library": {
+              "const": "lunar-python"
+            },
+            "library_version": {
+              "const": "1.4.8"
+            },
+            "library_source_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "source_files_sha256": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              }
+            },
+            "fingerprint_method": {
+              "const": "sha256-canonical-sorted-relative-file-map-lf"
+            },
+            "school": {
+              "const": "lunar-python-day-almanac-sect1"
+            },
+            "yi_ji_sect": {
+              "const": 1
+            },
+            "month_boundary": {
+              "const": "library-date-level-jie-month-for-almanac-sect1"
+            },
+            "day_boundary": {
+              "const": "civil-midnight"
+            },
+            "date_timezone": {
+              "const": "Asia/Shanghai"
+            },
+            "solar_time_applied": {
+              "const": false
+            },
+            "source_status": {
+              "const": "library_output_original_edition_collation_pending"
+            }
+          },
+          "required": [
+            "library",
+            "library_version",
+            "library_source_sha256",
+            "source_files_sha256",
+            "fingerprint_method",
+            "school",
+            "yi_ji_sect",
+            "month_boundary",
+            "day_boundary",
+            "date_timezone",
+            "solar_time_applied",
+            "source_status"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "date",
+        "calendar",
+        "timezone",
+        "sample_at",
+        "lunar",
+        "ganzhi",
+        "yi",
+        "ji",
+        "chong_sha",
+        "duty",
+        "mansion",
+        "pengzu",
+        "method"
+      ],
+      "additionalProperties": false
+    },
+    "rule_hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rule_id": {
+            "type": "string",
+            "pattern": "^p8-almanac-"
+          },
+          "met": {
+            "const": true
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "school": {
+            "const": "lunar-python-day-almanac-sect1"
+          },
+          "source": {
+            "type": "object",
+            "required": [
+              "title",
+              "url"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          },
+          "evidence_paths": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^/data/"
+            },
+            "minItems": 1
+          },
+          "claim_kind": {
+            "const": "traditional_calendar_label"
+          }
+        },
+        "required": [
+          "rule_id",
+          "met",
+          "name",
+          "school",
+          "source",
+          "evidence_paths",
+          "claim_kind"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title",
+          "url"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "minItems": 1
+    },
+    "document_id": {
+      "type": "string",
+      "pattern": "^tool-[0-9a-f]{64}$"
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "alias": {
+                "type": "string",
+                "pattern": "^c[1-9][0-9]*$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/data/"
+              },
+              "value_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "claim_id": {
+                "type": "string",
+                "pattern": "^claim-[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "alias",
+              "path",
+              "value_sha256",
+              "claim_id"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        },
+        "r": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "alias": {
+                "type": "string",
+                "pattern": "^r[1-9][0-9]*$"
+              },
+              "path": {
+                "type": "string",
+                "pattern": "^/rule_hits/[0-9]+$"
+              },
+              "value_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "claim_id": {
+                "type": "string",
+                "pattern": "^claim-[0-9a-f]{64}$"
+              },
+              "rule_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "evidence_aliases": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^c[1-9][0-9]*$"
+                },
+                "minItems": 1
+              }
+            },
+            "required": [
+              "alias",
+              "path",
+              "value_sha256",
+              "claim_id",
+              "rule_id",
+              "evidence_aliases"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "c",
+        "r"
+      ],
+      "additionalProperties": false
+    },
+    "effects": {
+      "type": "object",
+      "properties": {
+        "model_calls": {
+          "const": 0
+        },
+        "writes": {
+          "const": 0
+        },
+        "alias_registry": {
+          "const": "ephemeral_only"
+        }
+      },
+      "required": [
+        "model_calls",
+        "writes",
+        "alias_registry"
+      ],
+      "additionalProperties": false
+    },
+    "limits": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 2
+    }
+  },
+  "required": [
+    "version",
+    "scope",
+    "data",
+    "rule_hits",
+    "sources",
+    "document_id",
+    "aliases",
+    "effects",
+    "limits"
+  ],
+  "additionalProperties": false
+}

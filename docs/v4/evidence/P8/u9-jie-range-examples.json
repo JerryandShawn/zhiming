@@ -1,0 +1,100 @@
+{
+  "source": "installed lunar-python getNextJie; calendar examples only, no user birth records",
+  "examples": [
+    {
+      "id": "lichun-range",
+      "civil_range": {
+        "start": "2026-02-04 00:00",
+        "end": "2026-02-04 23:59",
+        "utc_offset": 8
+      },
+      "jie_boundaries": [
+        {
+          "jie": "立春",
+          "calendar_boundary": "2026-02-04T04:02:08+08:00",
+          "civil_boundary": "2026-02-04T04:02:08",
+          "samples": [
+            "2026-02-04 04:02",
+            "2026-02-04 04:03"
+          ],
+          "strict_sides_within_declared_range": {
+            "before": true,
+            "after": true
+          },
+          "enumeration": "real_getNextJie_only_inside_declared_range_not_near_center_probe",
+          "declared_range": {
+            "start": "2026-02-04T00:00:00",
+            "end": "2026-02-04T23:59:00",
+            "inclusive": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "jingzhe-clipped",
+      "civil_range": {
+        "start": "2026-03-05 21:58",
+        "end": "2026-03-05 21:59",
+        "utc_offset": 8
+      },
+      "jie_boundaries": [
+        {
+          "jie": "惊蛰",
+          "calendar_boundary": "2026-03-05T21:59:00+08:00",
+          "civil_boundary": "2026-03-05T21:59:00",
+          "samples": [
+            "2026-03-05 21:58"
+          ],
+          "strict_sides_within_declared_range": {
+            "before": true,
+            "after": false
+          },
+          "enumeration": "real_getNextJie_only_inside_declared_range_not_near_center_probe",
+          "declared_range": {
+            "start": "2026-03-05T21:58:00",
+            "end": "2026-03-05T21:59:00",
+            "inclusive": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "lichun-other-offset",
+      "civil_range": {
+        "start": "2026-02-03 00:00",
+        "end": "2026-02-03 23:59",
+        "utc_offset": -5
+      },
+      "jie_boundaries": [
+        {
+          "jie": "立春",
+          "calendar_boundary": "2026-02-04T04:02:08+08:00",
+          "civil_boundary": "2026-02-03T15:02:08",
+          "samples": [
+            "2026-02-03 15:02",
+            "2026-02-03 15:03"
+          ],
+          "strict_sides_within_declared_range": {
+            "before": true,
+            "after": true
+          },
+          "enumeration": "real_getNextJie_only_inside_declared_range_not_near_center_probe",
+          "declared_range": {
+            "start": "2026-02-03T00:00:00",
+            "end": "2026-02-03T23:59:00",
+            "inclusive": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "spring-equinox-zhongqi",
+      "civil_range": {
+        "start": "2026-03-20 00:00",
+        "end": "2026-03-20 23:59",
+        "utc_offset": 8
+      },
+      "jie_boundaries": []
+    }
+  ]
+}
