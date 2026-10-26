@@ -23,7 +23,16 @@ if TYPE_CHECKING:
 
     from mingjing_core.repositories.postgres import PostgresRepository
 
-DERIVED_KINDS = ("thread_summary", "note", "profile_doc", "knowledge_gap", "followup", "reminder", "proposal")
+DERIVED_KINDS = (
+    "thread_summary",
+    "note",
+    "profile_doc",
+    "knowledge_gap",
+    "followup",
+    "reminder",
+    "proposal",
+    "synastry_consent",
+)
 
 
 def redact_assistant(repo: PostgresRepository, owner: str, message: dict[str, Any]) -> dict[str, Any]:

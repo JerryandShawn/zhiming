@@ -198,3 +198,19 @@ agent_p8_tools执行原生步骤指纹/租约/隐私，短事务准备→事务�
 main58/模块首段35/37仍未就绪，不提前merge。03:35 SSH仍banner timeout/native255，session72089结束，未认证/远端命令/修改0。PG55480/PID50516仅核存活未启停，无后台测试/模型/新CI，无完整tests/v4。
 
 尚未完成：synastry原生同意卡/24小时单次授权与临时结果；准确缺IANA/clock_basis返回MISSING_INPUT但完整补资料确认卡仍待；容量精确裁定、临界文案/命理档案摘要及晨报daily可信开关接线。P8整项未就绪，不能提前全量/冻结/部署/真实评测。下一继续这些剩余项，不重做准确排盘主链/三日期工具或旧绿轮；模块一就绪优先独立无P8 mem2-gate合入与41/46门。H1 41660531和首发e578/r46保持冻结。
+
+### 2026-10-27 04:03 合盘原生单次授权与网页确认接口
+
+按42第2.5节新增原生synastry_consent实体种类，沿既有core_entities保存，没有新增SQL迁移。应用服务只接受同owner已授权的两个不同subject、原生准确且明确确认的出生资料；所有资料来源和原话区间通过既有投影/撤销核验。绑定双方subject资料修订及精确fact/message版本，不用全owner修订号（否则创建/确认授权本身会使授权失效）。请求卡片只显示人物称呼、用途、确认文案和状态，不输出任何一方出生值。
+
+原生授权先pending_confirmation，聊天“他同意了”不能改成granted。新增认证网页POST请求/GET确认卡/POST明确confirmed布尔确认接口，沿原X-Token认证；模型consent、出生字段、字符串true、布尔修订号和其他额外输入拒绝，错误不回显提交值。跨owner/未授权人物404，不提供HTTP consume接口。真正网页按钮展示及Agent第四工具尚未接入，不能把后端接口称完整确认卡交互已完成。
+
+确认回执绑定真实请求operation_id，Clock记录granted_at与24小时expires_at、uses_left=1。内部consume只能在owner事务中按原人物顺序/用途/未过期/资料及来源未变消费一次；并发两次消费只有一次成功，重放确认不能延期或重置已消费授权。未来工具调用方仍必须核原生租约/已完成步骤并先走缓存重放，本服务不伪造ToolContext。合盘结果尚未计算/持久化，不建chart/fact/note；将新授权kind纳入现有privacy_foundation闭包，撤销任一方出生来源或请求来源会删除授权且不能复活。
+
+证据（原metadata/XML/log均根核，分轮不拼全链）：
+- private/safe-narrow-d516cdde96f34aba935481af649a802e：16/16、6.72s；原生PG授权/单次并发/用途和人物/24h精确边界/两方修订/来源撤销、HTTP认证和严格schema。
+- 最终private/safe-narrow-d1389d950242445791a651d8da089f79：22/22、10.87s；新增重放不续期/普通消息不自失效/请求后资料改变拒绝确认，加原资料确认HTTP兼容。1条既有Starlette/anyio弃用警告，无fail/error。Ruff/check、format120、两个旧文件局部AST、diff--check过。没有完整tests/v4/CI/真实模型/远端操作。
+
+模块状态已变化：其日报公开H1已普通合并，候选9ef726257034a391c94191fa60789baa4afbd223的KU01/KU02及指定37/37、新变体4/4通过，但完整tests/v4为4795pass/11fail/193errors/72skip，exit1，仍明确尚未记忆2.0就绪。没有替模块修代码/重跑/提前合并或冒称主线验过。03:55本轮SSH仍banner timeout/native255，session90084完成，未认证/远端命令/修改0。原PG55480/PID50516仅单次核存活，未启停，无后台测试。
+
+剩余/下一：继续synastry实际网页确认按钮、原生Agent第四工具和不进档案/反思的临时结果；然后缺资料确认卡、可见性容量精确裁定、临界文案/档案摘要及晨报开关。P8整体未就绪，不提前全量/冻结/部署/真实评测。模块一就绪优先无P8 mem2-gate合入与41/46门；首发e578及H1 41660531保持冻结。

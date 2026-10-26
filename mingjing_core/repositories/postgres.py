@@ -26,6 +26,7 @@ from .dispatch_hooks import admit_v4, notify_run
 
 ENTITY_KINDS = frozenset({'message','fact','case','episode','draw','reading','report','report_schedule','chart','delivery','upload','session','consent','legacy','feedback','request','interpretive_claim','runtime_step','artifact','model_call'})
 ENTITY_KINDS |= frozenset({'thread','thread_summary','note','profile_doc','knowledge_gap','followup','reminder','proposal'})
+ENTITY_KINDS |= frozenset({'synastry_consent'})
 CALL_LIMITS = {'fast': 2, 'standard': 6, 'deep': 10}
 
 
