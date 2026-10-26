@@ -14,6 +14,7 @@ from mingjing_core.timekit.clock import FrozenClock, get_clock
 from tools.eval.lifecycle_identity import LifecycleBinding, LifecycleError
 from tools.eval.providers.scripted import ScriptedProvider
 
+from .v4_memory_lifecycle_state import restore_memory, snapshot_memory
 from .v4_privacy_seed import V4PrivacySeeder
 from .v4_tarot import TarotDriver
 
@@ -129,6 +130,7 @@ def snapshot(target: Any, binding: LifecycleBinding, turn: int, completed: dict 
             key: sorted(value) if isinstance(value := getattr(target.seeder, key), set) else deepcopy(value)
             for key in SEEDER_FIELDS
         },
+        "memory_observers": snapshot_memory(target),
         "tarot": {key: deepcopy(getattr(target.tarot, key)) for key in ("ids", "failed_reading", "retry_reading")},
         "runs": records,
         "metrics": {key: getattr(target.port, key) for key in ("calls", "external_calls")},
@@ -217,6 +219,7 @@ def restore(target: Any, state: dict[str, Any]) -> None:
     for key in SEEDER_FIELDS:
         value = state["seeder"][key]
         setattr(target.seeder, key, set(value) if key == "profile_fact_ids" else deepcopy(value))
+    restore_memory(target, state)
     target.tarot = TarotDriver(target.service, target.seeder)
     for key, value in state["tarot"].items():
         setattr(target.tarot, key, deepcopy(value))

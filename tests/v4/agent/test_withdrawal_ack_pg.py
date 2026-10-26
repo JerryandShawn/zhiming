@@ -135,7 +135,16 @@ def test_real_public_receipt_survives_only_with_owner_run_operation_source_and_e
     monkeypatch.setattr(finalization, "withdrawal_acknowledgements", inspected)
     result = evaluate_scenario(f02(), target, target_name="v4")
     assert result["status"] == "passed", result["failed_assertions"]
-    assert len(checked) == 12
+    # H1 checks the proof at both publication boundaries; every invocation must reject all mutations.
+    expected = {
+        "fingerprint", "operation", "sequence", "epoch", "fact_body", "source_role",
+        "tombstone", "source_revoked", "owner", "id", "retry_epoch", "source_version",
+    }
+    assert checked and len(checked) % len(expected) == 0
+    assert all(
+        set(checked[index:index + len(expected)]) == expected
+        for index in range(0, len(checked), len(expected))
+    )
     current = target.repo.fetch_run(target.owner, target.run_ids[-1])
     assert current["status"] == "succeeded" and current["retry_epoch"] == 1
     assert current["result"]["receipts"][0]["write_status"] == "deleted"
