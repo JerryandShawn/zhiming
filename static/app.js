@@ -342,6 +342,14 @@ function bindHistory(root) {
     if(m)sendChat(m.content,null,m.run_id || m.turn_id);
   });
 }
+function refreshSynastryConsents() {
+  if(typeof renderSynastryConsents!=='function')return;
+  const flow=$('#chatFlow');if(!flow)return;
+  let root=flow.querySelector('[data-synastry-confirmations]');
+  if(!root){root=document.createElement('div');root.dataset.synastryConfirmations='';flow.append(root);}
+  const session=currentSession,token=getToken();
+  renderSynastryConsents(root,{apiJson,conversationId:session,isCurrent:()=>session===currentSession && token===getToken()});
+}
 async function loadHistory(older=false) {
   const session=currentSession;
   const flow=$("#chatFlow");
@@ -355,6 +363,7 @@ async function loadHistory(older=false) {
     const previousHeight=flow.scrollHeight;
     if(older)flow.prepend(wrap);else flow.append(wrap);
     bindHistory(wrap);
+    refreshSynastryConsents();
     $('#olderHistoryBtn').disabled=list.length<60;
     if(!historyRows.length)flow.innerHTML=`<div class="chat-welcome"><span>明镜，映照日常。</span><h2>今天，从哪件事聊起？</h2><p>可以说说近况，上传一张图片，或从命盘中选一个细节展开。你的经历和想法，始终是解读的起点。</p></div>`;
     if(older)flow.scrollTop=flow.scrollHeight-previousHeight;else scrollChat();
@@ -426,7 +435,7 @@ $("#chatFlow").addEventListener("click", e => {
 let sending = false, activeTurn=null;
 const chatRequests=new Map();
 function progress(text) {$('#chatProgress').textContent=text;$('#chatProgress').classList.remove('hidden');}
-function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);bindClarification(body,result);const m=result?.meta || {},caseId=m.case_id || m.case_ids?.[0];if(Array.isArray(m.case_ids) || caseId)setChatContext({case_ids:m.case_ids || [caseId],case_id:caseId,title:m.case_title || chatScopeCases.filter(entry=>(m.case_ids || [caseId]).includes(entry.id)).map(entry=>entry.title).join('、'),...(m.draw_id?{draw_id:m.draw_id,draw_case_id:caseId}:{})});scrollChat(false); }
+function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);bindClarification(body,result);refreshSynastryConsents();const m=result?.meta || {},caseId=m.case_id || m.case_ids?.[0];if(Array.isArray(m.case_ids) || caseId)setChatContext({case_ids:m.case_ids || [caseId],case_id:caseId,title:m.case_title || chatScopeCases.filter(entry=>(m.case_ids || [caseId]).includes(entry.id)).map(entry=>entry.title).join('、'),...(m.draw_id?{draw_id:m.draw_id,draw_case_id:caseId}:{})});scrollChat(false); }
 function bindClarification(body,result) {
   const interrupt=result?.meta?.interrupt,runId=result?.meta?.core_run?.run_id;
   if(!interrupt?.id || !interrupt.state_version || !runId)return;

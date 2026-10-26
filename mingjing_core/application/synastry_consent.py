@@ -9,7 +9,7 @@ from typing import Any
 from mingjing_core.application.agent_tools import AgentToolsService
 from mingjing_core.application.agent_tools_projection import sources_active
 from mingjing_core.application.charts_natal import natal_request
-from mingjing_core.domain.contracts import EvidenceError, RevisionConflict, ScopeError
+from mingjing_core.domain.contracts import CoreError, EvidenceError, RevisionConflict, ScopeError
 from mingjing_core.repositories.postgres import PostgresRepository, fingerprint
 from mingjing_core.timekit.clock import Clock, get_clock
 
@@ -202,6 +202,27 @@ class SynastryConsentService:
                 owner, "synastry_confirm", request_id, [ident, expected_revision, confirmed], effect
             )
             return self.card(owner, ident)
+
+    def cards_for_conversation(self, owner: str, conversation_id: str) -> list[dict[str, Any]]:
+        """Discover native cards, never a model-supplied confirmation payload."""
+        cards = []
+        with self.repo.transaction(owner):
+            for row in self.repo.list(owner, "synastry_consent", subject="self", order="desc", limit=100):
+                if row.get("state") not in {"pending_confirmation", "granted"}:
+                    continue
+                try:
+                    source = self._source(owner, row["subject_a"], row["source_ids"][0])
+                    if source.get("conversation_id") != conversation_id:
+                        continue
+                    card = self.card(owner, row["id"])
+                except CoreError:
+                    # Withdrawn/stale cards remain private audit records, not actionable UI.
+                    continue
+                if card["state"] != "expired":
+                    cards.append(card)
+                if len(cards) == 20:
+                    break
+        return cards
 
     def consume(self, owner: str, ident: str, *, subject_a: str, subject_b: str, kind: str, operation_id: str) -> dict:
         """Internal boundary only; callers must fence their native leased step."""

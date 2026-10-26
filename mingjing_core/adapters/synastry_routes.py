@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from mingjing_core.application.synastry_consent import SynastryConsentService
@@ -57,6 +57,11 @@ def synastry_router(core, auth, body) -> APIRouter:
     async def get_consent(ident: str, req: Request):
         owner, svc = auth(req), core(req)
         return guarded(lambda: SynastryConsentService(svc.repo).card(owner, ident))
+
+    @router.get("")
+    async def list_consents(req: Request, conversation_id: str = Query(min_length=1, max_length=200)):
+        owner, svc = auth(req), core(req)
+        return guarded(lambda: SynastryConsentService(svc.repo).cards_for_conversation(owner, conversation_id))
 
     @router.post("/{ident}/confirm")
     async def confirm_consent(ident: str, req: Request):

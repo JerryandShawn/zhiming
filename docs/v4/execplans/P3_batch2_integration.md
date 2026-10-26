@@ -214,3 +214,17 @@ main58/模块首段35/37仍未就绪，不提前merge。03:35 SSH仍banner timeo
 模块状态已变化：其日报公开H1已普通合并，候选9ef726257034a391c94191fa60789baa4afbd223的KU01/KU02及指定37/37、新变体4/4通过，但完整tests/v4为4795pass/11fail/193errors/72skip，exit1，仍明确尚未记忆2.0就绪。没有替模块修代码/重跑/提前合并或冒称主线验过。03:55本轮SSH仍banner timeout/native255，session90084完成，未认证/远端命令/修改0。原PG55480/PID50516仅单次核存活，未启停，无后台测试。
 
 剩余/下一：继续synastry实际网页确认按钮、原生Agent第四工具和不进档案/反思的临时结果；然后缺资料确认卡、可见性容量精确裁定、临界文案/档案摘要及晨报开关。P8整体未就绪，不提前全量/冻结/部署/真实评测。模块一就绪优先无P8 mem2-gate合入与41/46门；首发e578及H1 41660531保持冻结。
+
+### 2026-10-27 04:22 合盘网页原生确认卡显示与点击
+
+新增认证GET合盘卡片列表，必须传当前conversation_id；只返回当前owner/self、同一原生请求对话中仍有效的pending/granted卡片，过期、已消费、资料或来源变更的卡片不显示。只输出上一轮已有安全卡片投影，不输出双方出生值，不从模型最终正文/receipt反向创建授权。列表最多20项（扫描最近100条原生授权记录），不改原始失效记录。
+
+新增独立static/synastry-consent.js，沿既有apiJson/X-Token读取原生列表，真实页面在加载历史和渲染回答后接入。使用DOM textContent而非拼接模型HTML；复用既有clarification-form/btn-gold样式，不加裸颜色/字号。卡片有用途、授权声明、状态及明确确认按钮；展示/聊天不会触发POST，必须点击才带confirmed=true/真实修订/稳定request_id发原生确认。提交中禁用双击，响应不确定可按同一request_id重试；成功后去掉按钮，明示“合盘结果尚未生成”，不自动发模型请求。已授权/到期卡片不重复确认。更换对话或口令后，旧异步响应和点击不能复活旧卡片；每次刷新先清旧DOM。新增脚本在app前defer加载，app缓存版本同步更新，旧jsdom纯app环境无新脚本时显式跳过此独立功能。
+
+实际验证：private/safe-narrow-b4de00a0f51a4168b40c1de7507ced1b，原metadata/XML/log根核23/23、9.46s、exit0/fail0/error0（既有Starlette/anyio弃用警告1）；新增原生PG+HTTP认证列表/对话隔离/跨owner空列表/无出生值/到期及资料变化隐藏，保前轮授权和原资料确认测试。新增tests/synastry-consent.dom.test.cjs通过真实DOM点击、双击、稳定重试、XSS文字转义、过期和异步旧身份拒绝；初次该Node测试因strict eval函数未导出到测试window报TypeError，按真实浏览器script作用域仅修改测试桥接暴露原入口后通过，没有修改授权或伪造原生API通过。此初错保留工具实际输出，未伪称私有XML轮次。
+
+原tests/frontend.test.cjs及tests/dom.test.cjs实际通过，覆盖现有主页面/资料确认/事项/固定牌阵/澄清重放兼容；Node语法、Python Ruff/check/format120、diff--check通过。DOM测试只替代HTTP传输，业务授权另外用真实PG/HTTP验证；没有375/768/1440截图，不声称跨尺寸视觉验收。没有完整tests/v4/真实模型/远端操作，没有请求新CI。
+
+main仍58；模块首段仍明确未就绪（H1已合入、KU37/37，但完整4795pass/11fail/193errors/72skip），不提前合入。04:15一次SSH仍banner timeout/native255，session9679完成，未认证/远端命令/修改0。PG55480/PID50516仅核存活，未启停。命理源10-26_meta首段仍批准9a8466ec接线材料就绪，未拿模块3227当主线验过。
+
+下一直接Agent synastry第四工具：无有效授权时创建原生卡片/CONSENT_REQUIRED；存在授权则按真实租约消费一次，在PG事务外真实隔离计算，门内二次校验/临时缓存/已完成步骤证明/撤销和结果不进记忆及反思。当前网页入口已有实际显示/点击，但四工具尚未全完；还要精确处理带事项的原生请求来源范围，不能伪造当前ToolContext去读另一人物。准确缺资料确认卡、容量裁定、临界文案/命理摘要、晨报daily开关同为剩余，不重复刷已绿卡片/三日期工具。模块就绪优先无P8记忆路线；首发e578/H1 41660531不动。

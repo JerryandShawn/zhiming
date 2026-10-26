@@ -211,3 +211,30 @@ def test_http_auth_native_button_revision_strict_schema_and_foreign_404(consent,
     assert response.status_code == 200 and response.json()["uses_left"] == 1
     assert client.post(url + "/confirm", json=click, headers=headers).json() == response.json()
     assert client.post(url + "/consume", json={}, headers=headers).status_code == 404
+
+
+def test_authenticated_conversation_list_only_native_current_unexpired_cards(consent, monkeypatch):
+    h = consent
+    monkeypatch.setenv("MINGJING_TOKEN", "synthetic-token")
+    monkeypatch.setenv("MINGJING_OWNER_ID", "alice")
+    monkeypatch.setenv("ZHIMING_TOKEN_OWNERS", '{"synthetic-bob":"bob"}')
+    monkeypatch.setattr("mingjing_core.application.synastry_consent.get_clock", lambda: h.clock)
+    client = TestClient(create_app(SimpleNamespace(repo=h.repo)))
+    card = request(h)
+    headers = {"X-Token": "synthetic-token"}
+    url = "/api/synastry/consents?conversation_id=default"
+    assert client.get(url).status_code == 401
+    assert client.get("/api/synastry/consents", headers=headers).status_code == 422
+    assert client.get(url, headers={"X-Token": "synthetic-bob"}).json() == []
+    assert client.get(url.replace("default", "other-conversation"), headers=headers).json() == []
+    result = client.get(url, headers=headers)
+    assert result.status_code == 200 and result.json() == [card]
+    assert "1992" not in result.text and "104.07" not in result.text
+    grant(h)
+    assert client.get(url, headers=headers).json()[0]["state"] == "granted"
+    h.clock.advance(timedelta(hours=24))
+    assert client.get(url, headers=headers).json() == []
+    card = request(h, "fresh")
+    fact = h.repo.list("alice", "fact", subject="other")[0]
+    h.repo.update("alice", "fact", fact["id"], {"value": "changed"}, expected_revision=fact["revision"])
+    assert client.get(url, headers=headers).json() == []
