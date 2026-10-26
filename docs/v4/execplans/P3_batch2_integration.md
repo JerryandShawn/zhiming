@@ -19,6 +19,14 @@
 
 TA01当前TarotRead强制draw_id；execute_tarot要求显式字段等于run.request.draw_id。runtime_assembly拒绝draw_id，线程SendMessage无该字段，面板readings对v4直接拒绝。当前评测先ThreadService.receive再ThreadIngress.queue，需改用共用受信揭牌入口，保留原话来源/幂等/归属，不猜最近牌阵。尚未修改产品或跑测试。
 
+### 2026-10-26 22:59 实际增量（覆盖上句尚未修改状态）
+
+42号P1–P3已实现：TarotRead.draw_id可省略，执行时只取权威run.request.draw_id；显式其他ID仍ScopeError，输入指纹继续按实际参数核验，不补造工具参数。描述同步。新增真实PG验证省略/显式读取、重放不改牌，以及“已有揭牌但run未绑定时拒绝猜最近牌阵”。本次仅工具层增量，P4上下文及P5–P7产品入口/E1–E4评测尚未完成，不宣称TA01端到端通过。
+
+原首轮private/safe-narrow-c63b875ba90d4b6ebe7827b374381a74为14项fixture连接错误（本机55480 PG未运行），exit1原件保留。未改测试绕过，未停其他PG；恢复原private/pg-p0的PG15实例，前台session13558，自动恢复后22:57:58 ready。第二轮private/safe-narrow-13a884050dff48d7ad0022ef819c432e exit0、14/14、6.63s，metadata/XML/log根读，0fail/err/skip。Core环境无ruff模块的首次命令失败保留；使用既有.venv-core/Scripts/ruff.exe，check和format120均通过，不装依赖。真实模型/远端修改/外发0。
+
+本次22:55只读SSH探测仍banner超时，已捕获原生exit255，未认证/进入远端命令；下次探测至少20分钟间隔。模块首段尚未记忆2.0就绪、命理最新10-26首段尚未达到P8接线材料就绪，不提前合并。
+
 ## 省额度与交接
 
 每wake单次SSH探测，检查两线日报第一段；不通且无可做项时仅一行日报结束。大文件只读当前项；每项定向测试，连续同错两次记录后换项。每项实际完成后提交推送；40分钟实质推送。首发SSH恢复立即优先37号stage，成功回执后等31号Go窗口。连接阶段R30，远端命令失败按执行单停；不改网络/SSH/认证。

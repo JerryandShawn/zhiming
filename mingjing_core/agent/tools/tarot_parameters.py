@@ -21,4 +21,6 @@ class TarotStart(Parameters):
 
 
 class TarotRead(Parameters):
-    draw_id: str = Field(min_length=1, max_length=200, description="运行请求中用户已选中并揭示的固定draw")
+    draw_id: str | None = Field(
+        default=None, min_length=1, max_length=200, description="可省略；省略时读取本轮用户已选中并揭示的固定牌阵"
+    )

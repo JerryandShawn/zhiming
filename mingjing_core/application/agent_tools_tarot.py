@@ -127,7 +127,7 @@ def execute_tarot(
             raise EvidenceError("请先选中并揭示固定牌阵，重抽需要明确的新请求")
         if name == "tarot_read":
             actual = service.repo.fetch_run(ctx.owner, ctx.run_id)["request"].get("draw_id")
-            if args["draw_id"] != actual:
+            if args.get("draw_id") is not None and args["draw_id"] != actual:
                 raise ScopeError("只能读取本轮真实选中的固定牌阵")
             draw = TarotService(service.repo).get_for_reading(ctx.owner, actual)
             validate_draw_source(service, ctx, draw)
