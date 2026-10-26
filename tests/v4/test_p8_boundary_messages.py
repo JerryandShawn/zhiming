@@ -43,7 +43,7 @@ def fixture() -> tuple[dict, dict, list]:
 def test_actual_ayuan_preserves_measured_seconds_and_only_hour_differs() -> None:
     document, rule, evidence = fixture()
     before = deepcopy(document)
-    result = render_boundary(document, rule, evidence)
+    result = render_boundary(document, rule, evidence, used_pillars={"hour"})
     assert result["affected_pillars"] == ["hour"]
     assert "380.537秒" in result["text"]
     assert (
@@ -53,7 +53,7 @@ def test_actual_ayuan_preserves_measured_seconds_and_only_hour_differs() -> None
     )
     assert f"〔{rule['alias']}〕" in result["text"]
     assert document == before
-    brief = render_boundary(document, rule, evidence, brief=True)
+    brief = render_boundary(document, rule, evidence, used_pillars={"hour"}, brief=True)
     assert "前面说明" in brief["text"] and brief["state_writes"] == 0
 
 
@@ -64,9 +64,15 @@ def test_all_five_kinds_use_actual_pillars_and_allow_identical_sides(kind: str) 
     alert["boundary_kind"] = kind
     for alternative in alert["alternatives"]:
         alternative["pillars"] = deepcopy(alert["current_pillars"])
-    result = render_boundary(document, rule, evidence)
-    assert result["affected_pillars"] == []
-    assert "未出现四柱差异" in result["text"]
+    assert (
+        render_boundary(
+            document, rule, evidence, used_pillars={"year", "month", "day", "hour"}
+        )
+        is None
+    )
+    alert["alternatives"][0]["pillars"]["day"] = "甲子"
+    result = render_boundary(document, rule, evidence, used_pillars={"day"})
+    assert result["affected_pillars"] == ["day"]
     if kind == "eot_implementations":
         assert "实现差值是380.537秒" in result["text"]
         assert "几十秒" not in result["text"]
@@ -82,7 +88,7 @@ def test_eot_can_change_year_and_day_instead_of_hour() -> None:
             "year": "甲子",
             "day": "乙丑",
         }
-    result = render_boundary(document, rule, evidence)
+    result = render_boundary(document, rule, evidence, used_pillars={"day"})
     assert result["affected_pillars"] == ["year", "day"]
     assert "时柱" not in result["text"]
 
@@ -106,4 +112,15 @@ def test_unbound_or_invalid_alert_is_rejected(mutation: str) -> None:
     else:
         alert["boundary_kind"] = "other"
     with pytest.raises(ValueError):
-        render_boundary(document, rule, evidence)
+        render_boundary(document, rule, evidence, used_pillars={"hour"})
+
+
+def test_no_warning_when_answer_does_not_use_affected_pillars() -> None:
+    document, rule, evidence = fixture()
+    assert (
+        render_boundary(document, rule, evidence, used_pillars={"year", "month"})
+        is None
+    )
+    assert render_boundary(document, rule, evidence, used_pillars=set()) is None
+    with pytest.raises(ValueError, match="used_pillars"):
+        render_boundary(document, rule, evidence, used_pillars={"personality"})

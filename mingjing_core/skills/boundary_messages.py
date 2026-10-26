@@ -16,6 +16,12 @@ LABELS = {
     "eot_implementations": "两种均时差实现的差异",
 }
 PILLARS = {"year": "年柱", "month": "月柱", "day": "日柱", "hour": "时柱"}
+SCHOOLS = {
+    "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month": (
+        "晚子23点换日、物理时刻定交节的真太阳口径"
+    ),
+    "lunar-python-sect2-midnight-day-comparison-only": "子夜0点换日对照派（只作比较）",
+}
 
 
 def _evidence(document: dict, rule: dict, evidence: list[dict]) -> dict:
@@ -73,7 +79,11 @@ def _comparison(alert: dict) -> tuple[list[str], str]:
             value = row["pillars"].get(key)
             if not isinstance(value, str) or not row.get("school"):
                 raise ValueError("boundary_comparison_incomplete")
-            values.append(f"{row.get('label', '对照')}：{value}（{row['school']}）")
+            label = {"before": "交界前1秒", "after": "交界后1秒"}.get(
+                row.get("label"), "对照"
+            )
+            school = SCHOOLS.get(row["school"], row["school"])
+            values.append(f"{label}：{value}（{school}）")
         phrases.append(
             f"{PILLARS[key]}当前为{current[key]}，对照为" + "；".join(values)
         )
@@ -87,8 +97,9 @@ def render_boundary(
     rule: dict[str, Any],
     evidence: list[dict[str, Any]],
     *,
+    used_pillars: set[str],
     brief: bool = False,
-) -> dict[str, Any]:
+) -> dict[str, Any] | None:
     """Use server-registered aliases relative to this verified document only.
 
     The caller verifies owner/revision/provenance before calling and decides whether
@@ -106,6 +117,10 @@ def render_boundary(
     ):
         raise ValueError("boundary_distance_invalid")
     changed, comparison = _comparison(alert)
+    if not isinstance(used_pillars, set) or not used_pillars <= PILLARS.keys():
+        raise ValueError("boundary_used_pillars_invalid")
+    if not used_pillars.intersection(changed):
+        return None
     refs = "".join(f"〔{name}〕" for name in [*rule["evidence_aliases"], rule["alias"]])
     if brief:
         text = f"这里沿用本次资料版本前面说明的{LABELS[kind]}口径。{refs}"
@@ -113,7 +128,7 @@ def render_boundary(
         measure = "实现差值" if kind == "eot_implementations" else "离交界的距离"
         text = (
             f"这里有个小边界：{LABELS[kind]}，{measure}是{distance:.3f}秒。"
-            f"{comparison}。当前按{alert['school']}解读。"
+            f"{comparison}。当前按{SCHOOLS.get(alert['school'], alert['school'])}解读。"
             f"这些是核对用的对照，不是新的出生事实；先保留你的记录，不据此改档或倒推时辰。{refs}"
         )
     return {

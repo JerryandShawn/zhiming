@@ -82,11 +82,12 @@ time_basis目前无tool-内容document_id；由主线校验可信worker来源后
 
 ## 白话模板与技能索引
 
-skills/boundary_messages.render_boundary(document,rule,evidence,brief=False)接受主线已经登记、
+skills/boundary_messages.render_boundary(document,rule,evidence,used_pillars={"hour"},brief=False)接受主线已经登记、
 同一可信文档内的别名行：rule={alias:rN,path,evidence_aliases:[cN,...]}，evidence=[{alias:cN,path},...]。
 预览ref需先映射到该文档，不能把整预览当原生根。函数重新解析rule和证据Pointer，拒绝false/无来源/假引用。
 hour_branch、late_zi_day、zi_midnight、jie_month、eot_implementations均使用实际秒数、具名流派和实际比较柱。
-午夜两侧同柱时明确无差异；均时差不同可以影响年/月/日/时的任意实际差异，绝不写死时柱。
+只在used_pillars与实际比较差异相交时返回提示，否则返回None；未使用受影响柱时不打扰回答。
+午夜两侧同柱且无具名流派对照差异时不造另一柱；均时差差异可能影响任意柱，绝不写死时柱。
 返回text、affected_pillars、school、source和原别名。brief=True只短引，是否已完整提示由主线会话状态决定。
 
 skills/wiring_index.skill_index()仅返回32章元数据和精确体系/topic配对，不载入全文；

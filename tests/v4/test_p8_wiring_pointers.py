@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from mingjing_core.adapters.charts.tool_evidence import pointer
 from mingjing_core.adapters.charts.benchmarks.handoff_validate import validate_preview
+from mingjing_core.adapters.charts.tool_evidence import pointer
 from mingjing_core.skills.wiring_index import skill_index
 
 SAMPLES = Path(__file__).resolve().parents[2] / "docs/v4/contracts/samples"
