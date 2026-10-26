@@ -149,3 +149,14 @@ main58未变，模块仍35/37未就绪，不提前merge。02:15单次SSH仍banne
 private/safe-narrow-cd7798da1191445fa00ebcb5410d83bb为38/38、1.17s，metadata/XML/log根核exit0/fail0/error0，含原生三份样例、飞化正例/八种篡改拒绝及原文档临界规则。private/safe-narrow-823724006c01486b8fba34647f719883为4/4、3.28s：实际PG确认资料→真实Charts worker→新增飞化文档校验及错误负例；原件根核，不把两轮合称一次全链。因本次更改产物验收入口才复核真实worker，不重跑无关TA01/M01/评分包。Ruff/check/format120/git diff--check过，无全量/CI/真实模型。
 
 main58/模块首段35/37未就绪，不提前merge；02:35只读SSH仍banner timeout/native255，session47201结束，未认证/远端命令0。原PG55480 PID50516仅确认存活，未启停。H1独立无P8闸门41660531保持发布；首发e578/r46冻结。下一优先实际Agent P8路由/cache/lineage、四工具/合盘，容量策略仍待裁定不吞异常或放宽15；模块就绪立即优先无P8记忆路线，不再重复已绿飞化/临界子项。
+### 2026-10-27 02:58 P8原生文档与Pointer引用持久记录
+
+新增p8_reference_records：在既有原生authority/资料版本/隐私租约事务内先保存完整document，再按(document_id, Pointer, kind, value hash)派生独立artifact或interpretive_claim引用记录，绑定原文档实际ID/revision及run/epoch/事实/原话版本。幂等ID/operation均从本受信步骤和引用派生，删除后不复活。仅内部受信计算调用方可用，不是模型或HTTP输入入口。
+
+单个bundle确定选择至多10条引用，临界规则优先，选择规则时连同全部真实chart依据；超出容量不割断证据闭包。完整产物仍按document保存，不信上游短别名。该上限目前是bundle保存/复核层；Agent跨工具本轮总注入上限和已完成Journal绑定仍须下一步接线，不能称已经注入c/r。
+
+verify_reference_bundle只读重核实际文档和每条引用的内容、owner/subject/run/epoch/修订/撤销状态、原文档Pointer清单、完整无重复投影；返回原资料+doc+引用的真实版本闭包和后续主线可使用的原生记录证明。没有跳过原生已完成步骤证明或把本helper单独当完整chart_lineage。下一接Agent chart_compute/cache/lineage及真实completed步骤和alias输出，默认旧路径仍未切换；四工具/合盘未完成。
+
+private/safe-narrow-90278c670320415a84de0f5aee37cdfa为12/12、4.42s，metadata/XML/log根核exit0/fail0/error0：真实PG幂等无重复、chart/rule各自ID和doc版本闭包、10条选择保规则全部依据，删除/更改doc或引用、资料变化、取消、重复/缺失记录和错误修订拒绝。首轮d81610b76ec54c73b5753aa0fa85db9b为11pass/1fail：Python True==1让清单比较误接受布尔修订；已增加全部投影严格整数及类型敏感fingerprint比较，原失败保留。没有放宽该负例或原分。Ruff/check/format120/git diff--check通过，无全量/CI/真实模型。
+
+02:55只读SSH仍banner timeout/native255，session74476结束，未认证/远端命令0。main58/模块35/37仍未就绪，不提前merge；PG55480/PID50516仅核存活未启停。H1无P8路线41660531及首发e578冻结不动；模块就绪立即优先mem2-gate合入和41/46门。续项不重复已绿边界/飞化/TA01/M01/评分包测试。
