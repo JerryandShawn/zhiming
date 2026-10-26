@@ -1,5 +1,5 @@
 {
-  "version": "p8-skills-draft-2026-10-21-v2.4",
+  "version": "p8-skills-draft-2026-10-26-v2.5",
   "status": "draft_requires_owner_review",
   "systems": {
     "bazi": {
@@ -59,7 +59,13 @@
             "u12-combo-officer-killer",
             "u12-combo-output-killer",
             "u12-combo-hurting-officer-seal"
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "strength",
@@ -92,7 +98,13 @@
           "status": "draft_requires_owner_review",
           "rule_ids": [
             "u12-wealth-multiple-weak"
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "patterns",
@@ -150,7 +162,13 @@
             "u12-pattern-established-lu",
             "u12-pattern-month-robber",
             "u12-pattern-yang-blade"
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "climate-useful",
@@ -205,7 +223,13 @@
           "rule_ids": [
             "u12-climate-candidate-missing",
             "u12-wealth-multiple-weak"
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "time-layers",
@@ -238,7 +262,13 @@
             "u12-palace-month-clash-combine",
             "u12-palace-day-clash-combine",
             "u12-palace-hour-clash-combine"
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "life-topics",
@@ -268,7 +298,13 @@
             "u12-palace-month-clash-combine",
             "u12-palace-day-clash-combine",
             "u12-palace-hour-clash-combine"
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "misreadings",
@@ -311,7 +347,13 @@
               ]
             }
           ],
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "rectification",
@@ -351,7 +393,13 @@
           "status": "draft_requires_owner_review",
           "rule_ids": [],
           "feature_state": "accurate_record_time_basis_check",
-          "visible_by_default": true
+          "visible_by_default": true,
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "frozen_refusal_only"
+          }
         },
         {
           "topic": "rectification-rules",
@@ -391,7 +439,13 @@
           "status": "draft_requires_owner_review",
           "rule_ids": [],
           "feature_state": "experimental_frozen",
-          "visible_by_default": false
+          "visible_by_default": false,
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "frozen_refusal_only"
+          }
         },
         {
           "topic": "traditional-hour-methods",
@@ -430,7 +484,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "frozen_refusal_only"
+          }
         }
       ]
     },
@@ -477,7 +537,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "major-stars",
@@ -503,7 +569,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "mutagens",
@@ -542,7 +614,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "combinations",
@@ -572,7 +650,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "time-layers",
@@ -600,7 +684,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "misreadings",
@@ -631,7 +721,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         }
       ]
     },
@@ -664,7 +760,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "aspects",
@@ -695,7 +797,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "transits-progressions",
@@ -750,7 +858,13 @@
               ]
             }
           ],
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "educational_only_not_wired"
+          }
         },
         {
           "topic": "returns",
@@ -795,7 +909,13 @@
                 "/data/actual_UTC"
               ]
             }
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "educational_only_not_wired"
+          }
         },
         {
           "topic": "misreadings",
@@ -821,7 +941,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         }
       ]
     },
@@ -852,7 +978,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "minor",
@@ -882,7 +1014,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "court",
@@ -907,7 +1045,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "spread",
@@ -940,7 +1084,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "relations",
@@ -971,7 +1121,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "reversals",
@@ -1003,7 +1159,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         },
         {
           "topic": "misreadings",
@@ -1030,7 +1192,13 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation"
+          }
         }
       ]
     },
@@ -1076,7 +1244,18 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation",
+            "intent_required": "daily_transit",
+            "underlying_tool_hidden_in": [
+              "crisis",
+              "incognito"
+            ]
+          }
         },
         {
           "topic": "window-search",
@@ -1111,7 +1290,18 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation",
+            "intent_required": "window_search",
+            "underlying_tool_hidden_in": [
+              "crisis",
+              "incognito"
+            ]
+          }
         },
         {
           "topic": "almanac",
@@ -1159,7 +1349,18 @@
             "p8-almanac-mansion",
             "p8-almanac-pengzu",
             "p8-almanac-chong-sha"
-          ]
+          ],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation",
+            "intent_required": "almanac",
+            "underlying_tool_hidden_in": [
+              "crisis",
+              "incognito"
+            ]
+          }
         },
         {
           "topic": "synastry",
@@ -1200,7 +1401,18 @@
             }
           ],
           "status": "draft_requires_owner_review",
-          "rule_ids": []
+          "rule_ids": [],
+          "wiring_applicability": {
+            "after_successful_chart_compute": true,
+            "skill_incognito_allowed": true,
+            "enforcement_owner": "mainline",
+            "execution": "read_only_interpretation",
+            "intent_required": "synastry",
+            "underlying_tool_hidden_in": [
+              "crisis",
+              "incognito"
+            ]
+          }
         }
       ]
     }

@@ -68,6 +68,32 @@ time_basis目前无tool-内容document_id；由主线校验可信worker来源后
 双方修订、kind、owner、确认卡operation_id绑定，24小时、uses_left=1；撤销/改修订/换kind失效。
 不写记忆/档案/AboutMe，不进入反思；forget撤销授权。模型参数不提供consent或birth。
 
+### 本机区间观测（2026-10-26，n=3，各次重新准备本命）
+
+| inclusive天数 | 三次耗时（秒） | 最慢 |
+| --- | --- | --- |
+| 31 | 4.427988 / 1.244026 / 1.219402 | 4.427988 |
+| 62 | 2.188611 / 2.243598 / 2.226765 | 2.243598 |
+| 92 | 3.220503 / 3.238145 / 3.232991 | 3.238145 |
+
+据此建议Agent上限92天、每页31，不触发42号“92天超过30秒则降62”规则。
+证据：[原始观测](../evidence/P8/wiring-window-performance-20261026.json)。
+包括全日期计算/排序/分页/证据；不包括Core进程启动、JSON传输或HTTP，不是45秒超时的服务保证。
+
+## 白话模板与技能索引
+
+skills/boundary_messages.render_boundary(document,rule,evidence,brief=False)接受主线已经登记、
+同一可信文档内的别名行：rule={alias:rN,path,evidence_aliases:[cN,...]}，evidence=[{alias:cN,path},...]。
+预览ref需先映射到该文档，不能把整预览当原生根。函数重新解析rule和证据Pointer，拒绝false/无来源/假引用。
+hour_branch、late_zi_day、zi_midnight、jie_month、eot_implementations均使用实际秒数、具名流派和实际比较柱。
+午夜两侧同柱时明确无差异；均时差不同可以影响年/月/日/时的任意实际差异，绝不写死时柱。
+返回text、affected_pillars、school、source和原别名。brief=True只短引，是否已完整提示由主线会话状态决定。
+
+skills/wiring_index.skill_index()仅返回32章元数据和精确体系/topic配对，不载入全文；
+catalog.json每章wiring_applicability标记何时使用。加载正文仍用chart_skill，5500 UTF-8字节保守预算不变。
+冻结倒推章只能诚实拒绝；西占推运/回归章节是教育内容，不解锁本批UNSUPPORTED工具。
+枚举和场景另导出samples/p8-skill-index.json，主线不可把不同体系的topic交叉组合。
+
 ## 主线需要调整的已有模块
 
 依据42号审计的文件定位，合入时重新核对实际路径/签名：
@@ -85,6 +111,8 @@ Agent工具可见性装配（metaphysics_intent优先synastry>window>almanac>dai
 它们是实际计算→合成装配→引用验证的材料端到端，不是Agent/HTTP/授权账本端到端。
 三体系既有输出保留；astro示例研究用timing字段不代表本批允许注册该工具。
 主线装配请从真实文档重新登记别名，不能照搬演示编号。
+samples/p8-wiring-cases.json逐份列出已确认资料映射、归属修订、预期document_id；
+test_p8_wiring_pointers.py校验三份输入映射、源hash、全部assessment证据根及true命中引用。
 
 ## 验证与待核
 

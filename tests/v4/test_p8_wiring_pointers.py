@@ -8,6 +8,8 @@ from pathlib import Path
 import pytest
 
 from mingjing_core.adapters.charts.tool_evidence import pointer
+from mingjing_core.adapters.charts.benchmarks.handoff_validate import validate_preview
+from mingjing_core.skills.wiring_index import skill_index
 
 SAMPLES = Path(__file__).resolve().parents[2] / "docs/v4/contracts/samples"
 
@@ -37,3 +39,35 @@ def test_documented_pointer_lift_resolves_every_assessment(system: str) -> None:
         ref = alias["ref"]
         hit = pointer(documents[ref["document_id"]], ref["path"])
         assert hit["met"] is True
+
+
+def test_mainline_cases_map_confirmed_fields_to_actual_sample_requests() -> None:
+    material = json.loads((SAMPLES / "p8-wiring-cases.json").read_text(encoding="utf8"))
+    assert material["synthetic"] is True and len(material["cases"]) == 3
+    for case in material["cases"]:
+        preview = json.loads(
+            (SAMPLES / case["expected_preview_file"]).read_text(encoding="utf8")
+        )
+        validate_preview(preview, verify_runtime_sources=True)
+        profile = case["confirmed_profile_fixture"]
+        birth = preview["request"]["birth"]
+        assert (
+            profile["birth.solar_datetime"]
+            == birth["date"] + "T" + birth["reported_time"] + ":00"
+        )
+        assert profile["birth.location"]["tz"] == birth["place"]["tz"]
+        assert profile["birth.location"]["lng"] == birth["place"]["lon"]
+        assert profile["birth.location"]["lat"] == birth["place"]["lat"]
+        assert profile["birth.clock_basis"] == birth["clock_basis"]
+        assert profile["birth.precision"] == birth["precision"] == "reported"
+        assert case["input_scope"] == preview["scope"]
+        assert case["documents"] == [
+            {"document_id": row["document_id"], "kind": row["kind"]}
+            for row in preview["documents"]
+        ]
+        assert case["not_agent_runtime_acceptance"] is True
+
+
+def test_exported_skill_index_is_current_and_complete() -> None:
+    exported = json.loads((SAMPLES / "p8-skill-index.json").read_text(encoding="utf8"))
+    assert exported == skill_index()
