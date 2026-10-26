@@ -22,7 +22,7 @@ def test_ax01_script_uses_three_originals_without_divination():
         assert "第三次" in system and "1–2个具体、可控的小行动" in system
         assert "最多问一个问题" in system and "不能只反问一句" in system
         assert (
-            load_prompts().manifest["files"]["system"]["version"] == "1.2.3"
+            load_prompts().manifest["files"]["system"]["version"] == "1.2.4"
         )  # Board v38/v39: header and follow-up prompt revisions.
     finally:
         target.close()

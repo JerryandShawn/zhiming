@@ -250,3 +250,13 @@ agent_synastry_lineage只接受同run/epoch唯一已完成Journal完整输出与
 未完/限制：合盘专业c/r临时引用尚未注册，不把限制性无引用脚本回答冒称专业解释依据验收，不为凑别名把结果塞入长期artifact。runtime_step/工具结果有reflection=false声明，但后台反思消费者排除仍需记忆模块合入后接线验证，不能把字段当实际筛选。另有准确缺资料完整确认卡、容量精确策略、临界文案/命理摘要、晨报开关和最后完整脚本/tests/v4/CI；P8整项未就绪，不冻结/部署/真实评测。
 
 04:35一次SSH仍banner timeout/native255，session14200结束，无认证/远端命令/修改。原PG55480/PID50516仅核存活未启停，无后台测试。main58；模块最新首段03cc0bb指定37/37+4/4过，仍明确未就绪，9ef7262原完整失败未改，不提前merge。下一一就绪优先无P8 mem2-gate合入；未就绪可先在该树做58明确允许的附加段2–5独立项，再续P8剩余，不重复本轮绿测。首发e578/H1 41660531及无P8基点不动。
+
+## 2026-10-27 05:20 实际交付：本轮已登记引用的临界白话桥接
+
+- main58，模块03cc0bb指定37/37+变体4/4但首段仍未就绪，未提前merge。05:15只读SSH仍banner timeout/native255，未认证/远端命令0；原55480 PG仅核存活未启停。
+- 按42第二部分2.6，新增agent/p8_boundary_guidance：从真实已校验documents/reference_views与调用方当前已attest aliases按native_id/kind唯一配对，不接受产物内自报别名；缺规则或任一同document依据、重复登记、kind错误不出白话。复用原生render_boundary真实柱差异/学校/测量秒，不套固定几十秒/时柱；返回完整和简短措辞及受影响柱条件，不造新事实、不写状态。loop_codec实际tool_message在可信登记之后接入，只投影白话，不加别名、不额外写持久盘面。
+- system v1.2.4及chart_compute工具摘要按明确42授权接白话条件、同资料版本可见前文才brief、当前引用、不改档/不倒推；manifest记录此次amendment并实际重算system字节hash和manifest固定hash，校验没有绕过。旧两个版本断言1.2.3→1.2.4只同步批准版本契约，原hash/AX01/危机规则仍保留；新增提示词约束检查。
+- 原生PG出生样例1994-03-12 08:20/104.07经真实Charts worker→Journal.complete→verified_versions/extend_aliases→实际tool_message，确有临界白话，源数据不变；无可信alias不出，缺规则/依据/错误kind/重复匹配均无白话。private/safe-narrow-98305de746f845ddb69ad221bf99627c为19/19、13.16秒（五个PG桥接+原五类模板/负例），原metadata/XML/log根读。
+- 最终提示词manifest/原R31 AX/原Agent runtime/实际P8脚本tool_message→core4.0提交，private/safe-narrow-e253039417064ceaafcc05c2198ec11b为19/19、11.57秒，原metadata/XML/log根核exit0/fail0/error0。两组分轮不能合称一次全链。Ruff/check+format120八文件及diff--check过。
+- 原失败保留：a7bf1c8f39514c7d8315112335904f6e collection ImportError1（误导入fixture公开名repo，改用真实repository包装）；初Ruff F811同原因已修不忽略。e9ecb8a9728343628ea90c59c2d48f43为1pass3fail（实际提示词manifest旧pin正确拒绝），同步manifest后复核通过，不改闸门。
+- 未完成/限制：跨轮同资料版本“只完整说一次”目前是可见历史上的提示词约束，未新增服务端已展示状态，也不能把生成工具提示当最终回答已经展示；最终真实模型输出未验。可选review警告未接。P8合盘临时专业c/r、真实反思消费者排除、完整补资料卡、15工具容量精确策略、命理档案摘要/晨报可信开关及最后全量/CI仍待。没有全量/真实模型/服务器操作，不称P8整项完成。下一优先模块就绪门，否则继续独立剩余项，勿重复绿测。

@@ -65,6 +65,11 @@ def tool_message(
         if registered:
             output["data"]["registered_aliases"] = registered
             output["data"]["alias_registration"] = "verified_current_run"
+            from .p8_boundary_guidance import boundary_guidance
+
+            guidance = boundary_guidance(result.data, aliases)
+            if guidance:
+                output["data"]["boundary_guidance"] = guidance
     return ChatMessage(
         "tool",
         json.dumps(output, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False),
