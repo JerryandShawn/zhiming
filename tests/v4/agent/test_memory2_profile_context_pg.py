@@ -131,3 +131,36 @@ def test_profile_summary_cannot_hide_a_hard_user_constraint(tool_repo: Any) -> N
     l2 = next(layer for layer in result.budget.layers if layer.name == "L2")
     text = "\n".join(str(message.content) for item in l2.items for message in item.messages)
     assert "我不能上合成夜班" in text and "希望合成稳定作息" in text
+
+
+def test_confirmed_profile_cannot_hide_birth_field_or_unknown_time_notice(tool_repo: Any) -> None:
+    memory = V4FactMemory(tool_repo)
+    source = memory.receive(
+        "alice", content="请保存我的birth.time_unknown为True", source_id="synthetic-birth-unknown", channel="synthetic"
+    )
+    # Existing trusted birth material enters via MemoryService, never model field injection.
+    from mingjing_core.application.memory import MemoryService
+
+    row = MemoryService(tool_repo).save_fact(
+        "alice", "self", source["id"], source["content"], "profile", field="birth.time_unknown", value=True
+    )
+    service = ProfileReflectionService(memory)
+    prepared = service.prepare("alice", "self", [row["id"]])
+    receipt = service.propose(
+        "alice", "self", [{"section": 1, "text": "出生时辰尚不确定", "fact_ids": [row["id"]]}],
+        fact_versions=prepared["fact_versions"], operation_id="synthetic-birth-profile-propose",
+    )
+    proposal = tool_repo.get("alice", "proposal", receipt["ids"][0])
+    accepted = act(tool_repo, proposal, key="synthetic-birth-profile-accept")
+    current = memory.receive(
+        "alice", content="请参考我的资料", source_id="synthetic-birth-profile-query", channel="synthetic"
+    )
+    result = build(memory, current)
+    assert profile_ids(result) == {accepted["id"]}
+    l2 = next(layer for layer in result.budget.layers if layer.name == "L2")
+    original = next(item for item in l2.items if item.key == row["id"])
+    assert original.required
+    assert "birth_time_notice" in original.messages[0].content
+    assert "时辰还不确定" in original.messages[0].content
+    assert result.injected_versions["fact:" + row["id"]] == row["revision"]
+    assert result.injected_versions["message:" + source["id"]] == source["revision"]
