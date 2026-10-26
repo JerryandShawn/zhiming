@@ -176,6 +176,10 @@ class AgentToolsService:
             return execute_chart(self, arguments, ctx, charts=self.charts)
         if name == "chart_skill":
             return execute_chart_skill(self, arguments, ctx)
+        if name == "synastry":
+            from mingjing_core.application.agent_synastry import execute_synastry
+
+            return execute_synastry(self, arguments, ctx)
         if name in {"daily_transit", "window_search", "almanac"}:
             from mingjing_core.application.agent_p8_tools import execute_date_tool
 

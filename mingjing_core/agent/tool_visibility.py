@@ -36,6 +36,7 @@ CONDITIONAL_TOOLS = (
     "daily_transit",
     "window_search",
     "almanac",
+    "synastry",
 )
 CRISIS_TOOLS = frozenset({"time_context", "memory_search"})
 PRIVATE_WRITES = frozenset(
@@ -82,6 +83,7 @@ class VisibilityState:
             "daily_transit": self.metaphysics_intent == "daily",
             "window_search": self.metaphysics_intent == "window",
             "almanac": self.metaphysics_intent == "almanac",
+            "synastry": self.metaphysics_intent == "synastry",
         }
 
     def necessary(self) -> set[str]:
@@ -97,6 +99,7 @@ class VisibilityState:
                 ("daily_transit", self.metaphysics_intent == "daily"),
                 ("window_search", self.metaphysics_intent == "window"),
                 ("almanac", self.metaphysics_intent == "almanac"),
+                ("synastry", self.metaphysics_intent == "synastry"),
             )
             if active
         }

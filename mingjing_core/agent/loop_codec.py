@@ -45,6 +45,10 @@ def tool_message(
     call_id: str, result: ToolResult, cycle: str, *, aliases: dict[str, dict[str, Any]] | None = None
 ) -> ChatMessage:
     output = result.model_dump()
+    if output["data"].get("adapter_mode") == "p8_synastry_transient":
+        from mingjing_core.application.synastry_result import project_synastry
+
+        output["data"] = project_synastry(output["data"])
     if output["data"].get("adapter_mode") == "p8_v1_1":
         from mingjing_core.application.agent_p8_charts import tool_projection
 
@@ -203,6 +207,10 @@ def _registries(service: Any, run: dict[str, Any], name: str, result: ToolResult
     rows, captured = [], {}
     if name == "chart_compute":
         rows, captured = chart_lineage(service, run, result)
+    elif name == "synastry":
+        from mingjing_core.application.agent_synastry_lineage import synastry_lineage
+
+        rows, captured = synastry_lineage(service, run, result)
     elif name in {"daily_transit", "window_search", "almanac"}:
         from mingjing_core.application.agent_p8_tool_lineage import p8_tool_lineage
 

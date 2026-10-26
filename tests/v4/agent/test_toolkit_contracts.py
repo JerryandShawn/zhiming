@@ -44,7 +44,7 @@ def test_registry_order_visibility_and_flattened_schemas() -> None:
         for name in (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS)
         if name in registered and name not in {"tarot_read", "memory_update", "profile_update_request", "date_calc"}
     ][:15]
-    assert len(DEFINITIONS) == 24 and len(specs) == 15
+    assert len(DEFINITIONS) == 25 and len(specs) == 15
     for item in specs:
         text = str(item.parameters)
         assert "$ref" not in text and "$defs" not in text and "anyOf" not in text

@@ -1,12 +1,19 @@
 """Intent-disclosed P8 tools, with local derived evidence and no fact writes."""
 
-from .p8_parameters import Almanac, DailyTransit, WindowSearch
+from .p8_parameters import Almanac, DailyTransit, Synastry, WindowSearch
 
 
 def p8_definitions():
     from mingjing_core.agent.toolkit import ToolDefinition
 
     return (
+        ToolDefinition(
+            "synastry",
+            Synastry,
+            "明确问当前人物与同账户另一已授权人物合盘时使用；只传另一人物标识和用途，不传出生值或consent。"
+            "缺授权返回网页确认请求，明确按钮确认后才消费一次24小时授权；会保存普通执行步骤，返回临时比较，不写记忆或档案。",
+            False,
+        ),
         ToolDefinition(
             "daily_transit",
             DailyTransit,

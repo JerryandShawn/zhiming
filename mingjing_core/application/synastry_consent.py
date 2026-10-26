@@ -95,7 +95,14 @@ class SynastryConsentService:
             or policy.get("run_context") is not True
         ):
             raise ConsentRequired("请在普通网页会话中确认合盘")
-        if not sources_active(self.projection, source, ProfileScope(owner, subject), "message"):
+        cases = source.get("case_ids", [])
+        if not isinstance(cases, list) or any(not isinstance(ident, str) for ident in cases):
+            raise ScopeError("合盘请求事项范围无效")
+        for case_id in cases:
+            case = self.repo.get(owner, "case", case_id)
+            if case["subject_id"] != subject or case["status"] != "open":
+                raise ScopeError("合盘请求事项不属于当前人物")
+        if not sources_active(self.projection, source, ProfileScope(owner, subject, tuple(cases)), "message"):
             raise ConsentRequired("合盘请求来源已失效")
         return source
 
@@ -223,6 +230,24 @@ class SynastryConsentService:
                 if len(cards) == 20:
                     break
         return cards
+
+    def find_granted(self, owner: str, subject_a: str, subject_b: str, kind: str, conversation: str) -> str | None:
+        with self.repo.transaction(owner):
+            for row in self.repo.list(owner, "synastry_consent", subject=subject_a, order="desc", limit=100):
+                if (row.get("subject_b"), row.get("comparison_kind"), row.get("state")) != (subject_b, kind, "granted"):
+                    continue
+                try:
+                    current = self._current(owner, row["id"])
+                    source = self._source(owner, subject_a, current["source_ids"][0])
+                except CoreError:
+                    continue
+                if (
+                    source.get("conversation_id") == conversation
+                    and current["uses_left"] == 1
+                    and (datetime.fromisoformat(current["expires_at"]) > self.clock.now())
+                ):
+                    return current["id"]
+        return None
 
     def consume(self, owner: str, ident: str, *, subject_a: str, subject_b: str, kind: str, operation_id: str) -> dict:
         """Internal boundary only; callers must fence their native leased step."""

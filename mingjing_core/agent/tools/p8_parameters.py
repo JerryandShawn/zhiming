@@ -43,3 +43,8 @@ class WindowSearch(Parameters):
         if not 0 <= (date.fromisoformat(self.end_date) - date.fromisoformat(self.start_date)).days < 366:
             raise ValueError("择日区间需要有序且最多366日")
         return self
+
+
+class Synastry(Parameters):
+    other_subject_id: str = Field(min_length=1, max_length=200)
+    kind: Literal["romantic", "friendship", "collaboration"]

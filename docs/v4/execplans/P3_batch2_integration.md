@@ -228,3 +228,25 @@ main58/模块首段35/37仍未就绪，不提前merge。03:35 SSH仍banner timeo
 main仍58；模块首段仍明确未就绪（H1已合入、KU37/37，但完整4795pass/11fail/193errors/72skip），不提前合入。04:15一次SSH仍banner timeout/native255，session9679完成，未认证/远端命令/修改0。PG55480/PID50516仅核存活，未启停。命理源10-26_meta首段仍批准9a8466ec接线材料就绪，未拿模块3227当主线验过。
 
 下一直接Agent synastry第四工具：无有效授权时创建原生卡片/CONSENT_REQUIRED；存在授权则按真实租约消费一次，在PG事务外真实隔离计算，门内二次校验/临时缓存/已完成步骤证明/撤销和结果不进记忆及反思。当前网页入口已有实际显示/点击，但四工具尚未全完；还要精确处理带事项的原生请求来源范围，不能伪造当前ToolContext去读另一人物。准确缺资料确认卡、容量裁定、临界文案/命理摘要、晨报daily开关同为剩余，不重复刷已绿卡片/三日期工具。模块就绪优先无P8记忆路线；首发e578/H1 41660531不动。
+
+
+### 2026-10-27 04:49 合盘第四工具实际计算与临时步骤证明
+
+已注册/分发Synastry严格参数（other_subject_id+三用途，无模型consent/出生值/owner），原话synastry单值意图才披露，无痕/危机隐藏，非网页只返回去网页确认。注册数24→25是42批准第四工具的字面契约同步，原15上限/顺序及复杂容量冲突不放宽。带事项请求从原生source.case_ids读，核owner/subject/原生open状态后投影，不伪造另一人物ToolContext。初版要求active经实际create_case契约核查改为open；新增正反例通过。
+
+agent_synastry短事务核租约/步骤指纹/source/隐私与同对话原生授权。缺授权实际创建网页卡并返回CONSENT_REQUIRED，不计算或返回对方出生值；原步骤pending结果持久重放不因后来点按钮变成新结果。有效授权在owner锁下消费一次并写calculating标记，事务外真实P8 worker计算，新事务重核资料/租约/消费后写普通runtime_step结果。超时/中断不盲重算或恢复旧授权。没有fact/note/profile_doc/chart/artifact/interpretive_claim写入；worker.effects写0指纯计算，不冒称PG授权及执行步骤也0写。
+
+synastry_result核实际p8-synastry-v1、owner/双方subject/revision/operation顺序、用途/server consent、原生内容摘要、真实命中Pointer及严格整数effects0。只信自己的adapter调用，不将hash当模型授权。模型投影不含完整出生time_basis/原UTC生日/scope/cache，不注册上游别名；完整rule_hits留私有，防未经登记规则进入模型。reference_policy明确native_step_verified_no_reference_aliases。
+
+agent_synastry_lineage只接受同run/epoch唯一已完成Journal完整输出与缓存一致，捕获双方fact/message、当前请求、上一轮原授权请求、消费后的consent实体修订及缓存修订。隐私闭包仅额外扫描ephemeral_synastry普通步骤；任一方资料/原请求来源撤销清cache及关联run工具输出/事件，包含尚未finalize时。非合盘cache不扩大扫描。取消/计算后资料变化不发布，成功重放不重算，伪输出拒绝。
+
+证据全部metadata/XML/log根核，分轮不拼全链：
+- a90f354f0307496abb9898397f493d0d：38/38、16.07s，三用途实际worker/原生授权/重放及schema。同期Ruff F811是同名fixture导入，改显式包装fixture，不忽略规则。
+- 1c67f08853b54e478be912cb70d456cb：58/58、28.66s，补取消/另一人物资料变更/case/跨轮授权来源依赖/validator负例，含原三日期工具及确认HTTP。
+- d1fd5ecbcf6f46298349367a883a2a3a：37pass/1fail、16.10s；新增脚本已取得真实工具投影，但测试错误期待alias_registration仍在。原codec始终清该非授权字段，按原契约改核没有registered_aliases/c-r；产品闸门不改，失败保留。
+- b22a422bf7b1455cbbc5d556a0efa191：45/45、18.50s，非网页拒绝、真实脚本Agent工具→投影→core4.0最终提交/used_claim_ids空、旧可见性/事项隐私。
+- 最终56cdc10d75944f4d9a8bcc0921d63963：17/17、16.09s，在投影移除未登记rule_hits并加reference_policy后复验全部合盘运行时，含脚本最终提交。Ruff/check/format120共13文件、diff--check、新文件函数≤60行检查通过。既有Starlette/anyio弃用警告1；无全量/真实模型/服务器操作，未请求新CI。
+
+未完/限制：合盘专业c/r临时引用尚未注册，不把限制性无引用脚本回答冒称专业解释依据验收，不为凑别名把结果塞入长期artifact。runtime_step/工具结果有reflection=false声明，但后台反思消费者排除仍需记忆模块合入后接线验证，不能把字段当实际筛选。另有准确缺资料完整确认卡、容量精确策略、临界文案/命理摘要、晨报开关和最后完整脚本/tests/v4/CI；P8整项未就绪，不冻结/部署/真实评测。
+
+04:35一次SSH仍banner timeout/native255，session14200结束，无认证/远端命令/修改。原PG55480/PID50516仅核存活未启停，无后台测试。main58；模块最新首段03cc0bb指定37/37+4/4过，仍明确未就绪，9ef7262原完整失败未改，不提前merge。下一一就绪优先无P8 mem2-gate合入；未就绪可先在该树做58明确允许的附加段2–5独立项，再续P8剩余，不重复本轮绿测。首发e578/H1 41660531及无P8基点不动。

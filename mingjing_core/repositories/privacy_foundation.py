@@ -88,6 +88,9 @@ def invalidate_foundation(
     partial = partial_sources(repo, owner, facts, span_source_ids)
     sources.update(partial | {ident for _, ident in seed_entities})
     entities, run_rows = closure_rows(repo, owner, (*DERIVED_KINDS, "message", "episode", "interpretive_claim"))
+    from .synastry_privacy import transient_rows
+
+    entities.extend(transient_rows(repo, owner, facts, sources, runs))
     entities.extend(case_effect_rows(repo, owner))
     propagate(
         repo,
