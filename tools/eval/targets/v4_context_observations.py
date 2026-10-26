@@ -49,8 +49,22 @@ def context_observations(repo: PostgresRepository, owner: str, run: dict[str, An
                     "constraint",
                     "preference",
                 }:
-                    injected.append({"alias": value.get("alias"), "kind": value["kind"], "text": value.get("text", "")})
+                    injected.append(
+                        {
+                            "id": item["key"],
+                            "alias": value.get("alias"),
+                            "kind": value["kind"],
+                            "text": value.get("text", ""),
+                        }
+                    )
     return {
+        "now": "\n".join(
+            message["content"]
+            for layer in layers
+            if layer["name"] == "L1"
+            for item in layer["items"]
+            for message in item["messages"]
+        ),
         "injected_facts": injected,
         "l4": {
             "time_filter": match.group(1) if match else None,

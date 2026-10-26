@@ -1,5 +1,6 @@
 """Deterministic assertion checks and the separately metered live critic."""
 
+import hashlib
 import math
 import time
 from dataclasses import dataclass
@@ -169,6 +170,8 @@ JUDGE_SCHEMA: dict[str, Any] = {
         },
         "deductions": {"type": "array", "items": {"type": "string"}},
         "expected_clauses": {"type": "array", "items": {"type": "string"}},
+        "needs_human": {"type": "boolean", "description": "依据不足或口径有争议时交大脑复核"},
+        "suggestions": {"type": "array", "items": {"type": "string"}},
         "score": {"type": "number", "minimum": 0, "maximum": 1},
         "verdict": {"type": "string", "enum": ["pass", "revise"]},
         "issues": {
@@ -191,6 +194,12 @@ JUDGE_SCHEMA: dict[str, Any] = {
 
 
 def _validate_reason(output: dict[str, Any]) -> None:
+    if "needs_human" in output and type(output["needs_human"]) is not bool:
+        raise ValueError("invalid human review flag")
+    if "suggestions" in output and (
+        not isinstance(output["suggestions"], list) or any(not isinstance(item, str) for item in output["suggestions"])
+    ):
+        raise ValueError("invalid critic suggestions")
     if not isinstance(output.get("reason"), str) or not output["reason"].strip():
         raise ValueError("critic reason missing")
     for key in ("deductions", "expected_clauses"):
@@ -208,6 +217,12 @@ class ModelJudge:
             provider = ConfiguredModel(model=model, role="critic")
         self.provider = provider
         self.rubric = rubric.read_text(encoding="utf-8")
+        self.judge_metadata = {
+            "rubric_path": str(rubric.resolve()),
+            "rubric_sha256": hashlib.sha256(rubric.read_bytes()).hexdigest(),
+            "model": model,
+            "effort": None,
+        }
 
     def evaluate(self, payload: dict[str, Any]) -> dict[str, Any]:
         calls, elapsed, errors = 0, 0.0, []
@@ -225,6 +240,7 @@ class ModelJudge:
             }:
                 break
         result.update(model_calls=calls, elapsed_seconds=elapsed, attempt_errors=errors)
+        result["judge_metadata"] = dict(self.judge_metadata)
         if result["error"]:
             result.update(score=None, judge_unavailable=True)
         return result
@@ -264,7 +280,9 @@ class ModelJudge:
             return {
                 "score": float(score),
                 "private_reasoning": {
-                    key: output[key] for key in ("reason", "deductions", "expected_clauses", "issues")
+                    **{key: output[key] for key in ("reason", "deductions", "expected_clauses", "issues")},
+                    "needs_human": output.get("needs_human", False),
+                    "suggestions": output.get("suggestions", []),
                 },
                 "model_calls": 1,
                 "elapsed_seconds": response.get("latency_seconds", time.monotonic() - started),

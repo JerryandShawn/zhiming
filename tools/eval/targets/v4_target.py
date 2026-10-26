@@ -84,6 +84,7 @@ class V4Target:
         self.portability = {}
         self.semantic = []
         self.semantic_history = []
+        self.judge_action_history = []
         self.tool_visibility_history = []
         self.crashed_run = None
         self.feishu = None
@@ -261,6 +262,8 @@ class V4Target:
         return semantic
 
     def send(self, turn: dict[str, Any]) -> TurnResult:
+        from .v4_judge_evidence import judge_evidence
+
         if turn.get("action", {}).get("type") == "sse_reconnect":
             return reconnect(self, turn)
         if turn.get("action", {}).get("type") in {"fact_revoke", "source_delete"}:
@@ -330,7 +333,11 @@ class V4Target:
                 "evaluator_observations": semantic,
                 "error_category": "business" if error else None,
                 "tool_effects": tool_effects(self.repo, self.owner, run["id"]),
-                "prior_turns": previous_turns(self.repo, self.owner, self.run_ids[:-1]),
+                "prior_turns": sorted(
+                    previous_turns(self.repo, self.owner, self.run_ids[:-1]) + self.judge_action_history,
+                    key=lambda row: row["turn"],
+                ),
+                "judge_evidence": judge_evidence(self, current),
                 "visible_tools_per_request": [
                     request.get("tool_names", []) for request in self.port.requests[request_offset:]
                 ],

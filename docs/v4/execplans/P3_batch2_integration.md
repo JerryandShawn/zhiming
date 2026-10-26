@@ -12,7 +12,7 @@
 - [x] 项1 TA01本机脚本修复：P1–P7/E1–E4完成；TA01两轮（pick/auto，显式/省略ID）、TA02/03/04/AX01及三条真实HTTP路径定向通过。没有真实模型评测；最终记忆候选全量/CI/真实门仍待后续。
 - [x] 项2 M01：只读38号第八节/v40精确修法后实现晚间默认值已过去则保留未来原时间；37项兼容定向通过，9项加强脚本断言通过，见下方分轮证据。
 - [ ] 项3 记忆2.0候选：模块线首段真正就绪才普通merge；41号附加段接线，R31不发任何迁移，撤销用变更ID+修订号，migrations与e578逐文件相同。03:00归档/反思仅脚本。46号脚本门、完整tests/v4、CI后冻结v4/release-mem2并写候选就绪+SHA；两份mem2执行单；仅46号指定约20题真实评测一页回执。
-- [ ] 项4 评分包v2：开始时只读43号第六节，仅tools/eval；脚本验收。
+- [x] 项4 main v57点名的评分包v2三项：结构/领域参考/纯judge失败待复核实现，26项定向通过；43号草稿的扩展条款、语义断言迁移、rubric切换和付费校准未自动启用。
 - [ ] 项5 P8：命理线首段真正就绪才接入；开始时只读42号第二部分2.3–2.6；完成后一次全量及第二批脚本门。
 
 ## 已观察实现
@@ -58,6 +58,18 @@ TA01及第二批各项尚未实现/验收；模块线首段“尚未记忆2.0就
 修后e9820d59dda04178bd3eece18029a9d5：37/37、24.91s，覆盖旧v39早/晚/静默时间、今日过去时间规整、真实写入/幂等/无外发、提醒显式授权及新晚间边界。再加强回归变体的硬DB期望（仅内存克隆，不改M01 YAML），4f0efa0c0fba4a319dd3f9163af85d15：9/9、9.54s，正例4个完整脚本passed、两种原due也过去的负例不写跟进、3项仅date-only-followup放宽政策断言。metadata/XML/log根读；分轮不相加称一次全链；真实模型0、服务器修改0。
 
 23:35单次SSH仍banner超时/native255，未进远端。模块尚未记忆2.0就绪，不能merge；命理首段现已“P8 接线材料就绪”（9a8466ec），仅登记前置，不提前合并。下一优先重看模块第一段，就绪则做项3；若仍未就绪，记录等待并转项4评分包v2（只读43第六节），不停止工作、不重测TA01/M01。
+
+### 2026-10-27 00:13 评分包v2三项完成（模块未就绪时推进）
+
+本轮业务代码diff仅tools/eval（此外更新本ExecPlan）。judge-packet-v2纳入实际此刻块、合成画像、种子/注入/原生记忆及撤销状态、前轮原话gist/回执/级联关闭、本轮卡片完整字段、实际盘面声明、按类别选至多3条领域规则。画像/此刻/卡片/现有criterion不截断，必要区超预算直接拒绝；记忆12条/80字、盘面10条/80字、保最近3轮gist并始终保留更早effects；总预算不含answer≤6000字。答案全文保持，优先保被引用别名，记录truncation/packet_chars/sha256到私有证据。缺原生此刻时明确missing_evidence，不补造产品块。
+
+F01从真实撤销前的跟进关联和撤销后的删除/撤销账本证明级联关闭，沿已有privacy observer的cancelled（native_status=deleted）等价口径；不由回答文字推断。新报告评分元数据保留实际rubric路径/原字节hash/model/effort（未知为null；LiveJudgeProvider已核high才标high）。没有切换已加载rubric或自行启用未审29题扩展criterion，当前criterion显式legacy_only_pending_brain_review_of_expanded_clauses。
+
+新增brain_review：硬工具/DB/回执/事件或target错误仍失败；仅judge失败且问题类型无已校准revision_enabled证据则待大脑复核，字面疑似且语义高分也只待审。原machine_status/machine_score/failed_assertions保留，未自动放宽0.8通过线。native session和engine均接入；rollup单列needs_brain_review_ids，未决不算通过或失败、不重跑已执行题、门槛accepted=false。needs_human/suggestions可选字段只影响复核，不新增偷偷扣分项。
+
+证据分轮：6574fc32c8a345f695aebc6deb3b6812为16pass/1fail，F01跟进删除后关联字段已清空，原实现无法提取关闭；保留原件，改为撤销前只读保留原关联、撤销后原生验证。80509032a0a3484bad215e3fce9b013e为17/17（13.40s，含旧r39兼容），21286aa6cd6e410ea427b0d543c9c730为7/7（5.35s，补引用别名优先保留），c133fef50b17473e9aa93703d82e495e为7/7（5.21s，补实际rubric元数据）。最后489134020eb9495abe641fcb0919ffbe为26/26（214.44s），覆盖packet、待复核各分支/接受门和原生JudgeJournal持久重放/未知拒绝/隐私。metadata/XML/log根核，Ruff/format120过；不相加称一次全链，没有真实模型或校准请求、未跑全量、未改历史分数/原报告。
+
+23:55（10-26北京）本wake单次SSH仍banner timeout/native255，未入远端。模块首段仍未就绪，P8材料已就绪。下一wake先看模块：就绪则优先记忆合入/候选；否则进入P8项（仅读42第二部分指定段），记住P8不得进入release-mem2，从当前不含P8的提交保留候选基点。所有首发/记忆Go/窗口规则仍有效。
 
 ## v57 / 46号优先规则（已全文读取）
 
