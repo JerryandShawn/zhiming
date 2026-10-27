@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { fileURLToPath } from 'node:url';
 import { shellPwaPlugin } from './pwa.plugin';
+import { compressedAssetsPlugin } from './compression.plugin';
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), shellPwaPlugin()],
+  plugins: [react(), tailwindcss(), shellPwaPlugin(), compressedAssetsPlugin()],
   base: './',
   build: {
     manifest: true,

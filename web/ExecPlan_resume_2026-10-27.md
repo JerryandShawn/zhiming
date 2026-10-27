@@ -13,6 +13,7 @@
 - [ ] 旧页独立真实loopback HTTP五冷4G/CPU4：0bc8502基线2564–2580ms，p75 2572，未过2500。预加载候选p75 2588，无收益已撤回；原失败/候选15图完整保存。新P10性能及真实PG联调被原55481测试角色缺失阻塞，继续其他前端队列。
 - [ ] 按49继续P10真实API、区话题/整理、研习、假H5；里程碑矩阵和上线准备文档。
 - [x] 2026-10-27 10:13 +08:00：独立?embed=demo假服务H5候选，68相关单测/14目标浏览器绿，四尺寸双主题31图、Axe0/朱砂≤3。授权/拒绝/超时/取消/过期/退出、迟到隔离、草稿/刷新、键盘/安全区/浏览器返回；原登录和对话均不接假身份。类型/lint/构建绿，接着测干净头性能，尚非真实免登。
+- [ ] H5 fdf6db2未压缩五冷p75 3660，未过门槛；新增静态gzip副本构建，80相关单测绿，93副本逐字解压一致（含最终SW），fonts.css 187451→62719B。原资源不变、无新依赖/服务器配置。候选推送后继续同条件gzip交付测量，不能冒称生产已启用。
 
 ## Surprises & Discoveries
 
@@ -23,6 +24,8 @@ H5实际服务端认证仍缺，按既有Thread_runtime_integration_notes采用�
 首轮真实旧HTML浏览器的流式行为已通过，但全页Axe揭示原paper主题小字对比度、aside使用dialog角色、按钮名称遗漏“我的档案”。只加深既有墨色token和小标签、改drawer为同class的div并补名称，不禁用规则。两种系统配色偏好仍使用旧页面自有浅纸主题，不冒称新增深色主题。JSON回执读取另加45秒/64KiB上限及固定错误文案，避免损坏JSON将片段泄漏到旧错误栏。
 
 ## Decision Log
+
+H5未压缩瓶颈为静态传输；优化交付包而不伪减文案/不把骨架当LCP。Vite post/sequential插件等待PWA最终产物，再生成可协商的.gzip副本；对压缩后不变小、字体/图片不生成。实际服务器启用留主线，本线只写Static_delivery_notes。原生loopback工具显式记录identity/gzip模式、实际传输与构建配置指纹，分开保存，不改旧失败。
 
 H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles；fakeSignInPort集中作为未来契约接线位置，明确不是HTTP/cookie合同草案。独立懒加载入口不绕过正式AuthGate，真接口/真设备缺口留主线/P9。扩展既有真实loopback测量工具支持H5无API页面，继续保存受测工具原字节，不能拿登录预览LCP替代登录后今日页。
 

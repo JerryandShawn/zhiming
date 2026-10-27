@@ -12,6 +12,8 @@ import { safeWebPath, webRoot } from './bundle-budget.mjs';
 const root = path.resolve(webRoot, '..');
 const target = process.env.FRONTEND_PERF_TARGET ?? 'legacy';
 if (!['legacy', 'h5'].includes(target)) throw new Error('Expected legacy or h5 target');
+const encoding = process.env.FRONTEND_PERF_ENCODING ?? 'identity';
+if (!['identity', 'gzip'].includes(encoding)) throw new Error('Expected identity or gzip delivery');
 const attempt = process.env.LEGACY_PERF_ATTEMPT;
 if (!attempt || !/^[a-z0-9][a-z0-9_-]{0,47}$/i.test(attempt)) throw new Error('Choose a fresh safe attempt name');
 const directory = await safeWebPath(`evidence/2026-10-27/${target}-performance/${attempt}`);
@@ -23,6 +25,7 @@ const bjt = () => new Date(Date.now() + 28800000).toISOString().replace('Z', '+0
 const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 const runtimePaths = ['static/index.html', 'static/app.js', 'static/base.css', 'static/paper.css'];
+const buildPaths = ['web/vite.config.ts', 'web/compression.plugin.ts', 'web/pwa.plugin.ts', 'web/index.html', 'web/package.json', 'web/package-lock.json'];
 async function provenance() {
   const files = {};
   async function visit(relative) {
@@ -38,10 +41,11 @@ async function provenance() {
   if (target === 'h5') {
     await visit('web/src');
     await visit('web/public');
+    for (const file of buildPaths) files[file] = hash(await fs.readFile(path.join(root, file)));
   }
   return {
     head: git('rev-parse', 'HEAD'),
-    runtime_dirty: Boolean(git('status', '--porcelain', '--', ...runtimePaths, 'web/src', 'web/public')),
+    runtime_dirty: Boolean(git('status', '--porcelain', '--', ...runtimePaths, 'web/src', 'web/public', ...(target === 'h5' ? buildPaths : []))),
     files,
   };
 }
@@ -95,7 +99,18 @@ const server = http.createServer(async (request, response) => {
           ? path.join(root, 'static/index.html')
           : path.resolve(root, '.' + decodeURIComponent(url.pathname));
     if (!filename.startsWith(path.join(root, 'static') + path.sep)) return void response.writeHead(404).end();
-    const bytes = await fs.readFile(filename);
+    let bytes = await fs.readFile(filename),
+      compressed = false;
+    if (encoding === 'gzip' && /\bgzip\b/.test(request.headers['accept-encoding'] ?? '')) {
+      try {
+        bytes = await fs.readFile(filename + '.gz');
+        compressed = true;
+      } catch (error) {
+        if (error.code !== 'ENOENT') throw error;
+      }
+    }
+    response.setHeader('Vary', 'Accept-Encoding');
+    if (compressed) response.setHeader('Content-Encoding', 'gzip');
     response.writeHead(200, {
       'Content-Type': types[path.extname(filename)] ?? 'application/octet-stream',
       'Content-Length': bytes.length,
@@ -118,6 +133,7 @@ const network = {
   connectionType: 'cellular4g',
 };
 const batch = {
+  encoding_mode: encoding,
   started_bjt: bjt(),
   mode:
     target === 'h5'
