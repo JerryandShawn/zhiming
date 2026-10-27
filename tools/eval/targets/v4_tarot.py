@@ -123,7 +123,12 @@ class TarotDriver:
         for draw in self.cards.list_draws(self.seeder.owner):
             label = reverse.get(draw["id"], "new-draw")
             data = dict(draw, native_id=draw["id"])
-            data["cards"] = [{"id": card["card_id"], "orientation": card["orientation"]} for card in draw["cards"]]
+            # Auto draws have selected but still face-down cards; the public view correctly hides their identity.
+            data["cards"] = [
+                {"id": card["card_id"], "orientation": card["orientation"]}
+                for card in draw["cards"]
+                if card.get("revealed") is True
+            ]
             rows.append(
                 {
                     "id": label,

@@ -7,7 +7,7 @@ import threading
 from collections.abc import Iterator
 from typing import Any
 
-from .errors import CapabilityError, ModelProtocolError
+from .errors import CapabilityError, ModelProtocolError, ModelResponseIdentityError
 from .port import ChatMessage, Part, StreamEvent, ToolCall, ToolSpec, reasoning_indices, with_execution_meta
 from .request_policy import safe_tool_choice
 from .schema_flatten import flatten_schema
@@ -70,13 +70,22 @@ def _tool_calls(calls: dict[int, dict[str, str]]) -> Iterator[StreamEvent]:
 
 
 def parse_events(
-    chunks: Iterator[dict[str, Any]], reasoning_field: str | None, *, membership: bool = False
+    chunks: Iterator[dict[str, Any]],
+    reasoning_field: str | None,
+    *,
+    membership: bool = False,
+    expected_model: str | None = None,
 ) -> Iterator[StreamEvent]:
     calls: dict[int, dict[str, str]] = {}
     finished = False
+    identity_seen = False
     for chunk in chunks:
         if chunk.get("error"):
             raise stream_error(chunk["error"], membership=membership)
+        if expected_model is not None:
+            if (not identity_seen or "model" in chunk) and chunk.get("model") != expected_model:
+                raise ModelResponseIdentityError()
+            identity_seen = True
         if usage := safe_usage(chunk.get("usage")):
             yield StreamEvent("usage", usage)
         for choice in chunk.get("choices", []):
@@ -97,6 +106,8 @@ def parse_events(
                 if choice["finish_reason"] not in {"stop", "tool_calls", "function_call"}:
                     raise ModelProtocolError()
                 finished = True
+    if expected_model is not None and not identity_seen:
+        raise ModelResponseIdentityError()
     if not finished:
         raise ModelProtocolError()
     yield from _tool_calls(calls)
@@ -124,6 +135,8 @@ class OpenAICompat(StreamingHTTP):
             "stream": True,
             "max_tokens": max_output or self.settings.get("max_output", 14000),
         }
+        if self.model == "k3.1-pro":
+            body["reasoning_effort"] = self.settings["reasoning_effort"]
         if self.caps.get("include_usage"):
             body["stream_options"] = {"include_usage": True}
         if temperature is not None:
@@ -156,8 +169,17 @@ class OpenAICompat(StreamingHTTP):
                 "/chat/completions",
                 body,
                 headers,
-                lambda chunks: parse_events(chunks, caps.get("reasoning_field"), membership=self.membership),
+                self._parsed_events,
                 cancel_event,
             ),
             metadata,
+        )
+
+    def _parsed_events(self, chunks: Iterator[dict[str, Any]]) -> Iterator[StreamEvent]:
+        caps = replay_caps(self.model, self.caps, self.settings, openai=True)
+        yield from parse_events(
+            chunks,
+            caps.get("reasoning_field"),
+            membership=self.membership,
+            expected_model="k3.1-pro" if self.model == "k3.1-pro" else None,
         )

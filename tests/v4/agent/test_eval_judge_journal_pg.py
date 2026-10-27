@@ -161,7 +161,7 @@ def test_completed_checkpoint_refuses_fabricated_turn_result(completed: Complete
     assert len(completed.live.sent) == 1
 
 
-def test_incomplete_real_mock_response_is_unknown_and_cannot_repost(
+def test_two_invalid_score_responses_persist_ungraded_and_cannot_repost(
     completed: Completed, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     def invalid(request: httpx.Request) -> httpx.Response:
@@ -171,18 +171,29 @@ def test_incomplete_real_mock_response_is_unknown_and_cannot_repost(
                 "type": "tool_use",
                 "id": "invalid-score",
                 "name": "submit",
-                "input": {"score": 2, "verdict": "pass", "issues": []},
+                "input": {
+                    "score": 2,
+                    "verdict": "pass",
+                    "issues": [],
+                    "reason": "Synthetic invalid score",
+                    "deductions": [],
+                    "expected_clauses": [],
+                },
             }
         )
 
     monkeypatch.setattr(completed.live, "handle", invalid)
     journal = completed.journal()
-    with completed.live.session.activate(), pytest.raises(LifecycleError):
-        journal.evaluate(completed.live.judge())
+    # R25/R38: received protocol errors finish after one retry; unknown inflight stays blocked above.
+    with completed.live.session.activate():
+        score = journal.evaluate(completed.live.judge())
+    assert score["score"] is None and score["judge_unavailable"]
     sent = len(completed.live.sent)
-    assert journal.prepare()["value"]["attempt_state"] == "unknown" and sent == 2
-    with completed.live.session.activate(), pytest.raises(LifecycleError):
-        journal.evaluate(completed.live.judge())
+    row = journal.prepare()["value"]
+    assert row["attempt_state"] == "completed" and sent == 3
+    assert len(row["attempt_ids"]) == 2
+    with completed.live.session.activate():
+        assert journal.evaluate(completed.live.judge()) == score
     assert len(completed.live.sent) == sent
 
 
@@ -270,7 +281,8 @@ def test_withdrawal_after_inflight_before_native_send_blocks_payload_and_clears_
         return row
 
     monkeypatch.setattr(journal, "_begin", withdraw_after_begin)
-    with completed.live.session.activate(), pytest.raises(ProviderStopped):
+    # R25 privacy last-send guard may reject at the native Journal before provider entry.
+    with completed.live.session.activate(), pytest.raises((ProviderStopped, LifecycleError)):
         journal.evaluate(judge)
     assert len(completed.live.sent) == 1 and judge.provider.tracker.calls == 0
     assert judge.provider.tracker.external_calls == 0 and judge.provider.tracker._before_send.get() is None

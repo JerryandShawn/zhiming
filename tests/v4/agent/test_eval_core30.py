@@ -20,7 +20,14 @@ from tools.eval.contracts import scenario_contract_hash
 from tools.eval.engine import evaluate_scenario
 from tools.eval.report import summarize
 from tools.eval.schema import load_scenarios
-from tools.eval.targets.v4_core30 import CORE30_IDS, NEW_IDS, SAFETY_IDS, Core30LiveTarget, acceptance, load_core30
+from tools.eval.targets.v4_core30 import (
+    CORE30_IDS,
+    NEW_IDS,
+    SAFETY_IDS,
+    Core30LiveTarget,
+    acceptance,
+    load_core30,
+)
 from tools.eval.targets.v4_target import V4Target
 
 from .test_eval_v4_live_pg import Harness, scenario, wire
@@ -28,6 +35,16 @@ from .test_eval_v4_live_pg import live as live_fixture
 from .test_eval_v4_pg import target as target_fixture
 
 ROOT = Path(__file__).resolve().parents[3]
+# Exact approved v39 contracts from frozen 2200485; independent of the overlay implementation.
+BOARD39_CONTRACTS = {
+    "Q02": "e2ab211b8f420f849aff9b75c9285a21dc0e044d010c15edab24aa1a7dd5ef20",
+    "S02": "a37f7f0d750947136ec871b245953b94c35e24fa33b5d0e0434fdaa105fd137c",
+    "S03": "ed2a7266754e98a3984940cab74386807eed6625998d9bc076c1ad4fbd475f56",
+    "S04": "41da8e5261732339862ffa01317f4ecd542ecdac6e2ec74300869b13d66fc84d",
+    "C04": "eebd5311eff3bbeea944affeea43ed5e322a4665d7f9234f9a9a03b215e58a05",
+    "C02": "4bfb0cfbd04a722bd1f00b56ef6aeea4387c6c2414ac0365c4f059e37fc185ec",
+    "C05": "0fc9b2230c618f87424081efc2ebed753986d61d28bebff4ffdc089605ff2d1f",
+}
 
 
 @pytest.fixture
@@ -44,19 +61,29 @@ def live(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch):
 def synthetic_core_source(monkeypatch: pytest.MonkeyPatch) -> None:
     # These transport fixtures issue a fixed synthetic candidate, not a real Git approval.
     # Keep source/contract/central identity native; checkout enforcement has its own tests.
-    monkeypatch.setattr(lifecycle_identity, "candidate_provenance", lambda *args: {"worktree_clean": True})
+    monkeypatch.setattr(
+        lifecycle_identity,
+        "candidate_provenance",
+        lambda *args: {"worktree_clean": True},
+    )
 
 
-def test_exact_selection_preserves_all_twenty_eight_original_scoring_contracts() -> None:
+def test_exact_selection_preserves_originals_except_board39_approved_expectations() -> None:
     selected = load_core30()
     originals = {case.id: case for case in load_scenarios(ROOT / "tools/eval/scenarios")}
-    assert len(selected) == 30 and tuple(case.id for case in selected) == CORE30_IDS
+    assert len(selected) == 29 and tuple(case.id for case in selected) == CORE30_IDS
     assert len(originals) == 80 and not NEW_IDS.intersection(originals)
     assert {case.id for case in load_scenarios(ROOT / "tools/eval/scenarios_v4_core30")} == NEW_IDS
-    assert {"S01", "S02", "S03", "S04", "C04", "AX01"} == SAFETY_IDS
+    assert {"S02", "S03", "S04", "C04", "AX01"} == SAFETY_IDS
     for case in selected:
         if case.id not in NEW_IDS:
-            assert scenario_contract_hash(case) == scenario_contract_hash(originals[case.id])
+            # Board v29 core29 selection; v39 permits only these expectation overlays.
+            original = originals[case.id]
+            if case.id in BOARD39_CONTRACTS:
+                assert scenario_contract_hash(case) == BOARD39_CONTRACTS[case.id]
+                assert scenario_contract_hash(case) != scenario_contract_hash(original)
+            else:
+                assert scenario_contract_hash(case) == scenario_contract_hash(original)
             assert all(
                 set(action.model_dump(exclude_none=True)) <= {"tool_call", "text"}
                 for step in case.scripted
@@ -84,7 +111,6 @@ def test_six_groups_have_exact_human_approved_ids() -> None:
         "Q04",
         "Q05",
         "D01",
-        "S01",
         "S02",
         "S03",
         "S04",
@@ -117,7 +143,7 @@ def test_every_safety_failure_blocks_acceptance(identity: str) -> None:
     cases = outcomes()
     next(case for case in cases if case["id"] == identity).update(status="failed", score=0.99)
     result = acceptance(cases)
-    assert not result["accepted"] and result["safety_passed"] == 5
+    assert not result["accepted"] and result["safety_passed"] == 4
 
 
 @pytest.mark.parametrize("change", ["missing", "duplicate", "unknown"])
@@ -149,19 +175,27 @@ def test_new_v22_contracts_use_actual_pg_tools_and_history(identity: str, target
 
 
 def test_core30_validate_cli_opens_no_database_or_model(monkeypatch: pytest.MonkeyPatch, capsys) -> None:
-    monkeypatch.setattr(V4Target, "reset", lambda *args: pytest.fail("validation must not initialize a target"))
+    monkeypatch.setattr(
+        V4Target,
+        "reset",
+        lambda *args: pytest.fail("validation must not initialize a target"),
+    )
     assert runner.main(["--target", "v4", "--suite", "core30", "--validate"]) == 0
-    assert "Validated 30/30" in capsys.readouterr().out
+    assert "Validated 29/29" in capsys.readouterr().out
 
 
 @pytest.mark.parametrize("extra", [["--target", "fake"], ["--target", "v4", "--scenario", "S01"]])
-def test_core30_cli_cannot_silently_select_a_different_or_partial_suite(extra: list[str]) -> None:
+def test_core30_cli_cannot_silently_select_a_different_or_partial_suite(
+    extra: list[str],
+) -> None:
     with pytest.raises(SystemExit):
         runner.main(["--suite", "core30", "--validate", *extra])
 
 
 @pytest.mark.usefixtures("synthetic_core_source")
-def test_core30_native_withdrawal_uses_zero_model_calls_before_next_turn(live: Harness) -> None:
+def test_core30_native_withdrawal_uses_zero_model_calls_before_next_turn(
+    live: Harness,
+) -> None:
     target = Core30LiveTarget(
         model="k3-256k",
         dsn=os.environ["CORE_TEST_DSN"],
@@ -169,12 +203,19 @@ def test_core30_native_withdrawal_uses_zero_model_calls_before_next_turn(live: H
         adapter_factory=live.factory,
     )
     live.targets.append(target)
-    live.primary = lambda _: wire({"type": "text", "text": "目前没有保存的个人安排，可以按你现在告诉我的内容来聊。"})
+    live.primary = lambda _: wire(
+        {
+            "type": "text",
+            "text": "目前没有保存的个人安排，可以按你现在告诉我的内容来聊。",
+        }
+    )
     session = DelegatedSession(live.guard, live.session.approval, phase="core", scenario_ids=["F01"])
     try:
         with session.activate():
             observed = evaluate_scenario(
-                next(case for case in load_core30() if case.id == "F01"), target, target_name="v4"
+                next(case for case in load_core30() if case.id == "F01"),
+                target,
+                target_name="v4",
             )
     finally:
         session.close()
@@ -205,7 +246,7 @@ def test_report_and_exit_preserve_strict_safety_threshold(tmp_path: Path, unsafe
     args = Namespace(mode="live", target="v4", output=tmp_path, scenario=None, suite="core30")
     assert runner._finish(args, load_core30(), report) == exit_code
     document = next(tmp_path.glob("*-core30.md")).read_text(encoding="utf-8")
-    assert ("安全 5/6" if unsafe else "安全 6/6") in document and "至少22" in document
+    assert ("安全 4/5" if unsafe else "安全 5/5") in document and "至少22" in document
 
 
 def date_step(index: int) -> httpx.Response:
@@ -220,7 +261,9 @@ def date_step(index: int) -> httpx.Response:
 
 
 @pytest.mark.usefixtures("synthetic_core_source")
-def test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_models(live: Harness) -> None:
+def test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_models(
+    live: Harness,
+) -> None:
     target = Core30LiveTarget(
         model="k3-256k",
         dsn=os.environ["CORE_TEST_DSN"],
@@ -278,7 +321,9 @@ def test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_model
 
 
 @pytest.mark.usefixtures("synthetic_core_source")
-def test_core30_rejects_non_core_fixture_scenario_before_any_physical_attempt(live: Harness) -> None:
+def test_core30_rejects_non_core_fixture_scenario_before_any_physical_attempt(
+    live: Harness,
+) -> None:
     target = Core30LiveTarget(
         model="k3-256k",
         dsn=os.environ["CORE_TEST_DSN"],

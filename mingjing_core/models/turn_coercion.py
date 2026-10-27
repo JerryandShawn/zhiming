@@ -29,6 +29,14 @@ def turn_policy(model: str, settings: Mapping[str, Any], role: str) -> dict[str,
         raise ConfigError("K3调用角色与已绑定角色不符")
     if any(settings.get(name) not in (None, "high") for name in ("effort", "reasoning_effort")):
         raise ConfigError("本阶段K3角色固定high，未经探针不得切换effort")
+    if model == "k3.1-pro":
+        return {
+            "role": role,
+            "effort": "high",
+            "effort_requested": "high",
+            "effort_verified": False,
+            "effort_source": "explicit_request",
+        }
     # Kimi documents high by default; its Anthropic effort wire remains unprobed.
     # Send no guessed controls or the inherited 1024-token thinking budget.
     return {

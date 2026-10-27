@@ -113,10 +113,22 @@ def test_repeat_is_identical_and_replay_ignores_expect() -> None:
             TurnResult(events=["done", "start"]),
         ),
         ({"min_questions": 1}, TurnResult(text="怎么样？"), TurnResult(text="你好")),
-        ({"max_questions": 1}, TurnResult(text="怎么样？"), TurnResult(text="怎么样？还好吗?")),
+        (
+            {"max_questions": 1},
+            TurnResult(text="怎么样？"),
+            TurnResult(text="怎么样？还好吗?"),
+        ),
         ({"max_questions": 0}, TurnResult(text="你好"), TurnResult(text="好吗？")),
-        ({"db": [{"path": "latency", "lte": 2000}]}, TurnResult(db={"latency": 800}), TurnResult(db={"latency": 2001})),
-        ({"db": [{"path": "score", "gte": 0.9}]}, TurnResult(db={"score": 0.95}), TurnResult(db={"score": 0.8})),
+        (
+            {"db": [{"path": "latency", "lte": 2000}]},
+            TurnResult(db={"latency": 800}),
+            TurnResult(db={"latency": 2001}),
+        ),
+        (
+            {"db": [{"path": "score", "gte": 0.9}]},
+            TurnResult(db={"score": 0.95}),
+            TurnResult(db={"score": 0.8}),
+        ),
     ],
 )
 def test_assertion_positive_and_negative(expect: dict[str, Any], good: TurnResult, bad: TurnResult) -> None:
@@ -207,7 +219,15 @@ class CriticFixture:
         self.output = output
 
     def generate(self, **_: Any) -> dict[str, Any]:
-        return {"output": deepcopy(self.output), "latency_seconds": 0.125}
+        return {
+            "output": {
+                "reason": "合成理由",
+                "deductions": [],
+                "expected_clauses": [],
+                **deepcopy(self.output),
+            },
+            "latency_seconds": 0.125,
+        }
 
 
 @pytest.mark.parametrize("score", [-1, 1.5, True, float("nan"), "0.5"])
@@ -231,23 +251,40 @@ def test_critic_score_multiplies_deterministic_result_and_counts_call() -> None:
     [
         {"score": 1, "verdict": "revise", "issues": []},
         {"score": 1, "verdict": "pass", "issues": ["malformed"]},
-        {"score": 1, "verdict": "revise", "issues": [{"type": "time_error", "severity": 5}]},
-        {"score": 0.1, "verdict": "pass", "issues": [{"type": "time_error", "severity": 5}]},
-        {"score": 0.1, "verdict": "revise", "issues": [{"type": "time_error", "severity": True}]},
+        {
+            "score": 1,
+            "verdict": "revise",
+            "issues": [{"type": "time_error", "severity": 5}],
+        },
+        {
+            "score": 0.1,
+            "verdict": "pass",
+            "issues": [{"type": "time_error", "severity": 5}],
+        },
+        {
+            "score": 0.1,
+            "verdict": "revise",
+            "issues": [{"type": "time_error", "severity": True}],
+        },
     ],
 )
-def test_critic_rejects_inconsistent_or_malformed_issues(output: dict[str, Any]) -> None:
+def test_critic_rejects_inconsistent_or_malformed_issues(
+    output: dict[str, Any],
+) -> None:
     judge = ModelJudge("fixed-model", ROOT / "tools/eval/rubric_v1.md", CriticFixture(output))
     result = judge.evaluate({})
-    assert result["score"] == 0
+    # R25: two invalid external scores are ungraded, never a business failure.
+    assert result["score"] is None and result["judge_unavailable"]
     assert result["error"] == "ValueError"
+    assert result["model_calls"] == 2
 
 
 def test_critic_errors_never_turn_into_passed_cases() -> None:
     judge = ModelJudge("fixed-model", ROOT / "tools/eval/rubric_v1.md", CriticFixture({"score": 9}))
     case = evaluate_scenario(Scenario.model_validate(example()), FakeTarget(), judge=judge)
-    assert case["score"] == 0
-    assert case["status"] == "failed"
+    # R25: preserve missing grading instead of recording a fabricated zero.
+    assert case["score"] is None
+    assert case["status"] == "judge_unavailable"
     assert case["failed_assertions"] == ["turn[1].judge_error"]
 
 
@@ -258,7 +295,18 @@ def test_live_missing_key_preflight_does_not_create_baseline(tmp_path: Path, mon
     monkeypatch.delenv("MOONSHOT_API_KEY", raising=False)
     monkeypatch.setattr(runner, "load_scenarios", lambda _: [Scenario.model_validate(example())])
     with pytest.raises(SystemExit, match="Live preflight failed"):
-        runner.main(["--mode", "live", "--target", "v3", "--scenarios", str(tmp_path), "--output", str(tmp_path)])
+        runner.main(
+            [
+                "--mode",
+                "live",
+                "--target",
+                "v3",
+                "--scenarios",
+                str(tmp_path),
+                "--output",
+                str(tmp_path),
+            ]
+        )
     assert not (tmp_path / "baseline-v3.json").exists()
 
 
@@ -275,10 +323,15 @@ def test_source_digest_invalidates_results_after_code_changes(tmp_path: Path, mo
     assert original != runner._source_digest()
 
 
-def test_endpoint_fingerprint_does_not_include_credentials(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_endpoint_fingerprint_does_not_include_credentials(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     from tools.eval import runner
 
-    monkeypatch.setenv("KIMI_BASE_URL", "https://synthetic-user:synthetic-password@api.example/v1?token=synthetic")
+    monkeypatch.setenv(
+        "KIMI_BASE_URL",
+        "https://synthetic-user:synthetic-password@api.example/v1?token=synthetic",
+    )
     with_credentials = runner._endpoint_digest()
     monkeypatch.setenv("KIMI_BASE_URL", "https://api.example/v1")
     assert runner._endpoint_digest() == with_credentials
@@ -287,7 +340,11 @@ def test_endpoint_fingerprint_does_not_include_credentials(monkeypatch: pytest.M
 def test_target_error_is_safe_and_not_a_capability_failure() -> None:
     class BrokenTarget(FakeTarget):
         def send(self, turn: dict[str, Any]) -> TurnResult:
-            return TurnResult(error="ModelUnavailable", metadata={"error_category": "provider"}, model_calls=1)
+            return TurnResult(
+                error="ModelUnavailable",
+                metadata={"error_category": "provider"},
+                model_calls=1,
+            )
 
     case = evaluate_scenario(Scenario.model_validate(example()), BrokenTarget())
     assert case["target_error_code"] == "ModelUnavailable"
@@ -304,16 +361,25 @@ def test_live_report_and_baseline_gates_without_network(
     class ReplayOnlyTarget(FakeTarget):
         def send(self, turn: dict[str, Any]) -> TurnResult:
             if provider_error:
-                return TurnResult(error="ModelUnavailable", metadata={"error_category": "provider"}, model_calls=1)
+                return TurnResult(
+                    error="ModelUnavailable",
+                    metadata={"error_category": "provider"},
+                    model_calls=1,
+                )
             return super().send(turn)
 
     fixed = ModelJudge(
-        "fixed-model", ROOT / "tools/eval/rubric_v1.md", CriticFixture({"score": 1, "verdict": "pass", "issues": []})
+        "fixed-model",
+        ROOT / "tools/eval/rubric_v1.md",
+        CriticFixture({"score": 1, "verdict": "pass", "issues": []}),
     )
     monkeypatch.setattr(runner, "_target", lambda *_: ReplayOnlyTarget())
     monkeypatch.setattr(runner, "ModelJudge", lambda *_: fixed)
     args = runner.parser().parse_args(["--mode", "live", "--target", "v3", "--output", str(tmp_path)])
-    config = {"version": "test", "judge": {"model": "fixed-model", "rubric": "rubric_v1.md", "version": "test"}}
+    config = {
+        "version": "test",
+        "judge": {"model": "fixed-model", "rubric": "rubric_v1.md", "version": "test"},
+    }
     assert runner._run(args, load_scenarios(), config, "synthetic-test") == int(provider_error)
     assert (tmp_path / "baseline-v3.json").exists() is not provider_error
     path = next(path for path in tmp_path.glob("*.json") if path.name != "baseline-v3.json")
