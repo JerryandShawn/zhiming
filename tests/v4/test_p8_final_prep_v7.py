@@ -127,3 +127,16 @@ def test_undo_requires_observed_restoration_not_missing_or_stale(state: dict) ->
     value = next(row for row in CASES if row.id == "KU04").model_dump()
     value["scripted"][0]["model"][0]["db"]["memory_update"]["old"] = state
     assert evaluate(value)["status"] == "failed"
+
+
+@pytest.mark.parametrize(
+    ("key", "bad"),
+    [("cited_rule_count", 0), ("unresolved_count", 1), ("missing_used_claim_count", 1)],
+)
+def test_rule_references_require_actual_resolved_and_used_claims(
+    key: str, bad: int
+) -> None:
+    value = next(row for row in CASES if row.id == "CR01").model_dump()
+    check = value["scripted"][0]["model"][2]["db"]["run_meta"]["rule_citation_check"]
+    check[key] = bad
+    assert evaluate(value)["status"] == "failed"
