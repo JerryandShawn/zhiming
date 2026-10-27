@@ -10,9 +10,11 @@ import { safeWebPath, webRoot } from './bundle-budget.mjs';
 // A real loopback HTTP server preserves CDP network throttling. Browser route.fulfill
 // would bypass the transfer time we are trying to measure. No database/model is used.
 const root = path.resolve(webRoot, '..');
+const target = process.env.FRONTEND_PERF_TARGET ?? 'legacy';
+if (!['legacy', 'h5'].includes(target)) throw new Error('Expected legacy or h5 target');
 const attempt = process.env.LEGACY_PERF_ATTEMPT;
 if (!attempt || !/^[a-z0-9][a-z0-9_-]{0,47}$/i.test(attempt)) throw new Error('Choose a fresh safe attempt name');
-const directory = await safeWebPath(`evidence/2026-10-27/legacy-performance/${attempt}`);
+const directory = await safeWebPath(`evidence/2026-10-27/${target}-performance/${attempt}`);
 await fs.mkdir(path.dirname(directory), { recursive: true });
 await fs.mkdir(directory, { recursive: false });
 const harnessBytes = await fs.readFile(fileURLToPath(import.meta.url));
@@ -33,6 +35,10 @@ async function provenance() {
   for (const file of runtimePaths) files[file] = hash(await fs.readFile(path.join(root, file)));
   await visit('static/dist');
   await visit('static/vendor');
+  if (target === 'h5') {
+    await visit('web/src');
+    await visit('web/public');
+  }
   return {
     head: git('rev-parse', 'HEAD'),
     runtime_dirty: Boolean(git('status', '--porcelain', '--', ...runtimePaths, 'web/src', 'web/public')),
@@ -57,6 +63,8 @@ const types = {
   '.svg': 'image/svg+xml',
   '.woff2': 'font/woff2',
   '.png': 'image/png',
+  '.json': 'application/json',
+  '.webmanifest': 'application/manifest+json',
 };
 const server = http.createServer(async (request, response) => {
   try {
@@ -69,16 +77,23 @@ const server = http.createServer(async (request, response) => {
       return;
     }
     if (url.pathname.startsWith('/api/')) {
-      if (!Object.hasOwn(fixture, url.pathname)) unexpected.push({ method: 'GET', path: url.pathname });
+      if (target === 'h5' || !Object.hasOwn(fixture, url.pathname))
+        unexpected.push({ method: 'GET', path: url.pathname });
       response.writeHead(200, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify(fixture[url.pathname] ?? {}));
       return;
     }
     if (url.pathname === '/favicon.ico') return void response.writeHead(204).end();
     const filename =
-      url.pathname === '/'
-        ? path.join(root, 'static/index.html')
-        : path.resolve(root, '.' + decodeURIComponent(url.pathname));
+      target === 'h5'
+        ? path.resolve(
+            root,
+            'static/dist',
+            url.pathname === '/' ? 'index.html' : '.' + decodeURIComponent(url.pathname),
+          )
+        : url.pathname === '/'
+          ? path.join(root, 'static/index.html')
+          : path.resolve(root, '.' + decodeURIComponent(url.pathname));
     if (!filename.startsWith(path.join(root, 'static') + path.sep)) return void response.writeHead(404).end();
     const bytes = await fs.readFile(filename);
     response.writeHead(200, {
@@ -104,7 +119,10 @@ const network = {
 };
 const batch = {
   started_bjt: bjt(),
-  mode: 'old-html-built-module-loopback-http-synthetic-read-only-api',
+  mode:
+    target === 'h5'
+      ? 'h5-isolated-demo-built-loopback-http-no-api'
+      : 'old-html-built-module-loopback-http-synthetic-read-only-api',
   network,
   cpu_slowdown: 4,
   runs: 5,
@@ -136,8 +154,9 @@ try {
         return route.abort();
       },
     );
-    await context.addInitScript(() => {
-      localStorage.setItem('mjt_token', 'synthetic-performance-token');
+    await context.addInitScript((target) => {
+      if (target === 'legacy') localStorage.setItem('mjt_token', 'synthetic-performance-token');
+      else localStorage.setItem('mingjing-theme', 'light');
       window.__legacyLcp = [];
       const capture = (entries) =>
         entries.forEach((entry) =>
@@ -150,7 +169,7 @@ try {
       const observer = new PerformanceObserver((list) => capture(list.getEntries()));
       observer.observe({ type: 'largest-contentful-paint', buffered: true });
       window.__legacyLcpFlush = () => capture(observer.takeRecords());
-    });
+    }, target);
     const page = await context.newPage();
     page.on('pageerror', () => errors.push('pageerror'));
     page.on('response', (response) => {
@@ -164,9 +183,10 @@ try {
     await cdp.send('Network.emulateNetworkConditions', network);
     await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
     try {
-      await page.goto(origin + '/#/chat', { waitUntil: 'networkidle' });
-      await page.waitForFunction(() => Boolean(window.mingjingLegacyStream));
-      await page.getByRole('textbox', { name: '本次问题' }).waitFor();
+      await page.goto(origin + (target === 'h5' ? '/?embed=demo#/chat' : '/#/chat'), { waitUntil: 'networkidle' });
+      if (target === 'legacy') await page.waitForFunction(() => Boolean(window.mingjingLegacyStream));
+      else await page.locator('[data-demo="h5"]').waitFor();
+      await page.getByRole('textbox', { name: target === 'h5' ? '本地草稿' : '本次问题' }).waitFor();
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(1000);
       const timings = await page.evaluate(() => {
@@ -221,7 +241,9 @@ try {
     unexpected,
     samples,
     limitations:
-      'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
+      target === 'h5'
+        ? 'Isolated H5 sign-in demo only, not signed-in Today, real Feishu/cookie authentication, device, API or deployment acceptance.'
+        : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
   };
   await fs.writeFile(path.join(directory, 'report.json'), JSON.stringify(report, null, 2));
   await fs.writeFile(

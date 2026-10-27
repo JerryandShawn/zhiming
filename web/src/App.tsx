@@ -33,6 +33,7 @@ const ComponentNotice = lazy(() => import('./demos/ComponentNotice'));
 const ChartDemo = lazy(() => import('./charts/ChartDemo'));
 const NightApp = lazy(() => import('./night/NightApp'));
 const ToolsDemo = lazy(() => import('./tools/ToolsDemo'));
+const H5Demo = lazy(() => import('./embed/H5Demo'));
 const aliases: Record<string, string> = {
   memory: 'me?section=memory',
   timeline: 'me?section=timeline',
@@ -87,6 +88,14 @@ export default function App() {
     if (aliases[name]) location.replace(`#/${route}`);
     window.scrollTo(0, 0);
   }, [name, route]);
+  if (new URLSearchParams(location.search).get('embed') === 'demo')
+    return (
+      <RouteErrorBoundary resetKey="h5-demo" homeHref="?preview=1#/today">
+        <Suspense fallback={<Skeleton label="正在展开内嵌预览" />}>
+          <H5Demo />
+        </Suspense>
+      </RouteErrorBoundary>
+    );
   if (new URLSearchParams(location.search).get('night') === 'demo')
     return (
       <RouteErrorBoundary
