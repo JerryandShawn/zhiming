@@ -16,8 +16,8 @@ function frame(seq: number, type: string, body: Record<string, unknown>) {
     ...body,
   })}\n\n`;
 }
-const final = () =>
-  frame(5, 'final', {
+const final = (seq = 5, patch: Record<string, unknown> = {}) =>
+  frame(seq, 'final', {
     message_id: 'synthetic-message',
     envelope: {
       schema: 'core4.0',
@@ -30,11 +30,12 @@ const final = () =>
       options: null,
       review: { state: 'revised', reasons: [], revision_id: 'synthetic-revision' },
       usage: {},
+      ...patch,
     },
   });
 export async function prepareLegacy(
   page: Page,
-  scenario: 'revised' | 'cancelled' | 'legacy' | 'bad-receipt' = 'revised',
+  scenario: 'revised' | 'cancelled' | 'legacy' | 'bad-receipt' | 'catalog' = 'revised',
 ) {
   const outside: string[] = [],
     errors: string[] = [],
@@ -92,6 +93,61 @@ export async function prepareLegacy(
       }
       if (url.pathname === `/api/runs/${runId}/events`) {
         cursors.push(request.headers()['last-event-id'] ?? null);
+        if (scenario === 'catalog') {
+          const asked = {
+            ask_id: 'ask-1',
+            question: '你想先梳理哪件事？',
+            options: [{ id: 'a', label: '工作' }],
+            allow_free_text: true,
+            multi: false,
+            why: '先缩小范围',
+          };
+          const decision = (id: string) => ({
+            id,
+            title: '先核对',
+            benefit: '清楚',
+            cost: '时间',
+            risk: '延迟',
+            reversibility: 'easy',
+            first_step: '询问',
+            unknowns: [],
+          });
+          const options = { options_id: 'options-1', options: [decision('a'), decision('b')] };
+          return route.fulfill({
+            contentType: 'text/event-stream',
+            body:
+              frame(1, 'started', { thread_id: 'life:self', message_id: 'synthetic-message', incognito: false }) +
+              frame(2, 'status', { phase: 'tool', text: '核对合成资料' }) +
+              frame(3, 'tool_call', { call_id: 'call-1', name: 'date_calc', summary: '核对日期' }) +
+              frame(4, 'tool_result', {
+                call_id: 'call-1',
+                name: 'date_calc',
+                summary: '日期已核对',
+                ok: true,
+                receipt: { write_status: 'saved', fact_id: 'fact-1' },
+              }) +
+              ['saved', 'pending_confirm', 'undone', 'rejected']
+                .map((write_status, index) =>
+                  frame(5 + index, 'memory_receipt', {
+                    fact_id: 'fact-1',
+                    write_status,
+                    summary: '合成回执摘要',
+                    sensitive: false,
+                  }),
+                )
+                .join('') +
+              frame(9, 'ask_user', asked) +
+              frame(10, 'present_options', options) +
+              frame(11, 'text_delta', { text: firstText }) +
+              frame(12, 'review', { state: 'skipped', reasons: [] }) +
+              final(13, {
+                asked,
+                options,
+                review: { state: 'skipped', reasons: [] },
+                receipts: [{ fact_id: 'fact-1', write_status: 'rejected' }],
+              }),
+          });
+        }
         if (++connections === 1)
           return route.fulfill({
             contentType: 'text/event-stream',
