@@ -18,7 +18,7 @@
 
 现有tools.first_release_stage_copy.CopyScope.target及tools.first_release_native_exchange.Scope.original在非local_drill模式均硬绑定zhiming_core_fr_stage；模板也拒已有stage root/unit。首发stage成功后这些对象将存在。仅替换SHA仍会正确拒绝，不能覆盖旧副本、删库、改硬guard、传local_drill或复用首发operation绕过。
 
-main62/R37已批准独立命名方案：数据库固定zhiming_core_mem2_stage，目录固定/opt/zhiming-core-mem2-stage，unit固定zhiming-core-mem2-stage.service，operation使用独立mem2-stage命名空间并在最终SHA绑定后固定；沿原PG原生dump/restore、owner/ACL/SET与安全重放核验，保持首发对象原样。新入口须独立核固定命名并拒绝所有首发名，首发入口继续拒绝mem2名；定向反例通过后由47号审绑定后的明确执行入口。当前尚未提供适配新命名的受审可执行入口，本单B3/B7仍No-Go；不把计划当实现。该缺口只阻止stage执行，不阻止本机记忆门、候选审查或准备生产执行单。
+main62/R37已批准独立命名方案：数据库固定zhiming_core_mem2_stage，目录固定/opt/zhiming-core-mem2-stage，unit固定zhiming-core-mem2-stage.service，operation使用独立mem2-stage命名空间并在最终SHA绑定后固定；沿原PG原生dump/restore、owner/ACL/SET与安全重放核验，保持首发对象原样。新入口须独立核固定命名并拒绝所有首发名，首发入口继续拒绝mem2名；定向反例通过后由47号审绑定后的明确执行入口。R42独立树16366f0e已实现tools.memory2_stage本地入口及双向错名拒绝定向测试；尚未最终候选绑定、完整门/CI及47复核或Linux执行，本单B3/B7仍No-Go。该缺口只阻止stage执行，不阻止本机记忆门、候选审查或准备生产执行单。
 
 ## 执行顺序与逐项回执
 
@@ -35,3 +35,5 @@ main62/R37已批准独立命名方案：数据库固定zhiming_core_mem2_stage�
 |B8 关闭|stage保持closed/inactive，无模型/外发，原四入口未动；只写一页逐项exit/实际耗时/hash/第一错误与未验证项回执，然后停，不进入生产。|
 
 任一非预设负验失败，停止当前步骤，不覆盖/即时修线上/删除失败库或产物。连接重试仍按R30；不更改VPN/路由/SSH/防火墙。所有旧发布、库、包和备份至少保留14天。stage成功不等于48号生产放行。
+
+入口绑定草案（不是执行授权）：`python -m tools.memory2_stage <copy|capture|restore|seal|exchange> --operation <独立16位hex> --database zhiming_core_mem2_stage --root /opt/zhiming-core-mem2-stage --unit zhiming-core-mem2-stage.service --output <全新私有回执>`。不加--apply只验参数、不连库；实际执行另须保护admin文件、动作对应原生hash/备份/metadata参数及47同SHA绑定。无--local-drill选项。正式固定命令仍待最终包生成后逐项补齐，不能照占位符执行。
