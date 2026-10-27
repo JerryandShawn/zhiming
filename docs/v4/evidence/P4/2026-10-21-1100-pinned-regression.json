@@ -1,0 +1,126 @@
+{
+  "schema": "mainline-pinned-regression-evidence-v1",
+  "recorded_bjt": "2026-10-21T11:24:09.735608+08:00",
+  "source": {
+    "local_sha": "a1270174e6f64cfe1abe915a09836647c1da3484",
+    "remote_sha": "a1270174e6f64cfe1abe915a09836647c1da3484",
+    "tree": "a1bc41370850b1e554328d99d7b5e4cf5683cf99",
+    "tracked_blobs_verified": 1336,
+    "mismatches": 0,
+    "manifest_sha256": "469c37aadefd481abe9e8c3a716cf833a76ab5a06f512ccbbcc1ae0b445d1ecf"
+  },
+  "suites": {
+    "v4": {
+      "console_summary": "2876 passed, 1 xfailed, 1 warning in 831.66s (0:13:51)",
+      "metadata": {
+        "commit": "a1270174e6f64cfe1abe915a09836647c1da3484",
+        "export_started_at": "2026-10-21T11:00:36.997724+08:00",
+        "started_at": "2026-10-21T11:00:37.959759+08:00",
+        "timezone": "Asia/Shanghai",
+        "test_timezone": "Asia/Tokyo",
+        "runner_sha256": "b4dd03027b5f95658b8cfdd8150c5852b56b23319b2a4f2cc72c7aa60aff0e80",
+        "environment_policy": "finite-OS-runtime-only; credentials/PG/trace/provider config reset; loopback proxy bypass",
+        "command": [
+          "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-m",
+          "pytest",
+          "tests/v4",
+          "-q",
+          "-o",
+          "junit_family=legacy",
+          "--junitxml=C:\\Users\\Administrator\\Documents\\Codex\\2026-10-17\\v4-ai-claude-c-users-administrator-4\\private\\regression-20261021-1100-p4-a1270174-env2\\v4.xml"
+        ],
+        "junit_generated": true,
+        "finished_at": "2026-10-21T11:14:30.984869+08:00",
+        "exit_code": 0
+      },
+      "console_counts": {
+        "passed": 2876,
+        "xfailed": 1,
+        "warning": 1
+      },
+      "junit_observed": true,
+      "failures": [],
+      "xfails": [
+        "tests.v4.agent.test_legacy_dom_runtime_pg::test_legacy_dom_displays_actual_core4_memory_receipt"
+      ],
+      "ordinary_skips": [],
+      "node_lists_observed": true,
+      "tests": 2877,
+      "errors": 0,
+      "skipped": 1,
+      "suite_seconds": 831.529,
+      "junit_original_timestamp": "2026-10-21T04:00:38.897001+01:00"
+    },
+    "core": {
+      "tests": 583,
+      "seconds": 779.84,
+      "metadata": {
+        "commit": "a1270174e6f64cfe1abe915a09836647c1da3484",
+        "started_at": "2026-10-21T11:03:46.819128+08:00",
+        "test_timezone": "Asia/Tokyo",
+        "runner_sha256": "f474571a0286ee4c75c353ef7477f8375b8ad4755080b80b0db1ea1a35861026",
+        "environment_policy": "finite-OS-runtime-only; explicit-local-PG; loopback-proxy-bypass",
+        "finished_at": "2026-10-21T11:16:50.376137+08:00",
+        "exit_code": 0
+      },
+      "error_or_failure_nodes": []
+    }
+  },
+  "private_artifacts": [
+    {
+      "name": "core.log",
+      "bytes": 6383,
+      "sha256": "3803fea98261dee5a9f9044d4a92a3f612463b4afe575ec88037ab7e04fb57b4"
+    },
+    {
+      "name": "core_metadata.json",
+      "bytes": 401,
+      "sha256": "cf0b494db030222442b65584fa0377ca10d541f2b0605bb5c22eede22bff33f5"
+    },
+    {
+      "name": "m8-scripted-metadata.json",
+      "bytes": 4192,
+      "sha256": "3462a7ef25769481669c6704bbd7bdb84d9e93a91a35ed84765a4cebaf427e02"
+    },
+    {
+      "name": "metadata.json",
+      "bytes": 955,
+      "sha256": "b8c1f8f5467069088f94c4a43c94a379e28df4b69f4382fdfeff3a94149146a5"
+    },
+    {
+      "name": "scripted-extensions.log",
+      "bytes": 758,
+      "sha256": "fd202ecce511f2b0d9d32f9e86d6f9f3bb7ff5af486c2dca5316483a885f4840"
+    },
+    {
+      "name": "scripted-full.log",
+      "bytes": 1531,
+      "sha256": "6456105eaf465a2134e1500351b12033f0b516fbd95fb61756a4e707e6afddaa"
+    },
+    {
+      "name": "v4.log",
+      "bytes": 3862,
+      "sha256": "5e3e6d60ee241b7a356eeb7bbfa33389e1c9b565a021e4271c45b60fa1c6fe3c"
+    },
+    {
+      "name": "v4.xml",
+      "bytes": 641581,
+      "sha256": "f0925a2b955212fa31f499d695d507887ea500e69c690ae1a434e14195e91ebd"
+    }
+  ],
+  "safety": {
+    "real_provider_requests": 0,
+    "real_feishu_sends": 0,
+    "server_access": 0,
+    "private_exception_bodies_copied": false
+  },
+  "limitations": [
+    "Windows isolated PostgreSQL and synthetic providers; not Linux or deployment",
+    "Strict legacy receipt DOM xfail is incomplete, not a pass",
+    "A later commit does not inherit this exact-source result",
+    "Original M8 X03 remains unresolved; not rerun by these suites"
+  ]
+}

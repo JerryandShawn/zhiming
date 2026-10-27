@@ -108,8 +108,10 @@ def effect_receipt(result,kind):
     return {k:v for k,v in dict(result,kind=kind).items() if k in ('id','fact_id','status','revision','write_status','kind','deleted','deleted_ids','affected_ids')}
 
 
-def create_app(service=None):
-    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None}
+def create_app(service=None, *, event_hints: bool = False):
+    if type(event_hints) is not bool:raise ValueError('事件提示候选开关必须是受信布尔配置')
+    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None,
+             'event_hints': None}
     def core(req=None):
         if state['service'] is None: state['service'] = ConsultationService.from_base()
         if req: state['service'].repo.ensure_owner(auth(req))
@@ -147,15 +149,25 @@ def create_app(service=None):
         svc=core(); assembly=getattr(svc,'runtime_assembly',None)
         state['maintenance']=PrivacyMaintenanceSchedule(svc.repo)
         if assembly:state['dispatcher']=assembly.dispatcher(svc)
-        if state['dispatcher']:state['dispatcher'].start()
-        state['task'] = asyncio.create_task(worker())
-        try:yield
+        try:
+            if event_hints:
+                from ..application.run_event_service import acquire_event_hints
+                state['event_hints']=acquire_event_hints(svc.repo)
+            if state['dispatcher']:state['dispatcher'].start()
+            state['task'] = asyncio.create_task(worker())
+            yield
         finally:
-            state['task'].cancel()
-            await asyncio.gather(state['task'], return_exceptions=True)
-            if state['dispatcher']:
-                from ..application.runtime_assembly import stop_dispatcher
-                await asyncio.to_thread(stop_dispatcher,state['dispatcher'])
+            if state['task']:
+                state['task'].cancel()
+                await asyncio.gather(state['task'], return_exceptions=True)
+            try:
+                if state['dispatcher']:
+                    from ..application.runtime_assembly import stop_dispatcher
+                    await asyncio.to_thread(stop_dispatcher,state['dispatcher'])
+            finally:
+                if state['event_hints']:
+                    await asyncio.to_thread(state['event_hints'].close)
+                    state['event_hints']=None
 
     app = FastAPI(title='知命明镜台 Core v3', lifespan=lifespan)
     app.state.core = state
@@ -180,10 +192,10 @@ def create_app(service=None):
     async def stream(owner, run, reading_id=None, draw_id=None, request=None):
         svc = core()
         if run['runtime']=='v4':
-            from .thread_events import event_response
+            from .legacy_run_events import legacy_event_response
             if not state['dispatcher']:raise EvidenceError('v4 调度尚未启动，原请求已保留')
             state['dispatcher'].wake.set()
-            return event_response(svc.repo,owner,run['id'],request)
+            return legacy_event_response(svc.repo,owner,run['id'],request)
         if run['status']=='queued' and not state['workers']: launch(owner,run['id'],reading_id)
         async def events():
             yield 'data: '+json.dumps({'type':'started','turn_id':run['operation_id'],'run_id':run['id'],'reading_id':reading_id,'draw_id':draw_id})+'\n\n'
@@ -456,15 +468,28 @@ def create_app(service=None):
 
     @app.post('/api/chat')
     async def chat(req:Request):
-        svc=core(req);owner=auth(req);data=await body(req);request_id=data.get('retry_of') or key(data)
+        from .http_negotiation import parse_chat_accept
+        from ..application.run_acceptance import run_acceptance, submission_target
+        owner=auth(req);accept=parse_chat_accept(req.headers.getlist('accept'))
+        svc=core();data=await body(req);request_id=data.get('retry_of') or key(data)
         if data.get('incognito') or data.get('thread_id') or 'runtime' in data:
             raise EvidenceError('请通过线程入口发送消息，运行版本由持久设置决定')
-        from ..application.thread_queue import owner_runtime
-        if data.get('images') and owner_runtime(svc.repo.assert_scope(owner)['settings'])=='v4':
-            raise EvidenceError('v4 附件入口尚未接线，请保留原文件')
-        images=save_images(svc,owner,request_id,data.get('images') or [])
-        run=svc.submit(owner=owner,subject=data.get('subject_id','self'),message=data.get('message',''),conversation_id=data.get('session_id','shared'),
-            request_id=request_id,case_ids=data.get('case_ids') or ([data['case_id']] if data.get('case_id') else []),depth=data.get('depth','standard'),selection=data.get('selection') or {},draw_id=data.get('draw_id'),images=images)
+        with svc.repo.transaction(owner):
+            runtime,_=submission_target(svc.repo,owner,data.get('subject_id','self'),request_id)
+            representation=accept.representation(runtime)
+            if representation=='json':
+                if not state['dispatcher']:raise EvidenceError('v4 调度尚未启动，请保留原请求稍后再试')
+                svc.runtime_assembly.require_agent()
+            if data.get('images') and runtime=='v4':
+                raise EvidenceError('v4 附件入口尚未接线，请保留原文件')
+            core(req)
+            images=save_images(svc,owner,request_id,data.get('images') or [])
+            run=svc.submit(owner=owner,subject=data.get('subject_id','self'),message=data.get('message',''),conversation_id=data.get('session_id','shared'),
+                request_id=request_id,case_ids=data.get('case_ids') or ([data['case_id']] if data.get('case_id') else []),depth=data.get('depth','standard'),selection=data.get('selection') or {},draw_id=data.get('draw_id'),images=images)
+            if representation=='json':receipt=run_acceptance(svc.repo,owner,run['id'])
+        if representation=='json':
+            state['dispatcher'].wake.set()
+            return JSONResponse(receipt,status_code=202,headers={'Vary':'Accept','Cache-Control':'no-store'})
         return await stream(owner,run,request=req)
 
     @app.get('/api/chat/{ident}')

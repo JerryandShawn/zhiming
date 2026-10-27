@@ -27,6 +27,7 @@ from mingjing_core.agent.runtime_config import (
 from mingjing_core.agent.toolkit import ToolRegistry
 from mingjing_core.application.agent_answer_text import without_history_header
 from mingjing_core.application.agent_finalization import AgentFinalizer
+from mingjing_core.application.agent_memory_receipts import MemoryReceiptEvents
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_regeneration import AgentRegenerator
 from mingjing_core.application.agent_review import AgentReviewer
@@ -41,6 +42,7 @@ from mingjing_core.application.agent_tools_clarification import (
 from mingjing_core.application.agent_tools_private import consume_private_answer
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.read_result import read_result
+from mingjing_core.application.run_event_stream import ModelDeltaStream
 from mingjing_core.application.runtime_limits import RuntimeLimits
 from mingjing_core.application.time_range_parser import ModuleTimeRangeParser
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
@@ -62,7 +64,10 @@ class AgentRuntime:
         budget: BudgetPolicy | None = None,
         control_factory: Callable[..., RunControl] = RunControl,
         runtime_config: RuntimeConfig | None = None,
+        streaming_candidate: bool = False,
     ) -> None:
+        if type(streaming_candidate) is not bool:
+            raise EvidenceError("流式候选开关只能由受信程序集明确配置")
         if runtime_config is not None and type(runtime_config) is not RuntimeConfig:
             raise RuntimeConfigError("运行安全配置只能由受信构造注入")
         self.config = load_runtime_config() if runtime_config is None else validate_runtime_config(runtime_config)
@@ -77,6 +82,7 @@ class AgentRuntime:
             offline=offline,
         )
         self.control_factory = control_factory
+        self.streaming_candidate = streaming_candidate
 
     def _snapshot(self, run: dict[str, Any], system: str) -> ContextBuild:
         engine = ContextEngine(
@@ -125,6 +131,12 @@ class AgentRuntime:
             ledger=self.ledger,
             emit=events.send,
             tool_emit=events.tool_event,
+            text_stream=ModelDeltaStream(
+                self.repo, run, self.ledger, events.callback, cancel_event=control.cancel_event
+            )
+            if self.streaming_candidate
+            else None,
+            memory_receipts=MemoryReceiptEvents(events) if self.streaming_candidate else None,
         )
 
     def _start(self, run: dict[str, Any], events: RuntimeEvents) -> None:

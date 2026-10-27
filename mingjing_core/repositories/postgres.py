@@ -554,8 +554,11 @@ class PostgresRepository:
     def fail_run(self,owner,run_id,error,lease_token,*,status='failed'):
         if status not in ('failed','stale','cancelled'): raise ValueError('Invalid terminal status')
         with self.transaction(owner) as c:
-            self._leased(c,owner,run_id,lease_token)
+            current=self._leased(c,owner,run_id,lease_token)
             c.execute(sql.SQL('UPDATE {} SET status=%s,error=%s,lease_token=NULL,lease_until=NULL,updated_at=now() WHERE owner=%s AND id=%s').format(self.table('core_runs')), (status,str(error)[:300],owner,run_id))
+            if current.get('runtime')=='v4':
+                from .event_retention_metadata import record_terminal
+                record_terminal(self,c,owner,run_id)
             return self.fetch_run(owner,run_id)
 
     def recover_runs(self,owner=None):
@@ -576,6 +579,9 @@ class PostgresRepository:
             if not row:raise ScopeError('Run does not belong to current owner')
             self.assert_scope(owner,row['subject'])
             if row['status'] not in ('failed','stale'):raise LeaseConflict('Only failed or stale runs can retry')
+            if row.get('runtime')=='v4':
+                from .event_retention_metadata import is_closed
+                if is_closed(self._run(row)):raise EvidenceError('事件历史已过期，请明确发起新请求')
             if row['calls']>=row['call_limit']:raise BudgetExceeded('Persistent global model budget exhausted')
             epoch=int(row['retry_epoch'])
             steps=self.list(owner,'runtime_step',include_deleted=True)
@@ -607,6 +613,9 @@ class PostgresRepository:
                     for item in self.list(owner,kind,include_deleted=True):
                         if item.get('run_id')==run_id and item['status']!='deleted':self.delete(owner,kind,item['id'],expected_revision=item['revision'])
             c.execute(sql.SQL("UPDATE {} SET status='queued',retry_epoch=%s,error='',result=NULL,checkpoint=CASE WHEN %s THEN '{{}}'::jsonb ELSE checkpoint END,state_version=CASE WHEN %s THEN '{{}}'::jsonb ELSE state_version END,lease_token=NULL,lease_until=NULL,updated_at=now() WHERE owner=%s AND id=%s").format(self.table('core_runs')), (epoch,stale,stale,owner,run_id))
+            if row.get('runtime')=='v4':
+                from .event_retention_metadata import reopen_retry
+                reopen_retry(self,c,owner,run_id)
             return {'run':self.fetch_run(owner,run_id),'purge_checkpoint':bool(stale)}
 
     def queued_runs(self,owner=None,limit=100):

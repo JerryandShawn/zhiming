@@ -138,7 +138,8 @@ class EventReceipts:
             ),
             (row["owner"], row["id"], seq),
         ).fetchone()
-        if old is None or old["kind"] != kind:
+        # A privacy-cleared payload is as absent as a deleted row: never rebuilt.
+        if old is None or old["kind"] != kind or not old["payload"]:
             raise EvidenceError("原公开事件缺失，不能重建")
         value = validate_event(kind, old["payload"])
         body = {key: child for key, child in value.items() if key not in {"v", "run_id", "seq", "ts"}}

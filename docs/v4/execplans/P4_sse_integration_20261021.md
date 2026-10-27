@@ -1,6 +1,8 @@
 # P4：在集成候选上接通冻结 v1 事件流
 
-本 ExecPlan 遵循 `.agent/PLANS.md`。Progress、Surprises & Discoveries、Decision Log、Outcomes & Retrospective 四节持续更新。所有记录使用北京时间（Asia/Shanghai，UTC+08）。**本片只有计划，未实现 P4、未运行测试、未合并或部署。**
+本 ExecPlan 遵循 `.agent/PLANS.md`。Progress、Surprises & Discoveries、Decision Log、Outcomes & Retrospective 四节持续更新。所有记录使用北京时间（Asia/Shanghai，UTC+08）。**原09:17版为仅计划历史；当前独立候选已有下述实现和固定源验证，完整P4仍未验收、未正式集成或部署。**
+
+**当前口径（2026-10-21 11:29:25 +08:00）**：独立分支v4/p3-wire-p4-20261021已交M1事务通知、M2原纯核/独立timer、M3监听与严格游标。11点固定a1270174的v4为2876通过/1严格xfail/1warning、Core583通过；原脚本46/47、扩13/13，1255不属该树，本P4实际1336源blob0差异、当次JUnit真实生成。后续短读锁ad8ac548、联合844daac0、JSON回执9b4aa474分别已推，各自有窄证据，不纳a127宽验。legacy桥、retention与memory producer仍工作区候选；固定reading、旧DOM回执、全部X类与真实模型未完成。正式integration仍仅P1b，条件B/D不由本阶段解锁。
 
 ## Purpose / Big Picture（目的与全局）
 
@@ -32,6 +34,9 @@
 
 ## Progress（进度）
 
+- [x] (2026-10-21 11:29:25 +08:00) 实际创建独立P4候选并交M1/M2/M3/游标与M4a；11点固定源v4/Core/原47及扩13已归档。
+- [ ] 最新legacy/retention/memory工作区片、固定reading、旧DOM/TS及完整X门仍须各自收口；下方最初checkbox保留历史，不按其重做已交实现。
+
 - [x] (2026-10-21 09:13 +08:00) 只读固定接线头、P4 原提示词、28 号冻结 v1、33 号主线 §3、蓝图 §3.4/§9/§16、07 号 X/F 场景与模块线四份旧说明/新 SSE 指南。
 - [x] (2026-10-21 09:13 +08:00) 核对现有 HTTP/落库/取消/隐私路径，确定缺少 hub、事件 mj_run 监听、合并/清理与旧格式桥等实际差额；主线 Schema 与模块线冻结副本原始 SHA 完全相同。
 - [x] (2026-10-21 09:17 +08:00) 仅新增本计划，列出最小接线和未来测试门；文档结构/空白检查通过，未执行计划中的测试命令。此时同树出现其他代理的 native fixture WIP，只读状态记录，不纳入本计划或覆写。
@@ -44,6 +49,8 @@
 - [ ] M6：慢流/跨进程/三次随机重连/真实 HTTP 取消、X/F 脚本与完整组合回归；如实保留未通过项。
 
 ## Surprises & Discoveries（意外发现）
+
+2026-10-21 11:29:25 +08:00：一次try-owner会因正常短读永久失败，真实PG确定性首红2失败/1通过，原25ms内重试后10/33窄组绿；旧两次联合跨进程超时归因仍未知。
 
 不能沿用“v4 完全没有 SSE/落库”的旧描述。此头 `RuntimeEvents` 已逐事件写真实 `core_run_events`，`RunEventReader` 会修复提交后 final/提问/选项缺口；`thread_events` 已编码冻结 v1、支持 header 游标和 15 秒心跳。它每 150ms 直接查库，没有进程内 hub，也没有跨进程 `LISTEN mj_run`。dispatcher 的 `mj_run_queued / mj_run_cancel` 是另一用途，不能算 P4 事件监听已接通。
 
@@ -59,6 +66,8 @@
 
 ## Decision Log（决策记录）
 
+2026-10-21 11:29:25 +08:00：原公开Schema不变；JSON ACK是外层对象。默认legacy桥仅迁移临时协议观察，旧页面真实receipt缺口不通过向core4加memory_receipts掩盖。
+
 2026-10-21 09:13 / Codex：以 28 号冻结 v1 为唯一公开字段源，保留 `events_v1.schema.json` / `core4_envelope_v1`，不再建立漂移的第二份 `run-events.schema.json`。若原路径需要兼容，只提供同源生成/引用并用等价测试锁定。公共 owner 永不进 wire；owner 来自服务端 X-Token/既有认证或已绑定渠道，通知和模型不能授予 owner 权限。
 
 2026-10-21 09:13 / Codex：先在集成子分支做离线接线，保留 P3 的权威 PG、原安全闸门和最终事件修复。不把前置“P3 已合并”改写成 P3 已验收；本周 33 号允许依赖未好先做本地候选，发布门仍等待 X03、旧 DOM、encoder 与组合回归。仅普通 merge，所有本周分支保持草稿，不合 `v4/main` / `main`。
@@ -70,6 +79,8 @@
 2026-10-21 09:13 / Codex：主线不改 `web/**` 或他线工作树。TS 类型必须从同一 Schema 生成并交前端线入其拥有路径；尚未入库/未真实 DOM 验证就保持该验收项未完成。新旧数据格式适配只在后端兼容层做，不修改持久 core4 或伪造记忆/送达回执。
 
 ## Outcomes & Retrospective（结果与复盘）
+
+2026-10-21 11:29:25 +08:00：固定a127宽验结果与之后每片分开；旧09:17段落是计划快照，不能读成当前无实现。真实模型0、服务器0、飞书0，P4仍非整阶段完成。
 
 本片完成可审计划和当前差额盘点，P4 源码实施、测试、TS/DOM、跨进程监听、清理与性能验收全部尚未进行。仅只读 Git/文件/结构比较，没有 pytest、PG、HTTP、模型、飞书或服务器操作。Schema 原始摘要相同只证明契约一致；原模块纯测试、既有本机取消证据和在途 archive 回归均不等于本片通过。阻塞写入后继续其他已授权工作，用户不在线时不等待答复、不启动真实请求。
 
@@ -189,3 +200,5 @@ P4 实现已从本 wire 子分支另开 v4/p3-wire-p4-20261021；M1 真实事务
 本 wire 固定 ff4b4f65d762c8eef33a6e557b003050a3a808fd / tree b88d8f9a3f6cf7d5005214ee74a552bb6415c961 已在10:00窗口启动独立 archive 的 Core 完整回归，验证09点保留的三处夹具错误修复；结果仍在途。相同时间主树及 P4 的另外三条链合计四位，后续WIP未混入。09点2732 passed/1严格xfail、Core581含3errors与M8 46/47原档案保持不变。
 
 后续M2合并分片与M3实际LISTEN/SSE接线分别在P4树独占文件推进，测试需等空位；未达P4整体验收，不合integration/main，不发真实请求。
+
+- 2026-10-21 11:29:25 +08:00：对齐当前实现与11点固定源结果，保留旧计划及完整未验门，不预填工作区片结论。

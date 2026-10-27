@@ -11,12 +11,14 @@ from fastapi.testclient import TestClient
 
 from mingjing_core.adapters.web import create_app
 from mingjing_core.agent.events import validate_event
+from mingjing_core.application.read_result import read_result
 from mingjing_core.repositories.postgres import PostgresRepository
 
 from .test_dispatcher_pg import until
 from .test_loop_cycle_support import ScriptedPort, answer
 from .test_runtime_assembly_pg import configure, service
 from .test_runtime_assembly_pg import repository_fixture as source_repo_fixture
+from tests.v4.streaming_integration.legacy_event_support import flat_frames
 
 HEADERS = {"X-Token": "synthetic-http-owner"}
 
@@ -112,7 +114,7 @@ def test_missing_agent_does_not_start_dispatcher_or_fall_back(http_repo: Postgre
         assert http_repo.list("alice", "message") == []
 
 
-def test_compat_chat_opted_in_v4_uses_new_events_and_rejects_private_hint(http_repo: PostgresRepository) -> None:
+def test_compat_chat_opted_in_v4_uses_legacy_events_and_rejects_private_hint(http_repo: PostgresRepository) -> None:
     configure(http_repo)
     core = service(http_repo, ScriptedPort([answer("合成兼容入口")]))
     with TestClient(create_app(core)) as client:
@@ -123,7 +125,31 @@ def test_compat_chat_opted_in_v4_uses_new_events_and_rejects_private_hint(http_r
         )
         assert rejected.status_code == 422 and http_repo.list("alice", "message") == []
         result = client.post("/api/chat", headers=HEADERS, json={"request_id": "compat-v4", "message": "合成兼容问题"})
-        assert result.status_code == 200 and decoded(result)[-1]["data"]["envelope"]["text"] == "合成兼容入口"
+        assert result.status_code == 200
+        frames = flat_frames(result.text)
+        run = http_repo.fetch_run("alice", frames[0]["run_id"])
+        final = next(frame for frame in frames if frame["type"] == "result")
+        assert final["result"] == read_result(run["result"]) and run["result"]["text"] == "合成兼容入口"
+        assert run["result"]["schema_version"] == "core4.0" and len(core.runtime_assembly.agent.port.requests) == 1
+        assert core.runtime_assembly.legacy.calls == [] and len(http_repo.list("alice", "message")) == 2
+
+
+def test_json_chat_ack_then_frozen_get_preserves_same_core4(http_repo: PostgresRepository) -> None:
+    configure(http_repo)
+    core = service(http_repo, ScriptedPort([answer("合成JSON与冻结流")]))
+    payload = {"request_id": "json-compat-v4", "message": "合成JSON问题"}
+    with TestClient(create_app(core)) as client:
+        response = client.post("/api/chat", headers=dict(HEADERS, Accept="application/json"), json=payload)
+        ack = response.json()
+        assert response.status_code == 202
+        until(lambda: http_repo.fetch_run("alice", ack["run_id"])["status"] == "succeeded")
+        run = http_repo.fetch_run("alice", ack["run_id"])
+        events = decoded(client.get(ack["events_url"], headers=HEADERS))
+        assert ack["message_id"] == run["request"]["source_message_id"]
+        assert events[-1]["type"] == "final" and events[-1]["data"]["envelope"] == run["result"]
+        for event in events:
+            validate_event(event["type"], event["data"])
+        assert len(core.runtime_assembly.agent.port.requests) == 1 and core.runtime_assembly.legacy.calls == []
 
 
 def test_v4_cancel_route_does_not_clear_live_lease_before_worker_stops(http_repo: PostgresRepository) -> None:

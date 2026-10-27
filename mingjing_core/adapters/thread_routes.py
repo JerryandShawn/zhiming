@@ -10,12 +10,14 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from mingjing_core.application.private_retention import retire_private_thread
+from mingjing_core.application.run_acceptance import run_acceptance
 from mingjing_core.application.thread_history import thread_history
 from mingjing_core.application.thread_ingress import ThreadIngress
 from mingjing_core.application.thread_queue import owner_runtime
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
+from .event_cursor import header_cursors, resolve_event_cursor
 from .thread_events import event_response
 
 
@@ -125,7 +127,9 @@ def message_routes(router: APIRouter, core: Any, auth: Any, body: Any) -> None:
             depth=value.depth,
             **options,
         )
-        return JSONResponse(run_projection(run), status_code=202)
+        return JSONResponse(
+            run_projection(service.repo, owner, run), status_code=202, headers={"Cache-Control": "no-store"}
+        )
 
     @router.post("/api/threads/{ident}/close")
     async def close(ident: str, request: Request) -> dict:
@@ -146,9 +150,15 @@ def message_routes(router: APIRouter, core: Any, auth: Any, body: Any) -> None:
 
 def event_routes(router: APIRouter, core: Any, auth: Any) -> None:
     @router.get("/api/runs/{ident}/events")
-    async def events(ident: str, request: Request, after_seq: int = 0) -> Any:
+    async def events(ident: str, request: Request, after_seq: str | None = None, after: str | None = None) -> Any:
         service, owner = core(request), auth(request)
-        return event_response(service.repo, owner, ident, request, after_seq)
+        # Declared string params preserve OpenAPI names; raw lists retain duplicates.
+        cursor = resolve_event_cursor(
+            header_cursors(request.headers),
+            after=request.query_params.getlist("after"),
+            after_seq=request.query_params.getlist("after_seq"),
+        )
+        return event_response(service.repo, owner, ident, request, cursor)
 
 
 def close_private(repo: Any, owner: str, ident: str, subject: str) -> dict:
@@ -161,14 +171,5 @@ def thread_projection(row: dict) -> dict:
     return {key: row[key] for key in fields if key in row}
 
 
-def run_projection(run: dict) -> dict:
-    result = {
-        "run_id": run["id"],
-        "thread_id": run["thread_id"],
-        "status": run["status"],
-        "runtime": run["runtime"],
-        "run_url": "/api/runs/" + run["id"],
-    }
-    if run["runtime"] == "v4":
-        result["events_url"] = result["run_url"] + "/events"
-    return result
+def run_projection(repo: Any, owner: str, run: dict) -> dict:
+    return run_acceptance(repo, owner, run["id"])

@@ -1,0 +1,8 @@
+# Batch 3 release switches. Only trusted deployment files set these; env vars cannot.
+# streaming_v2: on  -> runs publish model text through the durable P4 event stream.
+# review_mode: off  -> no independent critic call; risk/always enable it (brain decides after launch).
+# proactive: off    -> P7 scheduled messages stay disabled.
+version: 1
+streaming_v2: true
+review_mode: "off"
+proactive: false

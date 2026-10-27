@@ -11,8 +11,8 @@ from mingjing_core.application.agent_runtime import AgentRuntime, RuntimeRouter
 from mingjing_core.application.dispatcher import AgentDispatcher
 from mingjing_core.application.dispatcher_inbox import recover_inboxes
 from mingjing_core.application.dispatcher_notifications import RunSignals
+from mingjing_core.application.run_acceptance import submission_target
 from mingjing_core.application.thread_ingress import ThreadIngress
-from mingjing_core.application.thread_queue import owner_runtime
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError
 
@@ -72,12 +72,7 @@ class RuntimeAssembly:
 def route_submit(service: Any, values: dict[str, Any]) -> dict[str, Any]:
     owner, subject = values["owner"], values.get("subject", "self")
     service.repo.ensure_owner(owner)
-    with service.repo.transaction(owner) as connection:
-        existing = connection.execute(
-            sql.SQL("SELECT * FROM {} WHERE owner=%s AND operation_id=%s").format(service.repo.table("core_runs")),
-            (owner, values["request_id"]),
-        ).fetchone()
-    runtime = existing["runtime"] if existing else owner_runtime(service.repo.assert_scope(owner, subject)["settings"])
+    runtime, existing = submission_target(service.repo, owner, subject, values["request_id"])
     if runtime == "v3":
         from mingjing_core.application.privacy_mode import PrivacyModeService
 

@@ -10,6 +10,7 @@ from mingjing_core.application.dispatcher_notifications import RunSignals
 from mingjing_core.application.memory import MemoryService
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
 from mingjing_core.repositories.dispatch_hooks import notify_run
+from mingjing_core.repositories.event_retention_metadata import record_terminal
 from mingjing_core.repositories.postgres import PostgresRepository, fingerprint
 from mingjing_core.timekit.clock import get_clock
 
@@ -35,6 +36,8 @@ class DispatcherCancellation:
                     ).format(self.repo.table("core_runs")),
                     (get_clock().now(), owner, ident),
                 )
+                if row["status"] == "queued":
+                    record_terminal(self.repo, connection, owner, ident)
                 notify_run(connection, self.repo.schema, ident, cancel=True)
             result = self.repo.fetch_run(owner, ident)
         if self.signals and result["cancel_requested_at"]:

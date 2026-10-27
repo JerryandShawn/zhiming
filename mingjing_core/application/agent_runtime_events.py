@@ -6,14 +6,16 @@ from collections.abc import Callable
 from typing import Any
 
 from psycopg import sql
-from psycopg.types.json import Jsonb
 
-from mingjing_core.agent.events import make_event, validate_event
-from mingjing_core.agent.journal import JournalStep
+from mingjing_core.agent.events import validate_event
+from mingjing_core.agent.journal import Journal, JournalStep
 from mingjing_core.application.agent_event_receipts import EventReceipts
+from mingjing_core.application.agent_thread_scope import assert_thread, thread_id
 from mingjing_core.application.public_tool_ids import public_call_id
 from mingjing_core.domain.contracts import EvidenceError
+from mingjing_core.repositories.event_retention_metadata import is_closed
 from mingjing_core.repositories.postgres import PostgresRepository
+from mingjing_core.repositories.run_event_log import append_event
 
 
 class RuntimeEvents:
@@ -38,24 +40,15 @@ class RuntimeEvents:
             raise EvidenceError("已有终止事件与真实提交不符，不能覆盖")
         return {"type": kind, "data": value}
 
-    def _append(self, connection: Any, kind: str, payload: dict[str, Any]) -> dict[str, Any]:
-        owner, ident = self.run["owner"], self.run["id"]
-        seq = connection.execute(
-            sql.SQL("SELECT coalesce(max(seq),0)+1 AS seq FROM {} WHERE owner=%s AND run_id=%s").format(
-                self.repo.table("core_run_events")
-            ),
-            (owner, ident),
-        ).fetchone()["seq"]
-        event = make_event(kind, ident, seq, payload)
-        connection.execute(
-            sql.SQL("INSERT INTO {}(owner,run_id,seq,kind,payload) VALUES(%s,%s,%s,%s,%s)").format(
-                self.repo.table("core_run_events")
-            ),
-            (owner, ident, seq, kind, Jsonb(event["data"])),
-        )
-        return event
+    def _append(
+        self, connection: Any, kind: str, payload: dict[str, Any], *, operation_key: str | None = None
+    ) -> dict[str, Any]:
+        # The P4 event log is the single sequence/notify authority (MOD_B3_P4_choice).
+        if kind == "started" and operation_key is None:
+            operation_key = "started:v1"
+        return append_event(self.repo, connection, self.run, kind, payload, operation_key=operation_key)
 
-    def send(self, kind: str, payload: dict[str, Any]) -> None:
+    def send(self, kind: str, payload: dict[str, Any], *, operation_key: str | None = None) -> None:
         if kind in {"tool_call", "tool_result"}:
             payload = dict(payload, call_id=public_call_id(self.run, payload.get("call_id")))
         owner, ident = self.run["owner"], self.run["id"]
@@ -75,9 +68,14 @@ class RuntimeEvents:
                 if not row or row["status"] != "succeeded" or expected != actual:
                     raise EvidenceError("最终事件缺少已提交的真实信封")
             else:
-                row = self.repo._leased(connection, owner, ident, self.run["lease_token"])
-                if row["retry_epoch"] != self.run["retry_epoch"]:
-                    raise EvidenceError("事件不属于当前运行批次")
+                row = Journal(self.repo, owner)._leased(connection, self.run)
+            if row["subject"] != self.run["subject"] or thread_id(row) != thread_id(self.run):
+                raise EvidenceError("事件人物或线程与当前运行不符")
+            if row["retry_epoch"] != self.run["retry_epoch"]:
+                raise EvidenceError("事件不属于当前运行批次")
+            if is_closed(row):
+                return
+            assert_thread(self.repo, row)
             event = (
                 EventReceipts(self.repo, self.run).started(connection, payload, self._append)
                 if kind == "started"
@@ -85,7 +83,8 @@ class RuntimeEvents:
                 if kind in {"final", "ask_user", "present_options"}
                 else None
             )
-            event = event or self._append(connection, kind, payload)
+            key = "started:v1" if kind == "started" and operation_key is None else operation_key
+            event = event or self._append(connection, kind, payload, operation_key=key)
         self._deliver(event)
 
     def begin_epoch(self) -> None:

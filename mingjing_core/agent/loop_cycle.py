@@ -5,7 +5,8 @@ from __future__ import annotations
 import copy
 from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass, field, replace
-from typing import Any
+from contextlib import nullcontext
+from typing import TYPE_CHECKING, Any
 
 from mingjing_core.application.agent_commit_versions import reconcile_versions
 from mingjing_core.application.agent_model_attempts import confirmed
@@ -38,7 +39,11 @@ from .loop_codec import (
     verified_versions,
 )
 from .loop_policy import LoopPolicy, LoopStopped, RunControl
+from .stream_events import ModelTextStream
 from .toolkit import ToolRegistry
+
+if TYPE_CHECKING:
+    from mingjing_core.application.agent_memory_receipts import MemoryReceiptEvents
 
 FALLBACK = "这次还没整理出完整回答，请稍后继续。"
 
@@ -75,6 +80,8 @@ class LoopCycle:
         ledger: RequestLedger | None = None,
         emit: Callable[[str, dict[str, Any]], None] | None = None,
         tool_emit: Callable[[JournalStep, str, dict[str, Any]], None] | None = None,
+        text_stream: ModelTextStream | None = None,
+        memory_receipts: MemoryReceiptEvents | None = None,
     ) -> None:
         self.port, self.registry, self.journal, self.run, self.frozen = (
             port,
@@ -88,6 +95,8 @@ class LoopCycle:
         self.budget_policy, self.crisis, self.incognito = budget_policy or BudgetPolicy(), crisis, incognito
         self.ledger, self.emit, self.revising, self.revised = ledger, emit, False, False
         self.tool_emit = tool_emit
+        self.text_stream = text_stream
+        self.memory_receipts = memory_receipts
         self.cycle = f"{run['id']}:e{run['retry_epoch']}"
         self.messages: list[ChatMessage] = []
         self.aliases, self.versions = copy.deepcopy(frozen.alias_map), copy.deepcopy(frozen.injected_versions)
@@ -183,8 +192,30 @@ class LoopCycle:
     def _text_delta(self, text: str) -> None:
         self.partial += text
         self.control.note_text(text)
-        if self.emit and not self.revising and text:
-            self.emit("text_delta", {"text": text})
+        if not self.revising and text:
+            if self.text_stream is not None:
+                self.text_stream.push(text)
+            elif self.emit:
+                self.emit("text_delta", {"text": text})
+
+    def _live_model(self, step: JournalStep, budget: Any, choice: str) -> Any:
+        stream = self.text_stream if not self.revising else None
+        if stream is not None:
+            stream.begin(step)
+        succeeded = False
+        try:
+            with self.ledger.physical(step) if self.ledger else nullcontext(), self.control.monitor():
+                result = ObservedPort(self.port, self.control, self._text_delta).complete(
+                    list(budget.messages),
+                    tools=list(budget.tools),
+                    tool_choice=choice,
+                    cancel_event=self.control.cancel_event,
+                )
+            succeeded = True
+            return result
+        finally:
+            if stream is not None:
+                stream.finish(step, succeeded=succeeded)
 
     def _model(self) -> Any:
         with confirmed(only_core=True):
@@ -218,15 +249,7 @@ class LoopCycle:
             self.usage["model_streams_this_execution"] += 1
             if self.ledger:
                 self.ledger.reserve(step, self.frozen, budget, choice, versions)
-            from contextlib import nullcontext
-
-            with self.ledger.physical(step) if self.ledger else nullcontext(), self.control.monitor():
-                response = ObservedPort(self.port, self.control, self._text_delta).complete(
-                    list(budget.messages),
-                    tools=list(budget.tools),
-                    tool_choice=choice,
-                    cancel_event=self.control.cancel_event,
-                )
+            response = self._live_model(step, budget, choice)
             used_ids = {call.id for message in self.messages for call in message.tool_calls}
             if (choice == "required" and not response.tool_calls) or any(
                 call.id in used_ids for call in response.tool_calls
