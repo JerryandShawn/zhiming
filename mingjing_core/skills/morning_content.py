@@ -5,7 +5,7 @@ from __future__ import annotations
 from copy import deepcopy
 from datetime import date
 
-from ..adapters.charts.tool_evidence import evidence_result
+from ..adapters.charts.tool_evidence import content_hash, evidence_result
 
 VERSION = "p8-morning-content-v1"
 LAYERS = {"daily": "流日", "monthly": "流月", "yearly": "流年"}
@@ -27,7 +27,10 @@ def _verified(result: dict, scope: dict, target_date: str) -> dict:
             raise ValueError
         if result["version"] != "p8-daily-transit-v1":
             raise ValueError
-        if result["scope"] != scope or result["data"]["date"] != target_date:
+        if (
+            content_hash(result["scope"]) != content_hash(scope)
+            or result["data"]["date"] != target_date
+        ):
             raise ValueError
         rebuilt = evidence_result(
             result["version"],

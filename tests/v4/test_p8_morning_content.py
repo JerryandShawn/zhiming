@@ -127,3 +127,13 @@ def test_malformed_context_raises_safe_code(context: object) -> None:
     )
     with pytest.raises(ValueError, match="morning_content_context_invalid"):
         render(rebuilt)
+
+
+def test_boolean_revision_cannot_match_integer_authority_scope() -> None:
+    value = sample()
+    scope = value["scope"] | {"revision": True}
+    rebuilt = evidence_result(
+        value["version"], value["data"], value["rule_hits"], value["sources"], scope
+    )
+    with pytest.raises(ValueError, match="morning_content_input_invalid"):
+        render(rebuilt, expected_scope=value["scope"])
