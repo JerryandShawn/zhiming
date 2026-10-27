@@ -1,5 +1,17 @@
 # 线程与补发接线核对（2026-10-21 11:05 +08:00）
 
+## 2026-10-27 17:18 +08:00 更新：A/B提交层候选已实现，C与页面仍待
+
+最新只读fetch主线`27b8af95a2a17d548b78ac25c9941c24b5cc85fd`，两份线程/API索引契约相对下文a83没有变化；main仍b9a89b6f，无新增P10区话题等API。以下旧核对记录保留为历史，不把61afdbe或旧稳定性1/3外推到当前头。
+
+`src/threads/contracts.ts`实现六输入字段、Python空白/Unicode码点、密集case数组、显式无痕长期事项拒绝；回执严格五字段v3/六字段v4，与旧网页七字段不同。接受八种已发布状态，返回线程身份为准；不要求与原线程相同，不误拒205字人生线程，不从前缀推断隐私授权。
+
+`src/threads/submit.ts`是显式注入fetch、headers和isCurrent的单次提交端口，工厂无网络/存储。调用方须绑定auth epoch、generation、subject与原线程；端口每次异步返回后核归属。固定同源编码线程路径，拒dot segment，redirect:error/cache:no-store，45秒总上限；仅202/application-json/64KiB严格UTF-8可进入封闭回执校验。网络未知不自动重发；显式再试仍由调用方保留原request_id/原线程/载荷，不随自然改道回执重定向POST。旧401和迟到响应只释放，不影响新身份。
+
+79新目标检查+原follow/legacy/R7共129/129相关项通过，包括1个真实本机合成HTTP的中文UTF-8分片回执；类型、定向lint、构建通过。416构建文件逐字节一致：新端口尚未导入普通页面，既有模拟与executeV3保留。没有新界面变化，不虚增截图；证据`evidence/2026-10-27/thread-acceptance/`。
+
+下一C仍待：GET订阅、允许递增缺号、422回查、最终core4严格核验和权威取消；没有因为新增提交端口就完成页面或私密历史接线。不把本机合成HTTP称真实后端/PG、飞书或部署。下文“下一离线切片”A/B已由此更新取代，其C仍待。
+
 只读本工作树已有 Git 对象；没有请求后端、运行模型或合并分支。固定核对对象更新为 `origin/v4/p3-agent-runtime@a83ca8b719597799600a1715e0b097c5b2219e1d`，不外推远端此刻最新状态。其 `docs/v4/contracts/thread_runtime_api_v1.md` 是实际 HTTP 本机候选契约；`mingjing_core/adapters/thread_routes.py`、`thread_events.py` 及 `web.py` 注册已有分支实现，不能把当前缺口称为“契约完全未发布”。本前端分支尚未集成或适配，不代表服务已部署。
 
 | 能力 | 已发布形状 | 前端后续接线要求 |
