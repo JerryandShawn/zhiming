@@ -595,4 +595,6 @@ def create_app(service=None):
         return svc.repo.put(owner,'feedback',key(data),{'forecast_id':data.get('forecast_id'),'feedback':data.get('feedback'),'source':'user'},operation_id='feedback:'+key(data))
     from .thread_routes import thread_router
     app.include_router(thread_router(core,auth,body))
+    from .memory2_routes import memory2_router
+    app.include_router(memory2_router(core,auth,body))
     return app
