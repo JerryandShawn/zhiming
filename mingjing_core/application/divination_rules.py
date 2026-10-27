@@ -50,7 +50,9 @@ class DivinationTurn:
         if type(self.active) is not bool or type(self.source_revoked) is not bool:
             raise ValueError("来源状态必须为明确布尔值")
         if self.topic_tag is not None and (
-            not isinstance(self.topic_tag, str) or not self.topic_tag.strip() or len(self.topic_tag) > 200
+            not isinstance(self.topic_tag, str)
+            or not self.topic_tag.strip()
+            or len(self.topic_tag) > 200
         ):
             raise ValueError("主题标签无效")
         if self.reference_alias is not None and not re.fullmatch(
@@ -74,7 +76,11 @@ class RepetitionDecision:
 
 
 def _instant(value: datetime) -> datetime:
-    if not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None:
+    if (
+        not isinstance(value, datetime)
+        or value.tzinfo is None
+        or value.utcoffset() is None
+    ):
         raise ValueError("占卜时间需要时区")
     return value.astimezone(UTC)
 
@@ -96,10 +102,16 @@ def _topic(turn: DivinationTurn) -> tuple[str, Literal["rule", "label"]]:
     else:
         raw = re.sub(r"[\W_]+", "", turn.text.casefold())
         if re.search(r"回来|复合|联系我|找我", raw):
-            actor = re.split(r"还|到底|会不会|能不能|是否|会|回来|复合|联系|找我", raw, maxsplit=1)[0]
+            actor = re.split(
+                r"还|到底|会不会|能不能|是否|会|回来|复合|联系|找我", raw, maxsplit=1
+            )[0]
             raw = "relationship_return:" + actor
         else:
-            raw = re.sub(r"(?:请|帮我|我想|再问|再算|再抽|会不会|能不能|是不是|到底|这次|一次|一下|吗|呢)", "", raw)
+            raw = re.sub(
+                r"(?:请|帮我|我想|再问|再算|再抽|会不会|能不能|是不是|到底|这次|一次|一下|吗|呢)",
+                "",
+                raw,
+            )
         source = "rule"
     return hashlib.sha256(raw.encode()).hexdigest()[:32], source
 
@@ -111,7 +123,11 @@ def repetition_decision(
     if not current.active or current.source_revoked or _instant(current.at) > now:
         raise ValueError("当前来源无效或时间超前")
     topic, source = _topic(current)
-    eligible = current.fate_query if current.fate_query is not None else is_fate_query(current.text)
+    eligible = (
+        current.fate_query
+        if current.fate_query is not None
+        else is_fate_query(current.text)
+    )
     if not eligible:
         return RepetitionDecision(0, "normal", topic, source, "", None, True, True)
     seen: dict[str, DivinationTurn] = {current.id: current}
@@ -124,15 +140,31 @@ def repetition_decision(
         if turn.id in versions and turn != versions[turn.id]:
             raise ValueError("同一来源标识发生冲突")
         versions[turn.id] = turn
-        if _topic(turn)[0] == topic and (turn.fate_query if turn.fate_query is not None else is_fate_query(turn.text)):
+        if _topic(turn)[0] == topic and (
+            turn.fate_query if turn.fate_query is not None else is_fate_query(turn.text)
+        ):
             seen[turn.id] = turn
     count = len(seen)
-    prior = sorted((turn for turn in seen.values() if turn.id != current.id), key=lambda turn: _instant(turn.at))
-    reference = next((turn.reference_alias for turn in reversed(prior) if turn.reference_alias), None)
+    prior = sorted(
+        (turn for turn in seen.values() if turn.id != current.id),
+        key=lambda turn: _instant(turn.at),
+    )
+    reference = next(
+        (turn.reference_alias for turn in reversed(prior) if turn.reference_alias), None
+    )
     if count >= 3:
-        return RepetitionDecision(count, "reframe", topic, source, "用户可能在焦虑", reference, False, False)
+        return RepetitionDecision(
+            count, "reframe", topic, source, "用户可能在焦虑", reference, False, False
+        )
     if count == 2:
         return RepetitionDecision(
-            count, "repeat", topic, source, "同一问题第2次；先复用档案或牌面，询问新情况", reference, False, True
+            count,
+            "repeat",
+            topic,
+            source,
+            "同一问题第2次；先复用档案或牌面，询问新情况",
+            reference,
+            False,
+            True,
         )
     return RepetitionDecision(count, "normal", topic, source, "", None, True, True)

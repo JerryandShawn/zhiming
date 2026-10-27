@@ -16,7 +16,10 @@ class UsageEvent:
     interactive: bool = True
 
     def __post_init__(self) -> None:
-        if any(not isinstance(value, str) or not value.strip() for value in (self.id, self.owner_id)):
+        if any(
+            not isinstance(value, str) or not value.strip()
+            for value in (self.id, self.owner_id)
+        ):
             raise ValueError("时长事件缺少归属或标识")
         if type(self.interactive) is not bool:
             raise ValueError("交互标志必须为明确布尔值")
@@ -32,7 +35,8 @@ class UsagePolicy:
 
     def __post_init__(self) -> None:
         if type(self.enabled) is not bool or any(
-            type(value) is not int or value <= 0 for value in (self.minutes, self.cooldown_minutes, self.gap_minutes)
+            type(value) is not int or value <= 0
+            for value in (self.minutes, self.cooldown_minutes, self.gap_minutes)
         ):
             raise ValueError("时长提醒设置无效")
 
@@ -67,13 +71,21 @@ class UsageDecision:
 
 
 def _utc(value: datetime) -> datetime:
-    if not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None:
+    if (
+        not isinstance(value, datetime)
+        or value.tzinfo is None
+        or value.utcoffset() is None
+    ):
         raise ValueError("时长事件必须有时区")
     return value.astimezone(UTC)
 
 
 def _session_start(
-    events: Sequence[UsageEvent], owner_id: str, now: datetime, timezone: str, gap_minutes: int
+    events: Sequence[UsageEvent],
+    owner_id: str,
+    now: datetime,
+    timezone: str,
+    gap_minutes: int,
 ) -> datetime:
     zone = ZoneInfo(timezone)
     today = now.astimezone(zone).date()
@@ -87,7 +99,11 @@ def _session_start(
         if event.id in unique and unique[event.id] != instant:
             raise ValueError("时长事件标识冲突")
         unique[event.id] = instant
-    stamps = sorted(instant for instant in unique.values() if instant.astimezone(zone).date() == today)
+    stamps = sorted(
+        instant
+        for instant in unique.values()
+        if instant.astimezone(zone).date() == today
+    )
     start = stamps[0] if stamps else now
     last = start
     for instant in stamps[1:] + [now]:
@@ -116,7 +132,9 @@ def usage_decision(
     start = _session_start(events, state.owner_id, now, timezone, policy.gap_minutes)
     duration = (now - start).total_seconds() / 60
     pending = state.deferred_on == today and state.deferred_session_start == start
-    if not pending and (state.deferred_on is not None or state.deferred_session_start is not None):
+    if not pending and (
+        state.deferred_on is not None or state.deferred_session_start is not None
+    ):
         state = replace(state, deferred_on=None, deferred_session_start=None)
     if crisis:
         return UsageDecision(False, duration, "crisis", state)
@@ -130,6 +148,11 @@ def usage_decision(
             return UsageDecision(False, duration, "cooldown", state)
     if confirming_data:
         return UsageDecision(
-            False, duration, "confirmation_deferred", UsageState(state.owner_id, state.last_reminded_at, today, start)
+            False,
+            duration,
+            "confirmation_deferred",
+            UsageState(state.owner_id, state.last_reminded_at, today, start),
         )
-    return UsageDecision(True, duration, "long_session", UsageState(state.owner_id, now, None))
+    return UsageDecision(
+        True, duration, "long_session", UsageState(state.owner_id, now, None)
+    )

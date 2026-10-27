@@ -11,7 +11,11 @@ ResponseStatus = Literal["pending", "replied", "ignored", "muted"]
 
 
 def aware(value: datetime) -> datetime:
-    if not isinstance(value, datetime) or value.tzinfo is None or value.utcoffset() is None:
+    if (
+        not isinstance(value, datetime)
+        or value.tzinfo is None
+        or value.utcoffset() is None
+    ):
         raise ValueError("主动消息时间必须包含时区")
     return value.astimezone(UTC)
 
@@ -69,7 +73,8 @@ class FollowupSettings:
         if during_quiet:
             raise ValueError("顺延恢复时刻必须在免打扰时段之外")
         if not isinstance(self.muted_categories, frozenset) or any(
-            not isinstance(item, str) or not item.strip() for item in self.muted_categories
+            not isinstance(item, str) or not item.strip()
+            for item in self.muted_categories
         ):
             raise ValueError("静音类别必须是不可变非空标签集合")
 
@@ -95,7 +100,9 @@ class FollowupCandidate:
         for value in (self.id, self.owner_id, self.subject_id):
             _identity(value)
         object.__setattr__(self, "due_at", aware(self.due_at))
-        if self.kind not in {"followup", "brief", "reminder"} or not isinstance(self.category, str):
+        if self.kind not in {"followup", "brief", "reminder"} or not isinstance(
+            self.category, str
+        ):
             raise ValueError("主动消息类型或类别无效")
         _flags(
             (
@@ -110,7 +117,9 @@ class FollowupCandidate:
         )
         if not isinstance(self.text, str):
             raise ValueError("主动消息预览必须是文本")
-        if self.explicit_quiet_time and not (self.kind == "reminder" and self.explicit_requested):
+        if self.explicit_quiet_time and not (
+            self.kind == "reminder" and self.explicit_requested
+        ):
             raise ValueError("免打扰例外必须来自用户明确设定的提醒时刻")
 
 
@@ -127,7 +136,9 @@ class ProactiveNotice:
         for value in (self.id, self.owner_id, self.subject_id):
             _identity(value)
         object.__setattr__(self, "sent_at", aware(self.sent_at))
-        if self.kind not in {"followup", "brief", "reminder"} or not isinstance(self.category, str):
+        if self.kind not in {"followup", "brief", "reminder"} or not isinstance(
+            self.category, str
+        ):
             raise ValueError("主动消息记录类型无效")
 
 
@@ -156,7 +167,10 @@ class ResponseObservation:
             raise ValueError("主动消息响应状态无效")
         if self.observed_at < self.notice.sent_at:
             raise ValueError("响应判定不能早于消息发送时间")
-        if self.status == "ignored" and self.observed_at < self.notice.sent_at + timedelta(hours=24):
+        if (
+            self.status == "ignored"
+            and self.observed_at < self.notice.sent_at + timedelta(hours=24)
+        ):
             raise ValueError("未满24小时不能投影为已忽略")
 
 
@@ -183,12 +197,13 @@ class ReceptivityState:
             if instant is not None:
                 object.__setattr__(self, name, aware(instant))
         if not isinstance(self.muted_categories, frozenset) or any(
-            not isinstance(item, str) or not item.strip() for item in self.muted_categories
+            not isinstance(item, str) or not item.strip()
+            for item in self.muted_categories
         ):
             raise ValueError("静音类别必须是不可变非空标签集合")
-        if not isinstance(self.observations, tuple) or len({item.notice.id for item in self.observations}) != len(
-            self.observations
-        ):
+        if not isinstance(self.observations, tuple) or len(
+            {item.notice.id for item in self.observations}
+        ) != len(self.observations):
             raise ValueError("响应观察必须是唯一消息的不可变序列")
         scope = FollowupScope(self.owner_id, self.subject_id)
         for item in self.observations:

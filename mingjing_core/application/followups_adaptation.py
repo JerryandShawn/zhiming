@@ -49,16 +49,23 @@ def classify_response(
 
 
 def _observations(
-    state: ReceptivityState, notice: ProactiveNotice, status: ResponseStatus, now: datetime
+    state: ReceptivityState,
+    notice: ProactiveNotice,
+    status: ResponseStatus,
+    now: datetime,
 ) -> tuple[ResponseObservation, ...]:
-    existing = next((item for item in state.observations if item.notice.id == notice.id), None)
+    existing = next(
+        (item for item in state.observations if item.notice.id == notice.id), None
+    )
     if existing and existing.notice != notice:
         raise ValueError("同一主动消息标识不能更换元数据")
     if existing and (existing.status == status or status == "pending"):
         return state.observations
     # Reconciled historical responses can refine a previous projection; a pause already started remains in force.
     update = ResponseObservation(notice, status, now)
-    return tuple(item for item in state.observations if item.notice.id != notice.id) + (update,)
+    return tuple(item for item in state.observations if item.notice.id != notice.id) + (
+        update,
+    )
 
 
 def _ignored_streak(
@@ -68,14 +75,18 @@ def _ignored_streak(
     streak = state.ignored_streak if not state.observations and not expired else 0
     reached_two = False
     for item in sorted(records, key=lambda item: (item.notice.sent_at, item.notice.id)):
-        if item.notice.kind == "reminder" or (expired and item.observed_at < state.pause_until):
+        if item.notice.kind == "reminder" or (
+            expired and item.observed_at < state.pause_until
+        ):
             continue
         streak = min(2, streak + 1) if item.status == "ignored" else 0
         reached_two = reached_two or streak >= 2
     return streak, reached_two
 
 
-def _brief_days(records: tuple[ResponseObservation, ...], timezone: str) -> tuple[date, ...]:
+def _brief_days(
+    records: tuple[ResponseObservation, ...], timezone: str
+) -> tuple[date, ...]:
     zone = ZoneInfo(timezone)
     days: tuple[date, ...] = ()
     for item in sorted(records, key=lambda item: (item.notice.sent_at, item.notice.id)):
@@ -117,7 +128,9 @@ def apply_response(
     if reached_two and (until is None or now >= until):
         until = now + ADAPTATION_PAUSE
     days = _brief_days(records, timezone)
-    pending = state.brief_prompt_pending or (notice.kind == "brief" and status == "ignored" and len(days) >= 5)
+    pending = state.brief_prompt_pending or (
+        notice.kind == "brief" and status == "ignored" and len(days) >= 5
+    )
     muted = state.muted_categories
     if status == "muted" and notice.category:
         muted = muted | {notice.category}
@@ -134,15 +147,22 @@ def apply_response(
     )
 
 
-def brief_prompt_due(state: ReceptivityState, *, scope: FollowupScope, clock: Clock) -> bool:
+def brief_prompt_due(
+    state: ReceptivityState, *, scope: FollowupScope, clock: Clock
+) -> bool:
     scope.require(state.owner_id, state.subject_id)
     now = aware(clock.now())
     return state.brief_prompt_pending and (
-        state.brief_prompted_at is None or now >= state.brief_prompted_at + BRIEF_PROMPT_COOLDOWN
+        state.brief_prompted_at is None
+        or now >= state.brief_prompted_at + BRIEF_PROMPT_COOLDOWN
     )
 
 
-def mark_brief_prompted(state: ReceptivityState, *, scope: FollowupScope, clock: Clock) -> ReceptivityState:
+def mark_brief_prompted(
+    state: ReceptivityState, *, scope: FollowupScope, clock: Clock
+) -> ReceptivityState:
     if not brief_prompt_due(state, scope=scope, clock=clock):
         raise ValueError("晨报偏好提问尚未触发或仍在冷却")
-    return replace(state, brief_prompt_pending=False, brief_prompted_at=aware(clock.now()))
+    return replace(
+        state, brief_prompt_pending=False, brief_prompted_at=aware(clock.now())
+    )
