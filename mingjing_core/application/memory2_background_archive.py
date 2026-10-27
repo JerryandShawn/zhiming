@@ -22,6 +22,21 @@ class MemoryArchiveSweep:
     def __init__(self, repo, clock):
         self.repo, self.clock = repo, clock
         self.service = MemoryArchiveService(V4FactMemory(repo), clock=clock)
+        self.scan_cursors = {}
+
+    def _page(self, connection, owner, local_day, old):
+        # Empty pages are scheduling bookkeeping, not changes to user information.
+        day, cursor = self.scan_cursors.get(owner, (local_day, old.get("cursor", "") if old else ""))
+        if day != local_day:
+            cursor = old.get("cursor", "") if old else ""
+        rows = connection.execute(
+            sql.SQL(
+                "SELECT * FROM {} WHERE owner=%s AND kind='fact' AND status='active' AND id>%s ORDER BY id LIMIT 100"
+            ).format(self.repo.table("core_entities")),
+            (owner, cursor),
+        ).fetchall()
+        self.scan_cursors[owner] = (local_day, rows[-1]["id"] if len(rows) == 100 else "")
+        return rows
 
     def owner(self, owner):
         with self.repo.transaction(owner) as connection:
@@ -36,12 +51,7 @@ class MemoryArchiveSweep:
             old = marker(self.repo, owner, ident)
             if old and (old["status"] == "deleted" or old.get("done")):
                 return {"archived": 0, "skipped": 0}
-            rows = connection.execute(
-                sql.SQL(
-                    "SELECT * FROM {} WHERE owner=%s AND kind='fact' AND status='active' AND id>%s ORDER BY id LIMIT 100"
-                ).format(self.repo.table("core_entities")),
-                (owner, old.get("cursor", "") if old else ""),
-            ).fetchall()
+            rows = self._page(connection, owner, str(local.date()), old)
             counts = {"archived": 0, "skipped": 0}
             for raw in rows:
                 row = self.repo._decode(raw)
@@ -59,6 +69,8 @@ class MemoryArchiveSweep:
                     counts["archived"] += 1
                 except CoreError:
                     counts["skipped"] += 1
+            if counts["archived"] == 0:
+                return counts
             self.repo.put(
                 owner,
                 "runtime_step",
