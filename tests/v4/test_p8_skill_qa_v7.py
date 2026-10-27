@@ -37,19 +37,22 @@ def test_every_chapter_inventory_preserves_actual_applicability_and_references(
     assert saved["required_fields"] and saved["sources"]
 
 
-def test_known_erratum_is_disclosed_not_silently_marked_green() -> None:
+def test_approved_r46_erratum_is_merged_without_losing_old_text_detection() -> None:
     report = audit_library()
     assert report["chapter_count"] == 32
     assert len(report["systems"]) == 5
-    assert report["issues"] == [
-        {
-            "system": "bazi",
-            "topic": "basics",
-            "code": "erratum_jie_boundary_2_minutes_vs_7200_seconds",
-        }
-    ]
+    assert report["issues"] == []
+    loaded = deepcopy(LIBRARY.load("bazi", "basics"))
+    assert "±2 小时以内（含边界）" in loaded["text"]
+    assert "既有精度测试不放宽" in loaded["text"]
+    assert "立春附近还可能换年柱" in loaded["text"]
+    loaded["text"] += "靠近交节 ±2 分钟"
+    assert (
+        "erratum_jie_boundary_2_minutes_vs_7200_seconds"
+        in inspect_chapter(loaded)["issues"]
+    )
     notes = (DIRECTORY / "skill_errata.md").read_text(encoding="utf-8")
-    assert "未修改原章节" in notes and "7200" in notes and "±2小时" in notes
+    assert "已并入" in notes and "7200" in notes and "±2小时" in notes
     assert "未重开PDF" in notes
 
 

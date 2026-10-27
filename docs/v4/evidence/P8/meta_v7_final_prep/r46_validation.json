@@ -1,0 +1,45 @@
+{
+  "at_beijing": "2026-10-27T17:25:25+08:00",
+  "instruction": "meta v8 / R46",
+  "previous_head": "bb1a627d875a24dfd4449338590ed81b68846917",
+  "joint_targeted": {
+    "passed": 277,
+    "failed": 0,
+    "skipped": 0
+  },
+  "new_native_probes": [
+    {
+      "offset_seconds": -7260,
+      "alert": false
+    },
+    {
+      "offset_seconds": -7140,
+      "alert": true
+    },
+    {
+      "offset_seconds": 7140,
+      "alert": true
+    },
+    {
+      "offset_seconds": 7260,
+      "alert": false
+    }
+  ],
+  "unchanged_native_regression": {
+    "tests": 12,
+    "successful": true,
+    "skipped": 0
+  },
+  "existing_precision_tests": "unchanged",
+  "algorithm_changes": false,
+  "old_asset_exceptions": [
+    "mingjing_core/skills/bazi/01_basics.md",
+    "docs/v4/contracts/skill_bindings.json: bazi/basics chapter_version and chapter_sha256 only"
+  ],
+  "chapter_context_bytes": 5436,
+  "budget_unchanged": 5500,
+  "real_model_calls": 0,
+  "agent_calls": 0,
+  "business_writes": 0,
+  "ci": "pending_new_head"
+}

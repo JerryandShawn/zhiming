@@ -1,12 +1,12 @@
 # v7末批材料与内容质量交付
 
-从已完成P8头3bdcb39f另开`v4/meta-final-prep`；仅新增文件。旧80题、旧Schema、旧基线、生产函数、技能正文与catalog不变。这里的“题单就绪”是主线可选的评测材料，不是实测已通过。
+从已完成P8头3bdcb39f另开`v4/meta-final-prep`；v7仅新增；v8/R46特许更正基础章E01及该章绑定摘要，其余原资产不变。旧80题、旧Schema、旧基线、生产计算函数及catalog不变。这里的“题单就绪”是主线可选的评测材料，不是实测已通过。
 
 ## 交付索引
 
 - `question_list.md`、`manifest.json`、`scenarios/`：29题/安全5；20题保留原场景LF内容，9题由19号隔离转写。manifest保存来源和理由。
 - `morning/`：阿远2026-10-21至27，7份可读Markdown和7份JSON；`morning_quality_report.md`一页自查。
-- `skill_inventory.json`、`skill_errata.md`：32章全检/14章抽查；E01“交节±2分钟”新增勘误，原章节待允许修改。
+- `skill_inventory.json`、`skill_errata.md`：32章全检/14章抽查；E01已按v8/R46并入正文，保留原勘误历史。
 - 证据：`docs/v4/evidence/P8/meta_v7_final_prep/`；计划与日报使用v7独立文件。
 
 ## 场景装配与观察要求
@@ -35,6 +35,6 @@ P8五题沿用原验收README的实际工具次数/拒绝/写入观察；原复�
 
 `benchmarks.morning_samples_v7.readable_sample(result, expected_scope=..., target_date=...)`读取既有daily_transit合成结果并调用原`morning_content`验证，输出内容与Markdown。仅允许所交七天，不是通用产品晨报或调度器。`repetition_audit`把计算事实和编辑建议的重复分开计数。
 
-`benchmarks.skill_qa_v7.audit_library()`只读真实`chart_skill`白名单资产；结构齐全不等于原典校勘或运行时执行正确。32章指纹/字段/来源与保存清单一致；E01明确保留，不通过删除检查掩盖。
+`benchmarks.skill_qa_v7.audit_library()`只读真实`chart_skill`白名单资产；结构齐全不等于原典校勘或运行时执行正确。32章指纹/字段/来源与保存清单一致；E01已修正文，检测仍用旧错误文本反例证明有效；不删除旧精度检查。
 
 定向：`python -m pytest tests/v4/test_p8_final_prep_v7.py tests/v4/test_p8_morning_samples_v7.py tests/v4/test_p8_skill_qa_v7.py -q`。本机Core/Charts使用原隔离环境，无新增依赖。所有模型/业务写入/发送计数均为0；写出的文件是交付材料，不是用户档案。
