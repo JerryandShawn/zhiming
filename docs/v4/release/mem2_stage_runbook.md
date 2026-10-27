@@ -1,6 +1,6 @@
 # 记忆 2.0 stage 执行单（待最终绑定）
 
-状态：准备稿 / No-Go。2026-10-27，依据46第三节与main60。当前测试对象ca5a340db81daf3e0b5dc452b718e71e7939bb83；完整tests/v4及CI在途，尚未冻结release-mem2、未完成约20题真实评测。不得把本稿当47号或服务器执行回执。
+状态：准备稿 / No-Go。2026-10-27，依据46第三节与main62/R37。当前测试对象ca5a340db81daf3e0b5dc452b718e71e7939bb83；完整tests/v4在途；同SHA CI已失败，待修复新头，尚未冻结release-mem2、未完成约20题真实评测。不得把本稿当47号或服务器执行回执。
 
 ## 绑定与前置门
 
@@ -18,7 +18,7 @@
 
 现有tools.first_release_stage_copy.CopyScope.target及tools.first_release_native_exchange.Scope.original在非local_drill模式均硬绑定zhiming_core_fr_stage；模板也拒已有stage root/unit。首发stage成功后这些对象将存在。仅替换SHA仍会正确拒绝，不能覆盖旧副本、删库、改硬guard、传local_drill或复用首发operation绕过。
 
-最简方案：记忆使用新的独立stage database/root/unit/operation；沿原PG原生dump/restore、owner/ACL/SET与安全重放核验，保持首发对象原样。47号须审此独立命名和明确执行入口。当前尚未提供适配新命名的受审可执行入口，本单B3/B7仍No-Go；不把计划当实现。该缺口只阻止stage执行，不阻止本机记忆门、候选审查或准备生产执行单。
+main62/R37已批准独立命名方案：数据库固定zhiming_core_mem2_stage，目录固定/opt/zhiming-core-mem2-stage，unit固定zhiming-core-mem2-stage.service，operation使用独立mem2-stage命名空间并在最终SHA绑定后固定；沿原PG原生dump/restore、owner/ACL/SET与安全重放核验，保持首发对象原样。新入口须独立核固定命名并拒绝所有首发名，首发入口继续拒绝mem2名；定向反例通过后由47号审绑定后的明确执行入口。当前尚未提供适配新命名的受审可执行入口，本单B3/B7仍No-Go；不把计划当实现。该缺口只阻止stage执行，不阻止本机记忆门、候选审查或准备生产执行单。
 
 ## 执行顺序与逐项回执
 

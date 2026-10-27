@@ -1,10 +1,10 @@
 # 记忆 2.0 生产执行单（待最终绑定）
 
-状态：准备稿 / No-Go。2026-10-27，依据46、人类记忆上线直接授权及main60；仅R2a，P8及R2b–R6不在此权限内。当前ca5a340db81daf3e0b5dc452b718e71e7939bb83仍在本机完整门，未冻结最终SHA，未完成实评/stage/48号。
+状态：准备稿 / No-Go。2026-10-27，依据46、人类记忆上线直接授权及main62/R37；仅R2a，P8及R2b–R6不在此权限内。当前ca5a340db81daf3e0b5dc452b718e71e7939bb83仍在本机完整门，未冻结最终SHA，未完成实评/stage/48号。
 
 ## D0：绑定、窗口与首发稳定
 
-48_大脑复核_记忆2.0上线.md须首行“结论：Go”、第二行明确北京时间窗口、第三行完整MEM2_SHA，并引用47及同SHA记忆stage逐项成功回执。MEM2_SHA必须与release-mem2、CI成功、全部脚本/完整tests/v4、迁移相同和约20题实评回执一致。冻结后补独立生产operation、新包/bootstrap hash与stage operation，不能沿首发4e680f175ea28cc8/1a131275da9dc8d6。
+48_大脑复核_记忆2.0上线.md须首行“结论：Go”、第二行明确北京时间窗口、第三行完整MEM2_SHA，并引用47及同SHA记忆stage逐项成功回执。stage独立对象固定为zhiming_core_mem2_stage、/opt/zhiming-core-mem2-stage、zhiming-core-mem2-stage.service；不得用首发stage回执替代。MEM2_SHA必须与release-mem2、CI成功、全部脚本/完整tests/v4、迁移相同和约20题实评回执一致。冻结后补独立生产operation、新包/bootstrap hash与stage operation，不能沿首发4e680f175ea28cc8/1a131275da9dc8d6。
 
 开始至少比48号复核晚20分钟，首发e578已开门至少4小时、未回滚、网页正常、一次只读日志5xx/异常无明显增加且日报有真实记录。窗口最长2小时，避06:45–07:15，2026-10-27 23:30前必须结束；自动任务至28号不延长部署窗口。时间不足即停在当前步，不赶工。
 
