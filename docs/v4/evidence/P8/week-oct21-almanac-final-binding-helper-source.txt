@@ -1,0 +1,163 @@
+"""Recalculate synthetic bindings after the almanac dependency guard only."""
+import hashlib
+import json
+import os
+import re
+import subprocess
+from copy import deepcopy
+from datetime import timedelta, timezone
+from pathlib import Path
+
+from mingjing_core.adapters.charts.benchmarks.handoff_build import build_preview
+from mingjing_core.adapters.charts.benchmarks.handoff_validate import validate_preview
+from mingjing_core.adapters.charts.benchmarks.night28_skill_samples import generate
+from mingjing_core.adapters.charts.tool_evidence import pointer
+from mingjing_core.skills.consistency import check_chart_consistency
+from mingjing_core.skills.consistency_u12 import check_u12_rule_assertions
+from mingjing_core.skills.learning import learning_outline
+from mingjing_core.timekit.clock import get_clock
+
+ROOT = Path.cwd()
+SAMPLES = ROOT / "docs/v4/contracts/samples"
+BASE = "f4da1267b83c4d3f65e80c5db59fce41848e2f3e"
+REPORT = ROOT / "docs/v4/evidence/P8/week-oct21-almanac-version-rebinding-final.json"
+assert not REPORT.exists()
+
+def load(path):
+    return json.loads(path.read_bytes())
+
+def baseline_bytes(path):
+    return subprocess.check_output(["git", "show", BASE + ":" + path.relative_to(ROOT).as_posix()])
+
+def baseline(path):
+    return json.loads(baseline_bytes(path))
+
+def save(path, value):
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf8", newline="\n")
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+def primary(chart):
+    docs = {doc["document_id"]: doc["payload"] for doc in chart["documents"]}
+    return [pointer(docs[row["document_id"]], row["path"]) for row in chart["view"]["primary"]]
+
+def signature(chart, alias):
+    docs = {doc["document_id"]: (index, doc) for index, doc in enumerate(chart["documents"])}
+    index, doc = docs[alias["ref"]["document_id"]]
+    path = alias["ref"]["path"]
+    if doc["kind"] == "calculation_bundle" and path.startswith("/artifacts/"):
+        parts = path.split("/")
+        artifact = doc["payload"]["artifacts"][parts[2]]
+        parts[2] = artifact["system"] + ":" + artifact["school_id"] + ":" + artifact["branch_id"]
+        path = "/".join(parts)
+    return (index, doc["kind"], doc["payload"].get("technique"), path, alias.get("rule_id"))
+
+def summary_checks(result):
+    keys = ("field", "outcome", "reason_code", "expected_values")
+    return [[row.get(key) for key in keys] for row in result["data"]["checks"]]
+
+before = {}
+paths = []
+for system in ("bazi", "ziwei", "astro"):
+    paths += [SAMPLES / f"ayuan_{system}.json", SAMPLES / f"learning-ayuan-{system}.json", SAMPLES / f"consistency-ayuan-{system}.json"]
+paths += [SAMPLES / "u12-assertions-ayuan.json", ROOT / "mingjing_core/knowledge/p8_learning_lessons/curriculum_v1.json"]
+paths += sorted((SAMPLES / "skill-bindings").glob("*.json"))
+paths += sorted((ROOT / "mingjing_core/knowledge/p8_learning_lessons/lessons").glob("lesson-*.json"))
+for path in paths:
+    before[path.relative_to(ROOT).as_posix()] = hashlib.sha256(baseline_bytes(path).replace(b"\r\n", b"\n")).hexdigest()
+originals = {system: baseline(SAMPLES / f"ayuan_{system}.json") for system in ("bazi", "ziwei", "astro")}
+source_changed = subprocess.check_output(["git", "diff", "--name-only", BASE, "--", "mingjing_core/adapters/charts"]).decode().splitlines()
+assert source_changed == ["mingjing_core/adapters/charts/almanac.py"], source_changed
+proofs, maps = [], {}
+for system, old in originals.items():
+    path = SAMPLES / f"ayuan_{system}.json"
+    new = build_preview(system, os.environ["CHART_PYTHON"])
+    validate_preview(new, verify_runtime_sources=True)
+    assert primary(old) == primary(new), system
+    assert old["scope"] == new["scope"] and old["request"] == new["request"]
+    assert [(doc["kind"], doc["payload"].get("technique")) for doc in old["documents"]] == [(doc["kind"], doc["payload"].get("technique")) for doc in new["documents"]]
+    save(path, new)
+    mapping = {}
+    for kind in ("c", "r"):
+        for alias in old["aliases"][kind]:
+            matches = [row for row in new["aliases"][kind] if signature(old, alias) == signature(new, row)]
+            assert len(matches) == 1
+            old_doc = next(doc for doc in old["documents"] if doc["document_id"] == alias["ref"]["document_id"])
+            new_doc = next(doc for doc in new["documents"] if doc["document_id"] == matches[0]["ref"]["document_id"])
+            assert pointer(old_doc["payload"], alias["ref"]["path"]) == pointer(new_doc["payload"], matches[0]["ref"]["path"]), (system, alias["alias"])
+            mapping[alias["alias"]] = matches[0]["alias"]
+    maps[system] = mapping
+    learning_path = SAMPLES / f"learning-ayuan-{system}.json"
+    previous_learning = baseline(learning_path)
+    learned = learning_outline(new)
+    semantic = lambda row: [{key: point[key] for key in ("point_id", "kind", "title", "text", "observed", "source_refs", "school")} for point in row["points"]]
+    assert semantic(previous_learning) == semantic(learned)
+    save(learning_path, learned)
+    checker_path = SAMPLES / f"consistency-ayuan-{system}.json"
+    checker = baseline(checker_path)
+    previous = summary_checks(checker["result"])
+    checker["result"] = check_chart_consistency(checker["answer_text"], new)
+    assert previous == summary_checks(checker["result"])
+    save(checker_path, checker)
+    proofs.append({"system": system, "primary_values_equal": True, "all_mapped_alias_values_equal": True, "learning_meaning_equal": True, "checker_comparisons_equal": True, "alias_mapping": mapping})
+
+u12_path = SAMPLES / "u12-assertions-ayuan.json"
+u12 = baseline(u12_path)
+old_checks = summary_checks(u12["result"])
+u12["result"] = check_u12_rule_assertions(u12["answer_text"], load(SAMPLES / "ayuan_bazi.json"))
+assert old_checks == summary_checks(u12["result"])
+save(u12_path, u12)
+
+curriculum_path = ROOT / "mingjing_core/knowledge/p8_learning_lessons/curriculum_v1.json"
+curriculum = baseline(curriculum_path)
+for case in curriculum["cases"]:
+    for prefix in ("chart", "learning"):
+        case[prefix + "_sha256"] = sha(ROOT / case[prefix + "_path"])
+    learned = load(ROOT / case["learning_path"])
+    assert case["learning_point_ids"] == [row["point_id"] for row in learned["points"]]
+for evidence in curriculum["evidence"]:
+    system = evidence["case_id"].removeprefix("ayuan-")
+    evidence["c_alias"] = maps[system][evidence["c_alias"]]
+    evidence["r_aliases"] = [maps[system][name] for name in evidence["r_aliases"]]
+save(curriculum_path, curriculum)
+
+for path in sorted((ROOT / "mingjing_core/knowledge/p8_learning_lessons/lessons").glob("lesson-*.json")):
+    lesson = baseline(path)
+    def relink(text, system):
+        return re.sub(r"〔([cr][1-9][0-9]*)〕", lambda match: "〔" + maps[system][match.group(1)] + "〕", text)
+    for example in lesson["worked_examples"]:
+        example["text"] = relink(example["text"], example["case_id"].removeprefix("ayuan-"))
+    for quiz in lesson["quiz"]:
+        evidence_id = quiz["basis"].get("evidence_id")
+        if evidence_id is not None:
+            evidence = next(row for row in curriculum["evidence"] if row["evidence_id"] == evidence_id)
+            quiz["explanation"] = relink(quiz["explanation"], evidence["case_id"].removeprefix("ayuan-"))
+    save(path, lesson)
+
+skill_old = {system: baseline(SAMPLES / "skill-bindings" / f"{system}-artifact.json") for system in ("bazi", "ziwei")}
+skill_summary = generate(os.environ["CHART_PYTHON"])
+for system, old in skill_old.items():
+    assert old["data"] == load(SAMPLES / "skill-bindings" / f"{system}-artifact.json")["data"]
+after = {path.relative_to(ROOT).as_posix(): sha(path) for path in paths}
+report = {
+    "version": "p8-almanac-version-synthetic-rebinding-v1",
+    "recorded_at_beijing": get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat(),
+    "baseline_commit": BASE,
+    "reason": "Almanac version refusal changes the shared chart source map; recalculate real synthetic charts before projecting aliases and learning evidence.",
+    "checks": proofs,
+    "u12_comparisons_equal": True,
+    "native_skill_artifact_data_equal": True,
+    "all_lesson_display_aliases_rebound_by_actual_case": True,
+    "native_skill_summary": skill_summary,
+    "before_lf_sha256": before,
+    "after_lf_sha256": after,
+    "intentional_refresh_paths": sorted(key for key in before if before[key] != after[key]),
+    "real_model_requests": 0,
+    "profile_writes": 0,
+    "alias_mapping_method": "Exact ordered document kind/technique and path; dynamic artifact id replaced by actual system/school/branch, unique candidate required; values separately compared",
+    "limits": ["Only synthetic source/document/alias bindings; no legacy calculation change or predictive validation", "No historical performance evidence overwritten; no model tokens measured", "First helper attempt rejected ambiguous western_timing /data and changed artifact IDs; failure retained and baseline remains fixed f4da Git objects"]
+}
+with REPORT.open("x", encoding="utf8", newline="\n") as stream:
+    stream.write(json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+print(json.dumps({"synthetic_systems": 3, "native_skill_summary": skill_summary, "primary_values_equal": True, "changed_bindings": len(report["intentional_refresh_paths"])}))

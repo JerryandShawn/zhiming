@@ -1,0 +1,243 @@
+{
+  "version": "p8-morning-content-v1",
+  "status": "ready",
+  "scope": {
+    "owner_user_id": "synthetic-owner-ayuan",
+    "subject_id": "synthetic-subject-ayuan",
+    "revision": 1,
+    "operation_id": "synthetic-ayuan-daily-week-20261021"
+  },
+  "date": "2026-10-22",
+  "source_document_id": "tool-b9ccd0f6303b1fda9d24115b7860e4a969de449e39aa3c000d08c3fe3fcef88e",
+  "snapshot_at": "2026-10-22T12:00:00+08:00",
+  "points": [
+    {
+      "system": "bazi",
+      "observation": "流日天干按本命日干比较，十神为食神。",
+      "reflection": "先挑一件今天真实要做的事，把需要的准备写下来；十神本身不决定事情的结果。",
+      "text": "流日天干按本命日干比较，十神为食神。〔c39〕〔c38〕〔r16〕 先挑一件今天真实要做的事，把需要的准备写下来；十神本身不决定事情的结果。",
+      "c_aliases": [
+        "c39",
+        "c38"
+      ],
+      "r_aliases": [
+        "r16"
+      ],
+      "school": "ziping-five-elements-polarity-project-v1",
+      "source": {
+        "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+        "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+        "status": "project_arithmetic_original_edition_collation_pending"
+      }
+    },
+    {
+      "system": "ziwei",
+      "observation": "按本次安装库口径，流日化禄映射到本命迁移。",
+      "reflection": "可以留意自己在相关话题上的感受；先看实际情况，再决定是否需要行动。",
+      "text": "按本次安装库口径，流日化禄映射到本命迁移。〔c42〕〔c57〕〔r25〕 可以留意自己在相关话题上的感受；先看实际情况，再决定是否需要行动。",
+      "c_aliases": [
+        "c42",
+        "c57"
+      ],
+      "r_aliases": [
+        "r25"
+      ],
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      }
+    },
+    {
+      "system": "astro",
+      "observation": "行运天王与本命土星形成刑相相位，偏离0.040°，本次容许度2°。",
+      "reflection": "把它当作一次整理感受的提示；今天怎么安排，仍以日程、身体感受和他人意愿为准。",
+      "text": "行运天王与本命土星形成刑相相位，偏离0.040°，本次容许度2°。〔c1〕〔c18〕〔c10〕〔c16〕〔r29〕 把它当作一次整理感受的提示；今天怎么安排，仍以日程、身体感受和他人意愿为准。",
+      "c_aliases": [
+        "c1",
+        "c18",
+        "c10",
+        "c16"
+      ],
+      "r_aliases": [
+        "r29"
+      ],
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      }
+    }
+  ],
+  "aliases": {
+    "c": [
+      {
+        "alias": "c1",
+        "path": "/data/astro/aspects/0",
+        "value_sha256": "6ca60f50c192ee1c8604113df151e728235ef7e32bc45d433870a7048729c030",
+        "claim_id": "claim-b82a1fdb87aa57e447ea764d604a73db75bc78ea94fdbcd83ddc5c0f43545636"
+      },
+      {
+        "alias": "c10",
+        "path": "/data/astro/natal_planets/土星/longitude",
+        "value_sha256": "3d2f533973e38dbe8908c369577b82e0539066a3af59f3eac0daf50ff2e60fc8",
+        "claim_id": "claim-b285b1714bba3057b9d1085097a8e537776caadefc988bc995146b5be47fab4e"
+      },
+      {
+        "alias": "c16",
+        "path": "/data/astro/orb_limit_degrees",
+        "value_sha256": "d84bdb34d4eeef4034d77e5403f850e35bc4a51b1143e3a83510e1aaad839748",
+        "claim_id": "claim-e9405eb5d10b051773341f99c82ca3829cc73e985cc970a06bf5d24c565e14ff"
+      },
+      {
+        "alias": "c18",
+        "path": "/data/astro/transit_planets/天王/longitude",
+        "value_sha256": "0fd9d732673a298f12eea927b9dc437f833ddd2626f6ac515b0490b9c0933c4f",
+        "claim_id": "claim-c66ef7bf9c83c675beafb26374d6c0b35ef3e3b17fb6504334dc35f87e897c42"
+      },
+      {
+        "alias": "c38",
+        "path": "/data/bazi/natal_pillars/day",
+        "value_sha256": "7c60180341ff8440b931339ba286204f7e6aae5edb33e34f6b40a1be74e0ebbf",
+        "claim_id": "claim-089fdf59ad43f94b5badbf50d79bcf3530c5cae9f74c0f497349af2e961598ed"
+      },
+      {
+        "alias": "c39",
+        "path": "/data/bazi/snapshot/day",
+        "value_sha256": "3560db9ab0eeab9cde81863c24da7a15b152acd7883d2223762004f933549d6c",
+        "claim_id": "claim-beb8b15cef1d46769d12fd6b38cea28da74fcffe7fdfb957f4324f8890253116"
+      },
+      {
+        "alias": "c42",
+        "path": "/data/ziwei/horoscope/daily/mutagen/0",
+        "value_sha256": "c69fccf0498a6072f954c31bcb382c163104d92a59f94e5768eb1fcaf2404035",
+        "claim_id": "claim-d020bf6f4f025791b6e0f0486bef15ae5fcef2f3816d1113e33ea39f7488a9f0"
+      },
+      {
+        "alias": "c57",
+        "path": "/data/ziwei/natal/palaces/3/major/0",
+        "value_sha256": "6450222f62a5b0bdb46ced55cc6c7b89a4b06fb6e5f40d15d3a2963b81d9836e",
+        "claim_id": "claim-30a4c517c8e1ead048d9895950576fb869f9833e2fd4b4101f23cc6babb27fc4"
+      }
+    ],
+    "r": [
+      {
+        "alias": "r16",
+        "path": "/rule_hits/15",
+        "rule_id": "daily.bazi.ten_god.daily",
+        "value_sha256": "bf423ae4780adeee84a8ec1b54f4a5730eee427902ab0a7ccdc68a75d86d28a2",
+        "claim_id": "claim-b8d13cfedd194186e1817015861a88b0b07f7278301d40af522167740458c5b6",
+        "evidence_aliases": [
+          "c39",
+          "c38"
+        ]
+      },
+      {
+        "alias": "r25",
+        "path": "/rule_hits/24",
+        "rule_id": "daily.ziwei.daily.0",
+        "value_sha256": "027c57ee0809349487a7303e92ff6c12d004d0f5660785c9784202f882fb28d9",
+        "claim_id": "claim-ee5e7924e506f3d089e036ae253b0f47f36f824dee88a911ba2b71195da692e1",
+        "evidence_aliases": [
+          "c42",
+          "c57"
+        ]
+      },
+      {
+        "alias": "r29",
+        "path": "/rule_hits/28",
+        "rule_id": "daily.astro.aspect.0",
+        "value_sha256": "826bde70b9251cded591eafa0ba6a5f1061fd661690fb672cda1ecfd3f45bb4d",
+        "claim_id": "claim-b024315c779c596ac6162d0a7d9424d0f1d283612d57b5d7c19a8ebd86136178",
+        "evidence_aliases": [
+          "c1",
+          "c18",
+          "c10",
+          "c16"
+        ]
+      }
+    ]
+  },
+  "rule_hits": [
+    {
+      "rule_id": "daily.bazi.ten_god.daily",
+      "met": true,
+      "school": "ziping-five-elements-polarity-project-v1",
+      "source": {
+        "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+        "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+        "status": "project_arithmetic_original_edition_collation_pending"
+      },
+      "context": {
+        "system": "bazi",
+        "kind": "ten_god",
+        "layer": "daily",
+        "ten_god": "食神"
+      },
+      "evidence_paths": [
+        "/data/bazi/snapshot/day",
+        "/data/bazi/natal_pillars/day"
+      ]
+    },
+    {
+      "rule_id": "daily.ziwei.daily.0",
+      "met": true,
+      "school": "iztro-2.5.0-default-palace-stem-table",
+      "source": {
+        "title": "安装py-iztro运限与本命星曜映射",
+        "url": "https://docs.iztro.com/posts/horoscope",
+        "status": "installed_library_convention_not_independent_school_validation"
+      },
+      "context": {
+        "system": "ziwei",
+        "kind": "mutagen",
+        "layer": "daily",
+        "mutagen": "禄",
+        "natal_palace": "迁移",
+        "palace_index": 3
+      },
+      "evidence_paths": [
+        "/data/ziwei/horoscope/daily/mutagen/0",
+        "/data/ziwei/natal/palaces/3/major/0"
+      ]
+    },
+    {
+      "rule_id": "daily.astro.aspect.0",
+      "met": true,
+      "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+      "source": {
+        "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+        "url": "https://www.astro.com/swisseph/swephprg.htm",
+        "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+      },
+      "context": {
+        "system": "astro",
+        "kind": "aspect",
+        "from": "天王",
+        "to": "土星",
+        "aspect": "刑相",
+        "orb_degrees": 0.03971683070864174,
+        "orb_limit": 2.0
+      },
+      "evidence_paths": [
+        "/data/astro/aspects/0",
+        "/data/astro/transit_planets/天王/longitude",
+        "/data/astro/natal_planets/土星/longitude",
+        "/data/astro/orb_limit_degrees"
+      ]
+    }
+  ],
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "sends": 0
+  },
+  "limits": [
+    "北京时间正午单点快照，不表示全天走势，也不代表早晨已经发生。",
+    "只校验内容绑定，不验证来源授权；调用方须校验可信计算、owner、修订及撤销状态。",
+    "别名沿用该日原结果；主线登记到当前上下文后才可用于对话，不跨日拼接。",
+    "各体系仅并列观察，不合成吉凶分数，不证明现实预测有效。"
+  ]
+}

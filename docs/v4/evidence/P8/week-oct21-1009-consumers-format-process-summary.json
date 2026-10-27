@@ -1,0 +1,48 @@
+{
+  "started_at_beijing": "2026-10-21T10:09:26.747033+08:00",
+  "effective_core_executable": "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+  "actual_base_executable": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+  "core_prefix": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core",
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+    "-I",
+    "-B",
+    "private/p8-validation/guarded_environment_validation.py",
+    "format_environment",
+    "--label",
+    "week-oct21-1009-consumers-format"
+  ],
+  "process_budget": {
+    "mechanism": "Windows Job ACTIVE_PROCESS_LIMIT=4 including this inline coordinator and all descendants; no BREAKAWAY flags",
+    "configured_limit": 4,
+    "active_before": 1,
+    "active_after": 1
+  },
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "validation_harness_lf_sha256": "62588a249aeec374dd9f7104c8fee5c21985197d9fa5ba73bfd4606a8998ff46",
+  "chart_launch_transport": "original configured Charts venv wrapper",
+  "format_ast_unchanged": true,
+  "intentional_format_paths": [
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py",
+    "tests/v4/test_p8_core_environment_roles.py",
+    "tests/v4/test_p8_core_environment_consumers.py"
+  ],
+  "completed_at_beijing": "2026-10-21T10:09:26.944162+08:00",
+  "exit_code": 0,
+  "sources_unchanged": false,
+  "artifact_kind": "derived_compact_coordinator_receipt",
+  "raw_private_receipt_sha256": "4c364c0eaaeecb207b95e4d6de5fe8a1306b0a65877b54a3117968920be65f23",
+  "source_file_count_before": 385,
+  "source_file_count_after": 385,
+  "source_lf_sha256_before": {
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py": "3a3614316d664f4f3ad71c717655f3fcbc046923cd17ff42f234b88dd82fcad1",
+    "tests/v4/test_p8_core_environment_roles.py": "029d577299653c27631811b6a3ef997bf957f0ac1f288ae77679646b92021876",
+    "tests/v4/test_p8_core_environment_consumers.py": "9fa9bfed0b23d59e65b1e926377b0a248da05dec0d13ae573375ad367bd7ee18"
+  },
+  "source_lf_sha256_after": {
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py": "3a3614316d664f4f3ad71c717655f3fcbc046923cd17ff42f234b88dd82fcad1",
+    "tests/v4/test_p8_core_environment_roles.py": "029d577299653c27631811b6a3ef997bf957f0ac1f288ae77679646b92021876",
+    "tests/v4/test_p8_core_environment_consumers.py": "002b7574e39f1e29d31f5fdffb4329a8038f6788372a8ef0ef5e6abe56b07622"
+  }
+}

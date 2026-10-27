@@ -1,0 +1,387 @@
+{
+  "version": "p8-native-skill-samples-v1",
+  "synthetic": true,
+  "input_archive": {
+    "owner_user_id": "synthetic-skills-owner",
+    "subject_id": "synthetic-skills-subject",
+    "user": {
+      "gender": "男",
+      "birth": {
+        "solar_datetime": "2000-06-15 10:30",
+        "timezone_offset": 8,
+        "time_precision": "exact",
+        "location": {
+          "lng": 120,
+          "lat": 30
+        }
+      }
+    }
+  },
+  "target_date": "2026-10-21",
+  "entry": "P8ChartAdapter.calculate",
+  "method_policy": "legacy_explicit_entry_not_default_true_solar_reading",
+  "method_notice": "保留实际平太阳/sect2等方法；不冒充time_basis真太阳主盘。",
+  "actual_profiles": {
+    "profile-b2aae7d89afb79cf9d452d2f": {
+      "id": "profile-b2aae7d89afb79cf9d452d2f",
+      "system": "bazi",
+      "school_id": "ziping-yueling-v1",
+      "owner_user_id": "synthetic-skills-owner",
+      "subject_id": "synthetic-skills-subject",
+      "revision": 1,
+      "branch_id": "time-8c971e1db4feed70e0aafdcb",
+      "input": {
+        "declared_birth": {
+          "solar_datetime": "2000-06-15 10:30",
+          "timezone_offset": 8,
+          "time_precision": "exact",
+          "location": {
+            "lng": 120,
+            "lat": 30
+          }
+        },
+        "sample_civil_datetime": "2000-06-15 10:30",
+        "sample_is_confirmed": false,
+        "longitude": 120.0,
+        "latitude": null,
+        "timezone_offset": 8.0,
+        "gender_parameter": "男",
+        "calendar": "solar",
+        "input_status": {},
+        "target_date": "2026-10-21"
+      },
+      "requested_method": {
+        "year_month": "UTC+8_exact_jie_boundary",
+        "day_hour": "local_mean_solar_time",
+        "equation_of_time": false,
+        "day_sect": 2,
+        "dayun_sect": 1
+      },
+      "actual_method": {
+        "calendar": "lunar-python EightChar",
+        "day_sect": 2,
+        "year_boundary": "立春准确时刻，UTC+8 节气表",
+        "month_boundary": "节交接准确时刻，UTC+8 节气表",
+        "dayun_sect": 1,
+        "equation_of_time_applied": false,
+        "xiyongshen": "表层八字五行计数启发式，不是完整格局/调候分析",
+        "derived_features": "hidden stems and ten gods from installed LunarUtil tables; structural relations without transformation judgments",
+        "natal_day_hour": "local_mean_solar_time_without_equation_of_time",
+        "natal_day_hour_time": "2000-06-15 10:30:00",
+        "year_month_and_dayun": "same_instant_converted_to_UTC+8_jie_table",
+        "year_month_calendar_time": "2000-06-15T10:30:00",
+        "day_snapshot": "requested_date_12:00_UTC+8",
+        "p8": {
+          "entry": "P8ChartAdapter_explicit_only",
+          "strength": "two_project_v1_methods",
+          "selected_schools": {
+            "command": "sanming_5520",
+            "tianyi": "combined_common",
+            "blade": "yang_only",
+            "hidden_order": "reverse_command_segments"
+          },
+          "climate": "versioned_opening_excerpt_not_full_book_rules",
+          "dayun_sect": 1,
+          "default_v3_fields": "unchanged_before_existing_adapter_derivation"
+        }
+      },
+      "versions": {
+        "lunar-python": "1.4.8",
+        "engine": "bazi-core-3.1",
+        "p8": {
+          "version": "p8-calc-v3-rules",
+          "source_sha256": {
+            "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
+            "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+            "mingjing_core/adapters/charts/almanac.py": "d42668939b14c63743d69b354a73d20ad60c5900abd2d76ce712352322397cf4",
+            "mingjing_core/adapters/charts/astro_ephemeris.py": "8fde847c7820d799d56e811e8ad23c39ded61c4797cc08353ab462eccdd29109",
+            "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
+            "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+            "mingjing_core/adapters/charts/boundary_alerts.py": "f6d3817496778c37d7e3f605b26ca244775a4fa58c9885b63b5bd8dcc4545d69",
+            "mingjing_core/adapters/charts/boundary_candidates.py": "773c78b6458d165d978a4f3bbea97a5f8bd110ed2aee28310f6ba6c48bd604a6",
+            "mingjing_core/adapters/charts/boundary_solar_reference.py": "28af1e0ad0cfba64ecd45b7db7c120f6934f4bd8150e6de4f98a442a42e1c8d1",
+            "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
+            "mingjing_core/adapters/charts/daily_transit.py": "dd5f4db3ce649621f960ae8ca417a6347a1284454ebe451fe7923f6f81630988",
+            "mingjing_core/adapters/charts/daily_transit_astro.py": "0cdbedbf2d4f305f6f4e23e37a293c5d0eda7b6ddf934e166c692854f096581b",
+            "mingjing_core/adapters/charts/daily_transit_bazi.py": "5a6995c28cdd0aa08c62bdec77d57fad88ad67f1c2f6d20d00a2470f83f63c82",
+            "mingjing_core/adapters/charts/daily_transit_natal.py": "2c393b996f4050d2df2367d9890280a093b5efeed2a877237a8d57f16558a1a6",
+            "mingjing_core/adapters/charts/daily_transit_ziwei.py": "a588e03881cd88789529e917dcc44d8248f1b92e5181e1c26cb370dd5451f8b0",
+            "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
+            "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
+            "mingjing_core/adapters/charts/interactions_ziwei.py": "baa2c814a0b2b1d3e678052a580f0c36e94e91fc3b85742adb7b6863777b05cd",
+            "mingjing_core/adapters/charts/jie_uncertainty.py": "f734d17258a0dcbc3aa1864d7b00e285071a3851f771a67ab99075daf0223060",
+            "mingjing_core/adapters/charts/named_bazi.py": "9f5e1843c10d540ccbd05268980ef00441593e93f19af9e132d6baf5aa4bd382",
+            "mingjing_core/adapters/charts/named_strength.py": "4ceb88bf8d8501f7defc978d5d05244d7c7e45c5c180bc9a2a2785b2042f938e",
+            "mingjing_core/adapters/charts/p8_adapter.py": "3e9acb177fb98b6894e8fbf20d207e005e8f424ab6b858dcc23bb72ca7f07595",
+            "mingjing_core/adapters/charts/p8_analysis.py": "72aae34f25e3ab4d1c9263564d3649eedc96aadc65bb6fef4060b6757caf2f4d",
+            "mingjing_core/adapters/charts/p8_policy.py": "2951cbc243484fae5759ee91e27b16b14ac9e1522721f776953475d3babe1b4c",
+            "mingjing_core/adapters/charts/p8_pure_tools.py": "fbf57c4fb7cfd53c7ca85a02df015c6745fda8d95fde1359014b5e1f393b4ec0",
+            "mingjing_core/adapters/charts/p8_structure.py": "3dcc442a40d13511b2abb61f36e35be6995a898e0cfa6a61640bfe6333c36e07",
+            "mingjing_core/adapters/charts/p8_worker.py": "d3898415ea09a0ec60304abe6a6c25bfb20afa5f4eedb12a31fa8d8a9e48b270",
+            "mingjing_core/adapters/charts/profile_draft.py": "21443d86a5bb4fee45ff65e97ece0dac91fd18cb22016384b58e76de9a6be065",
+            "mingjing_core/adapters/charts/rectification_workbench/__init__.py": "4bd3b498ee34ff4ff9c5aca4dae8ade58869be65744364f7f637ceeddef005b3",
+            "mingjing_core/adapters/charts/rectification_workbench/calibration_scope.py": "e5cb58feb0c1b617bce3e0ba1bcbf4bf76423b48a37055d9445c42f877dd8667",
+            "mingjing_core/adapters/charts/rectification_workbench/chart_grid.py": "c8bb928c30cd5400971597c04df3db83a45fc9ee0cb33c48579460bd9401af8d",
+            "mingjing_core/adapters/charts/rectification_workbench/contracts.py": "2f24f27b55e43f49c432522f0b9fbbdb1537eee463f2c95119c8f6c589d8dee8",
+            "mingjing_core/adapters/charts/rectification_workbench/envelope.py": "9e78132bb335ff70c5f7970436c715b1963187068b72d9dbedc6eed92b4f04ce",
+            "mingjing_core/adapters/charts/rectification_workbench/evaluation.py": "534a20ab180077ea762bb553e08dae13c3cd9de12b80acd9d93f7f33e4703a95",
+            "mingjing_core/adapters/charts/rectification_workbench/evaluation_cases.py": "142d67240aa63088820d0d41070d7d0f67dad721206ad6beb48c33991caa5e3e",
+            "mingjing_core/adapters/charts/rectification_workbench/evaluation_charts.py": "f5a13ce6ae0e3723c9a41c1346e06e160171b068dd6384654b8b9d6c308d2ddf",
+            "mingjing_core/adapters/charts/rectification_workbench/sessions.py": "8175a945a009686e1719bbe2a1525b46196ea4827656c5d613b058d31edacbba",
+            "mingjing_core/adapters/charts/rectification_workbench/signals.py": "87415fd4ce38b002c3056c6bbf51104fdba066345b752b7dd96bffe40291db05",
+            "mingjing_core/adapters/charts/rectification_workbench/statistics.py": "21e04d93b0c20856efc0f4b175f09633fa6d5c4620e9186c98f605b9d8029633",
+            "mingjing_core/adapters/charts/rules/__init__.py": "eff1b36df054bcebc4a4fbec060f60e6075287ed64fb462e3c95bf78043a1a0f",
+            "mingjing_core/adapters/charts/rules/conditions.py": "2ffdac8c1c4f71bf04382d60c9f57956b54f179c6c17172c91a87da61dc2b3f7",
+            "mingjing_core/adapters/charts/rules/engine.py": "b0ecc4067936a0d53ca0b438fb4515da86142b70b856f75258054454029fc913",
+            "mingjing_core/adapters/charts/rules/interaction_metadata.py": "273af6285d3d57c414d8e09cf049f042e8809f73c7e85b6b4e901d0420f4f22c",
+            "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+            "mingjing_core/adapters/charts/synastry.py": "313012bdbaf63d3c9dca1f07ecd00c420918f45dcb8d96873cf3e1444ee996b6",
+            "mingjing_core/adapters/charts/synastry_bazi.py": "63acf539d608285bcebbb50859dec04e8febb9fe4b444b4dd75c871efed764a5",
+            "mingjing_core/adapters/charts/synastry_ziwei.py": "679b1e69974f0fb803921fe0f91cd05e7fb2a985baa685ca553b9759c60b8f2b",
+            "mingjing_core/adapters/charts/time_basis.py": "e25bb738e292f71e69f2735af237b898438476d0fc6bfb867ca36053a5cfedef",
+            "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
+            "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
+            "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
+            "mingjing_core/adapters/charts/time_basis_request.py": "2f8a81f7e1831924b1e8af036a6f8a0e037fbd586008102ae14fb92eefb5fa70",
+            "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
+            "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+            "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
+            "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
+            "mingjing_core/adapters/charts/window_search.py": "cdc1db7638183e8f61afdd1fd71cca90273ef925c48690c26819a7b4c75ae526",
+            "mingjing_core/adapters/charts/window_search_pagination.py": "6698026825d263e75f5e14e183c94a3986861396954fba31537102a61b1de277",
+            "mingjing_core/adapters/charts/window_search_scoring.py": "f7e327774724502489466f9dafb5bc3b8176f18dd7055d88038faff942f285a5",
+            "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
+            "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
+            "mingjing_core/adapters/charts/ziwei_flying_support.py": "62bd34ec4c3776df68d91805d80d8b34c7a64e18046577d7121b966670dcdce9",
+            "hermes/bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+            "hermes/ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+            "hermes/astro.py": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8",
+            "mingjing_core/calculations/bazi/__init__.py": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15",
+            "mingjing_core/calculations/bazi/calendar_layers.py": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d",
+            "mingjing_core/calculations/bazi/elements.py": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0",
+            "mingjing_core/calculations/bazi/stars.py": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974",
+            "mingjing_core/calculations/bazi/strength.py": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6",
+            "mingjing_core/calculations/bazi/structure.py": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2",
+            "mingjing_core/calculations/bazi/supplement.py": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f",
+            "mingjing_core/knowledge/p8_bazi/auxiliary_stars.json": "02ba01121b72562bc4644e5db8ba00628c6b1524f3931a00cdbc9b8ee419ec4c",
+            "mingjing_core/knowledge/p8_bazi/climate.json": "8fe8e8ee0ff2af8fba1daaa9f5ba0157b2513318dd1c1452f54163e6c9af20f4",
+            "mingjing_core/knowledge/p8_bazi/climate_review_24.json": "e5d8357a4a4baf2b207b1c49831232fe16b477d669103d6264c49539550a68dc",
+            "mingjing_core/knowledge/p8_bazi/month_command.json": "bc20580ac1f031e508f99928648d2432caccd5363e952a5f5212f3fc28ef9296",
+            "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448",
+            "mingjing_core/knowledge/p8_bazi/schools.json": "10af42bc53caddcf9430657402b2460650608f201399348fc21b4cb2ff44276c",
+            "mingjing_core/knowledge/p8_ziwei/flying_v1.json": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+            "mingjing_core/knowledge/p8_interactions.json": "af859c9e1d1288ddb87c1f34a27e861da13e89e4b26ca142b1ecd49ccee34cde",
+            "mingjing_core/knowledge/p8_windows_v1.json": "8c202009f39c63b2bbf811ae8cdfc0d7386c465e70997c188d2189e4d938d322",
+            "mingjing_core/knowledge/rectification_rules_v1.json": "6091e2c573bfdbd5b6bb2b5abeb6ae7a8a54d84d0cb4abc02bfc452e9d7d6689"
+          }
+        },
+        "source_sha256": {
+          "bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+          "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+          "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+        }
+      },
+      "warnings": [
+        "P8具名口径；旺衰为项目口径v1，调候未经原刊校勘",
+        "五行数量不等于实际力量；未计藏干权重、通根、合化及调候",
+        "喜用神仅为探索线索，不可单独作为行动建议或吉凶结论",
+        "出生时刻误差及日界流派可能改变日时柱；未估计出生时间误差",
+        "出生参数的字段确认状态未在此档案提供；适配器不会把已有值升级为已确认事实"
+      ],
+      "fallback": []
+    },
+    "profile-abfd6e746ddf7ce28a61cc77": {
+      "id": "profile-abfd6e746ddf7ce28a61cc77",
+      "system": "ziwei",
+      "school_id": "sanhe-structure-v1",
+      "owner_user_id": "synthetic-skills-owner",
+      "subject_id": "synthetic-skills-subject",
+      "revision": 1,
+      "branch_id": "time-8c971e1db4feed70e0aafdcb",
+      "input": {
+        "declared_birth": {
+          "solar_datetime": "2000-06-15 10:30",
+          "timezone_offset": 8,
+          "time_precision": "exact",
+          "location": {
+            "lng": 120,
+            "lat": 30
+          }
+        },
+        "sample_civil_datetime": "2000-06-15 10:30",
+        "sample_is_confirmed": false,
+        "longitude": 120.0,
+        "latitude": null,
+        "timezone_offset": 8.0,
+        "gender_parameter": "男",
+        "calendar": "solar",
+        "input_status": {},
+        "target_date": "2026-10-21"
+      },
+      "requested_method": {
+        "calendar": "py_iztro_by_solar_defaults",
+        "time": "local_mean_solar_time",
+        "links": "two_trines_and_opposition",
+        "equation_of_time": false
+      },
+      "actual_method": {
+        "calendar": "py-iztro by_solar 默认历法与闰月规则",
+        "hour_index": 5,
+        "late_zi": "23:00 单独编码为 12，由 py-iztro 默认日界规则处理",
+        "equation_of_time_applied": false,
+        "links": "本宫的两组三合宫及对宫；四化按真实星曜位置关联本命宫和运限宫",
+        "by_solar_defaults": {
+          "fix_leap": "True",
+          "language": "'zh-CN'"
+        },
+        "local_time": "local_mean_solar_time_without_equation_of_time",
+        "leap_month": "solar_input_with_installed_by_solar_defaults",
+        "horoscope_layers": [
+          "decadal",
+          "yearly",
+          "monthly",
+          "daily"
+        ],
+        "p8_yearly_links": "p8-yearly-mutagen-links-v1",
+        "p8_flying_transformations": "p8-ziwei-palace-stem-flying-v1.1-review24"
+      },
+      "versions": {
+        "py-iztro": "0.1.5",
+        "pythonmonkey": "1.1.0",
+        "engine": "ziwei-core-3.1",
+        "iztro_upstream_declared": "2.4.4",
+        "iztro_upstream_version_source": "installed_py_iztro_distribution_description",
+        "iztro_bundle_sha256": {
+          "py_iztro/res/iztro-2.5.0.min.js": "09333d6a2da7fff7bd338134c8d17de0d589259c16a70ece1db1d64e17217ea0"
+        },
+        "upstream_version_independently_verified": false,
+        "p8": {
+          "version": "p8-u2-v1",
+          "source_sha256": {
+            "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
+            "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+            "mingjing_core/adapters/charts/almanac.py": "d42668939b14c63743d69b354a73d20ad60c5900abd2d76ce712352322397cf4",
+            "mingjing_core/adapters/charts/astro_ephemeris.py": "8fde847c7820d799d56e811e8ad23c39ded61c4797cc08353ab462eccdd29109",
+            "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
+            "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+            "mingjing_core/adapters/charts/boundary_alerts.py": "f6d3817496778c37d7e3f605b26ca244775a4fa58c9885b63b5bd8dcc4545d69",
+            "mingjing_core/adapters/charts/boundary_candidates.py": "773c78b6458d165d978a4f3bbea97a5f8bd110ed2aee28310f6ba6c48bd604a6",
+            "mingjing_core/adapters/charts/boundary_solar_reference.py": "28af1e0ad0cfba64ecd45b7db7c120f6934f4bd8150e6de4f98a442a42e1c8d1",
+            "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
+            "mingjing_core/adapters/charts/daily_transit.py": "dd5f4db3ce649621f960ae8ca417a6347a1284454ebe451fe7923f6f81630988",
+            "mingjing_core/adapters/charts/daily_transit_astro.py": "0cdbedbf2d4f305f6f4e23e37a293c5d0eda7b6ddf934e166c692854f096581b",
+            "mingjing_core/adapters/charts/daily_transit_bazi.py": "5a6995c28cdd0aa08c62bdec77d57fad88ad67f1c2f6d20d00a2470f83f63c82",
+            "mingjing_core/adapters/charts/daily_transit_natal.py": "2c393b996f4050d2df2367d9890280a093b5efeed2a877237a8d57f16558a1a6",
+            "mingjing_core/adapters/charts/daily_transit_ziwei.py": "a588e03881cd88789529e917dcc44d8248f1b92e5181e1c26cb370dd5451f8b0",
+            "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
+            "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
+            "mingjing_core/adapters/charts/interactions_ziwei.py": "baa2c814a0b2b1d3e678052a580f0c36e94e91fc3b85742adb7b6863777b05cd",
+            "mingjing_core/adapters/charts/jie_uncertainty.py": "f734d17258a0dcbc3aa1864d7b00e285071a3851f771a67ab99075daf0223060",
+            "mingjing_core/adapters/charts/named_bazi.py": "9f5e1843c10d540ccbd05268980ef00441593e93f19af9e132d6baf5aa4bd382",
+            "mingjing_core/adapters/charts/named_strength.py": "4ceb88bf8d8501f7defc978d5d05244d7c7e45c5c180bc9a2a2785b2042f938e",
+            "mingjing_core/adapters/charts/p8_adapter.py": "3e9acb177fb98b6894e8fbf20d207e005e8f424ab6b858dcc23bb72ca7f07595",
+            "mingjing_core/adapters/charts/p8_analysis.py": "72aae34f25e3ab4d1c9263564d3649eedc96aadc65bb6fef4060b6757caf2f4d",
+            "mingjing_core/adapters/charts/p8_policy.py": "2951cbc243484fae5759ee91e27b16b14ac9e1522721f776953475d3babe1b4c",
+            "mingjing_core/adapters/charts/p8_pure_tools.py": "fbf57c4fb7cfd53c7ca85a02df015c6745fda8d95fde1359014b5e1f393b4ec0",
+            "mingjing_core/adapters/charts/p8_structure.py": "3dcc442a40d13511b2abb61f36e35be6995a898e0cfa6a61640bfe6333c36e07",
+            "mingjing_core/adapters/charts/p8_worker.py": "d3898415ea09a0ec60304abe6a6c25bfb20afa5f4eedb12a31fa8d8a9e48b270",
+            "mingjing_core/adapters/charts/profile_draft.py": "21443d86a5bb4fee45ff65e97ece0dac91fd18cb22016384b58e76de9a6be065",
+            "mingjing_core/adapters/charts/rectification_workbench/__init__.py": "4bd3b498ee34ff4ff9c5aca4dae8ade58869be65744364f7f637ceeddef005b3",
+            "mingjing_core/adapters/charts/rectification_workbench/calibration_scope.py": "e5cb58feb0c1b617bce3e0ba1bcbf4bf76423b48a37055d9445c42f877dd8667",
+            "mingjing_core/adapters/charts/rectification_workbench/chart_grid.py": "c8bb928c30cd5400971597c04df3db83a45fc9ee0cb33c48579460bd9401af8d",
+            "mingjing_core/adapters/charts/rectification_workbench/contracts.py": "2f24f27b55e43f49c432522f0b9fbbdb1537eee463f2c95119c8f6c589d8dee8",
+            "mingjing_core/adapters/charts/rectification_workbench/envelope.py": "9e78132bb335ff70c5f7970436c715b1963187068b72d9dbedc6eed92b4f04ce",
+            "mingjing_core/adapters/charts/rectification_workbench/evaluation.py": "534a20ab180077ea762bb553e08dae13c3cd9de12b80acd9d93f7f33e4703a95",
+            "mingjing_core/adapters/charts/rectification_workbench/evaluation_cases.py": "142d67240aa63088820d0d41070d7d0f67dad721206ad6beb48c33991caa5e3e",
+            "mingjing_core/adapters/charts/rectification_workbench/evaluation_charts.py": "f5a13ce6ae0e3723c9a41c1346e06e160171b068dd6384654b8b9d6c308d2ddf",
+            "mingjing_core/adapters/charts/rectification_workbench/sessions.py": "8175a945a009686e1719bbe2a1525b46196ea4827656c5d613b058d31edacbba",
+            "mingjing_core/adapters/charts/rectification_workbench/signals.py": "87415fd4ce38b002c3056c6bbf51104fdba066345b752b7dd96bffe40291db05",
+            "mingjing_core/adapters/charts/rectification_workbench/statistics.py": "21e04d93b0c20856efc0f4b175f09633fa6d5c4620e9186c98f605b9d8029633",
+            "mingjing_core/adapters/charts/rules/__init__.py": "eff1b36df054bcebc4a4fbec060f60e6075287ed64fb462e3c95bf78043a1a0f",
+            "mingjing_core/adapters/charts/rules/conditions.py": "2ffdac8c1c4f71bf04382d60c9f57956b54f179c6c17172c91a87da61dc2b3f7",
+            "mingjing_core/adapters/charts/rules/engine.py": "b0ecc4067936a0d53ca0b438fb4515da86142b70b856f75258054454029fc913",
+            "mingjing_core/adapters/charts/rules/interaction_metadata.py": "273af6285d3d57c414d8e09cf049f042e8809f73c7e85b6b4e901d0420f4f22c",
+            "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+            "mingjing_core/adapters/charts/synastry.py": "313012bdbaf63d3c9dca1f07ecd00c420918f45dcb8d96873cf3e1444ee996b6",
+            "mingjing_core/adapters/charts/synastry_bazi.py": "63acf539d608285bcebbb50859dec04e8febb9fe4b444b4dd75c871efed764a5",
+            "mingjing_core/adapters/charts/synastry_ziwei.py": "679b1e69974f0fb803921fe0f91cd05e7fb2a985baa685ca553b9759c60b8f2b",
+            "mingjing_core/adapters/charts/time_basis.py": "e25bb738e292f71e69f2735af237b898438476d0fc6bfb867ca36053a5cfedef",
+            "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
+            "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
+            "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
+            "mingjing_core/adapters/charts/time_basis_request.py": "2f8a81f7e1831924b1e8af036a6f8a0e037fbd586008102ae14fb92eefb5fa70",
+            "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
+            "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+            "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
+            "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
+            "mingjing_core/adapters/charts/window_search.py": "cdc1db7638183e8f61afdd1fd71cca90273ef925c48690c26819a7b4c75ae526",
+            "mingjing_core/adapters/charts/window_search_pagination.py": "6698026825d263e75f5e14e183c94a3986861396954fba31537102a61b1de277",
+            "mingjing_core/adapters/charts/window_search_scoring.py": "f7e327774724502489466f9dafb5bc3b8176f18dd7055d88038faff942f285a5",
+            "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
+            "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
+            "mingjing_core/adapters/charts/ziwei_flying_support.py": "62bd34ec4c3776df68d91805d80d8b34c7a64e18046577d7121b966670dcdce9",
+            "hermes/bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+            "hermes/ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+            "hermes/astro.py": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8",
+            "mingjing_core/calculations/bazi/__init__.py": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15",
+            "mingjing_core/calculations/bazi/calendar_layers.py": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d",
+            "mingjing_core/calculations/bazi/elements.py": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0",
+            "mingjing_core/calculations/bazi/stars.py": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974",
+            "mingjing_core/calculations/bazi/strength.py": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6",
+            "mingjing_core/calculations/bazi/structure.py": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2",
+            "mingjing_core/calculations/bazi/supplement.py": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f",
+            "mingjing_core/knowledge/p8_bazi/auxiliary_stars.json": "02ba01121b72562bc4644e5db8ba00628c6b1524f3931a00cdbc9b8ee419ec4c",
+            "mingjing_core/knowledge/p8_bazi/climate.json": "8fe8e8ee0ff2af8fba1daaa9f5ba0157b2513318dd1c1452f54163e6c9af20f4",
+            "mingjing_core/knowledge/p8_bazi/climate_review_24.json": "e5d8357a4a4baf2b207b1c49831232fe16b477d669103d6264c49539550a68dc",
+            "mingjing_core/knowledge/p8_bazi/month_command.json": "bc20580ac1f031e508f99928648d2432caccd5363e952a5f5212f3fc28ef9296",
+            "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448",
+            "mingjing_core/knowledge/p8_bazi/schools.json": "10af42bc53caddcf9430657402b2460650608f201399348fc21b4cb2ff44276c",
+            "mingjing_core/knowledge/p8_ziwei/flying_v1.json": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+            "mingjing_core/knowledge/p8_interactions.json": "af859c9e1d1288ddb87c1f34a27e861da13e89e4b26ca142b1ecd49ccee34cde",
+            "mingjing_core/knowledge/p8_windows_v1.json": "8c202009f39c63b2bbf811ae8cdfc0d7386c465e70997c188d2189e4d938d322",
+            "mingjing_core/knowledge/rectification_rules_v1.json": "6091e2c573bfdbd5b6bb2b5abeb6ae7a8a54d84d0cb4abc02bfc452e9d7d6689"
+          }
+        },
+        "source_sha256": {
+          "ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+          "core_chart_adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+          "core_chart_worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+        }
+      },
+      "warnings": [
+        "py-iztro内嵌iztro版本尚未从包元数据独立核验；使用安装版本和源码哈希追踪",
+        "采用当前 py-iztro 默认流派，未做不同流派交叉校盘",
+        "宫位关联与四化是传统盘面结构，不代表事件已发生或必然发生",
+        "出生时刻靠近时辰或日界时，时间误差可能改变命盘",
+        "出生参数的字段确认状态未在此档案提供；适配器不会把已有值升级为已确认事实"
+      ],
+      "fallback": []
+    }
+  },
+  "files": [
+    {
+      "file": "bazi-artifact.json",
+      "sha256": "7026414e096084a1b7ef32e20d5d20cbb3005f6043e09ad458883794996496be"
+    },
+    {
+      "file": "ziwei-artifact.json",
+      "sha256": "f6a8e30f107ded942759e64161ddbe8f9eb58e05c98cf97b5cadfc5f99470556"
+    },
+    {
+      "file": "calculation-bundle.json",
+      "sha256": "afe28220eb6955b3ef3fa05c4b3915a043789c9bb43b64b25a41afc48b115b07"
+    },
+    {
+      "file": "profile-proposal.json",
+      "sha256": "956376bebf69cab5f107b788881e3cb6c4c68e3e45206a174e5757b0d9272f5a"
+    }
+  ],
+  "effects": {
+    "model_calls": 0,
+    "database_access": 0,
+    "writes": "sample_files_only"
+  },
+  "limits": [
+    "合成字段绑定证据，不是命理效度或外部owner授权证明。"
+  ]
+}

@@ -1,0 +1,301 @@
+"""Diagnostic only; instantiate on an empty inner Job, close before the Job.
+
+IOCP delivery is not guaranteed. PID reuse/exit/access failure stays unknown.
+Accounting and the existing total==1 rejection gate remain authoritative.
+Reference: https://learn.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-jobobject_associate_completion_port
+"""
+
+from __future__ import annotations
+
+import ctypes
+from copy import deepcopy
+from ctypes import wintypes as w
+from time import monotonic
+
+KEY = 0x50384A4F42
+CAPACITY = 16
+MAX_PACKETS = 64
+PROCESS_MESSAGES = frozenset((2, 6, 7, 8, 9, 11))
+
+
+class ObserverFailure(RuntimeError):
+    def __init__(self, code: str, winerror: int = 0, failures=()) -> None:
+        self.code, self.winerror, self.failures = code, int(winerror), list(failures)
+        super().__init__(code)
+
+
+class Association(ctypes.Structure):
+    _fields_ = [("key", ctypes.c_void_p), ("port", w.HANDLE)]
+
+
+class PidList(ctypes.Structure):
+    _fields_ = [
+        ("assigned", w.DWORD), ("listed", w.DWORD),
+        ("ids", ctypes.c_size_t * CAPACITY),
+    ]
+
+
+class Accounting(ctypes.Structure):
+    _fields_ = [
+        ("times", ctypes.c_longlong * 4), ("faults", w.DWORD),
+        ("total", w.DWORD), ("active", w.DWORD), ("terminated", w.DWORD),
+    ]
+
+
+class ProcessEntry(ctypes.Structure):
+    _fields_ = [
+        ("size", w.DWORD), ("usage", w.DWORD), ("pid", w.DWORD),
+        ("heap", ctypes.c_size_t), ("module", w.DWORD), ("threads", w.DWORD),
+        ("parent", w.DWORD), ("priority", w.LONG), ("flags", w.DWORD),
+        ("name", w.WCHAR * 260),
+    ]
+
+
+def _bind(api) -> None:
+    signatures = {
+        "CreateIoCompletionPort": (
+            w.HANDLE, (w.HANDLE, w.HANDLE, ctypes.c_size_t, w.DWORD)),
+        "GetQueuedCompletionStatus": (
+            w.BOOL, (w.HANDLE, ctypes.POINTER(w.DWORD),
+                     ctypes.POINTER(ctypes.c_size_t),
+                     ctypes.POINTER(ctypes.c_void_p), w.DWORD)),
+        "OpenProcess": (w.HANDLE, (w.DWORD, w.BOOL, w.DWORD)),
+        "IsProcessInJob": (w.BOOL, (w.HANDLE, w.HANDLE, ctypes.POINTER(w.BOOL))),
+        "GetProcessTimes": (
+            w.BOOL, (w.HANDLE, ctypes.POINTER(w.FILETIME),
+                     ctypes.POINTER(w.FILETIME), ctypes.POINTER(w.FILETIME),
+                     ctypes.POINTER(w.FILETIME))),
+        "QueryFullProcessImageNameW": (
+            w.BOOL, (w.HANDLE, w.DWORD, w.LPWSTR, ctypes.POINTER(w.DWORD))),
+        "WaitForSingleObject": (w.DWORD, (w.HANDLE, w.DWORD)),
+        "Process32FirstW": (w.BOOL, (w.HANDLE, ctypes.POINTER(ProcessEntry))),
+        "Process32NextW": (w.BOOL, (w.HANDLE, ctypes.POINTER(ProcessEntry))),
+    }
+    for name, (result, args) in signatures.items():
+        function = getattr(api, name)
+        function.restype, function.argtypes = result, args
+
+
+class JobObserver:
+    def __init__(self, job) -> None:
+        self.job, self.api = job, job.api
+        self.port = None
+        self.attached = False
+        self.handles, self.rows, self.allowed = {}, {}, {}
+        self.confirmed = set()
+        self.events, self.notes = [], []
+        self.started, self.last_elapsed = monotonic(), 0.0
+        self.last_accounting = None
+        if ctypes.sizeof(ctypes.c_void_p) != 8:
+            raise ObserverFailure("observer_64bit_required")
+        _bind(self.api)
+        job.verify_limits()
+        before = self.accounting()
+        self.last_accounting = before
+        if before["total"] != 0 or before["active"] != 0:
+            raise ObserverFailure("observer_requires_unused_empty_job")
+        try:
+            self.port = self.api.CreateIoCompletionPort(
+                ctypes.c_void_p(-1), None, 0, 1)
+            self._check(self.port, "observer_completion_port_create_failed")
+            association = Association(KEY, self.port)
+            self._check(self.api.SetInformationJobObject(
+                job.handle, 7, ctypes.byref(association), ctypes.sizeof(association)
+            ), "observer_completion_port_association_failed")
+            self.attached = True
+        except BaseException:
+            self.close()
+            raise
+
+    def _check(self, value, code: str):
+        if not value:
+            raise ObserverFailure(code, ctypes.get_last_error())
+        return value
+
+    def accounting(self) -> dict:
+        value, returned = Accounting(), w.DWORD()
+        self._check(self.api.QueryInformationJobObject(
+            self.job.handle, 1, ctypes.byref(value), ctypes.sizeof(value),
+            ctypes.byref(returned)), "observer_accounting_failed")
+        if returned.value != ctypes.sizeof(value):
+            raise ObserverFailure("observer_accounting_size_mismatch")
+        return {name: int(getattr(value, name))
+                for name in ("total", "active", "terminated")}
+
+    def _allow(self, pid: int, source: str) -> None:
+        if type(pid) is not int or not 0 < pid <= 0xFFFFFFFF:
+            raise ObserverFailure("observer_invalid_job_pid")
+        self.allowed.setdefault(pid, set()).add(source)
+
+    def pids(self) -> list[int]:
+        value, returned = PidList(), w.DWORD()
+        self._check(self.api.QueryInformationJobObject(
+            self.job.handle, 3, ctypes.byref(value), ctypes.sizeof(value),
+            ctypes.byref(returned)), "observer_pid_list_failed_or_more_data")
+        offset, stride = PidList.ids.offset, ctypes.sizeof(ctypes.c_size_t)
+        minimum = offset + int(value.listed) * stride
+        if (value.assigned != value.listed or value.listed > CAPACITY
+                or value.listed > 3 or not minimum <= returned.value <= ctypes.sizeof(value)
+                or (returned.value - offset) % stride):
+            raise ObserverFailure("observer_incomplete_pid_list_or_size")
+        result = [int(pid) for pid in value.ids[:value.listed]]
+        if len(set(result)) != len(result):
+            raise ObserverFailure("observer_duplicate_pid_list")
+        for pid in result:
+            self._allow(pid, "job_pid_list")
+        return result
+
+    def drain(self) -> list[dict]:
+        result = []
+        for _ in range(MAX_PACKETS):
+            message, key, value = w.DWORD(), ctypes.c_size_t(), ctypes.c_void_p()
+            ok = self.api.GetQueuedCompletionStatus(
+                self.port, ctypes.byref(message), ctypes.byref(key),
+                ctypes.byref(value), 0)
+            if not ok:
+                error = ctypes.get_last_error()
+                if value.value is None and error == 258:
+                    break
+                raise ObserverFailure("observer_completion_dequeue_failed", error)
+            if key.value != KEY:
+                raise ObserverFailure("observer_completion_key_mismatch")
+            row = {"message": int(message.value)}
+            if message.value in PROCESS_MESSAGES:
+                pid = int(value.value or 0)
+                self._allow(pid, "job_iocp_message")
+                row["pid"] = pid
+            result.append(row)
+        else:
+            self.notes.append("bounded_completion_drain_limit_reached")
+        self.events.extend(result)
+        return result
+
+    def _parent(self, pid: int) -> int | None:
+        snapshot = self.api.CreateToolhelp32Snapshot(2, 0)
+        if snapshot in (None, 0, ctypes.c_void_p(-1).value):
+            self._check(0, "observer_parent_snapshot_failed")
+        try:
+            entry = ProcessEntry()
+            entry.size = ctypes.sizeof(entry)
+            ok = self.api.Process32FirstW(snapshot, ctypes.byref(entry))
+            if not ok:
+                self._check(0, "observer_parent_snapshot_first_failed")
+            while ok:
+                if entry.pid == pid:
+                    return int(entry.parent)
+                ok = self.api.Process32NextW(snapshot, ctypes.byref(entry))
+            if ctypes.get_last_error() != 18:
+                self._check(0, "observer_parent_snapshot_next_failed")
+            return None
+        finally:
+            self._check(self.api.CloseHandle(snapshot), "observer_snapshot_close_failed")
+
+    def _identity(self, pid: int, handle) -> dict:
+        created, exited, kernel, user = (w.FILETIME() for _ in range(4))
+        self._check(self.api.GetProcessTimes(
+            handle, ctypes.byref(created), ctypes.byref(exited),
+            ctypes.byref(kernel), ctypes.byref(user)), "observer_process_times_failed")
+        buffer = ctypes.create_unicode_buffer(32768)
+        size = w.DWORD(len(buffer))
+        self._check(self.api.QueryFullProcessImageNameW(
+            handle, 0, buffer, ctypes.byref(size)), "observer_process_image_failed")
+        state = self.api.WaitForSingleObject(handle, 0)
+        if state not in (0, 258):
+            self._check(0, "observer_process_state_failed")
+        parent = self._parent(pid)
+        return {"pid": pid, "image": buffer.value,
+                "creation_filetime": (int(created.dwHighDateTime) << 32)
+                | int(created.dwLowDateTime), "parent_pid": parent,
+                "state": "observed_exited" if state == 0 else "observed_live",
+                "membership_confirmed": True, "incomplete": parent is None}
+
+    def observe(self, pid: int) -> dict:
+        if pid not in self.allowed:
+            raise ObserverFailure("observer_pid_not_obtained_from_this_job")
+        if pid in self.handles:
+            if pid in self.confirmed:
+                row = dict(self.rows[pid])
+                state = self.api.WaitForSingleObject(self.handles[pid], 0)
+                if state not in (0, 258):
+                    self._check(0, "observer_retained_process_state_failed")
+                if state == 0:
+                    row["state"] = "observed_exited"
+                return row
+            return {"pid": pid, "state": "retained_but_membership_unconfirmed",
+                    "incomplete": True, "possible_pid_reuse": True}
+        handle = self.api.OpenProcess(0x00101000, False, pid)
+        if not handle:
+            error = ctypes.get_last_error()
+            state = "permission_denied" if error == 5 else "exited_or_unavailable"
+            return {"pid": pid, "state": state, "winerror": error,
+                    "incomplete": True, "possible_pid_reuse": True}
+        self.handles[pid] = handle
+        actual = self.api.GetProcessId(handle)
+        if not actual:
+            return {"pid": pid, "state": "process_id_query_failed",
+                    "winerror": ctypes.get_last_error(), "incomplete": True}
+        member = w.BOOL()
+        self._check(self.api.IsProcessInJob(
+            handle, self.job.handle, ctypes.byref(member)), "observer_membership_query_failed")
+        if actual != pid or not member.value:
+            return {"pid": pid, "state": "membership_not_confirmed_possible_reuse",
+                    "incomplete": True, "possible_pid_reuse": True}
+        row = self._identity(pid, handle)
+        self.rows[pid] = row
+        self.confirmed.add(pid)
+        return row
+
+    def sample(self) -> dict:
+        if self.port is None:
+            raise ObserverFailure("observer_not_open")
+        self.last_elapsed = monotonic() - self.started
+        if self.last_elapsed > 15.0:
+            raise ObserverFailure("observer_sampling_bound_reached")
+        self.drain()
+        self.pids()
+        for pid in sorted(self.allowed):
+            row = self.observe(pid)
+            row["sources"] = sorted(self.allowed[pid])
+            self.rows[pid] = row
+        self.last_accounting = self.accounting()
+        return self.record()
+
+    def record(self) -> dict:
+        return deepcopy({"accounting": self.last_accounting,
+                "elapsed_at_last_sample": self.last_elapsed,
+                "events": list(self.events),
+                "processes": [self.rows[pid] for pid in sorted(self.rows)],
+                "notes": list(self.notes), "complete": False,
+                "limits": ["IOCP messages are not guaranteed; no identity is inferred.",
+                           "Parent PID is a snapshot, not a retained parent identity.",
+                           "No Job limit, total==1 gate, or sampling permission changes."]})
+
+    def _cleanup_step(self, code, operation, failures) -> bool:
+        try:
+            ok = operation()
+        except BaseException:
+            failures.append({"code": code, "exception_without_text": True})
+            return False
+        if not ok:
+            failures.append({"code": code, "winerror": ctypes.get_last_error()})
+        return bool(ok)
+
+    def close(self) -> None:
+        failures = []
+        for pid, handle in list(self.handles.items()):
+            if self._cleanup_step("observer_process_close_failed",
+                                  lambda: self.api.CloseHandle(handle), failures):
+                del self.handles[pid]
+                self.confirmed.discard(pid)
+        if self.attached:
+            association = Association(None, None)
+            if self._cleanup_step("observer_port_detach_failed", lambda:
+                    self.api.SetInformationJobObject(self.job.handle, 7,
+                    ctypes.byref(association), ctypes.sizeof(association)), failures):
+                self.attached = False
+        if self.port is not None:
+            if self._cleanup_step("observer_port_close_failed",
+                                  lambda: self.api.CloseHandle(self.port), failures):
+                self.port = None
+        if failures:
+            raise ObserverFailure("observer_cleanup_failed", failures=failures)

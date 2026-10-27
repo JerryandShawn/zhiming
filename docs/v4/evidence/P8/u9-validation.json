@@ -1,0 +1,237 @@
+{
+  "status": "passed",
+  "source_manifest": {
+    "mingjing_core/adapters/charts/__init__.py": "9cf5c9e5dd8a40bbb23a512bcce833484295521e74d85b3b2716a7abf697e546",
+    "mingjing_core/adapters/charts/adapter.py": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d",
+    "mingjing_core/adapters/charts/interactions_bazi.py": "51116d798ca4dac16e79a168d1c7a85c636d6139e29d4b555657da4fff60ce00",
+    "mingjing_core/adapters/charts/interactions_transits.py": "723c87c7e0f97fc387650d698404ec12f47409387a23b3173c37df0306468c8d",
+    "mingjing_core/adapters/charts/interactions_ziwei.py": "baa2c814a0b2b1d3e678052a580f0c36e94e91fc3b85742adb7b6863777b05cd",
+    "mingjing_core/adapters/charts/jie_uncertainty.py": "f734d17258a0dcbc3aa1864d7b00e285071a3851f771a67ab99075daf0223060",
+    "mingjing_core/adapters/charts/named_bazi.py": "1a5d29777ba085835f95a4d944160ad606fc2dba19ecd77aa0b1de296f5851c9",
+    "mingjing_core/adapters/charts/named_strength.py": "284294c43954dd386e5384a70f2dddcbf9a6fd72c60438b053acf798acf1b5e6",
+    "mingjing_core/adapters/charts/p8_adapter.py": "c5a7fb88a99d8c8be2ca675b034a33ba46a5e3bcf2cb2bc6022da44db56ab54d",
+    "mingjing_core/adapters/charts/p8_worker.py": "085f34f2083221b45bf79804d01188bf3f9959cfd4e618e0c55564c135b8bb64",
+    "mingjing_core/adapters/charts/profile_draft.py": "21443d86a5bb4fee45ff65e97ece0dac91fd18cb22016384b58e76de9a6be065",
+    "mingjing_core/adapters/charts/rectification.py": "b40b3aad1282a415c49eb478fcfd37a648eb9b0dc6cc066c11119d6e4343d3a1",
+    "mingjing_core/adapters/charts/rectification_calendar.py": "29185912cd22b0ef028aa9efcba9566148fa297ed5ac3367fcdbac841a4f7600",
+    "mingjing_core/adapters/charts/rectification_inputs.py": "e04945cc10fa0dc2ecee09d72db6b2975cba772c5641816cceca5e1cf40b624e",
+    "mingjing_core/adapters/charts/rectification_scoring.py": "5821f830e2e6435ac8b9634bdf4493152d8502029c42dd4f915b4b36ccb1e6de",
+    "mingjing_core/adapters/charts/worker.py": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0",
+    "hermes/bazi.py": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096",
+    "hermes/ziwei.py": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341",
+    "hermes/astro.py": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8",
+    "mingjing_core/calculations/bazi/__init__.py": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15",
+    "mingjing_core/calculations/bazi/calendar_layers.py": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d",
+    "mingjing_core/calculations/bazi/elements.py": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0",
+    "mingjing_core/calculations/bazi/stars.py": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974",
+    "mingjing_core/calculations/bazi/strength.py": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6",
+    "mingjing_core/calculations/bazi/structure.py": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2",
+    "mingjing_core/calculations/bazi/supplement.py": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f",
+    "mingjing_core/knowledge/p8_bazi/auxiliary_stars.json": "02ba01121b72562bc4644e5db8ba00628c6b1524f3931a00cdbc9b8ee419ec4c",
+    "mingjing_core/knowledge/p8_bazi/climate.json": "8fe8e8ee0ff2af8fba1daaa9f5ba0157b2513318dd1c1452f54163e6c9af20f4",
+    "mingjing_core/knowledge/p8_bazi/month_command.json": "bc20580ac1f031e508f99928648d2432caccd5363e952a5f5212f3fc28ef9296",
+    "mingjing_core/knowledge/p8_bazi/schools.json": "aee8d22ce9ef0c2a0332d2be034f86b8a7874c6508297b04b9a03b32482ecd6c",
+    "mingjing_core/knowledge/p8_interactions.json": "af859c9e1d1288ddb87c1f34a27e861da13e89e4b26ca142b1ecd49ccee34cde",
+    "mingjing_core/knowledge/rectification_v1.json": "907f2917c051420e7da28487aaeffd093c95f047783d1aefb8dc0f694f3a0c17"
+  },
+  "source_digest_before": "e2f31f713a1a565f611c232a076d04b2e169438591c82be52fc4c378bcc97ebe",
+  "source_digest_after": "e2f31f713a1a565f611c232a076d04b2e169438591c82be52fc4c378bcc97ebe",
+  "source_unchanged_during_run": true,
+  "evaluation_source_sha256": "2dd262d23f66e8a57c19e2a8883952a87c6d332db81e2be44dd8d79ecfa17d59",
+  "checks": [
+    {
+      "name": "native",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-charts/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "tests/test_p8_rectification_native.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 20.062,
+      "stdout": "{\"tests\": 25, \"successful\": true, \"skipped\": 0}\n",
+      "stderr": "test_approximate_range_samples_both_sides_of_hour_boundary (__main__.RectificationNative.test_approximate_range_samples_both_sides_of_hour_boundary) ... ok\ntest_as_of_date_must_be_supplied_by_caller (__main__.RectificationNative.test_as_of_date_must_be_supplied_by_caller) ... ok\ntest_birth_owner_and_subject_mismatch_are_rejected (__main__.RectificationNative.test_birth_owner_and_subject_mismatch_are_rejected) ... ok\ntest_current_year_unknown_month_never_samples_after_as_of_date (__main__.RectificationNative.test_current_year_unknown_month_never_samples_after_as_of_date) ... ok\ntest_cutoff_tie_metrics_keep_random_tie_probability (__main__.RectificationNative.test_cutoff_tie_metrics_keep_random_tie_probability) ... ok\ntest_duplicate_source_cannot_double_count (__main__.RectificationNative.test_duplicate_source_cannot_double_count) ... ok\ntest_event_owner_and_subject_mismatch_are_rejected (__main__.RectificationNative.test_event_owner_and_subject_mismatch_are_rejected) ... ok\ntest_future_birth_is_not_valid_confirmed_history (__main__.RectificationNative.test_future_birth_is_not_valid_confirmed_history) ... ok\ntest_future_events_are_not_accepted_as_confirmed_history (__main__.RectificationNative.test_future_events_are_not_accepted_as_confirmed_history) ... ok\ntest_identical_input_and_operation_are_deterministic (__main__.RectificationNative.test_identical_input_and_operation_are_deterministic) ... ok\ntest_invalid_revision_and_empty_confirmation_are_rejected (__main__.RectificationNative.test_invalid_revision_and_empty_confirmation_are_rejected) ... ok\ntest_known_event_month_before_birth_month_is_rejected (__main__.RectificationNative.test_known_event_month_before_birth_month_is_rejected) ... ok\ntest_known_month_is_not_a_fabricated_event_day (__main__.RectificationNative.test_known_month_is_not_a_fabricated_event_day) ... ok\ntest_known_month_partition_includes_real_jie_boundary (__main__.RectificationNative.test_known_month_partition_includes_real_jie_boundary) ... ok\ntest_non_finite_input_is_rejected_before_calculation (__main__.RectificationNative.test_non_finite_input_is_rejected_before_calculation) ... ok\ntest_owner_and_revision_change_result_and_candidate_scope (__main__.RectificationNative.test_owner_and_revision_change_result_and_candidate_scope) ... ok\ntest_partition_keeps_both_sides_of_nominal_decade_switch (__main__.RectificationNative.test_partition_keeps_both_sides_of_nominal_decade_switch) ... ok\ntest_read_only_and_no_birth_profile_confirmation (__main__.RectificationNative.test_read_only_and_no_birth_profile_confirmation) ... ok\ntest_support_and_non_support_are_explicit_and_capped (__main__.RectificationNative.test_support_and_non_support_are_explicit_and_capped) ... ok\ntest_time_range_must_intersect_declared_birth_date (__main__.RectificationNative.test_time_range_must_intersect_declared_birth_date) ... ok\ntest_twelve_way_tie_reports_quarter_expectation_despite_stable_order (__main__.RectificationNative.test_twelve_way_tie_reports_quarter_expectation_despite_stable_order) ... ok\ntest_unconfirmed_event_is_excluded_from_score (__main__.RectificationNative.test_unconfirmed_event_is_excluded_from_score) ... ok\ntest_unknown_month_keeps_multiple_hypotheses_and_conservative_score (__main__.RectificationNative.test_unknown_month_keeps_multiple_hypotheses_and_conservative_score) ... ok\ntest_unknown_produces_twelve_distinct_hour_branches (__main__.RectificationNative.test_unknown_produces_twelve_distinct_hour_branches) ... ok\ntest_unknown_year_partitions_cover_continuously_without_gaps (__main__.RectificationNative.test_unknown_year_partitions_cover_continuously_without_gaps) ... ok\n\n----------------------------------------------------------------------\nRan 25 tests in 19.691s\n\nOK\n"
+    },
+    {
+      "name": "jie-native",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-charts/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "tests/test_p8_rectification_jie_native.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 8.39,
+      "stdout": "{\"tests\": 10, \"successful\": true, \"skipped\": 0}\n",
+      "stderr": "test_approximate_range_crosses_jie_even_with_distant_center (__main__.RectificationJieNative.test_approximate_range_crosses_jie_even_with_distant_center) ... ok\ntest_exact_minute_jie_uses_strict_sides_and_no_boundary_as_before (__main__.RectificationJieNative.test_exact_minute_jie_uses_strict_sides_and_no_boundary_as_before) ... ok\ntest_invalid_or_excessive_ranges_do_not_silently_widen (__main__.RectificationJieNative.test_invalid_or_excessive_ranges_do_not_silently_widen) ... ok\ntest_left_edge_clips_before_sample (__main__.RectificationJieNative.test_left_edge_clips_before_sample) ... ok\ntest_non_jie_day_retains_twelve_candidates_and_inputs (__main__.RectificationJieNative.test_non_jie_day_retains_twelve_candidates_and_inputs) ... ok\ntest_refined_public_candidates_keep_scope_and_inference_only (__main__.RectificationJieNative.test_refined_public_candidates_keep_scope_and_inference_only) ... ok\ntest_right_edge_clips_after_sample_without_expanding_declared_range (__main__.RectificationJieNative.test_right_edge_clips_after_sample_without_expanding_declared_range) ... ok\ntest_timezone_conversion_finds_same_instant_on_other_civil_dates (__main__.RectificationJieNative.test_timezone_conversion_finds_same_instant_on_other_civil_dates) ... ok\ntest_unknown_lichun_day_adds_sides_missed_by_twelve_centers (__main__.RectificationJieNative.test_unknown_lichun_day_adds_sides_missed_by_twelve_centers) ... ok\ntest_zhongqi_does_not_refine_birth_candidates (__main__.RectificationJieNative.test_zhongqi_does_not_refine_birth_candidates) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 8.046s\n\nOK\n"
+    },
+    {
+      "name": "synthetic",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-charts/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "mingjing_core.adapters.charts.rectification_evaluation",
+        "--output",
+        "docs/v4/evidence/P8/u9-synthetic-evaluation.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 49.765,
+      "stdout": "{\"version\": \"p8-u9-synthetic-evaluation-v1\", \"people_count\": 10, \"fixed_fixture_sha256\": \"c4f68bf9cd647083a4fa6b0ced418533c552b6aeb63887a7ecf278a22396348a\", \"selection\": \"all_ten_prespecified_people_no_rerolls_or_exclusions\", \"event_generation\": \"known_chart_only_highest_type_score_with_fixed_years_months; alphabetical_ties\", \"blindness\": \"ranking_request_has_no_known_hour_or_true_candidate_label\", \"stable_top_three_hits\": 5, \"stable_top_three_rate\": 0.5, \"tie_aware_expected_hits\": 3.5512987012987014, \"tie_aware_expected_rate\": 0.35512987012987013, \"random_three_of_twelve_baseline\": 0.25, \"all_candidate_counts_are_twelve\": true, \"cases_with_known_score_ties\": 10, \"model_calls\": 0, \"writes\": 0, \"limits\": [\"合成事件来自同一评分规则，存在循环性及按已知盘选最强事件类型的选择偏差。\", \"仅验证规则内可逆性与排序实现，不验证真实人生事件或时辰校正的现实准确度。\", \"稳定前三使用民用时刻解同分；该顺序没有概率意义，应同时看tie-aware期望和并列数。\", \"固定UTC偏移是测试输入，不代表这些城市历史夏令时已经核实；没有使用真实人物资料。\"], \"raw_evidence\": {\"path\": \"private/p8-u9/u9-synthetic-full.json\", \"bytes\": 28138557, \"sha256\": \"2f69479b5220fa529a3b80e6b59be7e344e251d8252d64520971872b1eda42cc\", \"synthetic_only\": true}}\n",
+      "stderr": ""
+    },
+    {
+      "name": "bridge",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-m",
+        "pytest",
+        "tests/v4/test_p8_u9_process.py",
+        "tests/v4/test_p8_u9_jie_process.py",
+        "-q"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 29.235,
+      "stdout": "..                                                                       [100%]\n2 passed in 28.35s\n",
+      "stderr": ""
+    },
+    {
+      "name": "e2-scripted",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "-m",
+        "mingjing_core.adapters.charts.benchmarks.scripted",
+        "--mode",
+        "scripted",
+        "--chart-python",
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-charts/Scripts/python.exe",
+        "--mingli-root",
+        "private/e2-sources/mingli",
+        "--baziqa-root",
+        "private/e2-sources/baziqa",
+        "--output",
+        "docs/v4/evidence/P8/e2-scripted-2026-10-18.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 3.453,
+      "stdout": "{\"mode\": \"scripted\", \"real_model_requests\": 0, \"synthetic_questions\": 4, \"output\": \"docs\\\\v4\\\\evidence\\\\P8\\\\e2-scripted-2026-10-18.json\"}\n",
+      "stderr": ""
+    },
+    {
+      "name": "ruff",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "mingjing_core/adapters/charts/jie_uncertainty.py",
+        "mingjing_core/adapters/charts/rectification.py",
+        "mingjing_core/adapters/charts/rectification_evaluation.py",
+        "tests/test_p8_rectification_native.py",
+        "tests/v4/test_p8_u9_process.py",
+        "tests/test_p8_rectification_jie_native.py",
+        "tests/v4/test_p8_u9_jie_process.py",
+        "--select",
+        "E,F,I,B,UP,SIM",
+        "--line-length",
+        "120"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.094,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "name": "format-runtime",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "--line-length",
+        "120",
+        "mingjing_core/adapters/charts/jie_uncertainty.py",
+        "mingjing_core/adapters/charts/rectification.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.078,
+      "stdout": "2 files already formatted\n",
+      "stderr": ""
+    },
+    {
+      "name": "format",
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "mingjing_core/adapters/charts/rectification_evaluation.py",
+        "tests/test_p8_rectification_native.py",
+        "tests/v4/test_p8_u9_process.py",
+        "tests/test_p8_rectification_jie_native.py",
+        "tests/v4/test_p8_u9_jie_process.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 0.078,
+      "stdout": "5 files already formatted\n",
+      "stderr": ""
+    }
+  ],
+  "style": [
+    {
+      "path": "mingjing_core/adapters/charts/jie_uncertainty.py",
+      "lines": 105,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "mingjing_core/adapters/charts/rectification.py",
+      "lines": 229,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "mingjing_core/adapters/charts/rectification_evaluation.py",
+      "lines": 242,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/test_p8_rectification_native.py",
+      "lines": 370,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/v4/test_p8_u9_process.py",
+      "lines": 28,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/test_p8_rectification_jie_native.py",
+      "lines": 270,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/v4/test_p8_u9_jie_process.py",
+      "lines": 28,
+      "over_60_functions": [],
+      "over_120_lines": []
+    }
+  ],
+  "native_test_counts": {
+    "original": 25,
+    "jie_refinement": 10
+  },
+  "core_bridge_count": 2,
+  "model_calls": 0,
+  "database_calls": 0,
+  "writes_to_profiles": 0
+}

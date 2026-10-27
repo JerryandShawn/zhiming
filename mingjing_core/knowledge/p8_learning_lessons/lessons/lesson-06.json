@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-06",
+  "order": 6,
+  "title": "财官杀与印：谁生谁、谁克谁",
+  "level": "基础",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-05"
+  ],
+  "objectives": [
+    "辨别财、官杀、印的关系方向。",
+    "用丁日主实例复核正偏名称。"
+  ],
+  "paragraphs": [
+    "日主所克的一类叫财，克日主的一类叫官杀，生扶日主的一类叫印。每类再按阴阳同异区分名称，正偏并不是道德优劣。",
+    "在丁日主表里，庚是正财、辛是偏财，壬是正官、癸是七杀，甲是正印、乙是偏印。财不是账户余额，官也不是已经拿到职位。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本盘丁日主见庚，实际标签是正财。〔c3〕",
+      "evidence_ids": [
+        "wealth"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-06-q1",
+      "question": "完整十神表给庚的标签是什么？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "偏财",
+          "value": "偏财"
+        },
+        {
+          "option_id": "b",
+          "text": "正财",
+          "value": "正财"
+        },
+        {
+          "option_id": "c",
+          "text": "七杀",
+          "value": "七杀"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "丁火克庚金且阴阳不同，项目表登记正财；不因此确认收入或婚姻。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "wealth",
+        "expected": "正财"
+      }
+    },
+    {
+      "quiz_id": "lesson-06-q2",
+      "question": "印星标签可以代替哪种现实证明？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "学历证书",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "母亲身份",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "两者都不能",
+          "value": "not_identity_proof"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "传统象征不能拿来替未知人物、学历或家庭事实作证。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-elements"
+        ],
+        "expected": "not_identity_proof"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-elements"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "正偏是关系分类；不同书中的六亲解释不能无说明套用。",
+      "source_ids": [
+        "p8-elements"
+      ]
+    }
+  ],
+  "pending_review": [
+    "未校勘各版本六亲用语，不把本课当传统人物身份表。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

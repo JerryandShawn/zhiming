@@ -1,0 +1,111 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-12",
+  "order": 12,
+  "title": "伤官牵制神与庚辛例外",
+  "level": "进阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-11"
+  ],
+  "objectives": [
+    "记住本P8伤官牵制查正官。",
+    "不把庚辛概念例外冒充本例命中。"
+  ],
+  "paragraphs": [
+    "本P8显式层按审校裁定：伤官候选查正官牵制，庚辛日主保留例外。这里不能把七杀错填成这条阻断神，也不能因此认为所有季节救应都已计算。",
+    "阿远日主丁，原局年月时没有正官透出，故这条牵制筛选未触发阻断，实际r1只登记该条件通过。阿远并非庚辛，解释庚辛时只能作为概念题另讲。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "本例伤官候选“未见本筛选显性牵制”满足；它没有把阿远判成完整伤官格。〔c12〕〔r1〕",
+      "evidence_ids": [
+        "hurting_clear"
+      ],
+      "learning_point_ids": [
+        "learning-2"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-12-q1",
+      "question": "r1对应的这项伤官牵制条件是否通过？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "不通过",
+          "value": false
+        },
+        {
+          "option_id": "b",
+          "text": "通过",
+          "value": true
+        },
+        {
+          "option_id": "c",
+          "text": "不存在",
+          "value": "unknown"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "条件值为true；还要另看月令和透干，不能只凭该项说成格。〔c12〕〔r1〕",
+      "basis": {
+        "kind": "matched_rule",
+        "evidence_id": "hurting_clear",
+        "expected": true
+      }
+    },
+    {
+      "quiz_id": "lesson-12-q2",
+      "question": "依本次P8裁定，非庚辛伤官候选重点查哪类牵制透出？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "七杀",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "偏财",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "正官",
+          "value": "direct_officer"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "此为审校后的具名规则概念，不是假设阿远变成庚辛后已重新排盘。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-pattern-review"
+        ],
+        "expected": "direct_officer"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-pattern-review"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "显式P8修正与旧v3分开，庚辛例外不回写旧默认算法。",
+      "source_ids": [
+        "p8-pattern-review"
+      ]
+    }
+  ],
+  "pending_review": [
+    "金水季节、财印辅助和官伤并透专章限制仍须原典与完整条件复核。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

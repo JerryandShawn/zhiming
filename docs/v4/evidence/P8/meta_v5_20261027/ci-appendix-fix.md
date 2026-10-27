@@ -1,0 +1,19 @@
+# CI合并态：历史材料与上游追加附录
+
+失败头55510f131fe2247e957842bf1da71defc0332b2d；workflow40432718159，job121954021429。
+checkout日志：`Merge 55510f13... into b9a89b6f84f7bebb640de080548010859aae630c`，合并态1c845ab。
+旧Core553通过（1000.768秒）、前端通过；tests/v4：3730通过/1失败（341.73秒）。唯一失败是test_legacy_schema_corpus_and_seed_files_are_unchanged，07文档摘要a637aadc与P8基线74797112不符。
+
+从GitHub读取精确base b9a89b6的07号文档，规范化LF的SHA256为a637aadca05c412f5b27352769a7ddadc0b75359698b5002a86af30a018e28a6，与日志一致。
+差异仅是用户已要求的v2.2附录B；原始正文（含命理C01–C07）未变。去掉该块后与本线07原文逐字节相等。不是Windows/Linux换行差异。
+
+本线修复只改自己的材料测试：07可含这一份精确追加块（SHA256=9c21dcb7640a72be7d8c099052752e210a05bee0d2634bf0bd959aaf58159230），剥离后继续原全文摘要；其他85项可执行语料仍严格按原manifest。原manifest、07号与旧题未改。
+新增5项测试核真实CI合并态追加、篡改原C01文本、篡改附录、重复附录和在运行时文件套用例外。定向test_p8_acceptance_materials_v4.py：60 passed/0 skipped，0.45秒。
+修订断言的理由记于ExecPlan Decision Log；没有调整计算期望或放行任意上游设计修改。新头完整CI待确认；上一轮本机完整3366不是本次新测试源的全量结果。
+
+## 第二轮：新增测试自己的合并态输入装配
+
+f8d9536a的workflow40436282160/job121965596163：3735通过/1失败，335.48秒，原只读语料保护测试已通过。唯一失败是新增test_reviewed_upstream_appendix_does_not_freeze_mainline_design_evolution把已经存在附录的合并态文档再次插入附录，生成重复块SHA0ac2dc06，错误地对比单附录SHAa637aadc。
+本机用精确CI文档替换Path.read_bytes的只读视图，先复现相同失败；真实07未修改。修复拆出legacy_body，先校验/剥离唯一已批准附录，再显式构造已有/未有附录两种输入。
+同时为整组原语料保护、追加正例和四项拒绝反例加入两种checkout形状覆盖，避免只在本线旧文档形状验证。固定原正文/附录/合并态全文摘要和拒绝重复块要求均保留。最新定向63 passed/0 skipped，0.87秒，Ruff和格式通过。
+这是本线新增测试输入装配遗漏，不是计算错误或需放宽行为契约；新头CI继续等待。

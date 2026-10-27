@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:zhiming:p8:e2:m2:no-chart-input:v1",
+  "title": "M2 model-visible question and options only",
+  "type": "object",
+  "required": ["question", "options"],
+  "additionalProperties": false,
+  "properties": {
+    "question": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "options": {
+      "type": "object",
+      "required": ["A", "B", "C", "D"],
+      "additionalProperties": false,
+      "properties": {
+        "A": {"type": "string", "minLength": 1, "pattern": "\\S"},
+        "B": {"type": "string", "minLength": 1, "pattern": "\\S"},
+        "C": {"type": "string", "minLength": 1, "pattern": "\\S"},
+        "D": {"type": "string", "minLength": 1, "pattern": "\\S"}
+      }
+    }
+  }
+}

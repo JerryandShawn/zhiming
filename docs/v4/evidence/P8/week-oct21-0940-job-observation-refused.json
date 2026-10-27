@@ -1,0 +1,237 @@
+{
+  "version": "p8-direct-base-job-observation-v1",
+  "started_at_beijing": "2026-10-21T09:40:23.536131+08:00",
+  "fixed_sha256_before": {
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe": "f79a5d8c0415d7946468864b02156bfd771a6a5336bce178721dbddb58b54672",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe": "f38084ff0b75c199883d4369bce0d142e08ade5e3b66a0a7f42085599468b751",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\pyvenv.cfg": "131b393661b76c90b7ff21cd8d465513787b500761bbe15c82a90cc23706fa44",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_identity_child.py": "b53380fa72e6597018789daee1887df4a0c3bb24175dde5377a557711ff8a371",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_parent_probe.py": "5619098ce313afd702f034bfbece338d6ad9a9e25deb7a91b98d407d9f94c23a",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_job.py": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.dll": "3432a83cbc355f017b7da313cc2ea661b01517f8772da67b603edd7203b1b6ef",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python3.dll": "6639c0fa6da4d3147711a817a373ac787bb605e0b910b78a84ee25eb5afac6bd",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_diagnostic.py": "2c9d31b3aa3981d6785c98bdca999121e4295314ea25117ee8a8dbb11884ecd8",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_hold_child.py": "0023218d005627ce6cd4cdc6ec8ebf6c04b1903492f1cd0a4df922c3d7cacc76",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_job_observer.py": "151108f00edf98de5b108971869cc7b7f9024ffcac7619d2f53f24d796d432c1"
+  },
+  "outer_limit": 4,
+  "inner_limit": 3,
+  "child_hold_seconds": 0.75,
+  "real_model_requests": 0,
+  "server_access": false,
+  "collector_invocations": 0,
+  "pytest_invocations": 0,
+  "trace_invocations": 0,
+  "bootstrap_help_invocations": 0,
+  "transport_approved_for_sampling": false,
+  "acceptance_gate": "child_exit_zero_and_inner_total_exactly_one",
+  "observations_are_exhaustive": false,
+  "state": "refused",
+  "outer_before": {
+    "total": 1,
+    "active": 1,
+    "terminated": 0
+  },
+  "row": {
+    "kind": "A-only-observation",
+    "started_at_beijing": "2026-10-21T09:40:23.537145+08:00",
+    "command": [
+      "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+      "-I",
+      "-S",
+      "-B",
+      "-X",
+      "pycache_prefix=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-diagnostic-ebe308c1de164b7183fcc69681e8e4d8\\cache-A",
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_hold_child.py",
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-diagnostic-ebe308c1de164b7183fcc69681e8e4d8\\identity.json"
+    ],
+    "state": "refused",
+    "inner_before": {
+      "total": 0,
+      "active": 0,
+      "terminated": 0
+    },
+    "owned_popen_pid": 30688,
+    "suspended_image": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+    "assigned": {
+      "total": 1,
+      "active": 1,
+      "terminated": 0
+    },
+    "exit_code": 0,
+    "inner_after": {
+      "total": 2,
+      "active": 0,
+      "terminated": 0
+    },
+    "identity": {
+      "version": "p8-direct-base-identity-hold-child-v1",
+      "recorded_at_beijing": "2026-10-21T09:40:23.708820+08:00",
+      "pid": 30688,
+      "parent_pid": 41324,
+      "orig_argv": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+        "-I",
+        "-S",
+        "-B",
+        "-X",
+        "pycache_prefix=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-diagnostic-ebe308c1de164b7183fcc69681e8e4d8\\cache-A",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_hold_child.py",
+        "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-diagnostic-ebe308c1de164b7183fcc69681e8e4d8\\identity.json"
+      ],
+      "executable": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
+      "base_executable": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+      "prefix": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none",
+      "exec_prefix": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none",
+      "base_prefix": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none",
+      "base_exec_prefix": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none",
+      "path": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.zip",
+        "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\DLLs",
+        "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\Lib",
+        "C:\\Users\\Administrator\\AppData\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none"
+      ],
+      "flags": {
+        "debug": 0,
+        "inspect": 0,
+        "interactive": 0,
+        "optimize": 0,
+        "dont_write_bytecode": 1,
+        "no_user_site": 1,
+        "no_site": 1,
+        "ignore_environment": 1,
+        "verbose": 0,
+        "bytes_warning": 0,
+        "quiet": 0,
+        "hash_randomization": 1,
+        "isolated": 1,
+        "dev_mode": false,
+        "utf8_mode": 0,
+        "warn_default_encoding": 0,
+        "safe_path": true,
+        "int_max_str_digits": -1
+      },
+      "xoptions": {
+        "pycache_prefix": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\tmp\\direct-core-diagnostic-ebe308c1de164b7183fcc69681e8e4d8\\cache-A"
+      },
+      "python_version": [
+        3,
+        11,
+        16
+      ],
+      "implementation": "cpython",
+      "cache_tag": "cpython-311",
+      "trace_active": false,
+      "profile_active": false,
+      "launcher_state": "absent_consumed",
+      "project_or_pytest_imported": false,
+      "real_model_requests": 0,
+      "server_access": false,
+      "process_image": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+      "python_dlls": {
+        "python311.dll": {
+          "path": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.dll",
+          "sha256": "3432a83cbc355f017b7da313cc2ea661b01517f8772da67b603edd7203b1b6ef"
+        },
+        "python3.dll": {
+          "path": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python3.DLL",
+          "sha256": "6639c0fa6da4d3147711a817a373ac787bb605e0b910b78a84ee25eb5afac6bd"
+        }
+      }
+    },
+    "identity_sha256": "f4db04bc27c0c442634ff64bfdcc70a8d516c366b307a42279a59a1840ee4412",
+    "error_type": "RuntimeError",
+    "error_code": "probe_nonzero_exit_or_unexplained_descendants",
+    "observations": {
+      "accounting": {
+        "total": 2,
+        "active": 0,
+        "terminated": 0
+      },
+      "elapsed_at_last_sample": 0.9370000000053551,
+      "events": [
+        {
+          "message": 6,
+          "pid": 30688
+        },
+        {
+          "message": 6,
+          "pid": 35860
+        },
+        {
+          "message": 7,
+          "pid": 30688
+        },
+        {
+          "message": 7,
+          "pid": 35860
+        },
+        {
+          "message": 4
+        }
+      ],
+      "processes": [
+        {
+          "pid": 30688,
+          "image": "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe",
+          "creation_filetime": 134370204235380710,
+          "parent_pid": 41324,
+          "state": "observed_exited",
+          "membership_confirmed": true,
+          "incomplete": false,
+          "sources": [
+            "job_iocp_message",
+            "job_pid_list"
+          ]
+        },
+        {
+          "pid": 35860,
+          "image": "C:\\Windows\\System32\\conhost.exe",
+          "creation_filetime": 134370204236187733,
+          "parent_pid": 30688,
+          "state": "observed_exited",
+          "membership_confirmed": true,
+          "incomplete": false,
+          "sources": [
+            "job_iocp_message",
+            "job_pid_list"
+          ]
+        }
+      ],
+      "notes": [],
+      "complete": false,
+      "limits": [
+        "IOCP messages are not guaranteed; no identity is inferred.",
+        "Parent PID is a snapshot, not a retained parent identity.",
+        "No Job limit, total==1 gate, or sampling permission changes."
+      ]
+    },
+    "inner_cleanup_before_close": {
+      "total": 2,
+      "active": 0,
+      "terminated": 0
+    },
+    "completed_at_beijing": "2026-10-21T09:40:24.486924+08:00"
+  },
+  "fixed_sha256_after": {
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python.exe": "f79a5d8c0415d7946468864b02156bfd771a6a5336bce178721dbddb58b54672",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe": "f38084ff0b75c199883d4369bce0d142e08ade5e3b66a0a7f42085599468b751",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\pyvenv.cfg": "131b393661b76c90b7ff21cd8d465513787b500761bbe15c82a90cc23706fa44",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_identity_child.py": "b53380fa72e6597018789daee1887df4a0c3bb24175dde5377a557711ff8a371",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_parent_probe.py": "5619098ce313afd702f034bfbece338d6ad9a9e25deb7a91b98d407d9f94c23a",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_job.py": "9c6e7cbab9beb829962eac4fc07f6e01dafd6a386bde5addeaac852b21ad016e",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python311.dll": "3432a83cbc355f017b7da313cc2ea661b01517f8772da67b603edd7203b1b6ef",
+    "C:\\Users\\Administrator\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Roaming\\uv\\python\\cpython-3.11.16-windows-x86_64-none\\python3.dll": "6639c0fa6da4d3147711a817a373ac787bb605e0b910b78a84ee25eb5afac6bd",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_diagnostic.py": "2c9d31b3aa3981d6785c98bdca999121e4295314ea25117ee8a8dbb11884ecd8",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_launch_hold_child.py": "0023218d005627ce6cd4cdc6ec8ebf6c04b1903492f1cd0a4df922c3d7cacc76",
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\private\\p8-validation\\core_direct_job_observer.py": "151108f00edf98de5b108971869cc7b7f9024ffcac7619d2f53f24d796d432c1"
+  },
+  "outer_final": {
+    "total": 3,
+    "active": 1,
+    "terminated": 0
+  },
+  "completed_at_beijing": "2026-10-21T09:40:24.491716+08:00"
+}

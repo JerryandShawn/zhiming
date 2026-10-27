@@ -1,0 +1,148 @@
+"""Publish full/scripted local evidence only after exact-source checks."""
+import hashlib
+import json
+import re
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+from mingjing_core.timekit.clock import get_clock
+
+ROOT = Path.cwd().resolve()
+PRIVATE = ROOT / "private/p8-validation"
+OUT = ROOT / "docs/v4/evidence/P8"
+COMMIT = sys.argv[1]
+assert re.fullmatch(r"[a-f0-9]{40}", COMMIT)
+assert COMMIT == "449682bdcc8a309c482081d5722c0b66ce666903"
+
+def digest(raw):
+    return hashlib.sha256(raw).hexdigest()
+
+def canonical(value):
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf8")
+
+def read(path):
+    return json.loads(path.read_bytes())
+
+def save(name, value):
+    with (OUT / name).open("x", encoding="utf8", newline="\n") as stream:
+        stream.write(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n")
+
+def archive(source, name):
+    with (OUT / name).open("xb") as stream:
+        stream.write(source.read_bytes())
+
+labels = {"full": "v4-week-oct21-1115-full", "scripted": "scripted-week-oct21-1115-full", "style": "delivery-week-oct21-1115-full"}
+records = {kind: read(PRIVATE / (label + ".start.json")) for kind, label in labels.items()}
+expected = records["full"]["source_snapshot_before"]
+assert len(expected) == 387
+for record in records.values():
+    assert record["exit_code"] == 0 and record["sources_unchanged"]
+    assert record["source_snapshot_before"] == record["source_snapshot_after"] == expected
+    assert record["process_budget"]["configured_limit"] == 4
+    assert record["process_budget"]["active_before"] == record["process_budget"]["active_after"] == 1
+assert {row["validation_harness_lf_sha256"] for row in records.values()} == {"0d8649fb0eba0d98664a205dfe44dbefd0f0f20e8b87c6a7c70ba23282a7526b"}
+assert records["scripted"]["scripted_self_test_processes_captured"] == 1
+assert digest((PRIVATE / "guarded_almanac_validation.py").read_bytes().replace(b"\r\n", b"\n")) == records["full"]["validation_harness_lf_sha256"]
+old_target = read(OUT / "week-oct21-almanac-387-process.json")
+assert set(old_target["source_snapshot_before"]) == set(expected)
+changed_docs = sorted(path for path in expected if old_target["source_snapshot_before"][path] != expected[path])
+assert changed_docs == ["docs/v4/contracts/almanac.md", "docs/v4/contracts/window_search.md"]
+metadata_probe = read(OUT / "week-oct21-native-metadata-git-process.json")
+assert metadata_probe["exit_code"] == 0 and metadata_probe["sources_unchanged"]
+assert metadata_probe["source_snapshot_before"] == metadata_probe["source_snapshot_after"] == expected
+
+raw_xml_path = PRIVATE / (labels["full"] + ".xml")
+tree = ET.fromstring(raw_xml_path.read_bytes())
+suites = list(tree.iter("testsuite"))
+cases = list(tree.iter("testcase"))
+assert len(suites) == 1 and len(cases) == int(suites[0].get("tests")) == 3202
+assert all(int(suites[0].get(key)) == 0 for key in ("errors", "failures", "skipped"))
+assert not any(child.tag in ("failure", "error", "skipped") for case in cases for child in case)
+for suffix, count in (("test_p8_almanac_version", 28), ("test_p8_learning_citations", 60), ("test_p8_core_environment_roles", 39), ("test_p8_core_environment_consumers", 2)):
+    assert sum(case.get("classname").endswith(suffix) for case in cases) == count
+full_log = (PRIVATE / (labels["full"] + ".start.log")).read_text("utf8")
+summaries = re.findall(r"(\d+) passed in ([\d.]+)s", full_log)
+assert len(summaries) == 1 and int(summaries[0][0]) == 3202
+
+script_folder = Path(records["scripted"]["private_scripted_output"])
+assert script_folder.resolve().is_relative_to(ROOT / "private/tmp")
+assert script_folder.name == "week-oct21-1115-full-scripted-regression"
+script_path = script_folder / "2026-10-21-scripted-fake-scripted-v1.json"
+script = read(script_path)
+assert script["metadata"]["status"] == "complete"
+assert script["metadata"]["mode"] == "scripted" and script["metadata"]["target"] == "fake"
+assert script["metadata"]["synthetic_only"] is True
+assert script["summary"]["passed"] == script["summary"]["count"] == len(script["cases"]) == 80
+script_log = (PRIVATE / (labels["scripted"] + ".start.log")).read_text("utf8")
+self_summaries = re.findall(r"(\d+) passed in ([\d.]+)s", script_log)
+assert len(self_summaries) == 1 and int(self_summaries[0][0]) == 48
+assert script["summary"]["target_model_calls"] == script["summary"]["model_calls"] == 85
+assert script["summary"]["judge_model_calls"] == 0
+style = read(OUT / "meta-validation.json")
+assert style["python_files"] == 236 and len(style["protected_files_unchanged"]) == 141
+assert style["allowed_scope_only"] and style["secret_pattern_check"] == "passed_no_values_logged"
+
+paths = sorted(expected)
+result = subprocess.run(["git", "cat-file", "--batch"], input="".join(COMMIT + ":" + path + "\n" for path in paths).encode("utf8"), capture_output=True, check=True, timeout=30)
+cursor, rows = 0, []
+for path in paths:
+    end = result.stdout.index(b"\n", cursor)
+    fields = result.stdout[cursor:end].decode("ascii").split()
+    assert len(fields) == 3 and fields[1] == "blob"
+    length = int(fields[2])
+    body = result.stdout[end + 1:end + 1 + length]
+    assert len(body) == length and result.stdout[end + 1 + length] == 10
+    cursor = end + 2 + length
+    assert digest(body.replace(b"\r\n", b"\n")) == expected[path]
+    assert digest((ROOT / path).read_bytes().replace(b"\r\n", b"\n")) == expected[path]
+    rows.append({"path": path, "git_blob_sha1": fields[0], "lf_sha256": expected[path]})
+assert cursor == len(result.stdout)
+stamp = get_clock().now().astimezone(timezone(timedelta(hours=8))).isoformat()
+report = {
+    "version": "p8-1115-complete-local-regression-v1",
+    "recorded_at_beijing": stamp, "source_commit": COMMIT,
+    "source_snapshot_lf_sha256": expected,
+    "source_snapshot_canonical_sha256": digest(canonical(expected)),
+    "full_v4": {"tests": 3202, "failures": 0, "errors": 0, "skipped": 0, "reported_seconds": float(summaries[0][1]), "junit_seconds": float(suites[0].get("time"))},
+    "scripted": {"scenarios": 80, "passed": 80, "self_tests": 48, "self_test_seconds": float(self_summaries[0][1]), "fake_logical_model_calls": 85, "judge_calls": 0, "professional_score": None},
+    "style": {"python_files": 236, "protected_files": 141, "secret_pattern_check": "passed"},
+    "validation_harness_lf_sha256": records["full"]["validation_harness_lf_sha256"],
+    "same_harness_and_project_source_for_full_scripted_style": True,
+    "target_387_baseline_commit": "77353afda29a6d7c38a762fc5b12542cb55d2a2f",
+    "only_source_map_differences_from_target_387": changed_docs,
+    "native_metadata_probe_same_project_source": True,
+    "actual_metadata_probe_reads": 3,
+    "actual_supervisor_invocations": 0, "actual_collector_invocations": 0,
+    "actual_trace_samples": 0, "charts_coverage_samples": 0,
+    "real_model_requests": 0, "project_server_access": False,
+    "limits": ["Direct Charts verification transport with shared Core tzdata is not original wrapper acceptance or full dependency authentication", "Private temporary scripted output avoids prior original-path replace failure; no evaluator or assertions changed", "MetadataGit probe added9 Job processes and identified only3 direct Git handles; remaining6 not approved by name or inference", "Content/source/blob equality is not provider authentication, authorization, current CI or predictive validity"]
+}
+save("week-oct21-1115-full-validation.json", report)
+save("week-oct21-1115-committed-source-binding.json", {"version": "p8-1115-committed-source-binding-v1", "recorded_at_beijing": stamp, "source_commit": COMMIT, "verified_files": len(rows), "all_match": True, "rows": rows})
+for kind, label in labels.items():
+    record = dict(records[kind])
+    before, after = record.pop("source_snapshot_before"), record.pop("source_snapshot_after")
+    record.update(artifact_kind="derived_compact_coordinator_receipt", raw_private_receipt_sha256=digest((PRIVATE / (label + ".start.json")).read_bytes()), source_snapshot_count=len(expected), source_snapshot_before_sha256=digest(canonical(before)), source_snapshot_after_sha256=digest(canonical(after)), source_snapshot_map_reference="week-oct21-1115-full-validation.json:source_snapshot_lf_sha256")
+    save("week-oct21-1115-" + kind + "-process-summary.json", record)
+    archive(PRIVATE / (label + ".start.log"), "week-oct21-1115-" + kind + ".txt")
+archive(OUT / "meta-validation.json", "week-oct21-1115-style.json")
+archive(Path(__file__), "week-oct21-1115-finalizer-source.txt")
+archive(PRIVATE / "guarded_almanac_validation.py", "week-oct21-1115-validation-harness-source.txt")
+public_script = OUT / "week-oct21-1115-scripted-regression"
+public_script.mkdir(exist_ok=False)
+for suffix in ("json", "md"):
+    name = "2026-10-21-scripted-fake-scripted-v1." + suffix
+    with (public_script / name).open("xb") as stream:
+        stream.write((script_folder / name).read_bytes())
+archive(raw_xml_path, "week-oct21-1115-full-raw-host.xml")
+raw_stamp = suites[0].get("timestamp")
+beijing_stamp = datetime.fromisoformat(raw_stamp).astimezone(timezone(timedelta(hours=8))).isoformat()
+raw_xml = raw_xml_path.read_bytes()
+assert raw_xml.count(raw_stamp.encode()) == 1
+with (OUT / "week-oct21-1115-full.xml").open("xb") as stream:
+    stream.write(raw_xml.replace(raw_stamp.encode(), beijing_stamp.encode()))
+save("week-oct21-1115-junit-time-conversion.json", {"raw_host_timestamp": raw_stamp, "beijing_timestamp": beijing_stamp, "same_instant": datetime.fromisoformat(raw_stamp) == datetime.fromisoformat(beijing_stamp), "raw_xml_sha256": digest(raw_xml), "only_display_timestamp_changed": True})
+print(json.dumps({"source_commit": COMMIT, "full": report["full_v4"], "scripted": report["scripted"], "bound_files": len(rows)}))

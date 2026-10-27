@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:mingjing:p8:window-search:v1",
+  "title": "P8 transparent six-purpose window search response",
+  "type": "object",
+  "required": ["version", "scope", "document_id", "data", "rule_hits", "aliases", "sources", "effects", "limits"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const": "p8-window-search-v1"},
+    "document_id": {"type": "string", "pattern": "^tool-[0-9a-f]{64}$"},
+    "scope": {"$ref": "#/$defs/scope"},
+    "data": {"$ref": "#/$defs/data"},
+    "rule_hits": {"type": "array", "items": {"$ref": "#/$defs/hit"}},
+    "aliases": {
+      "type": "object", "required": ["c", "r"], "additionalProperties": false,
+      "properties": {
+        "c": {"type": "array", "items": {"$ref": "#/$defs/chart_alias"}},
+        "r": {"type": "array", "items": {"$ref": "#/$defs/rule_alias"}}
+      }
+    },
+    "sources": {"type": "array", "minItems": 1},
+    "effects": {
+      "type": "object", "required": ["model_calls", "writes", "alias_registry"], "additionalProperties": false,
+      "properties": {"model_calls": {"const": 0}, "writes": {"const": 0}, "alias_registry": {"const": "ephemeral_only"}}
+    },
+    "limits": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "scope": {
+      "type": "object", "required": ["owner_user_id", "subject_id", "revision", "operation_id"], "additionalProperties": false,
+      "properties": {
+        "owner_user_id": {"type": "string", "minLength": 1}, "subject_id": {"type": "string", "minLength": 1},
+        "revision": {"type": "integer", "minimum": 0}, "operation_id": {"type": "string", "minLength": 1}
+      }
+    },
+    "sha": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "date": {"type": "string", "format": "date", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "chart_alias": {
+      "type": "object", "required": ["alias", "path", "value_sha256", "claim_id"], "additionalProperties": false,
+      "properties": {
+        "alias": {"type": "string", "pattern": "^c[1-9][0-9]*$"},
+        "path": {"type": "string", "pattern": "^/data/"}, "value_sha256": {"$ref": "#/$defs/sha"},
+        "claim_id": {"type": "string", "pattern": "^claim-[0-9a-f]{64}$"}
+      }
+    },
+    "rule_alias": {
+      "type": "object", "required": ["alias", "path", "value_sha256", "claim_id", "rule_id", "evidence_aliases"],
+      "additionalProperties": false,
+      "properties": {
+        "alias": {"type": "string", "pattern": "^r[1-9][0-9]*$"}, "path": {"type": "string", "pattern": "^/rule_hits/"},
+        "value_sha256": {"$ref": "#/$defs/sha"}, "claim_id": {"type": "string", "pattern": "^claim-[0-9a-f]{64}$"},
+        "rule_id": {"type": "string"}, "evidence_aliases": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^c[1-9][0-9]*$"}}
+      }
+    },
+    "hit": {
+      "type": "object", "required": ["rule_id", "rules_version", "met", "school", "source", "date", "contribution", "context", "evidence_paths"],
+      "additionalProperties": false,
+      "properties": {
+        "rule_id": {"type": "string", "pattern": "^window\\."}, "rules_version": {"const": "project-six-purpose-ranking-v1"},
+        "met": {"const": true}, "school": {"type": "string"}, "source": {"type": "string"}, "date": {"$ref": "#/$defs/date"},
+        "contribution": {"type": "integer"}, "context": {"type": "object", "required": ["recognized", "family", "label", "base_weight", "layer_factor", "contribution", "reason", "purpose", "prediction_validated"]},
+        "evidence_paths": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^/data/"}}
+      }
+    },
+    "hit_link": {
+      "type": "object", "required": ["rule_hit_index", "contribution", "label"], "additionalProperties": false,
+      "properties": {"rule_hit_index": {"type": "integer", "minimum": 0}, "contribution": {"type": "integer"}, "label": {"type": "string"}}
+    },
+    "candidate": {
+      "type": "object", "required": ["date", "rank", "score", "positive_hits", "negative_hits", "neutral_hits"], "additionalProperties": false,
+      "properties": {
+        "date": {"$ref": "#/$defs/date"}, "rank": {"type": "integer", "minimum": 1}, "score": {"type": "integer"},
+        "positive_hits": {"type": "array", "items": {"$ref": "#/$defs/hit_link"}},
+        "negative_hits": {"type": "array", "items": {"$ref": "#/$defs/hit_link"}},
+        "neutral_hits": {"type": "array", "items": {"$ref": "#/$defs/hit_link"}}
+      }
+    },
+    "observation": {
+      "type": "object", "required": ["date", "kind", "daily_document_id", "daily_rule_index", "daily_hit", "facts", "facts_sha256", "provenance_paths_scope"],
+      "additionalProperties": false,
+      "properties": {
+        "date": {"$ref": "#/$defs/date"}, "kind": {"const": "derived_copy_of_actual_daily_evidence"},
+        "daily_document_id": {"type": "string", "pattern": "^tool-[0-9a-f]{64}$"}, "daily_rule_index": {"type": "integer", "minimum": 0},
+        "daily_hit": {"type": "object"}, "facts": {"type": "array", "minItems": 1, "items": {"type": "object", "required": ["path", "value"]}},
+        "facts_sha256": {"$ref": "#/$defs/sha"}, "provenance_paths_scope": {"const": "external_daily_document_not_local_pointers"}
+      }
+    },
+    "data": {
+      "type": "object", "required": ["purpose", "range", "method", "candidates", "observations", "ignored_conditions", "weights", "pagination", "ranking_summary", "trace"],
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {"enum": ["签约", "面试", "搬家", "出行", "表白", "开业"]},
+        "range": {
+          "type": "object", "required": ["start_date", "end_date", "inclusive", "day_count"], "additionalProperties": false,
+          "properties": {"start_date": {"$ref": "#/$defs/date"}, "end_date": {"$ref": "#/$defs/date"}, "inclusive": {"const": true}, "day_count": {"type": "integer", "minimum": 1, "maximum": 366}}
+        },
+        "method": {
+          "type": "object", "required": ["ranking", "weights_version", "sample_clock", "daily_orb_degrees", "election_hours_searched", "prediction_validated"],
+          "additionalProperties": false,
+          "properties": {
+            "ranking": {"const": "score_descending_then_date_ascending"}, "weights_version": {"const": "project-six-purpose-ranking-v1"},
+            "sample_clock": {"const": "12:00:00+08:00"}, "daily_orb_degrees": {"const": 2.0}, "election_hours_searched": {"const": false}, "prediction_validated": {"const": false}
+          }
+        },
+        "candidates": {"type": "array", "maxItems": 31, "items": {"$ref": "#/$defs/candidate"}},
+        "pagination": {
+          "type": "object", "required": ["total", "offset", "limit", "returned", "has_more", "next_offset"], "additionalProperties": false,
+          "properties": {
+            "total": {"type": "integer", "minimum": 1, "maximum": 366}, "offset": {"type": "integer", "minimum": 0},
+            "limit": {"type": "integer", "minimum": 1, "maximum": 31}, "returned": {"type": "integer", "minimum": 0, "maximum": 31},
+            "has_more": {"type": "boolean"}, "next_offset": {"type": ["integer", "null"], "minimum": 0}
+          }
+        },
+        "ranking_summary": {
+          "type": "array", "minItems": 1, "maxItems": 366,
+          "items": {
+            "type": "object", "required": ["date", "rank", "score", "positive_sum", "negative_sum"], "additionalProperties": false,
+            "properties": {
+              "date": {"$ref": "#/$defs/date"}, "rank": {"type": "integer", "minimum": 1}, "score": {"type": "integer"},
+              "positive_sum": {"type": "integer", "minimum": 0}, "negative_sum": {"type": "integer", "maximum": 0}
+            }
+          }
+        },
+        "trace": {
+          "type": "object", "required": ["kind", "query_sha256", "ranking_summary_sha256", "weights_sha256", "school", "source"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {"const": "query_and_ranking_trace_not_a_directional_rule_hit"},
+            "query_sha256": {"$ref": "#/$defs/sha"}, "ranking_summary_sha256": {"$ref": "#/$defs/sha"}, "weights_sha256": {"$ref": "#/$defs/sha"},
+            "school": {"type": "string"}, "source": {"type": "string"}
+          }
+        },
+        "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}},
+        "ignored_conditions": {"type": "array", "items": {"type": "object", "required": ["date", "daily_rule_index", "recognized", "reason"]}},
+        "weights": {"type": "object", "required": ["version", "school", "source", "prediction_validated", "layer_factors", "purpose_weights", "limits"]}
+      }
+    }
+  }
+}

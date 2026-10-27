@@ -1,0 +1,115 @@
+"""Archive bounded local results; no new calculation or model request."""
+import copy
+import hashlib
+import json
+import shutil
+import xml.etree.ElementTree as ET
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+ROOT = Path.cwd()
+PRIVATE = ROOT / "private/p8-validation"
+OUT = ROOT / "docs/v4/evidence/P8"
+PREFIX = "week-oct21-almanac"
+BEIJING = timezone(timedelta(hours=8))
+
+def read(path):
+    return json.loads(path.read_bytes())
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+
+def save(name, value):
+    with (OUT / name).open("x", encoding="utf8", newline="\n") as stream:
+        stream.write(json.dumps(value, ensure_ascii=False, indent=2) + "\n")
+
+def archive(source, name):
+    target = OUT / name
+    assert not target.exists()
+    shutil.copyfile(source, target)
+    return {"path": target.relative_to(ROOT).as_posix(), "lf_sha256": sha(target)}
+
+final_path = PRIVATE / "milestone-week-oct21-almanac-citations-final.start.json"
+final = read(final_path)
+assert final["exit_code"] == 0 and final["sources_unchanged"] is True
+assert len(final["source_snapshot_before"]) == 387
+assert final["process_budget"]["configured_limit"] == 4
+assert final["process_budget"]["active_before"] == final["process_budget"]["active_after"] == 1
+log = final_path.with_suffix(".log").read_text("utf8")
+assert "387 passed in 4.76s" in log
+style = read(OUT / "meta-validation.json")
+assert style["python_files"] == 236 and len(style["protected_files_unchanged"]) == 141
+assert style["allowed_scope_only"] is True
+raw = ET.parse(PRIVATE / "milestone-week-oct21-almanac-citations-final.xml")
+suite = raw.getroot().find("testsuite")
+assert (suite.get("tests"), suite.get("failures"), suite.get("errors"), suite.get("skipped")) == ("387", "0", "0", "0")
+converted = copy.deepcopy(raw)
+stamps = []
+for node in converted.iter():
+    if "timestamp" in node.attrib:
+        before = node.attrib["timestamp"]
+        instant = datetime.fromisoformat(before)
+        after = instant.astimezone(BEIJING).isoformat()
+        assert datetime.fromisoformat(after) == instant
+        node.set("timestamp", after)
+        stamps.append({"raw_host_timestamp": before, "canonical_beijing_timestamp": after, "same_instant": True})
+plain_old, plain_new = copy.deepcopy(raw), copy.deepcopy(converted)
+for tree in (plain_old, plain_new):
+    for node in tree.iter():
+        node.attrib.pop("timestamp", None)
+assert ET.tostring(plain_old.getroot()) == ET.tostring(plain_new.getroot())
+canonical = OUT / (PREFIX + "-387.xml")
+assert not canonical.exists()
+converted.write(canonical, encoding="utf8", xml_declaration=True)
+files = {}
+for label, source_label in (
+    ("387-process.json", "milestone-week-oct21-almanac-citations-final.start.json"),
+    ("387.txt", "milestone-week-oct21-almanac-citations-final.start.log"),
+    ("387-raw-host.xml", "milestone-week-oct21-almanac-citations-final.xml"),
+    ("52-process.json", "targeted-week-oct21-1047-almanac-version.start.json"),
+    ("52.txt", "targeted-week-oct21-1047-almanac-version.start.log"),
+    ("327-process.json", "milestone-week-oct21-almanac-final.start.json"),
+    ("327.txt", "milestone-week-oct21-almanac-final.start.log"),
+    ("display-red-process.json", "targeted-week-oct21-lesson-display-red.start.json"),
+    ("display-red.txt", "targeted-week-oct21-lesson-display-red.start.log"),
+    ("binding-first-failure-process.json", "refresh_almanac-week-oct21-1048-almanac-bindings.start.json"),
+    ("binding-first-failure.txt", "refresh_almanac-week-oct21-1048-almanac-bindings.start.log"),
+    ("binding-16-process.json", "refresh_almanac-week-oct21-1051-almanac-bindings.start.json"),
+    ("binding-17-process.json", "refresh_almanac-week-oct21-almanac-final-bindings.start.json"),
+    ("final-harness-source.txt", "guarded_almanac_validation.py"),
+    ("final-binding-helper-source.txt", "refresh_almanac_bindings.py"),
+    ("packaging-source.txt", "package_almanac_epoch.py"),
+):
+    files[label] = archive(PRIVATE / source_label, PREFIX + "-" + label)
+assert files["final-harness-source.txt"]["lf_sha256"] == final["validation_harness_lf_sha256"]
+display_red = read(PRIVATE / "targeted-week-oct21-lesson-display-red.start.json")
+assert display_red["exit_code"] == 1 and display_red["sources_unchanged"] is True
+assert "2 failed, 58 passed" in (PRIVATE / "targeted-week-oct21-lesson-display-red.start.log").read_text("utf8")
+binding = read(OUT / "week-oct21-almanac-version-rebinding-final.json")
+assert len(binding["intentional_refresh_paths"]) == 17
+assert all(row["all_mapped_alias_values_equal"] for row in binding["checks"])
+files["style.json"] = archive(OUT / "meta-validation.json", PREFIX + "-style.json")
+save(PREFIX + "-junit-time-conversion.json", {"timestamps": stamps, "other_xml_structure_equal": True, "files": {"canonical_lf_sha256": sha(canonical), "raw_lf_sha256": files["387-raw-host.xml"]["lf_sha256"]}})
+save(PREFIX + "-validation.json", {
+    "version": "p8-almanac-version-and-display-citations-validation-v1",
+    "started_at_beijing": final["started_at_beijing"],
+    "completed_at_beijing": final["completed_at_beijing"],
+    "tests": {"targeted": 387, "failed": 0, "errors": 0, "skipped": 0, "pytest_seconds": 4.76},
+    "new_tests_in_target": {"almanac_version": 28, "course_display_citations": 60},
+    "not_additive": "52 and327 overlap387; display red60 is prior failing input, not additional acceptance",
+    "display_red": {"passed": 58, "failed": 2, "reason": "lesson20 still used c2 while real solar-position evidence moved to c7"},
+    "source_count": 387,
+    "source_map_reference": files["387-process.json"]["path"],
+    "sources_unchanged_during_target_and_style": True,
+    "validation_harness_lf_sha256": final["validation_harness_lf_sha256"],
+    "chart_launch_transport": final["chart_launch_transport"],
+    "process_budget": final["process_budget"],
+    "delivery": {"python_files": 236, "protected_files": 141, "style_and_secret_check": "passed"},
+    "bindings": "week-oct21-almanac-version-rebinding-final.json",
+    "archived_files": files,
+    "current_full_regression_complete": False,
+    "previous_full": {"source_commit": "6508cc48132d6dc55c00eafe725be79fe9e1b34c", "v4": 3114, "scripted_fake": 80, "self_tests": 48, "historical_only": True},
+    "real_model_requests": 0, "project_server_access": False, "profile_writes": 0,
+    "limits": ["Direct Charts transport retains previously disclosed dependency and original-wrapper limits", "Version metadata check is not package authentication", "Full v4/scripted must start next legal minute15-29 window", "Initial ambiguous mapping refusal retained; final mapping uses fixed f4da Git baseline and actual values, no source calculated by model", "First failed binding helper source was not independently hashed in its original process receipt; traceback and source snapshots retained without retroactive claim"]
+})
+print(json.dumps({"targeted": 387, "source_count": 387, "bindings": 17, "style_files": 236, "protected": 141, "full_pending": True}))

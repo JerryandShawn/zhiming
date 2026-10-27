@@ -1,0 +1,145 @@
+{
+  "explicitly_synthetic": true,
+  "source_fixture": "benchmarks.scripted_v2.fixtures()[0]",
+  "birth_fingerprint": "bef247d40b3fa562a034bf72d9166318a6cd329642598537ea672a2dfcc59090",
+  "legacy_constructor_target_date": "2099-01-01",
+  "current_question_aware_provider_used": true,
+  "calculations": [
+    {
+      "explicit_question_target_year": 2024,
+      "actual_artifact_target_date": "2024-07-01",
+      "actual_profile_target_dates": [
+        "2024-07-01"
+      ],
+      "profile_ids": [
+        "profile-26d2620546639552fc92662a"
+      ],
+      "artifact_ids": [
+        "chart-ced324c38570a1c71c743528"
+      ],
+      "derived_method_source_lineage": [
+        {
+          "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+          "explicit_target_year": 2024,
+          "sampling_date": "2024-07-01",
+          "sampling_at": "2024-07-01T12:00:00+08:00",
+          "sampling_date_is_not_event_date": true,
+          "event_date": null,
+          "event_month": null,
+          "event_day": null,
+          "visible_time_layers": [
+            "natal",
+            "yearly"
+          ],
+          "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+          "limits": [
+            "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+            "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+            "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+          ],
+          "source_profile_id": "profile-dab1d8c7cedde9e833ce1952",
+          "source_profile_sha256": "b9a1418f3428dcfc7cdfac2a0765a8e078b874c0f42977b4d1318c43cec3188f",
+          "source_artifact_id": "chart-bd8a92f8228d2b9e4bf534e4",
+          "source_artifact_sha256": "3fb6dfcc317be591ce7167bc5f4f712286c1a0f45bea49d819348c9509a999de",
+          "source_natal_sha256": "0162cbc9421d69bd97419cba59ad05e104274a2b6f7ae059d1ac53884a1a6558",
+          "source_annual_layer_sha256": "b8d049c052a8ba5d117c9031aa51b1c793aa131b9940299456e367c094acc2f3"
+        }
+      ],
+      "annual_ganzhi": "甲辰",
+      "sampling_basis": {
+        "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+        "explicit_target_year": 2024,
+        "sampling_date": "2024-07-01",
+        "sampling_at": "2024-07-01T12:00:00+08:00",
+        "sampling_date_is_not_event_date": true,
+        "event_date": null,
+        "event_month": null,
+        "event_day": null,
+        "visible_time_layers": [
+          "natal",
+          "yearly"
+        ],
+        "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+        "limits": [
+          "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+          "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+          "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+        ]
+      },
+      "temporal_node_ids": [
+        "target.yearly"
+      ],
+      "cache_key": "4a42a53200d11f6cf85c8d30cb9288b94974a36d56b98ad08bfcc56a82a30048"
+    },
+    {
+      "explicit_question_target_year": 2025,
+      "actual_artifact_target_date": "2025-07-01",
+      "actual_profile_target_dates": [
+        "2025-07-01"
+      ],
+      "profile_ids": [
+        "profile-8ecc70f4177129a48569883e"
+      ],
+      "artifact_ids": [
+        "chart-8753a62dd05170c8352532ce"
+      ],
+      "derived_method_source_lineage": [
+        {
+          "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+          "explicit_target_year": 2025,
+          "sampling_date": "2025-07-01",
+          "sampling_at": "2025-07-01T12:00:00+08:00",
+          "sampling_date_is_not_event_date": true,
+          "event_date": null,
+          "event_month": null,
+          "event_day": null,
+          "visible_time_layers": [
+            "natal",
+            "yearly"
+          ],
+          "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+          "limits": [
+            "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+            "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+            "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+          ],
+          "source_profile_id": "profile-58973fef913408ccd277d90a",
+          "source_profile_sha256": "2984d5ea93f241b37a9a272d3d541e7f19e2043fb8c0a138c24d6286c9d3cac9",
+          "source_artifact_id": "chart-6cc446502bcc0fb5ff493ae0",
+          "source_artifact_sha256": "4ccf175f14dc0f7b22ead096d73cd719499c3f3d41e745a78df9cbd7e9d4736c",
+          "source_natal_sha256": "0162cbc9421d69bd97419cba59ad05e104274a2b6f7ae059d1ac53884a1a6558",
+          "source_annual_layer_sha256": "3ab81e39531df356918ecd9f995595a1137a105c76aac22baaa89822c16d828b"
+        }
+      ],
+      "annual_ganzhi": "乙巳",
+      "sampling_basis": {
+        "method": "e2-target-year-july01-noon-utc8-annual-view-v1",
+        "explicit_target_year": 2025,
+        "sampling_date": "2025-07-01",
+        "sampling_at": "2025-07-01T12:00:00+08:00",
+        "sampling_date_is_not_event_date": true,
+        "event_date": null,
+        "event_month": null,
+        "event_day": null,
+        "visible_time_layers": [
+          "natal",
+          "yearly"
+        ],
+        "calendar_year_convention": "exact_LiChun_year_containing_named_midyear_snapshot",
+        "limits": [
+          "题面仅明确公历年份，事件月日未知；07-01正午只是具名年度采样，不是事件发生日。",
+          "年初立春前后可能属于不同节年；没有事件日期，不能选定年初边界哪一侧。",
+          "不使用快照流月、流日、流时或采样日所在大运判断具体事件；年度视图只保留原局与流年。"
+        ]
+      },
+      "temporal_node_ids": [
+        "target.yearly"
+      ],
+      "cache_key": "da6f242fc13c5a3a2ab6ca7e9dbe6303e976fa4f4c0eb11977151673ebfbc88d"
+    }
+  ],
+  "cache_entries": 2,
+  "distinct_profile_ids": true,
+  "real_model_requests": 0,
+  "professional_corpus_score": null
+}

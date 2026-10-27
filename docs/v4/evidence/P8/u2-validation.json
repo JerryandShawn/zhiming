@@ -1,0 +1,134 @@
+{
+  "scope": "U2 standalone helpers; synthetic inputs only; no models/database/network transports in test commands",
+  "results": [
+    {
+      "name": "pytest",
+      "returncode": 0,
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-m",
+        "pytest",
+        "tests/v4/test_p8_u2_interactions.py",
+        "-q"
+      ],
+      "stdout": "..........................                                               [100%]\n26 passed in 0.98s\n",
+      "stderr": ""
+    },
+    {
+      "name": "native",
+      "returncode": 0,
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-charts/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "tests/test_p8_interactions_native.py"
+      ],
+      "stdout": "{\"tests\": 5, \"successful\": true, \"skipped\": 0}\n",
+      "stderr": "test_all_exposed_ten_gods_against_lunar_engine (__main__.InteractionsNative.test_all_exposed_ten_gods_against_lunar_engine) ... ok\ntest_mercury_retrograde_retains_multiple_exact_passes (__main__.InteractionsNative.test_mercury_retrograde_retains_multiple_exact_passes) ... ok\ntest_moon_six_hour_search_agrees_with_finer_grid (__main__.InteractionsNative.test_moon_six_hour_search_agrees_with_finer_grid) ... ok\ntest_sun_zero_longitude_occurs_on_public_hko_equinox_date (__main__.InteractionsNative.test_sun_zero_longitude_occurs_on_public_hko_equinox_date) ... ok\ntest_ziwei_all_four_links_match_installed_engine (__main__.InteractionsNative.test_ziwei_all_four_links_match_installed_engine) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.628s\n\nOK\n"
+    },
+    {
+      "name": "ruff",
+      "returncode": 0,
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "mingjing_core\\adapters\\charts\\interactions_bazi.py",
+        "mingjing_core\\adapters\\charts\\interactions_transits.py",
+        "mingjing_core\\adapters\\charts\\interactions_ziwei.py",
+        "tests\\v4\\test_p8_u2_interactions.py",
+        "tests\\test_p8_interactions_native.py",
+        "--select",
+        "E,F,I,B,UP,SIM",
+        "--line-length",
+        "120"
+      ],
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "name": "format",
+      "returncode": 0,
+      "command": [
+        "C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-core/Scripts/python.exe",
+        "-m",
+        "ruff",
+        "format",
+        "--check",
+        "mingjing_core\\adapters\\charts\\interactions_bazi.py",
+        "mingjing_core\\adapters\\charts\\interactions_transits.py",
+        "mingjing_core\\adapters\\charts\\interactions_ziwei.py",
+        "tests\\v4\\test_p8_u2_interactions.py",
+        "tests\\test_p8_interactions_native.py"
+      ],
+      "stdout": "5 files already formatted\n",
+      "stderr": ""
+    }
+  ],
+  "style": [
+    {
+      "path": "mingjing_core/adapters/charts/interactions_bazi.py",
+      "lines": 184,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "mingjing_core/adapters/charts/interactions_transits.py",
+      "lines": 287,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "mingjing_core/adapters/charts/interactions_ziwei.py",
+      "lines": 62,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/v4/test_p8_u2_interactions.py",
+      "lines": 268,
+      "over_60_functions": [],
+      "over_120_lines": []
+    },
+    {
+      "path": "tests/test_p8_interactions_native.py",
+      "lines": 116,
+      "over_60_functions": [],
+      "over_120_lines": []
+    }
+  ],
+  "legacy": [
+    {
+      "path": "hermes/bazi.py",
+      "unchanged_vs_head": true,
+      "sha256": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096"
+    },
+    {
+      "path": "hermes/ziwei.py",
+      "unchanged_vs_head": true,
+      "sha256": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341"
+    },
+    {
+      "path": "hermes/astro.py",
+      "unchanged_vs_head": true,
+      "sha256": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8"
+    },
+    {
+      "path": "mingjing_core/adapters/charts/adapter.py",
+      "unchanged_vs_head": true,
+      "sha256": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d"
+    },
+    {
+      "path": "mingjing_core/adapters/charts/worker.py",
+      "unchanged_vs_head": true,
+      "sha256": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+    }
+  ],
+  "native_tests_nested_in_pytest": true,
+  "source_status": {
+    "six_breaks": "project convention; primary edition pending",
+    "directional_three_branches": "project grouping; no transformation inference"
+  },
+  "external_date_crosscheck": "HKO Gregorian-Lunar calendar 2026 lists Vernal Equinox 2026-03-20; minute-level independent validation not claimed"
+}

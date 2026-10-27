@@ -1,0 +1,140 @@
+{
+  "status": "synthetic_readonly_crosscheck",
+  "release_policy": {
+    "version": "p8-release-policy-23-v1",
+    "decision_source": "23_大脑复核_B1计划与命理线.md §二",
+    "interpretation": {
+      "primary_basis": "true_solar",
+      "comparison_basis": "beijing_standard",
+      "comparison_utc_offset_minutes": 480,
+      "show_comparison_when_results_differ": true,
+      "western_astrology_basis": "actual_UTC_unchanged"
+    },
+    "rectification": {
+      "status": "experimental_frozen",
+      "visible_by_default": false,
+      "enabled_for_interpretation": false,
+      "public_tools": [],
+      "conclusion": "分不出来",
+      "thresholds_relaxed": false,
+      "ziwei_added_to_score": false,
+      "requires_new_review_before_enablement": true
+    }
+  },
+  "examples": [
+    {
+      "case": "design-urumqi",
+      "selected_basis": "true_solar",
+      "profile_basis_record": {
+        "basis": "true_solar",
+        "comparison_basis": "beijing_standard",
+        "primary_chart_ids": [
+          "time-chart-0b7829dae0151f68bb80a3a6"
+        ],
+        "method": "longitude_plus_NOAA_Meeus_equation_of_time",
+        "policy_version": "p8-release-policy-23-v1",
+        "status": "readonly_proposal_not_persisted",
+        "writes": 0
+      },
+      "comparison_count": 1,
+      "comparisons": [
+        {
+          "primary_chart_id": "time-chart-0b7829dae0151f68bb80a3a6",
+          "comparison_chart_id": "time-chart-396f10b96cbb60800d9ba6a2",
+          "fields_changed": [
+            "bazi.pillars.hour",
+            "ziwei.palaces",
+            "ziwei.ming_gong",
+            "ziwei.shen_gong",
+            "ziwei.lunar_date"
+          ],
+          "text": "按北京时间则为四柱乙亥、己卯、庚子、辛巳；紫微命宫戌、身宫申。"
+        }
+      ],
+      "charts": {
+        "standard": {
+          "coordinate": "1995-03-10T09:40:00",
+          "hour": "辛巳",
+          "role": "diagnostic",
+          "visible_by_default": false,
+          "flying_edges": 48
+        },
+        "beijing_standard": {
+          "coordinate": "1995-03-10T09:40:00",
+          "hour": "辛巳",
+          "role": "comparison",
+          "visible_by_default": true,
+          "flying_edges": 48
+        },
+        "true_solar": {
+          "coordinate": "1995-03-10T07:19:58.340985",
+          "hour": "庚辰",
+          "role": "primary",
+          "visible_by_default": true,
+          "flying_edges": 48
+        }
+      },
+      "physical_confirmation_required": false,
+      "writes": 0,
+      "model_calls": 0
+    },
+    {
+      "case": "synthetic-overseas",
+      "selected_basis": "true_solar",
+      "profile_basis_record": {
+        "basis": "true_solar",
+        "comparison_basis": "beijing_standard",
+        "primary_chart_ids": [
+          "time-chart-4c00d9ff9a631500e4dc95c0"
+        ],
+        "method": "longitude_plus_NOAA_Meeus_equation_of_time",
+        "policy_version": "p8-release-policy-23-v1",
+        "status": "readonly_proposal_not_persisted",
+        "writes": 0
+      },
+      "comparison_count": 1,
+      "comparisons": [
+        {
+          "primary_chart_id": "time-chart-4c00d9ff9a631500e4dc95c0",
+          "comparison_chart_id": "time-chart-f5b3f5c0699c214c017d0290",
+          "fields_changed": [
+            "bazi.pillars.day",
+            "bazi.pillars.hour",
+            "ziwei.palaces",
+            "ziwei.ming_gong",
+            "ziwei.shen_gong",
+            "ziwei.lunar_date",
+            "ziwei.wuxing_ju"
+          ],
+          "text": "按北京时间则为四柱己丑、丁丑、丙寅、己丑；紫微命宫子、身宫寅。"
+        }
+      ],
+      "charts": {
+        "standard": {
+          "coordinate": "2010-01-15T12:00:00",
+          "hour": "壬午",
+          "role": "diagnostic",
+          "visible_by_default": false,
+          "flying_edges": 48
+        },
+        "true_solar": {
+          "coordinate": "2010-01-15T11:54:31.466378",
+          "hour": "壬午",
+          "role": "primary",
+          "visible_by_default": true,
+          "flying_edges": 48
+        },
+        "beijing_standard": {
+          "coordinate": "2010-01-16T01:00:00",
+          "hour": "己丑",
+          "role": "comparison",
+          "visible_by_default": true,
+          "flying_edges": 48
+        }
+      },
+      "physical_confirmation_required": false,
+      "writes": 0,
+      "model_calls": 0
+    }
+  ]
+}

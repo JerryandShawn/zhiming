@@ -1,0 +1,159 @@
+"""Stdlib-only identity probe; never import project code, pytest, or trace."""
+
+from __future__ import annotations
+
+import ctypes
+import hashlib
+import json
+import os
+import sys
+from ctypes import wintypes as w
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+CORE = ROOT.parent / "zhiming-v4/.venv-core/Scripts/python.exe"
+BASE = Path(
+    "C:/Users/Administrator/AppData/Local/Packages/OpenAI.Codex_2p2nqsd0c76g0/LocalCache/Roaming/uv/python/cpython-3.11.16-windows-x86_64-none/python.exe"
+)
+FLAGS = (
+    "debug",
+    "inspect",
+    "interactive",
+    "optimize",
+    "dont_write_bytecode",
+    "no_user_site",
+    "no_site",
+    "ignore_environment",
+    "verbose",
+    "bytes_warning",
+    "quiet",
+    "hash_randomization",
+    "isolated",
+    "dev_mode",
+    "utf8_mode",
+    "warn_default_encoding",
+    "safe_path",
+    "int_max_str_digits",
+)
+
+
+def image_paths() -> dict:
+    api = ctypes.WinDLL("kernel32", use_last_error=True)
+    api.QueryFullProcessImageNameW.argtypes = (
+        w.HANDLE,
+        w.DWORD,
+        w.LPWSTR,
+        ctypes.POINTER(w.DWORD),
+    )
+    api.QueryFullProcessImageNameW.restype = w.BOOL
+    api.GetModuleHandleW.argtypes = (w.LPCWSTR,)
+    api.GetModuleHandleW.restype = w.HMODULE
+    api.GetModuleFileNameW.argtypes = (w.HMODULE, w.LPWSTR, w.DWORD)
+    api.GetModuleFileNameW.restype = w.DWORD
+    buffer = ctypes.create_unicode_buffer(32768)
+    size = w.DWORD(len(buffer))
+    if not api.QueryFullProcessImageNameW(
+        ctypes.c_void_p(-1), 0, buffer, ctypes.byref(size)
+    ):
+        raise RuntimeError("identity_process_image_query_failed")
+    result = {"process_image": buffer.value, "python_dlls": {}}
+    for name in ("python311.dll", "python3.dll"):
+        handle = api.GetModuleHandleW(name)
+        if not handle:
+            result["python_dlls"][name] = None
+            continue
+        length = api.GetModuleFileNameW(handle, buffer, len(buffer))
+        if not length or length >= len(buffer):
+            raise RuntimeError("identity_python_dll_query_failed")
+        path = Path(buffer.value)
+        result["python_dlls"][name] = {
+            "path": str(path),
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        }
+    return result
+
+
+def output_path() -> Path:
+    if len(sys.argv) != 2 or len(sys.orig_argv) != 8:
+        raise RuntimeError("identity_fixed_arguments_required")
+    path = Path(sys.argv[1])
+    actual = path.resolve()
+    if (
+        path.absolute() != actual
+        or not actual.is_relative_to(ROOT / "private/tmp")
+        or actual.suffix != ".json"
+        or actual.exists()
+    ):
+        raise RuntimeError("identity_new_private_output_required")
+    if (
+        sys.orig_argv[1:5] != ["-I", "-S", "-B", "-X"]
+        or Path(sys.orig_argv[6]).resolve() != Path(__file__).resolve()
+    ):
+        raise RuntimeError("identity_fixed_flags_required")
+    if (
+        not sys.flags.isolated
+        or not sys.flags.no_site
+        or not sys.dont_write_bytecode
+        or sys.flags.optimize != 0
+    ):
+        raise RuntimeError("identity_isolated_unoptimized_required")
+    if set(sys._xoptions) != {"pycache_prefix"} or not sys.pycache_prefix:
+        raise RuntimeError("identity_only_private_cache_option_required")
+    cache = Path(sys.pycache_prefix)
+    if (
+        cache.absolute() != cache.resolve()
+        or not cache.resolve().is_relative_to(ROOT / "private/tmp")
+        or not cache.is_dir()
+        or any(cache.iterdir())
+    ):
+        raise RuntimeError("identity_fresh_cache_required")
+    return actual
+
+
+def main() -> int:
+    output = output_path()
+    launcher = os.environ.get("__PYVENV_LAUNCHER__")
+    record = {
+        "version": "p8-direct-base-identity-child-v1",
+        "recorded_at_beijing": datetime.now(timezone.utc)
+        .astimezone(timezone(timedelta(hours=8)))
+        .isoformat(),
+        "pid": os.getpid(),
+        "parent_pid": os.getppid(),
+        "orig_argv": list(sys.orig_argv),
+        "executable": sys.executable,
+        "base_executable": sys._base_executable,
+        "prefix": sys.prefix,
+        "exec_prefix": sys.exec_prefix,
+        "base_prefix": sys.base_prefix,
+        "base_exec_prefix": sys.base_exec_prefix,
+        "path": list(sys.path),
+        "flags": {name: getattr(sys.flags, name) for name in FLAGS},
+        "xoptions": dict(sys._xoptions),
+        "python_version": list(sys.version_info[:3]),
+        "implementation": sys.implementation.name,
+        "cache_tag": sys.implementation.cache_tag,
+        "trace_active": sys.gettrace() is not None,
+        "profile_active": sys.getprofile() is not None,
+        "launcher_state": "absent_consumed"
+        if launcher is None
+        else (
+            "present_matches_core" if launcher == str(CORE) else "present_unexpected"
+        ),
+        "project_or_pytest_imported": any(
+            name == "pytest" or name.startswith(("pytest.", "_pytest", "mingjing_core"))
+            for name in sys.modules
+        ),
+        "real_model_requests": 0,
+        "server_access": False,
+        **image_paths(),
+    }
+    with output.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(record, stream, ensure_ascii=False, indent=2, allow_nan=False)
+        stream.write("\n")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

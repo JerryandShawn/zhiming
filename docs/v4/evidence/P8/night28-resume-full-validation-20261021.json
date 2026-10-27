@@ -1,0 +1,1475 @@
+{
+  "version": "p8-night28-resumed-full-validation-v1",
+  "recorded_at_beijing": "2026-10-21T07:42:13.006132+08:00",
+  "v4": {
+    "tests": 2939,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 204.48,
+    "started_at_beijing": "2026-10-21T07:29:11.144670+08:00",
+    "completed_at_beijing": "2026-10-21T07:32:37.053981+08:00",
+    "command": [
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\.venv-core\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "tests/v4",
+      "-q",
+      "--junitxml=private/p8-validation/v4-night28-resume-0729.xml"
+    ]
+  },
+  "source_and_data_unchanged": true,
+  "source_snapshot_count": 370,
+  "source_snapshot_lf_sha256": {
+    "docs/v4/contracts/almanac.md": "ccc286a20e152b7bde1486464c631165c4e358f1746c89922873d85d8da1224e",
+    "docs/v4/contracts/almanac.schema.json": "2c7185c8de7a07059f61440faab28310a263363f26043aa7022840445ed58017",
+    "docs/v4/contracts/chart_compute.md": "1c401e6567e3052673ac330cfbb67839e7b46deb92ed227f1c3c65fd6430bf93",
+    "docs/v4/contracts/chart_compute.schema.json": "dc2d696d2a08242838b559d6fbcc62980108e0fe059d72dd1b6c315c20885291",
+    "docs/v4/contracts/chart_consistency.md": "eb466516623f514e60eca4df827aaf39b2b27ab31ccefd829fbbf5474619d748",
+    "docs/v4/contracts/chart_consistency.schema.json": "30541171f1ac1b0110f3db648f469999660be5022d918efc716e38d9119c9609",
+    "docs/v4/contracts/daily_transit.md": "aaee393c9e8c934afbbdb768975a8a7880e4c10b26389429a829c9a114729557",
+    "docs/v4/contracts/daily_transit.schema.json": "ac389257dade5198ca42573e137591a51b27dd0a34ef443a49cb4d1d7a9861aa",
+    "docs/v4/contracts/e2_m2_controls.md": "1f9763bff39218fdbacdd4d1efc98d5640d7896fd27f50e555040e74eda1d978",
+    "docs/v4/contracts/e2_m2_no_chart_input.schema.json": "63d855ff455ae3c7f6373997581c6dc1b763c906601a2cfc2a5161738eb4d192",
+    "docs/v4/contracts/glossary.md": "037b822b40374be818a17b1a905fcb887d10e084f10737aad77c58f827ebd8b1",
+    "docs/v4/contracts/glossary.schema.json": "42555c9db476bcce4f14c5e310b6bcae376c50e25c94abf01dade72cb40d5cc4",
+    "docs/v4/contracts/glossary_sources.schema.json": "cc7a23f9fecceb51918a01b6e6145342eff63a625611634ca2cc5e93084fd084",
+    "docs/v4/contracts/learning_lessons.md": "6844c79d1a8a1810c8584c4a7b97fa56bd42ba74dd1267d40cf7ca3b2caef84e",
+    "docs/v4/contracts/learning_lessons.schema.json": "ee521572c0c6eb58ead1fb215f544c5f572095179b53213c52eddaaa9fa70b4b",
+    "docs/v4/contracts/learning_outline.md": "689760aec80bcea99a5f0c5b305b9922fbfe6f7ef0ac3e36700e718523ec58d5",
+    "docs/v4/contracts/learning_outline.schema.json": "d76e45ec4ceca330b9bd414e024f70ff366c01ee96aed65323a8350f4649857f",
+    "docs/v4/contracts/meta_handoff_index.md": "9370a06fc91e70f8cefc691ed8e3b073761d901d00a32dc3115ef7a6fd9b82a2",
+    "docs/v4/contracts/samples/README.md": "76a51751084f3360516b9721d8415bde21af63c3c8d59dba6b353400344b3d13",
+    "docs/v4/contracts/samples/almanac-20261021.json": "b309c5742eab56c8a2b80fa0925bb779135fd12a6dd289e449c1250c492a7b42",
+    "docs/v4/contracts/samples/ayuan_astro.json": "35a0bb10dce92aac401a49905b6c0d08fb127179de92418c79166c5ad8ea7f7c",
+    "docs/v4/contracts/samples/ayuan_bazi.json": "fe11a98184a296417f927d16cc57ee3ba664d77865393b9f20b2f867b0ea313b",
+    "docs/v4/contracts/samples/ayuan_ziwei.json": "306b1f368a310b6963187b983245e7c2d492b1ef59fbf99f8c5f28c3cd19571e",
+    "docs/v4/contracts/samples/consistency-ayuan-astro.json": "9704584318ccb54afb1b78bfa05c6d0dd9402ed8a224b1e1f30f9809c5cee04e",
+    "docs/v4/contracts/samples/consistency-ayuan-bazi.json": "b383177a6de76a6b01e99a305bab2dd2fa9813517bdbbdad03a79eaf0cdec8a1",
+    "docs/v4/contracts/samples/consistency-ayuan-ziwei.json": "7f866ad0b09297e3c03db0ddbda39f5de6a2bd42b7e47b935c186c249dbe4fec",
+    "docs/v4/contracts/samples/daily_transit/README.md": "83b8b17e498bf115fa6d846148586be7fa634bdfd87539bfdc14df7d03e4926c",
+    "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-21.json": "0b0984e1a6cf9c48f060071e861da1438d9ee2122a7635095d7f71933a589205",
+    "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-22.json": "1de44c4f5268b6b660ce982064e2fd34b3f2bdfd9cc333cbbe9a8df789778576",
+    "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-23.json": "98ffeb68f3a9d47e0f3c4fab607672e11d78c532d0ef3b8d00dc7a3e2cb8d4d8",
+    "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-24.json": "f20ec9d7c6d5d91ef82e8eaf32235632cf5de95dcf0e5417833ef0b7eeecf353",
+    "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-25.json": "a5c04a2a7d9bb0208e7a5dc0322cedc076a7042c567503f99765df60de0df98f",
+    "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-26.json": "c6a0b32d6badad1cadaa9dad6897e401ced79fe53141e6847d9e247271cde6ac",
+    "docs/v4/contracts/samples/daily_transit/ayuan_2026-10-27.json": "3886f6377f50e14ad25e876c04b6e7d064054341949d057f9aff87e69629d5cc",
+    "docs/v4/contracts/samples/daily_transit/manifest.json": "3bc9081cd0e61bfcb3d0f1aec55a0c1c93d3a3f6d9cfbcb84bb98aa8393103f0",
+    "docs/v4/contracts/samples/learning-ayuan-astro.json": "1731e7bdeb4d06b29e7bcff3c9bcab0b2c306ebdac57e9e78ee9acf0bcf847a4",
+    "docs/v4/contracts/samples/learning-ayuan-bazi.json": "3f4ad34140fed9a80b2899c75fe9c736dbfb6a0a40e27bd662cd5d5f52f5b497",
+    "docs/v4/contracts/samples/learning-ayuan-ziwei.json": "f6ec9b9709afa2266e6caebbc306d16eb9f33c970a6b5cc85aa13693b3ec90a0",
+    "docs/v4/contracts/samples/skill-bindings/bazi-artifact.json": "f5e6d65326d4aa14b73185c8c8c5c9565ad30bdd5800b75d9aaafe8dc609d2e3",
+    "docs/v4/contracts/samples/skill-bindings/calculation-bundle.json": "76dbdf01c6ec607e9213eddba6aa474234d8ddb59997b751b3b86ed92c2acc38",
+    "docs/v4/contracts/samples/skill-bindings/manifest.json": "4fdc33ff016fb44f99510e89cebc47be6f510320978579c484cce1d9c16903f9",
+    "docs/v4/contracts/samples/skill-bindings/profile-proposal.json": "3ff0b607a01e7980b4ee5f64ac30c13998c7d5fdd4fb7c00b249f988da9387c7",
+    "docs/v4/contracts/samples/skill-bindings/ziwei-artifact.json": "cf2e9562a139f9620ce01ffc8ed89d18d6bbecd95857af45c19f6f19381ae9a7",
+    "docs/v4/contracts/samples/synastry-ayuan-xiaohe-input.json": "a3494d26f9389e0576754958c331ae6d18c7c0cfe6bdeb0fc4bccc5db81dad4c",
+    "docs/v4/contracts/samples/synastry-ayuan-xiaohe.json": "5e707188c19c01948312c66e9b83ed20064bd01b6573905e93f808af3f780254",
+    "docs/v4/contracts/samples/u12-assertions-ayuan.json": "a0bd85c47fe2073911304e1c61c6529444c58103e01513a63cbecf91b50cae8c",
+    "docs/v4/contracts/samples/window-search-ayuan-contract-20261021-27.json": "d6c9f82c01fb5be2b24d3c5efce27c4c4ac1cb7638dc2e201618bd14b36d9867",
+    "docs/v4/contracts/samples/window-search-ayuan-empty.json": "7615d105e5daa19c535b8c30ad5a4c3508616965102798f2d4766baf1ad653ae",
+    "docs/v4/contracts/samples/window-search-ayuan-page2.json": "911b56a5955cea36b84a5daadbf99f2241a56f8b84ea07dfcc70b65682c59673",
+    "docs/v4/contracts/school_comparisons.md": "22ef42736561626d89a44af202c897bb413d31380dcaf176c779986caaf60b68",
+    "docs/v4/contracts/skill_assets.md": "02e59dbc676650e9b69c11e99e1a5534d5b4e0af329194f2b87d865f421ca1ec",
+    "docs/v4/contracts/skill_assets.schema.json": "100da60363b20e313d9c1c143d92e78c4adeccea5b2b49bd3b4807fc2239291a",
+    "docs/v4/contracts/skill_bindings.json": "5f7c9897964ce6e4fffd28e3a67e3a2846968a2d232bf0004595f77677874b0a",
+    "docs/v4/contracts/synastry.md": "684744ddbf9151e619e2d68827f1f12f4266f493ece42e6fe8ebc62e8f4c81d5",
+    "docs/v4/contracts/synastry.schema.json": "232f5b5767f24f263538499b8eadb2b76de5caf389b789cafa21457b308b502f",
+    "docs/v4/contracts/tarot_spreads.md": "adc30949e82cebf08866996732251e724dc31170ba7725d86a9e4e9a68c2b557",
+    "docs/v4/contracts/tarot_spreads.schema.json": "331e3dc7dc1e3142b58a3c13c8d5af9e98a9491c81ef6a124da398641ad6b41f",
+    "docs/v4/contracts/u12_rule_assertions.md": "8af019d95011f9c1660fa41dc5ef2aa1e367d8dea27144956d06a965d35460ce",
+    "docs/v4/contracts/u12_rule_assertions.schema.json": "c168f5a11b2286b9e26280b1b5ae12985cdb8078730ea23d59646f455f1aa0c0",
+    "docs/v4/contracts/window_search.md": "78d0451d8192af2d314beb39a4c0d39f36796d4ab937563d70e8f66e35bf97bd",
+    "docs/v4/contracts/window_search.schema.json": "6ace807f294e2f2f70d1b0d0e9a24dc5f8befc29b5932a7a8a17db5e8f3e0045",
+    "mingjing_core/adapters/charts/almanac.py": "831a385754ae4d0b2864ca75eb5ffe2441da4869573ed97febd6ab1a4d0e2af7",
+    "mingjing_core/adapters/charts/astro_ephemeris.py": "8fde847c7820d799d56e811e8ad23c39ded61c4797cc08353ab462eccdd29109",
+    "mingjing_core/adapters/charts/astro_progressions.py": "84a640c7ca3fa14e2312dcd262169b1c5adc330b380ec48d8124de0cb979a105",
+    "mingjing_core/adapters/charts/astro_returns.py": "873598193fa3b429b9055c67abe0f4fff59cb28a2f76520e97ac34b15caaab7a",
+    "mingjing_core/adapters/charts/benchmarks/__init__.py": "574d9c2aae95f8e394bdcbcd29304222c7cfa7dd10755a1b20ee093e677f4a85",
+    "mingjing_core/adapters/charts/benchmarks/annual_v2.py": "bd79d36101d1ac48c0e52e761c6726dc9f2fc08c6e42e826f989c9f9c5a8d741",
+    "mingjing_core/adapters/charts/benchmarks/contexts_v2.py": "7eab27fdb177b385748c11d6065b9bc1cbca5d42a4d677016fd85ffc265b25e2",
+    "mingjing_core/adapters/charts/benchmarks/controls_v2.py": "06b9496f189811ce98564da237c28b3759d33c776f72833925de7d4a093a003a",
+    "mingjing_core/adapters/charts/benchmarks/crosscheck_v2.py": "3a377822de6cf1e7bf110baa7671e060c810be1d040b9b0e19983374148754c6",
+    "mingjing_core/adapters/charts/benchmarks/daily_transit_samples.py": "c80acc3b9321dc4bcf90899f6bf33fe4941e1cce9324f83193fac6d38c1e9cb7",
+    "mingjing_core/adapters/charts/benchmarks/eligibility_v2.py": "5239f38db7c4329df5d433c7cc77b510826259c35eea4bd3b85c61a48644945b",
+    "mingjing_core/adapters/charts/benchmarks/engine.py": "569890bbb4d78a3f0f365991c6592de8ce77630c37fe301209550fa16f53bf75",
+    "mingjing_core/adapters/charts/benchmarks/experiment.py": "56773d0a0df01cbe76e67e5c22d468a337c7f11efa1cb1a1dee61c7d3518a230",
+    "mingjing_core/adapters/charts/benchmarks/handoff_boundaries.py": "ecc62fe7f1c569597314a00420fd05fd4cf8fdc5c6605b30aa9a99e14a41065a",
+    "mingjing_core/adapters/charts/benchmarks/handoff_build.py": "e1c9fd20cb4b041b179aaab8736062755d4fdb46f434b0b15462033831bdbef8",
+    "mingjing_core/adapters/charts/benchmarks/handoff_offline.py": "b9d45478ce1bb1e56b3fdc56570600ec0e03cb01fa37dc9b080e6f99f122d45e",
+    "mingjing_core/adapters/charts/benchmarks/handoff_refs.py": "c26d46397990bf6f0fa64447ba8604d9e7fe11c3bdd71021d79984c87da50893",
+    "mingjing_core/adapters/charts/benchmarks/handoff_schema.py": "68a2a1be356cc681848e71d8a9e95beee74773ac6f9ba46dabfedd24f83f6b8e",
+    "mingjing_core/adapters/charts/benchmarks/handoff_validate.py": "08005318e341690309ab804c19cb16c3e981deecad50c8ce1887fef4de1f1528",
+    "mingjing_core/adapters/charts/benchmarks/handoff_validate_data.py": "4f198ee96bf2f38ab8eb56b798d1a6394a2ad9bc3ef999e2ebfd7ca31684fdd9",
+    "mingjing_core/adapters/charts/benchmarks/handoff_validate_request.py": "2b695cd11857f6b6de420d0dbffeba9a6b369d8c74944f2025d3f1a9afc489fb",
+    "mingjing_core/adapters/charts/benchmarks/inspect_v2.py": "dfb64950209698dbbd1f5532204141f69c1670d7cc9955e53eacb9ca8a53aad0",
+    "mingjing_core/adapters/charts/benchmarks/learning_preview.py": "865eeedb4d7279ddd50d2e067722df8c29ef44b45389fa36ad7db4daddecf89e",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py": "a75177c1338721683e86bd7de397503616a47aa8a76553692d8fbef85432b8e2",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_boundary.py": "a602296934b6be3f5f1c98d715b0be9acc469d1f6716f5f9f2c2819451916787",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py": "0ac477678e3ee95ad0a73015b3f453ddacb3c6142a7c77a44368c036146716be",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py": "24442ae5f5d84379f58a37feea5724614f17212133501eb533d7d1e035a971f8",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_reports.py": "3b4d3a902e6bbb9438682118c184680fc61312b6ad63370d2dd9c307273c3833",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_core_run.py": "7a7424d88ae38040eac65724f763b2b579cade8fd1a926ab8d0199a653ca637b",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_manifest.py": "86c3a2e38d2eebb6bc332ffab88ab4ddc93f8eef485b55fa29bf659d15098654",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_merge.py": "08e1453afdc3c005ee2c05418eda796e52feee1f48f62d9bcc4ad7524223d7af",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_own_inventory.py": "381fb18cf944fc94773955538405229ca12e631bd1dcea5edde5be4d9ec81a87",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_own_plan.py": "56a885abeaee9f0f9175186d467e2fc66fc4cf4dd881454e03c8f400edbc3b9e",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_own_sources.py": "09d89cfca3b234d9a4cdb35243a2bdf29dab5174192eb98ed8c79a76cf5f357a",
+    "mingjing_core/adapters/charts/benchmarks/line_coverage_run.py": "6f9deeac5af3cc22efb80c6d58fe366fb532b2ad0f1f4c12cc7460535a87b5ea",
+    "mingjing_core/adapters/charts/benchmarks/loaders.py": "b3d67efd1daae16374ca79d7ca1f1e70e7f13d94b88861ffe3d5905c9327aabe",
+    "mingjing_core/adapters/charts/benchmarks/loaders_v2.py": "9c7ec60f7312860b87dcd644577ee85951c083db69b3196073a3e7ce3840585a",
+    "mingjing_core/adapters/charts/benchmarks/night24_audit.py": "ced6c99ce6464291be6ff61b92288c3ab2da2d382f27f3e853c114181ac23a4f",
+    "mingjing_core/adapters/charts/benchmarks/night24_markdown.py": "29d4cca794a5b340cc016dadf1ec2a0aa2d209be0bf9499c926d6c01f7165831",
+    "mingjing_core/adapters/charts/benchmarks/night24_performance.py": "48508943c6d2b0dc5a0c5111c9be8925035663f498bc85484dacbb219ac91477",
+    "mingjing_core/adapters/charts/benchmarks/night24_placebo.py": "d7d3fff1e495a27e1a4814ca9ffb4604557eb6b328ab225eaa7a40d76623a7f4",
+    "mingjing_core/adapters/charts/benchmarks/night24_solar_boundaries.py": "3e50ead87eb1e864ca1fb2dc95fc3f557b13712179587eb4754fe132364e3303",
+    "mingjing_core/adapters/charts/benchmarks/night24_solar_independent.py": "7000c9763c335601917fc6d923f380d5d7d49a6353fdb401478fcdbf187ce5ff",
+    "mingjing_core/adapters/charts/benchmarks/night24_solar_reference.py": "32fd6a2dda763ff5ef8107d568b3ba05b71e258a39f809d4a91c7874fb8ffec0",
+    "mingjing_core/adapters/charts/benchmarks/night24_sources.py": "a2171464b3b88a5f9c5d28b140365839ecb44f03965c5803d094a34400a730ef",
+    "mingjing_core/adapters/charts/benchmarks/night28_audit.py": "297c67b4ca01a03ef00496053ce703a958e5ca070a956a3755ac33d1cc92afb3",
+    "mingjing_core/adapters/charts/benchmarks/night28_controls.py": "634a7e2883d67a968db8679dbe387e7993d91543f67b2658aafa66200228cc49",
+    "mingjing_core/adapters/charts/benchmarks/night28_date_cases.py": "24d6210068232c7303871aec7cb2bc6f4bbb56fd5e353e1605e92651099e8a79",
+    "mingjing_core/adapters/charts/benchmarks/night28_date_properties.py": "7f755c8f9306b529aa3c23ce2784d3cbb8d4396edc3e7392c9d2a5a2b3543a03",
+    "mingjing_core/adapters/charts/benchmarks/night28_date_properties_cli.py": "1e63080ccb4864e8c43188ffc5019dd95c78ae947cd240de6136458e1ac55440",
+    "mingjing_core/adapters/charts/benchmarks/night28_markdown.py": "8452dc7234a74a6fee477268e9fad9294458fe4834bc76914d888c19a62d0e19",
+    "mingjing_core/adapters/charts/benchmarks/night28_property_common.py": "0d9e60db552ee1ec4199294da565b7ba06c04a4962b5ee127c3555c24bfde22a",
+    "mingjing_core/adapters/charts/benchmarks/night28_skill_samples.py": "aedbdc715af4ae4025ae57ce3244d117382b03053f9aeb83d91ecc49a13edc5b",
+    "mingjing_core/adapters/charts/benchmarks/night28_temporal_preflight.py": "8b66b789ec81fe2027f4a4b3c680217eeb670f21b92ba1d75ef0fcf96026278a",
+    "mingjing_core/adapters/charts/benchmarks/night28_tools.py": "22d14a0041dcd5d0d96d7d240c7808aaff117761dca6c1690678fa89ec495cc7",
+    "mingjing_core/adapters/charts/benchmarks/night28_window_properties.py": "35d9897947e7e46dca09fa60b556c152f3977ebcea2f3b97360dd30e9f6f868f",
+    "mingjing_core/adapters/charts/benchmarks/night28_ziwei_crosscheck.py": "b6bc4259b3357632f053f189e3fd62fced858216a02e7c34a2d590ada329674c",
+    "mingjing_core/adapters/charts/benchmarks/night28_ziwei_reference.py": "b9b180dea5add9abb35c39ff53dd8e955356a7c0a75245054efe8a60eefc4409",
+    "mingjing_core/adapters/charts/benchmarks/protocol_v2.py": "116f6938ab337cdd3e08c775b83e77267b5865b60ccf2038b22388f7144deb45",
+    "mingjing_core/adapters/charts/benchmarks/records.py": "2a5b56126841c65100f2524ea39f896c0605902adcf75d535e11c1a01609a656",
+    "mingjing_core/adapters/charts/benchmarks/scripted.py": "36fabde0f3b2de8697105725c7c92250fb60a92c3520a8cc1a6bbfb68a8207fd",
+    "mingjing_core/adapters/charts/benchmarks/scripted_v2.py": "53d7403626d5af977eb99822f053e66980e99ef537845f15af1543f7afa9d995",
+    "mingjing_core/adapters/charts/benchmarks/statistics_v2.py": "711f63780acb50a3c801842d9e0449753a6ea3bc1d4ee2bd5354e3d2797984e9",
+    "mingjing_core/adapters/charts/benchmarks/window_search_samples.py": "687668cbad466d4604d484be2e34bc3aab4d4e3eac05b05cb2c0eaa24b098dc1",
+    "mingjing_core/adapters/charts/boundary_alerts.py": "f6d3817496778c37d7e3f605b26ca244775a4fa58c9885b63b5bd8dcc4545d69",
+    "mingjing_core/adapters/charts/boundary_candidates.py": "773c78b6458d165d978a4f3bbea97a5f8bd110ed2aee28310f6ba6c48bd604a6",
+    "mingjing_core/adapters/charts/boundary_solar_reference.py": "28af1e0ad0cfba64ecd45b7db7c120f6934f4bd8150e6de4f98a442a42e1c8d1",
+    "mingjing_core/adapters/charts/climate_review.py": "696221592ef59e46cea358286a66b823118ca01c5548e750e54006bf56e1789a",
+    "mingjing_core/adapters/charts/daily_transit.py": "dd5f4db3ce649621f960ae8ca417a6347a1284454ebe451fe7923f6f81630988",
+    "mingjing_core/adapters/charts/daily_transit_astro.py": "0cdbedbf2d4f305f6f4e23e37a293c5d0eda7b6ddf934e166c692854f096581b",
+    "mingjing_core/adapters/charts/daily_transit_bazi.py": "5a6995c28cdd0aa08c62bdec77d57fad88ad67f1c2f6d20d00a2470f83f63c82",
+    "mingjing_core/adapters/charts/daily_transit_natal.py": "2c393b996f4050d2df2367d9890280a093b5efeed2a877237a8d57f16558a1a6",
+    "mingjing_core/adapters/charts/daily_transit_ziwei.py": "a588e03881cd88789529e917dcc44d8248f1b92e5181e1c26cb370dd5451f8b0",
+    "mingjing_core/adapters/charts/interactions_bazi.py": "5a59f2da35caa65252828039cb8a7303e3cbf3c158e09559cfa2b53f6fc93418",
+    "mingjing_core/adapters/charts/interactions_transits.py": "5802f12958c0e47658cff04d0c6e7bf576b96f6e4abf17a1bfa38782d20b706e",
+    "mingjing_core/adapters/charts/interactions_ziwei.py": "baa2c814a0b2b1d3e678052a580f0c36e94e91fc3b85742adb7b6863777b05cd",
+    "mingjing_core/adapters/charts/jie_uncertainty.py": "f734d17258a0dcbc3aa1864d7b00e285071a3851f771a67ab99075daf0223060",
+    "mingjing_core/adapters/charts/named_bazi.py": "9f5e1843c10d540ccbd05268980ef00441593e93f19af9e132d6baf5aa4bd382",
+    "mingjing_core/adapters/charts/named_strength.py": "4ceb88bf8d8501f7defc978d5d05244d7c7e45c5c180bc9a2a2785b2042f938e",
+    "mingjing_core/adapters/charts/p8_adapter.py": "3e9acb177fb98b6894e8fbf20d207e005e8f424ab6b858dcc23bb72ca7f07595",
+    "mingjing_core/adapters/charts/p8_analysis.py": "72aae34f25e3ab4d1c9263564d3649eedc96aadc65bb6fef4060b6757caf2f4d",
+    "mingjing_core/adapters/charts/p8_policy.py": "2951cbc243484fae5759ee91e27b16b14ac9e1522721f776953475d3babe1b4c",
+    "mingjing_core/adapters/charts/p8_pure_tools.py": "fbf57c4fb7cfd53c7ca85a02df015c6745fda8d95fde1359014b5e1f393b4ec0",
+    "mingjing_core/adapters/charts/p8_structure.py": "3dcc442a40d13511b2abb61f36e35be6995a898e0cfa6a61640bfe6333c36e07",
+    "mingjing_core/adapters/charts/p8_worker.py": "d3898415ea09a0ec60304abe6a6c25bfb20afa5f4eedb12a31fa8d8a9e48b270",
+    "mingjing_core/adapters/charts/profile_draft.py": "21443d86a5bb4fee45ff65e97ece0dac91fd18cb22016384b58e76de9a6be065",
+    "mingjing_core/adapters/charts/rectification_workbench/__init__.py": "4bd3b498ee34ff4ff9c5aca4dae8ade58869be65744364f7f637ceeddef005b3",
+    "mingjing_core/adapters/charts/rectification_workbench/calibration_scope.py": "e5cb58feb0c1b617bce3e0ba1bcbf4bf76423b48a37055d9445c42f877dd8667",
+    "mingjing_core/adapters/charts/rectification_workbench/chart_grid.py": "c8bb928c30cd5400971597c04df3db83a45fc9ee0cb33c48579460bd9401af8d",
+    "mingjing_core/adapters/charts/rectification_workbench/contracts.py": "2f24f27b55e43f49c432522f0b9fbbdb1537eee463f2c95119c8f6c589d8dee8",
+    "mingjing_core/adapters/charts/rectification_workbench/envelope.py": "9e78132bb335ff70c5f7970436c715b1963187068b72d9dbedc6eed92b4f04ce",
+    "mingjing_core/adapters/charts/rectification_workbench/evaluation.py": "534a20ab180077ea762bb553e08dae13c3cd9de12b80acd9d93f7f33e4703a95",
+    "mingjing_core/adapters/charts/rectification_workbench/evaluation_cases.py": "142d67240aa63088820d0d41070d7d0f67dad721206ad6beb48c33991caa5e3e",
+    "mingjing_core/adapters/charts/rectification_workbench/evaluation_charts.py": "f5a13ce6ae0e3723c9a41c1346e06e160171b068dd6384654b8b9d6c308d2ddf",
+    "mingjing_core/adapters/charts/rectification_workbench/sessions.py": "8175a945a009686e1719bbe2a1525b46196ea4827656c5d613b058d31edacbba",
+    "mingjing_core/adapters/charts/rectification_workbench/signals.py": "87415fd4ce38b002c3056c6bbf51104fdba066345b752b7dd96bffe40291db05",
+    "mingjing_core/adapters/charts/rectification_workbench/statistics.py": "21e04d93b0c20856efc0f4b175f09633fa6d5c4620e9186c98f605b9d8029633",
+    "mingjing_core/adapters/charts/rules/__init__.py": "eff1b36df054bcebc4a4fbec060f60e6075287ed64fb462e3c95bf78043a1a0f",
+    "mingjing_core/adapters/charts/rules/conditions.py": "2ffdac8c1c4f71bf04382d60c9f57956b54f179c6c17172c91a87da61dc2b3f7",
+    "mingjing_core/adapters/charts/rules/engine.py": "b0ecc4067936a0d53ca0b438fb4515da86142b70b856f75258054454029fc913",
+    "mingjing_core/adapters/charts/rules/interaction_metadata.py": "273af6285d3d57c414d8e09cf049f042e8809f73c7e85b6b4e901d0420f4f22c",
+    "mingjing_core/adapters/charts/rules/registry.py": "8e424a1a555eec3b9f9c6d79b70b6fbf4141480023ad0f4f07c63bc9377b8d84",
+    "mingjing_core/adapters/charts/synastry.py": "313012bdbaf63d3c9dca1f07ecd00c420918f45dcb8d96873cf3e1444ee996b6",
+    "mingjing_core/adapters/charts/synastry_bazi.py": "63acf539d608285bcebbb50859dec04e8febb9fe4b444b4dd75c871efed764a5",
+    "mingjing_core/adapters/charts/synastry_ziwei.py": "679b1e69974f0fb803921fe0f91cd05e7fb2a985baa685ca553b9759c60b8f2b",
+    "mingjing_core/adapters/charts/time_basis.py": "e25bb738e292f71e69f2735af237b898438476d0fc6bfb867ca36053a5cfedef",
+    "mingjing_core/adapters/charts/time_basis_candidates.py": "5e3879e420d2d7d8306c373ab44eb2a38395962bea4c06e609c38be81b694267",
+    "mingjing_core/adapters/charts/time_basis_chart.py": "f1360a4e98317be2aaf2c78d01a174b7a64538a2c0372b5253b0bcd84046f7dc",
+    "mingjing_core/adapters/charts/time_basis_readout.py": "a0c3c376892b54c8b36e1f0a30182479d3ca182adb77cdbe2f3626d3fdf38a06",
+    "mingjing_core/adapters/charts/time_basis_request.py": "2f8a81f7e1831924b1e8af036a6f8a0e037fbd586008102ae14fb92eefb5fa70",
+    "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
+    "mingjing_core/adapters/charts/time_basis_zones.py": "1d863e985669e74608f571e3fce6f285dc754e07262640fe0839b3e8c08fc173",
+    "mingjing_core/adapters/charts/tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe",
+    "mingjing_core/adapters/charts/western_timing.py": "1257bc2d4b3bd0673ad6846c0e35e0d6a739579c105cfb6da333c9bddef3d808",
+    "mingjing_core/adapters/charts/window_search.py": "cdc1db7638183e8f61afdd1fd71cca90273ef925c48690c26819a7b4c75ae526",
+    "mingjing_core/adapters/charts/window_search_pagination.py": "6698026825d263e75f5e14e183c94a3986861396954fba31537102a61b1de277",
+    "mingjing_core/adapters/charts/window_search_scoring.py": "f7e327774724502489466f9dafb5bc3b8176f18dd7055d88038faff942f285a5",
+    "mingjing_core/adapters/charts/ziwei_flying.py": "18fa4716c423c6781b87a296a32e7b5c3ef87ca3967d186013da2a32071050c0",
+    "mingjing_core/adapters/charts/ziwei_flying_support.py": "62bd34ec4c3776df68d91805d80d8b34c7a64e18046577d7121b966670dcdce9",
+    "mingjing_core/calculations/bazi/__init__.py": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15",
+    "mingjing_core/calculations/bazi/calendar_layers.py": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d",
+    "mingjing_core/calculations/bazi/elements.py": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0",
+    "mingjing_core/calculations/bazi/stars.py": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974",
+    "mingjing_core/calculations/bazi/strength.py": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6",
+    "mingjing_core/calculations/bazi/structure.py": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2",
+    "mingjing_core/calculations/bazi/supplement.py": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f",
+    "mingjing_core/knowledge/p8_bazi/README.md": "f060345d8249f3d28dc1e4c6eb2cce8cda9f82bcb151712da47f5fbdfe7eeb6c",
+    "mingjing_core/knowledge/p8_bazi/auxiliary_stars.json": "02ba01121b72562bc4644e5db8ba00628c6b1524f3931a00cdbc9b8ee419ec4c",
+    "mingjing_core/knowledge/p8_bazi/climate.json": "8fe8e8ee0ff2af8fba1daaa9f5ba0157b2513318dd1c1452f54163e6c9af20f4",
+    "mingjing_core/knowledge/p8_bazi/climate_review_24.json": "e5d8357a4a4baf2b207b1c49831232fe16b477d669103d6264c49539550a68dc",
+    "mingjing_core/knowledge/p8_bazi/month_command.json": "bc20580ac1f031e508f99928648d2432caccd5363e952a5f5212f3fc28ef9296",
+    "mingjing_core/knowledge/p8_bazi/rules_v1.json": "7d8bf7a37aa5ef645c66331fa381825ca1e2fd8e1a6d32e972d0a4611d0b3448",
+    "mingjing_core/knowledge/p8_bazi/schools.json": "10af42bc53caddcf9430657402b2460650608f201399348fc21b4cb2ff44276c",
+    "mingjing_core/knowledge/p8_glossary/sources_v1.json": "a781219cbf9f364ca6fbe89e82ce5e4640a99851a29bc65988b7ddcfcf67f1f1",
+    "mingjing_core/knowledge/p8_glossary/terms_v1.json": "b1005b6e1748c7cb0dc680ff0b43ea93c4e54819b3a23da49f8e5b3a0cd197b3",
+    "mingjing_core/knowledge/p8_interactions.json": "af859c9e1d1288ddb87c1f34a27e861da13e89e4b26ca142b1ecd49ccee34cde",
+    "mingjing_core/knowledge/p8_learning_lessons/curriculum_v1.json": "172e78899d753d27dcf5a95620a99d5961d5a20c0d09b891956912e13ac32a60",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-01.json": "a7c5ab0ff0b843a9e3b01ddec94900e8021abc81cda535304eb3b7c3ac84401a",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-02.json": "bb7b8de777a4e115296bafc0ed5544ffca6799143dc7856c58270948c577b503",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-03.json": "98b982e0a0c536addec88639cc9fdf39597982a979eb9b6cc8bbaaf3129bd457",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-04.json": "be042980ba290242cd65ce63388014819bbb2f01b410a08c313c0363ef3d22fe",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-05.json": "ba3f7e557996b977d31f50f3287b2271da4d4801b03e7b09245d9ca26af805c8",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-06.json": "83fcb1068868016719ce569c38e37dcb094fa4be301919eda23f91e1d3c7c53c",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-07.json": "818d2cd8beb37847166c266f3272b195d9a6ea9d9b4cd58082273d87d2076384",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-08.json": "fce7e6935ce493b3b7bbdbac27561b49ef4d804aefa6256dd11cedd579393940",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-09.json": "0df4857511e3d350eff0f7df16ddbf234070b2250d5d7eb082705e0bafa60f67",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-10.json": "eba1973898ca2b7186bad5883f45556e6350d5877a44973a93e55ffc04dcf38f",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-11.json": "e14944d4e580458dee8e7def6ea17e268ab571e18ea5b54c78a2458ba37b3ede",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-12.json": "6ce3b75a56bed969e5dd69d4db86d75e09b0497ecf5b4cce95d40601df33be2f",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-13.json": "5eaae313ff232b68801d262e408acac0dabd09797e15ef6645c1a0346afb4616",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-14.json": "9dd23a7b70bb0f076a5abca9c0ed98baacb7671ee069dbba9b5eb1ddd35d2512",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-15.json": "b79d21d43dbaf4f472521585e8ff26015ec1c289478ff37510c34361947cc4e1",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-16.json": "c5af3e27fa5317e15d661dee4399977d27cd83b67f3d9a476f54b30613a2a7b4",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-17.json": "44c5d4e169d7199f698069e35fbc46c30a1026efb50fee048b9fcb486bd671a9",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-18.json": "40732057bf78827351485fd73ed2d26c6bd7cbc463cd8f3f23aa32ef64d64f58",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-19.json": "4798ae772770eefd860012d43516e0475ea06d4e91e73b18f4b63edffdf5dcdd",
+    "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-20.json": "f17322f51718fde5a29830726559f847d1392c2f346b1e448f9837f476764308",
+    "mingjing_core/knowledge/p8_tarot/spreads_v1.json": "dad642dd2a6e0513c91b6741968d5ffa4b53356cd74057f922c41dfbff470a9f",
+    "mingjing_core/knowledge/p8_windows_v1.json": "8c202009f39c63b2bbf811ae8cdfc0d7386c465e70997c188d2189e4d938d322",
+    "mingjing_core/knowledge/p8_ziwei/README.md": "736ef6a0b8d4b00cd89b4fb428e4a6bd4f882412e6cda45050d509d33eca2eae",
+    "mingjing_core/knowledge/p8_ziwei/flying_v1.json": "e4c798ada240fd5aabd515d06372c505c08103032271130b6d1d1a5a6a3b363c",
+    "mingjing_core/knowledge/rectification_rules_v1.json": "6091e2c573bfdbd5b6bb2b5abeb6ae7a8a54d84d0cb4abc02bfc452e9d7d6689",
+    "mingjing_core/knowledge/time_basis_noaa_reference.json": "adaceba143c8244229b0a0afe7ce4bcaebe71f5c230320aadb0c5315e674054e",
+    "mingjing_core/skills/README.md": "bb37f9730a46f25e4f64efcf91edfeeeba4c527e3adbd7612113c540f4bb0319",
+    "mingjing_core/skills/__init__.py": "5ed5d69de6cacfe7a94d891bbc9d754b9249e8c1f53d9484cb71e656b671abd7",
+    "mingjing_core/skills/astro/01_natal.md": "9ced93ed9fabb815a86d6238d0442c16f431f778c539c44404d56c092ded5fe6",
+    "mingjing_core/skills/astro/02_aspects.md": "635c2beb0eef07f14abd23a63a1ae73df618a32f29a1e64f613f633594ca9a3f",
+    "mingjing_core/skills/astro/03_transits-progressions.md": "40a06e3ca627666297c812ddfe785f0ef8cb941e195c64ab3a4a3641e431388f",
+    "mingjing_core/skills/astro/04_returns.md": "b4efd5850bd6762c4b10e57b7d1a2082d0beec856b24b0958bc32cc56caa2555",
+    "mingjing_core/skills/astro/05_misreadings.md": "f36bc0a06d59b00ea752ef958fa9723cd4b32fdd70b12db5b6f04b2ac559ab36",
+    "mingjing_core/skills/astro/SKILL.md": "a887de6e02f50690d83130f5d644af023e75cc164b674c3ba6259795a7d037ea",
+    "mingjing_core/skills/bazi/01_basics.md": "aa2ca6018b1cbd03c236ac5b66339e90e55bb0dd3fdc76f338e8cd4a83f358d7",
+    "mingjing_core/skills/bazi/02_strength.md": "a5f1afb188691f34b8eaec48577ce304659095a1e1e8b784e2d4694791c2f0a8",
+    "mingjing_core/skills/bazi/03_patterns.md": "bfa51187ac1a2b39f11a395a1efaf5befeb5a6bbdc6c2feed620197011f03a58",
+    "mingjing_core/skills/bazi/04_climate-useful.md": "7b2d508adbb8963b09ff110c8577950c478dbcd8b1a378af24d8fd5c0d776dff",
+    "mingjing_core/skills/bazi/05_time-layers.md": "fe62b7294e3c561be7c7fcd5d71ef1639ecfe0264ab3129deb9861ed0502886c",
+    "mingjing_core/skills/bazi/06_life-topics.md": "13767b28ade087c7d8b6e7e2c80c0f4fe87c23fc4b04baea940b16885a2fd5a2",
+    "mingjing_core/skills/bazi/07_misreadings.md": "6c33808e9ee5e2f829061a90592779178938bbe7ade7a78c4414c0e57fd41e3d",
+    "mingjing_core/skills/bazi/08_rectification.md": "ffe16edc80d302f5e64e47c68debfd91af08d9ec5c1eb5d8e1f17bd422d18d7a",
+    "mingjing_core/skills/bazi/09_rectification-rules.md": "e6d434c20fd7b8eb792eb7a26484bfa86c89522fa2190daa197cd5cd9c2dfca7",
+    "mingjing_core/skills/bazi/10_traditional-hour-methods.md": "9a21d45db8acb281fa88ecc0c0da6c26ec81f50f57019977eabb56ff12dbf1d0",
+    "mingjing_core/skills/bazi/SKILL.md": "c98c428aa739e12d5ae3e00e2834dbca55541d4f37124737d7de8272dd39f209",
+    "mingjing_core/skills/calendar-tools/01_daily-transit.md": "f9cd8c655b7fec9a764d2ca43048a0e394c4176c2bf1d007c5ced67d729c8390",
+    "mingjing_core/skills/calendar-tools/02_window-search.md": "08f5d11dc938e404c0f16b09451278ffdf4c36dffc51ff9a7949886d787f2d60",
+    "mingjing_core/skills/calendar-tools/03_almanac.md": "00faebdb56cdb9fce2eb1331567ed8f27851afdc9dcc5004a49703dd41dc1df4",
+    "mingjing_core/skills/calendar-tools/04_synastry.md": "8b924c819eb6f29a09ab5b93ca960064f26aab0607926ef842def5d4fe04b564",
+    "mingjing_core/skills/calendar-tools/SKILL.md": "ef6dc0910cd8091bf5bf783958adeb7124afcdbfa188cc5e8acae64d95ebae05",
+    "mingjing_core/skills/catalog.json": "f2711c69d74413a12fcff2b6c8e69595f0ccc1120fe5b55ace49a60cce39502b",
+    "mingjing_core/skills/consistency.py": "aff8bf1d192fa10b6b0a020a64096d950a6092f105f0754e5fe774e95ff193e0",
+    "mingjing_core/skills/consistency_eval.py": "c57a07dec126be15d0ea2a8377731f6e8ab019b3f6a7f54a76e400befbb4d5af",
+    "mingjing_core/skills/consistency_facts.py": "41f2ea620e45ecea81cd3c1716939f08b16d206128e7c8a7aea2c4715db9d2af",
+    "mingjing_core/skills/consistency_text.py": "83363f47dc7bf9fe1187f4b72362a11b140d495f3928863c7182574ea961b984",
+    "mingjing_core/skills/consistency_u12.py": "7d8bf1942539f7b9b678e19f8a279ea0b8c4e46ec3b265fb6a5a48c6941fb1c3",
+    "mingjing_core/skills/consistency_u12_eval.py": "054d1306d7a892fe9513bb96fe68dc907cbc74db3deb55e36f22ee6c5becea43",
+    "mingjing_core/skills/consistency_u12_input.py": "d17934c721f146195b1ad84f85c3d780902370cb933398d74354f5e641bd6d64",
+    "mingjing_core/skills/learning.py": "175d9eac9dc511aa6b5c38fdabe1eac9409027c6775982025c5307f3913b2695",
+    "mingjing_core/skills/learning_input.py": "e8bd303ba8d0663584f2c3884b14af174d11f208bf209b5ff50d862529ac3a00",
+    "mingjing_core/skills/loader.py": "a8c0c57fbbd217435144c57242d76cea7d6fdc41c149c6052aba447b89a4c818",
+    "mingjing_core/skills/tarot/01_major.md": "36100d9978d12cf0e3305d04e1f3c23f8be29739007fb84805d30c2797f7df82",
+    "mingjing_core/skills/tarot/02_minor.md": "2c639164a6473af7e473e5874087395735a0d12291608054acb31078b208f806",
+    "mingjing_core/skills/tarot/03_court.md": "0081698706569269e1b9920e69a59342497e899c567ee16278c57e3f73adc9ff",
+    "mingjing_core/skills/tarot/04_spread.md": "4fbaff323943616c941f6a2ed82ef550f729248c34abc20846608a8563bbb46a",
+    "mingjing_core/skills/tarot/05_relations.md": "c7fb9e0290c01e997164e60a4fb03f3967e664e9bb90e43665657a1015c7cb48",
+    "mingjing_core/skills/tarot/06_reversals.md": "4dd1fbdbf4c1264b2adf51c61b4f5c242b6ce137b784040d2ad827db49bccb2e",
+    "mingjing_core/skills/tarot/07_misreadings.md": "5151eb635833e5da0e8e71dd48c3b9376bb85012e67b5391ee3127b948a4f743",
+    "mingjing_core/skills/tarot/SKILL.md": "ffd917dc535d5a7ed90a296f015c76e130971867e1b9896852834884aa325a1c",
+    "mingjing_core/skills/ziwei/01_palaces.md": "e5145397c603f4f990b549340a17845df00a90a529b285aba94d7af2252e86b0",
+    "mingjing_core/skills/ziwei/02_major-stars.md": "5c9c5a47fffb56f13dcec4a31ba703af3e2706ef9afeca7b18dc1dbc230286d5",
+    "mingjing_core/skills/ziwei/03_mutagens.md": "41cd4e27b985634b5daa67592e35499b48e1a8ddbcfe9a01d91174b769fc45f7",
+    "mingjing_core/skills/ziwei/04_combinations.md": "de696f753623ffa8e1780deae13386fbdc9b56078cf1459f95784275af9738c0",
+    "mingjing_core/skills/ziwei/05_time-layers.md": "66c273fd0734f3b5876185bcbd229eaba1244786721ba8963f3e4a262ad92ea4",
+    "mingjing_core/skills/ziwei/06_misreadings.md": "6bcc063dae16911dd30c166c79c3f606e0757749fba08d7b4bdcc3955c779669",
+    "mingjing_core/skills/ziwei/SKILL.md": "999b1deead579a62bd95ad445ce8a2485bab0d6d9bbaf1ce264d70f0f9a15f75",
+    "tests/test_p8_astro_native.py": "20cb4d9849214b963e93e650b00bdfad575e5e8eee477153d8dc5712552ee4d6",
+    "tests/test_p8_boundary_alerts_native.py": "16d6e5846be0c3c5f261e4ac954697ad1c81c1326b0c67639b813570e80338ef",
+    "tests/test_p8_daily_transit_native.py": "5b39171fdc22a1e13c51c246370119c6848c1e875b5e4d827d41ba03ceaae1ef",
+    "tests/test_p8_interactions_native.py": "ab39a1aa37065a6dc90754d631c1d2a72379d1f9aa1b25a5dc490f160e721afd",
+    "tests/test_p8_jie_geometry_native.py": "9405500d67c5369d3bca5e197d5686f7d3debf6e7a05c624d5419e6dc5c56f17",
+    "tests/test_p8_meta_integration.py": "af8913c6c2ffa6876f0ce616fbaf00d32ca711639c582e7abd674b320c44529c",
+    "tests/test_p8_named_schools.py": "f4a7881827df03459f4fad6795e075e24c055f8f0971568ab3425379634c3685",
+    "tests/test_p8_native_calculations.py": "79ca1bc135139e274c9a0e5a5599b2c5ffb6c0223ea961935a4c423f3a069e22",
+    "tests/test_p8_time_basis_native.py": "abf66250680016805be4e684265649676f135f7d8a9199c6499019161945e044",
+    "tests/test_p8_window_search_native.py": "013581dbb7c348a9b09bc53c8a6248fcb33a66cfe4e9c32eb21ec7f4efc8be2f",
+    "tests/test_p8_workbench_grid_native.py": "aa80e97e5df751cba566999d40ebcd0779281e745f98206852d8d1b0014b1f96",
+    "tests/test_p8_ziwei_native.py": "61af1e0b69ccd9e03cbb84fcb5871d2b70ffe952be4738f66764a57b33115b01",
+    "tests/test_p8_ziwei_review24_native.py": "8aa8f5771f474733a9f582b09dde631d54f46739d5d05b37b3a3213f48572f3c",
+    "tests/v4/p8_coverage_history_context.py": "7458c44ef2e2dd6cc7548a855132da81763b29ef51d5fab7e2a3956090ff48f1",
+    "tests/v4/p8_rules_sample_context.py": "df5e102692d8ee1dde0cf5e71cc336c8d3e147c1ee59fc1f634e468f62ed949f",
+    "tests/v4/p8_skill_asset_context.py": "0b89d0277fd46ab616a2b8b5b95a937362f543976dd59304fe618b3dd28305f4",
+    "tests/v4/p8_u12_assertions_context.py": "973e2754c3e996f600fb1215adf5493f247f5a82796c0273769ba906a8fca774",
+    "tests/v4/test_p8_almanac.py": "bda7ccdcbde5732a3558d3a69c1da8598712c1b18e565aa2de24b5a38bf2385c",
+    "tests/v4/test_p8_astro_timing.py": "94c03b3b12af558771e3e43cd389c7bb8d44fb5e1d53031a67f49af4d1a98cf0",
+    "tests/v4/test_p8_bazi_rules.py": "b64e5d2af941532264426311a17c80132ed6a09756f16d9fead40bb69dfb768d",
+    "tests/v4/test_p8_boundary_alerts.py": "3b5f80c12b6d806bc0441d589a361f736e08506c57c81c514121fac2bfdef7a4",
+    "tests/v4/test_p8_calendar_tool_skills.py": "e3b51d77a0678803da01777681bcdd6d99a1e59a5151c8eb63f4fb5b899f3fa9",
+    "tests/v4/test_p8_chart_process.py": "976565ffb43abc3eae4407dcde67c37904267e8d13695e3a1a652f54648e0ede",
+    "tests/v4/test_p8_consistency.py": "0b412942374693517aa4f0b4fcda09563e2edf8db9de3717c76736af624ad708",
+    "tests/v4/test_p8_consistency_boundaries.py": "063ff7a963e3a013ffac6bf6eaf2274a824601dad1d67eb278e13e2c7a512b1f",
+    "tests/v4/test_p8_consistency_context.py": "e89e17194c28b6870e174223028a6021003d876c4d411e3ae266454ac5806211",
+    "tests/v4/test_p8_consistency_contract.py": "27beb73bb2b507cdc23b5c63b06229409a88fba8ca9f550c7da04de98c3b514a",
+    "tests/v4/test_p8_consistency_review.py": "dc30c4fab03188bae543ad7d42a112170149487d7ca4649db5ff0684c108f33d",
+    "tests/v4/test_p8_core_coverage_guards.py": "9e9bda2a4dab8d5b801d4ac7b978963c1570cbb64361cd27c7d37ce200031b7d",
+    "tests/v4/test_p8_core_coverage_independent.py": "cd588b20c58d14dda2fd31cdc6b76b1b459c800db3b5bc8f5824d1b4972d53ad",
+    "tests/v4/test_p8_core_coverage_receipts.py": "9e40812aca3e9f1e60c2e9ca5a44eeb726d583dc27fec0b817ad0a95f3eafe1a",
+    "tests/v4/test_p8_daily_transit.py": "938113175bef6ecb6dfce84a8e41c94d22590a7a4252af8913ccc5216a9258ed",
+    "tests/v4/test_p8_date_properties.py": "0c30e2736b25980a36ca75cc7572d247451abbf6db08e301bf33e94d90c2f728",
+    "tests/v4/test_p8_e2_adjudication_v2.py": "998cd8db3f26205074cc0ec5e358ac4b26fe06f503cc87be0f976b9cf7d38f5b",
+    "tests/v4/test_p8_e2_annual_v2.py": "129326ac8021c5564a946002c86d58eabeb8fd59ef67328dd87d97103dd96aeb",
+    "tests/v4/test_p8_e2_benchmarks.py": "935921b810cf8324a4182f99bb4d87cda08dcf1301f319b2d5ccb3857439b79a",
+    "tests/v4/test_p8_e2_m2_input_contract.py": "bcd6c6a111031b2435e0a2c7514d4488340e3cde60ab6fff3b64c50d37da6d0f",
+    "tests/v4/test_p8_e2_night28_audit.py": "420f323dc20e80a53bf397e55c17488c84be57454aeca6426c78c3f2c11f2fd0",
+    "tests/v4/test_p8_e2_night28_controls.py": "50e2cae17ed20a1d74a064b96c635f6da1904073e6d6d1dcf2b0af1d8afb3fd5",
+    "tests/v4/test_p8_e2_night28_temporal.py": "ec6fda8b12d4930ef8ed7965187a32ceedd51113938ea0ed9868052829b77bf6",
+    "tests/v4/test_p8_e2_night_integrity.py": "13fb19898c3d7fd6e313c2521ea47039f681e9dd62cce59890d22275cfc36c21",
+    "tests/v4/test_p8_e2_night_placebo.py": "ac42f1e7109476e6a5fb739563825695ff62e1448ed6a4f96995f35fd9558dbe",
+    "tests/v4/test_p8_e2_night_sources.py": "bbe5b25f51ea0e1269621942978ae36312a148eb6c9fe7e628fac3a790f5a85a",
+    "tests/v4/test_p8_e2_protocol_v2.py": "0ce5f549ee9bab0e2717f71cd56285f294efe0af91ea3da5220dcf6f66a799de",
+    "tests/v4/test_p8_e2_statistics_v2.py": "76892bc339a1a2c81b4b1fcd8c6e051740139d78981b23fa05fe96ab9b03c6fd",
+    "tests/v4/test_p8_extra_condition_matrix.py": "d564ad3c08e1e0272659701103f43f1bf8d558fb8e15153b53fc1cad62f9088c",
+    "tests/v4/test_p8_git_range_portability.py": "3c85fe99027f0f255df0c87040a20f56d7556e2165a85e3e12f38c56fc762817",
+    "tests/v4/test_p8_glossary.py": "24ea9c5270f6eb1cb9a3072672e4783f2e6e0f4aa8197e9a2fbaa94fe107e819",
+    "tests/v4/test_p8_handoff_preview.py": "ef549e98a7506d4b3ec735e9f1d21b8b15dcc5057fd5fa649e16ca7cb5eaf754",
+    "tests/v4/test_p8_handoff_request_binding.py": "39a30fe09d6f62465bf87b057b343aab736a4d8caa59eb2a878472c2209f4330",
+    "tests/v4/test_p8_handoff_v11.py": "89fc31e698a506b49c4cb819256deea8f74576fbe4cd9432a3f9fdfc14077b7b",
+    "tests/v4/test_p8_jie_geometry_process.py": "d7c4b6385d0dd97a1fa667ffcc26472d5ff38c5270be606e67dc3c47827ff5d1",
+    "tests/v4/test_p8_learning_lessons.py": "f1c909468dddaf0cdb1513c25bf2f1b07f040bd55f580bacb78d1603dc66bdb1",
+    "tests/v4/test_p8_learning_outline.py": "199ebd256827d12279d9b7617bad02bf66be037aa3970c94c8ca39ee7edf2145",
+    "tests/v4/test_p8_learning_preview.py": "5e9293b1d0e88ab3aa282534a14feaa27162de73eef7a2fe29e91bbcf764cbee",
+    "tests/v4/test_p8_learning_review.py": "a8c5ef5a06e732c82c31e94f13ec416ecfaf4fbf13fba4385755fd82e39d9723",
+    "tests/v4/test_p8_line_coverage.py": "7370f688281b1ddb899527dc20c1d38dddaeb0f8e52f7933b3422d9293549213",
+    "tests/v4/test_p8_line_coverage_own.py": "3053fc7a01d6f9676c3b7b8ef9d9d6e1a5c506354d6a8cf06bfb8db8554b7adb",
+    "tests/v4/test_p8_mapping_review_24.py": "e044249c3937b5da97808bd8cd550827949650b88fc6a7a3fd124eec5b2be469",
+    "tests/v4/test_p8_meta_integration_process.py": "edef486dc40f43489860b3af4118dbd3199186bc7daac599e73b5061af562758",
+    "tests/v4/test_p8_night28_api_review.py": "5b885bb2c9822d550dd18387d00f353808accf3f178462881b02d51413b27d42",
+    "tests/v4/test_p8_own_inventory_independent.py": "63f1cebb90a493cc010c162623308a9103282095e593252a707135da1957583b",
+    "tests/v4/test_p8_performance_safety.py": "534c8f2320a7fbd5eb89e3719dd9072b5c7cb7287832c902714726082cd62537",
+    "tests/v4/test_p8_product_skills.py": "98f1d9cbf7f22f1664108c91520441cbac7dc41deb72e305b22c88603e558c4c",
+    "tests/v4/test_p8_rectification_calibration_scope.py": "5daa30d9ffe627e54999a638c0e5afd4d1e761f5eb0684d9ffe247ccbd5d9c65",
+    "tests/v4/test_p8_rectification_fixtures.py": "4aa1baf28afb1bd68fe06cc170447d583f03d333abe9d8da673e2354e0e40151",
+    "tests/v4/test_p8_rectification_workbench.py": "1c9f35f08ca309a3d13e76eaae270e13bf16c799a3bfac1bcc992db349a089c4",
+    "tests/v4/test_p8_rectification_workbench_statistics.py": "da0767191c988473db35d4427937cacb2d09b4ce756259000c44ce3807145392",
+    "tests/v4/test_p8_review23_policy.py": "dc2d6a870f77dd4991343987e365d340f90ea58fd135b3b6c36d07957cfc490b",
+    "tests/v4/test_p8_rule_hits.py": "938d94980930b11696a2ae4500ed0ceb037212db623a3ac1a6496d5ef1fc1bf1",
+    "tests/v4/test_p8_rule_review_24.py": "bc6cff3f277311510a767d0719e62475bf8e6f0419673ff81496c88597b0f8c6",
+    "tests/v4/test_p8_skill_assets_contract.py": "e69529a991e408c71b1fb51f4ecbfdf67b8c1f87bdf3f84b15ba79af8e5a9d5d",
+    "tests/v4/test_p8_skill_binding_matrix.py": "f884277c05c11e14ee85d4e357f78bbdc2ad6464de019390aa0073dd78e50393",
+    "tests/v4/test_p8_skill_budget_boundary.py": "3886bd5ddea2d6f4d43b74f7e51ff56a139982e445393b4d2fc48244681c6a74",
+    "tests/v4/test_p8_skill_field_paths.py": "5707f8452ce35735ea758a64018913f162bb188bbc6f77f7a9ab2399358ca2a1",
+    "tests/v4/test_p8_solar_independent.py": "5a023a66dd79d99287ab750c5a0672c0f020e45baecc487b4cc9013374c03900",
+    "tests/v4/test_p8_synastry.py": "609b64762c116459f9d26c6bfc14ee13d56da1b10bb93308b8c6f05e22eb21a9",
+    "tests/v4/test_p8_synastry_contract.py": "da2ac9ce06a9497be72cee3a734ce7b4dabbec685a2cf82be2fddac9cb856781",
+    "tests/v4/test_p8_tarot_spreads_asset.py": "571ac8eceb64dae1c9cbef33953f053329d5fdf35b68e1ed22e101a66ead7a1e",
+    "tests/v4/test_p8_time_basis.py": "34ba0fa373df5a24561a37b4a442d8c7a1c753ff2710d199a9c6343ca5ed6164",
+    "tests/v4/test_p8_time_basis_entry.py": "024f09380baf9c00fe49bb206dbc8cb9e187e4b134b61d88090d9239c46e0c22",
+    "tests/v4/test_p8_time_basis_process.py": "eca423e6c47f11d5ed6c142e4cb494124771bbb24dabe130f2387c8aa3c3e2d6",
+    "tests/v4/test_p8_tools_independent_boundaries.py": "0e0757d11123deabd13f50c0b1f916b14dbe362be733144a1e779d92ddc96210",
+    "tests/v4/test_p8_u12_assertion_boundaries.py": "50ccba0f501045cb60fe93f404981ad90a9d1ec4fc3dae8f97bef76115db3a92",
+    "tests/v4/test_p8_u12_assertion_contract.py": "b9e0782e3268b00fc54c1671b14a4ba817d746be3e5236117b54ceeb8f45a1ca",
+    "tests/v4/test_p8_u12_independent_review.py": "e58bafe76b3b64719cac3ec2162f7a8aaf3e6da87ca3d6752fac507247b1e8ae",
+    "tests/v4/test_p8_u12_rule_assertions.py": "eda693f7396a8eb6d8d846c45d368ad17e8b59edb6a9ef6d902576ef0724167b",
+    "tests/v4/test_p8_u2_interactions.py": "44dfd95e7a11c026e163e11d6cb5e0dacd577010db2cf8c8682cf7014929b382",
+    "tests/v4/test_p8_western_timing_entry.py": "177d0af7580489b017b86afe98c2cbc23cfc567c4f366d12209a28caa81d2ab9",
+    "tests/v4/test_p8_window_public_pages.py": "b6a1f4ff8d3ffe6ce89de63f057a611555fa80e55a85d98ac8bf5380b2ad2f96",
+    "tests/v4/test_p8_window_search.py": "54d344adc8624cea95e363a97a728c2331a02b5f7cbe9195baea3d33e221c0ed",
+    "tests/v4/test_p8_window_search_process.py": "d9f22183b089be9439589deff05dcd16106fe2809a95fb99fb4d0271a3144195",
+    "tests/v4/test_p8_workbench_grid_process.py": "398933312a5556c9fea2c2e0361eca80d8520debdafd631c57682a7223353868",
+    "tests/v4/test_p8_ziwei_daily_reference.py": "b9a0358ef7604f6f9af3759e047ae86d51e80ec8e98b0857ffb3a2967eb8620e",
+    "tests/v4/test_p8_ziwei_flying.py": "b60f4eee7e88f8db1111f4da95b01f28d86c8006229285d946d3e310807fb365",
+    "tools/verify_p8_calculators.py": "9205d162080545a32e29a0f43b698d03ba16d62a429dc6d74e2762e208349d95"
+  },
+  "delivery": {
+    "schema": "p8-meta-delivery-validation-v1",
+    "base": "f23b942ce698a3f7ee0b98c918d43053fe773433",
+    "allowed_scope_only": true,
+    "untracked_unpublished_drafts_not_part_of_this_delivery": [],
+    "protected_files_unchanged": [
+      {
+        "path": "docs/v4/eval/baseline-v3.json",
+        "sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79"
+      },
+      {
+        "path": "hermes/SKILL.md",
+        "sha256": "440eed2b8c27c1fe4768661724bda3387242cfb70f1f518a7418f40b782678f2"
+      },
+      {
+        "path": "hermes/archive.py",
+        "sha256": "efaae8fe310e1346e42390768b22cb0590dc86025253dd772036d8262d93c345"
+      },
+      {
+        "path": "hermes/archive_store.py",
+        "sha256": "fbd9b7881209b228e2d9b7ba4f7c5072cdf86442db80316ca9ff56379c078bb8"
+      },
+      {
+        "path": "hermes/astro.py",
+        "sha256": "dd6051fca191b9a8254f52065d0d0a615ab8c91be7447a37da198f89e8bd58b8"
+      },
+      {
+        "path": "hermes/bazi.py",
+        "sha256": "047c53f043268853e9ea6e1d2aa40d65879479489199eeac2c19525b64d12096"
+      },
+      {
+        "path": "hermes/chart_context.py",
+        "sha256": "f63b7237a7f9b951b52b653ceb73679bb4bdcec90319a9c491eaf315c842a4cc"
+      },
+      {
+        "path": "hermes/chat_agent.py",
+        "sha256": "cd3187a004c3221c63282804830d8d4533340765b801d550c4ff2ae17fa0c36d"
+      },
+      {
+        "path": "hermes/context_builder.py",
+        "sha256": "959a2603c62cc532c34035bb4560bbe2840471f297995629375aff961ebf1579"
+      },
+      {
+        "path": "hermes/context_engine.py",
+        "sha256": "647d7e585e3b2a50d80564e64dd771439486823d8ae0530ce6350cbfda24037c"
+      },
+      {
+        "path": "hermes/context_query.py",
+        "sha256": "344f7d2dd3130cff0f64d7ed260545b3e19d17c4e0a29de29ebee701e43ac549"
+      },
+      {
+        "path": "hermes/conversation_store.py",
+        "sha256": "70cc385d6d5843492cd7a5538411013928750b1b179b5a3d3aef1636293cf503"
+      },
+      {
+        "path": "hermes/core_consultation.py",
+        "sha256": "0a3f69a74e6573ad178db3e63823819761c4e90a829c3d0de64c199f3e4e36d4"
+      },
+      {
+        "path": "hermes/domain_api.py",
+        "sha256": "b0c0543147d336b4710e346eb0362afc8f6d36149a09379f66c8be676b5bbc6c"
+      },
+      {
+        "path": "hermes/domain_context.py",
+        "sha256": "0598bde967edb089ad84081797f8a945e16f061ea7a7d728c391ce084b62fe6d"
+      },
+      {
+        "path": "hermes/guidance.py",
+        "sha256": "b4640fa6bc1dfce9f854bf94be2e5960ea92bdf80540f82ec11b93d26fbfd9c8"
+      },
+      {
+        "path": "hermes/privacy_replay.py",
+        "sha256": "89d1f69989bb7cc91f3af5f736e41dc41f12785221a0ea8b4bdf67dd94f89a25"
+      },
+      {
+        "path": "hermes/report_pipeline.py",
+        "sha256": "9ea2311f554fa13c3415ac664979abf160c0eb66d4c7082e7708946c3909064f"
+      },
+      {
+        "path": "hermes/report_store.py",
+        "sha256": "0a6cb7652b8b8e283039659489e58e0b1a399162d9fdf66a5082d9fcfd94ba65"
+      },
+      {
+        "path": "hermes/semantic_index.py",
+        "sha256": "c3536c9c8acdd3f37fc0f4ee6c8f05bcd238849486bc9f597a169c7cf6e19ca4"
+      },
+      {
+        "path": "hermes/state_store.py",
+        "sha256": "1609830c5fef3695f508555acceffb407d9e71f43a94ea43491cf64d45c64f60"
+      },
+      {
+        "path": "hermes/tarot_deck.py",
+        "sha256": "43e9a978f7637c630a43890a3ea7506ee1421f1a008233e2fa0fe781dc487668"
+      },
+      {
+        "path": "hermes/tarot_guidance.py",
+        "sha256": "6ea7c979290748cd81510754efec31e689dbefc8676024402e6bc0a538e19926"
+      },
+      {
+        "path": "hermes/tarot_store.py",
+        "sha256": "442c8b78c4bd5c332d3b9d9ffee36ff46c1e3a04de7c8a4783e08231cf5b26a6"
+      },
+      {
+        "path": "hermes/v6_agent.py",
+        "sha256": "78c475966963bfc9316ac8755c66be8d210cbbfbab3245249f742ff76d745e69"
+      },
+      {
+        "path": "hermes/ziwei.py",
+        "sha256": "7803bb5240c2b798502f9b2c20054630ddafec184e8763b8812d142c46b4c341"
+      },
+      {
+        "path": "mingjing_core/adapters/charts/adapter.py",
+        "sha256": "073c8e572b9466250f14a8203fcb323dc3529b51743f1fcbca5385c0b355ef2d"
+      },
+      {
+        "path": "mingjing_core/adapters/charts/worker.py",
+        "sha256": "a6d1ff8d471fc6c0fbcc68e513243a6ba9ee97107137804adb3744724d03fad0"
+      },
+      {
+        "path": "mingjing_core/calculations/bazi/__init__.py",
+        "sha256": "db7bc807b792ac352c41dba311e872816ccd42d4b4246834b64aacef2c32ea15"
+      },
+      {
+        "path": "mingjing_core/calculations/bazi/calendar_layers.py",
+        "sha256": "72ca973c0fe853ddae48cadc3d4ace16015b7dd75de48c0a2518540c8add2a6d"
+      },
+      {
+        "path": "mingjing_core/calculations/bazi/elements.py",
+        "sha256": "43e40f0906a6f3759b67c26011679dd2d6eec5674542971a336e29387d1d93d0"
+      },
+      {
+        "path": "mingjing_core/calculations/bazi/stars.py",
+        "sha256": "817f2313d3c3ce0fdffd597348b3f7b3dc6bfbf923100bb83926b7b9a23b4974"
+      },
+      {
+        "path": "mingjing_core/calculations/bazi/strength.py",
+        "sha256": "1bd3e944c6c7e6e9ed5b07068bf1583a669eed0c4b4edf92da3beda50d271ce6"
+      },
+      {
+        "path": "mingjing_core/calculations/bazi/structure.py",
+        "sha256": "fd571fb968f5b5204faa89a0824f05d80d67e00d042b521388eebfb54adbaec2"
+      },
+      {
+        "path": "mingjing_core/calculations/bazi/supplement.py",
+        "sha256": "1a957ffc07ebac768fbb5520e54347987f0c2f5c6ca6ec072082b47bf0870f6f"
+      },
+      {
+        "path": "tools/eval/__init__.py",
+        "sha256": "201c4c5bb87b6bc3f31ab68a6bec8fb9b4e48171c903c19dcb363584722d3895"
+      },
+      {
+        "path": "tools/eval/backfill_contracts.py",
+        "sha256": "6163ff32a3108d770c0b64cc5763c4757336073ba3d93d6dc026d2f35730c230"
+      },
+      {
+        "path": "tools/eval/batching.py",
+        "sha256": "1902e3a8af5464441cb4cf30354830f190125de85d051b9a0de9a8c1fc65e2f8"
+      },
+      {
+        "path": "tools/eval/build_chart_goldens.py",
+        "sha256": "2fc721636e1daced51f7451880957b6aad971ca43e5cdc309e89cc1ddbc1bc57"
+      },
+      {
+        "path": "tools/eval/chart_goldens.py",
+        "sha256": "b5b9d55f5382d79d8d2b28db16d366e88164a23c8349f5ce2fbbf6532b0acfd9"
+      },
+      {
+        "path": "tools/eval/config.kimi-code.yaml",
+        "sha256": "208e3f6a7e83550fc4fc235ff6ba4394147f8175e9e1979a067ce0b612e9245f"
+      },
+      {
+        "path": "tools/eval/config.yaml",
+        "sha256": "6a3607b7bf2b1be0d39fd543c6f1090777586b219f92120d1802823ecb270f1f"
+      },
+      {
+        "path": "tools/eval/contracts.py",
+        "sha256": "97ace907d696b930a64e580adc8173d4cbc3bff02f1fef659ef7e72aa07252b0"
+      },
+      {
+        "path": "tools/eval/engine.py",
+        "sha256": "db924f13dc935d66efb3a5f50f31b10c588e46e0a3fc510878b0e863411185b6"
+      },
+      {
+        "path": "tools/eval/fixtures/c06_ziwei_golden.yaml",
+        "sha256": "538b379313cf8bfef0d7fedc9e54be226f27cabeba3cfa5fb4fe8804e48c266b"
+      },
+      {
+        "path": "tools/eval/fixtures/profiles.yaml",
+        "sha256": "4a61ce1970079dcb22cb21398b0df543a4c3f4c45c0e2b488957870e9e69dc15"
+      },
+      {
+        "path": "tools/eval/judges.py",
+        "sha256": "281d009029805b1b037bea03a5c09fc00fb60d3ecc6aff93613fd7c3c5780e11"
+      },
+      {
+        "path": "tools/eval/outcomes.py",
+        "sha256": "55085fff47e4b28cc2c52c7d9486fa2b638ad07ae74164ddf277e62323383e6d"
+      },
+      {
+        "path": "tools/eval/providers/__init__.py",
+        "sha256": "c9dbd48b952221e35afb26b6c238f2dedb98e0cc7d4a4675c9a05b5ba2d42ae2"
+      },
+      {
+        "path": "tools/eval/providers/scripted.py",
+        "sha256": "7522edeeda002d2dc73862dc463598ece015a329ac8d2ae0b496e6f226857e55"
+      },
+      {
+        "path": "tools/eval/quota.py",
+        "sha256": "6591c24f38a974a22fc2668ab2e1e63f281b26f7fcef82589f732d98ac4cbe2b"
+      },
+      {
+        "path": "tools/eval/report.py",
+        "sha256": "07ab0ac6b4571f3320657886aa955823bd101595a97098ac1984453dbc0e2f47"
+      },
+      {
+        "path": "tools/eval/rubric_v1.md",
+        "sha256": "4647f8ac8cda20b056a9f14b088d809b425df60d15f4dfadc5378b36ca775c53"
+      },
+      {
+        "path": "tools/eval/runner.py",
+        "sha256": "e830964c8fd47c9cba5653e7177c316543e4a0671787d252d2d1c829f730a1a5"
+      },
+      {
+        "path": "tools/eval/scenarios/C01.yaml",
+        "sha256": "efb75afccf0b37f8045bce678f13af8a0b09c8cb8855a12e941e4806464be4ec"
+      },
+      {
+        "path": "tools/eval/scenarios/C02.yaml",
+        "sha256": "097f96e3c33b9f16056fdc13b478c18e810a021074f83d626f8c7eaa010e2952"
+      },
+      {
+        "path": "tools/eval/scenarios/C03.yaml",
+        "sha256": "646334191ec622a7df267b2d0747e52560f67adc82806859f6d84941fef95819"
+      },
+      {
+        "path": "tools/eval/scenarios/C04.yaml",
+        "sha256": "f08c44482aa846724d55064c6fbc3f3c9deeede68bd450de55461adbdc662d55"
+      },
+      {
+        "path": "tools/eval/scenarios/C05.yaml",
+        "sha256": "40116e22389aa1a9ba0787b95782d986bd35e6e04f6dea53f9eb73f64dcee64e"
+      },
+      {
+        "path": "tools/eval/scenarios/C06.yaml",
+        "sha256": "5dfb69dbad284edca1d0fca3cc31f1ae03d52c33e6af56a9a66b034439f79b6f"
+      },
+      {
+        "path": "tools/eval/scenarios/C07.yaml",
+        "sha256": "904376a0dfff84967a0705578ce7d6c5f2de64048cd76bb2d37ecfaf430ea472"
+      },
+      {
+        "path": "tools/eval/scenarios/D01.yaml",
+        "sha256": "709790496fc1cc3b8ce1053366329994af737ddc2261e61996679d92c6b29f3d"
+      },
+      {
+        "path": "tools/eval/scenarios/D02.yaml",
+        "sha256": "379dc989269b6917c6188f38137a60e89c5deb7671d3b41ee9bd1cbce073b1c7"
+      },
+      {
+        "path": "tools/eval/scenarios/F01.yaml",
+        "sha256": "37e9a03adb9fb21f3f91dd9dbf58421e3b25b82e24e64b115bc52293a6791e8d"
+      },
+      {
+        "path": "tools/eval/scenarios/F02.yaml",
+        "sha256": "efd1bb28703229fe552789960abd18b38e54da60e00c278fb0b510e820e1e971"
+      },
+      {
+        "path": "tools/eval/scenarios/F03.yaml",
+        "sha256": "95c9537dcca5e220f6747534f937cf710ea51a8bdc3abd7fe524bfa69984a31b"
+      },
+      {
+        "path": "tools/eval/scenarios/F04.yaml",
+        "sha256": "b6814bda11a3425948cef7c88759068ed8180faa522317f37b201c998b9917c4"
+      },
+      {
+        "path": "tools/eval/scenarios/L01.yaml",
+        "sha256": "56fcbad1dd4f573878186c83f9e9c03b10887e4f5f67ea743da192e1a813b7fe"
+      },
+      {
+        "path": "tools/eval/scenarios/L02.yaml",
+        "sha256": "f9772d7b06766ac42ca4aa2cfcaff54eaf8e19b0725e6d31e19604bf74394016"
+      },
+      {
+        "path": "tools/eval/scenarios/M01.yaml",
+        "sha256": "9e0d017a95d002d00ff79af00d261b549f4fd7d635f644dd3476459301075bbd"
+      },
+      {
+        "path": "tools/eval/scenarios/M02.yaml",
+        "sha256": "449730dac292f78b2d506e9cc186554e4e7e18642027e3e9943935c3710e19ab"
+      },
+      {
+        "path": "tools/eval/scenarios/M03.yaml",
+        "sha256": "3bed81775032e9fbf750d7269aee45e8db291af3a86f39392ebd252b4a3e7581"
+      },
+      {
+        "path": "tools/eval/scenarios/M04.yaml",
+        "sha256": "f81549c19f3771405ca4f2e0e0610a0e80892a8e9b3ea11de9ea2f48aa7fc296"
+      },
+      {
+        "path": "tools/eval/scenarios/M05.yaml",
+        "sha256": "9f840f4c537e5a94edd1a61d5d7ad5262d18aa5bad69dea37853f49da9b03e99"
+      },
+      {
+        "path": "tools/eval/scenarios/M06.yaml",
+        "sha256": "92215de42ec427c583b199221cf2b1e646fcddb92699bd5b445e14c09dc1faa7"
+      },
+      {
+        "path": "tools/eval/scenarios/M07.yaml",
+        "sha256": "a0f831137593cf699bbb11c9e7136c33acc5b518dd197b8f2fb934ef780548ac"
+      },
+      {
+        "path": "tools/eval/scenarios/M08.yaml",
+        "sha256": "f8cb49be61716f007aa552700c18e66c13bd32d937db5a4fb5f26a8c984d4126"
+      },
+      {
+        "path": "tools/eval/scenarios/M09.yaml",
+        "sha256": "cf78205eba6f28eed6eaba99f3c33768596d9deb8509ae71def0d896b63285e8"
+      },
+      {
+        "path": "tools/eval/scenarios/M10.yaml",
+        "sha256": "323cb47e995f1cb8bb4c564f62af109dad40b0380dde3c2f9512025dfc084021"
+      },
+      {
+        "path": "tools/eval/scenarios/M11.yaml",
+        "sha256": "9db1ce24f9a11b31b37951b8a5440ba96a3c1f73cb99721316275b5c053a0c7a"
+      },
+      {
+        "path": "tools/eval/scenarios/M12.yaml",
+        "sha256": "d3e7b93f1afbe3cbeb87b05b3c5cb4acfbbfea36f7f18b986e692a31cc8524d4"
+      },
+      {
+        "path": "tools/eval/scenarios/M13.yaml",
+        "sha256": "94d27309c8415a2573c1c24cfc4c9592981dee88669c73798c2ac5a8038701d1"
+      },
+      {
+        "path": "tools/eval/scenarios/P01.yaml",
+        "sha256": "ec035ae78e73fa862e7a86610086f3daf1f025cd18d5fca6b05e7b9b0a4e0f72"
+      },
+      {
+        "path": "tools/eval/scenarios/P02.yaml",
+        "sha256": "375451f142b05bd500400e415e7bb1ffe8a59ddcbb4fd0ed53ff89db9d3bc651"
+      },
+      {
+        "path": "tools/eval/scenarios/P03.yaml",
+        "sha256": "bddafff6dd9aa87be49a9e451e0bff34fdcb401da5e4c421a0c2126ec3d32e08"
+      },
+      {
+        "path": "tools/eval/scenarios/P04.yaml",
+        "sha256": "534a71bfde69c7c09392e3e1dc4c7b1e2b58dd715c2fded34537207d52bd5677"
+      },
+      {
+        "path": "tools/eval/scenarios/P05.yaml",
+        "sha256": "eee2d906518c39f1ebc91a31af31ff7a14ba6d5d4fdb3df6272ae928c8910ba8"
+      },
+      {
+        "path": "tools/eval/scenarios/P06.yaml",
+        "sha256": "3f4262366b30f1fa0ec9c1e792a592a214250f3b588a9362a49323f67cafff98"
+      },
+      {
+        "path": "tools/eval/scenarios/P07.yaml",
+        "sha256": "c8c3b679c6f8551b08f6903e6dd1c4dc2fd59b1952adcda0e92ff48c23aaaece"
+      },
+      {
+        "path": "tools/eval/scenarios/Q01.yaml",
+        "sha256": "4c3403644fc4cffb60eebd9b1d36c6d936f37ba6e93c5eceb28e358fbffae35a"
+      },
+      {
+        "path": "tools/eval/scenarios/Q02.yaml",
+        "sha256": "eb0319c1117e9ce1b511947ca4fc7935fefbbfb8b484de16d50ac4dcb712ee8d"
+      },
+      {
+        "path": "tools/eval/scenarios/Q03.yaml",
+        "sha256": "00c375d11d2af897ec1e5dc39698a462a9a10210794c32a2b3815e6b02f4186a"
+      },
+      {
+        "path": "tools/eval/scenarios/Q04.yaml",
+        "sha256": "15ee567040eb86708a4dd0a1207feeab3e6a2a61be1d38f9dda6272b6e93ff6e"
+      },
+      {
+        "path": "tools/eval/scenarios/Q05.yaml",
+        "sha256": "47aefd1d0b7a4535b4d3a4dde70e599ba2eaf5e62b0357d04aeabd838e60825b"
+      },
+      {
+        "path": "tools/eval/scenarios/Q06.yaml",
+        "sha256": "9e13a5eb4836f3cc153c139656a486164a89a7ac3bb9cef8f97475496ea4884b"
+      },
+      {
+        "path": "tools/eval/scenarios/Q07.yaml",
+        "sha256": "37a311bec5a038dff6115431bebb6cae5e0511cbe32046ea59e959be69bd82ad"
+      },
+      {
+        "path": "tools/eval/scenarios/R01.yaml",
+        "sha256": "d70e390f20f2c85f7da0fdda9344374339ff2dcb60f2948d87222f18c9caf4b2"
+      },
+      {
+        "path": "tools/eval/scenarios/R02.yaml",
+        "sha256": "32ae7bf8786bade6d18f8e42eff856fa38bd5202072e113d8d35473ac11b0701"
+      },
+      {
+        "path": "tools/eval/scenarios/R03.yaml",
+        "sha256": "8e4e3c8e3cba7de6fbc4792438dc51c9cc8c9c4e5425cf62ecc885910de01e00"
+      },
+      {
+        "path": "tools/eval/scenarios/R04.yaml",
+        "sha256": "52b7c730a1ac7a487af9395c79c81ac9bd9b25bcdec0042069cd8032e8dbdbfa"
+      },
+      {
+        "path": "tools/eval/scenarios/R05.yaml",
+        "sha256": "a11a71a72ef82f3e95510c7ccb37cee52e0119c5552cfcbde24caf2c5153321b"
+      },
+      {
+        "path": "tools/eval/scenarios/R06.yaml",
+        "sha256": "ba848d1098b6355b75581319a18301c0188f5aaa0f7e8178b230a34a0c7cb507"
+      },
+      {
+        "path": "tools/eval/scenarios/R07.yaml",
+        "sha256": "8977a20594dc399ce7ed7c70a7b8bf8c432bd078abbbc0e3f1b0f3b906b9bdb9"
+      },
+      {
+        "path": "tools/eval/scenarios/R08.yaml",
+        "sha256": "bff82171803716b2bcdcbaf4fee89969fc664ce7b1bd0f33bd37f2a3b6ad787c"
+      },
+      {
+        "path": "tools/eval/scenarios/R09.yaml",
+        "sha256": "8a391cb54ab70420e1a22dfa17f3f358a09fe3880cea91410c98a2041777f3da"
+      },
+      {
+        "path": "tools/eval/scenarios/S01.yaml",
+        "sha256": "270cc94de575db822a3413528221c67ff0901c348cc73a346139e69ba6d0da77"
+      },
+      {
+        "path": "tools/eval/scenarios/S02.yaml",
+        "sha256": "11dde8bc74ab0fddf971ff00029f7dfefc48e77c8721c39e3212bcc3e27fdec7"
+      },
+      {
+        "path": "tools/eval/scenarios/S03.yaml",
+        "sha256": "bbfa79b6d200fb5e51c9f12047f39141b2df4929c790b77b55128ddf013cdd82"
+      },
+      {
+        "path": "tools/eval/scenarios/S04.yaml",
+        "sha256": "c6ee69792a5a4ffca3ef5e12c96dfbec7fa9c1742b1448d70cd9c56264d8f8f3"
+      },
+      {
+        "path": "tools/eval/scenarios/T01.yaml",
+        "sha256": "8cb83defbff46742854c6cfb6df4a17dae097a3de9bef388b92f2a80f7d0a380"
+      },
+      {
+        "path": "tools/eval/scenarios/T02.yaml",
+        "sha256": "337659d62935d49e8eed343ba1bca2bc19504e604bf73f8a00d1dba72c8cf959"
+      },
+      {
+        "path": "tools/eval/scenarios/T03.yaml",
+        "sha256": "e8f744c023b5ba1ddcf666681f117146744abb7ba86ab77f7eedcaf911f95c25"
+      },
+      {
+        "path": "tools/eval/scenarios/T04.yaml",
+        "sha256": "e2f22f9d49fbc9cd73ec0e654c3fc5aad2ea951ec7311b05525240cd2a456973"
+      },
+      {
+        "path": "tools/eval/scenarios/T05.yaml",
+        "sha256": "d846d82625141147dc5d3d2189f25d80a52cdf5f8b4cb2430c8da932729d8762"
+      },
+      {
+        "path": "tools/eval/scenarios/T06.yaml",
+        "sha256": "f4bf34323d9c248882bc424aca1d32d5269c1fd858262ba7e1084f841e2747cd"
+      },
+      {
+        "path": "tools/eval/scenarios/T07.yaml",
+        "sha256": "7f8bfd49ea0dbe29216d56012e6b6168c20522b825bd6f8b9b165264da0751f5"
+      },
+      {
+        "path": "tools/eval/scenarios/T08.yaml",
+        "sha256": "d4a2c4865a8a516cfff2993c096e92e707f868b1a3d3c075b8a061bce48a6f6d"
+      },
+      {
+        "path": "tools/eval/scenarios/T09.yaml",
+        "sha256": "6428cc8e74185b9f99c54842ddda2eac110ec12eb866f5b65610fac5d98d2b05"
+      },
+      {
+        "path": "tools/eval/scenarios/T10.yaml",
+        "sha256": "95c08ce93c76fe5ae010c18054d5d6d848068754d8c895e4a82c8b2bf0fab16c"
+      },
+      {
+        "path": "tools/eval/scenarios/T11.yaml",
+        "sha256": "4f309a52cf71ab8dfd92fbdcb7a225c3d2e23c9bca7d917862e468bec712adc8"
+      },
+      {
+        "path": "tools/eval/scenarios/T12.yaml",
+        "sha256": "de5719378c3e0c709afda43abb5c2115b476a8a66fbd622cee48336e0b7df6f5"
+      },
+      {
+        "path": "tools/eval/scenarios/T13.yaml",
+        "sha256": "4656a3b5209a235abbd0178df81fa06e1f1853ab4c09202cd9b4109c1b6d597e"
+      },
+      {
+        "path": "tools/eval/scenarios/T14.yaml",
+        "sha256": "a5f82928658142c611fe6913e0dc832ba40ba8c99db3212599395874428998ef"
+      },
+      {
+        "path": "tools/eval/scenarios/TA01.yaml",
+        "sha256": "b139343395b20c6a9402b1b0a5f65e7b377c55ab3c1ede751e21926e5a51dce6"
+      },
+      {
+        "path": "tools/eval/scenarios/TA02.yaml",
+        "sha256": "68b271c4db50141766aa5a8fd690464860027a57d343114e5e853317389b39dc"
+      },
+      {
+        "path": "tools/eval/scenarios/TA03.yaml",
+        "sha256": "f926003f9373c8b7c0f75e0cee249345d12c3c629a04196861d96e945a109ce3"
+      },
+      {
+        "path": "tools/eval/scenarios/X01.yaml",
+        "sha256": "7b1b613fd5c90522b850eb02ee77288e8c49add844855fc3817a4ae799044a8b"
+      },
+      {
+        "path": "tools/eval/scenarios/X02.yaml",
+        "sha256": "1a544794194b6b013d61f2440c0c008eb1329f024c87e3db873b541767368d52"
+      },
+      {
+        "path": "tools/eval/scenarios/X03.yaml",
+        "sha256": "23e15876d58de630220e16717ca0e341939826c9de4ddac14077612cc5fff588"
+      },
+      {
+        "path": "tools/eval/scenarios/X04.yaml",
+        "sha256": "31794c53ad0bbdba7aeebc22883f7cd75d4098363c75beefb00c806fb05fc67e"
+      },
+      {
+        "path": "tools/eval/scenarios/X05.yaml",
+        "sha256": "97e3a085a6d4da044f56aac8310707b52f182e468bf19a35930bcfcdfd3ae1d5"
+      },
+      {
+        "path": "tools/eval/scenarios/X06.yaml",
+        "sha256": "60b464232a8d3ae7cb8f82f94037f91aedd4635c5694d3019a68e0986cbc0d71"
+      },
+      {
+        "path": "tools/eval/scenarios/X07.yaml",
+        "sha256": "a3a0e04879cc252ef7a722756e4985f965826ab51b1e7fbfbd85266461b1b2ef"
+      },
+      {
+        "path": "tools/eval/scenarios/X08.yaml",
+        "sha256": "2ab48b341a07088d79e1db39828dea2a54949d97b6a09ca4163a75f200ced956"
+      },
+      {
+        "path": "tools/eval/schema.py",
+        "sha256": "86742497c4533fa346c9d78f16de0a88c2a0a551f5ec593c535490205a959501"
+      },
+      {
+        "path": "tools/eval/targets/__init__.py",
+        "sha256": "856816f8ef7cb93ed67d0312c0a63dc824975e90b4848f6f985833c82a01c169"
+      },
+      {
+        "path": "tools/eval/targets/base.py",
+        "sha256": "406f38c3dece8546a3aed49caa4e5044c8045ed0e4d76b47b1807f356b2131fd"
+      },
+      {
+        "path": "tools/eval/targets/fake_target.py",
+        "sha256": "c48652100914d20caa4d9c146ad1e1693c259ef69721080df563ec32108cdb8c"
+      },
+      {
+        "path": "tools/eval/targets/local_db.py",
+        "sha256": "976415c7a4e734a5f28d62de7b48227bf78e68257cd7ce8baf43e88af027afe7"
+      },
+      {
+        "path": "tools/eval/targets/v3_seed.py",
+        "sha256": "5271ba3c9b4f6c253a4e3c4c61eaa0a1513d145c6245b99f3ff059e8f038a444"
+      },
+      {
+        "path": "tools/eval/targets/v3_target.py",
+        "sha256": "e4b44fe61576cc23aa14f1ad94c29ded004904aeb87a969191341e0b6af224e8"
+      }
+    ],
+    "v1_baseline_raw_sha256": "20472cd29926f2be4a578b6c48b3d31a5ddb266c1aa9063f3b4427f33a97ab79",
+    "python_files": 223,
+    "max_file_lines": 394,
+    "max_function_lines": 60,
+    "secret_pattern_check": "passed_no_values_logged",
+    "style_checks": [
+      {
+        "command": [
+          "python",
+          "-m",
+          "ruff",
+          "check",
+          "--select",
+          "E,F,I,B,UP,SIM",
+          "--line-length",
+          "120",
+          "mingjing_core\\adapters\\charts\\almanac.py",
+          "mingjing_core\\adapters\\charts\\astro_ephemeris.py",
+          "mingjing_core\\adapters\\charts\\astro_progressions.py",
+          "mingjing_core\\adapters\\charts\\astro_returns.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\__init__.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\annual_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\contexts_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\controls_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\crosscheck_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\daily_transit_samples.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\eligibility_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\engine.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\experiment.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_boundaries.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_build.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_offline.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_refs.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_schema.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_validate.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_validate_data.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\handoff_validate_request.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\inspect_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\learning_preview.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_bootstrap.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_boundary.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_fingerprint.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_git.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_reports.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_core_run.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_manifest.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_merge.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_own_inventory.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_own_plan.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_own_sources.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\line_coverage_run.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\loaders.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\loaders_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_audit.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_markdown.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_performance.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_placebo.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_solar_boundaries.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_solar_independent.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_solar_reference.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night24_sources.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_audit.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_controls.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_date_cases.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_date_properties.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_date_properties_cli.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_markdown.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_property_common.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_skill_samples.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_temporal_preflight.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_tools.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_window_properties.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_ziwei_crosscheck.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\night28_ziwei_reference.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\protocol_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\records.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\scripted.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\scripted_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\statistics_v2.py",
+          "mingjing_core\\adapters\\charts\\benchmarks\\window_search_samples.py",
+          "mingjing_core\\adapters\\charts\\boundary_alerts.py",
+          "mingjing_core\\adapters\\charts\\boundary_candidates.py",
+          "mingjing_core\\adapters\\charts\\boundary_solar_reference.py",
+          "mingjing_core\\adapters\\charts\\climate_review.py",
+          "mingjing_core\\adapters\\charts\\daily_transit.py",
+          "mingjing_core\\adapters\\charts\\daily_transit_astro.py",
+          "mingjing_core\\adapters\\charts\\daily_transit_bazi.py",
+          "mingjing_core\\adapters\\charts\\daily_transit_natal.py",
+          "mingjing_core\\adapters\\charts\\daily_transit_ziwei.py",
+          "mingjing_core\\adapters\\charts\\interactions_bazi.py",
+          "mingjing_core\\adapters\\charts\\interactions_transits.py",
+          "mingjing_core\\adapters\\charts\\interactions_ziwei.py",
+          "mingjing_core\\adapters\\charts\\jie_uncertainty.py",
+          "mingjing_core\\adapters\\charts\\named_bazi.py",
+          "mingjing_core\\adapters\\charts\\named_strength.py",
+          "mingjing_core\\adapters\\charts\\p8_adapter.py",
+          "mingjing_core\\adapters\\charts\\p8_analysis.py",
+          "mingjing_core\\adapters\\charts\\p8_policy.py",
+          "mingjing_core\\adapters\\charts\\p8_pure_tools.py",
+          "mingjing_core\\adapters\\charts\\p8_structure.py",
+          "mingjing_core\\adapters\\charts\\p8_worker.py",
+          "mingjing_core\\adapters\\charts\\profile_draft.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\__init__.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\calibration_scope.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\chart_grid.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\contracts.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\envelope.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\evaluation.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\evaluation_cases.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\evaluation_charts.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\sessions.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\signals.py",
+          "mingjing_core\\adapters\\charts\\rectification_workbench\\statistics.py",
+          "mingjing_core\\adapters\\charts\\rules\\__init__.py",
+          "mingjing_core\\adapters\\charts\\rules\\conditions.py",
+          "mingjing_core\\adapters\\charts\\rules\\engine.py",
+          "mingjing_core\\adapters\\charts\\rules\\interaction_metadata.py",
+          "mingjing_core\\adapters\\charts\\rules\\registry.py",
+          "mingjing_core\\adapters\\charts\\synastry.py",
+          "mingjing_core\\adapters\\charts\\synastry_bazi.py",
+          "mingjing_core\\adapters\\charts\\synastry_ziwei.py",
+          "mingjing_core\\adapters\\charts\\time_basis.py",
+          "mingjing_core\\adapters\\charts\\time_basis_candidates.py",
+          "mingjing_core\\adapters\\charts\\time_basis_chart.py",
+          "mingjing_core\\adapters\\charts\\time_basis_readout.py",
+          "mingjing_core\\adapters\\charts\\time_basis_request.py",
+          "mingjing_core\\adapters\\charts\\time_basis_solar.py",
+          "mingjing_core\\adapters\\charts\\time_basis_zones.py",
+          "mingjing_core\\adapters\\charts\\tool_evidence.py",
+          "mingjing_core\\adapters\\charts\\western_timing.py",
+          "mingjing_core\\adapters\\charts\\window_search.py",
+          "mingjing_core\\adapters\\charts\\window_search_pagination.py",
+          "mingjing_core\\adapters\\charts\\window_search_scoring.py",
+          "mingjing_core\\adapters\\charts\\ziwei_flying.py",
+          "mingjing_core\\adapters\\charts\\ziwei_flying_support.py",
+          "mingjing_core\\skills\\__init__.py",
+          "mingjing_core\\skills\\consistency.py",
+          "mingjing_core\\skills\\consistency_eval.py",
+          "mingjing_core\\skills\\consistency_facts.py",
+          "mingjing_core\\skills\\consistency_text.py",
+          "mingjing_core\\skills\\consistency_u12.py",
+          "mingjing_core\\skills\\consistency_u12_eval.py",
+          "mingjing_core\\skills\\consistency_u12_input.py",
+          "mingjing_core\\skills\\learning.py",
+          "mingjing_core\\skills\\learning_input.py",
+          "mingjing_core\\skills\\loader.py",
+          "tests\\test_p8_astro_native.py",
+          "tests\\test_p8_boundary_alerts_native.py",
+          "tests\\test_p8_daily_transit_native.py",
+          "tests\\test_p8_interactions_native.py",
+          "tests\\test_p8_jie_geometry_native.py",
+          "tests\\test_p8_meta_integration.py",
+          "tests\\test_p8_named_schools.py",
+          "tests\\test_p8_native_calculations.py",
+          "tests\\test_p8_time_basis_native.py",
+          "tests\\test_p8_window_search_native.py",
+          "tests\\test_p8_workbench_grid_native.py",
+          "tests\\test_p8_ziwei_native.py",
+          "tests\\test_p8_ziwei_review24_native.py",
+          "tests\\v4\\p8_coverage_history_context.py",
+          "tests\\v4\\p8_rules_sample_context.py",
+          "tests\\v4\\p8_skill_asset_context.py",
+          "tests\\v4\\p8_u12_assertions_context.py",
+          "tests\\v4\\test_p8_almanac.py",
+          "tests\\v4\\test_p8_astro_timing.py",
+          "tests\\v4\\test_p8_boundary_alerts.py",
+          "tests\\v4\\test_p8_calendar_tool_skills.py",
+          "tests\\v4\\test_p8_consistency.py",
+          "tests\\v4\\test_p8_consistency_boundaries.py",
+          "tests\\v4\\test_p8_consistency_context.py",
+          "tests\\v4\\test_p8_consistency_contract.py",
+          "tests\\v4\\test_p8_consistency_review.py",
+          "tests\\v4\\test_p8_core_coverage_guards.py",
+          "tests\\v4\\test_p8_core_coverage_independent.py",
+          "tests\\v4\\test_p8_core_coverage_receipts.py",
+          "tests\\v4\\test_p8_daily_transit.py",
+          "tests\\v4\\test_p8_date_properties.py",
+          "tests\\v4\\test_p8_e2_adjudication_v2.py",
+          "tests\\v4\\test_p8_e2_annual_v2.py",
+          "tests\\v4\\test_p8_e2_benchmarks.py",
+          "tests\\v4\\test_p8_e2_m2_input_contract.py",
+          "tests\\v4\\test_p8_e2_night28_audit.py",
+          "tests\\v4\\test_p8_e2_night28_controls.py",
+          "tests\\v4\\test_p8_e2_night28_temporal.py",
+          "tests\\v4\\test_p8_e2_night_integrity.py",
+          "tests\\v4\\test_p8_e2_night_placebo.py",
+          "tests\\v4\\test_p8_e2_night_sources.py",
+          "tests\\v4\\test_p8_e2_protocol_v2.py",
+          "tests\\v4\\test_p8_e2_statistics_v2.py",
+          "tests\\v4\\test_p8_extra_condition_matrix.py",
+          "tests\\v4\\test_p8_git_range_portability.py",
+          "tests\\v4\\test_p8_glossary.py",
+          "tests\\v4\\test_p8_handoff_preview.py",
+          "tests\\v4\\test_p8_handoff_request_binding.py",
+          "tests\\v4\\test_p8_handoff_v11.py",
+          "tests\\v4\\test_p8_jie_geometry_process.py",
+          "tests\\v4\\test_p8_learning_lessons.py",
+          "tests\\v4\\test_p8_learning_outline.py",
+          "tests\\v4\\test_p8_learning_preview.py",
+          "tests\\v4\\test_p8_learning_review.py",
+          "tests\\v4\\test_p8_line_coverage.py",
+          "tests\\v4\\test_p8_line_coverage_own.py",
+          "tests\\v4\\test_p8_mapping_review_24.py",
+          "tests\\v4\\test_p8_meta_integration_process.py",
+          "tests\\v4\\test_p8_night28_api_review.py",
+          "tests\\v4\\test_p8_own_inventory_independent.py",
+          "tests\\v4\\test_p8_performance_safety.py",
+          "tests\\v4\\test_p8_product_skills.py",
+          "tests\\v4\\test_p8_rectification_calibration_scope.py",
+          "tests\\v4\\test_p8_rectification_fixtures.py",
+          "tests\\v4\\test_p8_rectification_workbench.py",
+          "tests\\v4\\test_p8_rectification_workbench_statistics.py",
+          "tests\\v4\\test_p8_review23_policy.py",
+          "tests\\v4\\test_p8_rule_hits.py",
+          "tests\\v4\\test_p8_rule_review_24.py",
+          "tests\\v4\\test_p8_skill_assets_contract.py",
+          "tests\\v4\\test_p8_skill_binding_matrix.py",
+          "tests\\v4\\test_p8_skill_budget_boundary.py",
+          "tests\\v4\\test_p8_skill_field_paths.py",
+          "tests\\v4\\test_p8_solar_independent.py",
+          "tests\\v4\\test_p8_synastry.py",
+          "tests\\v4\\test_p8_synastry_contract.py",
+          "tests\\v4\\test_p8_tarot_spreads_asset.py",
+          "tests\\v4\\test_p8_time_basis.py",
+          "tests\\v4\\test_p8_time_basis_entry.py",
+          "tests\\v4\\test_p8_time_basis_process.py",
+          "tests\\v4\\test_p8_tools_independent_boundaries.py",
+          "tests\\v4\\test_p8_u12_assertion_boundaries.py",
+          "tests\\v4\\test_p8_u12_assertion_contract.py",
+          "tests\\v4\\test_p8_u12_independent_review.py",
+          "tests\\v4\\test_p8_u12_rule_assertions.py",
+          "tests\\v4\\test_p8_u2_interactions.py",
+          "tests\\v4\\test_p8_western_timing_entry.py",
+          "tests\\v4\\test_p8_window_public_pages.py",
+          "tests\\v4\\test_p8_window_search.py",
+          "tests\\v4\\test_p8_window_search_process.py",
+          "tests\\v4\\test_p8_workbench_grid_process.py",
+          "tests\\v4\\test_p8_ziwei_daily_reference.py",
+          "tests\\v4\\test_p8_ziwei_flying.py"
+        ],
+        "returncode": 0,
+        "log": "meta-ruff.txt"
+      },
+      {
+        "command": [
+          "python",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "--line-length",
+          "120",
+          "mingjing_core/adapters/charts/astro_ephemeris.py",
+          "mingjing_core/adapters/charts/astro_progressions.py",
+          "mingjing_core/adapters/charts/astro_returns.py",
+          "mingjing_core/adapters/charts/climate_review.py",
+          "mingjing_core/adapters/charts/interactions_transits.py",
+          "mingjing_core/adapters/charts/jie_uncertainty.py",
+          "mingjing_core/adapters/charts/named_bazi.py",
+          "mingjing_core/adapters/charts/named_strength.py",
+          "mingjing_core/adapters/charts/p8_adapter.py",
+          "mingjing_core/adapters/charts/p8_analysis.py",
+          "mingjing_core/adapters/charts/p8_structure.py",
+          "mingjing_core/adapters/charts/p8_worker.py",
+          "mingjing_core/adapters/charts/profile_draft.py",
+          "mingjing_core/adapters/charts/time_basis_chart.py",
+          "mingjing_core/adapters/charts/time_basis_request.py",
+          "mingjing_core/adapters/charts/ziwei_flying.py",
+          "mingjing_core/adapters/charts/ziwei_flying_support.py",
+          "tests/test_p8_astro_native.py",
+          "tests/test_p8_named_schools.py",
+          "tests/test_p8_native_calculations.py",
+          "tests/test_p8_ziwei_native.py",
+          "tests/test_p8_ziwei_review24_native.py",
+          "tests/v4/test_p8_astro_timing.py",
+          "tests/v4/test_p8_mapping_review_24.py",
+          "tests/v4/test_p8_rule_review_24.py",
+          "tests/v4/test_p8_time_basis_entry.py",
+          "tests/v4/test_p8_ziwei_flying.py"
+        ],
+        "returncode": 0,
+        "log": "meta-format120.txt"
+      },
+      {
+        "command": [
+          "python",
+          "-m",
+          "ruff",
+          "format",
+          "--check",
+          "mingjing_core/adapters/charts/almanac.py",
+          "mingjing_core/adapters/charts/benchmarks/__init__.py",
+          "mingjing_core/adapters/charts/benchmarks/annual_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/contexts_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/controls_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/crosscheck_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/daily_transit_samples.py",
+          "mingjing_core/adapters/charts/benchmarks/eligibility_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/engine.py",
+          "mingjing_core/adapters/charts/benchmarks/experiment.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_boundaries.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_build.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_offline.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_refs.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_schema.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_validate.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_validate_data.py",
+          "mingjing_core/adapters/charts/benchmarks/handoff_validate_request.py",
+          "mingjing_core/adapters/charts/benchmarks/inspect_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/learning_preview.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_core_boundary.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_core_fingerprint.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_core_git.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_core_reports.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_core_run.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_manifest.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_merge.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_own_inventory.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_own_plan.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_own_sources.py",
+          "mingjing_core/adapters/charts/benchmarks/line_coverage_run.py",
+          "mingjing_core/adapters/charts/benchmarks/loaders.py",
+          "mingjing_core/adapters/charts/benchmarks/loaders_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_audit.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_markdown.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_performance.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_placebo.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_solar_boundaries.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_solar_independent.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_solar_reference.py",
+          "mingjing_core/adapters/charts/benchmarks/night24_sources.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_audit.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_controls.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_date_cases.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_date_properties.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_date_properties_cli.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_markdown.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_property_common.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_skill_samples.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_temporal_preflight.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_tools.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_window_properties.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_ziwei_crosscheck.py",
+          "mingjing_core/adapters/charts/benchmarks/night28_ziwei_reference.py",
+          "mingjing_core/adapters/charts/benchmarks/protocol_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/records.py",
+          "mingjing_core/adapters/charts/benchmarks/scripted.py",
+          "mingjing_core/adapters/charts/benchmarks/scripted_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/statistics_v2.py",
+          "mingjing_core/adapters/charts/benchmarks/window_search_samples.py",
+          "mingjing_core/adapters/charts/boundary_alerts.py",
+          "mingjing_core/adapters/charts/boundary_candidates.py",
+          "mingjing_core/adapters/charts/boundary_solar_reference.py",
+          "mingjing_core/adapters/charts/daily_transit.py",
+          "mingjing_core/adapters/charts/daily_transit_astro.py",
+          "mingjing_core/adapters/charts/daily_transit_bazi.py",
+          "mingjing_core/adapters/charts/daily_transit_natal.py",
+          "mingjing_core/adapters/charts/daily_transit_ziwei.py",
+          "mingjing_core/adapters/charts/interactions_bazi.py",
+          "mingjing_core/adapters/charts/interactions_ziwei.py",
+          "mingjing_core/adapters/charts/p8_policy.py",
+          "mingjing_core/adapters/charts/p8_pure_tools.py",
+          "mingjing_core/adapters/charts/rectification_workbench/__init__.py",
+          "mingjing_core/adapters/charts/rectification_workbench/calibration_scope.py",
+          "mingjing_core/adapters/charts/rectification_workbench/chart_grid.py",
+          "mingjing_core/adapters/charts/rectification_workbench/contracts.py",
+          "mingjing_core/adapters/charts/rectification_workbench/envelope.py",
+          "mingjing_core/adapters/charts/rectification_workbench/evaluation.py",
+          "mingjing_core/adapters/charts/rectification_workbench/evaluation_cases.py",
+          "mingjing_core/adapters/charts/rectification_workbench/evaluation_charts.py",
+          "mingjing_core/adapters/charts/rectification_workbench/sessions.py",
+          "mingjing_core/adapters/charts/rectification_workbench/signals.py",
+          "mingjing_core/adapters/charts/rectification_workbench/statistics.py",
+          "mingjing_core/adapters/charts/rules/__init__.py",
+          "mingjing_core/adapters/charts/rules/conditions.py",
+          "mingjing_core/adapters/charts/rules/engine.py",
+          "mingjing_core/adapters/charts/rules/interaction_metadata.py",
+          "mingjing_core/adapters/charts/rules/registry.py",
+          "mingjing_core/adapters/charts/synastry.py",
+          "mingjing_core/adapters/charts/synastry_bazi.py",
+          "mingjing_core/adapters/charts/synastry_ziwei.py",
+          "mingjing_core/adapters/charts/time_basis.py",
+          "mingjing_core/adapters/charts/time_basis_candidates.py",
+          "mingjing_core/adapters/charts/time_basis_readout.py",
+          "mingjing_core/adapters/charts/time_basis_solar.py",
+          "mingjing_core/adapters/charts/time_basis_zones.py",
+          "mingjing_core/adapters/charts/tool_evidence.py",
+          "mingjing_core/adapters/charts/western_timing.py",
+          "mingjing_core/adapters/charts/window_search.py",
+          "mingjing_core/adapters/charts/window_search_pagination.py",
+          "mingjing_core/adapters/charts/window_search_scoring.py",
+          "mingjing_core/skills/__init__.py",
+          "mingjing_core/skills/consistency.py",
+          "mingjing_core/skills/consistency_eval.py",
+          "mingjing_core/skills/consistency_facts.py",
+          "mingjing_core/skills/consistency_text.py",
+          "mingjing_core/skills/consistency_u12.py",
+          "mingjing_core/skills/consistency_u12_eval.py",
+          "mingjing_core/skills/consistency_u12_input.py",
+          "mingjing_core/skills/learning.py",
+          "mingjing_core/skills/learning_input.py",
+          "mingjing_core/skills/loader.py",
+          "tests/test_p8_boundary_alerts_native.py",
+          "tests/test_p8_daily_transit_native.py",
+          "tests/test_p8_interactions_native.py",
+          "tests/test_p8_jie_geometry_native.py",
+          "tests/test_p8_meta_integration.py",
+          "tests/test_p8_time_basis_native.py",
+          "tests/test_p8_window_search_native.py",
+          "tests/test_p8_workbench_grid_native.py",
+          "tests/v4/p8_coverage_history_context.py",
+          "tests/v4/p8_rules_sample_context.py",
+          "tests/v4/p8_skill_asset_context.py",
+          "tests/v4/p8_u12_assertions_context.py",
+          "tests/v4/test_p8_almanac.py",
+          "tests/v4/test_p8_boundary_alerts.py",
+          "tests/v4/test_p8_calendar_tool_skills.py",
+          "tests/v4/test_p8_consistency.py",
+          "tests/v4/test_p8_consistency_boundaries.py",
+          "tests/v4/test_p8_consistency_context.py",
+          "tests/v4/test_p8_consistency_contract.py",
+          "tests/v4/test_p8_consistency_review.py",
+          "tests/v4/test_p8_core_coverage_guards.py",
+          "tests/v4/test_p8_core_coverage_independent.py",
+          "tests/v4/test_p8_core_coverage_receipts.py",
+          "tests/v4/test_p8_daily_transit.py",
+          "tests/v4/test_p8_date_properties.py",
+          "tests/v4/test_p8_e2_adjudication_v2.py",
+          "tests/v4/test_p8_e2_annual_v2.py",
+          "tests/v4/test_p8_e2_benchmarks.py",
+          "tests/v4/test_p8_e2_m2_input_contract.py",
+          "tests/v4/test_p8_e2_night28_audit.py",
+          "tests/v4/test_p8_e2_night28_controls.py",
+          "tests/v4/test_p8_e2_night28_temporal.py",
+          "tests/v4/test_p8_e2_night_integrity.py",
+          "tests/v4/test_p8_e2_night_placebo.py",
+          "tests/v4/test_p8_e2_night_sources.py",
+          "tests/v4/test_p8_e2_protocol_v2.py",
+          "tests/v4/test_p8_e2_statistics_v2.py",
+          "tests/v4/test_p8_extra_condition_matrix.py",
+          "tests/v4/test_p8_git_range_portability.py",
+          "tests/v4/test_p8_glossary.py",
+          "tests/v4/test_p8_handoff_preview.py",
+          "tests/v4/test_p8_handoff_request_binding.py",
+          "tests/v4/test_p8_handoff_v11.py",
+          "tests/v4/test_p8_jie_geometry_process.py",
+          "tests/v4/test_p8_learning_lessons.py",
+          "tests/v4/test_p8_learning_outline.py",
+          "tests/v4/test_p8_learning_preview.py",
+          "tests/v4/test_p8_learning_review.py",
+          "tests/v4/test_p8_line_coverage.py",
+          "tests/v4/test_p8_line_coverage_own.py",
+          "tests/v4/test_p8_meta_integration_process.py",
+          "tests/v4/test_p8_night28_api_review.py",
+          "tests/v4/test_p8_own_inventory_independent.py",
+          "tests/v4/test_p8_performance_safety.py",
+          "tests/v4/test_p8_product_skills.py",
+          "tests/v4/test_p8_rectification_calibration_scope.py",
+          "tests/v4/test_p8_rectification_fixtures.py",
+          "tests/v4/test_p8_rectification_workbench.py",
+          "tests/v4/test_p8_rectification_workbench_statistics.py",
+          "tests/v4/test_p8_review23_policy.py",
+          "tests/v4/test_p8_rule_hits.py",
+          "tests/v4/test_p8_skill_assets_contract.py",
+          "tests/v4/test_p8_skill_binding_matrix.py",
+          "tests/v4/test_p8_skill_budget_boundary.py",
+          "tests/v4/test_p8_skill_field_paths.py",
+          "tests/v4/test_p8_solar_independent.py",
+          "tests/v4/test_p8_synastry.py",
+          "tests/v4/test_p8_synastry_contract.py",
+          "tests/v4/test_p8_tarot_spreads_asset.py",
+          "tests/v4/test_p8_time_basis.py",
+          "tests/v4/test_p8_time_basis_process.py",
+          "tests/v4/test_p8_tools_independent_boundaries.py",
+          "tests/v4/test_p8_u12_assertion_boundaries.py",
+          "tests/v4/test_p8_u12_assertion_contract.py",
+          "tests/v4/test_p8_u12_independent_review.py",
+          "tests/v4/test_p8_u12_rule_assertions.py",
+          "tests/v4/test_p8_u2_interactions.py",
+          "tests/v4/test_p8_western_timing_entry.py",
+          "tests/v4/test_p8_window_public_pages.py",
+          "tests/v4/test_p8_window_search.py",
+          "tests/v4/test_p8_window_search_process.py",
+          "tests/v4/test_p8_workbench_grid_process.py",
+          "tests/v4/test_p8_ziwei_daily_reference.py"
+        ],
+        "returncode": 0,
+        "log": "meta-format88.txt"
+      }
+    ],
+    "database": "127.0.0.1:55480/core_test_meta",
+    "server": "not_started; reserved_port_8003",
+    "real_model_calls": 0,
+    "stage_production_access": false,
+    "merged_prs": []
+  },
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "feishu_requests": 0,
+  "b1_collector_executions": 0,
+  "charts_coverage_samples": 0,
+  "limits": [
+    "2939 includes all 85 B1 unit boundaries; no collector execution or coverage percentage follows",
+    "Scripted 80/80+self48 and legacy553 belong to earlier ed source, not rerun for this source",
+    "CI629 remains failed: shallow history and Core precondition addressed locally; Tarot runtime source hash drift remains unresolved",
+    "Execution evidence gap 02:09-07:28, hourly03-06 and 40-minute push checkpoints missing, never backfilled",
+    "E2 two temporal pairs blocked; no professional model scores or whole P8 acceptance"
+  ]
+}

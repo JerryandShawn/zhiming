@@ -1,0 +1,111 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-11",
+  "order": 11,
+  "title": "筛选通过距离成格还有多远",
+  "level": "中阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-10"
+  ],
+  "objectives": [
+    "逐项读月令、透干和牵制条件。",
+    "保留完整成格尚未判断的部分。"
+  ],
+  "paragraphs": [
+    "格局筛选像核对几项门槛，不是一枚人生身份章。三项检查都过，可以说本条候选通过筛选；力量、刑冲、救应等未判部分仍不能省。",
+    "阿远的正印候选三项都满足，其中年月时透正印这一项有真实r8。我们可以准确说这一条件满足，但不能将r8一个短号扩写成所有印格专章已经完成。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "正印候选的透干条件实际满足，证据保留为〔c7〕〔r8〕。",
+      "evidence_ids": [
+        "seal_exposed"
+      ],
+      "learning_point_ids": [
+        "learning-9"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-11-q1",
+      "question": "当前被r8登记的透干条件是否满足？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "满足",
+          "value": true
+        },
+        {
+          "option_id": "b",
+          "text": "不满足",
+          "value": false
+        },
+        {
+          "option_id": "c",
+          "text": "没有这个条件",
+          "value": "unknown"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "原始condition.satisfied为true，r8也登记同一真实命中；只证明这一条件。〔c7〕〔r8〕",
+      "basis": {
+        "kind": "matched_rule",
+        "evidence_id": "seal_exposed",
+        "expected": true
+      }
+    },
+    {
+      "quiz_id": "lesson-11-q2",
+      "question": "三项筛选都过，较准确的表述是？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "已经证明完整成格并会成功",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "再不用看其它条件",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "候选筛选通过，未判条件继续保留",
+          "value": "screen_not_full_pattern"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "筛选覆盖范围有限，不能用工程布尔值替代整章传统判断。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-pattern-review"
+        ],
+        "expected": "screen_not_full_pattern"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-pattern-review"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "本课按P8显式三条件筛选，古籍完整成格与救应没有被全部数字化。",
+      "source_ids": [
+        "p8-pattern-review"
+      ]
+    }
+  ],
+  "pending_review": [
+    "正印印轻、身强印重及财印救应力量仍未完整判断。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

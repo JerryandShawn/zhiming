@@ -1,0 +1,79 @@
+id: P8AL03
+title: 无效公历日期不进引擎
+category: chart
+clock: '2026-10-27T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    confirmed: true
+    birth:
+      date: '1994-03-12'
+      time: 08:20
+      solar_datetime: '1994-03-12T08:20:00'
+      precision: exact
+      clock_basis: clock
+      location:
+        lng: 104.07
+        lat: 30.67
+        tz: Asia/Shanghai
+  controls:
+    p8_acceptance:
+      subject_id: synthetic-subject-ayuan
+      revision: 1
+      confirmed_fields:
+      - birth.solar_datetime
+      - birth.location.lng
+      - birth.location.lat
+      - birth.location.tz
+      - birth.clock_basis
+      - birth.precision
+      - gender
+      observer_contract: README.md#运行时观测约定
+  incognito: false
+turns:
+- user: 查一下2026年2月30日的黄历。
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 不存在
+    - 日期无效
+    - 确认
+    must_not_include:
+    - 必然成功
+    - 必然失败
+    - 保证盈利
+    - 吉日保证
+    tools_not_called:
+    - daily_transit
+    - window_search
+    - synastry
+    tools_called:
+    - almanac
+    db:
+    - path: p8_acceptance.engine_calls.almanac
+      equals: 0
+    - path: p8_acceptance.refusal_code
+      equals: INVALID_ARGUMENT
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: almanac
+      arguments:
+        date: '2026-02-30'
+  - result:
+      ok: false
+      code: INVALID_ARGUMENT
+  - db:
+      p8_acceptance:
+        engine_calls:
+          almanac: 0
+        long_term_writes: 0
+        refusal_code: INVALID_ARGUMENT
+  - text: 2026年2月30日不存在，日期无效，先不计算黄历。请确认一个有效日期。
+notes: 仅合成脚本回放，result与db是独立声明的观察，不是引擎或Agent执行证明；运行时目标须按README从真实调用/事务轨迹产生同名观察。出生资料来自阿远已确认档案，模型参数不得传birth或consent。
+  期望工具名表示可返回拒绝的Agent护栏入口，不表示原生计算；engine_calls=0是硬门。

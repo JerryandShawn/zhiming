@@ -1,0 +1,48 @@
+{
+  "version": "p8-almanac-performance-night28-v1",
+  "measurement_started_at_beijing": "2026-10-20T23:04:12+08:00",
+  "function": "almanac",
+  "input": {
+    "day": "2026-10-21"
+  },
+  "warmup_count": 1,
+  "observation_count": 10,
+  "durations_ms": [
+    0.6092,
+    0.5026,
+    0.4892,
+    0.4945,
+    0.4985,
+    0.4911,
+    0.4949,
+    0.4797,
+    0.4822,
+    0.4804
+  ],
+  "minimum_ms": 0.4797,
+  "median_ms": 0.4928,
+  "mean_ms": 0.50223,
+  "maximum_ms": 0.6092,
+  "measurement": "time.perf_counter; one warmup then ten sequential calls in one existing Charts Python process",
+  "included": [
+    "native lunar calculation",
+    "cached package fingerprint lookup",
+    "actual evidence aliases and content hashes"
+  ],
+  "excluded": [
+    "fresh interpreter startup",
+    "worker transport",
+    "JSON serialization by a parent",
+    "HTTP or deployed service latency"
+  ],
+  "limits": [
+    "Source fingerprint reads and initial lunar-year cache construction are warmed; not a cold-start SLA.",
+    "Small synthetic observation set, not a concurrency benchmark or external validity result.",
+    "No host current time or implicit date used."
+  ],
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "alias_registry": "ephemeral_only"
+  }
+}

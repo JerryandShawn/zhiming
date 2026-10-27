@@ -1,0 +1,381 @@
+"""Review-only A identity/B bootstrap-help launch probe. Do not run unapproved."""
+
+from __future__ import annotations
+
+import ctypes
+import hashlib
+import json
+import os
+import subprocess
+import sys
+from ctypes import wintypes as w
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from time import monotonic, sleep
+from uuid import uuid4
+
+ROOT = Path(__file__).resolve().parents[2]
+CORE = ROOT.parent / "zhiming-v4/.venv-core/Scripts/python.exe"
+BASE = Path(
+    "C:/Users/Administrator/AppData/Local/Packages/OpenAI.Codex_2p2nqsd0c76g0/LocalCache/Roaming/uv/python/cpython-3.11.16-windows-x86_64-none/python.exe"
+)
+CHILD = ROOT / "private/p8-validation/core_direct_launch_identity_child.py"
+BOOTSTRAP = (
+    ROOT / "mingjing_core/adapters/charts/benchmarks/line_coverage_core_bootstrap.py"
+)
+CFG = CORE.parent.parent / "pyvenv.cfg"
+TIMEOUT = 15.0
+
+
+def environment() -> dict:
+    result = {
+        key: os.environ[key]
+        for key in ("SYSTEMROOT", "WINDIR", "TEMP", "TMP", "COMSPEC")
+        if key in os.environ
+    }
+    result.update(
+        PATH=str(BASE.parent) + os.pathsep + "C:/Windows/System32",
+        __PYVENV_LAUNCHER__=str(CORE),
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+        PYTEST_ADDOPTS="",
+        PYDANTIC_DISABLE_PLUGINS="__all__",
+        LANGCHAIN_TRACING_V2="false",
+        LANGSMITH_TRACING="false",
+    )
+    return result
+
+
+def initialize():
+    if (
+        Path.cwd().resolve() != ROOT
+        or not sys.flags.isolated
+        or not sys.flags.no_site
+        or not sys.dont_write_bytecode
+        or sys.flags.optimize
+    ):
+        raise RuntimeError("direct_probe_fixed_coordinator_required")
+    if (
+        Path(sys.orig_argv[0]).resolve() != BASE.resolve()
+        or Path(sys.executable).resolve() != CORE.resolve()
+    ):
+        raise RuntimeError("direct_probe_native_base_and_core_identity_required")
+    cleaned = environment()
+    os.environ.clear()
+    os.environ.update(cleaned)
+    sys.path[:0] = [str(ROOT), str(CORE.parent.parent / "Lib/site-packages")]
+    from mingjing_core.adapters.charts.benchmarks.line_coverage_core_job import (
+        Accounting,
+        Extended,
+        WindowsJob,
+    )
+
+    return Accounting, Extended, WindowsJob
+
+
+def clock() -> str:
+    return (
+        datetime.now(timezone.utc).astimezone(timezone(timedelta(hours=8))).isoformat()
+    )
+
+
+def image(job, handle) -> str:
+    api = job.api
+    api.QueryFullProcessImageNameW.argtypes = (
+        w.HANDLE,
+        w.DWORD,
+        w.LPWSTR,
+        ctypes.POINTER(w.DWORD),
+    )
+    api.QueryFullProcessImageNameW.restype = w.BOOL
+    buffer = ctypes.create_unicode_buffer(32768)
+    size = w.DWORD(len(buffer))
+    job._check(
+        api.QueryFullProcessImageNameW(handle, 0, buffer, ctypes.byref(size)),
+        "probe_owned_image_query_failed",
+    )
+    return buffer.value
+
+
+def accounting(job, structure) -> dict:
+    value = structure()
+    returned = w.DWORD()
+    job._check(
+        job.api.QueryInformationJobObject(
+            job.handle,
+            1,
+            ctypes.byref(value),
+            ctypes.sizeof(value),
+            ctypes.byref(returned),
+        ),
+        "probe_accounting_failed",
+    )
+    if returned.value != ctypes.sizeof(value):
+        raise RuntimeError("probe_accounting_size_mismatch")
+    return {
+        name: int(getattr(value, name)) for name in ("total", "active", "terminated")
+    }
+
+
+def outer_job(kind, extended, structure):
+    job = kind()
+    try:
+        limits = extended()
+        limits.basic.flags = 8
+        limits.basic.active = 4
+        job._check(
+            job.api.SetInformationJobObject(
+                job.handle, 9, ctypes.byref(limits), ctypes.sizeof(limits)
+            ),
+            "probe_outer_limit_set_failed",
+        )
+        observed = extended()
+        returned = w.DWORD()
+        job._check(
+            job.api.QueryInformationJobObject(
+                job.handle,
+                9,
+                ctypes.byref(observed),
+                ctypes.sizeof(observed),
+                ctypes.byref(returned),
+            ),
+            "probe_outer_limit_query_failed",
+        )
+        if (
+            returned.value != ctypes.sizeof(observed)
+            or observed.basic.flags != 8
+            or observed.basic.active != 4
+        ):
+            raise RuntimeError("probe_outer_limit_mismatch")
+        job._check(
+            job.api.AssignProcessToJobObject(job.handle, ctypes.c_void_p(-1)),
+            "probe_outer_self_assign_failed",
+        )
+        if accounting(job, structure)["active"] != 1:
+            raise RuntimeError("probe_outer_not_single_coordinator")
+        if Path(image(job, ctypes.c_void_p(-1))).resolve() != BASE.resolve():
+            raise RuntimeError("probe_coordinator_physical_image_mismatch")
+        return job
+    except BaseException:
+        job.close()
+        raise
+
+
+def hashes() -> dict:
+    paths = [
+        BASE,
+        CORE,
+        CFG,
+        BOOTSTRAP,
+        CHILD,
+        Path(__file__).resolve(),
+        ROOT / "mingjing_core/adapters/charts/benchmarks/line_coverage_core_job.py",
+    ]
+    paths.extend(
+        BASE.parent / name
+        for name in ("python311.dll", "python3.dll")
+        if (BASE.parent / name).is_file()
+    )
+    return {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
+
+
+def save(path: Path, value: dict) -> None:
+    with path.open("x", encoding="utf-8", newline="\n") as stream:
+        json.dump(value, stream, ensure_ascii=False, indent=2, allow_nan=False)
+        stream.write("\n")
+
+
+def cleanup(child, job, assigned, structure, row) -> list[str]:
+    errors = []
+
+    def attempt(name, call):
+        try:
+            call()
+        except BaseException:
+            errors.append(name)
+
+    if child is not None and not assigned:
+        attempt(
+            "unassigned_child_kill_failed",
+            lambda: child.kill() if child.poll() is None else None,
+        )
+    if job is not None:
+        attempt("inner_job_termination_failed", lambda: job.terminate(3.0))
+    if child is not None:
+        attempt("child_wait_failed", lambda: child.wait(timeout=3.0))
+    if job is not None:
+        attempt(
+            "inner_cleanup_accounting_failed",
+            lambda: row.update(inner_cleanup_before_close=accounting(job, structure)),
+        )
+    if job is not None:
+        attempt("inner_job_close_failed", job.close)
+    if child is not None:
+        attempt("process_handle_close_failed", child._handle.Close)
+    return errors
+
+
+def command(kind: str, cache: Path, output: Path) -> list[str]:
+    leading = [str(BASE), "-I", "-S", "-B", "-X", "pycache_prefix=" + str(cache)]
+    return leading + (
+        [str(CHILD), str(output)] if kind == "A" else [str(BOOTSTRAP), "--help"]
+    )
+
+
+def observe_exit(child, job, structure, row, kind, output) -> None:
+    end = monotonic() + TIMEOUT
+    while child.poll() is None or job.active() != 0:
+        if monotonic() >= end:
+            raise TimeoutError("probe_deadline")
+        sleep(0.01)
+    row.update(
+        exit_code=child.returncode,
+        inner_after=accounting(job, structure),
+        state="exited_job_empty",
+    )
+    if child.returncode != 0 or row["inner_after"]["total"] != 1:
+        raise RuntimeError("probe_nonzero_exit_or_unexplained_descendants")
+    if kind == "A":
+        data = json.loads(output.read_bytes())
+        row.update(
+            identity=data,
+            identity_sha256=hashlib.sha256(output.read_bytes()).hexdigest(),
+        )
+        if (
+            data["pid"] != child.pid
+            or data["project_or_pytest_imported"]
+            or Path(data["process_image"]).resolve() != BASE.resolve()
+            or Path(data["executable"]).resolve() != CORE.resolve()
+            or data["orig_argv"][1:6] != row["command"][1:6]
+            or data["trace_active"]
+            or data["profile_active"]
+            or data["launcher_state"] != "absent_consumed"
+        ):
+            raise RuntimeError("probe_child_identity_mismatch")
+
+
+def one(kind, folder, structure, job_kind) -> dict:
+    cache = folder / ("cache-" + kind)
+    cache.mkdir()
+    output = folder / "identity.json"
+    row = {
+        "kind": kind,
+        "started_at_beijing": clock(),
+        "command": command(kind, cache, output),
+        "no_taskkill_or_supervisor": True,
+    }
+    child, job, assigned = None, None, False
+    try:
+        job = job_kind()
+        row["inner_before"] = accounting(job, structure)
+        child = subprocess.Popen(
+            row["command"],
+            cwd=ROOT,
+            env=environment(),
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            shell=False,
+            close_fds=True,
+            creationflags=0x08000004,
+        )
+        row.update(
+            owned_popen_pid=child.pid, suspended_image=image(job, int(child._handle))
+        )
+        if (
+            not job.owns(child)
+            or Path(row["suspended_image"]).resolve() != BASE.resolve()
+        ):
+            raise RuntimeError("probe_child_image_or_pid_mismatch")
+        job.assign(child)
+        assigned = True
+        row["assigned"] = accounting(job, structure)
+        job.resume(child)
+        observe_exit(child, job, structure, row, kind, output)
+    except BaseException as error:
+        row.update(state="refused", error_type=type(error).__name__)
+    finally:
+        errors = cleanup(child, job, assigned, structure, row)
+        if errors:
+            row.update(state="cleanup_unverified", cleanup_errors=errors)
+    row["completed_at_beijing"] = clock()
+    return row
+
+
+def new_record():
+    folder = ROOT / "private/tmp" / ("direct-core-launch-" + uuid4().hex)
+    if folder.parent.absolute() != folder.parent.resolve():
+        raise RuntimeError("probe_private_path_alias_refused")
+    folder.mkdir(parents=True, exist_ok=False)
+    before = hashes()
+    record = {
+        "version": "p8-direct-base-launch-only-v1",
+        "transport": "physical-base-plus-native-pyvenv-launcher-core",
+        "started_at_beijing": clock(),
+        "fixed_sha256_before": before,
+        "real_model_requests": 0,
+        "server_access": False,
+        "collector_invocations": 0,
+        "pytest_invocations": 0,
+        "trace_invocations": 0,
+        "outer_limit": 4,
+        "inner_limit": 3,
+        "transport_approved_for_sampling": False,
+        "rows": [],
+        "limits": [
+            "A identity is not production bootstrap execution.",
+            "B --help does not call collect_core or bootstrap_guard; B child internal identities not observed again.",
+            "This is launch-only and supplies no sampling authorization or coverage.",
+        ],
+    }
+    save(folder / "started.json", record)
+    return folder, before, record
+
+
+def main() -> int:
+    structure, extended, kind = initialize()
+    folder, before, record = new_record()
+    outer = None
+    try:
+        outer = outer_job(kind, extended, structure)
+        record["outer_before"] = accounting(outer, structure)
+        for phase in ("A", "B"):
+            row = one(phase, folder, structure, kind)
+            record["rows"].append(row)
+            row["outer_after"] = accounting(outer, structure)
+            if row["state"] != "exited_job_empty" or row["outer_after"]["active"] != 1:
+                break
+        record["fixed_sha256_after"] = hashes()
+        record["state"] = (
+            "launch_only_passed"
+            if len(record["rows"]) == 2
+            and all(row["state"] == "exited_job_empty" for row in record["rows"])
+            and before == record["fixed_sha256_after"]
+            else "refused"
+        )
+    except BaseException as error:
+        record.update(state="refused", error_type=type(error).__name__)
+    finally:
+        if outer is not None:
+            try:
+                record["outer_final"] = accounting(outer, structure)
+                if record["outer_final"]["active"] != 1:
+                    raise RuntimeError("outer_descendants_not_cleared")
+            except BaseException:
+                record["state"] = "cleanup_unverified"
+                record["completed_at_beijing"] = clock()
+                record["cleanup"] = "Terminating this entire owned Job, including the coordinator; no stale PID kill."
+                save(folder / "final.json", record)
+                outer.terminate(3.0)
+                raise SystemExit(1)
+            try:
+                outer.close()
+            except BaseException:
+                record["state"] = "cleanup_unverified"
+    record["completed_at_beijing"] = clock()
+    save(folder / "final.json", record)
+    print(str(folder / "final.json"))
+    return 0 if record["state"] == "launch_only_passed" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

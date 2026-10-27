@@ -1,0 +1,28 @@
+{
+  "mode": "offline_synthetic_material_validation",
+  "recorded_at_beijing": "2026-10-27T08:21:50.240972+08:00",
+  "base_commit": "299273ad5f32be6b0bcd77ae28506f4aa8c3d745",
+  "validated_new_python_sha256_lf": {
+    "mingjing_core/adapters/charts/benchmarks/acceptance_scenarios.py": "80389866fc190b0a3f2949103fe119dfd7ab7b5122e1cafc01000aa0792a0df5",
+    "mingjing_core/adapters/charts/benchmarks/acceptance_replay.py": "89011d3383a654558dbf1f9276b68b9341f5546486244e905496b9548935829d",
+    "tests/v4/test_p8_acceptance_materials_v4.py": "a279471cc2de0b017fe8e6d4273c458b6a556edecf7b98f6dda683eddc03e64d"
+  },
+  "full_v4": {
+    "tests": 3282,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "full_seconds_console": 197.19,
+  "full_started_at_beijing": "2026-10-27T08:17:27.582645+08:00",
+  "targeted_passed": 55,
+  "fake_replay_passed": 13,
+  "fake_replay_total": 13,
+  "real_model_calls": 0,
+  "native_business_tools_in_new_fake_replay": 0,
+  "mainline_agent_gate": "not_run",
+  "transport": "Core locked prefix with physical Python -I -B; Charts physical -S locked Charts site only, repo PYTHONPATH and Core tzdata; serial pytest with isolated native bridge test runner",
+  "old_80_inputs_unchanged_manifest": "../../contracts/p8_acceptance_20261027/legacy_readonly_manifest.json",
+  "namespace": "P8 extension loader added; default old Scenario ID allowlist untouched",
+  "first_targeted_issue": "blank-answer mutation removed the only action in incognito case; corrected to valid empty text so assertion failure is measured; original assertion and implementation unchanged"
+}

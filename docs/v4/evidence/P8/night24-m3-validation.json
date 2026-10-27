@@ -1,0 +1,66 @@
+{
+  "schema": "p8-night24-m3-validation-v1",
+  "verified_at": "2026-10-18T23:40:09+08:00",
+  "base_head": "5a8e4d0bf85d297d9786b2281452489472cfbe2b",
+  "v4": {
+    "passed": 843,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 117.12,
+    "log_tail": "........................................................................ [  8%]\n........................................................................ [ 17%]\n........................................................................ [ 25%]\n........................................................................ [ 34%]\n........................................................................ [ 42%]\n........................................................................ [ 51%]\n........................................................................ [ 59%]\n........................................................................ [ 68%]\n........................................................................ [ 76%]\n........................................................................ [ 85%]\n........................................................................ [ 93%]\n...................................................                      [100%]\n843 passed in 117.12s (0:01:57)\n"
+  },
+  "e2_targeted": {
+    "passed": 96,
+    "new_tests": 27,
+    "skipped": 0,
+    "seconds": 0.37,
+    "runner": "delegated local Core pytest; covered again by full v4"
+  },
+  "source_audit": {
+    "full_source_questions": 360,
+    "subset_source_questions": 80,
+    "included_questions": 14,
+    "excluded_questions": 66
+  },
+  "target_year_equals_competition_year_count": 0,
+  "source_exclusions": {
+    "no_explicit_target_year": 61,
+    "explicit_year_target_unresolved": 5
+  },
+  "placebo_preflight": {
+    "seed": 20261019,
+    "year_basis": "question_year",
+    "actual_call_count": 1,
+    "status": "unavailable",
+    "error_code": "placebo_case_spans_question_years_cannot_preserve_one_donor",
+    "retries": 0,
+    "multi_year_case_count": 5,
+    "group_count": 13,
+    "singleton_group_count": 12,
+    "cross_source_fallback": false,
+    "cross_year_fallback": false
+  },
+  "synthetic_scripted": {
+    "questions": 3,
+    "isolated_chart_calculations": 3,
+    "stage_callbacks": 30,
+    "model_calls": 0,
+    "professional_scores": null,
+    "report": "night24-e2-scripted-2026-10-19.json"
+  },
+  "full_source_validation_precedes_contest_filter": true,
+  "original_source_index_for_schema_exclusions": true,
+  "source_changed_during_audit_rejected": true,
+  "public_manifest_contains_raw_question_ids_or_births": false,
+  "style_python_files": 110,
+  "protected_files_unchanged": 141,
+  "real_model_requests": 0,
+  "server_access": false,
+  "professional_corpus_scores": null,
+  "new_head_ci": "pending_until_publish",
+  "m2_head_ci": {
+    "head": "5a8e4d0bf85d297d9786b2281452489472cfbe2b",
+    "run": 39139510036,
+    "conclusion": "success"
+  }
+}

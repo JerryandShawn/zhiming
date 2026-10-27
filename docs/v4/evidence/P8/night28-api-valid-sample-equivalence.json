@@ -1,0 +1,28 @@
+{
+  "version": "p8-api-valid-sample-equivalence-v1",
+  "recorded_at_beijing": "2026-10-21T00:15:19.272629+08:00",
+  "baseline": "a92b889815c7cc1c969f6aaa5d4dac5c44816548",
+  "checks": [
+    {
+      "system": "bazi",
+      "primary_values_equal": true,
+      "documents_rebound": true
+    },
+    {
+      "system": "ziwei",
+      "primary_values_equal": true,
+      "documents_rebound": true
+    },
+    {
+      "system": "astro",
+      "primary_values_equal": true,
+      "documents_rebound": true
+    }
+  ],
+  "limits": [
+    "Three synthetic primary values only; document/alias hashes change with new code provenance.",
+    "Not all valid inputs, predictive validity or caller authorization."
+  ],
+  "model_calls": 0,
+  "chart_processes": 0
+}

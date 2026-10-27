@@ -1,0 +1,76 @@
+{
+  "version": "p8-tarot-clock-provenance-review-v1",
+  "recorded_at_beijing": "2026-10-21T07:47:36.802758+08:00",
+  "historical": {
+    "lf_sha256": "603d961da03bc076c3272ffc40350a575ed6423e06716ee01f3db1f0b10b5ee0",
+    "git_commit": "ef3947b2f8e1a2627c6216a23240625dff171ac2",
+    "blob_sha1": "42f2c1618824203a02475d709a60bf148ed7f6de",
+    "source_asset": "mingjing_core/knowledge/p8_tarot/spreads_v1.json#/sources/1",
+    "meaning": "original source integrity only; does not assert the Clock migration is installed"
+  },
+  "reviewed_clock": {
+    "lf_sha256": "742d022d2368420f51870c2df4b7b50e5802966006f671f95a0fd1ce20e8b9ad",
+    "git_commit": "5bbd2fccfe392e30dc4b1686bd06acf8d12225c7",
+    "blob_sha1": "66600110660608840d8182474ee6752f0204613c",
+    "meaning": "exact fetched PR merge blob, separately reviewed migration"
+  },
+  "diff": [
+    "--- historical603",
+    "+++ reviewed742",
+    "@@ -2,7 +2,6 @@",
+    " from __future__ import annotations",
+    " ",
+    " from copy import deepcopy",
+    "-from datetime import datetime, timezone",
+    " import hashlib",
+    " import json",
+    " import secrets",
+    "@@ -10,6 +9,7 @@",
+    " ",
+    " from psycopg import sql",
+    " from psycopg.types.json import Jsonb",
+    "+from mingjing_core.timekit.clock import get_clock",
+    " from hermes.tarot_deck import CARDS, CARD_BY_ID, SPREADS, DECK_VERSION, MEANING_VERSION, METHOD_VERSION, card",
+    " ",
+    " ",
+    "@@ -29,7 +29,7 @@",
+    " ",
+    " ",
+    " def _stamp():",
+    "-    return datetime.now(timezone.utc).isoformat()",
+    "+    return get_clock().now().isoformat()",
+    " ",
+    " ",
+    " class TarotService:"
+  ],
+  "historical_validation": {
+    "review_version": "p8-tarot-service-clock-review-v1",
+    "checkout_basis": "historical_source",
+    "reviewed_clock_checkout_verified": false,
+    "checkout_lf_sha256": "603d961da03bc076c3272ffc40350a575ed6423e06716ee01f3db1f0b10b5ee0",
+    "historical_lf_sha256": "603d961da03bc076c3272ffc40350a575ed6423e06716ee01f3db1f0b10b5ee0",
+    "reviewed_clock_lf_sha256": "742d022d2368420f51870c2df4b7b50e5802966006f671f95a0fd1ce20e8b9ad",
+    "complete_service_ast_unchanged": true,
+    "historical_source_reconstructed_exactly": true,
+    "runtime_execution_verified": false,
+    "clock_dependency_verified": false
+  },
+  "clock_validation": {
+    "review_version": "p8-tarot-service-clock-review-v1",
+    "checkout_basis": "reviewed_clock_migration",
+    "reviewed_clock_checkout_verified": true,
+    "checkout_lf_sha256": "742d022d2368420f51870c2df4b7b50e5802966006f671f95a0fd1ce20e8b9ad",
+    "historical_lf_sha256": "603d961da03bc076c3272ffc40350a575ed6423e06716ee01f3db1f0b10b5ee0",
+    "reviewed_clock_lf_sha256": "742d022d2368420f51870c2df4b7b50e5802966006f671f95a0fd1ce20e8b9ad",
+    "complete_service_ast_unchanged": true,
+    "historical_source_reconstructed_exactly": true,
+    "runtime_execution_verified": false,
+    "clock_dependency_verified": false
+  },
+  "historical_spreads_asset_unchanged": true,
+  "actual_service_database_model_calls": 0,
+  "limits": [
+    "Static provenance compatibility, not runtime effects or dependency identity proof",
+    "CI success awaits exact new HEAD; earlier failure is retained"
+  ]
+}

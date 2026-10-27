@@ -1,0 +1,123 @@
+{
+  "synthetic": true,
+  "cases": [
+    {
+      "case_id": "ayuan-bazi",
+      "mode": "actual_engine_fixture_to_preview_reference_validation",
+      "confirmed_profile_fixture": {
+        "birth.solar_datetime": "1994-03-12T08:20:00",
+        "gender": "男",
+        "birth.location": {
+          "lng": 104.07,
+          "lat": 30.67,
+          "tz": "Asia/Shanghai"
+        },
+        "birth.clock_basis": "clock",
+        "birth.precision": "reported"
+      },
+      "input_scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-bazi-20261019"
+      },
+      "expected_preview_file": "ayuan_bazi.json",
+      "expected_contract_version": "p8-chart-compute-preview-v1.1",
+      "documents": [
+        {
+          "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+          "kind": "time_basis"
+        }
+      ],
+      "mainline_must_supply": [
+        "confirmed_fields",
+        "trusted_worker_origin",
+        "current_run_alias_ledger"
+      ],
+      "not_agent_runtime_acceptance": true
+    },
+    {
+      "case_id": "ayuan-ziwei",
+      "mode": "actual_engine_fixture_to_preview_reference_validation",
+      "confirmed_profile_fixture": {
+        "birth.solar_datetime": "1994-03-12T08:20:00",
+        "gender": "男",
+        "birth.location": {
+          "lng": 104.07,
+          "lat": 30.67,
+          "tz": "Asia/Shanghai"
+        },
+        "birth.clock_basis": "clock",
+        "birth.precision": "reported"
+      },
+      "input_scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-ziwei-20261019"
+      },
+      "expected_preview_file": "ayuan_ziwei.json",
+      "expected_contract_version": "p8-chart-compute-preview-v1.1",
+      "documents": [
+        {
+          "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+          "kind": "time_basis"
+        }
+      ],
+      "mainline_must_supply": [
+        "confirmed_fields",
+        "trusted_worker_origin",
+        "current_run_alias_ledger"
+      ],
+      "not_agent_runtime_acceptance": true
+    },
+    {
+      "case_id": "ayuan-astro",
+      "mode": "actual_engine_fixture_to_preview_reference_validation",
+      "confirmed_profile_fixture": {
+        "birth.solar_datetime": "1994-03-12T08:20:00",
+        "gender": "男",
+        "birth.location": {
+          "lng": 104.07,
+          "lat": 30.67,
+          "tz": "Asia/Shanghai"
+        },
+        "birth.clock_basis": "clock",
+        "birth.precision": "reported"
+      },
+      "input_scope": {
+        "owner_user_id": "synthetic-owner-ayuan",
+        "subject_id": "synthetic-subject-ayuan",
+        "revision": 1,
+        "operation_id": "synthetic-ayuan-astro-20261019"
+      },
+      "expected_preview_file": "ayuan_astro.json",
+      "expected_contract_version": "p8-chart-compute-preview-v1.1",
+      "documents": [
+        {
+          "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+          "kind": "time_basis"
+        },
+        {
+          "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+          "kind": "calculation_bundle"
+        },
+        {
+          "document_id": "doc-482ebeed6aab889875b154c8e79dda7dc7c1eb6c209b5bb24d663bdb64345c34",
+          "kind": "western_timing"
+        },
+        {
+          "document_id": "doc-ce0de687d4f35f8fe3a3be2fe325b64b93fad71965367db03e551c9d43f3ac31",
+          "kind": "western_timing"
+        }
+      ],
+      "mainline_must_supply": [
+        "confirmed_fields",
+        "trusted_worker_origin",
+        "current_run_alias_ledger"
+      ],
+      "not_agent_runtime_acceptance": true
+    }
+  ],
+  "model_calls": 0
+}

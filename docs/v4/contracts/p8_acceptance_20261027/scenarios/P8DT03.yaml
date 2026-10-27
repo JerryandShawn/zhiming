@@ -1,0 +1,59 @@
+id: P8DT03
+title: 无痕模式不暴露四个新计算工具
+category: chart
+clock: '2026-10-27T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    confirmed: true
+    birth:
+      date: '1994-03-12'
+      time: 08:20
+      solar_datetime: '1994-03-12T08:20:00'
+      precision: exact
+      clock_basis: clock
+      location:
+        lng: 104.07
+        lat: 30.67
+        tz: Asia/Shanghai
+  controls:
+    p8_acceptance:
+      subject_id: synthetic-subject-ayuan
+      revision: 1
+      confirmed_fields:
+      - birth.solar_datetime
+      - birth.location.lng
+      - birth.location.lat
+      - birth.location.tz
+      - birth.clock_basis
+      - birth.precision
+      - gender
+      observer_contract: README.md#运行时观测约定
+  incognito: true
+turns:
+- user: 无痕聊聊：今天的流日怎么样？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 无痕
+    - 不调用
+    - 不保存
+    must_not_include:
+    - 必然成功
+    - 必然失败
+    - 保证盈利
+    - 吉日保证
+    tools_not_called:
+    - daily_transit
+    - window_search
+    - almanac
+    - synastry
+scripted:
+- turn: 1
+  model:
+  - text: 当前是无痕模式，这轮不调用新命理计算工具，也不保存这段内容；可以先聊今天的实际安排。
+notes: 仅合成脚本回放，result与db是独立声明的观察，不是引擎或Agent执行证明；运行时目标须按README从真实调用/事务轨迹产生同名观察。出生资料来自阿远已确认档案，模型参数不得传birth或consent。

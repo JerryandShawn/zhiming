@@ -1,0 +1,109 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-01",
+  "order": 1,
+  "title": "四柱先按位置读",
+  "level": "入门",
+  "status": "draft_for_review",
+  "prerequisite_ids": [],
+  "objectives": [
+    "找到年、月、日、时四组符号。",
+    "把盘里记录与现实经历分开。"
+  ],
+  "paragraphs": [
+    "先把四柱当作四个有位置的格子：年、月、日、时各放一个干支。相同的字出现在不同格，不能随意合并。先读位置，比急着给自己贴标签更有用。",
+    "阿远这份合成盘按年到时列出甲戌、丁卯、丁酉、甲辰。第三组才是日柱；四组看起来像一句话，也不能调换顺序凑故事。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "阿远的年柱是甲戌；日柱另列丁酉，别把第一个天干当日主。〔c3〕",
+      "evidence_ids": [
+        "year"
+      ],
+      "learning_point_ids": [
+        "learning-1"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-01-q1",
+      "question": "这份样例的年柱是哪一组？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "甲戌",
+          "value": "甲戌"
+        },
+        {
+          "option_id": "b",
+          "text": "丁酉",
+          "value": "丁酉"
+        },
+        {
+          "option_id": "c",
+          "text": "甲辰",
+          "value": "甲辰"
+        }
+      ],
+      "correct_option_id": "a",
+      "explanation": "年柱字段直接给出甲戌；另外两组分别位于日、时位置。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "year",
+        "expected": "甲戌"
+      }
+    },
+    {
+      "quiz_id": "lesson-01-q2",
+      "question": "只看到八字字符串，能确认一个人的家庭经历吗？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "能，年柱就是完整家谱",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "不能，须另听现实资料",
+          "value": "need_real_facts"
+        },
+        {
+          "option_id": "c",
+          "text": "能，任意解释都算验证",
+          "value": "distractor_3"
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "盘面是符号记录，未知的家庭事实应继续未知。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-elements"
+        ],
+        "expected": "need_real_facts"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-elements"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "本课按P8四柱字段顺序，不把某一传统六亲映射当事实。",
+      "source_ids": [
+        "p8-elements"
+      ]
+    }
+  ],
+  "pending_review": [
+    "四柱术语的原刊异文未逐版核；本课只讲项目字段。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

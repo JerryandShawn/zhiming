@@ -1,0 +1,200 @@
+{
+  "contract": "p8-ziwei-daily-independent-implementation-v1",
+  "mode": "scripted_synthetic_crosscheck",
+  "recorded_at_beijing": "2026-10-20T23:35:10+08:00",
+  "seed": 20261020,
+  "natal_fixture": "synthetic_reference_1980_variant_not_canonical_ayuan",
+  "natal_request_sha256": "7aee881b647dc9b8ea97a5cb178de1a138178b7188ddbc343664c327241c91df",
+  "shared_natal_palaces_sha256": "db5fe287157c43d41da7faa0a4f27da441e65ad94aa506b960e421ca776c3e87",
+  "scope": {
+    "owner_user_id": "synthetic-reference-owner",
+    "subject_id": "synthetic-reference-subject-1980",
+    "revision": 1,
+    "operation_id": "synthetic-reference-daily-crosscheck"
+  },
+  "snapshot_time_index": 6,
+  "primary": "actual_ast_horoscope_then_existing_p8_temporal_star_lookup",
+  "reference": "stdlib_civil_day_count_then_pinned_table_then_raw_ast_star_scan",
+  "anchor": {
+    "date": "2000-01-07",
+    "ganzhi": "甲子",
+    "checked_against": "installed_lunar_python"
+  },
+  "table_source": {
+    "source": "installed_py_iztro/res/iztro-2.5.0.min.js",
+    "sha256": "09333d6a2da7fff7bd338134c8d17de0d589259c16a70ece1db1d64e17217ea0",
+    "cells_verified": 40,
+    "span_indexing": "unicode_codepoints_zero_based_half_open",
+    "table": {
+      "甲": {
+        "stars": [
+          "廉贞",
+          "破军",
+          "武曲",
+          "太阳"
+        ],
+        "source_character_span": [
+          5301,
+          5421
+        ]
+      },
+      "乙": {
+        "stars": [
+          "天机",
+          "天梁",
+          "紫微",
+          "太阴"
+        ],
+        "source_character_span": [
+          5423,
+          5543
+        ]
+      },
+      "丙": {
+        "stars": [
+          "天同",
+          "天机",
+          "文昌",
+          "廉贞"
+        ],
+        "source_character_span": [
+          5545,
+          5671
+        ]
+      },
+      "丁": {
+        "stars": [
+          "太阴",
+          "天同",
+          "天机",
+          "巨门"
+        ],
+        "source_character_span": [
+          5673,
+          5794
+        ]
+      },
+      "戊": {
+        "stars": [
+          "贪狼",
+          "太阴",
+          "右弼",
+          "天机"
+        ],
+        "source_character_span": [
+          5796,
+          5894
+        ]
+      },
+      "己": {
+        "stars": [
+          "武曲",
+          "贪狼",
+          "天梁",
+          "文曲"
+        ],
+        "source_character_span": [
+          5896,
+          5995
+        ]
+      },
+      "庚": {
+        "stars": [
+          "太阳",
+          "武曲",
+          "太阴",
+          "天同"
+        ],
+        "source_character_span": [
+          5997,
+          6118
+        ]
+      },
+      "辛": {
+        "stars": [
+          "巨门",
+          "太阳",
+          "文曲",
+          "文昌"
+        ],
+        "source_character_span": [
+          6120,
+          6239
+        ]
+      },
+      "壬": {
+        "stars": [
+          "天梁",
+          "紫微",
+          "左辅",
+          "武曲"
+        ],
+        "source_character_span": [
+          6241,
+          6360
+        ]
+      },
+      "癸": {
+        "stars": [
+          "破军",
+          "巨门",
+          "太阴",
+          "贪狼"
+        ],
+        "source_character_span": [
+          6362,
+          6481
+        ]
+      }
+    }
+  },
+  "versions": {
+    "py-iztro": "0.1.5",
+    "iztro_upstream_declared": "2.4.4",
+    "iztro_upstream_version_source": "installed_py_iztro_distribution_description",
+    "iztro_bundle_sha256": {
+      "py_iztro/res/iztro-2.5.0.min.js": "09333d6a2da7fff7bd338134c8d17de0d589259c16a70ece1db1d64e17217ea0"
+    },
+    "upstream_version_independently_verified": false
+  },
+  "code_sha256": {
+    "night28_ziwei_crosscheck.py": "b6bc4259b3357632f053f189e3fd62fced858216a02e7c34a2d590ada329674c",
+    "night28_ziwei_reference.py": "b9b180dea5add9abb35c39ff53dd8e955356a7c0a75245054efe8a60eefc4409",
+    "daily_transit_ziwei.py": "a588e03881cd88789529e917dcc44d8248f1b92e5181e1c26cb370dd5451f8b0",
+    "tool_evidence.py": "c1c0e64b0f4bece18f9477fffec87dd358bcdccc090a5ebdefbce104975ef0fe"
+  },
+  "dates": 1000,
+  "stem_coverage": {
+    "丁": 102,
+    "戊": 101,
+    "庚": 103,
+    "壬": 105,
+    "甲": 104,
+    "乙": 97,
+    "丙": 88,
+    "辛": 110,
+    "己": 85,
+    "癸": 105
+  },
+  "differences": [],
+  "difference_count": 0,
+  "target_dates_sha256": "677fa570e4e6b614870e2c413507038fcece83dd5945154ad76f32b314cf70da",
+  "target_year_counts": {
+    "1986": 178,
+    "1987": 159,
+    "1988": 157,
+    "1989": 155,
+    "1990": 180,
+    "1991": 164,
+    "2026": 7
+  },
+  "comparison_cell_count": 4000,
+  "real_model_requests": 0,
+  "server_requests": 0,
+  "writes_to_profiles": 0,
+  "limits": [
+    "独立实现日计数、四化选择、宫位扫描；本命星位与具名表源共用，不是第二个独立排盘引擎或学派真值。",
+    "甲子锚经现有历法库核对，不宣称独立历史原刊或天文校准；全部目标日期显式午时。",
+    "1000日期仅为软件一致性；无现实预测分数，不参与冻结的时辰倒推。"
+  ]
+}

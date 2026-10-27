@@ -1,0 +1,1451 @@
+{
+  "version": "night24-solar-independent-v1",
+  "fixed_alarm_seconds": 5.0,
+  "status": "offline_research_not_product_acceptance",
+  "live_model_calls": 0,
+  "network_calls": 0,
+  "database_writes": 0,
+  "production_method_changed": false,
+  "sources": {
+    "swiss_manual": "https://www.astro.com/swisseph/swephprg.htm",
+    "swiss_versioned_source": "https://raw.githubusercontent.com/aloistr/swisseph/v2.10.03/sweph.c",
+    "noaa_method": "https://gml.noaa.gov/grad/solcalc/calcdetails.html"
+  },
+  "documentation_conflict": {
+    "manual_section_18_3_11": "summary calls input tjd_et ephemeris time",
+    "resolved_by": "manual section9.4, wrapper docstring and versioned C implementation all require UT",
+    "reference_input_used": "JD_UT1 from Swiss utc_to_jd, never the returned JD_TT"
+  },
+  "grid": {
+    "year_start_inclusive": 1901,
+    "year_end_inclusive": 2099,
+    "dates_each_year": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        11
+      ],
+      [
+        3,
+        20
+      ],
+      [
+        4,
+        15
+      ],
+      [
+        6,
+        21
+      ],
+      [
+        7,
+        26
+      ],
+      [
+        9,
+        22
+      ],
+      [
+        11,
+        3
+      ],
+      [
+        12,
+        21
+      ],
+      [
+        12,
+        31
+      ]
+    ],
+    "UTC_times": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        6,
+        0,
+        0
+      ],
+      [
+        12,
+        0,
+        0
+      ],
+      [
+        23,
+        59,
+        59
+      ]
+    ],
+    "additional_days": "Feb29 in every Gregorian leap year",
+    "sample_count": 8156,
+    "ordered_UTC_grid_sha256": "83bae3590da637a039bded6424d0b3346e0234a889ae45849aa9cc89ad16f088",
+    "all_comparison_rows_sha256": "00c49b70505e132e2068df021ad933cb49c1b9b115a3043bdfcaee083927ce04",
+    "first": "1901-01-01T00:00:00Z",
+    "last": "2099-12-31T23:59:59Z"
+  },
+  "statistics": {
+    "noaa_minus_swiss_eot_seconds": {
+      "count": 8156,
+      "max_abs_seconds": 3.902981979813447,
+      "p95_abs_seconds_nearest_rank": 2.7740568852050274,
+      "rms_seconds": 1.4417715116786884,
+      "mean_signed_seconds": -0.1656541964371881,
+      "over_fixed_5_second_alarm": 0,
+      "sampled_research_alarm_clear": true
+    },
+    "noaa_minus_swiss_same_label_seconds": {
+      "count": 8156,
+      "max_abs_seconds": 3.902981979813447,
+      "p95_abs_seconds_nearest_rank": 2.7740568852050274,
+      "rms_seconds": 1.4417697913613126,
+      "mean_signed_seconds": -0.1656524338799513,
+      "over_fixed_5_second_alarm": 0,
+      "sampled_research_alarm_clear": true
+    },
+    "swiss_label_minus_UT1_eot_seconds": {
+      "count": 8156,
+      "max_abs_seconds": 0.0002818280154315289,
+      "p95_abs_seconds_nearest_rank": 0.00010250682862533722,
+      "rms_seconds": 4.166984936647042e-05,
+      "mean_signed_seconds": -1.7625572371163229e-06,
+      "over_fixed_5_second_alarm": 0,
+      "sampled_research_alarm_clear": true
+    },
+    "swiss_inferred_UT1_minus_UTC_seconds": {
+      "count": 8156,
+      "max_abs_seconds": 0.964750349521637,
+      "p95_abs_seconds_nearest_rank": 0.47290027141571045,
+      "rms_seconds": 0.18825447047831417,
+      "mean_signed_seconds": -0.003409422769623682,
+      "over_fixed_5_second_alarm": 0,
+      "sampled_research_alarm_clear": true
+    },
+    "noaa_minus_swiss_apparent_clock_seconds": {
+      "count": 8156,
+      "max_abs_seconds": 4.371612244025975,
+      "p95_abs_seconds_nearest_rank": 2.8233805651030863,
+      "rms_seconds": 1.4555454904420826,
+      "mean_signed_seconds": -0.16224477366756448,
+      "over_fixed_5_second_alarm": 0,
+      "sampled_research_alarm_clear": true
+    }
+  },
+  "worst_ten_by_absolute_eot_difference": [
+    {
+      "actual_UTC": "1921-11-03T23:59:59Z",
+      "noaa_eot_minutes": 16.39965132796753,
+      "swiss_eot_at_UT1_minutes": 16.33460162830397,
+      "swiss_eot_at_UTC_label_as_UT_minutes": 16.33460162830397,
+      "noaa_minus_swiss_eot_seconds": 3.902981979813447,
+      "noaa_minus_swiss_same_label_seconds": 3.902981979813447,
+      "swiss_label_minus_UT1_eot_seconds": 0.0,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.0,
+      "noaa_minus_swiss_apparent_clock_seconds": 3.902981979813447,
+      "JD_TT": 2422997.500249846,
+      "JD_UT1": 2422997.499988426,
+      "JD_UTC_label_as_UT": 2422997.499988426
+    },
+    {
+      "actual_UTC": "1921-11-03T12:00:00Z",
+      "noaa_eot_minutes": 16.400595493723955,
+      "swiss_eot_at_UT1_minutes": 16.336141486302267,
+      "swiss_eot_at_UTC_label_as_UT_minutes": 16.336141486302267,
+      "noaa_minus_swiss_eot_seconds": 3.867240445301263,
+      "noaa_minus_swiss_same_label_seconds": 3.867240445301263,
+      "swiss_label_minus_UT1_eot_seconds": 0.0,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.0,
+      "noaa_minus_swiss_apparent_clock_seconds": 3.867240445301263,
+      "JD_TT": 2422997.0002614125,
+      "JD_UT1": 2422997.0,
+      "JD_UTC_label_as_UT": 2422997.0
+    },
+    {
+      "actual_UTC": "1921-11-03T06:00:00Z",
+      "noaa_eot_minutes": 16.399774313139677,
+      "swiss_eot_at_UT1_minutes": 16.335661024146702,
+      "swiss_eot_at_UTC_label_as_UT_minutes": 16.335661024146702,
+      "noaa_minus_swiss_eot_seconds": 3.8467973395784583,
+      "noaa_minus_swiss_same_label_seconds": 3.8467973395784583,
+      "swiss_label_minus_UT1_eot_seconds": 0.0,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.0,
+      "noaa_minus_swiss_apparent_clock_seconds": 3.8467973395784583,
+      "JD_TT": 2422996.7502614087,
+      "JD_UT1": 2422996.75,
+      "JD_UTC_label_as_UT": 2422996.75
+    },
+    {
+      "actual_UTC": "1921-11-03T00:00:00Z",
+      "noaa_eot_minutes": 16.398093689666645,
+      "swiss_eot_at_UT1_minutes": 16.334348748558114,
+      "swiss_eot_at_UTC_label_as_UT_minutes": 16.334348748558114,
+      "noaa_minus_swiss_eot_seconds": 3.824696466511881,
+      "noaa_minus_swiss_same_label_seconds": 3.824696466511881,
+      "swiss_label_minus_UT1_eot_seconds": 0.0,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.0,
+      "noaa_minus_swiss_apparent_clock_seconds": 3.824696466511881,
+      "JD_TT": 2422996.500261405,
+      "JD_UT1": 2422996.5,
+      "JD_UTC_label_as_UT": 2422996.5
+    },
+    {
+      "actual_UTC": "2052-11-03T00:00:00Z",
+      "noaa_eot_minutes": 16.50860000845069,
+      "swiss_eot_at_UT1_minutes": 16.446315963407415,
+      "swiss_eot_at_UTC_label_as_UT_minutes": 16.446315963407415,
+      "noaa_minus_swiss_eot_seconds": 3.7370427025964403,
+      "noaa_minus_swiss_same_label_seconds": 3.7370427025964403,
+      "swiss_label_minus_UT1_eot_seconds": 0.0,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.0,
+      "noaa_minus_swiss_apparent_clock_seconds": 3.7370427025964403,
+      "JD_TT": 2470844.5008729207,
+      "JD_UT1": 2470844.5,
+      "JD_UTC_label_as_UT": 2470844.5
+    },
+    {
+      "actual_UTC": "2023-02-11T12:00:00Z",
+      "noaa_eot_minutes": -14.231913706393602,
+      "swiss_eot_at_UT1_minutes": -14.169749034040706,
+      "swiss_eot_at_UTC_label_as_UT_minutes": -14.169749031875197,
+      "noaa_minus_swiss_eot_seconds": -3.729880341173768,
+      "noaa_minus_swiss_same_label_seconds": -3.7298804711042877,
+      "swiss_label_minus_UT1_eot_seconds": 1.299305196766909e-07,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.011064112186431885,
+      "noaa_minus_swiss_apparent_clock_seconds": -3.7409444533602,
+      "JD_TT": 2459987.000800741,
+      "JD_UT1": 2459987.000000128,
+      "JD_UTC_label_as_UT": 2459987.0
+    },
+    {
+      "actual_UTC": "2023-02-11T23:59:59Z",
+      "noaa_eot_minutes": -14.231137166657424,
+      "swiss_eot_at_UT1_minutes": -14.168980479925267,
+      "swiss_eot_at_UTC_label_as_UT_minutes": -14.168980480515529,
+      "noaa_minus_swiss_eot_seconds": -3.7294012039294344,
+      "noaa_minus_swiss_same_label_seconds": -3.7294011685137107,
+      "swiss_label_minus_UT1_eot_seconds": -3.5415723687037826e-08,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.01118481159210205,
+      "noaa_minus_swiss_apparent_clock_seconds": -3.7405860155215365,
+      "JD_TT": 2459987.500789167,
+      "JD_UT1": 2459987.4999885554,
+      "JD_UTC_label_as_UT": 2459987.499988426
+    },
+    {
+      "actual_UTC": "2023-02-11T06:00:00Z",
+      "noaa_eot_minutes": -14.231092065498006,
+      "swiss_eot_at_UT1_minutes": -14.168965896063582,
+      "swiss_eot_at_UTC_label_as_UT_minutes": -14.16896589514613,
+      "noaa_minus_swiss_eot_seconds": -3.7275701660653837,
+      "noaa_minus_swiss_same_label_seconds": -3.7275702211125505,
+      "swiss_label_minus_UT1_eot_seconds": 5.504716682480648e-08,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.011023879051208496,
+      "noaa_minus_swiss_apparent_clock_seconds": -3.738594045116592,
+      "JD_TT": 2459986.750800741,
+      "JD_UT1": 2459986.7500001276,
+      "JD_UTC_label_as_UT": 2459986.75
+    },
+    {
+      "actual_UTC": "2023-02-11T00:00:00Z",
+      "noaa_eot_minutes": -14.229460600747784,
+      "swiss_eot_at_UT1_minutes": -14.167400620548506,
+      "swiss_eot_at_UTC_label_as_UT_minutes": -14.167400619361388,
+      "noaa_minus_swiss_eot_seconds": -3.72359881195667,
+      "noaa_minus_swiss_same_label_seconds": -3.7235988831837474,
+      "swiss_label_minus_UT1_eot_seconds": 7.122707756934687e-08,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.010943412780761719,
+      "noaa_minus_swiss_apparent_clock_seconds": -3.7345422247374316,
+      "JD_TT": 2459986.500800741,
+      "JD_UT1": 2459986.5000001267,
+      "JD_UTC_label_as_UT": 2459986.5
+    },
+    {
+      "actual_UTC": "2052-11-03T06:00:00Z",
+      "noaa_eot_minutes": 16.507163204501467,
+      "swiss_eot_at_UT1_minutes": 16.44514904641619,
+      "swiss_eot_at_UTC_label_as_UT_minutes": 16.44514904641619,
+      "noaa_minus_swiss_eot_seconds": 3.7208494851165597,
+      "noaa_minus_swiss_same_label_seconds": 3.7208494851165597,
+      "swiss_label_minus_UT1_eot_seconds": 0.0,
+      "swiss_inferred_UT1_minus_UTC_seconds": 0.0,
+      "noaa_minus_swiss_apparent_clock_seconds": 3.7208494851165597,
+      "JD_TT": 2470844.750872923,
+      "JD_UT1": 2470844.75,
+      "JD_UTC_label_as_UT": 2470844.75
+    }
+  ],
+  "per_year_max_absolute_eot_difference_seconds": {
+    "1901": 2.286433185307306,
+    "1902": 2.768463021986207,
+    "1903": 2.6643608776095817,
+    "1904": 2.5816654050338883,
+    "1905": 3.2406630007867676,
+    "1906": 2.7293212589476568,
+    "1907": 2.4085105348164504,
+    "1908": 3.1269694352288013,
+    "1909": 2.358067659281531,
+    "1910": 3.4511666896929682,
+    "1911": 3.1426371819770083,
+    "1912": 2.4618089477814564,
+    "1913": 3.2573862837474366,
+    "1914": 2.7230216264465668,
+    "1915": 2.386624938554043,
+    "1916": 3.183100643069281,
+    "1917": 2.52649659610384,
+    "1918": 2.929482231320293,
+    "1919": 3.259429686553119,
+    "1920": 2.146929958071233,
+    "1921": 3.902981979813447,
+    "1922": 3.0546345664031804,
+    "1923": 2.142449079194222,
+    "1924": 2.89056917585377,
+    "1925": 2.135412649370192,
+    "1926": 2.470602485808797,
+    "1927": 3.097897707282442,
+    "1928": 2.709039872061041,
+    "1929": 3.4113804235695966,
+    "1930": 3.2471794463079817,
+    "1931": 2.492506505572969,
+    "1932": 3.481145685622522,
+    "1933": 2.8060784218492785,
+    "1934": 2.8267754787487576,
+    "1935": 2.922566057577143,
+    "1936": 2.3870153826727325,
+    "1937": 2.5947819610748724,
+    "1938": 2.914045973140773,
+    "1939": 2.5627473041194904,
+    "1940": 2.9004075382102457,
+    "1941": 2.419755858774124,
+    "1942": 3.0352948119224266,
+    "1943": 3.3915524668526587,
+    "1944": 2.519202785719372,
+    "1945": 3.673436019370584,
+    "1946": 3.586225587099179,
+    "1947": 1.7953499285295216,
+    "1948": 2.6742104490463348,
+    "1949": 2.4919113020912143,
+    "1950": 2.522257016184284,
+    "1951": 2.9093988127607417,
+    "1952": 2.3089350806604614,
+    "1953": 2.782695909907247,
+    "1954": 3.1479117912675747,
+    "1955": 2.3208903026923267,
+    "1956": 3.212170394329732,
+    "1957": 3.235735667654751,
+    "1958": 2.6621350096245067,
+    "1959": 2.779997244975192,
+    "1960": 2.345095381604523,
+    "1961": 2.449894470650591,
+    "1962": 3.131516470760687,
+    "1963": 2.627330057248436,
+    "1964": 3.0531165335260724,
+    "1965": 2.644336012333426,
+    "1966": 3.061978415656057,
+    "1967": 2.8578284109845953,
+    "1968": 2.6799010191255945,
+    "1969": 2.940659947028408,
+    "1970": 3.2088004504880985,
+    "1971": 2.306616416991396,
+    "1972": 2.4418615071991034,
+    "1973": 2.5844326697966125,
+    "1974": 2.6526648328302826,
+    "1975": 3.180885726578744,
+    "1976": 2.6189448074676136,
+    "1977": 2.887209493249756,
+    "1978": 3.3358625657571395,
+    "1979": 2.6542319703011685,
+    "1980": 2.8175493804913287,
+    "1981": 3.115675639778601,
+    "1982": 2.3876554231294733,
+    "1983": 2.5361601304492076,
+    "1984": 3.185596685801677,
+    "1985": 2.1579611915440466,
+    "1986": 2.5400935855859075,
+    "1987": 2.278147731678146,
+    "1988": 3.0122329128298375,
+    "1989": 2.8093351704757907,
+    "1990": 2.9508911645888247,
+    "1991": 3.0049061595270032,
+    "1992": 3.2758957364017505,
+    "1993": 3.4111999729877596,
+    "1994": 3.028592309318938,
+    "1995": 2.6491354992275262,
+    "1996": 2.215059248931297,
+    "1997": 2.6757304979957652,
+    "1998": 2.5324855427207638,
+    "1999": 3.7020121745031176,
+    "2000": 2.852103021914818,
+    "2001": 2.783221220538401,
+    "2002": 2.751068795957181,
+    "2003": 2.7236729471949417,
+    "2004": 2.7210243808708157,
+    "2005": 3.0158071380667906,
+    "2006": 2.8535551325893493,
+    "2007": 2.320930061289914,
+    "2008": 2.8593596446447833,
+    "2009": 2.99050539836351,
+    "2010": 2.8633142206398787,
+    "2011": 2.662347277477295,
+    "2012": 2.9141670466467673,
+    "2013": 2.427289272172928,
+    "2014": 2.8844653796944897,
+    "2015": 3.1885301658360277,
+    "2016": 3.104198661195099,
+    "2017": 3.186631958946222,
+    "2018": 2.2193753251723436,
+    "2019": 2.9812129474348836,
+    "2020": 2.0494673293639742,
+    "2021": 2.363478867293005,
+    "2022": 2.9122997571691656,
+    "2023": 3.729880341173768,
+    "2024": 2.4889168718800647,
+    "2025": 3.475365010409135,
+    "2026": 3.097147534591116,
+    "2027": 3.015851847331561,
+    "2028": 3.203992275584966,
+    "2029": 2.53859735048918,
+    "2030": 2.6511550774849013,
+    "2031": 2.3295042038131974,
+    "2032": 3.10657531882212,
+    "2033": 2.873474016217088,
+    "2034": 3.4033103923798436,
+    "2035": 2.438835465425626,
+    "2036": 2.7263180177794766,
+    "2037": 2.5473050298952415,
+    "2038": 3.1372885962908725,
+    "2039": 3.131494255635161,
+    "2040": 2.575286216284809,
+    "2041": 3.6537418911812125,
+    "2042": 2.3382686951117293,
+    "2043": 2.907808630350459,
+    "2044": 2.5131001379750018,
+    "2045": 2.0441568260678267,
+    "2046": 2.6456645558413783,
+    "2047": 3.2589648425173223,
+    "2048": 2.6966041062589063,
+    "2049": 3.376047971637277,
+    "2050": 2.7740568852050274,
+    "2051": 2.6126600161025237,
+    "2052": 3.7370427025964403,
+    "2053": 2.444293206181598,
+    "2054": 2.6655149718202864,
+    "2055": 2.167712613995647,
+    "2056": 2.575199677340745,
+    "2057": 3.457386365206361,
+    "2058": 3.2924182092769527,
+    "2059": 2.5006343406303344,
+    "2060": 3.20508249584762,
+    "2061": 2.46256866591402,
+    "2062": 2.8630659444274897,
+    "2063": 2.996925018765495,
+    "2064": 2.444947787562377,
+    "2065": 3.409282734987613,
+    "2066": 2.409864594630804,
+    "2067": 2.985824905428416,
+    "2068": 3.169489571317996,
+    "2069": 2.527092995733895,
+    "2070": 2.722581701519573,
+    "2071": 2.9504204070091333,
+    "2072": 2.3987571283285547,
+    "2073": 3.6386388879790132,
+    "2074": 3.204551501599795,
+    "2075": 2.236001528395164,
+    "2076": 3.634664288105043,
+    "2077": 2.3740822597042666,
+    "2078": 2.3707628252914326,
+    "2079": 2.7300998645513808,
+    "2080": 2.3199264023400445,
+    "2081": 3.1694677453553055,
+    "2082": 3.010355663174167,
+    "2083": 2.568844196583022,
+    "2084": 3.6546337605292933,
+    "2085": 3.114676065325952,
+    "2086": 2.8542623354247354,
+    "2087": 3.6606501792473978,
+    "2088": 2.4387787014002527,
+    "2089": 3.3775848613930037,
+    "2090": 2.814991671488656,
+    "2091": 2.5283647076410887,
+    "2092": 3.003284637240853,
+    "2093": 2.635147581885988,
+    "2094": 3.055123904300636,
+    "2095": 2.5412606055830267,
+    "2096": 2.190052014142232,
+    "2097": 3.033770972557761,
+    "2098": 3.5506723696146736,
+    "2099": 2.4939545636897975
+  },
+  "boundary_study": {
+    "case_count": 6,
+    "probe_count": 42,
+    "day_hour_disagreements": 5,
+    "day_pillar_disagreements": 2,
+    "hour_pillar_disagreements": 5,
+    "thirty_second_control_disagreements": 0,
+    "comparison": "same lunar-python sect1/floor-to-second pillar engine, two solar clock inputs; not independent pillar validation",
+    "anchor": "NOAA coordinate root iterated eight times, then actual UTC floored to an input second",
+    "rows": [
+      {
+        "nominal_apparent_boundary": "2026-02-11T01:00:00",
+        "longitude": 87.625,
+        "offset_from_floor_UTC_anchor_seconds": -30,
+        "actual_UTC": "2026-02-10T19:23:13Z",
+        "noaa_apparent_coordinate": "2026-02-11T00:59:29.541167",
+        "swiss_apparent_coordinate": "2026-02-11T00:59:32.940072",
+        "noaa_distance_from_boundary_seconds": -30.458833,
+        "swiss_distance_from_boundary_seconds": -27.059928,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.101300608702182,
+        "coordinate_difference_seconds": -3.398905109949588,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.297604501247406
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T01:00:00",
+        "longitude": 87.625,
+        "offset_from_floor_UTC_anchor_seconds": -5,
+        "actual_UTC": "2026-02-10T19:23:38Z",
+        "noaa_apparent_coordinate": "2026-02-11T00:59:54.541043",
+        "swiss_apparent_coordinate": "2026-02-11T00:59:57.939942",
+        "noaa_distance_from_boundary_seconds": -5.458957,
+        "swiss_distance_from_boundary_seconds": -2.060058,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.1012951312378334,
+        "coordinate_difference_seconds": -3.3988996324852394,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.297604501247406
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T01:00:00",
+        "longitude": 87.625,
+        "offset_from_floor_UTC_anchor_seconds": -1,
+        "actual_UTC": "2026-02-10T19:23:42Z",
+        "noaa_apparent_coordinate": "2026-02-11T00:59:58.541023",
+        "swiss_apparent_coordinate": "2026-02-11T01:00:01.939922",
+        "noaa_distance_from_boundary_seconds": -1.458977,
+        "swiss_distance_from_boundary_seconds": 1.939922,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "same_day_hour": false,
+        "eot_difference_seconds": -3.1012942928521525,
+        "coordinate_difference_seconds": -3.3988987940995585,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.297604501247406
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T01:00:00",
+        "longitude": 87.625,
+        "offset_from_floor_UTC_anchor_seconds": 0,
+        "actual_UTC": "2026-02-10T19:23:43Z",
+        "noaa_apparent_coordinate": "2026-02-11T00:59:59.541018",
+        "swiss_apparent_coordinate": "2026-02-11T01:00:02.939916",
+        "noaa_distance_from_boundary_seconds": -0.458982,
+        "swiss_distance_from_boundary_seconds": 2.939916,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "same_day_hour": false,
+        "eot_difference_seconds": -3.1012940001953737,
+        "coordinate_difference_seconds": -3.3988985014427797,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.297604501247406
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T01:00:00",
+        "longitude": 87.625,
+        "offset_from_floor_UTC_anchor_seconds": 1,
+        "actual_UTC": "2026-02-10T19:23:44Z",
+        "noaa_apparent_coordinate": "2026-02-11T01:00:00.541013",
+        "swiss_apparent_coordinate": "2026-02-11T01:00:03.939911",
+        "noaa_distance_from_boundary_seconds": 0.541013,
+        "swiss_distance_from_boundary_seconds": 3.939911,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.1012938473226725,
+        "coordinate_difference_seconds": -3.3988983485700786,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.297604501247406
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T01:00:00",
+        "longitude": 87.625,
+        "offset_from_floor_UTC_anchor_seconds": 5,
+        "actual_UTC": "2026-02-10T19:23:48Z",
+        "noaa_apparent_coordinate": "2026-02-11T01:00:04.540993",
+        "swiss_apparent_coordinate": "2026-02-11T01:00:07.939890",
+        "noaa_distance_from_boundary_seconds": 4.540993,
+        "swiss_distance_from_boundary_seconds": 7.93989,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.1012930380465065,
+        "coordinate_difference_seconds": -3.3988975392939125,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.297604501247406
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T01:00:00",
+        "longitude": 87.625,
+        "offset_from_floor_UTC_anchor_seconds": 30,
+        "actual_UTC": "2026-02-10T19:24:13Z",
+        "noaa_apparent_coordinate": "2026-02-11T01:00:29.540868",
+        "swiss_apparent_coordinate": "2026-02-11T01:00:32.939760",
+        "noaa_distance_from_boundary_seconds": 29.540868,
+        "swiss_distance_from_boundary_seconds": 32.93976,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "己丑"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.101287415311482,
+        "coordinate_difference_seconds": -3.3988919165588882,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.297604501247406
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T23:00:00",
+        "longitude": 104.07,
+        "offset_from_floor_UTC_anchor_seconds": -30,
+        "actual_UTC": "2026-11-03T15:46:43Z",
+        "noaa_apparent_coordinate": "2026-11-03T22:59:29.302022",
+        "swiss_apparent_coordinate": "2026-11-03T22:59:26.963601",
+        "noaa_distance_from_boundary_seconds": -30.697978,
+        "swiss_distance_from_boundary_seconds": -33.036399,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.7112207680782063,
+        "coordinate_difference_seconds": 2.338420537098287,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.37280023097991943
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T23:00:00",
+        "longitude": 104.07,
+        "offset_from_floor_UTC_anchor_seconds": -5,
+        "actual_UTC": "2026-11-03T15:47:08Z",
+        "noaa_apparent_coordinate": "2026-11-03T22:59:54.301946",
+        "swiss_apparent_coordinate": "2026-11-03T22:59:51.963524",
+        "noaa_distance_from_boundary_seconds": -5.698054,
+        "swiss_distance_from_boundary_seconds": -8.036476,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.711222289261599,
+        "coordinate_difference_seconds": 2.3384220582816795,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.37280023097991943
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T23:00:00",
+        "longitude": 104.07,
+        "offset_from_floor_UTC_anchor_seconds": -1,
+        "actual_UTC": "2026-11-03T15:47:12Z",
+        "noaa_apparent_coordinate": "2026-11-03T22:59:58.301934",
+        "swiss_apparent_coordinate": "2026-11-03T22:59:55.963512",
+        "noaa_distance_from_boundary_seconds": -1.698066,
+        "swiss_distance_from_boundary_seconds": -4.036488,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.711222473811148,
+        "coordinate_difference_seconds": 2.3384222428312285,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.37280023097991943
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T23:00:00",
+        "longitude": 104.07,
+        "offset_from_floor_UTC_anchor_seconds": 0,
+        "actual_UTC": "2026-11-03T15:47:13Z",
+        "noaa_apparent_coordinate": "2026-11-03T22:59:59.301931",
+        "swiss_apparent_coordinate": "2026-11-03T22:59:56.963508",
+        "noaa_distance_from_boundary_seconds": -0.698069,
+        "swiss_distance_from_boundary_seconds": -3.036492,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.7112225768372156,
+        "coordinate_difference_seconds": 2.338422345857296,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.37280023097991943
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T23:00:00",
+        "longitude": 104.07,
+        "offset_from_floor_UTC_anchor_seconds": 1,
+        "actual_UTC": "2026-11-03T15:47:14Z",
+        "noaa_apparent_coordinate": "2026-11-03T23:00:00.301928",
+        "swiss_apparent_coordinate": "2026-11-03T22:59:57.963505",
+        "noaa_distance_from_boundary_seconds": 0.301928,
+        "swiss_distance_from_boundary_seconds": -2.036495,
+        "noaa_day_hour": {
+          "day": "壬午",
+          "hour": "庚子"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "己亥"
+        },
+        "same_day_hour": false,
+        "eot_difference_seconds": 2.711222594888909,
+        "coordinate_difference_seconds": 2.3384223639089896,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.37280023097991943
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T23:00:00",
+        "longitude": 104.07,
+        "offset_from_floor_UTC_anchor_seconds": 5,
+        "actual_UTC": "2026-11-03T15:47:18Z",
+        "noaa_apparent_coordinate": "2026-11-03T23:00:04.301916",
+        "swiss_apparent_coordinate": "2026-11-03T23:00:01.963493",
+        "noaa_distance_from_boundary_seconds": 4.301916,
+        "swiss_distance_from_boundary_seconds": 1.963493,
+        "noaa_day_hour": {
+          "day": "壬午",
+          "hour": "庚子"
+        },
+        "swiss_day_hour": {
+          "day": "壬午",
+          "hour": "庚子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.7112228632481106,
+        "coordinate_difference_seconds": 2.338422632268191,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.37280023097991943
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T23:00:00",
+        "longitude": 104.07,
+        "offset_from_floor_UTC_anchor_seconds": 30,
+        "actual_UTC": "2026-11-03T15:47:43Z",
+        "noaa_apparent_coordinate": "2026-11-03T23:00:29.301840",
+        "swiss_apparent_coordinate": "2026-11-03T23:00:26.963415",
+        "noaa_distance_from_boundary_seconds": 29.30184,
+        "swiss_distance_from_boundary_seconds": 26.963415,
+        "noaa_day_hour": {
+          "day": "壬午",
+          "hour": "庚子"
+        },
+        "swiss_day_hour": {
+          "day": "壬午",
+          "hour": "庚子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.711224412870834,
+        "coordinate_difference_seconds": 2.3384241818909146,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.37280023097991943
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T00:00:00",
+        "longitude": 120.0,
+        "offset_from_floor_UTC_anchor_seconds": -30,
+        "actual_UTC": "2026-02-10T16:13:43Z",
+        "noaa_apparent_coordinate": "2026-02-10T23:59:29.604579",
+        "swiss_apparent_coordinate": "2026-02-10T23:59:33.005733",
+        "noaa_distance_from_boundary_seconds": -30.395421,
+        "swiss_distance_from_boundary_seconds": -26.994267,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.10358980729319,
+        "coordinate_difference_seconds": -3.4011540754053726,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2975642681121826
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T00:00:00",
+        "longitude": 120.0,
+        "offset_from_floor_UTC_anchor_seconds": -5,
+        "actual_UTC": "2026-02-10T16:14:08Z",
+        "noaa_apparent_coordinate": "2026-02-10T23:59:54.604425",
+        "swiss_apparent_coordinate": "2026-02-10T23:59:58.005575",
+        "noaa_distance_from_boundary_seconds": -5.395575,
+        "swiss_distance_from_boundary_seconds": -1.994425,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.1035852660507146,
+        "coordinate_difference_seconds": -3.4011495341628972,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2975642681121826
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T00:00:00",
+        "longitude": 120.0,
+        "offset_from_floor_UTC_anchor_seconds": -1,
+        "actual_UTC": "2026-02-10T16:14:12Z",
+        "noaa_apparent_coordinate": "2026-02-10T23:59:58.604400",
+        "swiss_apparent_coordinate": "2026-02-11T00:00:02.005549",
+        "noaa_distance_from_boundary_seconds": -1.3956,
+        "swiss_distance_from_boundary_seconds": 2.005549,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.103584506361017,
+        "coordinate_difference_seconds": -3.4011487744731994,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2975642681121826
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T00:00:00",
+        "longitude": 120.0,
+        "offset_from_floor_UTC_anchor_seconds": 0,
+        "actual_UTC": "2026-02-10T16:14:13Z",
+        "noaa_apparent_coordinate": "2026-02-10T23:59:59.604394",
+        "swiss_apparent_coordinate": "2026-02-11T00:00:03.005543",
+        "noaa_distance_from_boundary_seconds": -0.395606,
+        "swiss_distance_from_boundary_seconds": 3.005543,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.1035842793006196,
+        "coordinate_difference_seconds": -3.4011485474128023,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2975642681121826
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T00:00:00",
+        "longitude": 120.0,
+        "offset_from_floor_UTC_anchor_seconds": 1,
+        "actual_UTC": "2026-02-10T16:14:14Z",
+        "noaa_apparent_coordinate": "2026-02-11T00:00:00.604388",
+        "swiss_apparent_coordinate": "2026-02-11T00:00:04.005537",
+        "noaa_distance_from_boundary_seconds": 0.604388,
+        "swiss_distance_from_boundary_seconds": 4.005537,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.1035841649965334,
+        "coordinate_difference_seconds": -3.401148433108716,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2975642681121826
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T00:00:00",
+        "longitude": 120.0,
+        "offset_from_floor_UTC_anchor_seconds": 5,
+        "actual_UTC": "2026-02-10T16:14:18Z",
+        "noaa_apparent_coordinate": "2026-02-11T00:00:04.604363",
+        "swiss_apparent_coordinate": "2026-02-11T00:00:08.005511",
+        "noaa_distance_from_boundary_seconds": 4.604363,
+        "swiss_distance_from_boundary_seconds": 8.005511,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.103583375156873,
+        "coordinate_difference_seconds": -3.4011476432690557,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2975642681121826
+      },
+      {
+        "nominal_apparent_boundary": "2026-02-11T00:00:00",
+        "longitude": 120.0,
+        "offset_from_floor_UTC_anchor_seconds": 30,
+        "actual_UTC": "2026-02-10T16:14:43Z",
+        "noaa_apparent_coordinate": "2026-02-11T00:00:29.604209",
+        "swiss_apparent_coordinate": "2026-02-11T00:00:33.005352",
+        "noaa_distance_from_boundary_seconds": 29.604209,
+        "swiss_distance_from_boundary_seconds": 33.005352,
+        "noaa_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "丙辰",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -3.103578831635261,
+        "coordinate_difference_seconds": -3.4011430997474434,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2975642681121826
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T01:00:00",
+        "longitude": 121.565,
+        "offset_from_floor_UTC_anchor_seconds": -30,
+        "actual_UTC": "2026-11-02T16:36:45Z",
+        "noaa_apparent_coordinate": "2026-11-03T00:59:29.968402",
+        "swiss_apparent_coordinate": "2026-11-03T00:59:27.632204",
+        "noaa_distance_from_boundary_seconds": -30.031598,
+        "swiss_distance_from_boundary_seconds": -32.367796,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.7087967026317017,
+        "coordinate_difference_seconds": 2.336197637327899,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.3725990653038025
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T01:00:00",
+        "longitude": 121.565,
+        "offset_from_floor_UTC_anchor_seconds": -5,
+        "actual_UTC": "2026-11-02T16:37:10Z",
+        "noaa_apparent_coordinate": "2026-11-03T00:59:54.968557",
+        "swiss_apparent_coordinate": "2026-11-03T00:59:52.632360",
+        "noaa_distance_from_boundary_seconds": -5.031443,
+        "swiss_distance_from_boundary_seconds": -7.36764,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.708796734520007,
+        "coordinate_difference_seconds": 2.3361976692162045,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.3725990653038025
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T01:00:00",
+        "longitude": 121.565,
+        "offset_from_floor_UTC_anchor_seconds": -1,
+        "actual_UTC": "2026-11-02T16:37:14Z",
+        "noaa_apparent_coordinate": "2026-11-03T00:59:58.968582",
+        "swiss_apparent_coordinate": "2026-11-03T00:59:56.632385",
+        "noaa_distance_from_boundary_seconds": -1.031418,
+        "swiss_distance_from_boundary_seconds": -3.367615,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.708796593137208,
+        "coordinate_difference_seconds": 2.3361975278334057,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.3725990653038025
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T01:00:00",
+        "longitude": 121.565,
+        "offset_from_floor_UTC_anchor_seconds": 0,
+        "actual_UTC": "2026-11-02T16:37:15Z",
+        "noaa_apparent_coordinate": "2026-11-03T00:59:59.968589",
+        "swiss_apparent_coordinate": "2026-11-03T00:59:57.632391",
+        "noaa_distance_from_boundary_seconds": -0.031411,
+        "swiss_distance_from_boundary_seconds": -2.367609,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.7087966062480007,
+        "coordinate_difference_seconds": 2.336197540944198,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.3725990653038025
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T01:00:00",
+        "longitude": 121.565,
+        "offset_from_floor_UTC_anchor_seconds": 1,
+        "actual_UTC": "2026-11-02T16:37:16Z",
+        "noaa_apparent_coordinate": "2026-11-03T01:00:00.968595",
+        "swiss_apparent_coordinate": "2026-11-03T00:59:58.632397",
+        "noaa_distance_from_boundary_seconds": 0.968595,
+        "swiss_distance_from_boundary_seconds": -1.367603,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "己丑"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "戊子"
+        },
+        "same_day_hour": false,
+        "eot_difference_seconds": 2.708796648228713,
+        "coordinate_difference_seconds": 2.3361975829249104,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.3725990653038025
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T01:00:00",
+        "longitude": 121.565,
+        "offset_from_floor_UTC_anchor_seconds": 5,
+        "actual_UTC": "2026-11-02T16:37:20Z",
+        "noaa_apparent_coordinate": "2026-11-03T01:00:04.968620",
+        "swiss_apparent_coordinate": "2026-11-03T01:00:02.632422",
+        "noaa_distance_from_boundary_seconds": 4.96862,
+        "swiss_distance_from_boundary_seconds": 2.632422,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "己丑"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "己丑"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.7087965899474398,
+        "coordinate_difference_seconds": 2.3361975246436373,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.3725990653038025
+      },
+      {
+        "nominal_apparent_boundary": "2026-11-03T01:00:00",
+        "longitude": 121.565,
+        "offset_from_floor_UTC_anchor_seconds": 30,
+        "actual_UTC": "2026-11-02T16:37:45Z",
+        "noaa_apparent_coordinate": "2026-11-03T01:00:29.968775",
+        "swiss_apparent_coordinate": "2026-11-03T01:00:27.632578",
+        "noaa_distance_from_boundary_seconds": 29.968775,
+        "swiss_distance_from_boundary_seconds": 27.632578,
+        "noaa_day_hour": {
+          "day": "辛巳",
+          "hour": "己丑"
+        },
+        "swiss_day_hour": {
+          "day": "辛巳",
+          "hour": "己丑"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": 2.7087965366565214,
+        "coordinate_difference_seconds": 2.336197471352719,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.3725990653038025
+      },
+      {
+        "nominal_apparent_boundary": "2000-06-21T23:00:00",
+        "longitude": 179.9,
+        "offset_from_floor_UTC_anchor_seconds": -30,
+        "actual_UTC": "2000-06-21T11:01:43Z",
+        "noaa_apparent_coordinate": "2000-06-21T22:59:29.849939",
+        "swiss_apparent_coordinate": "2000-06-21T22:59:30.772336",
+        "noaa_distance_from_boundary_seconds": -30.150061,
+        "swiss_distance_from_boundary_seconds": -29.227664,
+        "noaa_day_hour": {
+          "day": "庚戌",
+          "hour": "丁亥"
+        },
+        "swiss_day_hour": {
+          "day": "庚戌",
+          "hour": "丁亥"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -0.6999876528249738,
+        "coordinate_difference_seconds": -0.9223964243398663,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.22240877151489258
+      },
+      {
+        "nominal_apparent_boundary": "2000-06-21T23:00:00",
+        "longitude": 179.9,
+        "offset_from_floor_UTC_anchor_seconds": -5,
+        "actual_UTC": "2000-06-21T11:02:08Z",
+        "noaa_apparent_coordinate": "2000-06-21T22:59:54.846173",
+        "swiss_apparent_coordinate": "2000-06-21T22:59:55.768541",
+        "noaa_distance_from_boundary_seconds": -5.153827,
+        "swiss_distance_from_boundary_seconds": -4.231459,
+        "noaa_day_hour": {
+          "day": "庚戌",
+          "hour": "丁亥"
+        },
+        "swiss_day_hour": {
+          "day": "庚戌",
+          "hour": "丁亥"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -0.7000000262931971,
+        "coordinate_difference_seconds": -0.9223685646728663,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2223685383796692
+      },
+      {
+        "nominal_apparent_boundary": "2000-06-21T23:00:00",
+        "longitude": 179.9,
+        "offset_from_floor_UTC_anchor_seconds": -1,
+        "actual_UTC": "2000-06-21T11:02:12Z",
+        "noaa_apparent_coordinate": "2000-06-21T22:59:58.845570",
+        "swiss_apparent_coordinate": "2000-06-21T22:59:59.767941",
+        "noaa_distance_from_boundary_seconds": -1.15443,
+        "swiss_distance_from_boundary_seconds": -0.232059,
+        "noaa_day_hour": {
+          "day": "庚戌",
+          "hour": "丁亥"
+        },
+        "swiss_day_hour": {
+          "day": "庚戌",
+          "hour": "丁亥"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -0.7000020178600286,
+        "coordinate_difference_seconds": -0.9223705562396978,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2223685383796692
+      },
+      {
+        "nominal_apparent_boundary": "2000-06-21T23:00:00",
+        "longitude": 179.9,
+        "offset_from_floor_UTC_anchor_seconds": 0,
+        "actual_UTC": "2000-06-21T11:02:13Z",
+        "noaa_apparent_coordinate": "2000-06-21T22:59:59.845419",
+        "swiss_apparent_coordinate": "2000-06-21T23:00:00.767790",
+        "noaa_distance_from_boundary_seconds": -0.154581,
+        "swiss_distance_from_boundary_seconds": 0.76779,
+        "noaa_day_hour": {
+          "day": "庚戌",
+          "hour": "丁亥"
+        },
+        "swiss_day_hour": {
+          "day": "辛亥",
+          "hour": "戊子"
+        },
+        "same_day_hour": false,
+        "eot_difference_seconds": -0.7000025173318658,
+        "coordinate_difference_seconds": -0.922371055711535,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2223685383796692
+      },
+      {
+        "nominal_apparent_boundary": "2000-06-21T23:00:00",
+        "longitude": 179.9,
+        "offset_from_floor_UTC_anchor_seconds": 1,
+        "actual_UTC": "2000-06-21T11:02:14Z",
+        "noaa_apparent_coordinate": "2000-06-21T23:00:00.845269",
+        "swiss_apparent_coordinate": "2000-06-21T23:00:01.767640",
+        "noaa_distance_from_boundary_seconds": 0.845269,
+        "swiss_distance_from_boundary_seconds": 1.76764,
+        "noaa_day_hour": {
+          "day": "辛亥",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "辛亥",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -0.7000030206422592,
+        "coordinate_difference_seconds": -0.9223715590219284,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2223685383796692
+      },
+      {
+        "nominal_apparent_boundary": "2000-06-21T23:00:00",
+        "longitude": 179.9,
+        "offset_from_floor_UTC_anchor_seconds": 5,
+        "actual_UTC": "2000-06-21T11:02:18Z",
+        "noaa_apparent_coordinate": "2000-06-21T23:00:04.844666",
+        "swiss_apparent_coordinate": "2000-06-21T23:00:05.767040",
+        "noaa_distance_from_boundary_seconds": 4.844666,
+        "swiss_distance_from_boundary_seconds": 5.76704,
+        "noaa_day_hour": {
+          "day": "辛亥",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "辛亥",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -0.700005016269003,
+        "coordinate_difference_seconds": -0.9223735546486722,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2223685383796692
+      },
+      {
+        "nominal_apparent_boundary": "2000-06-21T23:00:00",
+        "longitude": 179.9,
+        "offset_from_floor_UTC_anchor_seconds": 30,
+        "actual_UTC": "2000-06-21T11:02:43Z",
+        "noaa_apparent_coordinate": "2000-06-21T23:00:29.840899",
+        "swiss_apparent_coordinate": "2000-06-21T23:00:30.763285",
+        "noaa_distance_from_boundary_seconds": 29.840899,
+        "swiss_distance_from_boundary_seconds": 30.763285,
+        "noaa_day_hour": {
+          "day": "辛亥",
+          "hour": "戊子"
+        },
+        "swiss_day_hour": {
+          "day": "辛亥",
+          "hour": "戊子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -0.700017495723726,
+        "coordinate_difference_seconds": -0.9223860341033951,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.2223685383796692
+      },
+      {
+        "nominal_apparent_boundary": "2000-12-21T00:00:00",
+        "longitude": -179.9,
+        "offset_from_floor_UTC_anchor_seconds": -30,
+        "actual_UTC": "2000-12-21T11:57:23Z",
+        "noaa_apparent_coordinate": "2000-12-20T23:59:29.814800",
+        "swiss_apparent_coordinate": "2000-12-20T23:59:31.862293",
+        "noaa_distance_from_boundary_seconds": -30.1852,
+        "swiss_distance_from_boundary_seconds": -28.137707,
+        "noaa_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "swiss_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -1.9481565698514558,
+        "coordinate_difference_seconds": -2.0474921807180024,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.09933561086654663
+      },
+      {
+        "nominal_apparent_boundary": "2000-12-21T00:00:00",
+        "longitude": -179.9,
+        "offset_from_floor_UTC_anchor_seconds": -5,
+        "actual_UTC": "2000-12-21T11:57:48Z",
+        "noaa_apparent_coordinate": "2000-12-20T23:59:54.806188",
+        "swiss_apparent_coordinate": "2000-12-20T23:59:56.853636",
+        "noaa_distance_from_boundary_seconds": -5.193812,
+        "swiss_distance_from_boundary_seconds": -3.146364,
+        "noaa_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "swiss_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -1.948112771333017,
+        "coordinate_difference_seconds": -2.0474483821995637,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.09933561086654663
+      },
+      {
+        "nominal_apparent_boundary": "2000-12-21T00:00:00",
+        "longitude": -179.9,
+        "offset_from_floor_UTC_anchor_seconds": -1,
+        "actual_UTC": "2000-12-21T11:57:52Z",
+        "noaa_apparent_coordinate": "2000-12-20T23:59:58.804810",
+        "swiss_apparent_coordinate": "2000-12-21T00:00:00.852251",
+        "noaa_distance_from_boundary_seconds": -1.19519,
+        "swiss_distance_from_boundary_seconds": 0.852251,
+        "noaa_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "swiss_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -1.9481057604350216,
+        "coordinate_difference_seconds": -2.0474413713015682,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.09933561086654663
+      },
+      {
+        "nominal_apparent_boundary": "2000-12-21T00:00:00",
+        "longitude": -179.9,
+        "offset_from_floor_UTC_anchor_seconds": 0,
+        "actual_UTC": "2000-12-21T11:57:53Z",
+        "noaa_apparent_coordinate": "2000-12-20T23:59:59.804465",
+        "swiss_apparent_coordinate": "2000-12-21T00:00:01.851905",
+        "noaa_distance_from_boundary_seconds": -0.195535,
+        "swiss_distance_from_boundary_seconds": 1.851905,
+        "noaa_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "swiss_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -1.9481040090220203,
+        "coordinate_difference_seconds": -2.047439619888567,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.09933561086654663
+      },
+      {
+        "nominal_apparent_boundary": "2000-12-21T00:00:00",
+        "longitude": -179.9,
+        "offset_from_floor_UTC_anchor_seconds": 1,
+        "actual_UTC": "2000-12-21T11:57:54Z",
+        "noaa_apparent_coordinate": "2000-12-21T00:00:00.804121",
+        "swiss_apparent_coordinate": "2000-12-21T00:00:02.851559",
+        "noaa_distance_from_boundary_seconds": 0.804121,
+        "swiss_distance_from_boundary_seconds": 2.851559,
+        "noaa_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "swiss_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -1.948102258227431,
+        "coordinate_difference_seconds": -2.0474378690939776,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.09933561086654663
+      },
+      {
+        "nominal_apparent_boundary": "2000-12-21T00:00:00",
+        "longitude": -179.9,
+        "offset_from_floor_UTC_anchor_seconds": 5,
+        "actual_UTC": "2000-12-21T11:57:58Z",
+        "noaa_apparent_coordinate": "2000-12-21T00:00:04.802743",
+        "swiss_apparent_coordinate": "2000-12-21T00:00:06.850174",
+        "noaa_distance_from_boundary_seconds": 4.802743,
+        "swiss_distance_from_boundary_seconds": 6.850174,
+        "noaa_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "swiss_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -1.9480952497998327,
+        "coordinate_difference_seconds": -2.0474308606663794,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.09933561086654663
+      },
+      {
+        "nominal_apparent_boundary": "2000-12-21T00:00:00",
+        "longitude": -179.9,
+        "offset_from_floor_UTC_anchor_seconds": 30,
+        "actual_UTC": "2000-12-21T11:58:23Z",
+        "noaa_apparent_coordinate": "2000-12-21T00:00:29.794131",
+        "swiss_apparent_coordinate": "2000-12-21T00:00:31.841518",
+        "noaa_distance_from_boundary_seconds": 29.794131,
+        "swiss_distance_from_boundary_seconds": 31.841518,
+        "noaa_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "swiss_day_hour": {
+          "day": "癸丑",
+          "hour": "壬子"
+        },
+        "same_day_hour": true,
+        "eot_difference_seconds": -1.948051449246102,
+        "coordinate_difference_seconds": -2.0473870601126487,
+        "swiss_inferred_UT1_minus_UTC_seconds": 0.09933561086654663
+      }
+    ]
+  },
+  "reference": {
+    "swisseph_version": "2.10.03",
+    "pyswisseph_package_version": "2.10.3.2",
+    "reference_function": "swisseph.time_equ(JD_UT1) * 1440 minutes",
+    "unit": "days converted to minutes",
+    "sign": "local_apparent_minus_local_mean",
+    "method": "apparent sidereal time minus apparent solar right ascension",
+    "tidal_acceleration": -25.58,
+    "delta_t": "Swiss automatic model",
+    "companion_calc_ut_flags": [
+      2052
+    ],
+    "flags_limit": "time_equ itself has no flags argument or returned flags; these are companion-call evidence",
+    "time_scale_limit": "Swiss-inferred UT1, not IERS observations; pre1972 and future UTC caveats apply",
+    "source_files_sha256": {
+      "mingjing_core/adapters/charts/benchmarks/night24_solar_boundaries.py": "3e50ead87eb1e864ca1fb2dc95fc3f557b13712179587eb4754fe132364e3303",
+      "mingjing_core/adapters/charts/benchmarks/night24_solar_independent.py": "7000c9763c335601917fc6d923f380d5d7d49a6353fdb401478fcdbf187ce5ff",
+      "mingjing_core/adapters/charts/benchmarks/night24_solar_reference.py": "32fd6a2dda763ff5ef8107d568b3ba05b71e258a39f809d4a91c7874fb8ffec0",
+      "mingjing_core/adapters/charts/time_basis_solar.py": "5f6bc82bf1b4dbd218852891a85bf57dbb500cc32a74b6725966318db2e7d08e",
+      "installed_swisseph_extension_binary": "b2b3277b7fb4b96b2ada7207b1362becbc9a4653903ba92878999558cce23b9e"
+    }
+  },
+  "limits": [
+    "固定5秒是抽样研究报警门槛，不是生产验收、物理准确度或时柱可靠度保证；超限照实保留。",
+    "8156点不是逐日或连续覆盖。Swiss与NOAA属于不同数值实现，不是独立天文观测。",
+    "time_equ没有flags输出；伴随calc_ut的Moshier标志只能作为所设置会话的旁证。",
+    "Swiss的UT1由其Delta-T/闰秒模型推算，并非IERS实测；1972年前及未来UTC有模型限制。",
+    "现实现UTC近似平太阳时，Swiss参考钟坐标额外包含推算DUT1；公式差与时标差分别报告。",
+    "边界两套坐标使用同一lunar-python排柱；临界差异不证明某套人生解释更真，不自动更换默认算法。",
+    "本研究不改变资料、v3、默认均时差算法或用户界面，不触发真实模型请求。"
+  ],
+  "elapsed_seconds": 1.1335055000000125
+}

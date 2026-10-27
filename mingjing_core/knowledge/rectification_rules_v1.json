@@ -1,0 +1,53 @@
+{
+  "version": "rectification-rules-v1-2026-10-18",
+  "status": "project_convention_pending_user_review_not_empirical_validity",
+  "system": "bazi",
+  "permutations": 1000,
+  "alpha": {"1": 0.05, "2": 0.025},
+  "delta": "must_be_frozen_by_independent_null_calibration",
+  "age_intervals": {
+    "education": [6, 30], "career": [16, 65], "relationship": [18, 60],
+    "childbirth": [18, 50], "relocation": [6, 80], "family_change": [6, 90],
+    "health": [6, 90], "finance": [18, 80]
+  },
+  "event_rules": {
+    "education": [
+      {"signal": "tg.yearly.正印", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审；传统十神概念不证明事件映射。"},
+      {"signal": "tg.yearly.食神", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审；不推断升学必然发生。"}
+    ],
+    "career": [
+      {"signal": "tg.decadal.正官", "system": "bazi", "layer": "大运", "weight": 1, "source": null, "note": "项目口径，待审。"},
+      {"signal": "rule:u12-palace-month-clash-combine", "system": "bazi", "layer": "大运|流年", "weight": 1, "source": null, "note": "项目口径，待审；只借用规则是否成立，不借此证明工作事件。"}
+    ],
+    "relationship": [
+      {"signal": "rule:u12-palace-day-clash-combine", "system": "bazi", "layer": "大运|流年", "weight": 1, "source": null, "note": "项目口径，待审；冲合不等于婚恋事件。"},
+      {"signal": "tg.yearly.正财", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审；未按性别断配偶，不宣称古法完整。"}
+    ],
+    "childbirth": [
+      {"signal": "rule:u12-palace-hour-clash-combine", "system": "bazi", "layer": "大运|流年", "weight": 1, "source": null, "note": "项目口径，待审。"},
+      {"signal": "tg.yearly.食神", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审；不得用于生育保证。"}
+    ],
+    "relocation": [
+      {"signal": "u2.yearly.六冲.day", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审。"},
+      {"signal": "u2.decadal.六冲.month", "system": "bazi", "layer": "大运", "weight": 1, "source": null, "note": "项目口径，待审。"}
+    ],
+    "family_change": [
+      {"signal": "rule:u12-palace-year-clash-combine", "system": "bazi", "layer": "大运|流年", "weight": 1, "source": null, "note": "项目口径，待审；仅用于已确认的过去事件。"},
+      {"signal": "tg.yearly.偏印", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审。"}
+    ],
+    "health": [
+      {"signal": "u2.yearly.六冲.day", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审；仅回看已确认既往事件，不推断未来灾病。"},
+      {"signal": "u2.yearly.三刑.hour", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审。"}
+    ],
+    "finance": [
+      {"signal": "tg.yearly.正财", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审。"},
+      {"signal": "tg.yearly.偏财", "system": "bazi", "layer": "流年", "weight": 1, "source": null, "note": "项目口径，待审；不提供投资保证。"}
+    ]
+  },
+  "limits": [
+    "年龄区间、类型映射、权重全部是项目口径，待用户抽查，不是原典评分公式。",
+    "紫微只作为独立列，不参与八字分数。传统口诀L2不参与评分。",
+    "年度信号对年内节年/交运分段取逐信号交集；保守地丢弃不稳定信号，不声称知道事件日期。",
+    "合成一致性和零数据检验不证明命理方法有效。"
+  ]
+}

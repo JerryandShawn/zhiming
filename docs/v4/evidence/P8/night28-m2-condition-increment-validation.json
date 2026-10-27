@@ -1,0 +1,49 @@
+{
+  "version": "p8-m2-input-and-extra-condition-increment-v1",
+  "recorded_at_beijing": "2026-10-21T01:46:58.155628+08:00",
+  "started_at_beijing": "2026-10-21T01:45:41.929084+08:00",
+  "tests": {
+    "passed": 259,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "observed_seconds": 0.906,
+    "new": 71,
+    "old": 188
+  },
+  "groups": {
+    "m2_new_contract": 59,
+    "m2_old_controls": 35,
+    "composite_new": 12,
+    "old_rules": 153
+  },
+  "source_lf_sha256": {
+    "docs/v4/contracts/e2_m2_controls.md": "1f9763bff39218fdbacdd4d1efc98d5640d7896fd27f50e555040e74eda1d978",
+    "docs/v4/contracts/e2_m2_no_chart_input.schema.json": "63d855ff455ae3c7f6373997581c6dc1b763c906601a2cfc2a5161738eb4d192",
+    "tests/v4/test_p8_e2_m2_input_contract.py": "bcd6c6a111031b2435e0a2c7514d4488340e3cde60ab6fff3b64c50d37da6d0f",
+    "tests/v4/test_p8_extra_condition_matrix.py": "d564ad3c08e1e0272659701103f43f1bf8d558fb8e15153b53fc1cad62f9088c"
+  },
+  "style_python_files": 212,
+  "protected_files_unchanged": 141,
+  "initial_runner_failure": {
+    "exit_code": 1,
+    "phase": "pytest_junit_sessionfinish",
+    "reason": "platform.node attempted helper subprocess and was denied",
+    "product_failure": false,
+    "actual_child_started": false,
+    "preserved_private_log": "private/p8-validation/e2-m2-contract-junit-platform-refusal.log"
+  },
+  "runner_correction": "Only JUnit hostname metadata set to offline-local; test assertions and subprocess denial unchanged",
+  "coverage_collected": false,
+  "charts_processes": 0,
+  "real_model_requests": 0,
+  "project_server_access": false,
+  "database_access": false,
+  "professional_e2_scores": null,
+  "limits": [
+    "Targeted collection, not a new full-v4 result; 2728 predates stage A and this increment",
+    "9 pairs compare legal independent Ganzhi pillars, not timestamp-to-calendar gold references",
+    "M2 input schema protects shape only; no semantic leakage or professional score claim",
+    "Historical C0, original corpus, 14-question inclusion, seed and 2/14 temporal blockers unchanged"
+  ]
+}

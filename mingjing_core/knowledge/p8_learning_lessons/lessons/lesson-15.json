@@ -1,0 +1,130 @@
+{
+  "schema_version": "p8-learning-lesson-v1",
+  "lesson_id": "lesson-15",
+  "order": 15,
+  "title": "三种用神提案保留分歧",
+  "level": "进阶",
+  "status": "draft_for_review",
+  "prerequisite_ids": [
+    "lesson-14"
+  ],
+  "objectives": [
+    "区分扶抑、调候与格局取用。",
+    "读交集同时看各自不同项。"
+  ],
+  "paragraphs": [
+    "问喜什么之前，先问采用什么方法。扶抑围绕强弱，调候讨论季节寒暖，格局提案另有路径。相同的用神二字，并不让三种问题变成一个。",
+    "阿远当前候选天干集合交集为庚，但各法还各有不同项。这里的庚只是本项目候选交集，不是投票选出的唯一现实答案，也不推出适合买金属或某种投资。"
+  ],
+  "worked_examples": [
+    {
+      "case_id": "ayuan-bazi",
+      "text": "当前三候选集合的consensus_stems为[庚]，分歧栏仍保留。〔c3〕",
+      "evidence_ids": [
+        "useful_intersection"
+      ],
+      "learning_point_ids": []
+    }
+  ],
+  "quiz": [
+    {
+      "quiz_id": "lesson-15-q1",
+      "question": "当前交集字段包含哪组候选天干？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "甲、壬",
+          "value": [
+            "甲",
+            "壬"
+          ]
+        },
+        {
+          "option_id": "b",
+          "text": "庚",
+          "value": [
+            "庚"
+          ]
+        },
+        {
+          "option_id": "c",
+          "text": "所有天干",
+          "value": [
+            "甲",
+            "乙",
+            "丙",
+            "丁",
+            "戊",
+            "己",
+            "庚",
+            "辛",
+            "壬",
+            "癸"
+          ]
+        }
+      ],
+      "correct_option_id": "b",
+      "explanation": "交集原值仅庚；不能因共识字段存在就删掉各方法前提。〔c3〕",
+      "basis": {
+        "kind": "chart_observation",
+        "evidence_id": "useful_intersection",
+        "expected": [
+          "庚"
+        ]
+      }
+    },
+    {
+      "quiz_id": "lesson-15-q2",
+      "question": "候选交集非空，可以直接给何种结论？",
+      "options": [
+        {
+          "option_id": "a",
+          "text": "买对应物品就能改变结果",
+          "value": "distractor_1"
+        },
+        {
+          "option_id": "b",
+          "text": "适合某职业或投资",
+          "value": "distractor_2"
+        },
+        {
+          "option_id": "c",
+          "text": "只能说明这些具名集合有交集",
+          "value": "set_intersection_only"
+        }
+      ],
+      "correct_option_id": "c",
+      "explanation": "计算的是候选集合，不是现实行动收益模型。",
+      "basis": {
+        "kind": "concept",
+        "source_ids": [
+          "p8-pattern-review",
+          "p8-strength"
+        ],
+        "expected": "set_intersection_only"
+      }
+    }
+  ],
+  "source_ids": [
+    "p8-pattern-review",
+    "p8-strength"
+  ],
+  "school_differences": [
+    {
+      "school": "当前具名项目口径与对读边界",
+      "note": "子平月令取用、现代扶抑与调候概念分列，项目不按票数合成唯一喜用。",
+      "source_ids": [
+        "p8-pattern-review",
+        "p8-strength"
+      ]
+    }
+  ],
+  "pending_review": [
+    "调候摘表未覆盖全文条件、佐神与异本；完整取用仍待核。"
+  ],
+  "effects": {
+    "new_rule_hits": 0,
+    "model_calls": 0,
+    "writes": 0
+  }
+}

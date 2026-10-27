@@ -1,0 +1,84 @@
+{
+  "recorded_at_beijing": "2026-10-26T23:25:36.454919+08:00",
+  "validated_source_commit": "9a8466ec80c1e8ae577c1eea21430e29c4987204",
+  "full_v4": {
+    "tests": 3227,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 198.026,
+    "started_at_beijing": "2026-10-26T23:20:36.042229+08:00",
+    "private_junit": "private/p8-validation/wiring-v4-corrected-full.xml",
+    "junit_sha256": "3aa119ddd31b7a66b3521fa755facda61892a7dab0e223fc9eb3ac5ab0bf7111",
+    "failed_nodes": []
+  },
+  "first_full_v4": {
+    "tests": 3223,
+    "failures": 8,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 197.913,
+    "started_at_beijing": "2026-10-26T23:15:21.696463+08:00",
+    "private_junit": "private/p8-validation/wiring-v4-full.xml",
+    "junit_sha256": "7a9d2a5964f8677d9879766c770f797b77bccdd8adf002b9103c8a6f7a764744",
+    "failed_nodes": [
+      "tests.v4.test_p8_skill_assets_contract::test_catalog_has_a_valid_complete_local_profile",
+      "tests.v4.test_p8_skill_assets_contract::test_manifests_and_real_chapter_inventory_match_catalog[bazi]",
+      "tests.v4.test_p8_skill_assets_contract::test_manifests_and_real_chapter_inventory_match_catalog[ziwei]",
+      "tests.v4.test_p8_skill_assets_contract::test_manifests_and_real_chapter_inventory_match_catalog[astro]",
+      "tests.v4.test_p8_skill_assets_contract::test_manifests_and_real_chapter_inventory_match_catalog[tarot]",
+      "tests.v4.test_p8_skill_assets_contract::test_manifests_and_real_chapter_inventory_match_catalog[calendar-tools]",
+      "tests.v4.test_p8_skill_assets_contract::test_reference_policy_keeps_u12_boundary_tools_and_tarot_types_distinct",
+      "tests.v4.test_p8_skill_binding_matrix::test_matrix_covers_exactly_every_registered_chapter_and_capability"
+    ]
+  },
+  "legacy_core": {
+    "tests": 553,
+    "passed": 553,
+    "seconds": 850.782,
+    "private_log": "private/p8-validation/wiring-legacy-core-corrected.log",
+    "log_sha256": "fd16e5fda7df5db45bf4741b12d4e2cf261e3bc65b551b008780ed50a55de907",
+    "first_attempt": "isolated invocation omitted project import path: 24 import errors; corrected and all 553 passed"
+  },
+  "scripted": {
+    "target": "fake",
+    "passed": 80,
+    "count": 80,
+    "fake_logical_calls": 85,
+    "judge_calls": 0,
+    "self_test_passed": 48,
+    "self_test_seconds": 9.97,
+    "real_model_calls": 0
+  },
+  "style": "wiring-style-validation.json",
+  "test_transport": {
+    "core": "physical Python -I -B with __PYVENV_LAUNCHER__ retaining locked Core prefix",
+    "charts": "direct physical Python -S, locked Charts site only + repo PYTHONPATH; shares Core tzdata",
+    "runners": "one serial pytest; native bridge may use one second isolated test runner; calculator workers are not parallel test runners",
+    "xdist": false,
+    "subagents_started": 0,
+    "limitation": "not original venv wrapper validation or a global OS process hard cap of two"
+  },
+  "ci_at_recording": {
+    "source_commit": "9a8466ec80c1e8ae577c1eea21430e29c4987204",
+    "run_id": 40348361147,
+    "status": "queued",
+    "conclusion": null
+  },
+  "limitations": [
+    "Agent registration, authorization ledger, P8 document persistence, UI and runtime acceptance belong to mainline",
+    "No live model, server, Feishu, merge or deployment",
+    "No professional prediction validity claim; original edition/page review pending"
+  ],
+  "artifacts": [
+    {
+      "file": "wiring-scripted-20261026.json",
+      "sha256": "724be49e66e383f18605b02a8d9fd881f9f6042b4f0289df43e5fb4daf18d2fe"
+    },
+    {
+      "file": "wiring-scripted-20261026.md",
+      "sha256": "cbd95dc9cd33673b85c94307de3b7497e24cd4cddd7565a2feee9aee2366885c"
+    }
+  ],
+  "harness_sha256": "c5a9d6b410c4829abe3c8fd7b09673dc31da69fed4cad3d3cc828c58aad58efe"
+}

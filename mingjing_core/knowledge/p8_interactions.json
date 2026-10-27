@@ -1,0 +1,39 @@
+{
+  "version": "p8-time-interactions-v1",
+  "school": "ziping-structural-relations-project-v1",
+  "pair_relations": {
+    "天干五合": ["甲己", "乙庚", "丙辛", "丁壬", "戊癸"],
+    "六冲": ["子午", "丑未", "寅申", "卯酉", "辰戌", "巳亥"],
+    "六合": ["子丑", "寅亥", "卯戌", "辰酉", "巳申", "午未"],
+    "六害": ["子未", "丑午", "寅巳", "卯辰", "申亥", "酉戌"],
+    "六破": ["子酉", "卯午", "辰丑", "未戌", "寅亥", "巳申"]
+  },
+  "group_relations": {
+    "三合": ["申子辰", "亥卯未", "寅午戌", "巳酉丑"],
+    "三会": ["寅卯辰", "巳午未", "申酉戌", "亥子丑"],
+    "三刑": ["寅巳申", "丑戌未", "子卯"]
+  },
+  "self_punishment": "辰午酉亥",
+  "punishment_directions": ["寅巳", "巳申", "申寅", "丑戌", "戌未", "未丑", "子卯", "卯子"],
+  "sources": [
+    {
+      "id": "sanming-v2",
+      "title": "三命通会卷二：论十干合、支元六合、支元三合、六害、三刑、冲击",
+      "url": "https://zh.wikisource.org/wiki/三命通會/卷二",
+      "scope": ["天干五合", "六合", "三合", "六害", "三刑", "六冲"],
+      "status": "public_domain_transcription_not_original_facsimile"
+    },
+    {
+      "id": "project-directional-break-table",
+      "title": "项目结构表：四时同方三支与六破配对",
+      "scope": ["三会", "六破"],
+      "status": "project_convention_primary_edition_collation_pending",
+      "note": "仅输出成员结构；六破配对尚未完成原刊出处校勘，不冒称古籍唯一表。"
+    }
+  ],
+  "limits": [
+    "结构组合不证明合化或现实事件，未计算旺衰权重和吉凶。",
+    "两支只标成员不完整，不命名为半合或半会，不用缺失支补盘。",
+    "相刑方向与成员完整性分列，不把两支直接说成三支齐全。"
+  ]
+}
