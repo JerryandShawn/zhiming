@@ -1,3 +1,7 @@
+最新实际2026-10-27 18:08:30北京时间：**首发 stage 成功**，完整逐项成功回执见[main67/R49成功回执](../eval/v67_first_release_stage_success_receipt.md)。新unit inactive、两副本closed/0连接、维护门保留；停等31号，生产未执行。下方早期失败记录原样保留为历史，不代表当前终态。
+
+---
+
 # 首发 stage 回执：已停止，未执行远端命令
 
 候选：`e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd`；operation：`4e680f175ea28cc8`。37号Go已在SSH前读取并核验，成功PR CI run40217280728；Go及执行单hash见 `../eval/v50_stage_stop.json`。

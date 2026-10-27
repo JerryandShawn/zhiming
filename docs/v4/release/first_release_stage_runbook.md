@@ -2,6 +2,8 @@
 
 main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/Users/Administrator/.ssh/gto_deploy_key`；若使用DEPLOY_KEY_FILE，固定为该路径。只供SSH工具按路径使用，不读取/复制/输出钥匙内容，不改服务器认证或网络。Windows向远端bash发送已审脚本时，须以UTF-8且LF原始字节写stdin，禁止text=True等文本管道转成CRLF；失败后仍按本单停止，不现场修补重试。
 
+main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。只豁免既有 `/etc/systemd/system/tat_agent.service` 的旧 `/var/run` PIDFile，以及 `/usr/lib/systemd/system/iptables.service`、`ip6tables.service` 的过时syslog输出警告；原始豁免行写回执。其他任何输出/警告，尤其zhiming unit、drop-in或runtime相关，均停止；不改、重载或停用这三个既有unit。下面捕获与严格过滤代码只落实此名单，其他执行步骤不变。
+
 执行人：**主线**。本单已绑定候选 `e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd`，授权依据为 v13 授权 F、main v36/v41/v49/v50 和匹配候选的37号首行 `结论：Go`；复核时间须晚于2026-10-24 12:30。文档就绪与服务器执行分开记录：37号未出现时只完成本机准备，不连接服务器，不上传。
 
 固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/fr-stage-e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/`；包SHA256 `e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `4e680f175ea28cc8`。同源R11证据：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/candidate-eval/e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/R11-de7472f506d04966a4b1a54c8bc78f72/assessment.json`，48/48、7/7、69/69、29/29已核。质量依据main v41/38号第九节：旧8727完整29＋220定向五题＋独立人工改判，安全5/5、其他23/24；TA01保留失败，首发后查。不覆盖原机器分数，不再跑评测。
@@ -339,7 +341,19 @@ PY
 
 ```bash
 fr tools.first_release_stage_runtime provision --operation "$FR_ID" --workspace "$FR_OP" --receipt "$FR_OP/exchange-receipt.json" --receipt-sha256 "$(h "$FR_OP/exchange-receipt.json")" --candidate "$FR_SHA" --tokenizer "$FR_TOKENIZER" --admin-env-file "$FR_ADMIN" --apply
-systemd-analyze verify "$FR_OP/zhiming-core-fr-stage.service"
+systemd-analyze verify "$FR_OP/zhiming-core-fr-stage.service" > "$FR_OP/verify-stage.log" 2>&1
+# R49: set -e requires verify exit0 before this exact whitelist check.
+python3.11 -I - "$FR_OP/verify-stage.log" <<'PY'
+import pathlib,re,sys
+patterns=(
+ r'/etc/systemd/system/tat_agent\.service:[0-9]+: PIDFile= references a path below legacy directory /var/run/, updating /var/run/tat_agent\.pid → /run/tat_agent\.pid; please update the unit file accordingly\.',
+ r'/usr/lib/systemd/system/(?:ip6tables|iptables)\.service:[0-9]+: Standard output type syslog is obsolete, automatically updating to journal\. Please update your unit file, and consider removing the setting altogether\.',
+)
+for line in pathlib.Path(sys.argv[1]).read_text(encoding='utf-8').splitlines():
+ if not line.strip():continue
+ assert any(re.fullmatch(pattern,line) for pattern in patterns),'R49 non-exempt verify output; stop'
+ print(line)
+PY
 ! test -e /etc/systemd/system/zhiming-core-fr-stage.service
 # set -C的独占重定向保护已有unit；不使用覆盖式install/cp。
 (umask 022; cat "$FR_OP/zhiming-core-fr-stage.service" > /etc/systemd/system/zhiming-core-fr-stage.service)

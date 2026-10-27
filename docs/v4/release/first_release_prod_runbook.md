@@ -1,3 +1,5 @@
+main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。只豁免既有 `/etc/systemd/system/tat_agent.service` 的旧 `/var/run` PIDFile，以及 `/usr/lib/systemd/system/iptables.service`、`ip6tables.service` 的过时syslog输出警告；原始豁免行写回执。其他任何输出/警告，尤其zhiming unit、drop-in或runtime相关，均停止；不改、重载或停用这三个既有unit。下面捕获与严格过滤代码只落实此名单，其他执行步骤不变。
+
 # 首发生产执行单：e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd
 
 main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/Users/Administrator/.ssh/gto_deploy_key`；若使用DEPLOY_KEY_FILE，固定为该路径。只供SSH工具按路径使用，不读取/复制/输出钥匙内容，不改服务器认证或网络。Windows向远端bash发送已审脚本时，须以UTF-8且LF原始字节写stdin，禁止text=True等文本管道转成CRLF；失败后仍按本单停止，不现场修补重试。
@@ -441,7 +443,19 @@ save('service-identity.json',{'sid':snap['system_identifier'],'oid':snap['oid'],
 Path(str(lock.with_suffix('.maintenance.json'))).write_text('{"closed":true}\n');lock.with_suffix('.maintenance.json').chmod(0o600)
 print('four-entry assets generated, not started')
 PY
-systemd-analyze verify "$FR_OP/assets/mingjingtai.service" "$FR_OP/assets/zhiming-core-feishu.service" "$FR_OP/assets/zhiming-core-reports.service"
+systemd-analyze verify "$FR_OP/assets/mingjingtai.service" "$FR_OP/assets/zhiming-core-feishu.service" "$FR_OP/assets/zhiming-core-reports.service" > "$FR_OP/verify-prod.log" 2>&1
+# R49: set -e requires verify exit0 before this exact whitelist check.
+python3.11 -I - "$FR_OP/verify-prod.log" <<'PY'
+import pathlib,re,sys
+patterns=(
+ r'/etc/systemd/system/tat_agent\.service:[0-9]+: PIDFile= references a path below legacy directory /var/run/, updating /var/run/tat_agent\.pid → /run/tat_agent\.pid; please update the unit file accordingly\.',
+ r'/usr/lib/systemd/system/(?:ip6tables|iptables)\.service:[0-9]+: Standard output type syslog is obsolete, automatically updating to journal\. Please update your unit file, and consider removing the setting altogether\.',
+)
+for line in pathlib.Path(sys.argv[1]).read_text(encoding='utf-8').splitlines():
+ if not line.strip():continue
+ assert any(re.fullmatch(pattern,line) for pattern in patterns),'R49 non-exempt verify output; stop'
+ print(line)
+PY
 install -m 600 "$FR_OP/assets/service-config.json" /root/zhiming-core-secrets/first-release-service-config.json
 install -m 600 "$FR_OP/assets/service-common.env" /root/zhiming-core-secrets/first-release-common.env
 install -m 644 "$FR_OP/assets/mingjingtai.service" /etc/systemd/system/mingjingtai.service
