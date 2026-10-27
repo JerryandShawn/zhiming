@@ -12,6 +12,8 @@
 
 SourceRef的start/end为Unicode码点半开区间[start,end)，业务须另核start<end≤原文长度、精确原话、message revision与owner/subject授权；JSON Schema无法独自验证原话或PG当前状态。
 
+每次请求先认证并核当前授权，幂等重放也不能泄露已撤销的来源或失去权限的资源。原操作已提交而当前授权失效时，只返回经授权的最小状态/安全错误，不重新执行副作用。应用事务内的revision/来源检查与幂等记录必须原子，Schema测试不证明此事务已经实现。未知结果的回查复用现有主线操作查询能力；没有可用查询能力时保持unknown、交主线对账，不编造新的运行路由。
+
 ## 错误和HTTP映射
 
 | HTTP | code | 客户端行为 |
