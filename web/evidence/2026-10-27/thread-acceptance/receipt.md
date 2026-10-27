@@ -1,6 +1,6 @@
 # P10 局部回执：线程提交 A/B
 
-- 分支：v4/p10-frontend；PR #6 保持 Open Draft；本片不是P10阶段验收。
+- 分支：v4/p10-frontend @ 9e54c692（本片源码提交）；PR #6 保持 Open Draft；本片不是P10阶段验收。
 - ExecPlan：web/ExecPlan_resume_2026-10-27.md。
 
 ## 完成了什么

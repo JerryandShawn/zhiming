@@ -130,4 +130,3 @@ H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles�
 Decision：测试改动只修复动态import的等待条件，保留全部结果断言；不扩大timeout、不跳过、不重跑失败来掩盖竞态。默认workers=2适用于CI与本机。
 
 2026-10-27T17:18:36+08:00 修订：读取主线27b8契约，完成线程A/B集中提交层及129相关检查；明确C/页面/PG未接，保留原模拟与普通入口。
-
