@@ -128,6 +128,7 @@ def test_new_tools_cannot_be_forced_without_native_intent_or_in_private_mode(rep
         (Almanac, {"date": "2026-10-27", "birth": {}}),
         (WindowSearch, {"start_date": "2026-10-27", "end_date": "2026-10-26", "purpose": "面试"}),
         (WindowSearch, {"start_date": "2026-01-01", "end_date": "2027-01-02", "purpose": "签约"}),
+        (WindowSearch, {"start_date": "2026-10-21", "end_date": "2027-01-21", "purpose": "签约"}),
         (WindowSearch, {"start_date": "2026-10-27", "end_date": "2026-10-27", "purpose": "保证中奖"}),
         (WindowSearch, {"start_date": "2026-10-27", "end_date": "2026-10-27", "purpose": "面试", "limit": True}),
     ],
@@ -164,3 +165,10 @@ def test_scripted_agent_almanac_projection_and_final_envelope_use_actual_tool(re
         usage=outcome.usage,
     )
     assert envelope["schema"] == "core4.0" and repo.list("alice", "fact") == []
+
+
+def test_window_search_agent_cap_is_ninety_two_inclusive_days():
+    accepted = WindowSearch.model_validate({"start_date": "2026-10-21", "end_date": "2027-01-20", "purpose": "签约"})
+    assert accepted.end_date == "2027-01-20"
+    with pytest.raises(ValidationError, match="93"):
+        WindowSearch.model_validate({"start_date": "2026-10-21", "end_date": "2027-01-21", "purpose": "签约"})

@@ -9,6 +9,9 @@ from pydantic import Field, field_validator, model_validator
 
 from .parameters import Parameters
 
+# p8_wiring_for_main.md D8: native search allows 366 days, the Agent entry caps at 92.
+AGENT_WINDOW_DAYS = 92
+
 
 class Almanac(Parameters):
     date: str
@@ -40,8 +43,9 @@ class WindowSearch(Parameters):
     def native_range(self) -> WindowSearch:
         for value in (self.start_date, self.end_date):
             Almanac(date=value)
-        if not 0 <= (date.fromisoformat(self.end_date) - date.fromisoformat(self.start_date)).days < 366:
-            raise ValueError("择日区间需要有序且最多366日")
+        span = (date.fromisoformat(self.end_date) - date.fromisoformat(self.start_date)).days + 1
+        if not 1 <= span <= AGENT_WINDOW_DAYS:
+            raise ValueError(f"择日区间需要有序，且含首尾最多{AGENT_WINDOW_DAYS}天（本次{span}天）")
         return self
 
 
