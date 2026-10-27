@@ -1,0 +1,468 @@
+{
+  "schema": "eval-material-readiness-v1",
+  "generated_at": "2026-10-21T07:35:53.527732+08:00",
+  "scope": "material and checker readiness; no product scenario executed",
+  "contract": "deterministic-eval-v2.3.0-candidate-material-v1",
+  "case_count": 59,
+  "assertion_count": 189,
+  "counts": {
+    "unverified": 51,
+    "blocked_decision": 1,
+    "blocked_dependency": 7,
+    "observed_pass": 0
+  },
+  "cases": [
+    {
+      "id": "DC01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "DC02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "DC03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "DC04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "TR01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "TR02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "TR03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "KU03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "KU04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "KU05",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "KU06",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "AS01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "AS02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CL01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CL02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CL03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CL04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CL05",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "FW01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "PR01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "PR02",
+      "status": "blocked_decision",
+      "blocking_reasons": [
+        "19原期望使用提醒与D4明确关闭冲突；不得擅自启用。"
+      ],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "PR03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "PR04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "PR05",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "PR06",
+      "status": "blocked_dependency",
+      "blocking_reasons": [
+        "依赖被D4阻塞的PR02；不虚构已触发提醒前提。"
+      ],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "RT01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "RT02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "RT03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "RT04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "RT05",
+      "status": "blocked_dependency",
+      "blocking_reasons": [
+        "时辰倒推仍冻结；这里只保存场景，未执行rectification_rules或校正流程。"
+      ],
+      "material_only": true,
+      "dataset_years": []
+    },
+    {
+      "id": "RT06",
+      "status": "blocked_dependency",
+      "blocking_reasons": [
+        "时辰倒推仍冻结；这里只保存场景，未执行rectification_rules或校正流程。"
+      ],
+      "material_only": true,
+      "dataset_years": []
+    },
+    {
+      "id": "RT07",
+      "status": "blocked_dependency",
+      "blocking_reasons": [
+        "时辰倒推仍冻结；这里只保存场景，未执行rectification_rules或校正流程。"
+      ],
+      "material_only": true,
+      "dataset_years": []
+    },
+    {
+      "id": "RT08",
+      "status": "blocked_dependency",
+      "blocking_reasons": [
+        "时辰倒推仍冻结；这里只保存场景，未执行rectification_rules或校正流程。"
+      ],
+      "material_only": true,
+      "dataset_years": []
+    },
+    {
+      "id": "RT09",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "RT10",
+      "status": "blocked_dependency",
+      "blocking_reasons": [
+        "时辰倒推仍冻结；这里只保存场景，未执行rectification_rules或校正流程。"
+      ],
+      "material_only": true,
+      "dataset_years": []
+    },
+    {
+      "id": "CR01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CR02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CR03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CR04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": [
+        2025
+      ]
+    },
+    {
+      "id": "CR05",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "CR06",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "J01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "J02",
+      "status": "blocked_dependency",
+      "blocking_reasons": [
+        "大脑20条答案及标签尚缺，不以合成替代品解除阻塞。"
+      ],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "J03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "J04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "J05",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "K01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "K02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "K03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "K04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "K05",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "K06",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "SP01",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "SP02",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "SP03",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "SP04",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "SP05",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "SP06",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    },
+    {
+      "id": "SP07",
+      "status": "unverified",
+      "blocking_reasons": [],
+      "material_only": false,
+      "dataset_years": []
+    }
+  ],
+  "source_files": {
+    "__init__.py": "471cfc8c60395dd3fe00d6759603c942269810f5ac5dd1a479a5daf41d31ae20",
+    "__main__.py": "f262fa662fcff745c62867681d51f66ae93a31f6bc031198da2415cbcb89dcc1",
+    "casebook.schema.json": "a31774784bde6f0d9a3865a04989a151739753f130f2748354c937d84d6cb6fe",
+    "loader.py": "e0e3c8def8a92aa705419a02151bbeaebca11e16c8a956bac60606d13956f8d7",
+    "manifest.json": "2648c86cadca9cdab3b44a43b57190a2f2b619cb99ea7e154fb2377a0d3c9c58",
+    "observation.schema.json": "9e6be01e434162f79eb6f64c5d13f80347bfec3a49b382908391907b0b345d9e",
+    "observe.py": "25ed9426e3609828c513a548a872f091e040957386d162b7c93d8ed2d9f235df",
+    "README.md": "6ac5d71a46ff21c057d80b43a5630f9437bca9efb6e96b6b89108f2ea5a4ce27",
+    "report.py": "e9bb25edbe4c121c8eeae92e01884db8f133bc88ce276b732aba1ea9d30bf574",
+    "scenarios.v23.yaml": "4fca0e76ead99fc7ad98151bbe3f1a7fe66322e310d42a77b33fe90dffd136b6"
+  },
+  "limits": [
+    "No live model/server/PG/HTTP/Feishu requests; no product tool is called",
+    "Checker unit tests use synthetic observations and do not establish 59 product passes",
+    "Missing or blank evidence stays unverified; fixed decisions and dependencies stay blocked",
+    "Artifact hashes bind supplied observation fields only; the checker does not authenticate PG or humans",
+    "Text negation support is a conservative lexical rule, not full natural language understanding",
+    "Historical v2.1/v2.2 and runners are untouched; no score subtraction across contracts",
+    "J01/J02 remain record_only without reviewed human labels; E2 is 2025 only"
+  ]
+}

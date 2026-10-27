@@ -1,0 +1,60 @@
+{
+  "schema": "organize.v2.preblind.v1",
+  "status": "preblind_frozen",
+  "frozen_at": "2026-10-21T00:22:04.840656+08:00",
+  "source_files": {
+    "mingjing_core/organize/__init__.py": "565a934c6091d41c5fd5d1f46efc9cf307a9ccf290649884ead522b888df4b70",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/contracts.py": "82058a063be2d2554bf666b736bce645da96a06f74802f0dc7ea458eb30de812",
+    "mingjing_core/organize/engine.py": "483a7841fdb190079381e13a67ec29cd44347ae986425070e30e159113c02571",
+    "mingjing_core/organize/local_vectors.py": "6de193ca0af107930182b3c5ffb0d472bcebbbacab88245633148d23a2808ac5",
+    "mingjing_core/organize/metrics.py": "46fcce49d2426fee798454b70c45bd39727849e7c1874dccc030c63ac6cf7567",
+    "mingjing_core/organize/onnx_vectors.py": "b6849d8dc3c669ce64b19a254cd417d0e75aebf1605b7694dfb67a78c4918a1d",
+    "mingjing_core/organize/proposal.py": "bd5a65526804d1aae8bf5db0f57ce109e3200434cdbc80a3305ddf0e058a98b2",
+    "mingjing_core/organize/router.py": "dcaaff9013e483b96429fd6705a11f30c5334e49e1b9b98b5da68564a18d44e4",
+    "mingjing_core/organize/segmenter.py": "4f6b0977c1a75a3bc4fc444bca98adbcfea9c042b445d3e70da818f6a7ee2884",
+    "mingjing_core/organize/space_classifier.py": "6182ccc0253bc91af27680e9ad86be23e252e7699e08648d18c811e038c65202",
+    "mingjing_core/organize/spaces.py": "049f55c4bb362266f1e77ed832dc911d7c388f5c01dab105b571771fe26062a7",
+    "mingjing_core/organize/synonyms.py": "7ac4a7f8092929b6d00f59f6b5f0652a09264879731ca84bb0d80fdeee154334",
+    "mingjing_core/organize/topic_clusterer.py": "5e9ce24069020d293dd3da3c61717bf023fcfb6c87e886ed42dc0f7f6b548084",
+    "mingjing_core/organize/v2/__init__.py": "dad7a2691060fa1249d8c6ee5b647892b160eac0434dd2dfc346887c4ce34747",
+    "mingjing_core/organize/v2/classifier.py": "7067a35699626689f6631e600ffb76a7ea1b959aca4a56c4e54bfbb7c75991a9",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/organize/v2/lexicons.py": "3c984cadb0b1f72e459a902c1bc7d86936e1171fa8a9f514f6b7103a49515cc4",
+    "mingjing_core/organize/v2/metrics.py": "dd2824762588d6042dc939b2dfc70aaff7a18c5721dc714820d0fd2f6c69f6df",
+    "mingjing_core/organize/v2/ngrams.py": "35ee8fda5df9b9cd59320d51572a19df5ff054d9df615e6844cccdadd219a334",
+    "mingjing_core/organize/v2/onnx_port.py": "8f1805a3786c7565e04885202429e33bec40873fd77b93226e471359e4faead7",
+    "mingjing_core/organize/v2/scoped.py": "0558ea1d93b741f80c1ade495a95780b75618758bf35cee9c4b13bbf4428506b",
+    "mingjing_core/organize/v2/topics.py": "75253d96e0067b55efc8714bec054ef2b9b7f6dbc5c23684b1852e92f4ef4240"
+  },
+  "source_tree_sha256": "a0746d5e73edb5872e0f92b3df5689b02c942ebfa800819f3a1af76c665062bc",
+  "settings": {
+    "minimum_evidence": 1.65,
+    "minimum_confidence": 0.6,
+    "minimum_margin": 0.48,
+    "ngram_weight": 0.5,
+    "context_weight": 0.85
+  },
+  "settings_sha256": "001dc195eccbd15a83c8d49c5f49912d2409f89c6b94c025be95432e28380bdc",
+  "topic_settings": {
+    "similarity_threshold": 0.4
+  },
+  "topic_settings_sha256": "3805ac9326cf67adad9c036c4cc4c60f3c474879d1c0fbda2bd9e3e88d9016e0",
+  "parameters_sha256": "b9d56a12734e95632df291f8c532e4dc1356a52003d1bef6b2ea163ae6b3e1aa",
+  "fixture_path": "tools/eval/fixtures/mod_20261021/organize_blind_B.json",
+  "fixture_sha256": "db998b7d960af7276c87d45d25ee024a0d3913e72d74e0bd938dfc6f60cd8682",
+  "mapping_path": "tools/eval/fixtures/mod_20261021/BLIND_B_label_mapping.json",
+  "mapping_sha256": "254ab6760a08bb3059533cf66f17283ab5c436ae8d3b8bc1c4c5312dd6c43639",
+  "evaluator_sha256": "84c74d8079b2a42ed45c8a221c19221db6c2de3a9aaacbd565b8cf476cb939c2",
+  "evaluator_files": {
+    "tools/eval/mod_organize_v2_eval.py": "84c74d8079b2a42ed45c8a221c19221db6c2de3a9aaacbd565b8cf476cb939c2",
+    "tools/eval/mod_organize_v2_topics.py": "730d3b3135cefcc507ea628705d030dc79e60a3c58d159042486d98efa08b45f",
+    "tools/eval/mod_organize_v2_features.py": "756c5c3b8f9afe8e0260190bceccb3e932bf751a9802afd97a9f1ae44665a48d"
+  },
+  "evaluator_tree_sha256": "864ebce660cb3ce3273dc4c2abf5a70ea545e25934823ba82bccbe99cb1f754a",
+  "context_policy": "explicit_context_group_previous_predictions_only",
+  "gold_unknown": "__unorganized__",
+  "topic_clustering": "character_ngram_without_gold",
+  "retry_policy": "single_final_no_retuning_or_automatic_retry"
+}

@@ -1,0 +1,425 @@
+{
+  "provenance": "synthetic_only; opaque tokens are synthetic examples, not valid capabilities",
+  "wire_status": "待对照飞书官方文档核实",
+  "schema_acceptance_claim": false,
+  "cards": [
+    {
+      "schema": "2.0",
+      "config": {
+        "streaming_mode": false,
+        "summary": {
+          "content": "明镜回复了你"
+        }
+      },
+      "header": {
+        "title": {
+          "tag": "plain_text",
+          "content": "明镜"
+        },
+        "template": "carmine"
+      },
+      "body": {
+        "elements": [
+          {
+            "tag": "markdown",
+            "element_id": "answer",
+            "content": "合成回答"
+          },
+          {
+            "tag": "markdown",
+            "element_id": "route",
+            "content": "归入：事业学业·合成求职话题"
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "改区"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000010"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "新话题"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000011"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "schema": "2.0",
+      "config": {
+        "streaming_mode": false,
+        "summary": {
+          "content": "明镜想问问你"
+        }
+      },
+      "header": {
+        "title": {
+          "tag": "plain_text",
+          "content": "明镜想问你"
+        },
+        "template": "carmine"
+      },
+      "body": {
+        "elements": [
+          {
+            "tag": "markdown",
+            "element_id": "question",
+            "content": "**合成问题？**\n为什么问：需要你确认"
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "选项0"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000000"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "选项1"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000001"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "选项2"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000002"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "markdown",
+            "element_id": "free_reply",
+            "content": "我自己说：也可以直接打字告诉我。"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "2.0",
+      "config": {
+        "streaming_mode": false,
+        "summary": {
+          "content": "明镜有一条记忆回执"
+        }
+      },
+      "header": {
+        "title": {
+          "tag": "plain_text",
+          "content": "明镜"
+        },
+        "template": "carmine"
+      },
+      "body": {
+        "elements": [
+          {
+            "tag": "markdown",
+            "element_id": "receipt_0",
+            "content": "记下了：合成偏好"
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "撤销"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000020"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "schema": "2.0",
+      "config": {
+        "streaming_mode": false,
+        "summary": {
+          "content": "明镜有一件事想和你确认"
+        }
+      },
+      "header": {
+        "title": {
+          "tag": "plain_text",
+          "content": "明镜"
+        },
+        "template": "carmine"
+      },
+      "body": {
+        "elements": [
+          {
+            "tag": "markdown",
+            "element_id": "proposal",
+            "content": "这个比较私人，要不要我记住？\n> 合成记忆提案"
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "记住"
+            },
+            "type": "primary",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000030"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "不用"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000031"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "以后这类都记"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000032"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "schema": "2.0",
+      "config": {
+        "streaming_mode": false,
+        "summary": {
+          "content": "明镜想问问你"
+        }
+      },
+      "header": {
+        "title": {
+          "tag": "plain_text",
+          "content": "明镜"
+        },
+        "template": "carmine"
+      },
+      "body": {
+        "elements": [
+          {
+            "tag": "markdown",
+            "element_id": "followup",
+            "content": "最近还顺利吗？"
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "选项0"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000000"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "选项1"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000001"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "schema": "2.0",
+      "config": {
+        "streaming_mode": false,
+        "summary": {
+          "content": "明镜的晨报到了"
+        }
+      },
+      "header": {
+        "title": {
+          "tag": "plain_text",
+          "content": "10月19日 周一 · 晨报"
+        },
+        "template": "carmine"
+      },
+      "body": {
+        "elements": [
+          {
+            "tag": "markdown",
+            "element_id": "brief_0",
+            "content": "**今日**\n合成日期信息"
+          },
+          {
+            "tag": "markdown",
+            "element_id": "brief_1",
+            "content": "**你的安排**\n合成安排"
+          },
+          {
+            "tag": "markdown",
+            "element_id": "brief_2",
+            "content": "**今日流日一句**\n合成流日句"
+          },
+          {
+            "tag": "markdown",
+            "element_id": "space_0",
+            "content": "**日常**\n合成近况"
+          },
+          {
+            "tag": "markdown",
+            "element_id": "closing",
+            "content": "合成结尾"
+          },
+          {
+            "tag": "markdown",
+            "element_id": "reply",
+            "content": "想聊聊，直接回复我就好。"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "2.0",
+      "config": {
+        "streaming_mode": false,
+        "summary": {
+          "content": "对话归属"
+        }
+      },
+      "header": {
+        "title": {
+          "tag": "plain_text",
+          "content": "明镜"
+        },
+        "template": "carmine"
+      },
+      "body": {
+        "elements": [
+          {
+            "tag": "markdown",
+            "element_id": "route",
+            "content": "归入：事业学业·合成求职话题"
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "改区"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000010"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "button",
+            "text": {
+              "tag": "plain_text",
+              "content": "新话题"
+            },
+            "type": "default",
+            "behaviors": [
+              {
+                "type": "callback",
+                "value": {
+                  "t": "0000000000000000000000000000000000000000011"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

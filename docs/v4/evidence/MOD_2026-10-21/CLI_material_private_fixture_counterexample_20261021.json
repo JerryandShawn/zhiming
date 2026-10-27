@@ -1,0 +1,25 @@
+{
+  "schema": "eval_material.cli.private_fixture.counterexample.v1",
+  "observed_at": "2026-10-21T10:26:12.233715+08:00",
+  "method": "public helper private_path(ROOT/synthetic-ci-temp-outside-private,x.json),no file creation",
+  "actual": "AssertionError",
+  "expected_for_default_ci_tmp_fixture": "Current helper requires private but CI pytest command supplies no basetemp and shared conftest does not override tmp_path",
+  "classification": "New test fixture portability gap confirmed from code and no-write helper invocation;not CLI product failure;not observed CI failure",
+  "source_sha256_before_fix": {
+    "tests/v4/eval_material_v23/cli_public_support_core_mod.py": "d40a772bb5cc498e2a49a53f0b627bea1829ef2f4e4c1cca8e143e2adc346fd5",
+    "tests/v4/eval_material_v23/test_cli_public_core_mod.py": "c88129e46c4945818b0457f554d58e34912d0c37a8c69a9f7b86b5f52013f151",
+    "tools/eval_material_v23/__main__.py": "f262fa662fcff745c62867681d51f66ae93a31f6bc031198da2415cbcb89dcc1",
+    ".github/workflows/ci.yml": "79229f2b31b42f8673f285a631560d80d27f3e55b5d261b14e76f315cc3cdf0b",
+    "tests/v4/conftest.py": "6e39f9406362d4b3f619d712fbd233249bfb831cf5d94a9bc6b2f9d9595df3a8",
+    "docs/v4/evidence/MOD_2026-10-21/CLI_material_compat_coverage_20261021.json": "47a60bc9984ea54f39071d05a179dcdbb73588b0813074736f2fbd530b8ca6c2",
+    "docs/v4/evidence/MOD_2026-10-21/CLI_material_coverage_final_20261021.json": "8b8c2564bc8568e5b22de00d1b1687a4f6b48e92b3ef66ad4dde1d27ff7b6bfe"
+  },
+  "probe_directory_created": false,
+  "raw_log": "private/mod-week/CLI_material_private_fixture_counterexample.log",
+  "raw_sha256": "fc58d0e8f1c8a1e6004499b01e56ea5e0ba4a95cb22b772c5ecfed5809822e65",
+  "limits": [
+    "No OS temp or workspace-external file creation",
+    "Historical120/coverage results retained with old test hashes",
+    "Product/material/CI/shared fixtures unchanged"
+  ]
+}

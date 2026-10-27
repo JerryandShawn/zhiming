@@ -1,0 +1,28 @@
+{
+  "schema": "rpf01.timezone.failure.v1",
+  "synthetic_only": true,
+  "source_before_observation": {
+    "observed_at": "2026-10-21T09:03:16.402611+08:00",
+    "source_sha256": {
+      "mingjing_core/application/reflection_projection_exp/projector.py": "cd619bfd05fb521eb0c173ef9de35d1f5dbbc74d59e81f80fbb5e49432185ff9",
+      "mingjing_core/application/reflection_projection_exp/types.py": "0b38e3d2aaa489b8bcccb8f86de3a280acdfd8200f0838413dd3042628152f18",
+      "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f"
+    }
+  },
+  "before_metadata_sha256": "2a9b898b459073d993c3df0124a7f3194258c24f2e657921519f5e3f60243f6c",
+  "original_log_sha256": "eca50bb2121d606eeb8c252eeb909ffb3ed5b0a5abfb8c8fd50bd923d043b3a5",
+  "stdout": "FFF                                                                      [100%]\n================================== FAILURES ===================================\n_ test_nested_uncopyable_timezone_never_expands_the_old_fingerprint_boundary __\n\n    def test_nested_uncopyable_timezone_never_expands_the_old_fingerprint_boundary() -> None:\n        value = proposal(datetime(2026, 10, 21, tzinfo=UncopyableZone()))\n        with pytest.raises(TypeError):\n            digest(dataclass_json(value))\n>       with pytest.raises(ProjectionError):\nE       Failed: DID NOT RAISE ProjectionError\n\ntests\\v4\\reflection_projection_exp\\test_timezone_boundary_core_mod.py:39: Failed\n_ test_standalone_custom_timezone_is_explicitly_narrower_than_the_old_oracle __\n\n    def test_standalone_custom_timezone_is_explicitly_narrower_than_the_old_oracle() -> None:\n        value = datetime(2026, 10, 21, tzinfo=UncopyableZone())\n        assert digest(dataclass_json(value))\n>       with pytest.raises(ProjectionError):\nE       Failed: DID NOT RAISE ProjectionError\n\ntests\\v4\\reflection_projection_exp\\test_timezone_boundary_core_mod.py:46: Failed\n_ test_uncopyable_standard_zoneinfo_from_file_is_also_not_a_new_nested_acceptance _\n\n    def test_uncopyable_standard_zoneinfo_from_file_is_also_not_a_new_nested_acceptance() -> None:\n        header = b\"TZif\\0\" + b\"\\0\" * 15 + struct.pack(\">6l\", 0, 0, 0, 0, 1, 4)\n        payload = header + struct.pack(\">lbb\", 0, 0, 0) + b\"UTC\\0\"\n        zone = ZoneInfo.from_file(io.BytesIO(payload), key=\"Synthetic/UTC\")\n        assert type(zone) is ZoneInfo\n        value = proposal(datetime(2026, 10, 21, tzinfo=zone))\n        with pytest.raises(pickle.PicklingError):\n            digest(dataclass_json(value))\n>       with pytest.raises(ProjectionError):\nE       Failed: DID NOT RAISE ProjectionError\n\ntests\\v4\\reflection_projection_exp\\test_timezone_boundary_core_mod.py:58: Failed\n=========================== short test summary info ===========================\nFAILED tests/v4/reflection_projection_exp/test_timezone_boundary_core_mod.py::test_nested_uncopyable_timezone_never_expands_the_old_fingerprint_boundary\nFAILED tests/v4/reflection_projection_exp/test_timezone_boundary_core_mod.py::test_standalone_custom_timezone_is_explicitly_narrower_than_the_old_oracle\nFAILED tests/v4/reflection_projection_exp/test_timezone_boundary_core_mod.py::test_uncopyable_standard_zoneinfo_from_file_is_also_not_a_new_nested_acceptance\n3 failed in 0.63s\n",
+  "actual_pytest_summary": "3 failed in 0.63s",
+  "reproduction_command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/v4/reflection_projection_exp/test_timezone_boundary_core_mod.py",
+    "-q"
+  ],
+  "limits": [
+    "Exact original invocation was not serialized in the private before metadata; command here is for reproduction",
+    "These failures describe the pre-timezone-fix experimental source, not the frozen reflection or production behavior",
+    "Standalone custom datetime old acceptance is distinct from nested asdict deepcopy rejection"
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "observed_at": "2026-10-21T00:34:09.939390+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "k3_issue_first_consume_replay_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.20435989999896265,
+        0.2074678999997559,
+        0.20904179999888584,
+        0.21327410000048985,
+        0.2075451000000612
+      ],
+      "median_seconds": 0.2075451000000612,
+      "max_seconds": 0.21327410000048985,
+      "separate_tracemalloc_peak_bytes": 1148349,
+      "unit": "unique token: issue + first consume + replay; all first permissions and zero replay effects",
+      "fixture_setup_included": true,
+      "expected_first_permissions": 1000,
+      "expected_replay_effects": 0,
+      "additional_small_warmup_tokens": 50
+    },
+    {
+      "name": "k3_capacity_1000_tail_replay_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.11433940000097209,
+        0.11666380000133358,
+        0.11326819999885629,
+        0.11290010000084294,
+        0.11198150000018359
+      ],
+      "median_seconds": 0.11326819999885629,
+      "max_seconds": 0.11666380000133358,
+      "separate_tracemalloc_peak_bytes": 10477,
+      "unit": "one click through the real metadata lookup at the final entry of a full memory store",
+      "fixture_setup_included": false,
+      "fixed_store_capacity": 1000,
+      "expected_effects": 0
+    },
+    {
+      "name": "k3_capacity_1000_tail_wrong_binding_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.08748829999967711,
+        0.0874151999996684,
+        0.08959519999916665,
+        0.08734390000063286,
+        0.08724600000095961
+      ],
+      "median_seconds": 0.0874151999996684,
+      "max_seconds": 0.08959519999916665,
+      "separate_tracemalloc_peak_bytes": 11081,
+      "unit": "one click through the real metadata lookup at the final entry of a full memory store",
+      "fixture_setup_included": false,
+      "fixed_store_capacity": 1000,
+      "expected_effects": 0
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/adapters/channels/action_token_contracts.py": "548fac211831304323679474c5c92dd338995d9b35c27e4b133742e45f666de0",
+    "mingjing_core/adapters/channels/action_token_policy_v2.py": "3e58dfbc19ef118cc7c68dde69d96037bcb5a8374fdbc337ec2c90a606260df0",
+    "mingjing_core/adapters/channels/action_token_refresh_v2.py": "6b30fa69f915b6ffadb1ce9f197e6e854acb011226bbe36039282caf137e7537",
+    "mingjing_core/adapters/channels/action_token_store.py": "a10bada777ada85bfb9a1eb459e1afed4aa9c35b5b9842f1463d479d9efd0345",
+    "mingjing_core/adapters/channels/action_tokens.py": "12b912d4229025d96fdb4c089cfbc8e39e1316d124d926ddbf649c83a3d29dbf",
+    "tools/mod_week/benchmark_k3_v2.py": "63c762435437b1c61aa230ab48b9fa57e72ef04383402d5a215a3c7fb202feeb",
+    "tools/mod_week/performance.py": "9e6feed2c4631f3685d46406c4ed0b7c2649578d41d926d6629a3f2e80e8c846"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ]
+}

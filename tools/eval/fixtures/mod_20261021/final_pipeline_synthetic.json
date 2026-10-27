@@ -1,0 +1,296 @@
+{
+  "schema": "mod-final-pipeline-synthetic-v1",
+  "synthetic_only": true,
+  "provenance": "New explicitly fictional synthetic statements for source-ledger composition; no B or calibration sample read",
+  "texts": {
+    "daily": "我喜欢午后整理书桌。",
+    "career": "我在纸鸢工坊负责产品设计。",
+    "relationships": "我更喜欢把关系里的分歧当面说清楚。",
+    "family": "我习惯周末整理家务清单。",
+    "wellbeing": "我喜欢傍晚散步。",
+    "finance": "我计划每周整理预算。",
+    "metaphysics": "我想按公开资料学习塔罗的牌阵。",
+    "assistant": "我建议你尝试把计划拆成三个小步骤。",
+    "health": "我在为失眠接受医生治疗。",
+    "optout": "我喜欢折纸，这段不用记住。",
+    "secret": "我的密码是 synthetic-only-do-not-store。"
+  },
+  "cases": [
+    {
+      "id": "FLOW-daily-weekly",
+      "family": "baseline",
+      "area": "daily",
+      "report_kind": "weekly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-daily-monthly",
+      "family": "baseline",
+      "area": "daily",
+      "report_kind": "monthly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-daily-quarterly",
+      "family": "baseline",
+      "area": "daily",
+      "report_kind": "quarterly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-career-weekly",
+      "family": "baseline",
+      "area": "career",
+      "report_kind": "weekly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-career-monthly",
+      "family": "baseline",
+      "area": "career",
+      "report_kind": "monthly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-career-quarterly",
+      "family": "baseline",
+      "area": "career",
+      "report_kind": "quarterly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-relationships-weekly",
+      "family": "baseline",
+      "area": "relationships",
+      "report_kind": "weekly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-relationships-monthly",
+      "family": "baseline",
+      "area": "relationships",
+      "report_kind": "monthly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-relationships-quarterly",
+      "family": "baseline",
+      "area": "relationships",
+      "report_kind": "quarterly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-family-weekly",
+      "family": "baseline",
+      "area": "family",
+      "report_kind": "weekly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-family-monthly",
+      "family": "baseline",
+      "area": "family",
+      "report_kind": "monthly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-family-quarterly",
+      "family": "baseline",
+      "area": "family",
+      "report_kind": "quarterly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-wellbeing-weekly",
+      "family": "baseline",
+      "area": "wellbeing",
+      "report_kind": "weekly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-wellbeing-monthly",
+      "family": "baseline",
+      "area": "wellbeing",
+      "report_kind": "monthly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-wellbeing-quarterly",
+      "family": "baseline",
+      "area": "wellbeing",
+      "report_kind": "quarterly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-finance-weekly",
+      "family": "baseline",
+      "area": "finance",
+      "report_kind": "weekly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-finance-monthly",
+      "family": "baseline",
+      "area": "finance",
+      "report_kind": "monthly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-finance-quarterly",
+      "family": "baseline",
+      "area": "finance",
+      "report_kind": "quarterly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-metaphysics-weekly",
+      "family": "baseline",
+      "area": "metaphysics",
+      "report_kind": "weekly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-metaphysics-monthly",
+      "family": "baseline",
+      "area": "metaphysics",
+      "report_kind": "monthly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "FLOW-metaphysics-quarterly",
+      "family": "baseline",
+      "area": "metaphysics",
+      "report_kind": "quarterly",
+      "expected": "same_original_fact_and_source_visible_in_work_profile_report"
+    },
+    {
+      "id": "SOURCE-revoked",
+      "family": "invalidate",
+      "change": "revoked",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "SOURCE-inactive",
+      "family": "invalidate",
+      "change": "inactive",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "SOURCE-incognito",
+      "family": "invalidate",
+      "change": "incognito",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "SOURCE-optout_flag",
+      "family": "invalidate",
+      "change": "optout_flag",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "SOURCE-text_same_revision",
+      "family": "invalidate",
+      "change": "text_same_revision",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "SOURCE-role_assistant",
+      "family": "invalidate",
+      "change": "role_assistant",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "SOURCE-origin_external",
+      "family": "invalidate",
+      "change": "origin_external",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "SOURCE-epoch_only",
+      "family": "invalidate",
+      "change": "epoch_only",
+      "expected": "old_intent_and_old_profile_and_cached_report_content_unavailable"
+    },
+    {
+      "id": "POLICY-assistant",
+      "family": "policy",
+      "text_key": "assistant",
+      "expected": "not_saved_no_user_fact_profile_or_report"
+    },
+    {
+      "id": "POLICY-health",
+      "family": "policy",
+      "text_key": "health",
+      "expected": "not_saved_no_user_fact_profile_or_report"
+    },
+    {
+      "id": "POLICY-optout",
+      "family": "policy",
+      "text_key": "optout",
+      "expected": "not_saved_no_user_fact_profile_or_report"
+    },
+    {
+      "id": "POLICY-secret",
+      "family": "policy",
+      "text_key": "secret",
+      "expected": "not_saved_no_user_fact_profile_or_report"
+    },
+    {
+      "id": "TIME-at_start",
+      "family": "halfopen",
+      "boundary": "at_start",
+      "expected_visible": true
+    },
+    {
+      "id": "TIME-before_start",
+      "family": "halfopen",
+      "boundary": "before_start",
+      "expected_visible": false
+    },
+    {
+      "id": "TIME-at_end",
+      "family": "halfopen",
+      "boundary": "at_end",
+      "expected_visible": false
+    },
+    {
+      "id": "TIME-before_end",
+      "family": "halfopen",
+      "boundary": "before_end",
+      "expected_visible": true
+    },
+    {
+      "id": "PROTECT-pinned",
+      "family": "protected",
+      "flag": "pinned",
+      "expected": "source_revocation_removes_content_despite_pin_or_edit"
+    },
+    {
+      "id": "PROTECT-edited_by_user",
+      "family": "protected",
+      "flag": "edited_by_user",
+      "expected": "source_revocation_removes_content_despite_pin_or_edit"
+    },
+    {
+      "id": "PROTECT-both",
+      "family": "protected",
+      "flag": "both",
+      "expected": "source_revocation_removes_content_despite_pin_or_edit"
+    },
+    {
+      "id": "REPLAY-stable",
+      "family": "replay",
+      "expected": "same_operation_same_fact_once_and_same_report_key"
+    }
+  ],
+  "zones": [
+    "Asia/Shanghai",
+    "Asia/Tokyo",
+    "UTC",
+    "America/New_York",
+    "Europe/Berlin",
+    "Pacific/Auckland"
+  ],
+  "random_seed": 20261021832,
+  "random_trials": 1000
+}

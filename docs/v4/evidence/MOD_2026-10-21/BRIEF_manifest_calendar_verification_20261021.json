@@ -1,0 +1,79 @@
+{
+  "scope": "briefing_current_manifest_independent_public_8",
+  "observed_log_completed_at_beijing": "2026-10-21T10:15:11.1850946+08:00",
+  "command": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p2/.venv-core/Scripts/python.exe -m pytest tests/v4/briefing_v2/test_manifest_calendar_mod.py -q --basetemp=private/mod-week/tmp/brief-manifest-calendar-first",
+  "result": {
+    "passed": 8,
+    "failed": 0,
+    "seconds": 0.63
+  },
+  "first_run": true,
+  "expectations_unchanged": true,
+  "frozen_plan": "docs/v4/execplans/MOD_briefing_manifest_independent_calendar_20261021.md",
+  "frozen_plan_sha256": "d4fc2aa32662c9625567fc5f385d7529e0af93cdf7201fbbfbc970463d0e75b1",
+  "frozen_eight_case_table_sha256": "4380db3f91dee5b9b32049b6f8e2d6f2a89a6f4de619929de839e8f213f3d5ed",
+  "snapshot_count_including_original_plan": 17,
+  "protected_runtime_source_and_material_count": 16,
+  "source_and_material_before": {
+    "mingjing_core/application/briefing_v2/__init__.py": "e4d45e0c7cae782968458e01ee9633163a52d8c148399cb3f86944884a99eb18",
+    "mingjing_core/application/briefing_v2/authorization.py": "dfc208bc9c5b45b00cf256a36d27a448af250c12db89558404712eb79193a742",
+    "mingjing_core/application/briefing_v2/calendar.py": "bb69333a1a8efb00f34add5538e3e1d02e0ad4316cd065e651c9b7a7116c720f",
+    "mingjing_core/application/briefing_v2/compose.py": "b38745b7a5ac59affd487f0922d6f9cc986c879d61ce0f9902a2184c6ae5fbde",
+    "mingjing_core/application/briefing_v2/contracts.py": "0e48a65b417120c8bc5268c275a6bd97308f6df8702e03959c88ba6b1bb41a3c",
+    "mingjing_core/application/briefing_v2/current_manifest.py": "a5d05a982c6ed384c1a56541ac520869601db6e854fc50c62d25bd3b536a23af",
+    "mingjing_core/application/briefing_v2/evidence.py": "fe0fd74df3ac39502b0a192e76413e3cae58d9250a7fb048b9834130c2c3e7d6",
+    "mingjing_core/application/briefing_v2/items.py": "1dd15b22cf025280e1c5bef07ee32ea2c95114af47ca22337724c2db39d39a9a",
+    "mingjing_core/application/briefing_v2/transit.py": "bdd019a0febb45831f23cf476429da61c9ceec7dd05fc867b3e20672ed12ffad",
+    "tests/v4/briefing_v2/brief_public_support_core_mod.py": "e2a327201a026c6dcee056a9ccce72343ee155e2a39c07ae175c93f9ebbad45a",
+    "tests/v4/briefing_v2/test_public_boundaries_core_mod.py": "2e8082d4f579c5af0132162949617545f37f294e50580582d5f3ea433a594e90",
+    "docs/v4/evidence/MOD_2026-10-21/BRIEF_public_boundaries_frozen_matrix_20261021.json": "1f77c413625f6f24c059cd9c7fd372c388b613459fb032632dd2bd1719cdaf9e",
+    "tests/v4/briefing_v2/fixtures/daily_transit_synthetic_20261021.json": "0b0984e1a6cf9c48f060071e861da1438d9ee2122a7635095d7f71933a589205",
+    "tools/eval/fixtures/mod_20261021/reflection_background_synthetic.json": "185bfa68eb306ae4a2a8dda73df8c14cf0bca93a72076b04eb20720379768b88",
+    "tests/v4/briefing_v2/manifest_calendar_support_mod.py": "d5d1654543b079c004ef13c0e9599aca4683597c9b5c0142f66cfe5e56123551",
+    "tests/v4/briefing_v2/test_manifest_calendar_mod.py": "0d5244974fa7ed35ac78825fce5ca0e646696a95c74ca276830426ceb5b2d6aa"
+  },
+  "source_and_material_after": {
+    "mingjing_core/application/briefing_v2/__init__.py": "e4d45e0c7cae782968458e01ee9633163a52d8c148399cb3f86944884a99eb18",
+    "mingjing_core/application/briefing_v2/authorization.py": "dfc208bc9c5b45b00cf256a36d27a448af250c12db89558404712eb79193a742",
+    "mingjing_core/application/briefing_v2/calendar.py": "bb69333a1a8efb00f34add5538e3e1d02e0ad4316cd065e651c9b7a7116c720f",
+    "mingjing_core/application/briefing_v2/compose.py": "b38745b7a5ac59affd487f0922d6f9cc986c879d61ce0f9902a2184c6ae5fbde",
+    "mingjing_core/application/briefing_v2/contracts.py": "0e48a65b417120c8bc5268c275a6bd97308f6df8702e03959c88ba6b1bb41a3c",
+    "mingjing_core/application/briefing_v2/current_manifest.py": "a5d05a982c6ed384c1a56541ac520869601db6e854fc50c62d25bd3b536a23af",
+    "mingjing_core/application/briefing_v2/evidence.py": "fe0fd74df3ac39502b0a192e76413e3cae58d9250a7fb048b9834130c2c3e7d6",
+    "mingjing_core/application/briefing_v2/items.py": "1dd15b22cf025280e1c5bef07ee32ea2c95114af47ca22337724c2db39d39a9a",
+    "mingjing_core/application/briefing_v2/transit.py": "bdd019a0febb45831f23cf476429da61c9ceec7dd05fc867b3e20672ed12ffad",
+    "tests/v4/briefing_v2/brief_public_support_core_mod.py": "e2a327201a026c6dcee056a9ccce72343ee155e2a39c07ae175c93f9ebbad45a",
+    "tests/v4/briefing_v2/test_public_boundaries_core_mod.py": "2e8082d4f579c5af0132162949617545f37f294e50580582d5f3ea433a594e90",
+    "docs/v4/evidence/MOD_2026-10-21/BRIEF_public_boundaries_frozen_matrix_20261021.json": "1f77c413625f6f24c059cd9c7fd372c388b613459fb032632dd2bd1719cdaf9e",
+    "tests/v4/briefing_v2/fixtures/daily_transit_synthetic_20261021.json": "0b0984e1a6cf9c48f060071e861da1438d9ee2122a7635095d7f71933a589205",
+    "tools/eval/fixtures/mod_20261021/reflection_background_synthetic.json": "185bfa68eb306ae4a2a8dda73df8c14cf0bca93a72076b04eb20720379768b88",
+    "tests/v4/briefing_v2/manifest_calendar_support_mod.py": "d5d1654543b079c004ef13c0e9599aca4683597c9b5c0142f66cfe5e56123551",
+    "tests/v4/briefing_v2/test_manifest_calendar_mod.py": "0d5244974fa7ed35ac78825fce5ca0e646696a95c74ca276830426ceb5b2d6aa"
+  },
+  "source_stable": true,
+  "product_source_count": 9,
+  "new_files": [
+    "tests/v4/briefing_v2/manifest_calendar_support_mod.py",
+    "tests/v4/briefing_v2/test_manifest_calendar_mod.py"
+  ],
+  "new_test_lf": true,
+  "original_30_matrix_and_helper_unchanged": true,
+  "private_manifest_or_validator_used_for_golden": false,
+  "product_or_existing_test_edits": 0,
+  "stdout": "........                                                                 [100%]\n8 passed in 0.63s\n",
+  "stdout_sha256": "fd7865c058f3a0e22681789c645cc6f7d6fe2d9d3852a145eccef89e41fb2d43",
+  "effects": {
+    "model_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0,
+    "notifications": 0,
+    "git_operations": 0
+  },
+  "limits": [
+    "8 public synthetic compose cases, no additional compatibility/coverage/performance run",
+    "Current host projections do not authenticate PostgreSQL or prove actual current-source lookups",
+    "Calendar_snapshot used only as public P2 input; no product manifest/evidence/subscription hash helper issues expected outcomes",
+    "Plan progress may be updated after target; original frozen SHA and case-table SHA remain historical proof",
+    "Root owns Git publication and blob-byte verification"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "scope": "completed offline module suites Q1-Q6 only; no PG/live model/HTTP",
+  "rounds": [
+    {
+      "round": 1,
+      "started_at": "2026-10-21T00:45:18.148954+08:00",
+      "finished_at": "2026-10-21T00:45:21.129230+08:00",
+      "command": [
+        "-m",
+        "pytest",
+        "tests/v4/organize",
+        "tests/v4/validation",
+        "tests/v4/followups_mod",
+        "tests/v4/cards_mod",
+        "tests/v4/mod_tools",
+        "tests/v4/mod_week",
+        "tests/v4/timeparse",
+        "tests/v4/memory2",
+        "tests/v4/streaming",
+        "tests/v4/scheduling",
+        "tests/v4/organize_v2",
+        "tests/v4/p9_v2",
+        "-q",
+        "--basetemp=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\private\\mod-week\\tmp\\completed-20261021-004518-1"
+      ],
+      "exit_code": 2,
+      "stdout": "\n=================================== ERRORS ====================================\n________ ERROR collecting tests/v4/organize_v2/test_acceptance_mod.py _________\nimport file mismatch:\nimported module 'test_acceptance_mod' has this __file__ attribute:\n  C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\tests\\v4\\memory2\\test_acceptance_mod.py\nwhich is not the same as the test file we want to collect:\n  C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\tests\\v4\\organize_v2\\test_acceptance_mod.py\nHINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules\n=========================== short test summary info ===========================\nERROR tests/v4/organize_v2/test_acceptance_mod.py\n!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 1.78s\n",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "schema_version": "mod-legacy-bridge-independent-postfix-v1",
+  "started_at": "2026-10-21T11:11:21.535788+08:00",
+  "finished_at": "2026-10-21T11:11:22.696365+08:00",
+  "clock_zone": "Asia/Shanghai",
+  "scope": "Unmodified original fifteen tests, after root strict raw scalar guard only",
+  "command": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py",
+    "-q",
+    "-s",
+    "--tb=short",
+    "--basetemp=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\private\\mod-week\\tmp\\legacy-bridge-post-20261021-111121-535788"
+  ],
+  "pytest_exit_code": 0,
+  "stdout": "LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB01\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_document_scope_mismatch\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB02\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_document_scope_mismatch\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB03\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_missing\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB04\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB05\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB06\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB07\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB08\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB09\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_labels_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB10\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"message_source_identity_mismatch\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB11\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"complete_message_source_required\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB12\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"mainline_entity_adapter_required\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB13\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_revision_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB14\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"mainline_topic_adapter_required\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB15\", \"outcome\": \"returned\", \"returned_type\": \"ChangeSet\", \"operation_paths\": [[\"messages\", \"synthetic-message-legacy-001\", \"route_confidence\"], [\"messages\", \"synthetic-message-legacy-001\", \"route_source\"], [\"messages\", \"synthetic-message-legacy-001\", \"space_id\"], [\"messages\", \"synthetic-message-legacy-001\", \"space_secondary\"]]}\n.\n15 passed in 0.14s\n",
+  "stderr": "",
+  "observations": [
+    {
+      "case_id": "LB01",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_document_scope_mismatch",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB02",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_document_scope_mismatch",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB03",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_missing",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB04",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB05",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB06",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB07",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB08",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB09",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_labels_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB10",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "message_source_identity_mismatch",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB11",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "complete_message_source_required",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB12",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "mainline_entity_adapter_required",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB13",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_revision_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB14",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "mainline_topic_adapter_required",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB15",
+      "outcome": "returned",
+      "returned_type": "ChangeSet",
+      "operation_paths": [
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "route_confidence"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "route_source"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "space_id"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "space_secondary"
+        ]
+      ]
+    }
+  ],
+  "historical_first": {
+    "path": "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_independent_first_20261021.json",
+    "sha256": "6bb2395267b4462f8657fae8a49f0d59490ca18cf0baa6a09af75674f3661adc",
+    "legacy_bridge_sha256": "e6b5a98bf95241d29470d2236b899a05bfd86615b130c13445a5529e85451c9b",
+    "result": "1 failed, 14 passed in 0.23s"
+  },
+  "scalar_historical_first": {
+    "path": "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_independent_first_20261021.json",
+    "sha256": "cbd7aa1fc7f560a143dae5a44d70fff829b34124a2a3d5c7e606c102504fdc50",
+    "matrix_sha256": "7b164849815b572f2dcbc583b2718c523965df5546b4dc227f3811b4d6a7cff9",
+    "result": "3 failed, 2 passed in 0.22s"
+  },
+  "source_files": [
+    "mingjing_core/organize/supplement_v2/__init__.py",
+    "mingjing_core/organize/supplement_v2/contracts.py",
+    "mingjing_core/organize/supplement_v2/guards.py",
+    "mingjing_core/organize/supplement_v2/intent_policy.py",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py",
+    "mingjing_core/organize/supplement_v2/lifecycle.py",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py",
+    "mingjing_core/organize/supplement_v2/projection.py",
+    "mingjing_core/organize/supplement_v2/review.py",
+    "mingjing_core/organize/contracts.py",
+    "mingjing_core/organize/changes.py",
+    "mingjing_core/organize/_change_values.py",
+    "mingjing_core/organize/v2/contracts.py",
+    "mingjing_core/memory2/contracts.py",
+    "mingjing_core/memory2/guards.py",
+    "mingjing_core/memory2/sensitivity.py",
+    "mingjing_core/memory2/consent_text.py",
+    "mingjing_core/memory2/validation.py",
+    "mingjing_core/memory/policy.py",
+    "mingjing_core/timekit/clock.py",
+    "mingjing_core/organize/spaces.py"
+  ],
+  "suite_files": [
+    "tests/v4/organize_supplement/test_supplement_mod.py",
+    "tests/v4/organize_supplement_v2/legacy_bridge_calendar_support_mod.py",
+    "tests/v4/organize_supplement_v2/test_acceptance_supplement_mod.py",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py",
+    "tests/v4/organize_supplement_v2/test_legacy_scalar_acceptance_mod.py"
+  ],
+  "materials": [
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_frozen_matrix_20261021.json",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_frozen_matrix_20261021.json",
+    "tools/eval/fixtures/mod_20261021/legacy_bridge_calendar_synthetic.json",
+    "tools/eval/fixtures/mod_20261021/legacy_scalar_independent_synthetic.json",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_independent_first_20261021.json",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_independent_first_20261021.json"
+  ],
+  "before_sha256": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "78ec7567a947388968d3d85d8565495aa904bdd8696ca63969ab30a74c3fc793",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "mingjing_core/organize/contracts.py": "82058a063be2d2554bf666b736bce645da96a06f74802f0dc7ea458eb30de812",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "mingjing_core/memory/policy.py": "47c82d83dd9177180392e3246763f9ef2c9ec219f710719d528746dc3256f09b",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "mingjing_core/organize/spaces.py": "049f55c4bb362266f1e77ed832dc911d7c388f5c01dab105b571771fe26062a7",
+    "tests/v4/organize_supplement/test_supplement_mod.py": "b113513320af70b9535b31bf22547390470c272fcfa17e79b3416818a8c59f43",
+    "tests/v4/organize_supplement_v2/legacy_bridge_calendar_support_mod.py": "92686c3d294ccf3d788df3136e058454539817fa3479c0a49ff25e09c2af2e24",
+    "tests/v4/organize_supplement_v2/test_acceptance_supplement_mod.py": "9c0fcb1e2a9f0040fa4763415ccda44b03a7d65afa2f48b8d980c3d171150dad",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py": "cd3cdc7bb2bb1f726fe79e9e94c0d1d50477595299c2ce4dfa06f852e61a5c05",
+    "tests/v4/organize_supplement_v2/test_legacy_scalar_acceptance_mod.py": "dda0e8ee5aa798bb0e6e56860b3312d6deda242601f8e6bc5b88723de957246b",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_frozen_matrix_20261021.json": "883b171aa7589aa1ee807d439c1779714ee91f588c9a2b0755b269b07b3491b2",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_frozen_matrix_20261021.json": "7b164849815b572f2dcbc583b2718c523965df5546b4dc227f3811b4d6a7cff9",
+    "tools/eval/fixtures/mod_20261021/legacy_bridge_calendar_synthetic.json": "480e5e00c70a809fa59b3e3b3ffdaddc7ded1940156236de6140cc1a49a899d0",
+    "tools/eval/fixtures/mod_20261021/legacy_scalar_independent_synthetic.json": "a77296ab9d19a25a79758027ced13928589b1c308ab25ebe53056def1ac15d9b",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_independent_first_20261021.json": "6bb2395267b4462f8657fae8a49f0d59490ca18cf0baa6a09af75674f3661adc",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_independent_first_20261021.json": "cbd7aa1fc7f560a143dae5a44d70fff829b34124a2a3d5c7e606c102504fdc50"
+  },
+  "after_sha256": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "78ec7567a947388968d3d85d8565495aa904bdd8696ca63969ab30a74c3fc793",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "mingjing_core/organize/contracts.py": "82058a063be2d2554bf666b736bce645da96a06f74802f0dc7ea458eb30de812",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "mingjing_core/memory/policy.py": "47c82d83dd9177180392e3246763f9ef2c9ec219f710719d528746dc3256f09b",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "mingjing_core/organize/spaces.py": "049f55c4bb362266f1e77ed832dc911d7c388f5c01dab105b571771fe26062a7",
+    "tests/v4/organize_supplement/test_supplement_mod.py": "b113513320af70b9535b31bf22547390470c272fcfa17e79b3416818a8c59f43",
+    "tests/v4/organize_supplement_v2/legacy_bridge_calendar_support_mod.py": "92686c3d294ccf3d788df3136e058454539817fa3479c0a49ff25e09c2af2e24",
+    "tests/v4/organize_supplement_v2/test_acceptance_supplement_mod.py": "9c0fcb1e2a9f0040fa4763415ccda44b03a7d65afa2f48b8d980c3d171150dad",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py": "cd3cdc7bb2bb1f726fe79e9e94c0d1d50477595299c2ce4dfa06f852e61a5c05",
+    "tests/v4/organize_supplement_v2/test_legacy_scalar_acceptance_mod.py": "dda0e8ee5aa798bb0e6e56860b3312d6deda242601f8e6bc5b88723de957246b",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_frozen_matrix_20261021.json": "883b171aa7589aa1ee807d439c1779714ee91f588c9a2b0755b269b07b3491b2",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_frozen_matrix_20261021.json": "7b164849815b572f2dcbc583b2718c523965df5546b4dc227f3811b4d6a7cff9",
+    "tools/eval/fixtures/mod_20261021/legacy_bridge_calendar_synthetic.json": "480e5e00c70a809fa59b3e3b3ffdaddc7ded1940156236de6140cc1a49a899d0",
+    "tools/eval/fixtures/mod_20261021/legacy_scalar_independent_synthetic.json": "a77296ab9d19a25a79758027ced13928589b1c308ab25ebe53056def1ac15d9b",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_independent_first_20261021.json": "6bb2395267b4462f8657fae8a49f0d59490ca18cf0baa6a09af75674f3661adc",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_independent_first_20261021.json": "cbd7aa1fc7f560a143dae5a44d70fff829b34124a2a3d5c7e606c102504fdc50"
+  },
+  "drift": [],
+  "source_changes_since_frozen15": {
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": {
+      "frozen_sha256": "e6b5a98bf95241d29470d2236b899a05bfd86615b130c13445a5529e85451c9b",
+      "current_sha256": "78ec7567a947388968d3d85d8565495aa904bdd8696ca63969ab30a74c3fc793"
+    }
+  },
+  "original_assertions_and_matrices_unchanged": true,
+  "environment": {
+    "factory": "tools.mod_week.completed_regression.environment",
+    "cleared_credential_classes": 12,
+    "tracing": false,
+    "runner_bytes_not_bound_to_domain_snapshot": true,
+    "reason": "Root may separately append fixed runner materials; only domain sources, suite code and runtime inputs are bound"
+  },
+  "effects": {
+    "model_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0,
+    "git_operations": 0
+  },
+  "limits": [
+    "Only the original fifteen target tests in this run; later compatibility and coverage have separate evidence",
+    "No product or test assertion was changed by this agent"
+  ]
+}

@@ -1,0 +1,1633 @@
+{
+  "schema": "u4.independent_acceptance.v1",
+  "frozen_before_parse_implementation_review": true,
+  "synthetic_only": true,
+  "oracle": "Gregorian explicit dates and ISO-week arithmetic from Python standard library; lunar/holiday assertions separately call pinned P2/library rather than parser",
+  "reference_times": [
+    "2026-10-17T11:35:00+08:00",
+    "2026-02-12T11:35:00+08:00",
+    "2026-10-10T11:35:00+08:00",
+    "2025-07-25T11:35:00+08:00",
+    "2026-12-31T11:35:00+08:00",
+    "2024-02-28T11:35:00+08:00"
+  ],
+  "point_cases": [
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "今天",
+      "date": "2026-10-17",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "明天",
+      "date": "2026-10-18",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "后天",
+      "date": "2026-10-19",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "大后天",
+      "date": "2026-10-20",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "昨天",
+      "date": "2026-10-16",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "前天",
+      "date": "2026-10-15",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "大前天",
+      "date": "2026-10-14",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "这周一",
+      "date": "2026-10-12",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "这周二",
+      "date": "2026-10-13",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "这周三",
+      "date": "2026-10-14",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "这周四",
+      "date": "2026-10-15",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "这周五",
+      "date": "2026-10-16",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "这周六",
+      "date": "2026-10-17",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "这周日",
+      "date": "2026-10-18",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "本周一",
+      "date": "2026-10-12",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "本周二",
+      "date": "2026-10-13",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "本周三",
+      "date": "2026-10-14",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "本周四",
+      "date": "2026-10-15",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "本周五",
+      "date": "2026-10-16",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "本周六",
+      "date": "2026-10-17",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "本周日",
+      "date": "2026-10-18",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下周一",
+      "date": "2026-10-19",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下周二",
+      "date": "2026-10-20",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下周三",
+      "date": "2026-10-21",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下周四",
+      "date": "2026-10-22",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下周五",
+      "date": "2026-10-23",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下周六",
+      "date": "2026-10-24",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下周日",
+      "date": "2026-10-25",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下下周一",
+      "date": "2026-10-26",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下下周二",
+      "date": "2026-10-27",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下下周三",
+      "date": "2026-10-28",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下下周四",
+      "date": "2026-10-29",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下下周五",
+      "date": "2026-10-30",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下下周六",
+      "date": "2026-10-31",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下下周日",
+      "date": "2026-11-01",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "三天后",
+      "date": "2026-10-20",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "两周后",
+      "date": "2026-10-31",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "十天后",
+      "date": "2026-10-27",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "七天前",
+      "date": "2026-10-10",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "一天后",
+      "date": "2026-10-18",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "今天",
+      "date": "2026-02-12",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "明天",
+      "date": "2026-02-13",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "后天",
+      "date": "2026-02-14",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "大后天",
+      "date": "2026-02-15",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "昨天",
+      "date": "2026-02-11",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "前天",
+      "date": "2026-02-10",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "大前天",
+      "date": "2026-02-09",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "这周一",
+      "date": "2026-02-09",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "这周二",
+      "date": "2026-02-10",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "这周三",
+      "date": "2026-02-11",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "这周四",
+      "date": "2026-02-12",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "这周五",
+      "date": "2026-02-13",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "这周六",
+      "date": "2026-02-14",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "这周日",
+      "date": "2026-02-15",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "本周一",
+      "date": "2026-02-09",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "本周二",
+      "date": "2026-02-10",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "本周三",
+      "date": "2026-02-11",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "本周四",
+      "date": "2026-02-12",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "本周五",
+      "date": "2026-02-13",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "本周六",
+      "date": "2026-02-14",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "本周日",
+      "date": "2026-02-15",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下周一",
+      "date": "2026-02-16",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下周二",
+      "date": "2026-02-17",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下周三",
+      "date": "2026-02-18",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下周四",
+      "date": "2026-02-19",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下周五",
+      "date": "2026-02-20",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下周六",
+      "date": "2026-02-21",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下周日",
+      "date": "2026-02-22",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下下周一",
+      "date": "2026-02-23",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下下周二",
+      "date": "2026-02-24",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下下周三",
+      "date": "2026-02-25",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下下周四",
+      "date": "2026-02-26",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下下周五",
+      "date": "2026-02-27",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下下周六",
+      "date": "2026-02-28",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下下周日",
+      "date": "2026-03-01",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "三天后",
+      "date": "2026-02-15",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "两周后",
+      "date": "2026-02-26",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "十天后",
+      "date": "2026-02-22",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "七天前",
+      "date": "2026-02-05",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "一天后",
+      "date": "2026-02-13",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "今天",
+      "date": "2026-10-10",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "明天",
+      "date": "2026-10-11",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "后天",
+      "date": "2026-10-12",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "大后天",
+      "date": "2026-10-13",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "昨天",
+      "date": "2026-10-09",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "前天",
+      "date": "2026-10-08",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "大前天",
+      "date": "2026-10-07",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "这周一",
+      "date": "2026-10-05",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "这周二",
+      "date": "2026-10-06",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "这周三",
+      "date": "2026-10-07",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "这周四",
+      "date": "2026-10-08",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "这周五",
+      "date": "2026-10-09",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "这周六",
+      "date": "2026-10-10",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "这周日",
+      "date": "2026-10-11",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "本周一",
+      "date": "2026-10-05",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "本周二",
+      "date": "2026-10-06",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "本周三",
+      "date": "2026-10-07",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "本周四",
+      "date": "2026-10-08",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "本周五",
+      "date": "2026-10-09",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "本周六",
+      "date": "2026-10-10",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "本周日",
+      "date": "2026-10-11",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下周一",
+      "date": "2026-10-12",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下周二",
+      "date": "2026-10-13",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下周三",
+      "date": "2026-10-14",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下周四",
+      "date": "2026-10-15",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下周五",
+      "date": "2026-10-16",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下周六",
+      "date": "2026-10-17",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下周日",
+      "date": "2026-10-18",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下下周一",
+      "date": "2026-10-19",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下下周二",
+      "date": "2026-10-20",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下下周三",
+      "date": "2026-10-21",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下下周四",
+      "date": "2026-10-22",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下下周五",
+      "date": "2026-10-23",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下下周六",
+      "date": "2026-10-24",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下下周日",
+      "date": "2026-10-25",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "三天后",
+      "date": "2026-10-13",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "两周后",
+      "date": "2026-10-24",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "十天后",
+      "date": "2026-10-20",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "七天前",
+      "date": "2026-10-03",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "一天后",
+      "date": "2026-10-11",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "今天",
+      "date": "2025-07-25",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "明天",
+      "date": "2025-07-26",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "后天",
+      "date": "2025-07-27",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "大后天",
+      "date": "2025-07-28",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "昨天",
+      "date": "2025-07-24",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "前天",
+      "date": "2025-07-23",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "大前天",
+      "date": "2025-07-22",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "这周一",
+      "date": "2025-07-21",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "这周二",
+      "date": "2025-07-22",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "这周三",
+      "date": "2025-07-23",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "这周四",
+      "date": "2025-07-24",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "这周五",
+      "date": "2025-07-25",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "这周六",
+      "date": "2025-07-26",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "这周日",
+      "date": "2025-07-27",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "本周一",
+      "date": "2025-07-21",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "本周二",
+      "date": "2025-07-22",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "本周三",
+      "date": "2025-07-23",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "本周四",
+      "date": "2025-07-24",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "本周五",
+      "date": "2025-07-25",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "本周六",
+      "date": "2025-07-26",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "本周日",
+      "date": "2025-07-27",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下周一",
+      "date": "2025-07-28",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下周二",
+      "date": "2025-07-29",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下周三",
+      "date": "2025-07-30",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下周四",
+      "date": "2025-07-31",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下周五",
+      "date": "2025-08-01",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下周六",
+      "date": "2025-08-02",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下周日",
+      "date": "2025-08-03",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下下周一",
+      "date": "2025-08-04",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下下周二",
+      "date": "2025-08-05",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下下周三",
+      "date": "2025-08-06",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下下周四",
+      "date": "2025-08-07",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下下周五",
+      "date": "2025-08-08",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下下周六",
+      "date": "2025-08-09",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下下周日",
+      "date": "2025-08-10",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "三天后",
+      "date": "2025-07-28",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "两周后",
+      "date": "2025-08-08",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "十天后",
+      "date": "2025-08-04",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "七天前",
+      "date": "2025-07-18",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "一天后",
+      "date": "2025-07-26",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "今天",
+      "date": "2026-12-31",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "明天",
+      "date": "2027-01-01",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "后天",
+      "date": "2027-01-02",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "大后天",
+      "date": "2027-01-03",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "昨天",
+      "date": "2026-12-30",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "前天",
+      "date": "2026-12-29",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "大前天",
+      "date": "2026-12-28",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "这周一",
+      "date": "2026-12-28",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "这周二",
+      "date": "2026-12-29",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "这周三",
+      "date": "2026-12-30",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "这周四",
+      "date": "2026-12-31",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "这周五",
+      "date": "2027-01-01",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "这周六",
+      "date": "2027-01-02",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "这周日",
+      "date": "2027-01-03",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "本周一",
+      "date": "2026-12-28",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "本周二",
+      "date": "2026-12-29",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "本周三",
+      "date": "2026-12-30",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "本周四",
+      "date": "2026-12-31",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "本周五",
+      "date": "2027-01-01",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "本周六",
+      "date": "2027-01-02",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "本周日",
+      "date": "2027-01-03",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下周一",
+      "date": "2027-01-04",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下周二",
+      "date": "2027-01-05",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下周三",
+      "date": "2027-01-06",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下周四",
+      "date": "2027-01-07",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下周五",
+      "date": "2027-01-08",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下周六",
+      "date": "2027-01-09",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下周日",
+      "date": "2027-01-10",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下下周一",
+      "date": "2027-01-11",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下下周二",
+      "date": "2027-01-12",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下下周三",
+      "date": "2027-01-13",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下下周四",
+      "date": "2027-01-14",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下下周五",
+      "date": "2027-01-15",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下下周六",
+      "date": "2027-01-16",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下下周日",
+      "date": "2027-01-17",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "三天后",
+      "date": "2027-01-03",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "两周后",
+      "date": "2027-01-14",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "十天后",
+      "date": "2027-01-10",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "七天前",
+      "date": "2026-12-24",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "一天后",
+      "date": "2027-01-01",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "今天",
+      "date": "2024-02-28",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "明天",
+      "date": "2024-02-29",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "后天",
+      "date": "2024-03-01",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "大后天",
+      "date": "2024-03-02",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "昨天",
+      "date": "2024-02-27",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "前天",
+      "date": "2024-02-26",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "大前天",
+      "date": "2024-02-25",
+      "group": "relative_day"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "这周一",
+      "date": "2024-02-26",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "这周二",
+      "date": "2024-02-27",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "这周三",
+      "date": "2024-02-28",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "这周四",
+      "date": "2024-02-29",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "这周五",
+      "date": "2024-03-01",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "这周六",
+      "date": "2024-03-02",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "这周日",
+      "date": "2024-03-03",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "本周一",
+      "date": "2024-02-26",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "本周二",
+      "date": "2024-02-27",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "本周三",
+      "date": "2024-02-28",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "本周四",
+      "date": "2024-02-29",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "本周五",
+      "date": "2024-03-01",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "本周六",
+      "date": "2024-03-02",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "本周日",
+      "date": "2024-03-03",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下周一",
+      "date": "2024-03-04",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下周二",
+      "date": "2024-03-05",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下周三",
+      "date": "2024-03-06",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下周四",
+      "date": "2024-03-07",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下周五",
+      "date": "2024-03-08",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下周六",
+      "date": "2024-03-09",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下周日",
+      "date": "2024-03-10",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下下周一",
+      "date": "2024-03-11",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下下周二",
+      "date": "2024-03-12",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下下周三",
+      "date": "2024-03-13",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下下周四",
+      "date": "2024-03-14",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下下周五",
+      "date": "2024-03-15",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下下周六",
+      "date": "2024-03-16",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下下周日",
+      "date": "2024-03-17",
+      "group": "qualified_weekday"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "三天后",
+      "date": "2024-03-02",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "两周后",
+      "date": "2024-03-13",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "十天后",
+      "date": "2024-03-09",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "七天前",
+      "date": "2024-02-21",
+      "group": "relative_duration"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "一天后",
+      "date": "2024-02-29",
+      "group": "relative_duration"
+    }
+  ],
+  "period_cases": [
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "上旬",
+      "start": "2026-10-01",
+      "end": "2026-10-11",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "中旬",
+      "start": "2026-10-11",
+      "end": "2026-10-21",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-10-17T11:35:00+08:00",
+      "text": "下旬",
+      "start": "2026-10-21",
+      "end": "2026-11-01",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "上旬",
+      "start": "2026-02-01",
+      "end": "2026-02-11",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "中旬",
+      "start": "2026-02-11",
+      "end": "2026-02-21",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-02-12T11:35:00+08:00",
+      "text": "下旬",
+      "start": "2026-02-21",
+      "end": "2026-03-01",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "上旬",
+      "start": "2026-10-01",
+      "end": "2026-10-11",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "中旬",
+      "start": "2026-10-11",
+      "end": "2026-10-21",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-10-10T11:35:00+08:00",
+      "text": "下旬",
+      "start": "2026-10-21",
+      "end": "2026-11-01",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "上旬",
+      "start": "2025-07-01",
+      "end": "2025-07-11",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "中旬",
+      "start": "2025-07-11",
+      "end": "2025-07-21",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2025-07-25T11:35:00+08:00",
+      "text": "下旬",
+      "start": "2025-07-21",
+      "end": "2025-08-01",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "上旬",
+      "start": "2026-12-01",
+      "end": "2026-12-11",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "中旬",
+      "start": "2026-12-11",
+      "end": "2026-12-21",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2026-12-31T11:35:00+08:00",
+      "text": "下旬",
+      "start": "2026-12-21",
+      "end": "2027-01-01",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "上旬",
+      "start": "2024-02-01",
+      "end": "2024-02-11",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "中旬",
+      "start": "2024-02-11",
+      "end": "2024-02-21",
+      "group": "ten_day_period"
+    },
+    {
+      "ref": "2024-02-28T11:35:00+08:00",
+      "text": "下旬",
+      "start": "2024-02-21",
+      "end": "2024-03-01",
+      "group": "ten_day_period"
+    }
+  ],
+  "negative_texts": [
+    "你好呀",
+    "我先把事情说清楚",
+    "这句话是什么意思",
+    "我喜欢周杰伦的歌",
+    "三体里的设定挺有意思",
+    "五花肉该怎么切",
+    "第三章的论证没看懂",
+    "四舍五入是什么规则",
+    "这个选项我不喜欢",
+    "甲乙两人意见不同",
+    "能不能换一种说法",
+    "帮我把段落改短一些",
+    "这个东西放哪合适",
+    "我想先听听你的看法",
+    "别替我编造一个结论",
+    "我需要的是例子不是标签",
+    "刚才的问题不涉及时间",
+    "谢谢你听我说这些",
+    "这句话是引用不是承诺",
+    "只要解释这个术语即可",
+    "苹果和梨我都喜欢",
+    "先不谈安排",
+    "我有三本不同的教材",
+    "数字九在这里是编号"
+  ],
+  "invalid_texts": [
+    "2026-13-01",
+    "2026-02-30",
+    "2026-00-10",
+    "2026-01-00",
+    "2026年13月1日",
+    "2026年2月30日",
+    "2025年2月29日",
+    "2026年4月31日",
+    "25:00",
+    "12:75",
+    "下午三十二点",
+    "晚上二十五点",
+    "明天25:00",
+    "本周八",
+    "下周九",
+    "2026年零月初",
+    "农历十三月初一",
+    "农历六月三十一",
+    "2025年闰正月初一",
+    "2026年闰六月初一"
+  ],
+  "oracle_correction": "下午十三点 is an unambiguous redundant 24h expression (13:00), so not an invalid value; replaced with 下午三十二点. All frozen explicit date labels unchanged."
+}

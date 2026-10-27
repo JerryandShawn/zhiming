@@ -1,0 +1,509 @@
+{
+  "schema": "mod-briefing-independent-acceptance-v1",
+  "provenance": "Independent synthetic semantic matrix frozen before reading new briefing product implementation",
+  "transit_fixture": {
+    "source": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p8\\docs\\v4\\contracts\\samples\\daily_transit\\ayuan_2026-10-21.json",
+    "sha256": "0b0984e1a6cf9c48f060071e861da1438d9ee2122a7635095d7f71933a589205",
+    "declared_synthetic": "P8 contracts/samples/daily_transit/README.md"
+  },
+  "boundaries": {
+    "default_schedule": "06:45 prepare and 07:00 Asia/Shanghai deliver; subscription time may override",
+    "snapshot": "2026-10-21T12:00:00+08:00 is an instant, not the 07:00 sky",
+    "authorization": "Matching content hashes cannot establish source authorization or a durable ledger",
+    "privacy": "All body markers synthetic; no Q5/B content, model, chart computation or production data"
+  },
+  "cases": [
+    {
+      "id": "BRIEF001",
+      "category": "time",
+      "case": "06:45_preparation_not_delivery",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF002",
+      "category": "time",
+      "case": "07:00_subscribed_quiet_exemption",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF003",
+      "category": "time",
+      "case": "custom_06:00_subscribed",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF004",
+      "category": "time",
+      "case": "no_transit_keeps_calendar",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF005",
+      "category": "time",
+      "case": "owner_local_midnight_not_host_Tokyo",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF006",
+      "category": "time",
+      "case": "same_instant_other_offset",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF007",
+      "category": "time",
+      "case": "new_york_date_differs_from_transit",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF008",
+      "category": "time",
+      "case": "invalid_naive_clock",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF009",
+      "category": "time",
+      "case": "future_unpublished_holiday_labeled",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF010",
+      "category": "time",
+      "case": "noon_snapshot_not_07_current_sky",
+      "expected": "Explicit aware calendar scope; no host timezone; noon snapshot identified or safely omitted"
+    },
+    {
+      "id": "BRIEF011",
+      "category": "subscription",
+      "case": "unsubscribed",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF012",
+      "category": "subscription",
+      "case": "global_proactive_off",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF013",
+      "category": "subscription",
+      "case": "subscription_source_inactive",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF014",
+      "category": "subscription",
+      "case": "subscription_source_revoked",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF015",
+      "category": "subscription",
+      "case": "brief_category_muted",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF016",
+      "category": "subscription",
+      "case": "receptivity_category_muted",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF017",
+      "category": "subscription",
+      "case": "wrong_subscription_owner",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF018",
+      "category": "subscription",
+      "case": "wrong_subscription_subject",
+      "expected": "No private briefing content and no push; foreign identity rejects without leaking data"
+    },
+    {
+      "id": "BRIEF019",
+      "category": "source",
+      "case": "item_source_inactive",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF020",
+      "category": "source",
+      "case": "item_source_revoked",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF021",
+      "category": "source",
+      "case": "item_inactive",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF022",
+      "category": "source",
+      "case": "item_wrong_owner",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF023",
+      "category": "source",
+      "case": "item_wrong_subject",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF024",
+      "category": "source",
+      "case": "item_basis_wrong_owner",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF025",
+      "category": "source",
+      "case": "item_basis_wrong_subject",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF026",
+      "category": "source",
+      "case": "item_basis_stale_revision",
+      "expected": "No reminder body or private source material may enter any public section"
+    },
+    {
+      "id": "BRIEF027",
+      "category": "reminder",
+      "case": "reminder_exact_due",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF028",
+      "category": "reminder",
+      "case": "late_60_minutes",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF029",
+      "category": "reminder",
+      "case": "late_60_minutes_plus_microsecond_quiet",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF030",
+      "category": "reminder",
+      "case": "late_61_minutes_quiet",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF031",
+      "category": "reminder",
+      "case": "late_exact_12_hours",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF032",
+      "category": "reminder",
+      "case": "late_12_hours_plus_microsecond",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF033",
+      "category": "reminder",
+      "case": "old_body_not_in_agenda_either",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF034",
+      "category": "reminder",
+      "case": "future_today_is_arrangement_not_sent",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF035",
+      "category": "reminder",
+      "case": "future_tomorrow_excluded_today",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF036",
+      "category": "reminder",
+      "case": "retry_preserves_original_due",
+      "expected": "Preserve K2 and source/quiet gates across every section; never turn a content line into a send receipt"
+    },
+    {
+      "id": "BRIEF037",
+      "category": "basis",
+      "case": "transit_wrong_owner",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF038",
+      "category": "basis",
+      "case": "transit_wrong_subject",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF039",
+      "category": "basis",
+      "case": "transit_wrong_profile_revision",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF040",
+      "category": "basis",
+      "case": "transit_wrong_date",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF041",
+      "category": "basis",
+      "case": "transit_snapshot_not_noon",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF042",
+      "category": "basis",
+      "case": "transit_snapshot_utc_mismatch",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF043",
+      "category": "basis",
+      "case": "transit_unknown_version",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF044",
+      "category": "basis",
+      "case": "transit_wrong_document_id",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF045",
+      "category": "basis",
+      "case": "alias_wrong_path",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF046",
+      "category": "basis",
+      "case": "alias_noncanonical_array_index",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF047",
+      "category": "basis",
+      "case": "alias_invalid_pointer_escape",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF048",
+      "category": "basis",
+      "case": "alias_wrong_value_hash",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF049",
+      "category": "basis",
+      "case": "alias_wrong_claim_id",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF050",
+      "category": "basis",
+      "case": "alias_undefined_c_reference",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF051",
+      "category": "basis",
+      "case": "alias_duplicate_conflicting_c",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF052",
+      "category": "basis",
+      "case": "alias_duplicate_conflicting_r",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF053",
+      "category": "basis",
+      "case": "alias_cross_date_same_short_name",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF054",
+      "category": "basis",
+      "case": "alias_cross_owner_same_short_name",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF055",
+      "category": "basis",
+      "case": "rule_alias_wrong_rule_id",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF056",
+      "category": "basis",
+      "case": "rule_alias_wrong_hit_path",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF057",
+      "category": "basis",
+      "case": "rule_alias_wrong_evidence_c",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF058",
+      "category": "basis",
+      "case": "input_recomputed_hash_is_not_trust_authority",
+      "expected": "Reject or omit transit safely; never reuse unverified doc+scope+date+alias+path+claim+hash binding"
+    },
+    {
+      "id": "BRIEF059",
+      "category": "truth",
+      "case": "incomplete_relation_not_complete",
+      "expected": "Only observed supported conditions, retaining limits and method; no invented fulfilled outcome"
+    },
+    {
+      "id": "BRIEF060",
+      "category": "truth",
+      "case": "transformation_not_established",
+      "expected": "Only observed supported conditions, retaining limits and method; no invented fulfilled outcome"
+    },
+    {
+      "id": "BRIEF061",
+      "category": "truth",
+      "case": "false_rule_not_claimed",
+      "expected": "Only observed supported conditions, retaining limits and method; no invented fulfilled outcome"
+    },
+    {
+      "id": "BRIEF062",
+      "category": "truth",
+      "case": "unresolved_ziwei_not_fabricated",
+      "expected": "Only observed supported conditions, retaining limits and method; no invented fulfilled outcome"
+    },
+    {
+      "id": "BRIEF063",
+      "category": "truth",
+      "case": "astro_orb_limit_respected",
+      "expected": "Only observed supported conditions, retaining limits and method; no invented fulfilled outcome"
+    },
+    {
+      "id": "BRIEF064",
+      "category": "truth",
+      "case": "symbolic_not_real_event_prediction",
+      "expected": "Only observed supported conditions, retaining limits and method; no invented fulfilled outcome"
+    },
+    {
+      "id": "BRIEF065",
+      "category": "privacy",
+      "case": "health_preview_generic",
+      "expected": "No sensitive text or raw source/birth data in previews, errors or metadata"
+    },
+    {
+      "id": "BRIEF066",
+      "category": "privacy",
+      "case": "finance_preview_generic",
+      "expected": "No sensitive text or raw source/birth data in previews, errors or metadata"
+    },
+    {
+      "id": "BRIEF067",
+      "category": "privacy",
+      "case": "third_party_preview_generic",
+      "expected": "No sensitive text or raw source/birth data in previews, errors or metadata"
+    },
+    {
+      "id": "BRIEF068",
+      "category": "privacy",
+      "case": "no_birth_raw_text",
+      "expected": "No sensitive text or raw source/birth data in previews, errors or metadata"
+    },
+    {
+      "id": "BRIEF069",
+      "category": "privacy",
+      "case": "exception_no_private_canary",
+      "expected": "No sensitive text or raw source/birth data in previews, errors or metadata"
+    },
+    {
+      "id": "BRIEF070",
+      "category": "privacy",
+      "case": "no_original_chat_dump",
+      "expected": "No sensitive text or raw source/birth data in previews, errors or metadata"
+    },
+    {
+      "id": "BRIEF071",
+      "category": "purity",
+      "case": "same_input_deterministic",
+      "expected": "Pure deterministic content planning only; stable IDs, no fake persistence, notification or alias ledger effects"
+    },
+    {
+      "id": "BRIEF072",
+      "category": "purity",
+      "case": "input_deeply_unchanged",
+      "expected": "Pure deterministic content planning only; stable IDs, no fake persistence, notification or alias ledger effects"
+    },
+    {
+      "id": "BRIEF073",
+      "category": "purity",
+      "case": "effects_all_zero",
+      "expected": "Pure deterministic content planning only; stable IDs, no fake persistence, notification or alias ledger effects"
+    },
+    {
+      "id": "BRIEF074",
+      "category": "purity",
+      "case": "no_registered_global_alias_claim",
+      "expected": "Pure deterministic content planning only; stable IDs, no fake persistence, notification or alias ledger effects"
+    },
+    {
+      "id": "BRIEF075",
+      "category": "purity",
+      "case": "no_sent_or_saved_claim_without_receipt",
+      "expected": "Pure deterministic content planning only; stable IDs, no fake persistence, notification or alias ledger effects"
+    },
+    {
+      "id": "BRIEF076",
+      "category": "purity",
+      "case": "stable_occurrence_and_schedule_revision",
+      "expected": "Pure deterministic content planning only; stable IDs, no fake persistence, notification or alias ledger effects"
+    },
+    {
+      "id": "BRIEF077",
+      "category": "areas",
+      "case": "seven_explicit_areas",
+      "expected": "Respect scoped area projections and provenance; grouping does not grant permission or mutate routing"
+    },
+    {
+      "id": "BRIEF078",
+      "category": "areas",
+      "case": "unknown_area_not_invented",
+      "expected": "Respect scoped area projections and provenance; grouping does not grant permission or mutate routing"
+    },
+    {
+      "id": "BRIEF079",
+      "category": "areas",
+      "case": "stable_area_order",
+      "expected": "Respect scoped area projections and provenance; grouping does not grant permission or mutate routing"
+    },
+    {
+      "id": "BRIEF080",
+      "category": "areas",
+      "case": "sensitive_area_lock_preview",
+      "expected": "Respect scoped area projections and provenance; grouping does not grant permission or mutate routing"
+    },
+    {
+      "id": "BRIEF081",
+      "category": "areas",
+      "case": "cross_area_same_topic_name_isolated",
+      "expected": "Respect scoped area projections and provenance; grouping does not grant permission or mutate routing"
+    },
+    {
+      "id": "BRIEF082",
+      "category": "areas",
+      "case": "withdrawn_cross_area_summary_excluded",
+      "expected": "Respect scoped area projections and provenance; grouping does not grant permission or mutate routing"
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "schema_version": "mod-legacy-bridge-independent-v1",
+  "frozen_at": "2026-10-21T10:41:20.490208+08:00",
+  "clock_zone": "Asia/Shanghai",
+  "artifact_state": "expectations_only_not_executed",
+  "authorized_now": "仅新增本 JSON 与独立 ExecPlan；不新增 Python，不运行测试或探针，不改任何既有文件，不 Git",
+  "case_count": 15,
+  "cases_canonical_sha256": "d2a66eac57234f68afc8c602394a8b359628addb8f4d7a938271840acdefa711",
+  "canonicalization": "UTF-8 json.dumps(cases, ensure_ascii=False, sort_keys=True, separators=(comma, colon))",
+  "public_entrypoint": "mingjing_core.organize.supplement_v2.to_legacy_changeset(snapshot, plan, document, *, scope, approval)",
+  "public_setup": [
+    "SupplementSnapshot",
+    "EntityRecord",
+    "MemorySource",
+    "SourceAnchor",
+    "Prediction",
+    "build_review_proposal",
+    "ReviewApproval",
+    "plan_review_labels",
+    "plan_topic_archive",
+    "plan_archive_review"
+  ],
+  "common_preconditions": [
+    "所有主体、当前来源、原话锚点、修订和获批内容先通过公开构造与审阅 API；只在表列边界改变输入",
+    "不导入产品私有 helper、不重 seal 伪造状态、不调用分类器、不读盲评 B 或私人校准正文",
+    "来源 owner/subject、role、revocation、incognito、活性及敏感授权门禁不得被夹具绕过",
+    "LB10-LB13 的通用实体/来源映射须先合法成立；旧 message 专用桥的拒绝不外推为通用映射无效",
+    "LB15 缺省 revision=1 为必须保留的正例；不得新增连续版本或完整历史 prefix 要求",
+    "固定显式合成源时刻与 Asia/Shanghai；若需 Clock 则使用 FrozenClock，不依赖主机 Tokyo 时区",
+    "合成正文未来仅放 private 或 tools/eval/fixtures 显式 synthetic；本矩阵不含消息正文"
+  ],
+  "cases": [
+    {
+      "id": "LB01",
+      "title": "旧文档 owner 不符",
+      "single_change": "仅 document.owner_id 与获批 scope 不同",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_document_scope_mismatch",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "P5b E 的逐批审阅不跨 owner；接线指南要求 authenticated owner/subject"
+    },
+    {
+      "id": "LB02",
+      "title": "旧文档 subject 不符",
+      "single_change": "仅 document.subject_id 与获批 scope 不同",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_document_scope_mismatch",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "获批主体不能授权另一个主体的旧消息"
+    },
+    {
+      "id": "LB03",
+      "title": "目标旧消息已不存在",
+      "single_change": "document.messages 为合法空字典，其他目录合法",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_message_missing",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "不能为不存在的消息构造标签写入"
+    },
+    {
+      "id": "LB04",
+      "title": "同 ID 与修订的正文被修改",
+      "single_change": "仅目标旧消息 content 与当前原始来源不同",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_message_evidence_changed",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "指南要求全文与原始来源一致，不以相同 ID/revision 代替原话"
+    },
+    {
+      "id": "LB05",
+      "title": "旧消息角色与用户来源不同",
+      "single_change": "当前来源仍为 user，仅旧消息 role 改为 assistant",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_message_evidence_changed",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "助手正文不能冒充已获批的用户原话"
+    },
+    {
+      "id": "LB06",
+      "title": "旧消息时间改变",
+      "single_change": "仅目标旧消息 at_ms 增加 1 毫秒",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_message_evidence_changed",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "指南要求原消息时间一致"
+    },
+    {
+      "id": "LB07",
+      "title": "旧消息修订已推进",
+      "single_change": "实体和来源均为 revision 1，仅旧消息 revision 改为整数 2",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_message_evidence_changed",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "审阅不能覆盖后续版本"
+    },
+    {
+      "id": "LB08",
+      "title": "布尔值冒充整数修订",
+      "single_change": "实体和来源均为 revision 1，仅旧消息 revision 改为布尔 True",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_types_exact": [
+          "SupplementConflict",
+          "ChangeConflict",
+          "ValueError"
+        ],
+        "reason_policy": "固定安全原因；不预设新的错误码；不得含合成正文",
+        "forbidden_error_types": [
+          "AttributeError",
+          "TypeError",
+          "KeyError"
+        ],
+        "initial_observation_policy": "先保存未经修改的首轮实际返回或异常，再报 root；不为当前输出降真值"
+      },
+      "independent_basis": "公开 Message 契约要求 type(revision) is int；布尔 True 不等于合法修订"
+    },
+    {
+      "id": "LB09",
+      "title": "旧标签缺失被改成 null",
+      "single_change": "获批实体 labels 无 topic_id；仅旧消息增加 topic_id: null",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_message_labels_changed",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "P5b 逐字段撤销与指南要求保留缺失和 null 的差别"
+    },
+    {
+      "id": "LB10",
+      "title": "同文但来源 ID 不等于消息 ID",
+      "single_change": "通过公开 API 建立合法实体与当前来源；来源 ID 与实体消息 ID 不同，正文完全一致",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "message_source_identity_mismatch",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "旧桥只适配 ID 对应的完整消息；其他合法来源映射仍可供其他实体适配器使用"
+    },
+    {
+      "id": "LB11",
+      "title": "只有合法部分原话锚点",
+      "single_change": "当前消息实体仅绑定同源有效子串，非完整原话；先通过公开审阅 API 建立合法计划",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "complete_message_source_required",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "旧桥指南仅允许完整用户消息；不否定部分锚点本身的合法性"
+    },
+    {
+      "id": "LB12",
+      "title": "有两个合法原话锚点",
+      "single_change": "当前实体绑定两个有效锚点并取得合法审阅计划，不伪造内部状态",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "mainline_entity_adapter_required",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "多锚点实体须使用主线实体适配器，不能压成单条旧消息"
+    },
+    {
+      "id": "LB13",
+      "title": "当前源修订与消息实体修订不同",
+      "single_change": "source 与有效 anchor 均为 revision 2；实体及旧消息为 revision 1；公开审阅计划先合法成立",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "legacy_message_revision_changed",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "指南要求消息与来源修订一致，单独的 anchor 当前性不能代替消息版本对应"
+    },
+    {
+      "id": "LB14",
+      "title": "将获批话题归档计划送入消息桥",
+      "single_change": "通过公开话题归档和审阅 API 取得合法 topic-only 计划；旧文档结构合法",
+      "expected": {
+        "disposition": "reject",
+        "returns_changeset": false,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "error_type": "SupplementConflict",
+        "reason": "mainline_topic_adapter_required",
+        "no_source_text_in_error": true
+      },
+      "independent_basis": "旧消息桥不能替代新的话题生命周期适配器"
+    },
+    {
+      "id": "LB15",
+      "title": "旧消息省略默认修订 1",
+      "single_change": "仅省略目标旧消息 revision；实体与来源为 revision 1，其他证据及标签全部一致",
+      "expected": {
+        "disposition": "allow",
+        "returns_changeset": true,
+        "inputs_unchanged": true,
+        "external_effects": 0,
+        "operations_collection": "messages",
+        "allowed_changed_fields": [
+          "space_id",
+          "topic_id",
+          "space_secondary",
+          "route_source",
+          "route_confidence"
+        ],
+        "body_role_time_anchor_source_preserved": true,
+        "revision_key_remains_absent": true
+      },
+      "independent_basis": "保留旧 Message 的 revision=1 默认兼容；不能凭感觉拒绝合法缺省映射"
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "e6b5a98bf95241d29470d2236b899a05bfd86615b130c13445a5529e85451c9b",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "mingjing_core/organize/contracts.py": "82058a063be2d2554bf666b736bce645da96a06f74802f0dc7ea458eb30de812",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528"
+  },
+  "existing_tests_sha256": {
+    "tests/v4/organize_supplement/test_supplement_mod.py": "b113513320af70b9535b31bf22547390470c272fcfa17e79b3416818a8c59f43",
+    "tests/v4/organize_supplement_v2/test_acceptance_supplement_mod.py": "9c0fcb1e2a9f0040fa4763415ccda44b03a7d65afa2f48b8d980c3d171150dad"
+  },
+  "design_sha256": {
+    "AGENTS.md": "f2c302e4d11fd6694eed923dfd4377cbadc326b1d6c28e16ca3510cebbd30419",
+    ".agent/PLANS.md": "ecf6a39a0feb01683d5221729de31a8c8cdd6ad748799d8c3a764514b3f4b4e1",
+    "docs/v4/07_评测场景集.md": "a637aadca05c412f5b27352769a7ddadc0b75359698b5002a86af30a018e28a6",
+    "docs/v4/prompts/supplements/P5b_功能区与旧对话整理.md": "f60b168b64d0b2029db2bccfbbc072aeafb199c6cda135f7f312b40cf22c6e44",
+    "docs/v4/integration/mod/DAY_supplement_20261021.md": "59a7f74b53933cdb54ea1931c5b5030c935341d149da099d0b2f17202c3e3415",
+    "C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/33_全量开发队列_本周.md": "235b41e021367d9d82aca571114d41459c8d87f399152b1179c4b58bdb668315"
+  },
+  "existing_direct_test": {
+    "path": "tests/v4/organize_supplement/test_supplement_mod.py",
+    "name": "test_legacy_message_bridge_produces_only_old_compatible_label_changes_and_full_inverse",
+    "observed_scope": "源码只读：成功转换、MemoryChangeStore 应用与撤销、非 message 拒绝；本轮未运行"
+  },
+  "coverage_reference": {
+    "path": "docs/v4/evidence/MOD_2026-10-21/MORNING_completed_coverage_0945.json",
+    "use": "只定位未直接验的桥接门禁；不以提升覆盖数字决定真值，不声称新增测试已计入旧快照"
+  },
+  "execution": {
+    "performed": false,
+    "pytest_processes": 0,
+    "product_imports_or_probes": 0,
+    "model_calls": 0,
+    "network_calls": 0,
+    "git_operations": 0
+  },
+  "limits": [
+    "LB08 仅为公开 strict-int 契约下的静态怀疑，尚无实测缺陷结论",
+    "批准仅覆盖文件冻结；未来 Python 实施、首测及必要兼容均须 root 后续明确放行",
+    "纯候选转换不是 DB 事务、真实审阅身份、实际应用或撤销授权证明"
+  ]
+}

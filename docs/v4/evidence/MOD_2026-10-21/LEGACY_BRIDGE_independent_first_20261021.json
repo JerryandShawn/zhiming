@@ -1,0 +1,288 @@
+{
+  "schema_version": "mod-legacy-bridge-independent-first-v1",
+  "started_at": "2026-10-21T11:04:23.464734+08:00",
+  "finished_at": "2026-10-21T11:04:24.746286+08:00",
+  "clock_zone": "Asia/Shanghai",
+  "scope": "Exactly fifteen frozen public legacy bridge boundary scenarios; first run only",
+  "python_version": "3.11.16 (main, Sep 24 2026, 17:55:08) [MSC v.1944 64 bit (AMD64)]",
+  "command": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py",
+    "-q",
+    "-s",
+    "--tb=short",
+    "--basetemp=C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-mod\\private\\mod-week\\tmp\\legacy-bridge-first-20261021-110423-464734"
+  ],
+  "pytest_exit_code": 1,
+  "summary_fragments": [
+    "1 failed",
+    "14 passed"
+  ],
+  "observations": [
+    {
+      "case_id": "LB01",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_document_scope_mismatch",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB02",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_document_scope_mismatch",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB03",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_missing",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB04",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB05",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB06",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB07",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_evidence_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB08",
+      "outcome": "returned",
+      "returned_type": "ChangeSet",
+      "operation_paths": [
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "route_confidence"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "route_source"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "space_id"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "space_secondary"
+        ]
+      ]
+    },
+    {
+      "case_id": "LB09",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_labels_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB10",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "message_source_identity_mismatch",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB11",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "complete_message_source_required",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB12",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "mainline_entity_adapter_required",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB13",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "legacy_message_revision_changed",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB14",
+      "outcome": "exception",
+      "error_type": "SupplementConflict",
+      "reason": "mainline_topic_adapter_required",
+      "no_fixture_text_in_error": true
+    },
+    {
+      "case_id": "LB15",
+      "outcome": "returned",
+      "returned_type": "ChangeSet",
+      "operation_paths": [
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "route_confidence"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "route_source"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "space_id"
+        ],
+        [
+          "messages",
+          "synthetic-message-legacy-001",
+          "space_secondary"
+        ]
+      ]
+    }
+  ],
+  "stdout": "LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB01\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_document_scope_mismatch\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB02\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_document_scope_mismatch\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB03\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_missing\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB04\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB05\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB06\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB07\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_evidence_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB08\", \"outcome\": \"returned\", \"returned_type\": \"ChangeSet\", \"operation_paths\": [[\"messages\", \"synthetic-message-legacy-001\", \"route_confidence\"], [\"messages\", \"synthetic-message-legacy-001\", \"route_source\"], [\"messages\", \"synthetic-message-legacy-001\", \"space_id\"], [\"messages\", \"synthetic-message-legacy-001\", \"space_secondary\"]]}\nFLEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB09\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_labels_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB10\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"message_source_identity_mismatch\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB11\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"complete_message_source_required\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB12\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"mainline_entity_adapter_required\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB13\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"legacy_message_revision_changed\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB14\", \"outcome\": \"exception\", \"error_type\": \"SupplementConflict\", \"reason\": \"mainline_topic_adapter_required\", \"no_fixture_text_in_error\": true}\n.LEGACY_BRIDGE_OBSERVATION={\"case_id\": \"LB15\", \"outcome\": \"returned\", \"returned_type\": \"ChangeSet\", \"operation_paths\": [[\"messages\", \"synthetic-message-legacy-001\", \"route_confidence\"], [\"messages\", \"synthetic-message-legacy-001\", \"route_source\"], [\"messages\", \"synthetic-message-legacy-001\", \"space_id\"], [\"messages\", \"synthetic-message-legacy-001\", \"space_secondary\"]]}\n.\n================================== FAILURES ===================================\n__________________ test_frozen_legacy_bridge_boundary[LB08] ___________________\ntests\\v4\\organize_supplement_v2\\test_legacy_bridge_calendar_mod.py:94: in test_frozen_legacy_bridge_boundary\n    pytest.fail(case_id + \" returned a ChangeSet instead of the frozen controlled rejection\")\nE   Failed: LB08 returned a ChangeSet instead of the frozen controlled rejection\n=========================== short test summary info ===========================\nFAILED tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py::test_frozen_legacy_bridge_boundary[LB08]\n1 failed, 14 passed in 0.23s\n",
+  "stderr": "",
+  "frozen_matrix_sha256": "883b171aa7589aa1ee807d439c1779714ee91f588c9a2b0755b269b07b3491b2",
+  "frozen_cases_canonical_sha256": "d2a66eac57234f68afc8c602394a8b359628addb8f4d7a938271840acdefa711",
+  "frozen_preimplementation_source_and_test_hashes_match": true,
+  "before_sha256": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "e6b5a98bf95241d29470d2236b899a05bfd86615b130c13445a5529e85451c9b",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "mingjing_core/organize/contracts.py": "82058a063be2d2554bf666b736bce645da96a06f74802f0dc7ea458eb30de812",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "tests/v4/organize_supplement/test_supplement_mod.py": "b113513320af70b9535b31bf22547390470c272fcfa17e79b3416818a8c59f43",
+    "tests/v4/organize_supplement_v2/test_acceptance_supplement_mod.py": "9c0fcb1e2a9f0040fa4763415ccda44b03a7d65afa2f48b8d980c3d171150dad",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py": "cd3cdc7bb2bb1f726fe79e9e94c0d1d50477595299c2ce4dfa06f852e61a5c05",
+    "tests/v4/organize_supplement_v2/legacy_bridge_calendar_support_mod.py": "92686c3d294ccf3d788df3136e058454539817fa3479c0a49ff25e09c2af2e24",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "mingjing_core/memory/policy.py": "47c82d83dd9177180392e3246763f9ef2c9ec219f710719d528746dc3256f09b",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "mingjing_core/organize/spaces.py": "049f55c4bb362266f1e77ed832dc911d7c388f5c01dab105b571771fe26062a7",
+    "tools/mod_week/completed_regression.py": "7c8557ac2dc106bed47c01c4ed709c87f8fa101a8e32c4dc8ded743d46041da9",
+    "tools/eval/fixtures/mod_20261021/legacy_bridge_calendar_synthetic.json": "480e5e00c70a809fa59b3e3b3ffdaddc7ded1940156236de6140cc1a49a899d0",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_frozen_matrix_20261021.json": "883b171aa7589aa1ee807d439c1779714ee91f588c9a2b0755b269b07b3491b2",
+    "docs/v4/execplans/MOD_legacy_bridge_boundary_20261021.md": "fe57bbff1f1c3488f97d0aec17510eec0a6cb23c8e3f3a5fb7fb04157f01085b"
+  },
+  "after_sha256": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "e6b5a98bf95241d29470d2236b899a05bfd86615b130c13445a5529e85451c9b",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "mingjing_core/organize/contracts.py": "82058a063be2d2554bf666b736bce645da96a06f74802f0dc7ea458eb30de812",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "tests/v4/organize_supplement/test_supplement_mod.py": "b113513320af70b9535b31bf22547390470c272fcfa17e79b3416818a8c59f43",
+    "tests/v4/organize_supplement_v2/test_acceptance_supplement_mod.py": "9c0fcb1e2a9f0040fa4763415ccda44b03a7d65afa2f48b8d980c3d171150dad",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py": "cd3cdc7bb2bb1f726fe79e9e94c0d1d50477595299c2ce4dfa06f852e61a5c05",
+    "tests/v4/organize_supplement_v2/legacy_bridge_calendar_support_mod.py": "92686c3d294ccf3d788df3136e058454539817fa3479c0a49ff25e09c2af2e24",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "mingjing_core/memory/policy.py": "47c82d83dd9177180392e3246763f9ef2c9ec219f710719d528746dc3256f09b",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "mingjing_core/organize/spaces.py": "049f55c4bb362266f1e77ed832dc911d7c388f5c01dab105b571771fe26062a7",
+    "tools/mod_week/completed_regression.py": "7c8557ac2dc106bed47c01c4ed709c87f8fa101a8e32c4dc8ded743d46041da9",
+    "tools/eval/fixtures/mod_20261021/legacy_bridge_calendar_synthetic.json": "480e5e00c70a809fa59b3e3b3ffdaddc7ded1940156236de6140cc1a49a899d0",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_frozen_matrix_20261021.json": "883b171aa7589aa1ee807d439c1779714ee91f588c9a2b0755b269b07b3491b2",
+    "docs/v4/execplans/MOD_legacy_bridge_boundary_20261021.md": "fe57bbff1f1c3488f97d0aec17510eec0a6cb23c8e3f3a5fb7fb04157f01085b"
+  },
+  "drift": [],
+  "new_python_static_checks": {
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py": {
+      "lines": 95,
+      "max_function_lines": 18,
+      "max_line_length": 108,
+      "lf": true,
+      "all_return_annotations": true
+    },
+    "tests/v4/organize_supplement_v2/legacy_bridge_calendar_support_mod.py": {
+      "lines": 207,
+      "max_function_lines": 23,
+      "max_line_length": 114,
+      "lf": true,
+      "all_return_annotations": true
+    }
+  },
+  "ruff_prior_first_run": {
+    "format": "2 files left unchanged",
+    "check": "All checks passed!",
+    "line_length": 120,
+    "rules": "E,F,I,B,UP,SIM"
+  },
+  "offline_controls": {
+    "environment_factory": "tools.mod_week.completed_regression.environment",
+    "removed_credential_variable_classes": 12,
+    "tracing_disabled": true,
+    "socket_class_preserved": true,
+    "blocked_socket_methods": [
+      "socket.socket.connect",
+      "socket.socket.connect_ex",
+      "socket.create_connection",
+      "socket.getaddrinfo"
+    ],
+    "temp_inside_workspace": true,
+    "parallel_pytest_processes": 1
+  },
+  "effects": {
+    "real_model_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0,
+    "external_delivery": 0,
+    "git_operations": 0
+  },
+  "limits": [
+    "First observations retained without changing matrix, existing tests or product sources",
+    "No compatibility, full regression, coverage or performance was run by this task",
+    "This in-memory candidate conversion does not establish database authorization or actual apply/undo safety",
+    "ExecPlan is a live document and will be updated after this immutable first-run snapshot"
+  ]
+}

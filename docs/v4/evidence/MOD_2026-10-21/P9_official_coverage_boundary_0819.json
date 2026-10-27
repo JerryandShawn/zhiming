@@ -1,0 +1,54 @@
+{
+  "observed_at": "2026-10-21T08:21:05.009231+08:00",
+  "measurement_started_at": "2026-10-21T08:19:43+08:00",
+  "pytest": "457 passed in 17.62s including 111 new invariant cases",
+  "scope": "17 P9 official products only; branch sampling enabled",
+  "totals": {
+    "covered_lines": 881,
+    "num_statements": 969,
+    "percent_covered": 87.73919206236711,
+    "percent_covered_display": "88",
+    "missing_lines": 88,
+    "excluded_lines": 0,
+    "num_branches": 442,
+    "num_partial_branches": 83,
+    "covered_branches": 357,
+    "missing_branches": 85
+  },
+  "line_percent": 90.91847265221878,
+  "branch_percent": 80.76923076923077,
+  "combined_percent": 87.73919206236711,
+  "source_sha256": {
+    "mingjing_core/adapters/channels/card_limits_official_v3.py": "dfe82426a6345405b7e53eeb247c8d29acae47fd3e5ec8606bb15ec5f4b45a5d",
+    "mingjing_core/adapters/channels/cardkit_official_v3/__init__.py": "b00bac2c0bfa336dfb3830d83b4a883b9fed613fa87a3e8de994af190689fb0f",
+    "mingjing_core/adapters/channels/cardkit_official_v3/artifacts.py": "0417aee061015d7ae6635b415d585834789d3bae66db45eea90bd36b46dc3372",
+    "mingjing_core/adapters/channels/cardkit_official_v3/codec.py": "bdacdd0be4483597ae33c31c067f16690061c3efc4ce520e5e6272147991d2fd",
+    "mingjing_core/adapters/channels/cardkit_official_v3/contracts.py": "07d1ca3a88b37844fd4067fadcdea18f1894a7bb5863e056cec85574f0270fc5",
+    "mingjing_core/adapters/channels/cardkit_official_v3/errors.py": "d3bee15f7867c1f583b03646cf403cc8ccda9a82f642a2a1e1d1f152b9d16080",
+    "mingjing_core/adapters/channels/cardkit_official_v3/namespace.py": "68f28805704512d8ba70167aefa995ab6fd1e346972c5d219e9ced085ca419fa",
+    "mingjing_core/adapters/channels/cardkit_official_v3/operations.py": "4b825270a57d5e4c09f150fa519fb442e022252981fe360daaa49ad4a12d2eec",
+    "mingjing_core/adapters/channels/cardkit_official_v3/transitions.py": "b2f145d6aa35289169fffe8471af04efebc3d2249365ecbc530135bd940e778a",
+    "mingjing_core/adapters/channels/cardkit_official_v3/validation.py": "125ee94067c51b3524cc160348d0e7e90878e0b2a63d9fd74337c11c5c07c180",
+    "mingjing_core/adapters/channels/cardkit_official_v3/wire.py": "a72a0e0693d7d79f373488f182f89637d42ce11ac36b6c25841db22f0259da31",
+    "mingjing_core/adapters/channels/cards_official_v3/__init__.py": "ae8e4d74f1333d8f221855a98b81727679c630c7bd10fc9bd6fe93362fbd9cfe",
+    "mingjing_core/adapters/channels/cards_official_v3/answers.py": "72865589fdce3d7b3e29a7673a295619ea307ce0ad086e584dec41bd9047676f",
+    "mingjing_core/adapters/channels/cards_official_v3/budget.py": "1ca6504d477729d669972ec2e3fc098428d8615ba2977c68fd86b1fba53cb767",
+    "mingjing_core/adapters/channels/cards_official_v3/elements.py": "a4af13b6c371291f5058993934e9270a206005fb4a2c698327c8583611e80f6b",
+    "mingjing_core/adapters/channels/cards_official_v3/notices.py": "1e1e6f08ebb653ff936b208b61e139f480cf8b4c3baa79525c42ce1d49ecbe33",
+    "mingjing_core/adapters/channels/cards_official_v3/validation.py": "726502f888e2be3f15f5d11516ff172a866a62dd67523d3688614de02339856f"
+  },
+  "coverage_sha256": "b44df21b958fdf9f69ccb8dda2fd6845b48b9afa3f26239f2272daf6149cadbd",
+  "new_test_sha256": {
+    "tests/v4/p9_official_v3/isolated_coverage_mod.py": "932f11276aefde9fbd4bc6b5a6f8bbe014a0f23401d72c282aa2333c594e2072",
+    "tests/v4/p9_official_v3/namespace_support_coverage_mod.py": "d581514abc701417104d73cad517bf42bcb0b72a8ee669c1257c6af13c46bfa9",
+    "tests/v4/p9_official_v3/test_artifact_guards_coverage_mod.py": "acb42a8b85c1da7ecdeacad04dd09108ec9eeefdd7398676831856720d76f1f5",
+    "tests/v4/p9_official_v3/test_metadata_guards_coverage_mod.py": "b35812ea0c333bf0f85866814b63f0e35c8a5732d1d21fd0af16082a653b186d",
+    "tests/v4/p9_official_v3/test_namespace_guards_coverage_mod.py": "ab3edd80615a09e2ade4ff090014ffe40bde978d65a9f02e7d8007bd42f6291d"
+  },
+  "limits": [
+    "Old coverage and prepatch performance evidence remain historical",
+    "Source hashes observed after measurement; frozen sources were not edited during measurement",
+    "Only line coverage exceeds 90 percent; branch and combined coverage still need work",
+    "No HTTP, actual ACK, PG, provider or external platform verification"
+  ]
+}

@@ -1,0 +1,213 @@
+{
+  "observed_at": "2026-10-21T08:56:26.072410+08:00",
+  "kind": "synthetic_local_only",
+  "cases": [
+    {
+      "name": "oracle_projection_and_digest_400",
+      "units_per_run": 400,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.12939360000018496,
+        0.12748350000038045,
+        0.12958980000257725,
+        0.1293502999978955,
+        0.1277912000005017
+      ],
+      "median_seconds": 0.1293502999978955,
+      "max_seconds": 0.12958980000257725,
+      "separate_tracemalloc_peak_bytes": 253664
+    },
+    {
+      "name": "candidate_projection_and_digest_400",
+      "units_per_run": 400,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.04378310000174679,
+        0.043658100003085565,
+        0.04349019999790471,
+        0.04290720000426518,
+        0.042806600002222694
+      ],
+      "median_seconds": 0.04349019999790471,
+      "max_seconds": 0.04378310000174679,
+      "separate_tracemalloc_peak_bytes": 123426
+    },
+    {
+      "name": "oracle_full_enqueue_work_aboutme_100",
+      "units_per_run": 100,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.6571711000069627,
+        0.6065795000031358,
+        0.6121502999958466,
+        0.6140662000034354,
+        0.6143650000012713
+      ],
+      "median_seconds": 0.6140662000034354,
+      "max_seconds": 0.6571711000069627,
+      "separate_tracemalloc_peak_bytes": 299589
+    },
+    {
+      "name": "candidate_full_enqueue_work_aboutme_100",
+      "units_per_run": 100,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.5156059000000823,
+        0.5129684999992605,
+        0.5206206000002567,
+        0.5330596000057994,
+        0.5297620999990613
+      ],
+      "median_seconds": 0.5206206000002567,
+      "max_seconds": 0.5330596000057994,
+      "separate_tracemalloc_peak_bytes": 238193
+    },
+    {
+      "name": "oracle_revoked_epoch_invalidation_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.378173400000378,
+        0.385410499999125,
+        0.39836259999719914,
+        0.38054440000269096,
+        0.3778251000039745
+      ],
+      "median_seconds": 0.38054440000269096,
+      "max_seconds": 0.39836259999719914,
+      "separate_tracemalloc_peak_bytes": 44625
+    },
+    {
+      "name": "candidate_revoked_epoch_invalidation_1000",
+      "units_per_run": 1000,
+      "warmup": 1,
+      "observations": 5,
+      "seconds": [
+        0.3770842000012635,
+        0.37297989999933634,
+        0.36894769999344135,
+        0.38213489999907324,
+        0.3707888999997522
+      ],
+      "median_seconds": 0.37297989999933634,
+      "max_seconds": 0.38213489999907324,
+      "separate_tracemalloc_peak_bytes": 42781
+    }
+  ],
+  "source_sha256": {
+    "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f",
+    "mingjing_core/application/reflection_projection_exp/projector.py": "dd7edbb2972fdd5dff56f0ddb0e6449be570da43f6917220c1fce700279b6be6",
+    "mingjing_core/application/reflection_projection_exp/types.py": "b81bca5504e0e83e8b293c3311fdef240915d383a7fce3c34b3a682c0d79d214",
+    "mingjing_core/application/reflection_v3/__init__.py": "d10780cce4e2d71ad7381f1fe825117025c092affb871abd7102e9e696a9d1b6",
+    "mingjing_core/application/reflection_v3/effects.py": "be9fa046c5f7cf9fd115630b350c0864105bfeefed05057dadbf740017def6f1",
+    "mingjing_core/application/reflection_v3/fact_analysis.py": "28b9ba3a18dd5e7eb5fc1fd716b5c70725ce3eeec51185058ab39a131194d3a4",
+    "mingjing_core/application/reflection_v3/fact_candidates.py": "88174c1cc809da0e91ad5c73470b7bd6e0b5c521512f525598c378031911ea82",
+    "mingjing_core/application/reflection_v3/fact_policy.py": "1c67c2b25e0acd5d3c8f02b35ec3759ed6dda01ebf9b492cc393637a9e6d2da7",
+    "mingjing_core/application/reflection_v3/gaps.py": "a0158228f39e752da037231a32f9ed466e8f521b3d986d1c578d1f8113eeb350",
+    "mingjing_core/application/reflection_v3/intent_guard.py": "39006be2ba087afe345fc0c19f02c7b7caf2e44a9a80259f2756779e177dccb8",
+    "mingjing_core/application/reflection_v3/lifecycle.py": "ea0276606f9402d05e37b0d21fcc33271b4c9fa390d160dcf6e7a9597fe8cf87",
+    "mingjing_core/application/reflection_v3/profile_contracts.py": "0ef8d19a181c65ccb5880165c8c4b2cc7bd180beba40b56df06ebe7e4b0642d3",
+    "mingjing_core/application/reflection_v3/profile_guard.py": "848657a6cd729a1dae0c9af7e82f1f4f421c2539efe97e99f4f8d06c2b8d8027",
+    "mingjing_core/application/reflection_v3/profile_renderer.py": "86cdc459407ffe47db150cf05898b4970aae2788fab0cc33bdfe7f53cbb29ec0",
+    "mingjing_core/application/reflection_v3/schedule.py": "deeec138c799c143f9558e1cdf446e0b3b6384282ee9f38a963691e0fbe0872e",
+    "mingjing_core/application/reflection_v3/schedule_contracts.py": "b48c13a4f4c29d3c78e87ac6cbd702743b0aeebed5890b5c8da439d2b1ed4ffc",
+    "mingjing_core/application/reflection_v3/source_policy.py": "a371c4c89b2b00bbd734160cc75280f35e9ad704acc4745efc15556ba8df64c2",
+    "mingjing_core/application/reflection_v3/summaries.py": "3f5a916c49208d3c41871527c11bf410c8eafae28c76a431315f105195d20374",
+    "mingjing_core/application/reflection_v3/validation.py": "bed7fe6df1e949eaf76b446e43063718bdf6bdb3afa1648036855c3a89efc06c",
+    "mingjing_core/application/reflection_v3/work.py": "c7a4a9d69b3484b708f9763e876b91e0565b488967deb1278a9fe56e497cc613",
+    "mingjing_core/application/reflection_v3/work_contracts.py": "59d3a5c2a424e36fae79a84f9f3db549de0be32fa9a20500ac9907e75c9e6ec5",
+    "mingjing_core/memory/slots.py": "971def850e9f882647bd28a1e3c3fcd6367d4708c118cd560ebd6ab4737450ad",
+    "mingjing_core/memory2/__init__.py": "310af2f5d4051717ed2e2be301d3d45585163ca3afcc2eba4bba13a3e893669e",
+    "mingjing_core/memory2/archive.py": "fd4c51c1c06f849c887b8049845112f4a6a1ad6064f1105e9f6934a6061ea364",
+    "mingjing_core/memory2/conflicts.py": "80f9e4b935e06596ee6fb5cbf0188365672990accf97f1d18b67599aef60650f",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/current_guard.py": "9adbd022141fee245f1c4678f38cdfe7349c135e4813c589b9e4fbeb60a280a8",
+    "mingjing_core/memory2/dedup.py": "971143372b412e47d634b0fb1d975d5958fe686541856bad46015945eb64c6de",
+    "mingjing_core/memory2/event_time.py": "836eca5323b6ffb825374c64e53a3f48848d0793828c470df694b7988128d6da",
+    "mingjing_core/memory2/event_time_extended_v2.py": "1302faf40d85144fef3cace7beb712456607f4e5684aa5bc38739e335e01d3d2",
+    "mingjing_core/memory2/forget.py": "7d339ff4807b4fde1b82d06fe6c9630f4c41444ea0d0c354ac6f45a701cd1bf6",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "mingjing_core/memory2/mutation_contracts.py": "08f4b8e521a863718ff2d37ec1fbf1a4336154dd464fe29138b60c6fb3b61d0c",
+    "mingjing_core/memory2/mutations.py": "82bb1b6aad7fe6b62ca327a38823f4ba614ba3d0aa1c23ff14949aae04c993d4",
+    "mingjing_core/memory2/plan_builder.py": "20e65408ffcf3aa60f366745e5ab8f5c2d42fd92e03958e90007abc6b1b5cf16",
+    "mingjing_core/memory2/reflection.py": "df3688910259150265194b1b8b381c837dd307d06f34df1f274d026c4346cc49",
+    "mingjing_core/memory2/retrieval_projection.py": "fe6cc38b3a9a8566e5d5a2e9585fa29845228b9a2c79d7b2711db9c53e2284dd",
+    "mingjing_core/memory2/scoring.py": "92e0035d4e42a28b6ebe40af038e96c0b4a54c3f7b0b16cde266725f964117e1",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/undo.py": "cb91edcec6f9d9e65e011936250154166a251136fd633e3b774d2784174f7aca",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "mingjing_core/scheduling/recurrence_wall.py": "7947c130234e5b0b6f246ccc546be1bf46eed6b4ba2b260503be1503b4302b1c",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "mingjing_core/timeparse/__init__.py": "d0c2cae835cee1e91eed9947f2c030fe7d330e16b86c8e8b31ec2892873163c9",
+    "mingjing_core/timeparse/calendar_expressions.py": "bc92857ba122de657c4f8c33fbbf1762a54891e29ff7d8dd7c8b7e54737df3ef",
+    "mingjing_core/timeparse/calendar_helpers.py": "b40c02f378c125312a8b2e81bf95957d50181e196ee32b33c694690f7881ebb0",
+    "mingjing_core/timeparse/calendar_holidays.py": "350f4ced1d03eb848256f26962f4cfff588e152eea88bf97ba0d46c2aa29c98b",
+    "mingjing_core/timeparse/calendar_lunar.py": "1d7360f931e277fa248d9a077abcc4154f162a5e40b415dc37947ba959d74a8d",
+    "mingjing_core/timeparse/calendar_lunar_cycles.py": "0775b3fb91ac7fe15f75d16f52ae12a6695fcfb70124c3764530050b16e0e25a",
+    "mingjing_core/timeparse/calendar_port.py": "c907ad42628e008f9a9ab8277b69e26dd0c61fa94ddd2b9e0dc707f642e3b5a6",
+    "mingjing_core/timeparse/calendar_terms.py": "0d3bdad0e9981669fc9bf3dd2516d2edf56ac0d4d14f849c96f173083879f786",
+    "mingjing_core/timeparse/clocks.py": "d250c248316ac4cdb5ceac5b87f62124b2508ab5470c0c8e3f1c7df03486c38e",
+    "mingjing_core/timeparse/contracts.py": "2e1b344dfd6fea2d82c67b50d7344d08c75ff078115b1b266a763d8ceb1e64b5",
+    "mingjing_core/timeparse/english_absolute_v2.py": "b4e5bc8c03656329f2404d3e4b55629d85a0690a49e197f9751fe1ecee7e66d3",
+    "mingjing_core/timeparse/english_calendar_v2.py": "8a0e22ca1dbfca9b1269b3e540f06d98312501adcc1e14055ee3040a8b066f6a",
+    "mingjing_core/timeparse/english_clocks_v2.py": "1999cbcafaac131eab5bfdba55f9ae3f9c58efc189c0aec6f00abaf086124975",
+    "mingjing_core/timeparse/english_dates_v2.py": "95bac0a839d16fd404f11e1613ccac472cb29a2bc2e0a1dd736ecb254644cd4e",
+    "mingjing_core/timeparse/english_helpers_v2.py": "060311b03155f5a85df83996f22e4dd9ddfebd33e79fc7bc4390052ecc3ded32",
+    "mingjing_core/timeparse/english_relative_v2.py": "b7e873da1f7570be1fb6944312b26baa35f53b59ffdc2ef358227d2c6b1db826",
+    "mingjing_core/timeparse/extended_v2.py": "8fa2a44ca84f927d99e586ce566b9e7778629e30ac02de8996d27f883434eb78",
+    "mingjing_core/timeparse/months.py": "9e765635612552d6978f2cb75e185b7fa571afcef3d259617a28e6498cfab6e0",
+    "mingjing_core/timeparse/numerals.py": "d87fc3ff15685b5dd4f904f22098cba97c81a9709fab07503f7ca46c6b24e61e",
+    "mingjing_core/timeparse/parser.py": "24f2948163d412c1202baf9014d56fe15536f7b85bb4ed50a2ca5b516f34198b",
+    "mingjing_core/timeparse/profile_calendar_v2.py": "07717ed6e3c9a4a361817246b76b08d5283081961cfae33eee0efee8f9b91e98",
+    "mingjing_core/timeparse/profile_contracts_v2.py": "68dedcce1c7a08df6c15dc6eab92392e266a857234e841366fc8ca744b5cba52",
+    "mingjing_core/timeparse/profile_dates_v2.py": "8157bc1d405a37d351902124527f096201da29523eed45751f9e83577ad3c9c7",
+    "mingjing_core/timeparse/profile_patterns_v2.py": "390b617915db284f974a1100ef2186397f857862203b46ae376dd466b0165800",
+    "mingjing_core/timeparse/recurrence.py": "fa2de7c01b8bdcbed98cfa4eb4d08555c94cad961ae272205822197a51700747",
+    "mingjing_core/timeparse/relative.py": "d302998f93b53e4469c794555fb733160e1e00498d72764c23438845a7f22435",
+    "mingjing_core/timeparse/weekdays.py": "e8fae746bad39bc4b8877fbea2afd8db040a85e01f409b1392af98366743f43d",
+    "tools/eval/fixtures/mod_20261021/reflection_background_synthetic.json": "185bfa68eb306ae4a2a8dda73df8c14cf0bca93a72076b04eb20720379768b88",
+    "tools/mod_week/benchmark_reflection_projection_RPF01.py": "0c89f95e549da367347be0d5bfe7c515b0fbe479fbaa4fed4d0aff451ff103c3",
+    "tools/mod_week/benchmark_reflection_v3.py": "b78731ab3c7e984487bf08fd36a1ede1728e97ce89ea0b4c20da291ed07427f7",
+    "tools/mod_week/performance.py": "9e6feed2c4631f3685d46406c4ed0b7c2649578d41d926d6629a3f2e80e8c846"
+  },
+  "limitations": [
+    "CPU wall time; caches may help repeated workloads",
+    "tracemalloc measures Python allocations, not process RSS",
+    "No network, model, database or production end-to-end inference"
+  ],
+  "experiment": "RPF01_unconnected_projection",
+  "semantic_capture_sha256": "dd83e380ac300e931f0a0cc3aa8ee9ff8fc78488ed42d468865f10b8bac66387",
+  "oracle_aliases_restored": true,
+  "source_sha256_before_after_equal": true,
+  "comparisons": [
+    {
+      "oracle": "oracle_projection_and_digest_400",
+      "candidate": "candidate_projection_and_digest_400",
+      "candidate_over_oracle_wall_ratio": 0.3362203257248904,
+      "candidate_over_oracle_allocation_peak_ratio": 0.48657278920146335
+    },
+    {
+      "oracle": "oracle_full_enqueue_work_aboutme_100",
+      "candidate": "candidate_full_enqueue_work_aboutme_100",
+      "candidate_over_oracle_wall_ratio": 0.8478248762060899,
+      "candidate_over_oracle_allocation_peak_ratio": 0.7950659069592008
+    },
+    {
+      "oracle": "oracle_revoked_epoch_invalidation_1000",
+      "candidate": "candidate_revoked_epoch_invalidation_1000",
+      "candidate_over_oracle_wall_ratio": 0.9801218990391105,
+      "candidate_over_oracle_allocation_peak_ratio": 0.9586778711484594
+    }
+  ],
+  "scope": "Four reflection aliases in this independent process only; no Q2/U4 monkeypatch",
+  "timed_full_work": "Frozen benchmark: fixture decode, input construction, all guards and assertions",
+  "timed_local_work": "400 projections plus old digest; corpus prepared outside, not full-chain performance",
+  "excluded": "Imports, fixture byte read, source hashes, semantic parity proof, evidence writes",
+  "compatibility": "22 exact types; string keys; depth<=64; unknown classes and subclasses rejected"
+}

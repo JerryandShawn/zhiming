@@ -1,0 +1,52 @@
+{
+  "experiment": "RPF01_unconnected_projection",
+  "scope": "unconnected experimental package only; no production vulnerability claim",
+  "observed_log_completed_at_beijing": "2026-10-21T09:00:11.789026+08:00",
+  "command": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p2/.venv-core/Scripts/python.exe -m pytest tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py -q --basetemp=private/mod-week/tmp/calendar-rpf01-metaclass-first",
+  "environment": "provider keys blank; tracing false; TEMP/TMP inside private/mod-week/tmp",
+  "exit_code": 1,
+  "result": {
+    "total": 6,
+    "passed": 1,
+    "failed": 5,
+    "seconds": 0.61
+  },
+  "expectations_frozen_before_first_run": [
+    "all unknown classes rejected by project_json even if metaclass equality or hash spoofs a supported type",
+    "unknown inputs rejected by oracle+digest cannot become fingerprint-accepted by candidate"
+  ],
+  "test_ids": [
+    "test_unknown_class_cannot_enter_exact_type_projection[value0]",
+    "test_unknown_class_cannot_enter_exact_type_projection[value1]",
+    "test_unknown_class_cannot_enter_exact_type_projection[value2]",
+    "test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path[value0]",
+    "test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path[value1]",
+    "test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path[value2]"
+  ],
+  "test_file": "tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py",
+  "test_file_sha256": "0d4bacac0ecac3d1ca7fa5706724c6d4ecc25ea6db60a094f68bfe4a508500cd",
+  "experimental_source_sha256_before_run": {
+    "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f",
+    "mingjing_core/application/reflection_projection_exp/projector.py": "dd7edbb2972fdd5dff56f0ddb0e6449be570da43f6917220c1fce700279b6be6",
+    "mingjing_core/application/reflection_projection_exp/types.py": "b81bca5504e0e83e8b293c3311fdef240915d383a7fce3c34b3a682c0d79d214"
+  },
+  "source_hash_capture_file_sha256": "646adbd4f919756cbec5979a6fb275452653697f27678ced5688e15050b8fb61",
+  "stdout_private_original_path": "private/mod-week/RPF01_metaclass_calendar_first.log",
+  "stdout_sha256": "e0eea9325e25fe2bcffb06077aca75f246a1254df4fdbb6dd5fb333c722a484b",
+  "stdout": "FFF.FF                                                                   [100%]\r\n================================== FAILURES ===================================\r\n________ test_unknown_class_cannot_enter_exact_type_projection[value0] ________\r\n\r\nvalue = <reflection_projection_exp.test_metaclass_identity_calendar_mod.UnknownScalar object at 0x0000016618782FA0>\r\n\r\n    @pytest.mark.parametrize(\"value\", (UnknownScalar(), UnknownScope(), UnknownContainer()))\r\n    def test_unknown_class_cannot_enter_exact_type_projection(value: object) -> None:\r\n        assert type(value) is not str and type(value) is not MemoryScope and type(value) is not list\r\n        with pytest.raises(ValueError):\r\n            digest(dataclass_json(value))\r\n>       with pytest.raises(ProjectionError):\r\nE       Failed: DID NOT RAISE ProjectionError\r\n\r\ntests\\v4\\reflection_projection_exp\\test_metaclass_identity_calendar_mod.py:53: Failed\r\n________ test_unknown_class_cannot_enter_exact_type_projection[value1] ________\r\n\r\nvalue = <reflection_projection_exp.test_metaclass_identity_calendar_mod.UnknownScope object at 0x00000166177DBCD0>\r\n\r\n    @pytest.mark.parametrize(\"value\", (UnknownScalar(), UnknownScope(), UnknownContainer()))\r\n    def test_unknown_class_cannot_enter_exact_type_projection(value: object) -> None:\r\n        assert type(value) is not str and type(value) is not MemoryScope and type(value) is not list\r\n        with pytest.raises(ValueError):\r\n            digest(dataclass_json(value))\r\n>       with pytest.raises(ProjectionError):\r\nE       Failed: DID NOT RAISE ProjectionError\r\n\r\ntests\\v4\\reflection_projection_exp\\test_metaclass_identity_calendar_mod.py:53: Failed\r\n________ test_unknown_class_cannot_enter_exact_type_projection[value2] ________\r\n\r\nvalue = <reflection_projection_exp.test_metaclass_identity_calendar_mod.UnknownContainer object at 0x00000166187F4F10>\r\n\r\n    @pytest.mark.parametrize(\"value\", (UnknownScalar(), UnknownScope(), UnknownContainer()))\r\n    def test_unknown_class_cannot_enter_exact_type_projection(value: object) -> None:\r\n        assert type(value) is not str and type(value) is not MemoryScope and type(value) is not list\r\n        with pytest.raises(ValueError):\r\n            digest(dataclass_json(value))\r\n>       with pytest.raises(ProjectionError):\r\nE       Failed: DID NOT RAISE ProjectionError\r\n\r\ntests\\v4\\reflection_projection_exp\\test_metaclass_identity_calendar_mod.py:53: Failed\r\n__ test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path[value1] ___\r\n\r\nvalue = <reflection_projection_exp.test_metaclass_identity_calendar_mod.UnknownScope object at 0x00000166187F4290>\r\n\r\n    @pytest.mark.parametrize(\"value\", (UnknownScalar(), UnknownScope(), UnknownContainer()))\r\n    def test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path(value: object) -> None:\r\n        with pytest.raises(ValueError):\r\n            digest(dataclass_json(value))\r\n>       with pytest.raises(ProjectionError):\r\nE       Failed: DID NOT RAISE ProjectionError\r\n\r\ntests\\v4\\reflection_projection_exp\\test_metaclass_identity_calendar_mod.py:61: Failed\r\n__ test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path[value2] ___\r\n\r\nvalue = <reflection_projection_exp.test_metaclass_identity_calendar_mod.UnknownContainer object at 0x00000166187C09D0>\r\n\r\n    @pytest.mark.parametrize(\"value\", (UnknownScalar(), UnknownScope(), UnknownContainer()))\r\n    def test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path(value: object) -> None:\r\n        with pytest.raises(ValueError):\r\n            digest(dataclass_json(value))\r\n>       with pytest.raises(ProjectionError):\r\nE       Failed: DID NOT RAISE ProjectionError\r\n\r\ntests\\v4\\reflection_projection_exp\\test_metaclass_identity_calendar_mod.py:61: Failed\r\n=========================== short test summary info ===========================\r\nFAILED tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py::test_unknown_class_cannot_enter_exact_type_projection[value0]\r\nFAILED tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py::test_unknown_class_cannot_enter_exact_type_projection[value1]\r\nFAILED tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py::test_unknown_class_cannot_enter_exact_type_projection[value2]\r\nFAILED tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py::test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path[value1]\r\nFAILED tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py::test_unknown_class_cannot_gain_a_new_fingerprint_acceptance_path[value2]\r\n5 failed, 1 passed in 0.61s\r\n",
+  "finding": "equality/hash-based type checks let three unknown classes pass projection; registered-class/list spoofing also widened fingerprint acceptance",
+  "unchanged_assertions": true,
+  "product_edits_by_independent_reviewer": 0,
+  "effects": {
+    "model_calls": 0,
+    "server_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0,
+    "notifications": 0,
+    "git_operations": 0
+  },
+  "baseline_source_aggregate_sha256": "67a77e35524e62e1ef76d271c64d26efb8b389b9c0e4019afe2664c3c16dde80",
+  "source_aggregate_method": "sorted repository path UTF8 + NUL + exact file bytes",
+  "experiment_has_no_git_commit_at_review": true,
+  "metadata_correction": "An initial draft mistook an aggregate-hash prefix for a commit; corrected without changing stdout, assertions or source-before hashes."
+}

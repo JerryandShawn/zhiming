@@ -1,0 +1,101 @@
+{
+  "schema": "stream-outbox-public-input-verification-v1",
+  "started_at": "2026-10-21T09:39:19.126718+08:00",
+  "finished_at": "2026-10-21T09:39:32.034397+08:00",
+  "command": [
+    "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p2\\.venv-core\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/v4/p9_v2",
+    "tests/v4/p9_official_v3",
+    "-q",
+    "--tb=short"
+  ],
+  "stdout": "........................................................................ [  3%]\n........................................................................ [  7%]\n........................................................................ [ 10%]\n........................................................................ [ 14%]\n........................................................................ [ 18%]\n........................................................................ [ 21%]\n........................................................................ [ 25%]\n........................................................................ [ 29%]\n........................................................................ [ 32%]\n........................................................................ [ 36%]\n........................................................................ [ 40%]\n........................................................................ [ 43%]\n........................................................................ [ 47%]\n........................................................................ [ 51%]\n........................................................................ [ 54%]\n........................................................................ [ 58%]\n........................................................................ [ 62%]\n........................................................................ [ 65%]\n........................................................................ [ 69%]\n........................................................................ [ 73%]\n........................................................................ [ 76%]\n........................................................................ [ 80%]\n........................................................................ [ 84%]\n........................................................................ [ 87%]\n........................................................................ [ 91%]\n........................................................................ [ 95%]\n........................................................................ [ 98%]\n.......................                                                  [100%]\n1967 passed in 11.80s\n",
+  "returncode": 0,
+  "kind": "synthetic_local_only",
+  "independent_target": {
+    "summary": "12 passed in 0.12s",
+    "initial_summary": "2 failed, 10 passed in 0.22s",
+    "truth_changed": false,
+    "test_style_only_change": "Ruff import ordering"
+  },
+  "first_failure_sha256": "25ec73577731c3ff91bcc363b0aebed73ff41e1b260834186a61a168c192a220",
+  "source_changed_from_failure": [
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py"
+  ],
+  "source_sha256": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "ade48456779b131d3eff32873c12cecac1961ed801f3a8ab05d42c95b1fae624",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "85c509b6343d7e72d46fad2f35133e54816d9aa399611fcab47c791ba617d38f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182"
+  },
+  "source_and_suite_sha256": {
+    "mingjing_core/adapters/channels/stream_outbox_v2/__init__.py": "3afe1f1fb5676992422299a94ea992d05fc5f3eb9a6c4455715ec509b306819c",
+    "mingjing_core/adapters/channels/stream_outbox_v2/codec.py": "8725594c05977fadb330a44f06aef4ed2178a686ea3f86bc2df9792aee8f893f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/contracts.py": "ade48456779b131d3eff32873c12cecac1961ed801f3a8ab05d42c95b1fae624",
+    "mingjing_core/adapters/channels/stream_outbox_v2/freshness.py": "85c509b6343d7e72d46fad2f35133e54816d9aa399611fcab47c791ba617d38f",
+    "mingjing_core/adapters/channels/stream_outbox_v2/guards.py": "a095ab03739d049779d0103974f6b2d5d3c60907fb704d0e4e5f3e37060c2a86",
+    "mingjing_core/adapters/channels/stream_outbox_v2/intents.py": "9ca1b2fc5487ff3736d5367c42b6a7d6f6e8e5d48b63e8cc802d3d12eef08236",
+    "mingjing_core/adapters/channels/stream_outbox_v2/transitions.py": "c787cf56be4a8bf6d5943a0f2d739c59ea640e4ba027b3f1b715c4f436c67182",
+    "tests/v4/p9_official_v3/__init__.py": "ae7f8e0fd6784ca9501f861c2adf93f733254457f6b306e506f921b518750fbc",
+    "tests/v4/p9_official_v3/fixtures/expected_contract_mod.json": "2fca0ce9b79c45a80106544e85de49c5d95f8a19a9f2317797578b61deec10bb",
+    "tests/v4/p9_official_v3/fixtures/expected_contract_mod.manifest.json": "b712bae37c17f71d5c92ec58d427e1374eda396d97143b3feed9430d473e3aa6",
+    "tests/v4/p9_official_v3/isolated_coverage_mod.py": "932f11276aefde9fbd4bc6b5a6f8bbe014a0f23401d72c282aa2333c594e2072",
+    "tests/v4/p9_official_v3/legacy_freshness_support_mod.py": "ebc31b78ea7c8953519eadc313c30d682c6d6ec45fdbd0c88152fbc763b25628",
+    "tests/v4/p9_official_v3/namespace_support_coverage_mod.py": "d581514abc701417104d73cad517bf42bcb0b72a8ee669c1257c6af13c46bfa9",
+    "tests/v4/p9_official_v3/support_mod.py": "5954ac648e9a67cf74f4aa94b2e2e3be48b7f2a3131024efd92c07d9732f39a1",
+    "tests/v4/p9_official_v3/test_acceptance_builders_extra_mod.py": "a4e31525e263d458e274d0aca7bb765e6ab7725359e356ff57933d0e5325506f",
+    "tests/v4/p9_official_v3/test_acceptance_state_mod.py": "f13f754d7dd7096755cb9f7551393085c51a69383a6d1a658884de3bd003d674",
+    "tests/v4/p9_official_v3/test_acceptance_wire_mod.py": "e5e98987a8ce221b1424e96d847cfc24dccf6ec2fb8accd3d546d99fdfcb711e",
+    "tests/v4/p9_official_v3/test_artifact_guards_coverage_mod.py": "acb42a8b85c1da7ecdeacad04dd09108ec9eeefdd7398676831856720d76f1f5",
+    "tests/v4/p9_official_v3/test_builders_mod.py": "4cc4ebc7a0e29ff048a533f2ed70137d6ee1fbab9e89d43aae5443a29f5c4350",
+    "tests/v4/p9_official_v3/test_core_state_mod.py": "209341efabf3f6f2ba4ebee76851c9e7cae3399c4953010ba341299f52db75da",
+    "tests/v4/p9_official_v3/test_legacy_freshness_guards_mod.py": "a5807ef2b2d0d1c654224b53e67e6b5dc9ca1f0945cf2ad1c9b3fb7f08554719",
+    "tests/v4/p9_official_v3/test_metadata_guards_coverage_mod.py": "b35812ea0c333bf0f85866814b63f0e35c8a5732d1d21fd0af16082a653b186d",
+    "tests/v4/p9_official_v3/test_namespace_guards_coverage_mod.py": "ab3edd80615a09e2ade4ff090014ffe40bde978d65a9f02e7d8007bd42f6291d",
+    "tests/v4/p9_official_v3/test_namespace_replay_root_mod.py": "7ebe17abd0b7ce4a6abdfb9f1ed19a4a74a5691a51df78269bc12a3982ccdc03",
+    "tests/v4/p9_official_v3/test_operation_wire_coverage_mod.py": "4a1743d4c3849a3c211aad357c18f183feda116700fd2119ce03da771558c4f5",
+    "tests/v4/p9_official_v3/test_response_retry_coverage_mod.py": "83d6423facb2b0e60c818aa51db9477068a4704e51859ca001ff948ec8d520c4",
+    "tests/v4/p9_v2/conftest.py": "0dbfceae1d10a3eabc30da40d2e7736ef2791ca9cdc8cc452514cf3a0e075886",
+    "tests/v4/p9_v2/coverage_support_acceptance_mod.py": "04f7f6529992f218b5fb1127add08938fde591cd1cebdcedf851bfc1fba75db7",
+    "tests/v4/p9_v2/fixtures/acceptance_expected_mod.json": "eb97be17d0e19d42757c37783ca2c3db58fdad1776e33eeb4e6e4f72e1159b83",
+    "tests/v4/p9_v2/test_acceptance_lifecycle_mod.py": "a8ad25a612a459e6671a64138c580b8501b0519a7920a9049626e46c0cc24e5e",
+    "tests/v4/p9_v2/test_acceptance_merge_stream_mod.py": "efe707a37ba8c68c3f4f3265f9482dae1a9ea9d5dc269a258d13113ca695a7cb",
+    "tests/v4/p9_v2/test_acceptance_namespace_mod.py": "45e40804cc72e6436bda0300d146f9f371bf64412eb9211cc3946436f8c4f432",
+    "tests/v4/p9_v2/test_acceptance_stream_mod.py": "679d5ac3ba36d1f3f043ffa88147c10ec185e4a7efd01f624e792fc5042db94f",
+    "tests/v4/p9_v2/test_acceptance_tokens_mod.py": "01960462bd28e05ce6d1bfbd4c36a7fe1c807d12532c79fc69b89a7e4dc67840",
+    "tests/v4/p9_v2/test_capability_coverage_acceptance_mod.py": "9010fddc784fa23a726179a7b1fda0a84e948d31953aefbac93107241c5dd8dd",
+    "tests/v4/p9_v2/test_freshness_coverage_acceptance_mod.py": "b6706fd3607a3b97b807db7c405df15cb1640cddb99810dea8757f0c2b38fb72",
+    "tests/v4/p9_v2/test_history_calendar_mod.py": "3582296216d8389f2e7f9a93babd05dc6e683a85c3d221f509076d963bb961ce",
+    "tests/v4/p9_v2/test_namespace_mod.py": "8e675ccd0f47ccbc995a685612bcdf8a4347514e091a8be5fb91db69bd957d91",
+    "tests/v4/p9_v2/test_namespace_stream_mod.py": "fec3d536567e3aae818fdc3e63339d95f921c9e5ebac2672205ff891a8e7f89a",
+    "tests/v4/p9_v2/test_public_inputs_review_acceptance_mod.py": "8292af0ac1b9ff18d63a1a818f38c2d7dcac44c9125d97045c98cd87c8eb0afb",
+    "tests/v4/p9_v2/test_recovery_coverage_acceptance_mod.py": "efae9c96f7662695644954c7c027bbcb57c448a984cfcf0c45e85a4098a047cb",
+    "tests/v4/p9_v2/test_stream_state_mod.py": "39c5ff6480749d02491ee1e1a4e997a1d780bc21dfb7baa883e9156afbf31968",
+    "tests/v4/p9_v2/test_token_policy_mod.py": "1fc19dbec0edb4fd2ea71a34ada4278d63062be72ebc502a9ecba4b4443a2969"
+  },
+  "source_stable": true,
+  "checks": {
+    "ruff": true,
+    "format120": true,
+    "AST_annotations": true,
+    "provider_keys_cleared": true,
+    "tracing_disabled": true
+  },
+  "effects": {
+    "network": 0,
+    "models": 0,
+    "pg": 0,
+    "notifications": 0,
+    "runtime_writes": 0
+  },
+  "limits": [
+    "Complete synthetic core3 envelope only; not proof of live cross-subject disclosure or PG authorization",
+    "Current host evidence cannot authenticate that PG was actually queried",
+    "09:44 freeze remains mandatory until root announces regression completion"
+  ]
+}

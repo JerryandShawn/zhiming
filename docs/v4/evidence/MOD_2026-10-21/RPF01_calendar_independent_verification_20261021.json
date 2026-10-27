@@ -1,0 +1,48 @@
+{
+  "experiment": "RPF01_unconnected_projection",
+  "observed_log_completed_at_beijing": "2026-10-21T09:05:48.200471+08:00",
+  "command": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p2/.venv-core/Scripts/python.exe -m pytest tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py tests/v4/reflection_projection_exp/test_timezone_semantics_calendar_mod.py -q --basetemp=private/mod-week/tmp/calendar-rpf01-final",
+  "result": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "seconds": 0.51
+  },
+  "frozen_original_six_unchanged": true,
+  "independent_test_source_sha256": {
+    "tests/v4/reflection_projection_exp/test_metaclass_identity_calendar_mod.py": "0d4bacac0ecac3d1ca7fa5706724c6d4ecc25ea6db60a094f68bfe4a508500cd",
+    "tests/v4/reflection_projection_exp/test_timezone_semantics_calendar_mod.py": "304afabe747a5c7c081bfb69c3cb25c16d88aa445696d7f8d7b8a8764a73cf4c"
+  },
+  "source_sha256_before": {
+    "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f",
+    "mingjing_core/application/reflection_projection_exp/projector.py": "eac3e8316b367f7d9679afb77674cff30ab6db63510180ec5d09ee4a8dd6bcde",
+    "mingjing_core/application/reflection_projection_exp/types.py": "0b38e3d2aaa489b8bcccb8f86de3a280acdfd8200f0838413dd3042628152f18"
+  },
+  "source_sha256_after": {
+    "mingjing_core/application/reflection_projection_exp/__init__.py": "3c9814013e299f58d588e33020bb9a9d1bd1f796a98e3a3e76c857367df90d4f",
+    "mingjing_core/application/reflection_projection_exp/projector.py": "eac3e8316b367f7d9679afb77674cff30ab6db63510180ec5d09ee4a8dd6bcde",
+    "mingjing_core/application/reflection_projection_exp/types.py": "0b38e3d2aaa489b8bcccb8f86de3a280acdfd8200f0838413dd3042628152f18"
+  },
+  "source_hashes_unchanged_during_target": true,
+  "source_aggregate_sha256": "707ed17655c261b35407ef26e9826bacd96befd82afb1f4b755b662de49c8005",
+  "aggregate_is_not_a_git_commit": true,
+  "initial_failure_evidence": "docs/v4/evidence/MOD_2026-10-21/RPF01_metaclass_identity_initial_failure_20261021.json",
+  "stdout": ".........                                                                [100%]\r\n9 passed in 0.51s\r\n",
+  "stdout_sha256": "9a9ddfa88f5bcc5379515ff04c257c1af986350802f22d769e0b7534c146d227",
+  "limits": [
+    "9 independent cases, not the full experimental suite or live integration",
+    "unknown classes cannot widen acceptance after identity repair",
+    "custom timezone copy transformations conservatively rejected",
+    "exact no_cache ZoneInfo DST folds preserve old projection and fingerprint",
+    "no performance run by independent reviewer",
+    "no production vulnerability claim"
+  ],
+  "effects": {
+    "model_calls": 0,
+    "server_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0,
+    "notifications": 0,
+    "git_operations": 0
+  }
+}

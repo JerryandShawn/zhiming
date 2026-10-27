@@ -1,0 +1,298 @@
+{
+  "schema_version": "mod-supplement-lifecycle-independent-v1",
+  "frozen_at": "2026-10-21T11:32:58.244915+08:00",
+  "clock_zone": "Asia/Shanghai",
+  "state": "expectations_only_not_executed",
+  "case_count": 9,
+  "cases_canonical_sha256": "544b38ac3e4e2fa5c2feda05f06fc20ec3f4968878783c496889c1618b280782",
+  "canonicalization": "UTF-8 json.dumps(cases, ensure_ascii=False, sort_keys=True, separators=(comma, colon))",
+  "authorization_now": "仅新增本JSON与ExecPlan；现有产品/测试冻结11:45全量，未授权Python实施、导入探针、测试、coverage或格式化代码",
+  "cases": [
+    {
+      "id": "S01",
+      "title": "从未应用的获批计划不能撤销",
+      "entrypoint": "project_undo(snapshot, plan, scope=scope)",
+      "public_setup": [
+        "使用当前合法原话来源、fact 实体、显式 Prediction 和公开审阅 API 取得合法 plan P",
+        "不调用 project_plan；snapshot.operations 仍是合法初始空账本",
+        "直接以原 snapshot、原 P 调用公开 project_undo"
+      ],
+      "independent_basis": "P5b A.5/A.7 可撤销变更集依赖真实应用账本；不能凭计划虚构已应用状态",
+      "existing_test_gap": "现有 preview/replay/undo 和随机标签测试都先 project_plan，再 project_undo；无撤销未执行批次",
+      "target_reference": "mingjing_core/organize/supplement_v2/projection.py:149-153",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "operation_not_applied"
+      }
+    },
+    {
+      "id": "S02",
+      "title": "另一真实公开批次推进版本后旧计划不能初次应用",
+      "entrypoint": "project_plan(current_after_B, plan_A, scope=scope, approval=approval_A)",
+      "public_setup": [
+        "初始同一合法 snapshot 有独立实体 A/B 及其各自当前合法来源；两实体均非敏感",
+        "分别通过公开审阅 API 建立只改 A 的 plan_A 与只改 B 的 plan_B，使用不同 operation_id",
+        "先真实调用 project_plan(snapshot, plan_B, approval_B) 得到 current_after_B",
+        "不 replace revision、不造 operations；用返回的 current_after_B 原样尝试 plan_A"
+      ],
+      "independent_basis": "接线指南第31-33行：审阅绑定快照 revision；全局并发变动采取保守冲突",
+      "existing_test_gap": "已有标签计划创建时 staleness 和 undo 时 revision 变化；未测另一个合法公开批次推进后初次 project_plan",
+      "target_reference": "mingjing_core/organize/supplement_v2/projection.py:125-140",
+      "must_preserve": [
+        "B 的已应用标签和账本",
+        "A 尚未应用",
+        "原话来源及 source_epoch 不因标签批次伪造改变"
+      ],
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "snapshot_revision_changed"
+      }
+    },
+    {
+      "id": "S03",
+      "title": "人工编辑 fact 后旧整理计划不能覆盖当前实体",
+      "entrypoint": "project_plan(current_snapshot, old_plan, scope=scope, approval=old_approval)",
+      "public_setup": [
+        "创建合法 MemoryFact/MemorySnapshot，source_ids/完整原话 anchors/scope/said_at 与当前 source 一致",
+        "先调用公开 entity_from_fact(..., clock=FrozenClock) 获得初始 fact EntityRecord，建立已审阅 old_plan",
+        "宿主当前投影以公开合法 MemoryFact 表达同一 fact 的人工摘要编辑，revision 推进且 edited=True；原话来源、锚点和 scope 不变",
+        "current fact 仍合法有效、已记录且 recorded_at<=clock.now；再次经 entity_from_fact 当前授权检查获得 current EntityRecord",
+        "以当前合法 SupplementSnapshot 提供该投影及推进后的全局 revision，再尝试旧 plan；不绕过 Q2 authorize_fact"
+      ],
+      "independent_basis": "接线指南审阅绑定实体内容/版本及原话；人工当前编辑不能被旧整理审阅覆盖",
+      "existing_test_gap": "已测 source revision、人工标签变化和计划创建时 entity revision；未测实体自身人工摘要/修订变化后的旧计划投影",
+      "target_reference": "mingjing_core/organize/supplement_v2/guards.py:133; projection.py:48-66",
+      "must_preserve": [
+        "人工编辑摘要及当前 fact revision",
+        "原来源正文与 anchors",
+        "既有敏感/无痕/撤回/当前性门禁"
+      ],
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "record_evidence_changed"
+      }
+    },
+    {
+      "id": "S04",
+      "title": "合法 A 主体计划不能投到合法 B 主体当前快照",
+      "entrypoint": "project_plan(snapshot_B, plan_A, scope=scope_B, approval=approval_A)",
+      "public_setup": [
+        "分别以公开类型构造 A/B 两套独立且内部 owner/subject 一致、来源合法的当前 snapshot",
+        "仅以 A 的公开审阅 API 取得合法 plan_A/approval_A，不修改任何获批字段或指纹",
+        "将完整 A 计划误送 B 的公开投影入口，调用 scope 明确为 B"
+      ],
+      "independent_basis": "AGENTS§5 owner 隔离及指南 authenticated owner/subject；A 的批准不能授权 B 数据",
+      "existing_test_gap": "已有 approval/grant 错主体和旧文档错归属；未测整份合法计划跨主体误投",
+      "target_reference": "mingjing_core/organize/supplement_v2/projection.py:23-26",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason_policy": "固定安全领域原因，不预设新的错误码，不回显来源/主体私密材料"
+      }
+    },
+    {
+      "id": "S05",
+      "title": "话题原话源已删除时不能继续产生归档候选",
+      "entrypoint": "plan_topic_archive(current_snapshot, scope=scope, clock=clock, operation_id=operation_id)",
+      "public_setup": [
+        "话题原先有合法当前来源与完整 SourceAnchor；其余 owner/subject、TopicRecord 类型和时间均有效",
+        "宿主来源删除后的当前公开 snapshot 不再包含该 source，话题投影仍带旧 anchor，source_epoch 如实推进",
+        "只表示删除后的内存输入，不执行任何真实删除；调用公开归档候选入口"
+      ],
+      "independent_basis": "07 F03 来源删除传播、当前原话来源授权；派生话题不能在源消失后凭旧 anchor 获授权",
+      "existing_test_gap": "已测 entity source 的 revoked/active 等标志；未测话题锚定源已从当前集合消失",
+      "target_reference": "mingjing_core/organize/supplement_v2/guards.py:88-94",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "topic_source_required"
+      }
+    },
+    {
+      "id": "S06",
+      "title": "话题 last_at 落后于已包含原话来源时不能按旧闲置时间归档",
+      "entrypoint": "plan_topic_archive(snapshot, scope=scope, clock=clock, operation_id=operation_id)",
+      "public_setup": [
+        "当前话题有两个合法同主体用户来源及精确 anchors，所有来源都早于显式 Clock",
+        "TopicRecord.last_at 比其中较新来源时刻早1微秒，类型、scope、来源版本及原话均合法",
+        "表示宿主生命周期投影与来源时刻不一致，不修改冻结对象内部状态或假造私有字段"
+      ],
+      "independent_basis": "22号§1话题14天无新消息才归档；指南要求同事务投影完整话题生命周期，不能以落后的 last_at 忽略已包含消息",
+      "existing_test_gap": "已测新消息使旧 archive proposal 失效；未测生成候选前话题生命周期与其原话时刻自相矛盾",
+      "target_reference": "mingjing_core/organize/supplement_v2/guards.py:109-110",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "topic_last_at_precedes_source"
+      }
+    },
+    {
+      "id": "S07",
+      "title": "工作时钟落后于最新话题活动时受控拒绝",
+      "entrypoint": "plan_topic_archive(snapshot, scope=scope, clock=clock, operation_id=operation_id)",
+      "public_setup": [
+        "来源合法且早于 Clock；TopicRecord.last_at 比 FrozenClock.now 晚1微秒，来源仍不晚于 last_at",
+        "显式 aware instant 和 Asia/Shanghai，模拟工作时钟落后或记录未来活动，不依赖主机 Tokyo 时区",
+        "调用公开归档候选入口，不把未来活动误当已闲置时间"
+      ],
+      "independent_basis": "14天闲置必须依据有效当前时钟与已发生的最后活动；不能以未来活动构造已知归档状态",
+      "existing_test_gap": "已有满14天前后边界；没有 last_at 位于当前工作时钟未来的公开归档输入",
+      "target_reference": "mingjing_core/organize/supplement_v2/lifecycle.py:47-48",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "topic_last_at_in_future"
+      }
+    },
+    {
+      "id": "S08",
+      "title": "话题仍有效但目标原话已删除时不能升级事项",
+      "entrypoint": "propose_case_upgrade(current_snapshot, topic_id, stale_goal_anchor, scope=scope, clock=clock, operation_id=operation_id)",
+      "public_setup": [
+        "话题自身当前来源 T 持续合法；另有合法明确目标来源 G 和精确 goal_anchor",
+        "宿主当前公开 snapshot 保留 T 和合法话题，但删除 G；调用者仍携带此前的 G anchor，source_epoch 如实推进",
+        "不执行真实删除，不把目标替换成话题原话；调用公开升级意图入口"
+      ],
+      "independent_basis": "接线指南明确目标必须来自当前用户原话，实际使用前重核目标、来源与话题版本；来源删除不得复活",
+      "existing_test_gap": "已有目标 anchor revision 错误、否定/条件目标；未测目标源缺失而话题自身仍可授权",
+      "target_reference": "mingjing_core/organize/supplement_v2/lifecycle.py:139-141",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "goal_source_missing"
+      }
+    },
+    {
+      "id": "S09",
+      "title": "普通肯定事实不能被自动推断成升级目标",
+      "entrypoint": "propose_case_upgrade(snapshot, topic_id, fact_anchor, scope=scope, clock=clock, operation_id=operation_id)",
+      "public_setup": [
+        "以显式 synthetic 的普通肯定事实建立当前合法用户来源和精确 anchor，无否定、条件、引号、敏感或秘密",
+        "话题保持 open、来源/时间均有效；事实语义不表达目标、愿望或行动意图",
+        "不调用模型推断隐含目标；直接调用公开升级意图入口"
+      ],
+      "independent_basis": "22号事项=有目标的话题；接线指南要求当前用户明确目标，不从普通事实自动推断目标",
+      "existing_test_gap": "已有肯定目标、否定及条件目标；未测无目标含义的普通肯定陈述",
+      "target_reference": "mingjing_core/organize/supplement_v2/lifecycle.py:152-153",
+      "expected": {
+        "disposition": "controlled_reject",
+        "returns_projection_or_intent": false,
+        "error_type": "SupplementConflict",
+        "inputs_unchanged": true,
+        "no_synthetic_body_in_error": true,
+        "external_effects": 0,
+        "reason": "explicit_goal_required"
+      }
+    }
+  ],
+  "current_source_sha256": {
+    "mingjing_core/organize/supplement_v2/__init__.py": "97ec6536327c442648c77204e83a530bce3d4b1be5b2c3f5d649da21f6fdcc50",
+    "mingjing_core/organize/supplement_v2/contracts.py": "de3f53fbf019dc79434023c204f0e68d49a380173d0bad8a83e953df458d0816",
+    "mingjing_core/organize/supplement_v2/guards.py": "b98d2fc73beec604b5edb38275980f16c8c94fff5c78dc56de0a0b97f2955f76",
+    "mingjing_core/organize/supplement_v2/intent_policy.py": "c3c6c91cde0eb0b8135b55b3594a77a96eafeaba5857e52864fe6283f8fa8d94",
+    "mingjing_core/organize/supplement_v2/legacy_bridge.py": "78ec7567a947388968d3d85d8565495aa904bdd8696ca63969ab30a74c3fc793",
+    "mingjing_core/organize/supplement_v2/lifecycle.py": "923f88173c2a918ca1fd0ff89e18540b161113c26db7475a776963839236d1b9",
+    "mingjing_core/organize/supplement_v2/plan_contracts.py": "522e553269a7ace350ec1eb3558e40f710dc564c3e247c342d035e722a44a015",
+    "mingjing_core/organize/supplement_v2/projection.py": "0eaa5a6eaaa239ee69489430ef2a7f6d81459bdfb88b6b6c2f5fcfe72c158956",
+    "mingjing_core/organize/supplement_v2/review.py": "c2db1e0c6e44946493b16d2e194c69b47530dd2ee7748210dfc3f6440e0c6428",
+    "mingjing_core/organize/contracts.py": "82058a063be2d2554bf666b736bce645da96a06f74802f0dc7ea458eb30de812",
+    "mingjing_core/organize/changes.py": "3c79f30a87f4507a9250d22ad618d3baa368b7a951968364b15bb325692678a9",
+    "mingjing_core/organize/_change_values.py": "a7775b9b0024757b2ab45ac4e29f85e6f0483ac81f2ffca19e62d5f306bf5f64",
+    "mingjing_core/organize/v2/contracts.py": "a10d1493b0defaddcf608ee9b1731b87182a49a3dd9944cbb5d6778253203b91",
+    "mingjing_core/memory2/contracts.py": "1bb87bf93e689df2b7acb7d4c203ff987c753e2240fbb28e0898b26a193225bb",
+    "mingjing_core/memory2/guards.py": "4fa58e2c87a732b0a7ede4623dada6431097d4570470f6a864e1b31c3c270528",
+    "mingjing_core/memory2/sensitivity.py": "c97fd143f69920be5d625e53ba4756bdbd640dc5ef1ffa4f58b05fead32b4922",
+    "mingjing_core/memory2/consent_text.py": "2c3e33095e406725fea70b133903a72f330e8aa58c00b97d05ca04a977cdcf46",
+    "mingjing_core/memory2/validation.py": "716f7ef1cf6ea69190b836f1fc84852f58198354ffa0bbdd81d290657a868477",
+    "mingjing_core/memory/policy.py": "47c82d83dd9177180392e3246763f9ef2c9ec219f710719d528746dc3256f09b",
+    "mingjing_core/timekit/clock.py": "61e967c05ab5ba066986921d61d6761f5544ee2171d37e5cfada4b7defad20c3",
+    "mingjing_core/organize/spaces.py": "049f55c4bb362266f1e77ed832dc911d7c388f5c01dab105b571771fe26062a7"
+  },
+  "existing_two_suite_python_sha256": {
+    "tests/v4/organize_supplement/test_supplement_mod.py": "b113513320af70b9535b31bf22547390470c272fcfa17e79b3416818a8c59f43",
+    "tests/v4/organize_supplement_v2/legacy_bridge_calendar_support_mod.py": "92686c3d294ccf3d788df3136e058454539817fa3479c0a49ff25e09c2af2e24",
+    "tests/v4/organize_supplement_v2/test_acceptance_supplement_mod.py": "9c0fcb1e2a9f0040fa4763415ccda44b03a7d65afa2f48b8d980c3d171150dad",
+    "tests/v4/organize_supplement_v2/test_legacy_bridge_calendar_mod.py": "cd3cdc7bb2bb1f726fe79e9e94c0d1d50477595299c2ce4dfa06f852e61a5c05",
+    "tests/v4/organize_supplement_v2/test_legacy_scalar_acceptance_mod.py": "dda0e8ee5aa798bb0e6e56860b3312d6deda242601f8e6bc5b88723de957246b"
+  },
+  "existing_frozen_and_synthetic_material_sha256": {
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_frozen_matrix_20261021.json": "883b171aa7589aa1ee807d439c1779714ee91f588c9a2b0755b269b07b3491b2",
+    "docs/v4/evidence/MOD_2026-10-21/LEGACY_SCALAR_frozen_matrix_20261021.json": "7b164849815b572f2dcbc583b2718c523965df5546b4dc227f3811b4d6a7cff9",
+    "tools/eval/fixtures/mod_20261021/legacy_bridge_calendar_synthetic.json": "480e5e00c70a809fa59b3e3b3ffdaddc7ded1940156236de6140cc1a49a899d0",
+    "tools/eval/fixtures/mod_20261021/legacy_scalar_independent_synthetic.json": "a77296ab9d19a25a79758027ced13928589b1c308ab25ebe53056def1ac15d9b"
+  },
+  "historical_coverage_reference": {
+    "path": "docs/v4/evidence/MOD_2026-10-21/LEGACY_BRIDGE_compatibility_coverage_20261021.json",
+    "sha256": "49419da399476a6cc28ee9f12360014aa24d2754400744034a24880eb672abda",
+    "observed_result": "529 passed; coverage only supplement_v2 nine products",
+    "use": "定位真实业务边界，不能声称新9例已计入历史快照"
+  },
+  "excluded_snapshot_paths": [
+    "任何活ExecPlan/日志",
+    "可能被root其他工作追加的runner",
+    "Q5 B或私人75正文/标签/分布/指标"
+  ],
+  "common_preconditions": [
+    "只用公开构造器、审阅API和当前可信宿主投影；不读取私有态，不 object.__setattr__，不手工构造/重seal坏plan",
+    "保留已审阅内容、真实owner/subject、敏感授权、来源当前版本/撤回/无痕、replay和undo规则",
+    "S02必须真正执行公开B计划得到新快照，不得replace revision或手造operations替代",
+    "S03必须经合法MemoryFact/MemorySnapshot和公开entity_from_fact进行当前授权投影，来源/锚点/said_at精确一致",
+    "所有时间和Clock显式aware；显示及记录用Asia/Shanghai，不依赖本机Tokyo",
+    "未来合成正文仅放private或tools/eval/fixtures显式synthetic；本轮不创建正文fixture",
+    "不调用Q5分类器、不读取B或私人75、不访问网络/model/PG/Feishu，不执行Git"
+  ],
+  "not_selected": [
+    "构造器类型镜像、重复ops/guards、缺record guard、非法字段或缺reviewed对象等需要手造/重seal坏plan的路径",
+    "已有敏感同意、无痕/revoked等标志、合法replay、重复undo、14天正负边界与同义否定目标的重复",
+    "为命中缺行而删除记录同时强行保持旧全局版本的人工矛盾状态"
+  ],
+  "execution": {
+    "performed": false,
+    "python_product_probes": 0,
+    "pytest_processes": 0,
+    "coverage_runs": 0,
+    "network_calls": 0,
+    "model_calls": 0,
+    "git_operations": 0
+  },
+  "limits": [
+    "只有候选文档冻结，尚未实施或验证",
+    "发现真实失败须先保存原始观察和前后哈希，再报告root，不放松期望或擅自修产品",
+    "不是PG授权、主线接线或生产验收"
+  ]
+}

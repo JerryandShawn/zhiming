@@ -1,0 +1,40 @@
+{
+  "kind": "offline_synthetic_candidate_only",
+  "code_commit": "b2924e5f58226751fd44dc764fb6df94b6d31967",
+  "module_tests": 200,
+  "module_seconds": 0.57,
+  "combined_tests": 1504,
+  "combined_seconds": 3.4,
+  "groups": {
+    "renderer": 72,
+    "token": 58,
+    "cardkit_including_independent": 69,
+    "cross_module_socket_dns_denied": 1
+  },
+  "ruff_new_python_files": 82,
+  "real_model_calls": 0,
+  "real_feishu_calls": 0,
+  "server_access": 0,
+  "official_schema_verified": false,
+  "durable_pg_or_fencing_verified": false,
+  "sha256": {
+    "mingjing_core/adapters/channels/action_token_contracts.py": "548fac211831304323679474c5c92dd338995d9b35c27e4b133742e45f666de0",
+    "mingjing_core/adapters/channels/action_token_store.py": "a10bada777ada85bfb9a1eb459e1afed4aa9c35b5b9842f1463d479d9efd0345",
+    "mingjing_core/adapters/channels/action_tokens.py": "12b912d4229025d96fdb4c089cfbc8e39e1316d124d926ddbf649c83a3d29dbf",
+    "mingjing_core/adapters/channels/card_elements.py": "41a376f6505157a1c55f43e9dca8bfc6bcc035478a28b31e30d92f99c1790874",
+    "mingjing_core/adapters/channels/cardkit_checkpoint.py": "43c5ae8599b0306d9015cbb265d41d66c01fc351db2dcbfad948c70bf46dafaf",
+    "mingjing_core/adapters/channels/cardkit_client.py": "b64cc7c5cbfbe9108a16a1b87ae61ca974f2d4fe1231dd22e4138c7c1bd41578",
+    "mingjing_core/adapters/channels/cardkit_contracts.py": "bd6965ba3a3828e52f0327c01adfa1fd39781a70b88bdd027a6e98133a3fc379",
+    "mingjing_core/adapters/channels/cardkit_store.py": "47401b3fa96c300f7400061e838bfa435546a61de611c2d826a30e2e508088cf",
+    "mingjing_core/adapters/channels/cards.py": "db26935f44ffad1815724baf3839c3a5fdc86f7429f127264312b4b2965e38f8",
+    "mingjing_core/adapters/channels/cards_contracts.py": "3cf5ed6d8b8e1289ebd7d064709332f242faa53a60943ca73530a7207d4e985a",
+    "tests/v4/cards_mod/_cardkit_fixture_mod.py": "20e5197fed81aa22046b492d277ebe8e4dddf03c4bb0f11b81336dbffce350bf",
+    "tests/v4/cards_mod/test_action_tokens_mod.py": "3ae84da2f35ad7cc6eaa7d6f1fcab713eca39b57c9c0892d17c1bcd7f73b84bb",
+    "tests/v4/cards_mod/test_cardkit_adversarial_mod.py": "d7c4a022f2355ba99346f4788ddb28d1a9e4d17faa9dccfe068bdbaf49ab3a9c",
+    "tests/v4/cards_mod/test_cardkit_mod.py": "edc666554df811c971960482a43ac7e681b5c1f900da46b4fc6dddead0ca4523",
+    "tests/v4/cards_mod/test_cardkit_recovery_mod.py": "b5cf9b4272930711927d037fbf704b0cfceed22d58b9dc9f0d8e40f97d3a21ce",
+    "tests/v4/cards_mod/test_cards_adversarial_mod.py": "f4968c6e0d8b7ccaa9689018219426e520c8fbcdd9d64dbbd7c22485e8bdd4d4",
+    "tests/v4/cards_mod/test_cards_builders_mod.py": "27c3e20e5e589e10cd840ce3549abe5520aefcbad73c671bc506923fa9ad0cf3",
+    "tests/v4/cards_mod/test_cards_pipeline_mod.py": "45b4fb998bdc5361e181f7e00333b84bad167a9aadbdd51c562e1868c9d29f5d"
+  }
+}
