@@ -26,19 +26,12 @@ def snapshot_memory(target: Any) -> dict:
     values = {}
     for key in PRIVACY_FIELDS:
         value = getattr(privacy, key)
-        values[key] = (
-            sorted(value) if isinstance(value, set) else deepcopy(value)
-        )
+        values[key] = sorted(value) if isinstance(value, set) else deepcopy(value)
     return {
+        "judge_action_history": deepcopy(getattr(target, "judge_action_history", [])),
         "privacy": values,
-        "actions": {
-            key: deepcopy(getattr(target.memory_actions, key))
-            for key in ("ids", "revisions", "setup_calls")
-        },
-        "withdrawals": [
-            [list(key), value]
-            for key, value in target.memory_withdrawals.original_revisions.items()
-        ],
+        "actions": {key: deepcopy(getattr(target.memory_actions, key)) for key in ("ids", "revisions", "setup_calls")},
+        "withdrawals": [[list(key), value] for key, value in target.memory_withdrawals.original_revisions.items()],
     }
 
 
@@ -63,6 +56,7 @@ def restore_memory(target: Any, state: dict) -> None:
         ):
             raise LifecycleError("旧断点缺少记忆观察证据，不能重建过去的基线")
         return
+    target.judge_action_history = deepcopy(saved.get("judge_action_history", []))
     for key in PRIVACY_FIELDS:
         value = deepcopy(saved["privacy"][key])
         if key in {"source_ids", "query_ids"}:
@@ -74,6 +68,4 @@ def restore_memory(target: Any, state: dict) -> None:
         setattr(target.privacy_seed, key, value)
     for key in ("ids", "revisions", "setup_calls"):
         setattr(target.memory_actions, key, deepcopy(saved["actions"][key]))
-    target.memory_withdrawals.original_revisions = {
-        tuple(key): value for key, value in saved["withdrawals"]
-    }
+    target.memory_withdrawals.original_revisions = {tuple(key): value for key, value in saved["withdrawals"]}

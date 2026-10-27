@@ -73,11 +73,20 @@ class EvidenceJudge:
             "v3_full_time_block_present": any(key in evidence for key in ("now", "time_context")),
         }
         safe["事实证据"] = {
-            "seed_facts": deepcopy(payload.get("seed", {}).get("facts", [])),
+            "seed_facts": deepcopy(
+                [row for row in payload.get("memories", []) if row.get("source") == "seed"]
+                if payload.get("packet_version") == "judge-packet-v2"
+                else payload.get("seed", {}).get("facts", [])
+            ),
             "injected_facts": evidence.get("facts", evidence.get("current_facts", [])),
             "claims": evidence.get("claims", []),
         }
-        if payload.get("seed", {}).get("synthetic") is not True:
+        fixture = (
+            payload.get("fixture", {})
+            if payload.get("packet_version") == "judge-packet-v2"
+            else payload.get("seed", {})
+        )
+        if fixture.get("synthetic") is not True:
             raise ValueError("Full-answer capture requires the strict synthetic fixture marker")
         row = {
             **safe,

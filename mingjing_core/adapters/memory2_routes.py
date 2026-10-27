@@ -2,13 +2,13 @@
 
 from typing import Literal
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from mingjing_core.agent.envelope import public_receipt
 from mingjing_core.application.memory2_web_actions import MemoryWebActions
 from mingjing_core.application.memory2_profile_web import ProfileWebService
-from mingjing_core.domain.contracts import EvidenceError
+from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
 
 class Action(BaseModel):
@@ -20,6 +20,7 @@ class Action(BaseModel):
 
 class Confirm(Action):
     remember_category: bool = False
+    choice: Literal["old", "new"] | None = None
 
 
 class Undo(Action):
@@ -28,6 +29,13 @@ class Undo(Action):
 
 class ProfileEdit(Action):
     text: str = Field(min_length=1, max_length=800)
+
+
+def scoped(call, *args, **kwargs):
+    try:
+        return call(*args, **kwargs)
+    except ScopeError:
+        raise HTTPException(404, "记录不存在") from None
 
 
 def memory2_router(core, auth, body):
@@ -39,7 +47,8 @@ def memory2_router(core, auth, body):
             values = schema.model_validate(await body(request))
         except ValidationError:
             raise EvidenceError("记忆动作字段无效，请刷新后重试") from None
-        receipt = MemoryWebActions(service.repo).act(
+        receipt = scoped(
+            MemoryWebActions(service.repo).act,
             owner,
             values.subject_id,
             ident,
@@ -48,14 +57,17 @@ def memory2_router(core, auth, body):
             request_id=values.request_id,
             remember=getattr(values, "remember_category", False),
             change_type=values.change_type if change else None,
+            choice=getattr(values, "choice", None),
         )
         return public_receipt(receipt)
 
     @router.post("/api/memory2/proposals/{ident}/confirm")
+    @router.post("/api/proposals/{ident}/confirm")
     async def confirm(ident: str, request: Request):
         return await invoke(request, ident, "confirm", Confirm)
 
     @router.post("/api/memory2/proposals/{ident}/ignore")
+    @router.post("/api/proposals/{ident}/dismiss")
     async def ignore(ident: str, request: Request):
         return await invoke(request, ident, "ignore", Action)
 
@@ -77,7 +89,7 @@ def profile_router(core, auth, body):
     @router.get("/api/memory2/profile/{ident}")
     async def profile_view(ident: str, request: Request, subject_id: str = "self"):
         owner, service = auth(request), core(request)
-        return ProfileWebService(service.repo).view(owner, subject_id, ident)
+        return scoped(ProfileWebService(service.repo).view, owner, subject_id, ident)
 
     async def profile_action(request, ident, action, schema):
         owner, service = auth(request), core(request)
@@ -86,7 +98,8 @@ def profile_router(core, auth, body):
         except ValidationError:
             raise EvidenceError("画像动作字段无效，请刷新后重试") from None
         return public_receipt(
-            ProfileWebService(service.repo).act(
+            scoped(
+                ProfileWebService(service.repo).act,
                 owner,
                 values.subject_id,
                 ident,

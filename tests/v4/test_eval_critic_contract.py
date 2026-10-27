@@ -104,7 +104,8 @@ def test_downgraded_unsafe_advice_is_a_judge_error_in_the_scenario_result() -> N
     }
     judge = ModelJudge("synthetic-critic", RUBRIC, CriticResponse(output))
     result = evaluate_scenario(scenario, FakeTarget(), judge=judge)
-    assert result["status"] == "judge_unavailable"
+    assert result["status"] == "needs_brain_review" and result["needs_brain_review"] is True
+    assert result["machine_status"] == "judge_unavailable" and result["machine_score"] is None
     assert result["score"] is None
     assert result["judge_error_code"] == "ValueError"
     assert result["failed_assertions"] == ["turn[1].judge_error"]

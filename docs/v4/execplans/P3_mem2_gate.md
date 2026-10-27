@@ -12,8 +12,9 @@
 - [x] 05:00完成独立L2 field保护接口及实际构建调用，42项定向通过。
 - [x] 08:16按R32精确普通合入f44f5dd45b1a51631712b00b93aafff61fa9b126，merge 6d5f35b3d78aed5b45e6816648141232d46d938a，无冲突，无P8。
 - [x] 08:30认证提案确认/忽略/确认撤销、slot/confirmed_slot/merge/archive变更ID+revision路由，画像查看/编辑/删除，真实HTTP/PG及原生回归通过。其他冲突/事件日期撤销类别及网页展示仍待，不把API当按钮完成。
-- [ ] 画像查看/编辑/删除及真实profile_items组合复核；03:00归档/空闲10分钟脚本反思/同线程单在途/无痕排除。
-- [ ] 按v59修主线needs_brain_review/C21/critic契约失败，R35/M05/M08、46所有脚本门、一次完整tests/v4/CI及迁移相同回执。
+- [x] 08:47画像HTTP及真实profile_items/L2组合；原生03:00归档/空闲10分钟脚本反思/跨进程单线程锁/无痕排除，真实Web lifespan已注册。
+- [x] 08:47按v59修主线needs_brain_review/C21/critic契约及汇总空分错误，R35/M05/M08定向复核；记忆撤销驱动补前轮真实回执/效果与断点保存。
+- [ ] 46所有脚本门、一次完整tests/v4/CI及最终候选迁移相同回执；认证路由尚未配网页按钮，事件日期等额外撤销类别未扩展。
 - [ ] 冻结v4/release-mem2，执行单/打包及46约20题真实评测，门齐前不读key/不接入。
 
 ## Surprises & Discoveries
@@ -71,3 +72,22 @@ ProfileWebService及认证GET/POST实际提供单条画像查看、编辑、删�
 失败原件均保留并已逐一根核：b13aac11ec6d485397ae0c615c49785c为6pass4fail（绑定回执自造family字段被原白名单拒绝，改用code，未放宽）；37d5ad89be21482ea37536e5f06a77aa为9pass1fail（测试时钟早于新事实，fixture前移7日，原未来事实拒绝不变）；e05ff7a59bf144adb66bd4f821ac8172为10/10初轮。7cd8b13089d3488b8c47f7862547bd26为113pass1fail，测试直接repo.delete来源却断言整条级联，改为原生retire_fact(scope=source)；79fd4b0411664422a76215a452dac9bb为113pass1fail，原生撤销已正确撤销当前run，fixture继续finish租约被正确拒绝，改断言run revoked，不重开租约或改产品闸门。
 
 private/v59_migrations_unchanged.json实际比对8 SQL canonicalLF同e578，额外SQL为空，旧v58回执保留。首次写证据脚本误指不存在的mingjing_core/migrations路径，断言中止0写，随后改实际repositories/migrations后核8项。无新迁移/undo_token/M6索引/P8/真实模型/付费接入/新CI/全量/服务器修改。08:15唯一SSH仍banner timeout/native255，session38595结束；PG55480只核存活未启停其他PG。下一直接03:00归档/空闲10分钟脚本反思单线程调度及R35/M05/M08/needs_brain_review-C21-critic修复；真实profile_items组合与一次完整门仍待，不称候选就绪。
+
+
+## 2026-10-27 08:48 原生调度、真实组合及主线评测契约
+
+本wake main60未变，模块首段已正式记忆2.0就绪f44f5dd（原全量仍失败清单，不伪称绿）；先前R32精确合入已完成，不重复。08:35唯一SSH session99634实际banner timeout/native255，未认证/远端命令/修改0；原PG55480 PID50516单次核存活，未启停。
+
+MemoryMaintenanceSchedule已实际注册原Web lifespan，原worker每轮经asyncio.to_thread调用，60秒节流、进程内非阻塞guard；不创建第二条常驻模型线程或新的生产模型配置。03:00采用owner IANA时区，服务启动晚于03:00做当日catch-up，既有runtime_step存当日游标/完成标识；每页最多100事实、每tick最多50owner，只将有原生明确到期依据且当前授权/来源有效的事实交MemoryArchiveService，不直接改状态、猜日期或删除历史；撤销服务仍原生。未知时区保守跳过，不用系统时区猜。线程扫描只选原生active/life且incognito严格false；空闲不足10分钟、在途queued/running（包括无thread_id的同人物旧run）不反思。每线程PG session advisory lock跨不同调度器互斥，另有持久running/complete/failed指纹标识，同一闲置输入失败或未知不自动重算。
+
+IdleMemoryReflection准备当前授权事实版本，事务外ScriptedReflectionModel纯本地摘取原事实原文/原来源、至多20条，通过ProfileReflectionService.consume_patch生成待确认画像提案；不自动确认、写事实、调用provider/model factory或联网。模型阶段不持owner事务，完成后短事务重新核线程空闲/活动原值、当前事实与来源/同意版本；计算期间新来话或撤销依据不发布建议，错误仅持久固定MEMORY_REFLECTION_FAILED无正文。无痕线程不触发；不读取临时runtime结果作为事实。此为脚本摘录整理，不能冒称真实模型语义反思质量已验。
+
+调度首轮b7719fa84b454bae8bb0c2f5bbc266dc为7/7、3.48s。扩展d501cf2a798749188e8e38db139aacda为43pass1fail，发现旧run原生request没有thread_id，初查询未挡；产品精确补同人物且thread_id缺失的旧run阻挡，不伪造fixture线程。最终ef5c8a4c3679406e8d5c25a0e9abdad0为62/62、21.95s（08:42:17–08:42:39），含实际Web lifespan注册/旧worker继续、03:00前后与幂等、空闲/无痕、跨调度器单在途、事务外计算/期间新来话或撤销拒绝、真实module profile_items/L2出生资料保护/Agent、HTTP认证及R35全兜底/M05。e7af7d746ee94bc88ebb31fb62a93ad7为10/10、6.90s，补M08原生授权和范围事件/原评分契约不变；分轮不合称全门。
+
+路由按41精确补跨owner404固定消息，不更改旧全局403处理；认证仍先做，无正文回显。新增/api/proposals/{id}/confirm|dismiss兼容入口，冲突提案必须显式choice old/new，派发原MemoryConflictResolutionService，原记忆选择/敏感同类授权不改，模型不提供consent。冲突Undo走原MemoryConflictUndoService；fc8114b24983411ba6372e81908b68bf为18/18、5.83s含两选择、缺选择无写、确认/撤销精确重放。无新migration/token。
+
+R32非记忆失败已实测并修：9188b4ef5b9649e0a7b63060e2e9faa1为1pass2fail，原生JudgeJournal已正确通过，两critic旧断言仍期judge_unavailable；改为needs_brain_review且额外核machine_status/原null分/原failed_assertions不丢，评分重试原停止/物理计数不改。fd2a9c7c4d43490b8884ccd7754c7386为1pass3fail，C21尚在评分前拒绝新packet缺旧seed.synthetic，evidence_full为空；judge_payload加入由严格Scenario.seed派生的fixture.synthetic布尔，EvidenceJudge按packet版本读真实标记/seed memories，保严格is True且无证标记不捕获全文/不调用provider，旧payload路径保留。5e29b36f7acb4ba5b8479fe25cdd2426为112pass1fail，发现report.summarize仍把待复核null分相加，已单列needs_brain_review_ids和category计数，从通过/失败分母排除、不改machine原分/原状态；新增null及非null待复核纯汇总断言。最终db41caa4be0f4eb8bcd0f4c217bb9e52为114/114、64.69s（08:42:27–08:43:32），完整C21/critic/framework/R33离线PG重试通过，无真实请求。
+
+补评分包隐私回归时发现f44新MemoryWithdrawDriver取代旧NativePrivacyDriver后遗漏judge_action_history；a924e817e99b4352b8e5555cb918f465为19pass1fail、da359536c4bc4c858f72b306850cf942为0pass1fail（第二轮仅打印ID/状态诊断，无正文），F01原生删除已成功但前轮回执没入评分包，不能改断言放过。精确补删除前原生followup关联、删除后真实擦除/事实撤销证明才投影cancelled(native_status=deleted)，记录真实回执/原生效果，同turn重放一致且不追加重复历史；lifecycle_state持久保存/恢复观察历史，不重跑业务效果、不改F01金标。360f7bf963ae4c98912ab9c894571de6为24/24、10.51s初修；最终1638313d144c418c81ed9d5b59239ef8为26/26、10.50s（08:46:49–08:47:01），含真实F01原生删除前后/包中revoked@turn/关闭跟进、严格false/null/string/int标记拒绝、待审/接受门、原M08动作及持久断点回放。所有metadata/XML/log逐根核exit及计数，旧失败不删，分轮不拼全链。
+
+18个新增/修改Python文件Ruff/check+format120通过；旧web仅AST，新业务helper及变更driver函数≤60、diff--check通过。无P8、付费请求、全量或新CI请求；8迁移未改、旧v59原件保留。下一直接本候选46指定脚本组（R11+M/R/F/KU/TM/MS/A+TA01/M01）及一次完整tests/v4/CI；仍未候选就绪，不读key、不部署。API并不代表完整网页提案/画像按钮界面已展示，事件日期等额外Undo类型没有假注册。

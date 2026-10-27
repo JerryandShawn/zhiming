@@ -28,6 +28,22 @@ def test_packet_resolves_profile_and_excludes_replay_answers():
     assert packet["reference_ids"] == ["REF-ZI-01", "REF-JQ-01", "REF-HOL-01"]
 
 
+@pytest.mark.parametrize("marker", [False, None, "true", 1])
+def test_c21_packet_requires_strict_synthetic_marker_before_capture_or_provider(marker):
+    from tools.eval.evidence_v2 import EvidenceJudge
+
+    class Forbidden:
+        def generate(self, **kwargs):
+            raise AssertionError("unverified capture cannot reach provider")
+
+    packet = judge_payload(scenario("T05"), 1, TurnResult(text="合成回答"))
+    packet["fixture"]["synthetic"] = marker
+    judge = EvidenceJudge(Forbidden(), Path("tools/eval/rubric_v21.md"))
+    with pytest.raises(ValueError, match="strict synthetic"):
+        judge.evaluate(packet)
+    assert judge.records == []
+
+
 def test_native_tombstones_win_and_old_effects_are_never_truncated():
     case = scenario("F01")
     metadata = {
@@ -118,7 +134,9 @@ def test_native_judge_packet_preserves_now_cards_and_withdrawal(identity):
         if identity == "D01":
             assert packets[-1]["this_turn"]["cards"]["present_options"]
         if identity == "F01":
-            assert any(row["status"].startswith("revoked@turn1") for row in packets[-1]["memories"])
+            assert any(row["status"].startswith("revoked@turn1") for row in packets[-1]["memories"]), [
+                {key: row.get(key) for key in ("id", "alias", "status")} for row in packets[-1]["memories"]
+            ]
             assert any("cancelled" in effect for row in packets[-1]["prior_turns"] for effect in row["effects"])
     finally:
         target.close()

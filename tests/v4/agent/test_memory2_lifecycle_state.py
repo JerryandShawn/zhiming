@@ -22,14 +22,23 @@ def test_restored_memory_evidence_preserves_order_baseline_and_selected_revision
     target.privacy_seed.embedding_targets = {("fact", "fact-1")}
     target.privacy_seed.baseline = {"embedding": 3}
     target.memory_withdrawals.original_revisions[("fact", "fact-1")] = 7
+    target.judge_action_history = [
+        {
+            "turn": 1,
+            "receipts": [{"write_status": "deleted", "fact_id": "fact-1"}],
+            "effects": ["followup native → cancelled (native_status=deleted)"],
+        }
+    ]
     state = json.loads(json.dumps({"memory_observers": snapshot_memory(target)}))
     target.privacy_seed.baseline["embedding"] = 0
+    target.judge_action_history = []
     restore_memory(target, state)
     assert target.privacy_seed.query_tokens == ("z", "a")
     assert target.privacy_seed.source_ids == {"source-1", "source-2"}
     assert target.privacy_seed.embedding_targets == {("fact", "fact-1")}
     assert target.privacy_seed.baseline == {"embedding": 3}
     assert target.memory_withdrawals.original_revisions == {("fact", "fact-1"): 7}
+    assert target.judge_action_history == state["memory_observers"]["judge_action_history"]
     assert target.repo is None  # Attach did not access a DB or reseed business effects.
 
 

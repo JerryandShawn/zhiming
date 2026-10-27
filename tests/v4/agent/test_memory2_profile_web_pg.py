@@ -48,7 +48,7 @@ def test_view_edit_delete_and_replays_preserve_original_fact(web):
     before = repo.get_revision("alice")
     assert change(client, current, "delete", key="delete-profile").json() == removed.json()
     assert repo.get_revision("alice") == before and repo.get("alice", "fact", fact["id"]) == fact
-    assert client.get(url, headers=HEADERS).status_code in {403, 422}
+    assert client.get(url, headers=HEADERS).status_code in {404, 422}
     assert change(client, item, "edit", text="我想把画像描述改得更简洁").status_code == 409
 
 
@@ -63,7 +63,7 @@ def test_each_profile_route_has_owner_authentication_before_writes(web, action):
         response = change(
             client, item, action, headers={"X-Token": "synthetic-bob"}, **({"text": "合成"} if action == "edit" else {})
         )
-    assert response.status_code == 403
+    assert response.status_code == 404
     assert repo.get_revision("alice") == before and repo.list("bob", "message") == []
 
 
@@ -84,7 +84,7 @@ def test_invalid_edits_create_no_authorization_or_fact(web, values):
     repo.create_subject("alice", "other", "合成人物")
     before = repo.get_revision("alice")
     response = change(client, item, "edit", **dict({"text": "合成编辑"}, **values))
-    assert response.status_code in {403, 409, 422}, response.text
+    assert response.status_code in {404, 409, 422}, response.text
     assert repo.get_revision("alice") == before
 
 

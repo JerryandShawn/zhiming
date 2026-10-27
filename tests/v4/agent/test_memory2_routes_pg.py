@@ -14,6 +14,7 @@ from mingjing_core.timekit.clock import FrozenClock
 from .test_memory2_profile_proposals_pg import candidate
 from .test_memory2_proposals_pg import pending
 from .test_memory2_slots_pg import pair, update
+from .test_memory2_conflicts_pg import conflict
 from .test_toolkit_pg import SAID_AT
 
 HEADERS = {"X-Token": "synthetic-memory-web"}
@@ -97,7 +98,7 @@ def test_bad_identity_or_shape_cannot_create_action_sources(web, mode):
         payload["owner"] = "bob"
     before = repo.get_revision("alice")
     response = client.post(f"/api/memory2/proposals/{ident}/confirm", headers=headers, json=payload)
-    assert response.status_code in {401, 403, 409, 422}
+    assert response.status_code in {401, 404, 409, 422}
     assert repo.get_revision("alice") == before and repo.list("alice", "fact") == []
     h.finish()
 
@@ -128,7 +129,7 @@ def test_every_route_rejects_cross_owner_before_action_source_write(web, path):
         url = f"/api/memory2/changes/{ident}/undo"
     before = repo.get_revision("alice")
     response = client.post(url, headers={"X-Token": "synthetic-bob"}, json=payload)
-    assert response.status_code == 403
+    assert response.status_code == 404
     assert repo.get_revision("alice") == before and repo.list("bob", "message") == []
     h.finish()
 
@@ -158,4 +159,28 @@ def test_profile_ignore_replays_even_after_private_proposal_body_is_scrubbed(web
     before = repo.get_revision("alice")
     replay = post(client, proposal["id"], "ignore", "ignore-profile")
     assert replay.status_code == 200 and replay.json() == first.json()
+    assert repo.get_revision("alice") == before
+
+
+@pytest.mark.parametrize("choice", ["old", "new"])
+def test_conflict_requires_explicit_choice_and_uses_native_resolution_and_undo(web, choice):
+    repo, client = web
+    _, old, pending, _, _ = conflict(repo)
+    ident = pending.receipt["id"]
+    before = repo.get_revision("alice")
+    assert post(client, ident, "confirm", "missing-choice").status_code == 422
+    assert repo.get_revision("alice") == before
+    chosen = post(client, ident, "confirm", "choose", choice=choice)
+    assert chosen.status_code == 200, chosen.text
+    before = repo.get_revision("alice")
+    assert post(client, ident, "confirm", "choose", choice=choice).json() == chosen.json()
+    assert repo.get_revision("alice") == before
+    proposal = repo.get("alice", "proposal", ident)
+    assert proposal["status"] == "resolved_" + choice
+    undone = post(client, ident, "undo", "undo-choice", revision=proposal["revision"])
+    assert undone.status_code == 200, undone.text
+    assert repo.get("alice", "proposal", ident)["status"] == "pending"
+    assert repo.get("alice", "fact", old["id"])["status"] == "active"
+    before = repo.get_revision("alice")
+    assert post(client, ident, "undo", "undo-choice", revision=proposal["revision"]).json() == undone.json()
     assert repo.get_revision("alice") == before

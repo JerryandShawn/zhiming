@@ -284,8 +284,31 @@ def test_critic_errors_never_turn_into_passed_cases() -> None:
     case = evaluate_scenario(Scenario.model_validate(example()), FakeTarget(), judge=judge)
     # R25: preserve missing grading instead of recording a fabricated zero.
     assert case["score"] is None
-    assert case["status"] == "judge_unavailable"
+    assert case["status"] == "needs_brain_review" and case["needs_brain_review"] is True
+    assert case["machine_status"] == "judge_unavailable" and case["machine_score"] is None
     assert case["failed_assertions"] == ["turn[1].judge_error"]
+
+
+def test_summary_keeps_pending_review_out_of_business_pass_or_fail_counts() -> None:
+    from tools.eval.report import summarize
+
+    cases = [
+        dict(
+            id="review",
+            category="memory",
+            status="needs_brain_review",
+            score=0.4,
+            needs_brain_review=True,
+            machine_status="failed",
+            machine_score=0.4,
+        ),
+        dict(id="pass", category="memory", status="passed", score=1.0),
+    ]
+    before = dict(cases[0])
+    summary = summarize(cases)
+    assert summary["count"] == 1 and summary["passed"] == 1 and summary["score"] == 1.0
+    assert summary["needs_brain_review_ids"] == ["review"]
+    assert summary["categories"]["memory"]["needs_brain_review"] == 1 and cases[0] == before
 
 
 def test_live_missing_key_preflight_does_not_create_baseline(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
