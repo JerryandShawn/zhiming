@@ -31,6 +31,7 @@ from .v4_observations import (
     repeat_count,
     semantic_observations,
     structural_observations,
+    tool_disclosures,
     tool_steps,
 )
 from .v4_privacy import NativePrivacyDriver
@@ -309,6 +310,7 @@ class V4Target:
                     request.get("tool_names", []) for request in self.port.requests[request_offset:]
                 ],
                 "actual_tool_names": [step["name"] for step in steps],
+                "tool_disclosures": tool_disclosures(self.repo, self.owner, run["id"]),
             }
         )
         return TurnResult(
@@ -342,6 +344,7 @@ class V4Target:
                     request.get("tool_names", []) for request in self.port.requests[request_offset:]
                 ],
                 "actual_tool_names": [step["name"] for step in steps],
+                "tool_disclosures": tool_disclosures(self.repo, self.owner, run["id"]),
             },
         )
 

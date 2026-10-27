@@ -24,6 +24,24 @@ def tool_steps(repo: PostgresRepository, owner: str, run_id: str) -> list[dict[s
         ).fetchall()
 
 
+def tool_disclosures(repo: PostgresRepository, owner: str, run_id: str) -> list[dict[str, Any]]:
+    """E2 reads native completed model steps, never model-supplied reports."""
+    run = repo.fetch_run(owner, run_id)
+    with repo.transaction(owner) as connection:
+        rows = connection.execute(
+            sql.SQL(
+                "SELECT seq,output FROM {} WHERE owner=%s AND run_id=%s AND epoch=%s "
+                "AND kind='model' AND status='completed' AND error_code IS NULL ORDER BY seq"
+            ).format(repo.table("core_run_steps")),
+            (owner, run_id, run["retry_epoch"]),
+        ).fetchall()
+    return [
+        {"seq": row["seq"], **row["output"]["tool_disclosure"]}
+        for row in rows
+        if isinstance((row["output"] or {}).get("tool_disclosure"), dict)
+    ]
+
+
 def semantic_observations(steps: list[dict[str, Any]]) -> list[dict[str, Any]]:
     result = []
     for step in steps:

@@ -102,12 +102,14 @@ class ToolRegistry:
         self.service, self.definitions = service, definitions
         self._by_name = {item.name: item for item in definitions}
 
-    def specs(self, ctx: ToolContext, *, required: tuple[str, ...] = ()) -> list[ToolSpec]:
+    def specs(
+        self, ctx: ToolContext, *, required: tuple[str, ...] = (), trimmed_out: list[str] | None = None
+    ) -> list[ToolSpec]:
         state = self.service.visibility_state(ctx)
         definitions = tuple(
             item for item in self.definitions if item.name != "chart_compute" or self.service.chart_available(ctx)
         )
-        visible = select_visible(definitions, ctx, state, required=required)
+        visible = select_visible(definitions, ctx, state, required=required, trimmed_out=trimmed_out)
         return [
             ToolSpec(item.name, item.description, flatten_schema(item.parameters.model_json_schema()))
             for item in visible

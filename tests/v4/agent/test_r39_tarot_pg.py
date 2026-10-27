@@ -27,6 +27,10 @@ def test_native_live_tarot_action_path(draw_source, omit_identifier):
         for i, turn in enumerate(case.turns, 1):
             result = target.send({**turn.model_dump(mode="json", exclude={"expect"}, exclude_none=True), "_index": i})
             assert not result.error, result.error
+            disclosures = result.metadata["tool_disclosures"]
+            assert disclosures and all(row["trimmed_known"] for row in disclosures)
+            assert all(len(row["visible"]) <= 15 and isinstance(row["trimmed"], list) for row in disclosures)
+            assert target.case_evidence()["tool_visibility_by_turn"][-1]["tool_disclosures"] == disclosures
             result.db = target.inspect_db()
             from tools.eval.judges import check_assertions
 

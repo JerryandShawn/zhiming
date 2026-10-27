@@ -122,12 +122,24 @@ class ToolVisibilityConflict(EvidenceError):
     code = "TOOL_VISIBILITY_CONFLICT"
 
 
+def disclosure_priority(name: str, state: VisibilityState) -> int:
+    intent_tool = {"daily": "daily_transit", "window": "window_search", "almanac": "almanac", "synastry": "synastry"}
+    if name == "tarot_read" and state.tarot_pending:
+        return 0
+    if name == intent_tool.get(state.metaphysics_intent):
+        return 1
+    return {"chart_compute": 2, "chart_skill": 3, "memory_update": 4, "profile_update_request": 4, "date_calc": 5}.get(
+        name, 6
+    )
+
+
 def select_visible(
     definitions: Iterable[T],
     ctx: ToolContext,
     state: VisibilityState,
     *,
     required: Iterable[str] = (),
+    trimmed_out: list[str] | None = None,
 ) -> tuple[T, ...]:
     by_name = {item.name: item for item in definitions}
     requested = set(required)
@@ -148,14 +160,8 @@ def select_visible(
             for name in eligible
             if name not in PRIVATE_WRITES and (by_name[name].read_only or by_name[name].private_allowed)
         ]
-    necessary = (state.necessary() | requested).intersection(eligible)
-    resident = [name for name in eligible if name in RESIDENT_TOOLS]
-    reserved = set(resident) | necessary
-    if len(reserved) > 15:
-        raise ToolVisibilityConflict("常驻和本状态必需工具超过15个，需拆分本轮状态")
-    selected = set(reserved)
-    for name in eligible:
-        if len(selected) >= 15:
-            break
-        selected.add(name)
+    # R34: eligibility/privacy is authoritative; priority only removes capabilities.
+    selected = set(sorted(eligible, key=lambda name: disclosure_priority(name, state))[:15])
+    if trimmed_out is not None:
+        trimmed_out.extend(name for name in eligible if name not in selected)
     return tuple(by_name[name] for name in eligible if name in selected)

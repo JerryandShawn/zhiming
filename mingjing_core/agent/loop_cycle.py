@@ -94,6 +94,7 @@ class LoopCycle:
         self.receipts: list[dict[str, Any]] = []
         self.repeats: dict[str, int] = {}
         self.exposed: set[str] = set()
+        self.trimmed_tools: list[str] = []
         self.usage: dict[str, Any] = {
             "model_steps": 0,
             "model_streams_this_execution": 0,
@@ -153,9 +154,11 @@ class LoopCycle:
             for message in item.messages
         ):
             raise ContextInputError("loop_prior_reasoning_not_allowed")
+        self.trimmed_tools = []
         tools = self.registry.specs(
             self._context(),
             required=(self.policy.only_tool,) if self.policy.only_tool and self.usage["model_steps"] == 0 else (),
+            trimmed_out=self.trimmed_tools,
         )
         if self.policy.text_only:
             tools = []
@@ -189,6 +192,7 @@ class LoopCycle:
 
     def _model_step(self) -> Any:
         self.control.poll()
+        self.trimmed_tools = []
         name = "revision" if self.revising else ""
         restored = self.ledger.restore_next(self.journal, self.run, role="primary", name=name) if self.ledger else None
         self.inbox.prepare(self, restored)
@@ -228,7 +232,13 @@ class LoopCycle:
                 call.id in used_ids for call in response.tool_calls
             ):
                 raise ModelProtocolError()
-            completed = self.journal.complete(step, assistant_output(response), response.usage)
+            output = assistant_output(response)
+            output["tool_disclosure"] = {
+                "visible": [tool.name for tool in budget.tools],
+                "trimmed": self.trimmed_tools,
+                "trimmed_known": restored is None,
+            }
+            completed = self.journal.complete(step, output, response.usage)
             if self.ledger:
                 self.ledger.completed(completed)
             step = completed
