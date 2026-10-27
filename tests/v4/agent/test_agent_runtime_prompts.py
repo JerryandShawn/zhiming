@@ -10,8 +10,8 @@ from mingjing_core.application.consultation_context import crisis_policy
 def test_prompt_hashes_versions_and_resolved_placeholders():
     bundle = load_prompts()
     assert (
-        bundle.manifest["files"]["system"]["version"] == "1.2.4"
-    )  # Board42 2.6: evidence-bound boundary wording; existing rules remain.
+        bundle.manifest["files"]["system"]["version"] == "1.2.5"
+    )  # R33: temporary comparisons have plain native basis and no persistent aliases.
     for name, row in bundle.manifest["files"].items():
         assert hashlib.sha256((DIRECTORY / row["file"]).read_bytes()).hexdigest() == row["sha256"]
         assert "{{" not in bundle.render(name)
@@ -32,6 +32,12 @@ def test_five_review_rules_are_explicit_without_suppressing_natural_concern():
     ):
         assert token in system
     assert "禁止关心" not in system and "禁止提及求助" not in system
+
+
+def test_r33_temporary_synastry_exception_requires_native_basis_and_no_archive_notice():
+    system = load_prompts().system()
+    assert "plain_rule_basis" in system and "本次合盘是临时计算，没有存档" in system
+    assert "不登记或编造〔c#〕〔r#〕" in system
 
 
 def test_boundary_policy_uses_current_refs_actual_pillars_and_visible_prior_explanation():

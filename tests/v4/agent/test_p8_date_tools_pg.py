@@ -16,7 +16,7 @@ from .test_toolkit_pg import setup
 
 CASES = [
     ("almanac", "请看2026-10-27黄历宜忌", {"date": "2026-10-27"}),
-    ("daily_transit", "2026-10-27运势如何", {"date": "2026-10-27"}),
+    ("daily_transit", "今天运势如何", {"date": "2026-10-17"}),
     (
         "window_search",
         "择日安排面试",
@@ -76,14 +76,38 @@ def test_almanac_requires_no_birth_profile_or_profile_fact_reads(repo, monkeypat
     h.finish()
 
 
+@pytest.mark.parametrize(
+    "text,date,allowed",
+    [
+        ("明天运势如何", "2026-10-18", True),
+        ("今天运势如何", "2026-10-18", False),
+        ("2026-10-17流日", "2026-10-17", False),
+    ],
+)
+def test_daily_native_execution_cannot_substitute_a_different_or_non_user_date(repo, monkeypatch, text, date, allowed):
+    from mingjing_core.adapters.charts.p8_adapter import P8ChartAdapter
+
+    args = {"date": date}
+    h, _, ctx = begin(repo, "daily_transit", text, args)
+    if not allowed:
+        monkeypatch.setattr(
+            P8ChartAdapter, "daily_transit", lambda *a, **k: pytest.fail("No unauthorized date compute")
+        )
+    result = h.registry.execute("daily_transit", args, ctx)
+    assert result.ok is allowed
+    if not allowed:
+        assert repo.list("alice", "artifact") == repo.list("alice", "interpretive_claim") == []
+    h.finish()
+
+
 @pytest.mark.parametrize("mode", ["unrelated", "quoted", "negated", "private", "crisis"])
 def test_new_tools_cannot_be_forced_without_native_intent_or_in_private_mode(repo, mode):
     text = {
         "unrelated": "聊聊生活",
-        "quoted": "引用‘2026-10-27运势如何’",
+        "quoted": "引用‘今天运势如何’",
         "negated": "不要查运势",
-        "private": "2026-10-27运势如何",
-        "crisis": "2026-10-27运势如何",
+        "private": "今天运势如何",
+        "crisis": "今天运势如何",
     }[mode]
     name, _, args = CASES[1]
     h, step, ctx = begin(repo, name, text, args)

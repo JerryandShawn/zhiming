@@ -75,6 +75,8 @@ def test_actual_registered_comparison_temporary_result_and_completed_proof(conse
     public = json.loads(tool_message("comparison", result, "cycle").content)["data"]
     assert "time_basis" not in public and "natal_at_utc" not in public["comparison"]["astro"]
     assert "rule_hits" not in public and "aliases" not in public
+    assert public["required_notice"] == "本次合盘是临时计算，没有存档"
+    assert public["plain_rule_basis"] and all(isinstance(row, str) for row in public["plain_rule_basis"])
     assert public["record_policy"] == {"memory": False, "profile": False, "reflection": False, "forward": False}
     assert h.registry.execute("synastry", args, ctx) == result and calls == [1]
     assert len(h.repo.list("alice", "fact")) == before
@@ -227,7 +229,7 @@ def test_grant_request_from_previous_turn_is_in_withdrawal_dependency_closure(co
     second.finish()
 
 
-def test_scripted_agent_receives_temporary_projection_and_finalizes_without_saved_claims(consent):
+def test_scripted_agent_uses_actual_plain_basis_and_marks_temporary_unarchived(consent):
     from mingjing_core.application.agent_finalization import AgentFinalizer
     from mingjing_core.models.port import ToolCall
 
@@ -238,7 +240,16 @@ def test_scripted_agent_receives_temporary_projection_and_finalizes_without_save
     service = SynastryConsentService(repo, clock=registry.service.clock)
     card = service.request("alice", "self", "other", "friendship", run["request"]["source_message_id"], "loop-card")
     service.confirm("alice", card["id"], confirmed=True, expected_revision=1, request_id="loop-click")
-    port = ScriptedPort(
+
+    class PlainBasisPort(ScriptedPort):
+        def stream(self, messages, **kwargs):
+            if len(self.requests) == 1:
+                message = next(message for message in messages if message.role == "tool")
+                projection = json.loads(message.content)["data"]
+                self.responses[1] = answer(projection["plain_rule_basis"][0] + projection["required_notice"])
+            yield from super().stream(messages, **kwargs)
+
+    port = PlainBasisPort(
         [
             answer("", [ToolCall("compare", "synastry", {"other_subject_id": "other", "kind": "friendship"})]),
             answer("本次比较仅供讨论相处方式，不保证关系结果；资料和结果没有写入长期记忆或命理档案。"),
@@ -252,6 +263,7 @@ def test_scripted_agent_receives_temporary_projection_and_finalizes_without_save
     assert "calculation" not in data and "time_basis" not in data
     assert "rule_hits" not in data and data["reference_policy"] == "native_step_verified_no_reference_aliases"
     assert "registered_aliases" not in data
+    assert data["plain_rule_basis"][0] in outcome.text and "本次合盘是临时计算，没有存档" in outcome.text
     assert not any(key.startswith(("c", "r")) and key[1:].isdigit() for key in outcome.alias_map)
     final = AgentFinalizer(repo).finalize(
         run,

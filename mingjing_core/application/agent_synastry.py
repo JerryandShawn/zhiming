@@ -162,7 +162,7 @@ def execute_synastry(service, arguments, ctx):
                 "calculation": payload,
                 "record_policy": {"memory": False, "profile": False, "reflection": False},
             },
-            summary="本次合盘已计算，仅供本轮讨论；未写入记忆或档案，不保证关系结果",
+            summary="本次合盘是临时计算，没有存档；只讨论本轮实际规则依据，不保证关系结果",
         )
         store(service, ctx, dict(deepcopy(marker), state="completed", tool_output=result.model_dump()), previous=marker)
         return result

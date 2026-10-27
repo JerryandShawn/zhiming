@@ -1,6 +1,8 @@
 """Native P8 date tools: short authority transactions around isolated calculation."""
 
 from typing import Any
+from datetime import timedelta
+from zoneinfo import ZoneInfo
 
 from mingjing_core.adapters.charts.p8_adapter import P8ChartAdapter
 from mingjing_core.adapters.charts.p8_worker import source_hashes
@@ -13,12 +15,25 @@ from mingjing_core.application.charts_documents import verify_p8_document
 from mingjing_core.application.charts_natal import natal_request
 from mingjing_core.application.p8_chart_service import P8CalculationUnavailable
 from mingjing_core.application.p8_reference_records import persist_reference_bundle, selected_references
+from mingjing_core.application.metaphysics_intent import daily_offsets
 from mingjing_core.domain.contracts import CoreError, EvidenceError, ScopeError
 from mingjing_core.knowledge.registry import resolve_pointer
 from mingjing_core.repositories.postgres import fingerprint
 from subprocess import TimeoutExpired
 
 MODELS = {"daily_transit": DailyTransit, "window_search": WindowSearch, "almanac": Almanac}
+
+
+class DailyDateRequired(EvidenceError):
+    code = "MISSING_INPUT"
+
+
+def require_explicit_daily_date(service, ctx, run, target):
+    source = service.source(ctx, run["request"]["source_message_id"])
+    today = (ctx.at or service.clock.now()).astimezone(ZoneInfo(service.timezone(ctx))).date()
+    allowed = {(today + timedelta(days=offset)).isoformat() for offset in daily_offsets(source["content"])}
+    if target not in allowed:
+        raise DailyDateRequired("只能按本轮原话确认的今天或明天计算，请重新核对日期")
 
 
 def public_snapshot(service: Any, ctx: Any) -> dict:
@@ -87,9 +102,11 @@ def execute_date_tool(service: Any, name: str, arguments: dict, ctx: Any) -> Too
     if getattr(service.repo._local, "connection", None) is not None:
         raise EvidenceError("日期计算必须在外层数据库事务外执行")
     with service.repo.transaction(ctx.owner) as connection:
-        service.authority(connection, ctx)
+        run = service.authority(connection, ctx)
         if stopped := privacy_refusal(service, name, args, ctx):
             return stopped
+        if name == "daily_transit":
+            require_explicit_daily_date(service, ctx, run, args["date"])
     if cached := cached_chart(service, ctx):
         return cached
     snapshot = public_snapshot(service, ctx) if name == "almanac" else prepare_chart(service, ctx)

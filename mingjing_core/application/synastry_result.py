@@ -47,7 +47,27 @@ def project_synastry(data: dict) -> dict:
         "record_policy": {"memory": False, "profile": False, "reflection": False, "forward": False},
         "alias_registration": "not_registered",
         "reference_policy": "native_step_verified_no_reference_aliases",
+        "plain_rule_basis": plain_rule_basis(native),
+        "required_notice": "本次合盘是临时计算，没有存档",
     }
+
+
+def plain_rule_basis(native: dict) -> list[str]:
+    """Describe only this result's actual resolved rules, without inventing aliases."""
+    counts = {"bazi": 0, "astro": 0, "ziwei": 0}
+    for hit in native["rule_hits"]:
+        if hit.get("met") is not True:
+            continue
+        _rule_paths(native, hit)
+        for system in counts:
+            if hit["rule_id"].startswith("synastry." + system + "."):
+                counts[system] += 1
+    texts = {
+        "bazi": "八字按子平结构及并列用神候选对读，本次有{n}项实际依据；相合不等于合化，候选交集不代表适配评分。",
+        "astro": "星盘按真实UTC行星位置、五种主要相位和统一容许度对读，本次有{n}项实际相位依据；不代表关系成败概率。",
+        "ziwei": "紫微并列本人夫妻宫与对方命宫，本次有{n}个方向的盘面依据；只是宫位对照，没有星曜适配评分。",
+    }
+    return [texts[system].format(n=count) for system, count in counts.items() if count]
 
 
 def verify_cached_synastry(row, ctx, service, consent):

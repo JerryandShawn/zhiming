@@ -8,12 +8,11 @@ import pytest
 from mingjing_core.agent.tool_visibility import (
     CONDITIONAL_TOOLS,
     RESIDENT_TOOLS,
-    ToolVisibilityConflict,
     VisibilityState,
     select_visible,
 )
 from mingjing_core.application.agent_tools_contracts import ToolContext
-from mingjing_core.application.metaphysics_intent import metaphysics_intent
+from mingjing_core.application.metaphysics_intent import daily_offsets, metaphysics_intent
 
 
 @pytest.mark.parametrize(
@@ -26,7 +25,8 @@ from mingjing_core.application.metaphysics_intent import metaphysics_intent
         ("帮我挑个日子", "window"),
         ("今天黄历宜忌是什么", "almanac"),
         ("明天运势如何", "daily"),
-        ("2026-10-28流日", "daily"),
+        ("2026-10-28流日", "none"),
+        ("10月28日运势", "none"),
         ("今天顺不顺", "daily"),
         ("今天运势和黄历", "almanac"),
         ("今天黄历，哪天适合搬家？也想合盘", "synastry"),
@@ -46,19 +46,40 @@ def test_single_affirmative_intent(text: str, expected: str) -> None:
     assert metaphysics_intent(text) == expected
 
 
-def test_native_morning_report_fallback_does_not_override_explicit_priority() -> None:
-    assert metaphysics_intent("", morning_report=True) == "daily"
+def test_morning_report_flag_cannot_open_a_tool_without_explicit_user_intent() -> None:
+    assert metaphysics_intent("", morning_report=True) == "none"
     assert metaphysics_intent("合盘", morning_report=True) == "synastry"
+    assert metaphysics_intent("明天运势", morning_report=True) == "daily"
 
 
-def test_pre_p8_all_true_state_exposes_existing_resident_capacity_conflict() -> None:
-    # Baseline before registering any P8 tools. This assertion must be replaced
-    # with the approved <=15 disclosure contract when residents are demoted.
-    state = VisibilityState(**{field.name: True for field in fields(VisibilityState)})
+@pytest.mark.parametrize(
+    "text,offsets",
+    [
+        ("今天运势", {0}),
+        ("明天流日", {1}),
+        ("今天和明天运势", {0, 1}),
+        ("不要今天运势", set()),
+        ("引用‘明天运势’", set()),
+        ("2026-10-28流日", set()),
+    ],
+)
+def test_daily_dates_come_only_from_explicit_affirmative_relative_words(text, offsets):
+    assert daily_offsets(text) == offsets
+
+
+def test_r34_all_true_state_respects_approved_capacity_and_unique_intent() -> None:
+    state = VisibilityState(
+        **{
+            field.name: ("synastry" if field.name == "metaphysics_intent" else True)
+            for field in fields(VisibilityState)
+        }
+    )
     definitions = [
         SimpleNamespace(name=name, read_only=True, private_allowed=False)
         for name in (*RESIDENT_TOOLS, *CONDITIONAL_TOOLS)
     ]
     context = ToolContext("synthetic", "run", "self", 0, 1, "token", "model", "a" * 64, "life:self")
-    with pytest.raises(ToolVisibilityConflict):
-        select_visible(definitions, context, state)
+    trimmed = []
+    selected = select_visible(definitions, context, state, trimmed_out=trimmed)
+    assert len(selected) == 15 and "synastry" in {tool.name for tool in selected}
+    assert "set_reminder" in trimmed
