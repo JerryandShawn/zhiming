@@ -12,3 +12,5 @@
 未完成/风险：不称“旧网页流式就绪”；富决策/回执交互、真实旧页兼容投影、P4 HTTP+PG、新P10当前性能仍待。旧回执投影由主线负责，不造Schema或撤销API。上一头1221/93与历史2/3不顶替本轮或当前CI；0bc头frontend queued、Core in_progress。真实模型/服务器/飞书请求0，无新增依赖/迁移；本次运行源码无最终变化，回滚本测试/工具提交即可。
 
 证据：legacy-catalog-browser/{related-unit.json,browser.json,catalog-*.png}；legacy-performance/*/{batch.json,report.json,cold-*.png}；compatibility-checks.json。继续P10已发布API及49队列，不等待答复。
+
+09:57补充：前三批仅历史诊断，工具未保存原字节快照。已为后续补保存/核SHA/Node版本，86d026b运行源码整批稳定且工具快照匹配，五冷p75 2588仍失败，不称优化收益。工具自身dirty状态如实记录；完整见legacy-performance/head-86d026b-provenance和provenance-checks.json。main@b9a89b6f未发布api_*.md，P4@9b4aa474未更新；继续研习/假H5，不发明新接口。

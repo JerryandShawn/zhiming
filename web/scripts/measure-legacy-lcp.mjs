@@ -15,6 +15,8 @@ if (!attempt || !/^[a-z0-9][a-z0-9_-]{0,47}$/i.test(attempt)) throw new Error('C
 const directory = await safeWebPath(`evidence/2026-10-27/legacy-performance/${attempt}`);
 await fs.mkdir(path.dirname(directory), { recursive: true });
 await fs.mkdir(directory, { recursive: false });
+const harnessBytes = await fs.readFile(fileURLToPath(import.meta.url));
+await fs.writeFile(path.join(directory, 'harness.mjs'), harnessBytes);
 const bjt = () => new Date(Date.now() + 28800000).toISOString().replace('Z', '+08:00');
 const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
 const hash = (value) => createHash('sha256').update(value).digest('hex');
@@ -188,7 +190,8 @@ try {
     }
   }
   const after = await provenance();
-  const stable = JSON.stringify(before) === JSON.stringify(after);
+  const harnessStable = harnessBytes.equals(await fs.readFile(fileURLToPath(import.meta.url)));
+  const stable = JSON.stringify(before) === JSON.stringify(after) && harnessStable;
   const sorted = samples.map((sample) => sample.lcp_ms).sort((a, b) => a - b);
   const passed =
     stable &&
@@ -200,10 +203,13 @@ try {
     ...batch,
     finished_bjt: bjt(),
     browser: browser.version(),
+    node: process.version,
     before,
     after,
     runtime_stable: stable,
-    harness_sha256: hash(await fs.readFile(fileURLToPath(import.meta.url))),
+    harness_sha256: hash(harnessBytes),
+    harness_snapshot: 'harness.mjs',
+    harness_stable: harnessStable,
     harness_tracked_status: git('status', '--porcelain', '--', 'web/scripts/measure-legacy-lcp.mjs'),
     cache_disabled: true,
     fresh_context_each_run: true,
