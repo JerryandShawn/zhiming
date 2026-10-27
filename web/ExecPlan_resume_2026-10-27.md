@@ -4,6 +4,8 @@
 
 ## Progress
 
+- [x] 2026-10-27T17:49:56+08:00 C2持久状态/停止候选：按主线27b8的GET run十字段与cancel {ok,run_id}，提取A/B既有归属安全JSON请求复用（原79检查/断言不变），新增状态投影与停止端口。仅状态/attempts和succeeded严格core4，不读非终态旧result及原始内部字段；ack后GET同run，仅cancelled stopped=true，running/inbox_wait仍pending，succeeded保留终稿。55新单测+2新实际loopback，连A/B/C1及原回归213/213；类型/lint/构建绿，416产物SHA全同。C3控制器/epoch安全恢复/页面/PG仍待，不称全链路。
+
 - [x] 2026-10-27T17:24:05+08:00 已执行指令板v5，R47 CI预算由主线改25分钟/必要时拆job，本线继续，不改.github。板自记18:10但工具实际读取17:24，记录实际时钟。
 - [x] 2026-10-27T17:36:57+08:00 C1订阅候选：独立threads/follow.ts复用冻结Schema/SSE解码；递增缺号、重复去重、resumed替换交消费者、心跳不推进/45秒、422停止坏游标并needs_state、终态接收回执不从零重放。原followV1连续策略/断言不改。26新单测+1新真实loopback POST→GET断线→Last-Event-ID续传，连A/B与原回归156/156，类型/lint/构建绿、416产物SHA无变化。只做新执行的内存订阅；epoch恢复、GET状态、HTTP权威停止与UI未接，下一C2。首批151绿后新增5终态前置门；汇总脚本首轮误写153断言失败后按原报告纠正，不改测试结果。
 
@@ -41,6 +43,8 @@
 
 ## Surprises & Discoveries
 
+17:49：GET run实际十字段含checkpoint/dependencies/error及可能旧result，不能作为可直接渲染的DTO；只投影三项状态和严格succeeded终稿。数据库CHECK允许calls=call_limit=0，不能凭前端直觉要求预算正数；新增用例据真实SQL修正并补越界检查。取消API只返回ack；真实HTTP回查running/inbox_wait与完成竞态分别有证据。
+
 17:36：P3 seq是可递增缺号的公开事件游标，不能重放已撤销正文来补齐。422必须停止同一坏游标；终态幂等202也不应从零重放旧事件。C1只返回needs_state，不伪造已经回查/恢复。公开契约尚无epoch起点，后续C2/C3要先查持久状态，不能把旧error当新执行终止。
 
 线程202回执是五字段v3/六字段v4，与旧chat含message_id的七字段不同，不能复用旧页acceptance解析器。Python str.strip含U+001C/0085却不含FEFF，JS trim有差异；前端显式对齐码点而不重写正文。opaque线程身份可超过200字；205字人生线程和自然改道均由回执权威决定。现有followV1默认连续seq不能直接套到允许撤销缺号的P3订阅，C继续保留此差异。
@@ -62,6 +66,8 @@ H5实际服务端认证仍缺，按既有Thread_runtime_integration_notes采用�
 首轮真实旧HTML浏览器的流式行为已通过，但全页Axe揭示原paper主题小字对比度、aside使用dialog角色、按钮名称遗漏“我的档案”。只加深既有墨色token和小标签、改drawer为同class的div并补名称，不禁用规则。两种系统配色偏好仍使用旧页面自有浅纸主题，不冒称新增深色主题。JSON回执读取另加45秒/64KiB上限及固定错误文案，避免损坏JSON将片段泄漏到旧错误栏。
 
 ## Decision Log
+
+17:49：将原submit的45秒/严格UTF-8/归属核对/迟到释放提为request.ts复用，不改原A/B断言。共享helper先拒外域/归一化歧义/query/hash路径，再读auth；提交64KiB、取消8KiB、run2MiB；HTTP错误仅安全code/status。authority.read固定已验证run_url，succeeded必须严格core4且可选meta绑定同run/operation；丢弃内部字段。stop不造request_id，不隐式取消其他消息；ack严格同run后GET，stopped只由cancelled决定，不轮询伪造2秒已停。C3负责即时UI反馈与最终事件/状态协调。仅修改本批新增的零预算断言以对齐SQL，原测试行为契约未改。
 
 17:36：C1使用独立P3 follower，复用既有readSse、abortable和严格runEvents，不改演示连续策略。factory不隐式POST、只按已验证events_url GET；每次headers/Response/事件/consumer await后核归属，消费成功才推进cursor，consumer失败终止而不重放可能已有副作用。游标只和完整内存投影一起存活；拒裸游标持久化。401/403及协议错不重连，5xx/断线有界GET重连；observer不能回滚已消费事件。R47已裁定交主线，本线不继续等待CI预算回复或改工作流。
 
@@ -88,6 +94,8 @@ H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles�
 旧HTML加载生产构建的独立legacy-stream.js入口；模块只登记显式适配器，加载不发请求。发送时协商JSON与SSE；旧SSE不读取/不改写；JSON仅接受已发布七字段、同run同源URL，运行身份以回执为准。取消HTTP确认不当作已停止，仅RUN_CANCELLED事件保留部分正文并标中断。默认Playwright入口注册独立旧页project，让CI原静态入口也覆盖13新项；不新增依赖。49新增第〇节要求11-02 12时或大脑通知额度85%时停止开新活，收尾至用户11-02 22时截止，不自行部署。
 
 ## Outcomes & Retrospective
+
+2026-10-27T17:49:56+08:00 C2完成可审查端口：55新单测与2真实loopback，合计213目标检查通过（含HTTP4项），原A/B/C1和R7继续通过；类型/定向lint/构建绿，416产物SHA全同。未接UI、未做epoch恢复或真实PG；R47交主线，R41不改Docker，旧页2572/课程5020缺口保留。下一C3绑定owner投影、422回查和终态协调，再接明确页面；不把端口误报用户功能全部完成。
 
 2026-10-27T17:36:57+08:00 C1独立订阅完成局部验证：26新单测、1新实际loopback流程；完整目标集合156绿，含2个HTTP项，不是浏览器或PG。生产416文件无变化，沿用既有视觉/Axe/性能结果且不报新达标。端口仍未导入普通UI，C2持久状态/权威停止及后续控制器/页面还需继续。最新CI未绿声明维持；已执行指令板v5，R47由主线调整预算，R41不动Docker。
 
@@ -140,3 +148,4 @@ Decision：测试改动只修复动态import的等待条件，保留全部结果
 
 2026-10-27T17:18:36+08:00 修订：读取主线27b8契约，完成线程A/B集中提交层及129相关检查；明确C/页面/PG未接，保留原模拟与普通入口。
 2026-10-27T17:36:57+08:00 修订：执行指令板v5/R47，完成线程C1内存订阅与156相关检查；持久状态/HTTP取消和页面留给C2/C3，不提前宣称全链路。
+2026-10-27T17:49:56+08:00 修订：完成C2状态/停止与共享安全JSON请求，213目标检查；真实UI/epoch/PG留C3，不把ack当已停止。

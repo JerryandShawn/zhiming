@@ -1,5 +1,15 @@
 # 线程与补发接线核对（2026-10-21 11:05 +08:00）
 
+## 2026-10-27 17:49 +08:00 更新：C2状态与取消端口候选，C3/UI仍待
+
+只读主线27b8的`adapters/web.py` blob dea7d9ff确认GET run十字段和cancel ack；`read_result`会严格core4并加兼容answer，本线仍只认core4 `receipts`。`threads/authority.ts`只输出runId/status/attempts，succeeded才附严格终稿，可选meta须绑定同run/operation；非终态不读取旧result，checkpoint/dependencies/error不读不输出。zero call_limit合法（SQL仅要求0≤calls≤call_limit），不添加前端正数门槛。
+
+`stop`只显式POST同一run的cancel，无自造request_id/正文；核对{ok:true,run_id}后GET同一run，stopped只有持久cancelled才true。queued/running/inbox_wait不伪称已停，succeeded竞态返回终稿。没有自动重发、删除、批量取消或轮询假冒两秒门；C3/UI须即时显示正在请求停止并处理后续权威状态。
+
+提取原submit共有的`threads/request.ts`：零隐式fetch/auth，45秒、严格UTF-8、逐await归属检查、迟到body释放；提交64KiB/取消8KiB/状态2MiB，redirect:error/no-store。路径先校验同源/原样，拒query/hash/dot归一化；错误只交安全code/status，不读HTTP拒绝正文、不唤全局登录。原79 A/B断言未改。
+
+55新单测+2实际loopback检查422后显式GET回查、ack仍running后实际cancelled、完成竞态保留终稿；连A/B/C1与原回归213/213，含HTTP4项。类型/lint/构建绿，416资源SHA全同，沿用原图。C3控制器/epoch/页面/PG/飞书仍未验；下一从这些集中端口接控制器，不清零重放旧error。证据`evidence/2026-10-27/thread-authority/`。
+
 ## 2026-10-27 17:36 +08:00 更新：C1内存订阅已验证，状态/停止与页面仍待
 
 新增`src/threads/follow.ts`，只消费已验证v4接收回执的新执行。严格冻结事件、媒体类型、同run与id/seq；递增缺号合法，重复不再投影，成功消费后才推进Last-Event-ID，`: ping`只重置45秒空闲。EOF/5xx只做有界GET重连，不POST、不猜v3地址；401/403和协议错误终止，422立即返回needs_state，不清零游标。已结束的幂等202同样直接needs_state，不从零重放旧终态。原followV1的连续seq策略与原断言完整保留。

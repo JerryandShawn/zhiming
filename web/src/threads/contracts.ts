@@ -30,7 +30,10 @@ export type ThreadAcceptance = Readonly<
 >;
 
 export class ThreadRequestError extends Error {
-  constructor(public code: 'input' | 'receipt' | 'obsolete' | 'network' | 'http') {
+  constructor(
+    public code: 'input' | 'receipt' | 'obsolete' | 'network' | 'http',
+    public status?: number,
+  ) {
     super(
       {
         input: '这条消息包含尚未支持或无效的内容，请保留原来的输入。',
