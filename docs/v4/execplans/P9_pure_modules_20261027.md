@@ -30,3 +30,5 @@
 2026-10-27T16:45:46.588782+08:00 160项定向通过（1.57s），包括原始字节签名→AES-CBC解密→schema/token/app核对、已认证连接入口、当前chat/message/open_id绑定、事件与逻辑动作双幂等、两线程一次命令/副作用、撤销后worker拒绝、unknown不重发。加密布局与签名拼接已对照本地固定lark-oapi 1.7.3 decryptor.py/dispatcher_handler.py；未建立SDK连接。测试首次lint E731为lambda赋值，改def后lint通过，测试均未删改保护行为。26号已分段补读结构/流式/回调/权限/未说明事项与修正清单；平台实测项仍未验证。
 
 Decision：v14明确任务为卡片纯模块+回调+假服务；不移植旧CardKit真实调用层或Agent监听器。26号两步finalize/close、序号/频控和权限/实体卡回调边界交给主线接线说明，当前不宣称完整05/P9产品阶段验收。
+
+Outcomes：v14指定P9纯模块就绪f38406c；一页回执列明05/P9整体平台及主线接线未验证。转入独立v4/mod-api-contracts，只写文档与Schema测试，不改运行代码。
