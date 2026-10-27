@@ -1,0 +1,102 @@
+{
+  "version": "p8-acceptance-material-v1",
+  "synthetic_person": "阿远",
+  "count": 13,
+  "cases": [
+    {
+      "id": "P8DT01",
+      "title": "明确今天的流日：正午快照与现实小步",
+      "tool": "daily_transit",
+      "native_compute_expected": true,
+      "refusal": false
+    },
+    {
+      "id": "P8DT02",
+      "title": "明日流日按冻结北京时间绝对化",
+      "tool": "daily_transit",
+      "native_compute_expected": true,
+      "refusal": false
+    },
+    {
+      "id": "P8DT03",
+      "title": "无痕模式不暴露四个新计算工具",
+      "tool": null,
+      "native_compute_expected": false,
+      "refusal": false
+    },
+    {
+      "id": "P8WS01",
+      "title": "面试择日公开正负命中",
+      "tool": "window_search",
+      "native_compute_expected": true,
+      "refusal": false
+    },
+    {
+      "id": "P8WS02",
+      "title": "搬家排序透明且不伪造择时",
+      "tool": "window_search",
+      "native_compute_expected": true,
+      "refusal": false
+    },
+    {
+      "id": "P8WS03",
+      "title": "93日超过Agent资源上限时先拒绝",
+      "tool": "window_search",
+      "native_compute_expected": false,
+      "refusal": true
+    },
+    {
+      "id": "P8AL01",
+      "title": "黄历七类字段与来源口径",
+      "tool": "almanac",
+      "native_compute_expected": true,
+      "refusal": false
+    },
+    {
+      "id": "P8AL02",
+      "title": "黄历不要求私人出生资料",
+      "tool": "almanac",
+      "native_compute_expected": true,
+      "refusal": false
+    },
+    {
+      "id": "P8AL03",
+      "title": "无效公历日期不进引擎",
+      "tool": "almanac",
+      "native_compute_expected": false,
+      "refusal": true
+    },
+    {
+      "id": "P8SY01",
+      "title": "没有对方同意：拒绝计算且不泄露生辰",
+      "tool": "synastry",
+      "native_compute_expected": false,
+      "refusal": true
+    },
+    {
+      "id": "P8SY02",
+      "title": "一次有效按钮同意：临时合盘不登记引用",
+      "tool": "synastry",
+      "native_compute_expected": true,
+      "refusal": false
+    },
+    {
+      "id": "P8SY03",
+      "title": "一次授权用尽：再次计算必须重新确认",
+      "tool": "synastry",
+      "native_compute_expected": false,
+      "refusal": true
+    },
+    {
+      "id": "P8BA01",
+      "title": "阿远准确时刻靠近时辰交界：只提示实际时柱差异",
+      "tool": "chart_compute",
+      "native_compute_expected": true,
+      "refusal": false
+    }
+  ],
+  "runtime_observer": "README.md",
+  "namespace_pending_brain_review": true,
+  "business_tools_executed_during_replay": 0,
+  "current_synastry_policy": "R33: temporary comparison has no c/r or alternate reference prefix and no long-term entity writes"
+}

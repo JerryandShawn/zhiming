@@ -1,0 +1,102 @@
+{
+  "source": "existing actual-engine synthetic snapshots, unchanged",
+  "boundary": {
+    "sample": "docs/v4/contracts/samples/ayuan_bazi.json",
+    "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+    "current_pillars": {
+      "year": "甲戌",
+      "month": "丁卯",
+      "day": "丁酉",
+      "hour": "甲辰"
+    },
+    "hour_ganzhi": "甲辰",
+    "day_master": "丁",
+    "distance_seconds": 380.536889,
+    "evidence_paths": [
+      "/time_basis/items/0/source_variants/1/coordinate_datetime",
+      "/time_basis/items/0/source_variants/1/pillars",
+      "/time_basis/items/0/source_variants/1/solar_time"
+    ],
+    "alternatives": [
+      {
+        "label": "before",
+        "is_birth_fact": false,
+        "physical_utc": "1994-03-12T00:13:38.533817Z",
+        "coordinate_datetime": "1994-03-12T06:59:59",
+        "coordinate_basis": "true_solar",
+        "pillars": {
+          "year": "甲戌",
+          "month": "丁卯",
+          "day": "丁酉",
+          "hour": "癸卯"
+        },
+        "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+        "day_boundary": "23:00_advances_day",
+        "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+        "subsecond_handling": "floor_to_engine_second"
+      },
+      {
+        "label": "after",
+        "is_birth_fact": false,
+        "physical_utc": "1994-03-12T00:13:40.533447Z",
+        "coordinate_datetime": "1994-03-12T07:00:01",
+        "coordinate_basis": "true_solar",
+        "pillars": {
+          "year": "甲戌",
+          "month": "丁卯",
+          "day": "丁酉",
+          "hour": "甲辰"
+        },
+        "school": "p8-true-solar-day-hour-sect1; physical-UTC+8-exact-jie-year-month",
+        "day_boundary": "23:00_advances_day",
+        "source": "https://github.com/6tail/lunar-python/blob/v1.4.8/lunar_python/EightChar.py",
+        "subsecond_handling": "floor_to_engine_second"
+      }
+    ]
+  },
+  "almanac": {
+    "sample": "docs/v4/contracts/samples/almanac-20261021.json",
+    "document_id": "tool-c9d7a9efd74af22aa0456e7f5e1bede937f714524c1cc6b6435b4b89dcf9ee13",
+    "date": "2026-10-21",
+    "fields": {
+      "yi": [
+        "祭祀",
+        "沐浴",
+        "破屋",
+        "坏垣",
+        "馀事勿取"
+      ],
+      "ji": [
+        "嫁娶",
+        "入宅",
+        "上梁",
+        "出行",
+        "安葬"
+      ],
+      "chong_sha": {
+        "branch": "戌",
+        "stem": "壬",
+        "zodiac": "狗",
+        "display": "(壬戌)狗",
+        "sha_direction": "南"
+      },
+      "duty": {
+        "deity": "青龙",
+        "category": "黄道",
+        "luck": "吉",
+        "officer": "破"
+      },
+      "mansion": {
+        "name": "箕",
+        "luminary": "水",
+        "animal": "豹",
+        "luck": "吉"
+      },
+      "pengzu": {
+        "stem": "戊不受田田主不祥",
+        "branch": "辰不哭泣必主重丧"
+      }
+    },
+    "yi_ji_sect": 1
+  }
+}

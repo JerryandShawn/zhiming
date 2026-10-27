@@ -1,0 +1,85 @@
+id: P8WS01
+title: 面试择日公开正负命中
+category: chart
+clock: '2026-10-27T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    confirmed: true
+    birth:
+      date: '1994-03-12'
+      time: 08:20
+      solar_datetime: '1994-03-12T08:20:00'
+      precision: exact
+      clock_basis: clock
+      location:
+        lng: 104.07
+        lat: 30.67
+        tz: Asia/Shanghai
+  controls:
+    p8_acceptance:
+      subject_id: synthetic-subject-ayuan
+      revision: 1
+      confirmed_fields:
+      - birth.solar_datetime
+      - birth.location.lng
+      - birth.location.lat
+      - birth.location.tz
+      - birth.clock_basis
+      - birth.precision
+      - gender
+      observer_contract: README.md#运行时观测约定
+  incognito: false
+turns:
+- user: 请比较2026-10-21到10-27哪天面试可作参考，把加分和减分依据都说清楚。
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - '2026-10-21'
+    - '2026-10-27'
+    - 面试
+    - 加分
+    - 减分
+    - 参考
+    - 〔c
+    - 〔r
+    must_not_include:
+    - 必然成功
+    - 必然失败
+    - 保证盈利
+    - 吉日保证
+    tools_not_called:
+    - daily_transit
+    - almanac
+    - synastry
+    tools_called:
+    - window_search
+    db:
+    - path: p8_acceptance.engine_calls.window_search
+      equals: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: window_search
+      arguments:
+        range:
+          start_date: '2026-10-21'
+          end_date: '2026-10-27'
+        purpose: 面试
+        offset: 0
+        limit: 31
+  - result:
+      ok: true
+      mode: synthetic_scripted_observation_not_native_payload
+  - db:
+      p8_acceptance:
+        engine_calls:
+          window_search: 1
+        long_term_writes: 0
+  - text: 2026-10-21至2026-10-27的面试候选按项目权重排序，加分和减分分别列出〔c1〕〔r1〕，只作参考；仍要服从面试官档期，不保证录取。
+notes: 仅合成脚本回放，result与db是独立声明的观察，不是引擎或Agent执行证明；运行时目标须按README从真实调用/事务轨迹产生同名观察。出生资料来自阿远已确认档案，模型参数不得传birth或consent。
