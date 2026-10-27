@@ -1,0 +1,65 @@
+{
+  "instruction": "main65/R47",
+  "candidate": "653fbf821b00d95da6cb98d05909b6c36e05adef",
+  "base": "8a4e2abc549b138c226700eeb912c5cb582d3db0",
+  "worktree": "C:/Users/Administrator/Documents/Codex/zhiming-v4-r47-frontend-ci",
+  "branch": "v4/r47-frontend-ci",
+  "published_ref": "v4/p10-frontend",
+  "changes": {
+    "timeout-minutes": [
+      15,
+      25
+    ],
+    "runs-on": [
+      "ubuntu-latest",
+      "ubuntu-24.04"
+    ]
+  },
+  "steps_unchanged": true,
+  "test_retries_added": false,
+  "tests_skipped": false,
+  "remote_updated_nonforce": true,
+  "frontend_worktree_head_untouched": "8a4e2abc549b138c226700eeb912c5cb582d3db0",
+  "frontend_dirty_files_untouched": true,
+  "runs": [
+    {
+      "id": 40483521384,
+      "name": "Core v3 checks",
+      "head_sha": "653fbf821b00d95da6cb98d05909b6c36e05adef",
+      "status": "queued",
+      "conclusion": null,
+      "html_url": "https://github.com/JerryandShawn/zhiming/actions/runs/40483521384",
+      "event": "pull_request"
+    },
+    {
+      "id": 40483521416,
+      "name": "v4 frontend M1 M2",
+      "head_sha": "653fbf821b00d95da6cb98d05909b6c36e05adef",
+      "status": "queued",
+      "conclusion": null,
+      "html_url": "https://github.com/JerryandShawn/zhiming/actions/runs/40483521416",
+      "event": "pull_request"
+    },
+    {
+      "id": 40483506293,
+      "name": "Core v3 checks",
+      "head_sha": "653fbf821b00d95da6cb98d05909b6c36e05adef",
+      "status": "queued",
+      "conclusion": null,
+      "html_url": "https://github.com/JerryandShawn/zhiming/actions/runs/40483506293",
+      "event": "push"
+    },
+    {
+      "id": 40483506241,
+      "name": "v4 frontend M1 M2",
+      "head_sha": "653fbf821b00d95da6cb98d05909b6c36e05adef",
+      "status": "queued",
+      "conclusion": null,
+      "html_url": "https://github.com/JerryandShawn/zhiming/actions/runs/40483506241",
+      "event": "push"
+    }
+  ],
+  "observed_at_beijing": "2026-10-27T17:48:11+08:00",
+  "conclusion": "queued; no green claimed",
+  "next_on_actual_timeout": "split unit and browser into two parallel jobs, each25, preserve suites and ubuntu24.04"
+}
