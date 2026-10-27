@@ -29,10 +29,14 @@ def event_metadata(
     ctx: ToolContext,
     source: dict[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any] | None]:
+    return resolve_event_fields(args, source, service.timezone(ctx), service.relative_parser)
+
+
+def resolve_event_fields(args: dict, source: dict, zone: str, parser: Any) -> tuple[dict, dict | None]:
+    """Shared writer/legacy-proposal repair; the original said_at anchors parsing."""
     said_at = history_instant(source.get("at"))
     if said_at is None:
         raise EvidenceError("来源时间无法确认")
-    zone = service.timezone(ctx)
     ZoneInfo(zone)
     metadata = {"said_at": said_at.astimezone(UTC).isoformat(), "owner_timezone": zone}
     claimed = args.get("date_expression") or args.get("event_at") or args["kind"] == "event"
@@ -41,15 +45,18 @@ def event_metadata(
         # claiming a calendar event. Preserve the source instant, not an
         # invented event_at, and leave date confirmation to actual event writes.
         return metadata, None
-    if service.relative_parser is None:
-        if claimed:
-            return metadata, {
-                "write_status": "needs_confirmation",
-                "code": "date_parser_unavailable",
-            }
-        return metadata, None
-    result = service.relative_parser.resolve(args["quote"], said_at=said_at, timezone=zone)
+    if parser is None:
+        return metadata, {"write_status": "needs_confirmation", "code": "date_parser_unavailable"}
+    result = parser.resolve(args["quote"], said_at=said_at, timezone=zone)
     if result.status == "needs_confirmation":
+        if args["kind"] == "event":
+            fields = range_event_fields(args["quote"], said_at, zone)
+            if (
+                fields
+                and (not args.get("event_at") or valid_event_at(args["event_at"]) == fields["event_at"])
+                and (not args.get("date_expression") or args["date_expression"] == fields["original_expression"])
+            ):
+                return dict(metadata, **fields), None
         return metadata, {
             "write_status": "needs_confirmation",
             "code": "date_ambiguous",
@@ -74,3 +81,27 @@ def event_metadata(
             "code": "date_expression_conflict",
         }
     return dict(metadata, event_at=event_at, original_expression=result.expression), None
+
+
+def range_event_fields(quote: str, said_at: datetime, zone: str) -> dict | None:
+    """R31 stores an exclusive range endpoint, never an invented occurrence day."""
+    from mingjing_core.timeparse import parse_time_range
+
+    result = parse_time_range(quote, said_at, zone)
+    if (
+        result.kind != "range"
+        or result.needs_clarification
+        or result.confidence < 0.8
+        or result.start is None
+        or result.end is None
+        or result.end <= result.start
+        or not result.matched_text
+        or result.matched_text not in quote
+    ):
+        return None
+    return {
+        "event_at": result.start.astimezone(UTC).isoformat(),
+        "event_end": result.end.astimezone(UTC).isoformat(),
+        "precision": "range",
+        "original_expression": result.matched_text,
+    }

@@ -50,3 +50,30 @@ def test_naive_or_missing_source_time_cannot_be_a_new_execution_reference() -> N
         ModuleTimeRangeParser().parse_time_range("昨天", datetime(2026, 10, 17))
     with pytest.raises(ValueError):
         time_window(ModuleTimeRangeParser(), "昨天", {"at": None}, "Asia/Shanghai")
+
+
+def test_candidate_budget_and_missing_exact_quote_are_safe() -> None:
+    from types import SimpleNamespace
+
+    from mingjing_core.agent.context_time_retrieval import retrieve
+
+    calls = []
+
+    def search(owner, subject, tokens, kinds, limit):
+        calls.append((kinds[0], limit))
+        return [{"id": f"{kinds[0]}-{index}"} for index in range(limit)]
+
+    sources = SimpleNamespace(
+        time_parser=ModuleTimeRangeParser(),
+        repo=SimpleNamespace(search=search),
+        policy=SimpleNamespace(search_limit=5),
+        _project=lambda *args: None,
+    )
+    facts = [
+        {"id": f"fact-{index}", "content": "合成正文", "source_refs": [{"quote": "不同的原话"}]} for index in range(5)
+    ]
+    result, candidates, window = retrieve(
+        sources, "alice", "self", "合成问题", facts, (), {"id": "current", **SOURCE}, "Asia/Shanghai"
+    )
+    assert result == [] and candidates == 10 and window is None
+    assert calls == [("message", 5), ("fact", 5)]

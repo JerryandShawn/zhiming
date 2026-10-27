@@ -8,6 +8,7 @@ from typing import Any
 from psycopg import sql
 
 from mingjing_core.application.memory import MemoryService
+from mingjing_core.application.memory2_read_authority import fact_consent_versions
 from mingjing_core.domain.contracts import ScopeError
 from mingjing_core.domain.time_ranges import TimeRangeParser
 from mingjing_core.memory.projections import redact_ranges
@@ -275,6 +276,10 @@ class BoundedSources:
             entities = read_entities(self, owner, subject, case_ids, facts)
             versions = {"message:" + row["id"]: row["revision"] for row in self.cache.values()}
             versions.update({"fact:" + fact["id"]: fact["revision"] for fact in facts})
+            consent_versions = fact_consent_versions(self.memory, owner, subject, facts)
+            if len(consent_versions) > self.policy.source_ref_limit:
+                raise ContextInputError("context_source_catalog_overflow")
+            versions.update(consent_versions)
             versions.update(
                 {entity_dependency(kind, row["id"]): row["revision"] for kind, rows in entities.items() for row in rows}
             )

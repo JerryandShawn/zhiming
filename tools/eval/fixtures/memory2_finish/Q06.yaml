@@ -1,0 +1,63 @@
+id: Q06
+title: 41号新增变体：模型实际写入城市矛盾
+category: question
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  settings:
+    timezone: Asia/Shanghai
+turns:
+- user: 我在杭州工作
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: saved
+- user: 我在上海上班
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: pending_confirmation
+    db:
+    - kind: proposal
+      status: pending
+      where:
+        data.proposal_type: memory_conflict
+      count: 1
+    - kind: fact
+      status: active
+      where:
+        data.content: 我在杭州工作
+      count: 1
+    - kind: fact
+      status: active
+      where:
+        data.content: 我在上海上班
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我在杭州工作
+        summary: 我在杭州工作
+        kind: background
+        sensitivity: normal
+  - text: 记下了。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-2
+        quote: 我在上海上班
+        summary: 我在上海上班
+        kind: background
+        sensitivity: normal
+  - text: 以前你在杭州，现在是搬到上海了吗？以哪个为准？

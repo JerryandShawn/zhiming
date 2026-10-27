@@ -1,0 +1,26 @@
+id: A02
+title: 未知信息不编造
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+turns:
+- user: 我妈生日是哪天？
+  expect:
+    must_include_any:
+    - 没提过
+    - 不知道
+    tools_not_called:
+    - memory_write
+    max_questions: 1
+    db:
+    - kind: fact
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - text: 你还没提过妈妈的生日，我不知道是哪天。
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。

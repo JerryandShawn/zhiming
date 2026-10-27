@@ -1,0 +1,63 @@
+id: MS02
+title: 跨日预算进入买车建议
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  settings:
+    auto_save_categories:
+    - money
+turns:
+- user: 我的预算是30万
+  expect:
+    receipts:
+    - write_status: saved
+  at: '2026-10-03T10:30:00+08:00'
+- user: 我想买车
+  expect:
+    receipts:
+    - write_status: saved
+  at: '2026-10-12T10:30:00+08:00'
+- user: 按我说过的预算给买车建议
+  expect:
+    must_include_all:
+    - 30万
+    - 买车
+    tools_not_called:
+    - memory_write
+    db:
+    - path: context.l2.text
+      contains: 30万
+    - path: context.l2.text
+      contains: 买车
+  at: '2026-10-17T10:30:00+08:00'
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我的预算是30万
+        summary: 我的预算是30万
+        kind: constraint
+        sensitivity: money
+  - text: 记下了，你的预算是30万。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-2
+        quote: 我想买车
+        summary: 我想买车
+        kind: goal
+  - text: 记下了，你想买车。
+- turn: 3
+  model:
+  - text: 你之前的预算是30万，买车时可以先预留保险和维护费用，再比较合适的车型。
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。 合成 owner 在初始设置里已明确授权
+  money；本题不证明新授权动作。
