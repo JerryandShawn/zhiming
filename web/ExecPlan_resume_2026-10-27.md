@@ -4,6 +4,8 @@
 
 ## Progress
 
+- [x] 2026-10-27T17:53:15+08:00 C2普通推送50e82f98；远端主线R47提交653fbf82先到，只重放本地未发布提交，web/日报树逐字节不变，未force-push/未合并PR。本线未编辑.github，继承主线Ubuntu24.04/25分钟。精确头两CIqueued，不冒称绿；下一C3。
+
 - [x] 2026-10-27T17:49:56+08:00 C2持久状态/停止候选：按主线27b8的GET run十字段与cancel {ok,run_id}，提取A/B既有归属安全JSON请求复用（原79检查/断言不变），新增状态投影与停止端口。仅状态/attempts和succeeded严格core4，不读非终态旧result及原始内部字段；ack后GET同run，仅cancelled stopped=true，running/inbox_wait仍pending，succeeded保留终稿。55新单测+2新实际loopback，连A/B/C1及原回归213/213；类型/lint/构建绿，416产物SHA全同。C3控制器/epoch安全恢复/页面/PG仍待，不称全链路。
 
 - [x] 2026-10-27T17:24:05+08:00 已执行指令板v5，R47 CI预算由主线改25分钟/必要时拆job，本线继续，不改.github。板自记18:10但工具实际读取17:24，记录实际时钟。
@@ -43,6 +45,8 @@
 
 ## Surprises & Discoveries
 
+17:53：推送并发遇R47主线直接向本分支提交workflow，不是凭据失败。只读核对远端父8a4与单一.github差异后，安全重放一个未发布本地提交，验证本线树无差异再普通推送；不回退主线预算或改写共享历史。
+
 17:49：GET run实际十字段含checkpoint/dependencies/error及可能旧result，不能作为可直接渲染的DTO；只投影三项状态和严格succeeded终稿。数据库CHECK允许calls=call_limit=0，不能凭前端直觉要求预算正数；新增用例据真实SQL修正并补越界检查。取消API只返回ack；真实HTTP回查running/inbox_wait与完成竞态分别有证据。
 
 17:36：P3 seq是可递增缺号的公开事件游标，不能重放已撤销正文来补齐。422必须停止同一坏游标；终态幂等202也不应从零重放旧事件。C1只返回needs_state，不伪造已经回查/恢复。公开契约尚无epoch起点，后续C2/C3要先查持久状态，不能把旧error当新执行终止。
@@ -66,6 +70,8 @@ H5实际服务端认证仍缺，按既有Thread_runtime_integration_notes采用�
 首轮真实旧HTML浏览器的流式行为已通过，但全页Axe揭示原paper主题小字对比度、aside使用dialog角色、按钮名称遗漏“我的档案”。只加深既有墨色token和小标签、改drawer为同class的div并补名称，不禁用规则。两种系统配色偏好仍使用旧页面自有浅纸主题，不冒称新增深色主题。JSON回执读取另加45秒/64KiB上限及固定错误文案，避免损坏JSON将片段泄漏到旧错误栏。
 
 ## Decision Log
+
+17:53：R47的配置作者与文件所有权仍属主线；本线仅同步远端合法历史。原58a6本地提交未发布，因此重放不会改写共享记录，前端内容diff0无需重复213检查。新CI必须按实际新头核，当前仅queued；不把新25分钟预算当CI已绿。
 
 17:49：将原submit的45秒/严格UTF-8/归属核对/迟到释放提为request.ts复用，不改原A/B断言。共享helper先拒外域/归一化歧义/query/hash路径，再读auth；提交64KiB、取消8KiB、run2MiB；HTTP错误仅安全code/status。authority.read固定已验证run_url，succeeded必须严格core4且可选meta绑定同run/operation；丢弃内部字段。stop不造request_id，不隐式取消其他消息；ack严格同run后GET，stopped只由cancelled决定，不轮询伪造2秒已停。C3负责即时UI反馈与最终事件/状态协调。仅修改本批新增的零预算断言以对齐SQL，原测试行为契约未改。
 
@@ -94,6 +100,8 @@ H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles�
 旧HTML加载生产构建的独立legacy-stream.js入口；模块只登记显式适配器，加载不发请求。发送时协商JSON与SSE；旧SSE不读取/不改写；JSON仅接受已发布七字段、同run同源URL，运行身份以回执为准。取消HTTP确认不当作已停止，仅RUN_CANCELLED事件保留部分正文并标中断。默认Playwright入口注册独立旧页project，让CI原静态入口也覆盖13新项；不新增依赖。49新增第〇节要求11-02 12时或大脑通知额度85%时停止开新活，收尾至用户11-02 22时截止，不自行部署。
 
 ## Outcomes & Retrospective
+
+2026-10-27T17:53:15+08:00 C2源码已普通推送50e82f98，继承主线653fbf82的R47配置。本线未改.github；当前精确头两CI排队。所有前端源码与213项受测候选逐字节一致；下一C3控制器/页面仍待，保持局部完成边界。
 
 2026-10-27T17:49:56+08:00 C2完成可审查端口：55新单测与2真实loopback，合计213目标检查通过（含HTTP4项），原A/B/C1和R7继续通过；类型/定向lint/构建绿，416产物SHA全同。未接UI、未做epoch恢复或真实PG；R47交主线，R41不改Docker，旧页2572/课程5020缺口保留。下一C3绑定owner投影、422回查和终态协调，再接明确页面；不把端口误报用户功能全部完成。
 
@@ -149,3 +157,4 @@ Decision：测试改动只修复动态import的等待条件，保留全部结果
 2026-10-27T17:18:36+08:00 修订：读取主线27b8契约，完成线程A/B集中提交层及129相关检查；明确C/页面/PG未接，保留原模拟与普通入口。
 2026-10-27T17:36:57+08:00 修订：执行指令板v5/R47，完成线程C1内存订阅与156相关检查；持久状态/HTTP取消和页面留给C2/C3，不提前宣称全链路。
 2026-10-27T17:49:56+08:00 修订：完成C2状态/停止与共享安全JSON请求，213目标检查；真实UI/epoch/PG留C3，不把ack当已停止。
+2026-10-27T17:53:15+08:00 修订：同步主线R47远端提交，仅重放一个未发布本地提交且本线源码diff0；精确新头CI排队，未改.github。

@@ -1,6 +1,6 @@
 # P10 局部回执：线程 C2 持久状态与取消
 
-- 分支：v4/p10-frontend；PR #6仍草稿，未合并/部署；ExecPlan：web/ExecPlan_resume_2026-10-27.md。
+- 分支：v4/p10-frontend @ 50e82f98（受测C2源码）；PR #6仍草稿，未合并/部署；ExecPlan：web/ExecPlan_resume_2026-10-27.md。
 
 ## 完成了什么
 
@@ -29,11 +29,11 @@ threads/authority.ts、request.ts、submit.ts、contracts.ts；thread-authority.
 
 ## 未验证 / 已知风险
 
-C3/epoch恢复/页面/真实PG未验；2MiB状态上限为本机防御边界，不扩大协议。当前CI待主线R47，不称绿；旧页2572/课程5020ms仍失败，历史稳定性仍2/3。
+C3/epoch恢复/页面/真实PG未验；2MiB状态上限为本机防御边界，不扩大协议。R47已由主线653fbf82实施Ubuntu24.04/25分钟，本线安全同步仅重放本地未发布提交，前端源码diff0；50e82f98精确头两CIqueued，不称绿。旧页2572/课程5020ms仍失败，历史稳定性仍2/3。
 
 ## 需要大脑决定的问题
 
-R47已裁定由主线改CI预算，R41归属仍待主线。本线不停、不改.github/Docker。
+R47已由主线实施，若25分钟仍不足再由主线拆job；R41归属仍待主线。本线不停、不改.github/Docker。
 
 ## 建议后续
 
