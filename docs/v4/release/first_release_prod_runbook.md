@@ -1,5 +1,7 @@
 # 首发生产执行单：e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd
 
+main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/Users/Administrator/.ssh/gto_deploy_key`；若使用DEPLOY_KEY_FILE，固定为该路径。只供SSH工具按路径使用，不读取/复制/输出钥匙内容，不改服务器认证或网络。Windows向远端bash发送已审脚本时，须以UTF-8且LF原始字节写stdin，禁止text=True等文本管道转成CRLF；失败后仍按本单停止，不现场修补重试。
+
 执行人：**主线**。授权依据为main v17/v34/v37/v41/v49/v50的D-首发，以及同候选、在有效窗口内的31号 `结论：Go`。先有同候选stage成功回执，再进入生产。37/31号实际放行前仅本机准备；现场执行逐步记回执，不以文档就绪代替验收。
 
 质量依据：38号第九节/main v41，安全5/5、其他23/24；TA01仍失败，首发后排查。原机器分数不改。R11和包见stage单；PR24同SHA CI run 40217280728 已实际success（attempt1，最后实际job完成2026-10-25T18:50:07Z），Go必须引用该同SHA成功CI。
