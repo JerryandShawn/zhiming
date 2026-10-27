@@ -4,6 +4,8 @@
 
 ## Progress
 
+- [x] 2026-10-27T11:15:37+08:00 研习课程候选：新增独立v5静态只读端口和20课/40题页面，目录/前后课/键盘单选/答案核对/出处异说待核/西占c7依据、切视图暂停继续、刷新清空与失败重试。只GET固定146197B/SHA资产，omit/no-store/redirect:error；不混旧StudyPort、不写存储或记忆，原对话草稿DOM保持。97/97定向单测（含PWA/预算/gzip）、类型/全量lint/构建绿；最终14/14浏览器含12课程+2原研习聊天，四尺寸×双主题×阅读/核对/西占加交互共30图，Axe0、朱砂≤3、横溢出/API/外域/非GET0；初轮11/27图保留，不与最终重复累计。默认CI注册study-courses项目，2目标入口/ignored证据输出验证通过。首轮测试导入/summary选择器与Windows命令管道错误均如实留存，非产品失败或修改原断言；当前只候选，干净头4G下一测，不冒称已部署/专业审校。
+
 - [x] 10:55 研习v5离线切片：固定meta f8d9536a与1491b7ce清单，32资产LF摘要、Schema、三个case原document/alias/claim/Pointer、20依据、20课/40题的答案与来源绑定通过。29完整性+12公开导出新项、原学习12+词典22，合计75/75，ruff绿。反例覆盖跨case、false≠0、错误答案/干扰项、远程ref禁用、最后一课损坏时零输出、目录逃逸/覆盖拒绝、投影不含原盘/scope/原时刻/任意observed。西占新c7与旧c2版本独立；公开七资产字节不变。新146197B课程仅导出ignored test-results，未接页面、未新增正式截图，不冒称20课UI或专业验收。下一做独立课程静态端口与页面，接着矩阵；CI修复新头仍待。
 
 - [x] 2026-10-27 10:36 +08:00：已执行指令板v4（10:15大脑定时复核）；同意合成HTTP/P10继续，55481归属由主线R41只读查，本线不改Docker，待主线日报确认后恢复8002 fixture。旧页2500门槛不放宽。
@@ -22,6 +24,8 @@
 
 ## Surprises & Discoveries
 
+课程公开目录被根data/规则忽略；只显式force-add新固定合成course.json/manifest.json，不改.gitignore或其他数据。测试最初jsdom把import.meta URL视为HTTP，改测试读取仓库固定路径；Disclosure原生summary在jsdom不是button，改新测试的选择器，不改原组件/结果断言。用户界面case和来源审核状态改中文，技术摘要不直接占用正文。
+
 课程实际v5已修正西占c7；旧0f1公开资产仍c2，不能以同名case或短号合并。新原料带完整盘面/时刻，投影显式白名单只给教材文字、选项ID/文本、已验证答案ID、case上下文摘要及受控依据，不盲拷原JSON。
 
 H5实际服务端认证仍缺，按既有Thread_runtime_integration_notes采用独立内存假端口。预览URL显式开启；容器UA仅外观，不建立登录身份。模型/SDK/HTTP/Storage零接线；控制器不保存code到公开状态，退出立即清本页身份，不把远端未确认说成已撤销。首轮tsc一个mock泛型错误已修；首轮13绿浏览器原报告保留，截图只计最终14项31张，避免重复累加。
@@ -31,6 +35,8 @@ H5实际服务端认证仍缺，按既有Thread_runtime_integration_notes采用�
 首轮真实旧HTML浏览器的流式行为已通过，但全页Axe揭示原paper主题小字对比度、aside使用dialog角色、按钮名称遗漏“我的档案”。只加深既有墨色token和小标签、改drawer为同class的div并补名称，不禁用规则。两种系统配色偏好仍使用旧页面自有浅纸主题，不冒称新增深色主题。JSON回执读取另加45秒/64KiB上限及固定错误文案，避免损坏JSON将片段泄漏到旧错误栏。
 
 ## Decision Log
+
+课程按需独立懒加载，固定SHA/大小/单一URL，再做封闭字段和case/context/前置课/来源/题目绑定检查；20课伴随卡仅在此版本包，UI不灌入旧StudyPort。内存题目草稿和checked状态按稳定quiz/option ID保存，改选择即撤销旧核对状态；切视图保留，离开区/刷新即清。新增view=courses初始深链接供分享和无交互冷启动性能测量。
 
 课程输出新目录才创建；全部20课验证及JSON编码完成后写入，不覆盖旧资产。复用已锁定jsonschema而不装依赖，仅接受本地defs引用；课程case各自上下文SHA，concept不伪造c/r，matched_rule须同case且met=true。原始观察/答案值仅用于本机核验，公开题目保留稳定option_id。
 
@@ -45,6 +51,8 @@ H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles�
 旧HTML加载生产构建的独立legacy-stream.js入口；模块只登记显式适配器，加载不发请求。发送时协商JSON与SSE；旧SSE不读取/不改写；JSON仅接受已发布七字段、同run同源URL，运行身份以回执为准。取消HTTP确认不当作已停止，仅RUN_CANCELLED事件保留部分正文并标中断。默认Playwright入口注册独立旧页project，让CI原静态入口也覆盖13新项；不新增依赖。49新增第〇节要求11-02 12时或大脑通知额度85%时停止开新活，收尾至用户11-02 22时截止，不自行部署。
 
 ## Outcomes & Retrospective
+
+2026-10-27T11:15:37+08:00 研习课程候选：新增独立v5静态只读端口和20课/40题页面，目录/前后课/键盘单选/答案核对/出处异说待核/西占c7依据、切视图暂停继续、刷新清空与失败重试。只GET固定146197B/SHA资产，omit/no-store/redirect:error；不混旧StudyPort、不写存储或记忆，原对话草稿DOM保持。97/97定向单测（含PWA/预算/gzip）、类型/全量lint/构建绿；最终14/14浏览器含12课程+2原研习聊天，四尺寸×双主题×阅读/核对/西占加交互共30图，Axe0、朱砂≤3、横溢出/API/外域/非GET0；初轮11/27图保留，不与最终重复累计。默认CI注册study-courses项目，2目标入口/ignored证据输出验证通过。首轮测试导入/summary选择器与Windows命令管道错误均如实留存，非产品失败或修改原断言；当前只候选，干净头4G下一测，不冒称已部署/专业审校。
 
 10:55 研习v5离线切片：固定meta f8d9536a与1491b7ce清单，32资产LF摘要、Schema、三个case原document/alias/claim/Pointer、20依据、20课/40题的答案与来源绑定通过。29完整性+12公开导出新项、原学习12+词典22，合计75/75，ruff绿。反例覆盖跨case、false≠0、错误答案/干扰项、远程ref禁用、最后一课损坏时零输出、目录逃逸/覆盖拒绝、投影不含原盘/scope/原时刻/任意observed。西占新c7与旧c2版本独立；公开七资产字节不变。新146197B课程仅导出ignored test-results，未接页面、未新增正式截图，不冒称20课UI或专业验收。下一做独立课程静态端口与页面，接着矩阵；CI修复新头仍待。
 

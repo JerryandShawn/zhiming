@@ -91,3 +91,11 @@ PWA外壳88文件中研习JSON为0，运行时数据不写缓存。当前只验�
 入口：scripts/export_courses.py；默认输出test-results/course-v5。课程格式frontend-course-v1，与旧StudyPort/七资产独立；固定32输入摘要在provenance，不授权读取个人盘面。sources仅登记ID/标题/审核状态，不加载外链。cases仅受控learning投影、case_id与operation上下文摘要；evidence只含case/上下文/原c与r编号/角色/摘要，不含relative_path或expected。quiz只含教材选项文本与稳定ID，correct_option_id已先按真实合成原值核验；不下发通用Pointer/原值。当前无20课页面、无进度持久化，后续不得复用旧0f1的c2解释新c7。
 
 精确代码摘要和各计数：evidence/2026-10-27/course-v5-offline-checks.json；当前无UI改动，不伪造截图。浅克隆CI标准TS套件不导入固定Git原料，离线Python测试需要先取得固定对象。
+
+## 9. 20课只读页面候选（2026-10-27T11:15:37+08:00）
+
+2026-10-27T11:15:37+08:00 研习课程候选：新增独立v5静态只读端口和20课/40题页面，目录/前后课/键盘单选/答案核对/出处异说待核/西占c7依据、切视图暂停继续、刷新清空与失败重试。只GET固定146197B/SHA资产，omit/no-store/redirect:error；不混旧StudyPort、不写存储或记忆，原对话草稿DOM保持。97/97定向单测（含PWA/预算/gzip）、类型/全量lint/构建绿；最终14/14浏览器含12课程+2原研习聊天，四尺寸×双主题×阅读/核对/西占加交互共30图，Axe0、朱砂≤3、横溢出/API/外域/非GET0；初轮11/27图保留，不与最终重复累计。默认CI注册study-courses项目，2目标入口/ignored证据输出验证通过。首轮测试导入/summary选择器与Windows命令管道错误均如实留存，非产品失败或修改原断言；当前只候选，干净头4G下一测，不冒称已部署/专业审校。
+
+接线点src/study/courses/loader.ts，单一同源公开GET；公共静态包public/data/study/courses-v5/与旧七资产独立。课程不新增业务API或个人学习授权，不把SHA当人物授权。入口为功能区预览命理研习→研习课程；冷启动深链/?spaces=demo#/chat?space=study&topic=chart-study&view=courses。题目正确ID来自离线核验，课文/选项顺序可变仍按ID核对。只有当前页面内存进度，不写Storage/PG/缓存，PWA白名单排除课程JSON；真实进度接口待主线契约。
+
+验证web/evidence/2026-10-27/courses-ui-checks.json，最终图courses-final/；第一批courses-first/作为历史候选保留。原0f1卡c2继续原归属，新v5课程c7只绑定本包case/context，页面中文显示体系与出处边界。下一推送后测干净头合成课程4G，未代替真实登录今日页或旧页2572缺口。

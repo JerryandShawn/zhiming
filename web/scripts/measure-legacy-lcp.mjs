@@ -11,7 +11,8 @@ import { safeWebPath, webRoot } from './bundle-budget.mjs';
 // would bypass the transfer time we are trying to measure. No database/model is used.
 const root = path.resolve(webRoot, '..');
 const target = process.env.FRONTEND_PERF_TARGET ?? 'legacy';
-if (!['legacy', 'h5'].includes(target)) throw new Error('Expected legacy or h5 target');
+if (!['legacy', 'h5', 'courses'].includes(target)) throw new Error('Expected legacy, h5 or courses target');
+const builtTarget = target !== 'legacy';
 const encoding = process.env.FRONTEND_PERF_ENCODING ?? 'identity';
 if (!['identity', 'gzip'].includes(encoding)) throw new Error('Expected identity or gzip delivery');
 const attempt = process.env.LEGACY_PERF_ATTEMPT;
@@ -25,7 +26,14 @@ const bjt = () => new Date(Date.now() + 28800000).toISOString().replace('Z', '+0
 const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
 const hash = (value) => createHash('sha256').update(value).digest('hex');
 const runtimePaths = ['static/index.html', 'static/app.js', 'static/base.css', 'static/paper.css'];
-const buildPaths = ['web/vite.config.ts', 'web/compression.plugin.ts', 'web/pwa.plugin.ts', 'web/index.html', 'web/package.json', 'web/package-lock.json'];
+const buildPaths = [
+  'web/vite.config.ts',
+  'web/compression.plugin.ts',
+  'web/pwa.plugin.ts',
+  'web/index.html',
+  'web/package.json',
+  'web/package-lock.json',
+];
 async function provenance() {
   const files = {};
   async function visit(relative) {
@@ -38,14 +46,16 @@ async function provenance() {
   for (const file of runtimePaths) files[file] = hash(await fs.readFile(path.join(root, file)));
   await visit('static/dist');
   await visit('static/vendor');
-  if (target === 'h5') {
+  if (builtTarget) {
     await visit('web/src');
     await visit('web/public');
     for (const file of buildPaths) files[file] = hash(await fs.readFile(path.join(root, file)));
   }
   return {
     head: git('rev-parse', 'HEAD'),
-    runtime_dirty: Boolean(git('status', '--porcelain', '--', ...runtimePaths, 'web/src', 'web/public', ...(target === 'h5' ? buildPaths : []))),
+    runtime_dirty: Boolean(
+      git('status', '--porcelain', '--', ...runtimePaths, 'web/src', 'web/public', ...(builtTarget ? buildPaths : [])),
+    ),
     files,
   };
 }
@@ -81,23 +91,17 @@ const server = http.createServer(async (request, response) => {
       return;
     }
     if (url.pathname.startsWith('/api/')) {
-      if (target === 'h5' || !Object.hasOwn(fixture, url.pathname))
-        unexpected.push({ method: 'GET', path: url.pathname });
+      if (builtTarget || !Object.hasOwn(fixture, url.pathname)) unexpected.push({ method: 'GET', path: url.pathname });
       response.writeHead(200, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify(fixture[url.pathname] ?? {}));
       return;
     }
     if (url.pathname === '/favicon.ico') return void response.writeHead(204).end();
-    const filename =
-      target === 'h5'
-        ? path.resolve(
-            root,
-            'static/dist',
-            url.pathname === '/' ? 'index.html' : '.' + decodeURIComponent(url.pathname),
-          )
-        : url.pathname === '/'
-          ? path.join(root, 'static/index.html')
-          : path.resolve(root, '.' + decodeURIComponent(url.pathname));
+    const filename = builtTarget
+      ? path.resolve(root, 'static/dist', url.pathname === '/' ? 'index.html' : '.' + decodeURIComponent(url.pathname))
+      : url.pathname === '/'
+        ? path.join(root, 'static/index.html')
+        : path.resolve(root, '.' + decodeURIComponent(url.pathname));
     if (!filename.startsWith(path.join(root, 'static') + path.sep)) return void response.writeHead(404).end();
     let bytes = await fs.readFile(filename),
       compressed = false;
@@ -136,9 +140,11 @@ const batch = {
   encoding_mode: encoding,
   started_bjt: bjt(),
   mode:
-    target === 'h5'
-      ? 'h5-isolated-demo-built-loopback-http-no-api'
-      : 'old-html-built-module-loopback-http-synthetic-read-only-api',
+    target === 'courses'
+      ? 'courses-pinned-synthetic-study-built-loopback-http-no-api'
+      : target === 'h5'
+        ? 'h5-isolated-demo-built-loopback-http-no-api'
+        : 'old-html-built-module-loopback-http-synthetic-read-only-api',
   network,
   cpu_slowdown: 4,
   runs: 5,
@@ -199,10 +205,18 @@ try {
     await cdp.send('Network.emulateNetworkConditions', network);
     await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
     try {
-      await page.goto(origin + (target === 'h5' ? '/?embed=demo#/chat' : '/#/chat'), { waitUntil: 'networkidle' });
+      const route =
+        target === 'courses'
+          ? '/?spaces=demo#/chat?space=study&topic=chart-study&view=courses'
+          : target === 'h5'
+            ? '/?embed=demo#/chat'
+            : '/#/chat';
+      await page.goto(origin + route, { waitUntil: 'networkidle' });
       if (target === 'legacy') await page.waitForFunction(() => Boolean(window.mingjingLegacyStream));
-      else await page.locator('[data-demo="h5"]').waitFor();
-      await page.getByRole('textbox', { name: target === 'h5' ? '本地草稿' : '本次问题' }).waitFor();
+      else if (target === 'h5') await page.locator('[data-demo="h5"]').waitFor();
+      else await page.locator('[data-course-state="ready"]').waitFor();
+      if (target !== 'courses')
+        await page.getByRole('textbox', { name: target === 'h5' ? '本地草稿' : '本次问题' }).waitFor();
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(1000);
       const timings = await page.evaluate(() => {
@@ -257,9 +271,11 @@ try {
     unexpected,
     samples,
     limitations:
-      target === 'h5'
-        ? 'Isolated H5 sign-in demo only, not signed-in Today, real Feishu/cookie authentication, device, API or deployment acceptance.'
-        : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
+      target === 'courses'
+        ? 'Synthetic fixed course deep link only; not personal study progress, signed-in Today, real API, device or deployment acceptance.'
+        : target === 'h5'
+          ? 'Isolated H5 sign-in demo only, not signed-in Today, real Feishu/cookie authentication, device, API or deployment acceptance.'
+          : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
   };
   await fs.writeFile(path.join(directory, 'report.json'), JSON.stringify(report, null, 2));
   await fs.writeFile(

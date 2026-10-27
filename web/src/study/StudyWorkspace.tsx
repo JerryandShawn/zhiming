@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { lazy, Suspense, useState, type ReactNode } from 'react';
 import { Button, Disclosure, Segmented, Tag } from '../components/ui/Controls';
 import { GlossaryPanel } from './GlossaryPanel';
 import { LearningPanel } from './LearningPanel';
@@ -8,7 +8,8 @@ import { useStudyCatalog } from './useStudyCatalog';
 import type { StudyLoadSession } from './staticLoader';
 import './study.css';
 
-type View = 'chat' | 'dictionary' | 'cards';
+const CoursePanel = lazy(() => import('./courses/CoursePanel'));
+type View = 'chat' | 'dictionary' | 'cards' | 'courses';
 
 export default function StudyWorkspace({
   children,
@@ -17,7 +18,10 @@ export default function StudyWorkspace({
   children: ReactNode;
   createSession?: () => StudyLoadSession;
 }) {
-  const [tab, setTab] = useState<View>('chat');
+  const [tab, setTab] = useState<View>(() =>
+    new URLSearchParams(window.location.hash.split('?')[1]).get('view') === 'courses' ? 'courses' : 'chat',
+  );
+  const [coursesOpened, setCoursesOpened] = useState(tab === 'courses');
   const catalog = useStudyCatalog(createSession);
   const ready = catalog.view.status === 'ready' ? catalog.view : undefined;
   return (
@@ -48,9 +52,13 @@ export default function StudyWorkspace({
             { value: 'chat', label: '对话' },
             { value: 'dictionary', label: '术语词典' },
             { value: 'cards', label: '学习卡' },
+            { value: 'courses', label: '研习课程' },
           ]}
           value={tab}
-          onChange={setTab}
+          onChange={(next) => {
+            if (next === 'courses') setCoursesOpened(true);
+            setTab(next);
+          }}
         />
         {catalog.view.status === 'loading' && (
           <p role="status" className="meta">
@@ -78,6 +86,13 @@ export default function StudyWorkspace({
         </div>
         <div className="study-tab-content" hidden={tab !== 'cards'}>
           <LearningPanel port={ready?.port} metadata={ready?.metadata} />
+        </div>
+        <div className="study-tab-content" hidden={tab !== 'courses'}>
+          {coursesOpened && (
+            <Suspense fallback={<p role="status">正在展开课程…</p>}>
+              <CoursePanel active={tab === 'courses'} />
+            </Suspense>
+          )}
         </div>
         {ready && (
           <Disclosure title="研习资料的口径与限制">

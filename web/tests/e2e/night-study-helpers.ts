@@ -112,8 +112,9 @@ export async function auditStudy(page: Page) {
   assertStudyQuiet(page);
 }
 
-export async function captureStudy(page: Page, name: string, info: TestInfo) {
-  const directory = process.env.STUDY_EVIDENCE_DIR ?? process.env.NIGHT_EVIDENCE_DIR ?? 'evidence/2026-10-21/study';
+export async function captureStudy(page: Page, name: string, info: TestInfo, outputDirectory?: string) {
+  const directory =
+    outputDirectory ?? process.env.STUDY_EVIDENCE_DIR ?? process.env.NIGHT_EVIDENCE_DIR ?? 'evidence/2026-10-21/study';
   await fs.mkdir(directory, { recursive: true });
   const filename = path.join(directory, `${name}-${randomUUID().slice(0, 8)}.png`);
   await page.evaluate(() => window.scrollTo(0, 0));
