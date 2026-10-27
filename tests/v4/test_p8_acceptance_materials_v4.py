@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -23,7 +24,7 @@ DESIGN_DOCUMENT = "docs/v4/07_评测场景集.md"
 APPENDIX_SHA256 = "9c21dcb7640a72be7d8c099052752e210a05bee0d2634bf0bd959aaf58159230"
 
 
-def legacy_digest(name: str, raw: bytes) -> str:
+def legacy_body(name: str, raw: bytes) -> bytes:
     raw = raw.replace(b"\r\n", b"\n")
     # PR merge CI includes mainline's reviewed v2.2 appendix (base b9a89b6).
     # Only that exact addition is allowed; original text remains byte-pinned.
@@ -32,7 +33,11 @@ def legacy_digest(name: str, raw: bytes) -> str:
         end = raw.index("## 附录：历法核对数据".encode(), start)
         assert hashlib.sha256(raw[start:end]).hexdigest() == APPENDIX_SHA256
         raw = raw[:start] + raw[end:]
-    return hashlib.sha256(raw).hexdigest()
+    return raw
+
+
+def legacy_digest(name: str, raw: bytes) -> str:
+    return hashlib.sha256(legacy_body(name, raw)).hexdigest()
 
 
 def evaluate(value: P8Scenario) -> dict:
@@ -156,8 +161,11 @@ def test_legacy_schema_corpus_and_seed_files_are_unchanged() -> None:
         Scenario.model_validate(CASES[0].model_dump())
 
 
-def test_reviewed_upstream_appendix_does_not_freeze_mainline_design_evolution() -> None:
-    original = (ROOT / DESIGN_DOCUMENT).read_bytes().replace(b"\r\n", b"\n")
+@pytest.mark.parametrize("already_integrated", [False, True])
+def test_reviewed_upstream_appendix_does_not_freeze_mainline_design_evolution(
+    already_integrated: bool,
+) -> None:
+    original = legacy_body(DESIGN_DOCUMENT, (ROOT / DESIGN_DOCUMENT).read_bytes())
     appendix = (SCENARIOS.parent / "approved_upstream_appendix_b.md").read_bytes()
     appendix = appendix.replace(b"\r\n", b"\n")
     assert hashlib.sha256(appendix).hexdigest() == APPENDIX_SHA256
@@ -167,14 +175,16 @@ def test_reviewed_upstream_appendix_does_not_freeze_mainline_design_evolution() 
     assert hashlib.sha256(integrated).hexdigest() == (
         "a637aadca05c412f5b27352769a7ddadc0b75359698b5002a86af30a018e28a6"
     )
-    assert legacy_digest(DESIGN_DOCUMENT, integrated) == legacy_digest(
+    checkout = integrated if already_integrated else original
+    assert legacy_body(DESIGN_DOCUMENT, checkout) == original
+    assert legacy_digest(DESIGN_DOCUMENT, checkout) == legacy_digest(
         DESIGN_DOCUMENT, original
     )
 
 
 @pytest.mark.parametrize("mutation", ["original_text", "appendix", "twice", "runtime"])
 def test_upstream_exception_cannot_hide_other_changes(mutation: str) -> None:
-    original = (ROOT / DESIGN_DOCUMENT).read_bytes().replace(b"\r\n", b"\n")
+    original = legacy_body(DESIGN_DOCUMENT, (ROOT / DESIGN_DOCUMENT).read_bytes())
     appendix = (SCENARIOS.parent / "approved_upstream_appendix_b.md").read_bytes()
     appendix = appendix.replace(b"\r\n", b"\n")
     marker = "## 附录：历法核对数据".encode()
@@ -193,6 +203,30 @@ def test_upstream_exception_cannot_hide_other_changes(mutation: str) -> None:
     except AssertionError:
         return
     assert digest != legacy_digest(DESIGN_DOCUMENT, original)
+
+
+@pytest.mark.parametrize("merge_checkout", [False, True])
+def test_appendix_checks_run_against_both_actual_checkout_shapes(
+    monkeypatch: pytest.MonkeyPatch,
+    merge_checkout: bool,
+) -> None:
+    document = ROOT / DESIGN_DOCUMENT
+    original_read = Path.read_bytes
+    body = legacy_body(DESIGN_DOCUMENT, original_read(document))
+    appendix = original_read(SCENARIOS.parent / "approved_upstream_appendix_b.md")
+    appendix = appendix.replace(b"\r\n", b"\n")
+    marker = "## 附录：历法核对数据".encode()
+    checkout = body.replace(marker, appendix + marker, 1) if merge_checkout else body
+
+    def read_bytes(path: Path) -> bytes:
+        return checkout if path == document else original_read(path)
+
+    monkeypatch.setattr(Path, "read_bytes", read_bytes)
+    test_legacy_schema_corpus_and_seed_files_are_unchanged()
+    for state in (False, True):
+        test_reviewed_upstream_appendix_does_not_freeze_mainline_design_evolution(state)
+    for mutation in ("original_text", "appendix", "twice", "runtime"):
+        test_upstream_exception_cannot_hide_other_changes(mutation)
 
 
 def test_count_distribution_and_no_model_submitted_birth_or_consent() -> None:
