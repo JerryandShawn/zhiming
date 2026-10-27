@@ -8,7 +8,12 @@ the integration guide; no HTTP or model requests occur in this package.
 
 from .answers import answer_card, memory_receipt_card, proposal_card, question_card
 from .elements import literal
-from .interactive import DecisionOption, decision_card, synastry_confirmation_card, tarot_card
+from .interactive import (
+    DecisionOption,
+    decision_card,
+    synastry_confirmation_card,
+    tarot_card,
+)
 from .notices import brief_card, followup_card, route_card
 from .validation import card_sizes, validate_card
 
