@@ -1,0 +1,232 @@
+# R32：记忆就绪后的非记忆回归交接
+
+记忆候选 f44f5dd45b1a51631712b00b93aafff61fa9b126 指定37/37、变体4/4已通过。R32将下列非记忆失败交主线；不改历史完整回归结果：9ef7262为4795 passed /11 failed /193 errors /72 skipped /1 warning，2547.89秒。不是全量绿色、产品集成或上线验收。
+
+## 一、release本机夹具端口（原172 errors、1 failed）
+
+夹具要求55480/55481，本线独立合成PG使用55482；未借用其他线PG、未放宽端口白名单。
+
+- `FAILED tests/v4/release/test_first_release_native_exchange_pg.py::test_explicit_restore_endpoint_wins_over_distinct_core_ci_endpoint`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_correct_quota_acl_and_real_checkpoint_schema_are_read_only`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_extra_quota_delete_is_rejected_without_granting_to_match_old_b9_gate[core_model_accounts]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_extra_quota_delete_is_rejected_without_granting_to_match_old_b9_gate[core_model_usage]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_extra_quota_delete_is_rejected_without_granting_to_match_old_b9_gate[core_model_batches]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_extra_quota_delete_is_rejected_without_granting_to_match_old_b9_gate[core_model_authorizations]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_migration_ledgers_remain_read_only[mingjing_core.schema_migrations]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_migration_ledgers_remain_read_only[public.checkpoint_migrations]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_column_only_quota_escalation_is_not_missed`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_privilege_escalations_and_checkpoint_dml_losses_fail_closed[GRANT CREATE ON SCHEMA public TO {writer}-REVOKE CREATE ON SCHEMA public FROM {writer}-DDL_TEMP]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_privilege_escalations_and_checkpoint_dml_losses_fail_closed[GRANT TEMP ON DATABASE {database} TO {writer}-REVOKE TEMP ON DATABASE {database} FROM {writer}-DDL_TEMP]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_privilege_escalations_and_checkpoint_dml_losses_fail_closed[GRANT DELETE ON mingjing_core.core_model_accounts TO PUBLIC-REVOKE DELETE ON mingjing_core.core_model_accounts FROM PUBLIC-EXACT_TABLE]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_privilege_escalations_and_checkpoint_dml_losses_fail_closed[REVOKE DELETE ON public.checkpoints FROM {writer}-GRANT DELETE ON public.checkpoints TO {writer}-EXACT_TABLE]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_privilege_escalations_and_checkpoint_dml_losses_fail_closed[GRANT SELECT ON mingjing_core.core_entities TO {writer} WITH GRANT OPTION-REVOKE GRANT OPTION FOR SELECT ON mingjing_core.core_entities FROM {writer}-EXACT_TABLE]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_privilege_escalations_and_checkpoint_dml_losses_fail_closed[GRANT UPDATE ON SEQUENCE mingjing_core.core_model_usage_id_seq TO {writer}-REVOKE UPDATE ON SEQUENCE mingjing_core.core_model_usage_id_seq FROM {writer}-EXACT_SEQUENCE]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_writer_role_inheritance_is_rejected_even_without_owner_switch`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_owner_view_cannot_expose_forbidden_quota_delete_or_update[public]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_owner_view_cannot_expose_forbidden_quota_delete_or_update[mingjing_core]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_executable_owner_security_definer_cannot_bypass_quota_acl[FUNCTION]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_executable_owner_security_definer_cannot_bypass_quota_acl[PROCEDURE]`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_default_search_path_catalog_view_cannot_hide_actual_quota_backdoor`
+- `ERROR tests/v4/release/test_first_release_acl_pg.py::test_valid_acl_pins_catalog_despite_both_role_default_search_paths`
+- `ERROR tests/v4/release/test_first_release_admission_pg.py::test_live_native_writer_can_close_admission_then_original_marker_is_adopted_by_real_m1`
+- `ERROR tests/v4/release/test_first_release_admission_pg.py::test_default_identity_marker_protocol_and_actual_stability_fail_closed_without_core_changes`
+- `ERROR tests/v4/release/test_first_release_admission_pg.py::test_true_pg_dump_error_retains_closed_admission_partial_outputs_and_refuses_reentry`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_full_actual_candidate_preflight_is_readonly_and_does_not_replay`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_actual_preloaded_control_namespace_is_refused_and_target_retained[tools]`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_actual_preloaded_control_namespace_is_refused_and_target_retained[mingjing_core]`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_candidate_business_drift_after_upgrade_is_refused_with_target_preserved`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_preflight_requires_same_call_apply_upgrade_without_any_connection`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_real_target_refusal_is_readonly_and_never_repairs_or_clears_the_target[owner]`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_real_target_refusal_is_readonly_and_never_repairs_or_clears_the_target[active]`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_real_target_refusal_is_readonly_and_never_repairs_or_clears_the_target[lease]`
+- `ERROR tests/v4/release/test_first_release_candidate_preflight_pg.py::test_real_target_refusal_is_readonly_and_never_repairs_or_clears_the_target[central]`
+- `ERROR tests/v4/release/test_first_release_candidate_replay_pg.py::test_real_committed_candidate_replays_nonempty_ledger_twice_and_preserves_other_owner[7]`
+- `ERROR tests/v4/release/test_first_release_candidate_replay_pg.py::test_prefix_four_empty_replay_remains_local_and_is_idempotent`
+- `ERROR tests/v4/release/test_first_release_candidate_replay_pg.py::test_real_old_candidate_does_not_borrow_controller_idempotence_fix[7e3d098-7]`
+- `ERROR tests/v4/release/test_first_release_candidate_replay_pg.py::test_replay_requires_explicit_pin_and_same_call_before_any_connection`
+- `ERROR tests/v4/release/test_first_release_candidate_replay_pg.py::test_changed_effects_pin_is_refused_before_creating_any_target`
+- `ERROR tests/v4/release/test_first_release_candidate_replay_pg.py::test_stale_latest_ledger_refuses_before_first_apply_and_preserves_full_state[7]`
+- `ERROR tests/v4/release/test_first_release_candidate_replay_pg.py::test_owner_collision_rolls_back_whole_first_apply_and_never_runs_second[7]`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_true_capture_to_fresh_original_restore_then_upgrade_has_utc_and_complete_column_binding[core-only-4]`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_true_capture_to_fresh_original_restore_then_upgrade_has_utc_and_complete_column_binding[core-only-7]`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_old_capture_without_explicit_utc_cannot_be_relabelled_by_new_review_hash`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_actual_capture_ledger_bytes_must_still_match_reviewed_capture`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_timestamp_field_drift_is_detected_before_forward_upgrade_and_retains_original`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_empty_table_column_drift_is_detected_even_when_row_hash_is_still_empty`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_sequence_semantic_drift_cannot_be_hidden_by_valid_table_rows`
+- `ERROR tests/v4/release/test_first_release_capture_binding_pg.py::test_binding_requires_same_call_and_exact_original_source_lineage_without_connections`
+- `ERROR tests/v4/release/test_first_release_capture_replay_chain_pg.py::test_actual_m1_capture_m2_original_compare_upgrade_and_native_double_replay_share_one_chain[7]`
+- `ERROR tests/v4/release/test_first_release_central_routing_pg.py::test_actual_restored_business_uses_original_nonempty_central_and_refuses_wrong_bindings[7]`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_actual_existing_source_capture_and_restored_snapshot_match_without_source_upgrade[4]`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_actual_existing_source_capture_and_restored_snapshot_match_without_source_upgrade[7]`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_default_has_no_connections_processes_or_files_and_exact_oid_mismatch_never_backs_up`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_extra_real_session_is_not_allowed_by_spoofed_application_name`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_active_lease_is_refused_without_changing_or_revoking_source_run`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_real_cross_process_shared_writer_blocks_exclusive_backup[file]`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_real_cross_process_shared_writer_blocks_exclusive_backup[pg]`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_dump_and_native_ledger_share_snapshot_but_fresh_source_drift_stops_and_retains_outputs`
+- `ERROR tests/v4/release/test_first_release_incremental_backup_pg.py::test_persistent_marker_blocks_real_cooperative_writer_after_backup_locks_are_released`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_default_has_no_connections_processes_or_writes`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_real_same_call_target_runtime_and_source_forward_preserve_original_fields[4]`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_real_same_call_target_runtime_and_source_forward_preserve_original_fields[7]`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_forged_or_expired_authority_and_actual_lost_pg_lock_stop_before_first_write`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_actual_runtime_pin_mismatch_never_reaches_source_write`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_real_source_drift_after_proof_before_locked_snapshot_is_not_repaired`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_real_sdk_closed_owned_connection_preserves_primary_over_restore_failure`
+- `ERROR tests/v4/release/test_first_release_incremental_forward_pg.py::test_after_real_core_commit_injected_boundary_error_is_unknown_and_never_reentered`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_real_capture_source_guard_is_readonly_and_holds_original_both_fences[4]`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_real_capture_source_guard_is_readonly_and_holds_original_both_fences[7]`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_guard_control_drift_rejects_before_any_connection`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_missing_or_malformed_retained_material_is_rejected_without_repair[missing-fence]`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_missing_or_malformed_retained_material_is_rejected_without_repair[missing-marker]`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_missing_or_malformed_retained_material_is_rejected_without_repair[invalid-started]`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_same_bytes_replaced_marker_is_detected_when_leaving_scope`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_actual_timestamp_field_drift_stops_without_reverting_source`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_actual_queued_run_or_unowned_live_pid_is_never_exempted[busy]`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_actual_queued_run_or_unowned_live_pid_is_never_exempted[other-session]`
+- `ERROR tests/v4/release/test_first_release_incremental_guard_pg.py::test_unreviewed_relation_is_refused_by_actual_source_profile`
+- `ERROR tests/v4/release/test_first_release_legacy_tombstone_pg.py::test_native_legacy_tombstone_erases_mapped_body_after_candidate_replay[93886bbbadc5048e8269c0537e278dc0c12886e9-7]`
+- `ERROR tests/v4/release/test_first_release_legacy_tombstone_pg.py::test_old_native_candidate_is_rejected_for_surviving_legacy_body[144b81eeed3e792221393673bd611637fbaae01f-7]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_actual_restore_preserves_original_prefix_data_and_new_owner_without_forward_migration[4]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_actual_restore_preserves_original_prefix_data_and_new_owner_without_forward_migration[7]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_default_validation_does_not_connect_create_or_execute_pg_restore`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_formal_scope_is_hard_rejected_even_before_looking_for_inputs[False]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_formal_scope_is_hard_rejected_even_before_looking_for_inputs[True]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_existing_database_or_either_role_is_never_adopted_or_changed[database]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_existing_database_or_either_role_is_never_adopted_or_changed[owner]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_existing_database_or_either_role_is_never_adopted_or_changed[writer]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_reviewed_input_changes_are_rejected_before_creating_any_objects[dump]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_reviewed_input_changes_are_rejected_before_creating_any_objects[binary]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_reviewed_input_changes_are_rejected_before_creating_any_objects[prefix8]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_reviewed_input_changes_are_rejected_before_creating_any_objects[candidate]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_actual_central_ledger_archive_is_refused_before_role_or_database_creation[8]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_actual_restore_error_retains_new_database_and_roles_without_second_restore`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_wrong_declared_original_prefix_stops_after_restore_and_preserves_evidence`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_cli_public_failure_never_echoes_process_credentials_or_private_body`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_new_public_initialization_refuses_changed_default_and_preserves_it[occupied]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_new_public_initialization_refuses_changed_default_and_preserves_it[changed_owner]`
+- `ERROR tests/v4/release/test_first_release_local_restore_pg.py::test_role_sql_uses_client_scram_verifiers_with_actual_ddl_logging`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_actual_fresh_restore_upgrades_to8_preserving_data_and_checkpoint_with_exact_acl[4]`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_actual_fresh_restore_upgrades_to8_preserving_data_and_checkpoint_with_exact_acl[7]`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_upgrade_flag_without_same_call_apply_never_connects_or_executes`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_migration_sql_error_rolls_back_whole_forward_transaction_and_keeps_original`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_changed_reviewed_sql_after_restore_is_refused_before_forward_migration`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_changed_historical_checksum_after_restore_stops_without_adopting_it`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_actual_checkpoint_failure_keeps_committed_core8_without_grants_or_retry`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_extra_quota_delete_permission_fails_final_acl_without_automatic_repair`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_nonempty_central_table_stops_and_never_deletes_or_reprovisions_it`
+- `ERROR tests/v4/release/test_first_release_local_upgrade_pg.py::test_internal_upgrade_refuses_an_ordinary_admin_session_without_fresh_creator_lock`
+- `ERROR tests/v4/release/test_first_release_native_exchange_pg.py::test_actual_foreign_key_clean_failure_then_new_restore_preserves_owner_acl_settings_and_old_database`
+- `ERROR tests/v4/release/test_first_release_native_exchange_pg.py::test_public_cli_capture_restore_exchange_writes_private_receipts_without_echoing_secrets`
+- `ERROR tests/v4/release/test_first_release_native_exchange_pg.py::test_existing_client_prevents_exchange_without_renaming_or_terminating_it`
+- `ERROR tests/v4/release/test_first_release_native_exchange_pg.py::test_changed_backup_fails_before_database_creation_and_existing_restore_is_never_adopted`
+- `ERROR tests/v4/release/test_first_release_replay_idempotence_pg.py::test_native_nonempty_privacy_replay_second_apply_keeps_full_state_and_other_owner[7]`
+- `ERROR tests/v4/release/test_first_release_service_assets_pg.py::test_rendered_entry_assets_share_binding_and_internal_projected_launcher_really_commits`
+- `ERROR tests/v4/release/test_first_release_service_assets_pg.py::test_projected_assets_marker_and_actual_identity_gate_reject_without_business_changes`
+- `ERROR tests/v4/release/test_first_release_service_pg.py::test_actual_native_commits_background_and_both_fences_last_until_real_os_exit`
+- `ERROR tests/v4/release/test_first_release_service_pg.py::test_default_and_real_marker_lock_or_wrong_sid_reject_without_business`
+- `ERROR tests/v4/release/test_first_release_service_pg.py::test_native_exception_after_guard_backend_termination_keeps_os_fence_until_exit`
+- `ERROR tests/v4/release/test_first_release_session_observer_pg.py::test_owner_hidden_foreign_client_has_visible_same_gate_type_and_is_still_rejected`
+- `ERROR tests/v4/release/test_first_release_source_backfill_chain_pg.py::test_m1_proof_runtime_forward_privacy_and_nonempty_candidate_backfill_one_live_scope[7]`
+- `ERROR tests/v4/release/test_first_release_source_backfill_chain_pg.py::test_backfill_pin_default_and_invalid_inputs_have_zero_effects_and_keep_original_source[7]`
+- `ERROR tests/v4/release/test_first_release_source_forward_cli.py::test_main_validates_then_applies_one_real_nonempty_source_chain[7]`
+- `ERROR tests/v4/release/test_first_release_source_forward_failures_pg.py::test_native_sdk_failure_then_restore_control_preserves_same_interrupt_over_cleanup`
+- `ERROR tests/v4/release/test_first_release_source_forward_failures_pg.py::test_real_post_setup_live_sql_drift_stops_before_grants_and_preserves_source`
+- `ERROR tests/v4/release/test_first_release_source_forward_failures_pg.py::test_actual_foreign_session_diagnostic_survives_public_forward_stop_without_source_changes`
+- `ERROR tests/v4/release/test_first_release_source_pool_pg.py::test_original_repository_nested_transactions_and_real_saver_share_one_physical_connection`
+- `ERROR tests/v4/release/test_first_release_source_pool_pg.py::test_closed_held_connection_poison_never_reacquires_or_reconnects`
+- `ERROR tests/v4/release/test_first_release_source_pool_pg.py::test_foreign_actual_connection_return_is_rejected_without_owning_or_closing_it`
+- `ERROR tests/v4/release/test_first_release_source_pool_pg.py::test_extra_actual_source_session_permanently_burns_the_lease_generation`
+- `ERROR tests/v4/release/test_first_release_source_postcheck_pg.py::test_actual_forward_sdk_grants_and_owner_writer_postchecks_preserve_old_fields[4]`
+- `ERROR tests/v4/release/test_first_release_source_postcheck_pg.py::test_actual_forward_sdk_grants_and_owner_writer_postchecks_preserve_old_fields[7]`
+- `ERROR tests/v4/release/test_first_release_source_postcheck_pg.py::test_original_timestamp_drift_is_rejected_and_never_repaired`
+- `ERROR tests/v4/release/test_first_release_source_postcheck_pg.py::test_original_column_type_and_nullability_drift_are_rejected_without_repairs`
+- `ERROR tests/v4/release/test_first_release_source_postcheck_pg.py::test_quota_delete_and_grant_option_are_rejected_and_never_repaired`
+- `ERROR tests/v4/release/test_first_release_source_postcheck_pg.py::test_actual_usage_sequence_nextval_is_rejected_and_never_reset`
+- `ERROR tests/v4/release/test_first_release_source_postcheck_pg.py::test_nonreadonly_nonrepeatable_or_wrong_pid_scope_is_rejected_without_writes`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_prefix4_profile_and_forward_preserve_all_original_fields[4]`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_prefix7_profile_and_forward_preserve_all_original_fields[7]`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_wrong_or_disabled_actual_retirement_trigger_is_rejected`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_public_database_or_schema_grants_are_rejected`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_writer_missing_dml_or_mutable_migration_ledger_is_rejected`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_unreviewed_relation_or_executable_security_definer_is_rejected`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_actual_0006_index_cast_failure_rolls_back_complete_core_transaction[4]`
+- `ERROR tests/v4/release/test_first_release_source_profile_pg.py::test_actual_database_oid_mismatch_is_rejected_without_writes`
+- `ERROR tests/v4/release/test_first_release_source_replay_chain_pg.py::test_real_nonempty_m1_target_proof_runtime_forward_and_live_source_replay_are_one_call[7]`
+- `ERROR tests/v4/release/test_first_release_source_replay_chain_pg.py::test_valid_replay_pin_default_is_readonly_and_wrong_type_or_candidate_never_reaches_effects[7]`
+- `ERROR tests/v4/release/test_first_release_source_replay_pg.py::test_real_candidate_nonempty_native_double_replay_keeps_one_live_lease_until_parent_done`
+- `ERROR tests/v4/release/test_first_release_source_replay_pg.py::test_no_parent_write_ack_preserves_actual_prefix4_component_source[4]`
+- `ERROR tests/v4/release/test_first_release_source_replay_pg.py::test_actual_persistent_drift_in_ready_ack_gap_is_rejected_before_first_native_apply`
+- `ERROR tests/v4/release/test_first_release_source_replay_pg.py::test_forged_authority_is_closed_and_actual_final_drift_with_live_child_never_gets_done_ack`
+- `ERROR tests/v4/release/test_first_release_source_span_pg.py::test_native_correction_span_preserves_raw_and_independent_fact_through_real_restore[93886bbbadc5048e8269c0537e278dc0c12886e9-7]`
+- `ERROR tests/v4/release/test_first_release_source_span_pg.py::test_native_whole_fact_and_source_span_combination_keeps_original_projection_contract[93886bbbadc5048e8269c0537e278dc0c12886e9-7]`
+- `ERROR tests/v4/release/test_first_release_source_span_pg.py::test_missing_original_after_backup_requires_marker_only_zero_residual[marker-only-93886bbbadc5048e8269c0537e278dc0c12886e9-7]`
+- `ERROR tests/v4/release/test_first_release_source_span_pg.py::test_missing_original_after_backup_requires_marker_only_zero_residual[actual-orphan-note-93886bbbadc5048e8269c0537e278dc0c12886e9-7]`
+- `ERROR tests/v4/release/test_first_release_source_span_pg.py::test_missing_original_after_backup_requires_marker_only_zero_residual[bad-field-source-refs-93886bbbadc5048e8269c0537e278dc0c12886e9-7]`
+- `ERROR tests/v4/release/test_first_release_stage_app_pg.py::test_real_stage_host_installs_agent_but_only_allows_reads_and_holds_writer_fence`
+- `ERROR tests/v4/release/test_first_release_stage_backup_pg.py::test_empty_delta_prefix8_native_restore_exchange_retains_both_databases`
+- `ERROR tests/v4/release/test_first_release_stage_backup_pg.py::test_backup_rejects_inflight_client_without_changing_or_terminating_it`
+- `ERROR tests/v4/release/test_first_release_stage_backup_pg.py::test_backup_refuses_old_prefix_before_creating_archive_and_preserves_started_marker`
+- `ERROR tests/v4/release/test_first_release_stage_copy_pg.py::test_readonly_original_backup_and_new_closed_copy_preserve_owner_acl_settings_and_data`
+- `ERROR tests/v4/release/test_first_release_stage_prepare_pg.py::test_old_copy_forward_backfill_replay_closed_and_source_untouched`
+- `ERROR tests/v4/release/test_first_release_stage_runtime_pg.py::test_new_scram_writer_private_assets_explicit_admission_and_actual_health`
+- `ERROR tests/v4/release/test_first_release_target_gate_diagnostic_pg.py::test_real_foreign_session_then_live_lease_have_distinct_original_gate_diagnostics`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_actual_candidate_chain_yields_opaque_once_only_current_proof_and_never_source_authority`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_context_exit_revokes_unconsumed_proof_without_removing_restored_database`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_same_name_recreated_database_is_not_the_process_registered_birth`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_actual_target_dml_after_mint_rejects_stale_proof_and_burns_the_token`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_actual_ledger_bytes_after_mint_are_rechecked_and_never_replayed_again`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_real_post_replay_acl_change_is_rejected_before_any_proof_yield`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_real_post_replay_sequence_use_is_rejected_before_any_proof_yield`
+- `ERROR tests/v4/release/test_first_release_target_proof_pg.py::test_default_public_json_and_missing_flags_are_zero_target_effects_and_birth_requires_live_creator`
+
+## 二、本机tokenizer初始化及新版judge状态（原21 errors）
+
+补已有本机tokenizer目录后，这21节点定向19 passed/2 failed，110.20秒；两个失败是现行needs_brain_review与旧judge_unavailable断言不一致，交主线，不改模型层。
+
+- `ERROR tests/v4/agent/test_k31_core_chain_pg.py::test_k31_actual_core_lifecycle_primary_and_external_score`
+- `ERROR tests/v4/agent/test_k31_core_chain_pg.py::test_k31_binding_requires_matching_sealed_core_proof`
+- `ERROR tests/v4/agent/test_k31_core_chain_pg.py::test_k31_quota_stop_restarts_whole_question_with_fresh_run`
+- `ERROR tests/v4/agent/test_k31_core_chain_pg.py::test_k31_recovery_token_stage_matches_native_delegation`
+- `ERROR tests/v4/agent/test_r33_judge_policy.py::test_native_pg_primary_and_required_judge_retry[0]`
+- `ERROR tests/v4/agent/test_r33_judge_policy.py::test_native_pg_primary_and_required_judge_retry[1]`
+- `ERROR tests/v4/agent/test_r33_judge_policy.py::test_native_pg_primary_and_required_judge_retry[2]`
+- `ERROR tests/v4/agent/test_r33_judge_policy.py::test_r38_native_judge_http_retry_then_ungraded[1]`
+- `ERROR tests/v4/agent/test_r33_judge_policy.py::test_r38_native_judge_http_retry_then_ungraded[2]`
+- `ERROR tests/v4/models/test_k31_connection_pg.py::test_connection_protocol_calibration_and_core_selection_are_bound_to_actual_pg`
+- `ERROR tests/v4/models/test_k31_connection_pg.py::test_wrong_actual_model_stops_all_scopes_and_never_replays_connection`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_tool_loop_finishes_within_four_requests_and_replays_every_round[2]`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_tool_loop_finishes_within_four_requests_and_replays_every_round[3]`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_tool_loop_finishes_within_four_requests_and_replays_every_round[4]`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_equal_name_and_arguments_ignore_changed_call_id_and_stop_before_execution[2]`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_equal_name_and_arguments_ignore_changed_call_id_and_stop_before_execution[3]`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_fourth_tool_request_is_retained_as_failure_without_a_fifth_request`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_later_round_still_checks_identity_and_reasoning[identity]`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_later_round_still_checks_identity_and_reasoning[reasoning]`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_real_fixed_tool_contract_rejects_repeat_even_with_auto_policy`
+- `ERROR tests/v4/models/test_k31_r18_pg.py::test_new_control_retains_two_prior_calls_in_cumulative_thirty_limit`
+
+环境补齐后仍失败的两个节点：
+
+- `FAILED tests/v4/agent/test_r33_judge_policy.py::test_native_pg_primary_and_required_judge_retry[2]`
+- `FAILED tests/v4/agent/test_r33_judge_policy.py::test_r38_native_judge_http_retry_then_ungraded[2]`
+
+## 三、C21与critic旧评测契约（原5 failed）
+
+保留实际失败，交主线核对现行needs_brain_review状态和旧测试夹具；没有修改评分行为或历史报告。
+
+- `FAILED tests/v4/models/test_c21_lifecycle.py::test_infrastructure_failure_stops_without_finishing_batch_or_auto_resume[grade]`
+- `FAILED tests/v4/models/test_c21_lifecycle.py::test_infrastructure_failure_stops_without_finishing_batch_or_auto_resume[schema]`
+- `FAILED tests/v4/models/test_c21_lifecycle.py::test_infrastructure_failure_stops_without_finishing_batch_or_auto_resume[network]`
+- `FAILED tests/v4/test_eval_critic_contract.py::test_downgraded_unsafe_advice_is_a_judge_error_in_the_scenario_result`
+- `FAILED tests/v4/test_eval_framework.py::test_critic_errors_never_turn_into_passed_cases`
+
+## 原完整回归中的记忆相关失败已单独修复（原5 failed）
+
+这五项保留原失败记录，之后定向补证通过，不混入非记忆清单。新候选f44f5dd的指定集合单独通过，不能据此改写旧全量。
+
+- `FAILED tests/v4/agent/test_eval_quota_resume_pending_pg.py::test_case_effect_prefix_resumes_one_physical_attempt_then_native_final_and_completed_read`
+- `FAILED tests/v4/agent/test_eval_session_driver_pg.py::test_pending_session_resumes_and_judges_once_then_new_observer_is_readonly`
+- `FAILED tests/v4/agent/test_r30_review_fixes.py::test_unknown_hour_is_explicit_in_actual_profile_layer`
+- `FAILED tests/v4/agent/test_u4_runtime_pg.py::test_uncertain_or_repeating_time_never_writes_a_single_event[\u6211\u6708\u5e95\u53c2\u52a0\u9762\u8bd5]`
+- `FAILED tests/v4/agent/test_withdrawal_ack_pg.py::test_real_public_receipt_survives_only_with_owner_run_operation_source_and_erasure_proofs`
