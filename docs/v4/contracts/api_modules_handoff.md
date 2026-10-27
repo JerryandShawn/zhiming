@@ -1,6 +1,7 @@
 # P10/P5b接口契约草稿回执
 
 - 范围：mod.md v14；仅文档与Schema测试，不是P10产品或HTTP验收。
+- 接口契约草稿就绪；实测候选：daccd26cd68f6b790f778946a9c3a769408216b2。
 - 分支：v4/mod-api-contracts；Draft PR29，目标first-release，不合并。
 - 基点：大脑指定e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd。PR相对目标含基点历史差异，采用时只认本线新增api文档/Schema测试提交，不把历史运行改动归于本线。
 
