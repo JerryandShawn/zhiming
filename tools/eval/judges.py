@@ -1,13 +1,17 @@
 """Deterministic assertion checks and the separately metered live critic."""
 
+import hashlib
 import math
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from mingjing_core.models.errors import ModelProtocolError
+
 from tools.eval.chart_goldens import load_golden, stability_checks, structure_checks
 from tools.eval.targets.base import TurnResult
+from tools.eval.review_assertions import cited_memory, naming_only_questions
 
 ISSUE_SEVERITIES: dict[str, int] = {
     "off_topic": 4,
@@ -92,6 +96,14 @@ def _event_check(expected: list[Any], actual: list[str]) -> bool:
 def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[AssertionResult]:
     """Each check has a stable name; failure diagnostics never contain text."""
     checks: list[AssertionResult] = []
+    if pattern := expect.get("profile_confirmation_or_text"):
+        actual = result.metadata.get("tool_effects", {}).get("profile_requests", [])
+        card = any(
+            row.get("status") == "pending"
+            and {"birth.date", "birth.time", "birth.city"}.issubset(row.get("fields", []))
+            for row in actual
+        )
+        checks.append(AssertionResult("profile_confirmation_or_text", _includes(result.text, pattern) or card))
     if expect.get("must_include_any"):
         passed = any(_includes(result.text, value) for value in expect["must_include_any"])
         checks.append(AssertionResult("must_include_any", passed))
@@ -107,6 +119,19 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
             checks.append(AssertionResult(f"{name}[{index}]", bool(predicate(value))))
     if "events" in expect and expect["events"] is not None:
         checks.append(AssertionResult("events", _event_check(expect["events"], result.events)))
+    for index, query in enumerate(expect.get("memory_access", []), 1):
+        checks.append(
+            AssertionResult(
+                f"memory_access[{index}]", "memory_search" in result.tools_called or cited_memory(result, query)
+            )
+        )
+    if patterns := expect.get("memory_recall_or_text"):
+        passed = all(_includes(result.text, value) for value in patterns) or cited_memory(
+            result, patterns[0], constraint=True
+        )
+        checks.append(AssertionResult("memory_recall_or_text", passed))
+    if expect.get("naming_only_questions"):
+        checks.append(AssertionResult("naming_only_questions", naming_only_questions(result.text)))
     if expect.get("chart_structure"):
         checks.extend(
             AssertionResult("chart_structure." + name, passed) for name, passed in structure_checks(result.text).items()
@@ -129,8 +154,24 @@ def check_assertions(expect: dict[str, Any], result: TurnResult) -> list[Asserti
 JUDGE_SCHEMA: dict[str, Any] = {
     "type": "object",
     "additionalProperties": False,
-    "required": ["score", "verdict", "issues"],
+    "required": [
+        "score",
+        "verdict",
+        "issues",
+        "reason",
+        "deductions",
+        "expected_clauses",
+    ],
     "properties": {
+        "reason": {
+            "type": "string",
+            "minLength": 1,
+            "description": "对照criterion解释评分，不得捏造期望",
+        },
+        "deductions": {"type": "array", "items": {"type": "string"}},
+        "expected_clauses": {"type": "array", "items": {"type": "string"}},
+        "needs_human": {"type": "boolean", "description": "依据不足或口径有争议时交大脑复核"},
+        "suggestions": {"type": "array", "items": {"type": "string"}},
         "score": {"type": "number", "minimum": 0, "maximum": 1},
         "verdict": {"type": "string", "enum": ["pass", "revise"]},
         "issues": {
@@ -141,12 +182,29 @@ JUDGE_SCHEMA: dict[str, Any] = {
                 "required": ["type", "severity"],
                 "properties": {
                     "type": {"type": "string", "enum": list(ISSUE_SEVERITIES)},
-                    "severity": {"type": "integer", "enum": sorted(set(ISSUE_SEVERITIES.values()))},
+                    "severity": {
+                        "type": "integer",
+                        "enum": sorted(set(ISSUE_SEVERITIES.values())),
+                    },
                 },
             },
         },
     },
 }
+
+
+def _validate_reason(output: dict[str, Any]) -> None:
+    if "needs_human" in output and type(output["needs_human"]) is not bool:
+        raise ValueError("invalid human review flag")
+    if "suggestions" in output and (
+        not isinstance(output["suggestions"], list) or any(not isinstance(item, str) for item in output["suggestions"])
+    ):
+        raise ValueError("invalid critic suggestions")
+    if not isinstance(output.get("reason"), str) or not output["reason"].strip():
+        raise ValueError("critic reason missing")
+    for key in ("deductions", "expected_clauses"):
+        if not isinstance(output.get(key), list) or any(not isinstance(v, str) for v in output[key]):
+            raise ValueError("critic reasoning clauses missing")
 
 
 class ModelJudge:
@@ -159,8 +217,35 @@ class ModelJudge:
             provider = ConfiguredModel(model=model, role="critic")
         self.provider = provider
         self.rubric = rubric.read_text(encoding="utf-8")
+        self.judge_metadata = {
+            "rubric_path": str(rubric.resolve()),
+            "rubric_sha256": hashlib.sha256(rubric.read_bytes()).hexdigest(),
+            "model": model,
+            "effort": None,
+        }
 
     def evaluate(self, payload: dict[str, Any]) -> dict[str, Any]:
+        calls, elapsed, errors = 0, 0.0, []
+        for _ in range(2):
+            result = self._evaluate_once(payload)
+            calls += result["model_calls"]
+            elapsed += result["elapsed_seconds"]
+            errors.append(result["error"])
+            if result["error"] not in {
+                "ModelProtocolError",
+                "JudgeTransportUnavailable",
+                "ValueError",
+                "KeyError",
+                "TypeError",
+            }:
+                break
+        result.update(model_calls=calls, elapsed_seconds=elapsed, attempt_errors=errors)
+        result["judge_metadata"] = dict(self.judge_metadata)
+        if result["error"]:
+            result.update(score=None, judge_unavailable=True)
+        return result
+
+    def _evaluate_once(self, payload: dict[str, Any]) -> dict[str, Any]:
         started = time.monotonic()
         try:
             response = self.provider.generate(
@@ -170,6 +255,7 @@ class ModelJudge:
                 purpose="eval_critic",
             )
             output = response["output"]
+            _validate_reason(output)
             score = output["score"]
             if isinstance(score, bool) or not isinstance(score, int | float) or not math.isfinite(score):
                 raise ValueError("invalid critic score")
@@ -193,11 +279,16 @@ class ModelJudge:
                 raise ValueError("critic score conflicts with verdict")
             return {
                 "score": float(score),
+                "private_reasoning": {
+                    **{key: output[key] for key in ("reason", "deductions", "expected_clauses", "issues")},
+                    "needs_human": output.get("needs_human", False),
+                    "suggestions": output.get("suggestions", []),
+                },
                 "model_calls": 1,
                 "elapsed_seconds": response.get("latency_seconds", time.monotonic() - started),
                 "error": None,
             }
-        except Exception as exc:
+        except (ValueError, KeyError, TypeError, ModelProtocolError) as exc:
             return {
                 "score": 0.0,
                 "model_calls": 1,

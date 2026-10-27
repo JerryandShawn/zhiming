@@ -12,6 +12,7 @@ from mingjing_core.timekit.clock import Clock
 from mingjing_core.timekit.now_block import render_now_block
 
 from .context_current import current_layer
+from .context_fact_guards import fact_item, preserve_field_facts
 from .context_types import BudgetPolicy, ContextItem, ContextLayer, SourceSnapshot
 
 
@@ -56,16 +57,13 @@ def json_item(
 
 
 def fact_layer(snapshot: SourceSnapshot, aliases: AliasBook) -> ContextLayer:
-    items = []
+    from .context_profiles import profile_items
+
+    items, represented = profile_items(snapshot, aliases)
     for row in sorted(snapshot.facts, key=lambda fact: (fact.get("kind") != "constraint", fact["id"])):
-        alias = aliases.add("f", "fact", row)
-        data = {
-            "alias": alias,
-            "date": row.get("said_at") or row.get("valid_from"),
-            "kind": row["kind"],
-            "text": row["content"],
-        }
-        items.append(json_item(row["id"], "画像", data, required=True))
+        if row["id"] in represented and row.get("kind") != "constraint" and not row.get("field"):
+            continue
+        items.append(fact_item(row, aliases))
     return ContextLayer("L2", tuple(items))
 
 
@@ -154,7 +152,12 @@ def retrieval_layer(snapshot: SourceSnapshot, aliases: AliasBook, policy: Budget
         header = f'<相关记忆 time_filter="{snapshot.retrieval_time_filter}">\n'
         header += "时间命中的条目优先；time_match=false只是补充资料，不能当成该时段发生的事。"
         items.append(
-            ContextItem("time-filter", (ChatMessage("system", header),), True, source_ids=(snapshot.current["id"],))
+            ContextItem(
+                "time-filter",
+                (ChatMessage("system", header),),
+                True,
+                source_ids=(snapshot.current["id"],),
+            )
         )
     candidates = [(row.get("_retrieval_kind", "message"), row) for row in snapshot.retrieved]
     query = set(tokenize(snapshot.current["content"][:2000])[:32])
@@ -219,7 +222,7 @@ def build_layers(
     aliases = AliasBook()
     layers = [
         ContextLayer("L0", (ContextItem("system", (ChatMessage("system", system),), True),)),
-        fact_layer(snapshot, aliases),
+        preserve_field_facts(snapshot, aliases, fact_layer(snapshot, aliases)),
         stable_layer(snapshot, aliases),
         history_layer(snapshot, aliases, policy),
         retrieval_layer(snapshot, aliases, policy),

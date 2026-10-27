@@ -35,3 +35,11 @@ sandbox.askLinked('ziwei',4,'官禄宫');assert.equal(sandbox.sent.selection.key
 sandbox.showSlices({chart_status:{bazi:'ok',ziwei:'error',astro:'ok'},history_messages:16,records:12});
 assert.match(element('#sliceInfo').innerHTML,/紫微 · 数据不足/);
 console.log('PASS: palace navigation, four transformations, transit aspects, structured selection, real context status');
+
+const updatedReceiptHtml=sandbox.memoryUpdateReceiptsHtml({receipts:[{write_status:'updated',summary:'已更新：茶 → 咖啡［撤销］',ids:['change-synthetic']}]});
+assert.match(updatedReceiptHtml,/已更新：茶 → 咖啡［撤销］/);
+assert.match(updatedReceiptHtml,/role="status"/);
+assert.equal(sandbox.memoryUpdateReceiptsHtml({receipts:[{write_status:'saved',summary:'old'}]}),'');
+assert.doesNotMatch(sandbox.memoryUpdateReceiptsHtml({receipts:[{write_status:'updated',summary:'<script>bad()</script>'}]}),/<script>/);
+assert.match(sandbox.answerHtml({answer:'合成回答',receipts:[{write_status:'updated',summary:'已更新：A → B［撤销］'}]}),/已更新：A → B［撤销］/);
+console.log('PASS: updated receipt status is shown and escaped without inventing an undo endpoint');

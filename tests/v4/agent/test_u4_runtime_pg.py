@@ -53,7 +53,7 @@ def test_memory_uses_original_said_at_preserves_quote_and_replays_once(
 
 
 @pytest.mark.parametrize(
-    "text", ["我月底参加面试", "我明天或后天参加面试", "我每周三面试"]
+    "text", ["我明天或后天参加面试", "我每周三面试"]
 )
 def test_uncertain_or_repeating_time_never_writes_a_single_event(
     repo: PostgresRepository, text: str
@@ -65,6 +65,20 @@ def test_uncertain_or_repeating_time_never_writes_a_single_event(
         result.receipt["code"] == "date_ambiguous" and repo.list("alice", "fact") == []
     )
 
+
+
+def test_month_end_is_stored_as_a_range_without_inventing_an_occurrence_day(repo: PostgresRepository) -> None:
+    # Document 41 permits range events; the old contract still forbids a made-up single date.
+    h = setup(repo, "我月底参加面试", parser=ModuleTimeRangeParser())
+    result, _, _ = h.write(kind="event")
+    assert result.receipt["write_status"] == "saved"
+    fact = repo.get("alice", "fact", result.receipt["id"])
+    assert fact["precision"] == "range"
+    assert fact["event_at"] == "2026-10-20T16:00:00+00:00"
+    assert fact["event_end"] == "2026-10-31T16:00:00+00:00"
+    assert fact["original_expression"] == "月底"
+    assert fact["content"] == "我月底参加面试"
+    assert fact["owner_timezone"] == "Asia/Shanghai"
 
 def test_model_claimed_date_cannot_replace_module_date(
     repo: PostgresRepository,

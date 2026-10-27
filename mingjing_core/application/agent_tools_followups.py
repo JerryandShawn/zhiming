@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, time, timedelta
 from functools import partial
 from typing import TYPE_CHECKING, Any
 from zoneinfo import ZoneInfo
@@ -78,6 +78,8 @@ def schedule_metadata(
     ctx: ToolContext,
     source: dict[str, Any],
     due: datetime,
+    *,
+    date_only_followup: bool = False,
 ) -> tuple[dict[str, Any], dict[str, Any] | None]:
     zone = service.timezone(ctx)
     local_day = due.astimezone(ZoneInfo(zone)).date()
@@ -104,7 +106,7 @@ def schedule_metadata(
         if len(event_at) == 10
         else datetime.fromisoformat(event_at).astimezone(ZoneInfo(zone)).date()
     )
-    if event_day != local_day:
+    if event_day != local_day and not (date_only_followup and len(event_at) == 10):
         return metadata, {"write_status": "needs_confirmation", "code": "date_conflict"}
     return metadata, None
 
@@ -132,6 +134,23 @@ def validate_fact(service: AgentToolsService, args: dict[str, Any], ctx: ToolCon
     return [ident]
 
 
+def followup_due(due: datetime, metadata: dict[str, Any], zone: str) -> datetime:
+    """Date-only events get an evening followup; reminders keep their explicit contract."""
+    event_at = metadata.get("event_at", "")
+    if not isinstance(event_at, str) or len(event_at) != 10:
+        return due
+    local = due.astimezone(ZoneInfo(zone))
+    day = date.fromisoformat(event_at)
+    if local.date() == day and 18 <= local.hour < 23:
+        return due
+    if local.hour >= 23:
+        day += timedelta(days=1)
+        at = time(8, 30)
+    else:
+        at = time(20)
+    return datetime.combine(day, at, tzinfo=ZoneInfo(zone)).astimezone(UTC)
+
+
 def persist_schedule(
     service: AgentToolsService,
     name: str,
@@ -154,11 +173,20 @@ def persist_schedule(
     if name == "schedule_followup" and settings.get("proactive_followups_enabled", True) is not True:
         return {"write_status": "stopped", "code": "proactive_disabled"}
     due = due_instant(args["due_at"])
-    if due <= service.clock.now():
-        raise EvidenceError("提醒时间必须在当前时刻之后")
-    metadata, pending = schedule_metadata(service, args, ctx, source, due)
+    metadata, pending = schedule_metadata(
+        service, args, ctx, source, due, date_only_followup=name == "schedule_followup"
+    )
     if pending:
         return pending
+    now = service.clock.now()
+    if name == "schedule_followup":
+        normalized = followup_due(due, metadata, service.timezone(ctx))
+        # An evening default cannot turn a future explicit model time into
+        # a past deadline. Keep the validated original if the default elapsed.
+        if normalized > now:
+            due = normalized
+    if due <= now:
+        raise EvidenceError("提醒时间必须在当前时刻之后")
     if name == "set_reminder":
         local_time = due.astimezone(ZoneInfo(service.timezone(ctx))).strftime("%H:%M")
         if args["text"] not in args["quote"] or local_time not in args["quote"]:

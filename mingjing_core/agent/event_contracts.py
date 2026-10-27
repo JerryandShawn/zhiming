@@ -35,6 +35,8 @@ class PublicReceipt(PublicModel):
     status: str | None = None
     code: str | None = None
     affected_ids: list[Ident] = Field(default_factory=list, max_length=1024)
+    ids: list[Ident] = Field(default_factory=list, max_length=1024)
+    summary: str | None = Field(default=None, max_length=160)
 
 
 class AskOption(PublicModel):
@@ -255,7 +257,7 @@ class MemoryReceipt(EventData):
     )
     fact_id: Ident | None = None
     proposal_id: Ident | None = None
-    write_status: Literal["saved", "pending_confirm", "undone", "rejected"]
+    write_status: Literal["saved", "updated", "pending_confirm", "undone", "rejected"]
     summary: str = Field(min_length=1, max_length=160)
     undo_token: str | None = Field(default=None, max_length=1024)
     sensitive: bool

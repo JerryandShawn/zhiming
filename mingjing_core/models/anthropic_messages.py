@@ -6,6 +6,7 @@ import threading
 from collections.abc import Iterator
 from typing import Any
 
+from .config_policy import ConfigError
 from .errors import (
     CapabilityError,
     ModelProtocolError,
@@ -137,6 +138,8 @@ class AnthropicMessages(StreamingHTTP):
         temperature: float | None = None,
         cancel_event: threading.Event | None = None,
     ) -> Iterator[StreamEvent]:
+        if self.model == "k3.1-pro":
+            raise ConfigError("首发K3.1 Pro仅使用已显式发送high且核响应身份的OpenAI原生协议")
         tool_choice = safe_tool_choice(self.model, tools, tool_choice)
         metadata = self.execution_metadata(role)
         caps = replay_caps(self.model, self.caps, self.settings)

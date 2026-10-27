@@ -1,0 +1,58 @@
+{
+  "recorded_beijing": "2026-10-24T04:04:24.516122+08:00",
+  "candidate": "6f9e578e7348ea15d8ae1b54c831343d1766c626",
+  "suite": "tests/v4",
+  "started_beijing": "2026-10-24T03:43:25+08:00",
+  "single_full_run": {
+    "passed": 4312,
+    "failed": 19,
+    "skipped": 72,
+    "warnings": 1,
+    "seconds": 1000.05
+  },
+  "failed_nodes": [
+    "tests/v4/agent/test_eval_core30.py::test_core30_native_withdrawal_uses_zero_model_calls_before_next_turn",
+    "tests/v4/agent/test_eval_core30.py::test_twelve_physical_attempts_in_one_run_cross_batch_without_replaying_models",
+    "tests/v4/agent/test_eval_live_proof_pg.py::test_verified_proof_selects_same_model_for_actual_agent_meter_and_external_judge[True]",
+    "tests/v4/agent/test_eval_live_proof_pg.py::test_verified_proof_selects_same_model_for_actual_agent_meter_and_external_judge[False]",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_actual_agent_u4_meter_and_wallclock_are_used",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_six_turns_and_external_judge_roll_at_ten_physical_calls",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_absent_delegation_stops_before_any_http",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_requested_model_cannot_silently_use_different_config",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_provider_stop_cannot_be_swallowed_by_agent_or_continue_to_judge[permission_error-synthetic private permission]",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_provider_stop_cannot_be_swallowed_by_agent_or_continue_to_judge[access_terminated-Access terminated]",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_provider_stop_cannot_be_swallowed_by_agent_or_continue_to_judge[quota_5h-You've reached your 5-hour usage limit.]",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_provider_stop_cannot_be_swallowed_by_agent_or_continue_to_judge[concurrency_limited-Too many concurrent requests]",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_preexisting_stop_reports_zero_new_attempts",
+    "tests/v4/agent/test_eval_v4_live_pg.py::test_native_feishu_delivery_is_only_local_transport",
+    "tests/v4/agent/test_legacy_dom_runtime_pg.py::test_legacy_dom_real_http_v3_v4_v3_and_committed_history",
+    "tests/v4/agent/test_legacy_dom_runtime_pg.py::test_legacy_dom_displays_actual_core4_memory_receipt",
+    "tests/v4/agent/test_legacy_dom_runtime_pg.py::test_legacy_dom_sensitive_proposal_is_pending_and_never_a_saved_notice",
+    "tests/v4/agent/test_production_agent_pg.py::test_real_local_encoder_and_primary_only_are_installed",
+    "tests/v4/agent/test_production_agent_pg.py::test_from_base_success_installs_real_agent_without_changing_legacy_port"
+  ],
+  "environment_root_causes": {
+    "pinned_tokenizer_dependency_environment": 16,
+    "missing_existing_jsdom_dependency_path": 3
+  },
+  "environment_recovery": {
+    "scope": "exactly the 19 failed nodes, same code and original assertions",
+    "passed": 19,
+    "failed": 0,
+    "seconds": 46.65,
+    "python": "existing zhiming-v4/.venv-k3",
+    "node_modules": "existing zhiming-v4-p10/web/node_modules via NODE_PATH",
+    "downloads": 0
+  },
+  "external_provider_requests": 0,
+  "network_guard": "loopback-only Python socket/DNS guard, MockTransport and isolated PG15",
+  "suite_not_repeated": true,
+  "single_full_run_all_green": false,
+  "limitations": [
+    "Do not add separate-run counts into a claim of a single green full run.",
+    "72 skips remain unverified. Existing Starlette dependency deprecation warning retained.",
+    "Required memory acceptance still not ready; latest full 37-case run34 passed, M08/KU01/KU02 failed.",
+    "No source changes during full run or recovery; no model/gate/channel changes to repair test environment."
+  ],
+  "execution_mistake": "Full runner reused an older interpreter and omitted the already-known jsdom NODE_PATH. Recovery used the existing pinned environment; future full-run preflight must check both before starting."
+}

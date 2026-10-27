@@ -33,6 +33,8 @@ def validate_model_settings(model: str, settings: Mapping[str, Any]) -> None:
     locked = settings.get("model_lock")
     if locked is not None and (not isinstance(locked, str) or model != locked):
         raise ConfigError("模型身份已锁定，不能由环境或调用参数切换")
+    if model == "k3.1-pro" and any(settings.get(field) != "high" for field in ("effort", "reasoning_effort")):
+        raise ConfigError("首发K3.1 Pro必须显式配置high，不能沿用默认max或关闭思考")
     if not settings.get("membership", False) or not model.strip().casefold().startswith("k3"):
         return
     thinking = settings.get("thinking")

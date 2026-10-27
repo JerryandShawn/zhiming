@@ -6,7 +6,8 @@ import json
 import os
 import re
 import subprocess
-from collections.abc import Mapping
+from collections.abc import Iterator, Mapping
+from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
@@ -21,6 +22,7 @@ from tools.first_release_restore import SafeParser
 if TYPE_CHECKING:
     from tools.first_release_candidate_process import CandidatePreflight, CandidateReplay
     from tools.first_release_capture_binding import CaptureBinding
+    from tools.first_release_target_proof import TargetProof, TargetProofPin
 
 
 def process_environment(owner_dsn: str) -> dict[str, str]:
@@ -110,20 +112,39 @@ def _verified_original(inputs: LocalInputs, dsns: dict[str, str], creator: Any, 
     return original
 
 
-def execute(
-    inputs: LocalInputs,
-    *,
-    apply_local: bool = False,
-    upgrade_local: bool = False,
-    replay_preflight: CandidatePreflight | None = None,
-    withdrawals_replay: CandidateReplay | None = None,
-    capture_binding: CaptureBinding | None = None,
-    environment: Mapping[str, str] | None = None,
+def _target_stages(
+    inputs: LocalInputs, dsns: dict[str, str], creator: Any, upgrade: bool, preflight: Any, replay: Any
 ) -> dict[str, Any]:
-    receipt = inputs.validate()
-    _validate_modes(inputs, apply_local, upgrade_local, replay_preflight, withdrawals_replay, capture_binding)
-    if not apply_local:
-        return receipt
+    upgraded = {}
+    if upgrade:
+        from tools.first_release_local_upgrade import _upgrade_new_target
+
+        upgraded = _upgrade_new_target(inputs, dsns, creator)
+    if preflight is not None:
+        from tools.first_release_candidate_process import candidate_preflight
+
+        upgraded["replay_preflight"] = candidate_preflight(preflight, inputs, dsns, creator)
+        upgraded["database_connections"] = 8
+    if replay is not None:
+        from tools.first_release_candidate_process import candidate_replay
+
+        upgraded["withdrawals_replay"] = candidate_replay(replay, inputs, dsns, creator)
+        upgraded["latest_withdrawals_replayed"] = True
+        upgraded["database_connections"] = 9
+    return upgraded
+
+
+@contextmanager
+def _applied_target(
+    inputs: LocalInputs,
+    receipt: dict[str, Any],
+    *,
+    upgrade: bool,
+    preflight: Any,
+    replay: Any,
+    capture: Any,
+    environment: Mapping[str, str] | None,
+) -> Iterator[Any]:
     dsns = inputs.connections(environment)
     child_environment = process_environment(dsns["owner"])
     preflight_program(inputs, child_environment)
@@ -132,24 +153,13 @@ def execute(
         require(file_hash(inputs.dump) == inputs.dump_pin.dump_sha256, "REVIEWED_DUMP_CHANGED")
         run_program(inputs, restore_command(inputs, dsns["owner"]), child_environment)
         require(file_hash(inputs.dump) == inputs.dump_pin.dump_sha256, "REVIEWED_DUMP_CHANGED")
-        original = _verified_original(inputs, dsns, creator, capture_binding)
-        upgraded = {}
-        if upgrade_local:
-            from tools.first_release_local_upgrade import _upgrade_new_target
+        original = _verified_original(inputs, dsns, creator, capture)
+        upgraded = _target_stages(inputs, dsns, creator, upgrade, preflight, replay)
+        upgraded["database_connections"] = upgraded.get("database_connections", 4) + int(capture is not None)
+        yield _restore_receipt(receipt, original, upgraded), dsns, creator
 
-            upgraded = _upgrade_new_target(inputs, dsns, creator)
-        if replay_preflight is not None:
-            from tools.first_release_candidate_process import candidate_preflight
 
-            upgraded["replay_preflight"] = candidate_preflight(replay_preflight, inputs, dsns, creator)
-            upgraded["database_connections"] = 8
-        if withdrawals_replay is not None:
-            from tools.first_release_candidate_process import candidate_replay
-
-            upgraded["withdrawals_replay"] = candidate_replay(withdrawals_replay, inputs, dsns, creator)
-            upgraded["latest_withdrawals_replayed"] = True
-            upgraded["database_connections"] = 9
-        upgraded["database_connections"] = upgraded.get("database_connections", 4) + int(capture_binding is not None)
+def _restore_receipt(receipt: dict[str, Any], original: dict[str, Any], upgraded: dict[str, Any]) -> dict[str, Any]:
     receipt.pop("mutations", None)
     return {
         **receipt,
@@ -170,6 +180,64 @@ def execute(
         "mutation_scope": "new-local-database-only",
         **upgraded,
     }
+
+
+def execute(
+    inputs: LocalInputs,
+    *,
+    apply_local: bool = False,
+    upgrade_local: bool = False,
+    replay_preflight: CandidatePreflight | None = None,
+    withdrawals_replay: CandidateReplay | None = None,
+    capture_binding: CaptureBinding | None = None,
+    environment: Mapping[str, str] | None = None,
+) -> dict[str, Any]:
+    receipt = inputs.validate()
+    _validate_modes(inputs, apply_local, upgrade_local, replay_preflight, withdrawals_replay, capture_binding)
+    if not apply_local:
+        return receipt
+    with _applied_target(
+        inputs,
+        receipt,
+        upgrade=upgrade_local,
+        preflight=replay_preflight,
+        replay=withdrawals_replay,
+        capture=capture_binding,
+        environment=environment,
+    ) as scope:
+        return scope[0]
+
+
+@contextmanager
+def _proved_target(
+    inputs: LocalInputs,
+    *,
+    apply_local: bool = False,
+    upgrade_local: bool = False,
+    capture_binding: CaptureBinding,
+    withdrawals_replay: CandidateReplay,
+    target_proof_pin: TargetProofPin,
+    environment: Mapping[str, str] | None = None,
+) -> Iterator[TargetProof]:
+    from tools.first_release_target_proof import TargetProofPin, _held_proof
+
+    require(apply_local is True and upgrade_local is True, "TARGET_PROOF_EXPLICIT_APPLY_UPGRADE_REQUIRED")
+    require(type(target_proof_pin) is TargetProofPin, "TARGET_PROOF_REVIEW_PIN_REQUIRED")
+    receipt = inputs.validate()
+    _validate_modes(inputs, apply_local, upgrade_local, None, withdrawals_replay, capture_binding)
+    target_proof_pin.validate(inputs, capture_binding, withdrawals_replay)
+    with _applied_target(
+        inputs,
+        receipt,
+        upgrade=True,
+        preflight=None,
+        replay=withdrawals_replay,
+        capture=capture_binding,
+        environment=environment,
+    ) as scope:
+        _, dsns, creator = scope
+        with _held_proof(inputs, capture_binding, withdrawals_replay, target_proof_pin, dsns, creator) as proof:
+            yield proof
 
 
 def _parser() -> SafeParser:

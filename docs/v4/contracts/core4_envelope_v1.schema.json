@@ -373,6 +373,30 @@
           "maxItems": 1024,
           "title": "Affected Ids",
           "type": "array"
+        },
+        "ids": {
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:-]*$",
+            "type": "string"
+          },
+          "maxItems": 1024,
+          "title": "Ids",
+          "type": "array"
+        },
+        "summary": {
+          "anyOf": [
+            {
+              "maxLength": 160,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Summary"
         }
       },
       "required": [

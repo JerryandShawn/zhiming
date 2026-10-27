@@ -97,6 +97,15 @@ def candidates(name: str, result: ToolResult) -> list[tuple[str, str]]:
     if name == "calendar_lookup":
         rows.extend(("fact", item["id"]) for day in result.data.get("days", []) for item in day.get("events", []))
     receipt = result.receipt or {}
+    if receipt.get("write_status") == "updated" and receipt.get("kind") == "fact":
+        affected = receipt.get("affected_ids", [])
+        if (
+            not isinstance(affected, list)
+            or len(affected) > 1024
+            or any(not isinstance(ident, str) or not 1 <= len(ident) <= 200 for ident in affected)
+        ):
+            raise EvidenceError("更新回执旧事实范围无效")
+        rows.extend(("fact", ident) for ident in affected)
     if receipt.get("kind") in {
         "fact",
         "note",
@@ -210,7 +219,19 @@ def verified_versions(
 ) -> tuple[dict[str, int], list[dict]]:
     """Resolve identifiers against PG, never trust returned revision/scope claims."""
     pending, versions, records = candidates(name, result), {}, []
-    with service.repo.transaction(run["owner"]):
+    with service.repo.transaction(run["owner"]) as connection:
+        receipt = result.receipt or {}
+        own = ()
+        if receipt.get("write_status") == "updated":
+            from mingjing_core.application.agent_commit_versions import persisted_receipts
+            from mingjing_core.repositories.postgres import fingerprint
+
+            own = persisted_receipts(service.repo, run)
+            if not any(
+                fingerprint({k: v for k, v in item.items() if k != "_operation"}) == fingerprint(receipt)
+                for item in own
+            ):
+                raise EvidenceError("更新回执缺少本轮实际写入证明")
         professional, indexes, captured = _registries(service, run, name, result)
         pending.extend(professional)
         pending.extend(indexes)
@@ -222,7 +243,7 @@ def verified_versions(
             row = _verified_row(service, run, kind, ident, index_case=index_case)
             receipt = result.receipt or {}
             if (
-                receipt.get("write_status") == "saved"
+                receipt.get("write_status") in {"saved", "updated"}
                 and receipt.get("kind") == kind
                 and receipt.get("id", receipt.get("fact_id")) == ident
                 and (type(receipt.get("revision")) is not int or receipt["revision"] != row["revision"])
@@ -232,6 +253,11 @@ def verified_versions(
                 from mingjing_core.application.agent_case_receipt_replay import assert_case_receipt_replay
 
                 assert_case_receipt_replay(service.repo, run, receipt, row)
+            if receipt.get("write_status") == "updated" and kind == "fact" and ident in receipt.get("affected_ids", []):
+                from mingjing_core.application.agent_commit_versions import _own_revision
+
+                if not _own_revision(connection, service.repo, run, row, kind, own):
+                    raise RevisionConflict("更新回执旧事实缺少精确修订证明")
             key = entity_dependency(kind, ident)
             if key in versions:
                 continue

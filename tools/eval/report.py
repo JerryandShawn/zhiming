@@ -1,6 +1,7 @@
 """Privacy-limited report serialization and baseline comparisons."""
 
 import json
+from copy import deepcopy
 import re
 from pathlib import Path
 from typing import Any
@@ -32,15 +33,24 @@ JUDGE_COMPARISON_KEYS = (
 
 
 def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
-    applicable = [case for case in cases if case["status"] != "n/a on v3"]
+    applicable = [case for case in cases if case["status"] not in {"n/a on v3", "incomplete", "judge_unavailable"}]
     categories: dict[str, dict[str, Any]] = {}
     for case in cases:
         group = categories.setdefault(
             case["category"],
-            {"count": 0, "passed": 0, "points": 0.0, "not_applicable": 0},
+            {
+                "count": 0,
+                "passed": 0,
+                "points": 0.0,
+                "not_applicable": 0,
+                "incomplete": 0,
+            },
         )
         if case["status"] == "n/a on v3":
             group["not_applicable"] += 1
+            continue
+        if case["status"] in {"incomplete", "judge_unavailable"}:
+            group["incomplete"] += 1
             continue
         group["count"] += 1
         group["passed"] += case["status"] == "passed"
@@ -51,14 +61,17 @@ def summarize(cases: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "count": len(applicable),
         "passed": sum(case["status"] == "passed" for case in applicable),
-        "not_applicable": len(cases) - len(applicable),
+        "not_applicable": sum(case["status"] == "n/a on v3" for case in cases),
+        "incomplete": sum(case["status"] == "incomplete" for case in cases),
+        "judge_unavailable": sum(case["status"] == "judge_unavailable" for case in cases),
+        "wasted_model_calls": sum(case.get("model_calls", 0) for case in cases if case["status"] == "incomplete"),
         "points": round(points, 6),
         "score": round(points / len(applicable), 6) if applicable else None,
         "categories": categories,
-        "model_calls": sum(case.get("model_calls", 0) for case in applicable),
-        "target_model_calls": sum(case.get("target_model_calls", 0) for case in applicable),
-        "judge_model_calls": sum(case.get("judge_model_calls", 0) for case in applicable),
-        "elapsed_seconds": round(sum(case.get("elapsed_seconds", 0) for case in applicable), 3),
+        "model_calls": sum(case.get("model_calls", 0) for case in cases),
+        "target_model_calls": sum(case.get("target_model_calls", 0) for case in cases),
+        "judge_model_calls": sum(case.get("judge_model_calls", 0) for case in cases),
+        "elapsed_seconds": round(sum(case.get("elapsed_seconds", 0) for case in cases), 3),
     }
 
 
@@ -84,7 +97,8 @@ def markdown(report: dict[str, Any]) -> str:
     ]
     if header.get("scoring_contract_version"):
         lines.insert(
-            5, f"判分契约：{header['scoring_contract_version']}；场景契约 SHA256：{header['scoring_corpus_sha256']}"
+            5,
+            f"判分契约：{header['scoring_contract_version']}；场景契约 SHA256：{header['scoring_corpus_sha256']}",
         )
     for name, group in summary["categories"].items():
         lines.append(f"| {name} | {group['passed']}/{group['count']} | {_percentage(group['score'])} |")
@@ -126,7 +140,7 @@ def _core30_lines(header: dict[str, Any]) -> list[str]:
         return []
     return [
         "",
-        f"核心30契约：{core['version']}；安全 {core['safety_passed']}/6（要求6）；"
+        f"核心30契约：{core['version']}；安全 {core['safety_passed']}/{core['safety_count']}（要求{core['safety_count']}）；"
         f"其他 {core['other_passed']}/24（要求至少22）；验收：{'通过' if core['accepted'] else '未通过'}。",
         "场景分组不是物理批次；主模型与外部评分每批合计最多10次物理请求，总在途1。",
     ]
@@ -164,7 +178,12 @@ def _batch_lines(report: dict[str, Any]) -> list[str]:
     if metadata.get("stop_reason"):
         reason = "额度限制" if metadata["stop_reason"] == "quota" else "供应商 HTTP 故障"
         if metadata.get("evaluation_suite") == "core30":
-            lines.extend(["", "核心30已停止；跨窗口同run续作尚未开放，不可用普通 --resume 重做已完成轮次。"])
+            lines.extend(
+                [
+                    "",
+                    "核心30已停止；跨窗口同run续作尚未开放，不可用普通 --resume 重做已完成轮次。",
+                ]
+            )
         else:
             lines.extend(["", f"因{reason}已停止；需用户明确决定后显式使用 --resume 继续。"])
     return lines
@@ -178,6 +197,25 @@ def write_report(report: dict[str, Any], directory: Path, *, baseline: bool = Fa
     if header.get("evaluation_suite") == "core30":
         stem += "-core30"
     json_path, md_path = directory / f"{stem}.json", directory / f"{stem}.md"
+    report = deepcopy(report)
+    evidence = {case["id"]: case.pop("private_evidence") for case in report["cases"] if "private_evidence" in case}
+    if evidence:
+        boundary = Path(__file__).resolve().parents[2] / "private"
+        if directory.resolve().is_relative_to(boundary.resolve()):
+            _atomic_write(
+                directory / f"{stem}.private-evidence.json",
+                json.dumps(evidence, ensure_ascii=False, indent=2),
+            )
+        elif header.get("mode") == "live":
+            from uuid import uuid4
+
+            destination = boundary / "eval-reviews" / uuid4().hex
+            destination.mkdir(parents=True, exist_ok=False)
+            _atomic_write(
+                destination / "evidence.json",
+                json.dumps(evidence, ensure_ascii=False, indent=2),
+            )
+            report["metadata"]["private_evidence_path"] = str(destination / "evidence.json")
     serialized = json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False) + "\n"
     _atomic_write(json_path, serialized)
     _atomic_write(md_path, markdown(report))

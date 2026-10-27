@@ -1,0 +1,308 @@
+{
+  "recorded_beijing": "2026-10-24T03:13:36.908681+08:00",
+  "target": "v4",
+  "mode": "scripted",
+  "external_provider_requests": 0,
+  "parents_at_execution": [
+    "8e45bd4a3c819541e8048daacb896cee59a5ec7a",
+    "5af4628c37a6d654a7d8cc02ce50ea75bd3baf3a"
+  ],
+  "merge_resolution_worktree_at_execution": true,
+  "complete_memory2_acceptance": false,
+  "summary": {
+    "attempted": 37,
+    "passed": 34,
+    "failed": [
+      "M08",
+      "KU01",
+      "KU02"
+    ],
+    "unexecuted": []
+  },
+  "source_sha256": "ddd055b82e561bbec018b1bf008df2b9bbab530cf3cb74687a144b0da275a874",
+  "cases": [
+    {
+      "id": "A01",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "63506313296a1c5d33bb13d73f73577db5f2cabe6fafe5268d9f576a42c00a78"
+    },
+    {
+      "id": "A02",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "ebcd210bcf4956813a183c5e8ae6104d9156767e7ee136a7101030de99371b9c"
+    },
+    {
+      "id": "A03",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "780f97abba4ff4c46c30d4e1c326f0503a0f97e117ff45d6246675ddfcb27d2c"
+    },
+    {
+      "id": "F01",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "9f500bf3aa054804cfd233bded9314c54cbe94c0b2c25eb143f5abd07054780f"
+    },
+    {
+      "id": "F02",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "9be7f6aec03f4c136a08a96028de4c1cafed9a676392ecb2dc7cd0acc7c1f97e"
+    },
+    {
+      "id": "F03",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "7a1a4f66ead58c2a517d4302b3180555a8a8bee3959669c70bf9efe81fc44cdf"
+    },
+    {
+      "id": "F04",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "89a809d2c1b605b31fe2888a3cc0d738d0bd6bbc064268e1bfeb3b2b89dba243"
+    },
+    {
+      "id": "KU01",
+      "status": "failed",
+      "score": 0.0,
+      "failed_assertions": [
+        "turn[2].receipts[1]",
+        "turn[2].db[1]"
+      ],
+      "scenario_contract_sha256": "780612d40dffc968e7e66043db0e43d7449709d202c6d09c18d80bef6ca085f5"
+    },
+    {
+      "id": "KU02",
+      "status": "failed",
+      "score": 0.0,
+      "failed_assertions": [
+        "turn[1].receipts[1]",
+        "turn[2].receipts[1]",
+        "turn[2].db[1]",
+        "turn[3].db[1]"
+      ],
+      "scenario_contract_sha256": "da9cc33e1c708d8763aff2391bb1b7cc77d070e34085231d0abd2a1d32062536"
+    },
+    {
+      "id": "M01",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "5d53f641f2d56ccfe6c96f1c5837942020520bc97ec4e1720a3ffe6732499363"
+    },
+    {
+      "id": "M02",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "032123653de14192c3e079294bae0c2f13c4a2304df7dd8793c0d20ee1732dbd"
+    },
+    {
+      "id": "M03",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "0396af380a40dd8f7bbac191e41a6fdf6a29f108d48831837ce52ab45e3ca514"
+    },
+    {
+      "id": "M04",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "d0a86f489fc1363e92f5b10d8e52e6f182a075ac26882f2da16d28f03b8a5a0a"
+    },
+    {
+      "id": "M05",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "399e51d23ae8164bada4524c9a8cc04c4259a35c28fd290e0624086f81e08210"
+    },
+    {
+      "id": "M06",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "6ca0c191c561b9884fe19ad7f842126c7963734527372d9b035dba24b90a63ff"
+    },
+    {
+      "id": "M07",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "d6d09b14526a9a58d94c35434145df48024204ddb3be5f089c2ceb02223a80d2"
+    },
+    {
+      "id": "M08",
+      "status": "failed",
+      "score": 0.0,
+      "failed_assertions": [
+        "turn[2].receipts[1]",
+        "turn[2].db[1]"
+      ],
+      "scenario_contract_sha256": "9a524127bc2a19676fac154ffb4cb82addd6265c414832030a37fa78b76b3bdf"
+    },
+    {
+      "id": "M09",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "efa7929f78340d68fdc105463f1d380bd25bcfdffb58fc702cdcc09251f21132"
+    },
+    {
+      "id": "M10",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "ad2fcf91599edce9ac0d8d8982ba3feca47e85e7e4d888209fa8b98ebd136251"
+    },
+    {
+      "id": "M11",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "f49c5fa5df4a73aadb82e7705aab448e1c7b148449c7e1b013edf419cfc93a30"
+    },
+    {
+      "id": "M12",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "8f649479209059070971dde96a08146e809056cd5818f0a44fef5ae5e1a2c413"
+    },
+    {
+      "id": "M13",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "6e0fbecba406bae3c85f7279855966cd43ef4b773cce393d59d4d2be523f63ab"
+    },
+    {
+      "id": "MS01",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "d73ae51e43a24bd3dbd292cd6de19da33ff8f89215cbc0cb575bdb854197b2da"
+    },
+    {
+      "id": "MS02",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "5fa09e2199157bdfbc49f3544fba6b96f42a8fa936a2fa4f1d01fc034c5c4323"
+    },
+    {
+      "id": "MS03",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "27f5b2fdeebaf116c8d34dbbb7dcda96a7f532d484efd27a4e4c663acfdbae1c"
+    },
+    {
+      "id": "Q06",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "7bf7a6c65bc77f9ea8fa8e00c332204df90c49eb6edd78f82c57bfd1d870613b"
+    },
+    {
+      "id": "R01",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "72c5cc959620424f18020c9c1a01e98551129f75ba3feec5104d7f72bb6bfb74"
+    },
+    {
+      "id": "R02",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "5969ed4897a25baa8100804a3f5248cadbc9eceea8895d5bbaec170d7ba7b4c6"
+    },
+    {
+      "id": "R03",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "4792ec73d7b1900a111e8b35c6958091a39393c2cd5d08a42dd85378c2765684"
+    },
+    {
+      "id": "R04",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "c38a3ba36c761595f463b41523887b6e95bad9b44d1f7cec4c444f4dbd74de7f"
+    },
+    {
+      "id": "R05",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "6d72e9fd8430904938dddf4e7cdbc1aeb0e53fa9832e4f7a7f3fd6cfccc20e64"
+    },
+    {
+      "id": "R06",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "ec9658cdfc16ab1c63d21079dec89a73c882f344ec690363bbb3a516f541754a"
+    },
+    {
+      "id": "R07",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "40ddcb983466d659e0ba1c244bf1e3438d91fcf8ca66d3705c454d93094eb813"
+    },
+    {
+      "id": "R08",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "7bc3c2e4e537a95ac71268188652b6e001f1cb7ceb7152e0f7b1bbc23ae8f17d"
+    },
+    {
+      "id": "R09",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "a2fe1b7485f6c5707572e1ff41d302d8df1119e3fb2ef7f5346702a2107b2a7f"
+    },
+    {
+      "id": "TM01",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "9ca23d61badf03d507426fac64f76b6f59f3602511a36b03fff71d26acf8ca99"
+    },
+    {
+      "id": "TM02",
+      "status": "passed",
+      "score": 1.0,
+      "failed_assertions": [],
+      "scenario_contract_sha256": "e2b2c405d5a47b6c3a3550e7ef8ccf5ea43c56c7fb674403fcfc43dd47dcd2ea"
+    }
+  ],
+  "checks": {
+    "native_privacy_ack_related_passed": 13,
+    "merge_contract_and_actions_passed": 20,
+    "merge_contract_first_failed": 1,
+    "resolved_adapter_and_mainline_overlay_passed": 10,
+    "note": "Overlapping scopes; counts must not be summed. Initial pending/native fixture bridge failed before correction."
+  },
+  "limits": [
+    "Only local isolated PG and scripted models; no live quality claim.",
+    "Earlier 31/37 evidence retained; this is a new single 37-case execution.",
+    "Mainline native logical privacy view preserves raw deleted/tombstone proofs.",
+    "No repository-wide repeat regression; only merge-affected checks and required memory scenarios."
+  ]
+}

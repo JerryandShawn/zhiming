@@ -134,7 +134,8 @@ def initial_layers(repo: Any, owner: str, layers: list[dict[str, Any]]) -> dict[
             present = any(row["id"] == layer["id"] and row["kind"] == layer["kind"] for row in native)
         else:
             row = repo.get(owner, layer["native_kind"], layer["native_id"])
-            present = row["status"] == "active" and bool(row.get("source_refs"))
+            expected_status = "pending" if layer.get("actual_p3_pending") is True else "active"
+            present = row["status"] == expected_status and bool(row.get("source_refs"))
         if not present:
             raise ValueError("Declared privacy layer absent before withdrawal: " + layer["id"])
         counts[layer["kind"]] = counts.get(layer["kind"], 0) + 1

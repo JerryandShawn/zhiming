@@ -94,7 +94,7 @@ class TarotDriver:
         for action in script["model"]:
             call = action.get("tool_call", {})
             if call.get("name") == "tarot_read":
-                return self.ids.get(call["arguments"]["draw_id"])
+                return self.ids.get(call.get("arguments", {}).get("draw_id"))
         return None
 
     def resume(self, run: dict[str, Any]) -> None:
@@ -123,7 +123,12 @@ class TarotDriver:
         for draw in self.cards.list_draws(self.seeder.owner):
             label = reverse.get(draw["id"], "new-draw")
             data = dict(draw, native_id=draw["id"])
-            data["cards"] = [{"id": card["card_id"], "orientation": card["orientation"]} for card in draw["cards"]]
+            # Auto draws have selected but still face-down cards; the public view correctly hides their identity.
+            data["cards"] = [
+                {"id": card["card_id"], "orientation": card["orientation"]}
+                for card in draw["cards"]
+                if card.get("revealed") is True
+            ]
             rows.append(
                 {
                     "id": label,

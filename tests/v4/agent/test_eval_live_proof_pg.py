@@ -146,7 +146,14 @@ def test_verified_proof_selects_same_model_for_actual_agent_meter_and_external_j
                     "type": "tool_use",
                     "id": "judge-proof",
                     "name": "submit",
-                    "input": {"score": 1.0, "verdict": "pass", "issues": []},
+                    "input": {
+                        "score": 1,
+                        "verdict": "pass",
+                        "issues": [],
+                        "reason": "Synthetic complete judge response (v30/R25)",
+                        "deductions": [],
+                        "expected_clauses": [],
+                    },
                 }
             )
         return wire({"type": "text", "text": "合成已核对"})

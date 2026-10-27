@@ -12,9 +12,10 @@ from typing import Any
 
 from psycopg import sql
 
-from .quota_delegated import DelegatedApproval, begin_delegated_batch
+from .quota_delegated import DelegatedApproval, begin_delegated_batch, delegated_stage
 from .quota_guard import QuotaGuard
 from .quota_mode import current_delegated_session, delegated_session
+from .quota_r16 import K31ConnectionApproval, K31CoreApproval
 from .quota_runtime import CallScope
 from .quota_types import GuardConfigurationError, GuardRejected, identifier, instant
 
@@ -31,14 +32,13 @@ class DelegatedSession:
     def __init__(
         self,
         guard: QuotaGuard,
-        approval: DelegatedApproval,
+        approval: DelegatedApproval | K31ConnectionApproval | K31CoreApproval,
         *,
         phase: str,
         scenario_ids: Sequence[str],
     ) -> None:
         approval.check(guard.clock.now())
-        if phase not in {"equivalence", "core"} or phase == "core" and approval.equivalent is None:
-            raise GuardRejected("manual_start_required")
+        delegated_stage(approval, phase)
         if not scenario_ids or len(set(scenario_ids)) != len(scenario_ids):
             raise GuardConfigurationError("委托需要不同的计划场景")
         self.scenarios = tuple(identifier(value) for value in scenario_ids)
@@ -57,7 +57,7 @@ class DelegatedSession:
         if scenario_id not in self.scenarios:
             raise GuardRejected("batch_conflict")
         return CallScope(
-            lane="probe" if self.phase == "equivalence" else "eval",
+            lane="probe" if self.phase in {"equivalence", "k31-connect"} else "eval",
             scenario_id=scenario_id,
         )
 
@@ -106,7 +106,7 @@ class DelegatedSession:
 
     @contextmanager
     def permit_scope(self, scope: CallScope) -> Iterator[CallScope]:
-        expected = "probe" if self.phase == "equivalence" else "eval"
+        expected = "probe" if self.phase in {"equivalence", "k31-connect"} else "eval"
         if scope.lane != expected or scope.scenario_id not in self.scenarios:
             raise GuardRejected("batch_conflict")
         # Serialize local batch rollover across primary and judge; PG slots cover
@@ -127,6 +127,9 @@ class DelegatedSession:
             "batch_id": self._receipt["batch_id"] if self._receipt else None,
             "batch_requests": self._state()[0],
             "batches_started": self._sequence,
+            "account_id": state["account_id"],
+            "ledger_identity": state["ledger_identity"],
+            "window_requests": state["window"]["total"],
             "stop_kind": state["stop_kind"],
-            "resume_at": state["resume_at"],
+            "resume_at": state["resume_at"].isoformat() if state["resume_at"] else None,
         }

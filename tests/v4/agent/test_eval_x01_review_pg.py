@@ -22,7 +22,8 @@ from tools.eval.targets.v4_review_observations import review_counts, review_obse
 from tools.eval.targets.v4_target import V4Target
 
 ROOT = Path(__file__).resolve().parents[3]
-ORIGINAL_HASH = "76a4343b8f5b28a9815c9d33e8b4ffac8805d1962fe21e3cf78948c68b35e15f"
+# Board v39: scoring version is part of the digest; X01's scenario remains unchanged.
+ORIGINAL_HASH = "517c2ec7e1800a50dc75657caf349eab2a0e3cb6cea795a778d076748101913b"
 
 
 def x01():

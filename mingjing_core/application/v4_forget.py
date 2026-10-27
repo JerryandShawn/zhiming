@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from mingjing_core.application.memory2_forget_candidates import forget_candidates
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from mingjing_core.memory.policy import clause, hypothetical, mask_quoted
 from mingjing_core.memory.private import require_persistent_source
@@ -60,7 +61,7 @@ def retire_from_message(memory: Any, owner: str, fact_id: str, source_id: str, o
         or hypothetical(text, intent.start(), intent.end())
     ):
         raise EvidenceError("否定、假设或多人遗忘需要先确认具体意图")
-    facts = memory.facts(owner, source["subject_id"], source.get("case_ids", []))
+    facts = forget_candidates(memory, owner, source["subject_id"], source.get("case_ids", []))
     if unique_reference(statement, facts) != fact_id:
         raise EvidenceError("所给事实ID与用户原话的唯一目标不符")
     return memory.retire_fact(

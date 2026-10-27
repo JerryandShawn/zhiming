@@ -56,7 +56,9 @@ def _build(
         for handle in handles
     ):
         raise EvidenceError("Agent 主模型须由配置锁定同一会员模型、工具与高思考强度")
-    meter = K3EstimatedMeter(load_k3_counter(directory), model=handles[0].model)
+    meter = K3EstimatedMeter(
+        load_k3_counter(directory), model=handles[0].model, factor=getattr(registry, "input_factor", "1.15")
+    )
     if not meter.live_admissible:
         raise EvidenceError("Agent 分词计量尚未核验")
     # P6's independent model critic is a later release. P3 keeps its structural
