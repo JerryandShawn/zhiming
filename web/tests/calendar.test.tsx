@@ -131,7 +131,7 @@ describe('today calendar placement and safe data source', () => {
     const trigger = screen.getByRole('button', { name: '查看本月日历' });
     expect(screen.queryByRole('region', { name: '2030年7月日历' })).not.toBeInTheDocument();
     await userEvent.click(trigger);
-    const dialog = screen.getByRole('dialog', { name: '本月日历' });
+    const dialog = await screen.findByRole('dialog', { name: '本月日历' });
     expect(within(dialog).getByRole('region', { name: '2030年7月日历' })).toHaveAttribute(
       'data-calendar-source',
       'unavailable',

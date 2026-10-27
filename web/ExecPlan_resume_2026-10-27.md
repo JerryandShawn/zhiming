@@ -62,3 +62,9 @@ H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles�
 
 2026-10-27 09时：建立v3恢复计划；记录旧入口范围差异与最简前端切片。
 2026-10-27 09:37：旧入口/GET/取消与默认CI覆盖、1221/93及Axe修复；记录性能与真实联调未验和49第〇节新收束规则。
+
+## 10:52 CI修复检查点
+
+10:52 CI优先修复：精确头2a70a7a2的frontend run40439472365失败，日志仅calendar.test.tsx:134在懒加载DialogContent到达前同步getByRole；1263过/1失败，未到构建/浏览器。不改原行为断言，改await findByRole等待实际dialog；默认Vitest workers从4收至2符合本轮限制。26/26日历+DeferredPanel目标项和定向lint通过，保留Escape回焦、未请求网络、显式延迟/取消/迟到测试。无界面源码变化，截图沿用本日已有日历矩阵，不虚增新图；新头CI待验证。课程29项离线校验尚未提交，下一继续独立投影。
+
+Decision：测试改动只修复动态import的等待条件，保留全部结果断言；不扩大timeout、不跳过、不重跑失败来掩盖竞态。默认workers=2适用于CI与本机。

@@ -7,7 +7,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./tests/setup.ts'],
     include: ['tests/*.test.{ts,tsx}'],
-    maxWorkers: 4,
+    maxWorkers: 2,
     env: { TZ: 'Asia/Shanghai' },
   },
 });
