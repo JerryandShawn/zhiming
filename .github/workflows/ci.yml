@@ -36,7 +36,7 @@ permissions:
 jobs:
   core:
     runs-on: ubuntu-24.04 # Board v46/R27: pin the runner; checkout already fetches full history.
-    timeout-minutes: 90
+    timeout-minutes: 150 # Main v70 (Claude): memory2 suite exceeds 90 min on step 13; no tests removed.
     env:
       CORE_TEST_DSN: postgresql://core_test:isolated_ci_only@127.0.0.1:5432/core_test
       ZHIMING_TEST_DSN: postgresql://core_test:isolated_ci_only@127.0.0.1:5432/core_test
