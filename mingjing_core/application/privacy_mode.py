@@ -7,6 +7,7 @@ from typing import Any
 
 from mingjing_core.application.privacy_mode_policy import blocks_current_run, privacy_action
 from mingjing_core.application.privacy_run_barrier import block_thread_runs
+from mingjing_core.application.thread_case_sources import bind_case_selection, normalize_case_ids
 from mingjing_core.application.thread_queue import owner_runtime
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
@@ -42,17 +43,11 @@ class PrivacyModeService:
         conversation_id: str = "shared",
         source_id: str | None = None,
         at: datetime | None = None,
+        case_ids: list[str] | None = None,
     ) -> dict[str, Any]:
         self._validate(message, request_id, at)
-        identity = [
-            subject,
-            channel,
-            external_id,
-            conversation_id,
-            thread_id,
-            fingerprint(message),
-            at.astimezone(UTC).isoformat() if at else None,
-        ]
+        cases = normalize_case_ids(case_ids)
+        identity = self._identity(subject, channel, external_id, conversation_id, thread_id, message, at, cases)
         ident = "privacy-route:" + fingerprint([owner, channel, source_id or request_id])[:32]
         with self.repo.transaction(owner):
             self.repo.assert_scope(owner, subject)
@@ -62,10 +57,11 @@ class PrivacyModeService:
                     raise ScopeError("原始事件不能移动到其他人物或线程")
                 if old.get("input_fp") != fingerprint(identity) or old["subject_id"] != subject:
                     raise EvidenceError("原始事件不能替换无痕路由、人物或正文")
+                thread = old["thread_id"]
                 return self._receive(
                     owner,
                     subject,
-                    old["thread_id"],
+                    thread,
                     message,
                     request_id,
                     channel,
@@ -73,11 +69,12 @@ class PrivacyModeService:
                     conversation_id,
                     source_id,
                     at,
+                    cases,
                 )
             thread = self._choose(owner, subject, thread_id, message, request_id, channel, conversation_id)
             receipt = self._receipt(owner, subject, ident, thread_id, thread, message, identity)
             source = self._receive(
-                owner, subject, thread, message, request_id, channel, external_id, conversation_id, source_id, at
+                owner, subject, thread, message, request_id, channel, external_id, conversation_id, source_id, at, cases
             )
             self.repo.update(
                 owner, "request", ident, {"source_id": source["id"]}, expected_revision=receipt["revision"]
@@ -85,6 +82,21 @@ class PrivacyModeService:
             if receipt["blocks_current_run"]:
                 block_thread_runs(self.repo, owner, subject, thread_id, ident)
             return source
+
+    @staticmethod
+    def _identity(subject, channel, external, conversation, thread, message, at, cases) -> list[Any]:
+        return bind_case_selection(
+            [
+                subject,
+                channel,
+                external,
+                conversation,
+                thread,
+                fingerprint(message),
+                at.astimezone(UTC).isoformat() if at else None,
+            ],
+            cases,
+        )
 
     @staticmethod
     def _validate(message: str, request_id: str, at: datetime | None) -> None:
@@ -107,6 +119,7 @@ class PrivacyModeService:
         conversation: str,
         source: str | None,
         at: datetime | None,
+        case_ids: list[str],
     ) -> dict[str, Any]:
         return self.threads.receive(
             owner,
@@ -119,6 +132,7 @@ class PrivacyModeService:
             conversation_id=conversation,
             source_id=source,
             at=at,
+            case_ids=case_ids,
         )
 
     def _choose(

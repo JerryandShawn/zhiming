@@ -18,6 +18,29 @@
 
 ## Progress
 
+2026-10-24 19:22 +08:00：已执行v23/R22。为核心中途unavailable补原生--unavailable-retry 1/2，仅同源原report未完成题，保已完成及浪费；用实际SystemClock stopped_at而非题目冻结时间核10/30分钟，两次序号严格递增。quota5h原恢复合同不变，403/权限/并发/Access等不能走此分支。相关新13+原R12四项同轮17/17，1.91s，private/safe-narrow-4ce47bde1e43465eafa737567163d813，根核metadata/XML/log；Ruff/format过。旧448首unavailable计入次数1/累计9，请求不重签不造proof；新候选R11后先满足原失败后10min再新control接入，成功立即core30；再unavailable等30min最后一次，核心最多2次同节奏题头新run。
+
+
+2026-10-24 19:11 +08:00：已执行v22/R21，一次扫描core30全链；封装sealed批准选模型，修LifecycleBinding、CoreObservation、quota witness及三处恢复/账本token命名（K31实际core-k31）。仅c21独立baseline的runner_v2/subset/source/calibration不在runner→core30调用链，按板保留。原定向45旧项通过/1新增失败（e1092c3950b04874b4e7834df34a6cf2，409.32s）；再新3中2失败1过（108d4b984ac54450b7f45b42dcd38d19），原因复用计量压力Mock夸大10000输入导致RequiredContextOverflow，未改生产门。修此夹具后新3/3真实隔离PG/Agent/外评/已知5h恢复新run通过（e868c82b07b04082b0f06d87cd6148f5，32.79s）；追加native token对齐1/1（b2d1d6c1e3e34a5b8b8470fa4fcf7231，4.71s）。根核metadata/XML/log，各轮不相加冒称一次全链。Ruff/format通过。待同候选R11后<=4新接入累计<=20（旧8保留），成功立即core30。
+
+
+- [x] (2026-10-24 18:46 +08:00) 已执行v21/R20：v4单工具auto保持auto，v3 legacy单提交独立保required；两协议单/多工具、非法选择拒绝、K31原生回传及旧入口定向首轮127通过/1断言失败，原件private/safe-narrow-0b285a0b229f40a7b1f9e4c80214fc17。首请求原本显式required、续轮auto，修正新断言后仅该项1/1（private/safe-narrow-9866ae139a9b4fd0913548d9ff6acb70，2.71s），非一次128/128。待同候选R11后立即connect→core30，不等完整回归。
+
+
+- [x] (2026-10-24 18:29 +08:00) R18定向证据：第一轮新8项因Mock参数不符合原enum固定值而失败，旧必要3项及累计预算单元过（8failed/4passed，d80490f1e95f46e389adb263c2367c45，16.41s）；仅新循环测试在Mock合同中允许变参，2/3/4轮、重复/上限/逐轮身份/推理及20总数边界新9/9过（d2c85f83fc7c40f687b236f95e7af1ab，17.48s）。另原固定schema+实际required下重复拒绝，以及新control仍保旧2次累计两目标2/2过（d23dbcfbd57e48cf920a5a5c592ccc40，6.01s）。根读各metadata/XML/log，原失败不改，不合称一次全14/14。5文件Ruff/format及函数行数通过；无新增真实请求。真实schema不变，3/4轮正例是纯合成泛化测试，不冒充真实固定参数可以产生不同合法调用。
+
+- [ ] (2026-10-24 18:26 +08:00) 按用户直接要求读取v18/R18，独立r18树从冻结d167建分支，仅改K31工具循环及必要合同/PG完成判定：2–4轮最终无工具正文、连续同名同参数第二次拒绝、每轮原生推理回传和精确model/high；其他两个探针不改。累计接入预算读取同一中央账户所有候选k31-connect历史，含旧2次，≤20。新增定向测试待验；正式树milestone仍在途，不改其HEAD/源码。新探针进入source指纹，须新提交的同源R11后才真实请求，不能沿旧报告冒充新同源。
+
+- [x] 2026-10-24 13:45 +08:00 R16接入/可信核心选择与R12必要代码已接：固定4物理检查（工具往返/U39/high、长输入实际计量及Z1系数、中文长答完整结尾），PG重读证明/独立core-k31批准、主/外部评分精确K31及系数注入；新tools.eval.k31_cli和runner --connection-proof、--fresh-questions-from、无正文rollup入口。尚未整合最终同源候选，禁止真实运行；现有R11 b008不套新代码。
+- [x] 2026-10-24 13:45 +08:00 必要验证原件（根均读metadata/XML/log，不合计成一轮）：private/safe-narrow-c61c8bc9fcba4e9984fde820467737c9为2过1败（成功协议/PG可信选择及20上限通过，身份错只停本请求未持久全停失败）；修后2474c766f6354416981e196e70e9bfb5为6/6（4.32s，含5旧终止兼容）；2bfbdf8fafa94afb8fb65fa21fc828d3为6/6（2.08s，R12+旧judge/阈值/实际tokenizer启动）；a60d3756c8be41d485206e6a2c2977fe为2/2（1.03s，浪费计数汇总+旧过期/复位）；08eb916531c643c2b3442f7d8636e677为3/3（.61s，固定待跑集+旧禁任意子集）；700e976e4b4949c085888b280f274950为1/1（.57s，target额度后不进judge）；f7866d298b42483289c22639ed85e42b为2/2（1.30s，真实CLI缺中央0POST、R12实际CLI validate仅取未完成两题）。22e0c527cd3745a2acec2bf27e47bc63的首次测试导入collection失败保留，移入已有models测试包后才执行成功。所有真实模型/服务器/外发0。
+
+- [x] 2026-10-24 13:20 +08:00 必要源绑定修复：runner源指纹纳入config/models.first-release.yaml，防止旧配置proof复用于改动后的首发模型。新增定向1/1（0.14s），唯一原件private/safe-narrow-baa628682dba4ccf8ae0f4b4b54671dc；不重跑已绿脚本，最终候选须重新绑定。非模型调用、服务器、外发均0。
+
+- [x] 2026-10-24 13:19 +08:00 R16必要接线第一片：R11派生69门+四组原报告消费、同HEAD/source绑定、独立K31接入批准与中央20物理/10每批跨重启约束。隔离PG/Mock必要6/6（3.46s），随后新增路径穿越拒绝定向1/1（0.19s）；原件分别private/safe-narrow-d5f29485a8534711a7fb2279e98369d6与9fc66e0659e2407d8d3542deab3ca294，根已读metadata/XML/log。真实/服务器/外发0，真实CLI、可信核心选择与R12尚未完成。
+
+- [x] (2026-10-24 12:31 +08:00) R16首发独立配置与OpenAI原生wire/身份消费者离线片完成，v13已读，单代理；原c74排13:00树不改。首链8新+2直接旧U39兼容共10/10（0.18秒），为控制函数≤60提取既有parser调用后仅两条受影响行为2/2（0.14秒），固定服务资产显式MODELS_CONFIG接缝必要一条1/1（3.14秒，真实本机PG）。根读各metadata/XML/log；不是真实接入、最终候选门或Linux通过，真实请求0。
+- [x] R16新接入/可信选择器与R12题级incomplete处理代码已实现并有必要离线证据；待最终集成同源脚本门、CI及Claude真实执行，旧两模型证明始终不能授权K3.1。
+
 - [x] (2026-10-21 01:31 +08:00) 修复候选本机4ec0d978→远端03230c6bd180305fa8b4dfd47f8f8a5ae8e9677c，tree2918b79c4d8580adc690112373b1234084715f6f。精确头CI运行39462173453、Core job118764176145及全部步骤success，含旧Core/计算器、前端、v4框架和ModelPort合成覆盖。旧dedce109失败留档，不以定向修复替代完整结果。真实256k等价、P1b与P3集成和部署仍未验证，阶段未完成。
 
 - [x] (2026-10-21 00:56 +08:00) 精确CI失败审计：dedce109的Core553项只有冻结legacy sha失败。查明5ed56de给两个冻结替身新增离线标记，恢复原始字节；manifest/严格断言不动。两文件逐项Git候选blob等于03514f7原blob，11源文件/AST102一致，architecture6项/0.693s通过。
@@ -58,6 +81,25 @@
 
 ## Surprises & Discoveries
 
+19:22：旧fresh-questions-from只接受已知quota5h，若不补会在v23首次核心unavailable恢复时本地拒绝；新增显式R22序号及实际停止时刻，不能把业务题目clock或不完整上次启动时刻用作等待锚点。
+
+
+19:11：除旧模型白名单及K31批准没有equivalent外，quota_resume_evidence/clear/session_accounting把token阶段拼成core-k3.1-pro，而中央原生为core-k31；已统一。原runner_v2等仅E1 c21冻结基线，core30从runner.py→live_session→ProofSelectedRegistry进入，不改变旧基线。
+
+
+2026-10-24 18:46 +08:00：R20裁定确认auto强升required是本地策略缺陷。探针首请求调用方明确required，第二请求明确auto；测试必须保护这个差别。旧v3 submit需要结构化单提交，强制策略移至legacy_request_policy，不改变其wire。
+
+
+2026-10-24 18:26 +08:00：safe_tool_choice对K3单工具请求会将auto变成required，既有原生wire测试也核两轮required。因此旧第二轮追加工具不能只归因模型习惯；R18本片不改生产策略、不扩大其他探针。新重复保护忽略每次变化的opaque call ID，只核名称/规范化参数；echo回传实际参数而非写死value，推理与opaque ID仍用原native as_chat。
+
+18:29补核：原ECHO只有一个value且enum仅合成，所有合法再次调用必然与前次相同；因此真实R18第二轮若再调用，按裁定正确失败。测试为验证泛化循环的第3/4轮，仅在Mock中显式允许不同合成值，真实合同/探针其他项不改；初轮失败来自错误Mock参数，未为迁就测试改真实schema。
+
+2026-10-24 13:45 +08:00：R16实际PG反例发现旧bad_request不属于中央持久停止类，单有error.global_stop不足以封住其他进程。身份异常现保留物理bad_request原件，同时使用既有permission_error人工解除类持久全停；无新增PG枚举/迁移。已知reset的snapshot原datetime亦改ISO字符串，避免quota报告序列化丢失。冻结脚本/旧默认模型不改。
+
+2026-10-24 13:19 +08:00：R11的原core报告保留incomplete及延期失败，不能消费旧全81门或仅信派生计数。新消费器重读四组原报告、固定case集合/零外发/同源及X02契约；实际b008原件只读兼容核验通过，不发批准、不重跑脚本，也不将旧候选证明套到新代码。
+
+2026-10-24 12:31 +08:00：旧turn_policy的high只表示服务器默认，没有发送参数；仅换YAML会让K3.1实际使用默认max。旧done.model是请求值也不能证明响应身份。因此新独立profile只用官方OpenAI原生Chat Completions、显式reasoning_effort=high，首响应必须声明精确model，后续声明若改变也拒绝，空响应同样不走协议重试。旧k3/k3-256k响应合同不强加model字段；尚未验证Anthropic K3.1的high wire，故该路径发送前拒绝，保留旧Anthropic行为。
+
 2026-10-21 00:56 +08:00 / CI失败不是Windows CRLF：`test_quality_v6.py` 与 `test_review_v6.py` 在5ed56de各增加 `_zhiming_offline_transport=True`，因此真实Git blob已经不同于冻结清单。其余9源文件原字节匹配。CI只读取这两份文件做AST/hash，不执行其退役控制器，无需改冻结替身来允许离线传输。
 
 2026-10-21 00:07 +08:00 / 仅给YAML锁256仍漏ConfiguredModel环境默认，且旧body继续发送1024预算不能只靠“历史”标注。故默认路由和实际send前请求规范同时收口；旧接口没有规范助手回执，连续工具历史明确拒绝，依赖RuntimeRouter切至ModelPort，不冒称多轮兼容。
@@ -95,6 +137,25 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / M2a兼容复核已解决：首轮共用transport无条件加默认1.8MB会改变非K3原大包行为。root明确要求保留该旧契约，因此默认限制现按K3身份收窄；两协议新增“非K3默认大于1.8MB可发送”与“显式限制/无效值零POST”对照。最终httpx字节→size→meter/count→send顺序保留；源码再次冻结并通知eval只读复核。此修正没有改变缺签名、完整推理、effort或中央守卫的未完成状态。
 
 ## Decision Log
+
+19:22：只给v23明确授权的unavailable开放有限重试，默认flag0仍拒绝；前次序号、同候选/source/model/计划与未完成集合均核，10/30分钟未到拒绝。core仍每题全新run，无同run续作或改变期限；所有原报告输入只读。
+
+
+19:11：R21仅在当前sealed K31CoreApproval且候选/source/中央guard一致时允许Lifecycle capture/verify；连接专用批准、无批准、篡改来源均拒绝。旧K3选择及none/named保护不变；实际主/外评仍K31/high，R12整题新run，不投入旧同run续作。
+
+
+2026-10-24 18:46 +08:00：依用户直接指令及v21，替换旧单工具强制断言为保调用方auto，保留显式required能力检查、none/指定工具名拒绝和旧legacy断言；不改协议/schema/循环熔断/真实额度账本。
+
+
+2026-10-24 18:26 +08:00：R18直接授权新control重跑，但不能重置既有账本或丢旧请求；新探针在持有全账户exclusive锁内每POST前核所有k31-connect历史≥20即拒绝，proof同时列当前候选和累计次数。2–4轮的完成位来自真实PG连续step及final终态，不改旧proof/原始R11。仅在新候选同源门后执行授权接入及core30。
+
+18:29：探针合同升级r18，仅K31-TOOLS允许连续2–4个真实PG检查；INPUT/LONG原合同保持。完成位需无跳号/所有中间轮合法且不重复/最终无工具正文，失败记录带原因；摘要分别列工具请求数与实际执行额外次数，不能从一次探针外推整体K3/K31额度比。
+
+2026-10-24 13:45 +08:00：R12只对新sealed K31 core scope把停止题标incomplete/score=null，不计成败；旧评测契约不变。--fresh-questions-from仅接受同候选/同源、已知5h恢复窗口的原报告，并从原计划剔除已完成题，显式新调用/新run/新期限；仍禁--resume，原过期run零POST。rollup保留中断浪费，不重签、不延长旧期限、不做累计预算新账本。
+
+2026-10-24 13:19 +08:00：R16接入使用独立sealed K31ConnectionApproval和k31-connect中央阶段，不能从旧两模型等价布尔升级，也不能由接入批准进入core。沿用现有PG批/在途账本；不新造同run续作账本。新增纯策略反例与实际PG+HTTP Mock验证20次跨批/重启硬上限及旧模型0POST拒绝。
+
+2026-10-24 12:31 +08:00 / 按R16补最小消费者：新增config/models.first-release.yaml，旧default/v3文件不改；审核资产共同env最后固定MODELS_CONFIG至同候选新profile，既有资产测试只新增一条对应断言，不弱化原断言。新错误沿原BadRequest分类和全停动作使Registry不重试/不fallback，评测TrackingPort沿原provider_http_error停批，不新建中央stop类型或重签旧批准。未把此静态配置/Mock成功当账号权限、effort实测、K3.1分词器等价或正式新模型批准。
 
 2026-10-21 00:56 +08:00 / 恢复而非重签基线：两个文件恢复到03514f7原始字节；不改manifest哈希，不归一化/忽略新增行，不弱化102-ID或目标场景断言。仅对这两个已冻结文件加`.gitattributes -text`，保留普通可变tests的text=auto/eol=lf。退役网络守卫及正常非冻结替身的离线标记不变；无需新legacy执行harness。root统一提交发布，CI待精确新头复核。
 
@@ -137,6 +198,25 @@ HTTP402会员专项重试最初扩大到非会员，最终窄改保留非会员B
 2026-10-18 / root决定：P1b K3专项的默认体积保护与工具选择必须共用同一is_k3谓词，不无声新增全供应商默认限制。非K3仅显式max_request_bytes才检查；显式None等无效值不能被当作缺失而放过。按此最小改动补两协议对照，不改YAML/Registry/旧适配器/模块守卫；此前默认全端口的解释作为历史保留，当前以兼容收窄为准。
 
 ## Outcomes & Retrospective
+
+19:22：R22必要框架17/17，待新同源R11及后台固定退避真实重试；历史9物理保留，不使用旧成功接入proof批准新source，不改协议/客户端/限流特征。
+
+
+19:11：新增必要实际PG+公开tokenizer+Mock HTTP完整答题/外评及额度新run通过，无真实新请求；旧8计数保留。未宣称CI或真实core绿，源码固定后立即R11和真实流水线，不等完整回归。
+
+
+2026-10-24 18:46 +08:00：必要定向已核原件，真实评测尚未启动；原R18及v16共4物理保留，本轮新候选须重跑R11，成功后同进程立即接入/core30，累计接入仍<=20。
+
+
+2026-10-24 18:26 +08:00：此时仅必要R18代码/测试草案，未发新真实请求；旧2次及失败control保留。下一定向测试、提交、新同源R11、实际新control接入；失败仍停，不自动回退模型或放宽重复断言。stage继续Claude，生产不执行。
+
+18:29：必要定向均有分轮实证；下一提交probe-only分支并跑其新同源R11，不修改formal在途milestone。通过才用原R17账本、新control执行本次直接授权的接入；旧2次计累计，失败立即停止。生产策略单工具required和原enum均保留，不能据探针失败断言模型不兼容。
+
+2026-10-24 13:45 +08:00：本轮必要代码已具有真实可用入口，但不能拿b008旧门放行新源码；接下来仅普通集成、最终候选同源脚本/CI与交接精确命令、stage必需串联。真实接入/核心30由Claude执行，本代理零真实请求；中央配置仍缺，不自动创建账户。生产/Docker/服务器均未操作，stage就绪提醒仍不发。
+
+2026-10-24 13:19 +08:00：交接仍未可发真实请求；只完成必要门消费/接入限流底座，后续须补K31实际接入检查、PG证明可信核心选择、R12整题中断及实际CLI后再交Claude。R11冻结b008不变；本树新实现必须整合后重新绑定候选。旧模型配置/既有证明/v3未改，stage单仍No-Go，不重复通知用户。
+
+2026-10-24 12:31 +08:00 R16离线片：主/评审实际合成HTTP请求均精确k3.1-pro/high，U39原推理/原tool ID回传、合成中文长答不丢、错/缺/后续改变身份在不可信内容前全停且无重试、空响应和未核Anthropic路径均关闭。effort_verified保持false。唯一原件均在release-prep的private/safe-narrow-b38fca028bb140a99c2d96b16b0c1f71、014798210b7e47f1b08d44d747dd95b5、3ac18992206d4d329892a42c591a3e6d；不合计成一次13/13。官方依据https://www.kimi.com/code/docs/kimi-code/models.html于本轮只读核验。真实新模型选择/≤20接入/核心30尚未执行，R11固定c74仍scheduled；本片是另树后续提交，不能套用c74脚本证明。v12停止Docker，R2新库对调工具仍缺，stage/prod执行单仍No-Go。
 
 2026-10-21 00:56 +08:00 / 最小恢复候选完成：11份源的工作树原字节及拟提交Git blob均等于03514f7，AST精确102；architecture6项0.693s通过，diff检查通过。此前CI553项的1失败不能称绿，恢复后的远端CI尚未运行。证据见[冻结字节审计](../evidence/P1b/2026-10-21-frozen-legacy-integrity.md)及同名JSON。没有新依赖、模型/服务器/飞书请求或迁移；P1b整体仍未完成。
 
@@ -225,6 +305,8 @@ Decision Log补充（2026-10-18/Codex）：旧test_membership_quota_never_retry�
 2026-10-18 / Codex：402会员验证60秒重试仅限membership提供方，非会员402保留原ModelBadRequest且不重试；避免把Kimi专项动作扩到其他供应商。新增非会员反例；真实供应商兼容/探针仍未执行。
 
 ## 修订记录
+
+- 2026-10-24 12:31 +08:00：v13及R16离线片、必要三轮原件与未验证边界；保旧默认/授权，更新现有runbook的v12恢复规则及F限定对象，不连接服务器。
 
 - 2026-10-20 23:45 +08:00：追加旧HTTP/退役阻断/TTY批门第二切片证据、零skip复验、夹具显式非会员与离线I/O声明的Decision Log；下一步为授权scope接线。
 

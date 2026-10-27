@@ -3020,11 +3020,12 @@ turns:
   channel: web
   kind: chat
   expect:
-    must_include_all:
-    - 不能上夜班
-    - 约束|限制
     judge: 从长历史或检索中找回第5轮的约束。
+    memory_recall_or_text:
+    - 夜班
+    - 约束|限制|硬条件
 scripted:
 - turn: 1
   model:
   - text: 你在之前说过不能上夜班〔f1〕，这个夜班工作与已有约束冲突，先不要忽略这条限制。
+notes: v30授权；契约修订依据38号复核，见docs/v4/eval/contract_changes_20261024.md。

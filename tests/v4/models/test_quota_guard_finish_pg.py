@@ -15,6 +15,7 @@ from mingjing_core.models.errors import (
     ModelConcurrencyLimited,
     ModelPermissionDenied,
     ModelQuotaExhausted,
+    ModelResponseIdentityError,
     ModelUnavailable,
 )
 from mingjing_core.models.quota_delegated import begin_delegated_batch
@@ -171,6 +172,26 @@ def test_original_cancellation_and_process_control_survive_finish_failure(
     assert caught.value is original
     assert_safe(caught.value)
     assert_retained(guard)
+
+
+def test_identity_stop_persists_when_physical_finalization_fails(
+    guard: QuotaGuard, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    original = ModelResponseIdentityError()
+    fail_finish(guard, monkeypatch)
+    with pytest.raises(ModelResponseIdentityError) as caught:
+        invoke(guard, original)
+    assert caught.value is original and original.global_stop
+    assert_safe(caught.value)
+    records = rows(guard)
+    assert len(records) == 1 and records[0]["status"] == "reserved" and records[0]["finished_at"] is None
+    status = guard.status()
+    assert status["stop_kind"] == "permission_error" and status["in_flight"] == 0
+    assert status["window"]["total"] == 1
+    with pytest.raises(GuardRejected) as stopped:
+        invoke(guard, None)
+    assert stopped.value.kind == "permission_error"
+    assert len(rows(guard)) == 1
 
 
 @pytest.mark.parametrize("broken_finish", [False, True])

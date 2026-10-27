@@ -9,7 +9,7 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
-from tools.first_release_contracts import ordinary, require
+from tools.first_release_contracts import RestoreRejected, ordinary, require
 
 
 def _windows(handle: Any, *, exclusive: bool, unlock: bool) -> None:
@@ -58,16 +58,36 @@ def _windows(handle: Any, *, exclusive: bool, unlock: bool) -> None:
     )
 
 
+def _open_fence(path: Path, existing_only: bool) -> int:
+    try:
+        ordinary(path.parent, directory=True)
+        if existing_only or path.exists():
+            ordinary(path)
+        flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0)
+        return os.open(path, flags if existing_only else flags | os.O_CREAT, 0o600)
+    except OSError:
+        if existing_only:
+            raise RestoreRejected("INCREMENTAL_EXISTING_FENCE_REQUIRED") from None
+        raise
+
+
 @contextmanager
-def file_lock(path: Path, *, exclusive: bool) -> Iterator[None]:
-    ordinary(path.parent, directory=True)
-    if path.exists():
-        ordinary(path)
-    flags = os.O_RDWR | os.O_CREAT | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_BINARY", 0)
-    descriptor = os.open(path, flags, 0o600)
+def file_lock(
+    path: Path,
+    *,
+    exclusive: bool,
+    existing_only: bool = False,
+    return_handle: bool = False,
+) -> Iterator[Any]:
+    descriptor = _open_fence(path, existing_only)
     with os.fdopen(descriptor, "r+b", buffering=0) as handle:
-        ordinary(path)
-        observed, opened = path.stat(), os.fstat(handle.fileno())
+        try:
+            ordinary(path)
+            observed, opened = path.stat(), os.fstat(handle.fileno())
+        except OSError:
+            if existing_only:
+                raise RestoreRejected("INCREMENTAL_EXISTING_FENCE_REQUIRED") from None
+            raise
         require(
             (observed.st_dev, observed.st_ino) == (opened.st_dev, opened.st_ino),
             "INCREMENTAL_FENCE_PATH_CHANGED",
@@ -85,7 +105,7 @@ def file_lock(path: Path, *, exclusive: bool) -> Iterator[None]:
             except BlockingIOError:
                 require(False, "INCREMENTAL_FILE_FENCE_BUSY")
         try:
-            yield
+            yield handle if return_handle else None
         finally:
             if os.name == "nt":
                 _windows(handle, exclusive=exclusive, unlock=True)

@@ -1,5 +1,7 @@
 # 首发核心30题计划（v2.2隔离子集）
 
+2026-10-24 07:34 +08:00当前态：精确physical UUID/Journal锚点已在c5e实现；专用Durable目标的真实累计执行预算现已提交2e86ef5，三个必要行为组取得分轮实证（首2通过/1新夹具失败、仅原红复验1通过），唯一证据见[P3累计预算ExecPlan](../execplans/P3_eval_execution_budget_20261024.md)。每次execute以真实monotonic封一段，checkpoint/detach/只读attach保持累计与原pin，未知open或已有Journal而缺预算拒绝；耗尽组实际1.562秒，下一真实预算入口明确拒绝、0POST。普通Core30默认不启用此专用预算；附着后的send、同run跨进程执行、CLI resume、长5小时等待和真实评测门仍关闭。原完整f18脚本报告保持69/81，不因本片或局部故障驱动补绿。
+
 2026-10-24 02:35 +08:00 CI修订：C5的真实GitHub job120556263496为4088通过、56跳过、2失败，ModelPort后续步骤未执行；正式integration的3d43cae两次Core CI另已成功，不混称C5通过。CI已按官方K3目录运行此前被跳过的旧Core30两例，固定synthetic_approval的候选为a×40，新增观察器按真实Git HEAD验证时理应拒绝。两例保护的是原生撤销零模型调用和同run十二次物理请求10+2及唯一Journal，不能降低这些断言；现仅在这两例显式采用与既有model_attempt_support相同的合成checkout边界，实际source hash、场景契约、中央身份和物理发送仍走原生路径，生产校验及真实candidate_provenance测试不改。
 
 本机复现记录：最初误用未装K3依赖的Core解释器为2失败（InputMeterUnverified，private/safe-narrow-803d4b77de8e47f1a8b292dc411b423b）；换既有正确K3环境后同两目标仍2失败、症状与CI一致（4.67秒，private/safe-narrow-8ad9041740a04b7681968608b2647783）。仅修合成checkout夹具后，F01及既有checkout契约通过，十二次物理请求例仍失败（2通过/1失败，10.02秒，private/safe-narrow-41998a9b29eb4175903cf9a0b7c860ed）：该旧例用了不属于core30的合成T01，新增精确场景门理应拒绝。现替换为未改契约的真实T05、显式T05 sealed会话与Mock回答，十二次请求/十一次工具结果/唯一Journal/10+2全部断言保留；另新增T01非core案例零物理调用拒绝。只复验剩余目标与新反例，2/2通过（61.64秒，private/safe-narrow-f337a52d60e74586b6a85ded22eaaf3f），未复跑已绿F01/checkout或宽套。四个不同目标有分段通过证据，不声称一次4/4；生产代码、源码/契约校验与真实调用门未改，新的CI仍待。
@@ -67,6 +69,12 @@ RuntimeLimits把每epoch配置/hash/deadline固定，并以LEAST写回，确实�
 
 真实PG15.19中实际finish事务制造SQL错误并回滚，中央记录保持reserved/finished_at=NULL、总请求计数不退、slot已释放；普通interactive剩余79，委托记录不计普通预算而剩余80，保留两者原策略。原global stop对象/kind/reset/actions、取消、KeyboardInterrupt等不被finish覆盖；普通模型错误保持安全kind但NEVER，原本成功HTTP或普通非模型错误遇finish失败仅安全关闭；原始falsey异常也不能被吞。实际Mock HTTP计数确认成功/503后finish失败均只发1次，无retry/fallback。Ruff、120列格式、语法及文件/函数尺寸通过；只改三个授权路径，测试令牌释放，真实模型/服务器/飞书均0。没有实现observer、primary/CLI恢复、累计预算或额度清停。
 
+2026-10-24 05:40 +08:00当前态复核：精确physical attempt与Journal锚点已经由c5e7b5fe9aa268b817b723437ab547119e89dd5d实现，原生intent、中央同UUID终态和completed的权威PG重读均已存在，不能再把本文较早的“尚未实现方案”当作当前待办。7996c0b来源CI已成功，其X08真实本机HTTP断线/PG续接观察驱动已普通合入正式v4/integration的9f2506f；这是局部驱动/测试证据，原f18完整69/81报告保持不变，完整同候选脚本门没有因此解除。
+
+下一最小未覆盖点是实际累计执行预算：新RunControl仍以当前monotonic重记started，RuntimeLimits的原deadline/配置pin与私密生命周期的FrozenClock、请求计数不能替代已耗执行秒数。后续只拟通过专用DurableTarget的control_factory在原场景PG新增受source/run/epoch/limit-pin/deadline与LifecycleBinding绑定的私密runtime_step段；实际binding已在Core30._attempt的runtime.execute之前捕获，需显式传给专用执行scope，工厂在RuntimeLimits原pin已持久化后核实真实leased run并于首POST前提交open段。按整次execute的真实monotonic测量、只由该执行scope的finally封closed并累计，poll扣旧累计与本段消耗；不能在monitor退出时封整段，因为每个模型步骤都会进入monitor。detach须拒活跃段，attach只读核closed累计，已有Journal却缺预算或遗留open/未知段都失败关闭，不猜耗时、不清停、不改业务Clock或原deadline。最多验证跨attach保留、累计耗尽零POST、未知预算拒绝三行为；此设计未实施或测试，attached send、CLI恢复、长5小时窗口等待及真实评测门继续关闭。精确物理锚点不重复开发，历史失败记录不删。
+
+2026-10-24 06:40 +08:00仅只读复核：可信binding接点为v4_core30.py的Core30LiveTarget._attempt，工厂在agent_runtime.py::_cycle，原限制权威为runtime_limits.py::policy/validate_pin/deadline；RunControl.monitor在loop_cycle.py每个模型步骤使用。此记录校正较早设计的封段边界，不表示已接预算或开放续跑，也不修改共享生产运行时。
+
 当前离线CLI首次30/30，真实调用为0。可信等价证明至core会话的接线已用真实隔离PG与替身HTTP验证；正式脚本门和真实20步等价证明仍未齐，生产core依然不放行，跨额度窗口的持久续作尚未接通。本计划不代表无人值守流程可用。第一轮原80题展开81个渠道用例的失败证据保持原样，不能由本子集替代完整脚本放行门。
 
 ## 固定范围与评分
@@ -108,6 +116,18 @@ live/v4入口现在要求`--scripted-gate`、`--candidate`、`--equivalence-proo
 遇403 permission_error、usage limit、并发受限或Access terminated立即停止后续主模型与外部评分。只有明确5小时重置时刻到达且可信授权仍有效才具备断点续作条件；未知恢复时间不能猜，Access terminated永不自动恢复。普通runner的跨进程`--resume`会新建场景schema，因此live/v4入口已硬性拒绝该参数，早于中央配置、permit、证明与target装配；独立等价probe既有续作不受影响。需要保留既有PG run、已完成turn评分和下一步Journal并核对候选/source/账本身份后才可开放core真实续跑。
 
 ## 放行前仍需补齐
+
+2026-10-24 09:28 +08:00：独立显式exact-clear已实现，只消费原活资格并锁内核同一terminal/stop与完整中央摘要、跨库当前状态；10个不同定向行为分首9绿1夹具红、仅原红1绿成立，精确原件只在 `docs/v4/execplans/P3_quota_resume_witness_20261024.md`。成功清停及真实commit未知都不授执行权，不claim/新POST、不自动补偿，attached send/CLI仍硬关。下一实际resume_pending与原pending一次permit、完成/再quota断点仍待实现；旧gather/check一直只读，完整81门和真实评测门未变。
+
+2026-10-24 09:09 +08:00：completed模型历史版本的只读原生证明，已在真实两次case_update保存、中央quota和原租约自然过期后5/5通过；精确证据及原失败只见 `docs/v4/execplans/P3_quota_historical_prefix_20261024.md`。先前实际入站遗漏case选择已独立以7c20d40和8节点验证。历史证据的execution_authority始终False，不接StepAttempts或发送权限；中央exact-clear、claim、pending-step执行permit和实际同run续作仍未实现，不能据此放行真实评测或CLI。
+
+2026-10-24 08:06 +08:00 当前独立进度：工具事件身份/缺口恢复与原started复用基础已通过首三组及仅受影响pending-case正反两组，分轮证据只在`docs/v4/execplans/P3_journal_events_20261024.md`登记。它保当前真实run/epoch/Journal/隐私边界，未开放Durable.send、CLI或跨额度清停；下述quota witness与完整可信续作仍待实现验证，原81脚本门未变。
+
+2026-10-24 08:30 +08:00：pre-clear只读资格witness已首次9/9通过，原始证据仅见`docs/v4/execplans/P3_quota_resume_witness_20261024.md`。当前中央仍须为同一原terminal建立的到期quota_5h；只核原checkpoint/当前epoch请求与终态/已闭合未耗尽预算，不接旧epoch未映射usage、未发布ok、未知或其它停机。该资格不清停、不claim/execute，attached send与CLI硬关，真实评测门不变；后续原同run执行及评分续作仍待独立实现，不能据固定业务钟测试延长现实绝对deadline。
+
+2026-10-24 08:01 +08:00 下一小片的只读设计收口：只考虑真实物理attempt已明确finished quota_5h、中央同UUID/terminal摘要完整、明确reset已到期且原执行预算可信closed的primary_pending同run续作。初步不处理仅intent而无中央行的情况；当前没有持久pre-send rejection receipt，不能拿内存0 calls或中央缺行当跨进程0 POST证据。未知发送、reserved/admitted未闭合、已成功但Journal未完成、open预算及Access停机均不重发。
+
+后续拟独立resume_pending接缝，保attach/send/CLI现硬关：重新load control/read_private、核原候选/source/run/epoch/turn/model/limit pin/deadline/closed预算和受信DelegatedSession。现有generic resume_delegated只核当前停机类别/时间，不能直接作为原步骤恢复入口；须原account/stop/reset/terminal UUID与整行hash精确绑定的窄门，清停前再次核同一证据、全账户无未闭合发送及旧批次可信结束。旧批次未知/仍有reserved不能补清。短生命周期进程内witness绑定原失败UUID与状态摘要；旧run无活租约时只claim原run，不reset/seed/receive/requeue或改epoch。跨业务库/中央库没有原子提交，任何clear/claim结果不确定均停协调器、保留现场且0POST，不能回写假的stop或自动补偿重试。只有新的活opaque执行permit可让StepAttempts.begin接纳原pending步骤的全部已知finished quota历史并追加新UUID，普通发送authority不变，仍经实际中央admission/before_send/finish。completed前缀历史版本另外核原case连续自写链与model seq对应，不覆盖原快照；工具和评分继续验真重放。真实累计预算/原绝对deadline不重置；物理总数从原中央UUID对账，不能把重新装配port.calls当累计0。上述协调器尚未实现、验证或开放。
 
 2026-10-24 00:02 +08:00最新正式脚本：同clean候选`f18fc6956e3fe009f55f9857aa7f100ab42ce610`的P3 48/48、日期7/7、完整81用例69/81；全部原始报告在集成工作树`private/candidate-eval/f18fc6956e3fe009f55f9857aa7f100ab42ce610/scripted-7a324e6afa064254bbd900fd7596f39e/`。12项延期/跨模型口径未解决，完整门保持关闭；没有发真实模型请求。当前生命周期开发分支不冒充该冻结候选，其后合并仍须按最终来源判断证据绑定。
 

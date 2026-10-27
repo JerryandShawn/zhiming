@@ -29,9 +29,24 @@ from tools.first_release_incremental import (
     HERE,
     BackupInputs,
     SourcePin,
-    execute,
     file_hash,
 )
+from tools.first_release_incremental import (
+    execute as native_execute,
+)
+
+
+def execute(*args, **kwargs):
+    try:
+        return native_execute(*args, **kwargs)
+    except RestoreRejected as error:
+        diagnostic = getattr(error, "session_diagnostic", None)
+        if str(error) == "INCREMENTAL_OTHER_SOURCE_SESSION" and diagnostic is not None:
+            try:
+                print(json.dumps(diagnostic, sort_keys=True), flush=True)
+            except Exception:
+                raise error from None
+        raise
 
 
 @dataclass
@@ -275,16 +290,28 @@ def test_default_has_no_connections_processes_or_files_and_exact_oid_mismatch_ne
 
 def test_extra_real_session_is_not_allowed_by_spoofed_application_name(existing):
     before = state(existing)
-    with (
-        psycopg.connect(
-            make_conninfo(
-                existing.environment["FIRST_INCREMENTAL_OWNER_DSN"],
-                application_name="pg_dump",
-            )
-        ),
-        pytest.raises(RestoreRejected, match="INCREMENTAL_OTHER_SOURCE_SESSION"),
-    ):
-        execute(existing.inputs, backup_local=True, environment=existing.environment)
+    with psycopg.connect(
+        make_conninfo(existing.environment["FIRST_INCREMENTAL_OWNER_DSN"], application_name="pg_dump")
+    ) as extra:
+        with pytest.raises(RestoreRejected, match="^INCREMENTAL_OTHER_SOURCE_SESSION$") as stopped:
+            execute(existing.inputs, backup_local=True, environment=existing.environment)
+        diagnostic = stopped.value.session_diagnostic
+        assert diagnostic["observation"] == "at_failed_gate" and diagnostic["truncated"] is False
+        actual = {row["pid"]: row["backend_type"] for row in diagnostic["actual_backends"]}
+        assert diagnostic["actual_count"] == len(actual)
+        assert diagnostic["allowed_count"] == len(diagnostic["allowed_pids"])
+        assert extra.info.backend_pid in actual.keys() - set(diagnostic["allowed_pids"])
+        assert actual[extra.info.backend_pid] == "client backend"
+        assert set(diagnostic) == {
+            "schema",
+            "observation",
+            "allowed_pids",
+            "allowed_count",
+            "actual_backends",
+            "actual_count",
+            "truncated",
+        }
+        assert all(set(row) == {"pid", "backend_type"} for row in diagnostic["actual_backends"])
     assert state(existing) == before and not existing.inputs.maintenance.exists()
 
 

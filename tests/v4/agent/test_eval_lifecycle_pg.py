@@ -13,6 +13,7 @@ import psycopg
 import pytest
 from psycopg import sql
 
+from mingjing_core.application.consultation import ConsultationService
 from mingjing_core.application.dispatcher_cancellation import DispatcherCancellation
 from mingjing_core.application.source_withdrawal import SourceWithdrawalService
 from mingjing_core.application.thread_ingress import ThreadIngress
@@ -29,6 +30,7 @@ from tools.eval.quota import ProviderStopped
 from tools.eval.targets.v4_core30 import load_core30
 from tools.eval.targets.v4_durable import DurableCore30Target
 from tools.eval.targets.v4_privacy_seed import V4PrivacySeeder
+from tools.eval.targets.v4_scripted import ForbiddenLegacyModel
 from tools.eval.targets.v4_tarot import TarotDriver
 
 from .test_eval_v4_live_pg import Harness, wire
@@ -207,42 +209,51 @@ def test_changed_execution_binding_rejected_without_posts(saved: Saved, change: 
 @pytest.mark.parametrize("change", ["cancel", "terminal", "source", "revoke", "epoch"])
 def test_native_cancellation_terminal_withdrawal_and_identity_changes_rejected(saved: Saved, change: str) -> None:
     target = saved.target
-    run = target.repo.fetch_run(target.owner, target.run_ids[-1])
-    source = target.repo.get(target.owner, "message", run["request"]["source_message_id"])
-    if change == "cancel":
-        DispatcherCancellation(target.repo).request(target.owner, run["id"])
-    elif change == "terminal":
-        target.repo.fail_run(target.owner, run["id"], "SyntheticTerminal", run["lease_token"])
-    elif change == "source":
-        target.repo.update(
-            target.owner,
-            "message",
-            source["id"],
-            {"content": "changed synthetic source"},
-            expected_revision=source["revision"],
-        )
-    elif change == "revoke":
-        state_id = "eval-lifecycle:" + saved.session
-        private = target.repo.get(target.owner, "runtime_step", state_id)
-        assert private["state"]["targets"]["seed"]["synthetic"] is True
-        SourceWithdrawalService(target.service.memory).delete(
-            target.owner, run["subject"], source["id"], expected_revision=source["revision"], request_id="withdraw-life"
-        )
-        with target.repo.transaction(target.owner) as connection:
-            erased = connection.execute(
-                sql.SQL("SELECT status,data FROM {} WHERE owner=%s AND kind='runtime_step' AND id=%s").format(
-                    target.repo.table("core_entities")
-                ),
-                (target.owner, state_id),
-            ).fetchone()
-        assert erased["status"] == "deleted" and erased["data"] == {}
-    else:
-        with target.repo.transaction(target.owner) as connection:
-            connection.execute(
-                sql.SQL("UPDATE {} SET retry_epoch=retry_epoch+1 WHERE id=%s").format(target.repo.table("core_runs")),
-                (run["id"],),
-            )
     target.detach()
+    repo = PostgresRepository(target.dsn, schema=target.schema, initialize=False, max_size=1)
+    try:
+        run = repo.fetch_run(target.owner, target.run_ids[-1])
+        source = repo.get(target.owner, "message", run["request"]["source_message_id"])
+        if change == "cancel":
+            DispatcherCancellation(repo).request(target.owner, run["id"])
+        elif change == "terminal":
+            repo.fail_run(target.owner, run["id"], "SyntheticTerminal", run["lease_token"])
+        elif change == "source":
+            repo.update(
+                target.owner,
+                "message",
+                source["id"],
+                {"content": "changed synthetic source"},
+                expected_revision=source["revision"],
+            )
+        elif change == "revoke":
+            state_id = "eval-lifecycle:" + saved.session
+            private = repo.get(target.owner, "runtime_step", state_id)
+            assert private["state"]["targets"]["seed"]["synthetic"] is True
+            service = ConsultationService(repo, model=ForbiddenLegacyModel(), runtime=target.runtime)
+            SourceWithdrawalService(service.memory).delete(
+                target.owner,
+                run["subject"],
+                source["id"],
+                expected_revision=source["revision"],
+                request_id="withdraw-life",
+            )
+            with repo.transaction(target.owner) as connection:
+                erased = connection.execute(
+                    sql.SQL("SELECT status,data FROM {} WHERE owner=%s AND kind='runtime_step' AND id=%s").format(
+                        repo.table("core_entities")
+                    ),
+                    (target.owner, state_id),
+                ).fetchone()
+            assert erased["status"] == "deleted" and erased["data"] == {}
+        else:
+            with repo.transaction(target.owner) as connection:
+                connection.execute(
+                    sql.SQL("UPDATE {} SET retry_epoch=retry_epoch+1 WHERE id=%s").format(repo.table("core_runs")),
+                    (run["id"],),
+                )
+    finally:
+        repo.close()
     with pytest.raises((LifecycleError, CoreError)):
         saved.new().attach(saved.control, saved.session, saved.binding, saved.live.guard)
     assert len(saved.live.sent) == 2

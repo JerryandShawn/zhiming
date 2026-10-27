@@ -32,6 +32,7 @@ class ThreadIngress:
         external_id: str | None = None,
         source_id: str | None = None,
         at: datetime | None = None,
+        case_ids: list[str] | None = None,
     ) -> dict[str, Any]:
         if not isinstance(message, str) or not 1 <= len(message.strip()) <= 16000:
             raise EvidenceError("消息需要一至16000字")
@@ -46,6 +47,7 @@ class ThreadIngress:
             conversation_id=conversation_id,
             source_id=source_id,
             at=at,
+            case_ids=case_ids,
         )
 
     def submit(
@@ -75,6 +77,7 @@ class ThreadIngress:
                 external_id=external_id,
                 source_id=source_id,
                 at=at,
+                case_ids=options.get("case_ids"),
             )
             return self.queue(
                 owner=owner,
