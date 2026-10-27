@@ -8,7 +8,9 @@ from typing import Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, model_validator
 
-Item = Literal["E1", "E2", "E3", "E4", "E5", "E6", "J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8", "J9"]
+Item = Literal[
+    "E1", "E2", "E3", "E4", "E5", "J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8", "J9"
+]
 CalibrationState = Literal["revision_enabled", "record_only"]
 ITEM_TYPES = MappingProxyType(
     {
@@ -17,7 +19,6 @@ ITEM_TYPES = MappingProxyType(
         "E3": "unsupported_chart",
         "E4": "chart_inconsistency",
         "E5": "memory_error",
-        "E6": "crisis_missed",
         "J1": "fatalism",
         "J2": "unsafe_advice",
         "J3": "generic_barnum",
@@ -36,7 +37,6 @@ SEVERITIES = MappingProxyType(
         "E3": 4,
         "E4": 3,
         "E5": 4,
-        "E6": 5,
         "J1": 4,
         "J2": 5,
         "J3": 3,
@@ -48,12 +48,14 @@ SEVERITIES = MappingProxyType(
         "J9": 2,
     }
 )
-CRITIC_PROMPT_VERSION = "2.0.0"
-RUBRIC_VERSION = "v2"
+CRITIC_PROMPT_VERSION = "2.1.0"
+RUBRIC_VERSION = "v2.1.0"
 
 
 class CriticIssue(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True, hide_input_in_errors=True)
+    model_config = ConfigDict(
+        extra="forbid", frozen=True, strict=True, hide_input_in_errors=True
+    )
 
     item: Item
     type: StrictStr
@@ -75,9 +77,11 @@ class CriticIssue(BaseModel):
 
 
 class CriticOutput(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True, hide_input_in_errors=True)
+    model_config = ConfigDict(
+        extra="forbid", frozen=True, strict=True, hide_input_in_errors=True
+    )
 
-    issues: tuple[CriticIssue, ...] = Field(max_length=15, repr=False)
+    issues: tuple[CriticIssue, ...] = Field(max_length=14, repr=False)
 
     @model_validator(mode="after")
     def validate_unique_items(self) -> Self:
@@ -97,12 +101,14 @@ class ProgramIssue:
 
     def __post_init__(self) -> None:
         if self.item not in SEVERITIES or not self.item.startswith("E"):
-            raise ValueError("program evidence findings must use E1-E6")
+            raise ValueError("program evidence findings must use E1-E5")
         if any(
             not isinstance(value, str) or not value.strip()
             for value in (self.quote, self.rule, self.evidence, self.fix_hint)
         ):
-            raise ValueError("program finding requires an observable quote, rule and evidence")
+            raise ValueError(
+                "program finding requires an observable quote, rule and evidence"
+            )
         if type(self.resolved) is not bool:
             raise ValueError("program finding resolved flag must be boolean")
 
@@ -137,7 +143,7 @@ class ReviewIssue:
 class ReviewResult:
     verdict: Literal["pass", "revise"]
     mode: Literal["full", "evidence_only"]
-    revision_action: Literal["none", "revise", "crisis"]
+    revision_action: Literal["none", "revise"]
     issues: tuple[ReviewIssue, ...] = field(repr=False)
     sample_queue: tuple[ReviewIssue, ...] = field(repr=False)
     critic_prompt_version: str

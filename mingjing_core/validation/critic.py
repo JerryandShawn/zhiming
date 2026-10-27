@@ -37,13 +37,17 @@ def _invalid_constant(value: str) -> None:
     raise CriticParseError("non_json_number")
 
 
-def parse_critic_output(raw: str, *, draft: str, evidence_ids: Set[str]) -> CriticOutput:
+def parse_critic_output(
+    raw: str, *, draft: str, evidence_ids: Set[str]
+) -> CriticOutput:
     if not isinstance(raw, str):
         raise CriticParseError("invalid_output_size")
     try:
         if len(raw.encode("utf-8")) > 262_144:
             raise CriticParseError("invalid_output_size")
-        data = json.loads(raw, object_pairs_hook=_unique_object, parse_constant=_invalid_constant)
+        data = json.loads(
+            raw, object_pairs_hook=_unique_object, parse_constant=_invalid_constant
+        )
         if not isinstance(data, dict) or not isinstance(data.get("issues"), list):
             raise CriticParseError("invalid_output_shape")
         data["issues"] = tuple(data["issues"])
@@ -60,18 +64,28 @@ def parse_critic_output(raw: str, *, draft: str, evidence_ids: Set[str]) -> Crit
     return result
 
 
-def parse_attempts(attempts: Sequence[str], *, draft: str, evidence_ids: Set[str]) -> ParseResult:
+def parse_attempts(
+    attempts: Sequence[str], *, draft: str, evidence_ids: Set[str]
+) -> ParseResult:
     if len(attempts) > 2:
         raise ValueError("at most two already-obtained critic outputs may be parsed")
     errors = []
     for index, raw in enumerate(attempts, start=1):
         try:
             return ParseResult(
-                parse_critic_output(raw, draft=draft, evidence_ids=evidence_ids), index, False, tuple(errors)
+                parse_critic_output(raw, draft=draft, evidence_ids=evidence_ids),
+                index,
+                False,
+                tuple(errors),
             )
         except CriticParseError as error:
             errors.append(str(error))
-    return ParseResult(CriticOutput(issues=()), len(attempts), True, tuple(errors) or ("critic_unavailable",))
+    return ParseResult(
+        CriticOutput(issues=()),
+        len(attempts),
+        True,
+        tuple(errors) or ("critic_unavailable",),
+    )
 
 
 def _review_issue(
@@ -79,11 +93,16 @@ def _review_issue(
     calibration: CalibrationReport | None,
     revisions_used: int,
     calibration_current: bool,
+    primary_model: str | None,
 ) -> ReviewIssue:
     program = isinstance(issue, ProgramIssue)
     confidence = 3 if program else issue.confidence
     severity = SEVERITIES[issue.item]
-    state = calibration.state_for(issue.item) if calibration is not None and calibration_current else "record_only"
+    state = (
+        calibration.state_for(issue.item, primary_model=primary_model)
+        if calibration is not None and calibration_current
+        else "record_only"
+    )
     reason = "eligible"
     if program and issue.resolved:
         reason = "already_resolved"
@@ -93,7 +112,7 @@ def _review_issue(
         reason = "severity_below_revision_threshold"
     elif not program and state != "revision_enabled":
         reason = "record_only"
-    elif revisions_used >= 1 and issue.item != "E6":
+    elif revisions_used >= 1:
         reason = "revision_limit"
     return ReviewIssue(
         issue.item,
@@ -118,6 +137,7 @@ def compute_review(
     critic_allowed: bool = True,
     revisions_used: int = 0,
     calibration_current: bool = True,
+    primary_model: str | None = None,
 ) -> ReviewResult:
     if type(revisions_used) is not int or revisions_used < 0:
         raise ValueError("revision count must be a nonnegative integer")
@@ -127,10 +147,17 @@ def compute_review(
         raise ValueError("program findings must be unique per rubric item")
     program_items = {issue.item for issue in program_issues}
     critic_issues = parsed.output.issues if critic_allowed else ()
-    raw = tuple(program_issues) + tuple(issue for issue in critic_issues if issue.item not in program_items)
-    issues = tuple(_review_issue(issue, calibration, revisions_used, calibration_current) for issue in raw)
+    raw = tuple(program_issues) + tuple(
+        issue for issue in critic_issues if issue.item not in program_items
+    )
+    issues = tuple(
+        _review_issue(
+            issue, calibration, revisions_used, calibration_current, primary_model
+        )
+        for issue in raw
+    )
     active = [issue for issue in issues if issue.triggered]
-    action = "crisis" if any(issue.item == "E6" for issue in active) else "revise" if active else "none"
+    action = "revise" if active else "none"
     return ReviewResult(
         "revise" if active else "pass",
         "full" if critic_allowed else "evidence_only",
