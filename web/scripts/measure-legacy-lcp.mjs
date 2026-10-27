@@ -13,6 +13,9 @@ const root = path.resolve(webRoot, '..');
 const target = process.env.FRONTEND_PERF_TARGET ?? 'legacy';
 if (!['legacy', 'h5', 'courses'].includes(target)) throw new Error('Expected legacy, h5 or courses target');
 const builtTarget = target !== 'legacy';
+const runs = Number(process.env.FRONTEND_PERF_RUNS ?? 5);
+if (![1, 5].includes(runs)) throw new Error('Expected one diagnostic run or five acceptance runs');
+const diagnostic = runs === 1;
 const encoding = process.env.FRONTEND_PERF_ENCODING ?? 'identity';
 if (!['identity', 'gzip'].includes(encoding)) throw new Error('Expected identity or gzip delivery');
 const attempt = process.env.LEGACY_PERF_ATTEMPT;
@@ -33,6 +36,8 @@ const buildPaths = [
   'web/index.html',
   'web/package.json',
   'web/package-lock.json',
+  'web/scripts/prepare-fonts.mjs',
+  'web/scripts/font-css.mjs',
 ];
 async function provenance() {
   const files = {};
@@ -53,6 +58,17 @@ async function provenance() {
   }
   return {
     head: git('rev-parse', 'HEAD'),
+    font_display_modes: builtTarget
+      ? [
+          ...new Set(
+            [
+              ...(await fs.readFile(path.join(root, 'web/public/fonts/fonts.css'), 'utf8')).matchAll(
+                /font-display:([a-z]+)/g,
+              ),
+            ].map((match) => match[1]),
+          ),
+        ]
+      : [],
     runtime_dirty: Boolean(
       git('status', '--porcelain', '--', ...runtimePaths, 'web/src', 'web/public', ...(builtTarget ? buildPaths : [])),
     ),
@@ -147,7 +163,8 @@ const batch = {
         : 'old-html-built-module-loopback-http-synthetic-read-only-api',
   network,
   cpu_slowdown: 4,
-  runs: 5,
+  runs,
+  diagnostic_only: diagnostic,
 };
 await fs.writeFile(path.join(directory, 'batch.json'), JSON.stringify({ ...batch, status: 'running' }, null, 2));
 let browser;
@@ -155,7 +172,7 @@ try {
   const before = await provenance();
   browser = await chromium.launch({ channel: process.env.CI ? undefined : 'chrome', headless: true });
   const samples = [];
-  for (let run = 1; run <= 5; run++) {
+  for (let run = 1; run <= runs; run++) {
     const context = await browser.newContext({
       viewport: { width: 390, height: 844 },
       deviceScaleFactor: 2,
@@ -180,12 +197,30 @@ try {
       if (target === 'legacy') localStorage.setItem('mjt_token', 'synthetic-performance-token');
       else localStorage.setItem('mingjing-theme', 'light');
       window.__legacyLcp = [];
+      window.__courseReady = null;
+      if (target === 'courses') {
+        const ready = new MutationObserver(() => {
+          if (document.querySelector('[data-course-state="ready"]')) {
+            window.__courseReady = performance.now();
+            ready.disconnect();
+          }
+        });
+        ready.observe(document, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['data-course-state'],
+        });
+      }
       const capture = (entries) =>
         entries.forEach((entry) =>
           window.__legacyLcp.push({
             startTime: entry.startTime,
             size: entry.size,
             element: entry.element?.tagName ?? null,
+            class_name: String(entry.element?.className ?? '').slice(0, 180),
+            parent_class: String(entry.element?.parentElement?.className ?? '').slice(0, 180),
+            text_length: entry.element?.textContent?.length ?? 0,
           }),
         );
       const observer = new PerformanceObserver((list) => capture(list.getEntries()));
@@ -223,10 +258,17 @@ try {
         window.__legacyLcpFlush();
         return {
           entries: window.__legacyLcp,
+          course_ready_ms: window.__courseReady,
+          first_contentful_paint_ms: performance.getEntriesByName('first-contentful-paint')[0]?.startTime ?? null,
           resources: performance.getEntriesByType('resource').map((entry) => ({
             path: new URL(entry.name).pathname,
             transfer_size: entry.transferSize,
             duration: entry.duration,
+            start_time: entry.startTime,
+            response_end: entry.responseEnd,
+            encoded_body_size: entry.encodedBodySize,
+            decoded_body_size: entry.decodedBodySize,
+            initiator_type: entry.initiatorType,
           })),
         };
       });
@@ -244,6 +286,7 @@ try {
   const stable = JSON.stringify(before) === JSON.stringify(after) && harnessStable;
   const sorted = samples.map((sample) => sample.lcp_ms).sort((a, b) => a - b);
   const passed =
+    !diagnostic &&
     stable &&
     !before.runtime_dirty &&
     sorted.every((value) => value < 2500) &&
@@ -264,7 +307,7 @@ try {
     cache_disabled: true,
     fresh_context_each_run: true,
     viewport: { width: 390, height: 844, deviceScaleFactor: 2 },
-    p75_ms: sorted[3],
+    p75_ms: diagnostic ? null : sorted[3],
     target_ms: 2500,
     passed,
     methods: [...new Set(methods)],
@@ -280,10 +323,16 @@ try {
   await fs.writeFile(path.join(directory, 'report.json'), JSON.stringify(report, null, 2));
   await fs.writeFile(
     path.join(directory, 'batch.json'),
-    JSON.stringify({ ...batch, status: passed ? 'passed' : 'failed', finished_bjt: bjt() }, null, 2),
+    JSON.stringify(
+      { ...batch, status: diagnostic ? 'diagnostic_completed' : passed ? 'passed' : 'failed', finished_bjt: bjt() },
+      null,
+      2,
+    ),
   );
-  console.log(JSON.stringify({ passed, p75_ms: sorted[3], directory }));
-  if (!passed) process.exitCode = 1;
+  console.log(
+    JSON.stringify({ passed, diagnostic_only: diagnostic, p75_ms: diagnostic ? null : sorted[3], directory }),
+  );
+  if (!passed && !diagnostic) process.exitCode = 1;
 } catch (error) {
   await fs.writeFile(
     path.join(directory, 'batch.json'),

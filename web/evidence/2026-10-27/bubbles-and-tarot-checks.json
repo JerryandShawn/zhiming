@@ -1,0 +1,234 @@
+{
+  "server_access": 0,
+  "candidate_lcp_p75_ms": 4988,
+  "visual_checks": 14,
+  "full_regression_start_bjt": "2026-10-27T16:41:02.9295356+08:00",
+  "unit_files": 106,
+  "ci": "Core green/frontend cancelled at3fd; new candidate pending",
+  "tarot_repair": {
+    "startTime": "2026-10-27T08:48:41.832Z",
+    "duration": 8552.743,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "ci_notes": "four actual tarot test failures found before cancellation; not only job budget; local SVG mocks now added, original assertions unchanged",
+  "base_head": "3fd6c5b1d69b3790cbcdd15ec130c1a8ad85aa64",
+  "baseline_p75_ms": 5260,
+  "unit_failed": 0,
+  "optional_font_experiment_p75_ms": 5268,
+  "tarot_default_output_guard": {
+    "startTime": "2026-10-27T08:49:56.94Z",
+    "duration": 5376.92,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "unit_passed": 1291,
+  "real_model_calls": 0,
+  "captured_bjt": "2026-10-27T16:51:51+08:00",
+  "optional_policy": "rejected, original swap and all font bytes restored",
+  "pixel_comparison": [
+    {
+      "scene": "courses-astro-1440-dark",
+      "byte_identical": true,
+      "sha256": "2285237a96f775e5796b21a9631e0e5d9e9d62fee9a9952eaacd1420445a7e25",
+      "reused_evidence": "courses-final/courses-astro-1440-dark-31966d2b.png"
+    },
+    {
+      "scene": "courses-astro-1440-light",
+      "byte_identical": true,
+      "sha256": "c946a2c00767ba1e05e9be6e1d9192a497a796e4df7a33d398a357e816433db1",
+      "reused_evidence": "courses-final/courses-astro-1440-light-a915b6a3.png"
+    },
+    {
+      "scene": "courses-astro-375-dark",
+      "byte_identical": true,
+      "sha256": "d7653b3d91c89e2bdde982e80cf479eac50a1dac3ee6fbd14f8177a812596d51",
+      "reused_evidence": "courses-final/courses-astro-375-dark-2ae59366.png"
+    },
+    {
+      "scene": "courses-astro-375-light",
+      "byte_identical": true,
+      "sha256": "688a5f781d7434404d922e8a38c76d7cf589dec298278b68b6b1fea76ebb2b30",
+      "reused_evidence": "courses-final/courses-astro-375-light-97fd75fa.png"
+    },
+    {
+      "scene": "courses-astro-390-dark",
+      "byte_identical": true,
+      "sha256": "27ca57bdfee302b3b872d3ef64fc287fafeef1dc61372eb5e7f10686bb484934",
+      "reused_evidence": "courses-final/courses-astro-390-dark-33626253.png"
+    },
+    {
+      "scene": "courses-astro-390-light",
+      "byte_identical": true,
+      "sha256": "4eef6b8d3c98a947693dcc9fa9b470048fedc2ff6939ed95a477ba9a0592625a",
+      "reused_evidence": "courses-final/courses-astro-390-light-e8561ca6.png"
+    },
+    {
+      "scene": "courses-astro-768-dark",
+      "byte_identical": true,
+      "sha256": "b5d39f5b1000e73d08cf62f205c6f47e5a5c593e1bfa4789a1218f12b27148e8",
+      "reused_evidence": "courses-final/courses-astro-768-dark-3d6a352f.png"
+    },
+    {
+      "scene": "courses-astro-768-light",
+      "byte_identical": true,
+      "sha256": "77212b7eec693d0cccd83fb8b4c62454df5dac9819470a0d9c4de62f8b7629d0",
+      "reused_evidence": "courses-final/courses-astro-768-light-4f2636a5.png"
+    },
+    {
+      "scene": "courses-checked-1440-dark",
+      "byte_identical": true,
+      "sha256": "c2e7068b1bb7539a65840c930e179c383089513265e9466900cb75e318929d08",
+      "reused_evidence": "courses-final/courses-checked-1440-dark-f01d191e.png"
+    },
+    {
+      "scene": "courses-checked-1440-light",
+      "byte_identical": true,
+      "sha256": "dee5bc734c59a1cd85e7bb35c3065cc45589cb4dfcde164b61f4ae5ace970d90",
+      "reused_evidence": "courses-final/courses-checked-1440-light-d44d864f.png"
+    },
+    {
+      "scene": "courses-checked-375-dark",
+      "byte_identical": true,
+      "sha256": "96adcb2ca299dcfdd207b808fa09cb9ff85aefa06b5f9d6b4a3f30e06510c3b7",
+      "reused_evidence": "courses-final/courses-checked-375-dark-885c7b1e.png"
+    },
+    {
+      "scene": "courses-checked-375-light",
+      "byte_identical": true,
+      "sha256": "640269bc3bb17cdf4a33308a25e15463eee05bf27ebbb1b3fe13491b1bd9c7c1",
+      "reused_evidence": "courses-final/courses-checked-375-light-7718b8e5.png"
+    },
+    {
+      "scene": "courses-checked-390-dark",
+      "byte_identical": true,
+      "sha256": "8c482d159b86f0f4b51d644aebf3e1241c33cdcc7ae7fcedbfc1028da85dc77b",
+      "reused_evidence": "courses-final/courses-checked-390-dark-8da50230.png"
+    },
+    {
+      "scene": "courses-checked-390-light",
+      "byte_identical": true,
+      "sha256": "595f733498670f435684e2e467675c80b4458da43efdb76f14c4210cd2a765c4",
+      "reused_evidence": "courses-final/courses-checked-390-light-723a502f.png"
+    },
+    {
+      "scene": "courses-checked-768-dark",
+      "byte_identical": true,
+      "sha256": "92f58e804e1bf7661c3b2f7bc22fdd7f6ea723feab0c06314c77775c6df2d482",
+      "reused_evidence": "courses-final/courses-checked-768-dark-175ccca2.png"
+    },
+    {
+      "scene": "courses-checked-768-light",
+      "byte_identical": true,
+      "sha256": "b1a63dfd66d44a6a545cdbe5b46eedf679f8d42caa90c028917f13d4c4eaeb52",
+      "reused_evidence": "courses-final/courses-checked-768-light-9c8d78bb.png"
+    },
+    {
+      "scene": "courses-deep-link",
+      "byte_identical": true,
+      "sha256": "9d884784cbb2153aa9f037db68b5729af8e6518d265aaa86c9f1886e06a53430",
+      "reused_evidence": "courses-final/courses-deep-link-642aee1f.png"
+    },
+    {
+      "scene": "courses-invalid",
+      "byte_identical": true,
+      "sha256": "58a9942057986879e8de1905bcd59b40e4d113c3de8875a161fcbd047fc7ef20",
+      "reused_evidence": "courses-final/courses-invalid-5ce47125.png"
+    },
+    {
+      "scene": "courses-keyboard-1440",
+      "byte_identical": true,
+      "sha256": "10d0726082537cdb2134988c863d1f2bc891b29c7dfbe85799d32bbf8f6b2a4a",
+      "reused_evidence": "courses-final/courses-keyboard-1440-9a1c0daf.png"
+    },
+    {
+      "scene": "courses-keyboard-390",
+      "byte_identical": true,
+      "sha256": "36bdae8f6b2c1a08ff49a9cff7506e6cdb28f4a83157efaa05090591f8f022a1",
+      "reused_evidence": "courses-final/courses-keyboard-390-de666068.png"
+    },
+    {
+      "scene": "courses-reading-1440-dark",
+      "byte_identical": true,
+      "sha256": "cc01a2e53900825e4d6175a96af0dccf7673db310317d091bc8c3e3ca30f637d",
+      "reused_evidence": "courses-final/courses-reading-1440-dark-e29d45c4.png"
+    },
+    {
+      "scene": "courses-reading-1440-light",
+      "byte_identical": true,
+      "sha256": "188aaebcb62fb92ed911c9c98f9d3d6b75f23f77a3b695a6fb1fb213536f002a",
+      "reused_evidence": "courses-final/courses-reading-1440-light-cd5df183.png"
+    },
+    {
+      "scene": "courses-reading-375-dark",
+      "byte_identical": true,
+      "sha256": "ab38e0391a1f53858b359a4ab7696fd470c61dfcb1f5573cf6a8bd79012ecaf1",
+      "reused_evidence": "courses-final/courses-reading-375-dark-a37bb1b7.png"
+    },
+    {
+      "scene": "courses-reading-375-light",
+      "byte_identical": true,
+      "sha256": "c3b94865dd5f06075b6e2c45620dbbf560fa14059db09e959dfc641177c5610b",
+      "reused_evidence": "courses-final/courses-reading-375-light-a62ce1fb.png"
+    },
+    {
+      "scene": "courses-reading-390-dark",
+      "byte_identical": true,
+      "sha256": "d8dc8a26b7eb3f11a045a121bffc744d62b99767137dceb3cb9574d0122358e8",
+      "reused_evidence": "courses-final/courses-reading-390-dark-590e6aee.png"
+    },
+    {
+      "scene": "courses-reading-390-light",
+      "byte_identical": true,
+      "sha256": "9d884784cbb2153aa9f037db68b5729af8e6518d265aaa86c9f1886e06a53430",
+      "reused_evidence": "courses-final/courses-reading-390-light-6e4c1287.png"
+    },
+    {
+      "scene": "courses-reading-768-dark",
+      "byte_identical": true,
+      "sha256": "d3fd7b69315414946c9157a88d7025a1d7b37b5f21867c139a738b5435e57ba5",
+      "reused_evidence": "courses-final/courses-reading-768-dark-c54bd3b5.png"
+    },
+    {
+      "scene": "courses-reading-768-light",
+      "byte_identical": true,
+      "sha256": "e4a8f991a95bc286c0fddf68a7811f14e31925b04523cb2b35fef9840f45f8f2",
+      "reused_evidence": "courses-final/courses-reading-768-light-f5a82d98.png"
+    },
+    {
+      "scene": "study-chat-retained-1440",
+      "byte_identical": true,
+      "sha256": "8c19bfd17daba6b186bac0dc7dcd32a1af33514e331231dddc656026c5b95e74",
+      "reused_evidence": "courses-final/study-chat-retained-1440-970e0ed0.png"
+    },
+    {
+      "scene": "study-chat-retained-390",
+      "byte_identical": true,
+      "sha256": "b93b48d0a681545436ebccc7adfc0284733cc1340d9af3e1745882ba14bcf420",
+      "reused_evidence": "courses-final/study-chat-retained-390-8ea76432.png"
+    }
+  ],
+  "threshold_ms": 2500,
+  "tested_runtime_dirty": true,
+  "file_sha256": {
+    "web/tests/e2e/night-tarot-read-state.spec.ts": "d2111e67cc6713856aaf533e40d3d381eac069b927f10e5913359255bf1796aa",
+    "web/src/components/Messages.tsx": "d190ad471c34c9d4e76a688b6c509ffd9fbd366ba29fe85aad70f78dd6c83fbb",
+    "web/src/components/MessageBubbles.tsx": "a888a6a5ddaa1bfaee463271ca1f1ce04ff79dffbdc0fac85369c22fb9d3cfc5",
+    "web/src/spaces/ChatPreview.tsx": "9ce333cc9a7bb4791aa6dbf0d2026e6d8497db1d7f84ad3c9de43183faf6769e",
+    "web/tests/e2e/night-tarot-refresh.spec.ts": "bc70d51316a0bcd2c9b12f19c281530553ce65b80344d8d485a93024e90be3e0",
+    "web/scripts/measure-legacy-lcp.mjs": "458481a2792a04b512a271e092d07cd7575ee3f22aebe743fbe0d4f490b52421"
+  },
+  "performance_passed": false,
+  "browser": {
+    "startTime": "2026-10-27T08:42:16.41Z",
+    "duration": 102557.85800000001,
+    "expected": 121,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

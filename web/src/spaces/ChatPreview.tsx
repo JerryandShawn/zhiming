@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { AssistantMessage, UserMessage } from '../components/Messages';
+import { AssistantMessage, UserMessage } from '../components/MessageBubbles';
 import { Button, Textarea } from '../components/ui/Controls';
 import { Select } from '../components/ui/Selection';
 import { RouteBadge } from './RouteBadge';

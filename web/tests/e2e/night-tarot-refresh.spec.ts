@@ -64,6 +64,13 @@ for (const width of [390, 1440])
         await route.abort();
         return;
       }
+      if (['/static/tarot/major-17.svg', '/static/tarot/back.svg'].includes(url.pathname))
+        return route.fulfill({
+          status: 200,
+          contentType: 'image/svg+xml',
+          body: await fs.readFile(path.resolve('../static/tarot', path.basename(url.pathname))),
+        });
+      if (url.pathname.startsWith('/static/')) throw new Error('Unexpected synthetic static resource');
       if (!url.pathname.startsWith('/api/')) return route.continue();
       calls.push({ path: url.pathname, method: request.method() });
       const json = (value: unknown) =>
@@ -105,8 +112,9 @@ for (const width of [390, 1440])
       await refresh.click();
       await expect(page.getByText('解读记录暂时无法读取。', { exact: true })).toBeVisible();
       await expect(page.getByText('牌阵B已保存的第1版', { exact: true })).toBeVisible();
-      const folder = process.env.NIGHT_EVIDENCE_DIR ?? 'evidence/2026-10-21/tarot-refresh';
-      await fs.mkdir(folder, { recursive: true });
+      const root = process.env.NIGHT_EVIDENCE_DIR ?? 'test-results/tarot-refresh';
+      await fs.mkdir(root, { recursive: true });
+      const folder = process.env.NIGHT_EVIDENCE_DIR ? root : await fs.mkdtemp(path.join(root, 'run-'));
       const capture = async (name: string) => {
         await page.evaluate(() => window.scrollTo(0, 0));
         const file = path.join(folder, `${name}-${width}.png`);
