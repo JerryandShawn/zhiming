@@ -10,7 +10,7 @@ export type RequestOwner = {
 export function assertOwner(owner: RequestOwner) {
   if (owner.signal.aborted || !owner.isCurrent()) throw new ThreadRequestError('obsolete');
 }
-async function readJson(response: Response, owner: RequestOwner, maxBytes: number): Promise<unknown> {
+export async function readJson(response: Response, owner: RequestOwner, maxBytes: number): Promise<unknown> {
   if (!response.body) throw new ThreadRequestError('receipt');
   const reader = response.body.getReader(),
     decoder = new TextDecoder('utf-8', { fatal: true });

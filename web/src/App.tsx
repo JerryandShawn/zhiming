@@ -14,6 +14,7 @@ const pages = {
   me: lazy(() => import('./pages/Me')),
   settings: lazy(() => import('./pages/Settings')),
   __design: lazy(() => import('./pages/Design')),
+  spaces: lazy(() => import('./spaces/LiveSpaces').then((module) => ({ default: () => <module.default preview /> }))),
 };
 const livePages = {
   today: LiveToday,
@@ -23,6 +24,7 @@ const livePages = {
   cases: lazy(() => import('./live/Cases')),
   me: lazy(() => import('./live/Me')),
   settings: lazy(() => import('./live/Settings')),
+  spaces: lazy(() => import('./spaces/LiveSpaces')),
 };
 const SpacesChat = lazy(() => import('./spaces/ChatPreview'));
 const SpacesMe = lazy(() => import('./spaces/MemoryPreview'));
