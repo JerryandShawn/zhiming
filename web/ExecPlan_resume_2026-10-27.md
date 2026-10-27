@@ -4,6 +4,10 @@
 
 ## Progress
 
+- [x] 2026-10-27T20:00:55+08:00 C3控制器通过（1480/1480全量单测；本机Node24下3个loopback HTTP文件改node环境，断言不变）。Claude接手前端线。
+
+- [x] 2026-10-27T18:01:06+08:00 C3控制器：组合已有submit后回执/C1/C2，初始GET持久状态、活动重试缺起点不从零重放、422后回查不重发。终态事件与PG公开结果协调，终稿只用当前receipts/卡片，停止即时pending并守护完成/取消竞态；owner切换/离页只断订阅不隐式取消。纯控制器先验后接UI，当前0b7精确头两CI仍queued。
+
 - [x] 2026-10-27T17:53:15+08:00 C2普通推送50e82f98；远端主线R47提交653fbf82先到，只重放本地未发布提交，web/日报树逐字节不变，未force-push/未合并PR。本线未编辑.github，继承主线Ubuntu24.04/25分钟。精确头两CIqueued，不冒称绿；下一C3。
 
 - [x] 2026-10-27T17:49:56+08:00 C2持久状态/停止候选：按主线27b8的GET run十字段与cancel {ok,run_id}，提取A/B既有归属安全JSON请求复用（原79检查/断言不变），新增状态投影与停止端口。仅状态/attempts和succeeded严格core4，不读非终态旧result及原始内部字段；ack后GET同run，仅cancelled stopped=true，running/inbox_wait仍pending，succeeded保留终稿。55新单测+2新实际loopback，连A/B/C1及原回归213/213；类型/lint/构建绿，416产物SHA全同。C3控制器/epoch安全恢复/页面/PG仍待，不称全链路。

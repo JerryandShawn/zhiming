@@ -1,3 +1,5 @@
+// @vitest-environment node
+// Real loopback HTTP needs Node fetch with its own AbortSignal; jsdom signals are rejected on Node 24.
 import { createServer } from 'node:http';
 import { once } from 'node:events';
 import type { AddressInfo } from 'node:net';
