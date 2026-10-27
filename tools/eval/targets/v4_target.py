@@ -24,6 +24,7 @@ from .v4_context_observations import context_observations
 from .v4_faults import FaultScriptedPort, crash_observations, reclaim_crashed
 from .v4_feishu import FeishuBatchDriver
 from .v4_http_faults import HttpFaultPort, fault_evidence, fault_port
+from . import v4_p8_acceptance as p8
 from .v4_observations import (
     decision_rows,
     delivery_rows,
@@ -72,6 +73,7 @@ class V4Target:
         self.feishu: FeishuBatchDriver | None = None
         self.stream: dict[str, Any] = {}
         self.http_faults: HttpFaultPort | None = None
+        self.p8: p8.P8Acceptance | None = None
 
     def reset(self, seed: dict[str, Any]) -> None:
         if seed.get("synthetic") is not True:
@@ -98,9 +100,12 @@ class V4Target:
         )
         self._ports()
         self.service = ConsultationService(self.repo, model=ForbiddenLegacyModel(), runtime=self.runtime)
-        self.provider = ScriptedProvider(seed.get("_scripted", []))
+        self.provider = ScriptedProvider(p8.map_scripted(seed))
         self.seeder = V4PrivacySeeder(self.service, self.owner, seed.get("_scenario_id", "scenario"))
         self.seeder.seed(seed)
+        self.p8 = p8.P8Acceptance(self) if p8.active(seed) else None
+        if self.p8:
+            self.p8.seed()
         self.privacy_initial = initial_layers(self.repo, self.owner, self.seeder.privacy_layers)
         self.tarot = TarotDriver(self.service, self.seeder)
         self.tarot.seed(seed)
@@ -276,12 +281,16 @@ class V4Target:
         request_offset = len(self.port.requests)
         if turn.get("action", {}).get("type") == "cancel_run":
             return self._cancel(turn, started)
+        if self.p8:
+            self.p8.before_turn()
         run, resumed = self._start_turn(turn)
         events: list[dict[str, Any]] = []
         result, retry, error, crashed = self._attempt(run, events)
         delivered = self.feishu.finish(run["id"]) if result and self.feishu else []
         current = self.repo.fetch_run(self.owner, run["id"])
         steps = tool_steps(self.repo, self.owner, run["id"])
+        if self.p8:
+            self.p8.observe(steps)
         semantic = self._semantics(
             steps,
             turn,
@@ -418,6 +427,7 @@ class V4Target:
             "chart": chart_observations(kinds.get("artifact", []), self.owner, run),
             **({"stream": self.stream} if self.stream else {}),
             **fault_evidence(self.port),
+            **({"p8_acceptance": self.p8.observations} if self.p8 else {}),
         }
 
     def close(self) -> None:
