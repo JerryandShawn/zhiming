@@ -80,12 +80,19 @@ class ToolBatch:
 
     def accept(self, prepared: PreparedTool, result: ToolResult) -> tuple[ToolResult, str | None]:
         cycle, call = self.cycle, prepared.call
+        receipts, event = cycle.memory_receipts, None
+        if receipts is not None:
+            receipts.check_boundary()
         # A write may legitimately advance dependencies before its own acknowledgement.
         # Journal and registration retain the lease, cancellation and withdrawal fences.
         with cycle.registry.service.repo.transaction(cycle.run["owner"]):
             if not prepared.step.completed:
                 cycle.journal.complete(prepared.step, result.model_dump())
             cycle._register(call.name, result)
+            if receipts is not None:
+                event = receipts.record(prepared.step, result, arguments=call.arguments, context=prepared.context)
+        if receipts is not None:
+            receipts.dispatch(event)
         if result.receipt:
             cycle.receipts.append(copy.deepcopy(result.receipt))
         if result.ends_turn:

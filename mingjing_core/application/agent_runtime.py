@@ -27,6 +27,7 @@ from mingjing_core.agent.runtime_config import (
 from mingjing_core.agent.toolkit import ToolRegistry
 from mingjing_core.application.agent_crisis_sources import turn_has_crisis
 from mingjing_core.application.agent_finalization import AgentFinalizer
+from mingjing_core.application.agent_memory_receipts import MemoryReceiptEvents
 from mingjing_core.application.agent_model_calls import RequestLedger
 from mingjing_core.application.agent_regeneration import AgentRegenerator
 from mingjing_core.application.agent_review import AgentReviewer
@@ -120,6 +121,7 @@ class AgentRuntime:
             )
             if self.streaming_candidate
             else None,
+            memory_receipts=MemoryReceiptEvents(events) if self.streaming_candidate else None,
         )
 
     def _start(self, run: dict[str, Any], events: RuntimeEvents) -> None:

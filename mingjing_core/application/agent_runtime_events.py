@@ -12,6 +12,7 @@ from mingjing_core.agent.journal import Journal
 from mingjing_core.application.agent_thread_scope import assert_thread, thread_id
 from mingjing_core.application.public_tool_ids import public_call_id
 from mingjing_core.domain.contracts import EvidenceError
+from mingjing_core.repositories.event_retention_metadata import is_closed
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.repositories.run_event_log import append_event
 
@@ -63,6 +64,8 @@ class RuntimeEvents:
                 raise EvidenceError("事件人物或线程与当前运行不符")
             if row["retry_epoch"] != self.run["retry_epoch"]:
                 raise EvidenceError("事件不属于当前运行批次")
+            if is_closed(row):
+                return
             assert_thread(self.repo, row)
             event = (
                 self._existing(connection, kind, payload) if kind in {"final", "ask_user", "present_options"} else None

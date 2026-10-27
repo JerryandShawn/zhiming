@@ -90,7 +90,7 @@ def exercise_roundtrip(
         assert old["receipt_nodes"] == 0
         settings.apply("alice", "v4", expected_runtime="v3", request_id="dom-to-v4")
         new = probe(origin, message="请记住我喜欢合成蓝杯", expected=["合成新页面兼容回答", "已记住"])
-        assert new["post_count"] == 1 and new["recovery_count"] == 1
+        assert new["post_count"] == 1 and new["recovery_count"] == 0
         assert len(repo.list("alice", "fact")) == 1 and len(port.requests) == 2
         settings.apply("alice", "v3", expected_runtime="v4", request_id="dom-back-v3")
         again = probe(origin, message="本机合成回退后的问题", expected=["先核对现实安排"])

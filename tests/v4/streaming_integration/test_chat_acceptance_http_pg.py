@@ -9,6 +9,7 @@ import pytest
 
 from mingjing_core.adapters.web import create_app
 from mingjing_core.application.run_acceptance import run_acceptance
+from mingjing_core.application.read_result import read_result
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 from tests.v4.agent.legacy_dom_http_support import local_app
 from tests.v4.agent.test_loop_cycle_support import ScriptedPort, answer
@@ -18,6 +19,7 @@ from tests.v4.streaming_integration.chat_acceptance_support import (
     repository as repository,
 )
 from tests.v4.streaming_integration.event_http_support import HEADERS, decoded, until
+from tests.v4.streaming_integration.legacy_event_support import flat_frames
 
 JSON = dict(HEADERS, Accept="application/json")
 
@@ -65,7 +67,14 @@ def test_json_ack_precedes_model_completion_and_get_replays_same_run(
                 headers=dict(HEADERS, Accept="text/event-stream"),
                 json={"request_id": "async-json", "message": "合成异步问题"},
             )
-            assert decoded(legacy_request.text)[-1] == events[-1]
+            legacy_result = next(
+                frame
+                for frame in flat_frames(legacy_request.text)
+                if frame["type"] == "result"
+            )
+            assert legacy_result["result"] == read_result(
+                events[-1]["data"]["envelope"]
+            )
             assert len(port.requests) == 1 and len(repo.list("alice", "message")) == 2
             assert core.runtime_assembly.legacy.calls == []
         finally:

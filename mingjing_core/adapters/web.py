@@ -191,10 +191,10 @@ def create_app(service=None, *, event_hints: bool = False):
     async def stream(owner, run, reading_id=None, draw_id=None, request=None):
         svc = core()
         if run['runtime']=='v4':
-            from .thread_events import event_response
+            from .legacy_run_events import legacy_event_response
             if not state['dispatcher']:raise EvidenceError('v4 调度尚未启动，原请求已保留')
             state['dispatcher'].wake.set()
-            return event_response(svc.repo,owner,run['id'],request)
+            return legacy_event_response(svc.repo,owner,run['id'],request)
         if run['status']=='queued' and not state['workers']: launch(owner,run['id'],reading_id)
         async def events():
             yield 'data: '+json.dumps({'type':'started','turn_id':run['operation_id'],'run_id':run['id'],'reading_id':reading_id,'draw_id':draw_id})+'\n\n'

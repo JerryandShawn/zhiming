@@ -11,6 +11,7 @@ from psycopg.types.json import Jsonb
 from mingjing_core.agent.events import make_event, validate_event
 from mingjing_core.domain.contracts import EvidenceError
 
+from . import event_retention_metadata as retention
 from .postgres import PostgresRepository, fingerprint
 
 OPERATION_KIND = "run_event_v1"
@@ -72,17 +73,19 @@ def append_event(
     operation_key: str | None = None,
 ) -> dict[str, Any]:
     """Call only inside the authoritative owner/run transaction, after its write fences."""
+    current = retention.locked_run(repo, connection, run["owner"], run["id"])
+    if (
+        current["retry_epoch"] != run["retry_epoch"]
+        or current["subject"] != run["subject"]
+        or retention.is_closed(current)
+    ):
+        raise EvidenceError("事件写入身份或保留状态已失效")
     owner, ident = run["owner"], run["id"]
     operation = _operation_id(run, operation_key) if operation_key is not None else None
     digest = _fingerprint(run, kind, payload)
     if operation is not None and (prior := _prior(repo, connection, run, kind, operation, digest)) is not None:
         return prior
-    seq = connection.execute(
-        sql.SQL("SELECT coalesce(max(seq),0)+1 AS seq FROM {} WHERE owner=%s AND run_id=%s").format(
-            repo.table("core_run_events")
-        ),
-        (owner, ident),
-    ).fetchone()["seq"]
+    seq = retention.next_sequence(repo, connection, run)
     event = make_event(kind, ident, seq, payload)
     connection.execute(
         sql.SQL("INSERT INTO {}(owner,run_id,seq,kind,payload) VALUES(%s,%s,%s,%s,%s)").format(

@@ -25,6 +25,7 @@ from mingjing_core.application.memory import MemoryService
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.domain.contracts import EvidenceError, LeaseConflict, ScopeError
 from mingjing_core.repositories.dependencies import entity_dependency
+from mingjing_core.repositories.event_retention_metadata import record_terminal
 from mingjing_core.repositories.postgres import PostgresRepository
 from mingjing_core.timekit.clock import Clock, get_clock
 from mingjing_core.validation.structural import check_structure
@@ -158,6 +159,7 @@ class AgentFinalizer:
                 ).format(self.repo.table("core_runs")),
                 (Jsonb(envelope), Jsonb(effective), owner, current["id"]),
             )
+            record_terminal(self.repo, connection, owner, current["id"], at=self.clock.now())
             return envelope
 
     def _options(self, current: dict[str, Any]) -> dict[str, Any] | None:

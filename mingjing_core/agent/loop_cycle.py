@@ -5,7 +5,7 @@ from __future__ import annotations
 import copy
 from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass, field, replace
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from mingjing_core.application.agent_commit_versions import reconcile_versions
 from mingjing_core.application.agent_model_calls import RequestLedger
@@ -32,6 +32,9 @@ from .loop_codec import ObservedPort, assistant_from, assistant_output, extend_a
 from .loop_policy import LoopPolicy, LoopStopped, RunControl
 from .stream_events import ModelTextStream
 from .toolkit import ToolRegistry
+
+if TYPE_CHECKING:
+    from mingjing_core.application.agent_memory_receipts import MemoryReceiptEvents
 
 FALLBACK = "这次还没整理出完整回答，请稍后继续。"
 
@@ -68,6 +71,7 @@ class LoopCycle:
         ledger: RequestLedger | None = None,
         emit: Callable[[str, dict[str, Any]], None] | None = None,
         text_stream: ModelTextStream | None = None,
+        memory_receipts: MemoryReceiptEvents | None = None,
     ) -> None:
         self.port, self.registry, self.journal, self.run, self.frozen = (
             port,
@@ -81,6 +85,7 @@ class LoopCycle:
         self.budget_policy, self.crisis, self.incognito = budget_policy or BudgetPolicy(), crisis, incognito
         self.ledger, self.emit, self.revising, self.revised = ledger, emit, False, False
         self.text_stream = text_stream
+        self.memory_receipts = memory_receipts
         self.cycle = f"{run['id']}:e{run['retry_epoch']}"
         self.messages: list[ChatMessage] = []
         self.aliases, self.versions = copy.deepcopy(frozen.alias_map), copy.deepcopy(frozen.injected_versions)

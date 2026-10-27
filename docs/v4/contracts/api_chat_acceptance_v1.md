@@ -1,6 +1,6 @@
 # 普通 chat 接收回执 v1（P4 M4a）
 
-本文描述独立P4候选当前已本机验证的普通chat握手，不是部署或P4整阶段验收。`events_v1.md`、`events_v1.schema.json`、`core4_envelope_v1.md`保持冻结；这里的接收回执是HTTP外层对象，不是core4信封或新公开事件。本文补充`thread_runtime_api_v1.md`中的消息ID；该旧文档关于默认v4 POST命名SSE的临时描述目前仍成立。
+本文描述独立P4候选当前已本机验证的普通chat握手，不是部署或P4整阶段验收。`events_v1.md`、`events_v1.schema.json`、`core4_envelope_v1.md`保持冻结；这里的接收回执是HTTP外层对象，不是core4信封或新公开事件。本文补充`thread_runtime_api_v1.md`中的消息ID；该旧文档的默认v4 POST命名SSE是P3临时行为，M4b现已按P4正式目标迁移为同一PG事件的旧平面表示。
 
 ## 身份、授权和执行选择
 
@@ -20,7 +20,7 @@ v4需已显式注入受信AgentRuntime、计量和已启动dispatcher。缺这�
 
 | Accept | 实际v4 | 实际v3 |
 | --- | --- | --- |
-| 未给、`*/*`、`text/event-stream` | 当前临时命名SSE | 原旧data.type SSE |
+| 未给、`*/*`、`text/event-stream` | 同一PG事件投影的旧data.type SSE | 原旧data.type SSE |
 | `application/json` | 202 JSON | 406，零写入 |
 | `application/json,text/event-stream` | 同最高质量，显式JSON优先 | 原SSE，版本不变 |
 | `application/json;q=0.8,text/event-stream;q=1` | SSE | SSE |
@@ -78,7 +78,7 @@ v4需已显式注入受信AgentRuntime、计量和已启动dispatcher。缺这�
 
 同request_id跨JSON/SSE重放使用同一原话、run、预算与原runtime，不产生第二次执行。202可能给已终态run的当前状态，不代表自动retry；错误、stale或取消后的重试继续原受保护retry入口和人工规则，不能靠换Accept、新request_id或重新订阅悄悄扩大调用预算。GET run是运行状态权威，GET events只读/幂等修补原公开事件，不另consult。
 
-原默认SSE**本片没有迁移**：实际v4仍是P3临时命名events_v1帧；实际v3仍是旧平面`data:{type:started/context/status/result/error}`与`[DONE]`。因此旧客户端继续使用原行为，但不能据此声称P4要求的默认legacy兼容桥已完成。显式JSON→GET named是当前新客户端可用的明确路径。
+M4a初版曾保留P3临时默认命名SSE；M4b现已迁移实际v4默认POST为旧平面`data:{type:started/context/status/result/error}`与`[DONE]`，实际v3分支保持原样。v4旧流与GET命名流共用同一PG页/游标/提示订阅，不再次consult或新建预算。legacy result仅从当前真实已提交final的规范读取投影得到answer，不改原core4信封；工具仅以安全summary显示status，不将generic receipt伪装成旧记忆卡。已过期空事件历史不从run.result再造result，旧attempt错误不当成本次终态；旧客户端可沿既有受保护GET恢复已提交答案。显式JSON→GET named仍是新客户端的明确路径，GET冻结编码完全不变。
 
 ## inbox_wait与无痕的跟随限制
 
