@@ -1,0 +1,41 @@
+id: KU04
+title: 撤销刚才的上海更新后，我现在住哪？
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    fixture: KU03_then_undo_new_fact
+turns:
+- user: 我现在住哪？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 撤销
+    - 杭州
+    must_not_include:
+    - 你现在住上海
+    db:
+    - path: memory_update.new.status
+      equals: retired
+    - path: memory_update.old
+      equals:
+        valid_to: null
+        superseded_by: null
+scripted:
+- turn: 1
+  model:
+  - db:
+      memory_update:
+        new:
+          status: retired
+        old:
+          valid_to: null
+          superseded_by: null
+  - text: 上海更新已经撤销，先按原先杭州的记录；如果情况又有变化，以你确认的为准。
+notes: 19号场景隔离转写；scripted中的db/meta/result为合成观察轨迹，不是实际Agent/数据库/模型执行。主线必须接真实测试观察接口。
+  fixture必须先执行KU03，再用实际undo接口撤销new-city并观察旧事实恢复；用户提问不得包含城市答案。

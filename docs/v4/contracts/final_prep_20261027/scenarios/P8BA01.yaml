@@ -1,0 +1,83 @@
+id: P8BA01
+title: 阿远准确时刻靠近时辰交界：只提示实际时柱差异
+category: chart
+clock: '2026-10-27T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    confirmed: true
+    birth:
+      date: '1994-03-12'
+      time: 08:20
+      solar_datetime: '1994-03-12T08:20:00'
+      precision: exact
+      clock_basis: clock
+      location:
+        lng: 104.07
+        lat: 30.67
+        tz: Asia/Shanghai
+  controls:
+    p8_acceptance:
+      subject_id: synthetic-subject-ayuan
+      revision: 1
+      confirmed_fields:
+      - birth.solar_datetime
+      - birth.location.lng
+      - birth.location.lat
+      - birth.location.tz
+      - birth.clock_basis
+      - birth.precision
+      - gender
+      observer_contract: README.md#运行时观测约定
+  incognito: false
+turns:
+- user: 我的时柱是什么？按真太阳时会不会靠近时辰交界，对这个判断有什么影响？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 真太阳时
+    - 时柱
+    - 交界
+    - 甲辰
+    - 癸卯
+    - '380.537'
+    - 〔c
+    - 〔r
+    must_not_include:
+    - 必然成功
+    - 必然失败
+    - 保证盈利
+    - 吉日保证
+    tools_not_called:
+    - daily_transit
+    - window_search
+    - almanac
+    - synastry
+    tools_called:
+    - chart_compute
+    db:
+    - path: p8_acceptance.engine_calls.chart_compute
+      equals: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: chart_compute
+      arguments:
+        system: bazi
+        target: '2026-10-27'
+        scale: natal
+  - result:
+      ok: true
+      mode: synthetic_scripted_observation_not_native_payload
+  - db:
+      p8_acceptance:
+        engine_calls:
+          chart_compute: 1
+        long_term_writes: 0
+  - text: 按真太阳时，阿远出生在约7:06，时柱按甲辰看；离7点卯辰交界约380.537秒。交界另一侧对照为癸卯〔c26〕〔c27〕〔c28〕〔r10〕，这是核对提示，先保留原记录，不据此倒推时辰。
+notes: 仅合成脚本回放，result与db是独立声明的观察，不是引擎或Agent执行证明；运行时目标须按README从真实调用/事务轨迹产生同名观察。出生资料来自阿远已确认档案，模型参数不得传birth或consent。

@@ -1,0 +1,41 @@
+id: PR01
+title: 两条跟进都没回复，但我设过明天7点提醒
+category: proactive
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    ignored_nonreminders:
+    - sent_at: '2026-10-15T10:00:00+08:00'
+      response_status: ignored
+    - sent_at: '2026-10-16T10:00:00+08:00'
+      response_status: ignored
+    explicit_reminder: '2026-10-18T07:00:00+08:00'
+turns:
+- user: 两条跟进都没回复，但我设过明天7点提醒
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 暂停
+    - 提醒
+    db:
+    - path: proactive.daily_limit
+      equals: 1
+    - path: proactive.nonessential_paused_until
+      equals: '2026-10-24T00:00:00+08:00'
+    - path: proactive.explicit_reminder_queued
+      equals: true
+scripted:
+- turn: 1
+  model:
+  - db:
+      proactive:
+        daily_limit: 1
+        nonessential_paused_until: '2026-10-24T00:00:00+08:00'
+        explicit_reminder_queued: true
+  - text: 非必要跟进先暂停，明天你自己设定的提醒保留。
+notes: 19号场景隔离转写；scripted中的db/meta/result为合成观察轨迹，不是实际Agent/数据库/模型执行。主线必须接真实测试观察接口。

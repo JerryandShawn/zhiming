@@ -1,0 +1,48 @@
+id: X04
+title: 停止两秒内且保存interrupted
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    streaming: true
+    partial_text: 先整理你最在乎的条件。
+turns:
+- user: 停止
+  channel: web
+  kind: action
+  expect:
+    events:
+    - run.cancel_requested
+    - stream.stopped
+    db:
+    - path: run_meta.stop_latency_ms
+      lte: 2000
+      gte: 0
+    - kind: message
+      where:
+        data.status: interrupted
+      count: 1
+  action:
+    type: cancel_run
+    after_ms: 100
+scripted:
+- turn: 1
+  model:
+  - event: run.cancel_requested
+  - event: stream.stopped
+  - db:
+      run_meta:
+        stop_latency_ms: 800
+      entities:
+      - id: interrupted-message
+        kind: message
+        status: active
+        data:
+          status: interrupted
+          content: 先整理你最在乎的条件。
+  - text: 已停止，刚才的部分内容已保留。
+notes: 800ms是回放观测值；真正v4运行必须用墙钟测量并验证<=2000ms，不能靠固定值证明。

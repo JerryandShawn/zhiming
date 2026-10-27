@@ -1,0 +1,44 @@
+id: J03
+title: 评审给出generic_barnum、confidence等级1时怎样交付？
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    critic_fixture:
+      code: J3
+      type: generic_barnum
+      confidence_grade: 1
+turns:
+- user: 我在考虑跳槽，先从哪件事做起？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 条件
+    - 机会
+    db:
+    - path: review.issues
+      equals:
+      - code: J3
+        triggered: false
+    - path: review.sample_queue
+      contains: J3
+    - path: review.revision_count
+      equals: 0
+scripted:
+- turn: 1
+  model:
+  - db:
+      review:
+        issues:
+        - code: J3
+          triggered: false
+        sample_queue:
+        - J3
+        revision_count: 0
+  - text: 先把你最在乎的条件列出来，再看机会是否符合。
+notes: 19号场景隔离转写；scripted中的db/meta/result为合成观察轨迹，不是实际Agent/数据库/模型执行。主线必须接真实测试观察接口。

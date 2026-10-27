@@ -1,0 +1,43 @@
+id: P02
+title: 免打扰顺延次日八点半
+category: proactive
+clock: '2026-10-21T23:00:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  entities:
+  - id: late-followup
+    kind: followup
+    status: active
+    data:
+      due_at: '2026-10-21T23:00:00+08:00'
+  settings:
+    quiet_hours:
+      start: '22:00'
+      end: 08:00
+turns:
+- user: 检查23:00到期跟进
+  channel: web
+  kind: followup
+  expect:
+    db:
+    - kind: followup
+      id: late-followup
+      where:
+        data.due_at: '2026-10-22T08:30:00+08:00'
+    - kind: outbox
+      status: sent
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - db:
+      entities:
+      - id: late-followup
+        kind: followup
+        status: active
+        data:
+          due_at: '2026-10-22T08:30:00+08:00'
+  - text: 现在处于免打扰时段，这条跟进顺延到明天08:30。
