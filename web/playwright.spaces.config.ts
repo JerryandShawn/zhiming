@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   testMatch: 'spaces.spec.ts',
   timeout: 45000,
-  workers: 1,
+  workers: 2,
   outputDir: 'test-results/spaces-behavior-runs',
   reporter: [['list'], ['json', { outputFile: 'test-results/spaces-evidence/behavior.json' }]],
   use: {

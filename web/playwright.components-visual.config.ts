@@ -6,7 +6,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   testMatch: 'components-visual.spec.ts',
   timeout: 60000,
-  workers: 1,
+  workers: 2,
   outputDir: `test-results/components-visual/${batch}`,
   reporter: [['list'], ['json', { outputFile: `test-results/components-evidence/${batch}/visual.json` }]],
   use: {

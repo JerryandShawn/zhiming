@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests/e2e',
   testMatch: /components-(chart|tarot|calendar|embed)\.spec\.ts/,
   timeout: 45000,
-  workers: 1,
+  workers: 2,
   outputDir: 'test-results/components-behavior',
   reporter: [['list'], ['json', { outputFile: 'test-results/components-evidence/behavior.json' }]],
   use: {

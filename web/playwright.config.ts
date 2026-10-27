@@ -19,7 +19,7 @@ export default defineConfig({
     { name: 'legacy-stream', testDir: './tests/legacy-e2e' },
     { name: 'study-courses', testIgnore: [], testMatch: 'night-study-courses.spec.ts' },
   ],
-  workers: 1,
+  workers: 2,
   outputDir: 'test-results/static-runs',
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
