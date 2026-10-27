@@ -1,0 +1,56 @@
+id: KU03
+title: 跟你说一下，我已经从杭州搬到上海了
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls: {}
+  thread:
+  - id: old-city-message
+    role: user
+    content: 我现在住杭州
+    at: '2026-10-01T09:00:00+08:00'
+    channel: web
+  facts:
+  - id: old-city
+    kind: background
+    summary: 居住杭州
+    quote: 住杭州
+    source_message_id: old-city-message
+    data:
+      slot: 居住城市
+      value: 杭州
+turns:
+- user: 跟你说一下，我已经从杭州搬到上海了
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 上海
+    receipts:
+    - write_status: updated
+    db:
+    - path: memory_update.old.valid_to
+      equals: '2026-10-17T10:30:00+08:00'
+    - path: memory_update.old.superseded_by
+      equals: new-city
+    - path: memory_update.new.supersedes
+      equals: old-city
+scripted:
+- turn: 1
+  model:
+  - receipt:
+      write_status: updated
+      fact_id: new-city
+  - db:
+      memory_update:
+        old:
+          valid_to: '2026-10-17T10:30:00+08:00'
+          superseded_by: new-city
+        new:
+          supersedes: old-city
+  - text: 更新了，现在居住城市按上海记录；原来的杭州记录保留变更链。
+notes: 19号场景隔离转写；scripted中的db/meta/result为合成观察轨迹，不是实际Agent/数据库/模型执行。主线必须接真实测试观察接口。

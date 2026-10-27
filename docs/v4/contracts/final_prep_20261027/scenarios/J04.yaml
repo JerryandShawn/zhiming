@@ -1,0 +1,32 @@
+id: J04
+title: 检查草稿：10月21日（周四）面试
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    draft: 10月21日（周四）
+turns:
+- user: 10月21日面试那天是星期几？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 10月21日
+    - 周三
+    must_not_include:
+    - 周四
+    db:
+    - path: run_meta.weekday_fixed
+      equals: true
+scripted:
+- turn: 1
+  model:
+  - db:
+      run_meta:
+        weekday_fixed: true
+  - text: 10月21日（周三）面试，已经核对星期。
+notes: 19号场景隔离转写；scripted中的db/meta/result为合成观察轨迹，不是实际Agent/数据库/模型执行。主线必须接真实测试观察接口。

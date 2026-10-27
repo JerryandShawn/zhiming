@@ -1,0 +1,65 @@
+id: CR01
+title: 我是什么格局？
+category: chart
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    confirmed_profile: true
+    observer_contract: actual_rule_alias_to_used_claim_ids
+  profile_overrides:
+    confirmed: true
+    birth:
+      date: '1994-03-12'
+      time: 08:20
+      solar_datetime: '1994-03-12T08:20:00'
+      precision: exact
+      clock_basis: clock
+      location:
+        lng: 104.07
+        lat: 30.67
+        tz: Asia/Shanghai
+turns:
+- user: 我是什么格局？
+  channel: web
+  kind: chat
+  expect:
+    tools_called:
+    - chart_compute
+    must_include_all:
+    - 候选
+    - 条件
+    - 口径
+    - 〔r
+    must_not_include:
+    - 保证成格
+    db:
+    - path: run_meta.rule_citation_check.cited_rule_count
+      gte: 1
+    - path: run_meta.rule_citation_check.unresolved_count
+      equals: 0
+    - path: run_meta.rule_citation_check.missing_used_claim_count
+      equals: 0
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: chart_compute
+      arguments:
+        system: bazi
+  - result:
+      ok: true
+      mode: scripted_observation_only
+  - db:
+      run_meta:
+        rule_citation_check:
+          cited_rule_count: 1
+          unresolved_count: 0
+          missing_used_claim_count: 0
+  - text: 先列候选及其满足和未满足的条件〔r1〕；按本次子平项目筛选口径，候选还不能当作完整成格定论。
+notes: 19号场景隔离转写；scripted中的db/meta/result为合成观察轨迹，不是实际Agent/数据库/模型执行。主线必须接真实测试观察接口。
+  rule_citation_check须从最终正文r引用、真实上下文别名账本和实际used_claim_ids集合交叉产生；缺任一观察即失败，不能从expect填数，也不要求固定合成claim
+  ID。

@@ -1,0 +1,50 @@
+id: X08
+title: SSE重连事件无缺失无重复
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    disconnect_after_event_id: event-1
+    last_event_id: event-1
+turns:
+- user: 使用Last-Event-ID重连
+  channel: web
+  kind: action
+  expect:
+    events:
+    - text.delta
+    - text.delta
+    - run.completed
+    db:
+    - path: stream.received_event_ids
+      equals:
+      - event-1
+      - event-2
+      - event-3
+    - path: stream.replayed_event_ids
+      equals:
+      - event-2
+      - event-3
+  action:
+    type: sse_reconnect
+    last_event_id: event-1
+scripted:
+- turn: 1
+  model:
+  - event: text.delta
+  - event: text.delta
+  - event: run.completed
+  - db:
+      stream:
+        received_event_ids:
+        - event-1
+        - event-2
+        - event-3
+        replayed_event_ids:
+        - event-2
+        - event-3
+  - text: 先整理条件，再做比较。

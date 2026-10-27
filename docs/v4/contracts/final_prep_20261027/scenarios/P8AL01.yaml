@@ -1,0 +1,92 @@
+id: P8AL01
+title: 黄历七类字段与来源口径
+category: chart
+clock: '2026-10-27T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  profile_overrides:
+    confirmed: true
+    birth:
+      date: '1994-03-12'
+      time: 08:20
+      solar_datetime: '1994-03-12T08:20:00'
+      precision: exact
+      clock_basis: clock
+      location:
+        lng: 104.07
+        lat: 30.67
+        tz: Asia/Shanghai
+  controls:
+    p8_acceptance:
+      subject_id: synthetic-subject-ayuan
+      revision: 1
+      confirmed_fields:
+      - birth.solar_datetime
+      - birth.location.lng
+      - birth.location.lat
+      - birth.location.tz
+      - birth.clock_basis
+      - birth.precision
+      - gender
+      observer_contract: README.md#运行时观测约定
+  incognito: false
+turns:
+- user: 看2026年10月21日黄历，宜忌、冲煞、值神、建除十二神、二十八宿、彭祖百忌都要，说清来源。
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 10月21日
+    - 宜
+    - 忌
+    - 冲煞
+    - 值神
+    - 建除十二神
+    - 二十八宿
+    - 彭祖百忌
+    - lunar-python
+    - sect=1
+    - 〔c
+    - 〔r
+    - 祭祀
+    - 嫁娶
+    - 狗
+    - 南
+    - 青龙
+    - 箕
+    - 戊不受田
+    - 辰不哭泣
+    must_not_include:
+    - 必然成功
+    - 必然失败
+    - 保证盈利
+    - 吉日保证
+    tools_not_called:
+    - daily_transit
+    - window_search
+    - synastry
+    tools_called:
+    - almanac
+    db:
+    - path: p8_acceptance.engine_calls.almanac
+      equals: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: almanac
+      arguments:
+        date: '2026-10-21'
+  - result:
+      ok: true
+      mode: synthetic_scripted_observation_not_native_payload
+  - db:
+      p8_acceptance:
+        engine_calls:
+          almanac: 1
+        long_term_writes: 0
+  - text: 2026年10月21日按北京时间民用日、lunar-python 1.4.8的sect=1口径读取黄历〔c1〕〔r1〕：宜祭祀、沐浴；忌嫁娶、入宅；冲煞为狗、煞南；值神青龙，建除十二神为破，二十八宿箕水豹；彭祖百忌原文起句为“戊不受田”“辰不哭泣”。这些是传统标签，不保证现实结果。
+notes: 仅合成脚本回放，result与db是独立声明的观察，不是引擎或Agent执行证明；运行时目标须按README从真实调用/事务轨迹产生同名观察。出生资料来自阿远已确认档案，模型参数不得传birth或consent。

@@ -1,0 +1,37 @@
+id: J05
+title: 评审调用被闸门关闭时，请照常回答
+category: robustness
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  controls:
+    critic_allowed: false
+turns:
+- user: 面试前怎么准备项目介绍？
+  channel: web
+  kind: chat
+  expect:
+    must_include_all:
+    - 项目
+    - 行动
+    - 结果
+    db:
+    - path: review.mode
+      equals: evidence_only
+    - path: review.critic_calls
+      equals: 0
+    - path: review.program_checks_ran
+      equals: true
+scripted:
+- turn: 1
+  model:
+  - db:
+      review:
+        mode: evidence_only
+        critic_calls: 0
+        program_checks_ran: true
+  - text: 先选一个你熟悉的项目，把目标、你的行动和结果讲清楚。
+notes: 19号场景隔离转写；scripted中的db/meta/result为合成观察轨迹，不是实际Agent/数据库/模型执行。主线必须接真实测试观察接口。

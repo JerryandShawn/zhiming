@@ -1,0 +1,249 @@
+{
+  "version": "p8-v7-readable-sample-v1",
+  "content": {
+    "version": "p8-morning-content-v1",
+    "status": "ready",
+    "scope": {
+      "owner_user_id": "synthetic-owner-ayuan",
+      "subject_id": "synthetic-subject-ayuan",
+      "revision": 1,
+      "operation_id": "synthetic-ayuan-daily-week-20261021"
+    },
+    "date": "2026-10-26",
+    "source_document_id": "tool-c3c645419ed5122f11eab731bfaa28578a792f7e97afe3ea69f4cb83b2fd172f",
+    "snapshot_at": "2026-10-26T12:00:00+08:00",
+    "points": [
+      {
+        "system": "bazi",
+        "observation": "流日天干按本命日干比较，十神为七杀。",
+        "reflection": "先挑一件今天真实要做的事，把需要的准备写下来；十神本身不决定事情的结果。",
+        "text": "流日天干按本命日干比较，十神为七杀。〔c40〕〔c39〕〔r17〕 先挑一件今天真实要做的事，把需要的准备写下来；十神本身不决定事情的结果。",
+        "c_aliases": [
+          "c40",
+          "c39"
+        ],
+        "r_aliases": [
+          "r17"
+        ],
+        "school": "ziping-five-elements-polarity-project-v1",
+        "source": {
+          "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+          "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+          "status": "project_arithmetic_original_edition_collation_pending"
+        }
+      },
+      {
+        "system": "ziwei",
+        "observation": "按本次安装库口径，流日化禄映射到本命迁移。",
+        "reflection": "可以留意自己在相关话题上的感受；先看实际情况，再决定是否需要行动。",
+        "text": "按本次安装库口径，流日化禄映射到本命迁移。〔c43〕〔c57〕〔r26〕 可以留意自己在相关话题上的感受；先看实际情况，再决定是否需要行动。",
+        "c_aliases": [
+          "c43",
+          "c57"
+        ],
+        "r_aliases": [
+          "r26"
+        ],
+        "school": "iztro-2.5.0-default-palace-stem-table",
+        "source": {
+          "title": "安装py-iztro运限与本命星曜映射",
+          "url": "https://docs.iztro.com/posts/horoscope",
+          "status": "installed_library_convention_not_independent_school_validation"
+        }
+      },
+      {
+        "system": "astro",
+        "observation": "行运天王与本命土星形成刑相相位，偏离0.170°，本次容许度2°。",
+        "reflection": "把它当作一次整理感受的提示；今天怎么安排，仍以日程、身体感受和他人意愿为准。",
+        "text": "行运天王与本命土星形成刑相相位，偏离0.170°，本次容许度2°。〔c1〕〔c18〕〔c10〕〔c16〕〔r30〕 把它当作一次整理感受的提示；今天怎么安排，仍以日程、身体感受和他人意愿为准。",
+        "c_aliases": [
+          "c1",
+          "c18",
+          "c10",
+          "c16"
+        ],
+        "r_aliases": [
+          "r30"
+        ],
+        "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+        "source": {
+          "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+          "url": "https://www.astro.com/swisseph/swephprg.htm",
+          "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+        }
+      }
+    ],
+    "aliases": {
+      "c": [
+        {
+          "alias": "c1",
+          "path": "/data/astro/aspects/0",
+          "value_sha256": "06d85cc69d79c0d289c675f563dabf0c5369d62a4b26f45902e9bd67d25987ab",
+          "claim_id": "claim-02a46f028520f230c85f19bd7156ed4d34e0d3fc42db7ccbcda9351b5bc4cfaa"
+        },
+        {
+          "alias": "c10",
+          "path": "/data/astro/natal_planets/土星/longitude",
+          "value_sha256": "3d2f533973e38dbe8908c369577b82e0539066a3af59f3eac0daf50ff2e60fc8",
+          "claim_id": "claim-8f83b4e22318b62c58507c2afc54fc935384c1aa0dd2be234e53202eda626ec9"
+        },
+        {
+          "alias": "c16",
+          "path": "/data/astro/orb_limit_degrees",
+          "value_sha256": "d84bdb34d4eeef4034d77e5403f850e35bc4a51b1143e3a83510e1aaad839748",
+          "claim_id": "claim-ad83384a8f6a9c0af4b39feec7b8ead0ff88db7c3e4ba90df5b9c7abf0af2242"
+        },
+        {
+          "alias": "c18",
+          "path": "/data/astro/transit_planets/天王/longitude",
+          "value_sha256": "547fc7d50b59b376bbf1edf729f69f2db7368ec7d1aad4b642a3a1ceb861dad4",
+          "claim_id": "claim-c1a220db360ab86efd9c80a9d36458e18ce00940bc715c6835a4d164cea967f8"
+        },
+        {
+          "alias": "c39",
+          "path": "/data/bazi/natal_pillars/day",
+          "value_sha256": "7c60180341ff8440b931339ba286204f7e6aae5edb33e34f6b40a1be74e0ebbf",
+          "claim_id": "claim-c75d71ef675a0e7b49e7c3e76e42924740aa1612c02ca5c66082a3858fc863ba"
+        },
+        {
+          "alias": "c40",
+          "path": "/data/bazi/snapshot/day",
+          "value_sha256": "cd7575cfc372aa5c669fcfd0ade0a40b5cf6839a039d5c5005c3868b65d57c0b",
+          "claim_id": "claim-771c3c18c008a2df5efde0cc9e03a30afde26053fea81fd7352f7dcad88e83a3"
+        },
+        {
+          "alias": "c43",
+          "path": "/data/ziwei/horoscope/daily/mutagen/0",
+          "value_sha256": "322ab346b7291b6dd34d011038fdf039e96e18c5ee4566a2aba93d407e3910b8",
+          "claim_id": "claim-142ba57d6514291efd273a435aaf87f9fd041d3a5643882cfbc1a209b746c47f"
+        },
+        {
+          "alias": "c57",
+          "path": "/data/ziwei/natal/palaces/3/major/1",
+          "value_sha256": "72a77cf304771ce6b62a4151508e01767d7561d98c64eb857a85b11ab49ca718",
+          "claim_id": "claim-920c91a5b9964f3d3f725486a59657ff86a39c3705c388cd7ca59390d64f4312"
+        }
+      ],
+      "r": [
+        {
+          "alias": "r17",
+          "path": "/rule_hits/16",
+          "rule_id": "daily.bazi.ten_god.daily",
+          "value_sha256": "bfa42e6f1acd64e7b341b2fbfd5fb62b3a9d758c6e2b418df6e171a5037ba0ea",
+          "claim_id": "claim-23e95873fef328e72a7e8bc467b6ca1f2dacf5598721ab5402e702f8cc4f3783",
+          "evidence_aliases": [
+            "c40",
+            "c39"
+          ]
+        },
+        {
+          "alias": "r26",
+          "path": "/rule_hits/25",
+          "rule_id": "daily.ziwei.daily.0",
+          "value_sha256": "3acbb89982183009ca88ff25f1e8b828a7a5d89e2d4ab457448df7f6a3f2d236",
+          "claim_id": "claim-1be5db4d2cff6475f74c871378a901a014ec1f27d6db81e3768ed9bc66fe1bd7",
+          "evidence_aliases": [
+            "c43",
+            "c57"
+          ]
+        },
+        {
+          "alias": "r30",
+          "path": "/rule_hits/29",
+          "rule_id": "daily.astro.aspect.0",
+          "value_sha256": "dabda99c8699ad8122aace3e88ecb539b4ed4362390ab5978ca14ec3c74ea9cf",
+          "claim_id": "claim-c06fffaf41905981e67bf3a2f56c8efc539dcf84f9ff4b1946ce26fb7ec6d39c",
+          "evidence_aliases": [
+            "c1",
+            "c18",
+            "c10",
+            "c16"
+          ]
+        }
+      ]
+    },
+    "rule_hits": [
+      {
+        "rule_id": "daily.bazi.ten_god.daily",
+        "met": true,
+        "school": "ziping-five-elements-polarity-project-v1",
+        "source": {
+          "title": "项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录",
+          "locator": "mingjing_core/calculations/bazi/elements.py:ten_god",
+          "status": "project_arithmetic_original_edition_collation_pending"
+        },
+        "context": {
+          "system": "bazi",
+          "kind": "ten_god",
+          "layer": "daily",
+          "ten_god": "七杀"
+        },
+        "evidence_paths": [
+          "/data/bazi/snapshot/day",
+          "/data/bazi/natal_pillars/day"
+        ]
+      },
+      {
+        "rule_id": "daily.ziwei.daily.0",
+        "met": true,
+        "school": "iztro-2.5.0-default-palace-stem-table",
+        "source": {
+          "title": "安装py-iztro运限与本命星曜映射",
+          "url": "https://docs.iztro.com/posts/horoscope",
+          "status": "installed_library_convention_not_independent_school_validation"
+        },
+        "context": {
+          "system": "ziwei",
+          "kind": "mutagen",
+          "layer": "daily",
+          "mutagen": "禄",
+          "natal_palace": "迁移",
+          "palace_index": 3
+        },
+        "evidence_paths": [
+          "/data/ziwei/horoscope/daily/mutagen/0",
+          "/data/ziwei/natal/palaces/3/major/1"
+        ]
+      },
+      {
+        "rule_id": "daily.astro.aspect.0",
+        "met": true,
+        "school": "geocentric-tropical-major-longitude-aspects-project-v1",
+        "source": {
+          "title": "Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度",
+          "url": "https://www.astro.com/swisseph/swephprg.htm",
+          "status": "numerical_geometry_with_project_orb_not_predictive_validation"
+        },
+        "context": {
+          "system": "astro",
+          "kind": "aspect",
+          "from": "天王",
+          "to": "土星",
+          "aspect": "刑相",
+          "orb_degrees": 0.16963044262740823,
+          "orb_limit": 2.0
+        },
+        "evidence_paths": [
+          "/data/astro/aspects/0",
+          "/data/astro/transit_planets/天王/longitude",
+          "/data/astro/natal_planets/土星/longitude",
+          "/data/astro/orb_limit_degrees"
+        ]
+      }
+    ],
+    "effects": {
+      "model_calls": 0,
+      "writes": 0,
+      "sends": 0
+    },
+    "limits": [
+      "北京时间正午单点快照，不表示全天走势，也不代表早晨已经发生。",
+      "只校验内容绑定，不验证来源授权；调用方须校验可信计算、owner、修订及撤销状态。",
+      "别名沿用该日原结果；主线登记到当前上下文后才可用于对话，不跨日拼接。",
+      "各体系仅并列观察，不合成吉凶分数，不证明现实预测有效。"
+    ]
+  },
+  "editorial_action": "若本周有重要安排，核对一次时间地点；没有安排就按原来的节奏。",
+  "action_origin": "calendar_rotation_not_chart_inference",
+  "markdown": "# 阿远 · 2026-10-26 周一\n\n阿远，早安。这里是今天的一小段盘面观察，你按自己的日程安排就好。\n\n以下用北京时间今天正午12点的计算快照作参考；不是早晨已经发生的事，也不是全天走势。\n\n- 八字：流日天干按本命日干比较，十神为七杀。〔c40〕〔c39〕〔r17〕\n- 紫微：按本次安装库口径，流日化禄映射到本命迁移。〔c43〕〔c57〕〔r26〕\n- 西占：行运天王与本命土星形成刑相相位，偏离0.170°，本次容许度2°。〔c1〕〔c18〕〔c10〕〔c16〕〔r30〕\n\n这些是不同体系的符号观察，不能据此断定今天会发生什么。\n\n一个可选的小建议（编辑建议，不由盘面推导）：若本周有重要安排，核对一次时间地点；没有安排就按原来的节奏。\n\n不需要回复；这份内容不要求你改变原来的安排。\n\n## 依据与口径\n\n合成人物；原计算文档：tool-c3c645419ed5122f11eab731bfaa28578a792f7e97afe3ea69f4cb83b2fd172f。\n别名只属于这一天这份原结果，跨天同名不代表同一依据；正式对话须由主线登记。\n- 八字 / ziping-five-elements-polarity-project-v1：项目既有五行阴阳十神算式；《三命通会》论五行生克公开转录；状态：project_arithmetic_original_edition_collation_pending。mingjing_core/calculations/bazi/elements.py:ten_god\n- 紫微 / iztro-2.5.0-default-palace-stem-table：安装py-iztro运限与本命星曜映射；状态：installed_library_convention_not_independent_school_validation。https://docs.iztro.com/posts/horoscope\n- 西占 / geocentric-tropical-major-longitude-aspects-project-v1：Swiss Ephemeris Moshier + 项目五大黄经相位统一容许度；状态：numerical_geometry_with_project_orb_not_predictive_validation。https://www.astro.com/swisseph/swephprg.htm\n"
+}
