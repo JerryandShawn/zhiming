@@ -13,6 +13,8 @@ export default defineConfig({
   ],
   timeout: 60000,
   fullyParallel: false,
+  // Preserve the original default project and add the real old-page fixture to CI.
+  projects: [{}, { name: 'legacy-stream', testDir: './tests/legacy-e2e' }],
   workers: 1,
   outputDir: 'test-results/static-runs',
   reporter: [['list'], ['html', { open: 'never' }]],

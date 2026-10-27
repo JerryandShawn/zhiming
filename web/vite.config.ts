@@ -11,7 +11,16 @@ export default defineConfig({
     manifest: true,
     outDir: '../static/dist',
     emptyOutDir: true,
-    rollupOptions: { output: { manualChunks: { react: ['react', 'react-dom'] } } },
+    rollupOptions: {
+      input: {
+        index: fileURLToPath(new URL('./index.html', import.meta.url)),
+        legacy: fileURLToPath(new URL('./src/legacy/entry.ts', import.meta.url)),
+      },
+      output: {
+        entryFileNames: (chunk) => (chunk.name === 'legacy' ? 'legacy-stream.js' : 'assets/[name]-[hash].js'),
+        manualChunks: { react: ['react', 'react-dom'] },
+      },
+    },
   },
   publicDir: 'public',
   server: {
