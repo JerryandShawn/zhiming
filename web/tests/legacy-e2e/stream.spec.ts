@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { prepareLegacy } from './fixture';
 
-const evidence = path.resolve(process.env.LEGACY_EVIDENCE_DIR ?? 'evidence/2026-10-27/legacy-browser-first');
+const evidence = path.resolve(process.env.LEGACY_EVIDENCE_DIR ?? 'test-results/legacy-browser-latest');
 for (const width of [390, 1440]) {
   test(`old page consumes card and four receipt events without writes ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });

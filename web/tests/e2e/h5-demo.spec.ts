@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import { guardNight, assertNightQuiet, auditNight } from './night-helpers';
 import { installViewportSimulation, patchViewport, safeArea } from './components-embed-helpers';
 
-const evidence = 'evidence/2026-10-27/h5-demo-first';
+const evidence = process.env.H5_EVIDENCE_DIR ?? 'test-results/h5-demo-latest';
 test.use({ userAgent: 'Mozilla/5.0 Synthetic Feishu/7.0' });
 test.beforeEach(async ({ page }) => {
   guardNight(page);
