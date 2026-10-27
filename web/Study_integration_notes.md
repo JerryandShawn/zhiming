@@ -83,3 +83,11 @@ PWA外壳88文件中研习JSON为0，运行时数据不写缓存。当前只验�
 后续课程要建立独立版本包，整体验证来源、六输入、目录、20课、每题类型/答案/依据关系后才导出；concept不补c/r，matched_rule必须真实met=true且属于同case/规则分支，false与0严格区分。只读漂移证据见`evidence/2026-10-21/lesson_contract_drift_checks.json`，不是新页面或课程专业验收。
 
 课程原数据含用于教学的合成时间坐标。全部案例由契约明确为合成人物，但不能因此盲拷整个chart/time_basis、owner/scope或通用Pointer到浏览器；未来仅为具体教学题选择经过核对的最小摘要，并明确合成样例。若摘要改变题意或答案类型，要逐题说明映射，不能假称原40题已原样接通。当前20课/40题页面与学习进度均未实现，受测源码仍冻结，候选只在ignored准备。
+
+## 8. meta v5课程离线导出（2026-10-27 10:55 +08:00）
+
+10:55 研习v5离线切片：固定meta f8d9536a与1491b7ce清单，32资产LF摘要、Schema、三个case原document/alias/claim/Pointer、20依据、20课/40题的答案与来源绑定通过。29完整性+12公开导出新项、原学习12+词典22，合计75/75，ruff绿。反例覆盖跨case、false≠0、错误答案/干扰项、远程ref禁用、最后一课损坏时零输出、目录逃逸/覆盖拒绝、投影不含原盘/scope/原时刻/任意observed。西占新c7与旧c2版本独立；公开七资产字节不变。新146197B课程仅导出ignored test-results，未接页面、未新增正式截图，不冒称20课UI或专业验收。下一做独立课程静态端口与页面，接着矩阵；CI修复新头仍待。
+
+入口：scripts/export_courses.py；默认输出test-results/course-v5。课程格式frontend-course-v1，与旧StudyPort/七资产独立；固定32输入摘要在provenance，不授权读取个人盘面。sources仅登记ID/标题/审核状态，不加载外链。cases仅受控learning投影、case_id与operation上下文摘要；evidence只含case/上下文/原c与r编号/角色/摘要，不含relative_path或expected。quiz只含教材选项文本与稳定ID，correct_option_id已先按真实合成原值核验；不下发通用Pointer/原值。当前无20课页面、无进度持久化，后续不得复用旧0f1的c2解释新c7。
+
+精确代码摘要和各计数：evidence/2026-10-27/course-v5-offline-checks.json；当前无UI改动，不伪造截图。浅克隆CI标准TS套件不导入固定Git原料，离线Python测试需要先取得固定对象。

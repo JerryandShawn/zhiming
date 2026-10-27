@@ -4,6 +4,8 @@
 
 ## Progress
 
+- [x] 10:55 研习v5离线切片：固定meta f8d9536a与1491b7ce清单，32资产LF摘要、Schema、三个case原document/alias/claim/Pointer、20依据、20课/40题的答案与来源绑定通过。29完整性+12公开导出新项、原学习12+词典22，合计75/75，ruff绿。反例覆盖跨case、false≠0、错误答案/干扰项、远程ref禁用、最后一课损坏时零输出、目录逃逸/覆盖拒绝、投影不含原盘/scope/原时刻/任意observed。西占新c7与旧c2版本独立；公开七资产字节不变。新146197B课程仅导出ignored test-results，未接页面、未新增正式截图，不冒称20课UI或专业验收。下一做独立课程静态端口与页面，接着矩阵；CI修复新头仍待。
+
 - [x] 2026-10-27 10:36 +08:00：已执行指令板v4（10:15大脑定时复核）；同意合成HTTP/P10继续，55481归属由主线R41只读查，本线不改Docker，待主线日报确认后恢复8002 fixture。旧页2500门槛不放宽。
 
 - [x] 2026-10-27 08:56 +08:00：读指令板v3、49、44第七节和e1cbd281交接，核工作区干净。
@@ -20,6 +22,8 @@
 
 ## Surprises & Discoveries
 
+课程实际v5已修正西占c7；旧0f1公开资产仍c2，不能以同名case或短号合并。新原料带完整盘面/时刻，投影显式白名单只给教材文字、选项ID/文本、已验证答案ID、case上下文摘要及受控依据，不盲拷原JSON。
+
 H5实际服务端认证仍缺，按既有Thread_runtime_integration_notes采用独立内存假端口。预览URL显式开启；容器UA仅外观，不建立登录身份。模型/SDK/HTTP/Storage零接线；控制器不保存code到公开状态，退出立即清本页身份，不把远端未确认说成已撤销。首轮tsc一个mock泛型错误已修；首轮13绿浏览器原报告保留，截图只计最终14项31张，避免重复累加。
 
 本工作树旧网页实际发送器在static/app.js:446起，实际旧DOM测试在根tests。初读v3的web/**限制曾记录路径歧义；用户随后明确授权49第三节整个前端队列，实际旧入口及相关前端测试已纳入最小接线范围，无需等待裁定。已发布P4@9b4aa474有api_chat_acceptance_v1.md及events_v1.schema.json，尚未发现44所说run-events.schema.json；复用既有严格v1类型，不伪造“主线生成”来源。
@@ -27,6 +31,8 @@ H5实际服务端认证仍缺，按既有Thread_runtime_integration_notes采用�
 首轮真实旧HTML浏览器的流式行为已通过，但全页Axe揭示原paper主题小字对比度、aside使用dialog角色、按钮名称遗漏“我的档案”。只加深既有墨色token和小标签、改drawer为同class的div并补名称，不禁用规则。两种系统配色偏好仍使用旧页面自有浅纸主题，不冒称新增深色主题。JSON回执读取另加45秒/64KiB上限及固定错误文案，避免损坏JSON将片段泄漏到旧错误栏。
 
 ## Decision Log
+
+课程输出新目录才创建；全部20课验证及JSON编码完成后写入，不覆盖旧资产。复用已锁定jsonschema而不装依赖，仅接受本地defs引用；课程case各自上下文SHA，concept不伪造c/r，matched_rule须同case且met=true。原始观察/答案值仅用于本机核验，公开题目保留稳定option_id。
 
 H5未压缩瓶颈为静态传输；优化交付包而不伪减文案/不把骨架当LCP。Vite post/sequential插件等待PWA最终产物，再生成可协商的.gzip副本；对压缩后不变小、字体/图片不生成。实际服务器启用留主线，本线只写Static_delivery_notes。原生loopback工具显式记录identity/gzip模式、实际传输与构建配置指纹，分开保存，不改旧失败。
 
@@ -40,6 +46,8 @@ H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles�
 
 ## Outcomes & Retrospective
 
+10:55 研习v5离线切片：固定meta f8d9536a与1491b7ce清单，32资产LF摘要、Schema、三个case原document/alias/claim/Pointer、20依据、20课/40题的答案与来源绑定通过。29完整性+12公开导出新项、原学习12+词典22，合计75/75，ruff绿。反例覆盖跨case、false≠0、错误答案/干扰项、远程ref禁用、最后一课损坏时零输出、目录逃逸/覆盖拒绝、投影不含原盘/scope/原时刻/任意observed。西占新c7与旧c2版本独立；公开七资产字节不变。新146197B课程仅导出ignored test-results，未接页面、未新增正式截图，不冒称20课UI或专业验收。下一做独立课程静态端口与页面，接着矩阵；CI修复新头仍待。
+
 10:35：294807b1全量1264单测（104文件）和默认CI浏览器109全部首轮绿，在10:30–45错峰串行运行；不等于全部浏览器套件/PG/历史第三轮。默认证据目录会覆盖首轮失败图，已先另存本批20旧页图，再恢复已提交的首批失败原图/8份Axe，diff0；H5原31图字节相同不重复计数。将legacy/H5默认输出改为ignored test-results，显式变量才能写正式证据，仅路径变更且3定向浏览器/类型/lint通过，不改行为断言；下一仍按课程整包校验推进。
 
 10:24 H5假服务的功能/视觉/无障碍/本机gzip交付性能已形成局部里程碑：80相关单测、14浏览器、31图、Axe0、五冷p75 1816。原identity批次失败保留；生产gzip配置/真实认证/真机未验。未把旧页性能失败或PG缺角色掩盖为解决。已只读取得P8 meta v5@f8d9536a交付清单，20课/40题与西占c7需整包校验，下一继续课程接线；不覆盖0f1旧资产混合样例。
@@ -52,7 +60,7 @@ H5复用Button/Seal、设计token、useKeyboardViewport/useViewportPortalStyles�
 
 ## 验证与恢复
 
-下一顺序：在下个北京时间30–45分窗口跑当前候选必要完整前端单测和默认CI浏览器入口（预计含新增H5）；平时不重复已绿目标检查。随后为meta v5@f8d9536a建立独立课程公开导出，保留当前七个0f1资产，先Schema/case/依据绑定再接20课UI。32清单资产LF摘要及JSON/212词/20课40题已只读核对通过，不代表引用/投影或课程已验收；初步证据study-v5-source-audit.json。
+下一顺序：294807b1完整回归已通过；4f197d8f修calendar懒加载CI竞态，远端结果另核。v5课程离线导出75项已过，下一建立独立静态端口/课程UI，之后跑新页面矩阵。保留当前七个0f1资产，不重复已绿回归。32清单资产LF摘要及JSON/212词/20课40题已只读核对通过，不代表引用/投影或课程已验收；初步证据study-v5-source-audit.json。
 
 09:57：性能工具保存自身原字节与Node版本，核整批工具稳定；86d026b运行源码五冷p75 2588仍失败，快照SHA匹配。此前三批仅诊断，未保存工具快照，不冒称可逐字重建。只读fetch main=b9a89b6f/P4=9b4aa474；main无api_*.md，P4已接chat回执未更新，不猜P10新端点。继续研习/假H5等已授权队列。
 
