@@ -106,3 +106,16 @@ R32非记忆失败已实测并修：9188b4ef5b9649e0a7b63060e2e9faa1为1pass2fai
 - [ ] After remaining failures and R37 binding review, run revised candidate scripts and complete tests/v4 on the new SHA, inspect exact CI, then freeze/runbooks/authorized real evaluation. Current narrow pass is not candidate readiness.
 
 Original gate-tree H1/L2/current ca5 full evidence remains at that tree's private paths; this tree's inherited plan does not replace those originals. Independent stage entry is implemented locally and guarded, but final SHA/package/runbook commands and47 review remain pending. No migration, undo_token, M6 or P8 introduced.
+
+
+## 2026-10-27 16:20 actual resume / old full result
+
+The queued heartbeat carried11:47, but actual clock and shell were16:15 Beijing on resume. All following observations use actual wall time, not the queued timestamp. The old ca5 full had already exited naturally at12:36:48, exit1/head_unchanged:5064 passed,56 skipped,1 warning,1 setup error/0 failures,13608.73s. It exceeded R43's12:30 cutoff by6m48s; no stop action was executed by this wake and it is not counted as meeting that cutoff. Metadata/XML/raw/error stack and at-failed-gate session rows are preserved at the original directory, plus failure_receipt.json.
+
+The one error is `test_real_capture_source_guard_is_readonly_and_holds_original_both_fences[7]`: INCREMENTAL_OTHER_SOURCE_SESSION. Original diagnostic records allowed client57972 plus extra autovacuum worker60340. The production exact-session gate correctly rejected this; no client/worker filtering, retry, server setting change, PG restart, or guard relaxation is appropriate.
+
+Fixed only disposable fixture construction: after applying original migrations, set autovacuum_enabled=false on its own freshly created mingjing_core tables. Require actual database identity fr_source_<32hex> or fr_upgrade_<32hex>. Source creation belongs only to local test fixtures; shared PG configuration and original migrations/production code remain unchanged. This matches the existing CI dedicated restore-server approach while avoiding a global change to local PG. Original failed guard test [7] now passed once with its unchanged read-only/file/advisory fence assertions: private/safe-narrow-b31e433b9556473c9a5164855118873c,1/1,63.90s; metadata/XML/log root checked. Ruff/check+format120 and diff check passed. No repeat old full.
+
+16366f0e R11 completed11:30:39 exit0/head_unchanged:48/48,7/7,approved69/69,core30 29/29,X02 equivalent passed. assessment/source digest15d26f641e47a6416873e308d9758ab0c8c927bb9c7a3d15150c02664d068181; raw core81 incomplete remains original. 163 memory37 completed16:16:52 exit0:37/37, original contracts preserved, judge_calls0 (scripted model counters are not paid requests). Reports under private/candidate-eval/163...; these are163 evidence, not the next fixture-fix commit. Its push CI40442893062 was read as completed/cancelled, not failure/green; no rerun requested.
+
+Next exact SHA after this fixture repair needs fresh scripts/full/CI. Freeze candidate source and HEAD during those runs. R37 final bindings/47 review/Linux stage and46 real evaluation remain pending. No key/provider/server deployment occurred. Weekly usage freshly read28%, below85; no final-batch contraction triggered.

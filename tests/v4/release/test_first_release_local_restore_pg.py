@@ -89,6 +89,8 @@ class Sample:
 
 def seed(source: str, prefix: int, migrations: dict[str, str]) -> None:
     with psycopg.connect(source) as connection:
+        name = connection.execute("SELECT current_database()").fetchone()[0]
+        assert re.fullmatch(r"fr_(?:source|upgrade)_[0-9a-f]{32}", name), "synthetic fixture database required"
         connection.execute("CREATE SCHEMA mingjing_core")
         connection.execute("SET LOCAL search_path=mingjing_core")
         connection.execute(
@@ -100,6 +102,15 @@ def seed(source: str, prefix: int, migrations: dict[str, str]) -> None:
             connection.execute(path.read_text(encoding="utf-8"))
             connection.execute(
                 "INSERT INTO schema_migrations(version,checksum) VALUES(%s,%s)", (version, migrations[str(version)])
+            )
+        # Exact-session captures must not race maintenance in these disposable fixtures.
+        # Keep the production gate strict and leave the shared PG server configuration alone.
+        tables = connection.execute(
+            "SELECT tablename FROM pg_tables WHERE schemaname='mingjing_core' ORDER BY tablename"
+        ).fetchall()
+        for (table,) in tables:
+            connection.execute(
+                sql.SQL("ALTER TABLE mingjing_core.{} SET (autovacuum_enabled=false)").format(sql.Identifier(table))
             )
         connection.execute("INSERT INTO core_owners(id) VALUES('synthetic')")
         connection.execute("INSERT INTO core_subjects(owner,id,label) VALUES('synthetic','self','synthetic')")
