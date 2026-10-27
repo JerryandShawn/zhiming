@@ -1,4 +1,4 @@
-"""New questions use original scoring and reject corrupt traces, without business claims."""
+"""P8 materials reuse scoring and reject corrupt traces; no business gate claim."""
 
 from __future__ import annotations
 
@@ -19,6 +19,20 @@ from tools.eval.schema import Scenario, load_scenarios
 from tools.eval.targets.fake_target import FakeTarget
 
 CASES = load_p8_scenarios()
+DESIGN_DOCUMENT = "docs/v4/07_评测场景集.md"
+APPENDIX_SHA256 = "9c21dcb7640a72be7d8c099052752e210a05bee0d2634bf0bd959aaf58159230"
+
+
+def legacy_digest(name: str, raw: bytes) -> str:
+    raw = raw.replace(b"\r\n", b"\n")
+    # PR merge CI includes mainline's reviewed v2.2 appendix (base b9a89b6).
+    # Only that exact addition is allowed; original text remains byte-pinned.
+    if name == DESIGN_DOCUMENT and "## 附录 B：".encode() in raw:
+        start = raw.index("## 附录 B：".encode())
+        end = raw.index("## 附录：历法核对数据".encode(), start)
+        assert hashlib.sha256(raw[start:end]).hexdigest() == APPENDIX_SHA256
+        raw = raw[:start] + raw[end:]
+    return hashlib.sha256(raw).hexdigest()
 
 
 def evaluate(value: P8Scenario) -> dict:
@@ -135,13 +149,50 @@ def test_legacy_schema_corpus_and_seed_files_are_unchanged() -> None:
         (SCENARIOS.parent / "legacy_readonly_manifest.json").read_text(encoding="utf8")
     )
     for name, digest in manifest["files"].items():
-        actual = hashlib.sha256(
-            (ROOT / name).read_bytes().replace(b"\r\n", b"\n")
-        ).hexdigest()
+        actual = legacy_digest(name, (ROOT / name).read_bytes())
         assert actual == digest, name
     assert len(load_scenarios()) == 80
     with pytest.raises(ValidationError):
         Scenario.model_validate(CASES[0].model_dump())
+
+
+def test_reviewed_upstream_appendix_does_not_freeze_mainline_design_evolution() -> None:
+    original = (ROOT / DESIGN_DOCUMENT).read_bytes().replace(b"\r\n", b"\n")
+    appendix = (SCENARIOS.parent / "approved_upstream_appendix_b.md").read_bytes()
+    appendix = appendix.replace(b"\r\n", b"\n")
+    assert hashlib.sha256(appendix).hexdigest() == APPENDIX_SHA256
+    marker = "## 附录：历法核对数据".encode()
+    assert original.count(marker) == 1
+    integrated = original.replace(marker, appendix + marker, 1)
+    assert hashlib.sha256(integrated).hexdigest() == (
+        "a637aadca05c412f5b27352769a7ddadc0b75359698b5002a86af30a018e28a6"
+    )
+    assert legacy_digest(DESIGN_DOCUMENT, integrated) == legacy_digest(
+        DESIGN_DOCUMENT, original
+    )
+
+
+@pytest.mark.parametrize("mutation", ["original_text", "appendix", "twice", "runtime"])
+def test_upstream_exception_cannot_hide_other_changes(mutation: str) -> None:
+    original = (ROOT / DESIGN_DOCUMENT).read_bytes().replace(b"\r\n", b"\n")
+    appendix = (SCENARIOS.parent / "approved_upstream_appendix_b.md").read_bytes()
+    appendix = appendix.replace(b"\r\n", b"\n")
+    marker = "## 附录：历法核对数据".encode()
+    candidate = original.replace(marker, appendix + marker, 1)
+    name = DESIGN_DOCUMENT
+    if mutation == "appendix":
+        candidate = candidate.replace(b"A01", b"A99", 1)
+    elif mutation == "twice":
+        candidate = candidate.replace(marker, appendix + marker, 1)
+    elif mutation == "runtime":
+        name = "tools/eval/scenarios/C01.yaml"
+    else:
+        candidate = candidate.replace(b"C01", b"C99", 1)
+    try:
+        digest = legacy_digest(name, candidate)
+    except AssertionError:
+        return
+    assert digest != legacy_digest(DESIGN_DOCUMENT, original)
 
 
 def test_count_distribution_and_no_model_submitted_birth_or_consent() -> None:
