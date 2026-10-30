@@ -18,7 +18,7 @@ const pages = {
 };
 const livePages = {
   today: LiveToday,
-  chat: lazy(() => import('./live/Chat')),
+  chat: lazy(() => import('./live/Chat').then((module) => ({ default: () => <module.default transport="v4" /> }))),
   chart: lazy(() => import('./live/Chart')),
   tarot: lazy(() => import('./live/Tarot')),
   cases: lazy(() => import('./live/Cases')),

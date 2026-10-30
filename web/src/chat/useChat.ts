@@ -21,7 +21,10 @@ export function useChat() {
     loginRequired = useAuth((current) => current.loginRequired);
   const cache = useQueryClient();
   const namespace = useRef(operationNamespace()).current;
-  const [pending, setPending] = useState(loadPending);
+  const [pending, setPending] = useState(() => {
+    const current = loadPending();
+    return current?.thread ? undefined : current;
+  });
   const [draft, setDraft] = useState(() => readDraft() || loadPending()?.payload.message || '');
   const [state, setState] = useState<StreamState>(initialStream);
   const [busy, setBusy] = useState(false),

@@ -11,8 +11,8 @@ import { safeWebPath, webRoot } from './bundle-budget.mjs';
 // would bypass the transfer time we are trying to measure. No database/model is used.
 const root = path.resolve(webRoot, '..');
 const target = process.env.FRONTEND_PERF_TARGET ?? 'legacy';
-if (!['legacy', 'h5', 'courses', 'spaces'].includes(target))
-  throw new Error('Expected legacy, h5, courses or spaces target');
+if (!['legacy', 'h5', 'courses', 'spaces', 'thread'].includes(target))
+  throw new Error('Expected legacy, h5, courses, spaces or thread target');
 const builtTarget = target !== 'legacy';
 const runs = Number(process.env.FRONTEND_PERF_RUNS ?? 5);
 if (![1, 5].includes(runs)) throw new Error('Expected one diagnostic run or five acceptance runs');
@@ -85,6 +85,30 @@ const fixture = {
   '/api/memories': [],
   '/api/archive': {},
 };
+const threadRunId = 'synthetic:perf-run';
+const threadAcceptance = {
+  run_id: threadRunId,
+  thread_id: 'life:self',
+  status: 'queued',
+  runtime: 'v4',
+  run_url: `/api/runs/${threadRunId}`,
+  events_url: `/api/runs/${threadRunId}/events`,
+};
+const threadEnvelope = {
+  schema: 'core4.0',
+  message_id: 'synthetic:perf-message',
+  text: '这是经真实本机 HTTP 与本轮状态核对后显示的合成回答。',
+  receipts: [],
+  used_fact_ids: [],
+  used_claim_ids: [],
+  asked: null,
+  options: null,
+  review: { state: 'passed', reasons: [] },
+  usage: {},
+};
+let threadPersisted = 'running';
+const threadFrame = (seq, type, body) =>
+  `id: ${seq}\nevent: ${type}\ndata: ${JSON.stringify({ v: 1, run_id: threadRunId, seq, ts: '2026-10-30T18:00:00+08:00', ...body })}\n\n`;
 const methods = [],
   unexpected = [];
 const types = {
@@ -102,6 +126,49 @@ const server = http.createServer(async (request, response) => {
     const url = new URL(request.url, 'http://127.0.0.1');
     methods.push(request.method);
     response.setHeader('Cache-Control', 'no-store');
+    if (target === 'thread' && url.pathname.startsWith('/api/')) {
+      request.resume();
+      if (request.method === 'POST' && url.pathname === '/api/threads/life%3Aself/messages') {
+        response.writeHead(202, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify(threadAcceptance));
+        return;
+      }
+      if (request.method === 'GET' && url.pathname === '/api/history') {
+        response.writeHead(200, { 'Content-Type': 'application/json' });
+        response.end('[]');
+        return;
+      }
+      if (request.method === 'GET' && url.pathname === threadAcceptance.events_url) {
+        threadPersisted = 'succeeded';
+        response.writeHead(200, { 'Content-Type': 'text/event-stream; charset=utf-8' });
+        response.end(
+          threadFrame(1, 'text_delta', { text: '合成流式草稿' }) +
+            threadFrame(2, 'final', { message_id: threadEnvelope.message_id, envelope: threadEnvelope }),
+        );
+        return;
+      }
+      if (request.method === 'GET' && url.pathname === threadAcceptance.run_url) {
+        response.writeHead(200, { 'Content-Type': 'application/json' });
+        response.end(
+          JSON.stringify({
+            id: threadRunId,
+            operation_id: 'synthetic:perf-operation',
+            status: threadPersisted,
+            calls: 0,
+            call_limit: 12,
+            attempts: 1,
+            checkpoint: {},
+            dependencies: [],
+            error: null,
+            result: threadPersisted === 'succeeded' ? { ...threadEnvelope, answer: threadEnvelope.text } : {},
+          }),
+        );
+        return;
+      }
+      unexpected.push({ method: request.method, path: url.pathname });
+      response.writeHead(404).end();
+      return;
+    }
     if (request.method !== 'GET') {
       unexpected.push({ method: request.method, path: url.pathname });
       response.writeHead(405).end();
@@ -163,7 +230,9 @@ const batch = {
         ? 'h5-isolated-demo-built-loopback-http-no-api'
         : target === 'spaces'
           ? 'spaces-fake-built-loopback-http-no-api'
-          : 'old-html-built-module-loopback-http-synthetic-read-only-api',
+          : target === 'thread'
+            ? 'thread-v4-built-loopback-http-synthetic-api'
+            : 'old-html-built-module-loopback-http-synthetic-read-only-api',
   network,
   cpu_slowdown: 4,
   runs,
@@ -189,6 +258,7 @@ try {
     const outside = [],
       errors = [],
       failures = [];
+    threadPersisted = 'running';
     await context.route(
       (url) => ['http:', 'https:'].includes(url.protocol) && url.origin !== origin,
       (route) => {
@@ -198,7 +268,10 @@ try {
     );
     await context.addInitScript((target) => {
       if (target === 'legacy') localStorage.setItem('mjt_token', 'synthetic-performance-token');
-      else localStorage.setItem('mingjing-theme', 'light');
+      else {
+        localStorage.setItem('mingjing-theme', 'light');
+        if (target === 'thread') sessionStorage.setItem('mingjing-auth-token', 'synthetic-performance-token');
+      }
       window.__legacyLcp = [];
       window.__courseReady = null;
       if (target === 'courses') {
@@ -252,13 +325,18 @@ try {
               ? '/?spaces=demo#/spaces?space=career'
               : '/#/chat';
       await page.goto(origin + route, { waitUntil: 'networkidle' });
-      if (target === 'legacy') await page.waitForFunction(() => Boolean(window.mingjingLegacyStream));
+      if (target === 'thread') {
+        await page.locator('[data-page="chat"][data-runtime="thread-v4"]').waitFor();
+        await page.getByRole('textbox', { name: '和明镜说说' }).fill('真实 HTTP 性能合成问题');
+        await page.getByRole('button', { name: '发送', exact: true }).click();
+        await page.getByText(threadEnvelope.text, { exact: true }).waitFor();
+      } else if (target === 'legacy') await page.waitForFunction(() => Boolean(window.mingjingLegacyStream));
       else if (target === 'h5') await page.locator('[data-demo="h5"]').waitFor();
       else if (target === 'spaces') {
         await page.locator('[data-page="spaces"][data-runtime="spaces-fake"]').waitFor();
         await page.getByRole('heading', { name: '合成样例：是否换岗', exact: true }).waitFor();
       } else await page.locator('[data-course-state="ready"]').waitFor();
-      if (!['courses', 'spaces'].includes(target))
+      if (!['courses', 'spaces', 'thread'].includes(target))
         await page.getByRole('textbox', { name: target === 'h5' ? '本地草稿' : '本次问题' }).waitFor();
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(1000);
@@ -328,7 +406,9 @@ try {
           ? 'Isolated H5 sign-in demo only, not signed-in Today, real Feishu/cookie authentication, device, API or deployment acceptance.'
           : target === 'spaces'
             ? 'Synthetic in-memory spaces page only; not signed-in Today, real API, device or deployment acceptance.'
-            : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
+            : target === 'thread'
+              ? 'Synthetic v4 loopback HTTP only; not real PG, production API, device or deployment acceptance.'
+              : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
   };
   await fs.writeFile(path.join(directory, 'report.json'), JSON.stringify(report, null, 2));
   await fs.writeFile(

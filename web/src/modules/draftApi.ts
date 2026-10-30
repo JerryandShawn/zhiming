@@ -171,7 +171,7 @@ function draftError(value: unknown, status: number, requestId?: string): DraftAp
 }
 
 type Request = {
-  method: 'GET' | 'POST' | 'PATCH';
+  method: 'GET' | 'POST' | 'PATCH' | 'PUT';
   path: string;
   query?: Record<string, string | number | boolean | undefined>;
   body?: WriteIdentity;

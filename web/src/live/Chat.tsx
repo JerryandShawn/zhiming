@@ -4,12 +4,14 @@ import { Button, Switch } from '../components/ui/Controls';
 import { Answer, HistoryMessage } from '../chat/Answers';
 import { LiveComposer } from '../chat/Composer';
 import { useChat } from '../chat/useChat';
+import { useThreadChat } from '../chat/useThreadChat';
 import { object, string } from '../chat/types';
 import { publicChatText } from '../chat/publicProjection';
 import { createMemoryReceiptRegistry } from '../chat/interactions/memoryProjection';
 
-export default function Chat() {
-  const chat = useChat();
+type ViewModel = ReturnType<typeof useChat> & Partial<Pick<ReturnType<typeof useThreadChat>, 'phase' | 'refresh'>>;
+
+function ChatView({ chat }: { chat: ViewModel }) {
   const receiptRegistry = useRef(createMemoryReceiptRegistry()).current;
   const historyReadPending = useRef(false);
   const mounted = useRef(true);
@@ -48,7 +50,7 @@ export default function Chat() {
     }
   }
   return (
-    <div className="page chat-page" data-page="chat" data-runtime="v3">
+    <div className="page chat-page" data-page="chat" data-runtime={chat.phase ? 'thread-v4' : 'v3'}>
       <h1 className="sr-only">和明镜对话</h1>
       <div className="chat-layout">
         <div className="chat-main">
@@ -126,6 +128,9 @@ export default function Chat() {
                   {chat.stopStatus}
                 </p>
               )}
+              {chat.phase === 'needs_check' && chat.refresh && (
+                <Button onClick={() => void chat.refresh?.()}>重新核对本轮状态</Button>
+              )}
               {chat.pending && !chat.busy && (
                 <section className="ask-card">
                   <p>本轮记录已保留，继续会沿用已保存的问题与资料。</p>
@@ -168,4 +173,14 @@ export default function Chat() {
       </div>
     </div>
   );
+}
+
+function LegacyChat() {
+  return <ChatView chat={useChat()} />;
+}
+function ThreadChat() {
+  return <ChatView chat={useThreadChat()} />;
+}
+export default function Chat({ transport = 'v3' }: { transport?: 'v3' | 'v4' }) {
+  return transport === 'v4' ? <ThreadChat /> : <LegacyChat />;
 }

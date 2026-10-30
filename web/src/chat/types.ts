@@ -1,3 +1,5 @@
+import type { ThreadAcceptance } from '../threads/contracts';
+
 export type JsonObject = Record<string, unknown>;
 export function object(value: unknown): JsonObject {
   return value !== null && typeof value === 'object' && !Array.isArray(value) ? (value as JsonObject) : {};
@@ -138,6 +140,7 @@ export type PendingChat = {
   payload: ChatPayload;
   runId: string;
   restoreOnly?: boolean;
+  thread?: { threadId: string; incognito: boolean; acceptance?: ThreadAcceptance };
   resume?: {
     runId: string;
     interrupt_id: string;
