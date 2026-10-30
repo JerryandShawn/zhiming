@@ -83,3 +83,36 @@ def test_r34_all_true_state_respects_approved_capacity_and_unique_intent() -> No
     selected = select_visible(definitions, context, state, trimmed_out=trimmed)
     assert len(selected) == 15 and "synastry" in {tool.name for tool in selected}
     assert "set_reminder" in trimmed
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "请比较2026-10-21到10-27哪天面试可作参考，把加分和减分依据都说清楚。",
+        "比较2026-11-01到11-07搬家，若同分怎么办？有没有把全天时辰都扫过？",
+        "帮我在2026-10-21到2027-01-21之间找签约日，一次全部算完。",
+        "比较10月21日至10月27日哪天出行更合适",
+    ],
+)
+def test_explicit_date_range_with_purpose_or_which_day_opens_window(text):
+    assert metaphysics_intent(text) == "window"
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "比较这两份工作哪个更适合我",
+        "今天适合面试吗",
+        "2026-10-21到10-27我要出差",
+        "比较2026-10-21到10-27的天气",
+        "不要择日，只比较2026-10-21到10-27的行程",
+    ],
+)
+def test_ranges_or_comparisons_without_the_window_shape_do_not_open_window(text):
+    assert metaphysics_intent(text) != "window"
+
+
+def test_window_range_keeps_priority_below_synastry_and_above_almanac_and_daily():
+    assert metaphysics_intent("请合盘并比较2026-10-21到10-27哪天面试") == "synastry"
+    assert metaphysics_intent("比较2026-10-21到10-27哪天面试，顺便看黄历") == "window"
+    assert metaphysics_intent("比较2026-10-21到10-27哪天面试，今天运势如何") == "window"

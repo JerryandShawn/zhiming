@@ -82,12 +82,51 @@ def remaining_reference_slots(service: Any, ctx: Any, connection: Any) -> int:
     return max(0, 10 - len(used))
 
 
+WINDOW_HITS_PER_SIDE = 3
+WINDOW_WEIGHT_KEYS = ("version", "school", "source", "layer_factors", "limits", "prediction_validated")
+
+
+def window_projection(payload: dict[str, Any]) -> dict[str, Any]:
+    """R54: bound window_search for the model; native order and scores are kept, nothing re-scored.
+
+    Per day only the three largest positive and the three most negative hits stay visible
+    (deterministic: contribution, then native rule_hit_index). Omitted counts are explicit so the
+    model cannot present a trimmed list as complete; the full document stays private.
+    """
+    days, omitted_any = [], False
+    for row in payload["candidates"]:
+        positive = sorted(row["positive_hits"], key=lambda hit: (-hit["contribution"], hit["rule_hit_index"]))
+        negative = sorted(row["negative_hits"], key=lambda hit: (hit["contribution"], hit["rule_hit_index"]))
+        omitted = {
+            "positive_hits": max(0, len(positive) - WINDOW_HITS_PER_SIDE),
+            "negative_hits": max(0, len(negative) - WINDOW_HITS_PER_SIDE),
+            "neutral_hits": len(row.get("neutral_hits", [])),
+        }
+        omitted_any = omitted_any or any(omitted.values())
+        days.append(
+            {key: row[key] for key in ("date", "rank", "score")}
+            | {
+                "positive_hits": positive[:WINDOW_HITS_PER_SIDE],
+                "negative_hits": negative[:WINDOW_HITS_PER_SIDE],
+                "omitted": omitted,
+            }
+        )
+    return {
+        key: payload[key] for key in ("range", "purpose", "method", "trace", "pagination") if key in payload
+    } | {
+        "weights": {key: payload["weights"][key] for key in WINDOW_WEIGHT_KEYS if key in payload.get("weights", {})},
+        "candidates": days,
+        "projection_truncated": omitted_any or bool(payload.get("observations")),
+        "omitted_observations": len(payload.get("observations", [])),
+    }
+
+
 def tool_projection(data: dict[str, Any]) -> dict[str, Any]:
     """Full native documents stay private; actual selected references reach the model."""
     native = data["calculation"]
     if data.get("tool_name"):
         return {key: data[key] for key in ("adapter_mode", "tool_name", "arguments", "reference_views")} | {
-            "tool_data": native["data"],
+            "tool_data": window_projection(native["data"]) if data["tool_name"] == "window_search" else native["data"],
             "limits": native.get("limits", []),
         }
     summaries = []

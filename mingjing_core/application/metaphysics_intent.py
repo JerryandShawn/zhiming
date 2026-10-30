@@ -9,12 +9,19 @@ from mingjing_core.memory.policy import mask_quoted
 
 MetaphysicsIntent = Literal["none", "synastry", "window", "almanac", "daily"]
 PURPOSES = r"签约|面试|搬家|出行|表白|开业"
+# An explicit absolute date range, e.g. "2026-10-21到10-27" or "10月21日至10月27日".
+DATE = r"(?:\d{4}-\d{1,2}-\d{1,2}|\d{4}年\d{1,2}月\d{1,2}日|\d{1,2}月\d{1,2}日|\d{1,2}-\d{1,2})"
+DATE_RANGE = DATE + r"\s*(?:到|至|~|—|-)\s*" + DATE
 NEGATED = re.compile(r"不要|不用|不想|不需要|不许|禁止|别|无需")
 PATTERNS = (
     ("synastry", re.compile(r"合盘|合不合|配不配|我和[他她].{0,12}(?:八字|星盘)")),
     (
         "window",
-        re.compile(r"择日|挑(?:个)?日子|(?:哪天|哪几天|什么时候|何时).{0,12}(?:适合|宜).{0,8}(?:" + PURPOSES + r")"),
+        re.compile(
+            r"择日|挑(?:个)?日子|(?:哪天|哪几天|什么时候|何时).{0,12}(?:适合|宜).{0,8}(?:" + PURPOSES + r")"
+            # A date range alone is not enough: it must also name a purpose or ask "which day".
+            r"|" + DATE_RANGE + r".{0,12}(?:哪天|哪几天|" + PURPOSES + r")"
+        ),
     ),
     ("almanac", re.compile(r"老?黄历|宜忌|冲煞")),
     (
