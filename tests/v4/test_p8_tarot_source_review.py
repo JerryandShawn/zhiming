@@ -11,11 +11,14 @@ import pytest
 
 from mingjing_core.adapters.charts.benchmarks.tarot_source_review import (
     CLOCK_REVIEW_SHA,
+    CORE4_REVIEW_SHA,
+    CORE4_REVIEWED_METHODS,
     HISTORICAL_SHA,
     REVIEW_VERSION,
     historical_source,
     lf_sha,
     review_service_source,
+    review_core4_checkout,
     reviewed_clock_source,
 )
 from mingjing_core.timekit.clock import FrozenClock
@@ -124,3 +127,28 @@ def test_reviewed_stamp_uses_real_frozen_utc_clock_without_running_service() -> 
     )
     assert scope["_stamp"]() == frozen.now().isoformat()
     assert scope["_stamp"]().endswith("+00:00")
+
+
+def test_current_checkout_is_the_reviewed_core4_lineage_migration_of_exactly_two_methods() -> None:
+    assert lf_sha(CHECKOUT) == CORE4_REVIEW_SHA
+    result = review_core4_checkout(CHECKOUT)
+    assert result["reviewed_methods"] == list(CORE4_REVIEWED_METHODS) == ["cancel", "finish_reading"]
+    assert result["other_service_members_ast_unchanged"] is True
+    assert result["runtime_execution_verified"] is False
+    assert historical_source(CHECKOUT) == HISTORICAL
+
+
+@pytest.mark.parametrize(
+    "old,new",
+    [
+        ("draw['status']!='ready'", "draw['status']=='ready'"),
+        ("position=i+1", "position=i+2"),
+        ("if ident in seen", "if False and ident in seen"),
+        ("invalidate_cancelled_draw(self.repo,conn,owner,draw_id)", "pass"),
+        ("'run_id':run['id']", "'run_id':'forged'"),
+    ],
+)
+def test_any_other_or_modified_edit_to_the_core4_checkout_requires_review(old: str, new: str) -> None:
+    assert old in CHECKOUT
+    with pytest.raises(ValueError, match="P8_TAROT_SOURCE_REVIEW_REQUIRED"):
+        review_core4_checkout(CHECKOUT.replace(old, new))

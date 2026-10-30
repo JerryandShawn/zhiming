@@ -30,6 +30,10 @@ def historical_source(text: str) -> str:
     digest = lf_sha(text)
     if digest == HISTORICAL_SHA:
         return text
+    if digest == CORE4_REVIEW_SHA:
+        review_core4_checkout(text)
+        text = _undo_core4(text)
+        digest = lf_sha(text)
     if digest != CLOCK_REVIEW_SHA:
         raise ValueError("P8_TAROT_SOURCE_REVIEW_REQUIRED")
     historical = _replace_once(text, _CLOCK_IMPORT, "")
@@ -85,4 +89,51 @@ def review_service_source(text: str) -> dict:
         "historical_source_reconstructed_exactly": True,
         "runtime_execution_verified": False,
         "clock_dependency_verified": False,
+    }
+
+# R-review (10-31): main-lane core4 lineage edits to TarotService, reviewed as exactly two methods.
+CORE4_REVIEW_SHA = "1388a06427f959a0abfb4a18a5e6b8ee51d7cdcae29cfda533fc56eb049dec18"
+CORE4_REVIEW_VERSION = "p8-tarot-service-core4-lineage-review-v1"
+CORE4_REVIEWED_METHODS = ("cancel", "finish_reading")
+_CORE4_IMPORT = '        from ..application.tarot import invalidate_cancelled_draw\n'
+_CORE4_CANCEL_CALL = '            invalidate_cancelled_draw(self.repo,conn,owner,draw_id)\n'
+_CORE4_SNAPSHOT_NEW = "            if error is None:\n                # core4 keeps authoritative source versions on the run rather\n                # than copying private dependency metadata into its envelope.\n                p['execution_snapshot']={\n                    'run_id':run['id'],'revision':result['meta'].get('revision'),\n                    'dependencies':deepcopy(run['dependencies'])}\n"
+_CORE4_SNAPSHOT_OLD = "            if result and result.get('meta'):\n                core=result['meta']['core_run'];p['execution_snapshot']={'run_id':core['run_id'],'revision':result['meta'].get('revision'),'dependencies':core['dependencies']}\n"
+
+
+def _undo_core4(text: str) -> str:
+    text = _replace_once(text, _CORE4_IMPORT, "")
+    text = _replace_once(text, _CORE4_CANCEL_CALL, "")
+    return _replace_once(text, _CORE4_SNAPSHOT_NEW, _CORE4_SNAPSHOT_OLD)
+
+
+def _service_ast_without(text: str, skipped: tuple[str, ...]) -> str:
+    classes = [n for n in ast.parse(text).body if isinstance(n, ast.ClassDef) and n.name == "TarotService"]
+    if len(classes) != 1:
+        raise ValueError("P8_TAROT_SERVICE_LOCATOR_MISMATCH")
+    kept = [n for n in classes[0].body if not (isinstance(n, ast.FunctionDef) and n.name in skipped)]
+    return chr(10).join(ast.dump(n, include_attributes=False) for n in kept)
+
+
+def review_core4_checkout(text: str) -> dict:
+    """The checkout may differ from the Clock review only by the two reviewed core4 hunks.
+
+    Every other TarotService member (owner, choice5, manual, order, ready, shuffle) must keep an identical AST.
+    """
+    text = text.replace(chr(13) + chr(10), chr(10))
+    if lf_sha(text) != CORE4_REVIEW_SHA:
+        raise ValueError("P8_TAROT_SOURCE_REVIEW_REQUIRED")
+    clock = _undo_core4(text)
+    if lf_sha(clock) != CLOCK_REVIEW_SHA:
+        raise ValueError("P8_TAROT_CLOCK_SOURCE_MISMATCH")
+    if _service_ast_without(text, CORE4_REVIEWED_METHODS) != _service_ast_without(clock, CORE4_REVIEWED_METHODS):
+        raise ValueError("P8_TAROT_SERVICE_SEMANTICS_CHANGED")
+    return {
+        "review_version": CORE4_REVIEW_VERSION,
+        "checkout_basis": "reviewed_core4_lineage_migration",
+        "checkout_lf_sha256": lf_sha(text),
+        "reviewed_clock_lf_sha256": CLOCK_REVIEW_SHA,
+        "reviewed_methods": list(CORE4_REVIEWED_METHODS),
+        "other_service_members_ast_unchanged": True,
+        "runtime_execution_verified": False,
     }
