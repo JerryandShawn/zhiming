@@ -9,6 +9,7 @@ from typing import Any
 
 from mingjing_core.agent.context_k3 import K3EstimatedMeter
 from mingjing_core.application.agent_runtime import AgentRuntime
+from mingjing_core.application.release_switches import load_switches
 from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.models.registry import ModelRegistry
 
@@ -61,6 +62,16 @@ def _build(
     )
     if not meter.live_admissible:
         raise EvidenceError("Agent 分词计量尚未核验")
-    # P6's independent model critic is a later release. P3 keeps its structural
-    # validation, citations and commit gate, without silently enabling P6.
-    return AgentRuntime(repo, registry.port("primary", stop_on_quota=True), meter, offline=False)
+    # Release switches come only from the checked-in config/switches.yaml. The
+    # critic port is built only when review is on, so `off` makes no critic request.
+    switches = load_switches()
+    critic = registry.port("critic") if switches.review_mode != "off" else None
+    return AgentRuntime(
+        repo,
+        registry.port("primary", stop_on_quota=True),
+        meter,
+        critic=critic,
+        offline=False,
+        streaming_candidate=switches.streaming_v2,
+        review_mode=switches.review_mode,
+    )

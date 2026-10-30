@@ -33,12 +33,38 @@ from mingjing_core.domain.contracts import (
 from mingjing_core.models.errors import ModelUnavailable
 from mingjing_core.models.port import ChatMessage, ModelPort
 from mingjing_core.models.quota_attempt_observer import ModelAttemptUnconfirmed
+from mingjing_core.validation.review_risk import assess_review_risk
 from mingjing_core.validation.structural import check_structure
 
 
 class AgentReviewer:
-    def __init__(self, port: ModelPort | None, ledger: RequestLedger, prompts: PromptBundle, *, offline: bool) -> None:
+    def __init__(
+        self,
+        port: ModelPort | None,
+        ledger: RequestLedger,
+        prompts: PromptBundle,
+        *,
+        offline: bool,
+        review_mode: str = "always",
+    ) -> None:
+        if review_mode not in {"risk", "always", "off"}:
+            raise EvidenceError("评审模式只能是 risk、always 或 off")
         self.port, self.ledger, self.prompts, self.offline = port, ledger, prompts, offline
+        self.review_mode = review_mode
+
+    def _wanted(self, cycle: LoopCycle, outcome: LoopOutcome) -> bool:
+        """off never calls the critic; risk only reviews answers with a reviewable risk (44 §2)."""
+        if self.review_mode == "always":
+            return True
+        if self.review_mode == "off":
+            return False
+        return assess_review_risk(
+            outcome.text,
+            mode="risk",
+            chart_or_evidence=bool(outcome.alias_map),
+            memory_reference=any(item.get("write_status") for item in outcome.receipts),
+            decision_card=load_options(self.ledger.repo, cycle.run) is not None,
+        ).should_review
 
     def _budget(self, cycle: LoopCycle, outcome: LoopOutcome) -> BudgetResult:
         material = {
@@ -106,6 +132,8 @@ class AgentReviewer:
 
     def review(self, cycle: LoopCycle, outcome: LoopOutcome) -> tuple[LoopOutcome, TrustedReviewReceipt | None]:
         if self.port is None or outcome.asked or outcome.stop_reason != "completed" or cycle.last_step is None:
+            return outcome, None
+        if not self._wanted(cycle, outcome):
             return outcome, None
         # Sanitization precedes publication. A changed draft is not secretly
         # substituted for the model row that a critic proof must actually bind.

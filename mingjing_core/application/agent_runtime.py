@@ -65,6 +65,7 @@ class AgentRuntime:
         control_factory: Callable[..., RunControl] = RunControl,
         runtime_config: RuntimeConfig | None = None,
         streaming_candidate: bool = False,
+        review_mode: str = "always",
     ) -> None:
         if type(streaming_candidate) is not bool:
             raise EvidenceError("流式候选开关只能由受信程序集明确配置")
@@ -80,6 +81,7 @@ class AgentRuntime:
             RequestLedger(repo, critic_meter or meter, offline=offline),
             self.prompts,
             offline=offline,
+            review_mode=review_mode,
         )
         self.control_factory = control_factory
         self.streaming_candidate = streaming_candidate
