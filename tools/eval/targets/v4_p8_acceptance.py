@@ -18,7 +18,11 @@ from mingjing_core.application.synastry_consent import SynastryConsentService
 
 P8_TOOLS = ("chart_compute", "daily_transit", "window_search", "almanac", "synastry")
 # Strict mapping of native refusal codes onto the README's structured codes; nothing else maps.
-REFUSALS = {"invalid_arguments": "INVALID_ARGUMENT", "CONSENT_REQUIRED": "CONSENT_REQUIRED"}
+REFUSALS = {
+    "invalid_arguments": "INVALID_ARGUMENT",
+    "invalid_tool_request": "INVALID_ARGUMENT",
+    "CONSENT_REQUIRED": "CONSENT_REQUIRED",
+}
 # Run-scoped or audited-separately kinds; everything else in core_entities is long-term.
 TRANSIENT_KINDS = frozenset(
     {"message", "runtime_step", "model_call", "synastry_consent", "thread", "session", "request", "delivery"}
@@ -139,7 +143,7 @@ class P8Acceptance:
 
     def _grant(self, fixture: dict[str, Any], other: str) -> None:
         """Simulated confirmation-card click; chat text never creates this ledger."""
-        service = SynastryConsentService(self.repo, clock=self.target.service.clock)
+        service = SynastryConsentService(self.repo)
         source = self.memory.receive(
             self.owner,
             "self",
