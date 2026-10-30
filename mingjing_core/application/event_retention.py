@@ -91,6 +91,11 @@ class EventRetentionSweep:
                 return result
             complete = age >= timedelta(days=30)
             value = metadata.state(run)
+            # Persist the real maximum sequence before any delete, so a later append can never reuse a number.
+            actual = metadata.actual_maximum(self.repo, connection, run)
+            if value["high_watermark"] < actual:
+                value["high_watermark"] = actual
+                metadata.store(self.repo, connection, run, value)
             if complete and not metadata.is_closed(run):
                 value["closed"] = dict(anchor)
                 metadata.store(self.repo, connection, run, value)

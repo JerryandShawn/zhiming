@@ -97,6 +97,10 @@ def locked_run(repo: Any, connection: Any, owner: str, ident: str) -> dict[str, 
     return repo._run(row)
 
 
+def actual_maximum(repo: Any, connection: Any, run: dict[str, Any]) -> int:
+    return _initial(repo, connection, run)["high_watermark"]
+
+
 def _initial(repo: Any, connection: Any, run: dict[str, Any]) -> dict[str, Any]:
     maximum = connection.execute(
         sql.SQL("SELECT coalesce(max(seq),0) AS n FROM {} WHERE owner=%s AND run_id=%s").format(

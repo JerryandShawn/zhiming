@@ -87,9 +87,13 @@ class StreamState:
         return current
 
     def _save(self, connection: Any, run: dict[str, Any], metadata: dict[str, Any]) -> None:
+        # Set only this key on the row's current usage: appends in the same transaction advance the
+        # retention high watermark, and a stale in-memory copy must never overwrite it or other keys.
         connection.execute(
-            sql.SQL("UPDATE {} SET usage=%s WHERE owner=%s AND id=%s").format(self.repo.table("core_runs")),
-            (Jsonb(dict(run["usage"], **{STATE_KEY: metadata})), run["owner"], run["id"]),
+            sql.SQL("UPDATE {} SET usage=jsonb_set(usage,ARRAY[%s],%s,true) WHERE owner=%s AND id=%s").format(
+                self.repo.table("core_runs")
+            ),
+            (STATE_KEY, Jsonb(metadata), run["owner"], run["id"]),
         )
 
     def begin(self, step: JournalStep, *, stopped: threading.Event | None = None) -> dict[str, Any]:
