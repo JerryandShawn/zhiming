@@ -63,9 +63,11 @@ def map_scripted(seed: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _profile_fields(birth: dict[str, Any], gender: str | None) -> dict[str, Any]:
+    if not birth.get("solar_datetime"):
+        return {}
     location = birth.get("location") or {}
     fields = {
-        "birth.solar_datetime": str(birth["solar_datetime"]).replace("T", " "),
+        "birth.solar_datetime": str(birth["solar_datetime"]),
         "birth.precision": birth.get("precision", "exact"),
         "birth.location.lng": location.get("lng"),
         "birth.location.lat": location.get("lat"),
@@ -122,7 +124,9 @@ class P8Acceptance:
         seed = self.target.seed
         overrides = seed.get("profile_overrides", {})
         gender = {"male": "男", "female": "女"}.get(overrides.get("gender", "male"), overrides.get("gender"))
-        self._save("self", _profile_fields(overrides["birth"], gender), "p8-self")
+        # The base seeder already saved the declared birth facts; only missing fields are added so
+        # no second spelling of the same field creates a conflict.
+        self._save("self", _profile_fields(overrides.get("birth", {}), gender), "p8-self")
         fixture = seed["controls"]["p8_acceptance"].get("consent_fixture")
         if fixture is None:
             return

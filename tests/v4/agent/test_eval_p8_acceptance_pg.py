@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
+import os
 
+import httpx
 import pytest
 
 from mingjing_core.adapters.charts.benchmarks.acceptance_scenarios import P8Scenario, load_p8_scenarios
@@ -11,14 +13,32 @@ from tools.eval.engine import evaluate_scenario
 from tools.eval.schema import load_scenarios
 from tools.eval.targets.v4_target import V4Target
 
-from .test_eval_v4_pg import target as target_fixture
-
 IDS = [case.id for case in load_p8_scenarios()]
 
 
 @pytest.fixture
 def target(monkeypatch: pytest.MonkeyPatch):
-    yield from target_fixture.__wrapped__(monkeypatch)
+    """Like the shared eval fixture, but the local isolated chart worker subprocess is allowed."""
+    send = httpx.Client.send
+
+    def local_only(self, request, *args, **kwargs):
+        if request.url.host == "127.0.0.1" and request.url.scheme == "http":
+            return send(self, request, *args, **kwargs)
+        raise AssertionError("评测禁止真实供应商HTTP")
+
+    def reject(*args, **kwargs):
+        raise AssertionError("评测禁止真实HTTP")
+
+    monkeypatch.setattr(httpx.Client, "send", local_only)
+    monkeypatch.setattr(httpx.AsyncClient, "send", reject)
+    dsn = os.getenv("CORE_TEST_DSN")
+    if not dsn:
+        pytest.skip("requires disposable loopback PostgreSQL15")
+    instance = V4Target(dsn=dsn)
+    try:
+        yield instance
+    finally:
+        instance.close()
 
 
 def case(identity: str) -> P8Scenario:
@@ -41,9 +61,10 @@ def test_p8_acceptance_on_real_target(identity: str, target: V4Target) -> None:
 def test_observations_ignore_scripted_db_declarations(target: V4Target) -> None:
     forged = deepcopy(case("P8SY01").model_dump(mode="json"))
     for action in forged["scripted"][0]["model"]:
-        if "db" in action:
-            action["db"]["p8_acceptance"]["engine_calls"]["synastry"] = 1
-            action["db"]["p8_acceptance"]["refusal_code"] = "NONE"
+        declared = action.get("db")
+        if declared:
+            declared["p8_acceptance"]["engine_calls"]["synastry"] = 1
+            declared["p8_acceptance"]["refusal_code"] = "NONE"
     evaluate_scenario(P8Scenario.model_validate(forged), target, target_name="v4")
     actual = target.inspect_db()["p8_acceptance"]
     assert actual["engine_calls"]["synastry"] == 0 and actual["refusal_code"] == "CONSENT_REQUIRED"
