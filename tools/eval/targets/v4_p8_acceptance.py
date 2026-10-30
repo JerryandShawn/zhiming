@@ -87,7 +87,10 @@ def _other_fields(chart: dict[str, Any]) -> dict[str, Any]:
     return _profile_fields(
         {
             "solar_datetime": f"{chart['date']} {chart['reported_time']}:00",
-            "precision": chart.get("precision", "reported"),
+            # The scenario's "reported" is the P8 chart label; the confirmed profile fact must be
+            # "exact" (charts_natal._precision rejects anything else), so this is the README's
+            # exact -> reported mapping run backwards, not a relaxed check.
+            "precision": "exact" if chart.get("precision", "reported") == "reported" else chart["precision"],
             "location": {"lng": place["lon"], "lat": place["lat"], "tz": place["tz"]},
             "clock_basis": chart.get("clock_basis", "clock"),
         },
