@@ -116,3 +116,12 @@ def test_window_range_keeps_priority_below_synastry_and_above_almanac_and_daily(
     assert metaphysics_intent("请合盘并比较2026-10-21到10-27哪天面试") == "synastry"
     assert metaphysics_intent("比较2026-10-21到10-27哪天面试，顺便看黄历") == "window"
     assert metaphysics_intent("比较2026-10-21到10-27哪天面试，今天运势如何") == "window"
+
+
+def test_explicit_comparison_of_my_relationship_structure_with_a_named_person_opens_synastry():
+    assert metaphysics_intent("我已在确认卡点了本次同意，请比较我和小禾的关系结构，只做这一次。") == "synastry"
+
+
+@pytest.mark.parametrize("text", ["我和同事的关系怎么处理", "比较我和小禾的工资", "我和小禾的关系结构很复杂", "不要比较我和小禾的关系结构"])
+def test_plain_relationship_talk_or_negation_does_not_open_synastry(text):
+    assert metaphysics_intent(text) != "synastry"

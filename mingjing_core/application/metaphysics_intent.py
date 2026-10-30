@@ -14,7 +14,14 @@ DATE = r"(?:\d{4}-\d{1,2}-\d{1,2}|\d{4}年\d{1,2}月\d{1,2}日|\d{1,2}月\d{1,2}
 DATE_RANGE = DATE + r"\s*(?:到|至|~|—|-)\s*" + DATE
 NEGATED = re.compile(r"不要|不用|不想|不需要|不许|禁止|别|无需")
 PATTERNS = (
-    ("synastry", re.compile(r"合盘|合不合|配不配|我和[他她].{0,12}(?:八字|星盘)")),
+    (
+        "synastry",
+        re.compile(
+            r"合盘|合不合|配不配|我和[他她].{0,12}(?:八字|星盘)"
+            # "比较我和小禾的关系结构": an explicit comparison verb, a named other person and the structure noun.
+            r"|(?:比较|对比).{0,4}我和.{1,8}的(?:关系结构|命盘|星盘)"
+        ),
+    ),
     (
         "window",
         re.compile(
