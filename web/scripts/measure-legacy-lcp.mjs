@@ -11,7 +11,8 @@ import { safeWebPath, webRoot } from './bundle-budget.mjs';
 // would bypass the transfer time we are trying to measure. No database/model is used.
 const root = path.resolve(webRoot, '..');
 const target = process.env.FRONTEND_PERF_TARGET ?? 'legacy';
-if (!['legacy', 'h5', 'courses'].includes(target)) throw new Error('Expected legacy, h5 or courses target');
+if (!['legacy', 'h5', 'courses', 'spaces'].includes(target))
+  throw new Error('Expected legacy, h5, courses or spaces target');
 const builtTarget = target !== 'legacy';
 const runs = Number(process.env.FRONTEND_PERF_RUNS ?? 5);
 if (![1, 5].includes(runs)) throw new Error('Expected one diagnostic run or five acceptance runs');
@@ -160,7 +161,9 @@ const batch = {
       ? 'courses-pinned-synthetic-study-built-loopback-http-no-api'
       : target === 'h5'
         ? 'h5-isolated-demo-built-loopback-http-no-api'
-        : 'old-html-built-module-loopback-http-synthetic-read-only-api',
+        : target === 'spaces'
+          ? 'spaces-fake-built-loopback-http-no-api'
+          : 'old-html-built-module-loopback-http-synthetic-read-only-api',
   network,
   cpu_slowdown: 4,
   runs,
@@ -245,12 +248,17 @@ try {
           ? '/?spaces=demo#/chat?space=study&topic=chart-study&view=courses'
           : target === 'h5'
             ? '/?embed=demo#/chat'
-            : '/#/chat';
+            : target === 'spaces'
+              ? '/?spaces=demo#/spaces?space=career'
+              : '/#/chat';
       await page.goto(origin + route, { waitUntil: 'networkidle' });
       if (target === 'legacy') await page.waitForFunction(() => Boolean(window.mingjingLegacyStream));
       else if (target === 'h5') await page.locator('[data-demo="h5"]').waitFor();
-      else await page.locator('[data-course-state="ready"]').waitFor();
-      if (target !== 'courses')
+      else if (target === 'spaces') {
+        await page.locator('[data-page="spaces"][data-runtime="spaces-fake"]').waitFor();
+        await page.getByRole('heading', { name: '合成样例：是否换岗', exact: true }).waitFor();
+      } else await page.locator('[data-course-state="ready"]').waitFor();
+      if (!['courses', 'spaces'].includes(target))
         await page.getByRole('textbox', { name: target === 'h5' ? '本地草稿' : '本次问题' }).waitFor();
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(1000);
@@ -318,7 +326,9 @@ try {
         ? 'Synthetic fixed course deep link only; not personal study progress, signed-in Today, real API, device or deployment acceptance.'
         : target === 'h5'
           ? 'Isolated H5 sign-in demo only, not signed-in Today, real Feishu/cookie authentication, device, API or deployment acceptance.'
-          : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
+          : target === 'spaces'
+            ? 'Synthetic in-memory spaces page only; not signed-in Today, real API, device or deployment acceptance.'
+            : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
   };
   await fs.writeFile(path.join(directory, 'report.json'), JSON.stringify(report, null, 2));
   await fs.writeFile(

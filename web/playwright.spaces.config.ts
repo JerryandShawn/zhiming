@@ -2,7 +2,7 @@ import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: 'spaces.spec.ts',
+  testMatch: ['spaces.spec.ts', 'live-spaces.spec.ts'],
   timeout: 45000,
   workers: 2,
   outputDir: 'test-results/spaces-behavior-runs',

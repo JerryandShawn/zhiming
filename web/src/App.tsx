@@ -116,7 +116,7 @@ export default function App() {
         atHome={page === 'today'}
         resetKey={JSON.stringify([preview, spacesPreview, componentsPreview, toolsPreview, hash])}>
         <Suspense
-          key={spacesPreview && page === 'chat' ? 'spaces-chat' : route}
+          key={spacesPreview && page === 'chat' ? 'spaces-chat' : page === 'spaces' ? 'spaces' : route}
           fallback={
             <div className="page">
               <Skeleton label="正在展开页面" />
@@ -124,7 +124,7 @@ export default function App() {
           }>
           {spacesPreview && <PreviewNotice />}
           {componentsPreview && <ComponentNotice page={page} />}
-          <Component key={spacesPreview && page === 'chat' ? 'spaces-chat' : route} />
+          <Component key={spacesPreview && page === 'chat' ? 'spaces-chat' : page === 'spaces' ? 'spaces' : route} />
         </Suspense>
       </RouteErrorBoundary>
     </Layout>
