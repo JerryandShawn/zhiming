@@ -15,6 +15,9 @@ name, attempt = sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else ""
 # The gate file is written only after a fresh 31号 window and the user's "开始首发生产".
 if not (ROOT / "window-go.json").is_file():
     raise SystemExit("No window-go.json: production steps are closed")
+# R59: reopening after a rollback is never part of the default flow.
+if name == "r04-reopen-after-rollback" and not (ROOT / "reopen-order.json").is_file():
+    raise SystemExit("No reopen-order.json: r04 needs an explicit order for this occasion")
 raw = (ROOT / (name + ".sh")).read_bytes()
 assert hashlib.sha256(raw).hexdigest() == json.loads((ROOT / "steps.json").read_text())[name]["sha256"]
 assert b"\r" not in raw and raw.startswith(b"set -euo pipefail\n")

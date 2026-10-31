@@ -134,6 +134,49 @@ ADDED = {
     "p15-final-readonly": "只读：D8 最终核对",
 }
 
+# R59: an extra step outside the default flow; the sender needs a separate per-occasion order for it.
+REOPEN = r"""test ! -e "$FR_OP/opened.json"
+test -f "$FR_OP/rollback-old-runtime.json"
+test -f /www/wwwroot/p-acme/core-maintenance.flag
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+v=read('rollback-old-runtime.json')
+assert v['old_sha']=='7dbc951eaffebd3d812169865eaefcde16a00ed9' and v['schema_readonly_verified'] and v['closed']
+with admin() as c:
+ zero(c,LIVE);allow(c,LIVE,True)
+print('R59: live database admission opened behind the public maintenance gate')
+PY
+systemctl start mingjingtai.service
+systemctl is-active --quiet mingjingtai.service
+systemctl start zhiming-core-feishu.service
+systemctl is-active --quiet zhiming-core-feishu.service
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys,time,urllib.error,urllib.request
+sys.path.insert(0,sys.argv[1]);from context import *
+env={}
+for path in ('/root/.hermes/.env','/root/zhiming-core-secrets/live-runtime.env'):
+ env.update(private_env(path))
+request=urllib.request.Request('http://127.0.0.1:8787/api/health',headers={'X-Token':env['MINGJING_TOKEN']})
+env=None;body=None
+for _ in range(30):
+ try:
+  with urllib.request.urlopen(request,timeout=5) as response:
+   assert response.status==200;body=json.load(response);break
+ except (urllib.error.URLError,ConnectionError):
+  time.sleep(2)
+assert body and body['ok'] is True and body['database']=='postgresql' and body['context_version']=='core3.0','R59 health failed; maintenance retained'
+print('R59: old web healthy behind the public maintenance gate; token output=0')
+PY
+rm /www/wwwroot/p-acme/core-maintenance.flag
+"$FR_PY" -I - "$FR_OP/units-before.json" > "$FR_OP/r04-timer-state.txt" <<'PY'
+import json,sys
+print(json.load(open(sys.argv[1]))['zhiming-core-reports.timer']['ActiveState'])
+PY
+if test "$(cat "$FR_OP/r04-timer-state.txt")" = active; then systemctl start zhiming-core-reports.timer; fi
+echo "R59: maintenance removed; report timer restored to $(cat "$FR_OP/r04-timer-state.txt")"
+"""
+
 OUT.mkdir(exist_ok=True)
 rebuilt = {}
 manifest = {}
@@ -172,7 +215,13 @@ for extra, _ in ((name, 0) for name, value, _ in STEPS if value and value.starts
     number = manifest[extra]["runbook_blocks"][0]
     body = re.fullmatch(r"\"\$FR_PY\" -I - \"\$FR_OP\" <<'PY'\n(.*)\nPY\n", blocks[number - 1], re.S).group(1)
     assert body in start, extra
-(OUT / "steps.json").write_text(json.dumps(manifest, indent=1), encoding="utf-8")
+reopen = (HEADER + REOPEN).encode("utf-8")
+assert b"" not in reopen
+(OUT / "r04-reopen-after-rollback.sh").write_bytes(reopen)
+check = subprocess.run([GIT_BASH, "-n", str(OUT / "r04-reopen-after-rollback.sh")], capture_output=True, text=True)
+assert check.returncode == 0, check.stderr
+listing = {**manifest, "r04-reopen-after-rollback": {"sha256": hashlib.sha256(reopen).hexdigest(), "runbook_blocks": []}}
+(OUT / "steps.json").write_text(json.dumps(listing, indent=1), encoding="utf-8")
 
 rows = [
     "# 首发生产分步脚本（R51）",
@@ -188,6 +237,22 @@ for name, value in manifest.items():
     source = "、".join(str(n) for n in value["runbook_blocks"]) or "—"
     note = ADDED.get(name) or ("后台状态查询" if not value["runbook_blocks"] else "一致")
     rows.append(f"| {name} | {source} | {note} | `{value['sha256'][:12]}` |")
-(ROOT / "docs/v4/release/first_release_prod_steps.md").write_text("\n".join(rows) + "\n", encoding="utf-8")
+rows += [
+    "",
+    "## 附录：回滚后重新开门（R59，不在默认流程）",
+    "",
+    "`r04-reopen-after-rollback.sh`，sha256 `" + hashlib.sha256(reopen).hexdigest() + "`。不改执行单。"
+    "只有用户或大脑当次明确下令才执行：发送脚本另外要求 `reopen-order.json`，默认流程不会带上它。"
+    "顺序：r03 通过 → 开库连接 → 启动 7dbc951 旧服务 → 门内健康检查 → 去维护标记 → timer 按 D1 原状态恢复。"
+    "任何一步失败即停，维护页保持；健康检查失败时已启动的旧服务不自动停，等指令。不删除任何发布、备份或库。",
+    "",
+    "```bash",
+    REOPEN.rstrip("
+"),
+    "```",
+]
+(ROOT / "docs/v4/release/first_release_prod_steps.md").write_bytes(("
+".join(rows) + "
+").encode("utf-8"))
 print(len(manifest), "steps; all 17 runbook blocks rebuilt byte for byte")
 sys.exit(0)
