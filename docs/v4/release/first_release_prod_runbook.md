@@ -387,7 +387,6 @@ with admin() as c:
    db.execute(sql.SQL('GRANT SELECT ON public.checkpoint_migrations TO {}').format(role))
    db.execute(sql.SQL('REVOKE INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER ON public.checkpoint_migrations FROM {}').format(role))
    db.execute(sql.SQL('REVOKE INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER ON mingjing_core.schema_migrations FROM {}').format(role))
-   db.commit()
   save('migration-receipt.json',{'version':8,'repeat':{k:second[k] for k in ('message_metadata','search_tokens','assistant_created')},'privacy_equal':True,'source_oid':read('database-before.json')['oid'],'target_oid':read('restore-verified.json')['oid']})
  finally:r.close();allow(c,NEW,False)
  zero(c,LIVE);zero(c,NEW)

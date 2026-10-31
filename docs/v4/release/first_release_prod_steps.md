@@ -1,6 +1,6 @@
 # 首发生产分步脚本（R51）
 
-由 `first_release_prod_steps_gen.py` 从执行单（sha256 `17ef7a87b44493801ee8f45308ef368a2bf6d0cf8956e4fd1166028786bb6f3c`）生成，脚本在 `private/fr-prod-1a131275da9dc8d6/`。17 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
+由 `first_release_prod_steps_gen.py` 从执行单（sha256 `d3e675b34b9d60d26e38374105f683622915225d2538bacae9b4e508c16a279b`）生成，脚本在 `private/fr-prod-1a131275da9dc8d6/`。17 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
 
 | 步骤 | 执行单块 | 对照 | sha256 前 12 位 |
 | --- | --- | --- | --- |
@@ -18,7 +18,7 @@
 | p06b-d2-status | — | 后台状态查询 | `80757d0c3918` |
 | p07a-d3-start | 7 | 一致 | `ae58a241c843` |
 | p07b-d3-status | — | 后台状态查询 | `8952e5c3cf0c` |
-| p08a-d4-start | 8 | 一致 | `9be66d4336de` |
+| p08a-d4-start | 8 | 一致 | `937677b38278` |
 | p08b-d4-status | — | 后台状态查询 | `593ddd4f378e` |
 | p09-d5-exchange | 9 | 一致 | `8c1f781e3669` |
 | p10-d5-assets | 10 | 一致 | `9721d4afbbe7` |
@@ -114,7 +114,7 @@ D5 尾没有补回执时不能进 R1：R1 要求 `exchange-receipt.json`，先�
 | `c-wait-zero` | `c75d024b7a9da0ec38b3eec707ca74fcd9a8c16c5ea15fde6778b9538051f9a3` |
 | `c-d2-rerun-prep` | `81ce18249cb5846e799b6873ee8e3826d561fe095141f0432483d3bce3b275c8` |
 | `c-d3-rerun-prep` | `73624151e44efd3fa3c096e8f888832e28541d8f7a2e2d434db11e840d462727` |
-| `c-d4-rerun-prep` | `08c3acf4c3c46992b3d0396084ad51bd6827973bc891e9d6ddd6b08bffa3c0ff` |
+| `c-d4-rerun-prep` | `6e9f7c2b811bd97b78fa3e7033a6a8028f4a6f2922ceb2962fd011ad937b26f3` |
 | `c-d2-mid-start` | `904b044f5e587e4ac9d6b290932b8facb277bdad9021ee50db0ff4bbc07da963` |
 | `c-d2-mid-status` | `d28362f1f21ad2d0a376ef9789d206649144b6afc5fa7e201fd9509aad1b1a85` |
 | `c-d2-tail-start` | `f2d548d1d8d21ea2d6ea57650af2a48957f3ff3b82a9a9aaa87707022bb32eab` |
