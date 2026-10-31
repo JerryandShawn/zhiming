@@ -2,6 +2,36 @@
 
 当前工作树仅 `C:/Users/Administrator/Documents/Codex/zhiming-v4-p10`，分支 `v4/p10-frontend`，恢复头e1cbd281。遵循.agent/PLANS.md。指令板v3和49第一/第三节取代v2暂停；截止2026-11-02 22:00北京时间。中档，不开子代理，本线测试进程最多2，runner最多2 workers；不改后端、服务器、真实模型、飞书或合并，不新增依赖。
 
+## v6 Progress（Kimi，2026-10-30 起）
+
+- [x] 读取39d、frontend v6/v5/v4/v3、49、44、10-23/10-27交接、P10设计与根AGENTS；工作树/分支/头与bae83a43一致，未改其他线。
+- [x] `#/spaces`：新增实际页面5项行为、四视口双主题8项全Axe矩阵；旧spaces回归合计15/15。修复切区重建内存服务导致修改丢失。全量1501/1501。干净头gzip五冷p75 4148ms，未达2500，证据已推送890c777f。
+- [x] 整理/研习draft端口：严格HTTP投影、内存合成服务和真实loopback共17/17；整理record_only不放开应用，研习进度独立null/0、PUT修订和版本冲突。未接真实UI/PG。
+- [x] C3接生产对话：v4提交/状态/停止/恢复，附图与旧恢复保留v3；专项5/5、浏览器10/10、8图全Axe，原v3定向25/25。干净头真实HTTP五冷p75 5840ms，未达2500。端口与C3已推送89ef6e76。
+- [x] B6文档补齐生产构建、CSP Report-Only、nginx `/v4/`、gzip/SSE边界；没有部署或改服务器。
+- [x] `/v4/`统一静态基址：HTML相对资源、公开JSON按document.baseURI解析，API和共享塔罗路径不变。定向46/46、真实`/v4/` HTTP 2/2（课程、字体、manifest、SW scope、深链、旧根路径）。最终全量1531/1531、119文件，lint/typecheck/build绿。
+- [x] 首轮完整浏览器在night停止：204过/16失败；第二轮night为197过/23失败，均为多份spec用`wx`写固定历史截图导致EEXIST。配置层统一批次化ignored目录后，第三次night为219/220，唯一ERR_NO_BUFFER_SPACE在并行preview资源竞争后出现，单独串行复验1/1通过；不屏蔽console。最终完整串行入口**542/542全绿**（133/15/10/64/220/88/10/2）；`/v4/`截图已显式390×844重拍。真实API/PG、生产CSP/反代、飞书真机及2500ms性能门槛仍未完成，最新提交CI待核。
+
+## v6 Surprises & Discoveries
+
+- 多份night规格共享同一`NIGHT_EVIDENCE_DIR`设计，单修night-tools不足；在配置层统一默认批次目录才能覆盖全部调用，显式输出保持不变。只改测试输出位置，不改业务断言或删除历史证据。
+- spaces路由key曾使切区重建假服务，移动后数据丢失；稳定key保留实例。性能不能由行为/视觉通过外推，spaces与对话分别实测4148/5840ms。
+- C3浏览器首轮失败来自合成运行未置succeeded，控制器正确拒绝旧终态；修夹具而非放宽权威断言。终稿后的历史refetch属于预期请求。
+- `base:'./'`并不覆盖HTML绝对字体/PWA与公开JSON；manifest/SW本身可按scope解析。shell-manifest是构建核对产物，不会由浏览器自动请求，测试须显式GET。
+- 字体旧测试只认根绝对URL，改为同时接受根/相对形式并保留唯一预加载、全部本地文件断言。Node24与CI Node22分开记录；89ef6e76的CI单测/构建绿但浏览器失败，公开日志API返回403。
+
+## v6 Decision Log
+
+- 仅做前端工作树内的显式合成端口和本机HTTP，不等待或捏造主线API；main@b996f420仍无`docs/v4/contracts/api_*.md`。draft来源固定daccd26c，后续mod仅handoff文字变化。
+- 生产对话默认v4，但附件/旧恢复保留v3；任何网络结果不明都不跨端点双发。pending保存验收回执，刷新只GET原运行。
+- `/v4/`采用相对静态基址，API `/api/`和共享`/static/tarot/`不改；CSP保留经审查的style属性例外，不冒称仅style-src self。真实飞书来源仍占位待主线。
+- 所有2500ms未达标项原样保留，不用H5、包体、骨架屏或较快子样本替代；没有部署、合并、rebase、强推、后端或真实模型请求。
+
+## v6 Outcomes & Retrospective
+
+- 已形成spaces、draft端口、C3对话、B6和`/v4/`可审查候选；证据位于`web/evidence/2026-10-30/`及`2026-10-27/{spaces,thread}-performance/`。
+- 当前最新完整单测1531/1531、完整串行浏览器542/542；最新提交CI仍须另核，未核前不写CI全绿或上线就绪。以下10-27记录保留为历史。
+
 ## Progress
 
 - [x] 2026-10-27T19:00:55+08:00 C3控制器通过（1480/1480全量单测；本机Node24下3个loopback HTTP文件改node环境，断言不变）。Claude接手前端线。

@@ -137,7 +137,7 @@ describe('published Fontsource coverage and binary invariants', () => {
       expect(available.has(path![1])).toBe(true);
     }
     const html = readFileSync(resolve(root, 'index.html'), 'utf8');
-    const preloads = [...html.matchAll(/href="\/fonts\/([^"/]+\.woff2)"/g)];
+    const preloads = [...html.matchAll(/href="(?:\.?\/)?fonts\/([^"/]+\.woff2)"/g)];
     expect(preloads.length).toBeGreaterThan(0);
     for (const match of preloads) expect(available.has(match[1])).toBe(true);
   });
@@ -154,9 +154,11 @@ describe('published Fontsource coverage and binary invariants', () => {
     const links = [...html.matchAll(/<link\b[^>]*>/g)].map(([link]) => link);
     const fontHints = links.filter((link) => /rel="preload"/.test(link) && /as="font"/.test(link));
     expect(fontHints).toHaveLength(1);
-    expect(fontHints[0]).toContain('href="/fonts/noto-sans-sc-119-wght-normal.woff2"');
+    expect(fontHints[0]).toMatch(/href="(?:\.?\/)?fonts\/noto-sans-sc-119-wght-normal.woff2"/);
     expect(fontHints[0]).toContain('fetchpriority="low"');
-    expect(links.some((link) => /rel="stylesheet"/.test(link) && /href="\/fonts\/fonts.css"/.test(link))).toBe(true);
+    expect(links.some((link) => /rel="stylesheet"/.test(link) && /href="(?:\.?\/)?fonts\/fonts.css"/.test(link))).toBe(
+      true,
+    );
     expect(publicFaces().some((face) => face.src.includes('noto-sans-sc-latin-wght-normal.woff2'))).toBe(true);
   });
 });

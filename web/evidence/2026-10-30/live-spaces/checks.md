@@ -7,4 +7,5 @@
 - 修复后 `npm run test:spaces`：15/15，通过新建、改名、归档/恢复、移动、敏感区键盘导航及旧 spaces 演示回归；API/外域请求 0。
 - `npm run test:live-spaces-visual`：8/8，375/390/768/1440 × 宣纸/夜墨；全 Axe 规则、横向溢出、小字、朱砂预算、控制台/页面错误、API/外域请求均为 0。截图与逐图 SHA 见 `visual-summary.json` 和 `screenshots/`。
 - `npm test -- --maxWorkers=2`：115 文件、1501/1501 通过；`npm run lint`、`npm run typecheck`、`npm run build` 通过。
-- 未验证：真实接口、真实 PG、登录态、真机、服务器与部署；性能结果另存 `spaces-performance/`，不以本文件预写达标。
+- 性能：890c777f干净头gzip五冷4G/CPU4的LCP为2104/2064/4184/4148/4128ms，p75 **4148ms，未达2500ms**；源/构建/工具稳定，API/外域/资源失败0。报告见`../../2026-10-27/spaces-performance/890c777f-clean/`。
+- 未验证：真实接口、真实 PG、登录态、真机、服务器与部署；功能/视觉通过不代表性能就绪。

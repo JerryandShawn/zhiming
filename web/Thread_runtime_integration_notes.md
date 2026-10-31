@@ -1,5 +1,11 @@
 # 线程与补发接线核对（2026-10-21 11:05 +08:00）
 
+## 2026-10-30 更新：C3已接生产对话页
+
+`src/chat/useThreadChat.ts` 组合 v4 与原 v3：无附图的新消息经 `threadSubmitPort` 提交，保存线程目标与验收回执后由 C3 驱动状态、停止和终稿；附图及旧恢复继续走 `executeV3`，结果不明时不双发。v4 pending 跨刷新只恢复原运行。`src/live/Chat.tsx` 保留默认 v3 测试入口，生产 `src/App.tsx` 显式使用 v4。
+
+v4 专项单测5/5、原v3定向25/25、生产默认浏览器10/10（含四视口双主题8组）通过；全量1523/1523。证据`evidence/2026-10-30/thread-chat/`。干净头真实loopback HTTP五冷p75 LCP 5840ms，未达2500；真实PG/模型/部署仍未验。下文保留各端口形成过程。
+
 ## 2026-10-27 17:49 +08:00 更新：C2状态与取消端口候选，C3/UI仍待
 
 只读主线27b8的`adapters/web.py` blob dea7d9ff确认GET run十字段和cancel ack；`read_result`会严格core4并加兼容answer，本线仍只认core4 `receipts`。`threads/authority.ts`只输出runId/status/attempts，succeeded才附严格终稿，可选meta须绑定同run/operation；非终态不读取旧result，checkpoint/dependencies/error不读不输出。zero call_limit合法（SQL仅要求0≤calls≤call_limit），不添加前端正数门槛。

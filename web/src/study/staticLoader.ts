@@ -1,3 +1,4 @@
+import { publicAssetPath } from '../publicAsset';
 import type { StudyPort } from './types';
 import { createStudyPort } from './port';
 import { glossaryManifest, learningManifest, type OutputEntry } from './manifests';
@@ -24,7 +25,7 @@ const digest = async (body: ArrayBuffer) =>
   ).join('');
 async function download(location: string, signal?: AbortSignal) {
   studyNeed(allowed.has(location));
-  const response = await fetch(location, {
+  const response = await fetch(publicAssetPath(location), {
     method: 'GET',
     signal,
     credentials: 'omit',

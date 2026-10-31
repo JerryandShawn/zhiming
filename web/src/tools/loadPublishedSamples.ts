@@ -1,3 +1,4 @@
+import { publicAssetPath } from '../publicAsset';
 import { createToolDemoPort, ToolViewError } from './port';
 import type { PublishedSample, ToolName, ToolPort } from './types';
 
@@ -83,7 +84,7 @@ export function readPublicSample(value: unknown, entry: Entry, commit: string): 
 }
 
 async function download(filename: string, signal?: AbortSignal) {
-  const response = await fetch(`/data/tools/${filename}`, {
+  const response = await fetch(publicAssetPath(`/data/tools/${filename}`), {
     signal,
     cache: 'no-store',
     credentials: 'omit',

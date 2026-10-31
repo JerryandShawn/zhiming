@@ -1,3 +1,4 @@
+import { publicAssetPath } from '../../publicAsset';
 import { StudyDataError, studyNeed } from '../validation';
 import { readCourse } from './readCourse';
 import type { CourseData } from './types';
@@ -10,7 +11,7 @@ export type CourseLoader = (signal: AbortSignal) => Promise<CourseData>;
 export const loadCourse: CourseLoader = async (signal) => {
   try {
     signal.throwIfAborted();
-    const response = await fetch(COURSE_URL, {
+    const response = await fetch(publicAssetPath(COURSE_URL), {
       method: 'GET',
       signal,
       credentials: 'omit',

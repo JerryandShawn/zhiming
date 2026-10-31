@@ -3,7 +3,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { auditNight, guardNight, assertNightQuiet } from './night-helpers';
 
-const directory = process.env.NIGHT_EVIDENCE_DIR ?? 'evidence/2026-10-21/tools';
+const batch = (process.env.NIGHT_TOOLS_RUN_ID ?? new Date().toISOString()).replace(/[^a-zA-Z0-9-]/g, '-');
+const directory = process.env.NIGHT_EVIDENCE_DIR ?? path.join('test-results/night-tools-evidence', batch);
 async function capture(page: Page, name: string, info: TestInfo) {
   await fs.mkdir(directory, { recursive: true });
   const file = path.join(directory, `${name}.png`);

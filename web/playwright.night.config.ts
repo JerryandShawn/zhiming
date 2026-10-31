@@ -1,5 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
+process.env.NIGHT_EVIDENCE_DIR ??= `test-results/night-evidence/${new Date().toISOString().replace(/[^a-zA-Z0-9-]/g, '-')}`;
+
 export default defineConfig({
   testDir: './tests/e2e',
   testMatch: 'night-*.spec.ts',
