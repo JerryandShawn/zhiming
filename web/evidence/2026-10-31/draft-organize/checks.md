@@ -8,5 +8,6 @@
 - 完整串行浏览器入口552/552：static 143、spaces 15、components 10、components-visual 64、night 220、overnight 88、thread-chat 10、`/v4/` 2、draft-organize 10。
 - 五冷性能：`4b3382fd`干净头p75 4024ms，未达2500；证据`web/evidence/2026-10-27/organize-performance/4b3382fd-clean/`。行为回归不替代性能门。
 - 瀑布定位：首轮主组件约1874ms到达，pencil/shield-check两个微型分包约3824/3901ms才到达，LCP为3960ms。字体18片约1.05MB与微型分包共享带宽；不把此观察冒称已优化。
-- 合包候选：Lucide 5.92KB gzip、draft共享包4.45KB gzip；dirty五冷1932/1936/1940/1968/1984ms，p75 1968ms，见`grouped-runtime-candidate/`。包体/PWA40/40、功能/路由39/39；干净头复测另核。
-- 未验证：正式接口、真实PG、跨设备持久化、生产CSP/反代。性能未达标不因此改变。
+- 合包候选：Lucide 5.92KB gzip、draft共享包4.45KB gzip；dirty五冷p75 1968ms，见`grouped-runtime-candidate/`。包体/PWA40/40、功能/路由39/39。
+- 干净头`408a7264`五冷1952/1980/1972/1960/1980ms，p75 1980ms，五轮均通过2500ms门槛；证据`408a7264-clean/`。该成绩仅限整理页，不替代课程/spaces/对话的未达标报告。
+- 未验证：正式接口、真实PG、跨设备持久化、生产CSP/反代。整理页本机性能通过不代表真实接口或其他页面性能已验收。
