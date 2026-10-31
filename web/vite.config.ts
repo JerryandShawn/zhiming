@@ -19,7 +19,11 @@ export default defineConfig({
       },
       output: {
         entryFileNames: (chunk) => (chunk.name === 'legacy' ? 'legacy-stream.js' : 'assets/[name]-[hash].js'),
-        manualChunks: { react: ['react', 'react-dom'] },
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          icons: ['lucide-react'],
+          'draft-shared': ['./src/modules/draftApi.ts', './src/threads/request.ts'],
+        },
       },
     },
   },
