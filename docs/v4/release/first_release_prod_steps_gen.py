@@ -149,8 +149,6 @@ print('R59: live database admission opened behind the public maintenance gate')
 PY
 systemctl start mingjingtai.service
 systemctl is-active --quiet mingjingtai.service
-systemctl start zhiming-core-feishu.service
-systemctl is-active --quiet zhiming-core-feishu.service
 "$FR_PY" -I - "$FR_OP" <<'PY'
 import sys,time,urllib.error,urllib.request
 sys.path.insert(0,sys.argv[1]);from context import *
@@ -168,11 +166,13 @@ for _ in range(30):
 assert body and body['ok'] is True and body['database']=='postgresql' and body['context_version']=='core3.0','R59 health failed; maintenance retained'
 print('R59: old web healthy behind the public maintenance gate; token output=0')
 PY
-rm /www/wwwroot/p-acme/core-maintenance.flag
 "$FR_PY" -I - "$FR_OP/units-before.json" > "$FR_OP/r04-timer-state.txt" <<'PY'
 import json,sys
 print(json.load(open(sys.argv[1]))['zhiming-core-reports.timer']['ActiveState'])
 PY
+rm /www/wwwroot/p-acme/core-maintenance.flag
+systemctl start zhiming-core-feishu.service
+systemctl is-active --quiet zhiming-core-feishu.service
 if test "$(cat "$FR_OP/r04-timer-state.txt")" = active; then systemctl start zhiming-core-reports.timer; fi
 echo "R59: maintenance removed; report timer restored to $(cat "$FR_OP/r04-timer-state.txt")"
 """
@@ -220,7 +220,17 @@ assert b"\r" not in reopen
 (OUT / "r04-reopen-after-rollback.sh").write_bytes(reopen)
 check = subprocess.run([GIT_BASH, "-n", str(OUT / "r04-reopen-after-rollback.sh")], capture_output=True, text=True)
 assert check.returncode == 0, check.stderr
-listing = {**manifest, "r04-reopen-after-rollback": {"sha256": hashlib.sha256(reopen).hexdigest(), "runbook_blocks": []}}
+timer_lines = [line for line in REOPEN.splitlines(keepends=True) if line.startswith('if test "$(cat "$FR_OP/r04-timer')]
+assert len(timer_lines) == 1
+held = (HEADER + REOPEN.replace(timer_lines[0], "")).encode("utf-8").replace(b"report timer restored to", b"report timer held; was")
+(OUT / "r04-reopen-timer-held.sh").write_bytes(held)
+check = subprocess.run([GIT_BASH, "-n", str(OUT / "r04-reopen-timer-held.sh")], capture_output=True, text=True)
+assert check.returncode == 0, check.stderr
+listing = {
+    **manifest,
+    "r04-reopen-after-rollback": {"sha256": hashlib.sha256(reopen).hexdigest(), "runbook_blocks": []},
+    "r04-reopen-timer-held": {"sha256": hashlib.sha256(held).hexdigest(), "runbook_blocks": []},
+}
 (OUT / "steps.json").write_text(json.dumps(listing, indent=1), encoding="utf-8")
 
 rows = [
@@ -243,8 +253,12 @@ rows += [
     "",
     "`r04-reopen-after-rollback.sh`，sha256 `" + hashlib.sha256(reopen).hexdigest() + "`。不改执行单。"
     "只有用户或大脑当次明确下令才执行：发送脚本另外要求 `reopen-order.json`，默认流程不会带上它。"
-    "顺序：r03 通过 → 开库连接 → 启动 7dbc951 旧服务 → 门内健康检查 → 去维护标记 → timer 按 D1 原状态恢复。"
-    "任何一步失败即停，维护页保持；健康检查失败时已启动的旧服务不自动停，等指令。不删除任何发布、备份或库。",
+    "顺序：r03 通过 → 开库连接 → 启动 7dbc951 Web → 门内健康检查 → 读 timer 原状态 → 去维护标记 → 启动飞书并确认 active → timer 按原状态恢复。"
+    "飞书走外连长连接，不经过 nginx，维护门挡不住，所以和 D7 一样在去维护标记之后才启动。"
+    "下这个令同时表示接受到期报告恢复投递；不接受就改用 `r04-reopen-timer-held.sh`（sha256 `"
+    + hashlib.sha256(held).hexdigest()
+    + "`），它只少恢复 timer 这一行。"
+    "任何一步失败即停；健康检查失败时维护页保持，只有 Web 在门内运行，不自动停，等指令。不删除任何发布、备份或库。",
     "",
     "```bash",
     REOPEN.rstrip("\n"),

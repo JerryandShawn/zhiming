@@ -33,7 +33,7 @@
 
 ## 附录：回滚后重新开门（R59，不在默认流程）
 
-`r04-reopen-after-rollback.sh`，sha256 `6465d08d1e3528e054595db91c4472150ee785c2ecf230e05364cee05bb2d395`。不改执行单。只有用户或大脑当次明确下令才执行：发送脚本另外要求 `reopen-order.json`，默认流程不会带上它。顺序：r03 通过 → 开库连接 → 启动 7dbc951 旧服务 → 门内健康检查 → 去维护标记 → timer 按 D1 原状态恢复。任何一步失败即停，维护页保持；健康检查失败时已启动的旧服务不自动停，等指令。不删除任何发布、备份或库。
+`r04-reopen-after-rollback.sh`，sha256 `2d72038f6c4152c2fb159acc0637cde75581d150d704900db7ebec76b5b777eb`。不改执行单。只有用户或大脑当次明确下令才执行：发送脚本另外要求 `reopen-order.json`，默认流程不会带上它。顺序：r03 通过 → 开库连接 → 启动 7dbc951 Web → 门内健康检查 → 读 timer 原状态 → 去维护标记 → 启动飞书并确认 active → timer 按原状态恢复。飞书走外连长连接，不经过 nginx，维护门挡不住，所以和 D7 一样在去维护标记之后才启动。下这个令同时表示接受到期报告恢复投递；不接受就改用 `r04-reopen-timer-held.sh`（sha256 `5836b0427176ae3f7299647549e24ef82860e6963743e343b7b4fa50f7557761`），它只少恢复 timer 这一行。任何一步失败即停；健康检查失败时维护页保持，只有 Web 在门内运行，不自动停，等指令。不删除任何发布、备份或库。
 
 ```bash
 test ! -e "$FR_OP/opened.json"
@@ -50,8 +50,6 @@ print('R59: live database admission opened behind the public maintenance gate')
 PY
 systemctl start mingjingtai.service
 systemctl is-active --quiet mingjingtai.service
-systemctl start zhiming-core-feishu.service
-systemctl is-active --quiet zhiming-core-feishu.service
 "$FR_PY" -I - "$FR_OP" <<'PY'
 import sys,time,urllib.error,urllib.request
 sys.path.insert(0,sys.argv[1]);from context import *
@@ -69,11 +67,13 @@ for _ in range(30):
 assert body and body['ok'] is True and body['database']=='postgresql' and body['context_version']=='core3.0','R59 health failed; maintenance retained'
 print('R59: old web healthy behind the public maintenance gate; token output=0')
 PY
-rm /www/wwwroot/p-acme/core-maintenance.flag
 "$FR_PY" -I - "$FR_OP/units-before.json" > "$FR_OP/r04-timer-state.txt" <<'PY'
 import json,sys
 print(json.load(open(sys.argv[1]))['zhiming-core-reports.timer']['ActiveState'])
 PY
+rm /www/wwwroot/p-acme/core-maintenance.flag
+systemctl start zhiming-core-feishu.service
+systemctl is-active --quiet zhiming-core-feishu.service
 if test "$(cat "$FR_OP/r04-timer-state.txt")" = active; then systemctl start zhiming-core-reports.timer; fi
 echo "R59: maintenance removed; report timer restored to $(cat "$FR_OP/r04-timer-state.txt")"
 ```
