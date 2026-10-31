@@ -1,0 +1,113 @@
+{
+  "recorded_at": "2026-10-21T01:28:26+08:00",
+  "branch": "v4/p3-wire-p6-20261021",
+  "base": "7c07038fa6e00c9d54360e7d764a6c3d6a1bd0a8",
+  "candidate_status": "offline draft; no branch merge",
+  "source_manifest_sha256": "2ac1f7ec4608890144253a0598685e6134f990528b76bf197571426a8840b4fe",
+  "module_source": {
+    "status": "draft isolated P6 dependency; no module merge",
+    "source_ref": "origin/v4/mod-organize",
+    "source_commit": "ebfa22f8f7c59e486c6632035ae6bc8307f0f438",
+    "files": {
+      "__init__.py": {
+        "source_path": "mingjing_core/validation/__init__.py",
+        "sha256": "904d1d4d44daba4bc3baf6b682c7fb9071caa8b5a38d2b688746d955717250e7",
+        "source_git_blob": "652f0ac44ddd3e21a1ab8281bcf0c9393c961fb7"
+      },
+      "structural.py": {
+        "source_path": "mingjing_core/validation/structural.py",
+        "sha256": "9631f04fad86a30263e38fa0fb47feef831f99bdefbbb802b45ece1b5058e228",
+        "source_git_blob": "dba144cc3c8aa8e80471103bb183e9b104e6af48"
+      },
+      "structural_contracts.py": {
+        "source_path": "mingjing_core/validation/structural_contracts.py",
+        "sha256": "7ea96f0fbaf8f1b8ad0fe82dd7b69579d21d3558669972f54da06ba7dfe92621",
+        "source_git_blob": "ad6d31d3eff287139afe30fe008f0b125ab78505"
+      },
+      "structural_dates.py": {
+        "source_path": "mingjing_core/validation/structural_dates.py",
+        "sha256": "7738231f0e06c5ce138e18e3857556b4a8a237d644ccab1db68f0e6a55fa66fe",
+        "source_git_blob": "f517d9d4db738154198cc7bc05ae29b528fc696e"
+      },
+      "structural_receipts.py": {
+        "source_path": "mingjing_core/validation/structural_receipts.py",
+        "sha256": "a8dc74373fcb0d44d2161cb4ba0f5fccc8f401a12e315bfc0e224f78f7a41df8",
+        "source_git_blob": "3b19fb6b6fc8fbce6dc0dd7a1643cdedede84808"
+      },
+      "legacy_lint.py": {
+        "source_path": "mingjing_core/validation/legacy_lint.py",
+        "sha256": "6b68bf032d893c8d49b70f8ee97dc7cc64034887652f53363cd5f25978f2cf06",
+        "source_git_blob": "0d06b2ff56315317c4816c80e4284e17c6b9268d"
+      },
+      "legacy_decisions.py": {
+        "source_path": "mingjing_core/validation/legacy_decisions.py",
+        "sha256": "2a256af608573c09ed9b609d717364fe89a58d7d8d00ef11b62b062fd0ae85af",
+        "source_git_blob": "9ee770ae0f90785c182db703e4d8eecf59cb5e19"
+      },
+      "legacy_guarantees.py": {
+        "source_path": "mingjing_core/validation/legacy_guarantees.py",
+        "sha256": "6b8b961cb30f642c06fbe244151ccce43cddba058dcdc769941aafd0b98ddbf5",
+        "source_git_blob": "70144eaac63fb635fa3c226e4821b3e3a7967682"
+      },
+      "legacy_guarantee_denials.py": {
+        "source_path": "mingjing_core/validation/legacy_guarantee_denials.py",
+        "sha256": "f9f115dd32ce2cf893fa4956ffa08892e011844abf00fd91c4682e5a364f3bff",
+        "source_git_blob": "fce6e80ac77063f751e036cd64fb71394464196d"
+      },
+      "legacy_save.py": {
+        "source_path": "mingjing_core/validation/legacy_save.py",
+        "sha256": "a9c52752de0b5578a25ae805175c0049f9ea1c675e8ef8226b390e14415ef6c8",
+        "source_git_blob": "dfe1f075c60494b32a659553275f8854f91cdaea"
+      },
+      "legacy_symbolic.py": {
+        "source_path": "mingjing_core/validation/legacy_symbolic.py",
+        "sha256": "646fdd23c209f644138ffb9dbe1c2cf70446d6593276a991761da83b83457347",
+        "source_git_blob": "77ec042024b3c0e03114899778a5ed2b2b1e9e5e"
+      }
+    }
+  },
+  "adapted_files": {
+    "mingjing_core/application/agent_runtime.py": "c81c92d3143d0d75233db38e97643507404c8c83560c4b67d107a1f803276a56",
+    "mingjing_core/application/p6_projection.py": "b7127406835cf30d33372ceb7d8a8f46ffadaf3d9e824f71c65dc188e2aa5358",
+    "mingjing_core/application/p6_records.py": "beb7911761986c3f5c19c1c26aed0631d208f7b0b6084b6baab46364e5e4a38d",
+    "mingjing_core/application/p6_validation.py": "62192b16a570ff11ccf716066e6b9d9af28558a30a543bd3be0eaa32b5d937fa",
+    "mingjing_core/validation/structural.py": "d86e63b1e0e4feff87e10ec6cd9fba1ad07670ddadcd3d8175466493c4e568f9",
+    "tests/v4/agent/test_p6_wire_pg.py": "e0a4d1bf535ce8e2d01cc758785a3098f49a5c76489c421b4aaff74d042335c8",
+    "tests/v4/agent/test_p6_annotation_compat.py": "f47fa632897f7c1b2ce290318c12a2fefd8d856f57b32b686ca2093d356f815e"
+  },
+  "tests": [
+    {
+      "scope": "new bridge and annotation compatibility",
+      "passed": 22,
+      "seconds": 5.0,
+      "real_pg": 12,
+      "source_integrity": 1,
+      "pure_annotation": 9
+    },
+    {
+      "scope": "related runtime/options/envelope/U41",
+      "passed": 90,
+      "seconds": 20.4,
+      "warnings": 0
+    }
+  ],
+  "static": {
+    "ruff": "E,F,I,B,UP,SIM",
+    "line_length": 120,
+    "formatted_files": 18,
+    "adapted_file_function_limits": "400/60 passed"
+  },
+  "external_actions": {
+    "model_requests": 0,
+    "server_connections": 0,
+    "feishu_sends": 0,
+    "merges": 0
+  },
+  "limitations": [
+    "default off; trusted constructor injection only",
+    "P6 v2 critic/calibration and professional revalidator not connected",
+    "farewell detection remains false",
+    "no frontend/deployment acceptance",
+    "P3 structural annotation compatibility has a separate 19-line draft diff"
+  ]
+}

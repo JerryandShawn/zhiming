@@ -1,0 +1,105 @@
+{
+  "schema": "p6-exact-linux-ci-evidence-v1",
+  "recorded_bjt": "2026-10-21T10:18:24.253955+08:00",
+  "local_sha": "4eac85ecc2d4ab7ef7bc99cca670c79b55784e70",
+  "remote_sha": "337e66fba24e8c949d956f655453cd6f9ae1664f",
+  "run_id": 39528346446,
+  "job_id": 118988178456,
+  "conclusion": "success",
+  "node_actual": "22.23.3",
+  "python_actual": "3.11.17",
+  "postgres_major": 15,
+  "core": {
+    "tests": 581,
+    "seconds": 1091.54,
+    "conclusion": "OK"
+  },
+  "v4": {
+    "passed": 2297,
+    "ordinary_skipped": 19,
+    "strict_xfailed": 1,
+    "warnings": 2,
+    "seconds": 707.58,
+    "skip_nodes_not_exposed_by_q_log": true
+  },
+  "framework_self_test": {
+    "passed": 48,
+    "warnings": 1,
+    "seconds": 17.13,
+    "fake_scenarios_passed": 80,
+    "fake_scenarios_count": 80
+  },
+  "modelport": {
+    "passed": 222,
+    "warnings": 1,
+    "seconds": 89.09,
+    "coverage_percent": 95,
+    "transport": "synthetic"
+  },
+  "c21_scripted": {
+    "passed": 80,
+    "count": 80
+  },
+  "frontend_commands_step": "success; legacy checks, not P10 acceptance",
+  "connector_utf8_log_copy": {
+    "bytes": 216343,
+    "sha256": "8ff53e6b54573a9390fd0fc20684bfef72e91631013d8054e2abb238f17a21ce"
+  },
+  "safety": {
+    "real_provider_requests": 0,
+    "feishu_sends": 0,
+    "server_access": 0
+  },
+  "limitations": [
+    "19 ordinary skipped B1 opt-in checks were not executed; correlated by exact-source order, no original Linux JUnit",
+    "old strict receipt DOM xfail not a pass",
+    "P1b is not integrated on this P6 source",
+    "not whole P6/P3 acceptance or deployment",
+    "later docs source does not inherit this exact result",
+    "Workflow is associated with head337e but actually tested the PR merge preview; not standalone head tree523fe"
+  ],
+  "corrected_bjt": "2026-10-21T10:32:03.483974+08:00",
+  "head_tree": "523fe45e026d25015530fcbd8794d6b8a221d4dd",
+  "actual_checkout_sha": "c79b9e6a9a670e0f68a233156416045f34a4a41d",
+  "tested_tree": "1e81355101cde3419561d5ce2d9a4180a04fc298",
+  "tested_base_sha": "23ff14e4f96f9653fac3125c95e1a9b5f1c787d2",
+  "checkout_ref": "refs/remotes/pull/11/merge",
+  "skip_correlation": {
+    "schema": "p6-ci-actual-checkout-skip-correlation-v1",
+    "ci_head": "337e66fba24e8c949d956f655453cd6f9ae1664f",
+    "actual_ci_checkout": "c79b9e6a9a670e0f68a233156416045f34a4a41d",
+    "actual_ci_tree": "1e81355101cde3419561d5ce2d9a4180a04fc298",
+    "actual_ci_base": "23ff14e4f96f9653fac3125c95e1a9b5f1c787d2",
+    "progress_items": 2317,
+    "collection_items": 2317,
+    "skip_nodes_correlated_by_exact_order": [
+      "tests/v4/release/test_b1_linux_application_pg.py::test_actual_primary_backfill_dry_apply_repeat_preserves_originals_and_secondary",
+      "tests/v4/release/test_b1_linux_application_pg.py::test_unqualified_source_fails_without_partial_backfill[queue]",
+      "tests/v4/release/test_b1_linux_application_pg.py::test_unqualified_source_fails_without_partial_backfill[marker]",
+      "tests/v4/release/test_b1_linux_application_pg.py::test_unqualified_source_fails_without_partial_backfill[ledger]",
+      "tests/v4/release/test_b1_linux_application_pg.py::test_restarting_whole_backfill_receipt_does_not_relabel_noop_as_first_success",
+      "tests/v4/release/test_b1_linux_application_pg.py::test_open_competing_session_rejected_without_backfill",
+      "tests/v4/release/test_b1_linux_application_pg.py::test_partial_metadata_and_token_writes_roll_back_when_reply_cannot_be_attributed",
+      "tests/v4/release/test_b1_linux_application_pg.py::test_extra_primary_original_is_rejected_without_metadata_writes",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_real_dump_restore_migrate_replay_permissions_never_create_admissible_windows_proof",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_nonempty_target_rejects_before_restore_and_does_not_clear_existing_rows",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_unknown_type_or_empty_namespace_blocks_restore_and_is_preserved[enum]",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_unknown_type_or_empty_namespace_blocks_restore_and_is_preserved[namespace]",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_invalid_archive_returns_fixed_code_and_no_proof_without_echoing_bytes",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_restored_content_mismatch_never_migrates_and_retains_schema4_for_review",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_writer_permissions_check_rejects_real_ddl_grant_after_valid_restore[schema]",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_writer_permissions_check_rejects_real_ddl_grant_after_valid_restore[temporary]",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_writer_permissions_reject_both_migration_ledgers_becoming_writable",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_other_target_session_refuses_empty_target_without_mutation",
+      "tests/v4/release/test_b1_restore_proof_pg.py::test_active_restore_run_stops_before_forward_migration_even_if_latest_would_revoke_it"
+    ],
+    "strict_xfail_nodes": [
+      "tests/v4/agent/test_legacy_dom_runtime_pg.py::test_legacy_dom_displays_actual_core4_memory_receipt"
+    ],
+    "source_fixture_reason": "requires explicit disposable loopback PG15 administration DSN",
+    "required_environment_key": "B1_PROOF_TEST_ADMIN_DSN",
+    "tests_executed_by_collection_diagnosis": 0,
+    "physical_pg_connections": 0,
+    "limitation": "Exact-order correlation and audited fixture, not the original Linux JUnit; skips are not passed B1 checks"
+  }
+}
