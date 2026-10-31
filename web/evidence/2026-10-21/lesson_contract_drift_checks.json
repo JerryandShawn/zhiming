@@ -1,0 +1,124 @@
+{
+  "old_ref": "0f1d6e676259b961819de4da5ea3f343d58dbe98",
+  "new_ref": "b9f07426cac3de993b0552c3a43eddcf75b2d06f",
+  "versions": [
+    {
+      "ref": "0f1d6e676259b961819de4da5ea3f343d58dbe98",
+      "curriculum_sha256": "172e78899d753d27dcf5a95620a99d5961d5a20c0d09b891956912e13ac32a60",
+      "lesson_count": 20,
+      "quiz_count": 40,
+      "cases": [
+        {
+          "case_id": "ayuan-bazi",
+          "chart_sha256": "fe11a98184a296417f927d16cc57ee3ba664d77865393b9f20b2f867b0ea313b",
+          "learning_sha256": "3f4ad34140fed9a80b2899c75fe9c736dbfb6a0a40e27bd662cd5d5f52f5b497",
+          "primary_refs": [
+            {
+              "document_id": "doc-1a2e2ef43ea218651aa94c23407b1993f4e292bd46a767172b72df9370a2890d",
+              "path": "/charts/1/data"
+            }
+          ]
+        },
+        {
+          "case_id": "ayuan-ziwei",
+          "chart_sha256": "306b1f368a310b6963187b983245e7c2d492b1ef59fbf99f8c5f28c3cd19571e",
+          "learning_sha256": "f6ec9b9709afa2266e6caebbc306d16eb9f33c970a6b5cc85aa13693b3ec90a0",
+          "primary_refs": [
+            {
+              "document_id": "doc-047d6ef8d90637a1e0b5c920eadd697edda1187909a999b12d20fb0d983a53dc",
+              "path": "/charts/1/ziwei_column"
+            }
+          ]
+        },
+        {
+          "case_id": "ayuan-astro",
+          "chart_sha256": "35a0bb10dce92aac401a49905b6c0d08fb127179de92418c79166c5ad8ea7f7c",
+          "learning_sha256": "1731e7bdeb4d06b29e7bcff3c9bcab0b2c306ebdac57e9e78ee9acf0bcf847a4",
+          "primary_refs": [
+            {
+              "document_id": "doc-6c8c2df511dca34bf4e71af36986b2e047b9d139f9f10e75dd31d8e9e00dccc4",
+              "path": "/artifacts/chart-3686c55a4452d118711b00b7/data"
+            }
+          ]
+        }
+      ],
+      "evidence_count": 20,
+      "astro_sun_evidence": [
+        {
+          "evidence_id": "astro_sun_sign",
+          "c_alias": "c2",
+          "relative_path": "/planets/太阳/sign"
+        }
+      ],
+      "source_registry_sha256": "a781219cbf9f364ca6fbe89e82ce5e4640a99851a29bc65988b7ddcfcf67f1f1"
+    },
+    {
+      "ref": "b9f07426cac3de993b0552c3a43eddcf75b2d06f",
+      "curriculum_sha256": "fe8b512e96be8b79c9453c1807801c9255c94bf9d7968bb4661f56c7ba77cc98",
+      "lesson_count": 20,
+      "quiz_count": 40,
+      "cases": [
+        {
+          "case_id": "ayuan-bazi",
+          "chart_sha256": "3c9f37431244ce9eee0405e38ef19b04c9ae683f8c55e9ade6a450144e4c1939",
+          "learning_sha256": "87aa72422f76a28e27f63d7d32a7da37242fc5d95a9289621ad99a74f3cbd642",
+          "primary_refs": [
+            {
+              "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+              "path": "/charts/1/data"
+            }
+          ]
+        },
+        {
+          "case_id": "ayuan-ziwei",
+          "chart_sha256": "c4b07c2bfaaec3aa73c989105c49400eacd192cc28971ce1dd81f4d956bfbd9d",
+          "learning_sha256": "e644c75f47fdcd8624b2b7d43cef35424ed363af4c13dedd15e7f3828a8ec16e",
+          "primary_refs": [
+            {
+              "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+              "path": "/charts/1/ziwei_column"
+            }
+          ]
+        },
+        {
+          "case_id": "ayuan-astro",
+          "chart_sha256": "c18003894a32d1ac49cf27be27f6afe8302f59fbeb651f7c558c0cdbf2f69168",
+          "learning_sha256": "fd6bc4f24fc118217b8fdfd0e2fff553a7f34a176f3fc3c8574ade34961f3503",
+          "primary_refs": [
+            {
+              "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+              "path": "/artifacts/chart-5860ebf5b8f6663217f504a7/data"
+            }
+          ]
+        }
+      ],
+      "evidence_count": 20,
+      "astro_sun_evidence": [
+        {
+          "evidence_id": "astro_sun_sign",
+          "c_alias": "c7",
+          "relative_path": "/planets/太阳/sign"
+        }
+      ],
+      "source_registry_sha256": "a781219cbf9f364ca6fbe89e82ce5e4640a99851a29bc65988b7ddcfcf67f1f1"
+    }
+  ],
+  "changed_lessons": [
+    {
+      "lesson_id": "lesson-20",
+      "changed_fields": [
+        "worked_examples",
+        "quiz"
+      ],
+      "old_sha256": "f17322f51718fde5a29830726559f847d1392c2f346b1e448f9837f476764308",
+      "new_sha256": "741c0b203ddf5df63c476001b869d0cd945d95ed417debf863c55780dc039f9b"
+    }
+  ],
+  "audit": "read-only-fixed-git-object-metadata-comparison",
+  "beijing_recorded": "2026-10-21T11:13:00+08:00",
+  "runtime_source_changed": false,
+  "public_study_assets_changed": false,
+  "tests_or_calculation_executed": false,
+  "network_requests": 0,
+  "real_model_calls": 0
+}

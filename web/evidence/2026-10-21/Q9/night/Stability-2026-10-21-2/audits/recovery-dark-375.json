@@ -1,0 +1,83 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "captured_time_bjt": "2026-10-21T11:45:35.232+08:00",
+  "id": "recovery",
+  "case_key": "recovery-dark-375",
+  "state": "recovery",
+  "route": "/?night=demo#/recovery",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "theme": "dark",
+  "mode": "memory-recovery",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/recovery-dark-375.png",
+  "screenshot_sha256": "999e7f3dd05d23e455d2ce2d661fbe907a82c7c64ab8267a939f686970d77790",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/recovery-dark-375-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/recovery-dark-375.png",
+      "sha256": "999e7f3dd05d23e455d2ce2d661fbe907a82c7c64ab8267a939f686970d77790",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/recovery-dark-375-full.png",
+      "sha256": "7fc05747db26d37b27811d80c18fbb4d23e9c617524cd8787ff60036d399cb65",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "dark",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary",
+          "text": "回普通对话"
+        }
+      ]
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 32,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary",
+          "text": "回普通对话"
+        }
+      ]
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}

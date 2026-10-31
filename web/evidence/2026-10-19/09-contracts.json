@@ -1,0 +1,105 @@
+{
+  "sourceHead": "ed9665fa4bd08ccedc281244705290ee30b2ff10",
+  "environment": {
+    "database": "core_test_fe",
+    "pgPort": 55481,
+    "backendPort": 8002,
+    "frontendPort": 4174,
+    "model": "scripted-only"
+  },
+  "stats": {
+    "startTime": "2026-10-18T23:47:01.447Z",
+    "duration": 66336.705,
+    "expected": 9,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  },
+  "metrics": {
+    "database": "core_test_fe",
+    "schema_prefix": "test_frontend_",
+    "model": "scripted-only",
+    "provider_calls": 6,
+    "real_model_calls": 0,
+    "v2_connections": 2,
+    "v2_cursors": [
+      "",
+      "4"
+    ]
+  },
+  "processes": {
+    "pg": 4880,
+    "backendLauncher": 20992,
+    "backendListener": 28572,
+    "dev": 22980
+  },
+  "failures": [
+    {
+      "title": "3 v3 同轮重试与成功恢复；取消接口422时不伪报停止",
+      "line": 117,
+      "status": "failed",
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeEnabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: '停止回答' })\nExpected: enabled\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeEnabled\" getByRole('button', { name: '停止回答' }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: '停止回答' })\u001b[22m\n",
+      "attachments": [
+        {
+          "name": "error-context",
+          "path": "web/evidence/2026-10-19/09-contracts/case-1/error-context.md"
+        },
+        {
+          "name": "trace",
+          "path": "web/evidence/2026-10-19/09-contracts/case-1/trace.zip"
+        }
+      ]
+    },
+    {
+      "title": "6 服务端亲选牌背、固定牌、揭牌与失败解读恢复不重抽",
+      "line": 212,
+      "status": "failed",
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('status').filter({ hasText: '解释未完成' })\nExpected: visible\nTimeout: 30000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('status').filter({ hasText: '解释未完成' }) with timeout 30000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('status').filter({ hasText: '解释未完成' })\u001b[22m\n\u001b[2m    - waiting for navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:4174/#/tarot?draw=cce81c2ccd6b422aacea43bbf3b42103\"\u001b[22m\n",
+      "attachments": [
+        {
+          "name": "error-context",
+          "path": "web/evidence/2026-10-19/09-contracts/case-2/error-context.md"
+        },
+        {
+          "name": "trace",
+          "path": "web/evidence/2026-10-19/09-contracts/case-2/trace.zip"
+        }
+      ]
+    },
+    {
+      "title": "9 焦点陷阱/回返、减动效与手机输入可见",
+      "line": 305,
+      "status": "failed",
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeFocused\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: '新建事项', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  5000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeFocused\" getByRole('button', { name: '新建事项', exact: true }) with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: '新建事项', exact: true })\u001b[22m\n\u001b[2m    - waiting for navigation to finish...\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:4174/#/cases\"\u001b[22m\n\u001b[2m    7 × locator resolved to <button type=\"button\" data-state=\"closed\" aria-expanded=\"false\" aria-haspopup=\"dialog\" class=\"button secondary  \">新建事项</button>\u001b[22m\n\u001b[2m      - unexpected value \"inactive\"\u001b[22m\n",
+      "attachments": [
+        {
+          "name": "error-context",
+          "path": "web/evidence/2026-10-19/09-contracts/case-3/error-context.md"
+        },
+        {
+          "name": "trace",
+          "path": "web/evidence/2026-10-19/09-contracts/case-3/trace.zip"
+        }
+      ]
+    }
+  ],
+  "rawReport": "web/test-results/frontend/contracts.json",
+  "cleanup": {
+    "pending": false,
+    "closed": true,
+    "remaining": [],
+    "preview4173": [
+      {
+        "LocalPort": 4173,
+        "OwningProcess": 11776
+      }
+    ],
+    "checkedAt": "2026-10-19T07:49:07.3637488+08:00"
+  },
+  "limitations": [
+    "No product or test assertion changes.",
+    "The three failures are reported, not marked accepted."
+  ],
+  "workingTreeSourceCommit": "5e6b2754e68ca7db1b55300f7f38d8e143ae3d53",
+  "sourceNote": "HEAD during run was ed9665f with pending Q7 frontend changes, subsequently committed as 5e6b275. Tests used Vite dev, not a clean HEAD checkout."
+}

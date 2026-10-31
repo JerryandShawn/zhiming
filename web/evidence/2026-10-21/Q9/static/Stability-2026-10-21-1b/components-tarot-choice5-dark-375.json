@@ -1,0 +1,59 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "tarot-choice5",
+  "mode": "components",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "theme": "dark",
+  "url": "/?components=demo#/tarot?spread=choice5&step=reveal",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/components-tarot-choice5-dark-375.png",
+  "sha256": "22629996c36af0da03bab3e2e252f61cbc63e39208c7a229a5c617a5ed26b242",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "dark",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "",
+            "text": "揭牌"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 563,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "button primary  ",
+            "text": "全部揭开"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

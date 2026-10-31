@@ -1,0 +1,91 @@
+{
+  "recorded_at": "2026-10-18T09:56:12.051260+00:00",
+  "node_version": "v22.23.3",
+  "baseline": "241e87409987c91148adde639ec365c49a53fe5a",
+  "mode": "explicit synthetic front-end demo; no organizing API or production data",
+  "checks": {
+    "typecheck": true,
+    "lint": true,
+    "build": true,
+    "unit": {
+      "passed": 139,
+      "files": 17,
+      "new_tests_since_M4": 50,
+      "added_for_review": 9
+    },
+    "spaces_behavior": {
+      "startTime": "2026-10-18T09:55:04.627Z",
+      "duration": 7376.486,
+      "expected": 10,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "spaces_visual": {
+      "passed": 24,
+      "run_id": "2026-10-18T09:55:04.669Z",
+      "seconds": 33.1,
+      "checks": {
+        "api_requests": 0,
+        "external_requests": 0,
+        "javascript_errors": 0,
+        "console_messages": 0,
+        "overflowing_pages": 0,
+        "small_text_pages": 0,
+        "accessibility_violations": 0
+      }
+    },
+    "previous_static_behavior": {
+      "passed": 80,
+      "note": "Re-run after full-height Layout changes; final menu focus-only correction covered by 139 unit, 10 behavior and 24 visual checks."
+    },
+    "v3_pg_contracts": {
+      "startTime": "2026-10-18T09:11:59.905Z",
+      "duration": 20070.358,
+      "expected": 12,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0,
+      "note": "Historical successful run from 17:11 +08; not re-run for this presentation/menu-only correction."
+    },
+    "first_screen_gzip": 83566,
+    "gzip_limit": 204800
+  },
+  "demo_api_requests": 0,
+  "real_model_calls": 0,
+  "stage_or_production_access": false,
+  "screenshots": 32,
+  "interaction_sha256": {
+    "web/evidence/2026-10-18/spaces/interactions/apply-confirm-1440.png": "92da030a8c356d525ac5f113e1ddb7103d1a13a541244798fd931507603ebee7",
+    "web/evidence/2026-10-18/spaces/interactions/desktop-sidebar-scrolled-1440.png": "7d9c4b80cf67c30fab49374afb7c1fbc7a749dcc410ba72405a2fa29f66f28fa",
+    "web/evidence/2026-10-18/spaces/interactions/desktop-sidebar-scrolled-dark-1440.png": "c6770bae87233d4507e525d712b739c434dd9c2789ccdc411412ba19f3104063",
+    "web/evidence/2026-10-18/spaces/interactions/mobile-more-390.png": "cc44e10fa2a5b2276957e5b93d0f0771d74fe3621787f6369c5d4f9e4b87ca07",
+    "web/evidence/2026-10-18/spaces/interactions/mobile-more-dark-390.png": "9893aed6e6c9ef70aa934c49997fee07bef76de1975564470b603cf72b7adad8",
+    "web/evidence/2026-10-18/spaces/interactions/revert-confirm-1440.png": "e56b9fcfabbdc26f8ddea4c5561c8a01b6733b1ef7577bf5272f5ab4d0b32ee6",
+    "web/evidence/2026-10-18/spaces/interactions/route-new-topic-390.png": "814e9a3ee06405ed5e447955b03da01244a1349063f547df902136efc956e059",
+    "web/evidence/2026-10-18/spaces/interactions/split-editor-390.png": "a9df5da2a00cbb6452c5f00c854f848bd933c9dbd653dc50d8e1e69ed96dbe52"
+  },
+  "original_M4_evidence": "Preserved; new evidence in spaces/ only",
+  "not_verified": [
+    "real spaces/topic APIs and route_changed",
+    "real history migration or classifiers",
+    "server persistent apply/revert",
+    "Feishu",
+    "4G LCP",
+    "remote CI"
+  ],
+  "revision_scope": "Post-approval review: sticky full-height desktop sidebar; three mobile topic actions with More menu",
+  "source_build_screenshot_hash_verification": "All current files match; source includes base.css and behavior test",
+  "publication": {
+    "code_acceptance_sha": "60516e16f1f47d99c879f056edb7307064fcbf74",
+    "remote_baseline_sha": "8b6545973fd25bd3ab4f6b12ab9b8bdf6156a707",
+    "backup_ref": "codex/p10-before-publish-20261018",
+    "same_tree_before_after_rebase": "a0927c5b3239e1174cf35fe3fdb580e0ae38867e",
+    "same_tree_diff_exit": 0,
+    "hashes_verified_after_rebase": true,
+    "push_method": "ordinary fast-forward; no force",
+    "pr": "https://github.com/JerryandShawn/zhiming/pull/6",
+    "merge_authorized": false,
+    "remote_ci": "reported in PR after push; not represented by local checks"
+  }
+}

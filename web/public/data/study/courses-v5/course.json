@@ -1,0 +1,3709 @@
+{
+  "format": "frontend-course-v1",
+  "title": "命理研习：从四柱入门到具名条件判断",
+  "status": "draft_for_review",
+  "synthetic_only": true,
+  "lessons": [
+    {
+      "lesson_id": "lesson-01",
+      "order": 1,
+      "title": "四柱先按位置读",
+      "level": "入门",
+      "status": "draft_for_review",
+      "prerequisite_ids": [],
+      "objectives": [
+        "找到年、月、日、时四组符号。",
+        "把盘里记录与现实经历分开。"
+      ],
+      "paragraphs": [
+        "先把四柱当作四个有位置的格子：年、月、日、时各放一个干支。相同的字出现在不同格，不能随意合并。先读位置，比急着给自己贴标签更有用。",
+        "阿远这份合成盘按年到时列出甲戌、丁卯、丁酉、甲辰。第三组才是日柱；四组看起来像一句话，也不能调换顺序凑故事。"
+      ],
+      "source_ids": [
+        "p8-elements"
+      ],
+      "pending_review": [
+        "四柱术语的原刊异文未逐版核；本课只讲项目字段。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "阿远的年柱是甲戌；日柱另列丁酉，别把第一个天干当日主。〔c3〕",
+          "evidence_ids": [
+            "year"
+          ],
+          "learning_point_ids": [
+            "learning-1"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-01-q1",
+          "question": "这份样例的年柱是哪一组？",
+          "correct_option_id": "a",
+          "explanation": "年柱字段直接给出甲戌；另外两组分别位于日、时位置。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "甲戌"
+            },
+            {
+              "option_id": "b",
+              "text": "丁酉"
+            },
+            {
+              "option_id": "c",
+              "text": "甲辰"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "year"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-01-q2",
+          "question": "只看到八字字符串，能确认一个人的家庭经历吗？",
+          "correct_option_id": "b",
+          "explanation": "盘面是符号记录，未知的家庭事实应继续未知。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "能，年柱就是完整家谱"
+            },
+            {
+              "option_id": "b",
+              "text": "不能，须另听现实资料"
+            },
+            {
+              "option_id": "c",
+              "text": "能，任意解释都算验证"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "本课按P8四柱字段顺序，不把某一传统六亲映射当事实。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-02",
+      "order": 2,
+      "title": "记录时刻和太阳时是两回事",
+      "level": "入门",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-01"
+      ],
+      "objectives": [
+        "区分原始钟表读数与换算坐标。",
+        "知道西占保留实际UTC。"
+      ],
+      "paragraphs": [
+        "先保住原始记录，再谈换算。经度和均时差改变太阳时钟读数，同一个出生瞬间的UTC并没有因此重新发生一次。",
+        "阿远记录08:20，当前真太阳坐标约07:06。两个数字相差不少，却是在描述同一瞬间。遇到夏令时或重复时刻，要先核清时间依据，不能凭哪张盘顺眼来选。"
+      ],
+      "source_ids": [
+        "p8-time-basis",
+        "p8-solar",
+        "p8-basis-pillars"
+      ],
+      "pending_review": [
+        "历史钟表记录是否已去夏令时，仍须记录来源确认。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本例的真太阳坐标为1994-03-12T07:06:20.536889，原记录08:20仍保留。〔c26〕",
+          "evidence_ids": [
+            "solar"
+          ],
+          "learning_point_ids": [
+            "learning-11"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-02-q1",
+          "question": "原信封登记的真太阳坐标是哪一项？",
+          "correct_option_id": "a",
+          "explanation": "读取坐标原值，而不是再次加减宿主电脑时区。该坐标没有被当成新的实际UTC。〔c26〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "07:06:20.536889"
+            },
+            {
+              "option_id": "b",
+              "text": "08:20整"
+            },
+            {
+              "option_id": "c",
+              "text": "09:20整"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "solar"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-02-q2",
+          "question": "计算西占时，应把真太阳坐标再次作为UTC输入吗？",
+          "correct_option_id": "c",
+          "explanation": "太阳时与UTC承担不同角色，重复换算会把天体位置移到另一瞬间。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "应当，否则不统一"
+            },
+            {
+              "option_id": "b",
+              "text": "只要结果更好看就可以"
+            },
+            {
+              "option_id": "c",
+              "text": "不应，使用同一出生瞬间的实际UTC"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-time-basis",
+            "p8-solar",
+            "p8-basis-pillars"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "P8主解读选真太阳；这属于项目方法选择，不替所有流派定论。",
+          "source_ids": [
+            "p8-time-basis",
+            "p8-solar",
+            "p8-basis-pillars"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-03",
+      "order": 3,
+      "title": "日主是关系参照",
+      "level": "入门",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-02"
+      ],
+      "objectives": [
+        "从日柱定位日干。",
+        "不把日主当完整人格。"
+      ],
+      "paragraphs": [
+        "日主就是日柱的天干。它像表格里的参照列：说某干是印、财或官，都要先说明相对谁而言。",
+        "阿远日柱丁酉，日主为丁。知道这一点之后，才能解释同一个甲为什么在这里叫正印；不能把别人的甲日主十神表直接搬来。"
+      ],
+      "source_ids": [
+        "p8-elements"
+      ],
+      "pending_review": [
+        "日主的人格化类比不在本课计算事实范围。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "阿远的日主字段为丁，后续十神都围绕这个参照计算。〔c3〕",
+          "evidence_ids": [
+            "master"
+          ],
+          "learning_point_ids": [
+            "learning-1"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-03-q1",
+          "question": "当前样例用于十神比较的日主是什么？",
+          "correct_option_id": "b",
+          "explanation": "酉是日支，甲在其它柱出现；实际day_master为丁。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "酉"
+            },
+            {
+              "option_id": "b",
+              "text": "丁"
+            },
+            {
+              "option_id": "c",
+              "text": "甲"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "master"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-03-q2",
+          "question": "丁日主可以独自证明哪项？",
+          "correct_option_id": "c",
+          "explanation": "一个参照符号不等于人格、职业或经历的完整描述。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "此人性格已被完整确定"
+            },
+            {
+              "option_id": "b",
+              "text": "此人的职业应固定为一种"
+            },
+            {
+              "option_id": "c",
+              "text": "它是本盘十神比较的参照"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "子平十神按日干定位；旺衰、调候与格局还须各自说明方法。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-04",
+      "order": 4,
+      "title": "阴阳五行先作符号关系",
+      "level": "入门",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-03"
+      ],
+      "objectives": [
+        "识别天干的阴阳五行属性。",
+        "避免缺项就补的跳步。"
+      ],
+      "paragraphs": [
+        "甲乙都归木，阴阳却不同；这些属性参与关系分类，不是好坏排名。五行也不是身体里五种能用盘面测量的物质。",
+        "阿远年干甲可以作为阳木符号举例，日干丁则是阴火。这里只是在读符号属性，不从木火多少推健康，也不据缺什么就直接决定用神。"
+      ],
+      "source_ids": [
+        "p8-elements",
+        "p8-strength"
+      ],
+      "pending_review": [
+        "数值权重没有专家标定，不能转成医学或能力量表。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "阿远实际年干为甲，先有这个字段，才讨论甲的符号属性。〔c3〕",
+          "evidence_ids": [
+            "year_stem"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-04-q1",
+          "question": "阿远年柱实际天干是哪一个？",
+          "correct_option_id": "c",
+          "explanation": "字段为甲；甲阳木的概念解释要另沿十干映射阅读，不由模型补年干。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "乙"
+            },
+            {
+              "option_id": "b",
+              "text": "丁"
+            },
+            {
+              "option_id": "c",
+              "text": "甲"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "year_stem"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-04-q2",
+          "question": "看到某五行数量少，下一步较稳妥的是？",
+          "correct_option_id": "b",
+          "explanation": "数量、力量与取用不是同一栏，不能从缺项跳到现实补救。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "直接购买对应物品补足"
+            },
+            {
+              "option_id": "b",
+              "text": "先说明取用方法和未判条件"
+            },
+            {
+              "option_id": "c",
+              "text": "据此判断身体缺少某物质"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-elements",
+            "p8-strength"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "当前元素关系是符号映射，旺衰分数是另外的项目方法。",
+          "source_ids": [
+            "p8-elements",
+            "p8-strength"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-05",
+      "order": 5,
+      "title": "比劫与食伤：同类和输出",
+      "level": "基础",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-04"
+      ],
+      "objectives": [
+        "分清比肩、劫财的阴阳差别。",
+        "读懂我生关系的食神与伤官。"
+      ],
+      "paragraphs": [
+        "同五行里，同阴阳叫比肩，异阴阳叫劫财；日主所生的五行里，同阴阳叫食神，异阴阳叫伤官。这里的名称只是分类，不说明有人来抢钱或伤害谁。",
+        "阿远以丁为参照，丁是比肩、丙是劫财，己是食神、戊是伤官。练习时先走生克，再核阴阳，比背一组吉凶词更可靠。"
+      ],
+      "source_ids": [
+        "p8-elements"
+      ],
+      "pending_review": [
+        "传统六亲映射有语境，本课不据符号确认第三人身份。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "丁日主的完整十神表把己登记为食神。〔c3〕",
+          "evidence_ids": [
+            "food"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-05-q1",
+          "question": "当前丁日主表中，己对应哪类关系？",
+          "correct_option_id": "a",
+          "explanation": "丁与己同属阴，火生土，得到食神；换成戊就不是同一标签。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "食神"
+            },
+            {
+              "option_id": "b",
+              "text": "伤官"
+            },
+            {
+              "option_id": "c",
+              "text": "正财"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "food"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-05-q2",
+          "question": "劫财这个名字本身能证明什么？",
+          "correct_option_id": "b",
+          "explanation": "先区分关系名称与现实事件；是否有财务问题仍看真实账目。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "财物将被抢夺"
+            },
+            {
+              "option_id": "b",
+              "text": "仅是一种同五行异阴阳关系"
+            },
+            {
+              "option_id": "c",
+              "text": "已经出现坏朋友"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "十神基础算式与强弱、制化解释分开。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-06",
+      "order": 6,
+      "title": "财官杀与印：谁生谁、谁克谁",
+      "level": "基础",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-05"
+      ],
+      "objectives": [
+        "辨别财、官杀、印的关系方向。",
+        "用丁日主实例复核正偏名称。"
+      ],
+      "paragraphs": [
+        "日主所克的一类叫财，克日主的一类叫官杀，生扶日主的一类叫印。每类再按阴阳同异区分名称，正偏并不是道德优劣。",
+        "在丁日主表里，庚是正财、辛是偏财，壬是正官、癸是七杀，甲是正印、乙是偏印。财不是账户余额，官也不是已经拿到职位。"
+      ],
+      "source_ids": [
+        "p8-elements"
+      ],
+      "pending_review": [
+        "未校勘各版本六亲用语，不把本课当传统人物身份表。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本盘丁日主见庚，实际标签是正财。〔c3〕",
+          "evidence_ids": [
+            "wealth"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-06-q1",
+          "question": "完整十神表给庚的标签是什么？",
+          "correct_option_id": "b",
+          "explanation": "丁火克庚金且阴阳不同，项目表登记正财；不因此确认收入或婚姻。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "偏财"
+            },
+            {
+              "option_id": "b",
+              "text": "正财"
+            },
+            {
+              "option_id": "c",
+              "text": "七杀"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "wealth"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-06-q2",
+          "question": "印星标签可以代替哪种现实证明？",
+          "correct_option_id": "c",
+          "explanation": "传统象征不能拿来替未知人物、学历或家庭事实作证。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "学历证书"
+            },
+            {
+              "option_id": "b",
+              "text": "母亲身份"
+            },
+            {
+              "option_id": "c",
+              "text": "两者都不能"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "正偏是关系分类；不同书中的六亲解释不能无说明套用。",
+          "source_ids": [
+            "p8-elements"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-07",
+      "order": 7,
+      "title": "透干和藏干分开看",
+      "level": "基础",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-06"
+      ],
+      "objectives": [
+        "找到实际透出的天干。",
+        "不把支内藏干移到柱上。"
+      ],
+      "paragraphs": [
+        "透干指天干实际出现在柱的干位，藏干是所选表列在地支中的成员。两处都能标十神，却不是同一种出现方式。",
+        "阿远时干是甲；辰支里按当前具名表另列戊、壬、乙。不能因为辰里有壬，就说壬已经在天干透出；这种偷换会直接影响候选筛选。"
+      ],
+      "source_ids": [
+        "p8-named-methods"
+      ],
+      "pending_review": [
+        "具体藏干异文须按表名对读，不拼接不同表来增加成员。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本例时干实际为甲，藏于辰的其它干并没有因此透到时干位置。〔c3〕",
+          "evidence_ids": [
+            "hour_stem"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-07-q1",
+          "question": "时柱天干实际是什么？",
+          "correct_option_id": "c",
+          "explanation": "直接读取时干甲，不把辰内的壬或乙冒充已透。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "壬"
+            },
+            {
+              "option_id": "b",
+              "text": "乙"
+            },
+            {
+              "option_id": "c",
+              "text": "甲"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "hour_stem"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-07-q2",
+          "question": "某干只在支内出现，想满足透干条件应怎样处理？",
+          "correct_option_id": "a",
+          "explanation": "条件需要什么就核什么，缺少透干证据时应让该条件不满足。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "如实保留仅藏，不能补成透出"
+            },
+            {
+              "option_id": "b",
+              "text": "为了判断方便视为相同"
+            },
+            {
+              "option_id": "c",
+              "text": "把它移到任意天干位置"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "P8藏干来自所选司令表，和旧v3常用藏干表分开保留。",
+          "source_ids": [
+            "p8-named-methods"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-08",
+      "order": 8,
+      "title": "本中余是具名顺序",
+      "level": "基础",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-07"
+      ],
+      "objectives": [
+        "理解藏干角色不等于气量实测。",
+        "知道二藏干结构没有自动补出的中气。"
+      ],
+      "paragraphs": [
+        "当前P8按所选司令段的逆序给藏干标角色。本气、中气、余气在这里是具名位置标签，不是古籍已经给出了精确百分比。",
+        "阿远卯支在本表列乙、甲：乙标本气、甲标余气。因为只有两项，第二项直接记余气，不再补一个中气凑成三层。"
+      ],
+      "source_ids": [
+        "p8-named-methods",
+        "p8-school-tables"
+      ],
+      "pending_review": [
+        "逆序角色与气量比例的对应没有历史或实测标定。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本例月支第二项藏干甲的角色为余气。〔c3〕",
+          "evidence_ids": [
+            "residual"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-08-q1",
+          "question": "卯支第二项在当前输出中标为什么？",
+          "correct_option_id": "b",
+          "explanation": "二段结构的第二项明确是余气；这不是在测量甲的现实力量。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "中气"
+            },
+            {
+              "option_id": "b",
+              "text": "余气"
+            },
+            {
+              "option_id": "c",
+              "text": "没有任何角色"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "residual"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-08-q2",
+          "question": "换另一张藏干表时，应保留什么？",
+          "correct_option_id": "c",
+          "explanation": "具名差异不能靠混成一张无来源的表消除。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "只保留最顺眼的字"
+            },
+            {
+              "option_id": "b",
+              "text": "合并两表全部成员"
+            },
+            {
+              "option_id": "c",
+              "text": "表名、顺序与各自差异"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-named-methods",
+            "p8-school-tables"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "司令逆段序是项目定义，并非全部古法统一藏干序。",
+          "source_ids": [
+            "p8-named-methods",
+            "p8-school-tables"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-09",
+      "order": 9,
+      "title": "节界、月令与司令不是一栏",
+      "level": "中阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-08"
+      ],
+      "objectives": [
+        "用节界理解节月。",
+        "区分月支本气与当段司令。"
+      ],
+      "paragraphs": [
+        "八字月柱按节界切换，不直接等于公历月或农历月。月令提供季节背景；人元司令还要从前节起算经过时长，再查具名分日表。",
+        "阿远月支是卯，本气角色为乙，但出生时距前节约6.20日，当前三命司令表的首段仍取甲。两个字段不同有明确方法原因，不能悄悄改成同一个字。"
+      ],
+      "source_ids": [
+        "p8-basis-pillars",
+        "p8-named-methods",
+        "p8-calendar"
+      ],
+      "pending_review": [
+        "古籍异本与分日表来源页码继续待核，7/7/16不代表全月同一参数。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "当前具名分日表给出的司令干为甲，而不是把月支本气乙直接当司令。〔c3〕",
+          "evidence_ids": [
+            "command"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-09-q1",
+          "question": "本例month_command登记哪个司令干？",
+          "correct_option_id": "a",
+          "explanation": "节后连续日数落入甲段，实际字段是甲；不同于按藏干角色直接取乙。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "甲"
+            },
+            {
+              "option_id": "b",
+              "text": "乙"
+            },
+            {
+              "option_id": "c",
+              "text": "丁"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "command"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-09-q2",
+          "question": "比较两软件月柱不同时先核什么？",
+          "correct_option_id": "b",
+          "explanation": "先把时间和方法对齐，再比较结果，不能凭应验感倒选算法。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "哪一份更像自己"
+            },
+            {
+              "option_id": "b",
+              "text": "节界瞬间、实际UTC和所选方法"
+            },
+            {
+              "option_id": "c",
+              "text": "直接认定公历月初换柱"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-basis-pillars",
+            "p8-named-methods",
+            "p8-calendar"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "sanming_5520与徐表分日数不同；徐表申月还需显式归一戊或己。",
+          "source_ids": [
+            "p8-basis-pillars",
+            "p8-named-methods",
+            "p8-calendar"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-10",
+      "order": 10,
+      "title": "旺衰两种项目法并排读",
+      "level": "中阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-09"
+      ],
+      "objectives": [
+        "比较两套分数而不混成一个分数。",
+        "区分项目参数与古法定量。"
+      ],
+      "paragraphs": [
+        "旺衰讨论的是所选方法下的支持条件，不是人的能力等级。本项目把月令、根气、透干组合成两套诊断；权重和45/55阈值都须明说。",
+        "阿远两法分别给63与77.5，文字结论都是偏强。分数不同并不需要相加平均；当两法结论不同，也应保留分歧，而不是挑一个听起来舒服的。"
+      ],
+      "source_ids": [
+        "p8-strength"
+      ],
+      "pending_review": [
+        "权重未完成专家标定，不能把分数解释成健康、财富或个人价值。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "第一种项目旺衰法实际分数为63，第二种另为77.5。〔c3〕",
+          "evidence_ids": [
+            "strength_a"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-10-q1",
+          "question": "第一种方法记录的分数是多少？",
+          "correct_option_id": "c",
+          "explanation": "读取methods[0]的63，不能拿另一法或两者总和代替。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "77.5"
+            },
+            {
+              "option_id": "b",
+              "text": "140.5"
+            },
+            {
+              "option_id": "c",
+              "text": "63"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "strength_a"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-10-q2",
+          "question": "两法同称偏强，可以推出哪项？",
+          "correct_option_id": "b",
+          "explanation": "同标签是项目方法内部一致，不构成跨派或现实有效性认证。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "身心能力已获专家认证"
+            },
+            {
+              "option_id": "b",
+              "text": "两种项目筛选标签相同，现实能力仍另核"
+            },
+            {
+              "option_id": "c",
+              "text": "其它全部门派也会同判"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-strength"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "月令根气透干法与得令得地得势法是两种项目参数化口径。",
+          "source_ids": [
+            "p8-strength"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-11",
+      "order": 11,
+      "title": "筛选通过距离成格还有多远",
+      "level": "中阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-10"
+      ],
+      "objectives": [
+        "逐项读月令、透干和牵制条件。",
+        "保留完整成格尚未判断的部分。"
+      ],
+      "paragraphs": [
+        "格局筛选像核对几项门槛，不是一枚人生身份章。三项检查都过，可以说本条候选通过筛选；力量、刑冲、救应等未判部分仍不能省。",
+        "阿远的正印候选三项都满足，其中年月时透正印这一项有真实r8。我们可以准确说这一条件满足，但不能将r8一个短号扩写成所有印格专章已经完成。"
+      ],
+      "source_ids": [
+        "p8-pattern-review"
+      ],
+      "pending_review": [
+        "正印印轻、身强印重及财印救应力量仍未完整判断。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "正印候选的透干条件实际满足，证据保留为〔c7〕〔r8〕。",
+          "evidence_ids": [
+            "seal_exposed"
+          ],
+          "learning_point_ids": [
+            "learning-9"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-11-q1",
+          "question": "当前被r8登记的透干条件是否满足？",
+          "correct_option_id": "a",
+          "explanation": "原始condition.satisfied为true，r8也登记同一真实命中；只证明这一条件。〔c7〕〔r8〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "满足"
+            },
+            {
+              "option_id": "b",
+              "text": "不满足"
+            },
+            {
+              "option_id": "c",
+              "text": "没有这个条件"
+            }
+          ],
+          "basis": {
+            "kind": "matched_rule"
+          },
+          "evidence_ids": [
+            "seal_exposed"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-11-q2",
+          "question": "三项筛选都过，较准确的表述是？",
+          "correct_option_id": "c",
+          "explanation": "筛选覆盖范围有限，不能用工程布尔值替代整章传统判断。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "已经证明完整成格并会成功"
+            },
+            {
+              "option_id": "b",
+              "text": "再不用看其它条件"
+            },
+            {
+              "option_id": "c",
+              "text": "候选筛选通过，未判条件继续保留"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "本课按P8显式三条件筛选，古籍完整成格与救应没有被全部数字化。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-12",
+      "order": 12,
+      "title": "伤官牵制神与庚辛例外",
+      "level": "进阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-11"
+      ],
+      "objectives": [
+        "记住本P8伤官牵制查正官。",
+        "不把庚辛概念例外冒充本例命中。"
+      ],
+      "paragraphs": [
+        "本P8显式层按审校裁定：伤官候选查正官牵制，庚辛日主保留例外。这里不能把七杀错填成这条阻断神，也不能因此认为所有季节救应都已计算。",
+        "阿远日主丁，原局年月时没有正官透出，故这条牵制筛选未触发阻断，实际r1只登记该条件通过。阿远并非庚辛，解释庚辛时只能作为概念题另讲。"
+      ],
+      "source_ids": [
+        "p8-pattern-review"
+      ],
+      "pending_review": [
+        "金水季节、财印辅助和官伤并透专章限制仍须原典与完整条件复核。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本例伤官候选“未见本筛选显性牵制”满足；它没有把阿远判成完整伤官格。〔c12〕〔r1〕",
+          "evidence_ids": [
+            "hurting_clear"
+          ],
+          "learning_point_ids": [
+            "learning-2"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-12-q1",
+          "question": "r1对应的这项伤官牵制条件是否通过？",
+          "correct_option_id": "b",
+          "explanation": "条件值为true；还要另看月令和透干，不能只凭该项说成格。〔c12〕〔r1〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "不通过"
+            },
+            {
+              "option_id": "b",
+              "text": "通过"
+            },
+            {
+              "option_id": "c",
+              "text": "不存在"
+            }
+          ],
+          "basis": {
+            "kind": "matched_rule"
+          },
+          "evidence_ids": [
+            "hurting_clear"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-12-q2",
+          "question": "依本次P8裁定，非庚辛伤官候选重点查哪类牵制透出？",
+          "correct_option_id": "c",
+          "explanation": "此为审校后的具名规则概念，不是假设阿远变成庚辛后已重新排盘。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "七杀"
+            },
+            {
+              "option_id": "b",
+              "text": "偏财"
+            },
+            {
+              "option_id": "c",
+              "text": "正官"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "显式P8修正与旧v3分开，庚辛例外不回写旧默认算法。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-13",
+      "order": 13,
+      "title": "有藏印不等于偏印格已过筛",
+      "level": "进阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-12"
+      ],
+      "objectives": [
+        "比较单项命中和整条未通过。",
+        "认识救应路径未判的限制。"
+      ],
+      "paragraphs": [
+        "先问一条条件满足了什么，再看整条还缺什么。月支有某个十神，并不能代替年月时透出；同样，食制与用印是不同候选路径，不能混成已经生效的救应。",
+        "阿远卯中有乙偏印，但年月时透出的为正印、比肩、正印，没有偏印。因此偏印候选仍未过筛。这是学习正反例的好材料，不需要改盘才能保留反例。"
+      ],
+      "source_ids": [
+        "p8-pattern-review"
+      ],
+      "pending_review": [
+        "印轻与财印力量、制杀力度和先后关系尚未完整量化。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "偏印候选screen_passed实际为false，已有藏神条件不能补足透干。〔c3〕",
+          "evidence_ids": [
+            "indirect_seal_screen"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-13-q1",
+          "question": "本例偏印候选的整条screen_passed为何？",
+          "correct_option_id": "c",
+          "explanation": "月支藏神有证据，透干条件却不满足，所以整条为false；没有为此造一个r命中。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "true"
+            },
+            {
+              "option_id": "b",
+              "text": "资料完全不存在"
+            },
+            {
+              "option_id": "c",
+              "text": "false"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "indirect_seal_screen"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-13-q2",
+          "question": "七杀用食或用印两路径并列，意味着什么？",
+          "correct_option_id": "b",
+          "explanation": "路径候选与有效制化之间仍有力量、先后等未判条件。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "两套完整救应已经同时生效"
+            },
+            {
+              "option_id": "b",
+              "text": "只列候选，不主张无条件混用"
+            },
+            {
+              "option_id": "c",
+              "text": "可以删掉力量和先后条件"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "正偏印、食制与用印均保留具名条件，不将术语同现视为救应成立。",
+          "source_ids": [
+            "p8-pattern-review"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-14",
+      "order": 14,
+      "title": "建禄月劫阳刃按复合条件展开",
+      "level": "进阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-13"
+      ],
+      "objectives": [
+        "读取复合规则的三个子条件。",
+        "把未过筛与未定义阴刃分开。"
+      ],
+      "paragraphs": [
+        "建禄、月劫、阳刃在本项目各是一条复合候选，内部仍展开锚点、取用路径、败因三项。不是看到禄或劫财一字，就省略其它条件。",
+        "阿远建禄候选的锚点和路径都未满足，整条false。阳刃默认只定义五阳干，丁日主不因此被套进某个阴刃表；可选异说需要显式标出且保留出处待核。"
+      ],
+      "source_ids": [
+        "p8-pattern-review",
+        "p8-school-tables"
+      ],
+      "pending_review": [
+        "阴刃逆行第三表原典未找到，需具体书名、版本及页码。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本例建禄候选未通过，不因“未见败因”单项为true就升级成格。〔c3〕",
+          "evidence_ids": [
+            "established_lu_screen"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-14-q1",
+          "question": "建禄候选的整条screen_passed是什么？",
+          "correct_option_id": "a",
+          "explanation": "有一项通过也不能补另外两项，本例整条明确false。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "false"
+            },
+            {
+              "option_id": "b",
+              "text": "true"
+            },
+            {
+              "option_id": "c",
+              "text": "程序未返回"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "established_lu_screen"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-14-q2",
+          "question": "逆行阴刃第三表目前应怎样介绍？",
+          "correct_option_id": "c",
+          "explanation": "不以程序表存在冒充古籍原文已找到，也不改变五阳干默认。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "古籍原刊已经全部确认"
+            },
+            {
+              "option_id": "b",
+              "text": "所有阴干默认都按它算"
+            },
+            {
+              "option_id": "c",
+              "text": "具名可选异说，原典出处仍待核"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-pattern-review",
+            "p8-school-tables"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "月劫与阳刃不混为一条；阴刃异说不覆盖默认五阳干。",
+          "source_ids": [
+            "p8-pattern-review",
+            "p8-school-tables"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-15",
+      "order": 15,
+      "title": "三种用神提案保留分歧",
+      "level": "进阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-14"
+      ],
+      "objectives": [
+        "区分扶抑、调候与格局取用。",
+        "读交集同时看各自不同项。"
+      ],
+      "paragraphs": [
+        "问喜什么之前，先问采用什么方法。扶抑围绕强弱，调候讨论季节寒暖，格局提案另有路径。相同的用神二字，并不让三种问题变成一个。",
+        "阿远当前候选天干集合交集为庚，但各法还各有不同项。这里的庚只是本项目候选交集，不是投票选出的唯一现实答案，也不推出适合买金属或某种投资。"
+      ],
+      "source_ids": [
+        "p8-pattern-review",
+        "p8-strength"
+      ],
+      "pending_review": [
+        "调候摘表未覆盖全文条件、佐神与异本；完整取用仍待核。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "当前三候选集合的consensus_stems为[庚]，分歧栏仍保留。〔c3〕",
+          "evidence_ids": [
+            "useful_intersection"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-15-q1",
+          "question": "当前交集字段包含哪组候选天干？",
+          "correct_option_id": "b",
+          "explanation": "交集原值仅庚；不能因共识字段存在就删掉各方法前提。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "甲、壬"
+            },
+            {
+              "option_id": "b",
+              "text": "庚"
+            },
+            {
+              "option_id": "c",
+              "text": "所有天干"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "useful_intersection"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-15-q2",
+          "question": "候选交集非空，可以直接给何种结论？",
+          "correct_option_id": "c",
+          "explanation": "计算的是候选集合，不是现实行动收益模型。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "买对应物品就能改变结果"
+            },
+            {
+              "option_id": "b",
+              "text": "适合某职业或投资"
+            },
+            {
+              "option_id": "c",
+              "text": "只能说明这些具名集合有交集"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-pattern-review",
+            "p8-strength"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "子平月令取用、现代扶抑与调候概念分列，项目不按票数合成唯一喜用。",
+          "source_ids": [
+            "p8-pattern-review",
+            "p8-strength"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-16",
+      "order": 16,
+      "title": "大运与流年月日各留一层",
+      "level": "进阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-15"
+      ],
+      "objectives": [
+        "按实际起止读大运。",
+        "分清时间背景与具体事件。"
+      ],
+      "paragraphs": [
+        "大运是较长背景，流年、流月、流日是另外的时间层。先看日期和边界，再连原局，不能让十年标签变成每一天相同的结论。",
+        "阿远样例第三步大运列庚午，起止另有具名日历时刻；目标日快照则是2026-10-19。样例不是今天自动更新的日历，不能把快照日期悄悄改成现在。"
+      ],
+      "source_ids": [
+        "p8-calendar"
+      ],
+      "pending_review": [
+        "交运精度沿用所声明折算，不能解释成天文精确的事件应期。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本例大运第三步干支为庚午；它与某一天的流日不是同一字段。〔c3〕",
+          "evidence_ids": [
+            "decade"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-16-q1",
+          "question": "大运列表第三步实际干支为何？",
+          "correct_option_id": "c",
+          "explanation": "列表index为3的一步是庚午；另外两组是样例其它时间层，不能串用。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "丙寅"
+            },
+            {
+              "option_id": "b",
+              "text": "戊戌"
+            },
+            {
+              "option_id": "c",
+              "text": "庚午"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "decade"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-16-q2",
+          "question": "旧样例目标日写10月19日，10月21日阅读时应怎样做？",
+          "correct_option_id": "a",
+          "explanation": "时间层必须绑定实际目标日期；教学样例不自动变成实时晨报。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "保留样例日期，新日期须另算"
+            },
+            {
+              "option_id": "b",
+              "text": "直接把所有结果称今天"
+            },
+            {
+              "option_id": "c",
+              "text": "只改显示日期保留旧值"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "起运、顺逆与十年边界是具名方法；不把虚岁年表与精确瞬间混同。",
+          "source_ids": [
+            "p8-calendar"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-17",
+      "order": 17,
+      "title": "冲合刑害破只先认结构",
+      "level": "进阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-16"
+      ],
+      "objectives": [
+        "识别关系连接的实际成员。",
+        "不从结构跳到事件或合化。"
+      ],
+      "paragraphs": [
+        "六合、六冲、三合、刑害破先描述符号成员和所在层。合并不自动化成某五行，冲也不是事故预告；同一对成员可在具名表中出现不同关系。",
+        "样例目标月戊戌与本命时柱甲辰列出地支六冲。我们能复核戌与辰这两个成员，不能据此认定阿远这个月发生搬家、争执或灾祸。"
+      ],
+      "source_ids": [
+        "p8-interaction-table"
+      ],
+      "pending_review": [
+        "结构强弱、合化条件及事件效度未由成员出现证明。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "本例月层对本命时柱的关系字段列地支六冲，不等于现实冲突。〔c3〕",
+          "evidence_ids": [
+            "month_hour_clash"
+          ],
+          "learning_point_ids": []
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-17-q1",
+          "question": "该目标月与本命时柱实际列出的关系是什么？",
+          "correct_option_id": "a",
+          "explanation": "原字段为地支六冲；这里只认成员，未输出事件或合化结论。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "地支六冲"
+            },
+            {
+              "option_id": "b",
+              "text": "已经合化"
+            },
+            {
+              "option_id": "c",
+              "text": "医学诊断"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "month_hour_clash"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-17-q2",
+          "question": "三合组只出现两支，应怎样记？",
+          "correct_option_id": "b",
+          "explanation": "输入没有的支不能由解释补出，也不把两支偷偷重命名为完整三合。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "补上缺支让结构完整"
+            },
+            {
+              "option_id": "b",
+              "text": "保留未齐成员与缺项"
+            },
+            {
+              "option_id": "c",
+              "text": "直接算完整三合加分"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "当前只按具名成员表，六破保留项目表与原典待核状态。",
+          "source_ids": [
+            "p8-interaction-table"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-18",
+      "order": 18,
+      "title": "交界提示用于敏感性核对",
+      "level": "进阶",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-17"
+      ],
+      "objectives": [
+        "理解临界候选不是新出生事实。",
+        "保留准确记录并冻结倒推。"
+      ],
+      "paragraphs": [
+        "交界提示是在问：若坐标跨过附近边界，哪些字段会变？它不是在说实际记录错了。准确记录仍是依据，不从人生大事挑一张更像的盘。",
+        "阿远真太阳坐标距07:00卯辰界约六分多钟，系统给出边界两侧敏感性样本。两侧的时柱不同，不等于阿远有两个出生时刻，更不是倒推已成功。"
+      ],
+      "source_ids": [
+        "p8-basis-pillars",
+        "p8-time-basis"
+      ],
+      "pending_review": [
+        "交界几何敏感性不验证出生记录误差，也不证明事件倒推有效。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-bazi",
+          "text": "边界规则真实引用这份坐标，但敏感性样本都明确不是出生事实。〔c26〕〔r10〕",
+          "evidence_ids": [
+            "solar_boundary"
+          ],
+          "learning_point_ids": [
+            "learning-11"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-18-q1",
+          "question": "被本例边界规则引用的当前真太阳坐标是哪项？",
+          "correct_option_id": "b",
+          "explanation": "r10引用实际当前坐标c26；前后点是敏感性候选，不可替代出生记录。〔c26〕〔r10〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "边界前06:59:59"
+            },
+            {
+              "option_id": "b",
+              "text": "当前07:06:20.536889"
+            },
+            {
+              "option_id": "c",
+              "text": "边界后07:00:01"
+            }
+          ],
+          "basis": {
+            "kind": "matched_rule"
+          },
+          "evidence_ids": [
+            "solar_boundary"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-18-q2",
+          "question": "人生事件与某张候选更像时，本产品怎样处理？",
+          "correct_option_id": "c",
+          "explanation": "当前信号没有通过既定门槛，教学也不能越过冻结政策。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "自动改出生资料"
+            },
+            {
+              "option_id": "b",
+              "text": "放宽门槛宣布倒推成功"
+            },
+            {
+              "option_id": "c",
+              "text": "继续冻结隐藏倒推，诚实保留限制"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-basis-pillars",
+            "p8-time-basis"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "八字sect1与紫微晚子索引12分开声明；主口径不靠应验感倒选。",
+          "source_ids": [
+            "p8-basis-pillars",
+            "p8-time-basis"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-19",
+      "order": 19,
+      "title": "紫微宫名与八字同名字要分开",
+      "level": "跨体系",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-18"
+      ],
+      "objectives": [
+        "按实际宫位找命宫。",
+        "区分命主、身主和宫内主星。"
+      ],
+      "paragraphs": [
+        "紫微用十二宫和安星结构组织问题，与八字四柱不是同一张表。命宫随盘移动，不能默认数组第0项；命主、身主又是全盘标签，不会因此自动住进相应宫位。",
+        "阿远这份紫微主盘命宫在亥、身宫在未，实际命宫主星另读天相。紫微的太阳、七杀与其它体系同名，计算对象仍不同，不能当两份独立现实证据。"
+      ],
+      "source_ids": [
+        "iztro-palace",
+        "p8-ziwei-structure",
+        "p8-ziwei-stars-editorial"
+      ],
+      "pending_review": [
+        "壬科天府原刊页码仍待核，星性提问词是项目原创而非人物诊断。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-ziwei",
+          "text": "实际紫微命宫地支为亥，身宫另为未。〔c3〕",
+          "evidence_ids": [
+            "ziwei_life"
+          ],
+          "learning_point_ids": [
+            "learning-1"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-19-q1",
+          "question": "阿远这份紫微主盘命宫在什么地支格？",
+          "correct_option_id": "c",
+          "explanation": "ming_gong为亥；“未”来自shen_gong字段，不能用身宫字段替命宫。〔c3〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "未"
+            },
+            {
+              "option_id": "b",
+              "text": "寅"
+            },
+            {
+              "option_id": "c",
+              "text": "亥"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "ziwei_life"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-19-q2",
+          "question": "看到紫微七杀和八字七杀同名，可以推出什么？",
+          "correct_option_id": "a",
+          "explanation": "跨体系同名不自动建立因果或独立印证，须各读实际字段。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "二者不是同一计算对象"
+            },
+            {
+              "option_id": "b",
+              "text": "两个符号就使结论更确定"
+            },
+            {
+              "option_id": "c",
+              "text": "可把十神值直接放进紫微宫"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "iztro-palace",
+            "p8-ziwei-structure",
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "本例沿安装py-iztro默认；宫干可选表不覆盖原生生年和运限标签。",
+          "source_ids": [
+            "iztro-palace",
+            "p8-ziwei-structure",
+            "p8-ziwei-stars-editorial"
+          ]
+        }
+      ]
+    },
+    {
+      "lesson_id": "lesson-20",
+      "order": 20,
+      "title": "西占几何与三体系复盘",
+      "level": "跨体系",
+      "status": "draft_for_review",
+      "prerequisite_ids": [
+        "lesson-19"
+      ],
+      "objectives": [
+        "读出实际黄经、落座与参数。",
+        "把多体系结果和现实核验分层。"
+      ],
+      "paragraphs": [
+        "西占先讲位置：太阳黄经在哪个30度区段，相位角距在什么容许度内，宫制是什么。热带双鱼不是形状不规则的恒星星座，也不等于一份人格鉴定。",
+        "阿远样例太阳黄经约351.19654度，显示双鱼21.20度。本命统一6度是项目参数。三体系一起看时，先分别保留实际计算，再把现实事实放回中心；重复的象征主题不按出现次数增加概率。"
+      ],
+      "source_ids": [
+        "p8-astro-signs",
+        "p8-astro-aspects",
+        "p8-astro-natal-editorial"
+      ],
+      "pending_review": [
+        "当前民用UTC近似UT及容许度为具名方法，预测有效性与全部流派校勘未验证。"
+      ],
+      "worked_examples": [
+        {
+          "case_id": "ayuan-astro",
+          "text": "实际太阳落座显示双鱼，读取的是当前样例天体字段。〔c7〕",
+          "evidence_ids": [
+            "astro_sun_sign"
+          ],
+          "learning_point_ids": [
+            "learning-1"
+          ]
+        }
+      ],
+      "quiz": [
+        {
+          "quiz_id": "lesson-20-q1",
+          "question": "该西占样例太阳sign字段是什么？",
+          "correct_option_id": "a",
+          "explanation": "351.19654度处在热带330至360度段，所以实际显示双鱼；不由此推人格。〔c7〕",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "双鱼"
+            },
+            {
+              "option_id": "b",
+              "text": "白羊"
+            },
+            {
+              "option_id": "c",
+              "text": "水瓶"
+            }
+          ],
+          "basis": {
+            "kind": "chart_observation"
+          },
+          "evidence_ids": [
+            "astro_sun_sign"
+          ],
+          "source_ids": []
+        },
+        {
+          "quiz_id": "lesson-20-q2",
+          "question": "多体系出现相近主题，合适的复盘方式是？",
+          "correct_option_id": "b",
+          "explanation": "同题材可能共享输入和解释，不能把多个符号自动当独立证据相乘。",
+          "options": [
+            {
+              "option_id": "a",
+              "text": "相似越多，结果概率直接倍增"
+            },
+            {
+              "option_id": "b",
+              "text": "各自列依据和限制，再用现实进展核对"
+            },
+            {
+              "option_id": "c",
+              "text": "舍弃矛盾，只保留一致部分"
+            }
+          ],
+          "basis": {
+            "kind": "concept"
+          },
+          "evidence_ids": [],
+          "source_ids": [
+            "p8-astro-signs",
+            "p8-astro-aspects",
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ],
+      "school_differences": [
+        {
+          "school": "当前具名项目口径与对读边界",
+          "note": "本例热带黄道、地心、Placidus、Moshier；次限象征时刻不能冒充当日行运。",
+          "source_ids": [
+            "p8-astro-signs",
+            "p8-astro-aspects",
+            "p8-astro-natal-editorial"
+          ]
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "ayuan-bazi",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "learning": {
+        "format": "frontend-learning-sample-v1",
+        "sample_id": "ayuan-bazi",
+        "system": "bazi",
+        "status": "learning_only",
+        "cards": [
+          {
+            "point_id": "learning-1",
+            "kind": "orientation",
+            "title": "先找日主",
+            "text": "这张盘日柱是丁酉，日干丁是十神比较的参照。",
+            "school": "八字 · 项目显式多法十神参照",
+            "sources": [
+              {
+                "title": "《三命通会》卷二·论人元司事",
+                "url": "https://zh.wikisource.org/wiki/三命通會/卷二#论人元司事",
+                "status": "固定样例登记来源；本线未重新核对原刊。"
+              }
+            ],
+            "c_aliases": [
+              "c3"
+            ],
+            "r_aliases": [],
+            "citations": "〔c3〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c3",
+                "claim_id": "demo-claim-4c246d83e0695f5fb6f5058384ab1dfb12a9069c5c6f17ab6ea1270db2fca661"
+              }
+            ],
+            "limits": [
+              "从已核对的主盘学习读法，不据此推断人格或现实结果。"
+            ]
+          },
+          {
+            "point_id": "learning-2",
+            "kind": "matched_condition",
+            "title": "伤官格候选/未见本筛选的显性牵制条件",
+            "text": "这次核对的是“未见本筛选的显性牵制条件”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第41章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c12"
+            ],
+            "r_aliases": [
+              "r1"
+            ],
+            "citations": "〔c12〕〔r1〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c12",
+                "claim_id": "demo-claim-d84f3c32fb5baa0dc0c0ceb743a300d07fc80dd0b0a91e45e99d6cb24442cf92"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r1",
+                "claim_id": "demo-claim-5f0c28109b172a047552b1fe144728fb08e8bbaeb8ba39a0a71ea525d09d3da7"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-3",
+            "kind": "matched_condition",
+            "title": "偏印格候选/月支藏该十神",
+            "text": "这次核对的是“月支藏该十神”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c9"
+            ],
+            "r_aliases": [
+              "r2"
+            ],
+            "citations": "〔c9〕〔r2〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c9",
+                "claim_id": "demo-claim-5f36b520de356ce0b5f6ac990e8cb4d271464c8653a4a36ecb75d2521d316cff"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r2",
+                "claim_id": "demo-claim-468dd34e9add9f27743bb38117555d57ffff20a6c2dd4f7248ea5dcf8330b067"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-4",
+            "kind": "matched_condition",
+            "title": "偏印格候选/未见本筛选的显性牵制条件",
+            "text": "这次核对的是“未见本筛选的显性牵制条件”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c10"
+            ],
+            "r_aliases": [
+              "r3"
+            ],
+            "citations": "〔c10〕〔r3〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c10",
+                "claim_id": "demo-claim-5da65181175524f4c30c754191afa10fbbae645ecb2c2766c936dc95d3855afc"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r3",
+                "claim_id": "demo-claim-c846a1f8f5073eac4ee489d0b37e2d70528a2aa3b45ce2b968c7c18f508391e5"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-5",
+            "kind": "matched_condition",
+            "title": "七杀格候选/未见本筛选的显性牵制条件",
+            "text": "这次核对的是“未见本筛选的显性牵制条件”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第39章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c5"
+            ],
+            "r_aliases": [
+              "r4"
+            ],
+            "citations": "〔c5〕〔r4〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c5",
+                "claim_id": "demo-claim-1b94d4f420a154a6a614eff1a7ffedfabd2ecc111ee2c8c9384c3279174e5c6b"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r4",
+                "claim_id": "demo-claim-643368ae440593390972df8a2b9fba2fe29b93bad3b029cef3da885b3ff61756"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-6",
+            "kind": "matched_condition",
+            "title": "正官格候选/未见本筛选的显性牵制条件",
+            "text": "这次核对的是“未见本筛选的显性牵制条件”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第31章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c4"
+            ],
+            "r_aliases": [
+              "r5"
+            ],
+            "citations": "〔c4〕〔r5〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c4",
+                "claim_id": "demo-claim-bf3e4f01f3e7d50f2e15f3c7356eac2d8c2a481a2ba5f0b7bd8bb8574abe68af"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r5",
+                "claim_id": "demo-claim-4c3b9c64d2c3e5a1c25de2463a63b662637a680bb833963b9e4f9d7ed4b51cc1"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-7",
+            "kind": "matched_condition",
+            "title": "食神格候选/未见本筛选的显性牵制条件",
+            "text": "这次核对的是“未见本筛选的显性牵制条件”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第37章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c11"
+            ],
+            "r_aliases": [
+              "r6"
+            ],
+            "citations": "〔c11〕〔r6〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c11",
+                "claim_id": "demo-claim-818ff2a347225dc987dc82ca1f5569f93d6b9bbf14e495218c6b73f4486b7c07"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r6",
+                "claim_id": "demo-claim-f5bc5f23865b98e79a131dbb723d1bd801ccf26ca20106dc2c1f32b8772f453a"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-8",
+            "kind": "matched_condition",
+            "title": "正印格候选/月支藏该十神",
+            "text": "这次核对的是“月支藏该十神”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c6"
+            ],
+            "r_aliases": [
+              "r7"
+            ],
+            "citations": "〔c6〕〔r7〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c6",
+                "claim_id": "demo-claim-99168e2345fb348e3d4b9fb4d92276bfebf7298f4aaec57ff42316d20bee46d9"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r7",
+                "claim_id": "demo-claim-8f08153f769b3a568a24b67b868c891773c894e937e2a8fd3c4385fa4620ebba"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-9",
+            "kind": "matched_condition",
+            "title": "正印格候选/年月时透该十神",
+            "text": "这次核对的是“年月时透该十神”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c7"
+            ],
+            "r_aliases": [
+              "r8"
+            ],
+            "citations": "〔c7〕〔r8〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c7",
+                "claim_id": "demo-claim-24bbc8c39a86c3451d78c49240219b5ab6e225f8e1e4be071309c2f797f8df16"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r8",
+                "claim_id": "demo-claim-7f8e301f7b0a9dfbd2a8a04b95a92ad7da282c614d5384d53ac657bc31eb75e0"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-10",
+            "kind": "matched_condition",
+            "title": "正印格候选/未见本筛选的显性牵制条件",
+            "text": "这次核对的是“未见本筛选的显性牵制条件”这项候选条件。这里只展示已核对来源的公开摘要；单项满足不能跳过其他条件说已成格。",
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ],
+            "c_aliases": [
+              "c8"
+            ],
+            "r_aliases": [
+              "r9"
+            ],
+            "citations": "〔c8〕〔r9〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c8",
+                "claim_id": "demo-claim-ebd3c1d69f7fb1922ef6d639c0c123fe3de3ea862b320bc3b1e23933c8777d3b"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r9",
+                "claim_id": "demo-claim-5230e807d7b41bbc459673cf7da926c2187fd9b0db0bee679a63bf2596db1d32"
+              }
+            ],
+            "limits": [
+              "这里只满足一项候选条件，未综合其他条件确认成格；未实现的筛选不补造成命中。"
+            ]
+          },
+          {
+            "point_id": "learning-11",
+            "kind": "boundary",
+            "title": "核对临界候选",
+            "text": "这个样例靠近口径交界。本页只展示已核对的交界摘要，原始时刻与完整候选四柱不展开；保留记录和默认主盘，不据此倒推出生时辰。",
+            "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+            "sources": [
+              {
+                "title": "项目时辰交界口径与原始资料",
+                "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+              }
+            ],
+            "c_aliases": [
+              "c26",
+              "c27",
+              "c28"
+            ],
+            "r_aliases": [
+              "r10"
+            ],
+            "citations": "〔c26〕〔c27〕〔c28〕〔r10〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c26",
+                "claim_id": "demo-claim-39d8d287487564c4fa607846234417c0c91ef430d39dedd2667595a71a6e4b61"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c27",
+                "claim_id": "demo-claim-1bd775f11b4268d94427d65aeb5ec1bad05f5d855179dd8c8388e763b9b91896"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c28",
+                "claim_id": "demo-claim-c6a6d3494a70ab400faf0eed01a13eaa7e6ba749ff35bdc3a205ebd7e3a9e5ac"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "r10",
+                "claim_id": "demo-claim-b3dc8f8f186f245828a65d64cfe17fd2d38275fad95eb221fde79425f641ac33"
+              }
+            ],
+            "limits": [
+              "保留默认主盘和交界候选；原始时刻与完整候选四柱未下发，不授权倒推或修改出生时辰。"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c3",
+            "claim_id": "demo-claim-4c246d83e0695f5fb6f5058384ab1dfb12a9069c5c6f17ab6ea1270db2fca661",
+            "kind": "fact",
+            "value_sha256": "d94da4dfa67a2fbb5f3b83bf86a11253700353f738752b6c538de9eefd99c927",
+            "summary": "当前主盘的原有计算依据；本卡没有新造更细的别名。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c4",
+            "claim_id": "demo-claim-bf3e4f01f3e7d50f2e15f3c7356eac2d8c2a481a2ba5f0b7bd8bb8574abe68af",
+            "kind": "fact",
+            "value_sha256": "a2ad603562277a0e74c09f4b2100b3b34e6542d8830dc3f012e81266ff3fbcc8",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c5",
+            "claim_id": "demo-claim-1b94d4f420a154a6a614eff1a7ffedfabd2ecc111ee2c8c9384c3279174e5c6b",
+            "kind": "fact",
+            "value_sha256": "76fa0b7c70bd24a8200a04e09295c045d8033228fe7375f4468ea6848833cd71",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c6",
+            "claim_id": "demo-claim-99168e2345fb348e3d4b9fb4d92276bfebf7298f4aaec57ff42316d20bee46d9",
+            "kind": "fact",
+            "value_sha256": "022b50eccd7b0c6a99828693672be87330aab204d9a58bea843e2b904417d291",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c7",
+            "claim_id": "demo-claim-24bbc8c39a86c3451d78c49240219b5ab6e225f8e1e4be071309c2f797f8df16",
+            "kind": "fact",
+            "value_sha256": "b7994c4c4706dde9931f1b112c16d211f61f7301784d5bfb75138f8ac49ce1f9",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c8",
+            "claim_id": "demo-claim-ebd3c1d69f7fb1922ef6d639c0c123fe3de3ea862b320bc3b1e23933c8777d3b",
+            "kind": "fact",
+            "value_sha256": "e06071284ea0722bcc56fd07d2cd2267e5e3aca099d8fe4bf2bd67bdd63dd529",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c9",
+            "claim_id": "demo-claim-5f36b520de356ce0b5f6ac990e8cb4d271464c8653a4a36ecb75d2521d316cff",
+            "kind": "fact",
+            "value_sha256": "184c4af356bc7601cc227715b439b9838c8a69c76b97b8838272aa1f64369e51",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c10",
+            "claim_id": "demo-claim-5da65181175524f4c30c754191afa10fbbae645ecb2c2766c936dc95d3855afc",
+            "kind": "fact",
+            "value_sha256": "e06071284ea0722bcc56fd07d2cd2267e5e3aca099d8fe4bf2bd67bdd63dd529",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c11",
+            "claim_id": "demo-claim-818ff2a347225dc987dc82ca1f5569f93d6b9bbf14e495218c6b73f4486b7c07",
+            "kind": "fact",
+            "value_sha256": "e302fbc47835c4e9fd747f5cb43909e8e4551ddd71bd467cc515c57e69366c4e",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c12",
+            "claim_id": "demo-claim-d84f3c32fb5baa0dc0c0ceb743a300d07fc80dd0b0a91e45e99d6cb24442cf92",
+            "kind": "fact",
+            "value_sha256": "ecfe9693b5ecccbbdb1b630c2bc19cefdfbf66e37b52c37d72a186198500bb64",
+            "summary": "原生格局候选的条件输入；不下发任意观察JSON。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c26",
+            "claim_id": "demo-claim-39d8d287487564c4fa607846234417c0c91ef430d39dedd2667595a71a6e4b61",
+            "kind": "fact",
+            "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c27",
+            "claim_id": "demo-claim-1bd775f11b4268d94427d65aeb5ec1bad05f5d855179dd8c8388e763b9b91896",
+            "kind": "fact",
+            "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "c28",
+            "claim_id": "demo-claim-c6a6d3494a70ab400faf0eed01a13eaa7e6ba749ff35bdc3a205ebd7e3a9e5ac",
+            "kind": "fact",
+            "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r1",
+            "claim_id": "demo-claim-5f0c28109b172a047552b1fe144728fb08e8bbaeb8ba39a0a71ea525d09d3da7",
+            "kind": "rule",
+            "value_sha256": "c550a2c421bbea307c725a38e6033539692917609f94e100a9453bb6e0088ce3",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c12",
+                "claim_id": "demo-claim-d84f3c32fb5baa0dc0c0ceb743a300d07fc80dd0b0a91e45e99d6cb24442cf92"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第41章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r2",
+            "claim_id": "demo-claim-468dd34e9add9f27743bb38117555d57ffff20a6c2dd4f7248ea5dcf8330b067",
+            "kind": "rule",
+            "value_sha256": "16a458e8f32a9d34dc314efa80c35186b3490e598ec2eeaad3e0bfefe60e5746",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c9",
+                "claim_id": "demo-claim-5f36b520de356ce0b5f6ac990e8cb4d271464c8653a4a36ecb75d2521d316cff"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r3",
+            "claim_id": "demo-claim-c846a1f8f5073eac4ee489d0b37e2d70528a2aa3b45ce2b968c7c18f508391e5",
+            "kind": "rule",
+            "value_sha256": "1e5bd8e13cb115b1d1f6ced4677146c1e8aeb4f89c48f49b4a4078e1b453bd74",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c10",
+                "claim_id": "demo-claim-5da65181175524f4c30c754191afa10fbbae645ecb2c2766c936dc95d3855afc"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r4",
+            "claim_id": "demo-claim-643368ae440593390972df8a2b9fba2fe29b93bad3b029cef3da885b3ff61756",
+            "kind": "rule",
+            "value_sha256": "dfbf06d7f782ee5a412db6df02b0637c36e5aa9b27e15a4026eaacfba23cf40f",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c5",
+                "claim_id": "demo-claim-1b94d4f420a154a6a614eff1a7ffedfabd2ecc111ee2c8c9384c3279174e5c6b"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第39章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r5",
+            "claim_id": "demo-claim-4c3b9c64d2c3e5a1c25de2463a63b662637a680bb833963b9e4f9d7ed4b51cc1",
+            "kind": "rule",
+            "value_sha256": "ad565834adfe4ea47a2e964a74f884fb2f2a3cf2f8f130ff1868fda1d279a8b3",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c4",
+                "claim_id": "demo-claim-bf3e4f01f3e7d50f2e15f3c7356eac2d8c2a481a2ba5f0b7bd8bb8574abe68af"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第31章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r6",
+            "claim_id": "demo-claim-f5bc5f23865b98e79a131dbb723d1bd801ccf26ca20106dc2c1f32b8772f453a",
+            "kind": "rule",
+            "value_sha256": "44c94871852f2330e0e4c108ed17e7a1112181901cd81dfd28c1ec30e97ad5a4",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c11",
+                "claim_id": "demo-claim-818ff2a347225dc987dc82ca1f5569f93d6b9bbf14e495218c6b73f4486b7c07"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第37章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r7",
+            "claim_id": "demo-claim-8f08153f769b3a568a24b67b868c891773c894e937e2a8fd3c4385fa4620ebba",
+            "kind": "rule",
+            "value_sha256": "8d50bf66dc8822dcc0a503d4207e368216eaef621ceb42545fcbd190fd233805",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c6",
+                "claim_id": "demo-claim-99168e2345fb348e3d4b9fb4d92276bfebf7298f4aaec57ff42316d20bee46d9"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r8",
+            "claim_id": "demo-claim-7f8e301f7b0a9dfbd2a8a04b95a92ad7da282c614d5384d53ac657bc31eb75e0",
+            "kind": "rule",
+            "value_sha256": "40635ce8971a08e1329398697101bc613436a14de8dd6cc780c9a379177238c3",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c7",
+                "claim_id": "demo-claim-24bbc8c39a86c3451d78c49240219b5ab6e225f8e1e4be071309c2f797f8df16"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r9",
+            "claim_id": "demo-claim-5230e807d7b41bbc459673cf7da926c2187fd9b0db0bee679a63bf2596db1d32",
+            "kind": "rule",
+            "value_sha256": "310aa2156f38af8cd85628072b422ebaf2be4914a63ef570b5c25e14aff4d716",
+            "summary": "已核对的一项原生候选条件；不等于格局成立。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c8",
+                "claim_id": "demo-claim-ebd3c1d69f7fb1922ef6d639c0c123fe3de3ea862b320bc3b1e23933c8777d3b"
+              }
+            ],
+            "school": "子平 · 项目候选条件实现",
+            "sources": [
+              {
+                "title": "《子平真诠》",
+                "locator": "第八、九章；第35章专论；第十六章杂气（未完整实现）",
+                "url": "https://donglishuzhai.net/chapter/3722.html",
+                "status": "项目候选条件实现的登记出处；不能把项目模板当古籍原句。"
+              }
+            ]
+          },
+          {
+            "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+            "alias": "r10",
+            "claim_id": "demo-claim-b3dc8f8f186f245828a65d64cfe17fd2d38275fad95eb221fde79425f641ac33",
+            "kind": "rule",
+            "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+            "summary": "已核对的交界条件；不据此倒推出生时辰。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c26",
+                "claim_id": "demo-claim-39d8d287487564c4fa607846234417c0c91ef430d39dedd2667595a71a6e4b61"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c27",
+                "claim_id": "demo-claim-1bd775f11b4268d94427d65aeb5ec1bad05f5d855179dd8c8388e763b9b91896"
+              },
+              {
+                "document_id": "doc-5b940ab344fdecea45b33613b519dd41e8f2bdcea9fe50de6e4622a33c188386",
+                "alias": "c28",
+                "claim_id": "demo-claim-c6a6d3494a70ab400faf0eed01a13eaa7e6ba749ff35bdc3a205ebd7e3a9e5ac"
+              }
+            ],
+            "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+            "sources": [
+              {
+                "title": "项目时辰交界口径与原始资料",
+                "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+              }
+            ]
+          }
+        ],
+        "effects": {
+          "model_calls": 0,
+          "writes": 0,
+          "alias_registry": "reuse_input_projection_no_registration"
+        },
+        "limits": [
+          "沿用原信封本轮别名，不重编号；某c覆盖整个主盘，本页只展示受控摘要。",
+          "内容摘要不代表签名或真实授权；真实接线须核对归属和撤销状态。",
+          "纯规则学习要点，不生成新命理结论、性格标签或现实结果承诺。",
+          "仅已发布合成样例；未连接真实资料、通用Pointer或别名账本。",
+          "公开摘要省略任意observed、原始时刻、完整候选四柱及实现细节。",
+          "卡中实际输入已在本地核对；本公开版只展示受控依据摘要。"
+        ]
+      }
+    },
+    {
+      "case_id": "ayuan-ziwei",
+      "context_sha256": "801a5ce6c2fa6229f4287cedf38ebfed9d5d82818a3ba76dde46e9a8904f1a2f",
+      "learning": {
+        "format": "frontend-learning-sample-v1",
+        "sample_id": "ayuan-ziwei",
+        "system": "ziwei",
+        "status": "learning_only",
+        "cards": [
+          {
+            "point_id": "learning-1",
+            "kind": "orientation",
+            "title": "分清宫名与地支格",
+            "text": "这次命宫在亥、身宫在未，宫名与地支格分开读。",
+            "school": "紫微 · 已安装 py-iztro 默认口径",
+            "sources": [
+              {
+                "title": "iztro 宫位说明",
+                "url": "https://docs.iztro.com/posts/palace",
+                "status": "固定样例登记来源；本线未重新核对原刊。"
+              }
+            ],
+            "c_aliases": [
+              "c3"
+            ],
+            "r_aliases": [],
+            "citations": "〔c3〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "c3",
+                "claim_id": "demo-claim-3c264070a92bdb05f6408d1ef6f63c1ca02a8352bb6d880e3aaa54674aaea6e1"
+              }
+            ],
+            "limits": [
+              "从已核对的主盘学习读法，不据此推断人格或现实结果。"
+            ]
+          },
+          {
+            "point_id": "learning-2",
+            "kind": "boundary",
+            "title": "核对临界候选",
+            "text": "这个样例靠近口径交界。本页只展示已核对的交界摘要，原始时刻与完整候选四柱不展开；保留记录和默认主盘，不据此倒推出生时辰。",
+            "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+            "sources": [
+              {
+                "title": "项目时辰交界口径与原始资料",
+                "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+              }
+            ],
+            "c_aliases": [
+              "c7",
+              "c8",
+              "c9"
+            ],
+            "r_aliases": [
+              "r1"
+            ],
+            "citations": "〔c7〕〔c8〕〔c9〕〔r1〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "c7",
+                "claim_id": "demo-claim-27839644daf7b077f43c0a9581cd45d2b02c94c8e023858e393e6b51190405d7"
+              },
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "c8",
+                "claim_id": "demo-claim-5c49a6bdd4915a958a9ed6ad5c88a5c207fd81a9c07bee61a6149aeed3caff65"
+              },
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "c9",
+                "claim_id": "demo-claim-f30e65f68a57d2dc50e043c2f028924d4ec4d00dd6917b48310b12b913db0975"
+              },
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "r1",
+                "claim_id": "demo-claim-4cda8a5174b4f6de33e0ccf36558105b8acd03e14e1f5f1a1562487072aa023e"
+              }
+            ],
+            "limits": [
+              "保留默认主盘和交界候选；原始时刻与完整候选四柱未下发，不授权倒推或修改出生时辰。"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+            "alias": "c3",
+            "claim_id": "demo-claim-3c264070a92bdb05f6408d1ef6f63c1ca02a8352bb6d880e3aaa54674aaea6e1",
+            "kind": "fact",
+            "value_sha256": "35e07289fb047655ad898043fc7e2f437387338c881f085e8413c4ff9e3e518c",
+            "summary": "当前主盘的原有计算依据；本卡没有新造更细的别名。",
+            "basis": "true_solar"
+          },
+          {
+            "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+            "alias": "c7",
+            "claim_id": "demo-claim-27839644daf7b077f43c0a9581cd45d2b02c94c8e023858e393e6b51190405d7",
+            "kind": "fact",
+            "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+            "alias": "c8",
+            "claim_id": "demo-claim-5c49a6bdd4915a958a9ed6ad5c88a5c207fd81a9c07bee61a6149aeed3caff65",
+            "kind": "fact",
+            "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+            "alias": "c9",
+            "claim_id": "demo-claim-f30e65f68a57d2dc50e043c2f028924d4ec4d00dd6917b48310b12b913db0975",
+            "kind": "fact",
+            "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+            "alias": "r1",
+            "claim_id": "demo-claim-4cda8a5174b4f6de33e0ccf36558105b8acd03e14e1f5f1a1562487072aa023e",
+            "kind": "rule",
+            "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+            "summary": "已核对的交界条件；不据此倒推出生时辰。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "c7",
+                "claim_id": "demo-claim-27839644daf7b077f43c0a9581cd45d2b02c94c8e023858e393e6b51190405d7"
+              },
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "c8",
+                "claim_id": "demo-claim-5c49a6bdd4915a958a9ed6ad5c88a5c207fd81a9c07bee61a6149aeed3caff65"
+              },
+              {
+                "document_id": "doc-9e09c090fcf49eaae5906e5f7c3dc0b30ee1bccbae847ade831f61b72d982e83",
+                "alias": "c9",
+                "claim_id": "demo-claim-f30e65f68a57d2dc50e043c2f028924d4ec4d00dd6917b48310b12b913db0975"
+              }
+            ],
+            "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+            "sources": [
+              {
+                "title": "项目时辰交界口径与原始资料",
+                "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+              }
+            ]
+          }
+        ],
+        "effects": {
+          "model_calls": 0,
+          "writes": 0,
+          "alias_registry": "reuse_input_projection_no_registration"
+        },
+        "limits": [
+          "沿用原信封本轮别名，不重编号；某c覆盖整个主盘，本页只展示受控摘要。",
+          "内容摘要不代表签名或真实授权；真实接线须核对归属和撤销状态。",
+          "纯规则学习要点，不生成新命理结论、性格标签或现实结果承诺。",
+          "仅已发布合成样例；未连接真实资料、通用Pointer或别名账本。",
+          "公开摘要省略任意observed、原始时刻、完整候选四柱及实现细节。",
+          "卡中实际输入已在本地核对；本公开版只展示受控依据摘要。"
+        ]
+      }
+    },
+    {
+      "case_id": "ayuan-astro",
+      "context_sha256": "c1b509a05fec3cbe760b38eba017f590dfd048e61d61f9d01e710612a9a77c12",
+      "learning": {
+        "format": "frontend-learning-sample-v1",
+        "sample_id": "ayuan-astro",
+        "system": "astro",
+        "status": "learning_only",
+        "cards": [
+          {
+            "point_id": "learning-1",
+            "kind": "orientation",
+            "title": "先读计算位置",
+            "text": "本页核对本命主盘的来源与具名方法，不展开完整行星位置；黄道、坐标、宫制、历表与UTC口径一起阅读，不把计算位置当作现实事件。",
+            "school": "西占 · 热带黄道、地心黄经、Placidus宫制；Moshier历表，民用UTC近似UT",
+            "sources": [
+              {
+                "title": "Swiss Ephemeris 官方接口说明",
+                "url": "https://www.astro.com/swisseph/swephprg.htm",
+                "status": "固定样例登记来源；本线未重新核对原刊。"
+              }
+            ],
+            "c_aliases": [
+              "c7"
+            ],
+            "r_aliases": [],
+            "citations": "〔c7〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+                "alias": "c7",
+                "claim_id": "demo-claim-fe925eb88bf4d787187a583b21abeef48945924f671428b02e83a601f16a07ca"
+              }
+            ],
+            "limits": [
+              "从已核对的主盘学习读法，不据此推断人格或现实结果。"
+            ]
+          },
+          {
+            "point_id": "learning-2",
+            "kind": "boundary",
+            "title": "核对临界候选",
+            "text": "这个样例靠近口径交界。本页只展示已核对的交界摘要，原始时刻与完整候选四柱不展开；保留记录和默认主盘，不据此倒推出生时辰。",
+            "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+            "sources": [
+              {
+                "title": "项目时辰交界口径与原始资料",
+                "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+              }
+            ],
+            "c_aliases": [
+              "c3",
+              "c4",
+              "c5"
+            ],
+            "r_aliases": [
+              "r1"
+            ],
+            "citations": "〔c3〕〔c4〕〔c5〕〔r1〕",
+            "evidence_refs": [
+              {
+                "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+                "alias": "c3",
+                "claim_id": "demo-claim-4be0a8599ad9dba5a76336786126a1797cb2bd01f8e88eb96b1c81c1289033f3"
+              },
+              {
+                "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+                "alias": "c4",
+                "claim_id": "demo-claim-5ef298d08f4157b58dc637d7b6eb7297192810482b73032f83de74b7ca0dad1f"
+              },
+              {
+                "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+                "alias": "c5",
+                "claim_id": "demo-claim-8b71e2b0632f3e9d6b491217b8e2d9426521f72ae0579b9eb2ff4ecff5dbadd4"
+              },
+              {
+                "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+                "alias": "r1",
+                "claim_id": "demo-claim-b1ed236fba16eb54c8c47dbc11d6960b478914bf05c3b2388c5779fcf3e56bd1"
+              }
+            ],
+            "limits": [
+              "保留默认主盘和交界候选；原始时刻与完整候选四柱未下发，不授权倒推或修改出生时辰。"
+            ]
+          }
+        ],
+        "evidence": [
+          {
+            "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+            "alias": "c3",
+            "claim_id": "demo-claim-4be0a8599ad9dba5a76336786126a1797cb2bd01f8e88eb96b1c81c1289033f3",
+            "kind": "fact",
+            "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+            "alias": "c4",
+            "claim_id": "demo-claim-5ef298d08f4157b58dc637d7b6eb7297192810482b73032f83de74b7ca0dad1f",
+            "kind": "fact",
+            "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+            "alias": "c5",
+            "claim_id": "demo-claim-8b71e2b0632f3e9d6b491217b8e2d9426521f72ae0579b9eb2ff4ecff5dbadd4",
+            "kind": "fact",
+            "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+            "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-703afc8fd661b2098f2dff6eb1036ad0a1d7a683b4cddfc291cefa6d3b485dbc",
+            "alias": "c7",
+            "claim_id": "demo-claim-fe925eb88bf4d787187a583b21abeef48945924f671428b02e83a601f16a07ca",
+            "kind": "fact",
+            "value_sha256": "fb3a95f855c9562c48863c5597f671b16c3a2e4190aa49809bd1ea315b5459a4",
+            "summary": "当前主盘的原有计算依据；本卡没有新造更细的别名。",
+            "basis": "actual_UTC"
+          },
+          {
+            "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+            "alias": "r1",
+            "claim_id": "demo-claim-b1ed236fba16eb54c8c47dbc11d6960b478914bf05c3b2388c5779fcf3e56bd1",
+            "kind": "rule",
+            "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+            "summary": "已核对的交界条件；不据此倒推出生时辰。",
+            "basis": "true_solar",
+            "evidence_refs": [
+              {
+                "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+                "alias": "c3",
+                "claim_id": "demo-claim-4be0a8599ad9dba5a76336786126a1797cb2bd01f8e88eb96b1c81c1289033f3"
+              },
+              {
+                "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+                "alias": "c4",
+                "claim_id": "demo-claim-5ef298d08f4157b58dc637d7b6eb7297192810482b73032f83de74b7ca0dad1f"
+              },
+              {
+                "document_id": "doc-03189978c64703d67b40e101fa0a7211abc2906255ea5ae1a75d1f3a485fbb32",
+                "alias": "c5",
+                "claim_id": "demo-claim-8b71e2b0632f3e9d6b491217b8e2d9426521f72ae0579b9eb2ff4ecff5dbadd4"
+              }
+            ],
+            "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+            "sources": [
+              {
+                "title": "项目时辰交界口径与原始资料",
+                "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+              }
+            ]
+          }
+        ],
+        "effects": {
+          "model_calls": 0,
+          "writes": 0,
+          "alias_registry": "reuse_input_projection_no_registration"
+        },
+        "limits": [
+          "沿用原信封本轮别名，不重编号；某c覆盖整个主盘，本页只展示受控摘要。",
+          "内容摘要不代表签名或真实授权；真实接线须核对归属和撤销状态。",
+          "纯规则学习要点，不生成新命理结论、性格标签或现实结果承诺。",
+          "仅已发布合成样例；未连接真实资料、通用Pointer或别名账本。",
+          "公开摘要省略任意observed、原始时刻、完整候选四柱及实现细节。",
+          "卡中实际输入已在本地核对；本公开版只展示受控依据摘要。"
+        ]
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "year",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "master",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "year_stem",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "food",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "wealth",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "hour_stem",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "residual",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "command",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "strength_a",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "seal_exposed",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c7",
+      "r_aliases": [
+        "r8"
+      ],
+      "role": "rule_input",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "仅核对原生候选条件，不代表格局成立或现实结果。"
+    },
+    {
+      "evidence_id": "hurting_clear",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c12",
+      "r_aliases": [
+        "r1"
+      ],
+      "role": "rule_input",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "仅核对原生候选条件，不代表格局成立或现实结果。"
+    },
+    {
+      "evidence_id": "indirect_seal_screen",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "established_lu_screen",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "useful_intersection",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "decade",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "month_hour_clash",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "solar",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c26",
+      "r_aliases": [],
+      "role": "basis",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "已核对时间口径；本页不下发原始时刻与完整候选盘。"
+    },
+    {
+      "evidence_id": "solar_boundary",
+      "case_id": "ayuan-bazi",
+      "c_alias": "c26",
+      "r_aliases": [
+        "r10"
+      ],
+      "role": "rule_input",
+      "context_sha256": "e99603dabaed42e6714046933a47f246ef56b7a8c3f653a388db03a9787dd188",
+      "summary": "仅核对原生候选条件，不代表格局成立或现实结果。"
+    },
+    {
+      "evidence_id": "ziwei_life",
+      "case_id": "ayuan-ziwei",
+      "c_alias": "c3",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "801a5ce6c2fa6229f4287cedf38ebfed9d5d82818a3ba76dde46e9a8904f1a2f",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    },
+    {
+      "evidence_id": "astro_sun_sign",
+      "case_id": "ayuan-astro",
+      "c_alias": "c7",
+      "r_aliases": [],
+      "role": "primary",
+      "context_sha256": "c1b509a05fec3cbe760b38eba017f590dfd048e61d61f9d01e710612a9a77c12",
+      "summary": "已在该合成样例主盘核对；不细分或新造计算别名。"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "p8-elements",
+      "title": "P8五行阴阳与十神独立算式",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用，无刊页"
+    },
+    {
+      "source_id": "p8-pattern-review",
+      "title": "P8显式格局筛选与24号审校",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "子平真诠第九/十四/四十一章公开转录已有审校记录，具体原刊版页待核"
+    },
+    {
+      "source_id": "noaa-solar",
+      "title": "NOAA Solar Calculation Details",
+      "kind": "official_scientific_documentation",
+      "verification_status": "official_document_read",
+      "edition_page_status": "在线技术说明，无纸页"
+    },
+    {
+      "source_id": "p8-solar",
+      "title": "P8具名太阳时坐标换算",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用，无刊页"
+    },
+    {
+      "source_id": "iztro-palace",
+      "title": "iztro宫位系统与官方宫位接口",
+      "kind": "official_implementation_documentation",
+      "verification_status": "official_document_read",
+      "edition_page_status": "本次页面显示v2.6.2；只作术语结构资料，不冒称安装包已升级"
+    },
+    {
+      "source_id": "iztro-mutagen",
+      "title": "iztro四化与飞星系统",
+      "kind": "official_implementation_documentation",
+      "verification_status": "official_document_read",
+      "edition_page_status": "现代作者原始说明，非古籍原刊校勘"
+    },
+    {
+      "source_id": "p8-ziwei-flying",
+      "title": "P8具名宫干飞化结构",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "iztro默认与quanshu可选口径具名；全书壬科天府原刊版页待核"
+    },
+    {
+      "source_id": "p8-astro-aspects",
+      "title": "P8五大黄经相位和容许度筛选",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目参数定义，不冒称某古籍给定同一角度上限"
+    },
+    {
+      "source_id": "p8-progressions",
+      "title": "P8具名次限UT1一日对应一年映射",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "Alan Leo历史附录仅为方法背景；项目365.2422细化不是历史原书逐字算法"
+    },
+    {
+      "source_id": "project-tarot-editorial",
+      "title": "知命明镜台项目原创塔罗象征解释",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "原创产品文本，无古籍纸页；不是Waite逐句翻译"
+    },
+    {
+      "source_id": "project-tarot-reversals",
+      "title": "项目逆位解释方法草稿",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "历史牌义只作背景，不声称所有牌组均采用逆位"
+    },
+    {
+      "source_id": "p8-named-methods",
+      "title": "P8具名司令、藏干与十神方法",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-strength",
+      "title": "P8两种项目旺衰口径",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-calendar",
+      "title": "P8运限与节界历法层",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-interaction-table",
+      "title": "P8跨时间层干支结构表",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-time-basis",
+      "title": "P8物理瞬间与时钟依据",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-pattern-registry",
+      "title": "P8显式格局及38条件规则",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-stars-editorial",
+      "title": "P8十四主星原创解释草稿",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-structure",
+      "title": "P8实际紫微结构输出",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-combination-editorial",
+      "title": "P8三方四正与主题宫解释",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-ziwei-time-editorial",
+      "title": "P8紫微运限分层说明",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "iztro-palace-learning",
+      "title": "iztro作者宫位系统原始说明",
+      "kind": "official_implementation_documentation",
+      "verification_status": "official_document_read",
+      "edition_page_status": "现代作者说明，非全书原刊校勘；不冒称各派统一主题规则"
+    },
+    {
+      "source_id": "p8-astro-signs",
+      "title": "项目热带黄道星座与宫位输出",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-natal-editorial",
+      "title": "P8本命西占解释边界",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-aspect-editorial",
+      "title": "P8相位与软件口径说明",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-transit",
+      "title": "P8真实天空相位区间",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-astro-return",
+      "title": "P8太阳回归数值求解",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "swiss-houses",
+      "title": "Swiss Ephemeris宫制技术接口",
+      "kind": "official_scientific_documentation",
+      "verification_status": "official_document_read",
+      "edition_page_status": "线上技术文档，接口说明无古籍纸页；不冒称已提供其它宫制的产品入口"
+    },
+    {
+      "source_id": "p8-tarot-minor-editorial",
+      "title": "项目小阿卡纳花色与数字读法",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-tarot-court-editorial",
+      "title": "项目宫廷牌角色读法",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-tarot-major-editorial",
+      "title": "项目固定大阿卡纳与编号说明",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-tarot-spread-editorial",
+      "title": "项目牌阵与位置解释",
+      "kind": "project_editorial",
+      "verification_status": "original_editorial_read",
+      "edition_page_status": "仅核项目源码/编辑文本；所列古籍概念的原刊版次页码待核，不以程序代校古籍。"
+    },
+    {
+      "source_id": "p8-basis-pillars",
+      "title": "P8物理节界与声明日时坐标",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目源码定位，无刊页；不证明古籍效度。"
+    },
+    {
+      "source_id": "p8-school-tables",
+      "title": "P8具名阳刃/阴刃可选表",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "默认与异说表仅核当前项目数据；阴刃逆行第三表原典出处未找到，不能冒称三命通会支持。"
+    },
+    {
+      "source_id": "p8-synastry-default",
+      "title": "P8合盘显式参数默认值",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目源码定位，无刊页；不证明古籍效度。"
+    },
+    {
+      "source_id": "p8-daily-transit-default",
+      "title": "P8流日显式参数默认值",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "项目源码定位，无刊页；不证明古籍效度。"
+    },
+    {
+      "source_id": "p8-daily-snapshot",
+      "title": "P8北京时间正午采样约定",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用；采样为项目约定，无古籍刊页，不证明传统应期有效。"
+    },
+    {
+      "source_id": "p8-daily-astro",
+      "title": "P8流日真实天空采样调用",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用；采样为项目约定，无古籍刊页，不证明传统应期有效。"
+    },
+    {
+      "source_id": "p8-daily-ziwei",
+      "title": "P8紫微流日显式午时索引",
+      "kind": "project_implementation",
+      "verification_status": "implementation_locator_checked",
+      "edition_page_status": "源码定位适用；采样为项目约定，无古籍刊页，不证明传统应期有效。"
+    }
+  ],
+  "provenance": {
+    "source_commit": "f8d9536a44db67a84db9315c208e2a66893214c9",
+    "manifest_sha256_lf_utf8": "1491b7ce765e2b4317c309fcceb05288b87222a40e40a284a375c22533781a6c",
+    "input_sha256_lf_utf8": {
+      "docs/v4/contracts/glossary.schema.json": "42555c9db476bcce4f14c5e310b6bcae376c50e25c94abf01dade72cb40d5cc4",
+      "docs/v4/contracts/glossary_sources.schema.json": "cc7a23f9fecceb51918a01b6e6145342eff63a625611634ca2cc5e93084fd084",
+      "docs/v4/contracts/learning_lessons.schema.json": "ee521572c0c6eb58ead1fb215f544c5f572095179b53213c52eddaaa9fa70b4b",
+      "docs/v4/contracts/samples/ayuan_astro.json": "c18003894a32d1ac49cf27be27f6afe8302f59fbeb651f7c558c0cdbf2f69168",
+      "docs/v4/contracts/samples/ayuan_bazi.json": "3c9f37431244ce9eee0405e38ef19b04c9ae683f8c55e9ade6a450144e4c1939",
+      "docs/v4/contracts/samples/ayuan_ziwei.json": "c4b07c2bfaaec3aa73c989105c49400eacd192cc28971ce1dd81f4d956bfbd9d",
+      "docs/v4/contracts/samples/learning-ayuan-astro.json": "fd6bc4f24fc118217b8fdfd0e2fff553a7f34a176f3fc3c8574ade34961f3503",
+      "docs/v4/contracts/samples/learning-ayuan-bazi.json": "87aa72422f76a28e27f63d7d32a7da37242fc5d95a9289621ad99a74f3cbd642",
+      "docs/v4/contracts/samples/learning-ayuan-ziwei.json": "e644c75f47fdcd8624b2b7d43cef35424ed363af4c13dedd15e7f3828a8ec16e",
+      "mingjing_core/knowledge/p8_glossary/sources_v1.json": "a781219cbf9f364ca6fbe89e82ce5e4640a99851a29bc65988b7ddcfcf67f1f1",
+      "mingjing_core/knowledge/p8_glossary/terms_v1.json": "b1005b6e1748c7cb0dc680ff0b43ea93c4e54819b3a23da49f8e5b3a0cd197b3",
+      "mingjing_core/knowledge/p8_learning_lessons/curriculum_v1.json": "fe8b512e96be8b79c9453c1807801c9255c94bf9d7968bb4661f56c7ba77cc98",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-01.json": "a7c5ab0ff0b843a9e3b01ddec94900e8021abc81cda535304eb3b7c3ac84401a",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-02.json": "bb7b8de777a4e115296bafc0ed5544ffca6799143dc7856c58270948c577b503",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-03.json": "98b982e0a0c536addec88639cc9fdf39597982a979eb9b6cc8bbaaf3129bd457",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-04.json": "be042980ba290242cd65ce63388014819bbb2f01b410a08c313c0363ef3d22fe",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-05.json": "ba3f7e557996b977d31f50f3287b2271da4d4801b03e7b09245d9ca26af805c8",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-06.json": "83fcb1068868016719ce569c38e37dcb094fa4be301919eda23f91e1d3c7c53c",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-07.json": "818d2cd8beb37847166c266f3272b195d9a6ea9d9b4cd58082273d87d2076384",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-08.json": "fce7e6935ce493b3b7bbdbac27561b49ef4d804aefa6256dd11cedd579393940",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-09.json": "0df4857511e3d350eff0f7df16ddbf234070b2250d5d7eb082705e0bafa60f67",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-10.json": "eba1973898ca2b7186bad5883f45556e6350d5877a44973a93e55ffc04dcf38f",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-11.json": "e14944d4e580458dee8e7def6ea17e268ab571e18ea5b54c78a2458ba37b3ede",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-12.json": "6ce3b75a56bed969e5dd69d4db86d75e09b0497ecf5b4cce95d40601df33be2f",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-13.json": "5eaae313ff232b68801d262e408acac0dabd09797e15ef6645c1a0346afb4616",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-14.json": "9dd23a7b70bb0f076a5abca9c0ed98baacb7671ee069dbba9b5eb1ddd35d2512",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-15.json": "b79d21d43dbaf4f472521585e8ff26015ec1c289478ff37510c34361947cc4e1",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-16.json": "c5af3e27fa5317e15d661dee4399977d27cd83b67f3d9a476f54b30613a2a7b4",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-17.json": "44c5d4e169d7199f698069e35fbc46c30a1026efb50fee048b9fcb486bd671a9",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-18.json": "40732057bf78827351485fd73ed2d26c6bd7cbc463cd8f3f23aa32ef64d64f58",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-19.json": "4798ae772770eefd860012d43516e0475ea06d4e91e73b18f4b63edffdf5dcdd",
+      "mingjing_core/knowledge/p8_learning_lessons/lessons/lesson-20.json": "741c0b203ddf5df63c476001b869d0cd945d95ed417debf863c55780dc039f9b"
+    }
+  },
+  "effects": {
+    "model_calls": 0,
+    "user_writes": 0,
+    "network_calls": 0
+  },
+  "limits": [
+    "仅供合成样例学习，课程仍待专业复核。",
+    "测验答案按本次固定样例离线核对，不构成现实预测或专业认证。",
+    "别名只在所属样例与上下文有效；不连接真实资料或保存学习进度。"
+  ]
+}

@@ -1,0 +1,117 @@
+.checkbox-target {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  flex: none;
+}
+.checkbox-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.checkbox-box {
+  display: inline-grid;
+  place-items: center;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  border: var(--selected) solid var(--line-strong);
+  border-radius: var(--r-1);
+  background: var(--surface);
+}
+.checkbox-box .icon {
+  opacity: 0;
+}
+.checkbox-input:checked + .checkbox-box {
+  border-color: var(--cinnabar);
+  background: var(--cinnabar);
+  color: var(--on-cinnabar);
+}
+.checkbox-input:checked + .checkbox-box .icon {
+  opacity: 1;
+}
+.checkbox-input:focus-visible + .checkbox-box {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--ring-offset);
+}
+.checkbox-input:disabled + .checkbox-box {
+  opacity: 0.55;
+}
+.checkbox-input:not(:disabled):hover + .checkbox-box {
+  border-color: var(--ink-2);
+}
+.select-trigger {
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--s-2);
+  text-align: left;
+}
+.select-menu {
+  padding: var(--s-1);
+  width: max-content;
+  min-width: var(--radix-popover-trigger-width);
+  max-height: min(calc(var(--control-height) * 6), var(--radix-popover-content-available-height));
+  overflow: auto;
+}
+.select-menu [role='option'] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  width: 100%;
+  min-height: var(--control-height);
+  padding: var(--s-2) var(--s-3);
+  border: 0;
+  border-radius: var(--r-1);
+  color: var(--ink);
+  background: transparent;
+  font-size: var(--t-body-sm);
+}
+.select-menu [role='option']:hover,
+.select-menu [role='option']:focus-visible,
+.select-menu [aria-selected='true'] {
+  background: var(--paper-2);
+}
+.time-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+  margin-top: var(--s-3);
+}
+.time-trigger {
+  width: max-content;
+  padding-inline: var(--s-3);
+  white-space: nowrap;
+}
+.quiet-times {
+  gap: var(--s-2);
+}
+.calendar-navigation {
+  gap: 0;
+}
+.calendar-popover {
+  width: min(calc(100vw - var(--s-7)), var(--drawer-width));
+  padding-top: var(--s-5);
+}
+.calendar-popover > h2 {
+  padding-right: var(--s-7);
+  margin-bottom: var(--s-2);
+}
+.calendar-close {
+  position: absolute;
+  right: var(--s-2);
+  top: var(--s-2);
+}
+.calendar-sheet .mini-calendar,
+.calendar-popover .mini-calendar {
+  margin-top: var(--s-4);
+}
+.calendar-legend {
+  margin-top: var(--s-2);
+}

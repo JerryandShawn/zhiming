@@ -1,0 +1,350 @@
+{
+  "format": "frontend-tool-sample-v1",
+  "tool": "window_search",
+  "document_id": "tool-6daad2ece131e4e62d8619ca5a8a3aca5a9ede42567c914197a0ea119a40c4c3",
+  "data": {
+    "purpose": "签约",
+    "range": {
+      "start_date": "2026-10-21",
+      "end_date": "2026-10-27",
+      "inclusive": true,
+      "day_count": 7
+    },
+    "method": {
+      "ranking": "score_descending_then_date_ascending",
+      "weights_version": "project-six-purpose-ranking-v1",
+      "sample_clock": "12:00:00+08:00",
+      "daily_orb_degrees": 2.0,
+      "election_hours_searched": false,
+      "prediction_validated": false
+    },
+    "weights": {
+      "version": "project-six-purpose-ranking-v1",
+      "layer_factors": {
+        "yearly": 1,
+        "monthly": 2,
+        "daily": 3
+      },
+      "purpose_weights": {
+        "签约": {
+          "bazi_relation": {
+            "六冲": -3,
+            "六合": 2,
+            "三刑": -2,
+            "自刑": 0,
+            "六害": -2,
+            "六破": -1,
+            "天干五合": 2,
+            "天干相克": 0,
+            "三合": 2,
+            "三会": 2
+          },
+          "bazi_ten_god": {
+            "比肩": 0,
+            "劫财": -2,
+            "食神": 1,
+            "伤官": -1,
+            "偏财": 1,
+            "正财": 2,
+            "七杀": -1,
+            "正官": 2,
+            "偏印": 1,
+            "正印": 2
+          },
+          "ziwei_mutagen": {
+            "禄": 2,
+            "权": 1,
+            "科": 2,
+            "忌": -2
+          },
+          "astro_aspect": {
+            "合相": 0,
+            "六合": 1,
+            "刑相": -2,
+            "拱相": 2,
+            "冲相": -2
+          }
+        },
+        "面试": {
+          "bazi_relation": {
+            "六冲": -2,
+            "六合": 1,
+            "三刑": -2,
+            "自刑": 0,
+            "六害": -1,
+            "六破": -1,
+            "天干五合": 1,
+            "天干相克": 0,
+            "三合": 1,
+            "三会": 1
+          },
+          "bazi_ten_god": {
+            "比肩": 1,
+            "劫财": -1,
+            "食神": 2,
+            "伤官": 0,
+            "偏财": 0,
+            "正财": 1,
+            "七杀": 0,
+            "正官": 2,
+            "偏印": 1,
+            "正印": 2
+          },
+          "ziwei_mutagen": {
+            "禄": 1,
+            "权": 2,
+            "科": 2,
+            "忌": -2
+          },
+          "astro_aspect": {
+            "合相": 0,
+            "六合": 1,
+            "刑相": -1,
+            "拱相": 2,
+            "冲相": -1
+          }
+        },
+        "搬家": {
+          "bazi_relation": {
+            "六冲": -2,
+            "六合": 2,
+            "三刑": -2,
+            "自刑": 0,
+            "六害": -2,
+            "六破": -1,
+            "天干五合": 1,
+            "天干相克": 0,
+            "三合": 2,
+            "三会": 2
+          },
+          "bazi_ten_god": {
+            "比肩": 1,
+            "劫财": -1,
+            "食神": 1,
+            "伤官": 0,
+            "偏财": 1,
+            "正财": 1,
+            "七杀": -1,
+            "正官": 1,
+            "偏印": 1,
+            "正印": 2
+          },
+          "ziwei_mutagen": {
+            "禄": 2,
+            "权": 0,
+            "科": 1,
+            "忌": -2
+          },
+          "astro_aspect": {
+            "合相": 0,
+            "六合": 1,
+            "刑相": -2,
+            "拱相": 1,
+            "冲相": -2
+          }
+        },
+        "出行": {
+          "bazi_relation": {
+            "六冲": -2,
+            "六合": 1,
+            "三刑": -2,
+            "自刑": 0,
+            "六害": -1,
+            "六破": -1,
+            "天干五合": 1,
+            "天干相克": 0,
+            "三合": 1,
+            "三会": 1
+          },
+          "bazi_ten_god": {
+            "比肩": 1,
+            "劫财": -1,
+            "食神": 1,
+            "伤官": 0,
+            "偏财": 1,
+            "正财": 0,
+            "七杀": -1,
+            "正官": 1,
+            "偏印": 0,
+            "正印": 1
+          },
+          "ziwei_mutagen": {
+            "禄": 1,
+            "权": 0,
+            "科": 1,
+            "忌": -2
+          },
+          "astro_aspect": {
+            "合相": 0,
+            "六合": 1,
+            "刑相": -2,
+            "拱相": 1,
+            "冲相": -2
+          }
+        },
+        "表白": {
+          "bazi_relation": {
+            "六冲": -2,
+            "六合": 2,
+            "三刑": -2,
+            "自刑": 0,
+            "六害": -2,
+            "六破": -1,
+            "天干五合": 2,
+            "天干相克": 0,
+            "三合": 2,
+            "三会": 2
+          },
+          "bazi_ten_god": {
+            "比肩": 1,
+            "劫财": -1,
+            "食神": 2,
+            "伤官": 0,
+            "偏财": 1,
+            "正财": 1,
+            "七杀": 0,
+            "正官": 1,
+            "偏印": 0,
+            "正印": 1
+          },
+          "ziwei_mutagen": {
+            "禄": 2,
+            "权": 0,
+            "科": 1,
+            "忌": -2
+          },
+          "astro_aspect": {
+            "合相": 0,
+            "六合": 2,
+            "刑相": -1,
+            "拱相": 2,
+            "冲相": -2
+          }
+        },
+        "开业": {
+          "bazi_relation": {
+            "六冲": -3,
+            "六合": 2,
+            "三刑": -2,
+            "自刑": 0,
+            "六害": -2,
+            "六破": -1,
+            "天干五合": 2,
+            "天干相克": 0,
+            "三合": 2,
+            "三会": 2
+          },
+          "bazi_ten_god": {
+            "比肩": 1,
+            "劫财": -1,
+            "食神": 2,
+            "伤官": 1,
+            "偏财": 2,
+            "正财": 2,
+            "七杀": 0,
+            "正官": 1,
+            "偏印": 0,
+            "正印": 1
+          },
+          "ziwei_mutagen": {
+            "禄": 2,
+            "权": 1,
+            "科": 2,
+            "忌": -2
+          },
+          "astro_aspect": {
+            "合相": 0,
+            "六合": 1,
+            "刑相": -2,
+            "拱相": 2,
+            "冲相": -2
+          }
+        }
+      },
+      "prediction_validated": false
+    },
+    "ranking_summary": [
+      {
+        "date": "2026-10-25",
+        "rank": 1,
+        "score": 30,
+        "positive_sum": 65,
+        "negative_sum": -35
+      },
+      {
+        "date": "2026-10-22",
+        "rank": 2,
+        "score": 20,
+        "positive_sum": 55,
+        "negative_sum": -35
+      },
+      {
+        "date": "2026-10-23",
+        "rank": 3,
+        "score": 8,
+        "positive_sum": 46,
+        "negative_sum": -38
+      },
+      {
+        "date": "2026-10-27",
+        "rank": 4,
+        "score": 5,
+        "positive_sum": 55,
+        "negative_sum": -50
+      },
+      {
+        "date": "2026-10-24",
+        "rank": 5,
+        "score": 4,
+        "positive_sum": 42,
+        "negative_sum": -38
+      },
+      {
+        "date": "2026-10-26",
+        "rank": 6,
+        "score": -6,
+        "positive_sum": 47,
+        "negative_sum": -53
+      },
+      {
+        "date": "2026-10-21",
+        "rank": 7,
+        "score": -7,
+        "positive_sum": 46,
+        "negative_sum": -53
+      }
+    ],
+    "candidates": [],
+    "pagination": {
+      "total": 7,
+      "offset": 7,
+      "limit": 3,
+      "returned": 0,
+      "has_more": false,
+      "next_offset": null
+    },
+    "query_sha256": "61991929ad5b224690a9eb335ac1e25ec18a1d651048d65aae29c40c1ca19ec4",
+    "ignored_condition_count": 0
+  },
+  "evidence": [],
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "alias_registry": "ephemeral_only"
+  },
+  "limits": [
+    "仅离线合成样例，不是你的资料或本次实时计算。",
+    "依据短别名只对当前结果有效，不能跨结果借用。",
+    "盘面结构不证明现实预测有效；本页没有保存、发送或调用模型。",
+    "仅北京时间正午快照，不提供精确吉时。",
+    "分数是公开权重的项目排序，不是成功概率。"
+  ],
+  "provenance": {
+    "source_ref": "origin/v4/p8-calc",
+    "source_commit": "e56fcd6c4de96803fc5f6fc1135defd9ac34b1ff",
+    "source_path": "docs/v4/contracts/samples/window-search-ayuan-empty.json",
+    "source_sha256": "7615d105e5daa19c535b8c30ad5a4c3508616965102798f2d4766baf1ad653ae",
+    "mode": "published-synthetic-engine",
+    "integrity": "root-document-pointer-alias-and-fact-digests-verified"
+  }
+}

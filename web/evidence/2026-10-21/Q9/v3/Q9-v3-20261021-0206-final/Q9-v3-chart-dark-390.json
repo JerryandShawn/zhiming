@@ -1,0 +1,100 @@
+{
+  "schema": "frontend-q9-v3-visual-v1",
+  "run_id": "Q9-v3-20261021-0206-final",
+  "id": "Q9-v3-chart-dark-390",
+  "mode": "v3",
+  "page": "chart",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "theme": "dark",
+  "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chart-dark-390.png",
+  "sha256": "c20537c1ecadca007519ea499ea25d341b98481c0e0f20f63d612b5b1a758c2f",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chart-dark-390-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chart-dark-390.png",
+      "sha256": "c20537c1ecadca007519ea499ea25d341b98481c0e0f20f63d612b5b1a758c2f",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-chart-dark-390-full.png",
+      "sha256": "747337f574389731f1715c122d3462b67bd73be79a414ebfbaa147b62a022d70",
+      "full_page": true
+    }
+  ],
+  "captured_at_beijing": "2026-10-21T02:06:20+08:00",
+  "clock": "2026-10-21T10:00:00+08:00",
+  "build_manifest_sha256": "1caccda67130820b980538ffac1e07a08b2678b5802a7083d52c67300bf309ff",
+  "synthetic_only": true,
+  "backend": "http://127.0.0.1:8002 / core_test_fe",
+  "fixture_model": "scripted-only, one reading preseeded per worker; no browser model trigger",
+  "checks": {
+    "ready": true,
+    "readiness_error": "",
+    "inspection": {
+      "document": {
+        "lang": "zh-CN",
+        "theme": "dark",
+        "font_faces": 202,
+        "overflow": false
+      },
+      "screens": [
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 724,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "chart-luck-period current",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 1198,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "chart-luck-period current",
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "violations": []
+    },
+    "boundary": {
+      "arrivals": [
+        {
+          "path": "/api/chart",
+          "status": 200
+        }
+      ],
+      "external": [],
+      "writes": [],
+      "errors": [],
+      "console": [],
+      "failed": [],
+      "expected_cancellations": [],
+      "http_errors": []
+    }
+  }
+}

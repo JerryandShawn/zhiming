@@ -1,0 +1,99 @@
+{
+  "schema": "frontend-q9-v3-visual-v1",
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "Q9-v3-today-dark-768",
+  "mode": "v3",
+  "page": "today",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "dark",
+  "screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-1b/Q9-v3-today-dark-768.png",
+  "sha256": "db4d569a2cf248e1affaa3b99d5b4772759b3f6f2e67099296975f0bbe286c08",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-1b/Q9-v3-today-dark-768-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-1b/Q9-v3-today-dark-768.png",
+      "sha256": "db4d569a2cf248e1affaa3b99d5b4772759b3f6f2e67099296975f0bbe286c08",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-1b/Q9-v3-today-dark-768-full.png",
+      "sha256": "67ed73464999537a3b6101b6ffcd5df1b02532ba042f87d2cee4ad111a93639c",
+      "full_page": true
+    }
+  ],
+  "captured_at_beijing": "2026-10-21T10:56:41+08:00",
+  "clock": "2026-10-21T10:00:00+08:00",
+  "build_manifest_sha256": "685e6e14bb00de0e3a997ef0ad4fb96a8734688b0c8ce773f9528919b2f48f61",
+  "synthetic_only": true,
+  "backend": "http://127.0.0.1:8002 / core_test_fe",
+  "fixture_model": "scripted-only, one reading preseeded per worker; no browser model trigger",
+  "checks": {
+    "ready": true,
+    "readiness_error": "",
+    "inspection": {
+      "document": {
+        "lang": "zh-CN",
+        "theme": "dark",
+        "font_faces": 202,
+        "overflow": false
+      },
+      "screens": [
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "button primary block",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 93,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "button primary block",
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "violations": []
+    },
+    "boundary": {
+      "arrivals": [
+        {
+          "path": "/api/cases",
+          "status": 200
+        },
+        {
+          "path": "/api/history",
+          "status": 200
+        },
+        {
+          "path": "/api/chart",
+          "status": 200
+        }
+      ],
+      "external": [],
+      "writes": [],
+      "errors": [],
+      "console": [],
+      "failed": [],
+      "expected_cancellations": [],
+      "http_errors": []
+    }
+  }
+}

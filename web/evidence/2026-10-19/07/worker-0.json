@@ -1,0 +1,2885 @@
+{
+  "schema": "night-whole-site-visual-v1",
+  "browser_name": "chromium",
+  "run_id": "2026-10-18T23:46:46.243Z",
+  "synthetic_only": true,
+  "backend_required": false,
+  "expected_combinations": 88,
+  "captured_combinations": 88,
+  "source_hashes": {
+    "web/src/api/AuthGate.tsx": "7bb01819e64a631c388ae0abac10ebe8db325749eef72514001c6ef50cedc300",
+    "web/src/api/client.ts": "165fb104f5e7d20de4c9055be346afad8ebf1830c1dfcd4eaa0916533b920ff4",
+    "web/src/api/operations.ts": "b1cfd97313f2aa5154166995e4687519b068871895c7284e727ee99d107c38e7",
+    "web/src/api/useResource.ts": "8097e2e45b57fc0eaa7e20a9fb063f78ff6cb5d7097f2d7341b60102521b07a3",
+    "web/src/App.tsx": "f33fc7ad1b38d7355ad0df1401e1c638bc8ab90270d7784dbb499e9001ba33cc",
+    "web/src/calendar/data.ts": "88ae3b35bb7c1460617053655fefd20e3290fee908b8309408dc1b4d56c6df9f",
+    "web/src/calendar/examples.ts": "0e60ee56319c5b1e2a68197f4b79369c8e4d1c8c33fb3b3872e03ce0f56e22d1",
+    "web/src/calendar/MonthCalendar.tsx": "c2f290ac76f3bfd49025604718105a0b5aee761ae2e7fa0eaa7172f04502ec8f",
+    "web/src/calendar/TodayCalendar.tsx": "0d5775fa143a97b8df8a39fbf75a91620a8daeb2f0b843ceb405ddfac436761f",
+    "web/src/charts/AstroDiagram.tsx": "7f30f4570cab0ae5f4de8401e85ed455cf45bd75dfa9b8e24edcb85f3a4a5567",
+    "web/src/charts/ChartBasis.tsx": "65a98019d6846ff231c71b9487fd73e5932b32059d05b376274dd19a22efa9bf",
+    "web/src/charts/ChartDemo.tsx": "4a5c44cab0f6a120081e6439962e31f5d91ff5bc1471f2f6f2ac077498a38437",
+    "web/src/charts/charts.css": "349a6a068fe919a8b23a203c0291d0f2d824ad1511c7783b140b7d5002b0e74e",
+    "web/src/charts/data.ts": "346cca6c4a23dd0f168deeaceb2e95d533137356cd670f9396f4206eb3aa06fc",
+    "web/src/charts/demo.ts": "d17ef4df8001b6f02ee4825e64a9fece9ca606057f9c9cc23c1154d426bdda1d",
+    "web/src/charts/LuckPeriods.tsx": "9c0be6cac274c76beb2785579b396c8a668fb52701d5e566a72f3a8eb29bd081",
+    "web/src/charts/TimeBasis.tsx": "af284a64f8ee063b08b0369ca6f3f18684759de740b1502be990eaa47830e174",
+    "web/src/charts/ZiweiPalaces.tsx": "6d4b989a717f1476f0714e7fab22bb4e84822b02ff170729187265a3edd0fa0c",
+    "web/src/chat/Answers.tsx": "9fe519935838c4250def08959738ff278586d39a09f857b5790c06d294285688",
+    "web/src/chat/Composer.tsx": "1847d45a4c9993f563cf77e5e907d1a8db24cf001ec7cbabe4accfa2b3208712",
+    "web/src/chat/envelopes.ts": "9e1a493ac0691bd7552592a5400c1a5f3a2da0ce9e5eb21583ada7b85b6fd642",
+    "web/src/chat/events.ts": "844a4ae052bf68703d8790b2febf07d74bda1c04311ace8140b36a22c7d80c22",
+    "web/src/chat/interactions/AskCard.tsx": "f6f4490c35d6bf9ca6fa5470939b5f061f2aa6c066b3052f8722b440bb4d22fc",
+    "web/src/chat/interactions/ClarificationCard.tsx": "6bdfc25976d41851b5f5282036c8e9c0a7bfcccaad8b39fc339ee53d04576798",
+    "web/src/chat/interactions/contracts.ts": "0a68b0b149a9d0fcdda6bcd38104b634128eabec50347a9f7b44c6b9a9799cc7",
+    "web/src/chat/interactions/DecisionCards.tsx": "9ae3194dd75bab4bea0df5bc564bb2ccb2527b994f758439e87d5d451bfbb1fb",
+    "web/src/chat/interactions/MemoryCard.tsx": "d617819e7ec54ac2a82ea4073dd9933bc12af2499618508b6aad4467496a5d9c",
+    "web/src/chat/interactions/memoryCommands.ts": "7dd7d55a17edf5f26f294c82b6c0f988284ac5b7104ca227e0d05e2a122b301e",
+    "web/src/chat/interactions/memoryProjection.ts": "56b7745fa6545aebed38110f598cb9c0629c63150eda2729bdb8104ae505c769",
+    "web/src/chat/interactions/MemoryReceipts.tsx": "093cd5b3a4e7e964b2fa72752932f5595add2814e2f3297c888e8c13c0969468",
+    "web/src/chat/interactions/ToolProgress.tsx": "bff5b6e64ebca8dba6797975e0619115e33ee7e06a02bb7702d6868133153297",
+    "web/src/chat/interactions/useInteractionGuard.ts": "6606d87f62e3bb03e7e2ec089e89912c2ac0771789db640f37ae809338ccd2bc",
+    "web/src/chat/publicProjection.ts": "f2bc43e718576db96953ca8d13ee866b025237a50c18d1b819c422bc575fa019",
+    "web/src/chat/reducer.ts": "7d6300551f2cfceeef99954afd3fc2358918efe0fc11664640d1a90ad9265f82",
+    "web/src/chat/sse.ts": "414354498f52185fbf6360b7c43d93003257dfe5c6c1e4a59cf83119e2e5bd1c",
+    "web/src/chat/storage.ts": "07383479398282f730a7f5409fb999e5aab4f23908f394dd1ea8059cfb5752e2",
+    "web/src/chat/transport.ts": "5849931d665aec4343b6d05390a996a52d82ce9fede38dd2bd199337b40c6a9b",
+    "web/src/chat/types.ts": "d24906e306e4728c78773e1d9a88ac90bc7aaf9b248580d06641f9a249afdf30",
+    "web/src/chat/useChat.ts": "90fa1fdb8977dabadf287ab9af32d74ecc9d8981eb1c4b88e88aee4c6ee20a72",
+    "web/src/chat/v2.ts": "6423a13754b893ae7695c21f974c69a243425223aaef1020d5f7f01147eda6db",
+    "web/src/components/Calendar.tsx": "2e209023ae78a3ae25cbee696e51b9930558825cc10e418bad51c534a000f447",
+    "web/src/components/Charts.tsx": "3e9010a7c870c29b1b7e34b8886897ecda0dc8ef79dc116ef30f892fb92e6d7c",
+    "web/src/components/Composer.tsx": "801b7d7ca77b00b6fe03e1320f65a6a31a68b069e6e4e5f77b361a0f0d1d7ef2",
+    "web/src/components/DatePicker.tsx": "3964ac7b5388765471070fa1c65a2f86812cd0872782ba758e1dd44e337b984f",
+    "web/src/components/Markdown.tsx": "d3dc26cf3da70d183fd8c00de9b159704f4bff298838765f6e580960a2884b12",
+    "web/src/components/Messages.tsx": "4a6c70d6682c96e619bcf6c19393ae5a800366a995132513427fd887f2b4ba6a",
+    "web/src/components/ReportOptions.tsx": "c5f5e3eaa085cfe96e35d68267e291f1fae7b1b3435805a8c4d9732acf2c4bd0",
+    "web/src/components/TarotCards.tsx": "aea0b51cbacc527a9afe4d25303f209259632c8525a114d11af1213e00c5866e",
+    "web/src/components/TarotDraft.ts": "183bb05cb1ddb0659dcf698bc05cc129f69ccbd7b5844d614838a5bb3cde2008",
+    "web/src/components/ui/Controls.tsx": "5f548d9993df9498a153c910401b375f19e9dcb02d2f79001e9e99164b1e21bb",
+    "web/src/components/ui/Overlays.tsx": "7e15c10a7d490496cf0c3525b3304c9702918f2737f9988083260eb16ba413ff",
+    "web/src/components/ui/Selection.tsx": "7256e0eec4485151166f4dcea5467c03ca9dcd64aea453750afe02eefc3309c1",
+    "web/src/demos/ComponentNotice.tsx": "a04451965eabc581bfc76c401544a5befa0d63eb3f9a344e74a27548475f06ca",
+    "web/src/demos/components-demo.css": "24c304014c2f6922d341d1fae1ec91abb9807f516b9e8509285840ebd18535da",
+    "web/src/Layout.tsx": "76be86179fd6c15af5df4ab649e4d4a51144ee788de3bb1cfa7739f620a71a27",
+    "web/src/live/CaseFeedback.tsx": "6fe517e8b2048b0850da42b0e44c5d212dc3e8854a8d8b81b12b0d700839b43d",
+    "web/src/live/Cases.tsx": "ff69e8e4a65e4fba24b96440d062ad9dc7277354c23738e7eebc54bd3b869b6f",
+    "web/src/live/Chart.tsx": "788ee9ce410bcf023e7ad938ca268b4d2a37f5a62da33245edb157454011f810",
+    "web/src/live/ChartData.tsx": "f08ea3ba0bb0355dca5e4f56713acd35a176b1b99dd273b96aceb6ef4534590c",
+    "web/src/live/Chat.tsx": "890ffb2b5ae7a0b345adc53368b978da365b204454e3b33181152146ee6382fd",
+    "web/src/live/common.tsx": "0e1289f085fba909e1b98bbf7d5d10e128f2de04f7dccde44f30a4d6ba3a63ce",
+    "web/src/live/DateField.tsx": "8af7f0cd3a20085c4a5086c1bc81997f7c5486b454d11c2946071f621e54997b",
+    "web/src/live/LegacyPreview.tsx": "82b702beb74dff8c046e80fc2f09af99c6bc2f15e88117ceb6c870edf16f5460",
+    "web/src/live/Me.tsx": "35b63c096ef6a6b7e7a094f0638c78a4612270a18437bb5a9b063ea6c35dabc4",
+    "web/src/live/MemoryCard.tsx": "39b3f15778b61a2802120bdebd9f520b0a588a8d4503e8ae00997ffc21907742",
+    "web/src/live/ProfileForm.tsx": "887d622b855b0056e30dd8b4196d01ae482ad615473a5046f8565ef146a548e4",
+    "web/src/live/Reports.tsx": "1f17c1dcc2423147feeafdae7d9c9d151f1fae5365410571eaea9b138f3b5701",
+    "web/src/live/ReportSchedule.tsx": "3a682beb07f1db077940b8e576816145a432397853d9410c9258fcf3ca7c1e0d",
+    "web/src/live/Settings.tsx": "1e7cf378b23b20a1f6df7f34c63c7977369c77ec9692ba550fd83e13a52cae73",
+    "web/src/live/Tarot.tsx": "1dcfce07babf8f21138e4895195474b406439ef1ba5d4338b8cc33dfa218c26f",
+    "web/src/live/TimeField.tsx": "039ac413b3c81ab364551d865b1502eee2657d2eb07c26d63bef8ef7354ccf31",
+    "web/src/live/Today.tsx": "35653ab242aa4afac18089fac41866c1d8ba05e92b45457e2bca5789ea7ad102",
+    "web/src/live/types.ts": "aecdc2c807cd8f977f82d367387fb590d66f0bdada46ad1b75ac36b502f9595d",
+    "web/src/main.tsx": "a689c6e16d661c9557cd8716b2c1d56d1e3deb2d8fa8b21930bb2e22722f039c",
+    "web/src/night/charts/port.ts": "2f507311b24ac1962ae9e15f43ec19043ecd2632fd58a244a45a16c56330630f",
+    "web/src/night/charts/SampleChartPage.tsx": "098255376a72927197ccc67562c2dcac4d6ccd4657c4ee1de7dcd09da9e9ee86",
+    "web/src/night/charts/samples.css": "f5c42a05d185012a769401880b48ff24bd2b8d77ad69eb3a32f502350d297822",
+    "web/src/night/charts/samples.json": "664c460b1bde90e55086ffd5a1fc860e4d4199699c0348c4c3b5e568bfba2c65",
+    "web/src/night/charts/types.ts": "a410890de841199035d0d3411acf148cb269f21c931cc7ec269a52362fa8d110",
+    "web/src/night/ChatPreview.tsx": "1c68c555cf4ee4254f100c0108833ecce0525687dccb3dda4cdaf83ab9134db7",
+    "web/src/night/events.ts": "faaa5d93fa2f5f3ec0a9ac43d66886181abe97162a3dc0d568ea2484f4cd6537",
+    "web/src/night/me/AboutMePage.tsx": "92ae6eff09b9b452a57de93c29e33b915b04a5471a8b84e3a2e6e268111a07b9",
+    "web/src/night/me/ConfirmAction.tsx": "1d3488cc53922338e0aded44d12a5f2ccc0238ae2d56375d93410d812a723f92",
+    "web/src/night/me/DeleteMemory.tsx": "bc43a385293fbadb79b94b3fac939c0dc05642f069ca8c78b551bbcfea7a1f47",
+    "web/src/night/me/fixtures.ts": "4a3c338f6326dd9f7fce5a11313162f779eb16ff4a5a38a813f0c42053b66d56",
+    "web/src/night/me/ItemEditor.tsx": "8056a54deed475815c0e0476346c42616e533ecfe45fcb01142f2e70ea2edf71",
+    "web/src/night/me/me.css": "fa8e3ff218d6b2e373e4fe9a5329ff059ab13903253c3e991fed0869f39119dd",
+    "web/src/night/me/MeDialogBody.tsx": "9391049e91207efeacb55b81c0c2fe432eaaec9a17c49c512d19e478e57e63c0",
+    "web/src/night/me/MemoryList.tsx": "5a272064b256a2c9f561af7e64482722ee1b33b972da235ce4877790a1dbada8",
+    "web/src/night/me/MePanel.tsx": "6a771855ee77588749fdfb6bfe7ec7e9db843f55c7dabebba1d8fb9ac424c64f",
+    "web/src/night/me/model.ts": "6d624e3018773e3a174ad01890f0a729a4d72af8f4e34815f4bffa3050f66dc8",
+    "web/src/night/me/OtherTabs.tsx": "aea3c878fec65935e06ec6754c66d631fe7acb9b8b0bd57f7d85fd549b697de1",
+    "web/src/night/me/port.ts": "84e88e0c021d9e2823dced46b9f4d1fafbd535973416fad3e529ede96eaaf442",
+    "web/src/night/me/ProfileSections.tsx": "45b4cd0ae836982bc4f77f1aef3c7d71afaccef22e2c3d5d7e1590a255a508bc",
+    "web/src/night/me/projections.ts": "d3bdb9c47d8f57121f15a5f3a278782cd8f86f7a7d5128e4b363b6beaca85aa5",
+    "web/src/night/me/ProposalList.tsx": "afd59ee7d365bc1e37b9c25a0ecd7b30646b871bbb647320411c5b447a03d6b5",
+    "web/src/night/me/Sources.tsx": "a15d7ec901bddf1a0190a89a3a80fe180f1fda7fc74cb061d814f3d0d81726dc",
+    "web/src/night/me/types.ts": "ef243e31e36f898f578819fcda18d3ed9158dbafae4d22d4d713f1414f336e07",
+    "web/src/night/me/useMeCommand.tsx": "15bbf6a9f01249eaec4b946f969e6ad137df26b463680d6256271dc2690c3a05",
+    "web/src/night/me/views.tsx": "a7ec612f2d74fce9ecef4139d5c7e5c56bd99e7ab0c1c05508f5f4b02eb69b63",
+    "web/src/night/night.css": "29d9cfc7988e5ca6b83ea3eec91bc0a9d55ad0df531d590d780eb2609d19bf41",
+    "web/src/night/NightApp.tsx": "0f72bd03bf3d16816b0a9583d3121f84c42d8dc0f072fdb0c66d4e79816b8892",
+    "web/src/night/onboarding/birth.ts": "3e80aaa32b1e27680bd63848d70bc91e12f67efb2944e810d92631f6321175ac",
+    "web/src/night/onboarding/BirthConfirmSheet.tsx": "b69693e895f26a23cf08bb60261fad79c2c7522a5966dcabbaf2dc893f8410b3",
+    "web/src/night/onboarding/BirthForm.tsx": "94058f2843704ea558da5e11fbbc33532327cc8c2c2c42766de757e4c45d429e",
+    "web/src/night/onboarding/controller.ts": "5394677e263ecc716d610e353414ddbd3ca9e5f9927c2d545ba2ede5f1b98fc1",
+    "web/src/night/onboarding/GuidedQuestion.tsx": "dc892676beb5aeeed84e80e6476934a0e82d927c9d3188160b1f6e85cbbd70b8",
+    "web/src/night/onboarding/onboarding.css": "b0e82b8dcca8d224508aca5c5d027a83d849053859c481e4f7eedd83d57567e8",
+    "web/src/night/onboarding/OnboardingChat.tsx": "8ac3de0eb25f7a993a1421a8884092513112c1f4c6fa526b6b537fed0a0aa8b0",
+    "web/src/night/onboarding/steps.ts": "2d9b38de4fcd4f0792aadc860d29403bcfac41ea1f68f936298f6ee80e0fb1cc",
+    "web/src/night/onboarding/types.ts": "c5001cd4f85d88d9a0276472c7fac449046a23e01f3b23705ab069690a940a1a",
+    "web/src/night/port.ts": "8ca26f812178fb4370f40b5721f95c6f2c28593cffff4287613b9724e9441158",
+    "web/src/night/privacy/index.ts": "71839a25f44d75ab1b8ae3bf61a84ad1dea4ddd4e382b7e5e325532bd2aa4dfd",
+    "web/src/night/privacy/port.ts": "5843c2593069f805823c9b80276684ecdd4473577e78edec3eeac78761259f50",
+    "web/src/night/privacy/PrivateChat.tsx": "cc7f11607a05a68973541142dcd726ffba0a3b20c1e0165552fb6b3c230517b6",
+    "web/src/night/privacy/session.ts": "abbd226b151d0556970a7fe29ed0263ce2e43f27909161104c773ee6285fe3a5",
+    "web/src/night/privacy/usePrivacySession.ts": "f8bf9b62763f6473ce0b7e8a2a9d00d289545bea2b3ddd46bc1d20f7eaed2014",
+    "web/src/night/settings/AppearancePrivacy.tsx": "2c899342188d49f63477cccc4870aa553a4e9cfb6e25d5d96f19d7a6613b7abf",
+    "web/src/night/settings/ContactForm.tsx": "e397be396cae559e2709d115e33adb084e827322b3cf27756c6042f2176c0347",
+    "web/src/night/settings/Devices.tsx": "054acf4bde469bfd0b9d1a4333753f6e9d6c2c6cfca4eaefbe2d751b6d7e8b7f",
+    "web/src/night/settings/port.ts": "33ecdd4be83d0621c45a6ecc491374f945f33181b1227e556a321d45f2086ad1",
+    "web/src/night/settings/ReportForms.tsx": "8ecac143f7f5e2a74b78c4272238feeacb9437290617ae30413d39f480a6c4c1",
+    "web/src/night/settings/settings.css": "75e6094fab00e340378171b0a3cbaef7fc0a4335fe759d62db558abf5ebf4da9",
+    "web/src/night/settings/SettingsPage.tsx": "5baa4e9e86dae00757d72edd18885202041898f1f5a952dbd6d6e41787a13442",
+    "web/src/night/settings/types.ts": "b55a7392be0a4a57bac9830aaffc19068f7eb81eed17a9eee614dbe5bf8724f1",
+    "web/src/night/settings/useSettingsCommand.tsx": "c4bc39e3cd899e8d25b80b8a109918f10123f1b09f171d70ba92238e30c97a17",
+    "web/src/night/useAboutMeReceipts.ts": "f35925c9348211a862dc471a8d724a7f79b52fa6e776ac1f513ee4b318c3ce34",
+    "web/src/night/useNormalConversation.ts": "0cb7e5bd771e9010efd5b3da7c68e142ff512c98fcc44905fd0f3b9a4f82ae42",
+    "web/src/pages/Cases.tsx": "2994248a5f1fc54035a626d93e77484dedd6ab634045c6354def55f6cb773580",
+    "web/src/pages/Chart.tsx": "ecd68fadffd478a02ee865dc8c447ee1caab52877a072c4931c552d81f109cf7",
+    "web/src/pages/Chat.tsx": "e2bbb8c133bbd8dbbd70971ab6d7c54ff402baf32033064d9c3244e76f4450a9",
+    "web/src/pages/Design.tsx": "443ca32827f7f2bdf7574e6aba6c54b79ec9777d8e4f0ab771877a00115b0bf0",
+    "web/src/pages/Me.tsx": "a9aef5e38127786d3c7926221439abe2a5faac48cb73dfc305916a86cbe8fc91",
+    "web/src/pages/Settings.tsx": "0e73d11646c0d4a389fda37e5629956f05e78a78c408a323c99bbf0eaa8c6cad",
+    "web/src/pages/Tarot.tsx": "5901dc3c15ce7c2f9a29aad2c5e185216cb8c1a26cf249a7651e0ede3782eee6",
+    "web/src/pages/Today.tsx": "3533a114df8168b4fe75404a7ab5a52b26061a03cfc6789ecdf2407fa5e33955",
+    "web/src/spaces/chat.css": "a68bf6b961c82e9bc8a5d6a4c83acaea0719abb1730d99b45af8f35705641ecc",
+    "web/src/spaces/ChatPreview.tsx": "54ee3e7d01a932a1e7555648f534434ebd0054751b4ae2ff88f060a801f59149",
+    "web/src/spaces/common.css": "b6cdc52003f1bd86a4097dd57f0e736c4edb79e5265af050061d2cfa32aedcf2",
+    "web/src/spaces/EditDialog.tsx": "3689f225e164c24d3729521f90c154aa2ea695ce00c549ed275a6449f261b19a",
+    "web/src/spaces/fixtures.ts": "779c59b03199aa96847ecb2750eddcc91f86c1dbe3b1c2e53b5856c76eec2fff",
+    "web/src/spaces/MemoryPreview.tsx": "21fda7bc94b0971bd77e71a69f8a3c27ae0a05e4f3730ca67c02e3fa7d08afb4",
+    "web/src/spaces/organize.css": "39add31265c660ecdb5a31bcbb45a344e419cfb21ffad417c1654cfca988feb2",
+    "web/src/spaces/OrganizePage.tsx": "7fc4700531f8267247fb9089ceef8c8a961d0aab1453e6b0a61dc68d3a816f71",
+    "web/src/spaces/PreviewNotice.tsx": "123c217e915ffcac93f69f95d6c9e7af963c2aa222508e9ce465295595bb46c0",
+    "web/src/spaces/proposal.ts": "91a6862b14ae5f7838683717223a1ee10765ae5087490e0bb893a21f426a3eae",
+    "web/src/spaces/ProposalTree.tsx": "cea820d0daa70ac152535be5e20d7bb552c75bcba7fb02ba5fc202d606df7585",
+    "web/src/spaces/RouteBadge.tsx": "695caa468bce12195e295721d2bdc1e45d00d335cacf0220bada2336c1fdb9c6",
+    "web/src/spaces/SpaceNavigation.tsx": "e6d760e2f0755c72c76c39cfa8d04f9aeff27c46b647195f0f9a6392f8e72d97",
+    "web/src/spaces/store.ts": "91c965f05a036f91c0b56b526413c188621dd0ad90c20b25b7ddf65b5d91448a",
+    "web/src/spaces/TopicActions.tsx": "fff77efff8ba7310f2b0cfde7c0f543c2bba6572158563d389b7208086f08e0a",
+    "web/src/spaces/types.ts": "587846190550e5a52196f12faca514c9a90a22955fb95c70b30befeb96d3e6ff",
+    "web/src/state.ts": "23a0f719cfb315182dcf871b5b7b6295112114aa67d6f4f0b60ccc9253dd7bd1",
+    "web/src/styles/accessibility.css": "2a4d335c322d925b7ad5f7327e1b4f41585938fde02cb388a7a16ccc6542ea09",
+    "web/src/styles/base.css": "3840743d56721871bec574a51a828c8744c056b972ba1286a6f32fb5b3dffb14",
+    "web/src/styles/charts.css": "ded3b15bdd568762d22f9cbed50641067407fcd4806cd713ad849579ac01f11f",
+    "web/src/styles/controls.css": "c3ba07064f5a63fc0c279f9d49f792a2a426744809203f504bbf65f9ff3df55e",
+    "web/src/styles/design.css": "67a6cf567e666e8bf48b555199117ed593c58601cfbb83ad53b3441a9a09499a",
+    "web/src/styles/live.css": "2bf1da189a49f7d548f4550bbd829ad481e4f8245036066cb44fdf9e34261233",
+    "web/src/styles/messages.css": "cda577ade28d1024c7fc2ff1403f3d62d20a9e1f4a0ea75fac2ac25303166e57",
+    "web/src/styles/pages.css": "ee387cb7bcf4470a93f89237293c2ead956299f2baf88b93aca1a864d0063538",
+    "web/src/styles/selection.css": "fdb8ce0e9a7319ef27bf5f16db88c657ee0db1e106c4b98278c136780905b848",
+    "web/src/styles/tokens.css": "fa49e318b972f696495662e7c85fc900ff33536726cbbe95611ede229fed62cb",
+    "web/src/tarot/CardBackGrid.tsx": "f38b99614321cbf32c9fc0d9dcfeb5673fcd2629948b49e23f1290dc1613bdff",
+    "web/src/tarot/DrawPanel.tsx": "e42ee56b5b266645d07b2457f43ab509dde8396087efebdfc7d0d50f05cb3f16",
+    "web/src/tarot/draws.ts": "f6aa12ddbe096f0292ef365d1f093334fafe04c592172fb8825bc8f561577c00",
+    "web/src/tarot/FlipFace.tsx": "a38bd19cb916aa93b79ed2b7fe00f2d7d119105d80e42c796af6992e06d62ac4",
+    "web/src/tarot/keyboard.ts": "c9d6084ef3cd0cdbae341dfc3a852cf32d7e14bcacef6cd5a80b69269765691c",
+    "web/src/tarot/ManualCards.tsx": "497f3dd7cbf88a93af929f0ecda4e56f4147085c588bfb9bfe1f4206bfa00a82",
+    "web/src/tarot/public.ts": "3151fb5aee2deeb17536470d369be7de8f1b7ee0e951b82b289d8ebf1bdf2fd9",
+    "web/src/tarot/QuestionForm.tsx": "35f1da6ea39577f6bb799a80c1035585ba940796f94bfb751952ecbed0bbae9e",
+    "web/src/tarot/ReadingPanel.tsx": "3ee948a742e357aad73b39866cebe02820d14aacb3e22189215828454c4b2cad",
+    "web/src/tarot/readings.ts": "9e3856be89693da54698e1e28f77c3ca8930892cf911067e11207a32d8327195",
+    "web/src/tarot/ServerSpread.tsx": "cb6553cc203d2877c0bb482625b3efeea3f26f93ed517a19ab8431f39d164fc7",
+    "web/src/tarot/useTarotMotion.ts": "d654f2abbbb7914cbb2f3cabedff9888600a713919fcb9cd36de93a838618825",
+    "web/src/useKeyboardViewport.ts": "c7b4b7140a8da83a37c5a6f96ca964fb11322e09552f7899c28bb7be5f172cfe",
+    "web/src/usePanelHistory.ts": "fbec50bb3b5958e8e284958e15262dbabd3213f3f5c5ec216fb408f50e927014",
+    "web/src/useViewportPortalStyles.ts": "8535793dfe611ed12aefee24278867eba92d86d23982f787258c2773092b0d4e",
+    "web/tests/e2e/overnight-matrix.spec.ts": "03ca4c7fa015e684def3d7f2c1813f9bc2bb1c1655ba4649803b0423b3479dfa",
+    "web/tests/e2e/appearance.ts": "e6c5386cf9ce01a08ba9c3ce10dc529971c6b5db30e3709d0e1502cffa8b21a9",
+    "web/playwright.overnight-visual.config.ts": "b0f0c36428b6017007dd1f9fc3cf70e17fbef3b29495677eb7c3dcbac5c29db0"
+  },
+  "build_hashes": {
+    "static/dist/.vite/manifest.json": "d42638176f0e20d4bdea5577fc8b31cae00c5167ca68df6f7f30d30d9c907416",
+    "static/dist/assets/AboutMePage-CVHtHsDS.css": "30e22688465f61b387cfee799992359794b26603970f38c30ab5a7ada2176a6f",
+    "static/dist/assets/AboutMePage-m7wIhzkp.js": "16f771ed624ddd417932a0a345ad7b0b352df55d2791704af47e281a3c2c8cff",
+    "static/dist/assets/Calendar-BJKJvJHW.js": "44bc9b0816b29db60ae502c136add00316e9bd11a001f7c47e3fc4446621fac5",
+    "static/dist/assets/Cases-B4utCeaN.js": "94958b590f695bcd2a632731aaf8a806d03132035c36f802946347245dfde2dc",
+    "static/dist/assets/Cases-WvSJLUW8.js": "c264e4e61e7b6fee79e0cefab0944bf61217f9991525d95b1990c5a9d60a2ec0",
+    "static/dist/assets/Chart-CoaTsaz6.js": "cc4fae9b74b8deb88e93cc5748aadb912d658322a08edcb57aa04ce9360210d6",
+    "static/dist/assets/Chart-xgsV9QMl.js": "f538a50eb8077024bb1f60064a82f75d47c62d23c82ad064a8baf80f0fd18081",
+    "static/dist/assets/ChartData-D1Z3ePMH.js": "5acc4dd41391e830c0761fafbf69a77ce0a1abafcbce76042d62498c5533dced",
+    "static/dist/assets/ChartDemo-BQoHxxs4.js": "6cce5c4e7a07d5c50862d5da2a1da778b4e1b490d24ac2aa3a425cc5766524d6",
+    "static/dist/assets/Charts-DfBTnnZC.js": "4b367270d5d8f34134513fbc07c6e97c77313a0bcf469a9ce9be3f65879b262d",
+    "static/dist/assets/Chat-CaRQUCZA.js": "6e6a3d048c6368336e7e2e0b20d911a16488b59bc8eee8f4edde9dc9f0b28079",
+    "static/dist/assets/Chat-DyklJdM0.js": "75b9a23b33acefebe0d461eed55ff85edbb623643ce5e5fdbcdc8d78a0ed9db4",
+    "static/dist/assets/ChatPreview-C-lnjWum.js": "1f0b64413861a453ee491a3da06203a040e2d74588e3bfc57dba03855d9d0d8a",
+    "static/dist/assets/chevron-down-DGCaimJw.js": "8781f9acd6e2587567f47851a7f718a810106d9ec455fb4fb05a4a54ae9afc10",
+    "static/dist/assets/common-Cmd9HAar.css": "cb82c6da3859e24ff4b64ab8107434e98af8bf11c2667f8b92a72cfe08d4aad2",
+    "static/dist/assets/ComponentNotice-BIoJSqjK.css": "110d8be426ba4a2d5063ad0a7b31d999fc0babf1be9be7fe7b5538650db493fa",
+    "static/dist/assets/ComponentNotice-CQyZoMTF.js": "b5bf2140ef4a18b0ad54f74b18ed5d5dfa73fedb0c988ac11f10d8e45e900c7d",
+    "static/dist/assets/Composer-DkDAew6D.js": "554060dc7db2e854eb5d553526863c7577fa7b5be8e3e63043c345111518ec69",
+    "static/dist/assets/DateField-DPbn_XjT.js": "77edd79f3814d51a299e47524fdd324a8dab29640ef8501c0cc6f4c44f9bd9a3",
+    "static/dist/assets/Design-DmVhsiMl.js": "4a107dd9b30f4043675e75b7c3eed0eac8ca5b607d25a9bf0a8ae0591d96cf58",
+    "static/dist/assets/FlipFace-qk3cIpJA.js": "e5a15174a916b97ade0ba41f6b69429da04e30e0530ef11c7475b07c6d905e22",
+    "static/dist/assets/index-CMbqmjYs.css": "c19c9f1e4b01f56d083aeb2628df489e29073aa354e15bfcf8fc6a1387ce58f5",
+    "static/dist/assets/index-DEVHHwzM.js": "852b4636753a8528f29142881a9dcd9c85c6403beccba2ec37d814efacf2b7a1",
+    "static/dist/assets/index-JX7tuocD.js": "d0ea17dfdda0b2a825cf535d77e85b08a4cf11079859e97af6e55ca8aa7e8c1a",
+    "static/dist/assets/lock-keyhole-CjN-kbjW.js": "8effa1c4bcb3310e0cc5bd8cda6c01705972495bfb7d26c71abe4fb0abd7a128",
+    "static/dist/assets/Markdown-BwIP6jdA.js": "e9f532802ce0ce0e9c613dc532133390bccc88c0e069f51b8fce7f5271ef06b5",
+    "static/dist/assets/Me-C8oWxHRZ.js": "8798f7d3b9e756e38b6e06487109ecd8527211647d2146a8f95ecb6412146db0",
+    "static/dist/assets/Me-DjD2GqV5.js": "f4a8bc9f8712a280504492adf0d8893a54c2cf116b443922a0209c09e6172c2f",
+    "static/dist/assets/MemoryPreview-2VyUEJBC.js": "ff979229c53276660b7d4a10c15855606eb33a1115292892e4635c11b2962501",
+    "static/dist/assets/Messages-BinV1zTz.js": "13ff221c880bf89d189aeb7714f6cdf379565511723b8651a8a7402e8983fa4e",
+    "static/dist/assets/NightApp-CCE4WD2M.css": "71a3b20cd68d170181a05d13ee3b66a9a8016204cf4166ec678bf4a6141ed84a",
+    "static/dist/assets/NightApp-CgSPvnZZ.js": "72a3e7a7303003d33f6c1c18e6fbf4343bdb240f04d09fc0a3d4966a39b7e7b7",
+    "static/dist/assets/OnboardingChat-B4MKUt9l.css": "90d61d746ac6a99f426dd61b48debc1e9bf41c0ab9525e999ff54e8a21c784f2",
+    "static/dist/assets/OnboardingChat-DiHJnsDw.js": "955b70fe4a79687014caf31f7b672e510f1c44a67d941e2ed27ffec98e53d3a5",
+    "static/dist/assets/OrganizePage-Dmq8vNma.js": "f74507f5fa02ce0c7b03ad4429c08c31097f83418adaeaee57a0f4b989b90633",
+    "static/dist/assets/OrganizePage-Xf4G6qj_.css": "9432693f29a1cc6f8d6fd75e8998de199c8bf73997cbd7d0cb6cc8b7fc5d282b",
+    "static/dist/assets/PreviewNotice-DeciVegs.js": "b941a43450266a924d3b144d31b24936fe96776ad80eef9c86574ed131bb103c",
+    "static/dist/assets/react-DnxA9v5e.js": "753bd94c54c1746ba790ce3be16209c47ecd154709b319251a98c86b24408187",
+    "static/dist/assets/reducer-CJC-IZk0.js": "b7adfdbed4bb1c4d9a6bda27f48214765b96ea5fbd0454908ca665060ec0f6ed",
+    "static/dist/assets/ReportSchedule-CdbN7kxo.js": "8f717740ec8bbcade98f8b10034f63aa3e9344631c3b37abf083729f010e1db8",
+    "static/dist/assets/SampleChartPage-DAaHUsya.js": "63f337373d615ba2eaaee78fb13ec591654ca25e41eba0fc2316faaf62223172",
+    "static/dist/assets/SampleChartPage-DtKjQuU7.css": "2a2e88519eb28653292cf5dd6db249c44d249f1ec1329d38a39a6356c66e1e3e",
+    "static/dist/assets/Selection-CmPwoADo.js": "cee0b5ac2ae4096f2b8acef8e89abedc3a22b4945114631439442096cf550e01",
+    "static/dist/assets/Settings-BbSdHDld.js": "1558e9027bd549d0aea5a3220bfcb89b6e970f2a2a0aa8b33f7bb4acc61c7300",
+    "static/dist/assets/Settings-BrlyK3lR.js": "eb282e0befa1e28c56bfd274c5875b16c52cd2bd57aadcaba6ef9b1040d0ef73",
+    "static/dist/assets/SettingsPage-ClpuIC-i.css": "97177d77a33ea5c5a23d9152ad1891be4dda8b4ad92fb33138768584e091e1ad",
+    "static/dist/assets/SettingsPage-DjFSQZ6t.js": "5738f39e294c05819611ef7846a5b99e9dffd71317bf540a2c516f6d7d0df1bc",
+    "static/dist/assets/shield-check-RLr0QGuY.js": "b8a3040e50b3fc689743a43dccd648f495311b54d680d9499236120c3cfa5789",
+    "static/dist/assets/SpaceNavigation-BSd1b8Gl.js": "2ebacd5fe811d1553d35e720e23b6728ca8087c63927c02db76bf941f2979546",
+    "static/dist/assets/SpaceNavigation-p_7PkAVI.css": "49493df00aa7f9de9a1ec95a1cb1ed987c24760804177ee5810fdcbf623879e1",
+    "static/dist/assets/square-W1p7ixI9.js": "b5f8c46ff43b4c9bc8950d3bbc2dc0a91fb4e6a0c0845dc283c50349b8a03684",
+    "static/dist/assets/sse-MLsGSJ6H.js": "c34e1c507e173c5672c70dbc01a1f7af63ea22e02e7235744b71d1a6bb3ab313",
+    "static/dist/assets/store-D41nrTys.js": "999c1c74d886c1ad0c441668c3e0eaccd406afe5054760ecd45e995ee38b0588",
+    "static/dist/assets/Tarot-DA4rQWJt.js": "f965683158f6969ee680d1b0b5d0d2efdea160478e42aeb439f82bf324a561bc",
+    "static/dist/assets/Tarot-y0j1XdHZ.js": "189a6df96594367862afaee2b8f3e1b538aa3fcf59a1e9c4fbabf518ddf721f9",
+    "static/dist/assets/TarotCards-BvNA3iib.js": "36d01c1548b27b0fca07f1523b1e6036c9dc32514fc9cf3325a1b2d2fea5865c",
+    "static/dist/assets/TimeBasis-AcUsQWxw.css": "7cded079729772e8246ded578877dc964bb50b74d7c433e61cffd007b8fe229a",
+    "static/dist/assets/TimeBasis-wmDNIjZr.js": "01b4f5945022c9185692a5a034bb3c1ca9d0d8e9684b489df02a3b7ba4095bb1",
+    "static/dist/assets/TimeField-B8oaLa6z.js": "14d6837f0552a1c299a090806c0bda71a4149fc7764c980dc10cbc11163e0bff",
+    "static/dist/assets/Today-BeOtL8g2.js": "b575a2a71bff80d66331453e66956404fbaa61c8e81cd4a7885e22f5297eae02",
+    "static/dist/assets/triangle-alert-ByNRr2DK.js": "6ef46ecf82de482a92e57107e0af9740362b66b362c6baeb3c4de7ffbf192031",
+    "static/dist/fonts/fonts.css": "9e680ec06e518f6f16a5a96cbf7ea4cecc9e890bca51585491ba58c4b281abd1",
+    "static/dist/fonts/manifest.json": "9ea67a4034118346b82cc54e5e653db2db2603f571a49b5ac5d40375d753e2cf",
+    "static/dist/index.html": "fc810c0eb7f8856b3f0b83cf04f0f75136ddcceb1d60e92fbd89cdef0d2d9537"
+  },
+  "capture_scope": "Base page state; chat captures the visible internal scroll viewport. Other interaction states have 01–06 evidence.",
+  "reference_counting": "14 I.6: content emphasis only; brand, selected navigation and semantic chart colors excluded.",
+  "captures": [
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-dark-1440.png",
+      "screenshot_sha256": "1f7a24dc636f4f57c1dd4e949d957751b81e81733117842da6c0e74cb198560e",
+      "captured_at": "2026-10-18T23:48:25.502Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-dark-375.png",
+      "screenshot_sha256": "97df5b786c840020885d565a241dbbefbc3cfaf3c02d264a54ea38358791380f",
+      "captured_at": "2026-10-18T23:47:11.761Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-dark-390.png",
+      "screenshot_sha256": "19873cd41d3e7f4ccfe79ea3dde46d387f33e47ac1312e30d07447658cfc72e4",
+      "captured_at": "2026-10-18T23:47:35.204Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-dark-768.png",
+      "screenshot_sha256": "df5c56d9eaa46a2d0d5273af231a2da09fa3f29dbe92443ff96fe880f125419f",
+      "captured_at": "2026-10-18T23:47:59.716Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-light-1440.png",
+      "screenshot_sha256": "d267b257d06f4098b17e415c93cef20a7b5a55ec1097e56005f4f79d1f10ae5d",
+      "captured_at": "2026-10-18T23:48:12.428Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-light-375.png",
+      "screenshot_sha256": "d83515fa58f56c4ab85ea1234ab1fb0e5c36985222c85dd8e4474088ea3b8736",
+      "captured_at": "2026-10-18T23:46:59.816Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-light-390.png",
+      "screenshot_sha256": "7bf8eac13123d685760e0665c03888ffeef6c82398db303accb3da7919611b7a",
+      "captured_at": "2026-10-18T23:47:23.588Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "guide",
+      "mode": "guide",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/guide-light-768.png",
+      "screenshot_sha256": "67daf02a3dc26703ac2f40b88c009959ca596012bde7e73ef0efbd06db245791",
+      "captured_at": "2026-10-18T23:47:47.225Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-dark-1440.png",
+      "screenshot_sha256": "7d8882d0c87c1c827c7ce058cd1fb4c97cc26a9c96eb9d3ffeaae4c03cfde6f7",
+      "captured_at": "2026-10-18T23:48:19.092Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-dark-375.png",
+      "screenshot_sha256": "64014d53ff126340735ba8d88cc899eef83dea30c42f0cd79bd217853a2803fb",
+      "captured_at": "2026-10-18T23:47:05.866Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-dark-390.png",
+      "screenshot_sha256": "c620311308d8358c2cbf02c6aa014dba5c8514eb4f45755b57edf2230d9ca9cd",
+      "captured_at": "2026-10-18T23:47:29.722Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-dark-768.png",
+      "screenshot_sha256": "6463826eef8dcd23ac20eaa936c2e1e7a8a0a64ce1276b673ae5eab8e2f46493",
+      "captured_at": "2026-10-18T23:47:53.670Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-light-1440.png",
+      "screenshot_sha256": "138f98220eee923b34e2aa73bd110916962adcd70b5f8e249e1fc1da0eb1a877",
+      "captured_at": "2026-10-18T23:48:06.492Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-light-375.png",
+      "screenshot_sha256": "f3b9d8a5f90d1c31e0b61f693d865fcb2fcdadfb06dd4057206c51ef8cc3e837",
+      "captured_at": "2026-10-18T23:46:54.530Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-light-390.png",
+      "screenshot_sha256": "51a1e5c3ab5cddf0bde61e3c4700c1e69737f5df643e1323785bdb386e86c62c",
+      "captured_at": "2026-10-18T23:47:17.930Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-cases",
+      "mode": "night",
+      "route": "/?night=demo#/cases",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-cases-light-768.png",
+      "screenshot_sha256": "a8be74eafd65708baa52d8e32e0481238f48ee6b2dbaef6b77e3cce310182f47",
+      "captured_at": "2026-10-18T23:47:41.454Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-dark-1440.png",
+      "screenshot_sha256": "037653b05ccb1483d7f4493ab604bf5d6edcab716e6b94d3a3ac84d4c0ae2e0e",
+      "captured_at": "2026-10-18T23:48:17.365Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-dark-375.png",
+      "screenshot_sha256": "e8261d822aca7a0d0d50423d6c7f2e5ef9da8abc85ac44df33245e2cf1c6f1b0",
+      "captured_at": "2026-10-18T23:47:04.278Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-dark-390.png",
+      "screenshot_sha256": "8be1157ac7df75859fc397f9f4c7dffdad0c515480025f1ac0454618b6cce206",
+      "captured_at": "2026-10-18T23:47:28.087Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-dark-768.png",
+      "screenshot_sha256": "8feb0b09f33a6c137447c965d4e6ad8c5e5b9ff2dbb3f858044e4fd4d5e1dba6",
+      "captured_at": "2026-10-18T23:47:51.906Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-light-1440.png",
+      "screenshot_sha256": "af7286f5d966a1f722e2106718edc32e9f57399f0471738d7ae25e60fc38fad8",
+      "captured_at": "2026-10-18T23:48:04.729Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-light-375.png",
+      "screenshot_sha256": "a71b43050b45c6fcf5e1da0a288cd338f32fde43c1f1721742dd93aa97f6dc8e",
+      "captured_at": "2026-10-18T23:46:52.956Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-light-390.png",
+      "screenshot_sha256": "e5241ade633bf7311918b90d3ae3da02efef2ac061be1c92b25ff1cae95e50ff",
+      "captured_at": "2026-10-18T23:47:16.231Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chart",
+      "mode": "night",
+      "route": "/?night=demo#/chart",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chart-light-768.png",
+      "screenshot_sha256": "36b2b539c1bb21183daca57f7768bf85041d3682f13a3b3d4e4dd55878e793ed",
+      "captured_at": "2026-10-18T23:47:39.802Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-dark-1440.png",
+      "screenshot_sha256": "9ba4376e67a329ede784a81a11019c2f3fc83ce6a9e02e4e0c78f261ed1aa409",
+      "captured_at": "2026-10-18T23:48:16.264Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-dark-375.png",
+      "screenshot_sha256": "c49f603579804cfdde6b711714d5f65570a9bfb4aadbd65b81d1143d9f78067f",
+      "captured_at": "2026-10-18T23:47:03.277Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-dark-390.png",
+      "screenshot_sha256": "2e6a17dc9803bcfb9f4dfab11f698358511bbc34e1490595a860fc9bc14af912",
+      "captured_at": "2026-10-18T23:47:27.059Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-dark-768.png",
+      "screenshot_sha256": "c6be7478732ed7e77fc59e2d058f2851b9dd24c4fd381ab0820cb5a8d0635d74",
+      "captured_at": "2026-10-18T23:47:50.789Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-light-1440.png",
+      "screenshot_sha256": "595ea947399daa45a3a69924b2fe1eaa95bb41510399f0f5b873bb0eede46456",
+      "captured_at": "2026-10-18T23:48:03.576Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-light-375.png",
+      "screenshot_sha256": "61eabe2bfbd523ad8bf5d1e14d9db0f72dd980792966ad1579f97fff647a1b46",
+      "captured_at": "2026-10-18T23:46:51.820Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-light-390.png",
+      "screenshot_sha256": "c0381fb0dfe75e0cd7d4d76c6cf24cd87ff82473dfb2b41487bc6845047b007b",
+      "captured_at": "2026-10-18T23:47:15.196Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-chat",
+      "mode": "night",
+      "route": "/?night=demo#/chat",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-chat-light-768.png",
+      "screenshot_sha256": "8b631baae5779b6b70f2206982b617290609e712d3042bf84e55f7adb825aeff",
+      "captured_at": "2026-10-18T23:47:38.713Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-dark-1440.png",
+      "screenshot_sha256": "eacee91ca20378c8c8043328cd2474bcd3826736258363d8e4b97a2400140e0a",
+      "captured_at": "2026-10-18T23:48:20.226Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-dark-375.png",
+      "screenshot_sha256": "9fb046a8750de822411cc08525795877916fbf3ff2e237871670c845fbe2aaaa",
+      "captured_at": "2026-10-18T23:47:07.005Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-dark-390.png",
+      "screenshot_sha256": "164f3d551c3ce05d08ab50be87457197f23684b6c878ae38a8312914d9d69e59",
+      "captured_at": "2026-10-18T23:47:30.690Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-dark-768.png",
+      "screenshot_sha256": "a50b98ba04352f8ce6254026cf110e33eb12970f0265c14689e7ff4483b652eb",
+      "captured_at": "2026-10-18T23:47:54.790Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-light-1440.png",
+      "screenshot_sha256": "9791d7344289b29a9afe6b9706e37c4a5d8523b4c5fa5d3b6b1804a896e2451f",
+      "captured_at": "2026-10-18T23:48:07.674Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-light-375.png",
+      "screenshot_sha256": "8dee88dee326d63810361bfab75b33aed5c0a5fee0690c5a6d70eabf7d8221a5",
+      "captured_at": "2026-10-18T23:46:55.477Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-light-390.png",
+      "screenshot_sha256": "a60dc99e12def29ece851f237fab0b640951bbe174526a8196003865e1158389",
+      "captured_at": "2026-10-18T23:47:19.011Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-me",
+      "mode": "night",
+      "route": "/?night=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-me-light-768.png",
+      "screenshot_sha256": "94a52fc2a926f26d314d6c337ef040ec25d7d72a749eabf98265f781524b6257",
+      "captured_at": "2026-10-18T23:47:42.457Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-dark-1440.png",
+      "screenshot_sha256": "3a504207fea3e9cf010d0fa09511c24f639c0c6d31cf07648f9795b14e1ec2a8",
+      "captured_at": "2026-10-18T23:48:21.351Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-dark-375.png",
+      "screenshot_sha256": "e219b139c06a46e54bba79e8487a6a4cf0bacaf653540de49c7399c5d6d85cb0",
+      "captured_at": "2026-10-18T23:47:08.162Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-dark-390.png",
+      "screenshot_sha256": "eda4422da5ce25b9e792df25b8983feada6fdeac482c951950deb602081480ad",
+      "captured_at": "2026-10-18T23:47:31.725Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-dark-768.png",
+      "screenshot_sha256": "ebef802c9ea1788744c596e0efcf37ab13b81e15b7e3e29a02fc69968fae94fb",
+      "captured_at": "2026-10-18T23:47:56.029Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-light-1440.png",
+      "screenshot_sha256": "6a53d326a71589760fa5107461f9e6007e5a0b203c4839d3e9dbba199cd52b7d",
+      "captured_at": "2026-10-18T23:48:08.784Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-light-375.png",
+      "screenshot_sha256": "e624131ef9d0f0c5b4cdce4a9d51174fa55f0edfe866d92a5e5c1826ffcff458",
+      "captured_at": "2026-10-18T23:46:56.481Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-light-390.png",
+      "screenshot_sha256": "4d8e12eaf2960e47cc0e72900d357ed86f8fde1dc3e4782f803cd9d832ed58a4",
+      "captured_at": "2026-10-18T23:47:20.071Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-settings",
+      "mode": "night",
+      "route": "/?night=demo#/settings",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-settings-light-768.png",
+      "screenshot_sha256": "1361d5baf560d2d060a6bd062ea9bbe7e892ddc4a9b13ba8b68ceaffd30ec5fc",
+      "captured_at": "2026-10-18T23:47:43.539Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-dark-1440.png",
+      "screenshot_sha256": "41a63b27affa73eb55cfbbb2640951b98173809e5ac93d6a3b079c183cd643d8",
+      "captured_at": "2026-10-18T23:48:18.235Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-dark-375.png",
+      "screenshot_sha256": "a438b6dde5bda557ecf28fba94653b3550848da714e6f13b1d83aa2ce1e1f9f9",
+      "captured_at": "2026-10-18T23:47:05.091Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-dark-390.png",
+      "screenshot_sha256": "74a2c6674f915429a1d4739909e903ec0fe3942e8dd499fb3e5db0201e5f3751",
+      "captured_at": "2026-10-18T23:47:28.906Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-dark-768.png",
+      "screenshot_sha256": "52fa8b1a38a69c3d16d5e52bbc575467de45ef438407bb94aa02e81208f8fb8d",
+      "captured_at": "2026-10-18T23:47:52.842Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-light-1440.png",
+      "screenshot_sha256": "7d18c744cbeffc4a9a40dda6c8cd2b22d9dbe8e28419796418bc9e37562c402a",
+      "captured_at": "2026-10-18T23:48:05.655Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-light-375.png",
+      "screenshot_sha256": "e612859325032a3df27118364847fd476384d476b5f419c16ef18b87d94914a3",
+      "captured_at": "2026-10-18T23:46:53.786Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-light-390.png",
+      "screenshot_sha256": "590abbdc1ae2b77ac9e8e3531f0625bd086f9e363ac9b2ed4bb0f57c487bc59e",
+      "captured_at": "2026-10-18T23:47:17.121Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-tarot",
+      "mode": "night",
+      "route": "/?night=demo#/tarot",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-tarot-light-768.png",
+      "screenshot_sha256": "477eaf5e0da85bbae045b6aa60b5427666811e4847dc325f1a5a292b5d7783d5",
+      "captured_at": "2026-10-18T23:47:40.662Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "",
+          "text": "解读"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-dark-1440.png",
+      "screenshot_sha256": "f9a506897d8b095737a0fd6d9767707e08b49208718061a083d2c56bc92e2c42",
+      "captured_at": "2026-10-18T23:48:13.532Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        },
+        {
+          "className": "calendar-day today  selected",
+          "text": "17"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-dark-375.png",
+      "screenshot_sha256": "4527b3a2929dcefd562158994dc99cd2b02f27ebc2fd238df1e58428054f9d75",
+      "captured_at": "2026-10-18T23:47:00.607Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-dark-390.png",
+      "screenshot_sha256": "575edbe1d5094ce566e3c95f5808363aa184aca2a326a30cd2708a3e1c1bc172",
+      "captured_at": "2026-10-18T23:47:24.415Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-dark-768.png",
+      "screenshot_sha256": "51c35ffdd906c048ffaafcf8a7ba9cafca3539949489890264f70b61b1c50bc8",
+      "captured_at": "2026-10-18T23:47:48.082Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-light-1440.png",
+      "screenshot_sha256": "ea6117884e5e5e683f420c40691be6dfd25e195adc3af5ee679053749cd67420",
+      "captured_at": "2026-10-18T23:48:00.802Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        },
+        {
+          "className": "calendar-day today  selected",
+          "text": "17"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-light-375.png",
+      "screenshot_sha256": "c099140c5c82e8442ad246e1fe07f1bcbf759a3dda95927855d0e55d41982f58",
+      "captured_at": "2026-10-18T23:46:48.805Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-light-390.png",
+      "screenshot_sha256": "a723869c7fdf026e13fb0b52407d54f845e6ca9f50f2144207a1a9ed5b418fd0",
+      "captured_at": "2026-10-18T23:47:12.552Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "night-today",
+      "mode": "night",
+      "route": "/?night=demo#/today",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/night-today-light-768.png",
+      "screenshot_sha256": "2b04a5bd2c461e0cf35e10b6c91d744421b3d8ad46256a884c2a8657963e45c3",
+      "captured_at": "2026-10-18T23:47:36.037Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "text-link",
+          "text": "看依据"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-dark-1440.png",
+      "screenshot_sha256": "444c1eb89f956c4e5c9f270dff1d13ee6a1bd697dbdb90b25722558f9d9350ef",
+      "captured_at": "2026-10-18T23:48:22.350Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-dark-375.png",
+      "screenshot_sha256": "23d502f707052c122973ce7dc4ed5782dce81e5bb1e9bf10c48ae087b6e66787",
+      "captured_at": "2026-10-18T23:47:09.088Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "tag accent",
+          "text": "事业学业"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-dark-390.png",
+      "screenshot_sha256": "5aa40b1635d7bc81226ae25439421293c4aa1c2c2b75abcdd91cfe2992ebd5f2",
+      "captured_at": "2026-10-18T23:47:32.576Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "tag accent",
+          "text": "事业学业"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-dark-768.png",
+      "screenshot_sha256": "c7d9a07bfdfc9513c9f5eac7599eece14af6672d2fef3e66749d6d2f4e28f7a1",
+      "captured_at": "2026-10-18T23:47:56.956Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "tag accent",
+          "text": "事业学业"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-light-1440.png",
+      "screenshot_sha256": "2019f43ddd4ca335e24d6f9515438be21acc82bbb71a4b5bd592a17d0da88c74",
+      "captured_at": "2026-10-18T23:48:09.702Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-light-375.png",
+      "screenshot_sha256": "5056ff6a815fa2fdabde09b69e3d972d19fb3f51de490827fefdc49494e49c5c",
+      "captured_at": "2026-10-18T23:46:57.299Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "tag accent",
+          "text": "事业学业"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-light-390.png",
+      "screenshot_sha256": "c467493236b4f1e54a6062de7d57dc0da646d3119bca0cb5d0894528d58ff948",
+      "captured_at": "2026-10-18T23:47:20.929Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "tag accent",
+          "text": "事业学业"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-chat",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-chat-light-768.png",
+      "screenshot_sha256": "f4777f02df23e22e3f373c74be424f22ff8b103e4eaa2aeafa5815b95ebdcd1f",
+      "captured_at": "2026-10-18T23:47:44.419Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "tag accent",
+          "text": "事业学业"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-dark-1440.png",
+      "screenshot_sha256": "e1d254d00a085366e57a0a4bbb91c6bbf02f7e4a4b08de7a5a509559399dfd10",
+      "captured_at": "2026-10-18T23:48:23.498Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-dark-375.png",
+      "screenshot_sha256": "bcaf6163db0fe9e30df585ba9f48933fa4f909367329360c3ed51fe6e6ce40ab",
+      "captured_at": "2026-10-18T23:47:09.980Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-dark-390.png",
+      "screenshot_sha256": "640f435bf018c28ee5a27ad827bc7c81bff6e093799394f03c8e90b940873101",
+      "captured_at": "2026-10-18T23:47:33.458Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-dark-768.png",
+      "screenshot_sha256": "29c8af2afb89e5e878983336bb2ec87d66095c591eba67f5cee77f2f3d7bf0b4",
+      "captured_at": "2026-10-18T23:47:57.862Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-light-1440.png",
+      "screenshot_sha256": "e0d3e9c8341ef0c0bc1cd993de664a86c71f381769790306b514df91c7945451",
+      "captured_at": "2026-10-18T23:48:10.585Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-light-375.png",
+      "screenshot_sha256": "aeba8fe7d9ee22f3db06d73a0d38bf865c77b47d3ae9e8e7b728630b43ef038c",
+      "captured_at": "2026-10-18T23:46:58.114Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-light-390.png",
+      "screenshot_sha256": "30b5bd2c1cca962964fc8bd2bcd7123345643bb21641e380faf4cb55c033a1a2",
+      "captured_at": "2026-10-18T23:47:21.823Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-me",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-me-light-768.png",
+      "screenshot_sha256": "56227fd9f6370b29e456f4456f674c58e1c558907ccca877ac770f88d8ea1a58",
+      "captured_at": "2026-10-18T23:47:45.348Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-dark-1440.png",
+      "screenshot_sha256": "27a0319887f322c6b32191eedc19ee4e19ae1d5b2dbd4a01cbcb637f46348247",
+      "captured_at": "2026-10-18T23:48:24.638Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-dark-375.png",
+      "screenshot_sha256": "32a32215887617a179100cbce6e0d7d0ebbbc19a487d178fe73902f8b86b2717",
+      "captured_at": "2026-10-18T23:47:10.973Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-dark-390.png",
+      "screenshot_sha256": "75db36a0e65b8a7d969be788fb58cfe3a8833d7d98b523eb13c76cecc81e14f7",
+      "captured_at": "2026-10-18T23:47:34.420Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-dark-768.png",
+      "screenshot_sha256": "1446b4e4d63dd55cfcb59f0690c6156ef289dd2fdcf3245da22774ae854fcdf3",
+      "captured_at": "2026-10-18T23:47:58.905Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "dark",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-light-1440.png",
+      "screenshot_sha256": "45ada7960d792c2517734a5ac9366db9e53418416207ea74398396773e387593",
+      "captured_at": "2026-10-18T23:48:11.630Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-light-375.png",
+      "screenshot_sha256": "35a47201fa4cc38cf9bf17c32265c7a0c390edafd0333ae634694ff4a4c12fca",
+      "captured_at": "2026-10-18T23:46:59.057Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-light-390.png",
+      "screenshot_sha256": "f179aba5f4b3de683a24fc1006dc13721436cbcc64af27b42f9a106e7080f308",
+      "captured_at": "2026-10-18T23:47:22.802Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    },
+    {
+      "run_id": "2026-10-18T23:46:46.243Z",
+      "state": "spaces-organize",
+      "mode": "spaces",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-19/07/screenshots/spaces-organize-light-768.png",
+      "screenshot_sha256": "92c68a8412c102da66ff2492d23f287cf22bc6c0401dbfe616235428dd033f4a",
+      "captured_at": "2026-10-18T23:47:46.399Z",
+      "overflow": false,
+      "font_faces": 202,
+      "rendered_theme": "light",
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "button primary  ",
+          "text": "应用整理"
+        }
+      ],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": [],
+      "readiness_error": "",
+      "axe_error": ""
+    }
+  ]
+}

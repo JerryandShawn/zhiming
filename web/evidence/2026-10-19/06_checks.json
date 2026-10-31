@@ -1,0 +1,163 @@
+{
+  "item": 6,
+  "time_utc": "2026-10-18T23:42:46.8363689Z",
+  "branch": "v4/p10-frontend",
+  "base_commit": "ec2382105d7db865e7db3912d4f75c51f5c199bf",
+  "code_commit": "294c84baed99acfb8f49c8ba19bd53a3cf5094c9",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "unit": {
+    "passed": 444,
+    "total": 444,
+    "files": 43,
+    "failed": 0
+  },
+  "frontend": {
+    "systems": 3,
+    "passed": 12,
+    "failed": 0,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "widths": [
+      390,
+      1440
+    ],
+    "targeted": 12
+  },
+  "axe_violations": 0,
+  "cinnabar_budget": 3,
+  "network": {
+    "external": 0,
+    "api": 0,
+    "pageerror": 0,
+    "console": 0
+  },
+  "source_sha256": [
+    {
+      "sha256": "2493d57bd085863596c67f69954a45f02e1015621fab48a99f0fe33cbad4ec79",
+      "path": "web/scripts/prepare-chart-samples.mjs"
+    },
+    {
+      "sha256": "9c0be6cac274c76beb2785579b396c8a668fb52701d5e566a72f3a8eb29bd081",
+      "path": "web/src/charts/LuckPeriods.tsx"
+    },
+    {
+      "sha256": "6d4b989a717f1476f0714e7fab22bb4e84822b02ff170729187265a3edd0fa0c",
+      "path": "web/src/charts/ZiweiPalaces.tsx"
+    },
+    {
+      "sha256": "349a6a068fe919a8b23a203c0291d0f2d824ad1511c7783b140b7d5002b0e74e",
+      "path": "web/src/charts/charts.css"
+    },
+    {
+      "sha256": "0f72bd03bf3d16816b0a9583d3121f84c42d8dc0f072fdb0c66d4e79816b8892",
+      "path": "web/src/night/NightApp.tsx"
+    },
+    {
+      "sha256": "098255376a72927197ccc67562c2dcac4d6ccd4657c4ee1de7dcd09da9e9ee86",
+      "path": "web/src/night/charts/SampleChartPage.tsx"
+    },
+    {
+      "sha256": "2f507311b24ac1962ae9e15f43ec19043ecd2632fd58a244a45a16c56330630f",
+      "path": "web/src/night/charts/port.ts"
+    },
+    {
+      "sha256": "f5c42a05d185012a769401880b48ff24bd2b8d77ad69eb3a32f502350d297822",
+      "path": "web/src/night/charts/samples.css"
+    },
+    {
+      "sha256": "664c460b1bde90e55086ffd5a1fc860e4d4199699c0348c4c3b5e568bfba2c65",
+      "path": "web/src/night/charts/samples.json"
+    },
+    {
+      "sha256": "a410890de841199035d0d3411acf148cb269f21c931cc7ec269a52362fa8d110",
+      "path": "web/src/night/charts/types.ts"
+    },
+    {
+      "sha256": "ec4ff853e6e44279ad1b1cb220ad53c06d4370db5d207a3339da5f2479b7a461",
+      "path": "web/tests/chart-boundaries.test.tsx"
+    },
+    {
+      "sha256": "28f911e038c7187d21f2e4fc048b08ad215a2ae3ba907859487f52d423606c34",
+      "path": "web/tests/chart-components.test.tsx"
+    },
+    {
+      "sha256": "fde3989c0f0d1ff387cbfb8b5b0ab135ecb318f7c9fa0eb34826060de5e7f82d",
+      "path": "web/tests/e2e/components-chart.spec.ts"
+    },
+    {
+      "sha256": "1ee4e3a9e6a385a1c8470f78e647b7005affaccc4be94d4d23bf7f9faf10bc7b",
+      "path": "web/tests/e2e/night-chart-samples.spec.ts"
+    },
+    {
+      "sha256": "14f036688b57e677c7f62a692dbd00184f4fda1ef8a05f69baa787209ad0712f",
+      "path": "web/tests/night-chart-projector.test.ts"
+    },
+    {
+      "sha256": "c6b892b5e4d364cffcbc5d7b8faeb4224d0d23c2d8efca2a7284fd441e6f8d0a",
+      "path": "web/tests/night-chart-samples-ui.test.tsx"
+    },
+    {
+      "sha256": "a2151659c50fe063a08ecaac32ea435eb281a3f45701a1ce46a3491b5cab7152",
+      "path": "web/tests/night-chart-samples.test.ts"
+    }
+  ],
+  "built_manifest_sha256": "16459ce4724b60b5361bd99cc64c8bfc8e12e52171acef6bdff3dec8b1af6b4d",
+  "screenshots": [
+    {
+      "sha256": "c4e0405e81e5ed044d2db943f7d830911673e9b33e46dc4dd4015a9164c067ef",
+      "path": "06-chart-astro-1440-dark.png"
+    },
+    {
+      "sha256": "95f3179d280c738606be88ad250e9cfd194519a8f203273c98e21f7fec3853ab",
+      "path": "06-chart-astro-1440-light.png"
+    },
+    {
+      "sha256": "f367e6d99ed81a19fed3de0e22f118348c5945c47877f6b969ddab6899506fb7",
+      "path": "06-chart-astro-390-dark.png"
+    },
+    {
+      "sha256": "540c97e72286abc77fbeb0708f2e250a23a41bb72b7e09cc2609b264dae75d65",
+      "path": "06-chart-astro-390-light.png"
+    },
+    {
+      "sha256": "037653b05ccb1483d7f4493ab604bf5d6edcab716e6b94d3a3ac84d4c0ae2e0e",
+      "path": "06-chart-bazi-1440-dark.png"
+    },
+    {
+      "sha256": "af7286f5d966a1f722e2106718edc32e9f57399f0471738d7ae25e60fc38fad8",
+      "path": "06-chart-bazi-1440-light.png"
+    },
+    {
+      "sha256": "8be1157ac7df75859fc397f9f4c7dffdad0c515480025f1ac0454618b6cce206",
+      "path": "06-chart-bazi-390-dark.png"
+    },
+    {
+      "sha256": "e5241ade633bf7311918b90d3ae3da02efef2ac061be1c92b25ff1cae95e50ff",
+      "path": "06-chart-bazi-390-light.png"
+    },
+    {
+      "sha256": "9e956cf0668ad0c7e3c3d3da592ffc0ab31f076cacbdaecf4834d018116eb241",
+      "path": "06-chart-ziwei-1440-dark.png"
+    },
+    {
+      "sha256": "0b25162b78dabc73959ac6e05e241f1b123ed50057f7d764d870058eaa2b52bf",
+      "path": "06-chart-ziwei-1440-light.png"
+    },
+    {
+      "sha256": "4b0ddc19a1c95a2dff79891fb59af45a302784f543f6236d80d8cfc74a9cf3ad",
+      "path": "06-chart-ziwei-390-dark.png"
+    },
+    {
+      "sha256": "c6aab121e32d77af7deb28e605f7fb1d6366b8bc4580a6509ddc67c61362ca10",
+      "path": "06-chart-ziwei-390-light.png"
+    }
+  ],
+  "limitations": [
+    "Public projection excludes nominal transition timestamps retaining birth time; no exact period highlight.",
+    "Offline default_synthetic samples only; no chart engine, real model or API request."
+  ]
+}

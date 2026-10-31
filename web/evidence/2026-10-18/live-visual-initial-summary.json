@@ -1,0 +1,691 @@
+{
+  "schema": "frontend-v3-live-visual-v1",
+  "captured_at": "2026-10-18T08:25:32.668Z",
+  "synthetic_only": true,
+  "backend": "127.0.0.1:8002 / core_test_fe",
+  "frontend": "127.0.0.1:4173",
+  "dedicated_owner": true,
+  "model_requests_sent_by_matrix": 0,
+  "expected_combinations": 56,
+  "captured_combinations": 56,
+  "screenshots_directory": "web/test-results/live-evidence/screenshots",
+  "audits_directory": "web/test-results/live-evidence/audits",
+  "source_hashes": {
+    "web/src/live/CaseFeedback.tsx": "6fe517e8b2048b0850da42b0e44c5d212dc3e8854a8d8b81b12b0d700839b43d",
+    "web/src/live/Cases.tsx": "ff69e8e4a65e4fba24b96440d062ad9dc7277354c23738e7eebc54bd3b869b6f",
+    "web/src/live/Chart.tsx": "403782002e7114499f0fa7b751d115a3aac648fe6ba05b7b98b5dccf9cf61270",
+    "web/src/live/ChartData.tsx": "81617e682ee0ee3cbbc428946d680defc4b6a508d37ed7aa21ed1f48be7760b3",
+    "web/src/live/Chat.tsx": "b1f6c8a9c0773d2b9344d76d2c39517a6b942d288ab40e4c4fb392a75b9da479",
+    "web/src/live/common.tsx": "0e1289f085fba909e1b98bbf7d5d10e128f2de04f7dccde44f30a4d6ba3a63ce",
+    "web/src/live/DateField.tsx": "4c56a86650c01ced9b7b6d9268455efda619e266826ad4fee389cb2e08221a9b",
+    "web/src/live/LegacyPreview.tsx": "54170c6f629ce69744f7a5a10ddde42f861e1f43405b7458dbd07823a82bf464",
+    "web/src/live/Me.tsx": "014feb8b1ebe60d9878e59983c052d202e3275740aeb92eee740e6b671c51ecd",
+    "web/src/live/MemoryCard.tsx": "39b3f15778b61a2802120bdebd9f520b0a588a8d4503e8ae00997ffc21907742",
+    "web/src/live/ProfileForm.tsx": "887d622b855b0056e30dd8b4196d01ae482ad615473a5046f8565ef146a548e4",
+    "web/src/live/Reports.tsx": "1f17c1dcc2423147feeafdae7d9c9d151f1fae5365410571eaea9b138f3b5701",
+    "web/src/live/ReportSchedule.tsx": "3a682beb07f1db077940b8e576816145a432397853d9410c9258fcf3ca7c1e0d",
+    "web/src/live/Settings.tsx": "b0d19d3513084c13f4a4907dc0c1a7be63a2270c6f719c65bd5ba6c379eeda96",
+    "web/src/live/Tarot.tsx": "e865c8134568373bb5157bdb3c2b480da928480c9d77f179a26cbfe703e12fbe",
+    "web/src/live/TimeField.tsx": "039ac413b3c81ab364551d865b1502eee2657d2eb07c26d63bef8ef7354ccf31",
+    "web/src/live/Today.tsx": "7bb133fcb52e012c19df9dad98a78a3157bef18aa14d4d99a79230bc26b73924",
+    "web/src/live/types.ts": "aecdc2c807cd8f977f82d367387fb590d66f0bdada46ad1b75ac36b502f9595d"
+  },
+  "checks": {
+    "overflowing": 10,
+    "external_requests": 0,
+    "javascript_errors": 0,
+    "small_text_pages": 0,
+    "accessibility_violations": 0
+  },
+  "findings": [
+    {
+      "name": "chart",
+      "theme": "dark",
+      "width": 375,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "chart",
+      "theme": "dark",
+      "width": 390,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "chart",
+      "theme": "dark",
+      "width": 768,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "chart",
+      "theme": "light",
+      "width": 375,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "chart",
+      "theme": "light",
+      "width": 390,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "chart",
+      "theme": "light",
+      "width": 768,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "tarot",
+      "theme": "dark",
+      "width": 375,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "tarot",
+      "theme": "dark",
+      "width": 390,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "tarot",
+      "theme": "light",
+      "width": 375,
+      "overflow": true,
+      "violations": []
+    },
+    {
+      "name": "tarot",
+      "theme": "light",
+      "width": 390,
+      "overflow": true,
+      "violations": []
+    }
+  ],
+  "captures": [
+    {
+      "name": "cases",
+      "theme": "dark",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-dark-1440.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "cases",
+      "theme": "dark",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-dark-375.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "cases",
+      "theme": "dark",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-dark-390.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "cases",
+      "theme": "dark",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-dark-768.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "cases",
+      "theme": "light",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-light-1440.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "cases",
+      "theme": "light",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-light-375.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "cases",
+      "theme": "light",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-light-390.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "cases",
+      "theme": "light",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/cases-light-768.png",
+      "api_arrivals": [
+        "/api/cases"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "dark",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-dark-1440.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "dark",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-dark-375.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "dark",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-dark-390.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "dark",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-dark-768.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "light",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-light-1440.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "light",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-light-375.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "light",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-light-390.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chart",
+      "theme": "light",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/chart-light-768.png",
+      "api_arrivals": [
+        "/api/chart"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "dark",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-dark-1440.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "dark",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-dark-375.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "dark",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-dark-390.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "dark",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-dark-768.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "light",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-light-1440.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "light",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-light-375.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "light",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-light-390.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "chat",
+      "theme": "light",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/chat-light-768.png",
+      "api_arrivals": [
+        "/api/history"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "dark",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-dark-1440.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "dark",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-dark-375.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "dark",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-dark-390.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "dark",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-dark-768.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "light",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-light-1440.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "light",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-light-375.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "light",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-light-390.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "me",
+      "theme": "light",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/me-light-768.png",
+      "api_arrivals": [
+        "/api/memories",
+        "/api/subjects/self/profile"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "dark",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-dark-1440.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "dark",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-dark-375.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "dark",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-dark-390.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "dark",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-dark-768.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "light",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-light-1440.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "light",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-light-375.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "light",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-light-390.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "settings",
+      "theme": "light",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/settings-light-768.png",
+      "api_arrivals": [
+        "/api/health",
+        "/api/reports/schedules",
+        "/api/state"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "dark",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-dark-1440.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/cdcdd01112da4c65ab5d99961ff3ecb0",
+        "/api/tarot/draws/cdcdd01112da4c65ab5d99961ff3ecb0/readings"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "dark",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-dark-375.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/0ecd81c01b7d4ee980a9d145343a0449",
+        "/api/tarot/draws/0ecd81c01b7d4ee980a9d145343a0449/readings"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "dark",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-dark-390.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/cc4952ebe0c747d7b1cdcb5d49352ef3",
+        "/api/tarot/draws/cc4952ebe0c747d7b1cdcb5d49352ef3/readings"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "dark",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-dark-768.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/cdcdd01112da4c65ab5d99961ff3ecb0",
+        "/api/tarot/draws/cdcdd01112da4c65ab5d99961ff3ecb0/readings"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "light",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-light-1440.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/cdcdd01112da4c65ab5d99961ff3ecb0",
+        "/api/tarot/draws/cdcdd01112da4c65ab5d99961ff3ecb0/readings"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "light",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-light-375.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/1cc977e7bd034aa4a76fcc5d444de122",
+        "/api/tarot/draws/1cc977e7bd034aa4a76fcc5d444de122/readings"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "light",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-light-390.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/ecb89e842a6e4d6cb27d38099223f1d1",
+        "/api/tarot/draws/ecb89e842a6e4d6cb27d38099223f1d1/readings"
+      ]
+    },
+    {
+      "name": "tarot",
+      "theme": "light",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/tarot-light-768.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/tarot/deck",
+        "/api/tarot/draws",
+        "/api/tarot/draws/4299e2317dda43b48c467d0ef8eaa28b",
+        "/api/tarot/draws/4299e2317dda43b48c467d0ef8eaa28b/readings"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "dark",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-dark-1440.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "dark",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-dark-375.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "dark",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-dark-390.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "dark",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-dark-768.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "light",
+      "width": 1440,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-light-1440.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "light",
+      "width": 375,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-light-375.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "light",
+      "width": 390,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-light-390.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    },
+    {
+      "name": "today",
+      "theme": "light",
+      "width": 768,
+      "screenshot": "web/test-results/live-evidence/screenshots/today-light-768.png",
+      "api_arrivals": [
+        "/api/cases",
+        "/api/chart",
+        "/api/history"
+      ]
+    }
+  ],
+  "status": "first_complete_audit_before_overflow_fix"
+}

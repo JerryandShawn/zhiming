@@ -1,0 +1,68 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "id": "chart-ziwei",
+  "mode": "components",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "theme": "light",
+  "url": "/?components=demo#/chart?tab=ziwei",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-2/components-chart-ziwei-light-390.png",
+  "sha256": "3b7c624b68bd473c0f56eebca52cff689ff791c6abe965697cf6b56a69f61ce8",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "light",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "chart-mutagen mutagen-权",
+            "text": "化权"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 724,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "chart-mutagen mutagen-权",
+            "text": "化权"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 1119,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

@@ -1,0 +1,292 @@
+.wood {
+  color: var(--wood);
+}
+.fire {
+  color: var(--fire);
+}
+.earth {
+  color: var(--earth);
+}
+.metal {
+  color: var(--metal);
+}
+.water {
+  color: var(--water);
+}
+.wood-bg {
+  background: var(--wood);
+}
+.fire-bg {
+  background: var(--fire);
+}
+.earth-bg {
+  background: var(--earth);
+}
+.metal-bg {
+  background: var(--metal);
+}
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: var(--s-6);
+  border-top: var(--border) solid var(--line);
+  border-bottom: var(--border) solid var(--line);
+}
+.pillar {
+  min-width: 0;
+  padding: var(--s-3) var(--s-1);
+  text-align: center;
+  border-right: var(--border) solid var(--line);
+}
+.pillar:last-child {
+  border-right: 0;
+}
+.pillar.day-master {
+  outline: var(--selected) solid var(--cinnabar);
+  outline-offset: calc(-1 * var(--selected));
+}
+.pillar-glyphs {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-serif);
+  font-size: var(--t-glyph);
+  line-height: var(--l-glyph);
+  margin-block: var(--s-2);
+}
+.element-bar {
+  display: grid;
+  grid-template-columns: 3fr 2fr 2fr 1fr;
+  gap: var(--border);
+  height: var(--s-2);
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  margin-block: var(--s-3);
+}
+.strength-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+}
+.strength-grid .tag {
+  margin-block: var(--s-2);
+}
+.luck-timeline {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--s-2);
+  padding-block: var(--s-2);
+}
+.luck-step {
+  flex: none;
+  width: var(--luck-width);
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-2);
+  text-align: center;
+  padding: var(--s-3) var(--s-2);
+}
+.luck-step.now {
+  background: var(--cinnabar-wash);
+  border-color: var(--cinnabar);
+}
+.luck-step.now .meta {
+  color: var(--ink-2);
+}
+.luck-glyph {
+  font-family: var(--font-serif);
+  font-size: var(--t-voice);
+  line-height: var(--l-voice);
+}
+.palace-list {
+  margin-block: var(--s-5);
+}
+.palace-center {
+  display: none;
+}
+.palace-grid .palace-center {
+  display: grid;
+}
+.palace-center {
+  grid-column: 2 / 4;
+  grid-row: 2 / 4;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-2);
+  padding: var(--s-4);
+  border: var(--border) solid var(--line);
+}
+.palace-list summary,
+.palace-grid summary {
+  font-family: var(--font-serif);
+}
+.palace-list summary .meta,
+.palace-grid summary .meta {
+  font-size: var(--t-body-sm);
+  color: var(--ink-2);
+}
+.palace-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  overflow-x: auto;
+  margin-block: var(--s-5);
+}
+.palace-grid .disclosure {
+  border: var(--border) solid var(--line);
+  padding: var(--s-3);
+}
+.astro-wheel {
+  display: block;
+  width: min(100%, var(--dialog-width));
+  height: auto;
+  margin: var(--s-5) auto;
+}
+.astro-wheel text {
+  font-family: var(--font-sans);
+  font-size: var(--t-meta);
+}
+.spread-layout {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-3);
+  margin-block: var(--s-5);
+  min-width: 0;
+}
+.tarot-card {
+  width: min(30vw, var(--tarot-width));
+  min-width: 0;
+  text-align: center;
+}
+.tarot-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 7/12;
+  border-radius: var(--r-1);
+  border: var(--border) solid var(--line-strong);
+  object-fit: cover;
+  background: var(--surface);
+}
+.tarot-card img.reversed {
+  transform: rotate(180deg);
+}
+.tarot-card figcaption {
+  margin-top: var(--s-2);
+  overflow-wrap: anywhere;
+}
+.tarot-card figcaption .tag {
+  margin-top: var(--s-1);
+}
+.spread-layout.choice5 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-items: center;
+}
+.choice5 .tarot-card {
+  width: min(22vw, var(--tarot-width));
+}
+.choice5 .tarot-card:first-child {
+  grid-column: 2;
+  grid-row: 2;
+}
+.choice5 .tarot-card:nth-child(2) {
+  grid-column: 1;
+  grid-row: 2;
+}
+.choice5 .tarot-card:nth-child(3) {
+  grid-column: 3;
+  grid-row: 2;
+}
+.choice5 .tarot-card:nth-child(4) {
+  grid-column: 2;
+  grid-row: 1;
+}
+.choice5 .tarot-card:nth-child(5) {
+  grid-column: 2;
+  grid-row: 3;
+}
+.tarot-picker {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: calc(var(--s-3) / 2);
+  padding: calc(var(--s-3) / 2 + var(--focus-width) + var(--ring-offset)) calc(var(--focus-width) + var(--ring-offset));
+  overflow: visible;
+}
+.tarot-picker button {
+  border: var(--border) solid var(--line-strong);
+  background: var(--surface);
+  padding: 0;
+  min-height: var(--control-height);
+  border-radius: var(--r-1);
+}
+.tarot-picker button[aria-pressed='true'] {
+  outline: var(--selected) solid var(--cinnabar);
+  transform: translateY(calc(-1 * var(--s-3) / 2));
+}
+.tarot-picker img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: inherit;
+}
+.flip-button {
+  display: block;
+  width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: var(--r-1);
+  perspective: calc(var(--tarot-width) * 6);
+}
+.tarot-flip,
+.tarot-flip-rotor {
+  display: block;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 7/12;
+}
+.tarot-flip-rotor {
+  transform-style: preserve-3d;
+  transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--tarot-reveal-delay, 0ms);
+}
+.tarot-flip.is-revealed .tarot-flip-rotor {
+  transform: rotateY(180deg);
+}
+.tarot-card .tarot-flip img {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+.tarot-card .tarot-flip-front {
+  transform: rotateY(180deg);
+}
+.tarot-card .tarot-flip-front.reversed {
+  transform: rotateY(180deg) rotateZ(180deg);
+}
+.no-motion .tarot-flip-rotor {
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tarot-flip-rotor {
+    transition: none;
+  }
+}
+@media (min-width: 1024px) {
+  .tarot-picker {
+    grid-template-columns: repeat(13, minmax(0, 1fr));
+  }
+  .palace-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .palace-list .palace-center {
+    display: grid;
+  }
+  .palace-list .disclosure {
+    border: var(--border) solid var(--line);
+    padding: var(--s-3);
+    min-height: 120px;
+  }
+}

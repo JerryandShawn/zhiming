@@ -1,0 +1,74 @@
+{
+  "schema": "frontend-q9-initial-findings-v1",
+  "captured_beijing": "2026-10-21T01:56:09.741+08:00",
+  "synthetic_only": true,
+  "runs": [
+    {
+      "name": "night",
+      "phase": "b7e9255 runtime before gallery fixes",
+      "report_sha256": "5985181bd15f0bfecd922ac9cb7d7b8525284c52d124e02af0bab6d2b9ec7cb3",
+      "stats": {
+        "startTime": "2026-10-20T17:48:21.958Z",
+        "duration": 97427.934,
+        "expected": 112,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "archive": "web/test-results/Q9-initial (uncommitted detailed reports/screens)"
+    },
+    {
+      "name": "static",
+      "phase": "same runtime, stopped at four failures",
+      "report_sha256": "6ce4c878755dafc296af4b7f32e5143ceffbe5b2cb4f2b842fb031022581e8dc",
+      "stats": {
+        "startTime": "2026-10-20T17:50:12.659Z",
+        "duration": 71379.467,
+        "expected": 36,
+        "skipped": 88,
+        "unexpected": 4,
+        "flaky": 0
+      },
+      "archive": "web/test-results/Q9-initial (uncommitted detailed reports/screens)"
+    },
+    {
+      "name": "gallery-first-fix",
+      "phase": "grid and focus fixed; contrast and tablet accent budget still fail",
+      "report_sha256": "b9bb35facc10c4ff47e72ab026f78c957cf1cf6622c0f089bfcbc00b29b29d2d",
+      "stats": {
+        "startTime": "2026-10-20T17:53:04.376Z",
+        "duration": 25668.123,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 5,
+        "flaky": 0
+      },
+      "archive": "web/test-results/Q9-initial (uncommitted detailed reports/screens)"
+    },
+    {
+      "name": "gallery-final",
+      "phase": "all gallery fixes, eight original visual checks pass",
+      "report_sha256": "797e38a2a497a824f6da86b2aae727b9e3022066ded6b6e052299ab944513b93",
+      "stats": {
+        "startTime": "2026-10-20T17:54:33.294Z",
+        "duration": 20246.566,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "archive": "web/test-results/Q9-initial (uncommitted detailed reports/screens)"
+    }
+  ],
+  "findings": [
+    "Gallery intrinsic grid widened mobile document to 584px: use minmax(0,1fr) and min-width:0 children.",
+    "Static decision horizontal scroller had no keyboard focus: add named region and tab stop.",
+    "Dark accent text contrast 3.69 on wash: use stronger existing cinnabar hover tone as dedicated ink alias.",
+    "Tablet palette/form/tag examples showed four accents in one screen: move tag states into state examples.",
+    "One cases page failed to load entry with Chrome ERR_NO_BUFFER_SPACE; preserved original trace and no assertion relaxed. A fresh full matrix will verify the final runtime."
+  ],
+  "before_screenshot": {
+    "path": "web/evidence/2026-10-21/Q9/initial/gallery-dark-768-before-contrast-regroup.png",
+    "sha256": "dc990ef202d5664832b8f4b658a50daa6bdfd425c4493b2a189681f79b060cd2"
+  }
+}

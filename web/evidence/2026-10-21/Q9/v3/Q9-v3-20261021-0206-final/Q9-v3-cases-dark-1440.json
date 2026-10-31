@@ -1,0 +1,72 @@
+{
+  "schema": "frontend-q9-v3-visual-v1",
+  "run_id": "Q9-v3-20261021-0206-final",
+  "id": "Q9-v3-cases-dark-1440",
+  "mode": "v3",
+  "page": "cases",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "dark",
+  "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-cases-dark-1440.png",
+  "sha256": "8e7e292dda6de072d59efb80ce14785ecc16a4e2f556ffeeb30a4b60f2b0eb0d",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-cases-dark-1440-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-cases-dark-1440.png",
+      "sha256": "8e7e292dda6de072d59efb80ce14785ecc16a4e2f556ffeeb30a4b60f2b0eb0d",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-cases-dark-1440-full.png",
+      "sha256": "8e7e292dda6de072d59efb80ce14785ecc16a4e2f556ffeeb30a4b60f2b0eb0d",
+      "full_page": true
+    }
+  ],
+  "captured_at_beijing": "2026-10-21T02:06:44+08:00",
+  "clock": "2026-10-21T10:00:00+08:00",
+  "build_manifest_sha256": "1caccda67130820b980538ffac1e07a08b2678b5802a7083d52c67300bf309ff",
+  "synthetic_only": true,
+  "backend": "http://127.0.0.1:8002 / core_test_fe",
+  "fixture_model": "scripted-only, one reading preseeded per worker; no browser model trigger",
+  "checks": {
+    "ready": true,
+    "readiness_error": "",
+    "inspection": {
+      "document": {
+        "lang": "zh-CN",
+        "theme": "dark",
+        "font_faces": 202,
+        "overflow": false
+      },
+      "screens": [
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        }
+      ],
+      "violations": []
+    },
+    "boundary": {
+      "arrivals": [
+        {
+          "path": "/api/cases",
+          "status": 200
+        }
+      ],
+      "external": [],
+      "writes": [],
+      "errors": [],
+      "console": [],
+      "failed": [],
+      "expected_cancellations": [],
+      "http_errors": []
+    }
+  }
+}

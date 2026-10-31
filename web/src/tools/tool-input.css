@@ -1,0 +1,53 @@
+.tool-input-errors,
+.tool-input-summary {
+  grid-column: 1 / -1;
+  min-inline-size: 0;
+  padding: var(--s-4);
+  border: var(--border) solid var(--line-strong);
+  border-radius: var(--r-2);
+}
+.tool-input-errors h2,
+.tool-input-summary h2 {
+  font-size: var(--t-body);
+  line-height: var(--l-body);
+}
+.tool-input-errors ul {
+  margin: 0;
+  padding-inline-start: var(--s-5);
+}
+.tool-input-errors a,
+.tool-field-error {
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.tool-input-errors a {
+  text-decoration: underline;
+  text-underline-offset: var(--s-1);
+}
+.tool-form [aria-invalid='true'] {
+  border-color: var(--line-strong);
+}
+.tool-field-error {
+  margin: 0;
+}
+.tool-query-summary {
+  display: grid;
+  gap: var(--s-3);
+  margin: 0;
+}
+.tool-query-summary > div {
+  min-inline-size: 0;
+}
+.tool-query-summary dt {
+  color: var(--ink-2);
+  font-size: var(--t-meta);
+}
+.tool-query-summary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+@media (min-width: 768px) {
+  .tool-query-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

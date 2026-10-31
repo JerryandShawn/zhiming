@@ -1,0 +1,18 @@
+.pwa-offline,
+html[data-network='offline'] {
+  --font-sans: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-serif: 'Songti SC', 'SimSun', serif;
+}
+.pwa-offline {
+  padding: var(--s-3) max(var(--s-4), env(safe-area-inset-left, 0px));
+  background: var(--paper-2);
+  color: var(--ink);
+  border-bottom: var(--border) solid var(--line-strong);
+  font-size: var(--t-body-sm);
+}
+.pwa-offline > p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  margin: 0;
+}

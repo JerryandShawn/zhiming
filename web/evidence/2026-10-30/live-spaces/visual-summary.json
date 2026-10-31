@@ -1,0 +1,105 @@
+{
+  "schema": "frontend-live-spaces-visual-v1",
+  "run_id": "2026-10-30T14:16:29.965Z",
+  "captured_at": "2026-10-30T14:16:43.839Z",
+  "node_version": "v24.15.0",
+  "frontend": "http://127.0.0.1:4173",
+  "mode": "?spaces=demo#/spaces?space=career; synthetic in-memory service; no API or storage",
+  "expected_combinations": 8,
+  "captured_combinations": 8,
+  "source_hashes": {
+    "web/src/App.tsx": "d365f6f64dd56946cf7df62ddc229d1d31554d34f1b720ee20b23ffb06951628",
+    "web/src/spaces/LiveSpaces.tsx": "1f15dc4d6b15287f18f76755b55b9aaf7ef62c185b6327d9d4853d1144c52aa5",
+    "web/src/spaces/fakeServer.ts": "291908fac100e77136c8bf29128cf93727f94d62484cdb9f3df221af619d2483",
+    "web/src/spaces/http.ts": "48b23572a2b7722d8f25119e94282bf39597ddb3b9c7a988bf0408a43fb21b75",
+    "web/src/spaces/live-spaces.css": "51ff9688c540399d15ee6ba2680be03d07d22ca3a4ab0ba51c4566c431b1e536",
+    "web/tests/e2e/live-spaces.spec.ts": "5b06dfc93bbea0cac540747e4df9ef6251c11ad59bded3960725507ee6ae4bd8",
+    "web/tests/e2e/live-spaces-visual.spec.ts": "5a04b146431c3446b870583255f2b2408b84c287b0002d8f60c12575cf5428ee",
+    "web/playwright.live-spaces-visual.config.ts": "813c87aab1d7d831082af863f68e34258eb9a49db3f5a606270be9e0470dfd8e"
+  },
+  "checks": {
+    "api_requests": 0,
+    "external_requests": 0,
+    "javascript_errors": 0,
+    "console_messages": 0,
+    "overflowing_pages": 0,
+    "small_text_pages": 0,
+    "cinnabar_budget_failures": 0,
+    "accessibility_violations": 0
+  },
+  "findings": [],
+  "captures": [
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-dark-1440.png",
+      "sha256": "b2af64f7e0b0341595ff0658d4cfdeecb3e0817808ac86d23e42850fb4793b45"
+    },
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-dark-375.png",
+      "sha256": "fa523cdac231a58ff5ddae5fe106932df7f32d208f91a36c474dba46b5458ba6"
+    },
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-dark-390.png",
+      "sha256": "a4962be3fe52d6492136f001f77a6f9fcc1bf0d4e286833d3a8c0a816853b04e"
+    },
+    {
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-dark-768.png",
+      "sha256": "c134a0503bb1083792c128d28a5e1e1bb647cb241270959146ef007c0dcc787c"
+    },
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-light-1440.png",
+      "sha256": "9d51a7ec21158c760bced5012327cd2f364852cd67b84aadd8dae3049daffd96"
+    },
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-light-375.png",
+      "sha256": "7d9468865ea3a2fdeab3ebbcfdb7e065d7a9118f54df70d004a050190068fc62"
+    },
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-light-390.png",
+      "sha256": "c78e94fcc434f6fae15dbcedbe42bfe8a39eedce4727ecff9f88e1f30e7e5f56"
+    },
+    {
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-30/live-spaces/screenshots/spaces-light-768.png",
+      "sha256": "36662e091ed67bae150e6421868f60bb5b4b228d02920fe2074a7e4aeba6713a"
+    }
+  ]
+}

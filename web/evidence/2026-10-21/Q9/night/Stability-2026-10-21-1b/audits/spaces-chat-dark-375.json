@@ -1,0 +1,78 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "captured_time_bjt": "2026-10-21T10:54:51.538+08:00",
+  "id": "spaces-chat",
+  "case_key": "spaces-chat-dark-375",
+  "state": "spaces-chat",
+  "route": "/?spaces=demo#/chat?space=career&topic=interview",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "theme": "dark",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/spaces-chat-dark-375.png",
+  "screenshot_sha256": "4ba1eb0ea95db4144bb8669615282becee9fb41d9aa8ecbf777fafb737d77495",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/spaces-chat-dark-375-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/spaces-chat-dark-375.png",
+      "sha256": "4ba1eb0ea95db4144bb8669615282becee9fb41d9aa8ecbf777fafb737d77495",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/spaces-chat-dark-375-full.png",
+      "sha256": "50c6c4dca8d048dd4d1c84f7280aaadd6328a9128c89b5fad9d462c2d026cd2c",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "dark",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": [
+        {
+          "className": "tag accent",
+          "text": "事业学业"
+        }
+      ]
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 575,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}
