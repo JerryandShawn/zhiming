@@ -15,4 +15,5 @@
 - 过程保留：首轮 204 过/16 EEXIST，第二轮 night 197 过/23 EEXIST，均因 `wx` 写固定历史截图；默认输出改到带批次号的 ignored 目录。第三次 night 219/220，唯一 `ERR_NO_BUFFER_SPACE` 在并行 preview 资源竞争后出现，单独串行复验通过；最终不并行套件、不屏蔽 console、不删测试。
 - `/v4/` 首轮截图误用默认 1280 宽，已显式 390×844 重拍并人工核图。
 - 历史被覆盖的已跟踪证据已恢复；新未跟踪输出移到 ignored `test-results/full-e2e-generated/`，没有删除历史文件。
-- 未验证：真实 API/PG、生产 CSP/反代、真实飞书、真实模型和最新精确头 CI。性能旧页 2572ms、课程 5020ms、spaces 4148ms、v4 对话 5840ms 均未过 2500ms，回归全绿不等于性能或上线就绪。
+- `10bd5e81` 精确头 frontend/Core 四个 CI run 全部 success；监视过程一次 TLS 握手失败不是产品失败，最终 API 元数据已复核。
+- 未验证：真实 API/PG、生产 CSP/反代、真实飞书和真实模型。性能旧页 2572ms、课程 5020ms、spaces 4148ms、v4 对话 5840ms 均未过 2500ms，回归与 CI 全绿不等于性能或上线就绪。

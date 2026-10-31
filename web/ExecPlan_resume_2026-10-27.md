@@ -10,7 +10,7 @@
 - [x] C3接生产对话：v4提交/状态/停止/恢复，附图与旧恢复保留v3；专项5/5、浏览器10/10、8图全Axe，原v3定向25/25。干净头真实HTTP五冷p75 5840ms，未达2500。端口与C3已推送89ef6e76。
 - [x] B6文档补齐生产构建、CSP Report-Only、nginx `/v4/`、gzip/SSE边界；没有部署或改服务器。
 - [x] `/v4/`统一静态基址：HTML相对资源、公开JSON按document.baseURI解析，API和共享塔罗路径不变。定向46/46、真实`/v4/` HTTP 2/2（课程、字体、manifest、SW scope、深链、旧根路径）。最终全量1531/1531、119文件，lint/typecheck/build绿。
-- [x] 首轮完整浏览器在night停止：204过/16失败；第二轮night为197过/23失败，均为多份spec用`wx`写固定历史截图导致EEXIST。配置层统一批次化ignored目录后，第三次night为219/220，唯一ERR_NO_BUFFER_SPACE在并行preview资源竞争后出现，单独串行复验1/1通过；不屏蔽console。最终完整串行入口**542/542全绿**（133/15/10/64/220/88/10/2）；`/v4/`截图已显式390×844重拍。真实API/PG、生产CSP/反代、飞书真机及2500ms性能门槛仍未完成，最新提交CI待核。
+- [x] 首轮完整浏览器在night停止：204过/16失败；第二轮night为197过/23失败，均为多份spec用`wx`写固定历史截图导致EEXIST。配置层统一批次化ignored目录后，第三次night为219/220，唯一ERR_NO_BUFFER_SPACE在并行preview资源竞争后出现，单独串行复验1/1通过；不屏蔽console。最终完整串行入口**542/542全绿**（133/15/10/64/220/88/10/2）；`/v4/`截图已显式390×844重拍。真实API/PG、生产CSP/反代、飞书真机及2500ms性能门槛仍未完成；`10bd5e81`精确头frontend/Core四个CI run全部success。
 
 ## v6 Surprises & Discoveries
 
@@ -30,7 +30,7 @@
 ## v6 Outcomes & Retrospective
 
 - 已形成spaces、draft端口、C3对话、B6和`/v4/`可审查候选；证据位于`web/evidence/2026-10-30/`及`2026-10-27/{spaces,thread}-performance/`。
-- 当前最新完整单测1531/1531、完整串行浏览器542/542；最新提交CI仍须另核，未核前不写CI全绿或上线就绪。以下10-27记录保留为历史。
+- 当前最新完整单测1531/1531、完整串行浏览器542/542；`10bd5e81`精确头frontend/Core CI均成功。性能、真实API/PG和生产验收边界不因此改变。以下10-27记录保留为历史。
 
 ## Progress
 
