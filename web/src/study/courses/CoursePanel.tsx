@@ -1,11 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import { Button, Disclosure } from '../../components/ui/Controls';
+import { createStudyProgressFakeFetch } from '../progressFakeServer';
+import { studyProgressHttpPort, type StudyProgressHttpPort } from '../progressHttp';
 import { CourseLessonView } from './CourseLessonView';
+import { CourseProgress } from './CourseProgress';
 import { loadCourse, type CourseLoader } from './loader';
 import type { CourseData } from './types';
 import './courses.css';
 
-function CourseContent({ data }: { data: CourseData }) {
+function CourseContent({ data, progressPort }: { data: CourseData; progressPort?: StudyProgressHttpPort }) {
+  const [port] = useState(
+    () =>
+      progressPort ??
+      studyProgressHttpPort(
+        createStudyProgressFakeFetch({
+          lessons: Object.fromEntries(data.lessons.map((item) => [item.lesson_id, 'v5'])),
+        }),
+      ),
+  );
   const [index, setIndex] = useState(0);
   const [choices, setChoices] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState<Record<string, string>>({});
@@ -65,6 +77,7 @@ function CourseContent({ data }: { data: CourseData }) {
               if (choices[quiz]) setChecked((value) => ({ ...value, [quiz]: choices[quiz] }));
             }}
           />
+          <CourseProgress port={port} lessonId={lesson.lesson_id} lessonVersion="v5" />
           <nav aria-label="课程翻页" className="row wrap between">
             <Button disabled={index === 0} onClick={() => chooseLesson(index - 1)}>
               上一课
@@ -96,7 +109,15 @@ function CourseContent({ data }: { data: CourseData }) {
   );
 }
 
-export default function CoursePanel({ active, loader = loadCourse }: { active: boolean; loader?: CourseLoader }) {
+export default function CoursePanel({
+  active,
+  loader = loadCourse,
+  progressPort,
+}: {
+  active: boolean;
+  loader?: CourseLoader;
+  progressPort?: StudyProgressHttpPort;
+}) {
   const [data, setData] = useState<CourseData>();
   const [phase, setPhase] = useState<'loading' | 'ready' | 'error'>('loading');
   const [attempt, setAttempt] = useState(0);
@@ -137,7 +158,7 @@ export default function CoursePanel({ active, loader = loadCourse }: { active: b
           <Button onClick={() => setAttempt((value) => value + 1)}>重新读取课程</Button>
         </div>
       )}
-      {data && <CourseContent data={data} />}
+      {data && <CourseContent data={data} progressPort={progressPort} />}
     </section>
   );
 }

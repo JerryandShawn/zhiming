@@ -64,6 +64,10 @@
   border-block-start: var(--border) solid var(--line);
   padding-block-start: var(--s-3);
 }
+.course-progress {
+  border-block-start: var(--border) solid var(--line);
+  padding-block-start: var(--s-4);
+}
 @media (max-width: 767px) {
   .course-directory {
     max-block-size: calc(var(--control-height) * 4);

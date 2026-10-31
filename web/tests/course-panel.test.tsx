@@ -91,6 +91,27 @@ describe('twenty course lessons, local practice only', () => {
     expect(screen.getByText(/本页练习：0\/20课已核对/)).toBeVisible();
   });
 
+  it('marks completion explicitly and keeps a per-lesson bookmark in the synthetic progress port', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch'),
+      writes = vi.spyOn(Storage.prototype, 'setItem');
+    render(<CoursePanel active loader={loader()} />);
+    await screen.findByRole('navigation', { name: '课程目录' });
+    expect(screen.getByText('继续学习。')).toBeVisible();
+    await userEvent.type(screen.getByRole('textbox', { name: '本课书签' }), '第二段');
+    await userEvent.click(screen.getByRole('button', { name: '标记本课完成' }));
+    expect(await screen.findByText('已按你的标记记录完成；不代表理解或评测通过。')).toBeVisible();
+    expect(screen.getByText(/你已标记完成。/)).toBeVisible();
+    expect(screen.getByText(/当前书签：第二段/)).toBeVisible();
+    await userEvent.click(screen.getByRole('button', { name: '下一课' }));
+    expect(screen.getByText('继续学习。')).toBeVisible();
+    await userEvent.click(screen.getByRole('button', { name: '上一课' }));
+    expect(screen.getByText(/你已标记完成。/)).toBeVisible();
+    expect(screen.getByRole('textbox', { name: '本课书签' })).toHaveValue('第二段');
+    expect(screen.getByText(/本页练习：0\/20课已核对/)).toBeVisible();
+    expect(fetcher).not.toHaveBeenCalled();
+    expect(writes).not.toHaveBeenCalled();
+  });
+
   it('shows independent c7 case basis and original source caveats on the last lesson', async () => {
     render(<CoursePanel active loader={loader()} />);
     await screen.findByRole('navigation', { name: '课程目录' });
