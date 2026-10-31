@@ -88,6 +88,7 @@ echo "R59: maintenance removed; report timer restored to $(cat "$FR_OP/r04-timer
 | --- | --- | --- |
 | D2 首检 302 | LIVE 开着，只写了 `central-before.json` | `c-d2-rerun-prep` → `p06a-d2-start 2` → `p06b-d2-status 2` |
 | D2 关库 312 | 四份 before 已写，LIVE 已关，原块连不上 | `c-d2-mid-start` → `c-d2-mid-status` |
+| `c-d2-mid` 在 dump 写完后失败（等待超时或出现别的后端） | dump 已有，无 receipt，`c-d2-tail` 会拒绝 | 停，保持维护，找大脑。不加脚本；还没到 D5，原库没动，放弃这次窗口是安全的 |
 | D2 尾 321 | dump 已写，无 receipt | `c-d2-tail-start` → `c-d2-tail-status` |
 | D3 首检 335 | 无变化 | `c-d3-rerun-prep` → `p07a-d3-start 2` → `p07b-d3-status 2` |
 | D3 尾 349 | NEW 已恢复已关，无 receipt | `c-d3-tail-start` → `c-d3-tail-status` |
@@ -118,9 +119,9 @@ D5 尾没有补回执时不能进 R1：R1 要求 `exchange-receipt.json`，先�
 | `c-d2-mid-status` | `d28362f1f21ad2d0a376ef9789d206649144b6afc5fa7e201fd9509aad1b1a85` |
 | `c-d2-tail-start` | `f2d548d1d8d21ea2d6ea57650af2a48957f3ff3b82a9a9aaa87707022bb32eab` |
 | `c-d2-tail-status` | `3e2177b58036d4c0a85c50196349c0f7f27fd31b3b8b0015865628180363314f` |
-| `c-d3-tail-start` | `92f69cc31a7d8659525be44f10de0ed90424c141a059c59f62d913bbe1114324` |
+| `c-d3-tail-start` | `a5cecd842572a33741f559fda89058bd72fa5e2a0e4a2f70baa80df4092512ac` |
 | `c-d3-tail-status` | `b8ac9d979b6b3a90e122863d93ceb4aa9e4b049e0167c8c4d2ea2f08970ec532` |
-| `c-d5-tail-start` | `7b2db57d40ad5c97dd84f488526f6a5451b1c600d4d5cd3631e56f0f8dcc5b50` |
+| `c-d5-tail-start` | `95dbc5bc6370d9b34c746c475226125f86be871cced87f27925d0cfe0d535d78` |
 | `c-d5-tail-status` | `97941e0db8f5289ca70ec4d868bdf1970cd64f85db38ac8e61dbcab72e2cb626` |
-| `c-r1-after-restore-start` | `07cfced484b19ef9a8ad1c9bdbd5b2a84887dd329afbcdfbae17eae2b3d0d868` |
+| `c-r1-after-restore-start` | `a63c5426790ac8a395c7e9653180f778bf95d39a367c4ff74eaf6446c4591c2f` |
 | `c-r1-after-restore-status` | `d624e9a70c6ae5271b960c555795afc8d124593b3975ed47646967321ee3d07b` |

@@ -339,6 +339,7 @@ print('D2 tail: line 321 proven, dump listed and read in full; live closed')
     "c-d3-tail": r"""from tools.deploy_core import export_withdrawals
 failed_at('d3-restore',@@D3_SHA@@,@@D3_349@@)
 with admin() as c:
+ assert FLAG.is_file() and not (OP/'opened.json').exists()
  assert not (OP/'restore-verified.json').exists()
  wait_zero(c,LIVE);wait_zero(c,NEW)
  snap=read('database-before.json');validate(c,snap);assert capture(c,LIVE)==snap
@@ -361,6 +362,7 @@ with admin() as c:
 print('D3 tail: line 349 proven; new database re-verified and closed')
 """,
     "c-d5-tail": r"""with admin() as c:
+ assert FLAG.is_file() and not (OP/'opened.json').exists()
  assert not (OP/'exchange-receipt.json').exists()
  snap=read('database-before.json');validate(c,snap)
  assert read('migration-receipt.json')['privacy_equal']
@@ -376,6 +378,7 @@ print('D5 tail: exchange proven from database state; receipt written; nothing re
 assert not (OP/'opened.json').exists() and (OP/'exchange-receipt.json').is_file()
 assert not (OP/'rollback-database.json').exists()
 with skill_writer_lock(exclusive=True),admin() as c:
+ assert FLAG.is_file() and not (OP/'opened.json').exists()
  snap=read('database-before.json');validate(c,snap)
  assert not exists(c,FAILED)
  live=capture(c,LIVE);rb=capture(c,RB)
@@ -526,6 +529,7 @@ rows += [
     "| --- | --- | --- |",
     "| D2 首检 302 | LIVE 开着，只写了 `central-before.json` | `c-d2-rerun-prep` → `p06a-d2-start 2` → `p06b-d2-status 2` |",
     "| D2 关库 312 | 四份 before 已写，LIVE 已关，原块连不上 | `c-d2-mid-start` → `c-d2-mid-status` |",
+    "| `c-d2-mid` 在 dump 写完后失败（等待超时或出现别的后端） | dump 已有，无 receipt，`c-d2-tail` 会拒绝 | 停，保持维护，找大脑。不加脚本；还没到 D5，原库没动，放弃这次窗口是安全的 |",
     "| D2 尾 321 | dump 已写，无 receipt | `c-d2-tail-start` → `c-d2-tail-status` |",
     "| D3 首检 335 | 无变化 | `c-d3-rerun-prep` → `p07a-d3-start 2` → `p07b-d3-status 2` |",
     "| D3 尾 349 | NEW 已恢复已关，无 receipt | `c-d3-tail-start` → `c-d3-tail-status` |",
