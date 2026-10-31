@@ -15,6 +15,9 @@ const pages = {
   settings: lazy(() => import('./pages/Settings')),
   __design: lazy(() => import('./pages/Design')),
   spaces: lazy(() => import('./spaces/LiveSpaces').then((module) => ({ default: () => <module.default preview /> }))),
+  'organize-draft': lazy(() =>
+    import('./organize/DraftOrganizePage').then((module) => ({ default: () => <module.default preview /> })),
+  ),
 };
 const livePages = {
   today: LiveToday,
@@ -25,11 +28,15 @@ const livePages = {
   me: lazy(() => import('./live/Me')),
   settings: lazy(() => import('./live/Settings')),
   spaces: lazy(() => import('./spaces/LiveSpaces')),
+  'organize-draft': lazy(() => import('./organize/DraftOrganizePage')),
 };
 const SpacesChat = lazy(() => import('./spaces/ChatPreview'));
 const SpacesMe = lazy(() => import('./spaces/MemoryPreview'));
 const OrganizePage = lazy(() => import('./spaces/OrganizePage'));
 const OrganizeReviewPage = lazy(() => import('./organize/OrganizeReviewPage'));
+const DraftOrganizePage = lazy(() =>
+  import('./organize/DraftOrganizePage').then((module) => ({ default: () => <module.default preview /> })),
+);
 const PreviewNotice = lazy(() => import('./spaces/PreviewNotice'));
 const ComponentNotice = lazy(() => import('./demos/ComponentNotice'));
 const ChartDemo = lazy(() => import('./charts/ChartDemo'));
@@ -60,7 +67,7 @@ export default function App() {
   const pageName =
     routeName === 'reports'
       ? 'settings'
-      : spacesPreview && ['organize', 'organize-review'].includes(routeName)
+      : spacesPreview && ['organize', 'organize-review', 'organize-draft'].includes(routeName)
         ? 'me'
         : routeName;
   const page = pageName in pages ? (pageName as keyof typeof pages) : 'today';
@@ -73,19 +80,21 @@ export default function App() {
   const Component =
     toolsPreview && page === 'chart'
       ? ToolsDemo
-      : spacesPreview && routeName === 'organize-review'
-        ? OrganizeReviewPage
-        : spacesPreview && routeName === 'organize'
-          ? OrganizePage
-          : spacesPreview && page === 'chat'
-            ? SpacesChat
-            : spacesPreview && page === 'me'
-              ? SpacesMe
-              : componentsPreview && page === 'chart'
-                ? ChartDemo
-                : preview
-                  ? pages[page]
-                  : livePages[page as keyof typeof livePages];
+      : spacesPreview && routeName === 'organize-draft'
+        ? DraftOrganizePage
+        : spacesPreview && routeName === 'organize-review'
+          ? OrganizeReviewPage
+          : spacesPreview && routeName === 'organize'
+            ? OrganizePage
+            : spacesPreview && page === 'chat'
+              ? SpacesChat
+              : spacesPreview && page === 'me'
+                ? SpacesMe
+                : componentsPreview && page === 'chart'
+                  ? ChartDemo
+                  : preview
+                    ? pages[page]
+                    : livePages[page as keyof typeof livePages];
   useEffect(() => {
     if (aliases[name]) location.replace(`#/${route}`);
     window.scrollTo(0, 0);
