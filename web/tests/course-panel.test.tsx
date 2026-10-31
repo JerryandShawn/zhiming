@@ -7,6 +7,8 @@ import CoursePanel from '../src/study/courses/CoursePanel';
 import { readCourse } from '../src/study/courses/readCourse';
 import type { CourseData } from '../src/study/courses/types';
 import type { CourseLoader } from '../src/study/courses/loader';
+import type { StudyProgressHttpPort } from '../src/study/progressHttp';
+import { DraftApiError } from '../src/modules/draftApi';
 
 const data = readCourse(JSON.parse(readFileSync(resolve('public/data/study/courses-v5/course.json'), 'utf8')));
 const loader = () => vi.fn<CourseLoader>().mockResolvedValue(structuredClone(data));
@@ -146,5 +148,26 @@ describe('twenty course lessons, local practice only', () => {
     await userEvent.click(screen.getByRole('button', { name: '重新读取课程' }));
     await waitFor(() => expect(directory()).toBeVisible());
     expect(load).toHaveBeenCalledTimes(2);
+  });
+
+  it('resends the identical progress update after an ambiguous failure', async () => {
+    const read = vi.fn().mockResolvedValue({ progress: null, revision: 0 });
+    const put = vi
+      .fn()
+      .mockRejectedValueOnce(new DraftApiError('NETWORK'))
+      .mockResolvedValue({ operation_id: 'synthetic:op', write_status: 'saved', entity_id: 'lesson-01', revision: 1 });
+    const port = { read, put } as StudyProgressHttpPort;
+    const writes = vi.spyOn(Storage.prototype, 'setItem');
+    render(<CoursePanel active loader={loader()} progressPort={port} />);
+    await screen.findByRole('navigation', { name: '课程目录' });
+    await userEvent.type(screen.getByRole('textbox', { name: '本课书签' }), '重试书签');
+    await userEvent.click(screen.getByRole('button', { name: '标记本课完成' }));
+    expect(await screen.findByText(/网络没有连上/)).toBeVisible();
+    expect(screen.getByRole('textbox', { name: '本课书签' })).toHaveValue('重试书签');
+    await userEvent.click(screen.getByRole('button', { name: '标记本课完成' }));
+    expect(await screen.findByText('已按你的标记记录完成；不代表理解或评测通过。')).toBeVisible();
+    expect(put).toHaveBeenCalledTimes(2);
+    expect(put.mock.calls[1][1]).toEqual(put.mock.calls[0][1]);
+    expect(writes).not.toHaveBeenCalled();
   });
 });

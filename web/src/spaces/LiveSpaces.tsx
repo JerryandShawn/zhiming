@@ -3,13 +3,14 @@ import { Archive, ArchiveRestore, Lock, Pencil } from 'lucide-react';
 import { authHeaders, operationNamespace } from '../api/client';
 import { Button, Disclosure, Input, Tag } from '../components/ui/Controls';
 import { Skeleton } from '../components/ui/Feedback';
-import { DraftApiError, receiptSaved, writeIntent, type Receipt } from '../modules/draftApi';
+import { DraftApiError, receiptSaved, type Receipt } from '../modules/draftApi';
+import { clearDraftRetry, draftRetryIntent } from '../modules/draftRetry';
 import { formatSpaceTime } from './SpaceNavigation';
 import { createSpacesFakeFetch } from './fakeServer';
 import { spacesTopicsHttpPort, type ApiSpace, type ApiTopic, type TopicPatch } from './http';
 import './live-spaces.css';
 
-type Pending = { key: string; run: () => Promise<Receipt>; label: string };
+type Pending = { key: string; requestId: string; run: () => Promise<Receipt>; label: string };
 type Outcome = { kind: 'idle' | 'busy' | 'done' | 'queued' | 'error'; text: string; error?: DraftApiError };
 const subscribe = (listener: () => void) => {
   window.addEventListener('hashchange', listener);
@@ -17,8 +18,17 @@ const subscribe = (listener: () => void) => {
 };
 const errorOf = (error: unknown) => (error instanceof DraftApiError ? error : new DraftApiError('BAD_RESPONSE'));
 
-export default function LiveSpaces({ preview = false }: { preview?: boolean }) {
-  const fetcher = useMemo(() => (preview ? createSpacesFakeFetch({ delayMs: 120 }) : fetch), [preview]);
+export default function LiveSpaces({
+  preview = false,
+  suppliedFetcher,
+}: {
+  preview?: boolean;
+  suppliedFetcher?: typeof fetch;
+}) {
+  const fetcher = useMemo(
+    () => suppliedFetcher ?? (preview ? createSpacesFakeFetch({ delayMs: 120 }) : fetch),
+    [preview, suppliedFetcher],
+  );
   const port = useMemo(() => spacesTopicsHttpPort(fetcher), [fetcher]);
   const lifetime = useRef(new AbortController());
   const namespace = useRef(operationNamespace());
@@ -80,6 +90,7 @@ export default function LiveSpaces({ preview = false }: { preview?: boolean }) {
     setOutcome({ kind: 'busy', text: `${action.label}…` });
     try {
       const receipt = await action.run();
+      clearDraftRetry(action.key, action.requestId, !preview);
       setPending(undefined);
       after?.();
       setOutcome(
@@ -91,22 +102,39 @@ export default function LiveSpaces({ preview = false }: { preview?: boolean }) {
     } catch (error) {
       const failure = errorOf(error);
       if (failure.code === 'OBSOLETE') return;
-      if (!failure.resendSame) setPending(undefined);
+      if (!failure.resendSame) {
+        clearDraftRetry(action.key, action.requestId, !preview);
+        setPending(undefined);
+      }
       setOutcome({ kind: 'error', text: failure.message, error: failure });
+    }
+  }
+  function prepare<T extends object>(scope: string, revision: number, payload: T) {
+    try {
+      return draftRetryIntent(scope, revision, payload, !preview);
+    } catch (error) {
+      const failure = errorOf(error);
+      setOutcome({ kind: 'error', text: failure.message, error: failure });
+      return undefined;
     }
   }
   function create(event: FormEvent) {
     event.preventDefault();
     if (!current || !title.trim()) return;
-    const intent = writeIntent(0, { title: title.trim() });
+    const key = `spaces:create:${current.id}`;
+    const intent = prepare(key, 0, { title: title.trim() });
+    if (!intent) return;
     const spaceId = current.id;
-    void perform({ key: 'create', label: '新建话题', run: () => port.createTopic(spaceId, intent, owner()) }, () =>
-      setTitle(''),
+    void perform(
+      { key, requestId: intent.request_id, label: '新建话题', run: () => port.createTopic(spaceId, intent, owner()) },
+      () => setTitle(''),
     );
   }
   function change(topic: ApiTopic, patch: TopicPatch, label: string, after?: () => void) {
-    const intent = writeIntent(topic.revision, { patch });
-    void perform({ key: topic.id, label, run: () => port.patchTopic(topic.id, intent, owner()) }, after);
+    const key = `spaces:topic:${topic.id}:${label}`;
+    const intent = prepare(key, topic.revision, { patch });
+    if (!intent) return;
+    void perform({ key, requestId: intent.request_id, label, run: () => port.patchTopic(topic.id, intent, owner()) }, after);
   }
 
   if (loadError?.code === 'DRAFT_NOT_IMPLEMENTED')

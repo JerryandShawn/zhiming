@@ -3,7 +3,8 @@ import { Pencil, ShieldCheck } from 'lucide-react';
 import { authHeaders, operationNamespace } from '../api/client';
 import { Button, Input, Tag } from '../components/ui/Controls';
 import { Skeleton } from '../components/ui/Feedback';
-import { DraftApiError, receiptSaved, writeIntent } from '../modules/draftApi';
+import { DraftApiError, receiptSaved } from '../modules/draftApi';
+import { clearDraftRetry, draftRetryIntent } from '../modules/draftRetry';
 import { createOrganizeFakeFetch } from './fakeServer';
 import { organizeHttpPort, type OrganizeProposal, type ReviewGrant } from './http';
 
@@ -31,6 +32,7 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
   const [review, setReview] = useState<ReviewGrant>();
   const [title, setTitle] = useState('');
   const [busy, setBusy] = useState(false);
+  const [conflict, setConflict] = useState(false);
   const [error, setError] = useState('');
   const [outcome, setOutcome] = useState<Outcome>({ kind: 'idle', text: '' });
 
@@ -41,6 +43,7 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
       const current = page.items[0];
       setProposal(current);
       setTitle(current?.topics[0]?.title ?? '');
+      setConflict(false);
     } catch (reason) {
       setError(reason instanceof DraftApiError ? reason.message : '整理建议暂未读取成功。');
     }
@@ -49,24 +52,42 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
     void load();
   }, [load]);
 
+  function failed(scope: string, requestId: string, reason: unknown, fallback: string) {
+    const failure = reason instanceof DraftApiError ? reason : undefined;
+    if (failure && !failure.resendSame && requestId) clearDraftRetry(scope, requestId, !preview);
+    const changed = ['REVISION_CONFLICT', 'IDEMPOTENCY_CONFLICT', 'REVIEW_PLAN_CHANGED'].includes(failure?.code ?? '');
+    if (changed) {
+      setConflict(true);
+      setReview(undefined);
+    }
+    setOutcome({ kind: 'error', text: failure?.message ?? fallback });
+  }
+
   async function rename(event: FormEvent) {
     event.preventDefault();
     const current = proposal,
       topic = current?.topics[0];
-    if (!current || !topic || !title.trim() || title.trim() === topic.title || busy) return;
+    if (!current || !topic || !title.trim() || title.trim() === topic.title || busy || conflict) return;
     setBusy(true);
     setOutcome({ kind: 'busy', text: '正在保存改名…' });
+    const scope = `organize:rename:${current.batch_id}:${topic.id}`;
+    let requestId = '';
     try {
-      const intent = writeIntent(current.revision, {
-        edits: [{ kind: 'rename' as const, target_id: topic.id, title: title.trim() }],
-      });
+      const intent = draftRetryIntent(
+        scope,
+        current.revision,
+        { edits: [{ kind: 'rename' as const, target_id: topic.id, title: title.trim() }] },
+        !preview,
+      );
+      requestId = intent.request_id;
       const receipt = await port.edit(current.batch_id, intent, owner());
       if (!receiptSaved(receipt)) throw new DraftApiError('UNKNOWN_RESULT');
+      clearDraftRetry(scope, requestId, !preview);
       setOutcome({ kind: 'done', text: '改名已保存，旧审阅已失效，请重新核对计划。' });
       setReview(undefined);
       await load();
     } catch (reason) {
-      setOutcome({ kind: 'error', text: reason instanceof DraftApiError ? reason.message : '改名尚未确认保存。' });
+      failed(scope, requestId, reason, '改名尚未确认保存。');
     } finally {
       setBusy(false);
     }
@@ -74,20 +95,26 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
 
   async function reviewPlan() {
     const current = proposal;
-    if (!current || busy) return;
+    if (!current || busy || conflict) return;
     setBusy(true);
     setOutcome({ kind: 'busy', text: '正在核对当前精确计划…' });
+    const scope = `organize:review:${current.batch_id}`;
+    let requestId = '';
     try {
-      const intent = writeIntent(current.revision, {
-        plan_fingerprint: current.plan_fingerprint,
-        accepted: true as const,
-      });
+      const intent = draftRetryIntent(
+        scope,
+        current.revision,
+        { plan_fingerprint: current.plan_fingerprint, accepted: true as const },
+        !preview,
+      );
+      requestId = intent.request_id;
       const result = await port.review(current.batch_id, intent, owner());
+      clearDraftRetry(scope, requestId, !preview);
       setReview(result.review);
       setOutcome({ kind: 'done', text: `审阅凭证已签发，有效期至 ${result.review.expires_at}。` });
       await load();
     } catch (reason) {
-      setOutcome({ kind: 'error', text: reason instanceof DraftApiError ? reason.message : '当前计划尚未审阅成功。' });
+      failed(scope, requestId, reason, '当前计划尚未审阅成功。');
     } finally {
       setBusy(false);
     }
@@ -95,18 +122,24 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
 
   async function applyPlan() {
     const current = proposal;
-    if (!current || !review || busy) return;
+    if (!current || !review || busy || conflict) return;
     setBusy(true);
     setOutcome({ kind: 'busy', text: '正在核对应用资格…' });
+    const scope = `organize:apply:${current.batch_id}`;
+    let requestId = '';
     try {
-      const intent = writeIntent(current.revision, {
-        plan_fingerprint: current.plan_fingerprint,
-        review_receipt_id: review.receipt_id,
-      });
+      const intent = draftRetryIntent(
+        scope,
+        current.revision,
+        { plan_fingerprint: current.plan_fingerprint, review_receipt_id: review.receipt_id },
+        !preview,
+      );
+      requestId = intent.request_id;
       await port.apply(current.batch_id, intent, owner());
+      clearDraftRetry(scope, requestId, !preview);
       setOutcome({ kind: 'done', text: '应用已由程序回执确认。' });
     } catch (reason) {
-      setOutcome({ kind: 'error', text: reason instanceof DraftApiError ? reason.message : '整理尚未应用。' });
+      failed(scope, requestId, reason, '整理尚未应用。');
     } finally {
       setBusy(false);
     }
@@ -158,10 +191,10 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
                 aria-label="话题名称"
                 value={title}
                 maxLength={80}
-                disabled={busy}
+                disabled={busy || conflict}
                 onChange={(event) => setTitle(event.target.value)}
               />
-              <Button type="submit" disabled={busy || !title.trim() || title.trim() === topic.title}>
+              <Button type="submit" disabled={busy || conflict || !title.trim() || title.trim() === topic.title}>
                 <Pencil className="icon small" aria-hidden="true" />
                 保存改名
               </Button>
@@ -173,11 +206,11 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
               计划指纹：{proposal.plan_fingerprint.slice(0, 12)}… · 质量门：{proposal.quality_gate}
             </p>
             <div className="row wrap">
-              <Button disabled={busy} onClick={() => void reviewPlan()}>
+              <Button disabled={busy || conflict} onClick={() => void reviewPlan()}>
                 <ShieldCheck className="icon small" aria-hidden="true" />
                 审阅当前计划
               </Button>
-              <Button variant="primary" disabled={busy || !review} onClick={() => void applyPlan()}>
+              <Button variant="primary" disabled={busy || conflict || !review} onClick={() => void applyPlan()}>
                 核对应用资格
               </Button>
             </div>
@@ -187,6 +220,7 @@ export default function DraftOrganizePage({ preview = false }: { preview?: boole
       )}
       <div aria-live="polite" className="stack small">
         {outcome.kind !== 'idle' && <p className={outcome.kind === 'error' ? 'error-text' : 'meta'}>{outcome.text}</p>}
+        {conflict && <Button onClick={() => void load()}>重新读取核对</Button>}
       </div>
     </div>
   );

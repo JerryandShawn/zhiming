@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { DraftApiError, writeIntent } from '../../modules/draftApi';
+import { DraftApiError } from '../../modules/draftApi';
+import { clearDraftRetry, draftRetryIntent } from '../../modules/draftRetry';
 import { Button, Input } from '../../components/ui/Controls';
 import type { StudyProgressHttpPort, StudyProgressStatus, StudyProgressView } from '../progressHttp';
 
@@ -40,19 +41,29 @@ export function CourseProgress({ port, lessonId, lessonVersion }: Props) {
     setBusy(true);
     setError('');
     setNotice('');
+    const scope = `study:progress:${lessonId}`;
+    let requestId = '';
     try {
-      const intent = writeIntent(view.revision, {
-        lesson_version: lessonVersion,
-        status,
-        bookmark: bookmark.trim() || null,
-      });
+      const intent = draftRetryIntent(
+        scope,
+        view.revision,
+        {
+          lesson_version: lessonVersion,
+          status,
+          bookmark: bookmark.trim() || null,
+        },
+        false,
+      );
+      requestId = intent.request_id;
       await port.put(lessonId, intent, owner);
       const confirmed = await port.read(lessonId, owner);
+      clearDraftRetry(scope, requestId, false);
       setView(confirmed);
       setBookmark(confirmed.progress?.bookmark ?? '');
       setNotice(status === 'completed' ? '已按你的标记记录完成；不代表理解或评测通过。' : '已按你的标记改为继续学习。');
     } catch (reason) {
       if (reason instanceof DraftApiError) {
+        if (!reason.resendSame && requestId) clearDraftRetry(scope, requestId, false);
         setError(reason.message);
         setConflict(['REVISION_CONFLICT', 'IDEMPOTENCY_CONFLICT'].includes(reason.code));
       } else setError('本课进度尚未确认保存，书签草稿仍在。');
