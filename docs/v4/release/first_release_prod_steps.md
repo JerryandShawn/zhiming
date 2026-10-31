@@ -1,6 +1,6 @@
 # 首发生产分步脚本（R51）
 
-由 `first_release_prod_steps_gen.py` 从执行单（sha256 `d3e675b34b9d60d26e38374105f683622915225d2538bacae9b4e508c16a279b`）生成，脚本在 `private/fr-prod-1a131275da9dc8d6/`。17 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
+由 `first_release_prod_steps_gen.py` 从执行单（sha256 `0691cfc7500ee453923735abd9941fedc7ee9bcc93a514da176fb20f0acb27c4`）生成，脚本在 `private/fr-prod-1a131275da9dc8d6/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
 
 | 步骤 | 执行单块 | 对照 | sha256 前 12 位 |
 | --- | --- | --- | --- |
@@ -21,19 +21,21 @@
 | p08a-d4-start | 8 | 一致 | `937677b38278` |
 | p08b-d4-status | — | 后台状态查询 | `593ddd4f378e` |
 | p09-d5-exchange | 9 | 一致 | `8c1f781e3669` |
-| p10-d5-assets | 10 | 一致 | `9721d4afbbe7` |
-| p11-d6-preopen | 11 | 一致 | `ddd685e41889` |
-| p12-d6-writer | 12 | 一致 | `ee5c73a91d61` |
-| p13-d7-open | 13 | 一致 | `b9c5e646c930` |
-| p14-d7-timer-state | 14 | 一致 | `79ac1d3683fb` |
+| p09c-writer-harden | 10 | 一致 | `ff1115f913c2` |
+| p10-d5-assets | 11 | 一致 | `9721d4afbbe7` |
+| p11-d6-preopen | 12 | 一致 | `ddd685e41889` |
+| p12-d6-writer | 13 | 一致 | `ee5c73a91d61` |
+| p13-d7-open | 14 | 一致 | `b9c5e646c930` |
+| p14-d7-timer-state | 15 | 一致 | `79ac1d3683fb` |
 | p15-final-readonly | — | 只读：D8 最终核对 | `5f576aaf5073` |
-| r01-rollback-database | 15 | 一致 | `98b9b0d301a8` |
-| r02-rollback-files | 16 | 一致 | `27bdf33202eb` |
-| r03-rollback-verify | 17 | 一致 | `606c7ecac82c` |
+| r01-rollback-database | 16 | 一致 | `98b9b0d301a8` |
+| r02-rollback-files | 17 | 一致 | `27bdf33202eb` |
+| r02b-writer-restore | 18 | 一致 | `444b9c6f6f0f` |
+| r03-rollback-verify | 19 | 一致 | `606c7ecac82c` |
 
 ## 附录：回滚后重新开门（R59，不在默认流程）
 
-`r04-reopen-after-rollback.sh`，sha256 `2d72038f6c4152c2fb159acc0637cde75581d150d704900db7ebec76b5b777eb`。不改执行单。只有用户或大脑当次明确下令才执行：发送脚本另外要求 `reopen-order.json`，默认流程不会带上它。顺序：r03 通过 → 开库连接 → 启动 7dbc951 Web → 门内健康检查 → 读 timer 原状态 → 去维护标记 → 启动飞书并确认 active → timer 按原状态恢复。飞书走外连长连接，不经过 nginx，维护门挡不住，所以和 D7 一样在去维护标记之后才启动。下这个令同时表示接受到期报告恢复投递；不接受就改用 `r04-reopen-timer-held.sh`（sha256 `5836b0427176ae3f7299647549e24ef82860e6963743e343b7b4fa50f7557761`），它只少恢复 timer 这一行。任何一步失败即停；健康检查失败时维护页保持，只有 Web 在门内运行，不自动停，等指令。不删除任何发布、备份或库。
+`r04-reopen-after-rollback.sh`，sha256 `566189cd6e83bdc72827698e23f37764a39a3a513813a03dad8823a5a8325f9a`。不改执行单。只有用户或大脑当次明确下令才执行：发送脚本另外要求 `reopen-order.json`，默认流程不会带上它。顺序：r03 通过 → 开库连接 → 启动 7dbc951 Web → 门内健康检查 → 读 timer 原状态 → 去维护标记 → 启动飞书并确认 active → timer 按原状态恢复。飞书走外连长连接，不经过 nginx，维护门挡不住，所以和 D7 一样在去维护标记之后才启动。下这个令同时表示接受到期报告恢复投递；不接受就改用 `r04-reopen-timer-held.sh`（sha256 `87e97efb98d56c44bee00457d402f07f39f9c4ae1ca37faab873ed592211bb5b`），它只少恢复 timer 这一行。任何一步失败即停；健康检查失败时维护页保持，只有 Web 在门内运行，不自动停，等指令。不删除任何发布、备份或库。
 
 ```bash
 test ! -e "$FR_OP/opened.json"
@@ -44,7 +46,12 @@ import sys
 sys.path.insert(0,sys.argv[1]);from context import *
 v=read('rollback-old-runtime.json')
 assert v['old_sha']=='7dbc951eaffebd3d812169865eaefcde16a00ed9' and v['schema_readonly_verified'] and v['closed']
+assert read('role-restored.json')['verified'] is True
 with admin() as c:
+ if (OP/'role-before.json').is_file():
+  before=read('role-before.json')
+  assert c.execute('SELECT rolinherit FROM pg_roles WHERE rolname=%s',(before['writer'],)).fetchone()['rolinherit'] is before['rolinherit']
+ assert semantic(capture(c,LIVE))==semantic(read('database-before.json'))
  zero(c,LIVE);allow(c,LIVE,True)
 print('R59: live database admission opened behind the public maintenance gate')
 PY
@@ -103,11 +110,15 @@ echo "R59: maintenance removed; report timer restored to $(cat "$FR_OP/r04-timer
 | D7 550 | 无 `opened.json`，标记还在，库未开 | `c-wait-zero` → `p13-d7-open 2` |
 | R1 598 | 无状态变化 | `c-wait-zero` → `r01-rollback-database 2` |
 | R1 613（LIVE、RB 两处） | RB 已恢复已关，未对调 | `c-r1-after-restore-start` → `c-r1-after-restore-status` |
+| p09c 任何失败 | 已对调；role-before 可能已写，角色可能已改 | 不重跑，走 R1：r01 → r02 → r02b → r03 |
+| r02b 失败 | 门内，角色可能未恢复 | 撞 autovacuum 用 `c-wait-zero` 后 `r02b-writer-restore 2`；其他失败保持维护，找大脑 |
 | R3 646 | 库未开 | `c-wait-zero` → `r03-rollback-verify 2` |
 | R3 652 | 库已关，无回执 | `c-wait-zero` → `r03-rollback-verify 2` |
 | r04 第一段 | 库未开 | `c-wait-zero` → `r04-reopen-after-rollback 2`（或 `r04-reopen-timer-held 2`），`reopen-order.json` 仍要 |
 
-D5 尾没有补回执时不能进 R1：R1 要求 `exchange-receipt.json`，先跑 `c-d5-tail`。`c-wait-zero` 要求库已关闭，只用于 D2 关库之后。
+表中行号是 17ef7a87 版执行单的行号，之后的版本有增删，以块和步骤名为准。D5 尾没有补回执时不能进 R1：R1 要求 `exchange-receipt.json`，先跑 `c-d5-tail`。`c-wait-zero` 要求库已关闭，只用于 D2 关库之后。
+
+`p04a-readonly` 只读，不写库、不写文件、不打印秘密，发送门是 `readonly-order.json`，不看 `window-go.json`。它在 D1 之前核 writer 属性、库和 schema 权限、属主对象、两个 env 文件、writer DSN 的字段形状和环境变量名；`expected_for_p09c` 列 p09c 会修的项，`other_problems` 非空就停，找大脑。
 
 | 脚本 | sha256 |
 | --- | --- |
@@ -125,3 +136,4 @@ D5 尾没有补回执时不能进 R1：R1 要求 `exchange-receipt.json`，先�
 | `c-d5-tail-status` | `97941e0db8f5289ca70ec4d868bdf1970cd64f85db38ac8e61dbcab72e2cb626` |
 | `c-r1-after-restore-start` | `a63c5426790ac8a395c7e9653180f778bf95d39a367c4ff74eaf6446c4591c2f` |
 | `c-r1-after-restore-status` | `d624e9a70c6ae5271b960c555795afc8d124593b3975ed47646967321ee3d07b` |
+| `p04a-readonly` | `4ae75044ef77c641c3efb2e0d73f6acce524967db77b8c5f66dbc4084352142f` |

@@ -12,8 +12,12 @@ KEY = "C:/Users/Administrator/.ssh/gto_deploy_key"
 BEIJING = timezone(timedelta(hours=8))
 
 name, attempt = sys.argv[1], sys.argv[2] if len(sys.argv) > 2 else ""
+# R71: this read-only step has its own gate; the brain writes it after the user approves.
+if name == "p04a-readonly":
+    if not (ROOT / "readonly-order.json").is_file():
+        raise SystemExit("No readonly-order.json: the read-only check is closed")
 # The gate file is written only after a fresh 31号 window and the user's "开始首发生产".
-if not (ROOT / "window-go.json").is_file():
+elif not (ROOT / "window-go.json").is_file():
     raise SystemExit("No window-go.json: production steps are closed")
 # R59: reopening after a rollback is never part of the default flow.
 if name.startswith("r04-") and not (ROOT / "reopen-order.json").is_file():

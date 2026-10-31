@@ -420,6 +420,35 @@ print('D5 database exchanged; both versions retained and closed')
 PY
 ```
 
+R71：D5回执写成后、渲染入口之前加固writer。e578e2d的 `checked_writer` 拒绝 rolinherit 和库级TEMP，线上原角色不满足。此时三service已停、维护门在、原库已保存为KEPT；D5之前任何失败，线上角色都没动。
+
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+WRITER='zhiming_core_live_writer'
+def state(c):
+ role=c.execute('SELECT rolinherit FROM pg_roles WHERE rolname=%s',(WRITER,)).fetchone()
+ temp=c.execute("SELECT has_database_privilege(%s,%s,'TEMPORARY') AS temp",(WRITER,LIVE)).fetchone()
+ return role['rolinherit'],temp['temp']
+assert read('exchange-receipt.json')['admission_opened'] is False
+with admin() as c:
+ live=capture(c,LIVE)
+ assert live['oid']==read('exchange-receipt.json')['new_oid']
+ inherit,temp=state(c)
+ save('role-before.json',{'writer':WRITER,'rolinherit':inherit,'writer_temp':temp,'database_oid':live['oid'],'acl':live['acl']})
+ assert Path('/www/wwwroot/p-acme/core-maintenance.flag').is_file() and not (OP/'opened.json').exists()
+ with c.transaction():
+  c.execute(sql.SQL('ALTER ROLE {} NOINHERIT').format(sql.Identifier(WRITER)))
+  c.execute(sql.SQL('REVOKE TEMPORARY ON DATABASE {} FROM PUBLIC').format(sql.Identifier(LIVE)))
+ assert state(c)==(False,False)
+ save('writer-hardened.json',{'writer':WRITER,'rolinherit':False,'writer_temp':False,'database_oid':live['oid']})
+print('writer hardened: NOINHERIT and no database TEMP; prior state saved')
+PY
+```
+
+失败即走R1，r02b按 `role-before.json` 恢复。`role-before.json` 已存在时本块拒绝重跑。
+
 用候选实际 `first_release_service_assets` 渲染四入口。SID和新live OID从当前PG采集，writer OID仍用原角色。配置从原两env按原次序加载，新增common.env固定Agent=true、k3.1-pro/high配置、双解释器及公开K3；不更改旧env，以便原样回退。生成后先审核manifest和unit，后安装，manifest最后写。
 
 ```bash
@@ -630,6 +659,31 @@ for unit in mingjingtai.service zhiming-core-feishu.service zhiming-core-reports
  systemctl show "$unit" -p ExecStart -p WorkingDirectory -p DropInPaths -p NeedDaemonReload
 done
 test -d /root/zhiming-core-releases/7dbc951eaffebd3d812169865eaefcde16a00ed9
+```
+
+R71：恢复writer。在恢复归档之后、旧包校验之前执行。角色是集群级属性，不随库回退；库ACL由R1的 `apply_metadata` 恢复，这里只核对。
+
+```bash
+"$FR_PY" -I - "$FR_OP" <<'PY'
+import sys
+sys.path.insert(0,sys.argv[1]);from context import *
+WRITER='zhiming_core_live_writer'
+assert not (OP/'opened.json').exists() and Path('/www/wwwroot/p-acme/core-maintenance.flag').is_file()
+hardened=(OP/'role-before.json').is_file()
+assert not hardened or (OP/'rollback-database.json').is_file()
+snap=read('database-before.json')
+with admin() as c:
+ zero(c,LIVE)
+ if hardened:
+  before=read('role-before.json');assert before['writer']==WRITER
+  c.execute(sql.SQL('ALTER ROLE {} {}').format(sql.Identifier(WRITER),sql.SQL('INHERIT' if before['rolinherit'] else 'NOINHERIT')))
+  assert c.execute('SELECT rolinherit FROM pg_roles WHERE rolname=%s',(WRITER,)).fetchone()['rolinherit'] is before['rolinherit']
+  temp=c.execute("SELECT has_database_privilege(%s,%s,'TEMPORARY') AS temp",(WRITER,LIVE)).fetchone()['temp']
+  assert temp is before['writer_temp']
+ assert semantic(capture(c,LIVE))==semantic(snap)
+ save('role-restored.json',{'writer':WRITER,'hardened':hardened,'verified':True})
+print('writer state matches the state before hardening; database ACL matches the original snapshot')
+PY
 ```
 
 回退完成后仍保持公共维护、恢复库closed、三service/timer停。用原归档核四入口文件，再用旧7dbc解释器做只读schema兼容检查；不启动旧服务：

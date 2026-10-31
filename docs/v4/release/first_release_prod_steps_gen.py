@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 RUNBOOK = ROOT / "docs/v4/release/first_release_prod_runbook.md"
-RUNBOOK_SHA256 = "d3e675b34b9d60d26e38374105f683622915225d2538bacae9b4e508c16a279b"
+RUNBOOK_SHA256 = "0691cfc7500ee453923735abd9941fedc7ee9bcc93a514da176fb20f0acb27c4"
 OUT = ROOT / "private/fr-prod-1a131275da9dc8d6"
 GIT_BASH = "C:/Program Files/Git/bin/bash.exe"
 OLD_DEPLOY_CORE_SHA256 = "e5b98588968301cd89e61a54433efe62e8cbb3f57ac2803b6211e2f7f8e65bd8"
@@ -23,7 +23,7 @@ raw = RUNBOOK.read_bytes()
 assert hashlib.sha256(raw).hexdigest() == RUNBOOK_SHA256, "runbook changed; re-review before regenerating"
 assert b"\r" not in raw
 blocks = re.findall(r"```bash\n(.*?)```", raw.decode("utf-8"), re.S)
-assert len(blocks) == 17
+assert len(blocks) == 19
 
 
 def between(text, start, end):
@@ -118,15 +118,17 @@ STEPS = [
     ("p08a-d4-start", "bg:d4-migrate", [(8, blocks[7])]),
     ("p08b-d4-status", "status:d4-migrate", []),
     ("p09-d5-exchange", None, [(9, blocks[8])]),
-    ("p10-d5-assets", None, [(10, blocks[9])]),
-    ("p11-d6-preopen", None, [(11, blocks[10])]),
-    ("p12-d6-writer", None, [(12, blocks[11])]),
-    ("p13-d7-open", None, [(13, blocks[12])]),
-    ("p14-d7-timer-state", None, [(14, blocks[13])]),
+    ("p09c-writer-harden", None, [(10, blocks[9])]),
+    ("p10-d5-assets", None, [(11, blocks[10])]),
+    ("p11-d6-preopen", None, [(12, blocks[11])]),
+    ("p12-d6-writer", None, [(13, blocks[12])]),
+    ("p13-d7-open", None, [(14, blocks[13])]),
+    ("p14-d7-timer-state", None, [(15, blocks[14])]),
     ("p15-final-readonly", FINAL, []),
-    ("r01-rollback-database", None, [(15, blocks[14])]),
-    ("r02-rollback-files", None, [(16, blocks[15])]),
-    ("r03-rollback-verify", None, [(17, blocks[16])]),
+    ("r01-rollback-database", None, [(16, blocks[15])]),
+    ("r02-rollback-files", None, [(17, blocks[16])]),
+    ("r02b-writer-restore", None, [(18, blocks[17])]),
+    ("r03-rollback-verify", None, [(19, blocks[18])]),
 ]
 ADDED = {
     "p04a-precheck": "只读：确认线上仍是 7dbc951（v72）、旧 wrapper 符合 D1 前提",
@@ -143,7 +145,12 @@ import sys
 sys.path.insert(0,sys.argv[1]);from context import *
 v=read('rollback-old-runtime.json')
 assert v['old_sha']=='7dbc951eaffebd3d812169865eaefcde16a00ed9' and v['schema_readonly_verified'] and v['closed']
+assert read('role-restored.json')['verified'] is True
 with admin() as c:
+ if (OP/'role-before.json').is_file():
+  before=read('role-before.json')
+  assert c.execute('SELECT rolinherit FROM pg_roles WHERE rolname=%s',(before['writer'],)).fetchone()['rolinherit'] is before['rolinherit']
+ assert semantic(capture(c,LIVE))==semantic(read('database-before.json'))
  zero(c,LIVE);allow(c,LIVE,True)
 print('R59: live database admission opened behind the public maintenance gate')
 PY
@@ -226,6 +233,84 @@ held = (HEADER + REOPEN.replace(timer_lines[0], "")).encode("utf-8").replace(b"r
 (OUT / "r04-reopen-timer-held.sh").write_bytes(held)
 check = subprocess.run([GIT_BASH, "-n", str(OUT / "r04-reopen-timer-held.sh")], capture_output=True, text=True)
 assert check.returncode == 0, check.stderr
+READONLY = r"""
+"$FR_STAGE_PY" -I - "$FR_STAGE" "$FR_ADMIN" <<'PY'
+import ipaddress,json,os,sys
+from pathlib import Path
+sys.path.insert(0,sys.argv[1])
+import psycopg
+from psycopg.conninfo import conninfo_to_dict,make_conninfo
+from psycopg.rows import dict_row
+from tools.first_release_contracts import RestoreRejected
+from tools.first_release_hermes_entry import _parse_environment,_private_read
+WRITER='zhiming_core_live_writer';LIVE='zhiming_core_live'
+ENV_FILES=('/root/.hermes/.env','/root/zhiming-core-secrets/live-runtime.env')
+KEYS=('ZHIMING_DATABASE_URL','MEMBER_CENTRAL_DSN','MEMBER_CENTRAL_SCHEMA','MEMBER_ACCOUNT_ID','MEMBER_LEDGER_IDENTITY','MINGJING_TOKEN')
+DSN_FIELDS={'host','port','dbname','user','password','connect_timeout','sslmode'}
+REQUIRED=('host','port','dbname','user','password')
+report={'secret_output':0,'database_writes':0}
+merged={};files=[]
+for name in ENV_FILES:
+ path=Path(name);item={'path':name,'exists':path.is_file()}
+ if item['exists']:
+  seen=path.stat();item.update(mode=oct(seen.st_mode&0o777),uid=seen.st_uid)
+  try:
+   values=_parse_environment(_private_read(path))
+   item['read_error']=None
+   item['injected_key_names']=sorted(k for k,v in values.items() if k.startswith(('PG','PYTHON')) and v)
+   merged.update(values)
+  except RestoreRejected as error:
+   item['read_error']=str(error)
+ files.append(item)
+report['env_files']=files
+report['env_keys_present']={k:bool(merged.get(k)) for k in KEYS}
+dsn={'parsed':False}
+try:
+ fields=conninfo_to_dict(merged.get('ZHIMING_DATABASE_URL',''))
+ try:
+  ipaddress.ip_address(fields.get('host',''));ip=True
+ except ValueError:
+  ip=False
+ dsn=dict(parsed=True,fields_missing=[k for k in REQUIRED if not fields.get(k)],extra_field_names=sorted(set(fields)-DSN_FIELDS),
+  host_is_ip=ip,port_is_digits=str(fields.get('port','')).isdigit(),dbname_matches=fields.get('dbname')==LIVE,user_matches=fields.get('user')==WRITER,
+  sslmode_allowed=fields.get('sslmode','disable') in ('disable','require','verify-ca','verify-full'))
+except Exception:
+ pass
+report['writer_dsn']=dsn
+report['shell_injected_names']=sorted(k for k,v in os.environ.items() if k.startswith(('PG','PYTHON')) and v)
+admin=_parse_environment(_private_read(Path(sys.argv[2])))['FIRST_RELEASE_EXCHANGE_ADMIN_DSN']
+with psycopg.connect(admin,autocommit=True,row_factory=dict_row) as c:
+ c.execute('SET default_transaction_read_only=on')
+ role=c.execute('SELECT oid::int,rolsuper,rolcreatedb,rolcreaterole,rolreplication,rolbypassrls,rolinherit,rolcanlogin FROM pg_roles WHERE rolname=%s',(WRITER,)).fetchone()
+ report['writer_role']=role
+ report['writer_memberships']=[r['name'] for r in c.execute('SELECT pg_get_userbyid(roleid) AS name FROM pg_auth_members WHERE member=%s',(role['oid'],))]
+ report['database']=c.execute("SELECT datacl::text AS acl,pg_get_userbyid(datdba) AS owner,datdba=%s AS writer_is_owner,has_database_privilege(%s,datname,'CONNECT') AS writer_connect,has_database_privilege(%s,datname,'CREATE') AS writer_create,has_database_privilege(%s,datname,'TEMPORARY') AS writer_temp FROM pg_database WHERE datname=%s",(role['oid'],WRITER,WRITER,WRITER,LIVE)).fetchone()
+ report['autovacuum']={k:c.execute('SELECT current_setting(%s) AS v',(k,)).fetchone()['v'] for k in ('autovacuum','autovacuum_naptime')}
+with psycopg.connect(make_conninfo(admin,dbname=LIVE,options='-c default_transaction_read_only=on'),autocommit=True,row_factory=dict_row) as c:
+ report['schemas']=c.execute("SELECT nspname,has_schema_privilege(%s,oid,'CREATE') AS writer_create FROM pg_namespace WHERE nspname IN ('mingjing_core','public') ORDER BY 1",(WRITER,)).fetchall()
+ report['writer_owned']=c.execute('SELECT (SELECT count(*) FROM pg_namespace WHERE nspowner=%(o)s) AS schemas,(SELECT count(*) FROM pg_class WHERE relowner=%(o)s) AS relations,(SELECT count(*) FROM pg_proc WHERE proowner=%(o)s) AS routines',{'o':role['oid']}).fetchone()
+expected=[];other=[]
+if role['rolinherit']:expected.append('rolinherit')
+if report['database']['writer_temp']:expected.append('database_temp')
+other+=[k for k in ('rolsuper','rolcreatedb','rolcreaterole','rolreplication','rolbypassrls') if role[k]]
+if not role['rolcanlogin']:other.append('cannot_login')
+if report['writer_memberships']:other.append('memberships')
+if report['database']['writer_create']:other.append('database_create')
+if report['database']['writer_is_owner']:other.append('writer_owns_database')
+if not report['database']['writer_connect']:other.append('no_connect')
+other+=['schema_create:'+r['nspname'] for r in report['schemas'] if r['writer_create']]
+other+=['owns_'+k for k,v in report['writer_owned'].items() if v]
+for item in files:
+ if not item['exists'] or item.get('read_error') or item.get('injected_key_names'):other.append('env_file:'+item['path'])
+other+=['env_key_missing:'+k for k,v in report['env_keys_present'].items() if not v]
+if report['shell_injected_names']:other.append('shell_injected_names')
+good=dsn['parsed'] and not dsn['fields_missing'] and not dsn['extra_field_names'] and all(dsn[k] for k in ('host_is_ip','port_is_digits','dbname_matches','user_matches','sslmode_allowed'))
+if not good:other.append('writer_dsn')
+report['expected_for_p09c']=expected;report['other_problems']=other
+print(json.dumps(report,indent=1,sort_keys=True,default=str))
+PY
+""".lstrip("\n")
+
 # R67: continuation scripts, sent only with a per-occasion continue-order.json. The runbook stays unchanged.
 RETIRE = """retire_failed() {
   local name="$1" ext stamp
@@ -467,6 +552,7 @@ for name, value in CONT_BG.items():
         + f'start_step {name} "$FR_PY" -I "$FR_OP/{name}.py" "$FR_OP"\n'
     )
     cont_scripts[name + "-status"] = HEADER + f"step_status {name}\n"
+cont_scripts["p04a-readonly"] = HEADER + READONLY
 cont_listing = {}
 for name, text in cont_scripts.items():
     data = text.encode("utf-8")
@@ -488,7 +574,7 @@ rows = [
     "# 首发生产分步脚本（R51）",
     "",
     f"由 `first_release_prod_steps_gen.py` 从执行单（sha256 `{RUNBOOK_SHA256}`）生成，脚本在 "
-    "`private/fr-prod-1a131275da9dc8d6/`。17 个 bash 块逐字节拼回与执行单一致，顺序不变；"
+    "`private/fr-prod-1a131275da9dc8d6/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；"
     "pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。",
     "",
     "| 步骤 | 执行单块 | 对照 | sha256 前 12 位 |",
@@ -544,17 +630,24 @@ rows += [
     "| D7 550 | 无 `opened.json`，标记还在，库未开 | `c-wait-zero` → `p13-d7-open 2` |",
     "| R1 598 | 无状态变化 | `c-wait-zero` → `r01-rollback-database 2` |",
     "| R1 613（LIVE、RB 两处） | RB 已恢复已关，未对调 | `c-r1-after-restore-start` → `c-r1-after-restore-status` |",
+    "| p09c 任何失败 | 已对调；role-before 可能已写，角色可能已改 | 不重跑，走 R1：r01 → r02 → r02b → r03 |",
+    "| r02b 失败 | 门内，角色可能未恢复 | 撞 autovacuum 用 `c-wait-zero` 后 `r02b-writer-restore 2`；其他失败保持维护，找大脑 |",
     "| R3 646 | 库未开 | `c-wait-zero` → `r03-rollback-verify 2` |",
     "| R3 652 | 库已关，无回执 | `c-wait-zero` → `r03-rollback-verify 2` |",
     "| r04 第一段 | 库未开 | `c-wait-zero` → `r04-reopen-after-rollback 2`（或 `r04-reopen-timer-held 2`），`reopen-order.json` 仍要 |",
     "",
+    "表中行号是 17ef7a87 版执行单的行号，之后的版本有增删，以块和步骤名为准。"
     "D5 尾没有补回执时不能进 R1：R1 要求 `exchange-receipt.json`，先跑 `c-d5-tail`。"
     "`c-wait-zero` 要求库已关闭，只用于 D2 关库之后。",
+    "",
+    "`p04a-readonly` 只读，不写库、不写文件、不打印秘密，发送门是 `readonly-order.json`，不看 `window-go.json`。"
+    "它在 D1 之前核 writer 属性、库和 schema 权限、属主对象、两个 env 文件、writer DSN 的字段形状和环境变量名；"
+    "`expected_for_p09c` 列 p09c 会修的项，`other_problems` 非空就停，找大脑。",
     "",
     "| 脚本 | sha256 |",
     "| --- | --- |",
     *[f"| `{name}` | `{value['sha256']}` |" for name, value in cont_listing.items()],
 ]
 (ROOT / "docs/v4/release/first_release_prod_steps.md").write_bytes(("\n".join(rows) + "\n").encode("utf-8"))
-print(len(manifest), "steps; all 17 runbook blocks rebuilt byte for byte")
+print(len(manifest), "steps; all 19 runbook blocks rebuilt byte for byte")
 sys.exit(0)
