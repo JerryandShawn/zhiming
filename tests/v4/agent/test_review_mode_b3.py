@@ -79,9 +79,9 @@ def test_risk_reviews_decision_cards(monkeypatch):
     assert reviewer("risk")._wanted(cycle(), outcome("好的。")) is True
 
 
-def test_checked_in_switches_default_to_streaming_on_review_off_proactive_off():
+def test_checked_in_switches_default_to_streaming_off_review_off_proactive_off():
     switches = load_switches()
-    assert (switches.streaming_v2, switches.review_mode, switches.proactive) == (True, "off", False)
+    assert (switches.streaming_v2, switches.review_mode, switches.proactive) == (False, "off", False)
 
 
 @pytest.mark.parametrize(
