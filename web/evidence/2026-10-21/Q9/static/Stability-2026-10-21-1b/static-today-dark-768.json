@@ -1,0 +1,63 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "today",
+  "mode": "static",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "dark",
+  "url": "/?preview=1#/today",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/static-today-dark-768.png",
+  "sha256": "fa16220ed61ebefbc8e30c481a2ea54c75752cef8f1d863a61a13c5250628dda",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "dark",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "text-link",
+            "text": "看依据"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 176,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "text-link",
+            "text": "看依据"
+          },
+          {
+            "className": "button primary block",
+            "text": "和明镜聊聊"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

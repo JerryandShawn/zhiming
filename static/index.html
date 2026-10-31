@@ -38,7 +38,7 @@
 <header class="workspace-topbar">
   <div class="mobile-brand">明镜台</div><span id="todayLabel" class="date-label"></span>
   <button id="openSearchBtn" class="search-trigger"><span>⌕</span> 搜索经历、报告与对话 <kbd>Ctrl K</kbd></button>
-  <button class="account-button" onclick="switchPage('chart');openProfile()" aria-label="查看与确认出生档案">我的档案 <span>↗</span></button>
+  <button class="account-button" onclick="switchPage('chart');openProfile()" aria-label="我的档案，查看与确认出生档案">我的档案 <span aria-hidden="true">↗</span></button>
   <input id="tokenInput" type="password" class="hidden" aria-label="访问口令"><button id="tokenSaveBtn" class="hidden">保存</button>
 </header>
 <main id="mainContent" class="workspace">
@@ -179,7 +179,7 @@
 
 <!-- ================= 时间轴抽屉 ================= -->
 <div id="drawerMask" class="drawer-mask hidden"></div>
-<aside id="drawer" class="drawer p-5" role="dialog" aria-label="详情" aria-modal="true"></aside>
+<div id="drawer" class="drawer p-5" role="dialog" aria-label="详情" aria-modal="true"></div>
 
 <div id="toast" role="status" aria-live="polite" class="toast"></div>
 
@@ -188,6 +188,7 @@
   <img id="imgViewerImg" class="max-w-[92vw] max-h-[88vh] rounded-xl border border-white/10" alt="附图">
 </div>
 
+<script type="module" src="/static/dist/legacy-stream.js"></script>
 <script src="/static/app.js?v=6.0" defer></script>
 </body>
 </html>

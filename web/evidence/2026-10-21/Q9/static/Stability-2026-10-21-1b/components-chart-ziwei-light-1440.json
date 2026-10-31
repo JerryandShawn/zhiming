@@ -1,0 +1,54 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "chart-ziwei",
+  "mode": "components",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "light",
+  "url": "/?components=demo#/chart?tab=ziwei",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/components-chart-ziwei-light-1440.png",
+  "sha256": "f1e4f9dc42f0ed7b6758f82049149e0e2adfeaee3839dcb279d92240edb3d25d",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "light",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 591,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "chart-mutagen mutagen-权",
+            "text": "化权"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

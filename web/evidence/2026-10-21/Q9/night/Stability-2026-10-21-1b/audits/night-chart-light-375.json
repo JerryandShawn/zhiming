@@ -1,0 +1,91 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "captured_time_bjt": "2026-10-21T10:54:37.351+08:00",
+  "id": "night-chart",
+  "case_key": "night-chart-light-375",
+  "state": "night-chart",
+  "route": "/?night=demo#/chart",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "theme": "light",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-light-375.png",
+  "screenshot_sha256": "e3d3f4af9cee9d5c47eb877ed3865df2d1e43b5f5da424412ffb14b72a1e7150",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-light-375-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-light-375.png",
+      "sha256": "e3d3f4af9cee9d5c47eb877ed3865df2d1e43b5f5da424412ffb14b72a1e7150",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-1b/screenshots/night-chart-light-375-full.png",
+      "sha256": "7a63a87364e3da423c048a5deedfba3d04dca4225d2d33dc5066ad05ee5714bd",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "light",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 692,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 1384,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 1413,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}

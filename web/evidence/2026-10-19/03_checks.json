@@ -1,0 +1,282 @@
+{
+  "item": 3,
+  "time_utc": "2026-10-18T15:57:31.5424557Z",
+  "branch": "v4/p10-frontend",
+  "base_commit": "c72e58e739b639dbdc9f7d2dcdb6ca51b7bdb728",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "unit": {
+    "files": 35,
+    "passed": 378,
+    "total": 378
+  },
+  "frontend": {
+    "night_failed": 0,
+    "privacy_regressions": 9,
+    "chat_regressions": 10,
+    "about_me_cases": 22,
+    "night_total": 41
+  },
+  "axe": {
+    "violations": 0,
+    "about_me_scenarios": 17
+  },
+  "cinnabar_budget": 3,
+  "network": {
+    "external_requests": 0,
+    "console_messages": 0,
+    "page_errors": 0,
+    "api_requests": 0
+  },
+  "screenshots": [
+    {
+      "path": "03-delete-source-preview-390.png",
+      "sha256": "f379cedb4446bb4c2443dbd73774de075e9e221d25d4653139da0bf6c4374845"
+    },
+    {
+      "path": "03-delete-source-result-390.png",
+      "sha256": "ded74871eecc5104aa376e94edfb3ea5dec3b2b0dc4eb1aba7faf78dfc606594"
+    },
+    {
+      "path": "03-me-memories-1440-dark.png",
+      "sha256": "3daba063d6e1e1c12de53ef673365758457f622b70aa1721dbc89cf557928166"
+    },
+    {
+      "path": "03-me-memories-1440-light.png",
+      "sha256": "9b8c991d60835651d70b840bd46ec43b527b70927eaf3fe2e927c34599b055d6"
+    },
+    {
+      "path": "03-me-memories-390-dark.png",
+      "sha256": "df128be1c8618fe0813167aac3b3d858ce5a3fe3c6eb778a5b611164ce8f4a3a"
+    },
+    {
+      "path": "03-me-memories-390-light.png",
+      "sha256": "d61ff5f6368599970f77863df1aa8a0d6753563e8dd9347717fc7b4d905a8660"
+    },
+    {
+      "path": "03-me-profile-1440-dark.png",
+      "sha256": "ce730a0f27ec786447933d3b2fff18d1abe99580f30534baea8ab9f248be4a88"
+    },
+    {
+      "path": "03-me-profile-1440-light.png",
+      "sha256": "1d2d6df74f435f6ba923adff5c64259fcad10ade164eab4d8add37ebfb5c37d3"
+    },
+    {
+      "path": "03-me-profile-390-dark.png",
+      "sha256": "164f3d551c3ce05d08ab50be87457197f23684b6c878ae38a8312914d9d69e59"
+    },
+    {
+      "path": "03-me-profile-390-light.png",
+      "sha256": "a60dc99e12def29ece851f237fab0b640951bbe174526a8196003865e1158389"
+    },
+    {
+      "path": "03-me-proposals-1440-dark.png",
+      "sha256": "fad3aa1486c939c8fcdca76e9bc4ef511fa17e24d0f1acdfd03d59629f40bae1"
+    },
+    {
+      "path": "03-me-proposals-1440-light.png",
+      "sha256": "6638a80c8c25a12c0c099a5d4179d72dc8bc4e80c6bcfd91db9438bad5557c8e"
+    },
+    {
+      "path": "03-me-proposals-390-dark.png",
+      "sha256": "46aae0be66b16146333ca3cc1452edf096c4db29ad5eccc1c113caf304acb1a2"
+    },
+    {
+      "path": "03-me-proposals-390-light.png",
+      "sha256": "4b674ae8742c6b10441b8a242fcddbe276c8575cafb136fc6d445de84eac8011"
+    },
+    {
+      "path": "03-me-source-1440-dark.png",
+      "sha256": "1a92f0cbcd8c93f6cc7b133778a1af59c5829b7811fc0b771cdd07798949d9f5"
+    },
+    {
+      "path": "03-me-source-1440-light.png",
+      "sha256": "c1d962771004032879de242863bfc977e37ee3037d30101274ebf458d84e1729"
+    },
+    {
+      "path": "03-me-source-390-dark.png",
+      "sha256": "3bf06c1c8a8fbda5fee243ac66af71eddf3c2aaaa123b67915abd02a2fee1f82"
+    },
+    {
+      "path": "03-me-source-390-light.png",
+      "sha256": "d662a7fe1a12c0994aa5afefaf8a82102485aad2f7c0b0bc9c712a123b1a19a8"
+    },
+    {
+      "path": "03-profile-edited-basic-390.png",
+      "sha256": "7f330de67c9630793324e49481e2783ffbc109bb910c71fe4803c2e3bf25a216"
+    },
+    {
+      "path": "03-profile-edited-chart_summary-390.png",
+      "sha256": "35617a3e5d1f2bce00555bc2016201ccbeb4a27a4a81dcd18659ad96cf9860f7"
+    },
+    {
+      "path": "03-profile-edited-communication-390.png",
+      "sha256": "b0f76c07902fe9b63446dcee219f6efb66aefafd2c626f8d65ce03babb8a5baf"
+    },
+    {
+      "path": "03-profile-edited-current_life-390.png",
+      "sha256": "52b82a69062a116a1371230525ccde808c4e1d2d3e6c8a58c97d1c05ecec7411"
+    },
+    {
+      "path": "03-profile-edited-followups-390.png",
+      "sha256": "0d7366438035a1a7df43df3e97776d315f9fbe3cf4a04005f7ba95afc924beb8"
+    },
+    {
+      "path": "03-profile-edited-goals-390.png",
+      "sha256": "95d5fcb08b7fd914bd70816c642944245127564cdeb45cbe791585c141a9e56c"
+    },
+    {
+      "path": "03-profile-edited-people-390.png",
+      "sha256": "378093fdbe812e0bb7099eb8f0737fe95c381c430f6682104274379e510c7365"
+    },
+    {
+      "path": "03-profile-edited-preferences-390.png",
+      "sha256": "0c931902880fe76313b95dd647270601c56c57e903048f96c5d8b9ff7cfbb3da"
+    },
+    {
+      "path": "03-proposal-category-1440.png",
+      "sha256": "fadb7772eb0de49f081d8ab87c814e8d91b041cd4e437f50dfaa1b9a29ae4397"
+    },
+    {
+      "path": "03-proposal-dismissed-1440.png",
+      "sha256": "3e4ebe8fb3b1cd79e45740ce67b4e33e2af35b44251e4757f392d0b989f7eddd"
+    },
+    {
+      "path": "03-proposal-saved-1440.png",
+      "sha256": "fadb7772eb0de49f081d8ab87c814e8d91b041cd4e437f50dfaa1b9a29ae4397"
+    },
+    {
+      "path": "03-shared-receipt-withdrawn-1440.png",
+      "sha256": "cbf06e2fd0d8f33ac62e8b65ff2471e29319e91ff2244837edeb3cd95b55a689"
+    }
+  ],
+  "source_sha256": [
+    {
+      "path": "web/src/chat/interactions/MemoryCard.tsx",
+      "sha256": "d617819e7ec54ac2a82ea4073dd9933bc12af2499618508b6aad4467496a5d9c"
+    },
+    {
+      "path": "web/src/chat/interactions/MemoryReceipts.tsx",
+      "sha256": "093cd5b3a4e7e964b2fa72752932f5595add2814e2f3297c888e8c13c0969468"
+    },
+    {
+      "path": "web/src/night/me/AboutMePage.tsx",
+      "sha256": "92ae6eff09b9b452a57de93c29e33b915b04a5471a8b84e3a2e6e268111a07b9"
+    },
+    {
+      "path": "web/src/night/me/ConfirmAction.tsx",
+      "sha256": "1d3488cc53922338e0aded44d12a5f2ccc0238ae2d56375d93410d812a723f92"
+    },
+    {
+      "path": "web/src/night/me/DeleteMemory.tsx",
+      "sha256": "bc43a385293fbadb79b94b3fac939c0dc05642f069ca8c78b551bbcfea7a1f47"
+    },
+    {
+      "path": "web/src/night/me/fixtures.ts",
+      "sha256": "4a3c338f6326dd9f7fce5a11313162f779eb16ff4a5a38a813f0c42053b66d56"
+    },
+    {
+      "path": "web/src/night/me/ItemEditor.tsx",
+      "sha256": "8056a54deed475815c0e0476346c42616e533ecfe45fcb01142f2e70ea2edf71"
+    },
+    {
+      "path": "web/src/night/me/me.css",
+      "sha256": "fa8e3ff218d6b2e373e4fe9a5329ff059ab13903253c3e991fed0869f39119dd"
+    },
+    {
+      "path": "web/src/night/me/MeDialogBody.tsx",
+      "sha256": "9391049e91207efeacb55b81c0c2fe432eaaec9a17c49c512d19e478e57e63c0"
+    },
+    {
+      "path": "web/src/night/me/MemoryList.tsx",
+      "sha256": "5a272064b256a2c9f561af7e64482722ee1b33b972da235ce4877790a1dbada8"
+    },
+    {
+      "path": "web/src/night/me/MePanel.tsx",
+      "sha256": "6a771855ee77588749fdfb6bfe7ec7e9db843f55c7dabebba1d8fb9ac424c64f"
+    },
+    {
+      "path": "web/src/night/me/model.ts",
+      "sha256": "6d624e3018773e3a174ad01890f0a729a4d72af8f4e34815f4bffa3050f66dc8"
+    },
+    {
+      "path": "web/src/night/me/OtherTabs.tsx",
+      "sha256": "aea3c878fec65935e06ec6754c66d631fe7acb9b8b0bd57f7d85fd549b697de1"
+    },
+    {
+      "path": "web/src/night/me/port.ts",
+      "sha256": "84e88e0c021d9e2823dced46b9f4d1fafbd535973416fad3e529ede96eaaf442"
+    },
+    {
+      "path": "web/src/night/me/ProfileSections.tsx",
+      "sha256": "45b4cd0ae836982bc4f77f1aef3c7d71afaccef22e2c3d5d7e1590a255a508bc"
+    },
+    {
+      "path": "web/src/night/me/projections.ts",
+      "sha256": "d3bdb9c47d8f57121f15a5f3a278782cd8f86f7a7d5128e4b363b6beaca85aa5"
+    },
+    {
+      "path": "web/src/night/me/ProposalList.tsx",
+      "sha256": "afd59ee7d365bc1e37b9c25a0ecd7b30646b871bbb647320411c5b447a03d6b5"
+    },
+    {
+      "path": "web/src/night/me/Sources.tsx",
+      "sha256": "a15d7ec901bddf1a0190a89a3a80fe180f1fda7fc74cb061d814f3d0d81726dc"
+    },
+    {
+      "path": "web/src/night/me/types.ts",
+      "sha256": "ef243e31e36f898f578819fcda18d3ed9158dbafae4d22d4d713f1414f336e07"
+    },
+    {
+      "path": "web/src/night/me/useMeCommand.tsx",
+      "sha256": "15bbf6a9f01249eaec4b946f969e6ad137df26b463680d6256271dc2690c3a05"
+    },
+    {
+      "path": "web/src/night/me/views.tsx",
+      "sha256": "a7ec612f2d74fce9ecef4139d5c7e5c56bd99e7ab0c1c05508f5f4b02eb69b63"
+    },
+    {
+      "path": "web/src/night/NightApp.tsx",
+      "sha256": "34b8f4eee9b1145dbc79758bb962c7263b34104c88108225d19b7bf7873bb050"
+    },
+    {
+      "path": "web/src/night/port.ts",
+      "sha256": "8ca26f812178fb4370f40b5721f95c6f2c28593cffff4287613b9724e9441158"
+    },
+    {
+      "path": "web/src/night/useAboutMeReceipts.ts",
+      "sha256": "f35925c9348211a862dc471a8d724a7f79b52fa6e776ac1f513ee4b318c3ce34"
+    },
+    {
+      "path": "web/tests/e2e/night-me.spec.ts",
+      "sha256": "9bad8248242fb812af5b5bc864e5d82c95f4bfb8e4616731e77fb594d340a6cf"
+    },
+    {
+      "path": "web/tests/night-demo.test.ts",
+      "sha256": "7fe5b9f7441001b0d4fb16e1420814ef7f3ee1040a056b5c0d3f93cc86ee6161"
+    },
+    {
+      "path": "web/tests/night-me-components.test.tsx",
+      "sha256": "bd160b41fed81b024d5f545d9664d6125893157497e7a20467cb8f2c05d762da"
+    },
+    {
+      "path": "web/tests/night-me-receipts.test.tsx",
+      "sha256": "3a0e40ea370c9672c0367ce28445b38e71d3dc421030cf6cfc124b15fbf73e40"
+    },
+    {
+      "path": "web/tests/night-me-source.test.ts",
+      "sha256": "6d2e5ac39f50211476c972c66aaa258c88c6c788d4755be1cfc5233e32157a57"
+    },
+    {
+      "path": "web/tests/night-me-store.test.ts",
+      "sha256": "6e46339bc676674f86b86d188330481dec728c031a60e0bae4cc6fc8d1516396"
+    }
+  ],
+  "built_manifest_sha256": "905802d756aa56c1a1e3fdcb5da0ef70a3b47e183b2561cc1ba1c9d1d5279b5a",
+  "unverified": [
+    "Backend profile/proposal/source cascade APIs absent; mock aggregate only",
+    "No remote server, real model or Feishu delivery",
+    "No physical erasure claim"
+  ]
+}

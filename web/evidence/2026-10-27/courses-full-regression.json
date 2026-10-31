@@ -1,0 +1,35 @@
+{
+  "finished_bjt": "2026-10-27T11:35:02+08:00",
+  "source_head": "f374e1fc7b1c843408f8737b209235cc3e70759a",
+  "start": {
+    "started_bjt": "2026-10-27T12:30:32.4451873+09:00",
+    "source_head": "f374e1fc7b1c843408f8737b209235cc3e70759a",
+    "workers": 2,
+    "sequence": "unit then default CI browser",
+    "runtime_dirty": false
+  },
+  "unit_passed": 1291,
+  "unit_failed": 0,
+  "unit_files": 106,
+  "browser": {
+    "startTime": "2026-10-27T03:31:45.886Z",
+    "duration": 97808.204,
+    "expected": 121,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser_retries": 0,
+  "workers": 2,
+  "sequence": "unit then browser",
+  "real_models": 0,
+  "server_access": 0,
+  "runtime_changes_after_tests": 0,
+  "limitations": [
+    "Not all six browser configurations",
+    "Not real HTTP+PG or real Feishu",
+    "Historical stability remains 2/3",
+    "Course 4G p75 5260ms still failed; H5 not substitute"
+  ],
+  "screenshots": "courses-final30 reused; ignored default outputs not counted again"
+}

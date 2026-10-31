@@ -1,0 +1,31 @@
+.h5-demo {
+  max-inline-size: 44rem;
+  min-block-size: 100dvh;
+  margin-inline: auto;
+  padding: max(var(--s-5), env(safe-area-inset-top)) max(var(--s-4), env(safe-area-inset-right))
+    max(var(--s-8), env(safe-area-inset-bottom)) max(var(--s-4), env(safe-area-inset-left));
+  overflow-wrap: anywhere;
+}
+.h5-demo h1 {
+  font: var(--t-h1) / var(--l-h1) var(--font-serif);
+}
+.h5-demo-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  background: var(--surface);
+  margin-block: var(--s-5);
+  padding: var(--s-4);
+}
+.h5-demo .textarea {
+  min-block-size: 7rem;
+}
+.h5-demo[data-keyboard='open'] {
+  position: fixed;
+  inset-block-start: var(--app-vv-top, 0);
+  inset-inline: 0;
+  inline-size: 100%;
+  block-size: var(--app-vv-height);
+  min-block-size: 0;
+  overflow-y: auto;
+  padding-block-end: var(--s-8);
+}

@@ -1,0 +1,32 @@
+.study-term-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: 0 var(--s-1);
+  margin: 0;
+  border: 0;
+  border-radius: var(--r-1);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-decoration: underline dotted var(--gold-ink);
+  text-underline-offset: var(--s-1);
+  cursor: pointer;
+}
+.study-term-link:hover {
+  background: var(--paper-2);
+}
+.study-source-list {
+  list-style: none;
+  padding: 0;
+}
+.study-source-list > li + li {
+  padding-top: var(--s-4);
+  border-top: var(--border) solid var(--line);
+}
+.study-source-locator,
+.study-term-detail p,
+.study-term-detail li {
+  overflow-wrap: anywhere;
+}

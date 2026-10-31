@@ -1,0 +1,599 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\private\\runtime\\node-v22.23.3-win-x64\\node.exe",
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/e2e/h5-demo.spec.ts",
+      "--project=",
+      "--workers=2",
+      "--reporter=json",
+      "--output=test-results/h5-first-browser"
+    ],
+    "configFile": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\playwright.config.ts",
+    "rootDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/test-results/h5-first-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/tests/e2e",
+        "testIgnore": [
+          "/contracts\\.spec\\.ts/",
+          "/live-visual\\.spec\\.ts/",
+          "/spaces.*\\.spec\\.ts/",
+          "/components.*\\.spec\\.ts/",
+          "/night-.*\\.spec\\.ts/",
+          "/overnight-matrix\\.spec\\.ts/",
+          "/q9-.*\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/test-results/h5-first-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "legacy-stream",
+        "name": "legacy-stream",
+        "testDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/tests/legacy-e2e",
+        "testIgnore": [
+          "/contracts\\.spec\\.ts/",
+          "/live-visual\\.spec\\.ts/",
+          "/spaces.*\\.spec\\.ts/",
+          "/components.*\\.spec\\.ts/",
+          "/night-.*\\.spec\\.ts/",
+          "/overnight-matrix\\.spec\\.ts/",
+          "/q9-.*\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\test-results\\h5-first-browser",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e",
+        "snapshotDir": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e",
+        "testIgnore": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {}
+        ],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "channel": "chrome",
+          "headless": true,
+          "locale": "zh-CN",
+          "timezoneId": "Asia/Shanghai",
+          "reducedMotion": "reduce",
+          "trace": "retain-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 2,
+    "webServer": {
+      "command": "npm run preview",
+      "url": "http://127.0.0.1:4173",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "h5-demo.spec.ts",
+      "file": "h5-demo.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "H5 synthetic sign-in visual 375 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2200,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:07:53.213Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-01a5dd452069d62af0fd",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 synthetic sign-in visual 375 dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2080,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:07:55.576Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-87f72350faf3baafc0ab",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 synthetic sign-in visual 390 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2152,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:07:57.663Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-c429d4b10373f55409fa",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 synthetic sign-in visual 390 dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2135,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:07:59.821Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-e3abbd374d3fbdfc4541",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 synthetic sign-in visual 768 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2154,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:01.963Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-14792f1a5344e0e931a8",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 synthetic sign-in visual 768 dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2176,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:04.123Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-662862884e8820d25a96",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 synthetic sign-in visual 1440 light",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2215,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:06.305Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-d0af0d093c3cdcd0dc41",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 synthetic sign-in visual 1440 dark",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2194,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:08.526Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-421a80f39c7902d50442",
+          "file": "h5-demo.spec.ts",
+          "line": 36,
+          "column": 5
+        },
+        {
+          "title": "H5 controlled denied keeps draft and restarts with a fresh flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1802,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:10.726Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-b2c8c4a8124a84730cab",
+          "file": "h5-demo.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "H5 controlled unavailable keeps draft and restarts with a fresh flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1801,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:12.534Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-a5ce3d1b9edfc191514f",
+          "file": "h5-demo.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "H5 controlled timeout keeps draft and restarts with a fresh flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6926,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:14.340Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-92affa16a49acc7d76c4",
+          "file": "h5-demo.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "H5 controlled expired keeps draft and restarts with a fresh flow",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2319,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:21.272Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-ff4692f7e8d75ff26a47",
+          "file": "h5-demo.spec.ts",
+          "line": 67,
+          "column": 3
+        },
+        {
+          "title": "H5 cancellation, sign-out and keyboard-only restart remain local",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1638,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:08:23.597Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-fe0d4affcc19ce729ca6",
+          "file": "h5-demo.spec.ts",
+          "line": 83,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-27T02:07:51.794Z",
+    "duration": 34009.089,
+    "expected": 13,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

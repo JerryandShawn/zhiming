@@ -1,0 +1,554 @@
+[
+  {
+    "file": "core4-receipt-boundary.test.ts",
+    "status": "passed",
+    "assertions": [
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases receipts=undefined does not revive old acknowledgements",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases receipts=null does not revive old acknowledgements",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases receipts=%j does not revive old acknowledgements",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases receipts={} does not revive old acknowledgements",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases receipts=\"invalid\" does not revive old acknowledgements",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases receipts=0 does not revive old acknowledgements",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases does not even read old aliases on the core4 branch",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases keeps a permitted display receipt from receipts instead of its conflicting alias",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases public command ack cannot create a memory card or overwrite an authoritative stream receipt",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases conflicting/unknown core4.0 never downgrades to legacy receipt parsing",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases conflicting/unknown core5.0 never downgrades to legacy receipt parsing",
+        "status": "passed"
+      },
+      {
+        "name": "R7: core4 never borrows old-web receipt aliases preserves the separate old core3 compatibility path",
+        "status": "passed"
+      }
+    ]
+  },
+  {
+    "file": "events-v1-reconnect.test.ts",
+    "status": "passed",
+    "assertions": [
+      {
+        "name": "strict in-memory v1 reconnect follower decodes every split UTF-8 byte and split CRLF while heartbeats do not advance the cursor",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower passes only the last committed id to the adapter and discards an incomplete disconnected frame",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower drops repeated and old sequence ids across reconnects without duplicating text",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower fails closed for cross-run without cursor advancement or a retry",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower fails closed for wrong-id without cursor advancement or a retry",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower fails closed for noncanonical-id without cursor advancement or a retry",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower fails closed for legacy without cursor advancement or a retry",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower fails closed for bad-json without cursor advancement or a retry",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower fails closed for wrong-type without cursor advancement or a retry",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower reconnects from the earlier cursor for a gap and only accepts a continuous replay",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower never compresses a permanent gap into a cursor, and bounds all retry attempts",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower retries an initial network rejection without inventing wire status or sequence events",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower retries a broken response body after the last committed frame",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower applies resumed text_reset as replacement and keeps it distinct from review revision",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower ends on accepted final without waiting for EOF or accepting later pollution",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower ends on accepted error without waiting for EOF or accepting later pollution",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower awaits acceptance before reading another frame or advancing the cursor",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower does not advance or replay a frame rejected by the sync consumer",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower does not advance or replay a frame rejected by the async consumer",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower aborts a pending reader immediately and stops old callbacks",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower does not wait for an underlying cancel promise that never settles",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower aborts a signal-ignoring connector and cancels its late response without calling accept",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower aborts a signal-ignoring reconnect wait without opening a new generation",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower does not advance after an aborted asynchronous accept resolves late",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower keeps cursor, deduplication and reconnect state entirely out of browser storage",
+        "status": "passed"
+      },
+      {
+        "name": "strict in-memory v1 reconnect follower does not start a pre-aborted follower or accept an invalid retry budget",
+        "status": "passed"
+      }
+    ]
+  },
+  {
+    "file": "legacy-run-follow.test.ts",
+    "status": "passed",
+    "assertions": [
+      {
+        "name": "legacy GET follower, no original POST replay reconnects three times using committed cursor and drops replayed duplicates",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay discards residual UTF-8/CRLF frame on EOF without committing its ID",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay 45 seconds without valid frame or ping aborts only the connection and resumes cursor",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay ping refreshes the idle deadline without advancing Last-Event-ID",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay HTTP 401 stops without resetting cursor, replay or reading body",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay HTTP 403 stops without resetting cursor, replay or reading body",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay HTTP 404 stops without resetting cursor, replay or reading body",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay HTTP 422 stops without resetting cursor, replay or reading body",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay does not accept malformed IDs, wrong run, HTML or silently skip a sequence gap",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay cancel HTTP ack preserves partial text, until authoritative RUN_CANCELLED",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay stop request ignored by transport gives feedback in two seconds, not false cancellation",
+        "status": "passed"
+      },
+      {
+        "name": "legacy GET follower, no original POST replay retires late response after owner switch and cancels its body without DOM writes",
+        "status": "passed"
+      }
+    ]
+  },
+  {
+    "file": "thread-contracts.test.ts",
+    "status": "passed",
+    "assertions": [
+      {
+        "name": "published thread message DTO preserves stable request/message bytes, supplies only documented defaults and takes an immutable snapshot",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO refuses images without silently discarding it",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO refuses selection without silently discarding it",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO refuses runtime without silently discarding it",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO refuses owner without silently discarding it",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO refuses thread_id without silently discarding it",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO refuses parent_run without silently discarding it",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO refuses draw_id without silently discarding it",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 0",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 1",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 2",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 3",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 4",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 5",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 6",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 7",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 8",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 9",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 10",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 11",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 12",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 13",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 14",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 15",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO rejects unsupported shapes and boundary violations 16",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO uses Unicode code points rather than UTF-16 length; FEFF is not Python strip whitespace",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO does not invent case-ID uniqueness, ASCII or nonempty restrictions",
+        "status": "passed"
+      },
+      {
+        "name": "published thread message DTO uses explicit private scope and refuses long-term cases before submission",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts queued including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts running including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts inbox_wait including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts succeeded including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts failed including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts stale including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts cancelled including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance accepts revoked including idempotently replayed terminal runs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance uses returned thread identity after natural private routing and allows 205-character life IDs",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance v3 has no fabricated events URL",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 0",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 1",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 2",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 3",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 4",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 5",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 6",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 7",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 8",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 9",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 10",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 11",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 12",
+        "status": "passed"
+      },
+      {
+        "name": "thread 202 acceptance is distinct from legacy chat acceptance rejects drift, private fields and unsafe cross-run URLs 13",
+        "status": "passed"
+      }
+    ]
+  },
+  {
+    "file": "thread-http.test.ts",
+    "status": "passed",
+    "assertions": [
+      {
+        "name": "published thread acceptance over real synthetic loopback HTTP sends one authenticated POST, consumes fragmented UTF-8 JSON and adopts returned opaque thread",
+        "status": "passed"
+      }
+    ]
+  },
+  {
+    "file": "thread-submit.test.ts",
+    "status": "passed",
+    "assertions": [
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) factory is inert; sends exactly once to encoded original thread, adopts returned identity and does not GET",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) unknown attachments and incognito cases fail before reading auth or calling fetch",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) checks ownership before and after a reentrant headers reader",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) ignores and releases a response arriving after the user switches identity",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) aborts promptly when fetch ignores signal and releases its eventual response",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) never invokes a global login handler on a late 401",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects ownership change during a delayed body read",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) refuses unsafe target \".\" before a request",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) refuses unsafe target \"..\" before a request",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) refuses unsafe target \"bad\\nthread\" before a request",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) does not read identity headers when already aborted",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects invalid UTF-8 rather than accepting replacement characters in identity",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects HTTP 200 without automatic POST retry or private body leakage",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects HTTP 401 without automatic POST retry or private body leakage",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects HTTP 403 without automatic POST retry or private body leakage",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects HTTP 409 without automatic POST retry or private body leakage",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects HTTP 422 without automatic POST retry or private body leakage",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects HTTP 500 without automatic POST retry or private body leakage",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects text/event-stream instead of guessing the protocol",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects text/html instead of guessing the protocol",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) rejects application/jsonp instead of guessing the protocol",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) bounds and masks damaged/oversized JSON 0",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) bounds and masks damaged/oversized JSON 1",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) unknown transport result keeps the original operation unchanged for an explicit same-payload retry",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) 45-second hung fetch is bounded without sending a replacement operation",
+        "status": "passed"
+      },
+      {
+        "name": "explicit thread submit adapter (no automatic follow or resend) 45-second hung body is bounded and unlocks the response without retaining content",
+        "status": "passed"
+      }
+    ]
+  }
+]

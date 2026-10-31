@@ -1,0 +1,107 @@
+{
+  "base_commit": "5e6b2754e68ca7db1b55300f7f38d8e143ae3d53",
+  "time_utc": "2026-10-18T23:54:47.5653618Z",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "unit": {
+    "failed": 0,
+    "passed": 450,
+    "files": 44
+  },
+  "browser": {
+    "night": 76,
+    "components_failed": 0,
+    "feishu_ua": 1,
+    "keyboard_subset": 3,
+    "static": 80,
+    "visual_code_commit": "5e6b2754e68ca7db1b55300f7f38d8e143ae3d53",
+    "components": 10,
+    "night_failed": 0,
+    "static_failed": 0,
+    "visual_prior_milestone": 88,
+    "feishu_ua_failed": 0
+  },
+  "contracts": {
+    "final_passed": 12,
+    "real_model_calls": 0,
+    "initial_failed": 3,
+    "cause": "Generated output files triggered Vite reloads; watch ignores fixed harness interference without business assertion changes.",
+    "initial_passed": 9,
+    "final_failed": 0
+  },
+  "source_sha256": [
+    {
+      "sha256": "00509c583de99567aec62e089f289399ef911279cf250995244537bdea9670ac",
+      "path": "web/src/Layout.tsx"
+    },
+    {
+      "sha256": "8ab5c54ebde98b3386aa300c07c739ad8906b5c7bf50747b4e2f6f8b5808ba74",
+      "path": "web/src/embed/feishu.ts"
+    },
+    {
+      "sha256": "a68e4565a061b6859257db0c04dc7ddc6f6e0072a390c1fca1eb4de1ae159f20",
+      "path": "web/vite.config.ts"
+    },
+    {
+      "sha256": "2a702c66ed86c3d4ea51bf09313fe2f6ed0844bda8774308fb3ffa30dae59263",
+      "path": "web/tests/feishu-container.test.ts"
+    },
+    {
+      "sha256": "3830e09bcf757cf6937969dd26a20b3687af3a66185a9b65b2c817502a5e6024",
+      "path": "web/tests/e2e/night-keyboard.spec.ts"
+    }
+  ],
+  "built_manifest_sha256": "010444c40f57c27dffa124a1c427794a9b5a0ff125d6516908304a6f7938006f",
+  "screenshots": [
+    {
+      "sha256": "01bd62d395c3ea71bbd42e2d4080b3546e0ba48009c8df8aca402ac31ab4840e",
+      "path": "08-feishu-settings-390.png"
+    },
+    {
+      "sha256": "c057547d7712eb4d24ac5216d1f1a21de1c311638db3f8a4f1a81e025864b088",
+      "path": "08-keyboard-birth-confirmed-390.png"
+    },
+    {
+      "sha256": "b95eec91683fd4c7538f78713806dfeb1ca8915be58cc1c852b587fd45146147",
+      "path": "08-keyboard-profile-confirmed-390.png"
+    },
+    {
+      "sha256": "56e8735d6f5446c6a7ce715c4f1c1ef8b217f314612c53bc1f870931b1273aba",
+      "path": "08-reduced-motion-birth-sheet-390.png"
+    },
+    {
+      "sha256": "34e8bcebfa4286943b48b37bc811ab844ebe8977694102b661f98e1baa842cc0",
+      "path": "08-reduced-motion-profile-sheet-390.png"
+    },
+    {
+      "sha256": "d6abd75977546ec4fd7cec0e5b0d341e63629c8d54c826189821bf5ee0961805",
+      "path": "08-regression/calendar-five-markers-1440.png"
+    },
+    {
+      "sha256": "c629744f9ddf731671d0d22a52102c7e2c166e074626040f88b1a4ce0a3983b5",
+      "path": "08-regression/chart-astro-angles-390.png"
+    },
+    {
+      "sha256": "7a39bd94f7044cf590fc03039707a5bc2688f9ec3514b93164717a043f6b4556",
+      "path": "08-regression/chart-luck-explanation-390.png"
+    },
+    {
+      "sha256": "e88e869335e713192d82cf297472c7d60a1c1f9fe0c3a0dc03e9eb0c790027d4",
+      "path": "08-regression/chart-palace-explanation-1440.png"
+    },
+    {
+      "sha256": "6bc4b82377899b33da2843ef65386b3076e73767d08ed4570647977bdbf30fb2",
+      "path": "08-regression/chart-palace-grid-375.png"
+    },
+    {
+      "sha256": "d189f6206acfa33d1f74e160f2782887439f00b307f33d196f7027afa0e5edb9",
+      "path": "08-regression/tarot-picker-keyboard-1440.png"
+    }
+  ],
+  "limits": [
+    "Feishu UA is browser simulation; sign-in remains disconnected; no SDK or token.",
+    "No further bundle reduction or new 4G LCP claim.",
+    "Full 88 visual matrix belongs to Q7 source snapshot; bonus preserves Layout UA regex and visible UI."
+  ]
+}

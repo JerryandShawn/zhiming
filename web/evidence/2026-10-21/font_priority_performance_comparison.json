@@ -1,0 +1,552 @@
+{
+  "schema": "frontend-font-priority-performance-v1",
+  "baseline": {
+    "head": "e025f9fb3ba4cfde437bd48da3bc5725324a6a82",
+    "lcp_ms": [
+      2464,
+      2480,
+      2492,
+      2532,
+      2460
+    ],
+    "p75_ms": 2492,
+    "all_below2500": false,
+    "report": "web/evidence/2026-10-21/tools-pagination-performance/final/head-e025f9f-1008/report.json",
+    "sha256": "25045875af9f3eb4520f130330699ec1458baf558fa259f2bada881151e8c5b7",
+    "timings": [
+      {
+        "run": 1,
+        "lcp_ms": 2464,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 200.89999999850988,
+          "responseEnd": 1595.5,
+          "duration": 1394.6000000014901,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1748.7999999970198,
+            "responseEnd": 1923,
+            "duration": 174.20000000298023,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1750.3999999985099,
+            "responseEnd": 1937.8999999985099,
+            "duration": 187.5,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1751.7000000029802,
+            "responseEnd": 2429.7999999970198,
+            "duration": 678.0999999940395,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "lcp_ms": 2480,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 186.79999999701977,
+          "responseEnd": 1582.5,
+          "duration": 1395.7000000029802,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1761.5,
+            "responseEnd": 1941.5,
+            "duration": 180,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1763.1999999955297,
+            "responseEnd": 1956.5999999940395,
+            "duration": 193.39999999850988,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1764.5999999940395,
+            "responseEnd": 2448.89999999851,
+            "duration": 684.3000000044703,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "lcp_ms": 2492,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 187.5,
+          "responseEnd": 1591,
+          "duration": 1403.5,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1756,
+            "responseEnd": 1934.5,
+            "duration": 178.5,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1757.7999999970198,
+            "responseEnd": 1949.2999999970198,
+            "duration": 191.5,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1759,
+            "responseEnd": 2461.10000000149,
+            "duration": 702.1000000014901,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 4,
+        "lcp_ms": 2532,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 194.20000000298023,
+          "responseEnd": 1603.7000000029802,
+          "duration": 1409.5,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1803.6000000014901,
+            "responseEnd": 1971.3999999985099,
+            "duration": 167.79999999701977,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1806.2000000029802,
+            "responseEnd": 1990.3999999985099,
+            "duration": 184.19999999552965,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1808.1000000014901,
+            "responseEnd": 2501.60000000149,
+            "duration": 693.5,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 5,
+        "lcp_ms": 2460,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 191,
+          "responseEnd": 1577.2000000029802,
+          "duration": 1386.2000000029802,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1734,
+            "responseEnd": 1902.2000000029802,
+            "duration": 168.20000000298023,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1735.2999999970198,
+            "responseEnd": 1948.6000000014901,
+            "duration": 213.30000000447035,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1736.5,
+            "responseEnd": 2427.2999999970198,
+            "duration": 690.7999999970198,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      }
+    ]
+  },
+  "current": {
+    "head": "a93541d52d1a1f608af936e58f7a6ea9431f25f2",
+    "lcp_ms": [
+      2264,
+      2268,
+      2316,
+      2248,
+      2276
+    ],
+    "p75_ms": 2276,
+    "all_below2500": true,
+    "report": "web/evidence/2026-10-21/font-priority-performance/final/head-a93541d-1019/report.json",
+    "sha256": "fa7e1f6f555314aec7abe855a8d8d2dcee30a098e99093d0f885a13d6804f95e",
+    "timings": [
+      {
+        "run": 1,
+        "lcp_ms": 2264,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 197.40000000596046,
+          "responseEnd": 1458.6000000014901,
+          "duration": 1261.1999999955297,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1579.7000000029802,
+            "responseEnd": 1753.6000000014901,
+            "duration": 173.89999999850988,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1580.9000000059605,
+            "responseEnd": 1769,
+            "duration": 188.09999999403954,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1582,
+            "responseEnd": 2232.2000000029802,
+            "duration": 650.2000000029802,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 2,
+        "lcp_ms": 2268,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 192.29999999701977,
+          "responseEnd": 1461.1000000014901,
+          "duration": 1268.8000000044703,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1581.6999999955297,
+            "responseEnd": 1756.1999999955297,
+            "duration": 174.5,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1583.1000000014901,
+            "responseEnd": 1771.2999999970198,
+            "duration": 188.19999999552965,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1584.1999999955297,
+            "responseEnd": 2236.60000000149,
+            "duration": 652.4000000059605,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 3,
+        "lcp_ms": 2316,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 192.5,
+          "responseEnd": 1444.7999999970198,
+          "duration": 1252.2999999970198,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1582,
+            "responseEnd": 1755.5,
+            "duration": 173.5,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1585.1999999955297,
+            "responseEnd": 1770.6999999955297,
+            "duration": 185.5,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1588,
+            "responseEnd": 2284.1999999955297,
+            "duration": 696.1999999955297,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 4,
+        "lcp_ms": 2248,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 194.59999999403954,
+          "responseEnd": 1444.3999999985099,
+          "duration": 1249.8000000044703,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1559.1999999955297,
+            "responseEnd": 1739.3999999985099,
+            "duration": 180.20000000298023,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1560.5,
+            "responseEnd": 1754.5,
+            "duration": 194,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1561.3999999985099,
+            "responseEnd": 2218.89999999851,
+            "duration": 657.5,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      },
+      {
+        "run": 5,
+        "lcp_ms": 2276,
+        "font_bytes": 1069544,
+        "css": {
+          "path": "/fonts/fonts.css",
+          "start": 197.19999999552965,
+          "responseEnd": 1464.8999999985099,
+          "duration": 1267.7000000029802,
+          "transferSize": 63090,
+          "encodedBodySize": 62790,
+          "decodedBodySize": 187451,
+          "initiatorType": "link"
+        },
+        "apis": [
+          {
+            "path": "/api/cases",
+            "start": 1576.6000000014901,
+            "responseEnd": 1758.2999999970198,
+            "duration": 181.69999999552965,
+            "transferSize": 302,
+            "encodedBodySize": 2,
+            "decodedBodySize": 2,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/history",
+            "start": 1578,
+            "responseEnd": 1773.8999999985099,
+            "duration": 195.89999999850988,
+            "transferSize": 2908,
+            "encodedBodySize": 2608,
+            "decodedBodySize": 2608,
+            "initiatorType": "fetch"
+          },
+          {
+            "path": "/api/chart",
+            "start": 1579,
+            "responseEnd": 2251.7999999970198,
+            "duration": 672.7999999970198,
+            "transferSize": 14104,
+            "encodedBodySize": 13804,
+            "decodedBodySize": 13804,
+            "initiatorType": "fetch"
+          }
+        ]
+      }
+    ]
+  },
+  "observed_p75_reduction_ms": 216,
+  "source_changes_between_heads": [
+    "web/src/tools/ElementComparison.tsx",
+    "web/src/tools/elements.css",
+    "web/src/tools/SynastryResults.tsx",
+    "web/index.html"
+  ],
+  "scope": "Three additional source changes are the lazy tools-only M2c table, never loaded on measured Today. The critical Today source hashes are unchanged; index font hint policy is the startup change.",
+  "conditions": {
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 2,
+      "mobile": true,
+      "touch": true
+    },
+    "network": {
+      "offline": false,
+      "latency": 150,
+      "downloadThroughput": 200000,
+      "uploadThroughput": 93750,
+      "connectionType": "cellular4g"
+    },
+    "cpu_slowdown": 4,
+    "cache_disabled": true,
+    "fresh_context_each_run": true,
+    "service_workers": "blocked",
+    "normal_motion": true
+  },
+  "invariants": {
+    "clean_source": true,
+    "immutable_source_and_build": true,
+    "font_requests_each": 18,
+    "font_bytes_each": 1069544,
+    "complete_css_and202faces_woff_OFL": "unchanged, independently verified by font_coverage tests",
+    "fixture": {
+      "database": "core_test_fe",
+      "model": "scripted-only",
+      "real_model_calls": 0
+    }
+  },
+  "limitations": [
+    "Local synthetic4G measurement, not physical phone or deployed service.",
+    "A single controlled five-cold batch demonstrates observed improvement, not a population effect estimate.",
+    "Low is only a browser hint; the report does not separately prove its effective internal priority.",
+    "Latin bytes moved out of early preload; total font bytes did not decrease."
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "captured_time_bjt": "2026-10-21T11:46:33.429+08:00",
+  "id": "night-me",
+  "case_key": "night-me-dark-1440",
+  "state": "night-me",
+  "route": "/?night=demo#/me",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "dark",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-me-dark-1440.png",
+  "screenshot_sha256": "84e2d69da51c540152a8ff5565763ec5ce2662f122dbeb3919351b1c9fd31382",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-me-dark-1440-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-me-dark-1440.png",
+      "sha256": "84e2d69da51c540152a8ff5565763ec5ce2662f122dbeb3919351b1c9fd31382",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Stability-2026-10-21-2/screenshots/night-me-dark-1440-full.png",
+      "sha256": "7e928070833bd60a7de08a4cbc14cfc023763ac69e13fc60f4f8e49c64095376",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "dark",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 780,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 1560,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 1640,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}

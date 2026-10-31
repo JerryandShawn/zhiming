@@ -1,0 +1,114 @@
+{
+  "schema": "frontend-q9-v3-visual-v1",
+  "run_id": "Q9-v3-20261021-0206-final",
+  "id": "Q9-v3-tarot-dark-375",
+  "mode": "v3",
+  "page": "tarot",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "theme": "dark",
+  "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-tarot-dark-375.png",
+  "sha256": "ee343afd39e333d285ef9aabc3fed27075c230645903dba1cbe0a980221440e9",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-tarot-dark-375-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-tarot-dark-375.png",
+      "sha256": "ee343afd39e333d285ef9aabc3fed27075c230645903dba1cbe0a980221440e9",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-tarot-dark-375-full.png",
+      "sha256": "9e0a2db744687d638ae98b3a60547a8e11739439553c2316162e2fe6e7ff4f54",
+      "full_page": true
+    }
+  ],
+  "captured_at_beijing": "2026-10-21T02:06:09+08:00",
+  "clock": "2026-10-21T10:00:00+08:00",
+  "build_manifest_sha256": "1caccda67130820b980538ffac1e07a08b2678b5802a7083d52c67300bf309ff",
+  "synthetic_only": true,
+  "backend": "http://127.0.0.1:8002 / core_test_fe",
+  "fixture_model": "scripted-only, one reading preseeded per worker; no browser model trigger",
+  "checks": {
+    "ready": true,
+    "readiness_error": "",
+    "inspection": {
+      "document": {
+        "lang": "zh-CN",
+        "theme": "dark",
+        "font_faces": 202,
+        "overflow": false
+      },
+      "screens": [
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 692,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "button primary  ",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 734,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "button primary  ",
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "violations": []
+    },
+    "boundary": {
+      "arrivals": [
+        {
+          "path": "/api/tarot/draws",
+          "status": 200
+        },
+        {
+          "path": "/api/tarot/deck",
+          "status": 200
+        },
+        {
+          "path": "/api/tarot/draws/fd5732cd1ada4a388b86ca81526631d0",
+          "status": 200
+        },
+        {
+          "path": "/api/tarot/draws/fd5732cd1ada4a388b86ca81526631d0/readings",
+          "status": 200
+        }
+      ],
+      "external": [],
+      "writes": [],
+      "errors": [],
+      "console": [],
+      "failed": [],
+      "expected_cancellations": [
+        "GET /api/cases: net::ERR_ABORTED"
+      ],
+      "http_errors": []
+    }
+  }
+}

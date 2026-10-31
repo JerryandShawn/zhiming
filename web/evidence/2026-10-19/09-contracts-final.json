@@ -1,0 +1,188 @@
+{
+  "sourceHead": "5e6b2754e68ca7db1b55300f7f38d8e143ae3d53",
+  "configSha256": "a68e4565a061b6859257db0c04dc7ddc6f6e0072a390c1fca1eb4de1ae159f20",
+  "fix": {
+    "file": "web/vite.config.ts",
+    "change": "server.watch.ignored=['**/test-results/**','**/evidence/**']",
+    "businessLogicChanged": false,
+    "assertionsChanged": false
+  },
+  "environment": {
+    "database": "core_test_fe",
+    "pgPort": 55481,
+    "backendPort": 8002,
+    "frontendPort": 4174,
+    "model": "scripted-only"
+  },
+  "stats": {
+    "startTime": "2026-10-18T23:52:24.363Z",
+    "duration": 21691.069,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "metrics": {
+    "database": "core_test_fe",
+    "schema_prefix": "test_frontend_",
+    "model": "scripted-only",
+    "provider_calls": 8,
+    "real_model_calls": 0,
+    "v2_connections": 2,
+    "v2_cursors": [
+      "",
+      "4"
+    ]
+  },
+  "traceAudit": {
+    "repeatedReloads": false,
+    "explicitReloadCase": "1",
+    "navigationEvidence": [
+      {
+        "case": "contracts-1-稳定-request-id-跨断线与刷新重放，成功后新操作换号",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:25.452Z",
+            "url": "http://127.0.0.1:4174/"
+          },
+          {
+            "at": "2026-10-18T23:52:25.858Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 2
+      },
+      {
+        "case": "contracts-10-X-Token登录及401统一重登并保留编辑草稿",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:41.941Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-11-私有洗牌与出生原值不在非资料页渲染，零境外请求",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:43.762Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-2-真实-revision-冲突保留草稿、禁写、核对最新后再保存",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:26.546Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-3-v3-同轮重试与成功恢复；取消接口422时不伪报停止",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:27.300Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-4-资料明确同意、未知禁用时刻、大约必填分钟、回执确认",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:30.973Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-5-记忆更正与删除范围只依程序回执，未知提案不可确认",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:32.102Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-6-服务端亲选牌背、固定牌、揭牌与失败解读恢复不重抽",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:33.089Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-7-报告-PATCH-严格键、北京时间、提前准备、回执校验与409草稿",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:39.171Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-8-全部旧深链保持对应数据页，含报告归档日期",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:40.077Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-9-焦点陷阱-回返、减动效与手机输入可见",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:41.250Z",
+            "url": "http://127.0.0.1:4174/"
+          }
+        ],
+        "viteConnections": 1
+      },
+      {
+        "case": "contracts-SSE-v2-本地事件服务中断续传去重、修订替换、工具-回执-提问-决策渲染",
+        "documents": [
+          {
+            "at": "2026-10-18T23:52:45.525Z",
+            "url": "http://127.0.0.1:4174/tests/fixtures/v2.html"
+          }
+        ],
+        "viteConnections": 1
+      }
+    ]
+  },
+  "processes": {
+    "pg": 9176,
+    "backendLauncher": 3648,
+    "backendListener": 31984,
+    "dev": 7144
+  },
+  "rawReport": "web/test-results/frontend/contracts-final.json",
+  "initialEvidencePreserved": "web/evidence/2026-10-19/09-contracts.json",
+  "cleanup": {
+    "pending": false,
+    "closed": true,
+    "remaining": [],
+    "preview4173": [
+      {
+        "LocalPort": 4173,
+        "OwningProcess": 11776
+      }
+    ],
+    "checkedAt": "2026-10-19T07:53:31.2849842+08:00"
+  },
+  "conclusion": "All 12 unchanged contracts pass after excluding generated output directories from the development watcher. Initial failures 3/6/9 were caused by repeated full-page reloads during the test run."
+}

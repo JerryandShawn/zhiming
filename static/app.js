@@ -320,6 +320,7 @@ function calculationLimitsHtml(result) {
   return gaps+errors+calculationFallbackHtml(result?.calculation_fallbacks);
 }
 function answerHtml(result, fallback='') {
+  if(result?.schema==='core4.0')return `<div class="answer-reading">${md(typeof result.text==='string'?result.text:'')}${result.asked?.question?`<p>${esc(result.asked.question)}</p><p class="muted">可以在输入框补充回答。</p>`:''}</div>`;
   return `<div class="answer-reading">${md(result?.answer || fallback || result?.plain_summary || '')}${realityContextHtml(result)}</div>${evidenceHtml(result)}`;
 }
 function historyItemHtml(m) {
@@ -423,7 +424,7 @@ $("#chatFlow").addEventListener("click", e => {
   }
 });
 
-let sending = false, activeTurn=null;
+let sending = false, activeTurn=null, activeStreamStop=null;
 const chatRequests=new Map();
 function progress(text) {$('#chatProgress').textContent=text;$('#chatProgress').classList.remove('hidden');}
 function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);bindClarification(body,result);const m=result?.meta || {},caseId=m.case_id || m.case_ids?.[0];if(Array.isArray(m.case_ids) || caseId)setChatContext({case_ids:m.case_ids || [caseId],case_id:caseId,title:m.case_title || chatScopeCases.filter(entry=>(m.case_ids || [caseId]).includes(entry.id)).map(entry=>entry.title).join('、'),...(m.draw_id?{draw_id:m.draw_id,draw_case_id:caseId}:{})});scrollChat(false); }
@@ -454,6 +455,10 @@ async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null
   if(selection){$('#selectionChip').textContent=`${selection.date} · ${selection.system} · ${selection.focus}`;$('#selectionChip').classList.remove('hidden');}
   else $('#selectionChip').classList.add('hidden');
   const body=addAiMsg();let gotResult=false, serverError=null;
+  const streamOwnerToken=getToken(),streamOwnerSession=currentSession;
+  let streamRunId=retryOf;
+  const streamAbort=new AbortController();
+  const streamIsCurrent=()=>getToken()===streamOwnerToken && currentSession===streamOwnerSession;
   const context=chatContext(), previous=retryOf?(chatRequests.get(retryOf) || storedJson('chat-pending:'+retryOf,null)):null;
   const messageId=resumeSpec?tarotOperationKey('resume:'+resumeSpec.runId+':'+resumeSpec.interruptId,{message:msg,state_version:resumeSpec.stateVersion}):null;
   const id=previous?.request_id || retryOf || (resumeSpec?'resume:'+resumeSpec.runId+':'+messageId:crypto.randomUUID());
@@ -472,8 +477,17 @@ async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null
       if(run && ['running','queued'].includes(run.status)){await recoverTurn(body,run.id);gotResult=true;return;}
       if(run){r=await api('/api/runs/'+encodeURIComponent(run.id)+'/retry',{method:'POST',body:JSON.stringify({request_id:'retry:'+run.operation_id})});}
     }
-    r ||= payload.resume?await api('/api/runs/'+encodeURIComponent(payload.resume.runId)+'/resume',{method:'POST',body:JSON.stringify({message:payload.message,message_id:payload.resume.messageId,interrupt_id:payload.resume.interruptId,state_version:payload.resume.stateVersion})}):await api('/api/chat',{method:'POST',body:JSON.stringify(payload)});
+    r ||= payload.resume?await api('/api/runs/'+encodeURIComponent(payload.resume.runId)+'/resume',{method:'POST',body:JSON.stringify({message:payload.message,message_id:payload.resume.messageId,interrupt_id:payload.resume.interruptId,state_version:payload.resume.stateVersion})}):await api('/api/chat',{method:'POST',headers:window.mingjingLegacyStream?{Accept:'application/json,text/event-stream'}:{},body:JSON.stringify(payload)});
     if(!r.ok){let detail=await r.json().catch(()=>({}));throw Error(detail.detail || `请求失败 (${r.status})`);}
+    if(!streamIsCurrent())return;
+    if(window.mingjingLegacyStream){
+      const streamed=await window.mingjingLegacyStream.followAccepted({response:r,body,signal:streamAbort.signal,token:streamOwnerToken,isCurrent:streamIsCurrent,fetcher:fetch.bind(window),onRun:runId=>{activeTurn=runId;streamRunId=runId;chatRequests.set(runId,payload);},onReady:stop=>{activeStreamStop=stop;},onFinal:result=>{if(streamIsCurrent()){gotResult=true;renderAnswer(body,result);loaded.memory=false;loaded.cases=false;}},onRetry:()=>{if(!sending && streamIsCurrent())sendChat(msg,selection,streamRunId || id,resumeSpec);}});
+      if(streamed){
+        if(streamed.reason==='cancelled')gotResult=true;
+        if(['failed','error'].includes(streamed.reason))sessionStorage.setItem('chat-retry:'+streamOwnerSession,JSON.stringify({run_id:activeTurn || id,message:msg,selection,resumeSpec}));
+        return;
+      }
+    }
     const reader=r.body.getReader(),dec=new TextDecoder();let buffer='';
     try {
       while(true){
@@ -501,12 +515,13 @@ async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null
     if(!$('#chatInput').value){$('#chatInput').value=msg;sessionStorage.setItem('draft:'+currentSession,msg);}
     if(!pendingImgs.length){pendingImgs=imgs.slice();renderImgStrip();}
   } finally {
+    streamAbort.abort();activeStreamStop=null;
     if(gotResult){sessionStorage.removeItem('chat-pending:'+id);sessionStorage.removeItem('chat-retry:'+currentSession);chatRequests.delete(id);chatRequests.delete(activeTurn);}
     sending=false;activeTurn=null;$('#sendBtn').disabled=false;$('#stopBtn').classList.add('hidden');$('#chatProgress').classList.add('hidden');
     loadSessions().catch(()=>{});$('#chatInput').focus();
   }
 }
-$('#stopBtn').onclick=async()=>{if(activeTurn)try{await writeJson('/api/runs/'+encodeURIComponent(activeTurn)+'/cancel',{});progress('正在停止…');}catch(e){toast(e.message);}};
+$('#stopBtn').onclick=async()=>{if(activeStreamStop){await activeStreamStop();return;}if(activeTurn)try{await writeJson('/api/runs/'+encodeURIComponent(activeTurn)+'/cancel',{});progress('正在停止…');}catch(e){toast(e.message);}};
 $('#sendBtn').onclick=()=>sendChat($('#chatInput').value);
 $('#chatInput').addEventListener('keydown',e=>{if(e.key==='Enter' && !e.shiftKey && !e.isComposing){e.preventDefault();sendChat($('#chatInput').value);}});
 $('#chatInput').addEventListener('input',()=>{sessionStorage.setItem('draft:'+currentSession,$('#chatInput').value);$('#chatInput').style.height='auto';$('#chatInput').style.height=Math.min(160,$('#chatInput').scrollHeight)+'px';});

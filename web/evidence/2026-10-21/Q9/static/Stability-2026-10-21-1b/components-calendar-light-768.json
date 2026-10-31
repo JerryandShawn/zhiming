@@ -1,0 +1,63 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "calendar",
+  "mode": "components",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "light",
+  "url": "/?components=demo#/today",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/components-calendar-light-768.png",
+  "sha256": "061069ca05f1cdfe3dec35401389b5183fd5184794b0ef8b199ab612b5ea5cbf",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "light",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "text-link",
+            "text": "看依据"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 309,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "text-link",
+            "text": "看依据"
+          },
+          {
+            "className": "button primary block",
+            "text": "和明镜聊聊"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

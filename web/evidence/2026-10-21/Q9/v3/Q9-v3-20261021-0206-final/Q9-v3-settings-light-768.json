@@ -1,0 +1,112 @@
+{
+  "schema": "frontend-q9-v3-visual-v1",
+  "run_id": "Q9-v3-20261021-0206-final",
+  "id": "Q9-v3-settings-light-768",
+  "mode": "v3",
+  "page": "settings",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "light",
+  "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-settings-light-768.png",
+  "sha256": "86ff615fff8ecbc3b3758228b12cc3a42658f0b45ff88f7327c95279a509a54a",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-settings-light-768-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-settings-light-768.png",
+      "sha256": "86ff615fff8ecbc3b3758228b12cc3a42658f0b45ff88f7327c95279a509a54a",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Q9-v3-20261021-0206-final/Q9-v3-settings-light-768-full.png",
+      "sha256": "a22da6829308048cbb52679909f25444129158eeaa78d58f71593d0539ce0fff",
+      "full_page": true
+    }
+  ],
+  "captured_at_beijing": "2026-10-21T02:06:29+08:00",
+  "clock": "2026-10-21T10:00:00+08:00",
+  "build_manifest_sha256": "1caccda67130820b980538ffac1e07a08b2678b5802a7083d52c67300bf309ff",
+  "synthetic_only": true,
+  "backend": "http://127.0.0.1:8002 / core_test_fe",
+  "fixture_model": "scripted-only, one reading preseeded per worker; no browser model trigger",
+  "checks": {
+    "ready": true,
+    "readiness_error": "",
+    "inspection": {
+      "document": {
+        "lang": "zh-CN",
+        "theme": "light",
+        "font_faces": 202,
+        "overflow": false
+      },
+      "screens": [
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 904,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 1808,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": []
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 2673,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "switch",
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "violations": []
+    },
+    "boundary": {
+      "arrivals": [
+        {
+          "path": "/api/reports/schedules",
+          "status": 200
+        },
+        {
+          "path": "/api/state",
+          "status": 200
+        },
+        {
+          "path": "/api/health",
+          "status": 200
+        }
+      ],
+      "external": [],
+      "writes": [],
+      "errors": [],
+      "console": [],
+      "failed": [],
+      "expected_cancellations": [],
+      "http_errors": []
+    }
+  }
+}

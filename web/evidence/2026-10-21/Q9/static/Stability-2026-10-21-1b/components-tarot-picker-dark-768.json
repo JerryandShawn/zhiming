@@ -1,0 +1,72 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "tarot-picker",
+  "mode": "components",
+  "viewport": {
+    "width": 768,
+    "height": 1024
+  },
+  "theme": "dark",
+  "url": "/?components=demo#/tarot?spread=reflect3&step=pick",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/components-tarot-picker-dark-768.png",
+  "sha256": "9a4e97ebeae6d94054b5318908394daecf81060ccef8976b73efb6a00d33a9d7",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "dark",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "",
+            "text": "选牌"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 904,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 1808,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 2096,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

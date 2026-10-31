@@ -1,0 +1,38 @@
+.chat-queue {
+  margin: var(--s-4) var(--s-4) 0;
+  padding: var(--s-3) var(--s-4);
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-2);
+  background: var(--paper-2);
+  min-width: 0;
+  flex: none;
+  max-height: calc(var(--control-height) * 5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.chat-queue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.chat-queue-item + .chat-queue-item {
+  border-top: var(--border) solid var(--line);
+  margin-top: var(--s-3);
+  padding-top: var(--s-3);
+}
+.chat-queue-heading,
+.chat-queue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+  align-items: center;
+}
+.chat-queue-heading {
+  justify-content: space-between;
+}
+.chat-queue-text {
+  overflow-wrap: anywhere;
+}
+.chat-queue-actions .button {
+  min-height: var(--control-height);
+}
