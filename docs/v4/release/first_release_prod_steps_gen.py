@@ -226,10 +226,258 @@ held = (HEADER + REOPEN.replace(timer_lines[0], "")).encode("utf-8").replace(b"r
 (OUT / "r04-reopen-timer-held.sh").write_bytes(held)
 check = subprocess.run([GIT_BASH, "-n", str(OUT / "r04-reopen-timer-held.sh")], capture_output=True, text=True)
 assert check.returncode == 0, check.stderr
+# R67: continuation scripts, sent only with a per-occasion continue-order.json. The runbook stays unchanged.
+RETIRE = """retire_failed() {
+  local name="$1" ext stamp
+  test -e "$FR_OP/$name.pid" || return 0
+  test -f "$FR_OP/$name.exit"
+  test "$(cat "$FR_OP/$name.exit")" != 0
+  stamp="$(date -u +%Y%m%dT%H%M%SZ)"
+  mkdir -m 700 "$FR_OP/moved-$name-$stamp"
+  for ext in py log pid exit; do mv -n "$FR_OP/$name.$ext" "$FR_OP/moved-$name-$stamp/"; done
+}
+"""
+COMMON = r"""import os,subprocess,sys,time
+from datetime import datetime,timezone
+sys.path.insert(0,sys.argv[1]);from context import *
+WAIT_SECONDS=300
+RB='zhiming_core_rb_1a131275da9dc8d6';FAILED='zhiming_core_failed_1a131275da9dc8d6'
+FLAG=Path('/www/wwwroot/p-acme/core-maintenance.flag')
+def exists(c,name):return c.execute('SELECT 1 FROM pg_database WHERE datname=%s',(name,)).fetchone() is not None
+def wait_zero(c,name,closed=True):
+ end=time.monotonic()+WAIT_SECONDS;seen=set()
+ while True:
+  rows=c.execute('SELECT a.pid,a.backend_type FROM pg_stat_activity a JOIN pg_database d ON d.oid=a.datid WHERE d.datname=%s',(name,)).fetchall()
+  other=[r for r in rows if r['backend_type']!='autovacuum worker']
+  assert not other,f'{name}: backend other than autovacuum worker, stopped at once: {other}'
+  if not rows:
+   if closed:zero(c,name)
+   print(f'{name}: 0 connections; autovacuum workers seen while waiting: {len(seen)}',flush=True)
+   return
+  seen.update(r['pid'] for r in rows)
+  assert time.monotonic()<end,f'{name}: not 0 after {WAIT_SECONDS}s; maintenance kept'
+  time.sleep(2)
+def failed_at(step,script_sha256,tail):
+ assert (OP/(step+'.exit')).read_text().strip() not in ('','0')
+ assert h(OP/(step+'.py'))==script_sha256
+ lines=[x for x in (OP/(step+'.log')).read_text().splitlines() if x.strip(' ^~')]
+ assert lines[-len(tail):]==tail,'previous step did not stop at the expected line; stopped'
+def move_aside(*names):
+ target=OP/('moved-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'));target.mkdir(mode=0o700)
+ for name in names:os.rename(OP/name,target/name)
+ print('moved aside, nothing deleted:',target.name,*names,flush=True)
+"""
+CONT_PY = {
+    "c-wait-zero": r"""with admin() as c:
+ names=[x for x in (LIVE,NEW,KEPT,RB,FAILED) if exists(c,x)]
+ for name in names:wait_zero(c,name)
+print('all operation databases closed with 0 connections:',*names)
+""",
+    "c-d2-rerun-prep": r"""failed_at('d2-backup',@@D2_SHA@@,@@D2_302@@)
+assert (OP/'central-before.json').is_file()
+assert not any((OP/x).exists() for x in ('database-before.json','privacy-before.json','schema-before.json','live-before.dump','backup-receipt.json'))
+with admin() as c:wait_zero(c,LIVE,closed=False)
+move_aside('central-before.json','d2-backup.py','d2-backup.log','d2-backup.pid','d2-backup.exit')
+print('line 302 proven; send p06a-d2-start with a new attempt')
+""",
+    "c-d3-rerun-prep": r"""failed_at('d3-restore',@@D3_SHA@@,@@D3_335@@)
+with admin() as c:
+ assert not exists(c,NEW)
+ wait_zero(c,LIVE)
+move_aside('d3-restore.py','d3-restore.log','d3-restore.pid','d3-restore.exit')
+print('line 335 proven; send p07a-d3-start with a new attempt')
+""",
+    "c-d4-rerun-prep": r"""failed_at('d4-migrate',@@D4_SHA@@,@@D4_368@@)
+assert not (OP/'migration-receipt.json').exists()
+with admin() as c:
+ wait_zero(c,LIVE);wait_zero(c,NEW)
+move_aside('d4-migrate.py','d4-migrate.log','d4-migrate.pid','d4-migrate.exit')
+print('line 368 proven; send p08a-d4-start with a new attempt')
+""",
+}
+CONT_BG = {
+    "c-d2-mid": r"""from tools.deploy_core import skill_writer_lock
+failed_at('d2-backup',@@D2_SHA@@,@@D2_312@@)
+dump=OP/'live-before.dump'
+with skill_writer_lock(exclusive=True),admin() as c:
+ assert FLAG.is_file()
+ assert all((OP/x).is_file() for x in ('central-before.json','database-before.json','privacy-before.json','schema-before.json'))
+ assert not dump.exists() and not (OP/'backup-receipt.json').exists()
+ snap=read('database-before.json');validate(c,snap);assert capture(c,LIVE)==snap
+ wait_zero(c,LIVE)
+ assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([NEW,KEPT],)).fetchone()
+ allow(c,LIVE,True)
+ try:
+  with dump.open('xb') as out:
+   cmd=[pg_program('pg_dump'),'--host='+F['host'],'--port=5432','--username='+F['user'],'--dbname='+LIVE,'--no-password','--format=custom']
+   result=subprocess.run(cmd,env=process_environment(DSN),stdout=out,stderr=subprocess.PIPE)
+   assert result.returncode==0,'dump failed; keep private diagnostic'
+ finally:allow(c,LIVE,False)
+ wait_zero(c,LIVE)
+ save('backup-receipt.json',{'sha256':h(dump),'source_oid':snap['oid'],'closed':True,'pg_dump_sha256':h(pg_program('pg_dump')),'pg_restore_sha256':h(pg_program('pg_restore'))})
+print('D2 continued from line 312: backup captured; live closed')
+""",
+    "c-d2-tail": r"""from tools.deploy_core import skill_writer_lock
+failed_at('d2-backup',@@D2_SHA@@,@@D2_321@@)
+dump=OP/'live-before.dump'
+with skill_writer_lock(exclusive=True),admin() as c:
+ assert FLAG.is_file()
+ assert dump.is_file() and dump.stat().st_size>0 and not (OP/'backup-receipt.json').exists()
+ snap=read('database-before.json');validate(c,snap);assert capture(c,LIVE)==snap
+ wait_zero(c,LIVE)
+ assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([NEW,KEPT],)).fetchone()
+ restore=pg_program('pg_restore')
+ listing=subprocess.run([restore,'--list',str(dump)],env={'PATH':'/usr/bin:/bin'},capture_output=True,text=True)
+ assert listing.returncode==0
+ toc=listing.stdout.splitlines()
+ assert any(x.split()==[';','dbname:',LIVE] for x in toc)
+ assert any(' TABLE DATA mingjing_core schema_migrations ' in x for x in toc)
+ assert subprocess.run([restore,'--file=/dev/null',str(dump)],env={'PATH':'/usr/bin:/bin'},capture_output=True).returncode==0
+ save('backup-receipt.json',{'sha256':h(dump),'source_oid':snap['oid'],'closed':True,'pg_dump_sha256':h(pg_program('pg_dump')),'pg_restore_sha256':h(pg_program('pg_restore'))})
+print('D2 tail: line 321 proven, dump listed and read in full; live closed')
+""",
+    "c-d3-tail": r"""from tools.deploy_core import export_withdrawals
+failed_at('d3-restore',@@D3_SHA@@,@@D3_349@@)
+with admin() as c:
+ assert not (OP/'restore-verified.json').exists()
+ wait_zero(c,LIVE);wait_zero(c,NEW)
+ snap=read('database-before.json');validate(c,snap);assert capture(c,LIVE)==snap
+ assert not exists(c,KEPT)
+ new=capture(c,NEW);assert new['oid']!=snap['oid'] and semantic(new)==semantic(snap)
+ assert h(OP/'live-before.dump')==read('backup-receipt.json')['sha256']
+ assert h(pg_program('pg_restore'))==read('backup-receipt.json')['pg_restore_sha256']
+ allow(c,NEW,True)
+ try:
+  r=repo(NEW,True)
+  try:
+   check_queue(r);assert export_withdrawals(r)==read('privacy-before.json')
+   with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
+  finally:r.close()
+ finally:allow(c,NEW,False)
+ time.sleep(2)  # our own closed pool connection must have left before the strict wait looks
+ wait_zero(c,NEW)
+ assert capture(c,NEW)['oid']==new['oid']
+ save('restore-verified.json',{'oid':new['oid'],'schema_before_verified':True,'privacy_equal':True})
+print('D3 tail: line 349 proven; new database re-verified and closed')
+""",
+    "c-d5-tail": r"""with admin() as c:
+ assert not (OP/'exchange-receipt.json').exists()
+ snap=read('database-before.json');validate(c,snap)
+ assert read('migration-receipt.json')['privacy_equal']
+ assert not exists(c,NEW)
+ live=capture(c,LIVE);kept=capture(c,KEPT)
+ assert live['oid']==read('restore-verified.json')['oid'] and kept['oid']==snap['oid']
+ assert semantic(live)==semantic(snap) and semantic(kept)==semantic(snap)
+ wait_zero(c,LIVE);wait_zero(c,KEPT)
+ save('exchange-receipt.json',{'old_oid':snap['oid'],'new_oid':live['oid'],'kept_database':KEPT,'admission_opened':False})
+print('D5 tail: exchange proven from database state; receipt written; nothing renamed or reapplied')
+""",
+    "c-r1-after-restore": r"""from tools.deploy_core import skill_writer_lock,export_withdrawals
+assert not (OP/'opened.json').exists() and (OP/'exchange-receipt.json').is_file()
+assert not (OP/'rollback-database.json').exists()
+with skill_writer_lock(exclusive=True),admin() as c:
+ snap=read('database-before.json');validate(c,snap)
+ assert not exists(c,FAILED)
+ live=capture(c,LIVE);rb=capture(c,RB)
+ assert live['oid']==read('exchange-receipt.json')['new_oid'] and rb['oid'] not in (live['oid'],snap['oid'])
+ assert semantic(rb)==semantic(snap)
+ wait_zero(c,LIVE);wait_zero(c,RB)
+ allow(c,RB,True)
+ try:
+  r=repo(RB,True)
+  try:
+   assert export_withdrawals(r)==read('privacy-before.json')
+   with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
+  finally:r.close()
+ finally:allow(c,RB,False)
+ time.sleep(2)  # our own closed pool connection must have left before the strict wait looks
+ wait_zero(c,RB);wait_zero(c,LIVE)
+ with c.transaction():
+  c.execute("SET LOCAL lock_timeout='2s'")
+  c.execute(sql.SQL('ALTER DATABASE {} RENAME TO {}').format(sql.Identifier(LIVE),sql.Identifier(FAILED)))
+  c.execute(sql.SQL('ALTER DATABASE {} RENAME TO {}').format(sql.Identifier(RB),sql.Identifier(LIVE)))
+  apply_metadata(c,LIVE,snap)
+ save('rollback-database.json',{'restored_old_schema':True,'failed_database':FAILED,'new_live_oid':capture(c,LIVE)['oid'],'closed':True})
+print('R1 continued after line 613: old schema exchanged; failed database retained')
+""",
+}
+
+
+def heredoc(number):
+    return re.fullmatch(r"\"\$FR_PY\" -I - \"\$FR_OP\" <<'PY'\n(.*)\nPY\n", blocks[number - 1], re.S).group(1) + "\n"
+
+
+def line_of(text, source):
+    found = [i for i, line in enumerate(text.splitlines(), 1) if line.strip() == source]
+    assert len(found) == 1, source
+    return found[0]
+
+
+context_text = re.search(r"<<'PY'\n(.*?)\nPY\n", blocks[4], re.S).group(1)
+ZERO_ASSERT = "assert r and not r['datallowconn'] and r['n']==0"
+OP_PATH = "/root/zhiming-core-backups/first-release-1a131275da9dc8d6"
+
+
+def zero_tail(step, number, source):
+    return [
+        f'  File "{OP_PATH}/{step}.py", line {line_of(heredoc(number), source)}, in <module>',
+        f"    {source}",
+        f'  File "{OP_PATH}/context.py", line {line_of(context_text, ZERO_ASSERT)}, in zero',
+        f"    {ZERO_ASSERT}",
+        "AssertionError",
+    ]
+
+
+D2_302 = next(line.strip() for line in heredoc(6).splitlines() if line.strip().startswith("assert db.execute("))
+FILLS = {
+    "@@D2_SHA@@": repr(hashlib.sha256(heredoc(6).encode("utf-8")).hexdigest()),
+    "@@D3_SHA@@": repr(hashlib.sha256(heredoc(7).encode("utf-8")).hexdigest()),
+    "@@D4_SHA@@": repr(hashlib.sha256(heredoc(8).encode("utf-8")).hexdigest()),
+    "@@D2_302@@": repr(
+        [f'  File "{OP_PATH}/d2-backup.py", line {line_of(heredoc(6), D2_302)}, in <module>', f"    {D2_302}", "AssertionError"]
+    ),
+    "@@D2_312@@": repr(zero_tail("d2-backup", 6, "allow(c,LIVE,False);zero(c,LIVE)")),
+    "@@D2_321@@": repr(zero_tail("d2-backup", 6, "zero(c,LIVE)")),
+    "@@D3_335@@": repr(zero_tail("d3-restore", 7, "zero(c,LIVE);snap=read('database-before.json');validate(c,snap)")),
+    "@@D3_349@@": repr(zero_tail("d3-restore", 7, "allow(c,NEW,False);zero(c,NEW)")),
+    "@@D4_368@@": repr(zero_tail("d4-migrate", 8, "zero(c,LIVE);zero(c,NEW);allow(c,NEW,True)")),
+}
+
+
+def filled(text):
+    for key, value in FILLS.items():
+        text = text.replace(key, value)
+    assert "@@" not in text
+    return text
+
+
+cont_scripts = {}
+for name, value in CONT_PY.items():
+    cont_scripts[name] = HEADER + f"\"$FR_PY\" -I - \"$FR_OP\" <<'PY'\n{COMMON}{filled(value)}PY\n"
+for name, value in CONT_BG.items():
+    cont_scripts[name + "-start"] = (
+        HEADER
+        + RETIRE
+        + f"retire_failed {name}\n"
+        + f"cat > \"$FR_OP/{name}.py\" <<'PY'\n{COMMON}{filled(value)}PY\n"
+        + f'chmod 600 "$FR_OP/{name}.py"\n'
+        + f'start_step {name} "$FR_PY" -I "$FR_OP/{name}.py" "$FR_OP"\n'
+    )
+    cont_scripts[name + "-status"] = HEADER + f"step_status {name}\n"
+cont_listing = {}
+for name, text in cont_scripts.items():
+    data = text.encode("utf-8")
+    assert b"\r" not in data and data.startswith(b"set -euo pipefail\n")
+    (OUT / (name + ".sh")).write_bytes(data)
+    check = subprocess.run([GIT_BASH, "-n", str(OUT / (name + ".sh"))], capture_output=True, text=True)
+    assert check.returncode == 0, (name, check.stderr)
+    cont_listing[name] = {"sha256": hashlib.sha256(data).hexdigest(), "runbook_blocks": []}
+
 listing = {
     **manifest,
     "r04-reopen-after-rollback": {"sha256": hashlib.sha256(reopen).hexdigest(), "runbook_blocks": []},
     "r04-reopen-timer-held": {"sha256": hashlib.sha256(held).hexdigest(), "runbook_blocks": []},
+    **cont_listing,
 }
 (OUT / "steps.json").write_text(json.dumps(listing, indent=1), encoding="utf-8")
 
@@ -263,6 +511,45 @@ rows += [
     "```bash",
     REOPEN.rstrip("\n"),
     "```",
+    "",
+    "## 附录：撞上 autovacuum 后的续跑（R67，不在默认流程）",
+    "",
+    "`c-` 开头的脚本默认发不出去：除 `window-go.json` 外，还要当次的 `continue-order.json`，"
+    "内容 `{\"script\": \"<下表脚本名>\"}`；发送脚本在连接前把它改名为 `continue-order.used-*`，一份令只用一次。"
+    "判定仍是 n==0：每次等待最多 5 分钟，发现 autovacuum worker 以外的后端立刻停，到时限也停，维护页保持。"
+    "回执字段和原 D 块相同，仍是独占写；重复执行不会覆盖已有回执。文件只移开不删除。"
+    "不重新改名、不重新 apply；`c-r1-after-restore` 里的对调是 R1 原块还没执行的那一步。",
+    "",
+    "发送命令都是 `python docs/v4/release/first_release_prod_send.py <步骤> <attempt>`，下表 attempt 写 2，再次重发递增。",
+    "",
+    "| 撞车位置（执行单行） | 状态 | 处置 |",
+    "| --- | --- | --- |",
+    "| D2 首检 302 | LIVE 开着，只写了 `central-before.json` | `c-d2-rerun-prep` → `p06a-d2-start 2` → `p06b-d2-status 2` |",
+    "| D2 关库 312 | 四份 before 已写，LIVE 已关，原块连不上 | `c-d2-mid-start` → `c-d2-mid-status` |",
+    "| D2 尾 321 | dump 已写，无 receipt | `c-d2-tail-start` → `c-d2-tail-status` |",
+    "| D3 首检 335 | 无变化 | `c-d3-rerun-prep` → `p07a-d3-start 2` → `p07b-d3-status 2` |",
+    "| D3 尾 349 | NEW 已恢复已关，无 receipt | `c-d3-tail-start` → `c-d3-tail-status` |",
+    "| D4 首检 368 | 无变化 | `c-d4-rerun-prep` → `p08a-d4-start 2` → `p08b-d4-status 2` |",
+    "| D4 尾 393 | 回执已写，两库已关 | `c-wait-zero` → 继续 `p09-d5-exchange` |",
+    "| D5 首检 409 | 未改名 | `c-wait-zero` → `p09-d5-exchange 2` |",
+    "| D5 尾 418 | 已对调，无 receipt | `c-d5-tail-start` → `c-d5-tail-status` |",
+    "| D5 资产 432 | 无变化 | `c-wait-zero` → `p10-d5-assets 2` |",
+    "| D6 497 | 无变化 | `c-wait-zero` → `p11-d6-preopen 2` |",
+    "| D6 521 | 无变化 | `c-wait-zero` → `p12-d6-writer 2` |",
+    "| D6 尾 530 | 回执已写，LIVE 已关 | `c-wait-zero` → 继续 `p13-d7-open` |",
+    "| D7 550 | 无 `opened.json`，标记还在，库未开 | `c-wait-zero` → `p13-d7-open 2` |",
+    "| R1 598 | 无状态变化 | `c-wait-zero` → `r01-rollback-database 2` |",
+    "| R1 613（LIVE、RB 两处） | RB 已恢复已关，未对调 | `c-r1-after-restore-start` → `c-r1-after-restore-status` |",
+    "| R3 646 | 库未开 | `c-wait-zero` → `r03-rollback-verify 2` |",
+    "| R3 652 | 库已关，无回执 | `c-wait-zero` → `r03-rollback-verify 2` |",
+    "| r04 第一段 | 库未开 | `c-wait-zero` → `r04-reopen-after-rollback 2`（或 `r04-reopen-timer-held 2`），`reopen-order.json` 仍要 |",
+    "",
+    "D5 尾没有补回执时不能进 R1：R1 要求 `exchange-receipt.json`，先跑 `c-d5-tail`。"
+    "`c-wait-zero` 要求库已关闭，只用于 D2 关库之后。",
+    "",
+    "| 脚本 | sha256 |",
+    "| --- | --- |",
+    *[f"| `{name}` | `{value['sha256']}` |" for name, value in cont_listing.items()],
 ]
 (ROOT / "docs/v4/release/first_release_prod_steps.md").write_bytes(("\n".join(rows) + "\n").encode("utf-8"))
 print(len(manifest), "steps; all 17 runbook blocks rebuilt byte for byte")

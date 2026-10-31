@@ -18,11 +18,23 @@ if not (ROOT / "window-go.json").is_file():
 # R59: reopening after a rollback is never part of the default flow.
 if name.startswith("r04-") and not (ROOT / "reopen-order.json").is_file():
     raise SystemExit("No reopen-order.json: r04 needs an explicit order for this occasion")
+# R67: a continuation needs an order naming the script; its -status script only follows a sent order.
+base = name.removesuffix("-status")
+order = ROOT / "continue-order.json"
+if name.startswith("c-"):
+    if name.endswith("-status"):
+        if not list(ROOT.glob(f"continue-order.used-{base}-*.json")):
+            raise SystemExit("No used continue-order for " + base)
+    elif not order.is_file() or json.loads(order.read_text(encoding="utf-8")).get("script") != name:
+        raise SystemExit("No continue-order.json for " + name)
 raw = (ROOT / (name + ".sh")).read_bytes()
 assert hashlib.sha256(raw).hexdigest() == json.loads((ROOT / "steps.json").read_text())[name]["sha256"]
 assert b"\r" not in raw and raw.startswith(b"set -euo pipefail\n")
 stem = name + ("." + attempt if attempt else "")
 assert not (ROOT / (stem + ".json")).exists()
+if name.startswith("c-") and not name.endswith("-status"):
+    stamp = datetime.now(BEIJING).strftime("%Y%m%dT%H%M%S")
+    order.rename(ROOT / f"continue-order.used-{base}-{stamp}.json")
 started = datetime.now(BEIJING).isoformat()
 result = subprocess.run(
     ["ssh", "-i", KEY, "-o", "BatchMode=yes", "-o", "ConnectTimeout=30", "-o", "ServerAliveInterval=15",
