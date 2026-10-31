@@ -16,8 +16,8 @@ import yaml
 from models.test_probe_delegated_pg import SOURCE, fixture_setup, session, substitute_live_boundary
 from psycopg import sql
 
+from mingjing_core.models import quota_delegated
 from mingjing_core.models.config_policy import ConfigError
-from mingjing_core.models.quota_delegated import DEADLINE
 from mingjing_core.models.quota_delegated_session import require_active
 from mingjing_core.models.quota_guard import QuotaGuard
 from mingjing_core.models.quota_types import GuardRejected
@@ -32,7 +32,7 @@ from tools.eval.targets.v4_live import V4LiveTarget
 from tools.eval.targets.v4_live_judge import V4LiveJudge
 from tools.probe_equivalence_control import ProbeControl
 
-from .test_eval_v4_live_pg import scenario, wire
+from .test_eval_v4_live_pg import pin_delegation_window, scenario, wire
 
 ROOT = Path(__file__).resolve().parents[3]
 CONFIGURED_ARTIFACTS = os.getenv("K3_TOKENIZER_ARTIFACT_DIR")
@@ -62,6 +62,8 @@ class VerifiedFixture:
 
 @pytest.fixture
 def prepare(database: Any, tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    pin_delegation_window(monkeypatch)
+
     def build(*, equivalent: bool = True, mock: bool = False) -> VerifiedFixture:
         # Follow actual wall time instead of the probe helper's independent
         # future reference clock; business scenario time remains frozen separately.
@@ -239,7 +241,7 @@ def test_expired_approval_and_absent_proof_parameters_fail_before_target(
     with pytest.raises(GuardRejected), live_module.live_session(Namespace(), ["T01"]):
         pytest.fail("missing proof parameters must stop")
     # Keep the real PG guard/identity and move only its explicit test clock.
-    fixture.database.guard.clock = FrozenClock(DEADLINE + timedelta(seconds=1))
+    fixture.database.guard.clock = FrozenClock(quota_delegated.DEADLINE + timedelta(seconds=1))
     monkeypatch.setattr(live_module.CentralLocation, "guard", lambda self: fixture.database.guard)
     with pytest.raises(GuardRejected) as caught, live_module.live_session(fixture.args, ["T01"]):
         pytest.fail("expired receipt must stop before any target")

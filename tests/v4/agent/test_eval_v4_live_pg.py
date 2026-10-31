@@ -6,6 +6,7 @@ import json
 import os
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -17,10 +18,12 @@ from models.test_quota_http_pg import rows
 from models.test_u39_anthropic_wire import block_record
 from psycopg import sql
 
+from mingjing_core.models import quota_delegated, quota_r16
 from mingjing_core.models.quota_delegated_session import DelegatedSession
 from mingjing_core.models.quota_guard import QuotaGuard
 from mingjing_core.models.registry import ModelHandle
 from mingjing_core.repositories.postgres import PostgresRepository
+from tools import delegated_grant
 from tools.eval.engine import _record_stop, evaluate_scenario
 from tools.eval.live import candidate_provenance
 from tools.eval.schema import Scenario
@@ -107,8 +110,17 @@ class Harness:
         )
 
 
+def pin_delegation_window(monkeypatch: pytest.MonkeyPatch) -> datetime:
+    """Wall-clock fixtures test the rule, not the calendar; runtime DEADLINE itself stays unchanged."""
+    deadline = datetime.now(UTC) + timedelta(days=30)
+    for module in (quota_delegated, quota_r16, delegated_grant):
+        monkeypatch.setattr(module, "DEADLINE", deadline)
+    return deadline
+
+
 @pytest.fixture
 def live(p2_repo: PostgresRepository, monkeypatch: pytest.MonkeyPatch) -> Iterator[Harness]:
+    pin_delegation_window(monkeypatch)
     configured = os.getenv("K3_TOKENIZER_ARTIFACT_DIR")
     directory = (
         Path(configured) if configured else ROOT.parent / "zhiming-v4/private/artifacts/kimi-k3-installer-20261023"
