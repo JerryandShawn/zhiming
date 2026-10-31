@@ -2,6 +2,11 @@
 
 当前工作树仅 `C:/Users/Administrator/Documents/Codex/zhiming-v4-p10`，分支 `v4/p10-frontend`，恢复头e1cbd281。遵循.agent/PLANS.md。指令板v3和49第一/第三节取代v2暂停；截止2026-11-02 22:00北京时间。中档，不开子代理，本线测试进程最多2，runner最多2 workers；不改后端、服务器、真实模型、飞书或合并，不新增依赖。
 
+## v12 Progress / Decision / Outcome
+
+- [x] R62在日报改为已收口：10bd5e81四个CI run全绿，旧头EEXIST仅作历史。
+- [x] 对话页p75诊断：基线5840ms；懒加载Answers候选5916ms、全部首屏字体预加载候选6448ms，均无收益并撤回。保留两批失败证据，未改2500门槛、字体族或测量条件，未新增依赖。性能仍未完成，继续v6其他项而不写优化成功。
+
 ## v6 Progress（Kimi，2026-10-30 起）
 
 - [x] 读取39d、frontend v6/v5/v4/v3、49、44、10-23/10-27交接、P10设计与根AGENTS；工作树/分支/头与bae83a43一致，未改其他线。
