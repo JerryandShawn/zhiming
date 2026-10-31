@@ -216,7 +216,7 @@ for extra, _ in ((name, 0) for name, value, _ in STEPS if value and value.starts
     body = re.fullmatch(r"\"\$FR_PY\" -I - \"\$FR_OP\" <<'PY'\n(.*)\nPY\n", blocks[number - 1], re.S).group(1)
     assert body in start, extra
 reopen = (HEADER + REOPEN).encode("utf-8")
-assert b"" not in reopen
+assert b"\r" not in reopen
 (OUT / "r04-reopen-after-rollback.sh").write_bytes(reopen)
 check = subprocess.run([GIT_BASH, "-n", str(OUT / "r04-reopen-after-rollback.sh")], capture_output=True, text=True)
 assert check.returncode == 0, check.stderr
@@ -247,12 +247,9 @@ rows += [
     "任何一步失败即停，维护页保持；健康检查失败时已启动的旧服务不自动停，等指令。不删除任何发布、备份或库。",
     "",
     "```bash",
-    REOPEN.rstrip("
-"),
+    REOPEN.rstrip("\n"),
     "```",
 ]
-(ROOT / "docs/v4/release/first_release_prod_steps.md").write_bytes(("
-".join(rows) + "
-").encode("utf-8"))
+(ROOT / "docs/v4/release/first_release_prod_steps.md").write_bytes(("\n".join(rows) + "\n").encode("utf-8"))
 print(len(manifest), "steps; all 17 runbook blocks rebuilt byte for byte")
 sys.exit(0)
