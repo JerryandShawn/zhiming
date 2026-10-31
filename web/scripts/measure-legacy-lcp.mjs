@@ -11,8 +11,8 @@ import { safeWebPath, webRoot } from './bundle-budget.mjs';
 // would bypass the transfer time we are trying to measure. No database/model is used.
 const root = path.resolve(webRoot, '..');
 const target = process.env.FRONTEND_PERF_TARGET ?? 'legacy';
-if (!['legacy', 'h5', 'courses', 'spaces', 'thread'].includes(target))
-  throw new Error('Expected legacy, h5, courses, spaces or thread target');
+if (!['legacy', 'h5', 'courses', 'spaces', 'thread', 'organize'].includes(target))
+  throw new Error('Expected legacy, h5, courses, spaces, thread or organize target');
 const builtTarget = target !== 'legacy';
 const runs = Number(process.env.FRONTEND_PERF_RUNS ?? 5);
 if (![1, 5].includes(runs)) throw new Error('Expected one diagnostic run or five acceptance runs');
@@ -230,7 +230,9 @@ const batch = {
         ? 'h5-isolated-demo-built-loopback-http-no-api'
         : target === 'spaces'
           ? 'spaces-fake-built-loopback-http-no-api'
-          : target === 'thread'
+          : target === 'organize'
+            ? 'organize-draft-fake-built-loopback-http-no-api'
+            : target === 'thread'
             ? 'thread-v4-built-loopback-http-synthetic-api'
             : 'old-html-built-module-loopback-http-synthetic-read-only-api',
   network,
@@ -323,7 +325,9 @@ try {
             ? '/?embed=demo#/chat'
             : target === 'spaces'
               ? '/?spaces=demo#/spaces?space=career'
-              : '/#/chat';
+              : target === 'organize'
+                ? '/?spaces=demo#/organize-draft'
+                : '/#/chat';
       await page.goto(origin + route, { waitUntil: 'networkidle' });
       if (target === 'thread') {
         await page.locator('[data-page="chat"][data-runtime="thread-v4"]').waitFor();
@@ -335,8 +339,11 @@ try {
       else if (target === 'spaces') {
         await page.locator('[data-page="spaces"][data-runtime="spaces-fake"]').waitFor();
         await page.getByRole('heading', { name: '合成样例：是否换岗', exact: true }).waitFor();
+      } else if (target === 'organize') {
+        await page.locator('[data-page="organize-review"][data-runtime="organize-draft-fake"]').waitFor();
+        await page.getByRole('heading', { name: '合成话题', exact: true }).waitFor();
       } else await page.locator('[data-course-state="ready"]').waitFor();
-      if (!['courses', 'spaces', 'thread'].includes(target))
+      if (!['courses', 'spaces', 'thread', 'organize'].includes(target))
         await page.getByRole('textbox', { name: target === 'h5' ? '本地草稿' : '本次问题' }).waitFor();
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(1000);
@@ -406,7 +413,9 @@ try {
           ? 'Isolated H5 sign-in demo only, not signed-in Today, real Feishu/cookie authentication, device, API or deployment acceptance.'
           : target === 'spaces'
             ? 'Synthetic in-memory spaces page only; not signed-in Today, real API, device or deployment acceptance.'
-            : target === 'thread'
+            : target === 'organize'
+              ? 'Synthetic in-memory organize draft only; not real PG, production API, device or deployment acceptance.'
+              : target === 'thread'
               ? 'Synthetic v4 loopback HTTP only; not real PG, production API, device or deployment acceptance.'
               : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
   };
