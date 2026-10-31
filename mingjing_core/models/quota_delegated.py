@@ -15,7 +15,7 @@ from .quota_types import GuardRejected, instant
 
 PREFIX = "v7d-"
 TOKEN = re.compile(r"v7d-([0-9a-f]{40})-(eq|core-k3|core-k3-256k|k31-connect|core-k31)-[0-9a-f]{32}")
-DEADLINE = datetime(2026, 10, 27, 14, tzinfo=UTC)
+DEADLINE = datetime(2026, 11, 9, 14, tzinfo=UTC)
 _SEAL = object()
 
 
