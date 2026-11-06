@@ -1,22 +1,28 @@
 from pathlib import Path
 
+from packaging.requirements import Requirement
+from packaging.utils import canonicalize_name
+
 
 def test_chart_lock_has_hashes_for_every_pinned_package() -> None:
     lines = Path('requirements-charts.lock').read_text(encoding='utf-8').splitlines()
     requirements = [
-        (index, line.strip())
+        (index, line.strip().removesuffix('\\').strip())
         for index, line in enumerate(lines)
         if line.strip() and not line.startswith(('#', ' ', '\t'))
     ]
     expected = {
-        'aiodns', 'aiohappyeyeballs', 'aiohttp', 'aiosignal', 'annotated-types', 'attrs', 'backports.zstd',
+        'aiodns', 'aiohappyeyeballs', 'aiohttp', 'aiosignal', 'annotated-types', 'attrs', 'backports-zstd',
         'brotli', 'cffi', 'frozenlist', 'idna', 'lunar-python', 'multidict', 'pminit', 'propcache',
         'py-iztro', 'pycares', 'pycparser', 'pydantic', 'pydantic-core', 'pyswisseph', 'pythonmonkey',
         'tzdata', 'typing-extensions', 'yarl',
     }
-    assert {requirement.partition('==')[0].lower() for _, requirement in requirements} == expected
+    parsed = [Requirement(requirement) for _, requirement in requirements]
+    assert {canonicalize_name(requirement.name) for requirement in parsed} == expected
     assert len(requirements) == len(expected)
     assert len({requirement for _, requirement in requirements}) == len(requirements)
+    aiohttp = next(requirement for requirement in parsed if requirement.name == 'aiohttp')
+    assert aiohttp.extras == {'speedups'}
     for index, requirement in requirements:
         assert '==' in requirement
         following = lines[index + 1 :]
