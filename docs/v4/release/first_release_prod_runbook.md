@@ -1,18 +1,18 @@
 main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。只豁免既有 `/etc/systemd/system/tat_agent.service` 的旧 `/var/run` PIDFile，以及 `/usr/lib/systemd/system/iptables.service`、`ip6tables.service` 的过时syslog输出警告；原始豁免行写回执。其他任何输出/警告，尤其zhiming unit、drop-in或runtime相关，均停止；不改、重载或停用这三个既有unit。下面捕获与严格过滤代码只落实此名单，其他执行步骤不变。
 
-# 首发生产执行单：6d803bff9832f2a9582c09d25e0a6b9c6207dddc
+# 首发生产执行单：bf6e0bbc720b85510d757b17d4ccd74ff60687bb
 
 main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/Users/Administrator/.ssh/gto_deploy_key`；若使用DEPLOY_KEY_FILE，固定为该路径。只供SSH工具按路径使用，不读取/复制/输出钥匙内容，不改服务器认证或网络。Windows向远端bash发送已审脚本时，须以UTF-8且LF原始字节写stdin，禁止text=True等文本管道转成CRLF；失败后仍按本单停止，不现场修补重试。
 
 执行人：**主线**。操作授权依据为用户 2026-11-07 的连续上线指令；同候选stage成功回执和技术门不变。现场执行逐步记回执，不以文档就绪代替验收。
 
-合并候选包含记忆 2.0；同源R11、完整回归、CI和包见stage单，旧候选质量证据不移植。Core CI run 42337532390 已 completed/success（attempt1）；最终Go引用完整SHA 6d803bff9832f2a9582c09d25e0a6b9c6207dddc 的该实际结果。
+合并候选包含记忆 2.0；同源R11、完整回归、CI和包见stage单，旧候选质量证据不移植。本候选 Core CI run 42388565834 须 completed/success；最终Go引用完整SHA bf6e0bbc720b85510d757b17d4ccd74ff60687bb 的实际结果，旧 run 42337532390 只属于 6d803bff。
 
 本文使用 PostgreSQL 15 原生命令及候选已有Python API，不存在 `first_release_prod --apply` 命令。不得把 `first_release_native_exchange` 的fr_stage guard改成live，也不传 `--local-drill` 冒充生产路径。下面原生SQL/备份/文件切换步骤是本次待审生产操作的明确实现，不依赖尚未开发的CLI。所有代码块先审后执行；任何非0立即停，维护门保留，不覆盖失败产物、不自动重试。
 
 ## D0：放行、固定路径、容量与运行时
 
-31号必须明确：首行Go；完整候选SHA；北京时间开始/结束窗口；接受开门前回滚、开门后一次网页冒烟；stage回执成功的operation与路径。缺项、歧义或窗口未到均停止。37号不能代替31号。新operation固定 `c24caad7ae184faf`，与stage的 `afdfc99790984105` 区分，不复用旧目录。
+31号必须明确：首行Go；完整候选SHA；北京时间开始/结束窗口；接受开门前回滚、开门后一次网页冒烟；stage回执成功的operation与路径。缺项、歧义或窗口未到均停止。37号不能代替31号。新operation固定 `501d95670be144a3`，与stage的 `bcac4df7780c4516` 区分，不复用旧目录。
 
 本机读取31号，核文字与窗口后再进入服务器；不得以文件mtime作为窗口。远端第一次短连仅只读核以下路径/容量/目标，不根据历史状态直接停服务：
 
@@ -20,9 +20,9 @@ main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/U
 set -euo pipefail
 set -C
 umask 077
-FR_SHA=6d803bff9832f2a9582c09d25e0a6b9c6207dddc
+FR_SHA=bf6e0bbc720b85510d757b17d4ccd74ff60687bb
 FR_OLD=7dbc951eaffebd3d812169865eaefcde16a00ed9
-FR_ID=c24caad7ae184faf
+FR_ID=501d95670be144a3
 FR_RELEASE=/root/zhiming-core-releases/$FR_SHA
 FR_OLD_RELEASE=/root/zhiming-core-releases/$FR_OLD
 FR_STAGE=/root/zhiming-core-fr-stage/releases/$FR_SHA
@@ -121,7 +121,7 @@ test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 
 上述文件使用单字段URI DSN；若已有文件不是该受支持格式，停止审查而不覆盖。任意错误输出只记录步骤失败，不复制SQL/口令/原stderr；不现场安装软件或修改认证。
 
-包必须与stage同一公开包，SHA256 `7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
+包必须与stage同一公开包，SHA256 `3294003e56ca152b6de7f1127e68f850e25f4eb114b5b7478b1f810a7f46d59d`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
 
 ```bash
 test ! -e "$FR_RELEASE" && test ! -e "$FR_OP"
@@ -140,13 +140,13 @@ FR_STAGE_PY=/root/zhiming-core-fr-stage/venvs/$FR_SHA/core/bin/python
 import hashlib,json,os,pathlib,sys,tarfile
 sys.path.insert(0,sys.argv[1])
 from tools.first_release_stage_unpack import safe_name,extract_member,MANIFEST
-a=pathlib.Path('/root/zhiming-core-fr-stage/uploads/release.tar.gz')
-assert hashlib.sha256(a.read_bytes()).hexdigest()=='7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012'
+a=pathlib.Path('/root/zhiming-core-fr-stage/uploads/bcac4df7780c4516/release.tar.gz')
+assert hashlib.sha256(a.read_bytes()).hexdigest()=='3294003e56ca152b6de7f1127e68f850e25f4eb114b5b7478b1f810a7f46d59d'
 dest=pathlib.Path(sys.argv[2]);assert not dest.exists()
 with tarfile.open(a,'r:gz') as t:
     members=t.getmembers();names=[safe_name(x.name) for x in members]
     m=json.load(t.extractfile(MANIFEST))
-    assert m['commit']=='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
+    assert m['commit']=='bf6e0bbc720b85510d757b17d4ccd74ff60687bb'
     assert m['schema']=='core3-release-v1' and len(names)==len(set(names))
     assert set(names)=={MANIFEST,*m['files']} and all(x.isfile() for x in members)
     dest.mkdir(mode=0o700)
@@ -227,9 +227,9 @@ import psycopg
 from psycopg import sql
 from psycopg.conninfo import conninfo_to_dict,make_conninfo
 from psycopg.rows import dict_row
-SHA='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
+SHA='bf6e0bbc720b85510d757b17d4ccd74ff60687bb'
 ROOT=Path('/root/zhiming-core-releases')/SHA
-OP=Path('/root/zhiming-core-backups/first-release-c24caad7ae184faf')
+OP=Path('/root/zhiming-core-backups/first-release-501d95670be144a3')
 sys.path.insert(0,str(ROOT))
 from tools.first_release_hermes_entry import _private_read,_parse_environment
 from tools.first_release_database_metadata import capture,validate,apply_metadata,semantic
@@ -242,7 +242,7 @@ def private_env(path):return _parse_environment(_private_read(Path(path)))
 assert F['host'] in ('127.0.0.1','::1') and F['port']=='5432' and F['dbname']=='postgres'
 assert not any(k.startswith('PG') and v for k,v in os.environ.items())
 assert not set(F)-{'host','port','dbname','user','password','connect_timeout'}
-LIVE='zhiming_core_live';NEW='zhiming_core_first_c24caad7ae184faf';KEPT='zhiming_core_before_c24caad7ae184faf'
+LIVE='zhiming_core_live';NEW='zhiming_core_first_501d95670be144a3';KEPT='zhiming_core_before_501d95670be144a3'
 def admin():
  c=psycopg.connect(DSN,autocommit=True,row_factory=dict_row)
  r=c.execute("SELECT current_user,session_user,current_database(),inet_server_port() AS port,current_setting('server_version_num')::int AS version,(SELECT rolsuper FROM pg_roles WHERE rolname=session_user) AS su").fetchone()
@@ -278,6 +278,7 @@ def check_queue(r):
   c.execute('SET TRANSACTION READ ONLY')
   assert c.execute("SELECT count(*) AS n FROM mingjing_core.core_runs WHERE status IN ('queued','running') OR lease_until>now()").fetchone()['n']==0
   assert c.execute("SELECT count(*) AS n FROM mingjing_core.delivery_outbox WHERE status='sending' OR lease_until>now() OR (status='pending' AND due<=now())").fetchone()['n']==0
+from tools.b1_restore_proof_contracts import privacy_ordered,verify_monotone
 PY
 chmod 600 "$FR_OP/context.py"
 ```
@@ -343,7 +344,7 @@ with admin() as c:
  assert semantic(capture(c,NEW))==semantic(snap)
  r=repo(NEW,True)
  try:
-  check_queue(r);assert export_withdrawals(r)==read('privacy-before.json')
+  check_queue(r);assert privacy_ordered(export_withdrawals(r))==privacy_ordered(read('privacy-before.json'))
   with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
  finally:r.close()
  allow(c,NEW,False);zero(c,NEW)
@@ -376,7 +377,7 @@ with admin() as c:
   dry=backfill(memory,'primary',apply=False);first=backfill(memory,'primary',apply=True);second=backfill(memory,'primary',apply=True)
   assert all(second[k]==0 for k in ('message_metadata','search_tokens','assistant_created'))
   apply_withdrawals(r,read('privacy-before.json'))
-  privacy=export_withdrawals(r);assert privacy==read('privacy-before.json')
+  privacy=export_withdrawals(r);verify_monotone(read('privacy-before.json'),privacy)
   apply_withdrawals(r,read('privacy-before.json'));assert export_withdrawals(r)==privacy
   with r.connection() as db:
    grant_runtime_tables(db,'zhiming_core_live_writer')
@@ -387,16 +388,16 @@ with admin() as c:
    db.execute(sql.SQL('GRANT SELECT ON public.checkpoint_migrations TO {}').format(role))
    db.execute(sql.SQL('REVOKE INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER ON public.checkpoint_migrations FROM {}').format(role))
    db.execute(sql.SQL('REVOKE INSERT,UPDATE,DELETE,TRUNCATE,TRIGGER ON mingjing_core.schema_migrations FROM {}').format(role))
-  save('migration-receipt.json',{'version':8,'repeat':{k:second[k] for k in ('message_metadata','search_tokens','assistant_created')},'privacy_equal':True,'source_oid':read('database-before.json')['oid'],'target_oid':read('restore-verified.json')['oid']})
+  save('migration-receipt.json',{'version':8,'repeat':{k:second[k] for k in ('message_metadata','search_tokens','assistant_created')},'privacy_monotone':True,'second_export_equal':True,'source_oid':read('database-before.json')['oid'],'target_oid':read('restore-verified.json')['oid']})
  finally:r.close();allow(c,NEW,False)
  zero(c,LIVE);zero(c,NEW)
 print('D4: schema8, primary repeat-zero and privacy verified; both databases closed')
 PY
 ```
 
-停止：真实owner/ACL/历史checksum异常、存在未知writer、隐私旁账不等、repeat非0、中央位置不受支持等，均保持维护和两个库，不修改工具guard或PG认证来继续。该路径保留原live基线，缩小原地升级风险；不是把恢复成功直接当作允许开门。
+停止：真实owner/ACL/历史checksum异常、存在未知writer、撤销单调性失败或第二次导出变化、repeat非0、中央位置不受支持等，均保持维护和两个库，不修改工具guard或PG认证来继续。该路径保留原live基线，缩小原地升级风险；不是把恢复成功直接当作允许开门。
 
-## D5：对调与四入口固定到6d803bff
+## D5：对调与四入口固定到bf6e0bbc
 
 同一个控制事务内检查原SID、两个OID、原库元数据、0连接及closed，再对调。保留旧live为KEPT，不删除。新live的owner/ACL/库与角色SET从原快照恢复。
 
@@ -407,7 +408,7 @@ sys.path.insert(0,sys.argv[1]);from context import *
 with admin() as c:
  snap=read('database-before.json');zero(c,LIVE);zero(c,NEW)
  assert capture(c,LIVE)==snap and capture(c,NEW)['oid']==read('restore-verified.json')['oid']
- assert read('migration-receipt.json')['privacy_equal']
+ assert read('migration-receipt.json')['privacy_monotone'] and read('migration-receipt.json')['second_export_equal']
  with c.transaction():
   c.execute("SET LOCAL lock_timeout='2s'")
   assert not c.execute('SELECT 1 FROM pg_database WHERE datname=%s',(KEPT,)).fetchone()
@@ -612,7 +613,7 @@ PY
 
 触发：D3–D6失败或窗口不足，且FR_OP/opened.json不存在。公共维护门保持，三service/timer停，Hermes仍被门与旧writer锁挡住。原live未对调时不需要回退原库，保留失败新库；已对调则执行下面恢复，禁止在新live上 `--clean` 或删除表。
 
-先在候选新live只读导出当前privacy，与D2精确相等才可使用D2 dump；本路径开门前没有正常writer，新隐私差异意味着前提不成立，停止并保留现场，不丢弃最新撤销/送达收据。恢复到第三个全新库 `zhiming_core_rb_c24caad7ae184faf`，对调失败新live保存为 `zhiming_core_failed_c24caad7ae184faf`。恢复保owner/ACL/库与角色SET，旧包schema与D2原前缀一致。
+先在候选新live只读导出当前privacy，必须完整保留D2撤销、身份与送达回执才可使用D2 dump；本路径开门前没有正常writer，旧撤销缺失或送达回执冲突意味着前提不成立，停止并保留现场，不丢弃最新撤销/送达收据。恢复到第三个全新库 `zhiming_core_rb_501d95670be144a3`，对调失败新live保存为 `zhiming_core_failed_501d95670be144a3`。恢复保owner/ACL/库与角色SET，旧包schema与D2原前缀一致。
 
 ```bash
 systemctl stop zhiming-core-reports.timer zhiming-core-feishu.service zhiming-core-reports.service mingjingtai.service
@@ -621,11 +622,11 @@ import sys,subprocess
 sys.path.insert(0,sys.argv[1]);from context import *
 from tools.deploy_core import skill_writer_lock,export_withdrawals
 assert not (OP/'opened.json').exists() and (OP/'exchange-receipt.json').is_file()
-RB='zhiming_core_rb_c24caad7ae184faf';FAILED='zhiming_core_failed_c24caad7ae184faf'
+RB='zhiming_core_rb_501d95670be144a3';FAILED='zhiming_core_failed_501d95670be144a3'
 with skill_writer_lock(exclusive=True),admin() as c:
  snap=read('database-before.json');allow(c,LIVE,False);zero(c,LIVE)
  allow(c,LIVE,True);r=repo(LIVE,True)
- try:assert export_withdrawals(r)==read('privacy-before.json')
+ try:verify_monotone(read('privacy-before.json'),export_withdrawals(r))
  finally:r.close();allow(c,LIVE,False)
  assert not c.execute('SELECT 1 FROM pg_database WHERE datname=ANY(%s)',([RB,FAILED],)).fetchone()
  assert h(OP/'live-before.dump')==read('backup-receipt.json')['sha256']
@@ -635,7 +636,7 @@ with skill_writer_lock(exclusive=True),admin() as c:
  with c.transaction():apply_metadata(c,RB,snap)
  r=repo(RB,True)
  try:
-  assert export_withdrawals(r)==read('privacy-before.json')
+  assert privacy_ordered(export_withdrawals(r))==privacy_ordered(read('privacy-before.json'))
   with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
  finally:r.close();allow(c,RB,False)
  zero(c,LIVE);zero(c,RB)

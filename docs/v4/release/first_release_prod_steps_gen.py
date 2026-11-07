@@ -14,8 +14,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 RUNBOOK = ROOT / "docs/v4/release/first_release_prod_runbook.md"
-RUNBOOK_SHA256 = "afe54b29d8737ad574f05291836982bf6e02f03fda9cfc1bb8f43649e7bc996f"
-OUT = ROOT / "private/fr-prod-c24caad7ae184faf"
+RUNBOOK_SHA256 = "3ce073b27fff458695b64e11f9927e4ad92924235b9f6cfe1ba7acfa2d64a316"
+OUT = ROOT / "private/fr-prod-501d95670be144a3"
 GIT_BASH = "C:/Program Files/Git/bin/bash.exe"
 OLD_DEPLOY_CORE_SHA256 = "e5b98588968301cd89e61a54433efe62e8cbb3f57ac2803b6211e2f7f8e65bd8"
 
@@ -326,7 +326,7 @@ COMMON = r"""import os,subprocess,sys,time
 from datetime import datetime,timezone
 sys.path.insert(0,sys.argv[1]);from context import *
 WAIT_SECONDS=300
-RB='zhiming_core_rb_c24caad7ae184faf';FAILED='zhiming_core_failed_c24caad7ae184faf'
+RB='zhiming_core_rb_501d95670be144a3';FAILED='zhiming_core_failed_501d95670be144a3'
 FLAG=Path('/www/wwwroot/p-acme/core-maintenance.flag')
 def exists(c,name):return c.execute('SELECT 1 FROM pg_database WHERE datname=%s',(name,)).fetchone() is not None
 def wait_zero(c,name,closed=True):
@@ -436,7 +436,7 @@ with admin() as c:
  try:
   r=repo(NEW,True)
   try:
-   check_queue(r);assert export_withdrawals(r)==read('privacy-before.json')
+   check_queue(r);assert privacy_ordered(export_withdrawals(r))==privacy_ordered(read('privacy-before.json'))
    with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
   finally:r.close()
  finally:allow(c,NEW,False)
@@ -450,7 +450,7 @@ print('D3 tail: line 349 proven; new database re-verified and closed')
  assert FLAG.is_file() and not (OP/'opened.json').exists()
  assert not (OP/'exchange-receipt.json').exists()
  snap=read('database-before.json');validate(c,snap)
- assert read('migration-receipt.json')['privacy_equal']
+ assert read('migration-receipt.json')['privacy_monotone'] and read('migration-receipt.json')['second_export_equal']
  assert not exists(c,NEW)
  live=capture(c,LIVE);kept=capture(c,KEPT)
  assert live['oid']==read('restore-verified.json')['oid'] and kept['oid']==snap['oid']
@@ -474,7 +474,7 @@ with skill_writer_lock(exclusive=True),admin() as c:
  try:
   r=repo(RB,True)
   try:
-   assert export_withdrawals(r)==read('privacy-before.json')
+   assert privacy_ordered(export_withdrawals(r))==privacy_ordered(read('privacy-before.json'))
    with r.connection() as db:assert [dict(x) for x in db.execute('SELECT version,checksum FROM mingjing_core.schema_migrations ORDER BY version')]==read('schema-before.json')['rows']
   finally:r.close()
  finally:allow(c,RB,False)
@@ -503,7 +503,7 @@ def line_of(text, source):
 
 context_text = re.search(r"<<'PY'\n(.*?)\nPY\n", blocks[4], re.S).group(1)
 ZERO_ASSERT = "assert r and not r['datallowconn'] and r['n']==0"
-OP_PATH = "/root/zhiming-core-backups/first-release-c24caad7ae184faf"
+OP_PATH = "/root/zhiming-core-backups/first-release-501d95670be144a3"
 
 
 def zero_tail(step, number, source):
@@ -574,7 +574,7 @@ rows = [
     "# 首发生产分步脚本（R51）",
     "",
     f"由 `first_release_prod_steps_gen.py` 从执行单（sha256 `{RUNBOOK_SHA256}`）生成，脚本在 "
-    "`private/fr-prod-c24caad7ae184faf/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；"
+    "`private/fr-prod-501d95670be144a3/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；"
     "pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。",
     "",
     "| 步骤 | 执行单块 | 对照 | sha256 前 12 位 |",

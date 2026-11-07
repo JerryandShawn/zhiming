@@ -1,24 +1,24 @@
-# 首发 F 副本 stage 执行单（候选6d803bff）
+# 首发 F 副本 stage 执行单（候选bf6e0bbc）
 
 main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/Users/Administrator/.ssh/gto_deploy_key`；若使用DEPLOY_KEY_FILE，固定为该路径。只供SSH工具按路径使用，不读取/复制/输出钥匙内容，不改服务器认证或网络。Windows向远端bash发送已审脚本时，须以UTF-8且LF原始字节写stdin，禁止text=True等文本管道转成CRLF；失败后仍按本单停止，不现场修补重试。
 
 main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。只豁免既有 `/etc/systemd/system/tat_agent.service` 的旧 `/var/run` PIDFile，以及 `/usr/lib/systemd/system/iptables.service`、`ip6tables.service` 的过时syslog输出警告；原始豁免行写回执。其他任何输出/警告，尤其zhiming unit、drop-in或runtime相关，均停止；不改、重载或停用这三个既有unit。下面捕获与严格过滤代码只落实此名单，其他执行步骤不变。
 
-执行人：**主线**。本单已绑定合并候选 `6d803bff9832f2a9582c09d25e0a6b9c6207dddc`，操作授权依据为用户 2026-11-07 的连续上线指令；同候选37号、CI、R11和stage技术门不变。文档就绪与服务器执行分开记录，未满足前不连接或上传。
+执行人：**主线**。本单已绑定合并候选 `bf6e0bbc720b85510d757b17d4ccd74ff60687bb`，操作授权依据为用户 2026-11-07 的连续上线指令；同候选37号、CI、R11和stage技术门不变。文档就绪与服务器执行分开记录，未满足前不连接或上传。
 
-固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-candidate-20261107/private/fr-stage-6d803bff9832f2a9582c09d25e0a6b9c6207dddc/`；包SHA256 `7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `afdfc99790984105`。交付物已从精确 Git 提交生成，共1863个跟踪文件；同源R11已在独立数据库完成，首发要求48/48、7/7、69/69、29/29及X02均通过，真实请求0。
+固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-candidate-20261107/private/fr-stage-bf6e0bbc720b85510d757b17d4ccd74ff60687bb/`；包SHA256 `3294003e56ca152b6de7f1127e68f850e25f4eb114b5b7478b1f810a7f46d59d`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `bcac4df7780c4516`。交付物已从精确 Git 提交生成，共1863个跟踪文件；同源R11、CI和完整回归结果待本候选实际通过后填写，旧候选结果不移植。
 
-合并候选 Core CI run 42337532390 与时区 run 42337532311 均已 completed/success（attempt1）。进入服务器前由37号引用完整SHA和这两个实际结果；旧 run 40217280728 仅属于 e578e2d，不能作为本单证据。
+本候选 Core CI run 42388565834 正在执行，时区 run 待实际结果后绑定（e6616500 的 run 42375109086 属于文档分支，不是候选证据）。进入服务器前由37号引用完整SHA和实际成功结果；旧 run 42337532390 仅属于 6d803bff，不能作为本单证据。
 
 ## 范围与现有证据
 
-原 `zhiming_core_stage` 只有只读备份；演练只用新 `zhiming_core_fr_stage_afdfc99790984105` 及 `zhiming_core_fr_<operation>_restore/failed`。仅新 `zhiming-core-fr-stage-afdfc99790984105.service`、127.0.0.1:8788，无模型/中央凭据，飞书/报告/公网反代不启动。原stage/live/Hermes不改、不停、不删。禁止freeze/install/publish、旧库clean恢复、Docker/代理/WSL/ACL修复。
+原 `zhiming_core_stage` 只有只读备份；演练只用新 `zhiming_core_fr_stage_bcac4df7780c4516` 及 `zhiming_core_fr_<operation>_restore/failed`。仅新 `zhiming-core-fr-stage-bcac4df7780c4516.service`、127.0.0.1:8788，无模型/中央凭据，飞书/报告/公网反代不启动。原stage/live/Hermes不改、不停、不删。禁止freeze/install/publish、旧库clean恢复、Docker/代理/WSL/ACL修复。
 
 恢复/复制/回填、B7和运行资产的唯一本机原件索引见[恢复计划14:00–14:19四活节](../execplans/first_release_recovery_20261023.md)。各定向轮次分别通过；不称一次完整Linux链。stage模型端口明确拒绝请求，真实Agent/公开K3/PG装配只开放健康、状态、历史，原Web子app队列/dispatcher/维护worker不启动。这不是模型或常驻队列验收。
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定6d803bff包；同源R11已通过，两个同SHA CI均success；本机完整分片回归仍在收尾，37号须在全部技术证据满足后引用|
+|同一首发源码、CI、R11|本单绑定bf6e0bbc包；同源R11、同SHA CI与完整回归须实际通过，37号在全部技术证据满足后引用|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
@@ -31,12 +31,12 @@ main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。�
 主线读取本次37号复核记录，只接受首行Go、明确复核时间晚于2026-11-07 12:00且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。37号必须引用该候选和实际成功CI后才继续。
 
 ```powershell
-$FrGate = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep/private/review-37-6d803bff9832f2a9582c09d25e0a6b9c6207dddc.md'
+$FrGate = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep/private/review-37-bf6e0bbc720b85510d757b17d4ccd74ff60687bb.md'
 if (-not (Test-Path -LiteralPath $FrGate -PathType Leaf)) { throw '37号未出现，停止' }
 $FrGateLines = Get-Content -LiteralPath $FrGate -Encoding UTF8
 if ($FrGateLines[0].Trim() -ne '结论：Go') { throw '37号没有Go，停止' }
 $FrGateText = $FrGateLines -join "`n"
-if ($FrGateText -notmatch '6d803bff9832f2a9582c09d25e0a6b9c6207dddc') { throw '37号候选不符，停止' }
+if ($FrGateText -notmatch 'bf6e0bbc720b85510d757b17d4ccd74ff60687bb') { throw '37号候选不符，停止' }
 $FrTimes = [regex]::Matches($FrGateText, '(?:复核时间|写入时间)[：:]\s*(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?\s*(?:\+08:00|北京时间))')
 if ($FrTimes.Count -ne 1) { throw '37号复核时间缺失或歧义，停止' }
 $FrTime = [DateTimeOffset]::Parse($FrTimes[0].Groups[1].Value.Replace('北京时间','+08:00'))
@@ -50,7 +50,7 @@ if ($FrTime -le [DateTimeOffset]'2026-11-07T12:00:00+08:00') { throw '37号复�
 在下面固定clean候选树核验已经实际生成的包，不重新打包、不覆盖旧交付物。任一hash/候选不符即停止。
 
 ```powershell
-$FrSha = '6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
+$FrSha = 'bf6e0bbc720b85510d757b17d4ccd74ff60687bb'
 $FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-candidate-20261107'
 $FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep/.venv-k3-local/Scripts/python.exe'
 $FrTokenizer = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/private/artifacts/kimi-k3-installer-20261023'
@@ -58,12 +58,12 @@ Set-Location $FrRepo
 if ((git rev-parse HEAD) -ne $FrSha -or (git status --porcelain)) { throw '候选或clean状态不符' }
 $FrDelivery = Join-Path $FrRepo "private/fr-stage-$FrSha"
 $FrTar = Join-Path $FrDelivery 'release.tar.gz'
-if ((Get-FileHash -Algorithm SHA256 -LiteralPath $FrTar).Hash.ToLowerInvariant() -ne '7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012') { throw '包hash不符' }
+if ((Get-FileHash -Algorithm SHA256 -LiteralPath $FrTar).Hash.ToLowerInvariant() -ne '3294003e56ca152b6de7f1127e68f850e25f4eb114b5b7478b1f810a7f46d59d') { throw '包hash不符' }
 if ((Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $FrDelivery 'bootstrap.py')).Hash.ToLowerInvariant() -ne '18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42') { throw '引导hash不符' }
 & $FrPython -m tools.install_k3_tokenizer --destination $FrTokenizer --verify-only
 if ($LASTEXITCODE -ne 0) { throw '公开分词器原件不符' }
 $FrBound = Get-Content (Join-Path $FrDelivery 'delivery.json') -Raw | ConvertFrom-Json
-if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'afdfc99790984105') { throw '交付身份不符' }
+if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'bcac4df7780c4516') { throw '交付身份不符' }
 ```
 
 主线用上述命令核delivery.json中的SHA、operation、两项hash；全部相等才采用下方固定参数，任一不符停止并提醒。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
@@ -73,8 +73,8 @@ if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'afdfc99790984105')
 ```bash
 set -euo pipefail
 umask 077
-FR_SHA='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
-FR_ID='afdfc99790984105'
+FR_SHA='bf6e0bbc720b85510d757b17d4ccd74ff60687bb'
+FR_ID='bcac4df7780c4516'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
@@ -94,21 +94,25 @@ done
 command -v python3.11 sha256sum runuser
 test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
 grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
-! test -e "$FR_ROOT"
-! test -e /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service
+test -d "$FR_ROOT"
+for directory in uploads releases venvs tokenizer operations; do test -d "$FR_ROOT/$directory"; done
+! test -e /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service
+! test -e "$FR_ROOT/operations/$FR_ID"
+! test -e "$FR_ROOT/releases/$FR_SHA"
+! test -e "$FR_ROOT/venvs/$FR_SHA"
+! test -e "$FR_ROOT/tokenizer/$FR_SHA"
+! test -e "$FR_ROOT/uploads/$FR_ID"
 ! ss -ltn | awk '{print $4}' | grep -Eq '(^|:)8788$'
-mkdir -m 700 "$FR_ROOT"
-sha256sum "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" "$FR_PSQL" > "$FR_ROOT/pg-programs.sha256"
-mkdir -m 700 "$FR_ROOT/uploads" "$FR_ROOT/releases" "$FR_ROOT/venvs" "$FR_ROOT/tokenizer" "$FR_ROOT/operations"
-mkdir -m 700 "$FR_ROOT/tokenizer/$FR_SHA" "$FR_ROOT/operations/$FR_ID"
+sha256sum "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" "$FR_PSQL" > "$FR_ROOT/pg-programs-$FR_ID.sha256"
+mkdir -m 700 "$FR_ROOT/tokenizer/$FR_SHA" "$FR_ROOT/operations/$FR_ID" "$FR_ROOT/uploads/$FR_ID"
 ```
 
-根分区不足8GiB、现有fr_stage数据库/新writer角色/同名unit或root存在均停止；不删旧物腾空间。数据库是否全新由copy/provision的实际PG门再次核验。
+根分区不足8GiB、本次数据库/writer/同名unit或operation路径存在均停止；既有root和旧operation保留，不删旧物腾空间。数据库是否全新由copy/provision的实际PG门再次核验。
 
 回到本机，只上传三份公开交付物和lock列出的六个已核公开文件；下面是主线在执行准入满足后使用的传输命令；当前没有上传。
 
 ```powershell
-scp -i 'C:/Users/Administrator/.ssh/gto_deploy_key' -- $FrTar (Join-Path $FrDelivery 'bootstrap.py') (Join-Path $FrDelivery 'delivery.json') 'root@1.14.59.242:/root/zhiming-core-fr-stage/uploads/'
+scp -i 'C:/Users/Administrator/.ssh/gto_deploy_key' -- $FrTar (Join-Path $FrDelivery 'bootstrap.py') (Join-Path $FrDelivery 'delivery.json') 'root@1.14.59.242:/root/zhiming-core-fr-stage/uploads/bcac4df7780c4516/'
 if ($LASTEXITCODE -ne 0) { throw '上传失败停止' }
 $FrNames = (Get-Content 'k3-tokenizer.lock.json' -Raw | ConvertFrom-Json).files.PSObject.Properties.Name
 $FrPublicFiles = @($FrNames | ForEach-Object { Join-Path $FrTokenizer $_ })
@@ -124,15 +128,16 @@ if ($LASTEXITCODE -ne 0) { throw '公开分词器上传失败停止' }
 set -euo pipefail
 set -C
 umask 077
-FR_SHA='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
-FR_ID='afdfc99790984105'
+FR_SHA='bf6e0bbc720b85510d757b17d4ccd74ff60687bb'
+FR_ID='bcac4df7780c4516'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 FR_OP="$FR_ROOT/operations/$FR_ID"
+FR_UPLOAD="$FR_ROOT/uploads/$FR_ID"
 FR_RELEASE="/root/zhiming-core-fr-stage/releases/$FR_SHA"
 FR_PY="$FR_ROOT/venvs/$FR_SHA/core/bin/python"
 FR_TOKENIZER="$FR_ROOT/tokenizer/$FR_SHA"
-FR_ADMIN=/root/zhiming-core-secrets/fr-stage-afdfc99790984105-admin.env
+FR_ADMIN=/root/zhiming-core-secrets/fr-stage-bcac4df7780c4516-admin.env
 # v49: use programs beside the actual 5432 postmaster, never a distribution-specific path.
 mapfile -t FR_PG_PIDS < <(ss -H -ltnp 'sport = :5432' | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u)
 test "${#FR_PG_PIDS[@]}" = 1
@@ -149,8 +154,8 @@ done
 command -v python3.11 sha256sum runuser
 test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
 grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
-sha256sum -c "$FR_ROOT/pg-programs.sha256"
-FR_PACKAGE_SHA='7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012'
+sha256sum -c "$FR_ROOT/pg-programs-$FR_ID.sha256"
+FR_PACKAGE_SHA='3294003e56ca152b6de7f1127e68f850e25f4eb114b5b7478b1f810a7f46d59d'
 FR_BOOTSTRAP_SHA='18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42'
 h() { sha256sum "$1" | cut -d ' ' -f 1; }
 ```
@@ -159,9 +164,9 @@ h() { sha256sum "$1" | cut -d ' ' -f 1; }
 
 ```bash
 [[ "$FR_PACKAGE_SHA" =~ ^[0-9a-f]{64}$ && "$FR_BOOTSTRAP_SHA" =~ ^[0-9a-f]{64}$ ]]
-test "$(h "$FR_ROOT/uploads/release.tar.gz")" = "$FR_PACKAGE_SHA"
-test "$(h "$FR_ROOT/uploads/bootstrap.py")" = "$FR_BOOTSTRAP_SHA"
-python3.11 -I "$FR_ROOT/uploads/bootstrap.py" --candidate "$FR_SHA" --artifact "$FR_ROOT/uploads/release.tar.gz" --artifact-sha256 "$FR_PACKAGE_SHA" --release "$FR_RELEASE"
+test "$(h "$FR_UPLOAD/release.tar.gz")" = "$FR_PACKAGE_SHA"
+test "$(h "$FR_UPLOAD/bootstrap.py")" = "$FR_BOOTSTRAP_SHA"
+python3.11 -I "$FR_UPLOAD/bootstrap.py" --candidate "$FR_SHA" --artifact "$FR_UPLOAD/release.tar.gz" --artifact-sha256 "$FR_PACKAGE_SHA" --release "$FR_RELEASE"
 ! test -e "$FR_ROOT/venvs/$FR_SHA"
 mkdir -m 700 "$FR_ROOT/venvs/$FR_SHA"
 ```
@@ -220,7 +225,7 @@ parent=pathlib.Path('/root/zhiming-core-secrets')
 assert not parent.is_symlink()
 if not parent.exists():parent.mkdir(mode=0o700)
 assert parent.is_dir() and parent.stat().st_uid==0 and stat.S_IMODE(parent.stat().st_mode)==0o700
-paths=[parent/'fr-stage-afdfc99790984105-admin.env',parent/'fr-prod-admin.env']
+paths=[parent/'fr-stage-bcac4df7780c4516-admin.env',parent/'fr-prod-admin.env']
 key='FIRST_RELEASE_EXCHANGE_ADMIN_DSN'
 def private(path):
  fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW)
@@ -354,15 +359,15 @@ for line in pathlib.Path(sys.argv[1]).read_text(encoding='utf-8').splitlines():
  assert any(re.fullmatch(pattern,line) for pattern in patterns),'R49 non-exempt verify output; stop'
  print(line)
 PY
-! test -e /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service
+! test -e /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service
 # set -C的独占重定向保护已有unit；不使用覆盖式install/cp。
-(umask 022; cat "$FR_OP/zhiming-core-fr-stage.service" > /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service)
-test "$(h /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service)" = "$(h "$FR_OP/zhiming-core-fr-stage.service")"
+(umask 022; cat "$FR_OP/zhiming-core-fr-stage.service" > /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service)
+test "$(h /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service)" = "$(h "$FR_OP/zhiming-core-fr-stage.service")"
 systemctl daemon-reload
 fr tools.first_release_stage_runtime admit --operation "$FR_ID" --workspace "$FR_OP" --receipt "$FR_OP/runtime-receipt.json" --receipt-sha256 "$(h "$FR_OP/runtime-receipt.json")" --admin-env-file "$FR_ADMIN" --apply
-systemctl start zhiming-core-fr-stage-afdfc99790984105.service
-test "$(systemctl show -p ActiveState --value zhiming-core-fr-stage-afdfc99790984105.service)" = active
-systemctl show zhiming-core-fr-stage-afdfc99790984105.service -p MainPID -p ControlGroup -p IPAddressDeny -p IPAddressAllow -p RestrictAddressFamilies -p SocketBindAllow -p SocketBindDeny
+systemctl start zhiming-core-fr-stage-bcac4df7780c4516.service
+test "$(systemctl show -p ActiveState --value zhiming-core-fr-stage-bcac4df7780c4516.service)" = active
+systemctl show zhiming-core-fr-stage-bcac4df7780c4516.service -p MainPID -p ControlGroup -p IPAddressDeny -p IPAddressAllow -p RestrictAddressFamilies -p SocketBindAllow -p SocketBindDeny
 ```
 
 systemd不识别指令、BPF/cgroup不可用、unit启动失败或监听不符都停止，不能忽略警告或放宽封锁。`ss -ltnp`应仅有新进程127.0.0.1:8788，不能0.0.0.0/公网。只向新角色授予新副本DML，schema/checkpoint迁移台账无写权，不修改旧库ACL。runtime.json含新网站token/DB口令，仅留私有目录，绝不打印或scp。
@@ -387,8 +392,8 @@ PY
 出站核验必须检查**实际新unit cgroup**，不是另建transient unit。以下由主线在F范围内做TCP连通正负验，不发任何应用层payload，不访问模型/飞书；正验依次试1.1.1.1:443、223.5.5.5:443，选首个可达地址做同地址负验；两者都不可达时不能证明阻断，立即停止并发【提醒用户】。子进程只把自己加入已确认的新unit cgroup，退出后不留进程、不动其他cgroup。
 
 ```bash
-FR_CGROUP="$(systemctl show -p ControlGroup --value zhiming-core-fr-stage-afdfc99790984105.service)"
-test "$FR_CGROUP" = /system.slice/zhiming-core-fr-stage-afdfc99790984105.service
+FR_CGROUP="$(systemctl show -p ControlGroup --value zhiming-core-fr-stage-bcac4df7780c4516.service)"
+test "$FR_CGROUP" = /system.slice/zhiming-core-fr-stage-bcac4df7780c4516.service
 "$FR_PY" -I - "$FR_CGROUP" <<'PY'
 import errno,os,pathlib,socket,sys
 endpoint=None
@@ -405,7 +410,7 @@ print('selected TCP endpoint:',endpoint[0],endpoint[1])
 pid=os.fork()
 if pid==0:
     try:
-        assert sys.argv[1]=='/system.slice/zhiming-core-fr-stage-afdfc99790984105.service'
+        assert sys.argv[1]=='/system.slice/zhiming-core-fr-stage-bcac4df7780c4516.service'
         path=pathlib.Path('/sys/fs/cgroup'+sys.argv[1])/'cgroup.procs'
         with path.open('w') as stream:
             stream.write(str(os.getpid()))
@@ -466,8 +471,8 @@ PY
 然后只停新unit，保持维护门，不做开门后回滚。确认新进程自然退出/0连接，再capture+seal新副本，收尾状态明确为“新unit inactive，新副本及failed均closed，维护门保留”。
 
 ```bash
-systemctl stop zhiming-core-fr-stage-afdfc99790984105.service
-test "$(systemctl show -p ActiveState --value zhiming-core-fr-stage-afdfc99790984105.service)" = inactive
+systemctl stop zhiming-core-fr-stage-bcac4df7780c4516.service
+test "$(systemctl show -p ActiveState --value zhiming-core-fr-stage-bcac4df7780c4516.service)" = inactive
 fr tools.first_release_native_exchange capture --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/finish-metadata.json" --output "$FR_OP/finish-capture.json"
 fr tools.first_release_native_exchange seal --operation "$FR_ID" --admin-env-file "$FR_ADMIN" --metadata "$FR_OP/finish-metadata.json" --metadata-sha256 "$(h "$FR_OP/finish-metadata.json")" --output "$FR_OP/finish-sealed.json"
 ```

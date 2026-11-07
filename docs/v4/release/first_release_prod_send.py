@@ -7,7 +7,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3] / "private/fr-prod-c24caad7ae184faf"
+ROOT = Path(__file__).resolve().parents[3] / "private/fr-prod-501d95670be144a3"
 KEY = "C:/Users/Administrator/.ssh/gto_deploy_key"
 BEIJING = timezone(timedelta(hours=8))
 
@@ -49,7 +49,7 @@ result = subprocess.run(
 record = dict(step=name, attempt=attempt, started_at=started, finished_at=datetime.now(BEIJING).isoformat(),
               exit_code=result.returncode, script_sha256=hashlib.sha256(raw).hexdigest(),
               stdin="raw UTF8 LF bytes; no text mode; CR absent",
-              candidate="6d803bff9832f2a9582c09d25e0a6b9c6207dddc", operation="c24caad7ae184faf", key_path_only=KEY)
+              candidate="bf6e0bbc720b85510d757b17d4ccd74ff60687bb", operation="501d95670be144a3", key_path_only=KEY)
 (ROOT / (stem + ".json")).write_text(json.dumps(record, indent=2), encoding="utf-8")
 print(json.dumps(record))
 raise SystemExit(result.returncode)
