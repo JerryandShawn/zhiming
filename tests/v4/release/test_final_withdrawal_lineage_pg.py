@@ -223,3 +223,26 @@ def test_already_missing_draw_still_has_one_stable_owner_bound_marker(p2_repo: P
     assert apply_withdrawals(p2_repo, latest)["draw_tombstones_added"] == 0
     assert state(p2_repo) == snapshot
     assert export_withdrawals(p2_repo)["deleted_draws"] == [{"owner": "alice", "draw_id": missing}]
+
+
+def test_two_tarot_withdrawal_identities_survive_repeated_replay(p2_repo: PostgresRepository) -> None:
+    draws = seed(p2_repo)
+    for owner in draws:
+        with p2_repo.transaction(owner) as connection:
+            p2_repo.revoke(connection, owner, "fact", "unrelated-" + owner, "deleted")
+    for owner, draw_id in draws.items():
+        p2_repo.mutation_request(
+            owner,
+            "tarot-delete:" + draw_id,
+            "source-delete-" + owner,
+            {},
+            lambda owner=owner, draw_id=draw_id: TarotService(p2_repo).delete(owner, draw_id),
+        )
+    original = export_withdrawals(p2_repo)
+    assert len(original["tarot_requests"]) == 2
+    apply_withdrawals(p2_repo, original)
+    first = export_withdrawals(p2_repo)
+    assert first["tarot_requests"] == original["tarot_requests"]
+    apply_withdrawals(p2_repo, first)
+    second = export_withdrawals(p2_repo)
+    assert second["tarot_requests"] == original["tarot_requests"]
