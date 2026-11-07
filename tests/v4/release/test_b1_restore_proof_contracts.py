@@ -13,7 +13,14 @@ from dataclasses import replace
 from pathlib import Path
 
 import pytest
-from b1_restore_proof_support import SUPPORT, empty_document, make_fixture, pg_tool, pinned_candidate, write
+from b1_restore_proof_support import (
+    SUPPORT,
+    empty_document,
+    make_fixture,
+    pg_tool,
+    pinned_candidate,
+    write,
+)
 
 from tools import b1_restore_proof as proof
 from tools.b1_restore_proof_contracts import (
@@ -21,9 +28,15 @@ from tools.b1_restore_proof_contracts import (
     LOCAL_SCHEMA,
     OWNER_ENV,
     WRITER_ENV,
+    privacy_ordered,
     verify_monotone,
 )
-from tools.b1_restore_proof_process import environment, python_prefix, run_worker, worker_code
+from tools.b1_restore_proof_process import (
+    environment,
+    python_prefix,
+    run_worker,
+    worker_code,
+)
 from tools.b1_restore_replay_contracts import ReplayRejected, file_hash
 from tools.core_incremental_contracts import (
     EXPECTED_MANIFEST,
@@ -208,6 +221,27 @@ def test_formal_source_and_python_require_the_fixed_release_and_lexical_venv(inp
     formal.formal_paths(upgrade)
     with pytest.raises(ReplayRejected, match="FORMAL_FIXED_VENV_REQUIRED"):
         replace(formal, candidate_python=Path("/usr/bin/python3")).formal_paths(upgrade)
+
+
+def test_privacy_order_is_canonical_without_hiding_content_changes():
+    original = empty_document()
+    original["owners"][0]["revocations"] = [
+        {"kind": "message", "entity_id": "b", "operation": "deleted", "metadata": {}},
+        {"kind": "message", "entity_id": "a", "operation": "deleted", "metadata": {}},
+    ]
+    reordered = copy.deepcopy(original)
+    reordered["owners"].reverse()
+    for owner in reordered["owners"]:
+        owner["revocations"].reverse()
+    assert privacy_ordered(reordered) == privacy_ordered(original)
+    assert original["owners"][0]["revocations"][0]["entity_id"] == "b"
+    changed = copy.deepcopy(reordered)
+    next(owner for owner in changed["owners"] if owner["revocations"])["revocations"][0]["entity_id"] = "changed"
+    assert privacy_ordered(changed) != privacy_ordered(original)
+    duplicated = copy.deepcopy(reordered)
+    owner = next(owner for owner in duplicated["owners"] if owner["revocations"])
+    owner["revocations"].append(owner["revocations"][0])
+    assert privacy_ordered(duplicated) != privacy_ordered(original)
 
 
 @pytest.mark.parametrize("kind", ["revocation", "draw", "tarot", "receipt", "owners"])

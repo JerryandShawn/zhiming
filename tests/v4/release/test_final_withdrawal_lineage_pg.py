@@ -246,3 +246,49 @@ def test_two_tarot_withdrawal_identities_survive_repeated_replay(p2_repo: Postgr
     apply_withdrawals(p2_repo, first)
     second = export_withdrawals(p2_repo)
     assert second["tarot_requests"] == original["tarot_requests"]
+
+
+def test_apply_purges_fact_context_with_same_tarot_request_identity(p2_repo: PostgresRepository) -> None:
+    memory = MemoryService(p2_repo)
+    source = memory.receive(
+        "alice",
+        content="SYNTHETIC_FACT_CONTEXT",
+        channel="synthetic",
+        source_id="synthetic-fact-context",
+        operation_id="synthetic-fact-source",
+    )
+    fact = memory.save_fact(
+        "alice", "self", source["id"], "SYNTHETIC_FACT", operation_id="synthetic-fact-create"
+    )
+    case = memory.create_case("alice", "self", PRIVATE, operation_id="synthetic-fact-case")
+    request_key = "synthetic-fact-draw"
+    draw = TarotService(p2_repo).create_draw(
+        "alice",
+        subject_id="self",
+        case_id=case["id"],
+        question=PRIVATE,
+        context_snapshot={"fact_ids": [fact["id"]]},
+        idempotency_key=request_key,
+    )["draw"]
+    with p2_repo.connection() as connection:
+        original = connection.execute(
+            sql.SQL(
+                "SELECT owner,operation,request_key,fingerprint,result_type FROM {} "
+                "WHERE owner='alice' AND operation='create' AND request_key=%s"
+            ).format(p2_repo.table("tarot_requests")),
+            (request_key,),
+        ).fetchone()
+    memory.retire_fact("alice", fact["id"], expected_revision=fact["revision"])
+    before = export_withdrawals(p2_repo)
+    assert before["tarot_requests"] == []
+
+    apply_withdrawals(p2_repo, before)
+    after = export_withdrawals(p2_repo)
+    assert after["tarot_requests"] == [original]
+    verify_monotone(before, after)
+    assert TarotService(p2_repo).get("alice", draw["id"])["context_revoked"] is True
+
+    snapshot = state(p2_repo)
+    apply_withdrawals(p2_repo, before)
+    assert export_withdrawals(p2_repo) == after
+    assert state(p2_repo) == snapshot
