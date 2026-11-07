@@ -129,7 +129,7 @@ FR_ID='afdfc99790984105'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage-afdfc99790984105
 FR_OP="$FR_ROOT/operations/$FR_ID"
-FR_RELEASE="$FR_ROOT/releases/$FR_SHA"
+FR_RELEASE="/root/zhiming-core-fr-stage/releases/$FR_SHA"
 FR_PY="$FR_ROOT/venvs/$FR_SHA/core/bin/python"
 FR_TOKENIZER="$FR_ROOT/tokenizer/$FR_SHA"
 FR_ADMIN=/root/zhiming-core-secrets/fr-stage-afdfc99790984105-admin.env
