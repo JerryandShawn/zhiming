@@ -92,6 +92,7 @@ def test_r34_all_true_state_respects_approved_capacity_and_unique_intent() -> No
         "比较2026-11-01到11-07搬家，若同分怎么办？有没有把全天时辰都扫过？",
         "帮我在2026-10-21到2027-01-21之间找签约日，一次全部算完。",
         "比较10月21日至10月27日哪天出行更合适",
+        "10月1日到10月5日哪天面试好，顺便说说面试技巧",
     ],
 )
 def test_explicit_date_range_with_purpose_or_which_day_opens_window(text):
@@ -106,6 +107,9 @@ def test_explicit_date_range_with_purpose_or_which_day_opens_window(text):
         "2026-10-21到10-27我要出差",
         "比较2026-10-21到10-27的天气",
         "不要择日，只比较2026-10-21到10-27的行程",
+        "10月1日到10月5日有什么面试技巧",
+        "2026-11-01到11-07搬家要准备什么",
+        "10月21日至10月27日出行注意事项",
     ],
 )
 def test_ranges_or_comparisons_without_the_window_shape_do_not_open_window(text):
