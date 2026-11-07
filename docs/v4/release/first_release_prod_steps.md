@@ -1,6 +1,6 @@
 # 首发生产分步脚本（R51）
 
-由 `first_release_prod_steps_gen.py` 从执行单（sha256 `0353015d9d0e4f2c7ad7bab54d21a2c3cf5965d2f0b9ba96f03aa40c3e9db27d`）生成，脚本在 `private/fr-prod-c24caad7ae184faf/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
+由 `first_release_prod_steps_gen.py` 从执行单（sha256 `0d6a03882446091cde21148ed3ac904cfd0ad19b2cd6e219be58eeb37e127e8b`）生成，脚本在 `private/fr-prod-c24caad7ae184faf/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
 
 | 步骤 | 执行单块 | 对照 | sha256 前 12 位 |
 | --- | --- | --- | --- |

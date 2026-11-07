@@ -6,9 +6,9 @@ main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。�
 
 执行人：**主线**。本单已绑定合并候选 `6d803bff9832f2a9582c09d25e0a6b9c6207dddc`，操作授权依据为用户 2026-11-07 的连续上线指令；同候选37号、CI、R11和stage技术门不变。文档就绪与服务器执行分开记录，未满足前不连接或上传。
 
-固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-candidate-20261107/private/fr-stage-6d803bff9832f2a9582c09d25e0a6b9c6207dddc/`；包SHA256 `7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `afdfc99790984105`。交付物已从精确 Git 提交生成，共1863个跟踪文件；同源R11须重新生成并核验，旧候选证据不移植。
+固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-candidate-20261107/private/fr-stage-6d803bff9832f2a9582c09d25e0a6b9c6207dddc/`；包SHA256 `7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `afdfc99790984105`。交付物已从精确 Git 提交生成，共1863个跟踪文件；同源R11已在独立数据库完成，首发要求48/48、7/7、69/69、29/29及X02均通过，真实请求0。
 
-合并候选 Core CI run 42337532390 正在运行，时区 run 42337532311 同步执行。进入服务器前须取得该完整SHA的 success，并由37号引用；旧 run 40217280728 仅属于 e578e2d，不能作为本单证据。
+合并候选 Core CI run 42337532390 与时区 run 42337532311 均已 completed/success（attempt1）。进入服务器前由37号引用完整SHA和这两个实际结果；旧 run 40217280728 仅属于 e578e2d，不能作为本单证据。
 
 ## 范围与现有证据
 
@@ -18,7 +18,7 @@ main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。�
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定6d803bff包；同源R11和完整回归正在验证，CI run42337532390 尚未终态；同SHA success并由37号引用后才继续，不复用旧候选批准|
+|同一首发源码、CI、R11|本单绑定6d803bff包；同源R11已通过，两个同SHA CI均success；本机完整分片回归仍在收尾，37号须在全部技术证据满足后引用|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|

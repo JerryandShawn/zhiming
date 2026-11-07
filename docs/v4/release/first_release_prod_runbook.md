@@ -6,7 +6,7 @@ main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/U
 
 执行人：**主线**。操作授权依据为用户 2026-11-07 的连续上线指令；同候选stage成功回执和技术门不变。现场执行逐步记回执，不以文档就绪代替验收。
 
-合并候选包含记忆 2.0；同源R11、完整回归、CI和包见stage单，旧候选质量证据不移植。Core CI run 42337532390 正在运行，最终Go必须引用完整SHA 6d803bff9832f2a9582c09d25e0a6b9c6207dddc 的实际success。
+合并候选包含记忆 2.0；同源R11、完整回归、CI和包见stage单，旧候选质量证据不移植。Core CI run 42337532390 已 completed/success（attempt1）；最终Go引用完整SHA 6d803bff9832f2a9582c09d25e0a6b9c6207dddc 的该实际结果。
 
 本文使用 PostgreSQL 15 原生命令及候选已有Python API，不存在 `first_release_prod --apply` 命令。不得把 `first_release_native_exchange` 的fr_stage guard改成live，也不传 `--local-drill` 冒充生产路径。下面原生SQL/备份/文件切换步骤是本次待审生产操作的明确实现，不依赖尚未开发的CLI。所有代码块先审后执行；任何非0立即停，维护门保留，不覆盖失败产物、不自动重试。
 

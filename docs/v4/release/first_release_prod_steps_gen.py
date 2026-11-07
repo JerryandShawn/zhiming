@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 RUNBOOK = ROOT / "docs/v4/release/first_release_prod_runbook.md"
-RUNBOOK_SHA256 = "0353015d9d0e4f2c7ad7bab54d21a2c3cf5965d2f0b9ba96f03aa40c3e9db27d"
+RUNBOOK_SHA256 = "0d6a03882446091cde21148ed3ac904cfd0ad19b2cd6e219be58eeb37e127e8b"
 OUT = ROOT / "private/fr-prod-c24caad7ae184faf"
 GIT_BASH = "C:/Program Files/Git/bin/bash.exe"
 OLD_DEPLOY_CORE_SHA256 = "e5b98588968301cd89e61a54433efe62e8cbb3f57ac2803b6211e2f7f8e65bd8"
