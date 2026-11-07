@@ -1,0 +1,23 @@
+id: TA04
+title: 未提交揭牌动作不猜最近牌阵
+category: tarot
+clock: '2026-10-17T10:30:00+08:00'
+targets: [v4]
+seed:
+  entities:
+  - id: fixed-draw
+    kind: tarot_draw
+    status: revealed
+    data:
+      cards:
+      - id: major-08
+        orientation: upright
+turns:
+- user: 揭好了
+  expect:
+    tools_not_called: [tarot_read]
+    must_include_all: [面板]
+scripted:
+- turn: 1
+  model:
+  - text: 请在网页面板上提交揭牌解读，我会读取你明确选中的牌阵。

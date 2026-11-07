@@ -110,6 +110,34 @@ def test_twenty_four_hour_window_and_punctuation_do_not_create_new_decks(
     assert len(TarotService(repo).list_draws("alice")) == 2
 
 
+@pytest.mark.parametrize("explicit", [False, True])
+def test_read_resolves_only_the_authoritative_run_draw(tarot_env, explicit: bool) -> None:
+    h = harness(tarot_env)
+    started, _, _ = call(h, args={"question": QUESTION, "message_id": h.source["id"], "draw_source": "auto"})
+    ident = started.data["draw"]["id"]
+    tarot = TarotService(h.repo)
+    tarot.reveal("alice", ident)
+    select_request(h, ident)
+    values = TarotRead.model_validate({"draw_id": ident} if explicit else {}).model_dump()
+    before = tarot.get("alice", ident)
+    read, ctx, _ = call(h, "tarot_read", values)
+    assert read.ok and read.data["draw"]["id"] == ident
+    assert tarot.get("alice", ident) == before
+    assert execute_tarot(h.service, "tarot_read", values, ctx) == read
+    # An explicit identifier cannot select a different draw, even if the caller
+    # obtains a valid fingerprint for that exact proposed input.
+    with pytest.raises(ScopeError, match="本轮真实选中"):
+        call(h, "tarot_read", {"draw_id": "another-draw"})
+
+
+def test_omitted_draw_never_selects_the_latest_revealed_draw(tarot_env) -> None:
+    h = harness(tarot_env)
+    started, _, _ = call(h, args={"question": QUESTION, "message_id": h.source["id"], "draw_source": "auto"})
+    TarotService(h.repo).reveal("alice", started.data["draw"]["id"])
+    with pytest.raises(EvidenceError, match="先选中并揭示"):
+        call(h, "tarot_read", {"draw_id": None})
+
+
 @pytest.mark.parametrize(
     "statement,allowed",
     [

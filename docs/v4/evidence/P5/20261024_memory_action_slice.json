@@ -1,0 +1,85 @@
+{
+  "recorded_beijing": "2026-10-24T02:21:55.908545+08:00",
+  "target": "v4",
+  "mode": "scripted",
+  "complete_memory2_acceptance": false,
+  "prior_head": "00a14436d784a7fcc0649699780a4c4255de8c3c",
+  "working_tree_changes_at_execution": [
+    "mingjing_core/application/memory2_proposals.py",
+    "tools/eval/targets/v4_memory_actions.py",
+    "tools/eval/targets/v4_target.py"
+  ],
+  "source_sha256": "0e1b2aed985a9d6599ef7109226fbcc2dc7544f7381e1992552dbe38f83917ee",
+  "case": {
+    "id": "M08",
+    "status": "failed",
+    "score": 0.0,
+    "failed_assertions": [
+      "turn[2].receipts[1]",
+      "turn[2].db[1]"
+    ],
+    "scenario_contract_sha256": "9a524127bc2a19676fac154ffb4cb82addd6265c414832030a37fa78b76b3bdf",
+    "assertions": [
+      {
+        "turn": 1,
+        "name": "db[1]",
+        "passed": true
+      },
+      {
+        "turn": 1,
+        "name": "events",
+        "passed": true
+      },
+      {
+        "turn": 2,
+        "name": "receipts[1]",
+        "passed": false
+      },
+      {
+        "turn": 2,
+        "name": "db[1]",
+        "passed": false
+      },
+      {
+        "turn": 2,
+        "name": "events",
+        "passed": true
+      }
+    ]
+  },
+  "scripted_dialogue_model_calls": 2,
+  "scripted_setup_model_calls": 2,
+  "external_provider_requests": 0,
+  "summary": {
+    "passed_across_checkpoints": 30,
+    "failed": [
+      "KU01",
+      "KU02",
+      "M08"
+    ],
+    "unexecuted": [
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "required": 37,
+    "single_final_frozen_run": false
+  },
+  "checks": {
+    "proposals_and_undo_passed": 20,
+    "action_driver_passed": 4,
+    "existing_runtime_and_injection_and_contract_checks_passed": 11,
+    "ruff": "E,F,I,B,UP,SIM; py311; line-length 120"
+  },
+  "known_attempts": [
+    "Initial new action driver inspected authorization_id instead of approval_consent_id and produced target_exception; corrected, final M08 has only second-turn receipt/count failures.",
+    "Initial new driver test passed a consent id instead of a row to consent_live; corrected the new test API call, 4 passed."
+  ],
+  "limitations": [
+    "M08 category setting and evaluator event assertion pass; second event write is not saved. Range-date handling remains unresolved.",
+    "Setup actually executes memory_write in leased v4 runtime over the exact seeded original; model outputs cannot seed business state.",
+    "consent.category_updated is an evaluator-only alias verified from stored settings/consent/proposal, not a newly implemented public SSE event.",
+    "No authenticated HTTP route, production, model quality or final acceptance is established."
+  ]
+}

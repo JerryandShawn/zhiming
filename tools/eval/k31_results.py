@@ -88,9 +88,16 @@ def pending_questions(report: dict, candidate: str, source: str, *, unavailable_
     identities = [case["id"] for case in cases]
     if len(identities) != len(set(identities)) or not set(identities) <= set(planned):
         raise ValueError("R12_CASES_REJECTED")
-    if any(case["status"] not in {"passed", "failed", "incomplete", "judge_unavailable"} for case in cases):
+    if any(
+        case["status"] not in {"passed", "failed", "incomplete", "judge_unavailable", "needs_brain_review"}
+        for case in cases
+    ):
         raise ValueError("R12_CASE_STATUS_REJECTED")
-    finished = {case["id"] for case in cases if case["status"] in {"passed", "failed", "judge_unavailable"}}
+    finished = {
+        case["id"]
+        for case in cases
+        if case["status"] in {"passed", "failed", "judge_unavailable", "needs_brain_review"}
+    }
     pending = [identity for identity in planned if identity not in finished]
     if not pending or meta.get("pending_scenario_ids") != pending:
         raise ValueError("R12_PENDING_QUESTIONS_REJECTED")
@@ -121,6 +128,7 @@ def aggregate(reports: list[dict], candidate: str) -> dict:
                 "failed",
                 "incomplete",
                 "judge_unavailable",
+                "needs_brain_review",
             }:
                 raise ValueError("K31_CASE_REJECTED")
             physical += case["model_calls"]
@@ -131,7 +139,19 @@ def aggregate(reports: list[dict], candidate: str) -> dict:
             elif case["id"] in completed:
                 raise ValueError("K31_COMPLETED_QUESTION_DUPLICATED")
             else:
-                completed[case["id"]] = {key: case[key] for key in ("id", "status", "score")}
+                completed[case["id"]] = {
+                    key: case[key]
+                    for key in (
+                        "id",
+                        "status",
+                        "score",
+                        "machine_status",
+                        "machine_score",
+                        "needs_brain_review",
+                        "review_reason",
+                    )
+                    if key in case
+                }
     if len(sources) != 1:
         raise ValueError("K31_REPORT_SOURCE_REJECTED")
     cases = [completed[identity] for identity in CORE30_IDS if identity in completed]

@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-10-24T04:50:53.371948+08:00",
+  "timezone": "Asia/Shanghai",
+  "board_version": 3,
+  "branch": "v4/p5-memory2",
+  "scope": "P5 C2 source-backed event knowledge gap answer, explicit undo and context dependency closure",
+  "validation": [
+    {
+      "suite": "initial new confirmation/undo PG file",
+      "passed": 21,
+      "seconds": 6.62
+    },
+    {
+      "suite": "new authority/cascade checks and existing date PG file",
+      "passed": 32,
+      "seconds": 9.4
+    },
+    {
+      "suite": "final answer/date/context PG checks after explicit preparation/confirmation clock guards",
+      "passed": 56,
+      "seconds": 16.48
+    },
+    {
+      "suite": "reopened preparation-clock change affected exact undo and cascade checks",
+      "passed": 2,
+      "failed": 1,
+      "failure": "new test compared different timezone spellings of the same instant"
+    },
+    {
+      "suite": "corrected new reopened-clock guard, comparing aware instants",
+      "passed": 1,
+      "seconds": 1.24
+    },
+    {
+      "suite": "new backdated background-repair undo guard",
+      "passed": 1,
+      "seconds": 1.19
+    }
+  ],
+  "counts_overlap": true,
+  "new_cases": 27,
+  "native_checks": [
+    "original statement instant preserved",
+    "answer original source and version added",
+    "old context versions invalidated",
+    "resolved question removed from L3",
+    "same gap ID reopened with restored fact version",
+    "reopened gap forgotten with fact",
+    "fact and change snapshot bodies removed by withdrawal",
+    "answer and undo each bound to one operation",
+    "write and cascade failures fully rolled back",
+    "backdated actions rejected using injected application clock"
+  ],
+  "full_regression_rerun": false,
+  "required_37_rerun": false,
+  "latest_required_37": {
+    "passed": 34,
+    "failed": 3,
+    "failed_ids": [
+      "M08",
+      "KU01",
+      "KU02"
+    ]
+  },
+  "upstream_sync": {
+    "beijing": "2026-10-24T04:47:15+08:00",
+    "sha": "5af4628c37a6d654a7d8cc02ce50ea75bd3baf3a",
+    "method": "explicit tracking ref fetch then ordinary merge of verified SHA",
+    "result": "Already up to date"
+  },
+  "external_provider_requests": 0,
+  "model_downloads": 0,
+  "application_server_access": false,
+  "ready": false,
+  "not_verified": [
+    "authenticated channel and background wiring",
+    "strict model-tool updated commit proof",
+    "CI",
+    "live quality"
+  ],
+  "privacy": "Public evidence is aggregate only; original snapshots remain in native privacy cascade, mutation receipts body-free",
+  "counts_note": "The new 27 cases passed across development slices; final related56 predates the last two extra clock guards. Do not sum overlapping runs or call them one green full run."
+}

@@ -1,0 +1,149 @@
+{
+  "recorded_beijing": "2026-10-24T02:12:43.674569+08:00",
+  "target": "v4",
+  "mode": "scripted",
+  "contract_version": "v2.2 isolated appendix B",
+  "runtime_head_at_execution": "02ecdaaa0e509e97eec304aaa68e08b624c57bce",
+  "working_tree_changes_at_execution": [
+    "tools/eval/schema.py",
+    "tools/eval/targets/v4_context_observations.py",
+    "tools/eval/scenarios_v4_memory22/",
+    "tests/v4/agent/test_memory2_v22_contracts.py"
+  ],
+  "source_sha256": "b1b67f01fa4b2534912f65e3a86afd5442bd86396fa75c9b44cb371494de885e",
+  "summary": {
+    "count": 10,
+    "passed": 8,
+    "not_applicable": 0,
+    "points": 8.0,
+    "score": 0.8,
+    "categories": {
+      "memory_recall": {
+        "count": 8,
+        "passed": 8,
+        "points": 8.0,
+        "not_applicable": 0,
+        "score": 1.0
+      },
+      "memory_write": {
+        "count": 2,
+        "passed": 0,
+        "points": 0.0,
+        "not_applicable": 0,
+        "score": 0.0
+      }
+    },
+    "model_calls": 31,
+    "target_model_calls": 31,
+    "judge_model_calls": 0,
+    "elapsed_seconds": 4.497
+  },
+  "external_provider_requests": 0,
+  "complete_memory2_acceptance": false,
+  "required_count": 37,
+  "cumulative_evidence": {
+    "passed_at_separate_checkpoints": 30,
+    "failed": 2,
+    "unexecuted": [
+      "M08",
+      "F01",
+      "F02",
+      "F03",
+      "F04"
+    ],
+    "single_final_frozen_run": false,
+    "earlier_evidence": "20261024_memory_runtime_subset.json"
+  },
+  "cases": [
+    {
+      "id": "A01",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "63506313296a1c5d33bb13d73f73577db5f2cabe6fafe5268d9f576a42c00a78",
+      "failed_assertions": []
+    },
+    {
+      "id": "A02",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "ebcd210bcf4956813a183c5e8ae6104d9156767e7ee136a7101030de99371b9c",
+      "failed_assertions": []
+    },
+    {
+      "id": "A03",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "780f97abba4ff4c46c30d4e1c326f0503a0f97e117ff45d6246675ddfcb27d2c",
+      "failed_assertions": []
+    },
+    {
+      "id": "KU01",
+      "status": "failed",
+      "score": 0.0,
+      "scenario_contract_sha256": "780612d40dffc968e7e66043db0e43d7449709d202c6d09c18d80bef6ca085f5",
+      "failed_assertions": [
+        "turn[2].receipts[1]",
+        "turn[2].db[1]"
+      ]
+    },
+    {
+      "id": "KU02",
+      "status": "failed",
+      "score": 0.0,
+      "scenario_contract_sha256": "da9cc33e1c708d8763aff2391bb1b7cc77d070e34085231d0abd2a1d32062536",
+      "failed_assertions": [
+        "turn[1].receipts[1]",
+        "turn[2].receipts[1]",
+        "turn[2].db[1]",
+        "turn[3].db[1]"
+      ]
+    },
+    {
+      "id": "MS01",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "d73ae51e43a24bd3dbd292cd6de19da33ff8f89215cbc0cb575bdb854197b2da",
+      "failed_assertions": []
+    },
+    {
+      "id": "MS02",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "5fa09e2199157bdfbc49f3544fba6b96f42a8fa936a2fa4f1d01fc034c5c4323",
+      "failed_assertions": []
+    },
+    {
+      "id": "MS03",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "27f5b2fdeebaf116c8d34dbbb7dcda96a7f532d484efd27a4e4c663acfdbae1c",
+      "failed_assertions": []
+    },
+    {
+      "id": "TM01",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "9ca23d61badf03d507426fac64f76b6f59f3602511a36b03fff71d26acf8ca99",
+      "failed_assertions": []
+    },
+    {
+      "id": "TM02",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "e2b2c405d5a47b6c3a3550e7ef8ccf5ea43c56c7fb674403fcfc43dd47dcd2ea",
+      "failed_assertions": []
+    }
+  ],
+  "checks": {
+    "isolated_contract_tests_passed": 5,
+    "original_22_scoring_hashes_unchanged": true,
+    "ruff_rules": "E,F,I,B,UP,SIM; py311; line-length 120"
+  },
+  "limitations": [
+    "Scripted answers are supplied; only DB/context/tool assertions establish runtime evidence.",
+    "MS02/MS03 declare prior category consent in synthetic seed; they do not verify new consent.",
+    "TM02 verifies original dated history in L5, without pretending a vague date was saved as an event.",
+    "KU01 has no integrated semantic city update; KU02 slot argument/updated runtime proof remains unavailable.",
+    "No production, Feishu delivery, live quality, human calibration or final full acceptance is established."
+  ]
+}

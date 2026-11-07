@@ -1,0 +1,68 @@
+{
+  "recorded_at": "2026-10-24T06:24:41.045662+08:00",
+  "timezone": "Asia/Shanghai",
+  "board_version": 3,
+  "branch": "v4/p5-memory2",
+  "scope": "profile proposal preparation/action chronology, undo reopening and deterministic suggestion deduplication",
+  "initial_checks": {
+    "failed": 4,
+    "behavior_reproductions": 3,
+    "new_metadata_assertion": 1,
+    "description": "backdated acceptance/dismissal and acceptance predating reopen succeeded; new preparation field was missing"
+  },
+  "checks": [
+    {
+      "suite": "new chronology and related profile proposals/context/timezone",
+      "passed": 31,
+      "seconds": 9.32
+    },
+    {
+      "suite": "new cross-operation dedup regression before correction",
+      "failed": 1,
+      "reason": "new volatile preparation timestamp changed the existing deterministic operation fingerprint"
+    },
+    {
+      "suite": "final chronology, profile proposals, actual L2/scripted commit and timezone",
+      "passed": 34,
+      "seconds": 10.04
+    }
+  ],
+  "counts_overlap": true,
+  "new_cases": 7,
+  "changes": [
+    "new pending proposal stores injected Clock preparation instant",
+    "accept/dismiss cannot use an older user statement instant",
+    "undo reopening refreshes the preparation instant",
+    "repeated identical suggestion returns existing identity without refreshing preparation or rewriting fields",
+    "normal receipt replay remains read-only and deleted suggestions remain deleted"
+  ],
+  "validation": [
+    "real isolated loopback PG15",
+    "FrozenClock and explicit +08 instants",
+    "provider keys stripped and tracing disabled",
+    "loopback-only Python network guard",
+    "Ruff E/F/I/B/UP/SIM and format120",
+    "files below400 lines and functions below60 lines"
+  ],
+  "legacy_boundary": "existing proposals without prepared_at retain previous source/creation-time checks; no fabricated historical preparation instant",
+  "external_provider_requests": 0,
+  "model_downloads": 0,
+  "ready": false,
+  "latest_required_acceptance": {
+    "passed": 34,
+    "total": 37,
+    "failed": [
+      "M08",
+      "KU01",
+      "KU02"
+    ],
+    "not_rerun_for_this_change": true
+  },
+  "full_regression": "not repeated; previous 4403/0/72/1 result applies only to cf48cb1 before this scoped profile fix",
+  "limitations": [
+    "authenticated routes/background scheduling remain unwired",
+    "eighth authoritative profile section missing",
+    "local synthetic success does not establish product/live quality",
+    "no Agent loop, commit gate, channel, scheduler or model changes"
+  ]
+}

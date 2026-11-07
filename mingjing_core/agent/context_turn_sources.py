@@ -15,6 +15,21 @@ def attach_turn_sources(memory: Any, snapshot: SourceSnapshot, supplied: dict | 
     repo = memory.repo
     with repo.transaction(snapshot.owner):
         run = authorize_boundary(repo, snapshot.owner, snapshot.subject, snapshot.current, supplied)
+        if ident := run["request"].get("draw_id"):
+            from mingjing_core.application.tarot_reveal_ingress import selected_draw
+
+            draw = selected_draw(
+                repo,
+                snapshot.owner,
+                snapshot.subject,
+                ident,
+                snapshot.current["thread_id"],
+                run["request"].get("case_ids"),
+            )
+            # Only the server's authenticated run can attach this state. Card
+            # meanings and faces must still come from tarot_read's tool result.
+            projection = {key: draw[key] for key in ("id", "question", "spread_id")}
+            snapshot = replace(snapshot, extra_entities=dict(snapshot.extra_entities, revealed_draw=(projection,)))
         identifiers = run["request"].get("source_message_ids")
         if identifiers is None:
             return snapshot

@@ -101,7 +101,6 @@ def test_missing_agent_or_meter_rejects_before_creating_source(assembly_repo: Po
     "options",
     [
         {"images": ["synthetic-upload"]},
-        {"draw_id": "synthetic-draw"},
         {"reading_id": "synthetic-reading"},
         {"mode": "report"},
         {"selection": {"chart": True}},

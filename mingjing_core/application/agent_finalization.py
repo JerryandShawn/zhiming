@@ -125,9 +125,9 @@ class AgentFinalizer:
                 raise EvidenceError("最终依赖集合与持久运行不符")
             assert_no_withdrawal(self.repo, current, versions, snapshot_revision)
             effective = reconcile_versions(self.repo, current, versions)
+            native_receipts = persisted_receipts(self.repo, current)
             receipts = tuple(
-                {key: value for key, value in item.items() if key != "_operation"}
-                for item in persisted_receipts(self.repo, current)
+                {key: value for key, value in item.items() if key != "_operation"} for item in native_receipts
             ) + withdrawal_acknowledgements(self.repo, current, effective)
             self._asked(connection, current, asked)
             if asked and asked["question"] not in text:
@@ -142,11 +142,14 @@ class AgentFinalizer:
             self._aliases(current, alias_map, checked.cited_keys, effective)
             source = self._source(current, effective)
             message = self._message(current, source, checked, effective)
+            from mingjing_core.application.agent_updated_receipts import public_updated_receipts
+
+            display_receipts = public_updated_receipts(self.repo, current, native_receipts)
             envelope = build_envelope(
                 current,
                 checked,
                 message_id=message["id"],
-                receipts=receipts,
+                receipts=display_receipts + withdrawal_acknowledgements(self.repo, current, effective),
                 asked=asked,
                 options=options,
                 usage=usage,

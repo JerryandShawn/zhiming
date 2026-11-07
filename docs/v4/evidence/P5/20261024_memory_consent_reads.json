@@ -1,0 +1,100 @@
+{
+  "recorded_at": "2026-10-24T05:20:54.920185+08:00",
+  "timezone": "Asia/Shanghai",
+  "board_version": 3,
+  "branch": "v4/p5-memory2",
+  "scope": "effective memory read authority and consent dependencies of injected memory facts; native gates untouched",
+  "initial_regression_reproduction": {
+    "failed": 4,
+    "reason": "stopped/deleted/ledger-revoked consent still returned granted fact; injected context omitted exact consent version"
+  },
+  "checks": [
+    {
+      "suite": "initial fix + proposal/profile context",
+      "passed": 24,
+      "seconds": 8.44
+    },
+    {
+      "suite": "new consent tests and existing native epoch tests",
+      "passed": 17,
+      "seconds": 6.71
+    },
+    {
+      "suite": "consent reads/layers/proposal undo and legacy memory/proposals",
+      "passed": 56,
+      "subtests_passed": 16,
+      "warnings": 1,
+      "seconds": 15.78
+    },
+    {
+      "suite": "ledger-only withdrawal at both unchanged native freshness gates",
+      "passed": 1,
+      "seconds": 1.46
+    }
+  ],
+  "counts_overlap": true,
+  "new_cases": 13,
+  "unchanged_native_gate_audit": {
+    "scope": "isolated synthetic PG, no model transport",
+    "pre_send_rejected": true,
+    "final_commit_fenced": true,
+    "external_requests": 0,
+    "pre_send_error_type": "RegenerationRequired"
+  },
+  "required37": {
+    "target": "v4",
+    "mode": "scripted",
+    "count": 37,
+    "passed": 34,
+    "failed": [
+      {
+        "id": "KU01",
+        "failed_assertions": [
+          "turn[2].receipts[1]",
+          "turn[2].db[1]"
+        ]
+      },
+      {
+        "id": "KU02",
+        "failed_assertions": [
+          "turn[2].receipts[1]",
+          "turn[3].db[1]"
+        ]
+      },
+      {
+        "id": "M08",
+        "failed_assertions": [
+          "turn[2].receipts[1]",
+          "turn[2].db[1]"
+        ]
+      }
+    ],
+    "scripted_model_calls": 72,
+    "external_provider_requests": 0,
+    "source_sha256": "36d6706e686448eb6c7d54f27e6e9bebf57fe1d89f57ebacef1e13fd9705e84e",
+    "scoring_corpus_sha256": "1ace95b84cbf159a5835d050d86dedc40e576fed37a802df5ca6942d05e5c31f"
+  },
+  "full_regression_started": false,
+  "next_full": "one new milestone full is justified by shared memory read changes; start only Beijing minutes30-44 with corrected preflight; never repeat for stability",
+  "scope_boundary": "Changed only memory reads and context memory dependency assembly, no Agent loop/send gate/final gate/channel/scheduler/model edits",
+  "external_requests": 0,
+  "model_downloads": 0,
+  "ready": false,
+  "limitations": [
+    "raw historical include_inactive view preserved",
+    "not a data deletion or consent management endpoint",
+    "CI and live quality not established"
+  ],
+  "existing_warning": "legacy test_dsn helper returns DSN string (PytestReturnNotNoneWarning); no new source warning",
+  "selection_error": "first related command named a nonexistent test path; no tests ran, corrected by inspecting actual files",
+  "next_full_preflight": {
+    "passed": true,
+    "checks": [
+      "loopback-only Python guard",
+      "isolated PostgreSQL15",
+      "existing pinned tokenizer with k3 runtime",
+      "existing p10 jsdom module path"
+    ],
+    "full_started": false
+  }
+}

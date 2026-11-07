@@ -8,9 +8,13 @@ from typing import TYPE_CHECKING, Any
 from zoneinfo import ZoneInfo
 
 from mingjing_core.application.agent_tools_contracts import ToolContext, ToolResult
-from mingjing_core.application.agent_tools_projection import project_result, sources_active
+from mingjing_core.application.agent_tools_projection import (
+    project_result,
+    sources_active,
+)
 from mingjing_core.domain.contracts import EvidenceError
 from mingjing_core.memory.tokenize import tokenize
+from mingjing_core.memory2.ranking import rank_key, ranked_projection
 from mingjing_core.timekit.almanac import almanac
 from mingjing_core.timekit.calendar_cn import day_status
 from mingjing_core.timekit.timestamps import history_instant
@@ -97,18 +101,21 @@ def memory_search(service: AgentToolsService, args: dict[str, Any], ctx: ToolCon
         for row in rows:
             if kind == "fact" and row["id"] not in valid:
                 continue
+            original = row
             row = project_result(service, row, kind, ctx, facts)
             if row is None:
                 continue
             day = event_day(row, zone)
             if (since and (day is None or day < since)) or (until and (day is None or day > until)):
                 continue
-            items.append(dict(row, entity_kind=kind))
-    items.sort(key=lambda row: (-row.get("search_rank", 0), row["id"]))
+            items.append(ranked_projection(original, dict(row, entity_kind=kind), clock=service.clock))
+    items.sort(key=rank_key)
     return {
         "items": items[: args["limit"]],
         "candidate_limit_per_kind": 100,
         "date_basis": "event_at_or_source_time",
+        "ranking": "lexical_times_importance_180d",
+        "vector_available": False,
     }
 
 

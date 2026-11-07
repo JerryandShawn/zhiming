@@ -109,7 +109,7 @@ def effect_receipt(result,kind):
 
 
 def create_app(service=None):
-    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None}
+    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None, 'memory_maintenance': None}
     def core(req=None):
         if state['service'] is None: state['service'] = ConsultationService.from_base()
         if req: state['service'].repo.ensure_owner(auth(req))
@@ -135,6 +135,7 @@ def create_app(service=None):
             from ..application.runtime_assembly import legacy_queue
             svc = core()
             await asyncio.to_thread(state['maintenance'].tick)
+            await asyncio.to_thread(state['memory_maintenance'].tick)
             svc.repo.cleanup_media_deletions()
             if not state['workers']:
                 queue = legacy_queue(svc.repo,limit=1)
@@ -144,8 +145,10 @@ def create_app(service=None):
     @asynccontextmanager
     async def lifespan(app):
         from ..application.maintenance_schedule import PrivacyMaintenanceSchedule
+        from ..application.memory2_schedule import MemoryMaintenanceSchedule
         svc=core(); assembly=getattr(svc,'runtime_assembly',None)
         state['maintenance']=PrivacyMaintenanceSchedule(svc.repo)
+        state['memory_maintenance']=MemoryMaintenanceSchedule(svc.repo)
         if assembly:state['dispatcher']=assembly.dispatcher(svc)
         if state['dispatcher']:state['dispatcher'].start()
         state['task'] = asyncio.create_task(worker())
@@ -411,7 +414,11 @@ def create_app(service=None):
         svc=core(req);owner=auth(req);data=await body(req);draw=svc.tarot.get_for_reading(owner,ident);request=key(data)
         from ..application.thread_queue import owner_runtime
         if owner_runtime(svc.repo.assert_scope(owner,draw['subject_id'])['settings'])=='v4':
-            raise EvidenceError('v4 既有牌阵解读入口尚未接线，原牌阵已保留')
+            from ..application.tarot_reveal_ingress import TarotRevealIngress
+            svc.runtime_assembly.require_agent()
+            run=TarotRevealIngress(svc).submit(owner=owner,subject=draw['subject_id'],draw_id=ident,
+                request_id='reading:'+request,message=data.get('supplement'),depth=data.get('depth','standard'))
+            return await stream(owner,run,request=req)
         snap=svc.memory.snapshot(owner,draw['subject_id'],[draw['case_id']])
         version=svc.tarot.begin_reading(owner,ident,model=getattr(svc.model,'model','configured'),prompt_version='core3.0',
                     context_snapshot={'revision':snap['revision'],'fact_ids':[f['id'] for f in snap['facts']],'supplement':data.get('supplement','')},idempotency_key=request)['reading']
@@ -591,4 +598,6 @@ def create_app(service=None):
         return svc.repo.put(owner,'feedback',key(data),{'forecast_id':data.get('forecast_id'),'feedback':data.get('feedback'),'source':'user'},operation_id='feedback:'+key(data))
     from .thread_routes import thread_router
     app.include_router(thread_router(core,auth,body))
+    from .memory2_routes import memory2_router
+    app.include_router(memory2_router(core,auth,body))
     return app

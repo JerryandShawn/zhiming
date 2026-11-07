@@ -319,8 +319,13 @@ function calculationLimitsHtml(result) {
   const errors=list(result?.calculation_errors).filter(row=>row && typeof row==='object').map(row=>`<p class="calculation-error"><strong>${esc(systems[row.system] || '计算范围')}</strong> · ${esc(row.code || 'CALCULATION_ERROR')} · ${esc(row.reason || labels[row.code] || '计算未完成')}</p>`).join('');
   return gaps+errors+calculationFallbackHtml(result?.calculation_fallbacks);
 }
+function memoryUpdateReceiptsHtml(result) {
+  const receipts=Array.isArray(result?.receipts)?result.receipts:[];
+  return receipts.filter(row=>row?.write_status==='updated' && typeof row.summary==='string')
+    .map(row=>`<p class="memory-notice" role="status">${esc(row.summary)}</p>`).join('');
+}
 function answerHtml(result, fallback='') {
-  return `<div class="answer-reading">${md(result?.answer || fallback || result?.plain_summary || '')}${realityContextHtml(result)}</div>${evidenceHtml(result)}`;
+  return `<div class="answer-reading">${md(result?.answer || fallback || result?.plain_summary || '')}${realityContextHtml(result)}</div>${memoryUpdateReceiptsHtml(result)}${evidenceHtml(result)}`;
 }
 function historyItemHtml(m) {
   let html=histMsgHtml(m);

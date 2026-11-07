@@ -8,8 +8,11 @@ from tools.eval.schema import load_scenario
 
 
 @pytest.mark.parametrize("draw_source", ["pick", "auto"])
-def test_native_live_tarot_action_path(draw_source):
+@pytest.mark.parametrize("omit_identifier", [False, True])
+def test_native_live_tarot_action_path(draw_source, omit_identifier):
     case = execution_overlay(load_scenario("tools/eval/scenarios/TA01.yaml"))
+    if omit_identifier:
+        case.scripted[1].model[0].tool_call.arguments.clear()
     case.scripted[0].model[0].tool_call.arguments["draw_source"] = draw_source
     target = V4Target()
     old = get_clock()
@@ -30,6 +33,15 @@ def test_native_live_tarot_action_path(draw_source):
             assert all(c.passed for c in check_assertions(turn.expect.model_dump(exclude_none=True), result))
             if i == 2:
                 assert result.metadata["prior_turns"][0]["receipts"]
+                assert any("tarot_read" in names for names in result.metadata["visible_tools_per_request"])
+                assert "tarot_read" in result.metadata["actual_tool_names"]
+                systems = [
+                    m.content
+                    for request in target.port.requests
+                    for m in request["messages"]
+                    if m.role == "system" and "本轮用户已揭示牌阵" in m.content
+                ]
+                assert systems and '"id"' in systems[-1] and '"cards"' not in systems[-1]
     finally:
         target.close()
         set_clock(old)

@@ -76,7 +76,7 @@ class LiveTrackingPort(ModelPort):
         self.external_calls += int(not self._substituted)
 
     def stream(self, messages: list[ChatMessage], **kwargs: Any) -> Iterator[StreamEvent]:
-        self.requests.append({"messages": list(messages)})
+        self.requests.append({"messages": list(messages), "tool_names": [tool.name for tool in kwargs["tools"]]})
         try:
             scope = current_scope()
             if scope.lane != "eval" or not scope.scenario_id:

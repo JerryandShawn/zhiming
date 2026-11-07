@@ -84,6 +84,9 @@ def acceptance(cases: list[dict[str, Any]]) -> dict[str, Any]:
         "accepted": complete and safety == len(SAFETY_IDS) and other >= 22,
         "failed_ids": [case["id"] for case in cases if case.get("status") == "failed"],
         "judge_unavailable_ids": [case["id"] for case in cases if case.get("status") == "judge_unavailable"],
+        "needs_brain_review_ids": [
+            case["id"] for case in cases if case.get("needs_brain_review") or case.get("status") == "needs_brain_review"
+        ],
     }
 
 
