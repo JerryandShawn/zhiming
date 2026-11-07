@@ -76,7 +76,7 @@ umask 077
 FR_SHA='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
 FR_ID='afdfc99790984105'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
-FR_ROOT=/root/zhiming-core-fr-stage-afdfc99790984105
+FR_ROOT=/root/zhiming-core-fr-stage
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
 # v49: use programs beside the actual 5432 postmaster, never a distribution-specific path.
 mapfile -t FR_PG_PIDS < <(ss -H -ltnp 'sport = :5432' | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u)
@@ -108,11 +108,11 @@ mkdir -m 700 "$FR_ROOT/tokenizer/$FR_SHA" "$FR_ROOT/operations/$FR_ID"
 回到本机，只上传三份公开交付物和lock列出的六个已核公开文件；下面是主线在执行准入满足后使用的传输命令；当前没有上传。
 
 ```powershell
-scp -i 'C:/Users/Administrator/.ssh/gto_deploy_key' -- $FrTar (Join-Path $FrDelivery 'bootstrap.py') (Join-Path $FrDelivery 'delivery.json') 'root@1.14.59.242:/root/zhiming-core-fr-stage-afdfc99790984105/uploads/'
+scp -i 'C:/Users/Administrator/.ssh/gto_deploy_key' -- $FrTar (Join-Path $FrDelivery 'bootstrap.py') (Join-Path $FrDelivery 'delivery.json') 'root@1.14.59.242:/root/zhiming-core-fr-stage/uploads/'
 if ($LASTEXITCODE -ne 0) { throw '上传失败停止' }
 $FrNames = (Get-Content 'k3-tokenizer.lock.json' -Raw | ConvertFrom-Json).files.PSObject.Properties.Name
 $FrPublicFiles = @($FrNames | ForEach-Object { Join-Path $FrTokenizer $_ })
-scp -i 'C:/Users/Administrator/.ssh/gto_deploy_key' -- @FrPublicFiles "root@1.14.59.242:/root/zhiming-core-fr-stage-afdfc99790984105/tokenizer/$FrSha/"
+scp -i 'C:/Users/Administrator/.ssh/gto_deploy_key' -- @FrPublicFiles "root@1.14.59.242:/root/zhiming-core-fr-stage/tokenizer/$FrSha/"
 if ($LASTEXITCODE -ne 0) { throw '公开分词器上传失败停止' }
 ```
 
@@ -127,7 +127,7 @@ umask 077
 FR_SHA='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
 FR_ID='afdfc99790984105'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
-FR_ROOT=/root/zhiming-core-fr-stage-afdfc99790984105
+FR_ROOT=/root/zhiming-core-fr-stage
 FR_OP="$FR_ROOT/operations/$FR_ID"
 FR_RELEASE="/root/zhiming-core-fr-stage/releases/$FR_SHA"
 FR_PY="$FR_ROOT/venvs/$FR_SHA/core/bin/python"
@@ -341,7 +341,7 @@ PY
 
 ```bash
 fr tools.first_release_stage_runtime provision --operation "$FR_ID" --workspace "$FR_OP" --receipt "$FR_OP/exchange-receipt.json" --receipt-sha256 "$(h "$FR_OP/exchange-receipt.json")" --candidate "$FR_SHA" --tokenizer "$FR_TOKENIZER" --admin-env-file "$FR_ADMIN" --apply
-systemd-analyze verify "$FR_OP/zhiming-core-fr-stage-afdfc99790984105.service" > "$FR_OP/verify-stage.log" 2>&1
+systemd-analyze verify "$FR_OP/zhiming-core-fr-stage.service" > "$FR_OP/verify-stage.log" 2>&1
 # R49: set -e requires verify exit0 before this exact whitelist check.
 python3.11 -I - "$FR_OP/verify-stage.log" <<'PY'
 import pathlib,re,sys
@@ -356,8 +356,8 @@ for line in pathlib.Path(sys.argv[1]).read_text(encoding='utf-8').splitlines():
 PY
 ! test -e /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service
 # set -C的独占重定向保护已有unit；不使用覆盖式install/cp。
-(umask 022; cat "$FR_OP/zhiming-core-fr-stage-afdfc99790984105.service" > /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service)
-test "$(h /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service)" = "$(h "$FR_OP/zhiming-core-fr-stage-afdfc99790984105.service")"
+(umask 022; cat "$FR_OP/zhiming-core-fr-stage.service" > /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service)
+test "$(h /etc/systemd/system/zhiming-core-fr-stage-afdfc99790984105.service)" = "$(h "$FR_OP/zhiming-core-fr-stage.service")"
 systemctl daemon-reload
 fr tools.first_release_stage_runtime admit --operation "$FR_ID" --workspace "$FR_OP" --receipt "$FR_OP/runtime-receipt.json" --receipt-sha256 "$(h "$FR_OP/runtime-receipt.json")" --admin-env-file "$FR_ADMIN" --apply
 systemctl start zhiming-core-fr-stage-afdfc99790984105.service
