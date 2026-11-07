@@ -28,10 +28,10 @@ main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。�
 
 ## 执行前本机身份门（不连接服务器）
 
-主线读取37号，只接受首行Go、明确复核时间晚于2026-10-24 12:30且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。本轮37号未出现，服务器命令均未执行。同SHA CI已success；37号仍必须引用该候选和成功CI后才继续。
+主线读取本次37号复核记录，只接受首行Go、明确复核时间晚于2026-11-07 12:00且同一40位SHA；缺失即停止。先通过下列本机校验，再结合当次授权范围进入服务器步骤。37号必须引用该候选和实际成功CI后才继续。
 
 ```powershell
-$FrGate = 'C:/Users/Administrator/Documents/Codex/2026-10-11/p-jerrymeng-asia-1-14-59/outputs/明镜台v4_大脑交付/37_大脑复核_首发stage.md'
+$FrGate = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep/private/review-37-6d803bff9832f2a9582c09d25e0a6b9c6207dddc.md'
 if (-not (Test-Path -LiteralPath $FrGate -PathType Leaf)) { throw '37号未出现，停止' }
 $FrGateLines = Get-Content -LiteralPath $FrGate
 if ($FrGateLines[0].Trim() -ne '结论：Go') { throw '37号没有Go，停止' }
@@ -40,10 +40,10 @@ if ($FrGateText -notmatch '6d803bff9832f2a9582c09d25e0a6b9c6207dddc') { throw '3
 $FrTimes = [regex]::Matches($FrGateText, '(?:复核时间|写入时间)[：:]\s*(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?\s*(?:\+08:00|北京时间))')
 if ($FrTimes.Count -ne 1) { throw '37号复核时间缺失或歧义，停止' }
 $FrTime = [DateTimeOffset]::Parse($FrTimes[0].Groups[1].Value.Replace('北京时间','+08:00'))
-if ($FrTime -le [DateTimeOffset]'2026-10-24T12:30:00+08:00') { throw '37号复核时间太旧，停止' }
+if ($FrTime -le [DateTimeOffset]'2026-11-07T12:00:00+08:00') { throw '37号复核时间太旧，停止' }
 ```
 
-37号时间字段按上述格式核验；实际文件格式不同或有歧义就停，不能用文件修改时间代替。CI原证据见 `../eval/v50_candidate_ci.json`；原220失败见v43_candidate_ci.json，不覆盖原件。继续条件为同SHA CI success及37号明确放行；否则停止并提醒。
+37号时间字段按上述格式核验；实际文件格式不同或有歧义就停，不能用文件修改时间代替。继续条件为同SHA CI success及37号明确放行；否则停止并提醒。
 
 ## B0–B1：本机固定包、引导文件与公开分词器
 
@@ -51,8 +51,8 @@ if ($FrTime -le [DateTimeOffset]'2026-10-24T12:30:00+08:00') { throw '37号复�
 
 ```powershell
 $FrSha = '6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
-$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-r46'
-$FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/python.exe'
+$FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-candidate-20261107'
+$FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-release-prep/.venv-k3-local/Scripts/python.exe'
 $FrTokenizer = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/private/artifacts/kimi-k3-installer-20261023'
 Set-Location $FrRepo
 if ((git rev-parse HEAD) -ne $FrSha -or (git status --porcelain)) { throw '候选或clean状态不符' }
