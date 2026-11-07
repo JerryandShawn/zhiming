@@ -121,7 +121,7 @@ test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 
 上述文件使用单字段URI DSN；若已有文件不是该受支持格式，停止审查而不覆盖。任意错误输出只记录步骤失败，不复制SQL/口令/原stderr；不现场安装软件或修改认证。
 
-包必须与stage同一公开包，SHA256 `e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
+包必须与stage同一公开包，SHA256 `7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012`；不得复制整个stage/private或把stage运行口令带到生产。已有生产release存在即停，不覆盖。用原始archive逐成员校验、解包到新目录；这里使用不带stage路径限制的通用文件校验函数，不调用限定stage的unpack入口：
 
 ```bash
 test ! -e "$FR_RELEASE" && test ! -e "$FR_OP"
@@ -141,7 +141,7 @@ import hashlib,json,os,pathlib,sys,tarfile
 sys.path.insert(0,sys.argv[1])
 from tools.first_release_stage_unpack import safe_name,extract_member,MANIFEST
 a=pathlib.Path('/root/zhiming-core-fr-stage/uploads/release.tar.gz')
-assert hashlib.sha256(a.read_bytes()).hexdigest()=='e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795'
+assert hashlib.sha256(a.read_bytes()).hexdigest()=='7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012'
 dest=pathlib.Path(sys.argv[2]);assert not dest.exists()
 with tarfile.open(a,'r:gz') as t:
     members=t.getmembers();names=[safe_name(x.name) for x in members]
