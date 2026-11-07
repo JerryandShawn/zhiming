@@ -15,6 +15,12 @@ from mingjing_core.domain.contracts import EvidenceError, LeaseConflict
 
 from .postgres import PostgresRepository
 
+# The run-control monitor polls inside an owner transaction (several round trips). A stream write that arrives
+# during that poll must outlast it; the window still stays well inside the worker's 0.75 s acknowledgment budget.
+# The pool starts empty (min_size=0), so the first checkout may also have to open a connection.
+OWNER_LOCK_WINDOW_SECONDS = 0.2
+POOL_CHECKOUT_SECONDS = 0.2
+
 
 def _active(stopped: threading.Event | None) -> None:
     if stopped is not None and stopped.is_set():
@@ -22,7 +28,7 @@ def _active(stopped: threading.Event | None) -> None:
 
 
 def _owner_lock(connection: Any, key: str, stopped: threading.Event | None) -> None:
-    deadline, waiter = time.monotonic() + 0.025, stopped or threading.Event()
+    deadline, waiter = time.monotonic() + OWNER_LOCK_WINDOW_SECONDS, stopped or threading.Event()
     while True:
         _active(stopped)
         if time.monotonic() >= deadline:
@@ -50,7 +56,7 @@ def streaming_transaction(
         raise EvidenceError("流式刷新不能加入已有外层事务")
     _active(stopped)
     try:
-        with repo.pool.connection(timeout=0.05) as connection, connection.transaction():
+        with repo.pool.connection(timeout=POOL_CHECKOUT_SECONDS) as connection, connection.transaction():
             connection.execute("SET LOCAL statement_timeout='100ms'")
             connection.execute("SET LOCAL lock_timeout='25ms'")
             _owner_lock(connection, repo.schema + ":" + owner, stopped)
