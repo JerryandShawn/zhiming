@@ -1,14 +1,14 @@
-# 首发 F 副本 stage 执行单（候选e578e2d）
+# 首发 F 副本 stage 执行单（候选6d803bff）
 
 main64/R45认证参数：本机发起的每次SSH/SCP必须显式使用 `-i C:/Users/Administrator/.ssh/gto_deploy_key`；若使用DEPLOY_KEY_FILE，固定为该路径。只供SSH工具按路径使用，不读取/复制/输出钥匙内容，不改服务器认证或网络。Windows向远端bash发送已审脚本时，须以UTF-8且LF原始字节写stdin，禁止text=True等文本管道转成CRLF；失败后仍按本单停止，不现场修补重试。
 
 main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。只豁免既有 `/etc/systemd/system/tat_agent.service` 的旧 `/var/run` PIDFile，以及 `/usr/lib/systemd/system/iptables.service`、`ip6tables.service` 的过时syslog输出警告；原始豁免行写回执。其他任何输出/警告，尤其zhiming unit、drop-in或runtime相关，均停止；不改、重载或停用这三个既有unit。下面捕获与严格过滤代码只落实此名单，其他执行步骤不变。
 
-执行人：**主线**。本单已绑定候选 `e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd`，授权依据为 v13 授权 F、main v36/v41/v49/v50 和匹配候选的37号首行 `结论：Go`；复核时间须晚于2026-10-24 12:30。文档就绪与服务器执行分开记录：37号未出现时只完成本机准备，不连接服务器，不上传。
+执行人：**主线**。本单已绑定合并候选 `6d803bff9832f2a9582c09d25e0a6b9c6207dddc`，操作授权依据为用户 2026-11-07 的连续上线指令；同候选37号、CI、R11和stage技术门不变。文档就绪与服务器执行分开记录，未满足前不连接或上传。
 
-固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/fr-stage-e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/`；包SHA256 `e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `4e680f175ea28cc8`。同源R11证据：`C:/Users/Administrator/Documents/Codex/zhiming-v4-r46/private/candidate-eval/e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd/R11-de7472f506d04966a4b1a54c8bc78f72/assessment.json`，48/48、7/7、69/69、29/29已核。质量依据main v41/38号第九节：旧8727完整29＋220定向五题＋独立人工改判，安全5/5、其他23/24；TA01保留失败，首发后查。不覆盖原机器分数，不再跑评测。
+固定交付：`C:/Users/Administrator/Documents/Codex/zhiming-v4-release-candidate-20261107/private/fr-stage-6d803bff9832f2a9582c09d25e0a6b9c6207dddc/`；包SHA256 `7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012`；bootstrap SHA256 `18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42`；operation `afdfc99790984105`。交付物已从精确 Git 提交生成，共1863个跟踪文件；同源R11须重新生成并核验，旧候选证据不移植。
 
-PR24同SHA CI run 40217280728（https://github.com/JerryandShawn/zhiming/actions/runs/40217280728）已启动，已实际success，head_sha/attempt1与全部job终态已核，最后实际job完成时间2026-10-25T18:50:07Z（北京时间02:50:07）。进入服务器前须同SHA success，并由37号引用；37号未放行前无服务器执行结果。原220失败证据保留在v43_candidate_ci.json。
+合并候选 Core CI run 42337532390 正在运行，时区 run 42337532311 同步执行。进入服务器前须取得该完整SHA的 success，并由37号引用；旧 run 40217280728 仅属于 e578e2d，不能作为本单证据。
 
 ## 范围与现有证据
 
@@ -18,7 +18,7 @@ PR24同SHA CI run 40217280728（https://github.com/JerryandShawn/zhiming/actions
 
 |门|当前结论|
 |---|---|
-|同一首发源码、CI、R11|本单绑定e578e2d包/R11原件，R11已根核通过，同SHA CI success（run40217280728，attempt1，完成北京时间02:50:07）；同SHA success并由37号引用后才继续，不复用旧候选批准|
+|同一首发源码、CI、R11|本单绑定6d803bff包；同源R11和完整回归正在验证，CI run42337532390 尚未终态；同SHA success并由37号引用后才继续，不复用旧候选批准|
 |新库保owner/ACL/设置与0连接对调|本机必要门已解除，证据见恢复计划；Linux结果由本单实际执行记录|
 |副本迁移/回填/撤销收据及空增量B7|本机必要门已解除；不得把副本旁账称为生产停写后最新旁账|
 |无模型新角色/8788资产/维护栅栏|本机必要门已解除；systemd、cgroup和Linux解释器仍须现场核验|
@@ -36,7 +36,7 @@ if (-not (Test-Path -LiteralPath $FrGate -PathType Leaf)) { throw '37号未出�
 $FrGateLines = Get-Content -LiteralPath $FrGate
 if ($FrGateLines[0].Trim() -ne '结论：Go') { throw '37号没有Go，停止' }
 $FrGateText = $FrGateLines -join "`n"
-if ($FrGateText -notmatch 'e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd') { throw '37号候选不符，停止' }
+if ($FrGateText -notmatch '6d803bff9832f2a9582c09d25e0a6b9c6207dddc') { throw '37号候选不符，停止' }
 $FrTimes = [regex]::Matches($FrGateText, '(?:复核时间|写入时间)[：:]\s*(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}(?::\d{2})?\s*(?:\+08:00|北京时间))')
 if ($FrTimes.Count -ne 1) { throw '37号复核时间缺失或歧义，停止' }
 $FrTime = [DateTimeOffset]::Parse($FrTimes[0].Groups[1].Value.Replace('北京时间','+08:00'))
@@ -50,7 +50,7 @@ if ($FrTime -le [DateTimeOffset]'2026-10-24T12:30:00+08:00') { throw '37号复�
 在下面固定clean候选树核验已经实际生成的包，不重新打包、不覆盖旧交付物。任一hash/候选不符即停止。
 
 ```powershell
-$FrSha = 'e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
+$FrSha = '6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
 $FrRepo = 'C:/Users/Administrator/Documents/Codex/zhiming-v4-r46'
 $FrPython = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/.venv-k3/Scripts/python.exe'
 $FrTokenizer = 'C:/Users/Administrator/Documents/Codex/zhiming-v4/private/artifacts/kimi-k3-installer-20261023'
@@ -58,12 +58,12 @@ Set-Location $FrRepo
 if ((git rev-parse HEAD) -ne $FrSha -or (git status --porcelain)) { throw '候选或clean状态不符' }
 $FrDelivery = Join-Path $FrRepo "private/fr-stage-$FrSha"
 $FrTar = Join-Path $FrDelivery 'release.tar.gz'
-if ((Get-FileHash -Algorithm SHA256 -LiteralPath $FrTar).Hash.ToLowerInvariant() -ne 'e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795') { throw '包hash不符' }
+if ((Get-FileHash -Algorithm SHA256 -LiteralPath $FrTar).Hash.ToLowerInvariant() -ne '7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012') { throw '包hash不符' }
 if ((Get-FileHash -Algorithm SHA256 -LiteralPath (Join-Path $FrDelivery 'bootstrap.py')).Hash.ToLowerInvariant() -ne '18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42') { throw '引导hash不符' }
 & $FrPython -m tools.install_k3_tokenizer --destination $FrTokenizer --verify-only
 if ($LASTEXITCODE -ne 0) { throw '公开分词器原件不符' }
 $FrBound = Get-Content (Join-Path $FrDelivery 'delivery.json') -Raw | ConvertFrom-Json
-if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne '4e680f175ea28cc8') { throw '交付身份不符' }
+if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'afdfc99790984105') { throw '交付身份不符' }
 ```
 
 主线用上述命令核delivery.json中的SHA、operation、两项hash；全部相等才采用下方固定参数，任一不符停止并提醒。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
@@ -73,8 +73,8 @@ if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne '4e680f175ea28cc8')
 ```bash
 set -euo pipefail
 umask 077
-FR_SHA='e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
-FR_ID='4e680f175ea28cc8'
+FR_SHA='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
+FR_ID='afdfc99790984105'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
@@ -124,8 +124,8 @@ if ($LASTEXITCODE -ne 0) { throw '公开分词器上传失败停止' }
 set -euo pipefail
 set -C
 umask 077
-FR_SHA='e578e2d5d83dcf3b63c74af6e1b9f1a4c86453bd'
-FR_ID='4e680f175ea28cc8'
+FR_SHA='6d803bff9832f2a9582c09d25e0a6b9c6207dddc'
+FR_ID='afdfc99790984105'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
 FR_OP="$FR_ROOT/operations/$FR_ID"
@@ -150,7 +150,7 @@ command -v python3.11 sha256sum runuser
 test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
 grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
 sha256sum -c "$FR_ROOT/pg-programs.sha256"
-FR_PACKAGE_SHA='e1c245ebc220c136a1902ad878d7fe42014f99c91a72da87c845dde9b19bc795'
+FR_PACKAGE_SHA='7b72e68d10ad281a67cd87f0574974d40408b045e324125bd8e39a7da50ac012'
 FR_BOOTSTRAP_SHA='18cf1f19742ae49267087856110521a47b5a957afb7a8e5b5695bf6bfc67ce42'
 h() { sha256sum "$1" | cut -d ' ' -f 1; }
 ```
