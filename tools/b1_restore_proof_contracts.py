@@ -171,6 +171,20 @@ class ProofRequest:
         return values
 
 
+def privacy_ordered(document: dict[str, Any]) -> dict[str, Any]:
+    def key(row: dict[str, Any]) -> str:
+        return json.dumps(row, sort_keys=True, separators=(",", ":"))
+
+    result = dict(document)
+    result["owners"] = [
+        dict(owner, revocations=sorted(owner["revocations"], key=key))
+        for owner in sorted(document["owners"], key=lambda row: row["owner_user_id"])
+    ]
+    for name in ("tarot_requests", "deleted_draws", "delivery_receipts"):
+        result[name] = sorted(document[name], key=key)
+    return result
+
+
 def verify_monotone(old: dict[str, Any], new: dict[str, Any]) -> None:
     old_owners = {row["owner_user_id"]: row for row in old["owners"]}
     new_owners = {row["owner_user_id"]: row for row in new["owners"]}
