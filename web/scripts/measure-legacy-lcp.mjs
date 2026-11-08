@@ -233,8 +233,8 @@ const batch = {
           : target === 'organize'
             ? 'organize-draft-fake-built-loopback-http-no-api'
             : target === 'thread'
-            ? 'thread-v4-built-loopback-http-synthetic-api'
-            : 'old-html-built-module-loopback-http-synthetic-read-only-api',
+              ? 'thread-v4-built-loopback-http-synthetic-api'
+              : 'old-html-built-module-loopback-http-synthetic-read-only-api',
   network,
   cpu_slowdown: 4,
   runs,
@@ -257,6 +257,8 @@ try {
       serviceWorkers: 'block',
       reducedMotion: 'no-preference',
     });
+    // Thread acceptance point (user ruling 2026-11-08): page-load LCP, read before any input.
+    let loadLcp = null;
     const outside = [],
       errors = [],
       failures = [];
@@ -331,6 +333,13 @@ try {
       await page.goto(origin + route, { waitUntil: 'networkidle' });
       if (target === 'thread') {
         await page.locator('[data-page="chat"][data-runtime="thread-v4"]').waitFor();
+        await page.getByRole('textbox', { name: '和明镜说说' }).waitFor();
+        await page.evaluate(() => document.fonts.ready);
+        await page.waitForTimeout(1000);
+        loadLcp = await page.evaluate(() => {
+          window.__legacyLcpFlush();
+          return window.__legacyLcp.at(-1)?.startTime ?? null;
+        });
         await page.getByRole('textbox', { name: '和明镜说说' }).fill('真实 HTTP 性能合成问题');
         await page.getByRole('button', { name: '发送', exact: true }).click();
         await page.getByText(threadEnvelope.text, { exact: true }).waitFor();
@@ -365,10 +374,19 @@ try {
           })),
         };
       });
-      const lcp = timings.entries.at(-1)?.startTime;
+      const postSendLcp = timings.entries.at(-1)?.startTime;
+      const lcp = target === 'thread' ? loadLcp : postSendLcp;
       if (!Number.isFinite(lcp) || !lcp) throw new Error('No LCP measurement');
       await page.screenshot({ path: path.join(directory, `cold-${run}.png`), fullPage: true });
-      samples.push({ run, lcp_ms: lcp, ...timings, outside, errors, failures });
+      samples.push({
+        run,
+        lcp_ms: lcp,
+        ...(target === 'thread' ? { post_send_lcp_ms: postSendLcp } : {}),
+        ...timings,
+        outside,
+        errors,
+        failures,
+      });
       console.log(JSON.stringify({ run, lcp_ms: lcp }));
     } finally {
       await context.close();
@@ -416,8 +434,8 @@ try {
             : target === 'organize'
               ? 'Synthetic in-memory organize draft only; not real PG, production API, device or deployment acceptance.'
               : target === 'thread'
-              ? 'Synthetic v4 loopback HTTP only; not real PG, production API, device or deployment acceptance.'
-              : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
+                ? 'Synthetic v4 loopback HTTP only; not real PG, production API, device or deployment acceptance.'
+                : 'Synthetic read-only HTTP fixture, not P4 HTTP+PG, new P10 page, real device, deployment or server measurement.',
   };
   await fs.writeFile(path.join(directory, 'report.json'), JSON.stringify(report, null, 2));
   await fs.writeFile(
