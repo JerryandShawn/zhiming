@@ -12,7 +12,7 @@ main67/R49警告裁定：必须先verify exit0，再逐行精确核对输出。�
 
 ## 范围与现有证据
 
-原 `zhiming_core_stage` 只有只读备份；演练只用新 `zhiming_core_fr_stage_bcac4df7780c4516` 及 `zhiming_core_fr_<operation>_restore/failed`。仅新 `zhiming-core-fr-stage-bcac4df7780c4516.service`、127.0.0.1:8788，无模型/中央凭据，飞书/报告/公网反代不启动。原stage/live/Hermes不改、不停、不删。禁止freeze/install/publish、旧库clean恢复、Docker/代理/WSL/ACL修复。
+原 `zhiming_core_stage` 只有只读备份；演练副本是候选工具固定的 `zhiming_core_fr_stage`（first_release_stage_copy的copy目标、first_release_native_exchange的原名，不带operation），新writer固定为 `zhiming_core_fr_stage_writer`（first_release_stage_runtime），另有本operation的 `zhiming_core_fr_bcac4df7780c4516_restore/failed`。11-07 afdfc演练留下的同名副本库（OID 70807）与writer（OID 72548）必须先经B2.5改名保留为 `zhiming_core_fr_stage_6d803bff` / `zhiming_core_fr_stage_6d803bff_writer`，否则copy报 `EXCHANGE_NEW_NAME_ALREADY_EXISTS`、provision报 `STAGE_NEW_WRITER_REQUIRED`。仅新 `zhiming-core-fr-stage-bcac4df7780c4516.service`、127.0.0.1:8788，无模型/中央凭据，飞书/报告/公网反代不启动。原stage/live/Hermes不改、不停、不删。禁止freeze/install/publish、旧库clean恢复、Docker/代理/WSL/ACL修复。
 
 恢复/复制/回填、B7和运行资产的唯一本机原件索引见[恢复计划14:00–14:19四活节](../execplans/first_release_recovery_20261023.md)。各定向轮次分别通过；不称一次完整Linux链。stage模型端口明确拒绝请求，真实Agent/公开K3/PG装配只开放健康、状态、历史，原Web子app队列/dispatcher/维护worker不启动。这不是模型或常驻队列验收。
 
@@ -68,6 +68,52 @@ if ($FrBound.candidate -ne $FrSha -or $FrBound.operation -ne 'bcac4df7780c4516')
 
 主线用上述命令核delivery.json中的SHA、operation、两项hash；全部相等才采用下方固定参数，任一不符停止并提醒。交付包没有私有env/key/数据库。**不要SCP整个private目录。** Kimi key文件不在stage交付物中。
 
+### B0.5：容量准备（独立短SSH，先于B1首个SSH）
+
+11-07 的stage B1与生产D0都停在8GiB磁盘门且日志无原因。本块单独一个短会话、在B1之前执行：先只读打印 `df -Pk /` 与各包缓存体积（每项 `du` 限时60秒），再只清可再生成的包缓存——`pip cache purge`、`dnf clean all`、`npm cache clean --force`，以及固定路径 `/root/.local/share/pnpm/store`（服务器无pnpm命令，11-07即按此路径清理）——最后再打印 `df -Pk /`。node-gyp与Prisma缓存只打印不清。不碰任何release、venv、数据库、备份、uploads、tokenizer或operation目录；不建operation目录（B1要求它不存在），回执独占写到 `$FR_ROOT/capacity-$FR_ID-<UTC时间>.log`。单项清理失败只记 `CLEAN-FAILED` 并继续其他缓存，块末不判门，过门仍由B1的8GiB门决定；清完仍不足就停并【提醒用户】决定扩容或指定可归档对象，不降门、不删保留物。
+
+```bash
+set -euo pipefail
+set -C
+umask 077
+FR_ID='bcac4df7780c4516'
+[[ "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
+FR_ROOT=/root/zhiming-core-fr-stage
+test "$(id -u)" = 0
+test -d "$FR_ROOT"
+test ! -L "$FR_ROOT"
+FR_CAPACITY="$FR_ROOT/capacity-$FR_ID-$(date -u +%Y%m%dT%H%M%SZ).log"
+: > "$FR_CAPACITY"
+rec() { "$@" 2>&1 | tee -a "$FR_CAPACITY"; }
+size() {
+  if test -e "$1"; then
+    if ! timeout 60 du -sxk -- "$1"; then echo "DU-TIMEOUT-OR-ERROR $1"; fi
+  else
+    echo "ABSENT $1"
+  fi
+}
+FR_CACHES=(/root/.cache/pip /var/cache/dnf /root/.npm /root/.cache/node-gyp /root/.cache/prisma /root/.local/share/pnpm/store)
+rec df -Pk /
+for path in "${FR_CACHES[@]}"; do rec size "$path"; done
+if command -v python3.11 >/dev/null && test -d /root/.cache/pip; then
+  if ! rec python3.11 -m pip cache purge; then rec echo CLEAN-FAILED pip; fi
+fi
+if command -v dnf >/dev/null; then
+  if ! rec dnf clean all; then rec echo CLEAN-FAILED dnf; fi
+fi
+if command -v npm >/dev/null; then
+  if ! rec npm cache clean --force; then rec echo CLEAN-FAILED npm; fi
+fi
+FR_PNPM_STORE=/root/.local/share/pnpm/store
+if test -d "$FR_PNPM_STORE" && ! test -L "$FR_PNPM_STORE" && ! test -L /root/.local/share/pnpm && ! test -L /root/.local/share; then
+  if ! rec rm -rf --one-file-system -- "$FR_PNPM_STORE"; then rec echo CLEAN-FAILED pnpm-store; fi
+fi
+for path in "${FR_CACHES[@]}"; do rec size "$path"; done
+rec df -Pk /
+chmod 600 "$FR_CAPACITY"
+echo "capacity record: $FR_CAPACITY; gate is decided by B1"
+```
+
 第一次短SSH只读确认 `df -Pk /` 可用至少8388608 KiB、Python3.11和PG15客户端存在、原服务与8788端口当前状态。确认新root和新unit均不存在后，才在F范围内创建新目录；若已有同名物停止，不接管。
 
 ```bash
@@ -77,6 +123,7 @@ FR_SHA='bf6e0bbc720b85510d757b17d4ccd74ff60687bb'
 FR_ID='bcac4df7780c4516'
 [[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
 FR_ROOT=/root/zhiming-core-fr-stage
+df -Pk / >&2
 awk 'NR==2 {exit !($4>=8388608)}' < <(df -Pk /)
 # v49: use programs beside the actual 5432 postmaster, never a distribution-specific path.
 mapfile -t FR_PG_PIDS < <(ss -H -ltnp 'sport = :5432' | grep -oE 'pid=[0-9]+' | cut -d= -f2 | sort -u)
@@ -96,18 +143,19 @@ test "$(stat -fc %T /sys/fs/cgroup)" = cgroup2fs
 grep -Fq 'if (-f /www/wwwroot/p-acme/core-maintenance.flag)' /www/server/panel/vhost/nginx/p.jerrymeng.asia.conf
 test -d "$FR_ROOT"
 for directory in uploads releases venvs tokenizer operations; do test -d "$FR_ROOT/$directory"; done
-! test -e /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service
-! test -e "$FR_ROOT/operations/$FR_ID"
-! test -e "$FR_ROOT/releases/$FR_SHA"
-! test -e "$FR_ROOT/venvs/$FR_SHA"
-! test -e "$FR_ROOT/tokenizer/$FR_SHA"
-! test -e "$FR_ROOT/uploads/$FR_ID"
-! ss -ltn | awk '{print $4}' | grep -Eq '(^|:)8788$'
+test ! -e /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service
+test ! -e "$FR_ROOT/operations/$FR_ID"
+test ! -e "$FR_ROOT/releases/$FR_SHA"
+test ! -e "$FR_ROOT/venvs/$FR_SHA"
+test ! -e "$FR_ROOT/tokenizer/$FR_SHA"
+test ! -e "$FR_ROOT/uploads/$FR_ID"
+FR_LISTEN="$(ss -H -ltn)"
+if awk '$4 ~ /(^|:)8788$/ {found=1} END {exit !found}' <<<"$FR_LISTEN"; then echo '127.0.0.1:8788 already has a listener; stop' >&2; exit 1; fi
 sha256sum "$FR_PG_EXE" "$FR_DUMP" "$FR_RESTORE" "$FR_PSQL" > "$FR_ROOT/pg-programs-$FR_ID.sha256"
 mkdir -m 700 "$FR_ROOT/tokenizer/$FR_SHA" "$FR_ROOT/operations/$FR_ID" "$FR_ROOT/uploads/$FR_ID"
 ```
 
-根分区不足8GiB、本次数据库/writer/同名unit或operation路径存在均停止；既有root和旧operation保留，不删旧物腾空间。数据库是否全新由copy/provision的实际PG门再次核验。
+根分区不足8GiB（磁盘门前 `df -Pk /` 已打到stderr，停时日志可见实际可用量）、同名unit或operation路径存在均停止；既有root和旧operation保留，除B0.5列明的包缓存外不删旧物腾空间。固定副本库/writer名被11-07 afdfc占用的问题由B2.5改名保留解决，copy/provision的实际PG门再次核验。
 
 回到本机，只上传三份公开交付物和lock列出的六个已核公开文件；下面是主线在执行准入满足后使用的传输命令；当前没有上传。
 
@@ -167,7 +215,7 @@ h() { sha256sum "$1" | cut -d ' ' -f 1; }
 test "$(h "$FR_UPLOAD/release.tar.gz")" = "$FR_PACKAGE_SHA"
 test "$(h "$FR_UPLOAD/bootstrap.py")" = "$FR_BOOTSTRAP_SHA"
 python3.11 -I "$FR_UPLOAD/bootstrap.py" --candidate "$FR_SHA" --artifact "$FR_UPLOAD/release.tar.gz" --artifact-sha256 "$FR_PACKAGE_SHA" --release "$FR_RELEASE"
-! test -e "$FR_ROOT/venvs/$FR_SHA"
+test ! -e "$FR_ROOT/venvs/$FR_SHA"
 mkdir -m 700 "$FR_ROOT/venvs/$FR_SHA"
 ```
 
@@ -177,7 +225,7 @@ venv创建、锁依赖安装应后台单步运行并留exit/log，不在长SSH�
 start_step() {
   local name="$1"; shift
   [[ "$name" =~ ^[a-z0-9-]+$ ]]
-  for ext in log pid exit; do ! test -e "$FR_OP/$name.$ext"; done
+  for ext in log pid exit; do test ! -e "$FR_OP/$name.$ext"; done
   nohup /bin/bash -c 'set -C; out=$1; shift; "$@"; rc=$?; printf "%s\n" "$rc" > "$out"; exit "$rc"' fr-step "$FR_OP/$name.exit" "$@" > "$FR_OP/$name.log" 2>&1 < /dev/null &
   printf '%s\n' "$!" > "$FR_OP/$name.pid"
 }
@@ -271,12 +319,111 @@ for path in paths:
 env.clear();password=dsn=data=None
 print('R28: local administrator authenticated; two private files verified; credential output=0')
 PY
-test -f "$FR_ADMIN" && ! test -L "$FR_ADMIN"
+test -f "$FR_ADMIN"
+test ! -L "$FR_ADMIN"
 test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
 test "$(stat -c '%a %u' "$(dirname "$FR_ADMIN")")" = '700 0'
 ```
 
 上述文件使用单字段URI DSN；若已有文件不是该受支持格式，停止审查而不覆盖。任意错误输出只记录步骤失败，不复制SQL/口令/原stderr；不现场安装软件或修改认证。
+
+## B2.5：改名保留上次stage副本（独立短SSH，B3 copy之前）
+
+候选工具的副本库名与writer名固定（见“范围与现有证据”）。11-07 afdfc99790984105（候选6d803bff）留下的 `zhiming_core_fr_stage`（OID 70807，见 `private/stage-afdfc99790984105/` 的exchange current_oid、block-13.2 runtime receipt database_oid、block-18 finish seal）与 `zhiming_core_fr_stage_writer`（OID 72548，block-13.2 writer_oid）必须先改名保留，不删除、不改口令、不撤授权；授权与库级/角色库级SET按OID随对象保留。本块在B2的dependencies成功、R28之后、`start_step copy` 之前单独一个短会话执行，只用B2的FR_PY与FR_ADMIN（单字段URI DSN）以psycopg autocommit连接：先断言两个旧unit均不在运行（inactive或failed且MainPID=0）、8788无监听；库存在且OID=70807、datallowconn=false，除autovacuum worker外0会话（最多等300秒，只等autovacuum，出现其他会话立即停，不terminate）；writer存在且OID=72548、0会话；两个目标名都不存在；同时持有与exchange工具相同的 `fr-exchange:zhiming_core_fr_stage` advisory锁。然后在同一事务内改名库与writer，复核OID与新名，独占写 `$FR_OP/stage-6d803bff-preserved.json`，打印 `B25_RENAMED`。改名提交之前的任一断言失败即停，现场不变；提交之后（复核或写回执时）中断则两个对象已改名、回执缺失：重发本块时先识别这一“已完成”状态（70807名为 `zhiming_core_fr_stage_6d803bff` 且仍closed、72548名为 `zhiming_core_fr_stage_6d803bff_writer`、两个旧名都不存在、回执不存在），跳过改名只补写回执并打印 `B25_ALREADY_RENAMED` / `B25_RECEIPT_AFTER_EARLIER_COMMIT`，其余状态照旧逐项断言。回执已存在说明已执行过，本块拒绝重跑。改名后afdfc私有runtime.json里的旧writer名不再可用于登录，该unit保持inactive，仅作证据保留。
+
+```bash
+set -euo pipefail
+set -C
+umask 077
+FR_SHA='bf6e0bbc720b85510d757b17d4ccd74ff60687bb'
+FR_ID='bcac4df7780c4516'
+[[ "$FR_SHA" =~ ^[0-9a-f]{40}$ && "$FR_ID" =~ ^[0-9a-f]{16}$ ]]
+FR_ROOT=/root/zhiming-core-fr-stage
+FR_OP="$FR_ROOT/operations/$FR_ID"
+FR_RELEASE="/root/zhiming-core-fr-stage/releases/$FR_SHA"
+FR_PY="$FR_ROOT/venvs/$FR_SHA/core/bin/python"
+FR_ADMIN=/root/zhiming-core-secrets/fr-stage-bcac4df7780c4516-admin.env
+test -d "$FR_OP"
+test -x "$FR_PY"
+test -d "$FR_RELEASE"
+test "$(cat "$FR_OP/dependencies.exit")" = 0
+test -f "$FR_ADMIN"
+test ! -L "$FR_ADMIN"
+test "$(stat -c '%a %u' "$FR_ADMIN")" = '600 0'
+for ext in log pid exit; do test ! -e "$FR_OP/copy.$ext"; done
+test ! -e "$FR_OP/stage-6d803bff-preserved.json"
+for unit in zhiming-core-fr-stage-afdfc99790984105.service zhiming-core-fr-stage.service; do
+  state="$(systemctl show -p ActiveState --value "$unit")"
+  pid="$(systemctl show -p MainPID --value "$unit")"
+  echo "$unit ActiveState=$state MainPID=$pid"
+  test "$state" = inactive -o "$state" = failed
+  test "$pid" = 0
+done
+FR_LISTEN="$(ss -H -ltn)"
+if awk '$4 ~ /(^|:)8788$/ {found=1} END {exit !found}' <<<"$FR_LISTEN"; then echo '127.0.0.1:8788 already has a listener; stop' >&2; exit 1; fi
+"$FR_PY" -I - "$FR_RELEASE" "$FR_ADMIN" "$FR_OP" <<'PY'
+import json,sys,time
+from pathlib import Path
+sys.path.insert(0,sys.argv[1])
+import psycopg
+from psycopg import sql
+from psycopg.conninfo import conninfo_to_dict
+from psycopg.rows import dict_row
+from tools.first_release_hermes_entry import _private_read,_parse_environment
+from tools.first_release_native_exchange import write_private
+admin=_parse_environment(_private_read(Path(sys.argv[2])))
+assert set(admin)=={'FIRST_RELEASE_EXCHANGE_ADMIN_DSN'}
+fields=conninfo_to_dict(admin['FIRST_RELEASE_EXCHANGE_ADMIN_DSN'])
+assert fields.get('host') in ('127.0.0.1','::1') and fields.get('port')=='5432' and fields.get('dbname')=='postgres'
+OP=Path(sys.argv[3])
+OLD_DB,NEW_DB,DB_OID='zhiming_core_fr_stage','zhiming_core_fr_stage_6d803bff',70807
+OLD_ROLE,NEW_ROLE,ROLE_OID='zhiming_core_fr_stage_writer','zhiming_core_fr_stage_6d803bff_writer',72548
+WAIT_SECONDS=300
+with psycopg.connect(admin['FIRST_RELEASE_EXCHANGE_ADMIN_DSN'],autocommit=True,row_factory=dict_row) as c:
+ r=c.execute("SELECT current_database() AS db,current_user=session_user AS same,inet_server_port() AS port,current_setting('server_version_num')::int AS version,(SELECT rolsuper FROM pg_roles WHERE rolname=session_user) AS su").fetchone()
+ assert r['db']=='postgres' and r['same'] and r['port']==5432 and 150000<=r['version']<160000 and r['su']
+ assert c.execute("SELECT pg_try_advisory_lock(hashtextextended('fr-exchange:zhiming_core_fr_stage',0)) AS held").fetchone()['held'],'stage exchange tool holds the lock; stop'
+ by_oid_db=c.execute('SELECT datname,datallowconn FROM pg_database WHERE oid=%s',(DB_OID,)).fetchone()
+ by_oid_role=c.execute('SELECT rolname FROM pg_roles WHERE oid=%s',(ROLE_OID,)).fetchone()
+ old_db_left=c.execute('SELECT 1 FROM pg_database WHERE datname=%s',(OLD_DB,)).fetchone() is not None
+ old_role_left=c.execute('SELECT 1 FROM pg_roles WHERE rolname=%s',(OLD_ROLE,)).fetchone() is not None
+ # An earlier run may have committed both renames and stopped before its receipt; recognise that state only.
+ completed=bool(by_oid_db and by_oid_db['datname']==NEW_DB and by_oid_role and by_oid_role['rolname']==NEW_ROLE and not old_db_left and not old_role_left)
+ if completed:
+  assert by_oid_db['datallowconn'] is False,'preserved database is open; stop'
+  print('B25_ALREADY_RENAMED: both renames were committed earlier and no receipt exists; renames skipped, writing receipt only',flush=True)
+ else:
+  db=c.execute('SELECT oid::int AS oid,datallowconn FROM pg_database WHERE datname=%s',(OLD_DB,)).fetchone()
+  assert db and db['oid']==DB_OID and db['datallowconn'] is False,'old stage database is not the closed 11-07 OID; stop'
+  role=c.execute('SELECT oid::int AS oid FROM pg_roles WHERE rolname=%s',(OLD_ROLE,)).fetchone()
+  assert role and role['oid']==ROLE_OID,'old stage writer is not the 11-07 OID; stop'
+  assert not c.execute('SELECT 1 FROM pg_database WHERE datname=%s',(NEW_DB,)).fetchone(),'preserve database name already taken; stop'
+  assert not c.execute('SELECT 1 FROM pg_roles WHERE rolname=%s',(NEW_ROLE,)).fetchone(),'preserve role name already taken; stop'
+  assert c.execute('SELECT count(*) AS n FROM pg_stat_activity WHERE usesysid=%s',(ROLE_OID,)).fetchone()['n']==0,'old stage writer has sessions; stop, nothing terminated'
+  end=time.monotonic()+WAIT_SECONDS;seen=set()
+  while True:
+   rows=c.execute('SELECT pid,backend_type FROM pg_stat_activity WHERE datid=%s',(DB_OID,)).fetchall()
+   other=[x for x in rows if x['backend_type']!='autovacuum worker']
+   assert not other,'old stage database has a session other than autovacuum; stop, nothing terminated'
+   if not rows:break
+   seen.update(x['pid'] for x in rows)
+   assert time.monotonic()<end,'old stage database not at 0 sessions after 300s; stop'
+   time.sleep(2)
+  print('old stage database at 0 sessions; autovacuum workers seen while waiting:',len(seen),flush=True)
+  with c.transaction():
+   c.execute("SET LOCAL lock_timeout='2s'")
+   c.execute(sql.SQL('ALTER DATABASE {} RENAME TO {}').format(sql.Identifier(OLD_DB),sql.Identifier(NEW_DB)))
+   c.execute(sql.SQL('ALTER ROLE {} RENAME TO {}').format(sql.Identifier(OLD_ROLE),sql.Identifier(NEW_ROLE)))
+  after_db=c.execute('SELECT datname,datallowconn FROM pg_database WHERE oid=%s',(DB_OID,)).fetchone()
+  after_role=c.execute('SELECT rolname FROM pg_roles WHERE oid=%s',(ROLE_OID,)).fetchone()
+  assert after_db['datname']==NEW_DB and after_db['datallowconn'] is False and after_role['rolname']==NEW_ROLE
+  assert not c.execute('SELECT 1 FROM pg_database WHERE datname=%s',(OLD_DB,)).fetchone()
+  assert not c.execute('SELECT 1 FROM pg_roles WHERE rolname=%s',(OLD_ROLE,)).fetchone()
+result={'status':'previous_stage_preserved_not_deleted','source_operation':'afdfc99790984105','source_candidate':'6d803bff9832f2a9582c09d25e0a6b9c6207dddc','database':{'old':OLD_DB,'new':NEW_DB,'oid':DB_OID,'datallowconn':False},'writer':{'old':OLD_ROLE,'new':NEW_ROLE,'oid':ROLE_OID},'sessions_terminated':0,'objects_deleted':0,'renamed_in_this_run':not completed}
+write_private(OP/'stage-6d803bff-preserved.json',result)
+print('B25_RECEIPT_AFTER_EARLIER_COMMIT' if completed else 'B25_RENAMED',json.dumps(result,sort_keys=True))
+PY
+```
 
 ## B3–B5：只读复制、迁移与primary回填/副本旁账重放
 
@@ -359,7 +506,7 @@ for line in pathlib.Path(sys.argv[1]).read_text(encoding='utf-8').splitlines():
  assert any(re.fullmatch(pattern,line) for pattern in patterns),'R49 non-exempt verify output; stop'
  print(line)
 PY
-! test -e /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service
+test ! -e /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service
 # set -C的独占重定向保护已有unit；不使用覆盖式install/cp。
 (umask 022; cat "$FR_OP/zhiming-core-fr-stage.service" > /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service)
 test "$(h /etc/systemd/system/zhiming-core-fr-stage-bcac4df7780c4516.service)" = "$(h "$FR_OP/zhiming-core-fr-stage.service")"
