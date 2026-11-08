@@ -22,7 +22,14 @@ export default defineConfig({
         manualChunks: {
           react: ['react', 'react-dom'],
           icons: ['lucide-react'],
-          'draft-shared': ['./src/modules/draftApi.ts', './src/threads/request.ts'],
+          // On #/chat the route's tiny chunks queue behind CJK font slices (6 connections per host)
+          // and delay the first paragraph; keep them in one chunk.
+          'draft-shared': [
+            './src/modules/draftApi.ts',
+            './src/threads/request.ts',
+            './src/chat/sse.ts',
+            './src/chat/wireV1.ts',
+          ],
         },
       },
     },
