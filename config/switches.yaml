@@ -1,9 +1,12 @@
 # Batch 3 release switches. Only trusted deployment files set these; env vars cannot.
-# streaming_v2: off -> runs keep the batch2 event path. 'on' publishes model text through the durable P4 stream,
-#   but with `on` the live Core30 quota-guard chain cancels the first model step (see 2026-10-31 mod daily).
+# streaming_v2: on  -> runs publish model text through the durable P4 event stream.
+#   R64 (2026-11-08): the stream writer used to fail and cancel the round when its 25 ms owner-lock window or
+#   50 ms pool checkout lost to the run-control monitor's owner transaction; both bounds are now 200 ms, still
+#   inside the 0.75 s acknowledgment budget (see 2026-11-08 mod daily). The race exists on every streaming run,
+#   production included; it was reproduced and verified only in the local Core30 eval chain.
 # review_mode: off  -> no independent critic call; risk/always enable it (brain decides after launch).
 # proactive: off    -> P7 scheduled messages stay disabled.
 version: 1
-streaming_v2: false
+streaming_v2: true
 review_mode: "off"
 proactive: false
