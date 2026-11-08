@@ -29,6 +29,7 @@ export default defineConfig({
             './src/threads/request.ts',
             './src/chat/sse.ts',
             './src/chat/wireV1.ts',
+            './src/modules/draftRetry.ts',
           ],
         },
       },
