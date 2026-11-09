@@ -64,6 +64,11 @@ def health_model(model):
     return getattr(model, 'model', 'test')
 
 
+def conversation_session(row):
+    # Automatic privacy-mode state shares the 'session' kind; listing it showed phantom untitled conversations.
+    return row.get('ingress')!='privacy_mode' and not str(row.get('id','')).startswith('privacy-mode:')
+
+
 def auth(req):
     token = req.headers.get('X-Token', '')
     primary = os.getenv('MINGJING_TOKEN', '')
@@ -533,7 +538,7 @@ def create_app(service=None):
         return [svc.memory.get_source(owner,m['id'],for_context=True) for m in rows]
 
     @app.get('/api/sessions')
-    async def sessions(req:Request): return core(req).repo.list(auth(req),'session')
+    async def sessions(req:Request): return [row for row in core(req).repo.list(auth(req),'session') if conversation_session(row)]
 
     @app.post('/api/sessions')
     async def session(req:Request):
