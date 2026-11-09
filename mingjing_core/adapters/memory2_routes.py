@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from mingjing_core.agent.envelope import public_receipt
 from mingjing_core.application.memory2_web_actions import MemoryWebActions
 from mingjing_core.application.memory2_profile_web import ProfileWebService
+from mingjing_core.application.memory2_proposal_listing import pending_proposals
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
 
@@ -60,6 +61,11 @@ def memory2_router(core, auth, body):
             choice=getattr(values, "choice", None),
         )
         return public_receipt(receipt)
+
+    @router.get("/api/memory2/proposals")
+    async def pending(request: Request, subject_id: str = "self"):
+        owner, service = auth(request), core(request)
+        return scoped(pending_proposals, service.repo, owner, subject_id)
 
     @router.post("/api/memory2/proposals/{ident}/confirm")
     @router.post("/api/proposals/{ident}/confirm")
