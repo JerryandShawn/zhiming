@@ -23,7 +23,7 @@
 - [x] 2026-11-09 实现开关、输入、模型端口（提示词 `agent/prompts/memory_reflection.md` v1.0.0，单独 sha256 锁定，不改现有提示词清单）、主服务、调度接线。
 - [x] 2026-11-09 PG 回归 10 项 + 端口单元 9 项（本机隔离 PG15 55483）。
 - [x] 2026-11-09 现有记忆 2.0 回归（见日报）。
-- [ ] 推断/普通类待确认提案的用户确认入口（见 Surprises 3）。
+- [x] 2026-11-09 推断/事件类待确认提案的确认入口（大脑裁定 2）：`reflection_reviewable` + `GET /api/memory2/proposals`，接口见 `docs/v4/contracts/api_memory2_reflection_proposals.md`。
 - [ ] real 模式的 stage 实测（需要授权与真实模型，本线不做）。
 
 ## Surprises & Discoveries
@@ -44,3 +44,5 @@
 ## Outcomes & Retrospective
 
 开关默认 scripted 时行为与上线版相同（调度测试仍断言脚本模型）。real 模式在本机脚本模型下满足第三、六节的触发、预算、最小化、(b) 分流、血缘与撤销要求；真实模型效果未评测。
+
+追记（2026-11-09，裁定后）：Decision Log —— 确认入口只放行反思来源的非敏感提案，不放宽其他非敏感提案；事件提案不预填 `fact_metadata`，确认时复用 `resolve_event_fields` 核实日期；非敏感条目禁止"以后这类都记"（没有可授权的敏感类别）。

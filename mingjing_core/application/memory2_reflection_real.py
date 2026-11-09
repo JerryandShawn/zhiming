@@ -217,7 +217,12 @@ class RealMemoryReflection:
                 "sensitivity": level,
                 "categories": list(sensitivity_categories(item["quote"], message["content"], start, end)),
                 "summary": item["summary"],
-                "fact_metadata": {"summary": item["summary"], "requested_kind": item["kind"]},
+                # Events carry no pre-resolved dates: acceptance resolves and verifies the absolute date itself.
+                **(
+                    {}
+                    if item["kind"] == "event"
+                    else {"fact_metadata": {"summary": item["summary"], "requested_kind": item["kind"]}}
+                ),
                 "source_ids": [message["id"]],
                 "source_refs": [source_ref(message, start, end)],
                 "inferred": not item["explicit"],

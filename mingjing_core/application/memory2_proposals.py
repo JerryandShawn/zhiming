@@ -44,6 +44,11 @@ META_FIELDS = frozenset(
 )
 
 
+def reflection_reviewable(proposal: dict[str, Any]) -> bool:
+    # Idle-reflection inferred or event items (plan 50 ruling (b)) need the same explicit user click.
+    return proposal.get("origin") == "memory2_reflection" and proposal.get("sensitivity") == "normal"
+
+
 def approval_reference(action: dict[str, Any]) -> dict[str, Any]:
     return {
         "message_id": action["id"],
@@ -222,7 +227,9 @@ class MemoryProposalService:
                 raise EvidenceError("冲突提案需要先明确选择哪条说法为准")
             checked_conflict(self.memory, owner, subject, proposal)
             return proposal
-        if proposal["status"] != "pending" or proposal.get("sensitivity") not in SENSITIVITIES:
+        if proposal["status"] != "pending" or not (
+            proposal.get("sensitivity") in SENSITIVITIES or reflection_reviewable(proposal)
+        ):
             raise EvidenceError("此提案不能用作敏感记忆授权")
         refs = proposal.get("source_refs", [])
         if len(refs) != 1:
@@ -286,6 +293,8 @@ class MemoryProposalService:
     ) -> dict[str, Any]:
         proposal = self._pending(owner, subject, ident, revision)
         proof, source, categories = self._consent(owner, subject, proposal, action, operation_id)
+        if remember and not categories:
+            raise EvidenceError("这条建议不属于敏感类别，不能授权同类自动保存")
         ref = proposal["source_refs"][0]
         row = self.memory.save_fact(
             owner,
