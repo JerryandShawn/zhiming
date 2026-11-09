@@ -234,7 +234,9 @@ function histMsgHtml(m) {
     <div class="msg-ai relative px-4 py-3 max-w-[92%] w-fit min-w-[120px]">${badge}<div class="msg-body" ${m.meta?.meta?.core_run?.run_id || m.context_meta?.meta?.core_run?.run_id?`data-core-run="${esc((m.meta || m.context_meta).meta.core_run.run_id)}"`:''}>${answerHtml(m.meta || m.context_meta, m.content)}</div>${timeHtml}</div>
   </div>`;
 }
-let currentSession=localStorage.getItem("mjt_session") || "shared", historyBefore="", historyRows=[];
+/* 一个窗口聊到底：前端只有一条连续对话（shared），后端按话题分线程对用户透明；旧版遗留的会话选择一律忽略并清除，避免“莫名开了其他对话”。 */
+const currentSession="shared";try{localStorage.removeItem("mjt_session");}catch{}
+let historyBefore="", historyRows=[];
 function storedJson(key, fallback, storage=sessionStorage) {try {return JSON.parse(storage.getItem(key)) ?? fallback;} catch {return fallback;}}
 function chatContext() {return storedJson('context:'+currentSession,{});}
 let chatScopeCases=[];
@@ -361,28 +363,6 @@ async function loadHistory(older=false) {
     if(older)flow.scrollTop=flow.scrollHeight-previousHeight;else scrollChat();
     historyLoaded=true;
   } catch(e) {if(!older)flow.innerHTML=errState('历史暂时无法读取：'+e.message,'loadHistory');}
-}
-async function loadSessions() {
-  const list=await apiJson('/api/sessions');
-  if(!list.some(s=>s.id===currentSession))currentSession='shared';
-  $('#conversationTitle').textContent=list.find(s=>s.id===currentSession)?.title || '与明镜对话';
-  $('#sessionSelect').innerHTML=list.map(s=>`<option value="${esc(s.id)}" ${s.id===currentSession?'selected':''}>${esc(s.title)}</option>`).join('');
-  $('#sessionList').innerHTML=list.slice(0,30).map(s=>`<button data-session="${esc(s.id)}" class="session-item ${s.id===currentSession?'active':''}" title="${esc(s.title)}">${esc(s.title)}</button>`).join('');
-  $('#sessionList').querySelectorAll('button').forEach(b=>b.onclick=()=>activateSession(b.dataset.session));
-}
-async function activateSession(ident) {
-    if(sending){toast('请等待本轮结束，或先停止回答');return;}
-    sessionStorage.setItem('draft:'+currentSession,$('#chatInput').value);
-    currentSession=ident;localStorage.setItem('mjt_session',currentSession);
-    renderChatContext();
-    $('#chatInput').value=sessionStorage.getItem('draft:'+currentSession)||'';
-    switchPage('chat');await loadSessions();await loadHistory();
-}
-async function newConversation() {
-  if(sending){toast('请等待本轮结束，或先停止回答');return;}
-  try { const s=await writeJson('/api/sessions',{});
-    currentSession=s.id;localStorage.setItem('mjt_session',s.id);renderChatContext();$('#chatInput').value='';switchPage('chat');await loadSessions();await loadHistory();
-  } catch(e){toast(e.message);}
 }
 /* 待发附图：选图 → 缩略图条 → 随消息一起发送 */
 const MAX_IMGS = 4, MAX_IMG_BYTES = 5 * 1024 * 1024;
@@ -518,7 +498,7 @@ async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null
     streamAbort.abort();activeStreamStop=null;
     if(gotResult){sessionStorage.removeItem('chat-pending:'+id);sessionStorage.removeItem('chat-retry:'+currentSession);chatRequests.delete(id);chatRequests.delete(activeTurn);}
     sending=false;activeTurn=null;$('#sendBtn').disabled=false;$('#stopBtn').classList.add('hidden');$('#chatProgress').classList.add('hidden');
-    loadSessions().catch(()=>{});$('#chatInput').focus();
+    $('#chatInput').focus();
   }
 }
 $('#stopBtn').onclick=async()=>{if(activeStreamStop){await activeStreamStop();return;}if(activeTurn)try{await writeJson('/api/runs/'+encodeURIComponent(activeTurn)+'/cancel',{});progress('正在停止…');}catch(e){toast(e.message);}};
@@ -530,8 +510,6 @@ $$('.chip').forEach(c=>c.onclick=async()=>{
   try{downloadText('明镜台-个人档案.json',JSON.stringify(await apiJson('/api/archive'),null,2));}catch(e){toast(e.message);}
 });
 $('#olderHistoryBtn').onclick=()=>loadHistory(true);
-$('#sessionSelect').onchange=()=>activateSession($('#sessionSelect').value);
-$('#newSessionBtn').onclick=newConversation;$('#newChatMobileBtn').onclick=newConversation;
 
 /* 右栏：档案速览 */
 function renderMemorySettings(snapshot) {
@@ -2152,7 +2130,7 @@ document.addEventListener('keydown',e=>{
 });
 $('#logoutBtn').onclick=()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem('mjt_session');sessionStorage.clear();for(const u of blobImages.values())URL.revokeObjectURL(u);location.reload();};
 async function unlocked() {
-  Object.keys(loaded).forEach(k=>delete loaded[k]);await loadSessions();loadHistory();loadSidebar();switchPage(currentPage,true);
+  Object.keys(loaded).forEach(k=>delete loaded[k]);loadHistory();loadSidebar();switchPage(currentPage,true);
 }
 async function authenticate(v) {
   if(!v.trim())return;saveToken(v);$('#tokenErr').classList.add('hidden');
