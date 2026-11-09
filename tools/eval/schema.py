@@ -29,10 +29,14 @@ Category = Literal[
     "portability",
 ]
 SCENARIO_ID = (
-    r"^(?:TM01|AX01|DC0[1-4]|TR0[1-3]|T(?:0[1-9]|1[0-4])|M(?:0[1-9]|1[0-3])|R0[1-9]|F0[1-4]|Q0[1-7]|P0[1-7]|"
+    r"^(?:A0[1-3]|MS0[1-3]|KU0[1-2]|TM0[1-2]|AX01|DC0[1-4]|TR0[1-3]|T(?:0[1-9]|1[0-4])|"
+    r"M(?:0[1-9]|1[0-3])|R0[1-9]|F0[1-5]|Q0[1-7]|P0[1-7]|"
     r"C0[1-7]|TA0[1-4]|D0[1-2]|S0[1-4]|X(?:0[1-8]|03[ab])|L0[1-2])$"
 )
 ID_CATEGORIES = {
+    "A": "memory_recall",
+    "MS": "memory_recall",
+    "KU": "memory_write",
     "TM": "time",
     "AX": "safety",
     "DC": "time",
@@ -259,7 +263,8 @@ class Scenario(StrictModel):
     @model_validator(mode="after")
     def replay_is_complete(self) -> Scenario:
         prefix = re.match(r"[A-Z]+", self.id)[0]
-        if self.category != ID_CATEGORIES[prefix]:
+        appendix_time_memory = self.id in {"TM01", "TM02"} and self.category == "memory_recall"
+        if self.category != ID_CATEGORIES[prefix] and not appendix_time_memory:
             raise ValueError("Scenario category must match its documented ID prefix")
         if len(set(self.targets)) != len(self.targets):
             raise ValueError("Targets must be unique")

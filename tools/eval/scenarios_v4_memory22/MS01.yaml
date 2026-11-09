@@ -1,0 +1,59 @@
+id: MS01
+title: 跨日目标与新 offer 的城市不一致
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+turns:
+- user: 我想换到上海工作
+  expect:
+    receipts:
+    - write_status: saved
+  at: '2026-10-03T10:30:00+08:00'
+- user: 我拿到了杭州的 offer
+  expect:
+    receipts:
+    - write_status: saved
+  at: '2026-10-12T10:30:00+08:00'
+- user: 这个 offer 符合我之前的想法吗？
+  expect:
+    must_include_all:
+    - 上海
+    - 杭州
+    - 不一致
+    tools_not_called:
+    - memory_write
+    db:
+    - path: context.l2.text
+      contains: 上海
+    - path: context.l2.text
+      contains: 杭州
+  at: '2026-10-17T10:30:00+08:00'
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我想换到上海工作
+        summary: 我想换到上海工作
+        kind: goal
+  - text: 记下了，你想换到上海工作。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-2
+        quote: 我拿到了杭州的 offer
+        summary: 我拿到了杭州的 offer
+        kind: background
+  - text: 记下了，你拿到杭州的 offer。
+- turn: 3
+  model:
+  - text: 你之前想去上海工作，这次 offer 在杭州，城市不一致，可以先确认地点是否符合你的目标。
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。

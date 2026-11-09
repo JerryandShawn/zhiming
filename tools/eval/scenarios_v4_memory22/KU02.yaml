@@ -1,0 +1,63 @@
+id: KU02
+title: 辣味偏好更新而非并列矛盾值
+category: memory_write
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+turns:
+- user: 我不吃辣
+  expect:
+    receipts:
+    - write_status: saved
+  at: '2026-10-03T10:30:00+08:00'
+- user: 最近开始能吃点辣了
+  expect:
+    receipts:
+    - write_status: updated
+    db:
+    - kind: fact
+      where:
+        data.status: active
+        data.valid_to: null
+      count: 1
+  at: '2026-10-10T10:30:00+08:00'
+- user: 我现在能不能吃辣？
+  expect:
+    must_include_all:
+    - 能吃点辣
+    must_not_include:
+    - 不能吃辣
+    db:
+    - path: context.l2.text
+      contains: 能吃点辣
+  at: '2026-10-17T10:30:00+08:00'
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我不吃辣
+        summary: 我不吃辣
+        kind: preference
+        slot: spice_preference
+  - text: 记下了，你不吃辣。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-2
+        quote: 最近开始能吃点辣了
+        summary: 最近开始能吃点辣了
+        kind: preference
+        slot: spice_preference
+  - text: 已更新，你最近能吃点辣了。
+- turn: 3
+  model:
+  - text: 你最近说开始能吃点辣了，可以按自己的感受慢慢尝试。
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。

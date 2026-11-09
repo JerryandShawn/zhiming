@@ -1,0 +1,73 @@
+id: F05
+title: 41号新增：合并后遗忘所有副本
+category: forget
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  settings:
+    timezone: Asia/Shanghai
+turns:
+- user: 我喜欢合成晨跑
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: saved
+- user: 我喜欢合成晨跑
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: saved
+- user: 把我合成晨跑的事忘了
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: deleted
+    db:
+    - kind: fact
+      where:
+        data.content: 我喜欢合成晨跑
+      count: 0
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我喜欢合成晨跑
+        summary: 我喜欢合成晨跑
+        kind: preference
+        sensitivity: normal
+  - text: 已记下。
+- turn: 2
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-2
+        quote: 我喜欢合成晨跑
+        summary: 我喜欢合成晨跑
+        kind: preference
+        sensitivity: normal
+  - text: 已记下。
+- turn: 3
+  model:
+  - tool_call:
+      name: memory_search
+      arguments:
+        query: 合成晨跑
+        kinds:
+        - fact
+        limit: 20
+  - tool_call:
+      name: memory_forget
+      arguments:
+        fact_id: $unique_memory_fact
+        message_id: turn-3
+  - text: 已忘记这条记忆。

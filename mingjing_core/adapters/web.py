@@ -58,6 +58,17 @@ def history_before_key(cursor):
     return stamp, turn_id, {'user':0, 'assistant':1, 'tool':2, 'legacy':3}.get(role, 4), role
 
 
+def health_model(model):
+    # PortBackedModel has no .model; the old getattr default reported 'test' for every MODELS_CONFIG service.
+    if hasattr(model, 'configured_model'): return model.configured_model()
+    return getattr(model, 'model', 'test')
+
+
+def conversation_session(row):
+    # Automatic privacy-mode state shares the 'session' kind; listing it showed phantom untitled conversations.
+    return row.get('ingress')!='privacy_mode' and not str(row.get('id','')).startswith('privacy-mode:')
+
+
 def auth(req):
     token = req.headers.get('X-Token', '')
     primary = os.getenv('MINGJING_TOKEN', '')
@@ -109,7 +120,7 @@ def effect_receipt(result,kind):
 
 
 def create_app(service=None):
-    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None}
+    state = {'service': service, 'workers': {}, 'task': None, 'dispatcher': None, 'maintenance': None, 'memory_maintenance': None}
     def core(req=None):
         if state['service'] is None: state['service'] = ConsultationService.from_base()
         if req: state['service'].repo.ensure_owner(auth(req))
@@ -135,6 +146,7 @@ def create_app(service=None):
             from ..application.runtime_assembly import legacy_queue
             svc = core()
             await asyncio.to_thread(state['maintenance'].tick)
+            await asyncio.to_thread(state['memory_maintenance'].tick)
             svc.repo.cleanup_media_deletions()
             if not state['workers']:
                 queue = legacy_queue(svc.repo,limit=1)
@@ -144,8 +156,10 @@ def create_app(service=None):
     @asynccontextmanager
     async def lifespan(app):
         from ..application.maintenance_schedule import PrivacyMaintenanceSchedule
+        from ..application.memory2_schedule import MemoryMaintenanceSchedule
         svc=core(); assembly=getattr(svc,'runtime_assembly',None)
         state['maintenance']=PrivacyMaintenanceSchedule(svc.repo)
+        state['memory_maintenance']=MemoryMaintenanceSchedule(svc.repo)
         if assembly:state['dispatcher']=assembly.dispatcher(svc)
         if state['dispatcher']:state['dispatcher'].start()
         state['task'] = asyncio.create_task(worker())
@@ -214,7 +228,7 @@ def create_app(service=None):
     @app.get('/api/health')
     async def health(req:Request):
         svc=core(req);owner=auth(req)
-        return {'ok':True,'context_version':'core3.0','timezone':'Asia/Shanghai','daily_schedule':'07:00','model':getattr(svc.model,'model','test'),
+        return {'ok':True,'context_version':'core3.0','timezone':'Asia/Shanghai','daily_schedule':'07:00','model':health_model(svc.model),
                 'retrieval':{'mode':'postgres_scoped','documents':len(svc.memory.facts(owner))},'database':'postgresql','runtime':'langgraph'}
 
     @app.get('/api/state')
@@ -526,7 +540,7 @@ def create_app(service=None):
         return [svc.memory.get_source(owner,m['id'],for_context=True) for m in rows]
 
     @app.get('/api/sessions')
-    async def sessions(req:Request): return core(req).repo.list(auth(req),'session')
+    async def sessions(req:Request): return [row for row in core(req).repo.list(auth(req),'session') if conversation_session(row)]
 
     @app.post('/api/sessions')
     async def session(req:Request):
@@ -601,4 +615,6 @@ def create_app(service=None):
     app.include_router(synastry_router(core,auth,body))
     from .p8_profile_routes import p8_profile_router
     app.include_router(p8_profile_router(core,auth))
+    from .memory2_routes import memory2_router
+    app.include_router(memory2_router(core,auth,body))
     return app

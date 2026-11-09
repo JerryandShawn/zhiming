@@ -1,0 +1,131 @@
+{
+  "recorded_beijing": "2026-10-24T02:41:28.519775+08:00",
+  "target": "v4",
+  "mode": "scripted",
+  "complete_memory2_acceptance": false,
+  "runtime_head_at_execution": "e2bc8ed9e9871d1da8aebe0531b42e9e792a0022",
+  "working_tree_changes_at_execution": [
+    "mingjing_core/application/memory2_withdrawals.py",
+    "tools/eval/targets/v4_target.py",
+    "tools/eval/targets/v4_memory_privacy_seed.py",
+    "tools/eval/targets/v4_memory_privacy_views.py",
+    "tools/eval/targets/v4_memory_withdraw_driver.py",
+    "tools/eval/targets/v4_memory_revocation_fault.py"
+  ],
+  "source_sha256": [
+    "0d0d96902a0ee6f4b18341ec86c86e5f8f4374b27b9abf550000d7c0e2a3531e",
+    "0bc3d5fb8072e4e1299065b533ed0f2fe890c35401768af2e589b32e07dcfa84"
+  ],
+  "cases": [
+    {
+      "id": "F01",
+      "status": "failed",
+      "score": 0.0,
+      "scenario_contract_sha256": "9f500bf3aa054804cfd233bded9314c54cbe94c0b2c25eb143f5abd07054780f",
+      "failed_assertions": [
+        "turn[1].db[1]",
+        "turn[1].db[2]"
+      ],
+      "native_layers_before": {
+        "embedding": 1,
+        "profile_item": 1,
+        "search_hit": 2,
+        "run_event": 0,
+        "run_step": 0
+      },
+      "native_layers_after": {
+        "embedding": 0,
+        "profile_item": 0,
+        "search_hit": 0,
+        "run_event": 0,
+        "run_step": 0
+      },
+      "scripted_setup_calls": 0,
+      "scripted_dialogue_calls": 2
+    },
+    {
+      "id": "F03",
+      "status": "failed",
+      "score": 0.0,
+      "scenario_contract_sha256": "7a1a4f66ead58c2a517d4302b3180555a8a8bee3959669c70bf9efe81fc44cdf",
+      "failed_assertions": [
+        "turn[1].db[1]",
+        "turn[1].db[2]",
+        "turn[1].db[3]",
+        "turn[1].db[4]",
+        "turn[1].db[5]"
+      ],
+      "native_layers_before": {
+        "embedding": 1,
+        "profile_item": 0,
+        "search_hit": 2,
+        "run_event": 4,
+        "run_step": 1
+      },
+      "native_layers_after": {
+        "embedding": 0,
+        "profile_item": 0,
+        "search_hit": 0,
+        "run_event": 0,
+        "run_step": 0
+      },
+      "scripted_setup_calls": 1,
+      "scripted_dialogue_calls": 0
+    },
+    {
+      "id": "F04",
+      "status": "passed",
+      "score": 1.0,
+      "scenario_contract_sha256": "89a809d2c1b605b31fe2888a3cc0d738d0bd6bbc064268e1bfeb3b2b89dba243",
+      "failed_assertions": [],
+      "native_layers_before": {},
+      "native_layers_after": {
+        "embedding": 0,
+        "profile_item": 0,
+        "search_hit": 0,
+        "run_event": 0,
+        "run_step": 0
+      },
+      "scripted_setup_calls": 0,
+      "scripted_dialogue_calls": 1
+    }
+  ],
+  "summary": {
+    "passed_this_slice": 1,
+    "failed_this_slice": 2,
+    "required_count": 37,
+    "cumulative_passed_at_separate_checkpoints": 31,
+    "failed": [
+      "M08",
+      "KU01",
+      "KU02",
+      "F01",
+      "F03"
+    ],
+    "unexecuted": [
+      "F02"
+    ],
+    "single_final_frozen_run": false,
+    "external_provider_requests": 0
+  },
+  "checks": {
+    "final_related_PG_and_privacy_checks_passed": 21,
+    "corpus_and_unchanged_hash_and_M01_checks_passed": 6,
+    "prior_action_driver_related_passed": 7,
+    "overlapping_checks_not_added": true,
+    "ruff": "E,F,I,B,UP,SIM; py311; line-length 120",
+    "strict_boolean_authority_checks_passed": 3
+  },
+  "known_attempts": [
+    "F04 first driver used raw queue_run request; real regeneration rejected missing original request proof. Driver now uses actual ThreadIngress, not a changed gate or fingerprint. Final F04 passed."
+  ],
+  "limitations": [
+    "F01 native deleted tombstones do not meet unchanged retired/cancelled status assertions.",
+    "F03 native tombstones remain and original fixture label differs from native source id, so original entity-list assertions fail.",
+    "profile_item view explicitly maps actual profile_doc; embedding view reads actual core_embeddings; synthetic vectors test removal only.",
+    "Runtime event/step views count nonempty native payload/output; empty audit tombstones remain.",
+    "FTS checks keep the initial query tokens frozen and scope to declared initial graph; no deletion-time reparsing into an empty query.",
+    "Native setup must be nonempty before clearing; derived fixtures are declared initial state, not runtime writer acceptance.",
+    "Evaluator-only observation names are not public SSE additions; no live or product-route quality claim."
+  ]
+}

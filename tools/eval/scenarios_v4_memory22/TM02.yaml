@@ -1,0 +1,42 @@
+id: TM02
+title: 九月底原话不当成本月底或已付款
+category: memory_recall
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: empty_profile
+  synthetic: true
+  thread:
+  - id: rent-source
+    role: user
+    content: 我月底交房租
+    at: '2026-09-30T10:30:00+08:00'
+    channel: web
+turns:
+- user: 我上次说的房租交了吗？
+  expect:
+    must_include_all:
+    - 9月底
+    - 是否
+    - 交了
+    must_not_include:
+    - 你已经交了
+    - 10月底
+    tools_not_called:
+    - memory_write
+    max_questions: 1
+    db:
+    - path: context.l5.text
+      contains: '2026-09-30'
+    - path: context.l5.text
+      contains: 月底交房租
+    - kind: fact
+      count: 0
+  at: '2026-10-17T10:30:00+08:00'
+scripted:
+- turn: 1
+  model:
+  - text: 你在9月底提过月底交房租，那是9月底的安排；我还不知道是否交了，已经处理了吗？
+notes: 契约 v2.2：07 附录 B，独立目录，不修改 v2.1 基线；脚本仅给模型文本/工具调用，状态取实际 PG。 只用真实原话日期，不把有歧义的月底安排伪装成已确认
+  background 事实；不据此断言已付款。

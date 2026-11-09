@@ -1,0 +1,62 @@
+{
+  "recorded_beijing": "2026-10-24T03:42:38.406049+08:00",
+  "external_provider_requests": 0,
+  "scope": "memory_write optional slot initial-write integration; replacement remains gated",
+  "checks": [
+    {
+      "scope": "slot/merge/toolkit initial related",
+      "passed": 65
+    },
+    {
+      "scope": "actual Runtime initial-slot + conflicts + combined undo",
+      "passed": 35
+    },
+    {
+      "scope": "guard adjustment slot/merge/schema affected",
+      "passed": 34
+    }
+  ],
+  "counts_overlap": true,
+  "corrected_new_test_failure": "A new unslotted-conflict test used 不吃 versus 喜欢吃 outside the existing exact opposite-stance detector. Kept that case as an ambiguity guard; separately tested supported 不喜欢/喜欢 via unchanged P3 conflict flow.",
+  "runtime_proof": "new direct Runtime test observed succeeded, native fact slot + revision and actual saved receipt",
+  "scoring_subset": [
+    {
+      "id": "KU02",
+      "status": "failed",
+      "failed_assertions": [
+        "turn[2].receipts[1]",
+        "turn[3].db[1]"
+      ],
+      "scenario_contract_sha256": "da9cc33e1c708d8763aff2391bb1b7cc77d070e34085231d0abd2a1d32062536"
+    },
+    {
+      "id": "M01",
+      "status": "passed",
+      "failed_assertions": [],
+      "scenario_contract_sha256": "5d53f641f2d56ccfe6c96f1c5837942020520bc97ec4e1720a3ffe6732499363"
+    },
+    {
+      "id": "M08",
+      "status": "failed",
+      "failed_assertions": [
+        "turn[2].receipts[1]",
+        "turn[2].db[1]"
+      ],
+      "scenario_contract_sha256": "9a524127bc2a19676fac154ffb4cb82addd6265c414832030a37fa78b76b3bdf"
+    }
+  ],
+  "scoring_subset_count": 3,
+  "scoring_subset_passed": 1,
+  "previous_complete_memory_run": {
+    "passed": 34,
+    "total": 37
+  },
+  "complete_acceptance": false,
+  "limits": [
+    "updated commit proof and external event mapping remain mainline-owned; no initial value overwritten",
+    "known initial slots, multi values and exact duplicate merges work; sensitive confirmation remains P3 pending",
+    "old absent/null/unknown-slot argument serialization keeps all prior default fields and fingerprints",
+    "model-facing tool schema changed; prior provider/candidate proofs must not be reused",
+    "M08 range date still needs a clarified single absolute event_at; KU01 unresolved no-slot location semantics"
+  ]
+}

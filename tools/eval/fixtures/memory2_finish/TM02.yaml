@@ -1,0 +1,38 @@
+id: TM02
+title: 41号新增范围事件变体
+category: time
+clock: '2026-10-17T10:30:00+08:00'
+targets:
+- v4
+seed:
+  profile: default_synthetic
+  synthetic: true
+  settings:
+    timezone: Asia/Shanghai
+turns:
+- user: 我上个月参加合成会议
+  channel: web
+  kind: chat
+  expect:
+    receipts:
+    - write_status: saved
+    db:
+    - kind: fact
+      status: active
+      where:
+        data.precision: range
+        data.event_at: '2026-08-31T16:00:00+00:00'
+        data.event_end: '2026-09-30T16:00:00+00:00'
+      count: 1
+scripted:
+- turn: 1
+  model:
+  - tool_call:
+      name: memory_write
+      arguments:
+        message_id: turn-1
+        quote: 我上个月参加合成会议
+        summary: 我上个月参加合成会议
+        kind: event
+        sensitivity: normal
+  - text: 已按原话保留日期范围。

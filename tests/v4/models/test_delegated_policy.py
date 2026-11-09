@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 from mingjing_core.models.provider_reset import retry_after
-from mingjing_core.models.quota_delegated import _SEAL, DelegatedApproval, approval_from_gate
+from mingjing_core.models.quota_delegated import _SEAL, DEADLINE, DelegatedApproval, approval_from_gate
 from mingjing_core.models.quota_gate import REQUIRED
 from mingjing_core.models.quota_types import GuardRejected
 
@@ -46,6 +46,19 @@ def synthetic_approval(equivalent: bool | None = True) -> DelegatedApproval:
     """Test-only core fixture; production has no trusted equivalence issuer yet."""
     approval = approval_from_gate(gate(), CANDIDATE, NOW)
     return replace(approval, equivalent=equivalent, _seal=(_SEAL, CANDIDATE, approval.expires_at, equivalent))
+
+
+def test_runtime_deadline_is_the_user_dated_boundary_and_expiry_still_rejects() -> None:
+    # R57: fixtures may pin their own window, but the unpatched boundary only moves by an explicit user date.
+    assert DEADLINE == datetime(2026, 11, 9, 14, tzinfo=UTC)
+    approval = approval_from_gate(gate(), CANDIDATE, DEADLINE - timedelta(seconds=1))
+    for moment in (DEADLINE, DEADLINE + timedelta(seconds=1)):
+        with pytest.raises(GuardRejected) as caught:
+            approval.check(moment)
+        assert caught.value.kind == "authorization_expired"
+        with pytest.raises(GuardRejected) as caught:
+            approval_from_gate(gate(), CANDIDATE, moment)
+        assert caught.value.kind == "authorization_expired"
 
 
 @pytest.mark.parametrize("equivalent", [True, False])

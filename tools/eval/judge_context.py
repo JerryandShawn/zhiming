@@ -24,6 +24,7 @@ def judge_payload(scenario: Scenario, index: int, result: TurnResult) -> dict[st
     effects = deepcopy(result.metadata.get("tool_effects", {}))
     packet = {
         "packet_version": "judge-packet-v2",
+        "fixture": {"synthetic": seed.get("synthetic") is True},
         "scenario": {
             "id": scenario.id,
             "category": scenario.category,

@@ -104,7 +104,8 @@ def test_native_pg_primary_and_required_judge_retry(core, invalid):  # noqa: F81
             }
             assert result["judge_model_calls"] == len(judge_calls)
             if invalid == 2:
-                assert result["status"] == "judge_unavailable" and result["score"] is None
+                assert result["status"] == "needs_brain_review" and result["score"] is None
+                assert result["machine_status"] == "judge_unavailable" and result["needs_brain_review"] is True
                 assert summarize([result])["count"] == 0
                 assert result["private_evidence"][0]["answer"]
             else:
@@ -142,9 +143,10 @@ def test_r38_native_judge_http_retry_then_ungraded(core, failures):  # noqa: F81
             result = evaluate_scenario(scenario, target, target_name="v4", judge=judge)
             assert len(judge_calls) == 2
             assert result["judge_model_calls"] == 2
-            assert result["status"] == ("passed" if failures == 1 else "judge_unavailable"), result.get("stop_reason")
+            assert result["status"] == ("passed" if failures == 1 else "needs_brain_review"), result.get("stop_reason")
             if failures == 2:
                 assert result["score"] is None
+                assert result["machine_status"] == "judge_unavailable" and result["needs_brain_review"] is True
         finally:
             target.close()
 
