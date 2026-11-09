@@ -1,4 +1,4 @@
-"""Read-only list of pending memory proposals for the owner's confirmation page.
+"""Read-only lists for the new web page: pending memory proposals and the About Me sections.
 
 Idle reflection (A) creates proposals outside any chat turn, so run events never carry them to the
 page; without this list the user could not see, confirm or ignore them. Only the owner's own quoted
@@ -10,6 +10,8 @@ from __future__ import annotations
 from typing import Any
 
 from mingjing_core.application.agent_tools_policy import SENSITIVITIES
+from mingjing_core.application.memory2_profile_web import ProfileWebService
+from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
 FIELDS = (
     "id",
@@ -46,3 +48,17 @@ def pending_proposals(repo: Any, owner: str, subject: str) -> list[dict[str, Any
         item["confirmable"] = confirmable(row)
         result.append(item)
     return result
+
+
+def profile_sections(repo: Any, owner: str, subject: str) -> list[dict[str, Any]]:
+    """About Me rows exactly as the single-row view returns them; rows that fail its checks are skipped."""
+    service = ProfileWebService(repo)
+    with repo.transaction(owner):
+        repo.assert_scope(owner, subject)
+        rows = []
+        for row in repo.list(owner, "profile_doc", subject=subject):
+            try:
+                rows.append(service.view(owner, subject, row["id"]))
+            except (EvidenceError, ScopeError):
+                continue
+    return sorted(rows, key=lambda row: (row["section"], row["id"]))

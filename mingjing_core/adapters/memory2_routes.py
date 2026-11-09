@@ -8,7 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from mingjing_core.agent.envelope import public_receipt
 from mingjing_core.application.memory2_web_actions import MemoryWebActions
 from mingjing_core.application.memory2_profile_web import ProfileWebService
-from mingjing_core.application.memory2_proposal_listing import pending_proposals
+from mingjing_core.application.memory2_proposal_listing import pending_proposals, profile_sections
 from mingjing_core.domain.contracts import EvidenceError, ScopeError
 
 
@@ -91,6 +91,11 @@ def memory2_router(core, auth, body):
 
 def profile_router(core, auth, body):
     router = APIRouter()
+
+    @router.get("/api/memory2/profile")
+    async def profile_list(request: Request, subject_id: str = "self"):
+        owner, service = auth(request), core(request)
+        return scoped(profile_sections, service.repo, owner, subject_id)
 
     @router.get("/api/memory2/profile/{ident}")
     async def profile_view(ident: str, request: Request, subject_id: str = "self"):
