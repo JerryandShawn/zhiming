@@ -7,6 +7,7 @@ prechecks listed in ADDED. Generating never connects to the server.
 
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -14,8 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 RUNBOOK = ROOT / "docs/v4/release/first_release_prod_runbook.md"
-RUNBOOK_SHA256 = "723327f2e97d66509fe835d92659cbf5030e17a27dab4744e87d3e0a88147ad2"
-OUT = ROOT / "private/fr-prod-501d95670be144a3"
+RUNBOOK_SHA256 = "83fe161737488b8e756989afa7cfb2e6929661c4efc9f07dcfaaa4cf017a0a8d"
+# The first-release directory holds the scripts actually executed on 11-08; regenerate elsewhere.
+OUT = ROOT / os.environ.get("FR_PROD_STEPS_OUT", "private/fr-prod-next-draft")
 GIT_BASH = "C:/Program Files/Git/bin/bash.exe"
 OLD_DEPLOY_CORE_SHA256 = "e5b98588968301cd89e61a54433efe62e8cbb3f57ac2803b6211e2f7f8e65bd8"
 
@@ -63,7 +65,7 @@ step_status() {
 assert HEADER.startswith("set -euo pipefail\n") and "test -d" not in HEADER and "awk" not in HEADER
 
 three = blocks[2]
-extract = three[: three.index('python3.11 -m venv "$FR_RELEASE/venv/core"')]
+extract = three[: three.index('python3.11 -m venv --copies "$FR_RELEASE/venv/core"')]
 install = three[len(extract) : three.index("FR_PY=$FR_RELEASE/venv/core/bin/python")]
 verify = three[len(extract) + len(install) :]
 assert extract + install + verify == three
@@ -665,7 +667,7 @@ rows = [
     "# 首发生产分步脚本（R51）",
     "",
     f"由 `first_release_prod_steps_gen.py` 从执行单（sha256 `{RUNBOOK_SHA256}`）生成，脚本在 "
-    "`private/fr-prod-501d95670be144a3/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；"
+    f"`{OUT.relative_to(ROOT).as_posix()}/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；"
     "pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。",
     "",
     "| 步骤 | 执行单块 | 对照 | sha256 前 12 位 |",

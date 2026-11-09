@@ -172,8 +172,12 @@ with tarfile.open(a,'r:gz') as t:
     for x in members:extract_member(t,x,dest/x.name,m['files'].get(x.name))
 print('canonical candidate extracted; private data copied=0')
 PY
-python3.11 -m venv "$FR_RELEASE/venv/core"
-python3.11 -m venv "$FR_RELEASE/venv/charts"
+python3.11 -m venv --copies "$FR_RELEASE/venv/core"
+python3.11 -m venv --copies "$FR_RELEASE/venv/charts"
+for program in core/bin/python core/bin/python3 core/bin/python3.11 charts/bin/python; do
+ test ! -L "$FR_RELEASE/venv/$program"
+ test -f "$FR_RELEASE/venv/$program"
+done
 "$FR_RELEASE/venv/core/bin/python" -m pip install --require-hashes -r "$FR_RELEASE/requirements-core.lock"
 "$FR_RELEASE/venv/charts/bin/python" -m pip install --require-hashes -r "$FR_RELEASE/requirements-charts.lock"
 "$FR_RELEASE/venv/core/bin/python" -m pip check
@@ -183,6 +187,8 @@ FR_TOKENIZER=/root/zhiming-core-fr-stage/tokenizer/$FR_SHA
 cd "$FR_RELEASE"
 "$FR_PY" -m tools.install_k3_tokenizer --destination "$FR_TOKENIZER" --verify-only
 ```
+
+venv 必须用 `--copies` 建：四个生产入口 `first_release_hermes_entry` 以 `ordinary()` 拒绝符号链接路径（`LINKED_PATH_REJECTED`），默认 venv 的 `bin/python*` 是指向 `/usr/bin/python3.11` 的链接，首发 11-08 因此在 D7 循环重启（见 `docs/v4/daily/2026-11-08_main.md`）。上面 for 循环在安装依赖前就拒绝链接解释器；对应契约测试在候选 `tests/v4/release/test_first_release_real_venv_entry.py`。
 
 安装/备份/恢复均按stage单的 `start_step/check_step` 后台单步执行，长命令不占长SSH会话；日志、pid、exit只在FR_OP独占写入，结束码0才继续。此处不要重跑评测、重新接入或发模型探测。
 

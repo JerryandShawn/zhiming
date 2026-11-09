@@ -1,13 +1,13 @@
 # 首发生产分步脚本（R51）
 
-由 `first_release_prod_steps_gen.py` 从执行单（sha256 `723327f2e97d66509fe835d92659cbf5030e17a27dab4744e87d3e0a88147ad2`）生成，脚本在 `private/fr-prod-501d95670be144a3/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
+由 `first_release_prod_steps_gen.py` 从执行单（sha256 `83fe161737488b8e756989afa7cfb2e6929661c4efc9f07dcfaaa4cf017a0a8d`）生成，脚本在 `private/fr-prod-next-draft/`。19 个 bash 块逐字节拼回与执行单一致，顺序不变；pip 和 D2–D4 用 start_step/check_step 后台跑（Python 正文逐字不变，只从 stdin 改为落盘后执行）。
 
 | 步骤 | 执行单块 | 对照 | sha256 前 12 位 |
 | --- | --- | --- | --- |
 | p01-readonly | 1 | 一致 | `97c40a6a823f` |
 | p02-admin | 2 | 一致 | `a5dab6462de3` |
 | p03a-extract | 3 | 一致 | `4855eae1530f` |
-| p03b-install-start | 3 | 一致 | `f242906d6938` |
+| p03b-install-start | 3 | 一致 | `a0d88eb02529` |
 | p03c-install-status | — | 后台状态查询 | `bc4164d78ab6` |
 | p03d-tokenizer | 3 | 一致 | `86670b89292c` |
 | p04a-precheck | — | 只读：确认线上仍是 7dbc951（v72）、旧 wrapper 符合 D1 前提 | `5e40a2db40bb` |
