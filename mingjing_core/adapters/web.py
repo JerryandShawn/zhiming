@@ -27,6 +27,7 @@ from ..memory.history import history_window
 from ..memory.private import is_private
 from .tarot import IdempotencyConflict
 from .legacy_web_result import legacy_web_history, legacy_web_result
+from .web_ui import mount_web_ui
 
 ROOT = Path(__file__).resolve().parents[2]
 HISTORY_LEGACY_ZONE = ZoneInfo('Asia/Shanghai')
@@ -222,13 +223,12 @@ def create_app(service=None):
             yield 'data: [DONE]\n\n'
         return StreamingResponse(events(),media_type='text/event-stream',headers={'Cache-Control':'no-cache','X-Accel-Buffering':'no'})
 
-    @app.get('/')
-    async def index(): return FileResponse(ROOT/'static/index.html')
+    mount_web_ui(app)
 
     @app.get('/api/health')
     async def health(req:Request):
         svc=core(req);owner=auth(req)
-        return {'ok':True,'context_version':'core3.0','timezone':'Asia/Shanghai','daily_schedule':'07:00','model':health_model(svc.model),
+        return {'ok':True,'context_version':'core3.0','timezone':'Asia/Shanghai','daily_schedule':'07:00','model':health_model(svc.model),'web_ui':getattr(req.app.state,'web_ui','legacy'),
                 'retrieval':{'mode':'postgres_scoped','documents':len(svc.memory.facts(owner))},'database':'postgresql','runtime':'langgraph'}
 
     @app.get('/api/state')
