@@ -1,0 +1,71 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "id": "settings",
+  "mode": "static",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "theme": "light",
+  "url": "/?preview=1#/settings",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-2/static-settings-light-375.png",
+  "sha256": "a966714980da3dd3cb2c607c56eda5ceaa675e9b3dc58da22c907ba1e2b34df4",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "light",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "switch",
+            "text": ""
+          },
+          {
+            "className": "switch",
+            "text": ""
+          },
+          {
+            "className": "switch",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 692,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 922,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

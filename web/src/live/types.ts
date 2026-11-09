@@ -1,0 +1,50 @@
+export type Entity = { id: string; revision: number; status: string; subject_id?: string };
+export type Fact = Entity & {
+  content?: string;
+  text?: string;
+  category?: string;
+  kind?: string;
+  field?: string;
+  value?: string | number | boolean;
+  write_status?: string;
+  created_at?: string;
+  source_refs?: { message_id?: string; quote?: string }[];
+};
+export type CaseEvent = Entity & { kind: string; content: string; occurred_at?: string };
+export type Case = Entity & { title: string; goal?: string; state?: { goal?: string }; events?: CaseEvent[] };
+export type Profile = {
+  effective: Record<string, unknown>;
+  legacy_candidate: Record<string, unknown>;
+  revision: number;
+  requires_explicit_confirmation: boolean;
+};
+export type Snapshot = { revision: number; settings: { auto_save_low_sensitivity?: boolean }; facts: Fact[] };
+export type ReportKind = 'daily' | 'weekly' | 'monthly' | 'quarterly';
+export type Schedule = {
+  kind: ReportKind;
+  revision: number;
+  enabled: boolean;
+  time: string;
+  weekday?: number;
+  day?: number | 'last';
+  status: string;
+  status_reason?: string;
+  configured: boolean;
+  can_modify: boolean;
+  next_prepare?: string | null;
+  next_delivery?: string | null;
+  preview_prepare?: string | null;
+  preview_delivery?: string | null;
+  delivery_state?: { sending: number; uncertain: number; pending: number; sent: number };
+  receipt?: { id: string; kind: string; revision: number; write_status: string };
+};
+export type Schedules = { timezone: string; prepare_minutes: number; schedules: Schedule[] };
+export type History = {
+  id?: string;
+  turn_id: string;
+  role: string;
+  content: string;
+  at?: string;
+  source?: string;
+  cursor: string;
+};

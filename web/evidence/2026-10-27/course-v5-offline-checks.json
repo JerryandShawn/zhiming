@@ -1,0 +1,38 @@
+{
+  "captured_bjt": "2026-10-27T10:55:58.703740+08:00",
+  "source_commit": "f8d9536a44db67a84db9315c208e2a66893214c9",
+  "manifest_sha256_lf_utf8": "1491b7ce765e2b4317c309fcceb05288b87222a40e40a284a375c22533781a6c",
+  "tests": {
+    "new_integrity_and_public_export": 41,
+    "existing_learning": 12,
+    "existing_glossary": 22,
+    "total": 75,
+    "failed": 0
+  },
+  "ruff": "passed",
+  "export": {
+    "format": "frontend-course-export-v1",
+    "source_commit": "f8d9536a44db67a84db9315c208e2a66893214c9",
+    "synthetic_only": true,
+    "lessons": 20,
+    "quizzes": 40,
+    "file": "course.json",
+    "bytes": 146197,
+    "sha256": "016e6e3707c2f9e71ba61cc5663127d93e51f4a811029b2040f1f4d5db492500"
+  },
+  "scope": "offline preparation only; no public assets or course UI changed",
+  "screenshots": "not applicable to offline validator; course UI matrix pending",
+  "effects": {
+    "model_calls": 0,
+    "network_calls": 0,
+    "database_calls": 0
+  },
+  "files": {
+    "web/scripts/course_bundle.py": "3090a1501f8234f0660171508350861703c78b460ca7dbbe5f73e3cb3b36672e",
+    "web/scripts/course_integrity.py": "09074d50c5f0d58a6e8936cd61ab86f5cd5722dfddd36f49954cc5f8df3edf3b",
+    "web/scripts/course_projection.py": "ce621049047aba17a5f3549a0cd4d9b7e8cad0cf62d8121076d2700b88c29e22",
+    "web/scripts/export_courses.py": "387945c3645585557805208d465c4ca539ba36f0942488736abbb94ddadbea65",
+    "web/tests/test_course_integrity.py": "b7a9fcd01c1750fbc7bb1e2c7248ddd2b7ce348c05b2eadb2251525a195d7d92",
+    "web/tests/test_course_projection.py": "649747d0aa12e24ef52c512639f6047217b9da48c3bef83e00be47f44e611271"
+  }
+}

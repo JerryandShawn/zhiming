@@ -1,0 +1,123 @@
+.night-me-heading {
+  align-items: flex-start;
+  margin-bottom: var(--s-5);
+}
+.night-me-heading h1 {
+  font-size: var(--t-h2);
+}
+.night-me-tabs {
+  overflow-x: auto;
+  margin-block: var(--s-5);
+}
+.night-me-tabs .segmented {
+  width: max-content;
+  min-width: 100%;
+}
+.night-me-tabs .segmented button {
+  flex: none;
+  white-space: nowrap;
+}
+.night-me-section {
+  display: grid;
+  gap: var(--s-4);
+}
+.night-me-item {
+  padding-block: var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+  min-width: 0;
+}
+.night-me-item p,
+.night-me-item h3 {
+  overflow-wrap: anywhere;
+}
+.night-me-item h3 {
+  font-size: var(--t-h3);
+  margin-bottom: var(--s-2);
+}
+.night-me-item-actions {
+  margin-top: var(--s-3);
+}
+.night-me-sources {
+  margin-top: var(--s-2);
+}
+.night-me-sources .button {
+  color: var(--ink-3);
+  padding-inline: 0;
+}
+.night-me-filter {
+  display: flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.night-me-filter button[aria-pressed='true'] {
+  background: var(--jade-wash);
+  color: var(--jade);
+}
+.night-me-feedback {
+  color: var(--jade);
+  background: var(--jade-wash);
+  padding: var(--s-3);
+  border-radius: var(--r-1);
+}
+.night-me-scope {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-4);
+  border: var(--border) solid var(--line);
+  border-radius: var(--r-1);
+}
+.night-me-scope label {
+  display: flex;
+  gap: var(--s-3);
+  align-items: flex-start;
+  min-height: var(--control-height);
+}
+.night-me-scope input {
+  margin-top: var(--s-1);
+  accent-color: var(--jade);
+}
+.night-me-preview {
+  padding: var(--s-4);
+  background: var(--paper-2);
+  border-radius: var(--r-1);
+}
+.night-me-preview dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--s-2) var(--s-4);
+}
+.night-me-preview dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.night-me-panel .textarea {
+  min-height: calc(var(--s-9) * 2);
+}
+.night-me-card-grid {
+  display: grid;
+  gap: var(--s-4);
+}
+.night-me-card-grid .person {
+  text-align: left;
+}
+.night-me-timeline {
+  border-inline-start: var(--border) solid var(--line-strong);
+  padding-inline-start: var(--s-5);
+}
+.night-me-empty {
+  padding-block: var(--s-5);
+  color: var(--ink-2);
+}
+@media (min-width: 64rem) {
+  .night-me-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .night-me-panel {
+    max-width: var(--dialog-width);
+    left: 50%;
+    bottom: auto;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: var(--r-3);
+  }
+}

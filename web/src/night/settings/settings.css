@@ -1,0 +1,43 @@
+.night-settings .setting-group {
+  margin-top: var(--s-6);
+}
+.night-settings .setting-group > h2 {
+  margin-bottom: var(--s-3);
+}
+.night-settings-report {
+  padding-block: var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+}
+.night-settings-report h3 {
+  margin-bottom: var(--s-2);
+}
+.night-settings-report .field {
+  max-width: var(--drawer-width);
+}
+.night-settings .settings-preview {
+  padding: var(--s-3);
+  background: var(--paper-2);
+  border-radius: var(--r-1);
+}
+.night-settings .settings-feedback {
+  color: var(--jade);
+}
+.night-settings .settings-devices {
+  list-style: none;
+  padding: 0;
+}
+.night-settings .settings-device {
+  padding-block: var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+}
+.night-settings .segmented {
+  flex-wrap: wrap;
+}
+.night-settings .switch[data-state='checked'] {
+  background: var(--jade);
+}
+.night-settings .settings-contact-times {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-3);
+}

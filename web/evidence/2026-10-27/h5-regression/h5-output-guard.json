@@ -1,0 +1,193 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4\\private\\runtime\\node-v22.23.3-win-x64\\node.exe",
+      "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/e2e/h5-demo.spec.ts",
+      "--project=",
+      "--grep",
+      "cancellation",
+      "--workers=1",
+      "--reporter=json",
+      "--output=test-results/h5-evidence-path"
+    ],
+    "configFile": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\playwright.config.ts",
+    "rootDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/test-results/h5-evidence-path",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/tests/e2e",
+        "testIgnore": [
+          "/contracts\\.spec\\.ts/",
+          "/live-visual\\.spec\\.ts/",
+          "/spaces.*\\.spec\\.ts/",
+          "/components.*\\.spec\\.ts/",
+          "/night-.*\\.spec\\.ts/",
+          "/overnight-matrix\\.spec\\.ts/",
+          "/q9-.*\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      },
+      {
+        "outputDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/test-results/h5-evidence-path",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "legacy-stream",
+        "name": "legacy-stream",
+        "testDir": "C:/Users/Administrator/Documents/Codex/zhiming-v4-p10/web/tests/legacy-e2e",
+        "testIgnore": [
+          "/contracts\\.spec\\.ts/",
+          "/live-visual\\.spec\\.ts/",
+          "/spaces.*\\.spec\\.ts/",
+          "/components.*\\.spec\\.ts/",
+          "/night-.*\\.spec\\.ts/",
+          "/overnight-matrix\\.spec\\.ts/",
+          "/q9-.*\\.spec\\.ts/"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\test-results\\h5-evidence-path",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e",
+        "snapshotDir": "C:\\Users\\Administrator\\Documents\\Codex\\zhiming-v4-p10\\web\\tests\\e2e",
+        "testIgnore": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {}
+        ],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 60000,
+        "use": {
+          "baseURL": "http://127.0.0.1:4173",
+          "channel": "chrome",
+          "headless": true,
+          "locale": "zh-CN",
+          "timezoneId": "Asia/Shanghai",
+          "reducedMotion": "reduce",
+          "trace": "retain-on-failure"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run preview",
+      "url": "http://127.0.0.1:4173",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "h5-demo.spec.ts",
+      "file": "h5-demo.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "H5 cancellation, sign-out and keyboard-only restart remain local",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1731,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T02:34:33.931Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "c6ee937f5a6e5425af13-fe0d4affcc19ce729ca6",
+          "file": "h5-demo.spec.ts",
+          "line": 84,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-27T02:34:32.514Z",
+    "duration": 3799.248,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

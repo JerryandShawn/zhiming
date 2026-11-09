@@ -1,0 +1,101 @@
+
+> mingjing-v4-web@0.1.0 prebuild
+> npm run prepare:fonts
+
+
+> mingjing-v4-web@0.1.0 prepare:fonts
+> node scripts/prepare-fonts.mjs
+
+{"font_files":202,"bytes":10531532,"path":"fonts"}
+
+> mingjing-v4-web@0.1.0 build
+> vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 2374 modules transformed.
+rendering chunks...
+computing gzip size...
+../static/dist/index.html                                1.07 kB │ gzip:  0.57 kB
+../static/dist/.vite/manifest.json                      21.83 kB │ gzip:  2.81 kB
+../static/dist/assets/SampleChartPage-DtKjQuU7.css       0.17 kB │ gzip:  0.13 kB
+../static/dist/assets/ComponentNotice-BIoJSqjK.css       0.19 kB │ gzip:  0.15 kB
+../static/dist/assets/RecoveryPreview-iMEwyZ5g.css       0.35 kB │ gzip:  0.21 kB
+../static/dist/assets/common-Cmd9HAar.css                0.80 kB │ gzip:  0.39 kB
+../static/dist/assets/SettingsPage-ClpuIC-i.css          0.86 kB │ gzip:  0.34 kB
+../static/dist/assets/OnboardingChat-B4MKUt9l.css        1.05 kB │ gzip:  0.44 kB
+../static/dist/assets/TodayPage-D77z179j.css             1.18 kB │ gzip:  0.42 kB
+../static/dist/assets/OrganizePage-Xf4G6qj_.css          1.41 kB │ gzip:  0.52 kB
+../static/dist/assets/AboutMePage-CVHtHsDS.css           2.05 kB │ gzip:  0.72 kB
+../static/dist/assets/SpaceNavigation-p_7PkAVI.css       2.36 kB │ gzip:  0.75 kB
+../static/dist/assets/ChatPreview-B5p6z4pY.css           2.72 kB │ gzip:  0.91 kB
+../static/dist/assets/NightApp-BIHHJIJL.css              2.78 kB │ gzip:  0.89 kB
+../static/dist/assets/OrganizeReviewPage-BdKkwMiX.css    3.25 kB │ gzip:  0.92 kB
+../static/dist/assets/TimeBasis-AcUsQWxw.css             3.50 kB │ gzip:  1.08 kB
+../static/dist/assets/ToolsDemo-DMwTMvm9.css             4.00 kB │ gzip:  1.12 kB
+../static/dist/assets/index-DTA2J4MD.css                47.85 kB │ gzip: 10.94 kB
+../static/dist/assets/chevron-down-DlexlGMC.js           0.12 kB │ gzip:  0.14 kB
+../static/dist/assets/x-DuWj6OzL.js                      0.15 kB │ gzip:  0.15 kB
+../static/dist/assets/lock-keyhole-7tSpJ_7F.js           0.25 kB │ gzip:  0.22 kB
+../static/dist/assets/triangle-alert-D2FKhPLe.js         0.26 kB │ gzip:  0.21 kB
+../static/dist/assets/beijing-CZ95lBIa.js                0.45 kB │ gzip:  0.35 kB
+../static/dist/assets/shield-check-GSa7Bc64.js           0.48 kB │ gzip:  0.32 kB
+../static/dist/assets/square-DGbmPX3p.js                 0.56 kB │ gzip:  0.35 kB
+../static/dist/assets/TimeField-Cgski46Z.js              0.66 kB │ gzip:  0.41 kB
+../static/dist/assets/followV1Async-Bam3T2GV.js          0.72 kB │ gzip:  0.36 kB
+../static/dist/assets/ComponentNotice-C6j32Alp.js        0.78 kB │ gzip:  0.57 kB
+../static/dist/assets/Overlays-C1n2Dq4N.js               0.79 kB │ gzip:  0.42 kB
+../static/dist/assets/DialogContent-B_iFjbWe.js          0.85 kB │ gzip:  0.48 kB
+../static/dist/assets/sse-HVoWiiTI.js                    0.99 kB │ gzip:  0.63 kB
+../static/dist/assets/LoginDialog-D371-yGi.js            1.10 kB │ gzip:  0.65 kB
+../static/dist/assets/PreviewNotice-DCKDmbR7.js          1.11 kB │ gzip:  0.73 kB
+../static/dist/assets/Composer-V1yZo1ZG.js               1.24 kB │ gzip:  0.73 kB
+../static/dist/assets/Calendar-mvo74bfB.js               1.41 kB │ gzip:  0.79 kB
+../static/dist/assets/DateField-Dv5P1fHe.js              1.64 kB │ gzip:  0.87 kB
+../static/dist/assets/FlipFace-b9k2InAq.js               2.20 kB │ gzip:  1.17 kB
+../static/dist/assets/SpaceNavigation-DATYkBnE.js        2.26 kB │ gzip:  1.25 kB
+../static/dist/assets/MemoryPreview-DK1BKkgM.js          2.33 kB │ gzip:  1.06 kB
+../static/dist/assets/Selection-BkxkTe4p.js              2.48 kB │ gzip:  1.13 kB
+../static/dist/assets/Chat-DstDPhwB.js                   2.77 kB │ gzip:  1.42 kB
+../static/dist/assets/Chart-IOd3DY8X.js                  2.80 kB │ gzip:  1.51 kB
+../static/dist/assets/Today-CJivuMA0.js                  2.94 kB │ gzip:  1.22 kB
+../static/dist/assets/Cases-BqDON2jy.js                  3.22 kB │ gzip:  1.50 kB
+../static/dist/assets/ChartDemo-zayBdCFR.js              3.85 kB │ gzip:  2.09 kB
+../static/dist/assets/ReportSchedule-DEPNLweQ.js         4.01 kB │ gzip:  1.95 kB
+../static/dist/assets/Chart-BoOb-qCd.js                  4.06 kB │ gzip:  1.88 kB
+../static/dist/assets/index-BmoMHjpE.js                  5.13 kB │ gzip:  1.89 kB
+../static/dist/assets/Settings-BnU0SAZ-.js               5.55 kB │ gzip:  2.37 kB
+../static/dist/assets/ChartData-B5hFXll-.js              5.86 kB │ gzip:  2.43 kB
+../static/dist/assets/Design-CP3mGTy3.js                 5.95 kB │ gzip:  2.66 kB
+../static/dist/assets/Charts-6FqZPypP.js                 6.00 kB │ gzip:  2.56 kB
+../static/dist/assets/Tarot-BPljXLcl.js                  6.01 kB │ gzip:  2.66 kB
+../static/dist/assets/wireV1-LbfeiOHc.js                 6.16 kB │ gzip:  2.28 kB
+../static/dist/assets/Me-CS-YiPiX.js                     6.16 kB │ gzip:  2.66 kB
+../static/dist/assets/Settings-Dp5F7aXT.js               6.28 kB │ gzip:  2.29 kB
+../static/dist/assets/Messages-BIgGp-Dw.js               6.31 kB │ gzip:  2.96 kB
+../static/dist/assets/Cases-zMeZ_mdm.js                  6.34 kB │ gzip:  2.51 kB
+../static/dist/legacy-stream.js                          7.39 kB │ gzip:  2.98 kB
+../static/dist/assets/RecoveryPreview-C1zubmDO.js        8.01 kB │ gzip:  3.90 kB
+../static/dist/assets/TarotCards-KH8_jN8n.js            10.12 kB │ gzip:  3.48 kB
+../static/dist/assets/OnboardingChat-d1rySDAl.js        11.30 kB │ gzip:  4.28 kB
+../static/dist/assets/store-C8p7zoTd.js                 11.60 kB │ gzip:  4.92 kB
+../static/dist/assets/TodayPage-ZOOfA6JJ.js             11.65 kB │ gzip:  4.95 kB
+../static/dist/assets/OrganizePage-D7IvRnBs.js          11.88 kB │ gzip:  4.52 kB
+../static/dist/assets/SettingsPage-8Zs1JNEd.js          13.23 kB │ gzip:  4.70 kB
+../static/dist/assets/Chat-BxVC85SM.js                  13.96 kB │ gzip:  5.73 kB
+../static/dist/assets/Me-obdtFxPZ.js                    15.61 kB │ gzip:  5.93 kB
+../static/dist/assets/TimeBasis-DvAqKR-x.js             15.98 kB │ gzip:  6.35 kB
+../static/dist/assets/AboutMePage-Di9_i1wU.js           24.31 kB │ gzip:  7.89 kB
+../static/dist/assets/Tarot-BwQtEeec.js                 25.12 kB │ gzip:  9.07 kB
+../static/dist/assets/index-CtNammaq.js                 26.88 kB │ gzip:  9.59 kB
+../static/dist/assets/SampleChartPage-qksVYBkF.js       28.39 kB │ gzip:  7.08 kB
+../static/dist/assets/reducer-MuFtq760.js               29.13 kB │ gzip: 10.68 kB
+../static/dist/assets/index-n-6LHbWK.js                 31.55 kB │ gzip: 11.89 kB
+../static/dist/assets/OrganizeReviewPage-CjxIlcrf.js    39.24 kB │ gzip: 13.80 kB
+../static/dist/assets/ToolsDemo-tk5jIjSl.js             43.25 kB │ gzip: 15.19 kB
+../static/dist/assets/ChatPreview-DiHO0Wl7.js           49.25 kB │ gzip: 17.77 kB
+../static/dist/assets/Markdown-BQtuCvFv.js              75.35 kB │ gzip: 25.10 kB
+../static/dist/assets/index-BfP3rK0L.js                 92.37 kB │ gzip: 31.28 kB
+../static/dist/assets/NightApp-CpJxHwFw.js             112.31 kB │ gzip: 31.60 kB
+../static/dist/assets/react-DnxA9v5e.js                140.91 kB │ gzip: 45.31 kB
+✓ built in 3.01s

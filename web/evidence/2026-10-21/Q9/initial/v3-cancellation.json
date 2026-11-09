@@ -1,0 +1,14 @@
+{
+  "schema": "frontend-q9-v3-cancellation-finding-v1",
+  "report_sha256": "d7bf29c1a5ac16b0d1d2b0fbd860b3b6f8b0185eef42dbcd793ea49cc0a26a1c",
+  "stats": {
+    "startTime": "2026-10-20T18:01:56.347Z",
+    "duration": 27092.302,
+    "expected": 21,
+    "skipped": 31,
+    "unexpected": 4,
+    "flaky": 0
+  },
+  "finding": "The initial guard treated the unmounted question form React Query cancellation as a network failure. Independent local reproduction verified same-origin GET /api/cases net::ERR_ABORTED and form count zero. No initial failure is relabelled green. The final fresh 56-case batch records at most one exact expected cancellation on populated tarot only; other failed/http/console/error/write arrays remain zero.",
+  "runtime_source_unchanged": true
+}

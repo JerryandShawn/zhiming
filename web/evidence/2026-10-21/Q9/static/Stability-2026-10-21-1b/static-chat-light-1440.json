@@ -1,0 +1,89 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "chat",
+  "mode": "static",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "light",
+  "url": "/?preview=1#/chat",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/static-chat-light-1440.png",
+  "sha256": "2df60ce452a02b6c5ad8ab05445dd4f1fba8e1b7547d0af44c3e1a98c154528c",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "light",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "ask-card",
+            "text": "这次是技术面，还是谈薪的终面？为什么问：不同轮次要准备的重点不一样技术面终面 · 谈薪还不"
+          },
+          {
+            "className": "checkbox-box",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "kind": "internal",
+        "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "ask-card",
+            "text": "这次是技术面，还是谈薪的终面？为什么问：不同轮次要准备的重点不一样技术面终面 · 谈薪还不"
+          },
+          {
+            "className": "checkbox-box",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "kind": "internal",
+        "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 368,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "ask-card",
+            "text": "这次是技术面，还是谈薪的终面？为什么问：不同轮次要准备的重点不一样技术面终面 · 谈薪还不"
+          },
+          {
+            "className": "button primary  ",
+            "text": "记住"
+          },
+          {
+            "className": "checkbox-box",
+            "text": ""
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

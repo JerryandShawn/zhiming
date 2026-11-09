@@ -1,0 +1,1148 @@
+[
+  {
+    "id": "aria-allowed-role",
+    "impact": "minor",
+    "tags": [
+      "cat.aria",
+      "best-practice"
+    ],
+    "description": "Ensure role attribute has an appropriate value for the element",
+    "help": "ARIA role should be appropriate for the element",
+    "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/aria-allowed-role?application=playwright",
+    "nodes": [
+      {
+        "any": [
+          {
+            "id": "aria-allowed-role",
+            "data": [
+              "dialog"
+            ],
+            "relatedNodes": [],
+            "impact": "minor",
+            "message": "ARIA role dialog is not allowed for given element"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "minor",
+        "html": "<aside id=\"drawer\" class=\"drawer p-5\" role=\"dialog\" aria-label=\"详情\" aria-modal=\"true\"></aside>",
+        "target": [
+          "#drawer"
+        ],
+        "failureSummary": "Fix any of the following:\n  ARIA role dialog is not allowed for given element"
+      }
+    ]
+  },
+  {
+    "id": "color-contrast",
+    "impact": "serious",
+    "tags": [
+      "cat.color",
+      "wcag2aa",
+      "wcag143",
+      "TTv5",
+      "TT13.c",
+      "EN-301-549",
+      "EN-9.1.4.3",
+      "ACT",
+      "RGAAv4",
+      "RGAA-3.2.1"
+    ],
+    "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+    "help": "Elements must meet minimum color contrast ratio thresholds",
+    "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright",
+    "nodes": [
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 3.7,
+              "fontSize": "6.8pt (9px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<small>知命 · 日常观察与自我认知</small>",
+        "target": [
+          "span:nth-child(2) > small"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 3.7,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div class=\"rail-caption\">我的明镜</div>",
+        "target": [
+          ".rail-caption:nth-child(2)"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#8c9085",
+              "bgColor": "#dfe5d7",
+              "contrastRatio": 2.53,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<button class=\"nav-tab active\" data-page=\"chat\" aria-current=\"page\"><span>◎</span> 对话 <small>思考与记录</small></button>",
+                "target": [
+                  "#navTabs > .active[data-page=\"chat\"][aria-current=\"page\"]"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.53 (foreground color: #8c9085, background color: #dfe5d7, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<small>思考与记录</small>",
+        "target": [
+          ".active[data-page=\"chat\"][aria-current=\"page\"] > small"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.53 (foreground color: #8c9085, background color: #dfe5d7, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#8c9085",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 2.79,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.79 (foreground color: #8c9085, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<small>三盘对照</small>",
+        "target": [
+          ".nav-tab[data-page=\"chart\"] > small"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.79 (foreground color: #8c9085, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#8c9085",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 2.79,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.79 (foreground color: #8c9085, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<small>梳理问题与选择</small>",
+        "target": [
+          ".nav-tab[data-page=\"tarot\"] > small"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.79 (foreground color: #8c9085, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#8c9085",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 2.79,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.79 (foreground color: #8c9085, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<small>接着上次，继续聊</small>",
+        "target": [
+          ".nav-tab[data-page=\"cases\"] > small"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.79 (foreground color: #8c9085, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 3.7,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<summary>档案与工具</summary>",
+        "target": [
+          ".secondary-navigation > summary"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 3.7,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div class=\"rail-caption rail-session-title\">近期对话 <button id=\"newSessionBtn\" aria-label=\"新建对话\">＋</button></div>",
+        "target": [
+          ".rail-session-title"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 3.7,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div class=\"rail-foot\"><span class=\"live-dot\"></span>个人档案 · 双端互通<button id=\"logoutBtn\">退出</button></div>",
+        "target": [
+          ".rail-foot"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#eeeee5",
+              "contrastRatio": 3.7,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<aside class=\"app-rail\" aria-label=\"主导航\">",
+                "target": [
+                  ".app-rail"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button id=\"logoutBtn\">退出</button>",
+        "target": [
+          "#logoutBtn"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.7 (foreground color: #777b72, background color: #eeeee5, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 3.89,
+              "fontSize": "8.3pt (11px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<header class=\"workspace-topbar\">",
+                "target": [
+                  "header"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.89 (foreground color: #777b72, background color: #f6f3ec, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span id=\"todayLabel\" class=\"date-label\">10月27日星期二</span>",
+        "target": [
+          "#todayLabel"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.89 (foreground color: #777b72, background color: #f6f3ec, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#919486",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 2.79,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<header class=\"workspace-topbar\">",
+                "target": [
+                  "header"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.79 (foreground color: #919486, background color: #f6f3ec, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button id=\"openSearchBtn\" class=\"search-trigger\"><span>⌕</span> 搜索经历、报告与对话 <kbd>Ctrl K</kbd></button>",
+        "target": [
+          "#openSearchBtn"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.79 (foreground color: #919486, background color: #f6f3ec, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#919486",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 2.79,
+              "fontSize": "6.8pt (9px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<header class=\"workspace-topbar\">",
+                "target": [
+                  "header"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.79 (foreground color: #919486, background color: #f6f3ec, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<kbd>Ctrl K</kbd>",
+        "target": [
+          "kbd"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.79 (foreground color: #919486, background color: #f6f3ec, font size: 6.8pt (9px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#9a8a68",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 3.05,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<body class=\"min-h-screen font-sans\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.05 (foreground color: #9a8a68, background color: #f6f3ec, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div class=\"eyebrow\" id=\"pageEyebrow\">THE MIRROR / 对话</div>",
+        "target": [
+          "#pageEyebrow"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.05 (foreground color: #9a8a68, background color: #f6f3ec, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 3.89,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<body class=\"min-h-screen font-sans\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.89 (foreground color: #777b72, background color: #f6f3ec, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<p id=\"pageSubtitle\">带着经历来，借助依据思考，再回到日常行动。</p>",
+        "target": [
+          "#pageSubtitle"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.89 (foreground color: #777b72, background color: #f6f3ec, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#939781",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 2.71,
+              "fontSize": "10.5pt (14px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<body class=\"min-h-screen font-sans\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.71 (foreground color: #939781, background color: #f6f3ec, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div class=\"heading-note\" id=\"pageNote\">一事一问 · 一日一观</div>",
+        "target": [
+          "#pageNote"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.71 (foreground color: #939781, background color: #f6f3ec, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 4.25,
+              "fontSize": "8.3pt (11px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"conversation-panel\">",
+                "target": [
+                  ".conversation-panel"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button id=\"chatTarotBtn\">用塔罗梳理</button>",
+        "target": [
+          "#chatTarotBtn"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 4.25,
+              "fontSize": "8.3pt (11px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"conversation-panel\">",
+                "target": [
+                  ".conversation-panel"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button id=\"newChatMobileBtn\">新对话 ＋</button>",
+        "target": [
+          "#newChatMobileBtn"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 4.25,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"conversation-panel\">",
+                "target": [
+                  ".conversation-panel"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<p>可以说说近况，上传一张图片，或从命盘中选一个细节展开。你的经历和想法，始终是解读的起点。</p>",
+        "target": [
+          ".chat-welcome > p"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 4.25,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"conversation-panel\">",
+                "target": [
+                  ".conversation-panel"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span class=\"muted\">已修订</span>",
+        "target": [
+          ".msg-body > .muted"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#777b72",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 4.25,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<details id=\"chatCaseScope\" class=\"chat-case-scope\"><summary>本轮事项范围 <span id=\"chatCaseScopeCount\">未关联事项</span></summary><p class=\"muted\">明确选择这轮要一起考虑的事项，最多 8 件。未选的事项不会进入本轮背景。</p><div id=\"chatCaseScopeList\" role=\"group\" aria-label=\"本轮关联事项\"><p class=\"muted\">暂无可选事项。可以先到“我的事项”记录。</p></div></details>",
+                "target": [
+                  "#chatCaseScope"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span id=\"chatCaseScopeCount\">未关联事项</span>",
+        "target": [
+          "#chatCaseScopeCount"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.25 (foreground color: #777b72, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7c8570",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 3.79,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"composer\">",
+                "target": [
+                  ".composer"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button class=\"chip\" data-q=\"逐月详批本月运势\">逐月详批本月</button>",
+        "target": [
+          "button[data-q=\"逐月详批本月运势\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7c8570",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 3.79,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"composer\">",
+                "target": [
+                  ".composer"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button class=\"chip\" data-q=\"今日日课\">今日日课</button>",
+        "target": [
+          "button[data-q=\"今日日课\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7c8570",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 3.79,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"composer\">",
+                "target": [
+                  ".composer"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button class=\"chip\" data-q=\"应验率报告\">应验率报告</button>",
+        "target": [
+          "button[data-q=\"应验率报告\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7c8570",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 3.79,
+              "fontSize": "7.5pt (10px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"composer\">",
+                "target": [
+                  ".composer"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button class=\"chip\" data-q=\"导出档案\">导出档案</button>",
+        "target": [
+          "button[data-q=\"导出档案\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.79 (foreground color: #7c8570, background color: #fffdf8, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7c8572",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 3.78,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"glass p-4\">",
+                "target": [
+                  ".p-4.glass:nth-child(1)"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.78 (foreground color: #7c8572, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div class=\"text-xs tracking-widest text-gray-500 mb-3\">本 命 速 览</div>",
+        "target": [
+          ".tracking-widest.mb-3.text-gray-500"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.78 (foreground color: #7c8572, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7c8572",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 3.78,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"glass p-4\">\n          <div class=\"text-xs tracking-widest text-gray-500 mb-2\">本 轮 依 据</div>\n          <div id=\"sliceInfo\" class=\"text-xs text-gray-500 leading-relaxed\">回答会结合相关经历与计算依据，来源将在这里显示。</div>\n        </div>",
+                "target": [
+                  ".p-4.glass:nth-child(2)"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.78 (foreground color: #7c8572, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div class=\"text-xs tracking-widest text-gray-500 mb-2\">本 轮 依 据</div>",
+        "target": [
+          ".tracking-widest.mb-2.text-gray-500"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.78 (foreground color: #7c8572, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7c8572",
+              "bgColor": "#fffdf8",
+              "contrastRatio": 3.78,
+              "fontSize": "9.0pt (12px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<div class=\"glass p-4\">\n          <div class=\"text-xs tracking-widest text-gray-500 mb-2\">本 轮 依 据</div>\n          <div id=\"sliceInfo\" class=\"text-xs text-gray-500 leading-relaxed\">回答会结合相关经历与计算依据，来源将在这里显示。</div>\n        </div>",
+                "target": [
+                  ".p-4.glass:nth-child(2)"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.78 (foreground color: #7c8572, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<div id=\"sliceInfo\" class=\"text-xs text-gray-500 leading-relaxed\">回答会结合相关经历与计算依据，来源将在这里显示。</div>",
+        "target": [
+          "#sliceInfo"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.78 (foreground color: #7c8572, background color: #fffdf8, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#7d896c",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 3.34,
+              "fontSize": "12.0pt (16px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<body class=\"min-h-screen font-sans\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 3.34 (foreground color: #7d896c, background color: #f6f3ec, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<span>读盘，也读生活。</span>",
+        "target": [
+          ".context-note > span"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 3.34 (foreground color: #7d896c, background color: #f6f3ec, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#9a9e8d",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 2.47,
+              "fontSize": "8.3pt (11px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<body class=\"min-h-screen font-sans\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 2.47 (foreground color: #9a9e8d, background color: #f6f3ec, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<p>命盘提供观察角度；真实经历和你的反馈，让解读更贴近你。</p>",
+        "target": [
+          ".context-note > p"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 2.47 (foreground color: #9a9e8d, background color: #f6f3ec, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+      },
+      {
+        "any": [
+          {
+            "id": "color-contrast",
+            "data": {
+              "fgColor": "#667e55",
+              "bgColor": "#f6f3ec",
+              "contrastRatio": 4.04,
+              "fontSize": "8.3pt (11px)",
+              "fontWeight": "normal",
+              "messageKey": null,
+              "expectedContrastRatio": "4.5:1"
+            },
+            "relatedNodes": [
+              {
+                "html": "<body class=\"min-h-screen font-sans\">",
+                "target": [
+                  "body"
+                ]
+              }
+            ],
+            "impact": "serious",
+            "message": "Element has insufficient color contrast of 4.04 (foreground color: #667e55, background color: #f6f3ec, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button onclick=\"switchPage('memory')\">查看与更正记忆 ↗</button>",
+        "target": [
+          "button[onclick=\"switchPage('memory')\"]"
+        ],
+        "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.04 (foreground color: #667e55, background color: #f6f3ec, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+      }
+    ]
+  },
+  {
+    "id": "label-content-name-mismatch",
+    "impact": "serious",
+    "tags": [
+      "cat.semantics",
+      "wcag21a",
+      "wcag253",
+      "EN-301-549",
+      "EN-9.2.5.3",
+      "RGAAv4",
+      "RGAA-6.1.5"
+    ],
+    "description": "Ensure that elements labelled through their content must have their visible text as part of their accessible name",
+    "help": "Elements must have their visible text as part of their accessible name",
+    "helpUrl": "https://dequeuniversity.com/rules/axe/4.14/label-content-name-mismatch?application=playwright",
+    "nodes": [
+      {
+        "any": [
+          {
+            "id": "label-content-name-mismatch",
+            "data": null,
+            "relatedNodes": [],
+            "impact": "serious",
+            "message": "Text inside the element is not included in the accessible name"
+          }
+        ],
+        "all": [],
+        "none": [],
+        "impact": "serious",
+        "html": "<button class=\"account-button\" onclick=\"switchPage('chart');openProfile()\" aria-label=\"查看与确认出生档案\">我的档案 <span>↗</span></button>",
+        "target": [
+          ".account-button"
+        ],
+        "failureSummary": "Fix any of the following:\n  Text inside the element is not included in the accessible name"
+      }
+    ]
+  }
+]

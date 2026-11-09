@@ -1,0 +1,81 @@
+{
+  "run_id": "Stability-2026-10-21-1b",
+  "id": "chat",
+  "mode": "static",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "theme": "light",
+  "url": "/?preview=1#/chat",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-1b/static-chat-light-390.png",
+  "sha256": "3c57e50e6114e9d8839d764b3a9edd928757336e6136571db3602b99481cdaa6",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "light",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      },
+      {
+        "kind": "internal",
+        "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      },
+      {
+        "kind": "internal",
+        "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 529,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "ask-card",
+            "text": "这次是技术面，还是谈薪的终面？为什么问：不同轮次要准备的重点不一样技术面终面 · 谈薪还不"
+          }
+        ]
+      },
+      {
+        "kind": "internal",
+        "selector": ".chat-messages, [role=\"dialog\"], [role=\"alertdialog\"]",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 772,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "ask-card",
+            "text": "这次是技术面，还是谈薪的终面？为什么问：不同轮次要准备的重点不一样技术面终面 · 谈薪还不"
+          },
+          {
+            "className": "button primary  ",
+            "text": "记住"
+          }
+        ]
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

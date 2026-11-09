@@ -1,0 +1,189 @@
+{
+  "format": "frontend-learning-sample-v1",
+  "sample_id": "ayuan-astro",
+  "system": "astro",
+  "status": "learning_only",
+  "cards": [
+    {
+      "point_id": "learning-1",
+      "kind": "orientation",
+      "title": "先读计算位置",
+      "text": "本页核对本命主盘的来源与具名方法，不展开完整行星位置；黄道、坐标、宫制、历表与UTC口径一起阅读，不把计算位置当作现实事件。",
+      "school": "西占 · 热带黄道、地心黄经、Placidus宫制；Moshier历表，民用UTC近似UT",
+      "sources": [
+        {
+          "title": "Swiss Ephemeris 官方接口说明",
+          "url": "https://www.astro.com/swisseph/swephprg.htm",
+          "status": "固定样例登记来源；本线未重新核对原刊。"
+        }
+      ],
+      "c_aliases": [
+        "c2"
+      ],
+      "r_aliases": [],
+      "citations": "〔c2〕",
+      "evidence_refs": [
+        {
+          "document_id": "doc-6c8c2df511dca34bf4e71af36986b2e047b9d139f9f10e75dd31d8e9e00dccc4",
+          "alias": "c2",
+          "claim_id": "demo-claim-cfa4a35061618c69aaaec833cc048901337030175dba3dc74867e8bbb9c5ebb2"
+        }
+      ],
+      "limits": [
+        "从已核对的主盘学习读法，不据此推断人格或现实结果。"
+      ]
+    },
+    {
+      "point_id": "learning-2",
+      "kind": "boundary",
+      "title": "核对临界候选",
+      "text": "这个样例靠近口径交界。本页只展示已核对的交界摘要，原始时刻与完整候选四柱不展开；保留记录和默认主盘，不据此倒推出生时辰。",
+      "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+      "sources": [
+        {
+          "title": "项目时辰交界口径与原始资料",
+          "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+        }
+      ],
+      "c_aliases": [
+        "c6",
+        "c7",
+        "c8"
+      ],
+      "r_aliases": [
+        "r1"
+      ],
+      "citations": "〔c6〕〔c7〕〔c8〕〔r1〕",
+      "evidence_refs": [
+        {
+          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "alias": "c6",
+          "claim_id": "demo-claim-567498141fc263697156e804fb48fa87f4432d76d21728e7827b7b44987986d4"
+        },
+        {
+          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "alias": "c7",
+          "claim_id": "demo-claim-0dbaeda08888ae6c116a6d3720db32115f176f6f9ca6b13a3172579271d55f5d"
+        },
+        {
+          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "alias": "c8",
+          "claim_id": "demo-claim-703d35b43457faa546d41e36ff4a8d5721e9351d80e14efd4869903bf3b07907"
+        },
+        {
+          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "alias": "r1",
+          "claim_id": "demo-claim-9dee54e6f9adb6d2d8c90397e8e4fdb438f8c55be286705a5260551bf0737c5f"
+        }
+      ],
+      "limits": [
+        "保留默认主盘和交界候选；原始时刻与完整候选四柱未下发，不授权倒推或修改出生时辰。"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "document_id": "doc-6c8c2df511dca34bf4e71af36986b2e047b9d139f9f10e75dd31d8e9e00dccc4",
+      "alias": "c2",
+      "claim_id": "demo-claim-cfa4a35061618c69aaaec833cc048901337030175dba3dc74867e8bbb9c5ebb2",
+      "kind": "fact",
+      "value_sha256": "fb3a95f855c9562c48863c5597f671b16c3a2e4190aa49809bd1ea315b5459a4",
+      "summary": "当前主盘的原有计算依据；本卡没有新造更细的别名。",
+      "basis": "actual_UTC"
+    },
+    {
+      "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+      "alias": "c6",
+      "claim_id": "demo-claim-567498141fc263697156e804fb48fa87f4432d76d21728e7827b7b44987986d4",
+      "kind": "fact",
+      "value_sha256": "1dc7b8238875868cbf475bb6670287d17631f9e032538acc7fa2f6c5590e4504",
+      "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+      "basis": "actual_UTC"
+    },
+    {
+      "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+      "alias": "c7",
+      "claim_id": "demo-claim-0dbaeda08888ae6c116a6d3720db32115f176f6f9ca6b13a3172579271d55f5d",
+      "kind": "fact",
+      "value_sha256": "9c08b73198ec978d739ef3b47d287bd1aea36ebb36561b9e126bfa1aa219a545",
+      "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+      "basis": "actual_UTC"
+    },
+    {
+      "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+      "alias": "c8",
+      "claim_id": "demo-claim-703d35b43457faa546d41e36ff4a8d5721e9351d80e14efd4869903bf3b07907",
+      "kind": "fact",
+      "value_sha256": "b48d8b113959f3ae937ea4888285da0b09e3cf69a4b63348a93d39702ef4c7c7",
+      "summary": "交界核对的时间坐标输入已核对；原始时刻与完整候选四柱未下发。",
+      "basis": "actual_UTC"
+    },
+    {
+      "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+      "alias": "r1",
+      "claim_id": "demo-claim-9dee54e6f9adb6d2d8c90397e8e4fdb438f8c55be286705a5260551bf0737c5f",
+      "kind": "rule",
+      "value_sha256": "4dfb38af7e9a5835df4e0e905776e169144f6ebe1bd49d5ceb4bc78cd2b25c53",
+      "summary": "已核对的交界条件；不据此倒推出生时辰。",
+      "basis": "true_solar",
+      "evidence_refs": [
+        {
+          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "alias": "c6",
+          "claim_id": "demo-claim-567498141fc263697156e804fb48fa87f4432d76d21728e7827b7b44987986d4"
+        },
+        {
+          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "alias": "c7",
+          "claim_id": "demo-claim-0dbaeda08888ae6c116a6d3720db32115f176f6f9ca6b13a3172579271d55f5d"
+        },
+        {
+          "document_id": "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+          "alias": "c8",
+          "claim_id": "demo-claim-703d35b43457faa546d41e36ff4a8d5721e9351d80e14efd4869903bf3b07907"
+        }
+      ],
+      "school": "真太阳日时（sect1）与物理 UTC+8 节界",
+      "sources": [
+        {
+          "title": "项目时辰交界口径与原始资料",
+          "status": "具名交界口径；原刊待核，不授权修正出生时辰。"
+        }
+      ]
+    }
+  ],
+  "effects": {
+    "model_calls": 0,
+    "writes": 0,
+    "alias_registry": "reuse_input_projection_no_registration"
+  },
+  "limits": [
+    "沿用原信封本轮别名，不重编号；某c覆盖整个主盘，本页只展示受控摘要。",
+    "内容摘要不代表签名或真实授权；真实接线须核对归属和撤销状态。",
+    "纯规则学习要点，不生成新命理结论、性格标签或现实结果承诺。",
+    "仅已发布合成样例；未连接真实资料、通用Pointer或别名账本。",
+    "公开摘要省略任意observed、原始时刻、完整候选四柱及实现细节。",
+    "卡中实际输入已在本地核对；本公开版只展示受控依据摘要。"
+  ],
+  "provenance": {
+    "source_commit": "0f1d6e676259b961819de4da5ea3f343d58dbe98",
+    "mode": "published-synthetic-snapshot",
+    "source_files": [
+      {
+        "path": "docs/v4/contracts/samples/learning-ayuan-astro.json",
+        "sha256": "1731e7bdeb4d06b29e7bcff3c9bcab0b2c306ebdac57e9e78ee9acf0bcf847a4"
+      },
+      {
+        "path": "docs/v4/contracts/samples/ayuan_astro.json",
+        "sha256": "35a0bb10dce92aac401a49905b6c0d08fb127179de92418c79166c5ad8ea7f7c"
+      }
+    ],
+    "integrity": "original-documents-pointer-alias-claim-branch-and-card-templates-verified",
+    "source_document_ids": [
+      "doc-756e8f81a106c686d35a78805604d1a9dc1e850027ac02f09124c8448bb08525",
+      "doc-6c8c2df511dca34bf4e71af36986b2e047b9d139f9f10e75dd31d8e9e00dccc4",
+      "doc-e71de7df60d8ced0a828f0e6f069111fe33edc0dfa0691361eccf98f3422c04c",
+      "doc-35cdcda8657b14e6dd883b5bdd9ff9c9f88fdbbd88143fc3e38c3c483260f3c7"
+    ]
+  }
+}

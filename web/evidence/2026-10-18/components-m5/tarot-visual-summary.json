@@ -1,0 +1,848 @@
+{
+  "run_id": "2026-10-18T10:40:23.788Z",
+  "stage": "tarot",
+  "captured_at": "2026-10-18T10:41:03.814Z",
+  "node": "v22.23.3",
+  "synthetic_only": true,
+  "model_calls": 0,
+  "expected_combinations": 32,
+  "captured_combinations": 32,
+  "source_hashes": {
+    "web/src/api/AuthGate.tsx": "7bb01819e64a631c388ae0abac10ebe8db325749eef72514001c6ef50cedc300",
+    "web/src/api/client.ts": "3d8dab3341b5e46ef5517678f217dc66f47b7add20a9925a5877b4b15150224b",
+    "web/src/api/operations.ts": "b1cfd97313f2aa5154166995e4687519b068871895c7284e727ee99d107c38e7",
+    "web/src/api/useResource.ts": "8097e2e45b57fc0eaa7e20a9fb063f78ff6cb5d7097f2d7341b60102521b07a3",
+    "web/src/App.tsx": "17c26316b57db3591caef55b9ee7ecf167aced7fa4c95946ab9f6cff589c80af",
+    "web/src/charts/AstroDiagram.tsx": "7f30f4570cab0ae5f4de8401e85ed455cf45bd75dfa9b8e24edcb85f3a4a5567",
+    "web/src/charts/ChartBasis.tsx": "65a98019d6846ff231c71b9487fd73e5932b32059d05b376274dd19a22efa9bf",
+    "web/src/charts/ChartDemo.tsx": "4a5c44cab0f6a120081e6439962e31f5d91ff5bc1471f2f6f2ac077498a38437",
+    "web/src/charts/charts.css": "e5069dd7f8d0cef2d6e77b6dd0854ef80fd25cbbd2a9979dce16dbfac0df4772",
+    "web/src/charts/data.ts": "346cca6c4a23dd0f168deeaceb2e95d533137356cd670f9396f4206eb3aa06fc",
+    "web/src/charts/demo.ts": "d17ef4df8001b6f02ee4825e64a9fece9ca606057f9c9cc23c1154d426bdda1d",
+    "web/src/charts/LuckPeriods.tsx": "1bbdb27c78c97b1c6463f31730eac094373674933ba010a72229aa7a3fc8fc23",
+    "web/src/charts/TimeBasis.tsx": "af284a64f8ee063b08b0369ca6f3f18684759de740b1502be990eaa47830e174",
+    "web/src/charts/ZiweiPalaces.tsx": "14adeb43e6fe6b9a3a74490d0054a2187f8a54c6af2aeda8f538dbb6f7829cfe",
+    "web/src/chat/Answers.tsx": "5d5781cb98aed39a13d54ccbde993bf7beda6ace920e1c837bcca5a2bfe07140",
+    "web/src/chat/Composer.tsx": "1847d45a4c9993f563cf77e5e907d1a8db24cf001ec7cbabe4accfa2b3208712",
+    "web/src/chat/events.ts": "410df9da5cf2971068e2a5ce3317dc24d93753284e68699a60de312ee1662e02",
+    "web/src/chat/publicProjection.ts": "b403c2f145163c234b9473ff1aff0111581fd3898f9e1f7d4f918aae96a7fde6",
+    "web/src/chat/reducer.ts": "68b2d1eb4b66638771c41720ace23b872cf9328064e487c6156eebab0ba8eb5c",
+    "web/src/chat/sse.ts": "414354498f52185fbf6360b7c43d93003257dfe5c6c1e4a59cf83119e2e5bd1c",
+    "web/src/chat/storage.ts": "07383479398282f730a7f5409fb999e5aab4f23908f394dd1ea8059cfb5752e2",
+    "web/src/chat/transport.ts": "5849931d665aec4343b6d05390a996a52d82ce9fede38dd2bd199337b40c6a9b",
+    "web/src/chat/types.ts": "d2678eb5eafb63340db787857745f4ffe4ef420a52aed09b683d525436d112de",
+    "web/src/chat/useChat.ts": "90fa1fdb8977dabadf287ab9af32d74ecc9d8981eb1c4b88e88aee4c6ee20a72",
+    "web/src/chat/v2.ts": "6423a13754b893ae7695c21f974c69a243425223aaef1020d5f7f01147eda6db",
+    "web/src/components/Calendar.tsx": "3ad76a542dd67428ca5d9064942f4491aba0ff8b679d69f012ca6a7ee5f5e4d5",
+    "web/src/components/Charts.tsx": "3e9010a7c870c29b1b7e34b8886897ecda0dc8ef79dc116ef30f892fb92e6d7c",
+    "web/src/components/Composer.tsx": "801b7d7ca77b00b6fe03e1320f65a6a31a68b069e6e4e5f77b361a0f0d1d7ef2",
+    "web/src/components/DatePicker.tsx": "3964ac7b5388765471070fa1c65a2f86812cd0872782ba758e1dd44e337b984f",
+    "web/src/components/Markdown.tsx": "d3dc26cf3da70d183fd8c00de9b159704f4bff298838765f6e580960a2884b12",
+    "web/src/components/Messages.tsx": "583dda5dcf1c9411f6410d537e5d7a54b50336a1280b4817a1b1c92f5d05cbd6",
+    "web/src/components/ReportOptions.tsx": "c5f5e3eaa085cfe96e35d68267e291f1fae7b1b3435805a8c4d9732acf2c4bd0",
+    "web/src/components/TarotCards.tsx": "aea0b51cbacc527a9afe4d25303f209259632c8525a114d11af1213e00c5866e",
+    "web/src/components/TarotDraft.ts": "183bb05cb1ddb0659dcf698bc05cc129f69ccbd7b5844d614838a5bb3cde2008",
+    "web/src/components/ui/Controls.tsx": "5f548d9993df9498a153c910401b375f19e9dcb02d2f79001e9e99164b1e21bb",
+    "web/src/components/ui/Overlays.tsx": "d8e1aea939a8c47f15e222688b90fb50e780e22b482640e765a298788b15105b",
+    "web/src/components/ui/Selection.tsx": "7256e0eec4485151166f4dcea5467c03ca9dcd64aea453750afe02eefc3309c1",
+    "web/src/demos/ComponentNotice.tsx": "a04451965eabc581bfc76c401544a5befa0d63eb3f9a344e74a27548475f06ca",
+    "web/src/demos/components-demo.css": "24c304014c2f6922d341d1fae1ec91abb9807f516b9e8509285840ebd18535da",
+    "web/src/Layout.tsx": "f174f8dd4f567ae8d6a2edbd674d9916932f2b9fb56ee79fe12fa0136414ae14",
+    "web/src/live/CaseFeedback.tsx": "6fe517e8b2048b0850da42b0e44c5d212dc3e8854a8d8b81b12b0d700839b43d",
+    "web/src/live/Cases.tsx": "ff69e8e4a65e4fba24b96440d062ad9dc7277354c23738e7eebc54bd3b869b6f",
+    "web/src/live/Chart.tsx": "788ee9ce410bcf023e7ad938ca268b4d2a37f5a62da33245edb157454011f810",
+    "web/src/live/ChartData.tsx": "f08ea3ba0bb0355dca5e4f56713acd35a176b1b99dd273b96aceb6ef4534590c",
+    "web/src/live/Chat.tsx": "b1f6c8a9c0773d2b9344d76d2c39517a6b942d288ab40e4c4fb392a75b9da479",
+    "web/src/live/common.tsx": "0e1289f085fba909e1b98bbf7d5d10e128f2de04f7dccde44f30a4d6ba3a63ce",
+    "web/src/live/DateField.tsx": "4c56a86650c01ced9b7b6d9268455efda619e266826ad4fee389cb2e08221a9b",
+    "web/src/live/LegacyPreview.tsx": "82b702beb74dff8c046e80fc2f09af99c6bc2f15e88117ceb6c870edf16f5460",
+    "web/src/live/Me.tsx": "329164fc9e2292031dfe1196b57e6af212bb5dad5706da581b41fb3531cd1399",
+    "web/src/live/MemoryCard.tsx": "39b3f15778b61a2802120bdebd9f520b0a588a8d4503e8ae00997ffc21907742",
+    "web/src/live/ProfileForm.tsx": "887d622b855b0056e30dd8b4196d01ae482ad615473a5046f8565ef146a548e4",
+    "web/src/live/Reports.tsx": "1f17c1dcc2423147feeafdae7d9c9d151f1fae5365410571eaea9b138f3b5701",
+    "web/src/live/ReportSchedule.tsx": "3a682beb07f1db077940b8e576816145a432397853d9410c9258fcf3ca7c1e0d",
+    "web/src/live/Settings.tsx": "1e7cf378b23b20a1f6df7f34c63c7977369c77ec9692ba550fd83e13a52cae73",
+    "web/src/live/Tarot.tsx": "1dcfce07babf8f21138e4895195474b406439ef1ba5d4338b8cc33dfa218c26f",
+    "web/src/live/TimeField.tsx": "039ac413b3c81ab364551d865b1502eee2657d2eb07c26d63bef8ef7354ccf31",
+    "web/src/live/Today.tsx": "38518e4ef5636130c91977bbdedd0739f0404c17b7462060573645a68b7f4026",
+    "web/src/live/types.ts": "aecdc2c807cd8f977f82d367387fb590d66f0bdada46ad1b75ac36b502f9595d",
+    "web/src/main.tsx": "a689c6e16d661c9557cd8716b2c1d56d1e3deb2d8fa8b21930bb2e22722f039c",
+    "web/src/pages/Cases.tsx": "2994248a5f1fc54035a626d93e77484dedd6ab634045c6354def55f6cb773580",
+    "web/src/pages/Chart.tsx": "ecd68fadffd478a02ee865dc8c447ee1caab52877a072c4931c552d81f109cf7",
+    "web/src/pages/Chat.tsx": "e2bbb8c133bbd8dbbd70971ab6d7c54ff402baf32033064d9c3244e76f4450a9",
+    "web/src/pages/Design.tsx": "443ca32827f7f2bdf7574e6aba6c54b79ec9777d8e4f0ab771877a00115b0bf0",
+    "web/src/pages/Me.tsx": "a9aef5e38127786d3c7926221439abe2a5faac48cb73dfc305916a86cbe8fc91",
+    "web/src/pages/Settings.tsx": "0e73d11646c0d4a389fda37e5629956f05e78a78c408a323c99bbf0eaa8c6cad",
+    "web/src/pages/Tarot.tsx": "5901dc3c15ce7c2f9a29aad2c5e185216cb8c1a26cf249a7651e0ede3782eee6",
+    "web/src/pages/Today.tsx": "f0a9ad901a817f0a3994128675dfa84c5be9f79e2a1868e7eb06f96230269988",
+    "web/src/spaces/chat.css": "a68bf6b961c82e9bc8a5d6a4c83acaea0719abb1730d99b45af8f35705641ecc",
+    "web/src/spaces/ChatPreview.tsx": "54ee3e7d01a932a1e7555648f534434ebd0054751b4ae2ff88f060a801f59149",
+    "web/src/spaces/common.css": "b6cdc52003f1bd86a4097dd57f0e736c4edb79e5265af050061d2cfa32aedcf2",
+    "web/src/spaces/EditDialog.tsx": "3689f225e164c24d3729521f90c154aa2ea695ce00c549ed275a6449f261b19a",
+    "web/src/spaces/fixtures.ts": "779c59b03199aa96847ecb2750eddcc91f86c1dbe3b1c2e53b5856c76eec2fff",
+    "web/src/spaces/MemoryPreview.tsx": "21fda7bc94b0971bd77e71a69f8a3c27ae0a05e4f3730ca67c02e3fa7d08afb4",
+    "web/src/spaces/organize.css": "39add31265c660ecdb5a31bcbb45a344e419cfb21ffad417c1654cfca988feb2",
+    "web/src/spaces/OrganizePage.tsx": "7fc4700531f8267247fb9089ceef8c8a961d0aab1453e6b0a61dc68d3a816f71",
+    "web/src/spaces/PreviewNotice.tsx": "123c217e915ffcac93f69f95d6c9e7af963c2aa222508e9ce465295595bb46c0",
+    "web/src/spaces/proposal.ts": "91a6862b14ae5f7838683717223a1ee10765ae5087490e0bb893a21f426a3eae",
+    "web/src/spaces/ProposalTree.tsx": "1bb1a61e7163b9d1906bb2f98815269b2080e6d2ab3d7cab2127b8f29b0aa5b7",
+    "web/src/spaces/RouteBadge.tsx": "695caa468bce12195e295721d2bdc1e45d00d335cacf0220bada2336c1fdb9c6",
+    "web/src/spaces/SpaceNavigation.tsx": "e6d760e2f0755c72c76c39cfa8d04f9aeff27c46b647195f0f9a6392f8e72d97",
+    "web/src/spaces/store.ts": "91c965f05a036f91c0b56b526413c188621dd0ad90c20b25b7ddf65b5d91448a",
+    "web/src/spaces/TopicActions.tsx": "fff77efff8ba7310f2b0cfde7c0f543c2bba6572158563d389b7208086f08e0a",
+    "web/src/spaces/types.ts": "587846190550e5a52196f12faca514c9a90a22955fb95c70b30befeb96d3e6ff",
+    "web/src/state.ts": "23a0f719cfb315182dcf871b5b7b6295112114aa67d6f4f0b60ccc9253dd7bd1",
+    "web/src/styles/accessibility.css": "2a4d335c322d925b7ad5f7327e1b4f41585938fde02cb388a7a16ccc6542ea09",
+    "web/src/styles/base.css": "3840743d56721871bec574a51a828c8744c056b972ba1286a6f32fb5b3dffb14",
+    "web/src/styles/charts.css": "ded3b15bdd568762d22f9cbed50641067407fcd4806cd713ad849579ac01f11f",
+    "web/src/styles/controls.css": "c3ba07064f5a63fc0c279f9d49f792a2a426744809203f504bbf65f9ff3df55e",
+    "web/src/styles/design.css": "67a6cf567e666e8bf48b555199117ed593c58601cfbb83ad53b3441a9a09499a",
+    "web/src/styles/live.css": "1cbfb0d8648f8e88dfe0e916d37df5aa3db0ed91eda908151d742b159ca87bef",
+    "web/src/styles/messages.css": "3d4f88c47348ca8695b6f64bddb924945f922160d3ddf99fc60d0fd214941615",
+    "web/src/styles/pages.css": "883ccebd8f27b8ec26a3ab32d3eb0cf440586d6d7d8705ca85fe7bce242e9a50",
+    "web/src/styles/selection.css": "fdb8ce0e9a7319ef27bf5f16db88c657ee0db1e106c4b98278c136780905b848",
+    "web/src/styles/tokens.css": "fa49e318b972f696495662e7c85fc900ff33536726cbbe95611ede229fed62cb",
+    "web/src/tarot/CardBackGrid.tsx": "f38b99614321cbf32c9fc0d9dcfeb5673fcd2629948b49e23f1290dc1613bdff",
+    "web/src/tarot/DrawPanel.tsx": "e42ee56b5b266645d07b2457f43ab509dde8396087efebdfc7d0d50f05cb3f16",
+    "web/src/tarot/draws.ts": "f6aa12ddbe096f0292ef365d1f093334fafe04c592172fb8825bc8f561577c00",
+    "web/src/tarot/FlipFace.tsx": "a38bd19cb916aa93b79ed2b7fe00f2d7d119105d80e42c796af6992e06d62ac4",
+    "web/src/tarot/keyboard.ts": "c9d6084ef3cd0cdbae341dfc3a852cf32d7e14bcacef6cd5a80b69269765691c",
+    "web/src/tarot/ManualCards.tsx": "497f3dd7cbf88a93af929f0ecda4e56f4147085c588bfb9bfe1f4206bfa00a82",
+    "web/src/tarot/public.ts": "3151fb5aee2deeb17536470d369be7de8f1b7ee0e951b82b289d8ebf1bdf2fd9",
+    "web/src/tarot/QuestionForm.tsx": "35f1da6ea39577f6bb799a80c1035585ba940796f94bfb751952ecbed0bbae9e",
+    "web/src/tarot/ReadingPanel.tsx": "3ee948a742e357aad73b39866cebe02820d14aacb3e22189215828454c4b2cad",
+    "web/src/tarot/readings.ts": "9e3856be89693da54698e1e28f77c3ca8930892cf911067e11207a32d8327195",
+    "web/src/tarot/ServerSpread.tsx": "cb6553cc203d2877c0bb482625b3efeea3f26f93ed517a19ab8431f39d164fc7",
+    "web/src/tarot/useTarotMotion.ts": "d654f2abbbb7914cbb2f3cabedff9888600a713919fcb9cd36de93a838618825",
+    "web/src/useKeyboardViewport.ts": "372cf27293e74aaab805d278628d766157da4dceb242ad2c956723fd4427087c",
+    "web/tests/e2e/components-visual.spec.ts": "0a7b268196dc02b585dca140538c6864aa253628e369972858a8e7571f0e0da8"
+  },
+  "build_hashes": {
+    "static/dist/assets/Calendar-vnyPS-h-.js": "dbceef3e5831eae6365f6eb21389d48668e9cc9cd3b3fea291ae83dc6d4a85ae",
+    "static/dist/assets/Cases-B9oxt_BS.js": "e950b964c54ea125e0b6f0249b93804ce2b4c1cac5baddc0dbed0bd8c55d7972",
+    "static/dist/assets/Cases-D42fMtzZ.js": "06e3809ef976572cb3f8457799883c6398106d4fd7cfe1d5b2312880321a1103",
+    "static/dist/assets/Chart-Bm5r6yiQ.js": "5003bcac1be42096eee59d9dbc0ff50f5c9f599cd8b6248b2a4042bd36d63c75",
+    "static/dist/assets/Chart-hKqbdkMb.js": "7b9341fdcd64bd1cc43ef411b3bcb60a5e82a4582c8db7b1301a18e188d5a1e8",
+    "static/dist/assets/ChartDemo-DaGJFST6.js": "f9805c955fef70fbd5b6732270a5a33ba5a954f8b110ece07a755f197643f6d1",
+    "static/dist/assets/Charts-VDweez6e.js": "fba22b42d90450cc0763b6bf7c4df937d31f39e79744f99896b93f96e508cfd4",
+    "static/dist/assets/Chat-BBAotPzH.js": "41114a1c63d7ed8db186a5c512b26dac24aa3a11d40a3101a797791f6f29c767",
+    "static/dist/assets/Chat-CxUbhB6n.js": "f7197163bf724ce954cfc0f0372fa760525919047dc234c595a819540f2cad71",
+    "static/dist/assets/ChatPreview-BSkcm5K1.js": "9c26c5b9482f5bc64027b37dca3db74312ce17af4ecddde165d5a5b8bad03cc8",
+    "static/dist/assets/chevron-down-CBDP7VhM.js": "699ac351abd39886ae26e9bbbeceeeb6e902c6ec7f19cd3148fa2454e3a712ac",
+    "static/dist/assets/common-45oIuw-S.js": "cf2d9af12f66aea9281d2e8d21252847488c030dd9f7167a2ca80935ee392de5",
+    "static/dist/assets/common-Cmd9HAar.css": "cb82c6da3859e24ff4b64ab8107434e98af8bf11c2667f8b92a72cfe08d4aad2",
+    "static/dist/assets/ComponentNotice-BIoJSqjK.css": "110d8be426ba4a2d5063ad0a7b31d999fc0babf1be9be7fe7b5538650db493fa",
+    "static/dist/assets/ComponentNotice-SJNEsl-D.js": "3bfcf387a5dc2af68cce322abd1c0f0793a56d30addd30c892c338cc628eca45",
+    "static/dist/assets/Composer-BIUWnXRv.js": "67da4bac33f8f705848f4119be38094c72cda00813ddaaaa0932921b549c9b60",
+    "static/dist/assets/DateField-3ya3hiB3.js": "630829f6e869c3efbeaddb5e74608810598f7c1465b0916415561f0240b343ca",
+    "static/dist/assets/Design-Dv23fE5m.js": "ae8538b112685427f32b7e891fbab3beda6ea3c8876225516aebe2b287deb176",
+    "static/dist/assets/FlipFace-CvnT08xC.js": "21e1e4bcc4dc50a4eca90f325a81498ff0803534f8fe1377ef35ae2ca76d2601",
+    "static/dist/assets/index-B3DpZTQb.css": "872a67b23e941ae45a8a063faf082377dbd95f3adbc772bcb8c183e555334963",
+    "static/dist/assets/index-DiiCC0Xs.js": "6098622643f1ec3764f65b8d7eb8202943360336c343ab39a08f068d83563bd3",
+    "static/dist/assets/index-Ih8Kx7TR.js": "0caf49a52b8b5493e942c66d4685edb127bbc8e779cf87aec500b89ec6dff567",
+    "static/dist/assets/lock-keyhole-Dw-1LPaV.js": "6d1c702ad0bd152b84c12397101b290fb49025b2abf3c94025c2761d6b4450c4",
+    "static/dist/assets/Markdown-DIfxKhbm.js": "1d60d80b404a6b31966cc0b63187bc7899ac7b5356e0048ebc6ebd9a450e5952",
+    "static/dist/assets/Me-BcvGDjuY.js": "0e4dd7905e132aac8c0d2943ba2ab48bb0ebb387fbc4de68c77099505a5a1a9c",
+    "static/dist/assets/Me-bxtHTUlF.js": "1eb75163d06cc1c6975d39d7cf9b5f99bbde528bdc66e86e38286a1e92c832ad",
+    "static/dist/assets/MemoryPreview-rnUgtmO9.js": "a148a58384b15dedfdfa4aaef40cc5339f2f6d2d6843e0631999fbf816452f7e",
+    "static/dist/assets/Messages-CTqdRH8Z.js": "bf5622591a6a96535bce0d7ed10aad467b5cfa8e0dd2d8b6a799cba4c15d7ec4",
+    "static/dist/assets/operations-Bw_B0wFn.js": "d7847133aba99c09dca863f028f3a3660007d1155d9d87f632a5fb84390bc07c",
+    "static/dist/assets/OrganizePage-Bw3JIRTE.js": "94aa1c6712783c3b7ed6d424ca312b514fe432dc8420b4609ce7ac17bd2bb2ba",
+    "static/dist/assets/OrganizePage-Xf4G6qj_.css": "9432693f29a1cc6f8d6fd75e8998de199c8bf73997cbd7d0cb6cc8b7fc5d282b",
+    "static/dist/assets/PreviewNotice-BleE4yjd.js": "fd754e069a8f5d438b95cebf2039f8a00e8779231eb3efe11f5a5f097b6a81a3",
+    "static/dist/assets/react-DnxA9v5e.js": "753bd94c54c1746ba790ce3be16209c47ecd154709b319251a98c86b24408187",
+    "static/dist/assets/Selection-DMWuQLjG.js": "b2cb496dd99e0432ad937e65861eabb203f0fea5837b3fa7dd89eefb2ff0f394",
+    "static/dist/assets/Settings-DYjsdlBX.js": "019a8f051794403848b237156a689e66a908d853ae1781dae152000aa356d7a9",
+    "static/dist/assets/Settings-FnsyIjFP.js": "384686b7c5bb8b45d0b98f686ed471612f545397665b4acf8d07600f18315e5a",
+    "static/dist/assets/SpaceNavigation-BRQ32e6r.js": "18a6c8d7f130882c6d254e8fe705c961850ef52fd7ff90d699615c1540ba988c",
+    "static/dist/assets/SpaceNavigation-p_7PkAVI.css": "49493df00aa7f9de9a1ec95a1cb1ed987c24760804177ee5810fdcbf623879e1",
+    "static/dist/assets/square-CTNB8P1v.js": "272086d129a09fdf2e217821154ae8008c66f5648299b94bfb54a20b1a9348a1",
+    "static/dist/assets/sse-MLsGSJ6H.js": "c34e1c507e173c5672c70dbc01a1f7af63ea22e02e7235744b71d1a6bb3ab313",
+    "static/dist/assets/store-BNjLFMNY.js": "b741d9f589eeda113422d53063c6793d123e5c865b545131cd538a0c69bf05d0",
+    "static/dist/assets/Tarot-CH6NmBt0.js": "e104eb49060ff65fad1a2bbaf5e73b2c6d64b9506412ab820ab8db3d5835e65c",
+    "static/dist/assets/Tarot-ClTOAipZ.js": "f5b2ea6a50ab415b48194b2dd4c457e5052d7ab415d6b08d5082ccc357139fac",
+    "static/dist/assets/TarotCards-CHuGxvKn.js": "bfc88012ea16ad724a255f5aa562aa30d57e36c856e027a6f40f3e39305da703",
+    "static/dist/assets/TimeBasis-DFAJCxas.css": "828231e7a74fcb1e7a6c9bec4ad49ce8d0ceebe6cfce07f99bc18c2abb7d8a6a",
+    "static/dist/assets/TimeBasis-DR7X6wN3.js": "85f953ca0f944295e4422329c6c0a722c3d83442ad83fa70cfcb7066658e7376",
+    "static/dist/assets/TimeField-C6no3Vzv.js": "0f0a750ceeaca67f7f410b2404e040ca9352ab05f98235555cd50d8564d0eb3b",
+    "static/dist/assets/Today-C8vjGX3Q.js": "b5948e20ede0bce189fb45a18d17d37cabc273d8fab091fbcb03a682d141d694",
+    "static/dist/assets/Today-Sh6Luczu.js": "20dd8888343515122b9884e24159f24ca71a58853fa3221f5369b21dadb7061b",
+    "static/dist/assets/useResource-BmQQAvxp.js": "501d8880e2a7c569e938446d18615a23c6c2bbfd4dc5adaa329a2aa612850148",
+    "static/dist/index.html": "ba5e9357f3e6c520a1c990f553734c4ad64c0f34e0b97a9cb859d61a3d4ed36d",
+    "static/dist/.vite/manifest.json": "72f261dfca2931ef951670c31d38e55066ea4362c9efe931478ee1b21beb4ac7"
+  },
+  "captures": [
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-dark-1440.png",
+      "screenshot_sha256": "dad41b86996fa95e01b87da463e6e0efa9f6a215e68bc0597cfb337299eb13b6",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-dark-375.png",
+      "screenshot_sha256": "22629996c36af0da03bab3e2e252f61cbc63e39208c7a229a5c617a5ed26b242",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-dark-390.png",
+      "screenshot_sha256": "14100fe7bdc87f16d8be721ee0243419fb71dd7bd45893d9761a87aecc8592c8",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-dark-768.png",
+      "screenshot_sha256": "9a7f0f8197cefff7fb805969ac4079391165ce8a273a640e54b1b6963a3a5107",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-light-1440.png",
+      "screenshot_sha256": "9e501f974955141d53b48d670d7dac10a9d4af48af17b12ec055003738d430e7",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-light-375.png",
+      "screenshot_sha256": "55838544c64b0e5bd712a7c538718ea1cd64f6bdbaf452452a6eae2e65426555",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-light-390.png",
+      "screenshot_sha256": "5b60b588cb0e909523dccef9a9bbb5b073b95fa6026ce3225e535eac30965b48",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-choice5",
+      "route": "tarot?spread=choice5&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-choice5-light-768.png",
+      "screenshot_sha256": "9da820cd9e0558f85610be8b9e68195f01d4d3d61ddf89e06d2df07f43d9a4bc",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-dark-1440.png",
+      "screenshot_sha256": "a231133eee3a49e63710751a6f70b062e9b19dd63bc7f77564e984dcd556193c",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-dark-375.png",
+      "screenshot_sha256": "78bbb553e817f985de607358bf95e94582b046481725d8b8ce10563d2aefb387",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-dark-390.png",
+      "screenshot_sha256": "47d9578403647e8aa232a8b7665358d04ec0b855ea7fb533bbb6bfd031801cb2",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-dark-768.png",
+      "screenshot_sha256": "dbb9aa8ad1b745a4d4b05ebb071e284462780ffd97c5cc04b862935a244e946c",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-light-1440.png",
+      "screenshot_sha256": "696b03f065432732f2007bbc401817cbe6c780ab77ddd7ba85a068bfdf12210c",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-light-375.png",
+      "screenshot_sha256": "3c4c91b7df7a3bbbf866283fd81ac3ca0e956a0dffc2bae9a4fb6568e547b9e6",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-light-390.png",
+      "screenshot_sha256": "0a91492e4e9b86f062fb225aa4b9764f6afa795a25d33c8e2b46fe652175253e",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-focus1",
+      "route": "tarot?spread=focus1&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-focus1-light-768.png",
+      "screenshot_sha256": "28643b190c3496d1bbdbdb87003b7b5091428e33101c85a5f35083503ae8e4aa",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-dark-1440.png",
+      "screenshot_sha256": "661ab0c64de12bde36fc663f953c2105b032331ee6811dd0d12fdc1cb05235eb",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-dark-375.png",
+      "screenshot_sha256": "7c0a60b160cbb374463f617c63abe665f8c70add89fcf8bd9bb61d6c2bb370ec",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-dark-390.png",
+      "screenshot_sha256": "76ed6beaf5a2a5959524d21ed8c00dab1ebde3a78931c738549731b5258ae974",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-dark-768.png",
+      "screenshot_sha256": "9a4e97ebeae6d94054b5318908394daecf81060ccef8976b73efb6a00d33a9d7",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-light-1440.png",
+      "screenshot_sha256": "e28e7eefae6ac3358afd08ec4b5ad3af13f45549036b6198a63221ed4edd77ee",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-light-375.png",
+      "screenshot_sha256": "05b3c4adf5d344d192c0490b6a9fc87191367193e5844e20fa7c2080f591e301",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-light-390.png",
+      "screenshot_sha256": "c0fe60f0d6ef76fd7cf277a0052c5758b646a9d1d58e2963ac8c76ae5139fc3c",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-picker",
+      "route": "tarot?spread=reflect3&step=pick",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-picker-light-768.png",
+      "screenshot_sha256": "7a01f1c82059f4148b6e1d217ba58a2ac38e68ef76ae1b2b7cefcc5c743113e2",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-dark-1440.png",
+      "screenshot_sha256": "dd4854bf38a6b9738f5a0ae6055f2ccc8f19adc2e41cdf61ec07ebe9161f1134",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-dark-375.png",
+      "screenshot_sha256": "9b53903a0e8f1b68ad74e35a8deec61741ab84faf070342e05009afb5b434ffe",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-dark-390.png",
+      "screenshot_sha256": "4527cf78bf8b11b4e196efa2916f08c989d09d56bd9b2eb49653aa80b3ada548",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-dark-768.png",
+      "screenshot_sha256": "df0c924e6022ff1719d62120a8da93b75f5e8d83d978eb0bf84970532b173aa4",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-light-1440.png",
+      "screenshot_sha256": "143afbc87ab0fbf5901091ce576f2bc1c417b714b798c1fcf7e4a90c8037c51e",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-light-375.png",
+      "screenshot_sha256": "2e9e7233e923dfc9928f7da044825fa4338156f6e5f00a2f33382e61740abd22",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-light-390.png",
+      "screenshot_sha256": "6e36a33a750cd5cb8b01c21e3250b043be80336c46c52f2590aeadc35a8dbfda",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    },
+    {
+      "run_id": "2026-10-18T10:40:23.788Z",
+      "state": "tarot-reflect3",
+      "route": "tarot?spread=reflect3&step=reveal",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/components-m5/screenshots/tarot-reflect3-light-768.png",
+      "screenshot_sha256": "858bad299c80e057c8022b2282cdc1db289a3fb1459b79d1336dd0c1fb7fe3d7",
+      "overflow": false,
+      "small_text": [],
+      "activity": {
+        "api": [],
+        "external": [],
+        "errors": [],
+        "console": []
+      },
+      "violations": []
+    }
+  ]
+}

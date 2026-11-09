@@ -1,0 +1,82 @@
+{
+  "run_id": "Q9-night-20261021-0156-final",
+  "captured_time_bjt": "2026-10-21T01:58:02.403+08:00",
+  "id": "night-chart",
+  "case_key": "night-chart-light-1440",
+  "state": "night-chart",
+  "route": "/?night=demo#/chart",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "light",
+  "mode": "synthetic-page",
+  "screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/night-chart-light-1440.png",
+  "screenshot_sha256": "09e669c324c70e703f6a4c7f065e03a65fc04bd47e20a0009e8d0898729edcde",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/night-chart-light-1440-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/night-chart-light-1440.png",
+      "sha256": "09e669c324c70e703f6a4c7f065e03a65fc04bd47e20a0009e8d0898729edcde",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/night/Q9-night-20261021-0156-final/screenshots/night-chart-light-1440-full.png",
+      "sha256": "d0c8e4d027e05a56f5f64cacba0337ba53c9974e594e6a9dafd1b0a5230a4c8d",
+      "full_page": true
+    }
+  ],
+  "document": {
+    "lang": "zh-CN",
+    "theme": "light",
+    "font_faces": 202,
+    "overflow": false
+  },
+  "screens": [
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 0,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 780,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    },
+    {
+      "kind": "document",
+      "selector": "",
+      "index": 0,
+      "document_y": 1035,
+      "scroll_top": 0,
+      "small_text": [],
+      "cinnabar_uses": []
+    }
+  ],
+  "violations": [],
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": [],
+    "failed": []
+  },
+  "readiness_error": "",
+  "manual_review_required": [
+    "one-main-task",
+    "token-color-use",
+    "no-decorative-English-or-symbol-icons",
+    "spacing-and-interaction-only-cards",
+    "dark-chart-legibility",
+    "reference-side-by-side-differences"
+  ],
+  "counting": "14 I.6; each document/internal-scroll viewport; brand/navigation/chart semantic colors excluded"
+}

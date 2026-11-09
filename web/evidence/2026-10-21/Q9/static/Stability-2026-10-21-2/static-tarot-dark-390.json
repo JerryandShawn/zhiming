@@ -1,0 +1,54 @@
+{
+  "run_id": "Stability-2026-10-21-2",
+  "id": "tarot",
+  "mode": "static",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "theme": "dark",
+  "url": "/?preview=1#/tarot",
+  "screenshot": "web/evidence/2026-10-21/Q9/static/Stability-2026-10-21-2/static-tarot-dark-390.png",
+  "sha256": "7093edd70abc010ecfe9958052b3e2ac79b37566a902114b3df89eec46671421",
+  "synthetic_only": true,
+  "checks": {
+    "document": {
+      "lang": "zh-CN",
+      "theme": "dark",
+      "font_faces": 202,
+      "overflow": false
+    },
+    "screens": [
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 0,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": [
+          {
+            "className": "",
+            "text": "解读"
+          }
+        ]
+      },
+      {
+        "kind": "document",
+        "selector": "",
+        "index": 0,
+        "document_y": 327,
+        "scroll_top": 0,
+        "small_text": [],
+        "cinnabar_uses": []
+      }
+    ],
+    "violations": []
+  },
+  "activity": {
+    "api": [],
+    "external": [],
+    "errors": [],
+    "console": []
+  }
+}

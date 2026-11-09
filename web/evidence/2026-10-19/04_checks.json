@@ -1,0 +1,182 @@
+{
+  "item": 4,
+  "time_utc": "2026-10-18T23:24:33.3840448Z",
+  "branch": "v4/p10-frontend",
+  "base_commit": "c8d3b30a340bc924ee3e5214ce454665938f8121",
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "unit": {
+    "total": 404,
+    "files": 38,
+    "passed": 404
+  },
+  "frontend": {
+    "prior_regressions": 41,
+    "onboarding": 10,
+    "total": 51,
+    "failed": 0
+  },
+  "axe_violations": 0,
+  "cinnabar_budget": 3,
+  "network": {
+    "pageerror": 0,
+    "external": 0,
+    "api": 0,
+    "console": 0
+  },
+  "screenshots": [
+    {
+      "sha256": "93871dc33d108f501cb1af00530671ff4196c125314ce9bf384bfb8558a19989",
+      "path": "04-onboarding-birth-1440-dark.png"
+    },
+    {
+      "sha256": "849f986828067084986879e80aa5b2c7a136c9dececc00b07c9b4a42563e8309",
+      "path": "04-onboarding-birth-1440-light.png"
+    },
+    {
+      "sha256": "586fadcc5f3a5579cbb327a34f672595ac0e020e0c3cee89336778577cdc08a4",
+      "path": "04-onboarding-birth-390-dark.png"
+    },
+    {
+      "sha256": "4848eac53c4b0c04df533aca2087151eb570c050860acdd4b9696fcf7756a66f",
+      "path": "04-onboarding-birth-390-light.png"
+    },
+    {
+      "sha256": "0743465407b48ad324372dad230f46bf6a0dd20c0f9343613d79c170f308c687",
+      "path": "04-onboarding-birth-confirmation-390.png"
+    },
+    {
+      "sha256": "15fe3e35ff1a331bef29cec952227533b4f1af5a8a8968eac2aadef0959253ba",
+      "path": "04-onboarding-contact-1440-dark.png"
+    },
+    {
+      "sha256": "de9f28cacfe4d788d33feabd2d81576aef0ff17c2076aa25c6c77eabca1b847e",
+      "path": "04-onboarding-contact-1440-light.png"
+    },
+    {
+      "sha256": "ed49b1dc96cc87ef86c9caad000d20d8d1e504ec3d2235959c8dfedb6604cd61",
+      "path": "04-onboarding-contact-390-dark.png"
+    },
+    {
+      "sha256": "4ccb8b1344e2d232379f2ea735c7498d04fccfb764852771cf112e10bae310b1",
+      "path": "04-onboarding-contact-390-light.png"
+    },
+    {
+      "sha256": "ffb9cdefa153ed2965340d93b5e56f873e609b715b60c200b4c8dce725fe4838",
+      "path": "04-onboarding-contact-custom-1440.png"
+    },
+    {
+      "sha256": "367525992016ff9d96848f5e8f6fe3a7f78146364b59079ecff5304607fb7e61",
+      "path": "04-onboarding-known-contact-1440.png"
+    },
+    {
+      "sha256": "1f7a24dc636f4f57c1dd4e949d957751b81e81733117842da6c0e74cb198560e",
+      "path": "04-onboarding-names-1440-dark.png"
+    },
+    {
+      "sha256": "d267b257d06f4098b17e415c93cef20a7b5a55ec1097e56005f4f79d1f10ae5d",
+      "path": "04-onboarding-names-1440-light.png"
+    },
+    {
+      "sha256": "19873cd41d3e7f4ccfe79ea3dde46d387f33e47ac1312e30d07447658cfc72e4",
+      "path": "04-onboarding-names-390-dark.png"
+    },
+    {
+      "sha256": "7bf8eac13123d685760e0665c03888ffeef6c82398db303accb3da7919611b7a",
+      "path": "04-onboarding-names-390-light.png"
+    },
+    {
+      "sha256": "00f33a44e6a6bfb017efe7b23dcbe91d882097757a5c8897bb0b372a8bebb2f2",
+      "path": "04-onboarding-paused-390.png"
+    },
+    {
+      "sha256": "37c32e0be53cf1fbbfe2304aaed94e8bb74e89f88e0d8ccee048f1315b63f8c9",
+      "path": "04-onboarding-summary-1440-dark.png"
+    },
+    {
+      "sha256": "3260ad137919798c1794b05d3c00ecfc78add6c012a751bd2a881529fbc27447",
+      "path": "04-onboarding-summary-1440-light.png"
+    },
+    {
+      "sha256": "087d3b22f13332b8bc08103267b3e933f49f476a62c8dfac4d08a574a339907c",
+      "path": "04-onboarding-summary-390-dark.png"
+    },
+    {
+      "sha256": "ba5d28c65afd2841b253116b80d9eb1d6e8c851241a3b4be6c82da54e0928739",
+      "path": "04-onboarding-summary-390-light.png"
+    }
+  ],
+  "source_sha256": [
+    {
+      "sha256": "8af7f0cd3a20085c4a5086c1bc81997f7c5486b454d11c2946071f621e54997b",
+      "path": "web/src/live/DateField.tsx"
+    },
+    {
+      "sha256": "1c68c555cf4ee4254f100c0108833ecce0525687dccb3dda4cdaf83ab9134db7",
+      "path": "web/src/night/ChatPreview.tsx"
+    },
+    {
+      "sha256": "3d1899e18b3546d4a81f1379c20256885ac9132c855a06ae73786cfd1e5e4cc7",
+      "path": "web/src/night/NightApp.tsx"
+    },
+    {
+      "sha256": "3e80aaa32b1e27680bd63848d70bc91e12f67efb2944e810d92631f6321175ac",
+      "path": "web/src/night/onboarding/birth.ts"
+    },
+    {
+      "sha256": "b69693e895f26a23cf08bb60261fad79c2c7522a5966dcabbaf2dc893f8410b3",
+      "path": "web/src/night/onboarding/BirthConfirmSheet.tsx"
+    },
+    {
+      "sha256": "94058f2843704ea558da5e11fbbc33532327cc8c2c2c42766de757e4c45d429e",
+      "path": "web/src/night/onboarding/BirthForm.tsx"
+    },
+    {
+      "sha256": "258a08b0c62b71497a1b76766c73263ec01eac92535bc11d6bca838b0f9b90c1",
+      "path": "web/src/night/onboarding/controller.ts"
+    },
+    {
+      "sha256": "dc892676beb5aeeed84e80e6476934a0e82d927c9d3188160b1f6e85cbbd70b8",
+      "path": "web/src/night/onboarding/GuidedQuestion.tsx"
+    },
+    {
+      "sha256": "b0e82b8dcca8d224508aca5c5d027a83d849053859c481e4f7eedd83d57567e8",
+      "path": "web/src/night/onboarding/onboarding.css"
+    },
+    {
+      "sha256": "8ac3de0eb25f7a993a1421a8884092513112c1f4c6fa526b6b537fed0a0aa8b0",
+      "path": "web/src/night/onboarding/OnboardingChat.tsx"
+    },
+    {
+      "sha256": "2d9b38de4fcd4f0792aadc860d29403bcfac41ea1f68f936298f6ee80e0fb1cc",
+      "path": "web/src/night/onboarding/steps.ts"
+    },
+    {
+      "sha256": "35782691281ffa28b35e7c2771d1b105ea81e60e4f9e47dff3685aaf0c707a43",
+      "path": "web/src/night/onboarding/types.ts"
+    },
+    {
+      "sha256": "b4ba5118007bf5c048b6d89e857f375d274eee4229158045ca281047f9578a2c",
+      "path": "web/tests/e2e/night-onboarding.spec.ts"
+    },
+    {
+      "sha256": "d9d03afec47b43dcd904149da339686a2667cd649fcef96f114f44efc8d34bc9",
+      "path": "web/tests/night-onboarding-birth.test.ts"
+    },
+    {
+      "sha256": "efcccf40bf9e9b98b3f0979be4da59b4538a62cc93381a70c80290381d867fa1",
+      "path": "web/tests/night-onboarding-controller.test.ts"
+    },
+    {
+      "sha256": "44a470302ea8d658e2ee5561720c23e7e9dad8c470b925aed3c53d074b2f39eb",
+      "path": "web/tests/night-onboarding-ui.test.tsx"
+    }
+  ],
+  "built_manifest_sha256": "adeeba1420c0e74913e19554ff3534fc88c5bb407c0277e23b357ebe6846d58b",
+  "unverified": [
+    "Onboarding persistence and real report activation API absent",
+    "Gift requires real chart result; no simulated personality inference",
+    "Refresh resets explicit local preview"
+  ]
+}

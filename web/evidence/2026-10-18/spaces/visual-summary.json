@@ -1,0 +1,389 @@
+{
+  "schema": "frontend-spaces-demo-visual-v1",
+  "run_id": "2026-10-18T09:55:04.669Z",
+  "captured_at": "2026-10-18T09:55:37.524Z",
+  "node_version": "v22.23.3",
+  "frontend": "http://127.0.0.1:4173",
+  "mode": "?spaces=demo; synthetic in-memory fixtures; refresh resets",
+  "synthetic_only": true,
+  "backend_required": false,
+  "model_requests": 0,
+  "expected_combinations": 24,
+  "captured_combinations": 24,
+  "screenshots_directory": "web/evidence/2026-10-18/spaces/screenshots",
+  "raw_audits_directory": "web/test-results/spaces-visual-evidence/2026-10-18T09-55-04-669Z/audits",
+  "source_hashes": {
+    "web/src/spaces/chat.css": "a68bf6b961c82e9bc8a5d6a4c83acaea0719abb1730d99b45af8f35705641ecc",
+    "web/src/spaces/ChatPreview.tsx": "54ee3e7d01a932a1e7555648f534434ebd0054751b4ae2ff88f060a801f59149",
+    "web/src/spaces/common.css": "b6cdc52003f1bd86a4097dd57f0e736c4edb79e5265af050061d2cfa32aedcf2",
+    "web/src/spaces/EditDialog.tsx": "3689f225e164c24d3729521f90c154aa2ea695ce00c549ed275a6449f261b19a",
+    "web/src/spaces/fixtures.ts": "779c59b03199aa96847ecb2750eddcc91f86c1dbe3b1c2e53b5856c76eec2fff",
+    "web/src/spaces/MemoryPreview.tsx": "21fda7bc94b0971bd77e71a69f8a3c27ae0a05e4f3730ca67c02e3fa7d08afb4",
+    "web/src/spaces/organize.css": "39add31265c660ecdb5a31bcbb45a344e419cfb21ffad417c1654cfca988feb2",
+    "web/src/spaces/OrganizePage.tsx": "7fc4700531f8267247fb9089ceef8c8a961d0aab1453e6b0a61dc68d3a816f71",
+    "web/src/spaces/PreviewNotice.tsx": "123c217e915ffcac93f69f95d6c9e7af963c2aa222508e9ce465295595bb46c0",
+    "web/src/spaces/proposal.ts": "91a6862b14ae5f7838683717223a1ee10765ae5087490e0bb893a21f426a3eae",
+    "web/src/spaces/ProposalTree.tsx": "1bb1a61e7163b9d1906bb2f98815269b2080e6d2ab3d7cab2127b8f29b0aa5b7",
+    "web/src/spaces/RouteBadge.tsx": "695caa468bce12195e295721d2bdc1e45d00d335cacf0220bada2336c1fdb9c6",
+    "web/src/spaces/SpaceNavigation.tsx": "e6d760e2f0755c72c76c39cfa8d04f9aeff27c46b647195f0f9a6392f8e72d97",
+    "web/src/spaces/store.ts": "91c965f05a036f91c0b56b526413c188621dd0ad90c20b25b7ddf65b5d91448a",
+    "web/src/spaces/TopicActions.tsx": "fff77efff8ba7310f2b0cfde7c0f543c2bba6572158563d389b7208086f08e0a",
+    "web/src/spaces/types.ts": "587846190550e5a52196f12faca514c9a90a22955fb95c70b30befeb96d3e6ff",
+    "web/src/App.tsx": "d0ffc1b92f7e4e64ce4d889ad1a97f0ca07b2b624c4eb94abbfc44870a8ac7ab",
+    "web/src/Layout.tsx": "f174f8dd4f567ae8d6a2edbd674d9916932f2b9fb56ee79fe12fa0136414ae14",
+    "web/src/styles/base.css": "3840743d56721871bec574a51a828c8744c056b972ba1286a6f32fb5b3dffb14",
+    "web/index.html": "d0bfde3dd5470dd17828a8b165f380610f4f7a6fdfdbce6c27a322e5d3b6ea21",
+    "web/tests/e2e/spaces.spec.ts": "812d8af6c3f399c3e6c924c369152d0356dcd9434dd32cc5ec9ca88c094e527b",
+    "web/tests/e2e/spaces-visual.spec.ts": "06b24891ebe4ee76ba2062e46005a61896dbdfe87abd2fd0bed314387ee0474e",
+    "web/playwright.spaces-visual.config.ts": "3d05cbed937bf0d2240143cdf1a786f0a4d7fca7f6cade01eeb7666ac5f7df4f"
+  },
+  "build_hashes": {
+    "static/dist/assets/Calendar-SAPwqyqv.js": "a947705c4a892fb9cd6a229e8c59e2caa16e7224e024097a95feca7aff34d45a",
+    "static/dist/assets/Cases-BC0x287K.js": "d523eff84d68812e0d75e6465e8540c9f8608984b933df51dcc2715c873ff0b5",
+    "static/dist/assets/Cases-BIuw8QmA.js": "f1d4fc92b825ab586bb6b53580bee599bb4bef2b2167f7e554033f9a5dac22e0",
+    "static/dist/assets/Chart-DdcqvHJJ.js": "673719d579865b8149c2ebd5d43cac155ee93720648657d5b736c23cfef0c711",
+    "static/dist/assets/Chart-DvRlQfdy.js": "f45e463325bbbae4c5e7cd7c9fc43689f44a47ebfbd01ff378601670cbf0c3c3",
+    "static/dist/assets/Charts-dILyXym8.js": "a845801f286223b7f628eac1eccba41880253fc9fc5442262149ff54a14d1b7b",
+    "static/dist/assets/Chat-BTe4V-Xh.js": "1e70d8b91ec9a35920ea2e2ee9911da25b0bb130727ca2a203fef3e3e1d621e0",
+    "static/dist/assets/Chat-haYlZICk.js": "4729bdca9c2dded6a2dc4684a4f97e2cf7fa4f9c369c7b9b264fd621ebdf3118",
+    "static/dist/assets/ChatPreview-8gO4ENhN.js": "08dd238ea88ac4f08162b6b1d899873789cc997c8a5a03c2d3511e3e778a85f8",
+    "static/dist/assets/chevron-down-B79ZaL5W.js": "66fe8d87f690ce2e571c7265a96204f8a43318bf73ebf65b4cc260774ddaf5d9",
+    "static/dist/assets/common-Cmd9HAar.css": "cb82c6da3859e24ff4b64ab8107434e98af8bf11c2667f8b92a72cfe08d4aad2",
+    "static/dist/assets/common-ewIzVFy9.js": "c2f49fa3009c48671464c34cb76cdfd036c4e5b4e3fef5840febc3edcbc32bdb",
+    "static/dist/assets/Composer-XHVspye2.js": "22a343f6d378eac81342e39e458bc0c4a48c26be1a070c23dd3b982e900fcd9d",
+    "static/dist/assets/DateField-N7tWjXXO.js": "e64d39f848bcca98fab7fc00504de4d0bde465d8429e643447da47e0c6e08ac0",
+    "static/dist/assets/Design-BTt9XnnI.js": "b5d63009a4d8e87321c64f2f7a9294d20896b76c1b036c54928e01eaafbfdbe4",
+    "static/dist/assets/index-C062DUPl.js": "78bcbe18d497eac72782d61a4edb198e4fdaacc8714ae8d111a3ef0bae446907",
+    "static/dist/assets/index-DbEM4j6u.css": "0eaa9a4df26f039e46d729408815f7024d723ba755b48e715d89fb9c0d680a12",
+    "static/dist/assets/index-Dmf2CS8K.js": "2edc423578a6b47f00f94f958ed4270adfac2467fd7b6c861295a30f48d6df37",
+    "static/dist/assets/lock-keyhole-CakduU6f.js": "3a3aa43359f64a08376bf434716566f36c688a9f7076c3496cc063815ed0382a",
+    "static/dist/assets/Markdown-B2vxr4Ir.js": "004b48d067c3de2d727b76769d608d370a0757502525eb680ef6d74a8375a629",
+    "static/dist/assets/Me-CiJgGtQh.js": "01e1e7770333bf5c18c43ae56c0b59c7ddb503d971bf6a66d9d0010960971900",
+    "static/dist/assets/Me-Cjquu8LX.js": "4d9ceeef30d8142bfe93ba06f19b04a56e7f04e680cef2f15d41cc96f5af33e9",
+    "static/dist/assets/MemoryPreview-Cog73jEo.js": "705fa205370208d4e6913193c19d9417d6d9135a45d4fe7cb95b94eb0ea981bd",
+    "static/dist/assets/Messages-Jv5svpvF.js": "cf9eef8eef41d1a2e852e0632868187fe870ac20a765306e21f9cb5773d407a6",
+    "static/dist/assets/operations-wPMcSyJr.js": "cb77f664e7437f5809555fe4c8fde53418dd5d0d4e4f8b5c7b11cb59a5bf9155",
+    "static/dist/assets/OrganizePage-DePIaibU.js": "e0dad69e8cd155fe4648114382e54418d79c6aef9d8f83ab9f63e7b884da414a",
+    "static/dist/assets/OrganizePage-Xf4G6qj_.css": "9432693f29a1cc6f8d6fd75e8998de199c8bf73997cbd7d0cb6cc8b7fc5d282b",
+    "static/dist/assets/PreviewNotice-Du2oMYTV.js": "7ba68b324f33490d154943aba9279ea49ca24d6d56f2cddb1e5e38612f01e816",
+    "static/dist/assets/react-DnxA9v5e.js": "753bd94c54c1746ba790ce3be16209c47ecd154709b319251a98c86b24408187",
+    "static/dist/assets/Selection-3XRaJz0c.js": "6285f5b642f0a6286bcbf6d549a47076114d727a51a1524cc434f99ccaf538b8",
+    "static/dist/assets/Settings-CdsU3IDb.js": "6c4f06c2294ac65eb541c9f182fd423fa3f67a94a83a69332771ba814c4767b3",
+    "static/dist/assets/Settings-zPQNRqxY.js": "09cdaa398c059ab3eff30b8cd27606f6b967586e5947ef78c26f541932c340cc",
+    "static/dist/assets/SpaceNavigation-C_TcADuk.js": "5ead3112d8218c6392ae8c4dc1bb38e2e49e4f74b0f3f653f192e66e25cf9368",
+    "static/dist/assets/SpaceNavigation-p_7PkAVI.css": "49493df00aa7f9de9a1ec95a1cb1ed987c24760804177ee5810fdcbf623879e1",
+    "static/dist/assets/square-BjJLx0uX.js": "cd95f95eca624ffaa363c02e76c2b53a06fed194ab14eb997b77fc9b3ccbbe1c",
+    "static/dist/assets/sse-MLsGSJ6H.js": "c34e1c507e173c5672c70dbc01a1f7af63ea22e02e7235744b71d1a6bb3ab313",
+    "static/dist/assets/store-BrvpD8Pz.js": "1975f4a41f0e70a2d0847d60c028f41136d24b4a20c3ffea03d5b5bed3c53529",
+    "static/dist/assets/Tarot-BCiou1p0.js": "8dce229cab55def4522de1e5f696dd81328431d5cd4d4ce068dc226eaaab585c",
+    "static/dist/assets/Tarot-Gx7sgVM1.js": "9f0e059849c824b1576e89a8f5d09c685452f822bda19f52acbe132d465772e4",
+    "static/dist/assets/TarotCards-DpGwB7EA.js": "1dc51a9a32667f19b26fc6818872045ce7fa53ed2cff51a81d57a08ee4c0e023",
+    "static/dist/assets/TimeField-DtfrubEe.js": "7cfa102b9a816d824853f83ed3956798b327d06e89c4d8fb893b30379c4cee05",
+    "static/dist/assets/Today-Cywkhdur.js": "f9f7ffd1810a1588e6e39691b05fc3caa023311f70f90511fc9635f4ebacd2e0",
+    "static/dist/assets/Today-DdBeogCW.js": "483ce110319a1b79fc522a4077c02fc11e106a52f725dd81f9e9692204c0c6e4",
+    "static/dist/assets/use-reduced-motion-wwBuVQly.js": "55a8938dc79ba4f721d0ef5e40884a1bc8b544993ce83c8d3e02b7b77e5bbbe0",
+    "static/dist/assets/useResource-C3bWR5Ie.js": "666155995002eb01aeb32da6d26d8c75d8abfbec19e226c1213950e46d417c86",
+    "static/dist/index.html": "cb57a6ea356955a3273dc7bb23cbc1dd41675c459928a941461716f5a4e553c7",
+    "static/dist/.vite/manifest.json": "24dd9f7a2ac0bbd26177d398b1dd78e838b60aa28cbb55465d2da3fa07e46aea"
+  },
+  "checks": {
+    "api_requests": 0,
+    "external_requests": 0,
+    "javascript_errors": 0,
+    "console_messages": 0,
+    "overflowing_pages": 0,
+    "small_text_pages": 0,
+    "accessibility_violations": 0
+  },
+  "findings": [],
+  "captures": [
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-dark-1440.png",
+      "sha256": "b93da2f55a3cadce72180c5e79863ab5c32ea190f3e0e95a63e5ef8aee337b35",
+      "font_faces": 202
+    },
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-dark-375.png",
+      "sha256": "23d502f707052c122973ce7dc4ed5782dce81e5bb1e9bf10c48ae087b6e66787",
+      "font_faces": 202
+    },
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-dark-390.png",
+      "sha256": "5aa40b1635d7bc81226ae25439421293c4aa1c2c2b75abcdd91cfe2992ebd5f2",
+      "font_faces": 202
+    },
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-dark-768.png",
+      "sha256": "c7d9a07bfdfc9513c9f5eac7599eece14af6672d2fef3e66749d6d2f4e28f7a1",
+      "font_faces": 202
+    },
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-light-1440.png",
+      "sha256": "5f4d50d2c88959ef8f48eff68041d896e0b72f254d360aa49c64e0fabd2cabc2",
+      "font_faces": 202
+    },
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-light-375.png",
+      "sha256": "5056ff6a815fa2fdabde09b69e3d972d19fb3f51de490827fefdc49494e49c5c",
+      "font_faces": 202
+    },
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-light-390.png",
+      "sha256": "c467493236b4f1e54a6062de7d57dc0da646d3119bca0cb5d0894528d58ff948",
+      "font_faces": 202
+    },
+    {
+      "name": "chat",
+      "route": "/?spaces=demo#/chat?space=career&topic=interview",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/chat-light-768.png",
+      "sha256": "f4777f02df23e22e3f373c74be424f22ff8b103e4eaa2aeafa5815b95ebdcd1f",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-dark-1440.png",
+      "sha256": "494d7b605d1cd8bf360c245a4dc7b768f4ee27b52679658634bc545355040046",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-dark-375.png",
+      "sha256": "bcaf6163db0fe9e30df585ba9f48933fa4f909367329360c3ed51fe6e6ce40ab",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-dark-390.png",
+      "sha256": "640f435bf018c28ee5a27ad827bc7c81bff6e093799394f03c8e90b940873101",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-dark-768.png",
+      "sha256": "29c8af2afb89e5e878983336bb2ec87d66095c591eba67f5cee77f2f3d7bf0b4",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-light-1440.png",
+      "sha256": "809466f5699052ce1ea9a0d79afe5e5da6e77e8821a37157b1d54cfc5cabce1e",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-light-375.png",
+      "sha256": "aeba8fe7d9ee22f3db06d73a0d38bf865c77b47d3ae9e8e7b728630b43ef038c",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-light-390.png",
+      "sha256": "30b5bd2c1cca962964fc8bd2bcd7123345643bb21641e380faf4cb55c033a1a2",
+      "font_faces": 202
+    },
+    {
+      "name": "me",
+      "route": "/?spaces=demo#/me",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/me-light-768.png",
+      "sha256": "56227fd9f6370b29e456f4456f674c58e1c558907ccca877ac770f88d8ea1a58",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-dark-1440.png",
+      "sha256": "7b05f5f8e6ea4b535d37e9525f3e8ab76bdbf6d5eea9452a337f8cee3102e3d7",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-dark-375.png",
+      "sha256": "32a32215887617a179100cbce6e0d7d0ebbbc19a487d178fe73902f8b86b2717",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-dark-390.png",
+      "sha256": "75db36a0e65b8a7d969be788fb58cfe3a8833d7d98b523eb13c76cecc81e14f7",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "dark",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-dark-768.png",
+      "sha256": "1446b4e4d63dd55cfcb59f0690c6156ef289dd2fdcf3245da22774ae854fcdf3",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-light-1440.png",
+      "sha256": "d9cc5893d52c96a7e683db84b2349d0815447a87b0f0abbead640b1b42c8bd1c",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-light-375.png",
+      "sha256": "35a47201fa4cc38cf9bf17c32265c7a0c390edafd0333ae634694ff4a4c12fca",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-light-390.png",
+      "sha256": "f179aba5f4b3de683a24fc1006dc13721436cbcc64af27b42f9a106e7080f308",
+      "font_faces": 202
+    },
+    {
+      "name": "organize",
+      "route": "/?spaces=demo#/organize",
+      "theme": "light",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "screenshot": "web/evidence/2026-10-18/spaces/screenshots/organize-light-768.png",
+      "sha256": "92c68a8412c102da66ff2492d23f287cf22bc6c0401dbfe616235428dd033f4a",
+      "font_faces": 202
+    }
+  ]
+}

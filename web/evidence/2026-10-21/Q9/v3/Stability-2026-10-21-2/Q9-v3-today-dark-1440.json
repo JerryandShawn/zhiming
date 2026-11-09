@@ -1,0 +1,107 @@
+{
+  "schema": "frontend-q9-v3-visual-v1",
+  "run_id": "Stability-2026-10-21-2",
+  "id": "Q9-v3-today-dark-1440",
+  "mode": "v3",
+  "page": "today",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "theme": "dark",
+  "screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-2/Q9-v3-today-dark-1440.png",
+  "sha256": "641f376c1c9e576e7a2742ad2d69d16515ae61d3cd5f01b0457fceb261610227",
+  "full_screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-2/Q9-v3-today-dark-1440-full.png",
+  "images": [
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-2/Q9-v3-today-dark-1440.png",
+      "sha256": "641f376c1c9e576e7a2742ad2d69d16515ae61d3cd5f01b0457fceb261610227",
+      "full_page": false
+    },
+    {
+      "screenshot": "web/evidence/2026-10-21/Q9/v3/Stability-2026-10-21-2/Q9-v3-today-dark-1440-full.png",
+      "sha256": "93db3f30fa803d49cd034634fcda6fa9333f9a750989ff6190b7b2654bd98805",
+      "full_page": true
+    }
+  ],
+  "captured_at_beijing": "2026-10-21T11:47:29+08:00",
+  "clock": "2026-10-21T10:00:00+08:00",
+  "build_manifest_sha256": "685e6e14bb00de0e3a997ef0ad4fb96a8734688b0c8ce773f9528919b2f48f61",
+  "synthetic_only": true,
+  "backend": "http://127.0.0.1:8002 / core_test_fe",
+  "fixture_model": "scripted-only, one reading preseeded per worker; no browser model trigger",
+  "checks": {
+    "ready": true,
+    "readiness_error": "",
+    "inspection": {
+      "document": {
+        "lang": "zh-CN",
+        "theme": "dark",
+        "font_faces": 202,
+        "overflow": false
+      },
+      "screens": [
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 0,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "calendar-day today  selected",
+              "text": ""
+            },
+            {
+              "className": "button primary block",
+              "text": ""
+            }
+          ]
+        },
+        {
+          "kind": "document",
+          "selector": "",
+          "index": 0,
+          "document_y": 67,
+          "scroll_top": 0,
+          "small_text": [],
+          "cinnabar_uses": [
+            {
+              "className": "calendar-day today  selected",
+              "text": ""
+            },
+            {
+              "className": "button primary block",
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "violations": []
+    },
+    "boundary": {
+      "arrivals": [
+        {
+          "path": "/api/cases",
+          "status": 200
+        },
+        {
+          "path": "/api/history",
+          "status": 200
+        },
+        {
+          "path": "/api/chart",
+          "status": 200
+        }
+      ],
+      "external": [],
+      "writes": [],
+      "errors": [],
+      "console": [],
+      "failed": [],
+      "expected_cancellations": [],
+      "http_errors": []
+    }
+  }
+}

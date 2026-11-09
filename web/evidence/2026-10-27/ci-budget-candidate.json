@@ -1,0 +1,65 @@
+{
+  "captured_bjt": "2026-10-27T16:22:14+08:00",
+  "first_lint_attempt": "wrong working directory, repeated correctly from web",
+  "cancelled_suite": "night:220 selected, incomplete",
+  "core_ci": "success",
+  "cancelled_head": "6726618f2f3f50fce740b3543e3216d24a16d7df",
+  "model_calls": 0,
+  "job": 121994029572,
+  "resolved_suites": [
+    {
+      "selected_tests": 64,
+      "executed": false,
+      "workers": 2,
+      "configuration": "playwright.components-visual.config.ts"
+    },
+    {
+      "selected_tests": 10,
+      "executed": false,
+      "workers": 2,
+      "configuration": "playwright.components.config.ts"
+    },
+    {
+      "selected_tests": 121,
+      "executed": false,
+      "workers": 2,
+      "configuration": "playwright.config.ts"
+    },
+    {
+      "selected_tests": 220,
+      "executed": false,
+      "workers": 2,
+      "configuration": "playwright.night.config.ts"
+    },
+    {
+      "selected_tests": 88,
+      "executed": false,
+      "workers": 2,
+      "configuration": "playwright.overnight-visual.config.ts"
+    },
+    {
+      "selected_tests": 10,
+      "executed": false,
+      "workers": 2,
+      "configuration": "playwright.spaces.config.ts"
+    }
+  ],
+  "workflow_timeout_minutes": 15,
+  "server_access": 0,
+  "frontend_ci": "cancelled",
+  "typescript_unit_build_ci": "success",
+  "no_new_screenshots": "Test runner configuration only; reuse tested runtime f374 course matrix",
+  "remote_passed": {
+    "components_visual": 64,
+    "components": 10,
+    "default": 121,
+    "spaces": 10
+  },
+  "lint": "passed",
+  "reason": "Cancellation near 15 minute job budget; timeout inferred from configured budget and log timestamps, not a failed behavior assertion",
+  "candidate": "Only five web Playwright worker settings 1->2; npm suites stay sequential, no tests or assertions removed, no timeout raised",
+  "types": "passed",
+  "run": 40444995845,
+  "new_ci": "pending",
+  "missing_checkpoints": "After11:35 commit until16:16 tool return no reliable hourly/40 minute checkpoints; no invented progress"
+}

@@ -1,0 +1,62 @@
+{
+  "captured_bjt": "2026-10-27T11:15:37+08:00",
+  "base_head": "8591afce9f3b03d59e843a0800134dc117a93972",
+  "runtime_source_dirty": true,
+  "source_commit": "f8d9536a44db67a84db9315c208e2a66893214c9",
+  "asset_sha256": "016e6e3707c2f9e71ba61cc5663127d93e51f4a811029b2040f1f4d5db492500",
+  "public_asset_bytes": 146197,
+  "lessons": 20,
+  "quizzes": 40,
+  "unit_target_passed": 97,
+  "unit_target_failed": 0,
+  "browser_final": {
+    "startTime": "2026-10-27T03:09:50.567Z",
+    "duration": 42697.025,
+    "expected": 14,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "ci_project_entry": {
+    "startTime": "2026-10-27T03:14:25.804Z",
+    "duration": 5244.107,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "typescript": "passed",
+  "full_eslint": "passed",
+  "build": "passed",
+  "axe": "zero violations in every audited final scene",
+  "cinnabar": "<=3 per audited viewport by approved 14 I.6 policy",
+  "overflow": 0,
+  "api_requests": 0,
+  "external_requests": 0,
+  "non_get_requests": 0,
+  "screenshots_final": 30,
+  "screenshots_first": 27,
+  "first_attempts": [
+    "first Vitest import failed: jsdom import.meta URL was not a file URL; use repository path",
+    "second Vitest:26 passed/1 failed, summary role assumption corrected; behavior assertions unchanged",
+    "first browser:11 passed; final14 includes Chinese product labels, deep link and2 unchanged chat checks",
+    "CI entry CLI first command rejected Windows cmd regex pipe; native Node invocation2 passed"
+  ],
+  "performance": "pending clean-head 4G measurement",
+  "real_model_calls": 0,
+  "raw_scope_or_chart_export": false,
+  "old_seven_assets": "unchanged",
+  "file_sha256": {
+    "web/src/study/courses/CourseLessonView.tsx": "f26a5d53b1b66d0bf88b2ab9d8321c35d8e4d54cf5638a32c1fd7ea34d5c2396",
+    "web/src/study/courses/CoursePanel.tsx": "f357a9357152af9fd2a3c4847494fac4d9f8d78bd5d731b58b9be71742e9c284",
+    "web/src/study/courses/courses.css": "14f0c3780eb53ae80b1d9c78774bb63181c904e39269e25c0e49675742699b51",
+    "web/src/study/courses/loader.ts": "96199efc1767bc9804a372bb778dc5d60d0a7eeae64cda5ecfb629224fe7a6a2",
+    "web/src/study/courses/readCourse.ts": "fbcab35b229ff56ca15bc059e711a6da83dc5fda594c0cdc6cefa26dc17b63a2",
+    "web/src/study/courses/types.ts": "abb24fa08b36cb16a92ea4cda2e974516d64c82879fa1afb0831de2733de8609",
+    "web/src/study/StudyWorkspace.tsx": "d7e8f3ccaa3af5f43a58d89a68fbe77011cdf529a67cda0e8379fa2f7c6e8a74",
+    "web/tests/course-loader.test.ts": "deb3892ae797fe86f585c78815ed7d4413cb0693004d149e4327dd5c301e94b8",
+    "web/tests/course-panel.test.tsx": "cf9fb9b3f4b2e1f4b0502b2e2f005e00d32e806e36f87d7a99a3bb5811884aac",
+    "web/tests/e2e/night-study-courses.spec.ts": "86a90dd7341768b9c8562384f623e54ef4dac665009364194a46008eeb2afefb",
+    "web/public/data/study/courses-v5/course.json": "016e6e3707c2f9e71ba61cc5663127d93e51f4a811029b2040f1f4d5db492500"
+  }
+}

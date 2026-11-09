@@ -234,7 +234,9 @@ function histMsgHtml(m) {
     <div class="msg-ai relative px-4 py-3 max-w-[92%] w-fit min-w-[120px]">${badge}<div class="msg-body" ${m.meta?.meta?.core_run?.run_id || m.context_meta?.meta?.core_run?.run_id?`data-core-run="${esc((m.meta || m.context_meta).meta.core_run.run_id)}"`:''}>${answerHtml(m.meta || m.context_meta, m.content)}</div>${timeHtml}</div>
   </div>`;
 }
-let currentSession=localStorage.getItem("mjt_session") || "shared", historyBefore="", historyRows=[];
+/* 一个窗口聊到底：前端只有一条连续对话（shared），后端按话题分线程对用户透明；旧版遗留的会话选择一律忽略并清除，避免“莫名开了其他对话”。 */
+const currentSession="shared";try{localStorage.removeItem("mjt_session");}catch{}
+let historyBefore="", historyRows=[];
 function storedJson(key, fallback, storage=sessionStorage) {try {return JSON.parse(storage.getItem(key)) ?? fallback;} catch {return fallback;}}
 function chatContext() {return storedJson('context:'+currentSession,{});}
 let chatScopeCases=[];
@@ -320,6 +322,7 @@ function calculationLimitsHtml(result) {
   return gaps+errors+calculationFallbackHtml(result?.calculation_fallbacks);
 }
 function answerHtml(result, fallback='') {
+  if(result?.schema==='core4.0')return `<div class="answer-reading">${md(typeof result.text==='string'?result.text:'')}${result.asked?.question?`<p>${esc(result.asked.question)}</p><p class="muted">可以在输入框补充回答。</p>`:''}</div>`;
   return `<div class="answer-reading">${md(result?.answer || fallback || result?.plain_summary || '')}${realityContextHtml(result)}</div>${evidenceHtml(result)}`;
 }
 function historyItemHtml(m) {
@@ -361,28 +364,6 @@ async function loadHistory(older=false) {
     historyLoaded=true;
   } catch(e) {if(!older)flow.innerHTML=errState('历史暂时无法读取：'+e.message,'loadHistory');}
 }
-async function loadSessions() {
-  const list=await apiJson('/api/sessions');
-  if(!list.some(s=>s.id===currentSession))currentSession='shared';
-  $('#conversationTitle').textContent=list.find(s=>s.id===currentSession)?.title || '与明镜对话';
-  $('#sessionSelect').innerHTML=list.map(s=>`<option value="${esc(s.id)}" ${s.id===currentSession?'selected':''}>${esc(s.title)}</option>`).join('');
-  $('#sessionList').innerHTML=list.slice(0,30).map(s=>`<button data-session="${esc(s.id)}" class="session-item ${s.id===currentSession?'active':''}" title="${esc(s.title)}">${esc(s.title)}</button>`).join('');
-  $('#sessionList').querySelectorAll('button').forEach(b=>b.onclick=()=>activateSession(b.dataset.session));
-}
-async function activateSession(ident) {
-    if(sending){toast('请等待本轮结束，或先停止回答');return;}
-    sessionStorage.setItem('draft:'+currentSession,$('#chatInput').value);
-    currentSession=ident;localStorage.setItem('mjt_session',currentSession);
-    renderChatContext();
-    $('#chatInput').value=sessionStorage.getItem('draft:'+currentSession)||'';
-    switchPage('chat');await loadSessions();await loadHistory();
-}
-async function newConversation() {
-  if(sending){toast('请等待本轮结束，或先停止回答');return;}
-  try { const s=await writeJson('/api/sessions',{});
-    currentSession=s.id;localStorage.setItem('mjt_session',s.id);renderChatContext();$('#chatInput').value='';switchPage('chat');await loadSessions();await loadHistory();
-  } catch(e){toast(e.message);}
-}
 /* 待发附图：选图 → 缩略图条 → 随消息一起发送 */
 const MAX_IMGS = 4, MAX_IMG_BYTES = 5 * 1024 * 1024;
 let pendingImgs = [];  // data URL 数组
@@ -423,7 +404,7 @@ $("#chatFlow").addEventListener("click", e => {
   }
 });
 
-let sending = false, activeTurn=null;
+let sending = false, activeTurn=null, activeStreamStop=null;
 const chatRequests=new Map();
 function progress(text) {$('#chatProgress').textContent=text;$('#chatProgress').classList.remove('hidden');}
 function renderAnswer(body,result) { body.classList.remove('type-caret');body.innerHTML=answerHtml(result);bindClarification(body,result);const m=result?.meta || {},caseId=m.case_id || m.case_ids?.[0];if(Array.isArray(m.case_ids) || caseId)setChatContext({case_ids:m.case_ids || [caseId],case_id:caseId,title:m.case_title || chatScopeCases.filter(entry=>(m.case_ids || [caseId]).includes(entry.id)).map(entry=>entry.title).join('、'),...(m.draw_id?{draw_id:m.draw_id,draw_case_id:caseId}:{})});scrollChat(false); }
@@ -454,6 +435,10 @@ async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null
   if(selection){$('#selectionChip').textContent=`${selection.date} · ${selection.system} · ${selection.focus}`;$('#selectionChip').classList.remove('hidden');}
   else $('#selectionChip').classList.add('hidden');
   const body=addAiMsg();let gotResult=false, serverError=null;
+  const streamOwnerToken=getToken(),streamOwnerSession=currentSession;
+  let streamRunId=retryOf;
+  const streamAbort=new AbortController();
+  const streamIsCurrent=()=>getToken()===streamOwnerToken && currentSession===streamOwnerSession;
   const context=chatContext(), previous=retryOf?(chatRequests.get(retryOf) || storedJson('chat-pending:'+retryOf,null)):null;
   const messageId=resumeSpec?tarotOperationKey('resume:'+resumeSpec.runId+':'+resumeSpec.interruptId,{message:msg,state_version:resumeSpec.stateVersion}):null;
   const id=previous?.request_id || retryOf || (resumeSpec?'resume:'+resumeSpec.runId+':'+messageId:crypto.randomUUID());
@@ -472,8 +457,17 @@ async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null
       if(run && ['running','queued'].includes(run.status)){await recoverTurn(body,run.id);gotResult=true;return;}
       if(run){r=await api('/api/runs/'+encodeURIComponent(run.id)+'/retry',{method:'POST',body:JSON.stringify({request_id:'retry:'+run.operation_id})});}
     }
-    r ||= payload.resume?await api('/api/runs/'+encodeURIComponent(payload.resume.runId)+'/resume',{method:'POST',body:JSON.stringify({message:payload.message,message_id:payload.resume.messageId,interrupt_id:payload.resume.interruptId,state_version:payload.resume.stateVersion})}):await api('/api/chat',{method:'POST',body:JSON.stringify(payload)});
+    r ||= payload.resume?await api('/api/runs/'+encodeURIComponent(payload.resume.runId)+'/resume',{method:'POST',body:JSON.stringify({message:payload.message,message_id:payload.resume.messageId,interrupt_id:payload.resume.interruptId,state_version:payload.resume.stateVersion})}):await api('/api/chat',{method:'POST',headers:window.mingjingLegacyStream?{Accept:'application/json,text/event-stream'}:{},body:JSON.stringify(payload)});
     if(!r.ok){let detail=await r.json().catch(()=>({}));throw Error(detail.detail || `请求失败 (${r.status})`);}
+    if(!streamIsCurrent())return;
+    if(window.mingjingLegacyStream){
+      const streamed=await window.mingjingLegacyStream.followAccepted({response:r,body,signal:streamAbort.signal,token:streamOwnerToken,isCurrent:streamIsCurrent,fetcher:fetch.bind(window),onRun:runId=>{activeTurn=runId;streamRunId=runId;chatRequests.set(runId,payload);},onReady:stop=>{activeStreamStop=stop;},onFinal:result=>{if(streamIsCurrent()){gotResult=true;renderAnswer(body,result);loaded.memory=false;loaded.cases=false;}},onRetry:()=>{if(!sending && streamIsCurrent())sendChat(msg,selection,streamRunId || id,resumeSpec);}});
+      if(streamed){
+        if(streamed.reason==='cancelled')gotResult=true;
+        if(['failed','error'].includes(streamed.reason))sessionStorage.setItem('chat-retry:'+streamOwnerSession,JSON.stringify({run_id:activeTurn || id,message:msg,selection,resumeSpec}));
+        return;
+      }
+    }
     const reader=r.body.getReader(),dec=new TextDecoder();let buffer='';
     try {
       while(true){
@@ -501,12 +495,13 @@ async function sendChat(msg, selection = null, retryOf = null, resumeSpec = null
     if(!$('#chatInput').value){$('#chatInput').value=msg;sessionStorage.setItem('draft:'+currentSession,msg);}
     if(!pendingImgs.length){pendingImgs=imgs.slice();renderImgStrip();}
   } finally {
+    streamAbort.abort();activeStreamStop=null;
     if(gotResult){sessionStorage.removeItem('chat-pending:'+id);sessionStorage.removeItem('chat-retry:'+currentSession);chatRequests.delete(id);chatRequests.delete(activeTurn);}
     sending=false;activeTurn=null;$('#sendBtn').disabled=false;$('#stopBtn').classList.add('hidden');$('#chatProgress').classList.add('hidden');
-    loadSessions().catch(()=>{});$('#chatInput').focus();
+    $('#chatInput').focus();
   }
 }
-$('#stopBtn').onclick=async()=>{if(activeTurn)try{await writeJson('/api/runs/'+encodeURIComponent(activeTurn)+'/cancel',{});progress('正在停止…');}catch(e){toast(e.message);}};
+$('#stopBtn').onclick=async()=>{if(activeStreamStop){await activeStreamStop();return;}if(activeTurn)try{await writeJson('/api/runs/'+encodeURIComponent(activeTurn)+'/cancel',{});progress('正在停止…');}catch(e){toast(e.message);}};
 $('#sendBtn').onclick=()=>sendChat($('#chatInput').value);
 $('#chatInput').addEventListener('keydown',e=>{if(e.key==='Enter' && !e.shiftKey && !e.isComposing){e.preventDefault();sendChat($('#chatInput').value);}});
 $('#chatInput').addEventListener('input',()=>{sessionStorage.setItem('draft:'+currentSession,$('#chatInput').value);$('#chatInput').style.height='auto';$('#chatInput').style.height=Math.min(160,$('#chatInput').scrollHeight)+'px';});
@@ -515,8 +510,6 @@ $$('.chip').forEach(c=>c.onclick=async()=>{
   try{downloadText('明镜台-个人档案.json',JSON.stringify(await apiJson('/api/archive'),null,2));}catch(e){toast(e.message);}
 });
 $('#olderHistoryBtn').onclick=()=>loadHistory(true);
-$('#sessionSelect').onchange=()=>activateSession($('#sessionSelect').value);
-$('#newSessionBtn').onclick=newConversation;$('#newChatMobileBtn').onclick=newConversation;
 
 /* 右栏：档案速览 */
 function renderMemorySettings(snapshot) {
@@ -2137,7 +2130,7 @@ document.addEventListener('keydown',e=>{
 });
 $('#logoutBtn').onclick=()=>{localStorage.removeItem(TOKEN_KEY);localStorage.removeItem('mjt_session');sessionStorage.clear();for(const u of blobImages.values())URL.revokeObjectURL(u);location.reload();};
 async function unlocked() {
-  Object.keys(loaded).forEach(k=>delete loaded[k]);await loadSessions();loadHistory();loadSidebar();switchPage(currentPage,true);
+  Object.keys(loaded).forEach(k=>delete loaded[k]);loadHistory();loadSidebar();switchPage(currentPage,true);
 }
 async function authenticate(v) {
   if(!v.trim())return;saveToken(v);$('#tokenErr').classList.add('hidden');
