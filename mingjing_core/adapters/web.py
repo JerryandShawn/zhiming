@@ -58,6 +58,12 @@ def history_before_key(cursor):
     return stamp, turn_id, {'user':0, 'assistant':1, 'tool':2, 'legacy':3}.get(role, 4), role
 
 
+def health_model(model):
+    # PortBackedModel has no .model; the old getattr default reported 'test' for every MODELS_CONFIG service.
+    if hasattr(model, 'configured_model'): return model.configured_model()
+    return getattr(model, 'model', 'test')
+
+
 def auth(req):
     token = req.headers.get('X-Token', '')
     primary = os.getenv('MINGJING_TOKEN', '')
@@ -217,7 +223,7 @@ def create_app(service=None):
     @app.get('/api/health')
     async def health(req:Request):
         svc=core(req);owner=auth(req)
-        return {'ok':True,'context_version':'core3.0','timezone':'Asia/Shanghai','daily_schedule':'07:00','model':getattr(svc.model,'model','test'),
+        return {'ok':True,'context_version':'core3.0','timezone':'Asia/Shanghai','daily_schedule':'07:00','model':health_model(svc.model),
                 'retrieval':{'mode':'postgres_scoped','documents':len(svc.memory.facts(owner))},'database':'postgresql','runtime':'langgraph'}
 
     @app.get('/api/state')

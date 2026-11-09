@@ -15,6 +15,11 @@ class PortBackedModel:
         self.registry, self.role = registry, role
         self.port = registry.port(role, stop_on_quota=stop_on_quota)
 
+    def configured_model(self) -> str:
+        """Health identity: the effective name this role calls first; reads env, never sends or exposes keys."""
+        handles = self.registry.resolve(self.role)
+        return handles[0].model if handles else "unavailable"
+
     def generate(self, *, system: str, payload: dict[str, Any], schema: dict[str, Any], purpose: str) -> dict[str, Any]:
         handles = self.registry.resolve(self.role)
         choices = [handle.caps.get("tool_choice", ["auto"]) for handle in handles]
