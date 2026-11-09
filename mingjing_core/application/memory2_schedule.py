@@ -1,4 +1,4 @@
-"""Registered, bounded local memory maintenance; all reflection is scripted."""
+"""Registered, bounded memory maintenance; reflection is scripted unless MEMORY_REFLECTION_MODEL=real."""
 
 import logging
 import threading
@@ -8,16 +8,24 @@ from psycopg import sql
 
 from mingjing_core.application.memory2_background_archive import MemoryArchiveSweep
 from mingjing_core.application.memory2_background_reflection import IdleMemoryReflection
+from mingjing_core.application.memory2_reflection_input import reflection_mode
 from mingjing_core.timekit.clock import get_clock
 
 LOG = logging.getLogger(__name__)
 
 
 class MemoryMaintenanceSchedule:
-    def __init__(self, repo, *, clock=None, monotonic=time.monotonic):
+    def __init__(self, repo, *, clock=None, monotonic=time.monotonic, environment=None, reflection_model=None):
         self.repo, self.clock, self.monotonic = repo, clock or get_clock(), monotonic
         self.archive = MemoryArchiveSweep(repo, self.clock)
-        self.reflection = IdleMemoryReflection(repo, self.clock)
+        self.mode = reflection_mode(environment)
+        if self.mode == "real":
+            from mingjing_core.application.memory2_reflection_real import RealMemoryReflection
+
+            model = reflection_model or production_reflection_model(environment)
+            self.reflection = RealMemoryReflection(repo, self.clock, model=model)
+        else:
+            self.reflection = IdleMemoryReflection(repo, self.clock)
         self.next_due, self.cursor = 0.0, ""
         self.guard = threading.Lock()
 
@@ -61,3 +69,12 @@ class MemoryMaintenanceSchedule:
                 reflected += self.reflection.thread(owner, thread["id"], thread["subject"]) == "completed"
         self.cursor = owners[-1]["id"]
         return {"status": "succeeded", "archived": archived, "reflections": reflected}
+
+
+def production_reflection_model(environment=None):
+    """Same configured member model as chat, background role and lane; built only when the switch is real."""
+    from mingjing_core.application.memory2_reflection_model import ModelReflection
+    from mingjing_core.models.registry import ModelRegistry
+
+    registry = ModelRegistry(environment=environment) if environment is not None else ModelRegistry()
+    return ModelReflection(registry.port("background", stop_on_quota=True))
