@@ -70,6 +70,16 @@ npm run test:e2e         # 串行入口，约 560 项
 - 浏览器：`test:v4-base` 2/2、`test:thread-chat` 10/10、`test:spaces` 15/15、`test:draft-organize` 10/10；`test:static` 128 过、15 败（15 个全是 `legacy-stream` 项目，原因见第 4 节第 4 点）。
 - 没有跑完整 `test:e2e`、没有 CI、没有 `/v4/` 实机挂载、没有真实后端联调、没有 PG。
 
+## 6b. 与主线新文档（`docs/v4/api/*`，release-next@8b2e284a）对齐的实测结论
+
+主线计划把新前端挂在 **`/app/`**（`web_ui.py`，根路径默认 302 到 `/app/`，旧页在 `/legacy/`，`MINGJING_WEB_UI=legacy` 可切回），而不是本清单早先假设的 `/v4/`。构建基址是相对的，**不需要重新构建或改 `vite.config.ts`**：
+
+- **`/app/` 前缀实测：** 把 `v4-base.spec.ts` 里的 `/v4` 临时换成 `/app` 在一次性副本上跑，应用、公开课程、manifest（start_url/scope）、SW scope、壳资源全部在 `/app/` 下解析，通过 1/1。现有测试本身仍写死 `/v4/`，发布时应改成可配置前缀或增加 `/app/` 用例（需改测试文件，没做，归发布提交）。
+- **主线待定 1（`static/dist/` 纳入 git、能否逐字节复现）：** 实测 Windows + Node 24 与 Linux + Node 22.23（`npm ci`，同一份源码）两次构建，**314 个原文件逐字节一致**；同机两次构建也一致。不一致的只有 99 个 `.gz` 副本（压缩字节因 zlib 实现不同而异，解压内容完全相同）和记录了 gz 摘要的 `encoded-assets.json`。建议：`SHA256SUMS` 只覆盖原文件（排除 `*.gz` 与 `encoded-assets.json`）；`.gz` 副本要么不进 git、由 Linux 发布端生成，要么只取 Linux CI 的产物。仓库 `.gitattributes`（`* text=auto eol=lf`）已避免 Windows 换行造成的差异。
+- **主线待定 2（体积）：** `static/dist/` 原文件 314 个共 13,546,721 字节（≈ 13.5MB，主要是 202 个字体切片），gzip 副本 99 个共 662,678 字节。字体按 `unicode-range` 按需下载，浏览器只取页面用到的切片，全部随包是设计规范 §3 要求的自托管；首屏 JS 约 30KB gzip 的入口、不受影响。
+- **没有后端的功能（主线文档第 4 节）：** `spaces`、`organize`、`study/progress`、`messages` 仅在前端 `fakeServer.ts` 有实现。正式导航本来就没有它们的入口（深链除外，见第 5 节第 4 点），所以符合"本版请隐藏或保持仅预览"；仍建议用第 5 节的方案 (b) 给两个深链加"尚未开放"开关，由主线/大脑定。
+- **新后端有、前端还没用的接口：** `GET /api/memory2/proposals`（待确认提案列表，含 `confirmable`）、`/api/memory2/profile`（关于我分区，含第 7 节命理档案）、`/api/memory2/proposals/{id}/confirm|ignore|undo`、`/api/memory2/changes/{id}/undo`、`GET /api/subjects/self/profile/requirements`。`web/src` 里目前没有对 `memory2` 的调用，「我」页走旧的 `/api/memories`。这是**前端需要补的功能**，不是移植问题：若本版要在新前端里确认/撤销记忆提案，需要另做（工作量中等，要先对齐 `public_receipt` 字段）。
+
 ## 7. 仍未达标的项（移植不会改变它们）
 
 对话页页面加载 LCP p75 2548ms（差 48ms）、课程页约 5000ms 未达 2500ms；整理页 2080ms、spaces 2132ms 本机合成条件下达标。真机 4G、飞书真机、真实 API/PG 均未验证。这些在发布说明里要如实写，不写"就绪"。
