@@ -1,0 +1,41 @@
+@import './chat.css';
+.live-spaces-layout {
+  display: grid;
+  gap: var(--s-5);
+  min-inline-size: 0;
+}
+.live-space-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+.live-topic-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--s-4) 0 0;
+}
+.live-topic {
+  padding-block: var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+  overflow-wrap: anywhere;
+}
+.live-topic h3 {
+  margin: 0 0 var(--s-1);
+}
+.live-topic-create .input,
+.live-topic form .input {
+  flex: 1 1 12rem;
+  min-inline-size: 0;
+}
+.live-spaces-status {
+  min-block-size: var(--s-5);
+  margin-block: var(--s-3);
+}
+@media (min-width: 1024px) {
+  .live-spaces-layout {
+    grid-template-columns: 12rem minmax(0, 1fr);
+  }
+  .live-space-list {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,104 @@
+.night-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: var(--t-meta);
+  line-height: var(--l-meta);
+}
+.night-notice a {
+  display: inline-flex;
+  min-height: var(--control-height);
+  align-items: center;
+  text-decoration: underline;
+}
+.night-controls {
+  padding: var(--s-3) var(--s-4);
+  border-bottom: var(--border) solid var(--line);
+}
+.night-chat .chat-inner {
+  padding-bottom: var(--s-6);
+}
+.night-chat .user-bubble img,
+.night-chat .composer img {
+  max-width: 100%;
+  max-height: calc(var(--tarot-width) * 2);
+  object-fit: contain;
+  display: block;
+}
+.night-private-away {
+  padding: var(--s-3) var(--s-4);
+  background: var(--jade-wash);
+  color: var(--ink-2);
+}
+.night-private-chat {
+  background: var(--paper-2);
+}
+.night-ended {
+  padding: var(--s-2) var(--s-4);
+  flex: none;
+}
+.night-private-chat .chat-main > [aria-label='无痕对话提示'] {
+  margin: 0;
+  padding: var(--s-3) var(--s-4);
+  border-top: 0;
+  border-bottom: var(--border) dashed var(--jade);
+  background: var(--jade-wash);
+  flex: none;
+}
+.night-private-chat .user-bubble {
+  border: var(--border) dashed var(--line-strong);
+}
+.night-private-chat .user-bubble img {
+  max-width: 100%;
+  max-height: calc(var(--tarot-width) * 2);
+  object-fit: contain;
+  display: block;
+}
+.night-chat .chat-aside {
+  display: none;
+}
+.night-controls > [aria-label='对话隐私模式'] {
+  flex: 1 0 100%;
+  padding-bottom: var(--s-2);
+  border-bottom: var(--border) solid var(--line);
+}
+.shell:has(.night-chat) > main {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - var(--app-header-height, 0px) - var(--tabbar-height) - env(safe-area-inset-bottom, 0px));
+  min-height: 0;
+}
+.shell .night-chat,
+.shell[data-keyboard='open'] .night-chat {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: auto;
+  min-height: 0;
+}
+.night-chat > .chat-layout {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}
+.night-notice,
+.night-controls {
+  flex: none;
+}
+.shell[data-keyboard='open']:has(.night-chat) > main {
+  height: calc(var(--keyboard-height) - var(--app-header-height, 0px));
+}
+@media (min-width: 1024px) {
+  .night-chat .chat-aside {
+    display: flex;
+  }
+  .shell:has(.night-chat) > main {
+    height: 100dvh;
+  }
+}

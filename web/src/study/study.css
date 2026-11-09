@@ -1,0 +1,116 @@
+.study-workspace,
+.study-panel,
+.study-tab-content,
+.study-search-grid,
+.study-search-grid > *,
+.study-learning-card {
+  min-inline-size: 0;
+}
+.study-workspace {
+  padding-block: var(--s-4);
+}
+.study-workspace-heading {
+  padding-block-end: var(--s-3);
+}
+.study-workspace-heading h2 {
+  margin: 0;
+}
+.study-tab-content[hidden] {
+  display: none;
+}
+.study-panel {
+  padding-block: var(--s-4);
+}
+.study-search-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+}
+.study-term-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.study-term-list li {
+  border-block-end: var(--border) solid var(--line);
+}
+.study-term-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-4);
+  inline-size: 100%;
+  min-block-size: var(--control-height);
+  padding: var(--s-3) var(--s-2);
+  text-align: start;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.study-term-name {
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: var(--t-h3);
+}
+.study-term-row .meta {
+  text-align: start;
+}
+.study-conversation-example,
+.study-read-error {
+  padding: var(--s-4);
+  border: var(--border) solid var(--line-strong);
+  border-radius: var(--r-2);
+  background: var(--surface);
+  color: var(--ink-2);
+}
+.study-conversation-example {
+  margin-block: var(--s-4);
+}
+.study-learning-card {
+  padding-block: var(--s-5);
+  border-block-start: var(--border) solid var(--line);
+}
+.study-learning-card h4 {
+  font-family: var(--font-serif);
+  font-size: var(--t-h3);
+  line-height: var(--l-h3);
+  margin: 0;
+}
+.study-limit-list,
+.study-source-list {
+  padding-inline-start: var(--s-5);
+  margin-block: 0;
+}
+.study-limit-list li + li,
+.study-source-list li + li {
+  margin-block-start: var(--s-2);
+}
+.study-empty {
+  padding-block: var(--s-5);
+  color: var(--ink-2);
+}
+.study-evidence,
+.study-source {
+  overflow-wrap: anywhere;
+}
+.study-evidence-input {
+  border-block-start: var(--border) solid var(--line);
+  padding-block-start: var(--s-4);
+}
+.study-workspace :focus-visible {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--ring-offset);
+}
+@media (min-width: 768px) {
+  .study-search-grid {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .study-workspace *,
+  .study-workspace *::before,
+  .study-workspace *::after {
+    animation-duration: 0ms !important;
+    transition-duration: 0ms !important;
+  }
+}
