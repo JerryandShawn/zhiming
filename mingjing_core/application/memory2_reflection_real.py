@@ -37,8 +37,8 @@ ORIGIN = "memory2_reflection"
 
 
 class RealMemoryReflection:
-    def __init__(self, repo: Any, clock: Any, *, model: ReflectionModel) -> None:
-        self.repo, self.clock, self.model = repo, clock, model
+    def __init__(self, repo: Any, clock: Any, *, model: ReflectionModel, daily_limit: int | None = None) -> None:
+        self.repo, self.clock, self.model, self.daily_limit = repo, clock, model, daily_limit
         self.memory = V4FactMemory(repo)
         # Reuse the scripted path's eligibility: life thread, not incognito, idle >= 10 min, no run in flight.
         self.gate = IdleMemoryReflection(repo, clock)
@@ -80,7 +80,7 @@ class RealMemoryReflection:
                 # Same input already attempted (failed or superseded): never re-spend budget on it.
                 return "unchanged"
             day = owner_day(self.repo, owner, subject, self.clock.now())
-            if not reserve_budget(self.repo, owner, subject, day, job):
+            if not reserve_budget(self.repo, owner, subject, day, job, self.daily_limit):
                 return "budget_exhausted"
             record = self.repo.put(
                 owner,

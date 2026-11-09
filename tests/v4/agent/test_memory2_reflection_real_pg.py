@@ -8,16 +8,21 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import timedelta
 
 import pytest
+from models.test_quota_guard_pg import configure_central, post
 
 from mingjing_core.application.agent_tools_policy import V4FactMemory
 from mingjing_core.application.memory2_background_reflection import IdleMemoryReflection
-from mingjing_core.application.memory2_reflection_input import DAILY_LIMIT, reflection_mode
-from mingjing_core.application.memory2_reflection_model import ScriptedFactModel
+from mingjing_core.application.memory2_reflection_input import reflection_daily_limit, reflection_mode
+from mingjing_core.application.memory2_reflection_model import ModelReflection, ScriptedFactModel
 from mingjing_core.application.memory2_reflection_real import RealMemoryReflection
 from mingjing_core.application.memory2_schedule import MemoryMaintenanceSchedule
 from mingjing_core.application.memory2_withdrawals import MemoryWithdrawalService
 from mingjing_core.application.threads import ThreadService
 from mingjing_core.models.config_policy import ConfigError
+from mingjing_core.models.port import AssistantMessage, ModelPort, ToolCall
+from mingjing_core.models.quota_guard import QuotaGuard
+from mingjing_core.models.quota_runtime import current_scope
+from mingjing_core.models.quota_types import GuardRejected
 from mingjing_core.timekit.clock import FrozenClock
 
 from .test_toolkit_pg import SAID_AT
@@ -201,17 +206,54 @@ def test_ineligible_threads_and_memory_off_never_call_model(life):
     assert [row for row in repo.list("alice", "runtime_step")] == []
 
 
-def test_daily_budget_counts_attempts_and_resets_next_owner_day(life):
+def test_no_daily_cap_by_default_and_optional_cap_still_works(life):
     repo, clock, thread = life
-    for _ in range(DAILY_LIMIT):
+    assert reflection_daily_limit({}) is None and reflection_daily_limit({"MEMORY_REFLECTION_DAILY_LIMIT": "3"}) == 3
+    with pytest.raises(ConfigError):
+        reflection_daily_limit({"MEMORY_REFLECTION_DAILY_LIMIT": "0"})
+    for _ in range(25):
         say(repo, clock, LIKE + uuid.uuid4().hex[:4])
         idle(clock)
         assert reflect(repo, clock, thread)[0] == "completed"
+    capped = RealMemoryReflection(repo, clock, model=Forbidden(), daily_limit=25)
     say(repo, clock, JOB)
     idle(clock)
-    assert reflect(repo, clock, thread, model=Forbidden())[0] == "budget_exhausted"
-    clock.advance(timedelta(days=1))
-    assert reflect(repo, clock, thread)[0] == "completed"
+    assert capped.thread("alice", thread["id"], "self") == "budget_exhausted"
+
+
+class GuardedPort(ModelPort):
+    """Stands in for the member transport: every call takes a real central-guard slot in the caller's lane."""
+
+    def __init__(self, guard):
+        self.guard, self.calls = guard, 0
+
+    def complete(self, messages, **kwargs):
+        self.calls += 1
+        post(self.guard, f"reflection-{self.calls}", role="background", lane=current_scope().lane)
+        return AssistantMessage(tool_calls=[ToolCall(id="t", name="submit_memories", arguments={"items": []})])
+
+
+def test_reflection_only_uses_background_share_and_never_the_chat_reservation(life, monkeypatch):
+    repo, clock, thread = life
+    guard = QuotaGuard(**configure_central(repo, monkeypatch))
+    service = RealMemoryReflection(repo, clock, model=ModelReflection(GuardedPort(guard)))
+    background = 0
+    while True:
+        say(repo, clock, LIKE + uuid.uuid4().hex[:4])
+        idle(clock)
+        status = service.thread("alice", thread["id"], "self")
+        if status != "completed":
+            break
+        background += 1
+    # Background share is 20% of the 80-call window; the 17th reflection is refused by the guard, not locally.
+    assert background == 16 and status == "failed" and not guard.background_allowed()
+    with pytest.raises(GuardRejected) as caught:
+        post(guard, "direct-background-overflow", role="background", lane="background")
+    assert caught.value.kind == "share_limit"
+    assert repo.list("alice", "fact") == [] and repo.list("alice", "proposal") == []
+    for index in range(48):
+        assert post(guard, f"chat-{index}") == [1]
+    assert guard.status()["window"]["total"] == 64
 
 
 def test_failure_is_recorded_without_private_text_and_not_retried(life):

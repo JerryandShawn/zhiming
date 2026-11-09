@@ -18,8 +18,8 @@ from mingjing_core.memory.private import is_private
 from mingjing_core.models.config_policy import ConfigError
 
 SWITCH_ENV = "MEMORY_REFLECTION_MODEL"
+LIMIT_ENV = "MEMORY_REFLECTION_DAILY_LIMIT"
 MODES = ("scripted", "real")
-DAILY_LIMIT = 20
 MESSAGE_LIMIT = 40
 PROFILE_LIMIT = 30
 TASK = "memory2_reflection_real"
@@ -30,6 +30,16 @@ def reflection_mode(environment: Mapping[str, str] | None = None) -> str:
     if value not in MODES:
         raise ConfigError("MEMORY_REFLECTION_MODEL 只能是 scripted 或 real")
     return value
+
+
+def reflection_daily_limit(environment: Mapping[str, str] | None = None) -> int | None:
+    """User decision 2026-11-09: no daily cap by default; the central guard background share is the bound."""
+    value = (os.environ if environment is None else environment).get(LIMIT_ENV, "")
+    if value == "":
+        return None
+    if not value.isdigit() or not 1 <= int(value) <= 1000:
+        raise ConfigError("MEMORY_REFLECTION_DAILY_LIMIT 只能为空或 1–1000 的整数")
+    return int(value)
 
 
 def memory_enabled(repo: Any, owner: str, subject: str) -> bool:
@@ -59,13 +69,13 @@ def _runtime_row(repo: Any, owner: str, ident: str) -> dict[str, Any] | None:
         return None
 
 
-def reserve_budget(repo: Any, owner: str, subject: str, day: str, operation_id: str) -> bool:
-    """Counts model attempts, not successes; caller holds the owner transaction so reservations serialize."""
+def reserve_budget(repo: Any, owner: str, subject: str, day: str, operation_id: str, limit: int | None = None) -> bool:
+    """Counts model attempts per owner day (always recorded); refuses only when an optional limit is configured."""
     row = _runtime_row(repo, owner, budget_id(day))
     used = row["used"] if row else 0
-    if used >= DAILY_LIMIT:
+    if limit is not None and used >= limit:
         return False
-    data = {"task": "memory2_reflection_budget", "day": day, "used": used + 1, "limit": DAILY_LIMIT}
+    data = {"task": "memory2_reflection_budget", "day": day, "used": used + 1, "limit": limit}
     if row is None:
         repo.put(
             owner,

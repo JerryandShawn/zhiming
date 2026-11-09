@@ -8,7 +8,7 @@ from psycopg import sql
 
 from mingjing_core.application.memory2_background_archive import MemoryArchiveSweep
 from mingjing_core.application.memory2_background_reflection import IdleMemoryReflection
-from mingjing_core.application.memory2_reflection_input import reflection_mode
+from mingjing_core.application.memory2_reflection_input import reflection_daily_limit, reflection_mode
 from mingjing_core.timekit.clock import get_clock
 
 LOG = logging.getLogger(__name__)
@@ -23,7 +23,9 @@ class MemoryMaintenanceSchedule:
             from mingjing_core.application.memory2_reflection_real import RealMemoryReflection
 
             model = reflection_model or production_reflection_model(environment)
-            self.reflection = RealMemoryReflection(repo, self.clock, model=model)
+            self.reflection = RealMemoryReflection(
+                repo, self.clock, model=model, daily_limit=reflection_daily_limit(environment)
+            )
         else:
             self.reflection = IdleMemoryReflection(repo, self.clock)
         self.next_due, self.cursor = 0.0, ""

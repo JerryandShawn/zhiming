@@ -28,7 +28,7 @@
 
 ## Surprises & Discoveries
 
-1. **"不计入 80 次/5 小时"在守卫层做不到。**中央守卫按会员账号记 5 小时窗口（`QuotaPolicy.max_calls=80`），所有会员模型调用都会计入；后台通道只是不占交互预留（`interactive_share=0.60`）。本实现：后台通道 + 每人每天 ≤20 次本地预算。要真正不计入，只能换非会员模型或由主线改守卫——需要大脑裁定。
+1. **"不计入 80 次/5 小时"在守卫层做不到。**中央守卫按会员账号记 5 小时窗口（`QuotaPolicy.max_calls=80`），所有会员模型调用都会计入；后台通道只是不占交互预留（`interactive_share=0.60`）。本实现：后台通道 + 每人每天次数只统计、默认不限（用户 11-09 决定取消 20 次上限，可选 `MEMORY_REFLECTION_DAILY_LIMIT`）。要真正不计入，只能换非会员模型或由主线改守卫——需要大脑裁定。
 2. 没有单独的"记忆开关"设置；用 `auto_save_low_sensitivity` 作为"已开记忆"。
 3. 现有 `MemoryProposalService.accept` 只接受 `sensitivity ∈ SENSITIVITIES` 的提案；反思产生的**非敏感推断项和事件**提案（`sensitivity=normal`）目前没有确认入口，只能看到、不能一键确认。需要主线/前端定入口。
 4. 运行记录 `runtime_step` 不在隐私闭包收集的实体类型里（`closure_rows` 只收派生类、消息、episode、interpretive_claim），撤销原话后记录仍在，但只含不透明 id 和计数；脚本版反思记录同样如此。
